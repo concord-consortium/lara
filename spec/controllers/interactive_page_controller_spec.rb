@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe Lightweight::InteractivePagesController do
+describe InteractivePagesController do
   render_views
-  before do
-    # work around bug in routing testing
-    @routes = Lightweight::Engine.routes
-  end
+  # before do
+  #   # work around bug in routing testing
+  #   @routes = Engine.routes
+  # end
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => "activities/1/pages/3/2"}.should route_to(:controller => 'lightweight/interactive_pages', :action => 'show', :id => "3", :activity_id => "1", :offering_id => '2')
-      {:get => "activities/1/pages/3"}.should route_to(:controller => 'lightweight/interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
+      {:get => "activities/1/pages/3/2"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1", :offering_id => '2')
+      {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
     end
   end
 
@@ -36,7 +36,7 @@ describe Lightweight::InteractivePagesController do
       # Mock the setup_portal_student method because we don't have a current_user method (it's provided by the session)
       @learner = mock_model(Portal::Learner, :valid? => true,:[]= => true, :save => true, :destroy=> false, :delete=>false)
       controller.stub(:setup_portal_student) { @learner }
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
 
       # Add the offering - this can't be mocked because it's too close to the Activity
       offer = Portal::Offering.create!
@@ -45,7 +45,7 @@ describe Lightweight::InteractivePagesController do
 
       # set up page
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
-      interactive = Lightweight::MwInteractive.create!(:name => "MW model", :url => "http://google.com")
+      interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com")
       page1.add_interactive(interactive)
 
       # Add embeddables
@@ -86,7 +86,7 @@ describe Lightweight::InteractivePagesController do
     end
 
     it 'does not a form if the activity has no offering' do
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
       page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
@@ -98,7 +98,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'lists pages with links to each' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
       page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
@@ -112,7 +112,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'only renders the forward navigation link if it is a first page' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
       page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
@@ -125,7 +125,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'renders both the forward and back navigation links if it is a middle page' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
       page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
@@ -138,7 +138,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'only renders the back navigation links on the last page' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
       page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
@@ -151,7 +151,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'indicates the active page with a DOM class attribute' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
 
@@ -162,7 +162,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'renders pagination links if it is the only page' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
 
       get :show, :id => page1.id
@@ -173,7 +173,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'includes a class value matching the defined theme' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :theme => 'theme-string')
 
       get :show, :id => page1.id
@@ -195,7 +195,7 @@ describe Lightweight::InteractivePagesController do
       # Mock the setup_portal_student method because we don't have a current_user method (it's provided by the session)
       @learner = mock_model(Portal::Learner, :valid? => true,:[]= => true, :save => true, :destroy=> false, :delete=>false)
       controller.stub(:setup_portal_student) { @learner }
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
 
       # Add the offering - this can't be mocked because it's too close to the Activity
       offer = Portal::Offering.create!
@@ -239,7 +239,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'displays previous answers when viewed again' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
 
       # set up page
       @page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
@@ -292,7 +292,7 @@ describe Lightweight::InteractivePagesController do
 
     it 'shows sidebar content on pages which have it' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '<p>This is sidebar text.</p>')
 
       get :show, :id => page1.id
@@ -301,7 +301,7 @@ describe Lightweight::InteractivePagesController do
     end
 
     it 'shows related content on the last page' do
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity", :related => '<p>This is related content.</p>')
+      act = LightweightActivity.create!(:name => "Test activity", :related => '<p>This is related content.</p>')
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
 
       get :show, :id => page1.id
@@ -310,7 +310,7 @@ describe Lightweight::InteractivePagesController do
     end
 
     it 'does not show related content on pages other than the last page' do
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity", :related => '<p>This is related content.</p>')
+      act = LightweightActivity.create!(:name => "Test activity", :related => '<p>This is related content.</p>')
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
 
@@ -322,7 +322,7 @@ describe Lightweight::InteractivePagesController do
 
   describe 'new' do
     it 'creates a new page and redirects to its edit page' do
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
 
       get :new, :activity_id => act.id
 
@@ -332,7 +332,7 @@ describe Lightweight::InteractivePagesController do
 
   describe 'create' do
     it 'adds an InteractivePage to the current LightweightActivity' do
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       activity_page_count = act.pages.length
 
       post :create, :activity_id => act.id
@@ -354,7 +354,7 @@ describe Lightweight::InteractivePagesController do
   describe 'edit' do
     context 'when editing an existing page' do
       before do
-        @act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+        @act = LightweightActivity.create!(:name => "Test activity")
         @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       end
 
@@ -399,7 +399,7 @@ describe Lightweight::InteractivePagesController do
 
   describe 'update' do
     before do
-      @act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      @act = LightweightActivity.create!(:name => "Test activity")
       @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
     end
 
@@ -430,7 +430,7 @@ describe Lightweight::InteractivePagesController do
 
   describe 'destroy' do
     before do
-      @act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      @act = LightweightActivity.create!(:name => "Test activity")
       @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
     end
 
@@ -444,7 +444,7 @@ describe Lightweight::InteractivePagesController do
       @act.pages.length.should == page_count - 1
       flash[:notice].should == "Page #{@page1.name} was deleted."
       begin
-        Lightweight::InteractivePage.find(@page1.id)
+        InteractivePage.find(@page1.id)
         throw "Should not have been able to find this page"
       rescue ActiveRecord::RecordNotFound
       end
@@ -461,7 +461,7 @@ describe Lightweight::InteractivePagesController do
 
   describe 'add_embeddable' do
     before do
-      @act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      @act = LightweightActivity.create!(:name => "Test activity")
       @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
     end
 
@@ -485,7 +485,7 @@ describe Lightweight::InteractivePagesController do
   
   describe 'remove_embeddable' do
     before do
-      @act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      @act = LightweightActivity.create!(:name => "Test activity")
       @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
     end
 
