@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Lightweight::InteractivePage do
+describe InteractivePage do
   before :each do
     @valid = {
       :name => "Page",
       :text => "Some text"
     }
-    @page = Lightweight::InteractivePage.create!(@valid)
+    @page = InteractivePage.create!(@valid)
   end
 
   it 'should have valid attributes' do
@@ -15,7 +15,7 @@ describe Lightweight::InteractivePage do
   end
 
   it 'should belong to a lightweight activity' do
-    @activity = Lightweight::LightweightActivity.create!(:name => "Activity")
+    @activity = LightweightActivity.create!(:name => "Activity")
 
     @page.lightweight_activity = @activity
     @page.save!
@@ -29,7 +29,7 @@ describe Lightweight::InteractivePage do
 
   it 'should have interactives' do
     [3,1,2].each do |i|
-      inter = Lightweight::MwInteractive.create!(:name => "inter #{i}", :url => "http://www.concord.org/#{i}")
+      inter = MwInteractive.create!(:name => "inter #{i}", :url => "http://www.concord.org/#{i}")
       @page.add_interactive(inter, i)
     end
     @page.reload
@@ -39,7 +39,7 @@ describe Lightweight::InteractivePage do
 
   it 'should have interactives in the correct order' do
     [3,1,2].each do |i|
-      inter = Lightweight::MwInteractive.create!(:name => "inter #{i}", :url => "http://www.concord.org/#{i}")
+      inter = MwInteractive.create!(:name => "inter #{i}", :url => "http://www.concord.org/#{i}")
       @page.add_interactive(inter, i)
     end
     @page.reload

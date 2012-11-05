@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Lightweight::InteractiveItem do
+describe InteractiveItem do
   pending "is just a join model"
 end

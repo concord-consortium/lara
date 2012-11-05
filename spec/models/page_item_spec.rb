@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Lightweight::PageItem do
+describe PageItem do
   pending "is just a join model"
 end

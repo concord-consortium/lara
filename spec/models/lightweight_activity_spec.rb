@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Lightweight::LightweightActivity do
+describe LightweightActivity do
   before :each do
     @valid = {
       :name => "Activity"
     }
-    @activity = Lightweight::LightweightActivity.create!(@valid)
+    @activity = LightweightActivity.create!(@valid)
   end
 
   it 'should have valid attributes' do
@@ -14,7 +14,7 @@ describe Lightweight::LightweightActivity do
 
   it 'should have pages' do
     [3,1,2].each do |i|
-      page = Lightweight::InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
+      page = InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
       @activity.pages << page
     end
     @activity.reload
@@ -24,7 +24,7 @@ describe Lightweight::LightweightActivity do
 
   it 'should have interactives in the correct order' do
     [3,1,2].each do |i|
-      page = Lightweight::InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
+      page = InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
       @activity.pages << page
     end
     @activity.reload
