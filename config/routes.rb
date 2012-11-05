@@ -19,11 +19,6 @@ LightweightStandalone::Application.routes.draw do
   # the in-place editor needed interactive_page_path
   resources :pages, :as => 'interactive_pages', :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => [:new, :create]
 
-  # 'Show' routes including offering_ids
-  get "/activities/:id(/:offering_id)" => 'lightweight_activities#show', :as => 'lightweight_activity_show', :constraints => {:id => /\d+/, :offering_id => /\d+/}
-  get "/pages/:id(/:offering_id)" => 'interactive_pages#show', :as => 'interactive_page_show', :constraints => { :id => /\d+/, :offering_id => /\d+/ }
-  get "/activities/:activity_id/pages/:id(/:offering_id)" => 'interactive_pages#show', :as => 'activity_page_offering_show', :constraints => { :id => /\d+/, :offering_id => /\d+/, :activity_id => /\d+/ }
-
   # This route didn't work as a nested resource
   post "/pages/:id/remove_embeddable/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
 end
