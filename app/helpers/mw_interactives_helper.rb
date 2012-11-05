@@ -1,4 +1,2 @@
-module Lightweight
-  module MwInteractivesHelper
-  end
+module MwInteractivesHelper
 end
