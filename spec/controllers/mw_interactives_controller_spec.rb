@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Lightweight::MwInteractivesController do
+describe MwInteractivesController do
   render_views
   before do
     # work around bug in routing testing
-    @routes = Lightweight::Engine.routes
+    @routes = Engine.routes
   end
 
   describe 'index' do
@@ -34,17 +34,17 @@ describe Lightweight::MwInteractivesController do
   context 'when the logged-in user is an author' do
     context 'and an InteractivePage ID is provided' do
       before do
-        @page = Lightweight::InteractivePage.create!()
+        @page = InteractivePage.create!()
       end
 
       describe 'new' do
         it 'automatically creates a new interactive' do
-          starting_count = Lightweight::MwInteractive.count()
-          join_count = Lightweight::InteractiveItem.count()
+          starting_count = MwInteractive.count()
+          join_count = InteractiveItem.count()
           get :new, :page_id => @page.id
 
-          Lightweight::MwInteractive.count().should equal starting_count + 1
-          Lightweight::InteractiveItem.count().should equal join_count + 1
+          MwInteractive.count().should equal starting_count + 1
+          InteractiveItem.count().should equal join_count + 1
         end
 
         it 'redirects the submitter to the edit page' do
@@ -55,12 +55,12 @@ describe Lightweight::MwInteractivesController do
 
       describe 'create' do
         it 'creates an empty MW Interactive' do
-          starting_count = Lightweight::MwInteractive.count()
-          join_count = Lightweight::InteractiveItem.count()
+          starting_count = MwInteractive.count()
+          join_count = InteractiveItem.count()
           post :create, :page_id => @page.id
 
-          Lightweight::MwInteractive.count().should equal starting_count + 1
-          Lightweight::InteractiveItem.count().should equal join_count + 1
+          MwInteractive.count().should equal starting_count + 1
+          InteractiveItem.count().should equal join_count + 1
         end
 
         it 'redirects the submitter to the edit page' do
@@ -72,7 +72,7 @@ describe Lightweight::MwInteractivesController do
 
     context 'when editing an existing MW Interactive' do
       before do
-        @int = Lightweight::MwInteractive.create!(:name => 'Test Interactive', :url => 'http://concord.org')
+        @int = MwInteractive.create!(:name => 'Test Interactive', :url => 'http://concord.org')
       end
 
       describe 'edit' do
@@ -88,9 +88,9 @@ describe Lightweight::MwInteractivesController do
         end
 
         it 'has a link to go back to the page if one exists' do
-          @act = Lightweight::LightweightActivity.create!()
-          @page = Lightweight::InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
-          Lightweight::InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
+          @act = LightweightActivity.create!()
+          @page = InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
+          InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
 
           get :edit, :page_id => @page.id, :id => @int.id
           response.body.should match /<a[^<]+href="\/lightweight\/activities\/#{@act.id}\/pages\/#{@page.id}\/edit"[^<]*>[\s]*Go back to #{@page.name}[\s]*<\/a>/
@@ -102,7 +102,7 @@ describe Lightweight::MwInteractivesController do
           new_values_hash = { :name => 'Edited name', :url => 'http://lab.concord.org' }
           post :update, :id => @int.id, :mw_interactive => new_values_hash
 
-          mw_int = Lightweight::MwInteractive.find(@int.id)
+          mw_int = MwInteractive.find(@int.id)
           mw_int.name.should == new_values_hash[:name]
           mw_int.url.should == new_values_hash[:url]
         end
@@ -124,16 +124,16 @@ describe Lightweight::MwInteractivesController do
 
       describe 'destroy' do
         it 'removes the requested MW Interactive from the database and page and redirects to the page edit page' do
-          @act = Lightweight::LightweightActivity.create!()
-          @page = Lightweight::InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
-          Lightweight::InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
-          interactive_count = Lightweight::MwInteractive.count()
+          @act = LightweightActivity.create!()
+          @page = InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
+          InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
+          interactive_count = MwInteractive.count()
           page_count = @page.interactives.length
 
           post :destroy, :id => @int.id, :page_id => @page.id
 
           response.should redirect_to(edit_activity_page_path(@act, @page))
-          Lightweight::MwInteractive.count().should == interactive_count - 1
+          MwInteractive.count().should == interactive_count - 1
           @page.reload
           @page.interactives.length.should == page_count - 1
           flash[:notice].should == 'Your interactive was deleted.'
