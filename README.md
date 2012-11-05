@@ -1,6 +1,6 @@
 # Lightweight Activities Rails Portal Plugin
 
-This is a plugin which will eventually provide authoring, runtime and reporting support for lightweight, browser based activities within the CC rails portal.
+This is a Rails application intended to provide a platform for authoring and using Lightweight activities. It is developed as a standalone version of the code original developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). Much of the code (including this README) has been migrated directly from that plugin.
 
 ## Getting started
 
