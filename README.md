@@ -1,4 +1,4 @@
-# Lightweight Activities Rails Portal Plugin
+# Lightweight Activities Standalone
 
 This is a Rails application intended to provide a platform for authoring and using Lightweight activities. It is developed as a standalone version of the code original developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). Much of the code (including this README) has been migrated directly from that plugin.
 
@@ -6,61 +6,44 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 1. Check out the code
 
-        git clone https://github.com/concord-consortium/lightweight-activities-plugin.git
+        git clone https://github.com/pjmorse/lightweight-standalone.git
 
 2. Install the necessary gems
 
-        cd lightweight-activities-plugin
+        cd lightweight-standalone
         bundle install
 
-3. Go to the dummy app directory
+3. Initialize the database, with seed data
 
-        cd spec/dummy
+        rake db:drop db:create db:migrate db:seed
 
-4. Initialize the database, with seed data
+4. Launch the application
 
-        bundle exec rake db:drop db:create db:migrate db:seed
+        rails s
 
-5. Launch the dummy rails app
-
-        bundle exec rails s
-
-6. Browse to the app in your browser: [http://localhost:3000/lightweight/activity/1](http://localhost:3000/lightweight/activity/1)
+6. Browse to the app in your browser: [http://localhost:3000/activity/](http://localhost:3000/activity/)
 
 ## Running RSpec tests
 From the main plugin directory, run
 
-      RAILS_ENV=test bundle exec rspec spec
+      RAILS_ENV=test rspec spec
 
 You may first need to initialize the test database:
 
-      cd spec/dummy
       RAILS_ENV=test rake db:create db:migrate
-      cd -
 
 The RSpec tests live in spec/.
 
-## Editing and making changes
-All of the code for the plugin lives within app/, db/, and lib/.
+To re-initialize the test database, use the "initialize the database" command above:
 
-If you make any changes to the plugin's assets (js, css, images), you'll
-need to precompile them in the dummy app:
-
-      cd spec/dummy
-      bundle exec rake assets:precompile
-
-If you create any database migrations, you'll have to pull them into the
-dummy app:
-
-      cd spec/dummy
-      bundle exec rake lightweight:install:migrations
+      RAILS_ENV=test rake db:drop db:create db:migrate
 
 ### Adding Embeddable support
 
 To support new Embeddables:
 
-* We assume the Embeddable already has a model definition and controller in the host portal. The controller should have the necessary code to accept in-place-editing updates of individual fields in the Embeddable.
+* Add a model definition and controller in `app/models/embeddable/` `app/controllers/embeddable/`, respectively. The controller should have the necessary code to accept in-place-editing updates of individual fields in the Embeddable.
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
-* Provide a `_lightweight.html.haml` partial within that view directory (for showing the embeddable within an InteractivePage)
-* Provide a `_author.html.haml` partial as well (for editing the embeddable)
-* Add the Embeddable's name as a string to the list of supported Embeddables at `lib/lightweight/version.rb` (it's the `SUPPORTED_EMBEDDABLES` constant).
+* Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
+* Provide a `_author.html.haml` partial as well (for editing the Embeddable)
+* Add the Embeddable's name as a string to the the `SUPPORTED_EMBEDDABLES` constant in `config/initializers/embeddables.rb`.
