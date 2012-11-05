@@ -1,0 +1,68 @@
+=# TODO: Deal with pagination. This seems like a good place to handle "Add page."
+- next_page = nil unless defined?(next_page)
+- previous_page = nil unless defined?(previous_page)
+%div{:class => ["content", @page.theme]}
+  .page-nav
+    - if previous_page
+      %a{:class => 'previous', :href => edit_activity_page_path(@activity, previous_page)}
+        ! &nbsp;
+    - else
+      %a{:class => 'previous disabled'}
+        ! &nbsp;
+    - page_counter = 1
+    - @activity.pages.each do |p|
+      = link_to page_counter, edit_activity_page_path(@activity, p), :class => (p === @page) ? 'active' : ''
+      - page_counter = page_counter + 1
+    - if next_page
+      %a{:class => 'next', :href => edit_activity_page_path(@activity, next_page)}
+        ! &nbsp;
+    - else
+      = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}", :class => 'next'}
+
+  %h1.title
+    = @activity.name
+  %p.question
+    Editing
+    = editable_field @page, :name
+    = field_set_tag 'Page Appearance' do
+      = editable_field @page, :theme
+    .text
+      %p.instructions
+        =# best_in_place @page, :text, :type => :textarea, :nil => "Instructions (click to edit)"
+        = editable_field @page, :text, { :type => 'wysiwyg',
+                                         :rows => 10,
+                                         :cols => 60,
+                                         :submit => 'OK',
+                                         :onblur => 'ignore',
+                                         :wysiwyg => { :debug => false } }
+      = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
+        = select_tag :embeddable_type, options_for_select(Lightweight::SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
+        = submit_tag 'Add Embeddable'
+      .questions
+        - @page.embeddables.each do |e|
+          - e_type = e.class.name.underscore
+          = render :partial => "#{e_type}/author", :locals => { :embeddable => e, :page => @page }
+    .other
+      - @page.interactives.each do |interactive|
+        - i_type = interactive.class.name.underscore
+        = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
+      = link_to "Add interactive", new_page_mw_interactive_path(@page)
+    .sidebar
+      =# best_in_place @page, :sidebar, :type => :textarea, :rows => 5, :nil => 'Sidebar text (click to edit)'
+      = editable_field @page, :sidebar, { :type => 'wysiwyg',
+                                          :rows => 10,
+                                          :cols => 60,
+                                          :submit => 'OK',
+                                          :onblur => 'ignore',
+                                          :wysiwyg => { :debug => false } }
+    - if @page.interactives
+      #embed
+      #share
+
+  =# javascript_tag("focus_first_field();");
+
+  %ul.tasks
+    %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
+    %li= link_to "Return to editing #{@activity.name}", edit_activity_path(@activity)
+    %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
+    %li= link_to "All activities", activities_path

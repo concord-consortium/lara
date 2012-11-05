@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lightweight</title>
+  <%= stylesheet_link_tag    "lightweight/application", :media => "all" %>
+  <%= javascript_include_tag "lightweight/application" %>
+  <%= csrf_meta_tags %>
+  <script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body class="right">
+<div id="container">
+  <div id="header">
+    <div>
+      <%= image_tag "lightweight/mw-logo.png", :alt => "Molecular Workbench", :id => "mw-logo" %>
+      <%= image_tag "lightweight/cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %>
+      <nav>Home / Activities / Physics</nav>
+    </div>
+  </div>
+  <div id="content" class="content">
+    <%= yield %>
+  </div><!-- end #content -->
+</div>
+<div id="footer">
+  <div>
+    <p>&copy; Copyright 2012 The Concord Consortium. All rights reserved.</p>
+  </div>
+</div>
+<div id="overlay"></div>
+</body>
+</html>

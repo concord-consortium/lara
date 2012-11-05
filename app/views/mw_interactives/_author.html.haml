@@ -1,0 +1,9 @@
+.model
+  .toolbar
+    = editable_field interactive, :url
+    | 
+    = link_to "Remove", page_mw_interactive_path(@page, interactive), :method => :delete, :data => { :confirm => 'Are you sure?' }
+  %iframe{:src => interactive.url}
+    Your browser does not support inline frames, or is currently not configured to display inline frames.
+    Content can be viewed at the actual source page:
+    = link_to interactive.url, interactive.url
