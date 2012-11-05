@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe MwInteractivesController do
   render_views
-  before do
-    # work around bug in routing testing
-    @routes = Engine.routes
-  end
 
   describe 'index' do
     it 'returns a list of available MW Interactives' do
@@ -49,7 +45,7 @@ describe MwInteractivesController do
 
         it 'redirects the submitter to the edit page' do
           get :new
-          response.should redirect_to("/lightweight/mw_interactives/#{assigns(:interactive).id}/edit")
+          response.should redirect_to("/mw_interactives/#{assigns(:interactive).id}/edit")
         end
       end
 
@@ -65,7 +61,7 @@ describe MwInteractivesController do
 
         it 'redirects the submitter to the edit page' do
           post :create, :page_id => @page.id
-          response.should redirect_to("/lightweight/pages/#{@page.id}/mw_interactives/#{assigns(:interactive).id}/edit")
+          response.should redirect_to("/pages/#{@page.id}/mw_interactives/#{assigns(:interactive).id}/edit")
         end
       end
     end
@@ -79,7 +75,7 @@ describe MwInteractivesController do
         it 'shows a form with values of the MW Interactive filled in' do
           get :edit, :id => @int.id
 
-          response.body.should match /<form[^>]+action="\/lightweight\/mw_interactives\/#{@int.id}"[^<]+method="post"[^<]*>/
+          response.body.should match /<form[^>]+action="\/mw_interactives\/#{@int.id}"[^<]+method="post"[^<]*>/
           response.body.should match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
 
           response.body.should match /<input[^<]+id="mw_interactive_width"[^<]+name="mw_interactive\[width\]"[^<]+type="text"[^<]+value="#{@int.width}"[^<]*\/>/
@@ -93,7 +89,7 @@ describe MwInteractivesController do
           InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
 
           get :edit, :page_id => @page.id, :id => @int.id
-          response.body.should match /<a[^<]+href="\/lightweight\/activities\/#{@act.id}\/pages\/#{@page.id}\/edit"[^<]*>[\s]*Go back to #{@page.name}[\s]*<\/a>/
+          response.body.should match /<a[^<]+href="\/activities\/#{@act.id}\/pages\/#{@page.id}\/edit"[^<]*>[\s]*Go back to #{@page.name}[\s]*<\/a>/
         end
       end
 
