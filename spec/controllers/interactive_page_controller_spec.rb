@@ -9,7 +9,6 @@ describe InteractivePagesController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => "activities/1/pages/3/2"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1", :offering_id => '2')
       {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
     end
   end
@@ -33,17 +32,8 @@ describe InteractivePagesController do
 
     it 'renders the page if it exists' do
       # setup
-      # Mock the setup_portal_student method because we don't have a current_user method (it's provided by the session)
-      @learner = mock_model(Portal::Learner, :valid? => true,:[]= => true, :save => true, :destroy=> false, :delete=>false)
-      controller.stub(:setup_portal_student) { @learner }
       act = LightweightActivity.create!(:name => "Test activity")
 
-      # Add the offering - this can't be mocked because it's too close to the Activity
-      offer = Portal::Offering.create!
-      offer.runnable = act
-      offer.save
-
-      # set up page
       page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com")
       page1.add_interactive(interactive)
@@ -72,7 +62,7 @@ describe InteractivePagesController do
       page1.add_embeddable(mc2)
 
       # get the rendering
-      get :show, :id => page1.id, :offering_id => offer.id
+      get :show, :id => page1.id
 
       # verify the page is as expected
       response.body.should match /<iframe[^>]*src=['"]http:\/\/google.com['"]/m
@@ -81,19 +71,7 @@ describe InteractivePagesController do
       response.body.should match /What would you add to it\?/m
       response.body.should match /How many protons does Helium have\?/m
       response.body.should match /This is some <strong>xhtml<\/strong> content!/m
-      response.body.should match /<form accept-charset="UTF-8" action="\/portal\/offerings\/#{offer.id}\/answers" method="post">/
 
-    end
-
-    it 'does not a form if the activity has no offering' do
-      act = LightweightActivity.create!(:name => "Test activity")
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
-      page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.")
-      page3 = act.pages.create!(:name => "Page 3", :text => "This is the last activity text.")
-
-      get :show, :id => page1.id, :activity_id => act.id
-
-      response.body.should_not match /<form accept-charset="UTF-8" action="\/portal\/offerings/
     end
 
     it 'lists pages with links to each' do
@@ -105,9 +83,9 @@ describe InteractivePagesController do
 
       get :show, :id => page1.id
 
-      response.body.should match /<a[^>]*href="\/lightweight\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[^<]*1[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/lightweight\/activities\/#{act.id}\/pages\/#{page2.id}"[^>]*>[^<]*2[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/lightweight\/activities\/#{act.id}\/pages\/#{page3.id}"[^>]*>[^<]*3[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[^<]*1[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{page2.id}"[^>]*>[^<]*2[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{page3.id}"[^>]*>[^<]*3[^<]*<\/a>/
     end
 
     it 'only renders the forward navigation link if it is a first page' do
@@ -120,7 +98,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id
 
       response.body.should match /<a class='previous disabled'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/lightweight\/activities\/#{act.id}\/pages\/#{page2.id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{page2.id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -132,8 +110,8 @@ describe InteractivePagesController do
 
       get :show, :id => page2.id
 
-      response.body.should match /<a class='previous' href='\/lightweight\/activities\/#{act.id}\/pages\/#{page1.id}'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/lightweight\/activities\/#{act.id}\/pages\/#{page3.id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{page1.id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{page3.id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -145,7 +123,7 @@ describe InteractivePagesController do
 
       get :show, :id => page3.id
 
-      response.body.should match /<a class='previous' href='\/lightweight\/activities\/#{act.id}\/pages\/#{page2.id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{page2.id}'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next disabled'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
@@ -157,7 +135,7 @@ describe InteractivePagesController do
 
       get :show, :id => page1.id
 
-      response.body.should match /<a href="\/lightweight\/activities\/#{act.id}\/pages\/#{page1.id}" class="active">1<\/a>/
+      response.body.should match /<a href="\/activities\/#{act.id}\/pages\/#{page1.id}" class="active">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
@@ -182,6 +160,7 @@ describe InteractivePagesController do
     end
 
     it 'submits answers which can be parsed as Saveables' do
+      pending "There will be a new structure for user data persistence"
       # To create a Saveable, we need an Offering, a Learner, and an answered Embeddable.
       # The current portal action creating Saveables is Portal::OfferingsController#answer
       # The Learner is created from the session in that controller, so the form doesn't
@@ -238,6 +217,7 @@ describe InteractivePagesController do
     end
 
     it 'displays previous answers when viewed again' do
+      pending "There will be a new structure for user data persistence"
       # setup
       act = LightweightActivity.create!(:name => "Test activity")
 
@@ -284,7 +264,7 @@ describe InteractivePagesController do
     end
 
     it 'disables the submit button when there is no learner' do
-      pending('Not sure this is required')
+      pending "There will be a new structure for user data persistence"
       controller.stub!(:setup_portal_student).and_return(nil)
       get :show, :id => @offering.id, :format => 'run_html'
       response.body.should =~ /<input.*class='disabled'.*type='submit'/
@@ -342,7 +322,6 @@ describe InteractivePagesController do
     end
 
     it 'does not route if no LightweightActivity is specified' do
-      pending 'Routing changes for best_in_place broke this'
       begin
         post :create
         throw "Should not have been able to route without an ID"
@@ -371,23 +350,23 @@ describe InteractivePagesController do
       it 'has links to show the page, return to the activity, or add another page' do
         get :edit, :id => @page1.id, :activity_id => @act.id
 
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{@act.id}\/pages\/#{@page1.id}"[^>]*>[\s]*See this page[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{@act.id}\/edit"[^>]*>[\s]*Return to editing #{@act.name}[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{@act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{@act.name}[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/lightweight\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/pages\/#{@page1.id}"[^>]*>[\s]*See this page[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/edit"[^>]*>[\s]*Return to editing #{@act.name}[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{@act.name}[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
       end
 
       it 'has links for adding MwInteractives to the page' do
         get :edit, :id => @page1.id, :activity_id => @act.id
 
-        response.body.should match /<a[^>]+href="\/lightweight\/pages\/#{@page1.id}\/mw_interactives\/new"[^>]*>[\s]*Add interactive[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/pages\/#{@page1.id}\/mw_interactives\/new"[^>]*>[\s]*Add interactive[\s]*<\/a>/
       
       end
 
       it 'has links for adding Embeddables to the page' do
         get :edit, :id => @page1.id, :activity_id => @act.id
 
-        response.body.should match /<form[^>]+action="\/lightweight\/activities\/#{@act.id}\/pages\/#{@page1.id}\/add_embeddable"[^<]*>/
+        response.body.should match /<form[^>]+action="\/activities\/#{@act.id}\/pages\/#{@page1.id}\/add_embeddable"[^<]*>/
         response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
       end
     end
