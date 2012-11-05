@@ -409,3 +409,9 @@ h2.list-head {
   font-size: 1.7em;
   font-weight: bold;
 }
+div.wysiwyg ul.toolbar {
+  background: none;
+  color: inherit;
+  text-align: left;
+  height: inherit;
+}
