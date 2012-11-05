@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe Lightweight::LightweightActivitiesController do
+describe LightweightActivitiesController do
   render_views
   before do
     # work around bug in routing testing
-    @routes = Lightweight::Engine.routes
+    @routes = Engine.routes
   end
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => "activities/3"}.should route_to(:controller => 'lightweight/lightweight_activities', :action => 'show', :id => "3")
+      {:get => "activities/3"}.should route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
     end
   end
 
@@ -31,7 +31,7 @@ describe Lightweight::LightweightActivitiesController do
 
     it 'should render the activity if it exists' do
       # setup
-      act = Lightweight::LightweightActivity.create!(:name => "Test activity")
+      act = LightweightActivity.create!(:name => "Test activity")
       page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
 
       # get the rendering
@@ -68,7 +68,7 @@ describe Lightweight::LightweightActivitiesController do
       end
 
       it 'should provide a list of authored Lightweight Activities with edit and run links on the index page' do
-        act = Lightweight::LightweightActivity.create!(:name => 'There should be at least one')
+        act = LightweightActivity.create!(:name => 'There should be at least one')
         get :index
         response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}\/edit"[^>]+class="container_link"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
         response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}"[^>]*>[\s]*Run[\s]*<\/a>/
@@ -87,26 +87,26 @@ describe Lightweight::LightweightActivitiesController do
 
     describe 'create' do
       it 'should create a new Lightweight Activity when submitted with valid data' do
-        existing_activities = Lightweight::LightweightActivity.count
+        existing_activities = LightweightActivity.count
 
         post :create, {:lightweight_activity => {:name => 'Test Activity', :description => "Test Activity's description"}}
 
         flash[:notice].should == "Lightweight Activity Test Activity was created."
         response.should redirect_to(edit_activity_path(assigns(:activity)))
-        Lightweight::LightweightActivity.count.should equal existing_activities + 1
+        LightweightActivity.count.should equal existing_activities + 1
       end
 
       it 'creates LightweightActivities owned by the current_user' do
         # pending "This is very difficult to manage in the engine."
-        existing_activities = Lightweight::LightweightActivity.count(:conditions => {:user_id => 10})
+        existing_activities = LightweightActivity.count(:conditions => {:user_id => 10})
         post :create, {:lightweight_activity => {:name => 'Owned Activity', :description => "Test Activity's description", :user_id => 10}}
 
-        Lightweight::LightweightActivity.count(:conditions => {:user_id => 10}).should equal existing_activities + 1
+        LightweightActivity.count(:conditions => {:user_id => 10}).should equal existing_activities + 1
       end
 
       it 'should return to the form with an error message when submitted with invalid data' do
         pending "It turns out there aren't (m)any ways to build invalid data here."
-        existing_activities = Lightweight::LightweightActivity.count
+        existing_activities = LightweightActivity.count
 
         post :create, {}
 
@@ -114,13 +114,13 @@ describe Lightweight::LightweightActivitiesController do
         response.body.should match /<form[^<]+action="\/lightweight\/activities"[^<]+method="post"[^<]*>/
         response.body.should match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
         response.body.should match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
-        Lightweight::LightweightActivity.count.should equal existing_activities
+        LightweightActivity.count.should equal existing_activities
       end
     end
 
     describe 'edit' do
       it 'should display a form showing the current name and description' do
-        act = Lightweight::LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
         get :edit, {:id => act.id}
 
         response.body.should match /<form[^>]+action="\/lightweight\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
@@ -132,7 +132,7 @@ describe Lightweight::LightweightActivitiesController do
       end
 
       it 'should include a link to add pages' do
-        act = Lightweight::LightweightActivity.create!(:name => 'This Activity needs pages', :description => 'Activity to add pages to')
+        act = LightweightActivity.create!(:name => 'This Activity needs pages', :description => 'Activity to add pages to')
         get :edit, {:id => act.id}
 
         response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}\/pages\/new"/
@@ -141,14 +141,14 @@ describe Lightweight::LightweightActivitiesController do
 
     describe 'update' do
       it "should change the activity's database record to show submitted data" do
-        act = Lightweight::LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
-        existing_activities = Lightweight::LightweightActivity.count
+        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+        existing_activities = LightweightActivity.count
 
         post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This name has been edited', :description => 'Activity which was edited' }}
 
-        Lightweight::LightweightActivity.count.should == existing_activities
+        LightweightActivity.count.should == existing_activities
 
-        updated = Lightweight::LightweightActivity.find(act.id)
+        updated = LightweightActivity.find(act.id)
         updated.name.should == 'This name has been edited'
         updated.description.should == 'Activity which was edited'
         flash[:notice].should == "Activity #{updated.name} was updated."
@@ -156,7 +156,7 @@ describe Lightweight::LightweightActivitiesController do
 
       it "should redirect to the activity's edit page on error" do
         pending "It turns out there aren't (m)any ways to build invalid data here."
-        act = Lightweight::LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
 
         post :update, {:_method => 'put', :id => act.id}
 
@@ -175,16 +175,16 @@ describe Lightweight::LightweightActivitiesController do
       end
 
       it 'removes the specified activity from the database with a message' do
-        act = Lightweight::LightweightActivity.create!(:name => 'Short-lived activity', :description => 'The test should delete this in a few lines')
-        existing_activities = Lightweight::LightweightActivity.count
+        act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'The test should delete this in a few lines')
+        existing_activities = LightweightActivity.count
 
         post :destroy, {:_method => 'delete', :id => act.id}
 
-        Lightweight::LightweightActivity.count.should == existing_activities - 1
+        LightweightActivity.count.should == existing_activities - 1
         response.should redirect_to(activities_path)
         flash[:notice].should == "Activity #{act.name} was deleted."
         begin
-          Lightweight::LightweightActivity.find(act.id)
+          LightweightActivity.find(act.id)
           throw "Should not have found #{act.name}."
         rescue ActiveRecord::RecordNotFound
         end
