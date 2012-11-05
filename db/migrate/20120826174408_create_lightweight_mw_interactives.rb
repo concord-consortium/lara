@@ -1,6 +1,6 @@
-class CreateLightweightMwInteractives < ActiveRecord::Migration
+class CreateMwInteractives < ActiveRecord::Migration
   def change
-    create_table :lightweight_mw_interactives do |t|
+    create_table :mw_interactives do |t|
       t.string :name
       t.string :url
       t.integer :user_id
@@ -8,6 +8,6 @@ class CreateLightweightMwInteractives < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :lightweight_mw_interactives, :user_id, :name => 'mw_interactives_user_idx'
+    add_index :mw_interactives, :user_id, :name => 'mw_interactives_user_idx'
   end
 end
