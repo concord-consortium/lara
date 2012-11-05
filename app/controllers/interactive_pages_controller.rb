@@ -4,22 +4,6 @@ class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
 
   def show
-    # TODO: Select the offering properly rather than hard-wiring it.
-    if (params[:offering_id])
-      begin
-        @offering = @activity.offerings.find(params[:offering_id])
-      rescue
-        # HACK: This is a bad data situation, where the page comes from a
-        # different activity than the runnable for the offering.
-        # The correct response should be some kind of error page, I think.
-        @offering = @activity.offerings.first
-      end
-    else
-      @offering = @activity.offerings.first
-    end
-    if @offering
-      @learner = setup_portal_student
-    end
     @all_pages = @activity.pages
     current_idx = @all_pages.index(@page)
     @previous_page = (current_idx > 0) ? @all_pages[current_idx-1] : nil
@@ -28,7 +12,7 @@ class InteractivePagesController < ApplicationController
     respond_to do |format|
       format.html
       format.xml
-      format.run_html { render :show }
+      # format.run_html { render :show }
     end
   end
 
