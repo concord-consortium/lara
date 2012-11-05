@@ -3,7 +3,7 @@
 This is what's coming up for lightweight-standalone, along with questions where I have them about how this progress should happen.
 
 #### Home page
-What should go on it? Should it just redirect to the Activities index page?
+√ What should go on it? Should it just redirect to the Activities index page?
 
 #### Access control/authorization:
 We have at least two roles here: activity authors and "students" taking the activities. We don't actually need to *authenticate* the students, because we only need to persist their answers to questions; we don't actually need to know anything else about them, and so any kind of login/password setup is probably overkill. Authors do need to be authenticated, however, and only allowed to edit their own activities.
@@ -25,4 +25,4 @@ Stories are [in Pivotal Tracker](https://www.pivotaltracker.com/projects/442903#
 Where should this live? Does it replace http://lightweight-mw.concord.org?
 
 #### Misc
-* Seed data for demos
+* √ Seed data for demos
