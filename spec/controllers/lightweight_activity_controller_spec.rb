@@ -2,11 +2,6 @@ require 'spec_helper'
 
 describe LightweightActivitiesController do
   render_views
-  before do
-    # work around bug in routing testing
-    @routes = Engine.routes
-  end
-
   describe 'routing' do
     it 'recognizes and generates #show' do
       {:get => "activities/3"}.should route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
@@ -64,14 +59,14 @@ describe LightweightActivitiesController do
     describe 'index' do
       it 'should provide a link to create a new Lightweight Activity on the index page' do
         get :index
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/new"[^>]*>/
+        response.body.should match /<a[^>]+href="\/activities\/new"[^>]*>/
       end
 
       it 'should provide a list of authored Lightweight Activities with edit and run links on the index page' do
         act = LightweightActivity.create!(:name => 'There should be at least one')
         get :index
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}\/edit"[^>]+class="container_link"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}"[^>]*>[\s]*Run[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/edit"[^>]+class="container_link"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{act.id}"[^>]*>[\s]*Run[\s]*<\/a>/
       end
     end
 
@@ -79,7 +74,7 @@ describe LightweightActivitiesController do
 
       it 'should provide a form for naming and describing a Lightweight Activity' do
         get :new
-        response.body.should match /<form[^<]+action="\/lightweight\/activities"[^<]+method="post"[^<]*>/
+        response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
         response.body.should match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
         response.body.should match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
       end
@@ -111,7 +106,7 @@ describe LightweightActivitiesController do
         post :create, {}
 
         flash[:warning].should == 'There was a problem creating the new Lightweight Activity.'
-        response.body.should match /<form[^<]+action="\/lightweight\/activities"[^<]+method="post"[^<]*>/
+        response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
         response.body.should match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
         response.body.should match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
         LightweightActivity.count.should equal existing_activities
@@ -123,19 +118,19 @@ describe LightweightActivitiesController do
         act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
         get :edit, {:id => act.id}
 
-        response.body.should match /<form[^>]+action="\/lightweight\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
+        response.body.should match /<form[^>]+action="\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
         response.body.should match /<input[^>]+name="_method"[^>]+type="hidden"[^>]+value="put"[^<]+\/>/
         response.body.should match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{act.name}"[^<]*\/>/
         response.body.should match /<textarea[^>]+id="lightweight_activity_description"[^>]+name="lightweight_activity\[description\]"[^<]*>[\s]*Activity to be edited[\s]*<\/textarea>/
         response.body.should match /<textarea[^>]+id="lightweight_activity_related"[^>]+name="lightweight_activity\[related\]"[^<]*>[\s]*<\/textarea>/
-        response.body.should match /<a[^>]+href="\/lightweight\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
       end
 
       it 'should include a link to add pages' do
         act = LightweightActivity.create!(:name => 'This Activity needs pages', :description => 'Activity to add pages to')
         get :edit, {:id => act.id}
 
-        response.body.should match /<a[^>]+href="\/lightweight\/activities\/#{act.id}\/pages\/new"/
+        response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"/
       end
     end
 

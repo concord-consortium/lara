@@ -1,5 +1,5 @@
 %h1 Edit activity
-= form_for @activity, {:url => "/lightweight/activities/#{@activity.id}", :method => 'put'} do |f|
+= form_for @activity, {:url => "/activities/#{@activity.id}", :method => 'put'} do |f|
   = render :partial => 'form', :locals => {:f => f}
 = javascript_tag("focus_first_field();");
 %ul

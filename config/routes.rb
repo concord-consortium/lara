@@ -12,7 +12,7 @@ LightweightStandalone::Application.routes.draw do
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
 
   # This is so we can build the InteractiveItem at the same time as the Interactive
-  resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
+  resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
     resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
   end
 

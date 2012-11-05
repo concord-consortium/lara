@@ -12,9 +12,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def show
-    # If we're given an offering ID, use that to set the offering; otherwise just take the first one.
-    @offering = params[:offering_id] ? Portal::Offering.find(params[:offering_id]) : @activity.offerings.first
-    redirect_to activity_page_offering_show_path(@activity, @activity.pages.first, @offering)
+    redirect_to activity_page_path(@activity, @activity.pages.first)
   end
 
   def new
