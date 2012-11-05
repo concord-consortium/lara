@@ -1,7 +1,7 @@
 class InteractivePage < ActiveRecord::Base
   attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar
 
-  belongs_to :lightweight_activity, :class_name => 'tivity'
+  belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 
   has_many :interactive_items, :order => :position
 
