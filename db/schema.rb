@@ -13,6 +13,35 @@
 
 ActiveRecord::Schema.define(:version => 20121011190609) do
 
+  create_table "embeddable_multiple_choice_choices", :force => true do |t|
+    t.integer  "multiple_choice_id"
+    t.text     "choice"
+    t.boolean  "is_correct"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "embeddable_multiple_choices", :force => true do |t|
+    t.string   "name"
+    t.text     "prompt"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "embeddable_open_responses", :force => true do |t|
+    t.string   "name"
+    t.text     "prompt"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "embeddable_xhtmls", :force => true do |t|
+    t.string   "name"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactive_items", :force => true do |t|
     t.integer  "interactive_page_id"
     t.integer  "interactive_id"
