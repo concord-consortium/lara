@@ -1,4 +1,6 @@
 LightweightStandalone::Application.routes.draw do
+  root :to => 'lightweight_activities#index'
+
   # HACK: Seems like these should be nested resources of the offering, but that's not really practical
   # with the engine's URL scheme. Either way, we need to be able to optionally specify an offering ID.
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
