@@ -24,4 +24,4 @@
               %li= link_to "Run", activity_path(activity), :target => 'new'
               %li= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }
         %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
-          %p= activity.description
+          != activity.description
