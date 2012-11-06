@@ -11,8 +11,6 @@ gem 'acts_as_list'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 gem 'factory_girl_rails'
 gem 'default_value_for'
 
