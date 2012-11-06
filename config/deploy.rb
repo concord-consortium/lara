@@ -1,3 +1,5 @@
+require "bundler/capistrano"
+
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/pjmorse/lightweight-standalone.git"
 

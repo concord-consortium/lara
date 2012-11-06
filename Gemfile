@@ -16,6 +16,7 @@ gem 'default_value_for'
 
 group :production do
   gem 'mysql2'
+  gem 'therubyracer',         "~>0.10.2"
 end
 
 # Gems used only for assets and not required
