@@ -6,14 +6,14 @@
 = field_set_tag 'Activity Name' do
   = f.text_field :name
 = field_set_tag 'Activity Description' do
-  = f.text_area :description, :cols => 80, :rows => 5, :id => 'activity-desc-edit'
+  = f.text_area :description, :cols => 80, :rows => 5
   :javascript
     $(function() {
-        $('#activity-desc-edit').wysiwyg();
+        $('#lightweight_activity_description').wysiwyg();
     });
 = field_set_tag 'Related Content' do
-  = f.text_area :related, :cols => 80, :rows => 5, :id => 'activity-related-edit'
+  = f.text_area :related, :cols => 80, :rows => 5
   :javascript
     $(function() {
-        $('#activity-related-edit').wysiwyg();
+        $('#lightweight_activity_related').wysiwyg();
     });
