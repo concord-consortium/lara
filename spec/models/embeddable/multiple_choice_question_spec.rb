@@ -4,29 +4,22 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::MultipleChoice do
   before(:each) do
-    @page = Factory(:page)
-    @user = Factory(:user)
-    @multichoice = Factory(:multiple_choice)
-    @multichoice.pages << @page
-    @multichoice.user = @user
-    @multichoice.save
+    @page = FactoryGirl.create(:interactive_page)
+    @multichoice = FactoryGirl.create(:multiple_choice)
     @multichoice.create_default_choices
     @multichoice.reload
+    @page.add_embeddable(@multichoice)
+    @page.reload
   end
 
   describe "a newly created MutipleChoiceQuestion" do    
-    it "should have a non-blank propt" do
+    it "should have a non-blank prompt" do
       @multichoice.prompt.should_not be_nil
     end
     
-    it "should have a user" do
-      @multichoice.user.should_not be_nil
-      @multichoice.user.should == @user
-    end
-    
     it "should belong to a page" do
-      @multichoice.pages.should_not be_nil
-      @multichoice.pages.should include(@page)
+      @page.embeddables.should_not be_nil
+      @page.embeddables.should include(@multichoice)
     end
     
     it "should have three initial default answers" do
@@ -36,7 +29,7 @@ describe Embeddable::MultipleChoice do
 
   describe "adding a new choice" do
     before(:each) do
-      @choice = @multichoice.addChoice("my choice")
+      @choice = @multichoice.add_choice("my choice")
       @multichoice.reload
     end
     

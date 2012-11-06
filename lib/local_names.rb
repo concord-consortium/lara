@@ -8,7 +8,7 @@ class LocalNames
 
   # Lots of nay-saying about singleton patterns be-damned.
   class << self
-    def instance(theme  = APP_CONFIG[:theme] || 'default')
+    def instance(theme  =  'default')
       @instances = {} unless @instances
       unless @instances[theme]
         @instances[theme] = self.new(theme)
@@ -17,7 +17,7 @@ class LocalNames
     end
   end
 
-  def initialize(theme  = APP_CONFIG[:theme] || 'default')
+  def initialize(theme  =  'default')
     self.theme_name = theme
     self.logger = Rails.logger
   end

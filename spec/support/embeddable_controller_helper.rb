@@ -12,7 +12,7 @@ shared_examples_for 'an embeddable controller' do
     if self.respond_to?(method_name)
       return self.send(method_name)
     else
-      return Factory.create(model_name)
+      return FactoryGirl.create(model_name)
     end
   end
 
@@ -24,27 +24,28 @@ shared_examples_for 'an embeddable controller' do
     end
   end
 
-  describe "GET index" do
-    it "runs without error" do
-      get :index
-      response.should be_success
-    end
-
-  end
-
-  describe "GET show" do
-
-    it "assigns the requested #{model_ivar_name_lambda.call} as @#{model_ivar_name_lambda.call}" do
-      @model_class.stub!(:find).with("37").and_return(@model_ivar)
-      get :show, :id => "37"
-      assigns[@model_ivar_name].should equal(@model_ivar)
-    end
-
-    it "assigns the requested #{model_ivar_name_lambda.call} as @#{model_ivar_name_lambda.call} when called with Ajax" do
-      @model_class.stub!(:find).with("37").and_return(@model_ivar)
-      xhr :get, :show, :id => "37"
-      assigns[@model_ivar_name].should equal(@model_ivar)
-    end
-
-  end
+  # Standalone doesn't actually need these - ?
+  # describe "GET index" do
+  #   it "runs without error" do
+  #     get :index
+  #     response.should be_success
+  #   end
+  # 
+  # end
+  # 
+  # describe "GET show" do
+  # 
+  #   it "assigns the requested #{model_ivar_name_lambda.call} as @#{model_ivar_name_lambda.call}" do
+  #     @model_class.stub!(:find).with("37").and_return(@model_ivar)
+  #     get :show, :id => "37"
+  #     assigns[@model_ivar_name].should equal(@model_ivar)
+  #   end
+  # 
+  #   it "assigns the requested #{model_ivar_name_lambda.call} as @#{model_ivar_name_lambda.call} when called with Ajax" do
+  #     @model_class.stub!(:find).with("37").and_return(@model_ivar)
+  #     xhr :get, :show, :id => "37"
+  #     assigns[@model_ivar_name].should equal(@model_ivar)
+  #   end
+  # 
+  # end
 end

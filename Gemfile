@@ -13,6 +13,9 @@ gem 'acts_as_list'
 
 gem 'sqlite3'
 
+gem 'factory_girl_rails'
+gem 'default_value_for'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -39,7 +42,6 @@ group :test, :development do
   gem 'rb-fsevent'
   # Rspec formatter
   gem 'fuubar'
-  gem 'factory_girl'
 end
 
 # To use ActiveModel has_secure_password
