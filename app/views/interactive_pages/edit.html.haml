@@ -29,7 +29,7 @@
     .text
       %p.instructions
         =# best_in_place @page, :text, :type => :textarea, :nil => "Instructions (click to edit)"
-        = editable_field @page, :text, { :type => 'wysiwyg', :rows => 10, :cols => 60, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
+        = editable_field @page, :text, { :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
       = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
         = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
         = submit_tag 'Add Embeddable'
@@ -44,12 +44,7 @@
       = link_to "Add interactive", new_page_mw_interactive_path(@page)
     .sidebar
       =# best_in_place @page, :sidebar, :type => :textarea, :rows => 5, :nil => 'Sidebar text (click to edit)'
-      = editable_field @page, :sidebar, { :type => 'wysiwyg',
-                                          :rows => 10,
-                                          :cols => 60,
-                                          :submit => 'OK',
-                                          :onblur => 'ignore',
-                                          :wysiwyg => { :debug => false } }
+      = editable_field @page, :sidebar, { :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
     - if @page.interactives
       #embed
       #share
