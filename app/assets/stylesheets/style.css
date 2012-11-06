@@ -414,4 +414,5 @@ div.wysiwyg ul.toolbar {
   color: inherit;
   text-align: left;
   height: inherit;
+  margin: 0;
 }
