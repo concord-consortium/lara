@@ -19,7 +19,9 @@ test:
   timeout: 5000
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+  encoding: utf8
+  adapter: mysql2
+  username: root
+  database: xproject_production
+  password: ''
   pool: 5
-  timeout: 5000

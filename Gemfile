@@ -16,6 +16,10 @@ gem 'sqlite3'
 gem 'factory_girl_rails'
 gem 'default_value_for'
 
+group :production do
+  gem 'mysql2'
+end
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
