@@ -35,13 +35,23 @@ class InteractivePagesController < ApplicationController
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
         format.html do
-          flash[:notice] = "Page #{@page.name} was updated."
-          redirect_to edit_activity_page_path(@activity, @page)
+          if request.xhr?
+            # *** repond with the new value ***
+            render :text => params[:interactive_page].values.first
+          else
+            flash[:notice] = "Page #{@page.name} was updated."
+            redirect_to edit_activity_page_path(@activity, @page)
+          end
         end
       else
         format.html do
-          flash[warning] = "There was a problem updating Page #{@page.name}."
-          redirect_to edit_activity_page_path(@activity, @page)
+          if request.xhr?
+            # *** repond with the old value ***
+            render :text => @page[params[:interactive_page].keys.first]
+          else
+            flash[warning] = "There was a problem updating Page #{@page.name}."
+            redirect_to edit_activity_page_path(@activity, @page)
+          end
         end
       end
     end
