@@ -43,6 +43,7 @@ To re-initialize the test database, use the "initialize the database" command ab
 To support new Embeddables:
 
 * Add a model definition and controller in `app/models/embeddable/` `app/controllers/embeddable/`, respectively. The controller should have the necessary code to accept in-place-editing updates of individual fields in the Embeddable.
+* Add the resource to the "embeddable" namespace in `config/routes.rb`.
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)

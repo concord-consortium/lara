@@ -2,11 +2,5 @@
   .embeddable_tools
     = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
   %strong
-    = editable_field embeddable, :prompt, { :type => 'wysiwyg',
-                                            :update_url => main_app.embeddable_open_response_path,
-                                            :rows => 10,
-                                            :cols => 60,
-                                            :submit => 'OK',
-                                            :onblur => 'ignore',
-                                            :wysiwyg => { :debug => false } }
+    = editable_field embeddable, :prompt, { :type => 'wysiwyg', :update_url => embeddable_open_response_path, :rows => 10, :cols => 60, :submit => 'OK', :onblur => 'ignore', :wysiwyg => { :debug => false } }
   %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}

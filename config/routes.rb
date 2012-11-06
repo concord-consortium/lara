@@ -21,6 +21,17 @@ LightweightStandalone::Application.routes.draw do
   # the in-place editor needed interactive_page_path
   resources :pages, :as => 'interactive_pages', :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => [:new, :create]
 
+  namespace :embeddable do
+    # When new embeddables are supported, they should be added here.
+    resources :multiple_choices do
+      member do
+        post :add_choice
+      end
+    end
+    resources :xhtmls
+    resources :open_responses
+  end
+
   # This route didn't work as a nested resource
   post "/pages/:id/remove_embeddable/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
 end
