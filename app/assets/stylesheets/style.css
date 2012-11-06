@@ -46,7 +46,7 @@ em {
   font-style: italic;
 }
 body {
-  background: #fff url(/assets/lightweight/body-bg.gif) right 60px no-repeat;
+  background: #fff url(/assets/body-bg.gif) right 60px no-repeat;
   color: #3f3f3f;
   font: 80% arial, helvetica, sans-serif;
 }
@@ -149,24 +149,24 @@ button.disabled {
   width: 18px;
 }
 .page-nav a.previous {
-  background: transparent url(/assets/lightweight/page-nav-prev.png) no-repeat;
+  background: transparent url(/assets/page-nav-prev.png) no-repeat;
   height: 30px;
   margin-right: -1px;
   padding: 0;
   width: 30px;
 }
 .page-nav a.next {
-  background: transparent url(/assets/lightweight/page-nav-next.png) no-repeat;
+  background: transparent url(/assets/page-nav-next.png) no-repeat;
   height: 30px;
   margin-left: -1px;
   padding: 0;
   width: 30px;
 }
 .page-nav a.previous.disabled {
-  background: transparent url(/assets/lightweight/page-nav-prev-dis.png) no-repeat;
+  background: transparent url(/assets/page-nav-prev-dis.png) no-repeat;
 }
 .page-nav a.next.disabled {
-  background: transparent url(/assets/lightweight/page-nav-next-dis.png) no-repeat;
+  background: transparent url(/assets/page-nav-next-dis.png) no-repeat;
   background-size: 100% 100%;
 }
 .page-nav a.active {
@@ -289,7 +289,7 @@ button.disabled {
   width: 100%;
 }
 .model-instructions button {
-  background: url(/assets/lightweight/watch-tutorial.png) no-repeat;
+  background: url(/assets/watch-tutorial.png) no-repeat;
   display: block;
   height: 34px;
   margin: 15px auto;
