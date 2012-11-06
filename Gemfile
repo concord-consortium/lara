@@ -25,7 +25,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-group :development do
+group :test, :development do
   gem "sqlite3"
   gem "rspec",       "~> 2.10.0"
   gem "rspec-rails", "~> 2.10.1"
@@ -39,6 +39,7 @@ group :development do
   gem 'rb-fsevent'
   # Rspec formatter
   gem 'fuubar'
+  gem 'factory_girl'
 end
 
 # To use ActiveModel has_secure_password

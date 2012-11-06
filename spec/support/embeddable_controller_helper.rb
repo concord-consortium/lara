@@ -1,3 +1,5 @@
+require 'factory_girl'
+
 shared_examples_for 'an embeddable controller' do
   render_views
 
