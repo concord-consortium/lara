@@ -12,6 +12,10 @@ class LightweightActivity < ActiveRecord::Base
 
   validates :publication_status, :inclusion => { :in => PUB_STATUSES }
 
+  # TODO: There's room here for some named scopes:
+  # * Find all public activities
+  # * Find all activities for one user (regardless of publication status)
+
   def run_format
     :run_html
   end
