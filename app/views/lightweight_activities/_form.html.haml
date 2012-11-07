@@ -5,6 +5,8 @@
   = f.hidden_field 'user_id', :value => session[:user_id]
 = field_set_tag 'Activity Name' do
   = f.text_field :name
+= field_set_tag 'Publication status' do
+  = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @activity.publication_status)
 = field_set_tag 'Activity Description' do
   = f.text_area :description, :cols => 80, :rows => 5
   :javascript
