@@ -19,6 +19,21 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
+
+  desc "link in some shared resources, such as database.yml"
+  task :shared_symlinks do
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    # 2012-11-07: Not sure if the below are needed at this point, but here they are
+    run "ln -nfs #{shared_path}/config/aws_s3.yml #{release_path}/config/aws_s3.yml"
+    run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
+    run "ln -nfs #{shared_path}/config/mailer.yml #{release_path}/config/mailer.yml"
+    run "ln -nfs #{shared_path}/config/initializers/site_keys.rb #{release_path}/config/initializers/site_keys.rb"
+    run "ln -nfs #{shared_path}/config/initializers/subdirectory.rb #{release_path}/config/initializers/subdirectory.rb"
+    run "ln -nfs #{shared_path}/system #{release_path}/public/system" # paperclip file attachment location
+    # This is part of the setup necessary for using newrelics reporting gem
+    # run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
+    run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml"
+  end
 end
 
 # Production stage
@@ -28,3 +43,5 @@ set :deploy_to, "/web/portal"
 server domain, :app, :web
 role :db, domain, :primary => true
 set :branch, "master"
+
+after 'deploy:update_code', 'deploy:shared_symlinks'
