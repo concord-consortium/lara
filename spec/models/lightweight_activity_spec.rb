@@ -23,7 +23,7 @@ describe LightweightActivity do
     @activity.pages.size.should == 3
   end
 
-  it 'should have interactives in the correct order' do
+  it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
       page = InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
       @activity.pages << page
