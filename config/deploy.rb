@@ -17,7 +17,7 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+    run "touch #{File.join(current_path,'tmp','restart.txt')}"
   end
 
   desc "link in some shared resources, such as database.yml"
@@ -43,5 +43,6 @@ set :deploy_to, "/web/portal"
 server domain, :app, :web
 role :db, domain, :primary => true
 set :branch, "master"
+set :use_sudo, false
 
 after 'deploy:update_code', 'deploy:shared_symlinks'
