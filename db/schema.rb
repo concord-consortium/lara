@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011190609) do
+ActiveRecord::Schema.define(:version => 20121107150819) do
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
     t.integer  "multiple_choice_id"
@@ -73,16 +73,16 @@ ActiveRecord::Schema.define(:version => 20121011190609) do
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.string   "publication_status"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.string   "publication_status", :default => "draft"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
   end
 
-  add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
-  add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
+  add_index "lightweight_activities", ["publication_status"], :name => "altered_lightweight_activities_publication_status_idx"
+  add_index "lightweight_activities", ["user_id"], :name => "altered_lightweight_activities_user_idx"
 
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"

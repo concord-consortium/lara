@@ -5,7 +5,10 @@ class LightweightActivity < ActiveRecord::Base
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
 
-  has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
+  default_value_for :publication_status, 'draft'
+  # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
+
+  validates :publication_status, :inclusion => { :in => %w(draft private public archive) }
 
   def run_format
     :run_html

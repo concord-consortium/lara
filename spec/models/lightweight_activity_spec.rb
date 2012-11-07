@@ -10,6 +10,7 @@ describe LightweightActivity do
 
   it 'should have valid attributes' do
     @activity.name.should == "Activity"
+    @activity.publication_status.should == "draft"
   end
 
   it 'should have pages' do
@@ -31,5 +32,17 @@ describe LightweightActivity do
 
     @activity.pages.first.text.should == "some text 1"
     @activity.pages.last.name.should == "page 3"
+  end
+
+  it 'allows only defined publication statuses' do
+    @activity.valid? # default publication_status: 'draft'
+    @activity.publication_status = 'private'
+    @activity.valid?
+    @activity.publication_status = 'public'
+    @activity.valid?
+    @activity.publication_status = 'archive'
+    @activity.valid?
+    @activity.publication_status = 'invalid'
+    !@activity.valid?
   end
 end
