@@ -11,8 +11,9 @@ gem 'acts_as_list'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'factory_girl_rails'
 gem 'default_value_for'
+
+gem "sqlite3"
 
 group :production do
   gem 'mysql2'
@@ -32,10 +33,10 @@ group :assets do
 end
 
 group :test, :development do
-  gem "sqlite3"
   gem "rspec",       "~> 2.10.0"
   gem "rspec-rails", "~> 2.10.1"
   gem "ci_reporter", "~> 1.7.0"
+  gem 'factory_girl_rails'
 
   gem 'pry'
   # Guard runs tests automatically when the files they test (or the tests

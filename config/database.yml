@@ -18,6 +18,8 @@ test:
   pool: 5
   timeout: 5000
 
+# This is a placeholder database; the real production database is
+# set up at deploy time.
 production:
   adapter: sqlite3
   database: db/production.sqlite3
