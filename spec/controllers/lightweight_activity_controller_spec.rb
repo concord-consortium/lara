@@ -121,8 +121,8 @@ describe LightweightActivitiesController do
         response.body.should match /<form[^>]+action="\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
         response.body.should match /<input[^>]+name="_method"[^>]+type="hidden"[^>]+value="put"[^<]+\/>/
         response.body.should match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{act.name}"[^<]*\/>/
-        response.body.should match /<textarea[^>]+id="lightweight_activity_description"[^>]+name="lightweight_activity\[description\]"[^<]*>[\s]*Activity to be edited[\s]*<\/textarea>/
-        response.body.should match /<textarea[^>]+id="lightweight_activity_related"[^>]+name="lightweight_activity\[related\]"[^<]*>[\s]*<\/textarea>/
+        response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[description\]"[^<]*>/
+        response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[related\]"[^<]*>/
         response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
       end
 
