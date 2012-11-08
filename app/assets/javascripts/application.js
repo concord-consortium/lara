@@ -16,6 +16,7 @@
 //= require jquery.jeditable
 //= require jquery.wysiwyg
 //= require jquery.jeditable.wysiwyg
+//= require modals
 //= require_tree .
 //= require ./common.js
 

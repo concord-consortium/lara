@@ -1,0 +1,33 @@
+/* This partial should be @imported into your layout Sass file, or included via the Asset Pipeline */
+/* Source : https://gist.github.com/1456815 */
+
+#modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+#modal {
+  display: none;
+  position: absolute;
+  width: 600px;
+  left: 50%;
+  margin-left: (-600px - 40px) / 2;
+  padding: 20px;
+  background: #fff;
+  border: 5px solid #eee;
+
+  & > .close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: #666;
+    &:hover, &:active {
+      color: #000;
+    }
+  }
+}
