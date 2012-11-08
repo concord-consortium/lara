@@ -8,14 +8,6 @@
 = field_set_tag 'Publication status' do
   = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @activity.publication_status)
 = field_set_tag 'Activity Description' do
-  = f.text_area :description, :cols => 80, :rows => 5
-  :javascript
-    $(function() {
-        $('#lightweight_activity_description').wysiwyg();
-    });
+  = editable_field @activity, :description, { :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 = field_set_tag 'Related Content' do
-  = f.text_area :related, :cols => 80, :rows => 5
-  :javascript
-    $(function() {
-        $('#lightweight_activity_related').wysiwyg();
-    });
+  = editable_field @activity, :related, { :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }

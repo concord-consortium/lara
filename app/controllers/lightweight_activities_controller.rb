@@ -38,11 +38,19 @@ class LightweightActivitiesController < ApplicationController
 
   def update
     if @activity.update_attributes(params[:lightweight_activity])
-      flash[:notice] = "Activity #{@activity.name} was updated."
-      redirect_to edit_activity_path(@activity)
+      if request.xhr?
+        render :text => params[:lightweight_activity].values.first
+      else
+        flash[:notice] = "Activity #{@activity.name} was updated."
+        redirect_to edit_activity_path(@activity)
+      end
     else
-      flash[:warning] = "There was a problem updating activity #{@activity.name}."
-      redirect_to edit_activity_path(@activity)
+      if request.xhr?
+        render :text => "There was a problem updating activity #{@activity.name}. Please reload the page and try again."
+      else
+        flash[:warning] = "There was a problem updating activity #{@activity.name}."
+        redirect_to edit_activity_path(@activity)
+      end
     end
   end
 
