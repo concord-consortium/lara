@@ -1,6 +1,6 @@
 .model
   .toolbar
-    = editable_field interactive, :url
+    = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true
     | 
     = link_to "Remove", page_mw_interactive_path(@page, interactive), :method => :delete, :data => { :confirm => 'Are you sure?' }
   %iframe{:src => interactive.url}

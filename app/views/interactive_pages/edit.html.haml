@@ -40,7 +40,7 @@
       - @page.interactives.each do |interactive|
         - i_type = interactive.class.name.underscore
         = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
-      = link_to "Add interactive", new_page_mw_interactive_path(@page)
+      = link_to "Add interactive", new_page_mw_interactive_path(@page), :remote => true
     .sidebar
       = editable_with_trigger @page, :sidebar, { :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
     - if @page.interactives

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  # For modal edit windows. Source: https://gist.github.com/1456815
+  layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
   # Borrowed methods from lib/authenticated_system.rb, which we've had little luck reaching from the engine.
   def current_user
