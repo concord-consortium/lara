@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
-  revision: 97b51096936c1b61da1edd21fd0b9d566a32b7ac
+  revision: 9e0b16f496378ed060551d34159afb9dec0fcbb6
   specs:
-    jeditable_wysiwyg_rails (0.1.0)
+    jeditable_wysiwyg_rails (0.2.0)
       rails (~> 3.2.0)
 
 GEM

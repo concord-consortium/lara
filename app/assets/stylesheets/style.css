@@ -50,7 +50,7 @@ body {
   color: #3f3f3f;
   font: 80% arial, helvetica, sans-serif;
 }
-button {
+button, span.edit_trigger {
   background: #26a2bc;
   border: none;
   color: #fff;
@@ -61,7 +61,7 @@ button {
   text-align: center;
   border-radius: 20px;
 }
-button.disabled {
+button.disabled span.edit_trigger.disabled {
   background: #ccc !important;
 }
 #container {
@@ -416,3 +416,4 @@ div.wysiwyg ul.toolbar {
   height: inherit;
   margin: 0;
 }
+fieldset .edit_trigger { float: right; margin-top: -1em; }
