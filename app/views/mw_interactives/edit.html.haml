@@ -1,4 +1,5 @@
 = render :partial => 'form'
+-# TODO: This should be hidden in .js format. Hmm
 - if @page
   = link_to "Go back to #{@page.name}", edit_activity_page_path(@page.lightweight_activity, @page)
   = link_to "Go back to #{@page.lightweight_activity.name}", edit_activity_path(@page.lightweight_activity)
