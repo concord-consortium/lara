@@ -8,7 +8,7 @@ $ ->
   $modal_container = $('#modal-container')
 
   # Handle modal links with the data-remote attribute
-  $.on 'ajax:success', 'a[data-remote]', (xhr, data, status) ->
+  $(document).on 'ajax:success', 'a[data-remote]', (xhr, data, status) ->
     $modal
       .html(data)
       .prepend($modal_close)
@@ -16,7 +16,7 @@ $ ->
       .show()
     $modal_container.show();
 
-  $.on 'click', '#modal .close', ->
+  $(document).on 'click', '#modal .close', ->
     $modal_container.hide()
     $modal.hide()
     false
