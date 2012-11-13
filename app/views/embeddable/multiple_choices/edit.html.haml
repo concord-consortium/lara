@@ -6,6 +6,6 @@
     = f.text_area :prompt, :cols => 80, :rows => 5
     :javascript
       $(function() {
-          $('#embeddable_multiple_choice_prompt').wysiwyg();
+          $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true } } });
       });
   = f.submit "Save"
