@@ -3,29 +3,18 @@
 %div{:class => ["content", page.theme]}
   .page-nav
     - if previous_page
-      - if @offering
-        %a{:class => 'previous', :href => activity_page_offering_show_path(previous_page.lightweight_activity, previous_page, @offering)}
-          ! &nbsp;
-      -else
-        %a{:class => 'previous', :href => activity_page_path(previous_page.lightweight_activity, previous_page)}
-          ! &nbsp;
+      %a{:class => 'previous', :href => activity_page_path(previous_page.lightweight_activity, previous_page)}
+        ! &nbsp;
     - else
       %a{:class => 'previous disabled'}
         ! &nbsp;
     - page_counter = 1
     - all_pages.each do |p|
-      - if @offering
-        = link_to page_counter, activity_page_offering_show_path(p.lightweight_activity, p, @offering), :class => (p === page) ? 'active' : ''
-      - else
-        = link_to page_counter, activity_page_path(p.lightweight_activity, p), :class => (p === page) ? 'active' : ''
+      = link_to page_counter, activity_page_path(p.lightweight_activity, p), :class => (p === page) ? 'active' : ''
       - page_counter = page_counter + 1
     - if next_page
-      - if @offering
-        %a{:class => 'next', :href => activity_page_offering_show_path(next_page.lightweight_activity, next_page, @offering)}
-          ! &nbsp;
-      -else
-        %a{:class => 'next', :href => activity_page_path(next_page.lightweight_activity, next_page)}
-          ! &nbsp;
+      %a{:class => 'next', :href => activity_page_path(next_page.lightweight_activity, next_page)}
+        ! &nbsp;
     - else
       %a{:class => 'next disabled'}
         ! &nbsp;
@@ -35,16 +24,9 @@
   .text
     %p.instructions= page.text
     .questions
-      - if @offering
-        = form_tag(main_app.answers_portal_offering_path(@offering)) do
-          - page.embeddables.each do |e|
-            - e_type = e.class.name.underscore
-            = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
-          = submit_tag "Save Answers"
-      - else
-        - page.embeddables.each do |e|
-          - e_type = e.class.name.underscore
-          = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
+      - page.embeddables.each do |e|
+        - e_type = e.class.name.underscore
+        = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
   .other
     - page.interactives.each do |interactive|
       - i_type = interactive.class.name.underscore
