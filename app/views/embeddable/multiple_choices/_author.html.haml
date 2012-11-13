@@ -3,10 +3,7 @@
     = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
     |
     = link_to "Edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true
-  %p
-    %strong= embeddable.prompt.html_safe
-    %br
-    %br
+  .prompt= embeddable.prompt.html_safe
   - embeddable.choices.each do |choice|
     - control_name = "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"
     - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"

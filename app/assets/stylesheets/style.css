@@ -417,3 +417,7 @@ div.wysiwyg ul.toolbar {
   margin: 0;
 }
 fieldset .edit_trigger { float: right; margin-top: -1em; }
+.prompt {
+  font-weight: bold;
+  margin: 5px;
+}
