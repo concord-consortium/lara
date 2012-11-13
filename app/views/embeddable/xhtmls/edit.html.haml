@@ -1,0 +1,8 @@
+= form_for @embeddable do |f|
+  = f.error_messages
+  = field_set_tag 'Name' do
+    = f.text_field :name
+  = field_set_tag 'Content' do
+    = f.text_field :content
+
+

@@ -1,4 +1,12 @@
 class Embeddable::XhtmlsController < ApplicationController
+  def edit
+    @embeddable = Embeddable::Xhtml.find(params[:id])
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+
   # PUT /Embeddable/xhtmls/1
   # PUT /Embeddable/xhtmls/1.xml
   def update

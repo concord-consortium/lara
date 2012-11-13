@@ -1,4 +1,0 @@
-.xhtml.authorable_xhtml
-  .embeddable_tools
-    = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
-  = editable_field embeddable, :content, { :type => 'wysiwyg', :update_url => main_app.embeddable_xhtml_path, :rows => 10, :cols => 60, :submit => 'OK', :onblur => 'ignore', :wysiwyg => { :debug => false } }
