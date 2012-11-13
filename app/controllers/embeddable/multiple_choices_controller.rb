@@ -1,4 +1,12 @@
 class Embeddable::MultipleChoicesController < ApplicationController
+  def edit
+    @embeddable = Embeddable::MultipleChoice.find(params[:id])
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+
   def update
     cancel = params[:commit] == "Cancel"
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
@@ -17,7 +25,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
       respond_to do |format|
         if @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
           flash[:notice] = 'Multiplechoice was successfully updated.'
-          format.html { redirect_to(@multiple_choice) }
+          format.html { redirect_to(:back) }
           format.xml  { head :ok }
           format.json
         else

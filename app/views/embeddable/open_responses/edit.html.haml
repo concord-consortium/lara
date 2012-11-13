@@ -1,0 +1,11 @@
+= form_for @embeddable do |f|
+  = f.error_messages
+  = field_set_tag 'Name' do
+    = f.text_field :name
+  = field_set_tag 'Prompt' do
+    = f.text_area :prompt, :cols => 80, :rows => 5
+    :javascript
+      $(function() {
+          $('#embeddable_open_response_prompt').wysiwyg();
+      });
+  = f.submit "Save"

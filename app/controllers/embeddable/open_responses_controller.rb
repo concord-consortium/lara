@@ -1,4 +1,12 @@
 class Embeddable::OpenResponsesController < ApplicationController
+  def edit
+    @embeddable = Embeddable::OpenResponse.find(params[:id])
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+
   # PUT /Embeddable/open_responses/1
   # PUT /Embeddable/open_responses/1.xml
   def update
@@ -18,7 +26,7 @@ class Embeddable::OpenResponsesController < ApplicationController
       respond_to do |format|
         if @open_response.update_attributes(params[:embeddable_open_response])
           flash[:notice] = 'Embeddable::OpenResponse.was successfully updated.'
-          format.html { redirect_to(@open_response) }
+          format.html { redirect_to(:back) }
           format.xml  { head :ok }
           format.json
         else

@@ -1,14 +1,16 @@
 .authorable_multiple_choice
   .embeddable_tools
     = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
-  %strong= editable_field embeddable, :prompt, { :type => 'wysiwyg', :rows => 10, :cols => 60, :submit => 'OK', :onblur => 'ignore', :wysiwyg => { :debug => false } }
-  %br
-  %br
-  = link_to 'Add choice', add_choice_embeddable_multiple_choice_path(embeddable)
+    |
+    = link_to "Edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true
+  %p
+    %strong= embeddable.prompt
+    %br
+    %br
   - embeddable.choices.each do |choice|
     - control_name = "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"
     - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"
     %label{:for => control_id}
-      %input{:type => "radio", :name => control_name, :id => control_id, :value => control_id }
+      %input{:type => "radio", :name => control_name, :id => control_id, :value => control_id}
       = choice.choice
   %button= "Check Answer"

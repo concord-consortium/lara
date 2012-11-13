@@ -1,6 +1,8 @@
 .authorable_open_response
   .embeddable_tools
     = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
-  %strong
-    = editable_field embeddable, :prompt, { :type => 'wysiwyg', :update_url => embeddable_open_response_path, :rows => 10, :cols => 60, :submit => 'OK', :onblur => 'ignore', :wysiwyg => { :debug => false } }
+    |
+    = link_to "Edit", edit_embeddable_open_response_path(embeddable), :remote => true
+  %p
+    %strong= embeddable.prompt
   %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
