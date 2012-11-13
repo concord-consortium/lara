@@ -39,12 +39,12 @@
         = form_tag(main_app.answers_portal_offering_path(@offering)) do
           - page.embeddables.each do |e|
             - e_type = e.class.name.underscore
-            = render :partial => "#{e_type}/lightweight", :locals => {:embeddable => e}
+            = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
           = submit_tag "Save Answers"
       - else
         - page.embeddables.each do |e|
           - e_type = e.class.name.underscore
-          = render :partial => "#{e_type}/lightweight", :locals => {:embeddable => e}
+          = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
   .other
     - page.interactives.each do |interactive|
       - i_type = interactive.class.name.underscore
