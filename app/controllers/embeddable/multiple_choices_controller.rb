@@ -7,10 +7,10 @@ class Embeddable::MultipleChoicesController < ApplicationController
         if cancel || @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
           @multiple_choice.reload
           format.xml { render :partial => 'show', :locals => { :multiple_choice => @multiple_choice } }
-          format.json { respond_with_bip @multiple_choice }
+          format.json
         else
           format.xml { render :xml => @multiple_choice.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @multiple_choice }
+          format.json
         end
       end
     else
@@ -19,11 +19,11 @@ class Embeddable::MultipleChoicesController < ApplicationController
           flash[:notice] = 'Multiplechoice was successfully updated.'
           format.html { redirect_to(@multiple_choice) }
           format.xml  { head :ok }
-          format.json { respond_with_bip @multiple_choice }
+          format.json
         else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @multiple_choice.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @multiple_choice }
+          format.json
         end
       end
     end

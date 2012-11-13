@@ -8,10 +8,10 @@ class Embeddable::OpenResponsesController < ApplicationController
       respond_to do |format|
         if cancel || @open_response.update_attributes(params[:embeddable_open_response])
           format.xml { render :partial => 'show', :locals => { :open_response => @open_response } }
-          format.json { respond_with_bip @open_response }
+          format.json
         else
           format.xml { render :xml => @open_response.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @open_response }
+          format.json
         end
       end
     else
@@ -20,11 +20,11 @@ class Embeddable::OpenResponsesController < ApplicationController
           flash[:notice] = 'Embeddable::OpenResponse.was successfully updated.'
           format.html { redirect_to(@open_response) }
           format.xml  { head :ok }
-          format.json { respond_with_bip @open_response }
+          format.json
         else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @open_response.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @open_response }
+          format.json
         end
       end
     end

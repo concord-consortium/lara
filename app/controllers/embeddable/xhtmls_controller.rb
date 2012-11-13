@@ -8,10 +8,10 @@ class Embeddable::XhtmlsController < ApplicationController
       respond_to do |format|
         if cancel || @xhtml.update_attributes(params[:embeddable_xhtml])
           format.xml { render :partial => 'show', :locals => { :xhtml => @xhtml } }
-          format.json { respond_with_bip @xhtml }
+          format.json
         else
           format.xml { render :xml => @xhtml.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @xhtml }
+          format.json
         end
       end
     else
@@ -20,11 +20,11 @@ class Embeddable::XhtmlsController < ApplicationController
           flash[:notice] = 'Embeddable::Xhtml.was successfully updated.'
           format.html { redirect_to(@xhtml) }
           format.xml  { head :ok }
-          format.json { respond_with_bip @xhtml }
+          format.json
         else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @xhtml.errors, :status => :unprocessable_entity }
-          format.json { respond_with_bip @xhtml }
+          format.json
         end
       end
     end
