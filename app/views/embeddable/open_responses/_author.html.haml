@@ -4,5 +4,5 @@
     |
     = link_to "Edit", edit_embeddable_open_response_path(embeddable), :remote => true
   %p
-    %strong= embeddable.prompt
+    %strong= embeddable.prompt.html_safe
   %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}

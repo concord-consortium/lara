@@ -1,5 +1,5 @@
 %p
-  %strong= embeddable.prompt
+  %strong= embeddable.prompt.html_safe
   %br
   %br
   - if @learner and (saveable = Saveable::MultipleChoice.find_by_learner_id_and_multiple_choice_id(@learner.id, embeddable.id))
