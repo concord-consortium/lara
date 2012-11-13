@@ -23,7 +23,7 @@ class MwInteractivesController < ApplicationController
 
   def edit
     respond_to do |format|
-      format.js
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       format.html
     end
   end
@@ -37,7 +37,7 @@ class MwInteractivesController < ApplicationController
     end
     respond_to do |format|
       if @page
-        format.html { redirect_to edit_page_mw_interactive_path(@page, @interactive) }
+        format.html { redirect_to edit_activity_page_path(@page.lightweight_activity, @page) }
       else
         format.html { redirect_to edit_mw_interactive_path(@interactive) }
       end

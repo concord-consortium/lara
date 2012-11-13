@@ -10,7 +10,7 @@ $ ->
   # Handle modal links with the data-remote attribute
   $(document).on 'ajax:success', 'a[data-remote]', (xhr, data, status) ->
     $modal
-      .html(data)
+      .html(data.html)
       .prepend($modal_close)
       .css('top', $(window).scrollTop() + 40)
       .show()
