@@ -26,7 +26,7 @@ class Embeddable::XhtmlsController < ApplicationController
       respond_to do |format|
         if @xhtml.update_attributes(params[:embeddable_xhtml])
           flash[:notice] = 'Embeddable::Xhtml.was successfully updated.'
-          format.html { redirect_to(@xhtml) }
+          format.html { redirect_to(:back) }
           format.xml  { head :ok }
           format.json
         else

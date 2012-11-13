@@ -3,6 +3,9 @@
   = field_set_tag 'Name' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_field :content
-
-
+    = f.text_area :content, :cols => 80, :rows => 5
+    :javascript
+      $(function() {
+          $('#embeddable_xhtml_content').wysiwyg();
+      });
+  = f.submit "Save"
