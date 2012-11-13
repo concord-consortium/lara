@@ -30,7 +30,8 @@ describe MwInteractivesController do
   context 'when the logged-in user is an author' do
     context 'and an InteractivePage ID is provided' do
       before do
-        @page = InteractivePage.create!()
+        @act = LightweightActivity.create!(:name => "Test activity")
+        @page = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
       end
 
       describe 'new' do
@@ -43,9 +44,9 @@ describe MwInteractivesController do
           InteractiveItem.count().should equal join_count + 1
         end
 
-        it 'redirects the submitter to the edit page' do
-          get :new
-          response.should redirect_to("/mw_interactives/#{assigns(:interactive).id}/edit")
+        it 'redirects the submitter back to the page edit page' do
+          get :new, :page_id => @page.id
+          response.should redirect_to(edit_activity_page_path(@act, @page))
         end
       end
 
@@ -59,15 +60,17 @@ describe MwInteractivesController do
           InteractiveItem.count().should equal join_count + 1
         end
 
-        it 'redirects the submitter to the edit page' do
+        it 'redirects the submitter to the page edit page' do
           post :create, :page_id => @page.id
-          response.should redirect_to("/pages/#{@page.id}/mw_interactives/#{assigns(:interactive).id}/edit")
+          response.should redirect_to(edit_activity_page_path(@act, @page))
         end
       end
     end
 
     context 'when editing an existing MW Interactive' do
       before do
+        @act = LightweightActivity.create!()
+        @page = InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
         @int = MwInteractive.create!(:name => 'Test Interactive', :url => 'http://concord.org')
       end
 
@@ -83,9 +86,14 @@ describe MwInteractivesController do
           response.body.should match /<input[^<]+id="mw_interactive_url"[^<]+name="mw_interactive\[url\]"[^<]+type="text"[^>]+value="#{@int.url}"[^<]*\/>/
         end
 
+        it 'responds to js-format requests with JSON' do
+          get :edit, :id => @int.id, :page_id => @page.id, :format => 'js'
+
+          response.headers['Content-Type'].should match /text\/json/
+          response.body.should match /<form[^>]+action=\\"\/pages\/#{@page.id}\/mw_interactives\/#{@int.id}\\"[^<]+method=\\"post\\"[^<]*>/
+        end
+
         it 'has a link to go back to the page if one exists' do
-          @act = LightweightActivity.create!()
-          @page = InteractivePage.create!(:name => 'Page with interactive', :lightweight_activity => @act)
           InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
 
           get :edit, :page_id => @page.id, :id => @int.id
