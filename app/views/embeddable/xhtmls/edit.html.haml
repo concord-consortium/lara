@@ -3,9 +3,10 @@
   = field_set_tag 'Name' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :cols => 80, :rows => 5
+    = f.text_area :content, :rows => 5
     :javascript
       $(function() {
           $('#embeddable_xhtml_content').wysiwyg({"controls": { "html": { "visible": true } } });
       });
   = f.submit "Save"
+  = f.button "Cancel", :class => 'close'
