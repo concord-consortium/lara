@@ -34,7 +34,7 @@ describe InteractivePagesController do
       # setup
       act = LightweightActivity.create!(:name => "Test activity")
 
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => true, :show_info_assessment => true, :show_interactive => true, :show_sidebar => true)
       interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com")
       page1.add_interactive(interactive)
 
@@ -273,7 +273,7 @@ describe InteractivePagesController do
     it 'shows sidebar content on pages which have it' do
       # setup
       act = LightweightActivity.create!(:name => "Test activity")
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '<p>This is sidebar text.</p>')
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '<p>This is sidebar text.</p>', :show_sidebar => true)
 
       get :show, :id => page1.id
 
