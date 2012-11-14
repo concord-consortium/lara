@@ -334,7 +334,7 @@ describe InteractivePagesController do
     context 'when editing an existing page' do
       before do
         @act = LightweightActivity.create!(:name => "Test activity")
-        @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+        @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :show_interactive => true, :show_info_assessment => true)
       end
 
       it 'displays page fields with edit-in-place capacity' do
