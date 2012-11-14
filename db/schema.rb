@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121107150819) do
+ActiveRecord::Schema.define(:version => 20121114162210) do
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
     t.integer  "multiple_choice_id"
@@ -65,6 +65,10 @@ ActiveRecord::Schema.define(:version => 20121107150819) do
     t.string   "theme",                   :default => "default"
     t.integer  "offerings_count"
     t.text     "sidebar"
+    t.boolean  "show_introduction",       :default => false
+    t.boolean  "show_sidebar",            :default => false
+    t.boolean  "show_interactive",        :default => false
+    t.boolean  "show_info_assessment",    :default => false
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
