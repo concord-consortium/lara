@@ -1,9 +1,22 @@
 .page-section-controls
-  %ul
-    %li Page introduction
-    %li Page sidebar text
-    %li Interactive box
-    %li Info/Assessment block
+  = form_for @page do |f|
+    %ul
+      %li
+        %label
+          = f.check_box :show_introduction
+          Page introduction
+      %li
+        %label
+          = f.check_box :show_sidebar
+          Page sidebar text
+      %li
+        %label
+          = f.check_box :show_interactive
+          Interactive box
+      %li
+        %label
+          = f.check_box :show_info_assessment
+          Info/Assessment block
 =# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)

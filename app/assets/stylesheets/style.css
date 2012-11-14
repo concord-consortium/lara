@@ -428,3 +428,6 @@ div.page-section-controls {
   left: 10px;
   top: 70px;
 }
+div.page-section-controls li {
+  list-style: none;
+}
