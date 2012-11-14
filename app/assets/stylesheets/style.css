@@ -416,7 +416,7 @@ div.wysiwyg ul.toolbar {
   height: inherit;
   margin: 0;
 }
-fieldset .edit_trigger { float: right; margin-top: -1em; }
+fieldset .edit_trigger { line-height: 2em;; }
 .prompt {
   font-weight: bold;
   margin: 5px;
