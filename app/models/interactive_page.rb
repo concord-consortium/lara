@@ -1,5 +1,5 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar
+  attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 

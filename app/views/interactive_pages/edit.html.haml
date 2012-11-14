@@ -1,21 +1,24 @@
 .page-section-controls
-  = form_for @page do |f|
-    %ul
-      %li
+  %ul
+    %li
+      = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_introduction
+          = f.check_box :show_introduction, :onchange => 'this.form.submit();'
           Page introduction
-      %li
+    %li
+      = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_sidebar
+          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
           Page sidebar text
-      %li
+    %li
+      = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_interactive
+          = f.check_box :show_interactive, :onchange => 'this.form.submit();'
           Interactive box
-      %li
+    %li
+      = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_info_assessment
+          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
           Info/Assessment block
 =# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
