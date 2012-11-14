@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
-  revision: 9e0b16f496378ed060551d34159afb9dec0fcbb6
+  revision: 36bca1535df3ec06484c6b744222068e5ae0e40c
   specs:
-    jeditable_wysiwyg_rails (0.2.0)
+    jeditable_wysiwyg_rails (0.2.1)
       rails (~> 3.2.0)
 
 GEM
@@ -69,7 +69,7 @@ GEM
       rspec (~> 2.0)
       rspec-instafail (~> 0.2.0)
       ruby-progressbar (~> 1.0.0)
-    guard (1.5.3)
+    guard (1.5.4)
       listen (>= 0.4.2)
       lumberjack (>= 1.0.2)
       pry (>= 0.9.10)
@@ -130,7 +130,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (0.9.2.2)
+    rake (10.0.0)
     rb-fsevent (0.9.2)
     rdoc (3.12)
       json (~> 1.4)
@@ -149,7 +149,7 @@ GEM
       railties (>= 3.0)
       rspec (~> 2.10.0)
     ruby-progressbar (1.0.2)
-    sass (3.2.2)
+    sass (3.2.3)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
