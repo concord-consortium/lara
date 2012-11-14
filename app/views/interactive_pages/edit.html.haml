@@ -45,13 +45,13 @@
     = @activity.name
   %p.question
     Editing
-    = editable_with_trigger @page, :name, {:edit_string => 'Edit page name'}
+    = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit page name'}
     = field_set_tag 'Page Appearance' do
-      = editable_with_trigger @page, :theme, {:edit_string => 'Edit page theme'}
+      = editable_field @page, :theme, {:use_trigger => true, :edit_string => 'Edit page theme'}
     .text
       - if @page.show_introduction
-        .instructions
-          = editable_with_trigger @page, :text, { :edit_string => 'Edit page introduction', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+        .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
+          = editable_field @page, :text, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit page introduction', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
       - if @page.show_info_assessment
         .questions
           = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
@@ -69,7 +69,7 @@
         -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
     - if @page.show_sidebar
       .sidebar
-        = editable_with_trigger @page, :sidebar, { :edit_string => 'Edit sidebar text', :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
+        = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit sidebar text', :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :debug => false } }
 
   =# javascript_tag("focus_first_field();");
 

@@ -10,9 +10,9 @@
   = field_set_tag 'Publication status' do
     = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @activity.publication_status)
   = field_set_tag 'Activity Description' do
-    = editable_with_trigger @activity, :description, { :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+    = editable_field @activity, :description, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
   = field_set_tag 'Related Content' do
-    = editable_with_trigger @activity, :related, { :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+    = editable_field @activity, :related, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 = javascript_tag("focus_first_field();");
 %ul
   %li= link_to "Add pages to this activity", new_activity_page_path(@activity)
