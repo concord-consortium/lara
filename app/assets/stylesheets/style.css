@@ -421,3 +421,10 @@ fieldset .edit_trigger { line-height: 2em;; }
   font-weight: bold;
   margin: 5px;
 }
+div.page-section-controls {
+  border: 1px solid #ccc;
+  position: fixed;
+  padding: 1.5em;
+  left: 10px;
+  top: 70px;
+}
