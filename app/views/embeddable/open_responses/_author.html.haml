@@ -3,5 +3,5 @@
     = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
     |
     = link_to "Edit", edit_embeddable_open_response_path(embeddable), :remote => true
-  .prompt= embeddable.prompt.html_safe
+  .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
   %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
