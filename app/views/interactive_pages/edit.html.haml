@@ -33,26 +33,27 @@
     = field_set_tag 'Page Appearance' do
       = editable_with_trigger @page, :theme, {:edit_string => 'Edit page theme'}
     .text
-      .instructions
-        = editable_with_trigger @page, :text, { :edit_string => 'Edit page introduction', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
-      = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
-        = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
-        = submit_tag 'Add Embeddable'
-      .questions
-        - @page.embeddables.each do |e|
-          - e_type = e.class.name.underscore
-          = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
+      - if @page.show_introduction
+        .instructions
+          = editable_with_trigger @page, :text, { :edit_string => 'Edit page introduction', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+      - if @page.show_info_assessment
+        .questions
+          = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
+            = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
+            = submit_tag 'Add Embeddable'
+          - @page.embeddables.each do |e|
+            - e_type = e.class.name.underscore
+            = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
     .other
-      - @page.interactives.each do |interactive|
-        - i_type = interactive.class.name.underscore
-        = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
-      = link_to "Add interactive", new_page_mw_interactive_path(@page) unless @page.interactives.length > 0
-      -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
-    .sidebar
-      = editable_with_trigger @page, :sidebar, { :edit_string => 'Edit sidebar text', :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
-    - if @page.interactives
-      #embed
-      #share
+      - if @page.show_interactive
+        - @page.interactives.each do |interactive|
+          - i_type = interactive.class.name.underscore
+          = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
+        = link_to "Add interactive", new_page_mw_interactive_path(@page) unless @page.interactives.length > 0
+        -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
+    - if @page.show_sidebar
+      .sidebar
+        = editable_with_trigger @page, :sidebar, { :edit_string => 'Edit sidebar text', :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'OK', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :debug => false } }
 
   =# javascript_tag("focus_first_field();");
 
