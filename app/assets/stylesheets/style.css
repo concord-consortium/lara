@@ -431,3 +431,12 @@ div.page-section-controls {
 div.page-section-controls li {
   list-style: none;
 }
+div.block-empty {
+  border: 1px solid #ffcccc;
+  min-height: 2em;
+}
+div.instructions .edit_trigger {
+  float: right;
+  top: 5px;
+  margin: 0;
+}
