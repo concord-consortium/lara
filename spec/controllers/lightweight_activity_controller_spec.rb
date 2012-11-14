@@ -158,6 +158,14 @@ describe LightweightActivitiesController do
         flash[:warning].should == "There was a problem updating activity #{act.name}."
         response.should redirect_to(edit_activity_path(act))
       end
+
+      it 'should change single attributes in response to XHR-submitted data' do
+        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+
+        xhr :post, :update, {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
+
+        response.body.should match /I'm editing this name with an Ajax request/
+      end
     end
 
     describe 'delete' do
