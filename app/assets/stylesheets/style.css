@@ -440,3 +440,8 @@ div.instructions .edit_trigger {
   top: 5px;
   margin: 0;
 }
+/* Info/assessment block */
+div.questions {
+  border: 1px solid #26a2bc;
+  border-radius: 6px;
+}
