@@ -39,10 +39,10 @@ table {
   border-spacing: 0;
 }
 
-strong {
+b, strong {
   font-weight: bold;
 }
-em {
+i, em {
   font-style: italic;
 }
 body {
