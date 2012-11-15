@@ -14,9 +14,9 @@
 #modal {
   display: none;
   position: absolute;
-  width: 600px;
+  width: 350px;
   left: 50%;
-  margin-left: (-600px - 40px) / 2;
+  margin-left: (-350px - 40px) / 2;
   padding: 20px;
   background: #fff;
   border: 5px solid #eee;
@@ -29,5 +29,17 @@
     &:hover, &:active {
       color: #000;
     }
+  }
+
+  button.close {
+    float: right;
+    margin: 1em 1em 5px 0;
+    line-height: 1em;
+    height: 1.6em;
+  }
+
+  input.embeddable-save {
+    float: right;
+    margin: 1em;
   }
 }
