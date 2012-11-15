@@ -98,6 +98,10 @@ button.disabled span.edit_trigger.disabled {
   left: 10px;
   position: absolute;
 }
+.clear {
+  clear: both;
+  height: 0;
+}
 .content {
   height: auto;
   margin: 0 auto;
@@ -445,3 +449,5 @@ div.questions {
   border: 1px solid #26a2bc;
   border-radius: 6px;
 }
+/* Breadcrumbs */
+div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }

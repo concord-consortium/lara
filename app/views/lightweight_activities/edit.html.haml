@@ -1,3 +1,11 @@
+.breadcrumbs
+  %ul
+    %li
+      &raquo;
+      = link_to 'All Activities', activities_path
+    %li= "&raquo; #{@activity.name}".html_safe
+.clear
+
 %h1 Edit activity
 = form_for @activity, {:url => "/activities/#{@activity.id}", :method => 'put'} do |f|
   = f.error_messages
@@ -30,5 +38,3 @@
                   %li= link_to "Edit", edit_activity_page_path(@activity, p)
                   %li= link_to "Show", activity_page_path(@activity, p), :target => 'new'
                   %li= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
-
-  %li= link_to "All activities", activities_path
