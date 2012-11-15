@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121114162210) do
+ActiveRecord::Schema.define(:version => 20121115164804) do
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
     t.integer  "multiple_choice_id"
@@ -92,9 +92,11 @@ ActiveRecord::Schema.define(:version => 20121114162210) do
     t.string   "name"
     t.string   "url"
     t.integer  "user_id"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.float    "width",      :default => 60.0
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.float    "width",         :default => 60.0
+    t.integer  "native_width"
+    t.integer  "native_height"
   end
 
   add_index "mw_interactives", ["user_id"], :name => "mw_interactives_user_idx"
