@@ -444,6 +444,12 @@ div.instructions .edit_trigger {
   top: 5px;
   margin: 0;
 }
+/* Page intro */
+.editing div.instructions {
+  border: 1px solid #26a2bc;
+  border-radius: 6px;
+  min-height: 2.5em;
+}
 /* Info/assessment block */
 .editing div.questions {
   border: 1px solid #26a2bc;
