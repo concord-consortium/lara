@@ -123,7 +123,7 @@ describe LightweightActivitiesController do
         response.body.should match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{act.name}"[^<]*\/>/
         response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[description\]"[^<]*>/
         response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[related\]"[^<]*>/
-        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
       end
 
       it 'should include a link to add pages' do

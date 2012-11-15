@@ -92,13 +92,6 @@ describe MwInteractivesController do
           response.headers['Content-Type'].should match /text\/json/
           response.body.should match /<form[^>]+action=\\"\/pages\/#{@page.id}\/mw_interactives\/#{@int.id}\\"[^<]+method=\\"post\\"[^<]*>/
         end
-
-        it 'has a link to go back to the page if one exists' do
-          InteractiveItem.create!(:interactive_page => @page, :interactive => @int)
-
-          get :edit, :page_id => @page.id, :id => @int.id
-          response.body.should match /<a[^<]+href="\/activities\/#{@act.id}\/pages\/#{@page.id}\/edit"[^<]*>[\s]*Go back to #{@page.name}[\s]*<\/a>/
-        end
       end
 
       describe 'update' do

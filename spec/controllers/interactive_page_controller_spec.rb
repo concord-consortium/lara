@@ -351,9 +351,9 @@ describe InteractivePagesController do
         get :edit, :id => @page1.id, :activity_id => @act.id
 
         response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/pages\/#{@page1.id}"[^>]*>[\s]*See this page[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/edit"[^>]*>[\s]*Return to editing #{@act.name}[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/edit"[^>]*>[\s]*#{@act.name}[\s]*<\/a>/
         response.body.should match /<a[^>]+href="\/activities\/#{@act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{@act.name}[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All activities[\s]*<\/a>/
+        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
       end
 
       it 'has links for adding MwInteractives to the page' do
