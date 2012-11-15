@@ -163,7 +163,7 @@ button.disabled span.edit_trigger.disabled {
   background: transparent url(/assets/page-nav-next.png) no-repeat;
   height: 30px;
   margin-left: -1px;
-  padding: 0;
+  padding: 7px 0 0 0;
   width: 30px;
 }
 .page-nav a.previous.disabled {
