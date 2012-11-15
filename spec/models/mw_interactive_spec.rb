@@ -28,4 +28,5 @@ describe MwInteractive do
     @interactive.interactive_page.should == @page
   end
 
+  # TODO: Need to test aspect ratio and given-width-get-height methods
 end
