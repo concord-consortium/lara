@@ -6,7 +6,13 @@
     = f.text_field :name
   = field_set_tag 'URL' do
     = f.text_field :url
-  = field_set_tag 'Width' do
-    = f.text_field :width
+  = field_set_tag 'Dimensions' do
+    = f.label :native_width, 'Width'
+    = f.text_field :native_width
+    .clear
+    = f.label :native_height, 'Height'
+    = f.text_field :native_height
+    .clear
+    This width and height will be used to maintain a fixed aspect ratio for the interactive.
   = f.button "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
