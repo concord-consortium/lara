@@ -83,7 +83,8 @@
         -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
     - if @page.show_sidebar
       .sidebar
-        = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit sidebar text', :type => 'wysiwyg', :rows => 10, :cols => 80, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+        %h2 Sidebar
+        = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 
   =# javascript_tag("focus_first_field();");
 

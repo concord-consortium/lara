@@ -442,7 +442,7 @@ div.block-empty {
 /* These are unique to the edit view */
 .editing {
   /* Page intro */
-  div.instructions {
+  div.instructions, div.sidebar {
     border: 1px solid #26a2bc;
     position: relative;
     padding: 5px;
@@ -481,6 +481,11 @@ div.block-empty {
   div.questions {
     border: 1px solid #26a2bc;
     border-radius: 6px;
+  }
+  div.sidebar {
+    background: 0;
+    border-radius: 0;
+    color: #000;
   }
 }
 /* Breadcrumbs */
