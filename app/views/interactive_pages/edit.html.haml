@@ -63,7 +63,8 @@
       = editable_field @page, :theme, {:use_trigger => true, :edit_string => 'Edit page theme'}
     - if @page.show_introduction
       .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
-        = editable_field @page, :text, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit page introduction', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
+        %h2 Introduction
+        = editable_field @page, :text, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 47, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
     .text
       - if @page.show_info_assessment
         .questions

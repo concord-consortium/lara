@@ -439,15 +439,29 @@ div.block-empty {
   border: 1px solid #ffcccc;
   min-height: 2em;
 }
-/* Page intro */
+/* These are unique to the edit view */
 .editing {
+  /* Page intro */
   div.instructions {
     border: 1px solid #26a2bc;
     position: relative;
+    padding: 5px;
     .edit_trigger {
       position: absolute;
-      top: 5px;
+      top: 3px;
+      right: 5px;
       margin: 0;
+      background: 0;
+      text-decoration: underline;
+      color: #126eac;
+    }
+    h2 {
+      width: 100%;
+      background-color: #b5e3ef;
+      color: #126eac !important;
+      text-align: left;
+      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
+      padding: 5px; /* Gives the head itself some padding */
     }
   }
   /* Info/assessment block */
