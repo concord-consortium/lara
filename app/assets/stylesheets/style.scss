@@ -480,7 +480,22 @@ div.block-empty {
   /* Info/assessment block */
   div.questions {
     border: 1px solid #26a2bc;
-    border-radius: 6px;
+    padding: 5px;
+    position: relative;
+    h2 {
+      width: 100%;
+      background-color: #b5e3ef;
+      color: #126eac !important;
+      text-align: left;
+      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
+      padding: 5px; /* Gives the head itself some padding */
+    }
+    form.embeddables-form {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      text-align: right;
+    }
   }
   div.sidebar {
     background: 0;

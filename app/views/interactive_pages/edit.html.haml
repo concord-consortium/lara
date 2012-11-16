@@ -68,7 +68,8 @@
     .text
       - if @page.show_info_assessment
         .questions
-          = form_tag :controller => 'interactive_pages', :action => 'add_embeddable' do
+          %h2 Info/Assess
+          = form_tag add_embeddable_activity_page_path, :class => 'embeddables-form' do
             = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
             = submit_tag 'Add Embeddable'
           - @page.embeddables.each do |e|
