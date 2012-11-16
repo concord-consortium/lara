@@ -504,6 +504,12 @@ div.block-empty {
       a:link {
         color: #26a2bc;
       }
+      .drag_handle {
+        float: left;
+        height: 20px;
+        margin-top: -15px;
+        font-size: 2.5em;
+      }
     }
     .authorable_xhtml {
       .embeddable_tools {
