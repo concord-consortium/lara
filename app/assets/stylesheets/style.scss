@@ -452,7 +452,6 @@ div.block-empty {
       right: 5px;
       margin: 0;
       background: 0;
-      text-decoration: underline;
       color: #126eac;
     }
     h2 {
@@ -462,6 +461,20 @@ div.block-empty {
       text-align: left;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
       padding: 5px; /* Gives the head itself some padding */
+    }
+    .editable button {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      margin: 0;
+      background: 0;
+      color: #126eac;
+    }
+    .editable button[type=submit] {
+      right: 55px;
+    }
+    .editable button[type=submit]:after {
+      content: " |";
     }
   }
   /* Info/assessment block */
