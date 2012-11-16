@@ -489,12 +489,31 @@ div.block-empty {
       text-align: left;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
       padding: 5px; /* Gives the head itself some padding */
+      font: 500 1.5em museo-slab, georgia, 'times new roman', serif;
     }
     form.embeddables-form {
       position: absolute;
       top: 3px;
       right: 5px;
       text-align: right;
+    }
+    .embeddable_tools {
+      text-align: right;
+      font-weight: bold;
+      color: #26a2bc;
+      a:link {
+        color: #26a2bc;
+      }
+    }
+    .authorable_xhtml {
+      .embeddable_tools {
+        background-color: #b5e3ef;
+        padding: 5px;
+        margin: -5px -5px 5px;
+      }
+      padding: 5px;
+      border: 1px solid #26a2bc;
+      margin-bottom: 1em;
     }
   }
   div.sidebar {

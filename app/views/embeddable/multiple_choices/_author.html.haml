@@ -1,8 +1,9 @@
 .authorable_multiple_choice
   .embeddable_tools
-    = link_to "Remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
+    .drag_handle
+    = link_to "edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true
     |
-    = link_to "Edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true
+    = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
   - embeddable.choices.each do |choice|
     - control_name = "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"
