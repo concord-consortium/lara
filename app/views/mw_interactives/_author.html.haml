@@ -1,8 +1,12 @@
 .model
   .toolbar
-    = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true
+    = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
     | 
     = link_to "Remove", page_mw_interactive_path(@page, interactive), :method => :delete, :data => { :confirm => 'Are you sure?' }
+    - if interactive.url.blank?
+      :javascript
+        $("a[id^=edit-int-#{interactive.id}]").click()
+
   %iframe{:src => interactive.url, :data => {:aspect_ratio => interactive.aspect_ratio}}
     Your browser does not support inline frames, or is currently not configured to display inline frames.
     Content can be viewed at the actual source page:
