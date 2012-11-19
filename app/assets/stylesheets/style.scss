@@ -264,7 +264,7 @@ button.disabled span.edit_trigger.disabled {
   width: 100%;
   iframe {
     border: none;
-    height: 435px !important; /* TEMPORARY(?) FIX FOR MAKING CURRENT MODEL APPEAR AT CORRECT SIZE. MAY NOT WORK FOR OTHER MODELS */
+    height: 435px;
     margin: 3px 0 0;
     padding: 0;
     width: 100%;

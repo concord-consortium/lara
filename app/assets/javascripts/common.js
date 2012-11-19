@@ -18,6 +18,9 @@ $(document).ready(function() {
 		fullScreen();
 		return false;
 	});
+
+  // Adjust iframe to have correct aspect ratio
+  setIframeHeight();
 });
 
 var $content_height;
@@ -117,6 +120,13 @@ function fullScreen() {
 function showTutorial() {
 	$('#overlay').fadeIn('fast');
 	$('#tutorial').fadeIn('fast');
+}
+
+function setIframeHeight() {
+  // This depends on a data-aspect_ratio attribute being set in the HTML.
+  var aspectRatio = $('iframe[data-aspect_ratio]').attr('data-aspect_ratio');
+  var targetHeight = $('iframe[data-aspect_ratio]').width() / aspectRatio;
+  $('iframe[data-aspect_ratio]').height(targetHeight);
 }
 
 function exitFullScreen() {
