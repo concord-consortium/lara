@@ -1,9 +1,12 @@
 .xhtml.authorable_xhtml
   .embeddable_tools
     .drag_handle ≣
-    = link_to "edit", edit_embeddable_xhtml_path(embeddable), :remote => true
+    = link_to "edit", edit_embeddable_xhtml_path(embeddable), :remote => true, :id => "edit-embed-xhtml-#{embeddable.id}"
     |
     = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
+    - if embeddable.content.blank?
+      :javascript
+        $("a[id^=edit-embed-xhtml-#{embeddable.id}]").click()
   - if embeddable.content.blank?
     .xhtml
       Embeddable text will go here.
