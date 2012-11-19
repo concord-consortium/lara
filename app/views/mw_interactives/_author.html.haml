@@ -3,7 +3,7 @@
     = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true
     | 
     = link_to "Remove", page_mw_interactive_path(@page, interactive), :method => :delete, :data => { :confirm => 'Are you sure?' }
-  %iframe{:src => interactive.url}
+  %iframe{:src => interactive.url, :data => {:aspect_ratio => interactive.aspect_ratio}}
     Your browser does not support inline frames, or is currently not configured to display inline frames.
     Content can be viewed at the actual source page:
     = link_to interactive.url, interactive.url
