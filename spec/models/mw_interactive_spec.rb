@@ -28,7 +28,6 @@ describe MwInteractive do
     @interactive.interactive_page.should == @page
   end
 
-  # TODO: Need to test aspect ratio and given-width-get-height methods
   it 'returns an aspect ratio based on native height and native width' do
     @interactive.aspect_ratio.should === 2
     @interactive.native_width = 600
