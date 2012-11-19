@@ -17,7 +17,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def show_interactive=(value)
-    if (value)
+    if (value.to_i != 0)
       interactive = MwInteractive.create!
       add_interactive!(interactive)
     else

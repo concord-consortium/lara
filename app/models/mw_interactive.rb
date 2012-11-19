@@ -15,7 +15,11 @@ class MwInteractive < ActiveRecord::Base
   # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
   # will be 2. 
   def aspect_ratio
-    return self.native_width/self.native_height
+    if self.native_width && self.native_height
+      return self.native_width/self.native_height
+    else
+      return 1.324 # Derived from the default values, above
+    end
   end
 
   def height(width)
