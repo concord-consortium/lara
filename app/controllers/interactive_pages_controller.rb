@@ -90,15 +90,4 @@ class InteractivePagesController < ApplicationController
       @activity = @page.lightweight_activity
     end
   end
-
-  # This is borrowed from the Portal::Offerings controller and should perhaps be more generalized.
-  def setup_portal_student
-    learner = nil
-    if current_user
-      portal_student = current_user.portal_student
-      # create a learner for the user if one doesn't exist
-      learner = @offering.find_or_create_learner(portal_student)
-    end
-    learner
-  end
 end
