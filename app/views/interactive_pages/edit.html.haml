@@ -75,8 +75,8 @@
           - @page.embeddables.each do |e|
             - e_type = e.class.name.underscore
             = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
-    .other
-      - if @page.show_interactive
+    - if @page.show_interactive
+      %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
         - @page.interactives.each do |interactive|
           - i_type = interactive.class.name.underscore
           = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
