@@ -81,4 +81,28 @@ describe InteractivePage do
     @page.embeddables.first.content.should == "This is the 2nd embeddable"
     @page.embeddables.last.name.should == "Embeddable 4"
   end
+
+
+  it 'adds a new MwInteractive when show_interactive is set to true' do
+    int_count = @page.interactives.length
+    @page.current_state.to_s.should == 'no_interactive'
+    @page.show_interactive = true
+    @page.save
+    @page.reload
+    @page.current_state.to_s.should == 'has_interactive'
+    @page.interactives.length.should == int_count + 1
+  end
+
+  it 'removes the MwInteractive when show_interactive is set to false' do
+    @page.show_interactive = true
+    @page.save
+    @page.reload
+    int_count = @page.interactives.length
+    @page.current_state.to_s.should == 'has_interactive'
+    @page.show_interactive = false
+    @page.save
+    @page.reload
+    @page.current_state.to_s.should == 'no_interactive'
+    @page.interactives.length.should == int_count - 1
+  end
 end
