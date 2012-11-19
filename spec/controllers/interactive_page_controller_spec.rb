@@ -356,13 +356,6 @@ describe InteractivePagesController do
         response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
       end
 
-      it 'has links for adding MwInteractives to the page' do
-        get :edit, :id => @page1.id, :activity_id => @act.id
-
-        response.body.should match /<a[^>]+href="\/pages\/#{@page1.id}\/mw_interactives\/new"[^>]*>[\s]*Add interactive[\s]*<\/a>/
-      
-      end
-
       it 'has links for adding Embeddables to the page' do
         get :edit, :id => @page1.id, :activity_id => @act.id
 
