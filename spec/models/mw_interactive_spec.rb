@@ -29,4 +29,14 @@ describe MwInteractive do
   end
 
   # TODO: Need to test aspect ratio and given-width-get-height methods
+  it 'returns an aspect ratio based on native height and native width' do
+    @interactive.aspect_ratio.should === 2
+    @interactive.native_width = 600
+    @interactive.save
+    @interactive.aspect_ratio.should === 3
+  end
+
+  it 'returns a calculated height from a supplied width, based on aspect ratio' do
+    @interactive.height(800).should === 400
+  end
 end

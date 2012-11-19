@@ -17,4 +17,8 @@ class MwInteractive < ActiveRecord::Base
   def aspect_ratio
     return self.native_width/self.native_height
   end
+
+  def height(width)
+    return width/self.aspect_ratio
+  end
 end
