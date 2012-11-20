@@ -9,7 +9,7 @@
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true } } });
       });
   = field_set_tag 'Choices' do
-    = link_to "Add choice", add_choice_embeddable_multiple_choice_path(@embeddable)
+    = link_to "Add choice", add_choice_embeddable_multiple_choice_path(@embeddable), :method => 'post', :remote => true
     %ul
       - @embeddable.choices.each do |choice|
         %li
@@ -17,6 +17,6 @@
           %input{:type => "text", :id => "choice_#{choice.id}", :value => choice.choice}
           Correct:
           %input{:type => "checkbox"}
-          = link_to "Delete", remove_choice_embeddable_multiple_choice_path(@embeddable, choice)
+          = link_to "Delete", remove_choice_embeddable_multiple_choice_path(@embeddable, choice), :method => 'delete', :remote => true
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
