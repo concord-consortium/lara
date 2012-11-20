@@ -8,5 +8,15 @@
       $(function() {
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true } } });
       });
+  = field_set_tag 'Choices' do
+    Add choice
+    %ul
+      - @embeddable.choices.each do |choice|
+        %li
+          Choice:
+          %input{:type => "text", :id => "choice_#{choice.id}", :value => choice.choice}
+          Correct:
+          %input{:type => "checkbox"}
+          delete
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
