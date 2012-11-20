@@ -70,6 +70,9 @@ class InteractivePagesController < ApplicationController
   def add_embeddable
     e = params[:embeddable_type].constantize.create!
     @page.add_embeddable(e)
+    if e.instance_of?(Embeddable::MultipleChoice)
+      e.create_default_choices
+    end
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
