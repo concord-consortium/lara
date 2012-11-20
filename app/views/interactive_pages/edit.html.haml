@@ -36,7 +36,7 @@
 =# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)
-%div{:class => ["content", "editing", @page.theme]}
+%div{:class => ["content", "editing"]}
   .page-nav
     - if previous_page
       %a{:class => 'previous', :href => edit_activity_page_path(@activity, previous_page)}
