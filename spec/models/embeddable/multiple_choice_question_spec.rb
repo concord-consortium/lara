@@ -13,10 +13,6 @@ describe Embeddable::MultipleChoice do
   end
 
   describe "a newly created MutipleChoiceQuestion" do    
-    it "should have a non-blank prompt" do
-      @multichoice.prompt.should_not be_nil
-    end
-    
     it "should belong to a page" do
       @page.embeddables.should_not be_nil
       @page.embeddables.should include(@multichoice)
