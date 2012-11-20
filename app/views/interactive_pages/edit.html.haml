@@ -21,8 +21,8 @@
     %li
       = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
-          Page sidebar text
+          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
+          Info/Assessment block
     %li
       = form_for @page, :remote => true do |f|
         %label
@@ -31,8 +31,8 @@
     %li
       = form_for @page, :remote => true do |f|
         %label
-          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
-          Info/Assessment block
+          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
+          Page sidebar text
 =# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)
