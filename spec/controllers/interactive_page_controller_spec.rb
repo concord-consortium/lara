@@ -34,7 +34,7 @@ describe InteractivePagesController do
       # setup
       act = LightweightActivity.create!(:name => "Test activity")
 
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => true, :show_info_assessment => true, :show_interactive => true, :show_sidebar => true)
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => 1, :show_info_assessment => 1, :show_interactive => 1, :show_sidebar => 1)
       interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com", :native_width => 400, :native_height => 200)
       page1.add_interactive(interactive)
 
@@ -334,7 +334,7 @@ describe InteractivePagesController do
     context 'when editing an existing page' do
       before do
         @act = LightweightActivity.create!(:name => "Test activity")
-        @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :show_interactive => true, :show_info_assessment => true)
+        @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :show_interactive => 1, :show_info_assessment => 1)
       end
 
       it 'displays page fields with edit-in-place capacity' do
