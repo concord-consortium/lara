@@ -1,6 +1,6 @@
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)
-%div{:class => ["content", page.theme]}
+.content
   .page-nav
     - if previous_page
       %a{:class => 'previous', :href => activity_page_path(previous_page.lightweight_activity, previous_page)}

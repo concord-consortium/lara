@@ -149,16 +149,6 @@ describe InteractivePagesController do
       response.body.should_not match /<a class='next'>/
     end
 
-    it 'includes a class value matching the defined theme' do
-      # setup
-      act = LightweightActivity.create!(:name => "Test activity")
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :theme => 'theme-string')
-
-      get :show, :id => page1.id
-
-      response.body.should match /<div class='content theme-string'>/
-    end
-
     it 'submits answers which can be parsed as Saveables' do
       pending "There will be a new structure for user data persistence"
       # To create a Saveable, we need an Offering, a Learner, and an answered Embeddable.
