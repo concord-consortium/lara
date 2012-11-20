@@ -36,4 +36,11 @@ class Embeddable::MultipleChoicesController < ApplicationController
       end
     end
   end
+
+  def add_choice
+    
+  end
+
+  def remove_choice
+  end
 end
