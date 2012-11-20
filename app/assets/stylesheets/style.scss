@@ -470,6 +470,7 @@ div.block-empty {
       background-color: #b5e3ef;
       color: #126eac !important;
       text-align: left;
+      font-size: 1.3em;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
       padding: 5px; /* Gives the head itself some padding */
     }
@@ -500,7 +501,7 @@ div.block-empty {
       text-align: left;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
       padding: 5px; /* Gives the head itself some padding */
-      font: 500 1.5em museo-slab, georgia, 'times new roman', serif;
+      font: 500 1.3em museo-slab, georgia, 'times new roman', serif;
     }
     form.embeddables-form {
       position: absolute;
