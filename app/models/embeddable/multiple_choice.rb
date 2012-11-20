@@ -14,10 +14,6 @@ module Embeddable
       self.add_choice('c')
     end
 
-    # TODO: This is ugly, and silly!
-    #   rename to "add_choice"
-    #   redefine as Embeddable::MultipleChoiceChoice.create(:choice, :mc)
-    #   ...
     def add_choice(choice_name = "new choice")
       new_choice = Embeddable::MultipleChoiceChoice.create(:choice => choice_name, :multiple_choice => self)
       self.save
