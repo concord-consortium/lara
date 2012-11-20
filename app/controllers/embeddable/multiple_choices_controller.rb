@@ -40,8 +40,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
     if request.xhr?
       respond_to do |format|
         @multiple_choice.reload
-        format.xml { render 'edit.html.haml', :layout => false }
-        format.json
+        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       end
     else
       respond_to do |format|
@@ -57,12 +56,11 @@ class Embeddable::MultipleChoicesController < ApplicationController
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
     @choice = @multiple_choice.choices.find(params[:choice_id])
     @choice.destroy
+    @multiple_choice.reload
     @embeddable = @multiple_choice
     if request.xhr?
       respond_to do |format|
-        @multiple_choice.reload
-        format.xml { render :edit, :layout => false }
-        format.json
+        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       end
     else
       respond_to do |format|

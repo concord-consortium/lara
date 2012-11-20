@@ -173,3 +173,14 @@ function adjustWidth() {
 	$('div.model').css('width', model_width);
 	$('#footer div').css('width', width);
 }
+
+// Update the modal edit window with a returned partial
+$(function() {
+  $('[data-remote][data-replace]')
+    .data('type', 'html')
+    .live('ajax:success', function(event, data) {
+      var $this = $(this);
+      $($this.data('replace')).html(data.html);
+      $this.trigger('ajax:replaced');
+    });
+});
