@@ -11,28 +11,33 @@
       = @page.name
 .clear
 
-.page-section-controls
-  %ul
-    %li
-      = form_for @page, :remote => true do |f|
-        %label
-          = f.check_box :show_introduction, :onchange => 'this.form.submit();'
-          Page introduction
-    %li
-      = form_for @page, :remote => true do |f|
-        %label
-          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
-          Info/Assessment block
-    %li
-      = form_for @page, :remote => true do |f|
-        %label
-          = f.check_box :show_interactive, :onchange => 'this.form.submit();'
-          Interactive box
-    %li
-      = form_for @page, :remote => true do |f|
-        %label
-          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
-          Page sidebar text
+.edit-meta
+  .page-section-controls
+    %ul
+      %li
+        = form_for @page, :remote => true do |f|
+          %label
+            = f.check_box :show_introduction, :onchange => 'this.form.submit();'
+            Page introduction
+      %li
+        = form_for @page, :remote => true do |f|
+          %label
+            = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
+            Info/Assessment block
+      %li
+        = form_for @page, :remote => true do |f|
+          %label
+            = f.check_box :show_interactive, :onchange => 'this.form.submit();'
+            Interactive box
+      %li
+        = form_for @page, :remote => true do |f|
+          %label
+            = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
+            Page sidebar text
+  %ul.tasks
+    %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
+    %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
+  
 =# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)
@@ -86,7 +91,3 @@
         = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 
   =# javascript_tag("focus_first_field();");
-
-  %ul.tasks
-    %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
-    %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
