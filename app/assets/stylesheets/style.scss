@@ -70,6 +70,7 @@ button.disabled span.edit_trigger.disabled {
   background: #26a2bc;
   height: 60px;
   position: relative;
+  margin-bottom: 30px;
   div {
     height: 130px;
     margin: 0 auto;
@@ -420,20 +421,9 @@ div.wysiwyg ul.toolbar {
   height: inherit;
   margin: 0;
 }
-fieldset .edit_trigger { line-height: 2em;; }
 .prompt {
   font-weight: bold;
   margin: 5px;
-}
-div.page-section-controls {
-  border: 1px solid #ccc;
-  position: fixed;
-  padding: 1.5em;
-  left: 10px;
-  top: 70px;
-  li {
-    list-style: none;
-  }
 }
 div.block-empty {
   border: 1px solid #ffcccc;
@@ -447,7 +437,25 @@ div.block-empty {
   background-position: 2px 2px;
 }
 /* These are unique to the edit view */
+div.edit-meta {
+  border: 1px solid #ccc;
+  position: fixed;
+  padding: 1.5em;
+  left: 10px;
+  top: 70px;
+  max-width: 200px;
+  .page-section-controls li {
+    list-style: none;
+  }
+  ul.tasks {
+    margin-top: 2em;
+    li {
+      list-style-position: inside;
+    }
+  }
+}
 .editing {
+  fieldset .edit_trigger { line-height: 2em;; }
   /* Title */
   .editable[data-name="interactive_page[name]"] form {
     display: inline;

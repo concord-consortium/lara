@@ -14,7 +14,8 @@
     <div>
       <%= image_tag "mw-logo.png", :alt => "Molecular Workbench", :id => "mw-logo" %>
       <%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %>
-      <nav>Home / Activities / Physics</nav>
+      <!-- <nav>Home / Activities / Physics</nav> -->
+      <nav><%= yield :nav %></nav>
     </div>
   </div>
   <div id="content" class="content">

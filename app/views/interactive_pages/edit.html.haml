@@ -1,15 +1,14 @@
-.breadcrumbs
-  %ul
-    %li
-      &raquo;
-      = link_to 'All Activities', activities_path
-    %li
-      &raquo;
-      = link_to @activity.name, edit_activity_path(@activity)
-    %li
-      &raquo;
-      = @page.name
-.clear
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li
+        = link_to 'All Activities', activities_path
+      %li
+        \/
+        = link_to @activity.name, edit_activity_path(@activity)
+      %li
+        \/
+        = @page.name
 
 .edit-meta
   .page-section-controls
