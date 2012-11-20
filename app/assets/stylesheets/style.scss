@@ -448,6 +448,10 @@ div.block-empty {
 }
 /* These are unique to the edit view */
 .editing {
+  /* Title */
+  .editable[data-name="interactive_page[name]"] form {
+    display: inline;
+  }
   /* Page intro */
   div.instructions, div.sidebar {
     border: 1px solid #26a2bc;

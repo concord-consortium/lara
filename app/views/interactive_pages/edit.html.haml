@@ -58,7 +58,7 @@
     = @activity.name
   %p.question
     Editing
-    = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit page name'}
+    = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => ''}
     = field_set_tag 'Page Appearance' do
       = editable_field @page, :theme, {:use_trigger => true, :edit_string => 'Edit page theme'}
     - if @page.show_introduction
