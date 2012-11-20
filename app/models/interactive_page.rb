@@ -20,7 +20,7 @@ class InteractivePage < ActiveRecord::Base
     if (value.to_i != 0)
       interactive = MwInteractive.create!
       add_interactive!(interactive)
-    else
+    elsif (value.to_i == 0)
       remove_interactive!
     end
   end
