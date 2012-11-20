@@ -36,6 +36,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
   def add_choice
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
     @multiple_choice.add_choice("New choice")
+    @embeddable = @multiple_choice
     if request.xhr?
       respond_to do |format|
         @multiple_choice.reload
@@ -56,6 +57,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
     @choice = @multiple_choice.choices.find(params[:choice_id])
     @choice.destroy
+    @embeddable = @multiple_choice
     if request.xhr?
       respond_to do |format|
         @multiple_choice.reload
