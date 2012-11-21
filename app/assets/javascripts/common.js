@@ -23,10 +23,16 @@ $(document).ready(function() {
   setIframeHeight();
 
   // Set up sortable list
-  $('.sortable').sortable({ handle: '.drag_handle',
+  $('#sort_embeddables').sortable({ handle: '.drag_handle',
                             opacity: 0.8,
                             tolerance: 'pointer',
-                            update: function() { alert('Position updated!');}
+                            update: function(i) {
+                              $.ajax({
+                                type: "GET",
+                                url: "reorder-embeddables", // Nothing to see here
+                                data: $("#sort_embeddables").sortable("serialize")
+                              })
+                            }
                           });
 });
 
