@@ -74,9 +74,10 @@
         = form_tag add_embeddable_activity_page_path, :class => 'embeddables-form' do
           = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
           = submit_tag 'Add Embeddable'
-        - @page.embeddables.each do |e|
-          - e_type = e.class.name.underscore
-          = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
+        .sortable
+          - @page.embeddables.each do |e|
+            - e_type = e.class.name.underscore
+            = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
   - if @page.show_interactive
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
       - @page.interactives.each do |interactive|

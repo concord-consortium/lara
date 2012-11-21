@@ -21,6 +21,9 @@ $(document).ready(function() {
 
   // Adjust iframe to have correct aspect ratio
   setIframeHeight();
+
+  // Set up sortable list
+  $('.sortable').sortable();
 });
 
 var $content_height;
