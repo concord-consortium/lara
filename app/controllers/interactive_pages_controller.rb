@@ -81,6 +81,14 @@ class InteractivePagesController < ApplicationController
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
+  def reorder_embeddables
+    # XHR
+    # For each submitted param
+    # Find the embeddable
+    # Set its position to order in the params arrays
+    # Respond with 200
+  end
+
   private
   def set_page
     if params[:activity_id]
