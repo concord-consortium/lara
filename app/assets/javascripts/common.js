@@ -23,7 +23,11 @@ $(document).ready(function() {
   setIframeHeight();
 
   // Set up sortable list
-  $('.sortable').sortable();
+  $('.sortable').sortable({ handle: '.drag_handle',
+                            opacity: 0.8,
+                            tolerance: 'pointer',
+                            update: function() { alert('Position updated!');}
+                          });
 });
 
 var $content_height;
