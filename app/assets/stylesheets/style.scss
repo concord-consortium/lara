@@ -544,6 +544,19 @@ div.edit-meta {
     border-radius: 0;
     color: #000;
   }
+  h2.question {
+    margin-bottom: 1em;
+    font-weight: bold;
+    font-size: 1.5em;
+    .edit_trigger, button {
+      font-weight: normal;
+      font-size: 0.66em;
+      color: #26A2BC;
+      background: none;
+      text-decoration: underline;
+      margin-top: inherit;
+    }
+  }
 }
 /* Breadcrumbs */
 div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
