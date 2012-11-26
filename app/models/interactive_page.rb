@@ -45,6 +45,9 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def add_embeddable(embeddable, position = nil)
-    PageItem.create!(:interactive_page => self, :embeddable => embeddable, :position => (position || self.page_items.size))
+    join = PageItem.create!(:interactive_page => self, :embeddable => embeddable, :position => position)
+    unless position
+      join.move_to_bottom
+    end
   end
 end
