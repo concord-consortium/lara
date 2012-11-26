@@ -29,7 +29,7 @@ $(document).ready(function() {
                             update: function(i) {
                               $.ajax({
                                 type: "GET",
-                                url: "reorder-embeddables", // Nothing to see here
+                                url: "reorder_embeddables", // Nothing to see here
                                 data: $("#sort_embeddables").sortable("serialize")
                               })
                             }

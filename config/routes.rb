@@ -5,7 +5,10 @@ LightweightStandalone::Application.routes.draw do
   # with the engine's URL scheme. Either way, we need to be able to optionally specify an offering ID.
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
-      post 'add_embeddable', :on => :member
+      member do
+        get 'reorder_embeddables'
+        post 'add_embeddable'
+      end
     end
   end
   
