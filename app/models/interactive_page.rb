@@ -1,6 +1,4 @@
 class InteractivePage < ActiveRecord::Base
-  include Workflow
-
   attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
@@ -17,11 +15,15 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def show_interactive=(value)
-    if (value.to_i != 0)
-      interactive = MwInteractive.create!
-      add_interactive!(interactive)
-    elsif (value.to_i == 0)
-      remove_interactive!
+    if value.to_i != 0
+      if self.interactives.length < 1
+        interactive = MwInteractive.create!
+        self.add_interactive(interactive)
+      else
+        self[:show_interactive] = true;
+      end
+    else
+      self[:show_interactive] = false;
     end
   end
 
@@ -31,7 +33,7 @@ class InteractivePage < ActiveRecord::Base
     InteractiveItem.create!(:interactive_page => self, :interactive => interactive, :position => (position || self.interactive_items.size))
   end
 
-  def remove_interactive
+  def remove_interactives
     self[:show_interactive] = false;
     self.save
     self.interactives.each do |i|
@@ -44,15 +46,5 @@ class InteractivePage < ActiveRecord::Base
 
   def add_embeddable(embeddable, position = nil)
     PageItem.create!(:interactive_page => self, :embeddable => embeddable, :position => (position || self.page_items.size))
-  end
-
-  workflow do
-    state :no_interactive do
-      event :add_interactive, :transitions_to => :has_interactive
-    end
-
-    state :has_interactive do
-      event :remove_interactive, :transitions_to => :no_interactive
-    end
   end
 end

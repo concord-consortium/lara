@@ -85,24 +85,9 @@ describe InteractivePage do
 
   it 'adds a new MwInteractive when show_interactive is set to true' do
     int_count = @page.interactives.length
-    @page.current_state.to_s.should == 'no_interactive'
     @page.show_interactive = "1"
     @page.save
     @page.reload
-    @page.current_state.to_s.should == 'has_interactive'
-    @page.interactives.length.should == int_count + 1
-  end
-
-  it 'removes the MwInteractive when show_interactive is set to false' do
-    @page.show_interactive = "1"
-    @page.save
-    @page.reload
-    int_count = @page.interactives.length
-    @page.current_state.to_s.should == 'has_interactive'
-    @page.show_interactive = "0"
-    @page.save
-    @page.reload
-    @page.current_state.to_s.should == 'no_interactive'
-    @page.interactives.length.should == int_count - 1
+    @page.interactives.length.should > 0
   end
 end
