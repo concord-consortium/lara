@@ -421,6 +421,50 @@ describe InteractivePagesController do
     end
   end
 
+  describe 'reorder_embeddables' do
+    before do
+      @act = LightweightActivity.create!(:name => "Test activity")
+      @page1 = @act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => '')
+    end
+
+    it 'accepts a list of embeddables in order and adjusts position values to match' do
+      # Create two OpenResponse embeddables
+      or1 = Embeddable::OpenResponse.create!(:name => "Open Response 1", :prompt => "Why do you think this model is cool?")
+      or2 = Embeddable::OpenResponse.create!(:name => "Open Response 2", :prompt => "What would you add to it?")
+
+      # Create one MultipleChoice embeddable, with choices
+      mc1 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 1", :prompt => "What color is chlorophyll?")
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Red', :multiple_choice => mc1)
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Green', :multiple_choice => mc1)
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Blue', :multiple_choice => mc1)
+
+      # Create another MultipleChoice embeddable, with choices
+      mc2 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 2", :prompt => "How many protons does Helium have?")
+      Embeddable::MultipleChoiceChoice.create(:choice => '1', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '2', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '4', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '7', :multiple_choice => mc2)
+
+      # Create an (X)HTML embeddable
+      xhtml1 = Embeddable::Xhtml.create!(:name => "Xhtml 1", :content => "This is some <strong>xhtml</strong> content!")
+
+      # Add the five embeddables created above to the page. The order they are added is the starting order: first on top, last on the bottom.
+      @page1.add_embeddable(mc1, 1)
+      @page1.add_embeddable(or1, 2)
+      @page1.add_embeddable(xhtml1, 3)
+      @page1.add_embeddable(or2, 4)
+      @page1.add_embeddable(mc2, 5)
+
+      # Send a reorder request with params to reverse the order embeddable_multiplechoice[]=18&embeddable_multiplechoice[]=17&embeddable_openresponse[]=16&embeddable_xhtml[]=19&embeddable_xhtml[]=20&embeddable_openresponse[]=17
+      get :reorder_embeddables, :id => @page1.id, :activity_id => @act.id, :params => { :embeddable_multiplechoice => mc2.id, :embeddable_openresponse => or2.id, :embeddable_xhtml => xhtml1.id, :embeddable_openresponse => or1.id, :embeddable_multiplechoice => mc1.id }
+
+      @page1.reload
+      @page1.embeddables.first.should == mc2
+      @page1.embeddables.last.should == mc1
+      @page1.embeddables[2].should == xhtml1
+    end
+  end
+
   describe 'add_embeddable' do
     before do
       @act = LightweightActivity.create!(:name => "Test activity")
