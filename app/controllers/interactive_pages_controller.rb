@@ -82,11 +82,22 @@ class InteractivePagesController < ApplicationController
   end
 
   def reorder_embeddables
-    # XHR
-    # For each submitted param
-    # Find the embeddable
-    # Set its position to order in the params arrays
+    params[:embeddable].each do |e|
+      # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse   
+      embeddable_id, embeddable_type = e.split('.')
+      pi = PageItem.find(:first, :conditions => { :embeddable_id => embeddable_id, :embeddable_type => embeddable_type })
+      # If we move everything to the bottom in order, the first one should be at the top
+      pi.move_to_bottom
+    end
     # Respond with 200
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :nothing => true }
+        format.html { render :nothing => true }
+      end
+    else
+      redirect_to edit_activity_page_path(@activity, @page)
+    end
   end
 
   private

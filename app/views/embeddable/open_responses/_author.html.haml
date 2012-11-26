@@ -1,4 +1,4 @@
-.authorable_open_response{:id => "embeddable_openresponse-#{embeddable.id}"}
+.authorable_open_response{:id => "embeddable_#{embeddable.id}.#{embeddable.class.to_s}"}
   .embeddable_tools
     .drag_handle
     = link_to "edit", edit_embeddable_open_response_path(embeddable), :remote => true, :id => "edit-embed-or-#{embeddable.id}"

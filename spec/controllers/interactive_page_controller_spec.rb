@@ -455,8 +455,8 @@ describe InteractivePagesController do
       @page1.add_embeddable(or2, 4)
       @page1.add_embeddable(mc2, 5)
 
-      # Send a reorder request with params to reverse the order embeddable_multiplechoice[]=18&embeddable_multiplechoice[]=17&embeddable_openresponse[]=16&embeddable_xhtml[]=19&embeddable_xhtml[]=20&embeddable_openresponse[]=17
-      get :reorder_embeddables, :id => @page1.id, :activity_id => @act.id, :params => { :embeddable_multiplechoice => mc2.id, :embeddable_openresponse => or2.id, :embeddable_xhtml => xhtml1.id, :embeddable_openresponse => or1.id, :embeddable_multiplechoice => mc1.id }
+      # Send a reorder request with params to reverse the order
+      xhr :get, :reorder_embeddables, :id => @page1.id, :activity_id => @act.id, :embeddable => [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ]
 
       @page1.reload
       @page1.embeddables.first.should == mc2
