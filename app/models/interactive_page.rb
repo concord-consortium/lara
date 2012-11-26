@@ -3,6 +3,8 @@ class InteractivePage < ActiveRecord::Base
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 
+  acts_as_list :scope => :lightweight_activity
+
   has_many :interactive_items, :order => :position
 
   def interactives

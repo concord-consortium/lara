@@ -36,3 +36,5 @@
                   %li= link_to "Edit", edit_activity_page_path(@activity, p)
                   %li= link_to "Show", activity_page_path(@activity, p), :target => 'new'
                   %li= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
+                  %li= link_to "Move Up", move_up_activity_page_path(@activity, p)
+                  %li= link_to "Move Down", move_down_activity_page_path(@activity, p)

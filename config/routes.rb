@@ -4,10 +4,15 @@ LightweightStandalone::Application.routes.draw do
   # HACK: Seems like these should be nested resources of the offering, but that's not really practical
   # with the engine's URL scheme. Either way, we need to be able to optionally specify an offering ID.
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
+    member do
+      get 'reorder_pages'
+    end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
+        get 'move_up', :controller => 'lightweight_activities'
+        get 'move_down', :controller => 'lightweight_activities'
       end
     end
   end

@@ -64,8 +64,27 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  def move_up
+    @page = @activity.pages.find(params[:id])
+    @page.move_higher
+    redirect_to :back
+  end
+
+  def move_down
+    @page = @activity.pages.find(params[:id])
+    @page.move_lower
+    redirect_to :back
+  end
+
+  def reorder_pages
+  end
+
   private
   def set_activity
-    @activity = LightweightActivity.find(params[:id])
+    if params[:activity_id]
+      @activity = LightweightActivity.find(params[:activity_id])
+    else
+      @activity = LightweightActivity.find(params[:id])
+    end
   end
 end
