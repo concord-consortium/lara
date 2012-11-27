@@ -193,5 +193,102 @@ describe LightweightActivitiesController do
         end
       end
     end
+
+    describe 'move_up' do
+      before do
+        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
+        [1,2,3].each do |i|
+          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+        end
+        request.env["HTTP_REFERER"] = "/activities/#{@act.id}/edit"
+      end
+
+      it 'does not route without an id and page_id' do
+        begin
+          get :move_up, {:id => @act.id}
+          throw "Should not have been able to route with no page_id"
+        rescue ActionController::RoutingError
+        end
+      end
+
+      it 'decrements the position value of the page' do
+        page = @act.pages[2]
+        old_position = page.position
+        get :move_up, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page.position.should == old_position - 1
+        page.should === @act.pages[1]
+      end
+
+      it 'does not change the position of the first item' do
+        page = @act.pages.first
+        old_position = page.position
+        get :move_up, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page.position.should == old_position
+        page.should === @act.pages.first
+      end
+
+      it 'adjusts the positions of surrounding items correctly' do
+        page = @act.pages[2]
+        page_before = page.higher_item
+        get :move_up, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page_before.should === @act.pages[2]
+      end
+    end
+
+    describe 'move_down' do
+      before do
+        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
+        [1,2,3].each do |i|
+          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+        end
+        request.env["HTTP_REFERER"] = "/activities/#{@act.id}/edit"
+      end
+
+      it 'does not route without an id and page_id' do
+        begin
+          get :move_down, {:id => @act.id}
+          throw "Should not have been able to route with no page_id"
+        rescue ActionController::RoutingError
+        end
+      end
+
+      it 'increments the position value of the page' do
+        page = @act.pages[0]
+        old_position = page.position
+        get :move_down, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page.position.should == old_position + 1
+        page.should === @act.pages[1]
+      end
+
+      it 'does not change the position of the last item' do
+        page = @act.pages.last
+        old_position = page.position
+        get :move_down, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page.position.should == old_position
+        page.should === @act.pages.last
+      end
+
+      it 'adjusts the positions of surrounding items correctly' do
+        page = @act.pages.first
+        page_after = page.lower_item
+        get :move_down, {:activity_id => @act.id, :id => page.id}
+        page.reload
+        @act.reload
+        page_after.should === @act.pages.first
+      end
+    end
+
+    describe 'reorder_pages' do
+    end
   end
 end
