@@ -24,16 +24,27 @@ $(document).ready(function() {
 
   // Set up sortable list
   $('#sort_embeddables').sortable({ handle: '.drag_handle',
-                            opacity: 0.8,
-                            tolerance: 'pointer',
-                            update: function(i) {
-                              $.ajax({
-                                type: "GET",
-                                url: "reorder_embeddables", // Nothing to see here
-                                data: $("#sort_embeddables").sortable("serialize")
-                              })
-                            }
-                          });
+                                    opacity: 0.8,
+                                    tolerance: 'pointer',
+                                    update: function(i) {
+                                      $.ajax({
+                                        type: "GET",
+                                        url: "reorder_embeddables",
+                                        data: $("#sort_embeddables").sortable("serialize")
+                                      })
+                                    }
+                                  });
+  $('#sort-pages').sortable({ handle: '.drag_handle',
+                              opacity: 0.8,
+                              tolerance: 'pointer',
+                              update: function(i) {
+                                $.ajax({
+                                  type: "GET",
+                                  url: "reorder_pages",
+                                  data: $('#sort-pages').sortable("serialize")
+                                })
+                              }
+                            });
 });
 
 var $content_height;
