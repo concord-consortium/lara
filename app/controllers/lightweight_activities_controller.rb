@@ -77,6 +77,21 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def reorder_pages
+    params[:item_interactive_page].each do |p|
+      # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
+      page = @activity.pages.find(p)
+      # If we move everything to the bottom in order, the first one should be at the top
+      page.move_to_bottom
+    end
+    # Respond with 200
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :nothing => true }
+        format.html { render :nothing => true }
+      end
+    else
+      redirect_to edit_activity_path(@activity)
+    end
   end
 
   private
