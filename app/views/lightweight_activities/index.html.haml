@@ -8,13 +8,13 @@
   .action_menu_header
     .action_menu_header_left
     .action_menu_header_right
-      %ul.menu
+      %ul#new-menu
         -#unless current_user.anonymous?
-        %li= link_to 'create new activity', new_activity_path
-        %li= toggle_all 'activity descriptions'
+        %li#add= link_to 'create new activity', new_activity_path
+        %li#desc-toggle= toggle_all 'activity descriptions'
 
 
-%h2.list-head 
+%h1.title
   Lightweight Activities
 
 .item_collection
@@ -26,8 +26,8 @@
             = link_to activity.name, edit_activity_path(activity), :class => 'container_link', :title => 'Click to edit'
           %div.action_menu_header_right
             %ul.menu
-              %li= link_to "Edit", edit_activity_path(activity)
-              %li= link_to "Run", activity_path(activity), :target => 'new'
-              %li= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }
+              %li.edit= link_to "Edit", edit_activity_path(activity)
+              %li.run= link_to "Run", activity_path(activity), :target => 'new'
+              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }
         %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
           != activity.description
