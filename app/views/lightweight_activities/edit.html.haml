@@ -4,7 +4,7 @@
       %li= link_to 'All Activities', activities_path
       %li= "/ #{@activity.name}".html_safe
 
-%h1 Edit activity
+%h1.title Edit activity
 = form_for @activity, {:url => "/activities/#{@activity.id}", :method => 'put'} do |f|
   = f.error_messages
   = edit_menu_for(@activity, f)
@@ -20,21 +20,18 @@
   = field_set_tag 'Related Content' do
     = editable_field @activity, :related, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 80, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 = javascript_tag("focus_first_field();");
-%ul
-  %li= link_to "Add pages to this activity", new_activity_page_path(@activity)
+#menu
   - if @activity.pages.length > 0
-    %li
-      Edit pages:
+    #pages
+      %h2 Activity Pages
       %ul
         - @activity.pages.each do |p|
           %li{ :id => dom_id_for(p, :item), :class => 'item' }
-            %div.action_menu
-              %div.action_menu_header_left
-                = link_to p.name, edit_activity_page_path(@activity, p)
-              %div.action_menu_header_right
-                %ul.menu
-                  %li= link_to "Edit", edit_activity_page_path(@activity, p)
-                  %li= link_to "Show", activity_page_path(@activity, p), :target => 'new'
-                  %li= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
-                  %li= link_to "Move Up", move_up_activity_page_path(@activity, p)
-                  %li= link_to "Move Down", move_down_activity_page_path(@activity, p)
+            = p.name
+            %ul.menu
+              %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
+              %li.run= link_to "Show", activity_page_path(@activity, p), :target => 'new'
+              %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
+              %li= link_to "Move Up", move_up_activity_page_path(@activity, p)
+              %li= link_to "Move Down", move_down_activity_page_path(@activity, p)
+        %li#add= link_to "Add Page", new_activity_page_path(@activity)
