@@ -21,17 +21,16 @@
     = editable_field @activity, :related, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
 = javascript_tag("focus_first_field();");
 #menu
-  - if @activity.pages.length > 0
-    #pages
-      %h2 Activity Pages
-      %ul
-        - @activity.pages.each do |p|
-          %li{ :id => dom_id_for(p, :item), :class => 'item' }
-            = p.name
-            %ul.menu
-              %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
-              %li.run= link_to "Show", activity_page_path(@activity, p), :target => 'new'
-              %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
-              %li= link_to "Move Up", move_up_activity_page_path(@activity, p)
-              %li= link_to "Move Down", move_down_activity_page_path(@activity, p)
-        %li#add= link_to "Add Page", new_activity_page_path(@activity)
+  #pages
+    %h2 Activity Pages
+    %ul
+      - @activity.pages.each do |p|
+        %li{ :id => dom_id_for(p, :item), :class => 'item' }
+          = p.name
+          %ul.menu
+            %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
+            %li.run= link_to "Show", activity_page_path(@activity, p), :target => 'new'
+            %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
+            %li= link_to "Move Up", move_up_activity_page_path(@activity, p)
+            %li= link_to "Move Down", move_down_activity_page_path(@activity, p)
+      %li#add= link_to "Add Page", new_activity_page_path(@activity)
