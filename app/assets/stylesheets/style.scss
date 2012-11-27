@@ -387,12 +387,15 @@ button.disabled span.edit_trigger.disabled {
 }
 .action_menu_header_right {
   float: right;
-  width: 32%;
+  width: 7%;
   ul li {
     list-style: none;
     float: left;
-    margin: 1px 0 1px 10px;
+    margin: -10px 0 1px 10px;
   }
+}
+.action_menu_header_right.index {
+  width: 35%;
 }
 ul.quiet_list {
   border-top: dashed 1px #ddd;
@@ -427,7 +430,7 @@ form.edit_lightweight_activity {
     clear: left;
    	float: left;
    	margin-top: 20px;
-   	width: 65%;
+   	width: 45%;
   }
   legend {
    	font-weight: bold;
@@ -481,6 +484,12 @@ form.edit_lightweight_activity {
       padding-left: 18px;
    		text-decoration: none;
     }
+  }
+  li a {
+    color: #333;
+    height: 14px;
+    padding-left: 16px;
+    text-decoration: none;
   }
 }
 ul#new {
@@ -571,6 +580,19 @@ div.edit-meta {
     }
   }
 }
+/* Activity editing */
+fieldset {
+  position: relative;
+  .edit_trigger {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    margin: 0;
+    background: 0;
+    color: #126eac;
+  }
+}
+/* Page editing */
 .editing {
   fieldset .edit_trigger { line-height: 2em;; }
   /* Title */
