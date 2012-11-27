@@ -385,29 +385,146 @@ button.disabled span.edit_trigger.disabled {
   width: 100%;
   z-index: 10;
 }
-ul.quiet_list {
-  clear: both;
-  list-style: none;
-  li.item {
-    padding-top: 20px;
-    margin: 5px 0 15px 0;
-  }
-}
-.action_menu_header_left {
-  float: left;
-  width: 49.5%;
-  clear: both;
-}
 .action_menu_header_right {
-  background-color: #eed087;
-  border: 1px solid #e5a333;
   float: right;
-  width: 49.5%;
+  width: 32%;
   ul li {
     list-style: none;
     float: left;
-    margin: 0.5em 1.5em 0.5em 0.5em;
+    margin: 1px 0 1px 10px;
   }
+}
+ul.quiet_list {
+  border-top: dashed 1px #ddd;
+  margin-top: 30px;
+  clear: both;
+  list-style: none;
+  li.item {
+    padding: 20px 5px;
+    margin: 0;
+    border-bottom: dashed 1px #ddd;
+    .action_menu_header_left {
+      float: left;
+      font-size: 1.2em;
+      font-weight: bold;
+      width: 82%;
+    }
+    .action_menu_header_right {
+      width: 18%;
+    }
+    .tiny {
+      clear: both;
+      display: block;
+      margin-top: 23px;
+    }
+  }
+  li.item:hover {
+    background: #fef7e0;
+  }
+}
+form.edit_lightweight_activity {
+  fieldset {
+    clear: left;
+   	float: left;
+   	margin-top: 20px;
+   	width: 65%;
+  }
+  legend {
+   	font-weight: bold;
+ 	}
+}
+#menu {
+ 	float: right;
+ 	list-style-type: none;
+ 	margin-top: -150px;
+ 	width: 55%;
+ 	h2 {
+ 		font-weight: bold;
+ 		margin-bottom: 10px;
+	}
+  ul {
+ 		clear: both;
+ 		float: none;
+ 		list-style-type: none;
+ 		margin: 0;
+ 		padding: 0;
+    li {
+ 			border-bottom: dashed 1px #6fc5d8;
+ 			clear: both;
+ 			margin: 0 0 .5em;
+ 			padding: 5px 3px;
+    }
+    li.item {
+      min-height: 12px;
+    }
+    ul {
+			float: right;
+      li {
+        display: inline;
+      }
+    }
+  }
+}
+#pages {
+	background: #c9e9e6;
+	padding: 15px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+  li#add {
+    margin-top: 10px;
+    a {
+      background: transparent url(/assets/icons/add.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+   		text-decoration: none;
+    }
+  }
+}
+ul#new {
+ 	margin-top: 1em;
+  li#add a {
+    background: transparent url(/assets/icons/add.png) 0 0 no-repeat;
+    background-size: 14px;
+    color: #333;
+    height: 14px;
+    padding-left: 18px;
+    text-decoration: none;
+  }
+  li#desc-toggle a {
+    background: transparent url(/assets/icons/plus.png) 0 0 no-repeat;
+    background-size: 14px;
+    color: #333;
+    height: 14px;
+    padding-left: 18px;
+    text-decoration: none;
+  }
+}
+li.edit a {
+  background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
+  background-size: 14px;
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
+}
+li.run a {
+  background: transparent url(/assets/icons/run.png) 0 0 no-repeat;
+  background-size: 14px;
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
+}
+li.delete a {
+  background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+  background-size: 14px;
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
 }
 h2.list-head {
   clear: both;
