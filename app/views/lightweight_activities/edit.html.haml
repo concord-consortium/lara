@@ -19,14 +19,14 @@
     = editable_field @activity, :description, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
   = field_set_tag 'Related Content' do
     = editable_field @activity, :related, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true } } } }
-= javascript_tag("focus_first_field();");
+=# javascript_tag("focus_first_field();");
 #menu
   #pages
     %h2 Activity Pages
     %ul#sort-pages
       - @activity.pages.each do |p|
         %li{ :id => dom_id_for(p, :item), :class => 'item' }
-          = p.name
+          = p.name # TODO: Maybe put in "page #" here if it's blank; truncate title if it's too long and restore original width
           %ul.menu
             %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
             %li.run= link_to "Show", activity_page_path(@activity, p), :target => 'new'
