@@ -1,7 +1,9 @@
 $(document).ready(function () {
     // prepare for scrolling model
-    calculateDimensions();
-    $(document).bind('scroll', $scroll_handler);
+    if ($('.model-container').length) {
+        calculateDimensions();
+        $(document).bind('scroll', $scroll_handler);
+    }
 
     // add event listeners
     $('input[type=radio]').click(function () {
