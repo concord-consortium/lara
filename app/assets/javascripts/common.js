@@ -59,14 +59,17 @@ var $model_width;
 var $model_height;
 
 var $scroll_handler = function() {
-    if ($(document).scrollTop() > 70 && $(document).scrollTop() < 100 + ($content_height - $model_height)) {
-        $('.model-container').css({'position': 'absolute', 'top': $(document).scrollTop() + 'px', 'width': $model_width});
-        var $value = $content_top + $content_height;
-    } else if ($(document).scrollTop() >= 100 + ($content_height - $model_height)) {
-        //alert($content_height - ($content_height - $model_height));
-        $('.model-container').css({'position': 'absolute', 'top': (100 + ($content_height - $model_height)) + 'px', 'width': $model_width});
+    // 90px is header and its margin
+    var $header_height = 90;
+    if ($(document).scrollTop() > $header_height && (($(document).scrollTop() - $content_top) < (($content_bottom - $model_height) + $header_height))) {
+        // Case 1: moving with scroll
+        $('.model-container').css({'position': 'absolute', 'top': ($(document).scrollTop() + $header_height) + 'px', 'width': $model_width});
+    } else if (($(document).scrollTop() - $content_top) >= ($content_bottom - $model_height + $header_height)) {
+        // Case 2: fixed to bottom
+        $('.model-container').css({'position': 'absolute', 'top': (($content_top - $header_height) + ($content_height - $model_height)) + 'px', 'width': $model_width});
     } else {
-        $('.model-container').css({'position': 'absolute', 'top': '85px', 'width': $model_width});
+        // Case 3: fixed to top
+        $('.model-container').css({'position': 'absolute', 'top': ($content_top - $header_height) + 'px', 'width': $model_width});
     }
 };
 
