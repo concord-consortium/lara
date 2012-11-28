@@ -27,8 +27,8 @@
     - if page.show_info_assessment
       .questions
         - page.embeddables.each do |e|
-          - e_type = e.class.name.underscore
-          = render :partial => "#{e_type.pluralize}/lightweight", :locals => {:embeddable => e}
+          .embeddable
+            = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
   - if page.show_interactive
     %div{:class => (page.show_info_assessment ? 'other' : 'other full-width')}
       - page.interactives.each do |interactive|
