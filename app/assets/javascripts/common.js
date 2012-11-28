@@ -73,7 +73,7 @@ function calculateDimensions(){
     $content_offset = $('.text').offset();
     $content_top = $content_offset.top;
     $content_bottom = $(document).height() - ($content_top + $content_height);
-    $model_height = $('.model-container').height();
+    $model_height = $('.model-container').height() + 35; // 25 is the height of the blue bar
     $model_width = $('.model-container').css('width');
 }
 
