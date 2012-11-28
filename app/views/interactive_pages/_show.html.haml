@@ -23,7 +23,7 @@
   %p.question= page.name
   .text
     - if page.show_introduction
-      .instructions= page.text
+      .instructions!= page.text
     - if page.show_info_assessment
       .questions
         - page.embeddables.each do |e|
