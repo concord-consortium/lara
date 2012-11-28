@@ -21,11 +21,11 @@
   %h1.title
     = page.lightweight_activity.name
   %p.question= page.name
-  .text
-    - if page.show_introduction
-      .instructions!= page.text
+  - if page.show_introduction
+    .instructions!= page.text
+  %div{:class => (page.show_interactive ? 'text' : 'text full-width')}
     - if page.show_info_assessment
-      .questions
+      %div{:class => (page.show_interactive ? 'questions' : 'questions full-width')}
         - page.embeddables.each do |e|
           .embeddable
             = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}

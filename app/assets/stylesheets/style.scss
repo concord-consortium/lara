@@ -187,7 +187,7 @@ button.disabled span.edit_trigger.disabled {
   float: right;
   padding: 1% 0 1% 1%;
 }
-.full .text {
+.text.full-width {
   padding: 0;
   width: 100%;
 }
@@ -213,33 +213,37 @@ button.disabled span.edit_trigger.disabled {
   width: 94%;
   border-radius: 13px;
 }
-.questions label {
-  display: block;
-  margin-bottom: 1em;
-  padding-left: 1.7em;
-  text-indent: -1.7em;
+.questions {
+  label {
+    display: block;
+    margin-bottom: 1em;
+    padding-left: 1.7em;
+    text-indent: -1.7em;
+  }
+  .xhtml p {
+    background: transparent;
+    clear: both;
+    float: none;
+    height: auto;
+    min-height: 0;
+    width: 100%;
+  }
+  textarea {
+    height: 200px;
+    margin: .5em 0 0;
+    width: 98%;
+  }
 }
-.full .questions p {
-  float: left;
-  margin: 1% .5% 1% 0;
-  min-height: 243px;
-  width: 43%;
-}
-.full .questions p:nth-child(2), .full .questions p:nth-child(4) {
-  margin: 1% 0 1% 1.25%;
-}
-.questions .xhtml p {
-  background: transparent;
-  clear: both;
-  float: none;
-  height: auto;
-  min-height: 0;
-  width: 100%;
-}
-.questions textarea {
-  height: 200px;
-  margin: .5em 0 0;
-  width: 98%;
+.questions.full-width {
+  .embeddable {
+    float: left;
+    margin: 1% .5% 1% 0;
+    min-height: 243px;
+    width: 43%;
+  }
+  .embeddable:nth-child(2), .embeddable:nth-child(4) {
+    margin: 1% 0 1% 1.25%;
+  }
 }
 .other {
   float: right;
