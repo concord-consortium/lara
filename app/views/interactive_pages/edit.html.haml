@@ -37,7 +37,6 @@
     %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
     %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
   
-=# TODO: Deal with pagination. This seems like a good place to handle "Add page."
 - next_page = nil unless defined?(next_page)
 - previous_page = nil unless defined?(previous_page)
 %div{:class => ["content", "editing"]}
