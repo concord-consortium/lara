@@ -84,18 +84,18 @@ $(window).resize(function(){
 });
 
 function checkAnswer() {
-	// check for valid answer
-	if (!$('input:radio[name=q1]:checked').val()) {
-		alert('Please select an answer before checking.');
-	} else {
-		if ($('input:radio[name=q1]:checked').val() == 50) {
-			alert('Correct!');
-			$('#next').removeClass('disabled');
-		} else {
-			alert('That answer is incorrect.');
-			$('#next').addClass('disabled');
-		}
-	}
+    // check for valid answer
+    if (!$('input:radio[name=q1]:checked').val()) {
+        alert('Please select an answer before checking.');
+    } else {
+        if ($('input:radio[name=q1]:checked').val() == 50) {
+            alert('Correct!');
+            $('#next').removeClass('disabled');
+        } else {
+            alert('That answer is incorrect.');
+            $('#next').addClass('disabled');
+        }
+    }
 }
 
 function maxHeader() {
