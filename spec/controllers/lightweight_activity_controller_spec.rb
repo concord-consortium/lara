@@ -289,6 +289,21 @@ describe LightweightActivitiesController do
     end
 
     describe 'reorder_pages' do
+      before do
+        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
+        [1,2,3].each do |i|
+          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+        end
+      end
+
+      it 'rearranges activity pages to match order in request' do
+        # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
+        # Should provide a list of IDs in reverse order
+        get :reorder_pages, {:id => @act.id, :item_interactive_page => @act.pages.map { |p| p.id }.reverse }
+        @act.reload
+        @act.pages.first.name.should == "Page 3"
+        @act.pages.last.name.should == "Page 1"
+      end
     end
   end
 end
