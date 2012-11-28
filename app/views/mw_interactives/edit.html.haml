@@ -14,5 +14,5 @@
     = f.text_field :native_height
     .clear
     This width and height will be used to maintain a fixed aspect ratio for the interactive.
-  = f.submit "Cancel", :class => 'close'
-  = f.submit "Save", :class => 'embeddable-save'
+  = f.button "Cancel", :class => 'close', :type => 'button'
+  = f.submit "Save", :class => 'embeddable-save', :default => 'default'
