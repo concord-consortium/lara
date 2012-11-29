@@ -91,11 +91,15 @@ function checkAnswer() {
     if (!$('input:radio[name=q1]:checked').val()) {
         alert('Please select an answer before checking.');
     } else {
+        // TODO: $.ajax call to find correct answer for this question
         if ($('input:radio[name=q1]:checked').val() == 50) {
-            alert('Correct!');
+            // TODO: Use custom question response here if provided
+            // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
+            alert('Yes! You are correct.');
             $('#next').removeClass('disabled');
         } else {
-            alert('That answer is incorrect.');
+            // TODO: Use custom question response here if provided
+            alert('Sorry, that is incorrect.');
             $('#next').addClass('disabled');
         }
     }
