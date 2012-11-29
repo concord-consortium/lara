@@ -673,7 +673,7 @@ fieldset {
         float: left;
       }
     }
-    .authorable_xhtml {
+    #sort_embeddables>div {
       .embeddable_tools {
         background-color: #b5e3ef;
         padding: 5px;
@@ -682,6 +682,7 @@ fieldset {
       padding: 5px;
       border: 1px solid #26a2bc;
       margin-bottom: 1em;
+      border-radius: 0;
     }
   }
   div.sidebar {
