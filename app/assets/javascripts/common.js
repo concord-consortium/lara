@@ -1,39 +1,60 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true */
 /*global $ */
 
+var $content_box;
 var $content_height;
-var $content_offset;
 var $content_top;
 var $content_bottom;
-var $last_scroll_pos = $(document).scrollTop();
-var $stop_scrolltop;
 var $model_width;
 var $model_height;
+var $model_lowest;
+var $header_height;
+var $scroll_start;
+var $scroll_end;
 
 var fullScreen, exitFullScreen, minHeader, maxHeader;
 
 var $scroll_handler = function () {
-    // 90px is header and its margin
-    var $header_height = 90;
-    if ($(document).scrollTop() > $header_height && (($(document).scrollTop() - $content_top) < (($content_bottom - $model_height) + $header_height))) {
-        // Case 1: moving with scroll
-        $('.model-container').css({'position': 'absolute', 'top': ($(document).scrollTop() + $header_height) + 'px', 'width': $model_width});
-    } else if (($(document).scrollTop() - $content_top) >= ($content_bottom - $model_height + $header_height)) {
-        // Case 2: fixed to bottom
-        $('.model-container').css({'position': 'absolute', 'top': (($content_top - $header_height) + ($content_height - $model_height)) + 'px', 'width': $model_width});
-    } else {
-        // Case 3: fixed to top
-        $('.model-container').css({'position': 'absolute', 'top': ($content_top - $header_height) + 'px', 'width': $model_width});
+    // Don't do anything if the model is taller than the info/assessment block.
+    if ($content_height > $model_height) {
+        if (($(document).scrollTop() > $scroll_start) && ($(document).scrollTop() < $scroll_end)) {
+            // Case 1: moving with scroll: scrolling below header but not at bottom of info/assessment block
+            console.debug('Moving: ' + $(document).scrollTop() + ', set to ' + ($(document).scrollTop() + $scroll_start + 35));
+            $('.model-container').css({'position': 'absolute', 'top': ($(document).scrollTop() + $scroll_start + 35) + 'px', 'width': $model_width});
+        } else if ($(document).scrollTop() >= $scroll_end) {
+            // Case 2: fixed to bottom
+            console.debug('Bottom: ' + $(document).scrollTop() + ', set to ' + $model_lowest);
+            $('.model-container').css({'position': 'absolute', 'top': $model_lowest + 'px', 'width': $model_width});
+        } else {
+            // Case 3: fixed to top: scrolling shows some bit of header
+            console.debug('Top: ' + $(document).scrollTop() + ', set to ' + ($content_top - $header_height));
+            $('.model-container').css({'position': 'absolute', 'top': ($content_top - $header_height) + 'px', 'width': $model_width});
+        }
     }
 };
 
 function calculateDimensions() {
-    $content_height = $('.text').height();
-    $content_offset = $('.text').offset();
-    $content_top = $content_offset.top;
+    // Content starts at the bottom of the header, so this is the height of the header too.
+    // Handy as a marker for when to start scrolling.
+    $header_height = $('#content').offset().top;
+    // Height of info/assessment block
+    $content_box = $('.text').height();
+    $content_height = $content_box - parseInt($('.text').css('padding-top'), 10) - parseInt($('.text').css('padding-bottom'), 10);
+    // Top of info/assessment block (starting position of interactive, topmost location)
+    $content_top = $('.text').offset().top;
+    // Bottom location of info/assessment block
     $content_bottom = $(document).height() - ($content_top + $content_height);
+    // Interactive dimensions
+    // FIXME: I don't like this 35 magic number but it fixes a lot of problems
     $model_height = $('.model-container').height() + 35; // 25 is the height of the blue bar
     $model_width = $('.model-container').css('width');
+    // Scroll starts here
+    $scroll_start = $header_height;
+    // Scroll ends here
+    // The travel space available to the model is the height of the content block minus the height of the interactive, so the scroll-end is scroll start plus that value. (The 35 here puts back the extra added to $model_height)
+    $scroll_end = $scroll_start + ($content_height - $model_height) + 35;
+    // Interactive lowest position: highest of the stop point plus start point (pretty much where you are at the end of the scroll) or fixed-to-top value
+    $model_lowest = Math.max(($scroll_end + $scroll_start + 35), ($content_top - $header_height));
 }
 
 $(window).resize(function () {
