@@ -107,7 +107,7 @@ function showTutorial() {
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
     var aspectRatio = $('iframe[data-aspect_ratio]').attr('data-aspect_ratio'),
-        targetHeight = $('iframe[data-aspect_ratio]').width() / aspectRatio;
+        targetHeight = $('.model, .model-edit').width() / aspectRatio;
     $('iframe[data-aspect_ratio]').height(targetHeight);
 }
 
