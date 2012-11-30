@@ -11,6 +11,7 @@ class LightweightActivity < ActiveRecord::Base
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
   validates :publication_status, :inclusion => { :in => PUB_STATUSES }
+  validates_length_of :name, :maximum => 50
 
   # TODO: There's room here for some named scopes:
   # * Find all public activities

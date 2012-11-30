@@ -13,6 +13,12 @@ describe LightweightActivity do
     @activity.publication_status.should == "draft"
   end
 
+  it 'should not allow long names' do
+      # They break layouts.
+      @activity.name = "Renamed activity with a really, really, long name, seriously this sucker is so long you might run out of air before you can pronounce the period which comes at the end."
+      !@activity.valid?
+  end
+
   it 'should have pages' do
     [3,1,2].each do |i|
       page = InteractivePage.create!(:name => "page #{i}", :text => "some text #{i}", :position => i)
