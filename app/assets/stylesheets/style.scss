@@ -428,19 +428,29 @@ ul.quiet_list {
 form.edit_lightweight_activity {
   fieldset {
     clear: left;
-   	float: left;
    	margin-top: 20px;
-   	width: 45%;
   }
   legend {
    	font-weight: bold;
- 	}
+  }
+  .submit {
+	text-align: right;
+	width: 100%;
+  }
 }
+#leftcol {
+    clear: left;
+    float: left;
+    width: 60%;
+}
+#rightcol {
+	float: right;
+	width: 35%;
+}
+
 #menu {
  	float: right;
  	list-style-type: none;
- 	margin-top: -150px;
- 	width: 55%;
  	h2 {
  		font-weight: bold;
  		margin-bottom: 10px;
@@ -475,6 +485,7 @@ form.edit_lightweight_activity {
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
+    width: 100%;
   li#add {
     margin-top: 10px;
     a {
