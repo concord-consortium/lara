@@ -30,9 +30,9 @@ describe MwInteractive do
 
   it 'returns an aspect ratio based on native height and native width' do
     @interactive.aspect_ratio.should === 2
-    @interactive.native_width = 600
+    @interactive.native_width = 500
     @interactive.save
-    @interactive.aspect_ratio.should === 3
+    @interactive.aspect_ratio.should === 2.5
   end
 
   it 'returns a calculated height from a supplied width, based on aspect ratio' do

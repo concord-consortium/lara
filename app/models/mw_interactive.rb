@@ -16,7 +16,7 @@ class MwInteractive < ActiveRecord::Base
   # will be 2. 
   def aspect_ratio
     if self.native_width && self.native_height
-      return self.native_width/self.native_height
+      return self.native_width/self.native_height.to_f
     else
       return 1.324 # Derived from the default values, above
     end
