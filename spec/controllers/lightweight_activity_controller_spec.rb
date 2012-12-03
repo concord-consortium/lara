@@ -19,7 +19,7 @@ describe LightweightActivitiesController do
 
     it 'should render 404 when the activity does not exist' do
       begin
-        get :show, :id => 34
+        get :show, :id => 987654
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -131,6 +131,15 @@ describe LightweightActivitiesController do
         get :edit, {:id => act.id}
 
         response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"/
+      end
+
+      it 'should provide in-place editing of description and sidebar', :js => true do
+        act = LightweightActivity.create!(:name => 'This activity needs in-place editing', :description => 'Edit me!')
+
+        visit edit_activity_path(act)
+
+        find("#lightweight_activity_description_trigger").click
+        page.should have_xpath('//*[@name="lightweight_activity[description]"]')
       end
     end
 

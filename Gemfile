@@ -4,8 +4,8 @@ gem 'rails', '3.2.8'
 gem "jquery-rails", "~> 2.1.3"
 gem "haml", "~> 3.1.4"
 gem "dynamic_form", "~> 1.1.4"
-gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiwyg-rails.git"
-# gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
+# gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiwyg-rails.git"
+gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
 gem 'acts_as_list'
 
 # Bundle edge Rails instead:
@@ -36,7 +36,8 @@ group :test, :development do
   gem "rspec",       "~> 2.10.0"
   gem "rspec-rails", "~> 2.10.1"
   gem "ci_reporter", "~> 1.7.0"
-  gem 'factory_girl_rails'
+  gem "factory_girl_rails"
+  gem "capybara"
 
   gem 'pry'
   # Guard runs tests automatically when the files they test (or the tests
