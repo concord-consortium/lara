@@ -1,7 +1,8 @@
-PATH
-  remote: /Users/pmorse/Projects/jeditable_wysiwyg_rails
+GIT
+  remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
+  revision: 3cb5fd16c1dac2b46b0f1a3d2208150862accc4d
   specs:
-    jeditable_wysiwyg_rails (0.3.5)
+    jeditable_wysiwyg_rails (0.3.6)
       jeditable_wysiwyg_rails
       jquery-rails
       rails (~> 3.2.0)
