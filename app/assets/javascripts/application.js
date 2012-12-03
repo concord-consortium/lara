@@ -15,6 +15,9 @@
 //= require jquery-ui
 //= require jquery.jeditable
 //= require jquery.wysiwyg
+//= require wysiwyg.image
+//= require wysiwyg.link
+//= require wysiwyg.table
 //= require jquery.jeditable.wysiwyg
 //= require modals
 //= require_tree .
