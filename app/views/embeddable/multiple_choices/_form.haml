@@ -6,7 +6,7 @@
     = f.text_area :prompt, :rows => 5
     :javascript
       $(function() {
-          $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true } } });
+          $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
   = field_set_tag 'Choices' do
     = link_to "Add choice", add_choice_embeddable_multiple_choice_path(@embeddable), :method => 'post', :remote => true, :"data-replace" => '#modal', :id => 'add_new_choice'
