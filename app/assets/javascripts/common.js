@@ -34,27 +34,29 @@ var $scroll_handler = function () {
 };
 
 function calculateDimensions() {
-    // Content starts at the bottom of the header, so this is the height of the header too.
-    // Handy as a marker for when to start scrolling.
-    $header_height = $('#content').offset().top;
-    // Height of info/assessment block
-    $content_box = $('.text').height();
-    $content_height = $content_box - parseInt($('.text').css('padding-top'), 10) - parseInt($('.text').css('padding-bottom'), 10);
-    // Top of info/assessment block (starting position of interactive, topmost location)
-    $content_top = $('.text').offset().top;
-    // Bottom location of info/assessment block
-    $content_bottom = $(document).height() - ($content_top + $content_height);
-    // Interactive dimensions
-    // FIXME: I don't like this 35 magic number but it fixes a lot of problems
-    $model_height = $('.model-container').height() + 35; // 25 is the height of the blue bar
-    $model_width = $('.model-container').css('width');
-    // Scroll starts here
-    $scroll_start = $header_height;
-    // Scroll ends here
-    // The travel space available to the model is the height of the content block minus the height of the interactive, so the scroll-end is scroll start plus that value. (The 35 here puts back the extra added to $model_height)
-    $scroll_end = $scroll_start + ($content_height - $model_height) + 35;
-    // Interactive lowest position: highest of the stop point plus start point (pretty much where you are at the end of the scroll) or fixed-to-top value
-    $model_lowest = Math.max(($scroll_end + $scroll_start + 35), ($content_top - $header_height));
+    if ($('.text') && $('.model-container')) {
+        // Content starts at the bottom of the header, so this is the height of the header too.
+        // Handy as a marker for when to start scrolling.
+        $header_height = $('#content').offset().top;
+        // Height of info/assessment block
+        $content_box = $('.text').height();
+        $content_height = $content_box - parseInt($('.text').css('padding-top'), 10) - parseInt($('.text').css('padding-bottom'), 10);
+        // Top of info/assessment block (starting position of interactive, topmost location)
+        $content_top = $('.text').offset().top;
+        // Bottom location of info/assessment block
+        $content_bottom = $(document).height() - ($content_top + $content_height);
+        // Interactive dimensions
+        // FIXME: I don't like this 35 magic number but it fixes a lot of problems
+        $model_height = $('.model-container').height() + 35; // 25 is the height of the blue bar
+        $model_width = $('.model-container').css('width');
+        // Scroll starts here
+        $scroll_start = $header_height;
+        // Scroll ends here
+        // The travel space available to the model is the height of the content block minus the height of the interactive, so the scroll-end is scroll start plus that value. (The 35 here puts back the extra added to $model_height)
+        $scroll_end = $scroll_start + ($content_height - $model_height) + 35;
+        // Interactive lowest position: highest of the stop point plus start point (pretty much where you are at the end of the scroll) or fixed-to-top value
+        $model_lowest = Math.max(($scroll_end + $scroll_start + 35), ($content_top - $header_height));
+    }
 }
 
 $(window).resize(function () {
