@@ -328,13 +328,30 @@ describe InteractivePagesController do
       end
 
       it 'displays page fields with edit-in-place capacity' do
-        pending "update for new in-place editor"
+        @page1.show_introduction = 1
+        @page1.save
         get :edit, :id => @page1.id, :activity_id => @act.id
 
-        # These data-object and data-attribute span attributes are characteristic of best_in_place; another edit-in-place gem might not use the same attributes.
-        response.body.should match /<span[^>]+data-object='interactive_page'[^>]+data-attribute='name'[^>]*>#{@page1.name}<\/span>/
-        response.body.should match /<span[^>]+data-object='interactive_page'[^>]+data-attribute='text'[^>]*>#{@page1.text}<\/span>/
-        response.body.should match /<span[^>]+data-object='interactive_page'[^>]+data-attribute='sidebar'[^>]*>#{@page1.sidebar}<\/span>/
+        response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{@page1.name}<\/span>/
+        response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{@page1.text}<\/span>/
+      end
+
+      it 'should save first edits made in the WYSIWYG editor', :js => true do
+        @page1.show_introduction = 1
+        @page1.show_interactive = 0
+        @page1.save
+        visit edit_activity_page_path(@act, @page1)
+
+        find('#interactive_page_text_trigger').click
+        find('#interactive_page_text')
+        within_frame('interactive_page_text-wysiwyg-iframe') do
+          page.should have_content('This is the main activity text.')
+          # TODO: How can I put content in the WYSIWYG editor?
+        end
+        find('.wysiwyg li.html').click()
+        fill_in 'interactive_page[text]', :with => 'This is edited text'
+        find('.editable button[type="submit"]').click
+        page.should have_content('This is edited text')
       end
 
       it 'has links to show the page, return to the activity, or add another page' do
