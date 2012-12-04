@@ -1,7 +1,7 @@
 .model-edit
   .toolbar
     = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
-    - if interactive.url.blank?
+    - if params[:edit_int] == interactive.id
       :javascript
         $("a[id^=edit-int-#{interactive.id}]").click()
 

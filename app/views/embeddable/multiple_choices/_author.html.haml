@@ -4,7 +4,7 @@
     = link_to "edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true, :id => "edit-embed-mc-#{embeddable.id}"
     |
     = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => 'Are you sure?'}
-    - if embeddable.prompt.blank?
+    - if params[:edit_embed_mc] == embeddable.id
       :javascript
         $("a[id^=edit-embed-mc-#{embeddable.id}]").click()
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
