@@ -26,7 +26,8 @@ class Embeddable::OpenResponsesController < ApplicationController
       respond_to do |format|
         if @open_response.update_attributes(params[:embeddable_open_response])
           flash[:notice] = 'Embeddable::OpenResponse.was successfully updated.'
-          format.html { redirect_to(:back) }
+          redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
+          format.html { redirect_to(redirect_path) }
           format.xml  { head :ok }
           format.json
         else

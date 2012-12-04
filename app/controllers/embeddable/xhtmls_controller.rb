@@ -26,7 +26,8 @@ class Embeddable::XhtmlsController < ApplicationController
       respond_to do |format|
         if @xhtml.update_attributes(params[:embeddable_xhtml])
           flash[:notice] = 'Embeddable::Xhtml.was successfully updated.'
-          format.html { redirect_to(:back) }
+          redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
+          format.html { redirect_to(redirect_path) }
           format.xml  { head :ok }
           format.json
         else

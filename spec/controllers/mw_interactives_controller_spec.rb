@@ -46,7 +46,8 @@ describe MwInteractivesController do
 
         it 'redirects the submitter back to the page edit page' do
           get :new, :page_id => @page.id
-          response.should redirect_to(edit_activity_page_path(@act, @page))
+          new_id = MwInteractive.last().id
+          response.should redirect_to(edit_activity_page_path(@act, @page, :edit_int => new_id))
         end
       end
 
@@ -62,7 +63,8 @@ describe MwInteractivesController do
 
         it 'redirects the submitter to the page edit page' do
           post :create, :page_id => @page.id
-          response.should redirect_to(edit_activity_page_path(@act, @page))
+          new_id = MwInteractive.last().id
+          response.should redirect_to(edit_activity_page_path(@act, @page, :edit_int => new_id))
         end
       end
     end

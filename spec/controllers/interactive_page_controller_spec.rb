@@ -353,10 +353,6 @@ describe InteractivePagesController do
         response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
       end
     end
-
-    it 'redirects to the Activity page if no page is editable' do
-      pending "This is a pretty far-fetched scenario"
-    end
   end
 
   describe 'update' do
@@ -485,7 +481,9 @@ describe InteractivePagesController do
     it 'redirects to the edit page' do
       post :add_embeddable, :activity_id => @act.id, :id => @page1.id, :embeddable_type => 'Embeddable::Xhtml'
 
-      response.should redirect_to(edit_activity_page_path(@act.id, @page1.id))
+      embeddable_id = @page1.embeddables.last.id
+
+      response.should redirect_to(edit_activity_page_path(@act.id, @page1.id, { :edit_embed_xhtml => embeddable_id }))
     end
   end
   

@@ -23,7 +23,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
       respond_to do |format|
         if @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
           flash[:notice] = 'Multiple choice was successfully updated.'
-          format.html { redirect_to(:back) }
+          redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
+          format.html { redirect_to(redirect_path) }
           format.xml  { head :ok }
         else
           format.html { render :edit }

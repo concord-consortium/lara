@@ -32,15 +32,21 @@ class InteractivePagesController < ApplicationController
   end
 
   def update
+    had_interactive = @page.interactives.length
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
         format.html do
           if request.xhr?
-            # *** repond with the new value ***
+            # *** respond with the new value ***
             render :text => params[:interactive_page].values.first
           else
+            @page.reload
+            param = {}
+            if @page.interactives.length > had_interactive
+              param = { :edit_int => @page.interactives.last.id }
+            end
             flash[:notice] = "Page #{@page.name} was updated."
-            redirect_to edit_activity_page_path(@activity, @page)
+            redirect_to edit_activity_page_path(@activity, @page, param)
           end
         end
       else
@@ -72,8 +78,14 @@ class InteractivePagesController < ApplicationController
     @page.add_embeddable(e)
     if e.instance_of?(Embeddable::MultipleChoice)
       e.create_default_choices
+      param = { :edit_embed_mc => e.id }
+    elsif e.instance_of?(Embeddable::OpenResponse)
+      param = { :edit_embed_or => e.id }
+    elsif e.instance_of?(Embeddable::Xhtml)
+      param = { :edit_embed_xhtml => e.id }
     end
-    redirect_to edit_activity_page_path(@activity, @page)
+    # Add parameter to open new embeddable modal
+    redirect_to edit_activity_page_path(@activity, @page, param)
   end
 
   def remove_embeddable
