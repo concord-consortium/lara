@@ -9,7 +9,6 @@
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
   = field_set_tag 'Choices' do
-    = f.link_to_add "Add choice", :choices
     .choices
       %ul
         - @embeddable.choices.each do |choice|
@@ -20,5 +19,6 @@
               Correct:
               = choice_form.check_box :is_correct
               = choice_form.link_to_remove "Delete"
+      = f.link_to_add "Add choice", :choices
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
