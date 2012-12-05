@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
-  revision: 84204fe2a02deeccab2490165eba0d4a8cc753d3
+  revision: 63b1cce3a444509b7935d1d2bb552623309e469a
   specs:
-    jeditable_wysiwyg_rails (0.3.9)
+    jeditable_wysiwyg_rails (0.3.10)
       jeditable_wysiwyg_rails
       jquery-rails
       rails (~> 3.2.0)
@@ -37,7 +37,7 @@ GEM
     activesupport (3.2.8)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    acts_as_list (0.1.8)
+    acts_as_list (0.1.9)
     addressable (2.3.2)
     arel (3.0.2)
     builder (3.0.4)
@@ -102,7 +102,7 @@ GEM
     libwebsocket (0.1.7.1)
       addressable
       websocket
-    listen (0.5.3)
+    listen (0.6.0)
     lumberjack (1.0.2)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -116,7 +116,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
       net-ssh (>= 2.0.9)
-    net-ssh (2.6.1)
+    net-ssh (2.6.2)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
