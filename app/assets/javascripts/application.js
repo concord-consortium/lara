@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery_nested_form
 //= require jquery.jeditable
 //= require jquery.wysiwyg
 //= require wysiwyg.image

@@ -1,4 +1,4 @@
-= form_for @embeddable do |f|
+= nested_form_for @embeddable do |f|
   = f.error_messages
   = field_set_tag 'Name' do
     = f.text_field :name
@@ -9,7 +9,7 @@
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
   = field_set_tag 'Choices' do
-    = link_to "Add choice", add_choice_embeddable_multiple_choice_path(@embeddable), :method => 'post', :remote => true, :"data-replace" => '#modal', :id => 'add_new_choice'
+    = f.link_to_add "Add choice", :choices
     .choices
       %ul
         - @embeddable.choices.each do |choice|
@@ -19,6 +19,6 @@
               = choice_form.text_field :choice
               Correct:
               = choice_form.check_box :is_correct
-              = link_to "Delete", remove_choice_embeddable_multiple_choice_path(@embeddable, choice), :method => 'delete', :remote => true, :"data-replace" => '#modal', :class => 'delete_choice'
+              = choice_form.link_to_remove "Delete"
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

@@ -5,7 +5,7 @@ module Embeddable
     has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
 
     attr_accessible :name, :prompt, :choices_attributes
-    accepts_nested_attributes_for :choices
+    accepts_nested_attributes_for :choices, :allow_destroy => true
 
     default_value_for :name, "Multiple Choice Question element"
 
