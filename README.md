@@ -4,24 +4,37 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 ## Getting started
 
-1. Check out the code
+1. Check out the code: if you have access, use
+        git clone git@github.com:concord-consortium/lightweight-standalone.git
+
+otherwise, use
 
         git clone https://github.com/pjmorse/lightweight-standalone.git
 
-2. Install the necessary gems
+2. Install the necessary gems:
 
         cd lightweight-standalone
         bundle install
 
-3. Initialize the database, with seed data
+3. Initialize the database, with seed data:
 
         rake db:drop db:create db:migrate db:seed
+
+(If you would prefer to start with an empty database, leave the `db:seed` off the end.)
 
 4. Launch the application
 
         rails s
 
-6. Browse to the app in your browser: [http://localhost:3000/activity/](http://localhost:3000/activity/)
+6. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
+
+## Deploying
+
+If you have rights to deploy to [http://lightweight-mw.concord.org](http://lightweight-mw.concord.org)
+
+        cap deploy
+
+should be sufficient to deploy from the master branch of this repository. If you're using a different branch, or deploying to a different server, you will want to edit `config/deploy.rb`.
 
 ## Running RSpec tests
 From the main plugin directory, run
