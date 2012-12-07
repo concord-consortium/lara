@@ -366,13 +366,16 @@ button.disabled span.edit_trigger.disabled {
   background: #26a2bc;
   clear: both;
   color: #fff;
-  height: 100px;
+  height: 110px;
   margin-top: 20px;
   div {
     margin: 0 auto;
     padding-top: 20px;
     width: 960px;
   }
+}
+#footer a {
+  color: #fff;
 }
 #overlay {
   background: #000;
