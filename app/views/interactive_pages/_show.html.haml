@@ -37,7 +37,7 @@
   - if page.show_sidebar && page.sidebar
     .sidebar
       != page.sidebar
-  - if !next_page
+  - if !next_page && !page.lightweight_activity.related.blank?
     .related
       != page.lightweight_activity.related
   - if page.interactives
