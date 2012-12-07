@@ -34,7 +34,7 @@ describe InteractivePagesController do
       # setup
       act = LightweightActivity.create!(:name => "Test activity")
 
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => 1, :show_info_assessment => 1, :show_interactive => 1, :show_sidebar => 1)
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => 1, :show_info_assessment => 1, :show_introduction => 1, :show_sidebar => 1)
       interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com", :native_width => 400, :native_height => 200)
       page1.add_interactive(interactive)
 
@@ -287,6 +287,68 @@ describe InteractivePagesController do
       get :show, :id => page1.id
 
       response.body.should_not match /<div class='related'>/
+    end
+
+    it 'does not show page areas which are not selected to be shown' do
+      act = LightweightActivity.create!(:name => "Test activity", :related => '<p>This is related content.</p>')
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :sidebar => "Arbitrary sidebar text", :show_sidebar => true)
+      page2 = act.pages.create!(:name => "Page 2", :text => "This is the next activity text.", :sidebar => "Arbitrary sidebar text", :show_sidebar => false)
+      get :show, :id => page1.id
+      response.body.should match /<div class='sidebar'>/
+      get :show, :id => page2.id
+      response.body.should_not match /<div class='sidebar'>/
+    end
+
+    it 'should smoothly scroll the interactive without overlapping a sidebar', :js => true do
+      pending "This needs a good way to watch the top position of the interactive"
+      # setup
+      act = LightweightActivity.create!(:name => "Test activity")
+
+      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.", :name => "Page 1", :text => "This is the main activity text.", :show_interactive => 1, :show_info_assessment => 1, :show_introduction => 1, :show_sidebar => 1)
+      if page1.interactives.length < 1
+        interactive = MwInteractive.create!(:name => "MW model", :url => "http://google.com", :native_width => 400, :native_height => 200)
+        page1.add_interactive(interactive)
+      end
+
+      # Add embeddables
+      or1 = Embeddable::OpenResponse.create!(:name => "Open Response 1", :prompt => "Why do you think this model is cool?")
+      or2 = Embeddable::OpenResponse.create!(:name => "Open Response 2", :prompt => "What would you add to it?")
+
+      mc1 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 1", :prompt => "What color is chlorophyll?")
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Red', :multiple_choice => mc1)
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Green', :multiple_choice => mc1)
+      Embeddable::MultipleChoiceChoice.create(:choice => 'Blue', :multiple_choice => mc1)
+
+      mc2 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 2", :prompt => "How many protons does Helium have?")
+      Embeddable::MultipleChoiceChoice.create(:choice => '1', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '2', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '4', :multiple_choice => mc2)
+      Embeddable::MultipleChoiceChoice.create(:choice => '7', :multiple_choice => mc2)
+
+      xhtml1 = Embeddable::Xhtml.create!(:name => "Xhtml 1")
+      xhtml1.content = %Q{<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at lectus mauris, sit amet commodo nunc. Maecenas auctor, magna sagittis mollis sagittis, nisi arcu mollis nisi, euismod malesuada massa nibh eget mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam sit amet velit lectus. Curabitur elementum semper purus ultrices adipiscing. Vestibulum ornare dui a ante vehicula ut tempus est pharetra. Aenean sit amet augue sapien. Integer erat dui, dictum ut ornare vitae, fermentum in ligula. Aenean pulvinar iaculis arcu ut viverra.</p> 
+        <p>Quisque ut enim erat, ut tempor arcu. Vestibulum molestie dignissim sodales. Cras ullamcorper tincidunt eros vel commodo. Vestibulum in enim sed turpis consectetur fermentum. Donec sit amet est ac massa iaculis blandit. Praesent vitae consectetur arcu. Suspendisse tristique libero vitae magna semper sagittis. Etiam ac nibh nisi. Aliquam ac nibh tortor, et ultricies enim. Integer elementum facilisis quam, quis auctor lacus feugiat vitae. Vestibulum ut laoreet urna. Fusce varius, est vel fermentum convallis, velit enim tincidunt turpis, vitae lobortis nunc erat vitae diam. Pellentesque nec lorem metus, quis consectetur velit. Aliquam at mi nunc. Nunc nec leo eleifend elit tincidunt hendrerit sit amet sit amet nisi.</p> 
+        <p>Nullam faucibus arcu sit amet ante aliquam et vehicula nisl bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec tempor faucibus ligula, non feugiat velit dignissim et. Nam in tellus ac diam dignissim suscipit. Vestibulum dapibus vestibulum viverra. Nam dapibus egestas elit ut varius. Duis quis leo augue, ac aliquet diam. Aliquam et turpis id lacus malesuada pellentesque eget vitae elit. Pellentesque sed mauris at lectus adipiscing scelerisque.</p> 
+        <p>Curabitur commodo arcu vitae urna tristique vulputate. Nulla a leo dolor, a ullamcorper orci. Praesent nec purus turpis. Aliquam nec posuere lacus. Maecenas nec ligula ut leo ullamcorper viverra ut non lacus. Sed sit amet lorem lorem. Aliquam erat volutpat. Nulla at est libero.</p> 
+        <p>Sed feugiat mattis vehicula. Vestibulum at lorem leo, a rutrum mauris. In id libero tellus, ac tincidunt tellus. Etiam at sem velit, at tristique est. Vestibulum fringilla sem metus. Donec elementum, dolor eget mollis mattis, metus massa porttitor nisi, non posuere felis quam sed odio. Sed rhoncus placerat eros, vel varius urna auctor vel.</p> }
+
+      page1.add_embeddable(mc1)
+      page1.add_embeddable(or1)
+      page1.add_embeddable(xhtml1)
+      page1.add_embeddable(or2)
+      page1.add_embeddable(mc2)
+
+      # get the rendering
+      visit activity_page_path(act, page1)
+
+      startpos = first('.other > .model-container')[:style].match(/top: (\d+)px;/)[1].to_i
+      page.execute_script "window.scroll(0, 10);"
+      currpos = first('.other > .model-container')[:style].match(/top: (\d+)px;/)[1].to_i
+      currpos.should == startpos
+      page.execute_script "window.scroll(0, 150);"
+      currpos = first('.other > .model-container')[:style].match(/top: (\d+)px;/)[1].to_i
+      currpos.should == startpos + 70
+      
     end
   end
 
