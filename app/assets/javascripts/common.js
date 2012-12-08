@@ -7,6 +7,7 @@ var $content_top;
 var $content_bottom;
 var $model_width;
 var $model_height;
+var $model_start;
 var $model_lowest;
 var $header_height;
 var $scroll_start;
@@ -19,16 +20,16 @@ var $scroll_handler = function () {
     if ($content_height > $model_height) {
         if (($(document).scrollTop() > $scroll_start) && ($(document).scrollTop() < $scroll_end)) {
             // Case 1: moving with scroll: scrolling below header but not at bottom of info/assessment block
-            console.debug('Moving: ' + $(document).scrollTop() + ', set to ' + ($(document).scrollTop() + $scroll_start + 35));
-            $('.model-container').css({'position': 'absolute', 'top': ($(document).scrollTop() + $scroll_start + 35) + 'px', 'width': $model_width});
+            // console.debug('Moving: ' + $(document).scrollTop() + ', set to ' + ($model_start + ($(document).scrollTop() - $scroll_start)));
+            $('.model-container').css({'position': 'absolute', 'top': ($model_start + ($(document).scrollTop() - $scroll_start)) + 'px', 'width': $model_width});
         } else if ($(document).scrollTop() >= $scroll_end) {
             // Case 2: fixed to bottom
-            console.debug('Bottom: ' + $(document).scrollTop() + ', set to ' + $model_lowest);
+            // console.debug('Bottom: ' + $(document).scrollTop() + ', set to ' + $model_lowest);
             $('.model-container').css({'position': 'absolute', 'top': $model_lowest + 'px', 'width': $model_width});
         } else {
             // Case 3: fixed to top: scrolling shows some bit of header
-            console.debug('Top: ' + $(document).scrollTop() + ', set to ' + ($content_top - $header_height));
-            $('.model-container').css({'position': 'absolute', 'top': ($content_top - $header_height) + 'px', 'width': $model_width});
+            // console.debug('Top: ' + $(document).scrollTop() + ', set to ' + $model_start);
+            $('.model-container').css({'position': 'absolute', 'top': $model_start + 'px', 'width': $model_width});
         }
     }
 };
@@ -47,15 +48,16 @@ function calculateDimensions() {
         $content_bottom = $(document).height() - ($content_top + $content_height);
         // Interactive dimensions
         // FIXME: I don't like this 35 magic number but it fixes a lot of problems
-        $model_height = $('.model-container').height() + 35; // 25 is the height of the blue bar
+        $model_height = $('.model-container').height(); // 25 is the height of the blue bar
         $model_width = $('.model-container').css('width');
         // Scroll starts here
         $scroll_start = $header_height;
+        $model_start = ($content_top - $header_height);
         // Scroll ends here
-        // The travel space available to the model is the height of the content block minus the height of the interactive, so the scroll-end is scroll start plus that value. (The 35 here puts back the extra added to $model_height)
-        $scroll_end = $scroll_start + ($content_height - $model_height) + 35;
+        // The travel space available to the model is the height of the content block minus the height of the interactive, so the scroll-end is scroll start plus that value.
+        $scroll_end = $scroll_start + ($content_height - $model_height);
         // Interactive lowest position: highest of the stop point plus start point (pretty much where you are at the end of the scroll) or fixed-to-top value
-        $model_lowest = Math.max(($scroll_end + $scroll_start + 35), ($content_top - $header_height));
+        $model_lowest = Math.max(($model_start + ($scroll_end - $scroll_start)), $model_start);
     }
 }
 
