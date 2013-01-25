@@ -1,10 +1,15 @@
 require "bundler/capistrano"
+require 'capistrano/ext/multistage'
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lightweight-standalone.git"
 
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+
+set :stages, %w(staging production dev)
+
+set :default_stage, "staging"
 
 # if you want to clean up old releases on each deploy uncomment this:
 after "deploy:restart", "deploy:cleanup"
