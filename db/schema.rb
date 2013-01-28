@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127191507) do
+ActiveRecord::Schema.define(:version => 20130128151423) do
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
     t.integer  "multiple_choice_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20121127191507) do
     t.boolean  "is_correct"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.text     "prompt"
   end
 
   create_table "embeddable_multiple_choices", :force => true do |t|
