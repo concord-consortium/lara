@@ -64,22 +64,23 @@ $(window).resize(function () {
     calculateDimensions();
 });
 
-function checkAnswer() {
+function checkAnswer(q_id) {
     // check for valid answer
-    if (!$('input:radio[name=q1]:checked').val()) {
+    if (!$('input:radio[name="questions[' + q_id + ']"]:checked').val()) {
         alert('Please select an answer before checking.');
     } else {
-        // TODO: $.ajax call to find correct answer for this question
-        if ($('input:radio[name=q1]:checked').val() === 50) {
-            // TODO: Use custom question response here if provided
-            // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
-            alert('Yes! You are correct.');
-            $('#next').removeClass('disabled');
-        } else {
-            // TODO: Use custom question response here if provided
-            alert('Sorry, that is incorrect.');
-            $('#next').addClass('disabled');
-        }
+        var a_id = $('input:radio[name="questions[' + q_id + ']"]:checked').val().match(/embeddable__multiple_choice_choice_(\d+)/)[1];
+        $.getJSON('/embeddable/multiple_choice/' + a_id + '/check', function (data) {
+            if (data.choice) {
+                // TODO: Use custom question response here if provided
+                // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
+                alert('Yes! You are correct.');
+            } else {
+                // TODO: Use custom question response here if provided
+                alert('Sorry, that is incorrect.');
+                // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
+            }
+        });
     }
 }
 
