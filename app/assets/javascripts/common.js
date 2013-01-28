@@ -91,7 +91,7 @@ function checkAnswer(q_id) {
             } else {
                 response = 'Sorry, that is incorrect.';
             }
-            $modal.html('<div class="check-answer"><p class="response">' + data.prompt + '</p></div>')
+            $modal.html('<div class="check-answer"><p class="response">' + response + '</p></div>')
                   .prepend(modal_close)
                   .css('top', $(window).scrollTop() + 40)
                   .show();
