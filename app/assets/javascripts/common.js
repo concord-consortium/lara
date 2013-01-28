@@ -80,21 +80,20 @@ function checkAnswer(q_id) {
     } else {
         var a_id = $('input:radio[name="questions[' + q_id + ']"]:checked').val().match(/embeddable__multiple_choice_choice_(\d+)/)[1];
         $.getJSON('/embeddable/multiple_choice/' + a_id + '/check', function (data) {
+            var $modal = $('#modal'),
+                modal_close = '<div class="close">Close</div>',
+                $modal_container = $('#modal-container'),
+                response;
             if (data.choice) {
-                if (data.prompt) {
-                    alert(data.prompt);
-                } else {
-                    alert('Yes! You are correct.');
-                }
-                // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
+                response = data.prompt || 'Yes! You are correct.';
             } else {
-                if (data.prompt) {
-                    alert(data.prompt);
-                } else {
-                    alert('Sorry, that is incorrect.');
-                }
-                // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
+                response = data.prompt || 'Sorry, that is incorrect.';
             }
+            $modal.html('<div class="check-answer"><p class="response">' + data.prompt + '</p></div>')
+                  .prepend(modal_close)
+                  .css('top', $(window).scrollTop() + 40)
+                  .show();
+            $modal_container.show();
         });
     }
 }
