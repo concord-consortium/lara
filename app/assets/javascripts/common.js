@@ -1,4 +1,4 @@
-/*jslint browser: true, sloppy: true, todo: true, devel: true */
+/*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
 var $content_box;
@@ -47,8 +47,7 @@ function calculateDimensions() {
         // Bottom location of info/assessment block
         $content_bottom = $(document).height() - ($content_top + $content_height);
         // Interactive dimensions
-        // FIXME: I don't like this 35 magic number but it fixes a lot of problems
-        $model_height = $('.model-container').height(); // 25 is the height of the blue bar
+        $model_height = $('.model-container').height();
         $model_width = $('.model-container').css('width');
         // Scroll starts here
         $scroll_start = $header_height;
@@ -222,7 +221,7 @@ $(document).ready(function () {
                 data: $("#sort_embeddables").sortable("serialize")
             });
         }
-        });
+    });
     $('#sort-pages').sortable({ handle: '.drag_handle',
         opacity: 0.8,
         tolerance: 'pointer',
@@ -233,6 +232,6 @@ $(document).ready(function () {
                 data: $('#sort-pages').sortable("serialize")
             });
         }
-        });
+    });
 });
 
