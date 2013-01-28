@@ -1,6 +1,7 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
+// TODO: These variable names should be refactored to follow convention, i.e. only prepend with $ when it contains a jQuery object
 var $content_box;
 var $content_height;
 var $content_top;
