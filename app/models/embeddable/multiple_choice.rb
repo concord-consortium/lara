@@ -20,5 +20,11 @@ module Embeddable
       self.save
       new_choice
     end
+
+    def custom
+      custom = false
+      choices.each { |c| custom = true if !c.prompt.blank? }
+      custom
+    end
   end
 end

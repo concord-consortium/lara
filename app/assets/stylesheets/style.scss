@@ -735,6 +735,15 @@ div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
   .choices li {
     list-style: none;
   }
+  .choices li.custom-hidden {
+    input { width: 270px; }
+  }
+  .choices.hideprompt li.custom-hidden {
+    display: none;
+  }
+  .choices.custom li.custom-hidden {
+    display: block;
+  }
   fieldset legend {
     font-weight: bold;
   }

@@ -64,6 +64,14 @@ $(window).resize(function () {
     calculateDimensions();
 });
 
+function showPrompts() {
+    if ($('.choices.hideprompt').length) {
+        $('.choices').removeClass('hideprompt').addClass('custom');
+    } else {
+        $('.choices').removeClass('custom').addClass('hideprompt');
+    }
+}
+
 function checkAnswer(q_id) {
     // check for valid answer
     if (!$('input:radio[name="questions[' + q_id + ']"]:checked').val()) {
@@ -72,12 +80,18 @@ function checkAnswer(q_id) {
         var a_id = $('input:radio[name="questions[' + q_id + ']"]:checked').val().match(/embeddable__multiple_choice_choice_(\d+)/)[1];
         $.getJSON('/embeddable/multiple_choice/' + a_id + '/check', function (data) {
             if (data.choice) {
-                // TODO: Use custom question response here if provided
+                if (data.prompt) {
+                    alert(data.prompt);
+                } else {
+                    alert('Yes! You are correct.');
+                }
                 // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
-                alert('Yes! You are correct.');
             } else {
-                // TODO: Use custom question response here if provided
-                alert('Sorry, that is incorrect.');
+                if (data.prompt) {
+                    alert(data.prompt);
+                } else {
+                    alert('Sorry, that is incorrect.');
+                }
                 // TODO: Replace alert() with lightbox (look at modals.js.coffee for how)
             }
         });
