@@ -16,3 +16,6 @@
 
 # Ignore precompiled assets
 /public/assets
+
+# Some kind of cache - ?
+/.jhw-cache/*
