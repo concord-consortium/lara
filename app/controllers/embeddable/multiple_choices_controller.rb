@@ -34,6 +34,21 @@ class Embeddable::MultipleChoicesController < ApplicationController
     end
   end
 
+  def check
+    @choice = Embeddable::MultipleChoiceChoice.find(params[:id])
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :json => @choice.to_json }
+      end
+    else
+      respond_to do |format|
+        # TODO: Set up models so the choice can find its page and redirect there
+        format.html { redirect_to(@choice.multiple_choice.page) }
+        format.json { render :json => @choice.to_json }
+      end
+    end
+  end
+
   def add_choice
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
     @multiple_choice.add_choice("New choice")
