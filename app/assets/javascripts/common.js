@@ -84,10 +84,12 @@ function checkAnswer(q_id) {
                 modal_close = '<div class="close">Close</div>',
                 $modal_container = $('#modal-container'),
                 response;
-            if (data.choice) {
-                response = data.prompt || 'Yes! You are correct.';
+            if (data.prompt) {
+                response = data.prompt;
+            } else if (data.choice) {
+                response = 'Yes! You are correct.';
             } else {
-                response = data.prompt || 'Sorry, that is incorrect.';
+                response = 'Sorry, that is incorrect.';
             }
             $modal.html('<div class="check-answer"><p class="response">' + data.prompt + '</p></div>')
                   .prepend(modal_close)
