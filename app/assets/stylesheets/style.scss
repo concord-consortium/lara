@@ -235,10 +235,22 @@ button.disabled span.edit_trigger.disabled {
     float: left;
     margin: 1% .5% 1% 0;
     min-height: 243px;
+  }
+}
+.questions.full-width.two {
+  .embeddable {
     width: 43%;
   }
   .embeddable:nth-child(2n) {
     margin: 1% 0 1% 1.25%;
+  }
+}
+.questions.full-width.three {
+  .embeddable {
+    width: 26%;
+  }
+  .embeddable:nth-child(3n) {
+    margin: 1% 0;
   }
 }
 .other {
