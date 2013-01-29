@@ -16,6 +16,17 @@ class InteractivePage < ActiveRecord::Base
     self.page_items.collect{|qi| qi.embeddable}
   end
 
+  # Should the interactive block be full-width? N.B. when we put more than one 
+  # interactive/assessment block on a page, this should move to the block model.
+  def fullwidth_interactive
+    fullwidth = self.interactives.count { |ii| ii.fullwidth }
+    if fullwidth > 0 || !self.show_info_assessment
+      return true
+    else
+      return false
+    end
+  end
+
   def show_interactive=(value)
     if value.to_i != 0
       if self.interactives.length < 1

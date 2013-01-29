@@ -24,16 +24,21 @@
   - if page.show_introduction
     .instructions!= page.text
   %div{:class => (page.show_interactive ? 'text' : 'text full-width')}
-    - if page.show_info_assessment
+    - if page.show_info_assessment && !page.fullwidth_interactive
       %div{:class => (page.show_interactive ? 'questions' : 'questions full-width')}
         - page.embeddables.each do |e|
           .embeddable
             = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
   - if page.show_interactive
-    %div{:class => (page.show_info_assessment ? 'other' : 'other full-width')}
+    %div{:class => (page.fullwidth_interactive ? 'other full-width' : 'other')}
       - page.interactives.each do |interactive|
         - i_type = interactive.class.name.underscore
         = render :partial => "#{i_type.pluralize}/show", :locals => {:interactive => interactive}
+  - if page.fullwidth_interactive
+    .questions.full-width
+      - page.embeddables.each do |e|
+        .embeddable
+          = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
   - if page.show_sidebar && page.sidebar
     .sidebar
       != page.sidebar
