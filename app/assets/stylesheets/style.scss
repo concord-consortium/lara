@@ -237,7 +237,7 @@ button.disabled span.edit_trigger.disabled {
     min-height: 243px;
     width: 43%;
   }
-  .embeddable:nth-child(2), .embeddable:nth-child(4) {
+  .embeddable:nth-child(2n) {
     margin: 1% 0 1% 1.25%;
   }
 }
