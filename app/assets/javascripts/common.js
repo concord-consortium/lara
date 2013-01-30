@@ -66,10 +66,10 @@ $(window).resize(function () {
 });
 
 function showPrompts() {
-    if ($('.choices.hideprompt').length) {
-        $('.choices').removeClass('hideprompt').addClass('custom');
+    if ($('#custom').is(':checked')) {
+        $('.choices .custom-hidden').show();
     } else {
-        $('.choices').removeClass('custom').addClass('hideprompt');
+        $('.choices .custom-hidden').hide();
     }
 }
 

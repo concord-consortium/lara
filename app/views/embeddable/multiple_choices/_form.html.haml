@@ -12,7 +12,7 @@
     %label
       Custom Feedback
       = check_box_tag "custom", 'custom', @embeddable.custom, :onclick => "showPrompts();"
-    .choices.hideprompt
+    .choices
       %ul
         - @embeddable.choices.each do |choice|
           = f.fields_for :choices, choice do |choice_form|
@@ -22,7 +22,7 @@
               Correct:
               = choice_form.check_box :is_correct
               = choice_form.link_to_remove "Delete"
-            %li.custom-hidden
+            %li.custom-hidden{ :style => @embeddable.custom ? '' : 'display: none;' }
               Message:
               = choice_form.text_field :prompt
       = f.link_to_add "Add choice", :choices

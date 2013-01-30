@@ -740,21 +740,14 @@ div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
     right: 5px;
     margin-top: -1em;
   }
-  .choices .delete_choice {
-    position: relative;
-    left: 20px;
-  }
-  .choices li {
-    list-style: none;
-  }
-  .choices li.custom-hidden {
-    input { width: 270px; }
-  }
-  .choices.hideprompt li.custom-hidden {
-    display: none;
-  }
-  .choices.custom li.custom-hidden {
-    display: block;
+  .choices {
+    .delete_choice {
+      position: relative;
+      left: 20px;
+    }
+    li {
+      list-style: none;
+    }
   }
   fieldset legend {
     font-weight: bold;
