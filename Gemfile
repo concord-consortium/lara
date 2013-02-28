@@ -8,10 +8,10 @@ gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiw
 # gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
 gem 'acts_as_list'
 gem 'nested_form'
+gem 'devise'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'default_value_for'
 
 gem "sqlite3"
@@ -61,6 +61,3 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
