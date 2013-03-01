@@ -1,4 +1,6 @@
 LightweightStandalone::Application.routes.draw do
+  devise_for :users
+
   root :to => 'lightweight_activities#index'
 
   # HACK: Seems like these should be nested resources of the offering, but that's not really practical
