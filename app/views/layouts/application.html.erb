@@ -15,10 +15,10 @@
       <%= image_tag "mw-logo.png", :alt => "Molecular Workbench", :id => "mw-logo" %>
       <%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %>
       <!-- <nav>Home / Activities / Physics</nav> -->
+      <div id="session">
+        <%= render :partial => 'shared/session' %>
+      </div>
       <nav><%= yield :nav %></nav>
-    </div>
-    <div>
-      <%= render :partial => 'shared/session' %>
     </div>
   </div>
   <div id="content" class="content">

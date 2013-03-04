@@ -91,8 +91,22 @@ button.disabled span.edit_trigger.disabled {
     width: 130px;
   }
   nav {
-    clear: both;
+    clear: left;
     padding-top: 10px;
+  }
+  #session {
+    clear: right;
+    float: right;
+    text-align: right;
+    height: auto;
+    width: 20%;
+    padding-top: 12px;
+  }
+  .breadcrumbs {
+    width: 79%;
+    height: auto;
+    text-align: left;
+    float: left;
   }
 }
 .clear {
