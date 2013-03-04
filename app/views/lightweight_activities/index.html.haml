@@ -23,7 +23,7 @@
       %li{ :id => dom_id_for(activity, :item), :class => 'item' }
         %div.action_menu
           %div.action_menu_header_left
-            = link_to activity.name, edit_activity_path(activity), :class => 'container_link', :title => 'Click to edit'
+            = link_to activity.name, activity_path(activity), :class => 'container_link', :title => 'Click to edit'
           %div.action_menu_header_right
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_path(activity) unless cannot? :edit, activity
