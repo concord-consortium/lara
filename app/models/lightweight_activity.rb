@@ -13,9 +13,13 @@ class LightweightActivity < ActiveRecord::Base
   validates :publication_status, :inclusion => { :in => PUB_STATUSES }
   validates_length_of :name, :maximum => 50
 
-  # TODO: There's room here for some named scopes:
   # * Find all public activities
+  scope :public, where(:publication_status => 'public')
+
   # * Find all activities for one user (regardless of publication status)
+  def self.my(user)
+    where(:user => user)
+  end
 
   def run_format
     :run_html

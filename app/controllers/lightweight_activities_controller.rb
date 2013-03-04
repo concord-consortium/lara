@@ -5,9 +5,9 @@ class LightweightActivitiesController < ApplicationController
 
   def index
     if current_user.blank?
-      @activities ||= LightweightActivity.find(:all)
+      @activities ||= LightweightActivity.public
     else
-      @activities = LightweightActivity.find_all_by_user_id(current_user.id)
+      @activities = LightweightActivity.my(current_user) + LightweightActivity.public
     end
   end
 
@@ -17,13 +17,13 @@ class LightweightActivitiesController < ApplicationController
 
   def new
     @activity = LightweightActivity.new()
+    authorize! :create, @activity
   end
 
   def create
     @activity = LightweightActivity.create(params[:lightweight_activity])
-    if current_user
-      @activity.user = current_user
-    end
+    authorize! :create, @activity
+    @activity.user = current_user
     if @activity.save
       flash[:notice] = "Lightweight Activity #{@activity.name} was created."
       redirect_to edit_activity_path(@activity)
@@ -34,9 +34,11 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def edit
+    authorize! :update, @activity
   end
 
   def update
+    authorize! :update, @activity
     if @activity.update_attributes(params[:lightweight_activity])
       if request.xhr?
         render :text => params[:lightweight_activity].values.first
@@ -55,6 +57,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @activity
     if @activity.delete
       flash[:notice] = "Activity #{@activity.name} was deleted."
       redirect_to activities_path
@@ -65,18 +68,21 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def move_up
+    authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
     @page.move_higher
     redirect_to :back
   end
 
   def move_down
+    authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
     @page.move_lower
     redirect_to :back
   end
 
   def reorder_pages
+    authorize! :update, @activity
     params[:item_interactive_page].each do |p|
       # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
       page = @activity.pages.find(p)

@@ -4,6 +4,7 @@ class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
 
   def show
+    authorize! :read, @page
     @all_pages = @activity.pages
     current_idx = @all_pages.index(@page)
     @previous_page = (current_idx > 0) ? @all_pages[current_idx-1] : nil
@@ -24,14 +25,17 @@ class InteractivePagesController < ApplicationController
   def create
     @activity = LightweightActivity.find(params[:activity_id])
     @page = InteractivePage.create!(:lightweight_activity => @activity)
+    authorize! :create, @page
     flash[:notice] = "A new page was added to #{@activity.name}"
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
   def edit
+    authorize! :update, @page
   end
 
   def update
+    authorize! :update, @page
     had_interactive = @page.interactives.length
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
@@ -64,6 +68,7 @@ class InteractivePagesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @page
     if @page.delete
       flash[:notice] = "Page #{@page.name} was deleted."
       redirect_to edit_activity_path(@activity)
@@ -74,6 +79,7 @@ class InteractivePagesController < ApplicationController
   end
 
   def add_embeddable
+    authorize! :update, @page
     e = params[:embeddable_type].constantize.create!
     @page.add_embeddable(e)
     if e.instance_of?(Embeddable::MultipleChoice)
@@ -89,11 +95,13 @@ class InteractivePagesController < ApplicationController
   end
 
   def remove_embeddable
+    authorize! :update, @page
     PageItem.find_by_interactive_page_id_and_embeddable_id(params[:id], params[:embeddable_id]).destroy
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
   def reorder_embeddables
+    authorize! :update, @page
     params[:embeddable].each do |e|
       # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse   
       embeddable_id, embeddable_type = e.split('.')

@@ -9,8 +9,8 @@
     .action_menu_header_left
     .action_menu_header_right.index
       %ul#new-menu
-        -#unless current_user.anonymous?
-        %li#add= link_to 'create new activity', new_activity_path
+        - if can? :create, LightweightActivity
+          %li#add= link_to 'create new activity', new_activity_path
         %li#desc-toggle= toggle_all 'activity descriptions'
 
 
@@ -26,8 +26,9 @@
             = link_to activity.name, edit_activity_path(activity), :class => 'container_link', :title => 'Click to edit'
           %div.action_menu_header_right
             %ul.menu
-              %li.edit= link_to "Edit", edit_activity_path(activity)
+              %li.edit= link_to "Edit", edit_activity_path(activity) unless cannot? :edit, activity
               %li.run= link_to "Run", activity_path(activity), :target => 'new'
-              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }
+              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }    unless cannot? :destroy, activity
+
         %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
           != activity.description
