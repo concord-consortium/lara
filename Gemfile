@@ -40,6 +40,7 @@ group :test, :development do
   gem "rspec-rails", "~> 2.10.1"
   gem "ci_reporter", "~> 1.7.0"
   gem "factory_girl_rails"
+  gem "faker"
   gem "capybara"
 
   gem 'pry'
