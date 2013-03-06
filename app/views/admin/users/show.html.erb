@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @user.email %></h1>
+
+<%- if @user.admin? -%>
+  <p><%= @user.email %> is an admin.</p>
+<%- end -%>
+
+<%- if @user.author? -%>
+  <p><%= @user.email %> is an author.</p>
+<%- end -%>
+
+<%= link_to 'Edit', edit_admin_user_path(@user) %> |
+<%= link_to 'Back', admin_users_path %>
