@@ -11,11 +11,14 @@ class Ability
     if user.admin?
       can :manage, :all
       # TODO: Set up author permissions
+    elsif user.author?
+      can :create, LightweightActivity
+      can :create, InteractivePage
+      can :manage, LightweightActivity, :user_id => user.id
+      can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
     else
-      # can :manage, LightweightActivity, :user => user
-      # can :read, LightweightActivity, :publication_status => 'public'
-      # can :manage, InteractivePage, :lightweight_activity => { :user => user }
-      # can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
+      can :read, LightweightActivity, :publication_status => 'public'
+      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     end
   end
 end

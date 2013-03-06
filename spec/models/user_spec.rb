@@ -15,7 +15,11 @@ describe User do
     end
 
     context 'when is an author' do
-      pending 'not yet defined'
+      let (:user) { FactoryGirl.build(:author) }
+
+      it { should be_able_to(:create, LightweightActivity) }
+      it { should be_able_to(:create, InteractivePage) }
+      it { should be_able_to(:update, mock_model(LightweightActivity, 'user_id' => it.id)) }
     end
 
     context 'when is a user' do
@@ -23,6 +27,7 @@ describe User do
     end
 
     context 'when is anonymous' do
+      pending 'being redefined'
       let (:user) { FactoryGirl.build(:user) }
 
       it { should_not be_able_to(:manage, User) }
