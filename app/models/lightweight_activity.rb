@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
 
   # * Find all activities for one user (regardless of publication status)
   def self.my(user)
-    where(:user => user)
+    where(:user_id => user.id)
   end
 
   def run_format

@@ -12,6 +12,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def show
+    authorize! :read, @activity
     redirect_to activity_page_path(@activity, @activity.pages.first)
   end
 
