@@ -771,3 +771,44 @@ div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
     margin: 1em;
   }
 }
+
+/* User admin stuff */
+body.admin {
+  td {
+    padding: 7px;
+    border-width: 0 1px;
+    border-color: #999;
+    border-style: dotted;
+  }
+  th {
+    padding: 7px;
+    font-weight: bold;
+    text-align: left;
+  }
+  tr {
+    border-bottom: 1px solid #333;
+  }
+}
+body.admin.edit {
+  fieldset {
+    border: 1px solid #999;
+    padding: 7px;
+    legend {
+      padding: 5px;
+      text-align: right;
+      font-weight: bold;
+    }
+    label {
+      font-weight: bold;
+    }
+    p {
+      padding: 7px;
+    }
+  }
+  div.actions {
+    padding: 7px;
+    input {
+      padding: 7px;
+    }
+  }
+}
