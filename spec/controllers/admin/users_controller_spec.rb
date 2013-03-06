@@ -72,40 +72,35 @@ describe Admin::UsersController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new User" do
-        pending
         expect {
           post :create, {:user => FactoryGirl.attributes_for(:user)}
         }.to change(User, :count).by(1)
       end
 
       it "assigns a newly created user as @user" do
-        pending
         post :create, {:user => FactoryGirl.attributes_for(:user)}
         assigns(:user).should be_a(User)
         assigns(:user).should be_persisted
       end
 
       it "redirects to the created user" do
-        pending
         post :create, {:user => FactoryGirl.attributes_for(:user)}
-        response.should redirect_to(User.last)
+        response.should redirect_to(edit_admin_user_path(User.last))
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved user as @user" do
-        pending
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.stub(:save).and_return(false)
-        post :create, {:user => {}}, valid_session
+        post :create, {:user => {}}
         assigns(:user).should be_a_new(User)
       end
 
       it "re-renders the 'new' template" do
-        pending
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.stub(:save).and_return(false)
-        post :create, {:user => {}}, valid_session
+        post :create, {:user => {}}
         response.should render_template("new")
       end
     end
@@ -120,7 +115,7 @@ describe Admin::UsersController do
         # specifies that the User created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        User.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+        User.last.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, {:id => user.to_param, :user => {'these' => 'params'}}
       end
 

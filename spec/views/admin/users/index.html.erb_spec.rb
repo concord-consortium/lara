@@ -1,16 +1,17 @@
 require 'spec_helper'
 
-describe "admin_users/index" do
+describe "admin/users/index" do
   before(:each) do
-    assign(:admin_users, [
+    assign(:users, [
       stub_model(User),
       stub_model(User)
     ])
   end
 
-  it "renders a list of admin_users" do
-    pending
+  it "renders a list of users" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
+
+    assert_select 'td'
   end
 end
