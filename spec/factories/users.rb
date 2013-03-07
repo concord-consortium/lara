@@ -16,4 +16,12 @@ FactoryGirl.define do
     password_confirmation 'admin...'
     is_admin true
   end
+
+  factory :author, :class => User do
+    email { generate(:email) }
+    password 'author..'
+    password_confirmation 'author..'
+    is_admin false
+    is_author true
+  end
 end

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
          # confirmable is waiting on a glitch: http://stackoverflow.com/q/15207154/306084
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author
   # attr_accessible :title, :body
 
   def admin?
@@ -16,7 +16,6 @@ class User < ActiveRecord::Base
   end
 
   def author?
-    # TODO: set up author role tracking
-    return false
+    return is_author
   end
 end

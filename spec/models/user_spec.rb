@@ -15,14 +15,37 @@ describe User do
     end
 
     context 'when is an author' do
-      pending 'not yet defined'
+      let (:user) { FactoryGirl.build(:author) }
+      let (:other_user) { FactoryGirl.build(:author) }
+      let (:self_activity) do 
+        act = FactoryGirl.create(:activity)
+        act.user = user
+        act.save
+        act
+      end
+      let (:other_activity) do
+        oa = FactoryGirl.create(:public_activity)
+        oa.user = other_user
+        oa.pages << FactoryGirl.create(:page)
+        oa.save
+        oa
+      end
+
+      it { should be_able_to(:create, LightweightActivity) }
+      it { should be_able_to(:create, InteractivePage) }
+      # Can edit activities they own
+      it { should be_able_to(:update, self_activity) }
+      it { should_not be_able_to(:update, other_activity) }
+      it { should be_able_to(:read, other_activity) }
+      it { should be_able_to(:read, other_activity.pages.first) }
     end
 
     context 'when is a user' do
-      pending 'not yet defined'
+      pending 'currently same as anonymous'
     end
 
     context 'when is anonymous' do
+      pending 'being redefined'
       let (:user) { FactoryGirl.build(:user) }
 
       it { should_not be_able_to(:manage, User) }
