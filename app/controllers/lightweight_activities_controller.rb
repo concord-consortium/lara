@@ -4,10 +4,12 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
 
   def index
-    if current_user.blank?
-      @activities ||= LightweightActivity.public
-    else
+    if can? :manage, LightweightActivity
+      @activities = LightweightActivity.all
+    elsif current_user.present?
       @activities = LightweightActivity.my(current_user) + LightweightActivity.public
+    else
+      @activities ||= LightweightActivity.public
     end
   end
 
