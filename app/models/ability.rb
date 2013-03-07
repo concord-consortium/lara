@@ -16,9 +16,11 @@ class Ability
       can :create, InteractivePage
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
-    else
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
+    else
+      # can :read, LightweightActivity, :publication_status => 'public'
+      # can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     end
   end
 end
