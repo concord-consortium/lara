@@ -37,6 +37,7 @@ describe User do
       it { should be_able_to(:update, self_activity) }
       it { should_not be_able_to(:update, other_activity) }
       it { should be_able_to(:read, other_activity) }
+      it { should be_able_to(:read, other_activity.pages.first) }
     end
 
     context 'when is a user' do
