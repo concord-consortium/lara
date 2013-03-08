@@ -21,9 +21,9 @@ class Ability
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     else
-      # can :read, LightweightActivity, :publication_status => 'public'
-      # can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
       # Everyone can read public activities
+      can :read, LightweightActivity, :publication_status => 'public'
+      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     end
   end
 end

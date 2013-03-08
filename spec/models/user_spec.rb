@@ -45,13 +45,27 @@ describe User do
     end
 
     context 'when is anonymous' do
-      pending 'being redefined'
       let (:user) { FactoryGirl.build(:user) }
+      let (:other_user) { FactoryGirl.build(:author) }
+      let (:private_activity) do 
+        act = FactoryGirl.create(:activity)
+        act.user = other_user
+        act.save
+        act
+      end
+      let (:public_activity) do
+        oa = FactoryGirl.create(:public_activity)
+        oa.user = other_user
+        oa.pages << FactoryGirl.create(:page)
+        oa.save
+        oa
+      end
 
       it { should_not be_able_to(:manage, User) }
-      it { should_not be_able_to(:read, LightweightActivity) }
       it { should_not be_able_to(:update, LightweightActivity) }
       it { should_not be_able_to(:create, LightweightActivity) }
+      it { should be_able_to(:read, public_activity) }
+      it { should_not be_able_to(:read, private_activity) }
     end
   end
 end
