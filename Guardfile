@@ -13,6 +13,7 @@ guard 'rspec', :cli => '--format Fuubar --color', :version => 2 do
   watch(%r{^spec/support/(.+)\.rb$})                  { "spec" }
   watch('config/routes.rb')                           { "spec/controllers" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
+  watch('app/models/ability.rb')                      { "spec/models/user_spec.rb" }
   
   # Capybara request specs
   # watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }

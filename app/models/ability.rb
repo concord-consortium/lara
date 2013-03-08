@@ -9,18 +9,21 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
     if user.admin?
+      # Admins can do everything
       can :manage, :all
-      # TODO: Set up author permissions
     elsif user.author?
+      # Authors can create new items and manage those they created
       can :create, LightweightActivity
       can :create, InteractivePage
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+      # Also, everyone can read public activities
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     else
-      # can :read, LightweightActivity, :publication_status => 'public'
-      # can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
+      # Everyone can read public activities
+      can :read, LightweightActivity, :publication_status => 'public'
+      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     end
   end
 end
