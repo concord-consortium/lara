@@ -2,6 +2,7 @@ require 'spec_helper'
 require "cancan/matchers"
 
 describe User do
+  # Tests User authorization for various actions.
   describe 'abilities' do
     subject  { ability }
     let (:ability) { Ability.new(user) }
