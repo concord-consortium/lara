@@ -1,2 +1,4 @@
+= content_for :title do 
+  = "#{@page.name}"
 -# TODO: This should become the authoring view
 = render :partial => 'interactive_pages/show', :locals => {:page => @page, :previous_page => @previous_page, :next_page => @next_page, :all_pages => @all_pages}

@@ -1,2 +1,4 @@
+= content_for :title do 
+  = "#{@page.name}"
 -# This is the runtime view
 = render :partial => 'lightweight/interactive_pages/show', :locals => {:page => @page, :previous_page => @previous_page, :next_page => @next_page, :all_pages => @all_pages}
