@@ -18,15 +18,23 @@ otherwise, use
 
 3. Initialize the database, with seed data:
 
-        rake db:drop db:create db:migrate db:seed
+        rake db:drop db:create db:load
 
-(If you would prefer to start with an empty database, leave the `db:seed` off the end.)
+(If you would prefer to start with an empty database, use `db:migrate` instead of `db:load`.)
 
 4. Launch the application
 
         rails s
 
 6. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
+
+## Users and administration
+
+Currently, new users aren't confirmed, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
+
+On a local development copy, you can make an admin user by registering a new user at the link above, then running `rake lightweight:admin_last_user` in your shell. That will make the most-recently-created user an administrator. Needless to say, this task *will not* run in the production environment.
+
+Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
 
 ## Deploying
 
