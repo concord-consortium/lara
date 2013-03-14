@@ -51,7 +51,7 @@ body {
   font: 80% arial, helvetica, sans-serif;
 }
 button, span.edit_trigger, #modal .embeddable-save {
-  background: #26a2bc;
+  background: #6fc5d8;
   border: none;
   color: #fff;
   cursor: pointer;
@@ -67,7 +67,7 @@ button.disabled span.edit_trigger.disabled {
 #container {
 }
 #header {
-  background: #26a2bc;
+  background: #6fc5d8;
   height: 60px;
   position: relative;
   margin-bottom: 30px;
@@ -149,7 +149,7 @@ button.disabled span.edit_trigger.disabled {
     width: 100% !important;
   }
   a {
-    background: #26a2bc;
+    background: #6fc5d8;
     border-radius: 50%;
     color: #fff;
     display: block;
@@ -298,7 +298,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .toolbar {
-  background: #26a2bc;
+  background: #6fc5d8;
   color: #fff;
   font-size: .9em;
   height: 15px;
@@ -328,7 +328,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .sidebar {
-  background: #26a2bc;
+  background: #6fc5d8;
   clear: both;
   color: #fff;
   height: auto;
@@ -354,7 +354,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .related {
-  background: #26a2bc;
+  background: #6fc5d8;
   clear: both;
   color: #fff;
   height: auto;
@@ -389,7 +389,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 #footer {
-  background: #26a2bc;
+  background: #6fc5d8;
   clear: both;
   color: #fff;
   height: 110px;
@@ -647,7 +647,7 @@ fieldset {
   }
   /* Page intro */
   div.instructions, div.sidebar {
-    border: 1px solid #26a2bc;
+    border: 1px solid #6fc5d8;
     position: relative;
     padding: 5px;
     .edit_trigger {
@@ -684,7 +684,7 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #26a2bc;
+    border: 1px solid #6fc5d8;
     padding: 5px;
     position: relative;
     h2 {
@@ -705,9 +705,9 @@ fieldset {
     .embeddable_tools {
       text-align: right;
       font-weight: bold;
-      color: #26a2bc;
+      color: #6fc5d8;
       a:link {
-        color: #26a2bc;
+        color: #6fc5d8;
       }
       .drag_handle {
         float: left;
@@ -720,7 +720,7 @@ fieldset {
         margin: -5px -5px 5px;
       }
       padding: 5px;
-      border: 1px solid #26a2bc;
+      border: 1px solid #6fc5d8;
       margin-bottom: 1em;
       border-radius: 0;
     }
@@ -737,7 +737,7 @@ fieldset {
     .edit_trigger, button {
       font-weight: normal;
       font-size: 0.66em;
-      color: #26A2BC;
+      color: #6fc5d8;
       background: none;
       text-decoration: underline;
       margin-top: inherit;
