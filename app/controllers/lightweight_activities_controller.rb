@@ -103,6 +103,10 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  def summary
+    authorize! :read, @activity
+  end
+
   private
   def set_activity
     if params[:activity_id]
