@@ -1,4 +1,7 @@
+= content_for :title do 
+  = "Response Summary for #{@activity.name}"
 %h1 
   = "Response Summary for #{@activity.name}"
-%p
-  = @activity.question_keys.join(", ")
+- @activity.question_keys.each do |qk|
+  %div{ :data => { :storage_key => qk } }
+    = qk
