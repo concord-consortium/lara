@@ -24,4 +24,23 @@ class LightweightActivity < ActiveRecord::Base
   def run_format
     :run_html
   end
+
+  # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
+  def questions
+    q = []
+    pages.each do |p|
+      p.embeddables.each do |e|
+        if e.class == Embeddable::MultipleChoice || e.class == Embeddable::OpenResponse
+          q << e
+        end
+      end
+    end
+    return q
+  end
+
+  
+  # Returns an array of strings representing the storage_keys of all the questions
+  def question_keys
+    return questions.map { |q| q.storage_key }
+  end  
 end
