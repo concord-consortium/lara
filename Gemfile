@@ -15,6 +15,8 @@ gem 'devise'
 gem 'cancan'
 
 gem 'default_value_for'
+# Easy (or at least easier) database dumps and reloads
+gem "yaml_db"
 
 gem "sqlite3"
 
