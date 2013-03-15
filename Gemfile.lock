@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/lostapathy/yaml_db.git
+  revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
+  specs:
+    yaml_db (0.2.2)
+
+GIT
   remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
   revision: 63b1cce3a444509b7935d1d2bb552623309e469a
   specs:
@@ -210,7 +216,6 @@ GEM
     websocket (1.0.7)
     xpath (1.0.0)
       nokogiri (~> 1.3)
-    yaml_db (0.2.2)
 
 PLATFORMS
   ruby
@@ -244,4 +249,4 @@ DEPENDENCIES
   sqlite3
   therubyracer (~> 0.10.2)
   uglifier (>= 1.0.3)
-  yaml_db
+  yaml_db!

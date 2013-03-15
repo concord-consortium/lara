@@ -16,7 +16,8 @@ gem 'cancan'
 
 gem 'default_value_for'
 # Easy (or at least easier) database dumps and reloads
-gem "yaml_db"
+# Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
+gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
 gem "sqlite3"
 
