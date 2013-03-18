@@ -4,7 +4,7 @@
   = "Response Summary for #{@activity.name}"
 - @activity.question_keys.each do |qk|
   %div{ :data => { :storage_key => qk } }
-    = qk
+    -# Content for this div is populated by JS
 
 -# TODO: Need a reset function
 -#%p

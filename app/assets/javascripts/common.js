@@ -287,5 +287,13 @@ $(document).ready(function () {
             storeResponses();
         });
     }
+
+    // Display response summary
+    if ($('body.summary [data-storage_key]').length) {
+        $('[data-storage_key]').each( function () {
+            var qResponse = getResponse($(this).data('storage_key'));
+            $(this).html('<p class="question">' + qResponse.question + '</p><p class="response">' + qResponse.answer + '</p>'); 
+        });
+    }
 });
 
