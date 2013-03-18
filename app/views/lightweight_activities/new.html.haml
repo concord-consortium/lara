@@ -1,3 +1,5 @@
+= content_for :title do 
+  New Activity
 %h1 New activity
 = form_for @activity, :url => '/activities' do |f|
   = f.error_messages

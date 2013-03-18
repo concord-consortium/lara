@@ -48,7 +48,7 @@ i, em {
 body {
   background: #fff url(/assets/body-bg.gif) right 60px no-repeat;
   color: #3f3f3f;
-  font: 80% arial, helvetica, sans-serif;
+  font: 80% 'Lato', arial, helvetica, sans-serif;
 }
 button, span.edit_trigger, #modal .embeddable-save {
   background: #6fc5d8;
@@ -121,11 +121,12 @@ button.disabled span.edit_trigger.disabled {
   width: 960px;
   h1 {
     color: #eb8723;
-    font: 700 2em museo-sans, georgia, 'times new roman', serif;
+    font: 700 2em 'Lato', georgia, 'times new roman', serif;
   }
   p.question {
     color: #3a878b;
-    font: 300 1.3em museo-sans, georgia, 'times new roman', serif;
+    font: 400 1.3em 'Lato', georgia, 'times new roman', serif;
+    min-height: 1em;
   }
 }
 .title {
@@ -214,7 +215,7 @@ button.disabled span.edit_trigger.disabled {
 }
 .instructions h2, .model-instructions h2 {
   color: #75a643 !important;
-  font: 500 1.5em museo-slab, georgia, 'times new roman', serif;
+  font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
 .questions .embeddable, .authorable_open_response, .authorable_multiple_choice {
   background: #eee;
@@ -337,7 +338,7 @@ button.disabled span.edit_trigger.disabled {
   padding: 1%;
   border-radius: 13px;
   h2 {
-    font: 500 2em museo-slab, georgia, 'times new roman', serif;
+    font: 500 2em 'Lato', georgia, 'times new roman', serif;
     margin: 0 0 20px;
   }
   img {
@@ -372,7 +373,7 @@ button.disabled span.edit_trigger.disabled {
     text-align: center;
   }
   h3 {
-    font: 700 1.3em museo-slab, georgia, 'times new roman', serif;
+    font: 700 1.3em 'Lato', georgia, 'times new roman', serif;
   }
   ul {
     list-style: none;
@@ -694,7 +695,7 @@ fieldset {
       text-align: left;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
       padding: 5px; /* Gives the head itself some padding */
-      font: 500 1.3em museo-slab, georgia, 'times new roman', serif;
+      font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
     }
     form.embeddables-form {
       position: absolute;
