@@ -50,6 +50,8 @@
     .sidebar
       != page.sidebar
   - if !next_page && !page.lightweight_activity.related.blank?
+    .summary
+      = link_to "See a summary of your responses to questions in this activity.", summary_activity_path(page.lightweight_activity)
     .related
       != page.lightweight_activity.related
   - if page.interactives
