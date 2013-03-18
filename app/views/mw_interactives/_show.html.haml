@@ -1,6 +1,6 @@
 .model-container
   .model
-    %iframe{:src => interactive.url}
+    %iframe{:src => interactive.url, :webkitAllowFullScreen => true, :mozallowfullscreen => true}
       Your browser does not support inline frames, or is currently not configured to display inline frames.
       Content can be viewed at the actual source page:
       = link_to interactive.url, interactive.url
