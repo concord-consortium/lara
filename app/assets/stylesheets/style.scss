@@ -67,10 +67,9 @@ button.disabled span.edit_trigger.disabled {
 #container {
 }
 #header {
-  background: #6fc5d8;
-  height: 60px;
+  background: #bddfdf;
+  height: 75px;
   position: relative;
-  margin-bottom: 30px;
   div {
     height: 130px;
     margin: 0 auto;
@@ -78,35 +77,19 @@ button.disabled span.edit_trigger.disabled {
     width: 960px;
   }
   #mw-logo {
+    border: none;
     float: left;
     font-size: 1.5em;
-    height: 50px;
-    margin-top: 5px;
-    width: 238px;
+    height: 60px;
+    margin-top: 7px;
+    width: 158px;
   }
   #cc-logo {
+    border: none;
     float: right;
-    height: 40px;
-    margin-top: 10px;
-    width: 130px;
-  }
-  nav {
-    clear: left;
-    padding-top: 10px;
-  }
-  #session {
-    clear: right;
-    float: right;
-    text-align: right;
-    height: auto;
-    width: 20%;
-    padding-top: 12px;
-  }
-  .breadcrumbs {
-    width: 79%;
-    height: auto;
-    text-align: left;
-    float: left;
+    height: 35px;
+    margin-top: 19px;
+    width: 114px;
   }
 }
 .clear {
@@ -120,6 +103,7 @@ button.disabled span.edit_trigger.disabled {
   position: relative;
   width: 960px;
   h1 {
+    clear: both;
     color: #eb8723;
     font: 700 2em 'Lato', georgia, 'times new roman', serif;
   }
@@ -127,6 +111,32 @@ button.disabled span.edit_trigger.disabled {
     color: #3a878b;
     font: 400 1.3em 'Lato', georgia, 'times new roman', serif;
     min-height: 1em;
+  }
+  nav {
+    clear: left;
+    float: left;
+    padding: 10px 0;
+    width: 79%;
+  }
+  .breadcrumbs {
+    height: auto;
+    text-align: left;
+  }
+  #session {
+    clear: right;
+    float: right;
+    height: auto;
+    padding: 10px 0;
+    text-align: right;
+    width: 20%;
+  }
+  #activity-actions {
+    clear: both;
+    height: 20px;
+  }
+  #activity-actions #new-menu {
+    float: right;
+    margin-top: 10px;
   }
 }
 .title {
@@ -390,9 +400,9 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 #footer {
-  background: #6fc5d8;
+  background: #bddfdf;
   clear: both;
-  color: #fff;
+  color: #3a878b;
   height: 110px;
   margin-top: 20px;
   div {
@@ -402,7 +412,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 #footer a {
-  color: #fff;
+  color: #3a878b;
 }
 #overlay {
   background: #000;
@@ -746,7 +756,7 @@ fieldset {
   }
 }
 /* Breadcrumbs */
-div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
+div.breadcrumbs li { list-style: none; float: left; margin-right: .5em; }
 /* Inside the modal edit window */
 #modal {
   #add_new_choice {
