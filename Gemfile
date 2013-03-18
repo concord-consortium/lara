@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem "jquery-rails", "~> 2.1.3"
 gem "haml", "~> 3.1.4"
 gem "dynamic_form", "~> 1.1.4"
@@ -15,6 +15,9 @@ gem 'devise'
 gem 'cancan'
 
 gem 'default_value_for'
+# Easy (or at least easier) database dumps and reloads
+# Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
+gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
 gem "sqlite3"
 
