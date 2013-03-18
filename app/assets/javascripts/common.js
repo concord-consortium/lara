@@ -194,10 +194,10 @@ function adjustWidth() {
 function storeResponses () {
     console.log('Storing answers locally.');
     $('[data-storage_key]').each( function () {
-        var storageKey, questionText, answerText;
+        var storageKey, questionText, answerText = '';
         storageKey = $(this).data('storage_key');
         // This is the question
-        $(this).find(".prompt").contents().filter( function () { if (this.nodeType === Node.TEXT_NODE) { questionText = this.textContent; } });
+        $(this).find(".prompt").contents().filter( function () { questionText = this.textContent; });
         // This is the MC answer
         if ($(this).find("input:radio:checked").length > 0) {
             $(this).find("input:radio:checked").parent().contents().filter( function () { if (this.nodeType === Node.TEXT_NODE) { answerText += this.textContent; } } );
@@ -292,7 +292,9 @@ $(document).ready(function () {
     if ($('body.summary [data-storage_key]').length) {
         $('[data-storage_key]').each( function () {
             var qResponse = getResponse($(this).data('storage_key'));
-            $(this).html('<p class="question">' + qResponse.question + '</p><p class="response">' + qResponse.answer + '</p>'); 
+            if (qResponse) {
+                $(this).html('<p class="question">' + qResponse.question + '</p><p class="response">' + qResponse.answer + '</p>'); 
+            }
         });
     }
 });
