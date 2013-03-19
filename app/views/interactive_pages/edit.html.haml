@@ -39,8 +39,8 @@
     %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
     %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
   
-- next_page = nil unless defined?(next_page)
-- previous_page = nil unless defined?(previous_page)
+- next_page = nil unless defined?(@next_page)
+- previous_page = nil unless defined?(@previous_page)
 %div{:class => ["content", "editing"]}
   .page-nav
     - if previous_page

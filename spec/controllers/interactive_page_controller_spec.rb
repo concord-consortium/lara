@@ -183,6 +183,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id
 
       response.body.should match /<div class='related'>/
+      response.body.should match /<a href="\/activities\/#{act.id}\/summary">/
     end
 
     it 'does not show related content on pages other than the last page' do
@@ -324,6 +325,14 @@ describe InteractivePagesController do
 
           response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_embeddable"[^<]*>/
           response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
+        end
+
+        it 'shows navigation links ' do
+          page2
+          page1
+          get :edit, :id => page1.id, :activity_id => act.id
+          
+          assigns(:next_page).should_not be_nil
         end
       end
     end
