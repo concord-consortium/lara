@@ -73,7 +73,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id
 
       # verify the page is as expected
-      response.body.should match /<iframe>/m
+      response.body.should match /<iframe/m
       response.body.should match /What color is chlorophyll\?/m
       response.body.should match /Why do you think this model is cool\?/m
       response.body.should match /What would you add to it\?/m
