@@ -287,16 +287,21 @@ describe InteractivePagesController do
         end
 
         it 'saves first edits made in the WYSIWYG editor', :js => true do
-          pending "Figure out login in Capybara"
+          # pending "Figure out login in Capybara"
           page1.show_introduction = 1
           page1.show_interactive = 0
           page1.save
+
+          visit new_user_session_path
+          fill_in "Email", :with => @user.email
+          fill_in "Password", :with => @user.password
+          click_button "Sign in"
           visit edit_activity_page_path(act, page1)
 
           find('#interactive_page_text_trigger').click
           find('#interactive_page_text')
           within_frame('interactive_page_text-wysiwyg-iframe') do
-            page.should have_content('This is the main activity text.')
+            page.should have_content(page1.text)
             # TODO: How can I put content in the WYSIWYG editor?
           end
           find('.wysiwyg li.html').click()

@@ -148,9 +148,13 @@ describe LightweightActivitiesController do
       end
 
       it 'should provide in-place editing of description and sidebar', :js => true do
-        pending "when I figure out Devise auth in Capybara"
+        # pending "when I figure out Devise auth in Capybara"
         act = LightweightActivity.create!(:name => 'This activity needs in-place editing', :description => 'Edit me!')
 
+        visit new_user_session_path
+        fill_in "Email", :with => @user.email
+        fill_in "Password", :with => @user.password
+        click_button "Sign in"
         visit edit_activity_path(act)
 
         find("#lightweight_activity_description_trigger").click
