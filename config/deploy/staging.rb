@@ -1,4 +1,4 @@
-set :branch, "summary"
+set :branch, "staging"
 set :domain, "lightweight-mw.staging.concord.org"
 
 server domain, :app, :web
