@@ -50,10 +50,11 @@ class LightweightActivitiesController < ApplicationController
         redirect_to edit_activity_path(@activity)
       end
     else
+      # I'd like to use the activity name here, but what if that's what's the invalid update?
       if request.xhr?
-        render :text => "There was a problem updating activity #{@activity.name}. Please reload the page and try again."
+        render :text => "There was a problem updating your activity. Please reload the page and try again."
       else
-        flash[:warning] = "There was a problem updating activity #{@activity.name}."
+        flash[:warning] = "There was a problem updating your activity."
         redirect_to edit_activity_path(@activity)
       end
     end

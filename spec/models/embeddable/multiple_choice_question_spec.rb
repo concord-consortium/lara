@@ -13,13 +13,17 @@ describe Embeddable::MultipleChoice do
   end
 
   describe "a newly created MutipleChoiceQuestion" do    
-    it "should belong to a page" do
+    it "belongs to a page" do
       @page.embeddables.should_not be_nil
       @page.embeddables.should include(@multichoice)
     end
     
-    it "should have three initial default answers" do
+    it "has three initial default answers" do
       @multichoice.choices.should have(3).answers
+    end
+
+    it "has a self-generated storage key" do
+      @multichoice.storage_key.should_not be_nil
     end
   end
 

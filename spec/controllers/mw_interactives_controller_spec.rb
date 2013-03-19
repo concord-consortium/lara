@@ -5,7 +5,7 @@ describe MwInteractivesController do
 
   describe 'index' do
     it 'returns a list of available MW Interactives' do
-      pending 'Not working this yet'
+      pending 'Future feature'
     end
   end
 
@@ -19,15 +19,8 @@ describe MwInteractivesController do
     end
   end
 
-  context 'when the logged-in user is an ordinary user' do
-    describe 'interactives' do
-      it 'are not editable' do
-        pending 'we are not yet ready for this'
-      end
-    end
-  end
-
   context 'when the logged-in user is an author' do
+    # Authorization is tested in spec/models/user_spec.rb
     context 'and an InteractivePage ID is provided' do
       before do
         @act = LightweightActivity.create!(:name => "Test activity")
