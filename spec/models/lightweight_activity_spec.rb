@@ -55,4 +55,40 @@ describe LightweightActivity do
     
     LightweightActivity.my(author).should == [activity]
   end
+
+  it '#questions' do
+    activity.questions.should == []
+  end
+
+  it '#question_keys' do
+    activity.question_keys.should == []
+  end
+
+  context 'it has embeddables' do
+    before :each do
+      [3,1,2].each do |i|
+        page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
+        activity.pages << page
+      end
+      activity.reload
+      or1 = FactoryGirl.create(:or_embeddable)
+      or2 = FactoryGirl.create(:or_embeddable)
+      mc1 = FactoryGirl.create(:mc_embeddable)
+      mc2 = FactoryGirl.create(:mc_embeddable)
+      activity.pages.first.add_embeddable(mc1)
+      activity.pages.first.add_embeddable(or1)
+      activity.pages[1].add_embeddable(mc2)
+      activity.pages.last.add_embeddable(or2)
+    end
+
+    it '#questions' do
+      activity.questions.length.should be(4)
+      activity.questions.first.should be_kind_of Embeddable::MultipleChoice
+    end
+
+    it '#question_keys' do
+      activity.question_keys.length.should be(4)
+      activity.question_keys.first.should be_kind_of String
+    end
+  end
 end

@@ -18,6 +18,7 @@ module Embeddable
           sk = "#{interactive_pages.first.id}_#{sk}"
         end
       end
+      sk
     end
   end
 end
