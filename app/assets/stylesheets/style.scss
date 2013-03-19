@@ -51,7 +51,7 @@ body {
   font: 80% 'Lato', arial, helvetica, sans-serif;
 }
 button, span.edit_trigger, #modal .embeddable-save {
-  background: #26a2bc;
+  background: #6fc5d8;
   border: none;
   color: #fff;
   cursor: pointer;
@@ -67,10 +67,9 @@ button.disabled span.edit_trigger.disabled {
 #container {
 }
 #header {
-  background: #26a2bc;
-  height: 60px;
+  background: #bddfdf;
+  height: 75px;
   position: relative;
-  margin-bottom: 30px;
   div {
     height: 130px;
     margin: 0 auto;
@@ -78,35 +77,19 @@ button.disabled span.edit_trigger.disabled {
     width: 960px;
   }
   #mw-logo {
+    border: none;
     float: left;
     font-size: 1.5em;
-    height: 50px;
-    margin-top: 5px;
-    width: 238px;
+    height: 60px;
+    margin-top: 7px;
+    width: 159px;
   }
   #cc-logo {
+    border: none;
     float: right;
-    height: 40px;
-    margin-top: 10px;
-    width: 130px;
-  }
-  nav {
-    clear: left;
-    padding-top: 10px;
-  }
-  #session {
-    clear: right;
-    float: right;
-    text-align: right;
-    height: auto;
-    width: 20%;
-    padding-top: 12px;
-  }
-  .breadcrumbs {
-    width: 79%;
-    height: auto;
-    text-align: left;
-    float: left;
+    height: 35px;
+    margin-top: 19px;
+    width: 114px;
   }
 }
 .clear {
@@ -120,6 +103,7 @@ button.disabled span.edit_trigger.disabled {
   position: relative;
   width: 960px;
   h1 {
+    clear: both;
     color: #eb8723;
     font: 700 2em 'Lato', georgia, 'times new roman', serif;
   }
@@ -127,6 +111,32 @@ button.disabled span.edit_trigger.disabled {
     color: #3a878b;
     font: 400 1.3em 'Lato', georgia, 'times new roman', serif;
     min-height: 1em;
+  }
+  nav {
+    clear: left;
+    float: left;
+    padding: 10px 0;
+    width: 79%;
+  }
+  .breadcrumbs {
+    height: auto;
+    text-align: left;
+  }
+  #session {
+    clear: right;
+    float: right;
+    height: auto;
+    padding: 10px 0;
+    text-align: right;
+    width: 20%;
+  }
+  #activity-actions {
+    clear: both;
+    height: 20px;
+  }
+  #activity-actions #new-menu {
+    float: right;
+    margin-top: 10px;
   }
 }
 .title {
@@ -136,7 +146,7 @@ button.disabled span.edit_trigger.disabled {
 .page-nav {
   position: absolute;
   right: 0;
-  top: 20px;
+  top: 50px;
   .secondary {
     background: #fff;
     bottom: 0 !important;
@@ -150,7 +160,7 @@ button.disabled span.edit_trigger.disabled {
     width: 100% !important;
   }
   a {
-    background: #26a2bc;
+    background: #6fc5d8;
     border-radius: 50%;
     color: #fff;
     display: block;
@@ -299,7 +309,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .toolbar {
-  background: #26a2bc;
+  background: #6fc5d8;
   color: #fff;
   font-size: .9em;
   height: 15px;
@@ -329,7 +339,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .sidebar {
-  background: #26a2bc;
+  background: #6fc5d8;
   clear: both;
   color: #fff;
   height: auto;
@@ -355,7 +365,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 .related {
-  background: #26a2bc;
+  background: #6fc5d8;
   clear: both;
   color: #fff;
   height: auto;
@@ -390,9 +400,9 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 #footer {
-  background: #26a2bc;
+  background: #bddfdf;
   clear: both;
-  color: #fff;
+  color: #3a878b;
   height: 110px;
   margin-top: 20px;
   div {
@@ -402,7 +412,7 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 #footer a {
-  color: #fff;
+  color: #3a878b;
 }
 #overlay {
   background: #000;
@@ -648,7 +658,7 @@ fieldset {
   }
   /* Page intro */
   div.instructions, div.sidebar {
-    border: 1px solid #26a2bc;
+    border: 1px solid #6fc5d8;
     position: relative;
     padding: 5px;
     .edit_trigger {
@@ -685,7 +695,7 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #26a2bc;
+    border: 1px solid #6fc5d8;
     padding: 5px;
     position: relative;
     h2 {
@@ -706,9 +716,9 @@ fieldset {
     .embeddable_tools {
       text-align: right;
       font-weight: bold;
-      color: #26a2bc;
+      color: #6fc5d8;
       a:link {
-        color: #26a2bc;
+        color: #6fc5d8;
       }
       .drag_handle {
         float: left;
@@ -721,7 +731,7 @@ fieldset {
         margin: -5px -5px 5px;
       }
       padding: 5px;
-      border: 1px solid #26a2bc;
+      border: 1px solid #6fc5d8;
       margin-bottom: 1em;
       border-radius: 0;
     }
@@ -738,7 +748,7 @@ fieldset {
     .edit_trigger, button {
       font-weight: normal;
       font-size: 0.66em;
-      color: #26A2BC;
+      color: #6fc5d8;
       background: none;
       text-decoration: underline;
       margin-top: inherit;
@@ -746,7 +756,7 @@ fieldset {
   }
 }
 /* Breadcrumbs */
-div.breadcrumbs li { list-style: none; float: left; margin-left: .5em; }
+div.breadcrumbs li { list-style: none; float: left; margin-right: .5em; }
 /* Inside the modal edit window */
 #modal {
   #add_new_choice {

@@ -13,16 +13,16 @@
 <div id="container">
   <div id="header">
     <div>
-      <%= image_tag "mw-logo.png", :alt => "Molecular Workbench", :id => "mw-logo" %>
-      <%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %>
+      <a href="http://lightweight-mw.concord.org/" title="Molecular Workbench"><%= image_tag "mw-logo.png", :alt => "Molecular Workbench", :id => "mw-logo" %></a>
+      <a href="http://concord.org/" title="The Concord Consortium"><%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %></a>
       <!-- <nav>Home / Activities / Physics</nav> -->
-      <div id="session">
-        <%= render :partial => 'shared/session' %>
-      </div>
-      <nav><%= yield :nav %></nav>
     </div>
   </div>
   <div id="content" class="content">
+    <nav><%= yield :nav %></nav>
+    <div id="session">
+      <%= render :partial => 'shared/session' %>
+    </div>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
