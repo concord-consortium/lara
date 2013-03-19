@@ -42,8 +42,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
       end
     else
       respond_to do |format|
-        # TODO: Set up models so the choice can find its page and redirect there
-        format.html { redirect_to(@choice.multiple_choice.page) }
+        format.html { redirect_to interactive_page_path(@choice.page) unless @choice.page.nil? }
         format.json { render :json => @choice.to_json }
       end
     end

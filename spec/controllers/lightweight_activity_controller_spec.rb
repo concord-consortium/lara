@@ -3,6 +3,8 @@ require 'spec_helper'
 
 describe LightweightActivitiesController do
   render_views
+  let (:act) { FactoryGirl.create(:public_activity) }
+  
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
@@ -32,13 +34,39 @@ describe LightweightActivitiesController do
 
     it 'renders the activity if it exists and is public' do
       # setup
-      act = LightweightActivity.create!(:name => "Test activity", :publication_status => 'public')
       page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
 
       # get the rendering
       get :show, :id => act.id
 
       response.should redirect_to activity_page_url(act, page)
+    end
+  end
+
+  describe '#summary' do
+    it 'does not route when id is not valid' do
+      begin
+        get :summary, :id => 'foo'
+        throw "Should not have been able to route with id='foo'"
+      rescue ActionController::RoutingError
+      end
+    end
+
+    it 'renders 404 when the activity does not exist' do
+      begin
+        get :summary, :id => 9876548376394
+      rescue ActiveRecord::RecordNotFound
+      end
+    end
+
+    it 'renders the summary page if the activity exists and is public' do
+      page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+      page.add_embeddable(FactoryGirl.create(:mc_embeddable))
+
+      get :summary, :id => act.id
+
+      response.body.should match /<h1>\n?Response Summary for/
+      response.body.should match /<div[^>]+data-storage_key='[^']+'/
     end
   end
 

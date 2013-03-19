@@ -16,5 +16,13 @@ module Embeddable
     def to_json
       MultiJson.dump(self.to_hash)
     end
+
+    def page
+      if multiple_choice && !multiple_choice.interactive_pages.empty?
+        return multiple_choice.interactive_pages.last
+      else
+        return nil
+      end
+    end
   end
 end
