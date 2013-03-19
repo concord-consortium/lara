@@ -140,64 +140,6 @@ describe InteractivePagesController do
       response.body.should_not match /<a class='next'>/
     end
 
-    it 'submits answers which can be parsed as Saveables' do
-      pending "There will be a new structure for user data persistence"
-      # TODO: Get factories in here when it's out of pending
-      # To create a Saveable, we need an Offering, a Learner, and an answered Embeddable.
-      # The current portal action creating Saveables is Portal::OfferingsController#answer
-      # The Learner is created from the session in that controller, so the form doesn't
-      # need to provide it.
-      # The offering ID should be in params[:id].
-      # The answers should be in params[:questions] as something like
-      # embeddable__multiple_choice_(\d+) with value embeddable__multiple_choice_choice_(\d+)\
-      # embeddable__open_response_(\d+) with a string value
-
-      # setup
-      # Mock the setup_portal_student method because we don't have a current_user method (it's provided by the session)
-      @learner = mock_model(Portal::Learner, :valid? => true,:[]= => true, :save => true, :destroy=> false, :delete=>false)
-      controller.stub(:setup_portal_student) { @learner }
-      act = LightweightActivity.create!(:name => "Test activity", :publication_status => 'public')
-
-      # Add the offering - this can't be mocked because it's too close to the Activity
-      offer = Portal::Offering.create!
-      offer.runnable = act
-      offer.learners = [@learner]
-      offer.save
-
-      # set up page
-      page1 = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
-
-      # Add embeddables
-      or1 = Embeddable::OpenResponse.create!(:name => "Open Response 1", :prompt => "Why do you think this model is cool?")
-
-      mc1 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 1", :prompt => "What color is chlorophyll?")
-      Embeddable::MultipleChoiceChoice.create(:choice => 'Red', :multiple_choice => mc1)
-      Embeddable::MultipleChoiceChoice.create(:choice => 'Green', :multiple_choice => mc1)
-      Embeddable::MultipleChoiceChoice.create(:choice => 'Blue', :multiple_choice => mc1)
-
-      page1.add_embeddable(mc1)
-      page1.add_embeddable(or1)
-
-      # get the rendering
-      get :show, :id => page1.id, :offering_id => offer.id
-
-      form_regex = /<form.*?action="\/portal\/offerings\/(\d+)\/answers"/
-      response.body.should =~ form_regex
-      response.body =~ form_regex
-      $1.to_i.should == offer.id
-
-      or_regex = /<textarea.*?name='questions\[embeddable__open_response_(\d+)\]'/
-      response.body.should =~ or_regex
-      response.body =~ or_regex
-      $1.to_i.should == or1.id
-
-      mc_regex = /<input.*?name='questions\[embeddable__multiple_choice_(\d+)\]'.*?type='radio'.*?value='embeddable__multiple_choice_choice_\d+'/
-      response.body.should =~ mc_regex
-      response.body =~ mc_regex
-      $1.to_i.should == mc1.id
-
-    end
-
     it 'displays previous answers when viewed again' do
       pending "There will be a new structure for user data persistence"
       # TODO: Get factories in here when it's out of pending
@@ -227,13 +169,6 @@ describe InteractivePagesController do
 
       mc_regex = /<input.*?checked.*?name='questions\[embeddable__multiple_choice_(\d+)\]'.*?type='radio'.*?value='embeddable__multiple_choice_choice_#{choice.id}'/
       response.body.should =~ mc_regex
-    end
-
-    it 'disables the submit button when there is no learner' do
-      pending "There will be a new structure for user data persistence"
-      controller.stub!(:setup_portal_student).and_return(nil)
-      get :show, :id => @offering.id, :format => 'run_html'
-      response.body.should =~ /<input.*class='disabled'.*type='submit'/
     end
 
     it 'shows sidebar content on pages which have it' do
@@ -267,7 +202,7 @@ describe InteractivePagesController do
       response.body.should_not match /<div class='sidebar'>/
     end
 
-    it 'should smoothly scroll the interactive without overlapping a sidebar', :js => true do
+    it 'smoothly scrolls the interactive without overlapping a sidebar', :js => true do
       pending "This needs a good way to watch the top position of the interactive"
 
       # Add embeddables
@@ -351,7 +286,7 @@ describe InteractivePagesController do
           response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page1.text}<\/span>/
         end
 
-        it 'should save first edits made in the WYSIWYG editor', :js => true do
+        it 'saves first edits made in the WYSIWYG editor', :js => true do
           pending "Figure out login in Capybara"
           page1.show_introduction = 1
           page1.show_interactive = 0
@@ -404,10 +339,10 @@ describe InteractivePagesController do
       end
 
       it 'redirects to the edit page with a message if there is an error' do
-        pending "Again, it seems to be pretty hard to feed this invalid data"
+        pending "without validations, it's hard to feed this invalid data"
 
         # This actually generates an exception and a 500 error, not a failed update
-        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :related => 'This page now has sidebar text.' }}
+        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This page now has sidebar text.' }}
 
         flash[:warning].should == "There was a problem updating Page #{page1.name}."
         response.should redirect_to(edit_activity_page_path(act, page1))
