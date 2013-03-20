@@ -70,6 +70,12 @@ describe LightweightActivity do
     end
   end
 
+  describe '#deep_updated_at' do
+    it 'should return updated_at' do
+      activity.deep_updated_at.should == activity.updated_at
+    end
+  end
+
   context 'it has embeddables' do
     before :each do
       [3,1,2].each do |i|
@@ -99,6 +105,16 @@ describe LightweightActivity do
       it 'returns an array of storage_keys from questions' do
         activity.question_keys.length.should be(4)
         activity.question_keys.first.should be_kind_of String
+      end
+    end
+
+    describe '#deep_updated_at' do
+      it 'returns the most recent of updated_at or its pages updated_at' do
+        activity.deep_updated_at.should > activity.updated_at # The pages/embeddables will be newer
+        activity.updated_at = Time.now
+        activity.save
+        activity.reload
+        activity.deep_updated_at.should == activity.updated_at # Now the activity is newer
       end
     end
   end
