@@ -460,6 +460,9 @@ ul.quiet_list {
       display: block;
       margin-top: 23px;
     }
+    .author, .updated {
+        font-size: 0.8em;
+    }
   }
   li.item:hover {
     background: #fef7e0;
