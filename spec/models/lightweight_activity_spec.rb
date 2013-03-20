@@ -49,19 +49,25 @@ describe LightweightActivity do
     !activity.valid?
   end
 
-  it "#my" do
-    activity.user = author
-    activity.save
+  describe "#my" do
+    it 'returns activities owned by a given author' do
+      activity.user = author
+      activity.save
     
-    LightweightActivity.my(author).should == [activity]
+      LightweightActivity.my(author).should == [activity]
+    end
   end
 
-  it '#questions' do
-    activity.questions.should == []
+  describe '#questions' do
+    it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
+      activity.questions.should == []
+    end
   end
 
-  it '#question_keys' do
-    activity.question_keys.should == []
+  describe '#question_keys' do
+    it 'returns an array of storage_keys from questions' do
+      activity.question_keys.should == []
+    end
   end
 
   context 'it has embeddables' do
@@ -81,14 +87,19 @@ describe LightweightActivity do
       activity.pages.last.add_embeddable(or2)
     end
 
-    it '#questions' do
-      activity.questions.length.should be(4)
-      activity.questions.first.should be_kind_of Embeddable::MultipleChoice
+    
+    describe '#questions' do
+      it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
+        activity.questions.length.should be(4)
+        activity.questions.first.should be_kind_of Embeddable::MultipleChoice
+      end
     end
 
-    it '#question_keys' do
-      activity.question_keys.length.should be(4)
-      activity.question_keys.first.should be_kind_of String
+    describe '#question_keys' do
+      it 'returns an array of storage_keys from questions' do
+        activity.question_keys.length.should be(4)
+        activity.question_keys.first.should be_kind_of String
+      end
     end
   end
 end
