@@ -11,6 +11,18 @@ module Embeddable
 
     default_value_for :name, "Multiple Choice Question element"
 
+    def activity
+      if interactive_pages.length > 0
+        if interactive_pages.first.lightweight_activity.present?
+          return interactive_pages.first.lightweight_activity
+        else
+          return nil
+        end
+      else
+        return nil
+      end
+    end
+
     # A unique key to use for local storage
     def storage_key
       sk = "#{id}"
