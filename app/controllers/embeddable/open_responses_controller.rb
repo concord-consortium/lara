@@ -15,6 +15,8 @@ class Embeddable::OpenResponsesController < ApplicationController
     if request.xhr?
       respond_to do |format|
         if cancel || @open_response.update_attributes(params[:embeddable_open_response])
+          @activity = @open_response.activity
+          update_activity_changed_by unless @activity.nil?
           format.xml { render :partial => 'show', :locals => { :open_response => @open_response } }
           format.json
         else
@@ -25,6 +27,8 @@ class Embeddable::OpenResponsesController < ApplicationController
     else
       respond_to do |format|
         if @open_response.update_attributes(params[:embeddable_open_response])
+          @activity = @open_response.activity
+          update_activity_changed_by unless @activity.nil?
           flash[:notice] = 'Embeddable::OpenResponse.was successfully updated.'
           redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
           format.html { redirect_to(redirect_path) }

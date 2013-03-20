@@ -15,6 +15,8 @@ class Embeddable::XhtmlsController < ApplicationController
     if request.xhr?
       respond_to do |format|
         if cancel || @xhtml.update_attributes(params[:embeddable_xhtml])
+          @activity = @xhtml.activity
+          update_activity_changed_by unless @activity.nil?
           format.xml { render :partial => 'show', :locals => { :xhtml => @xhtml } }
           format.json
         else
@@ -26,6 +28,8 @@ class Embeddable::XhtmlsController < ApplicationController
       respond_to do |format|
         if @xhtml.update_attributes(params[:embeddable_xhtml])
           flash[:notice] = 'Embeddable::Xhtml.was successfully updated.'
+          @activity = @xhtml.activity
+          update_activity_changed_by unless @activity.nil?
           redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
           format.html { redirect_to(redirect_path) }
           format.xml  { head :ok }

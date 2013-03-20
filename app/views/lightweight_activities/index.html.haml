@@ -37,5 +37,7 @@
             %p.author
               = "by #{activity.user.email}"
           %p.updated
-            = "last updated at #{activity.updated_at.to_formatted_s(:long)}"
+            = "last updated at #{activity.deep_updated_at.to_formatted_s(:long)}"
+            - if activity.changed_by.present?
+              = "by #{activity.changed_by.email}"
           != activity.description
