@@ -4,6 +4,7 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :publication_status, :user_id, :pages, :related, :description
 
   belongs_to :user # Author
+  belongs_to :changed_by, :class_name => 'User'
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
 
