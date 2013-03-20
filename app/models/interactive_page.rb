@@ -16,6 +16,13 @@ class InteractivePage < ActiveRecord::Base
     self.page_items.collect{|qi| qi.embeddable}
   end
 
+  def deep_updated_at
+    last = updated_at
+    interactives.each { |ii| last = ii.updated_at unless ii.updated_at < last }
+    embeddables.each { |em| last = em.updated_at unless em.updated_at < last }
+    last
+  end
+
   # Should the interactive block be full-width? N.B. when we put more than one 
   # interactive/assessment block on a page, this should move to the block model.
   def fullwidth_interactive
