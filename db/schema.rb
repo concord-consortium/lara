@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(:version => 20130320175814) do
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
-    t.integer  "changed_by"
     t.integer  "changed_by_id"
   end
 
