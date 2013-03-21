@@ -38,7 +38,6 @@ class LightweightActivity < ActiveRecord::Base
     end
     return q
   end
-
   
   # Returns an array of strings representing the storage_keys of all the questions
   def question_keys

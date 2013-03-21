@@ -1,5 +1,4 @@
 require 'spec_helper'
-# TODO: Redo to use factories for the Activities
 
 describe LightweightActivitiesController do
   render_views
