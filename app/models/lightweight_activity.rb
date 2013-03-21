@@ -26,15 +26,6 @@ class LightweightActivity < ActiveRecord::Base
     :run_html
   end
 
-  # Returns an updated_at date which represents the most-recent change to any child of the
-  # activity, i.e. a page or any of the pages' embeddables or interactives. (Recursive: uses deep_updated_at
-  # from pages rather than checking those "grandchild" items itself.)
-  def deep_updated_at
-    last = updated_at
-    pages.each { |p| last = p.deep_updated_at unless p.updated_at < last }
-    last
-  end
-
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []

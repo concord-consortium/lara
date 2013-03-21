@@ -77,22 +77,4 @@ describe InteractivePage do
     page.reload
     page.interactives.length.should > 0
   end
-
-  describe '#deep_updated_at' do
-    it 'returns updated_at if there are no children' do
-      childless = FactoryGirl.create(:page)
-      childless.deep_updated_at.should == childless.updated_at
-    end
-
-    it 'returns updated_at of children newer than page' do
-      page.deep_updated_at.should > page.updated_at
-    end
-
-    it 'returns updated_at when page has been edited since children' do
-      page.updated_at = Time.now
-      page.save
-      page.reload
-      page.deep_updated_at.should == page.updated_at
-    end
-  end
 end
