@@ -78,7 +78,7 @@ describe LightweightActivitiesController do
       end
 
       it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
-        act = LightweightActivity.create!(:name => 'There should be at least one')
+        act
         get :index
         response.body.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
         response.body.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
@@ -128,7 +128,7 @@ describe LightweightActivitiesController do
 
     describe 'edit' do
       it 'should display a form showing the current name and description' do
-        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+        act
         get :edit, {:id => act.id}
 
         response.body.should match /<form[^>]+action="\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
@@ -204,7 +204,7 @@ describe LightweightActivitiesController do
       end
 
       it 'removes the specified activity from the database with a message' do
-        act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'The test should delete this in a few lines')
+        act
         existing_activities = LightweightActivity.count
 
         post :destroy, {:_method => 'delete', :id => act.id}
@@ -222,113 +222,110 @@ describe LightweightActivitiesController do
 
     describe 'move_up' do
       before do
-        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
         [1,2,3].each do |i|
-          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
-        request.env["HTTP_REFERER"] = "/activities/#{@act.id}/edit"
+        request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
 
       it 'does not route without an id and page_id' do
         begin
-          get :move_up, {:id => @act.id}
+          get :move_up, {:id => act.id}
           throw "Should not have been able to route with no page_id"
         rescue ActionController::RoutingError
         end
       end
 
       it 'decrements the position value of the page' do
-        page = @act.pages[2]
+        page = act.pages[2]
         old_position = page.position
-        get :move_up, {:activity_id => @act.id, :id => page.id}
+        get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
+        act.reload
         page.position.should == old_position - 1
-        page.should === @act.pages[1]
+        page.should === act.pages[1]
       end
 
       it 'does not change the position of the first item' do
-        page = @act.pages.first
+        page = act.pages.first
         old_position = page.position
-        get :move_up, {:activity_id => @act.id, :id => page.id}
+        get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
+        act.reload
         page.position.should == old_position
-        page.should === @act.pages.first
+        page.should === act.pages.first
       end
 
       it 'adjusts the positions of surrounding items correctly' do
-        page = @act.pages[2]
+        page = act.pages[2]
         page_before = page.higher_item
-        get :move_up, {:activity_id => @act.id, :id => page.id}
+        get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
-        page_before.should === @act.pages[2]
+        act.reload
+        page_before.should === act.pages[2]
       end
     end
 
     describe 'move_down' do
       before do
-        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
         [1,2,3].each do |i|
-          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
         request.env["HTTP_REFERER"] = "/activities/#{@act.id}/edit"
       end
 
       it 'does not route without an id and page_id' do
         begin
-          get :move_down, {:id => @act.id}
+          get :move_down, {:id => act.id}
           throw "Should not have been able to route with no page_id"
         rescue ActionController::RoutingError
         end
       end
 
       it 'increments the position value of the page' do
-        page = @act.pages[0]
+        page = act.pages[0]
         old_position = page.position
-        get :move_down, {:activity_id => @act.id, :id => page.id}
+        get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
+        act.reload
         page.position.should == old_position + 1
-        page.should === @act.pages[1]
+        page.should === act.pages[1]
       end
 
       it 'does not change the position of the last item' do
-        page = @act.pages.last
+        page = act.pages.last
         old_position = page.position
-        get :move_down, {:activity_id => @act.id, :id => page.id}
+        get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
+        act.reload
         page.position.should == old_position
-        page.should === @act.pages.last
+        page.should === act.pages.last
       end
 
       it 'adjusts the positions of surrounding items correctly' do
-        page = @act.pages.first
+        page = act.pages.first
         page_after = page.lower_item
-        get :move_down, {:activity_id => @act.id, :id => page.id}
+        get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
-        @act.reload
-        page_after.should === @act.pages.first
+        act.reload
+        page_after.should === act.pages.first
       end
     end
 
     describe 'reorder_pages' do
       before do
-        @act = LightweightActivity.create!(:name => 'Short-lived activity', :description => 'This should have reorderable pages')
         [1,2,3].each do |i|
-          @act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
       end
 
       it 'rearranges activity pages to match order in request' do
         # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
         # Should provide a list of IDs in reverse order
-        get :reorder_pages, {:id => @act.id, :item_interactive_page => @act.pages.map { |p| p.id }.reverse }
-        @act.reload
-        @act.pages.first.name.should == "Page 3"
-        @act.pages.last.name.should == "Page 1"
+        get :reorder_pages, {:id => act.id, :item_interactive_page => act.pages.map { |p| p.id }.reverse }
+        act.reload
+        act.pages.first.name.should == "Page 3"
+        act.pages.last.name.should == "Page 1"
       end
     end
   end
