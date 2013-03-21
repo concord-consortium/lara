@@ -51,13 +51,11 @@ class MwInteractivesController < ApplicationController
   def destroy
     @interactive.interactive_item.delete
     if @interactive.delete
-      flash[:notice] = 'Your interactive was deleted.'
       @activity = @page.lightweight_activity
       update_activity_changed_by
-      format.html { redirect_to edit_activity_page_path(@activity, @page) }
+      redirect_to edit_activity_page_path(@activity, @page), :flash => { :notice => 'Your interactive was deleted.' }
     else
-      flash[:warning] = 'There was a problem deleting the interactive.'
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page)
+      redirect_to edit_activity_page_path(@page.lightweight_activity, @page), :flash => { :warning => 'There was a problem deleting the interactive.' }
     end
   end
 

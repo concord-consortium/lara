@@ -147,8 +147,7 @@ describe LightweightActivitiesController do
       end
 
       it 'should provide in-place editing of description and sidebar', :js => true do
-        # pending "when I figure out Devise auth in Capybara"
-        act = LightweightActivity.create!(:name => 'This activity needs in-place editing', :description => 'Edit me!')
+        act
 
         visit new_user_session_path
         fill_in "Email", :with => @user.email
@@ -163,7 +162,7 @@ describe LightweightActivitiesController do
 
     describe 'update' do
       it "should change the activity's database record to show submitted data" do
-        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
+        act
         existing_activities = LightweightActivity.count
 
         post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This name has been edited', :description => 'Activity which was edited' }}
@@ -177,8 +176,7 @@ describe LightweightActivitiesController do
       end
 
       it "should redirect to the activity's edit page on error" do
-        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
-
+        act
         post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This is another one of those really long names, hopefully long enough to trip validation and get this to be an invalid update'}}
 
         flash[:warning].should == "There was a problem updating your activity."
@@ -186,8 +184,7 @@ describe LightweightActivitiesController do
       end
 
       it 'should change single attributes in response to XHR-submitted data' do
-        act = LightweightActivity.create!(:name => 'This name needs editing', :description => 'Activity to be edited')
-
+        act
         xhr :post, :update, {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
 
         response.body.should match /I'm editing this name with an Ajax request/
@@ -271,7 +268,7 @@ describe LightweightActivitiesController do
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
-        request.env["HTTP_REFERER"] = "/activities/#{@act.id}/edit"
+        request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
 
       it 'does not route without an id and page_id' do
