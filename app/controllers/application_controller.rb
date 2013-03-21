@@ -12,6 +12,9 @@ class ApplicationController < ActionController::Base
 
   def update_activity_changed_by
     @activity.changed_by = current_user
-    @activity.save
+    begin
+      @activity.save
+    rescue
+    end
   end
 end
