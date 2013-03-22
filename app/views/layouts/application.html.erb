@@ -38,6 +38,6 @@
 </div>
 <div id="overlay"></div>
 <%= render :partial => 'shared/modal' %>
-<%= render :partial => 'shared/analytics' if Rails.env == 'production' %>
+<%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
 </body>
 </html>
