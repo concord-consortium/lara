@@ -1,7 +1,8 @@
 %div{ :data => { :storage_key => embeddable.storage_key } }
   .prompt
     != embeddable.prompt
-  - if @learner and (saveable = Saveable::OpenResponse.find_by_learner_id_and_open_response_id(@learner.id, embeddable.id))
-    - value = saveable.answer if saveable.answered?
   %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
     = value
+-# if @learner and (saveable = Saveable::OpenResponse.find_by_learner_id_and_open_response_id(@learner.id, embeddable.id))
+  -# value = saveable.answer if saveable.answered?
+    
