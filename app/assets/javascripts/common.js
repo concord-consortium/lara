@@ -201,6 +201,11 @@ function getResponse (answerKey) {
     return JSON.parse(localStorage.getItem(answerKey));
 }
 
+// Set up questions on the page with previous responses
+// TODO: function and code
+// Look for divs on the page with storage keys, and check them against localStorage
+// Then put in the answer (this needs more detail)
+
 // Update the modal edit window with a returned partial
 $(function () {
     $('[data-remote][data-replace]')
