@@ -1,0 +1,11 @@
+= content_for :title do 
+  = "Response Summary for #{@activity.name}"
+%h1 
+  = "Response Summary for #{@activity.name}"
+- @activity.question_keys.each do |qk|
+  %div{ :data => { :storage_key => qk } }
+    -# Content for this div is populated by JS
+
+-# TODO: Need a reset function
+-#%p
+  -# "Reset #{@activity.name}"

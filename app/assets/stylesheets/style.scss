@@ -399,6 +399,9 @@ button.disabled span.edit_trigger.disabled {
     margin: 3px 0 0 10px;
   }
 }
+body.summary .question { 
+  padding: 10px 0; 
+} 
 #footer {
   background: #bddfdf;
   clear: both;
@@ -459,6 +462,9 @@ ul.quiet_list {
       clear: both;
       display: block;
       margin-top: 23px;
+    }
+    .author, .updated {
+        font-size: 0.8em;
     }
   }
   li.item:hover {

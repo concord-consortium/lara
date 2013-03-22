@@ -27,6 +27,7 @@ class LightweightActivitiesController < ApplicationController
     @activity = LightweightActivity.create(params[:lightweight_activity])
     authorize! :create, @activity
     @activity.user = current_user
+    @activity.changed_by = current_user
     if @activity.save
       flash[:notice] = "Lightweight Activity #{@activity.name} was created."
       redirect_to edit_activity_path(@activity)
@@ -42,6 +43,7 @@ class LightweightActivitiesController < ApplicationController
 
   def update
     authorize! :update, @activity
+    update_activity_changed_by
     if @activity.update_attributes(params[:lightweight_activity])
       if request.xhr?
         render :text => params[:lightweight_activity].values.first
@@ -75,6 +77,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
     @page.move_higher
+    update_activity_changed_by
     redirect_to :back
   end
 
@@ -82,6 +85,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
     @page.move_lower
+    update_activity_changed_by
     redirect_to :back
   end
 
@@ -93,6 +97,7 @@ class LightweightActivitiesController < ApplicationController
       # If we move everything to the bottom in order, the first one should be at the top
       page.move_to_bottom
     end
+    update_activity_changed_by
     # Respond with 200
     if request.xhr?
       respond_to do |format|
@@ -102,6 +107,10 @@ class LightweightActivitiesController < ApplicationController
     else
       redirect_to edit_activity_path(@activity)
     end
+  end
+
+  def summary
+    authorize! :read, @activity
   end
 
   private

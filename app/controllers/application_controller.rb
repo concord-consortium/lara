@@ -9,4 +9,12 @@ class ApplicationController < ActionController::Base
 
   # For modal edit windows. Source: https://gist.github.com/1456815
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
+
+  def update_activity_changed_by
+    @activity.changed_by = current_user
+    begin
+      @activity.save
+    rescue
+    end
+  end
 end

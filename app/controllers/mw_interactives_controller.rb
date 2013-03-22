@@ -10,10 +10,12 @@ class MwInteractivesController < ApplicationController
   def create
     if (params[:page_id])
       @page = InteractivePage.find(params[:page_id])
+      @activity = @page.lightweight_activity
       @interactive = MwInteractive.create!()
       InteractiveItem.create!(:interactive_page => @page, :interactive => @interactive)
       flash[:notice] = "Your new MW Interactive has been created."
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page, :edit_int => @interactive.id)
+      update_activity_changed_by
+      redirect_to edit_activity_page_path(@activity, @page, :edit_int => @interactive.id)
     else
       @interactive = MwInteractive.create!()
       flash[:notice] = "Your new MW Interactive has been created."
@@ -37,7 +39,9 @@ class MwInteractivesController < ApplicationController
     end
     respond_to do |format|
       if @page
-        format.html { redirect_to edit_activity_page_path(@page.lightweight_activity, @page) }
+        @activity = @page.lightweight_activity
+        update_activity_changed_by
+        format.html { redirect_to edit_activity_page_path(@activity, @page) }
       else
         format.html { redirect_to edit_mw_interactive_path(@interactive) }
       end
@@ -47,11 +51,11 @@ class MwInteractivesController < ApplicationController
   def destroy
     @interactive.interactive_item.delete
     if @interactive.delete
-      flash[:notice] = 'Your interactive was deleted.'
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page)
+      @activity = @page.lightweight_activity
+      update_activity_changed_by
+      redirect_to edit_activity_page_path(@activity, @page), :flash => { :notice => 'Your interactive was deleted.' }
     else
-      flash[:warning] = 'There was a problem deleting the interactive.'
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page)
+      redirect_to edit_activity_page_path(@page.lightweight_activity, @page), :flash => { :warning => 'There was a problem deleting the interactive.' }
     end
   end
 

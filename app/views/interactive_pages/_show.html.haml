@@ -49,9 +49,12 @@
   - if page.show_sidebar && page.sidebar
     .sidebar
       != page.sidebar
-  - if !next_page && !page.lightweight_activity.related.blank?
-    .related
-      != page.lightweight_activity.related
+  - if !next_page
+    .summary
+      = link_to "See a summary of your responses to questions in this activity.", summary_activity_path(page.lightweight_activity)
+    - if !page.lightweight_activity.related.blank?
+      .related
+        != page.lightweight_activity.related
   - if page.interactives
     #embed
     #share

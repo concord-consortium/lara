@@ -14,6 +14,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
       respond_to do |format|
         if cancel || @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
           @multiple_choice.reload
+          @activity = @multiple_choice.activity
+          update_activity_changed_by unless @activity.nil?
           format.xml { render :edit, :layout => false }
         else
           format.xml { render :xml => @multiple_choice.errors, :status => :unprocessable_entity }
@@ -24,6 +26,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
         if @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
           flash[:notice] = 'Multiple choice was successfully updated.'
           redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
+          @activity = @multiple_choice.activity
+          update_activity_changed_by unless @activity.nil?
           format.html { redirect_to(redirect_path) }
           format.xml  { head :ok }
         else
@@ -42,8 +46,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
       end
     else
       respond_to do |format|
-        # TODO: Set up models so the choice can find its page and redirect there
-        format.html { redirect_to(@choice.multiple_choice.page) }
+        format.html { redirect_to interactive_page_path(@choice.page) unless @choice.page.nil? }
         format.json { render :json => @choice.to_json }
       end
     end
@@ -53,6 +56,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
     @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
     @multiple_choice.add_choice("New choice")
     @embeddable = @multiple_choice
+    @activity = @multiple_choice.activity
+    update_activity_changed_by unless @activity.nil?
     if request.xhr?
       respond_to do |format|
         @multiple_choice.reload
@@ -74,6 +79,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
     @choice.destroy
     @multiple_choice.reload
     @embeddable = @multiple_choice
+    @activity = @multiple_choice.activity
+    update_activity_changed_by unless @activity.nil?
     if request.xhr?
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
