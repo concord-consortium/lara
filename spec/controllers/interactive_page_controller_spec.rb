@@ -89,13 +89,13 @@ describe InteractivePagesController do
       response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}"[^>]*>[^<]*3[^<]*<\/a>/
     end
 
-    it 'only renders the forward navigation link if it is a first page' do
+    it 'only renders the forward navigation link on the first page' do
       page1
       page2
       get :show, :id => act.pages.first.id
 
       response.body.should match /<a class='previous disabled'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -104,8 +104,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages[1].id
 
-      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -114,7 +114,7 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.last.id
 
-      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next disabled'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
@@ -332,8 +332,8 @@ describe InteractivePagesController do
           page2
           page1
           get :edit, :id => page1.id, :activity_id => act.id
-          
-          assigns(:next_page).should_not be_nil
+
+          response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
         end
       end
     end
