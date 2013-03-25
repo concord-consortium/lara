@@ -69,3 +69,5 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
+
+gem 'brakeman', :require => false
