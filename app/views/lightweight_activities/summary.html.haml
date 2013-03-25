@@ -7,6 +7,6 @@
     -# Content for this div is populated by JS
 
 %button.print{ :onclick => 'window.print();' } Print
--# TODO: Need a reset function
--#%p
-  -# "Reset #{@activity.name}"
+
+%button.reset{ :onclick => 'resetActivity();' }
+  = "Reset #{@activity.name}"

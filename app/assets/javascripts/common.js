@@ -196,9 +196,20 @@ function storeResponses () {
     });
 }
 
-// TODO: Zero out responses to all questions in this activity
+// Zero out responses to all questions in this activity
+// Depends on there being a data-storage_key div for each question on the page already
+// (which is true of the summary page)
 function resetActivity () {
-    return false;
+    if ($('body.summary [data-storage_key]').length) {
+        if (window.confirm("Are you sure you wish to delete all your answers to this activity?")) {
+            $('[data-storage_key]').each( function () {
+                var storageKey;
+                storageKey = $(this).data('storage_key');
+                console.log('Clearing data for ' + storageKey);
+                localStorage.setItem(storageKey, null);
+            });
+        }
+    }
 }
 
 // Returns an object with 'question' and 'answer' attributes
