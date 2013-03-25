@@ -207,9 +207,31 @@ function getResponse (answerKey) {
 }
 
 // Set up questions on the page with previous responses
-// TODO: function and code
-// Look for divs on the page with storage keys, and check them against localStorage
-// Then put in the answer (this needs more detail)
+function restoreAnswers() {
+    $('[data-storage_key]').each( function () {
+        var storageKey, storedResponse;
+        storageKey = $(this).data('storage_key');
+        storedResponse = getResponse(storageKey);
+        if (storedResponse !== '') {
+            // Is it open response?
+            if ($(this).find('textarea').length > 0) {
+                $(this).find('textarea').val(storedResponse.answer);
+            }
+            // Is it multiple choice?
+            if ($(this).find('input:radio').length > 0) {
+                $(this).find('label').each( function () {
+                    var $radio;
+                    $radio = $(this).find('input:radio');
+                    $(this).contents().filter( function () {
+                        if ((this.nodeType === Node.TEXT_NODE) && (this.textContent.trim() === storedResponse.answer.trim())) {
+                            $radio.attr('checked', 'checked');
+                        }
+                    });
+                });
+            }
+        } 
+    });
+}
 
 // Update the modal edit window with a returned partial
 $(function () {
@@ -268,11 +290,13 @@ $(document).ready(function () {
         }
     });
 
-    // Set up to store responses
     if (localStorage && $("[data-storage_key]").length) {
+        // Set up to store responses
         $(window).unload(function () {
             storeResponses();
         });
+        // Restore previously stored responses
+        restoreAnswers();
     }
 
     // Display response summary
