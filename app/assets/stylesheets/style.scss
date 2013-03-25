@@ -829,3 +829,9 @@ body.admin.edit {
     }
   }
 }
+
+@media print {
+    #footer, #header, nav, #session, button.print {
+        display: none;
+    }
+}
