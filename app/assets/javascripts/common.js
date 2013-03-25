@@ -196,6 +196,11 @@ function storeResponses () {
     });
 }
 
+// TODO: Zero out responses to all questions in this activity
+function resetActivity () {
+    return false;
+}
+
 // Returns an object with 'question' and 'answer' attributes
 function getResponse (answerKey) {
     return JSON.parse(localStorage.getItem(answerKey));
