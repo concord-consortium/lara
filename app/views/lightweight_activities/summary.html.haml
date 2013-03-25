@@ -6,6 +6,9 @@
   %div{ :data => { :storage_key => qk } }
     -# Content for this div is populated by JS
 
+- unless params[:print].present?
+  %a{ :href => '?print=1' }
+    %button Print
 -# TODO: Need a reset function
 -#%p
   -# "Reset #{@activity.name}"
