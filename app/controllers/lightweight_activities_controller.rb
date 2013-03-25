@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
-  layout :is_printable
+  layout :is_printable # With print CSS we actually don't need this - it will go away soon.
 
   def index
     if can? :manage, LightweightActivity

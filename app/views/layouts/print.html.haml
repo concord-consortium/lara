@@ -13,3 +13,5 @@
       #content.content
         = yield
     = render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/)
+
+-# This is actually not needed with the current print CSS - don't use it
