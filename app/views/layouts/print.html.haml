@@ -1,0 +1,15 @@
+!!! 5
+%html
+  %head
+    %title
+      Lightweight || 
+      = yield :title
+    %link{ :href => 'http://fonts.googleapis.com/css?family=Lato:400,500,700', :rel => 'stylesheet', :type => 'text/css' }
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body{ :class => "right #{request.original_fullpath.split(/[\/\?]/).join(' ')}", :onload => 'window.print()' }
+    #container
+      #content.content
+        = yield
+    = render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/)

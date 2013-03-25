@@ -2,6 +2,7 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
+  layout :is_printable
 
   def index
     if can? :manage, LightweightActivity
@@ -120,5 +121,9 @@ class LightweightActivitiesController < ApplicationController
     else
       @activity = LightweightActivity.find(params[:id])
     end
+  end
+
+  def is_printable
+    params[:print].present? ? 'print' : 'application'
   end
 end
