@@ -19,3 +19,6 @@
 
 # Some kind of cache - ?
 /.jhw-cache/*
+
+# Brakeman reports
+/public/brakeman*

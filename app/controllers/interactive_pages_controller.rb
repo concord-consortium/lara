@@ -6,9 +6,6 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     @all_pages = @activity.pages
-    current_idx = @all_pages.index(@page)
-    @previous_page = (current_idx > 0) ? @all_pages[current_idx-1] : nil
-    @next_page = (current_idx < (@all_pages.size-1)) ? @all_pages[current_idx+1] : nil
 
     respond_to do |format|
       format.html
@@ -34,9 +31,6 @@ class InteractivePagesController < ApplicationController
   def edit
     authorize! :update, @page
     @all_pages = @activity.pages
-    current_idx = @all_pages.index(@page)
-    @previous_page = (current_idx > 0) ? @all_pages[current_idx-1] : nil
-    @next_page = (current_idx < (@all_pages.size-1)) ? @all_pages[current_idx+1] : nil
   end
 
   def update
