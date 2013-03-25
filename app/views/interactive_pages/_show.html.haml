@@ -1,5 +1,8 @@
-- next_page = nil unless defined?(next_page)
-- previous_page = nil unless defined?(previous_page)
+-# How do we do the next/previous buttons in the navigation block?
+- next_class = "next #{'disabled' if page.lower_item.nil?}"
+- next_href = page.lower_item.nil? ? nil : activity_page_path(page.lightweight_activity, page.lower_item)
+- previous_class = "previous #{'disabled' if page.higher_item.nil?}"
+- previous_href = page.higher_item.nil? ? nil : activity_page_path(page.lightweight_activity, page.higher_item)
 -# How wide are our embeddables stacked?
 - el = page.embeddables.length
 - ec = ["questions"]
@@ -9,22 +12,14 @@
 - embeddable_classes = ec.join(" ")
 .content
   .page-nav
-    - if previous_page
-      %a{:class => 'previous', :href => activity_page_path(previous_page.lightweight_activity, previous_page)}
-        ! &nbsp;
-    - else
-      %a{:class => 'previous disabled'}
-        ! &nbsp;
+    %a{ :class => previous_class, :href => previous_href }
+      ! &nbsp;
     - page_counter = 1
     - all_pages.each do |p|
       = link_to page_counter, activity_page_path(p.lightweight_activity, p), :class => (p === page) ? 'active' : ''
       - page_counter = page_counter + 1
-    - if next_page
-      %a{:class => 'next', :href => activity_page_path(next_page.lightweight_activity, next_page)}
-        ! &nbsp;
-    - else
-      %a{:class => 'next disabled'}
-        ! &nbsp;
+    %a{:class => next_class, :href => next_href}
+      ! &nbsp;
   %h1.title
     = page.lightweight_activity.name
   %p.question= page.name
@@ -32,27 +27,21 @@
     .instructions!= page.text
   %div{:class => (page.show_interactive ? 'text' : 'text full-width')}
     - if page.show_info_assessment && !page.fullwidth_interactive
-      %div{:class => embeddable_classes}
-        - page.embeddables.each do |e|
-          .embeddable
-            = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
+      = render :partial => 'list_embeddables', :locals => { :page => page, :embeddable_classes => embeddable_classes }
   - if page.show_interactive
     %div{:class => (page.fullwidth_interactive ? 'other full-width' : 'other')}
       - page.interactives.each do |interactive|
         - i_type = interactive.class.name.underscore
         = render :partial => "#{i_type.pluralize}/show", :locals => {:interactive => interactive}
   - if page.fullwidth_interactive && page.show_info_assessment
-    %div{:class => embeddable_classes}
-      - page.embeddables.each do |e|
-        .embeddable
-          = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
-  - if page.show_sidebar && page.sidebar
+    = render :partial => 'list_embeddables', :locals => { :page => page, :embeddable_classes => embeddable_classes }
+  - if page.show_sidebar && page.sidebar.present?
     .sidebar
       != page.sidebar
-  - if !next_page
+  - if page.last?
     .summary
       = link_to "See a summary of your responses to questions in this activity.", summary_activity_path(page.lightweight_activity)
-    - if !page.lightweight_activity.related.blank?
+    - if page.lightweight_activity.related.present?
       .related
         != page.lightweight_activity.related
   - if page.interactives
