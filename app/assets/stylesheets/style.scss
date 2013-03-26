@@ -407,7 +407,10 @@ body.summary {
     clear: right;
     float: right;
   }
-} 
+}
+div.summary {
+    clear: both;
+}
 #footer {
   background: #bddfdf;
   clear: both;
