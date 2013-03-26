@@ -40,7 +40,7 @@
       != page.sidebar
   - if page.last?
     .summary
-      = link_to "See a summary of your responses to questions in this activity.", summary_activity_path(page.lightweight_activity)
+      = link_to "Generate a report of my work.", summary_activity_path(page.lightweight_activity)
     - if page.lightweight_activity.related.present?
       .related
         != page.lightweight_activity.related
