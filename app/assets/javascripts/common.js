@@ -191,7 +191,7 @@ function storeResponses () {
             answerText.trim();
         }
         if (answerText) {
-            localStorage.setItem(storageKey, JSON.stringify({ 'question': questionText, 'answer': answerText }));
+            sessionStorage.setItem(storageKey, JSON.stringify({ 'question': questionText, 'answer': answerText }));
         }
     });
 }
@@ -206,7 +206,7 @@ function resetActivity () {
                 var storageKey;
                 storageKey = $(this).data('storage_key');
                 console.log('Clearing data for ' + storageKey);
-                localStorage.setItem(storageKey, null);
+                sessionStorage.setItem(storageKey, null);
             });
         }
     }
@@ -214,7 +214,7 @@ function resetActivity () {
 
 // Returns an object with 'question' and 'answer' attributes
 function getResponse (answerKey) {
-    return JSON.parse(localStorage.getItem(answerKey));
+    return JSON.parse(sessionStorage.getItem(answerKey));
 }
 
 // Set up questions on the page with previous responses
@@ -301,7 +301,7 @@ $(document).ready(function () {
         }
     });
 
-    if (localStorage && $("[data-storage_key]").length) {
+    if (sessionStorage && $("[data-storage_key]").length) {
         // Set up to store responses
         $(window).unload(function () {
             storeResponses();
