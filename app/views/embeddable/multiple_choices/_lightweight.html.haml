@@ -1,12 +1,13 @@
 - embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 - control_name = "questions[embeddable__#{embeddable_string}]"
-.prompt= embeddable.prompt.html_safe
-- if @learner and (saveable = Saveable::MultipleChoice.find_by_learner_id_and_multiple_choice_id(@learner.id, embeddable.id))
-  - current_answer = saveable.answers.last.choice if saveable.answered?
-- embeddable.choices.each do |choice|
-  - selected = (current_answer == choice) ? true : false
-  - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"
-  %label{:for => control_id}
-    %input{:type => "radio", :name => control_name, :id => control_id, :value => control_id, :checked => selected}
-    = choice.choice
-%button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" } Check Answer
+%div{ :data => { :storage_key => embeddable.storage_key } }
+  .prompt= embeddable.prompt.html_safe
+  -# if @learner and (saveable = Saveable::MultipleChoice.find_by_learner_id_and_multiple_choice_id(@learner.id, embeddable.id))
+    -# current_answer = saveable.answers.last.choice if saveable.answered?
+  - embeddable.choices.each do |choice|
+    -# selected = (current_answer == choice) ? true : false
+    - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"
+    %label{:for => control_id}
+      %input{:type => "radio", :name => control_name, :id => control_id, :value => control_id }
+      = choice.choice
+  %button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" } Check Answer

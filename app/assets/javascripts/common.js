@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $ */
+/*global $, Node */
 
 // TODO: These variable names should be refactored to follow convention, i.e. only prepend with $ when it contains a jQuery object
 var $content_box;
@@ -171,6 +171,79 @@ function adjustWidth() {
     $('#footer div').css('width', width);
 }
 
+// For each data-storage_key in the page, stores the current response
+function storeResponses () {
+    console.log('Storing answers locally.');
+    $('[data-storage_key]').each( function () {
+        var storageKey, questionText, answerText = '';
+        storageKey = $(this).data('storage_key');
+        // This is the question
+        $(this).find(".prompt").contents().filter( function () { questionText = this.textContent; });
+        // This is the MC answer
+        if ($(this).find("input:radio:checked").length > 0) {
+            $(this).find("input:radio:checked").parent().contents().filter( function () { if (this.nodeType === Node.TEXT_NODE) { answerText += this.textContent; } } );
+        }
+        // This is the OR answer
+        if ($(this).find("textarea").length > 0) {
+            answerText = $(this).find("textarea").val();
+        }
+        if (answerText) {
+            answerText.trim();
+        }
+        if (answerText) {
+            localStorage.setItem(storageKey, JSON.stringify({ 'question': questionText, 'answer': answerText }));
+        }
+    });
+}
+
+// Zero out responses to all questions in this activity
+// Depends on there being a data-storage_key div for each question on the page already
+// (which is true of the summary page)
+function resetActivity () {
+    if ($('body.summary [data-storage_key]').length) {
+        if (window.confirm("Are you sure you wish to delete all your answers to this activity?")) {
+            $('[data-storage_key]').each( function () {
+                var storageKey;
+                storageKey = $(this).data('storage_key');
+                console.log('Clearing data for ' + storageKey);
+                localStorage.setItem(storageKey, null);
+            });
+        }
+    }
+}
+
+// Returns an object with 'question' and 'answer' attributes
+function getResponse (answerKey) {
+    return JSON.parse(localStorage.getItem(answerKey));
+}
+
+// Set up questions on the page with previous responses
+function restoreAnswers() {
+    $('[data-storage_key]').each( function () {
+        var storageKey, storedResponse;
+        storageKey = $(this).data('storage_key');
+        storedResponse = getResponse(storageKey);
+        if (storedResponse !== '') {
+            // Is it open response?
+            if ($(this).find('textarea').length > 0) {
+                $(this).find('textarea').val(storedResponse.answer);
+            }
+            // Is it multiple choice?
+            if ($(this).find('input:radio').length > 0) {
+                $(this).find('label').each( function () {
+                    var $radio;
+                    $radio = $(this).find('input:radio');
+                    $(this).contents().filter( function () {
+                        if ((this.nodeType === Node.TEXT_NODE) && (this.textContent.trim() === storedResponse.answer.trim())) {
+                            $radio.attr('checked', 'checked');
+                        }
+                    });
+                });
+            }
+        } 
+    });
+}
+
 // Update the modal edit window with a returned partial
 $(function () {
     $('[data-remote][data-replace]')
@@ -227,5 +300,24 @@ $(document).ready(function () {
             });
         }
     });
+
+    if (localStorage && $("[data-storage_key]").length) {
+        // Set up to store responses
+        $(window).unload(function () {
+            storeResponses();
+        });
+        // Restore previously stored responses
+        restoreAnswers();
+    }
+
+    // Display response summary
+    if ($('body.summary [data-storage_key]').length) {
+        $('[data-storage_key]').each( function () {
+            var qResponse = getResponse($(this).data('storage_key'));
+            if (qResponse) {
+                $(this).html('<p class="question">' + qResponse.question + '</p><p class="response">' + qResponse.answer + '</p>'); 
+            }
+        });
+    }
 });
 

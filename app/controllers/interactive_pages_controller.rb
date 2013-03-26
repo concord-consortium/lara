@@ -6,9 +6,6 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     @all_pages = @activity.pages
-    current_idx = @all_pages.index(@page)
-    @previous_page = (current_idx > 0) ? @all_pages[current_idx-1] : nil
-    @next_page = (current_idx < (@all_pages.size-1)) ? @all_pages[current_idx+1] : nil
 
     respond_to do |format|
       format.html
@@ -26,17 +23,20 @@ class InteractivePagesController < ApplicationController
     @activity = LightweightActivity.find(params[:activity_id])
     @page = InteractivePage.create!(:lightweight_activity => @activity)
     authorize! :create, @page
+    update_activity_changed_by
     flash[:notice] = "A new page was added to #{@activity.name}"
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
   def edit
     authorize! :update, @page
+    @all_pages = @activity.pages
   end
 
   def update
     authorize! :update, @page
     had_interactive = @page.interactives.length
+    update_activity_changed_by
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
         format.html do
@@ -69,6 +69,7 @@ class InteractivePagesController < ApplicationController
 
   def destroy
     authorize! :destroy, @page
+    update_activity_changed_by
     if @page.delete
       flash[:notice] = "Page #{@page.name} was deleted."
       redirect_to edit_activity_path(@activity)
@@ -80,6 +81,7 @@ class InteractivePagesController < ApplicationController
 
   def add_embeddable
     authorize! :update, @page
+    update_activity_changed_by
     e = params[:embeddable_type].constantize.create!
     @page.add_embeddable(e)
     if e.instance_of?(Embeddable::MultipleChoice)
@@ -96,12 +98,14 @@ class InteractivePagesController < ApplicationController
 
   def remove_embeddable
     authorize! :update, @page
+    update_activity_changed_by
     PageItem.find_by_interactive_page_id_and_embeddable_id(params[:id], params[:embeddable_id]).destroy
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
   def reorder_embeddables
     authorize! :update, @page
+    update_activity_changed_by
     params[:embeddable].each do |e|
       # Format: embeddable[]=17.Embeddable::OpenResponse&embeddable[]=20.Embeddable::Xhtml&embeddable[]=19.Embeddable::OpenResponse&embeddable[]=19.Embeddable::Xhtml&embeddable[]=17.Embeddable::MultipleChoice&embeddable[]=16.Embeddable::OpenResponse   
       embeddable_id, embeddable_type = e.split('.')

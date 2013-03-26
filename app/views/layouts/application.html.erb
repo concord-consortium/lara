@@ -6,8 +6,6 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 <body class="right <%= request.original_fullpath.split('/').join(' ') %>">
 <div id="container">
@@ -38,6 +36,6 @@
 </div>
 <div id="overlay"></div>
 <%= render :partial => 'shared/modal' %>
-<%= render :partial => 'shared/analytics' if Rails.env == 'production' %>
+<%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
 </body>
 </html>

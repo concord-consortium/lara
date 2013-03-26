@@ -54,6 +54,8 @@ group :test, :development do
   gem 'rb-fsevent'
   # Rspec formatter
   gem 'fuubar'
+  # Javascript tests with PhantomJS
+  gem 'poltergeist'
 end
 
 # To use ActiveModel has_secure_password
@@ -67,3 +69,5 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
+
+gem 'brakeman', :require => false

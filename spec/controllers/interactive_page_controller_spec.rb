@@ -16,11 +16,6 @@ describe InteractivePagesController do
     page3 = FactoryGirl.create(:page, :name => "Page 3", :text => "This is the last activity text.", :lightweight_activity => act)
   end
 
-  before(:each) do
-    @user ||= FactoryGirl.create(:admin)
-    sign_in @user
-  end
-
   describe 'routing' do
     it 'recognizes and generates #show' do
       {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
@@ -94,13 +89,13 @@ describe InteractivePagesController do
       response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}"[^>]*>[^<]*3[^<]*<\/a>/
     end
 
-    it 'only renders the forward navigation link if it is a first page' do
+    it 'only renders the forward navigation link on the first page' do
       page1
       page2
       get :show, :id => act.pages.first.id
 
       response.body.should match /<a class='previous disabled'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -109,8 +104,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages[1].id
 
-      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>[^<]*&nbsp;[^<]*<\/a>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -119,7 +114,7 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.last.id
 
-      response.body.should match /<a class='previous' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>[^<]*&nbsp;[^<]*<\/a>/
+      response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next disabled'>[^<]*&nbsp;[^<]*<\/a>/
     end
 
@@ -183,6 +178,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id
 
       response.body.should match /<div class='related'>/
+      response.body.should match /<a href="\/activities\/#{act.id}\/summary">/
     end
 
     it 'does not show related content on pages other than the last page' do
@@ -248,6 +244,11 @@ describe InteractivePagesController do
   end
 
   context 'when the current user is an author' do
+    before(:each) do
+      @user ||= FactoryGirl.create(:admin)
+      sign_in @user
+    end
+
     describe 'new' do
       it 'creates a new page and redirects to its edit page' do
         get :new, :activity_id => act.id
@@ -264,6 +265,7 @@ describe InteractivePagesController do
 
         act.reload
         act.pages.length.should == activity_page_count + 1
+        act.changed_by.should == @user
       end
 
       it 'does not route if no LightweightActivity is specified' do
@@ -287,16 +289,21 @@ describe InteractivePagesController do
         end
 
         it 'saves first edits made in the WYSIWYG editor', :js => true do
-          pending "Figure out login in Capybara"
+          pending "This test is really slow"
           page1.show_introduction = 1
           page1.show_interactive = 0
           page1.save
+
+          visit new_user_session_path
+          fill_in "Email", :with => @user.email
+          fill_in "Password", :with => @user.password
+          click_button "Sign in"
           visit edit_activity_page_path(act, page1)
 
           find('#interactive_page_text_trigger').click
           find('#interactive_page_text')
           within_frame('interactive_page_text-wysiwyg-iframe') do
-            page.should have_content('This is the main activity text.')
+            page.should have_content(page1.text)
             # TODO: How can I put content in the WYSIWYG editor?
           end
           find('.wysiwyg li.html').click()
@@ -320,6 +327,14 @@ describe InteractivePagesController do
           response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_embeddable"[^<]*>/
           response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
         end
+
+        it 'shows navigation links ' do
+          page2
+          page1
+          get :edit, :id => page1.id, :activity_id => act.id
+
+          response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
+        end
       end
     end
 
@@ -329,6 +344,8 @@ describe InteractivePagesController do
 
         page1.reload
         page1.sidebar.should == 'This page now has sidebar text.'
+        act.reload
+        act.changed_by.should == @user
       end
 
       it 'redirects to the edit page with a message confirming success' do
@@ -339,7 +356,7 @@ describe InteractivePagesController do
       end
 
       it 'redirects to the edit page with a message if there is an error' do
-        pending "without validations, it's hard to feed this invalid data"
+        pending "Without validations, it's hard to feed this invalid data"
 
         # This actually generates an exception and a 500 error, not a failed update
         post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This page now has sidebar text.' }}
@@ -361,6 +378,7 @@ describe InteractivePagesController do
 
         act.pages.length.should == page_count - 1
         flash[:notice].should == "Page #{page1.name} was deleted."
+        act.changed_by.should == @user
         begin
           InteractivePage.find(page1.id)
           throw "Should not have been able to find this page"
@@ -406,6 +424,8 @@ describe InteractivePagesController do
         page1.embeddables.first.should == mc2
         page1.embeddables.last.should == mc1
         page1.embeddables[2].should == xhtml1
+        act.reload
+        act.changed_by.should == @user
       end
     end
 
@@ -425,6 +445,8 @@ describe InteractivePagesController do
         post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Xhtml'
 
         embeddable_id = page1.embeddables.last.id
+        act.reload
+        act.changed_by.should == @user
 
         response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
       end
@@ -448,6 +470,8 @@ describe InteractivePagesController do
         page1.add_embeddable(embeddable)
         post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
 
+        act.reload
+        act.changed_by.should == @user
         response.should redirect_to(edit_activity_page_path(act.id, page1.id))
       end
     end

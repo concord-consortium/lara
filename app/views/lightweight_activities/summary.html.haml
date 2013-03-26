@@ -1,0 +1,15 @@
+= content_for :title do 
+  = "Response Summary for #{@activity.name}"
+
+%button.print{ :onclick => 'window.print();'} Print
+
+%h1 
+  = "Response Summary for #{@activity.name}"
+- @activity.question_keys.each do |qk|
+  %div{ :data => { :storage_key => qk } }
+    -# Content for this div is populated by JS
+
+%button.print{ :onclick => 'window.print();' } Print
+
+%button.reset{ :onclick => 'resetActivity();' }
+  = "Clear all answers to this activity"

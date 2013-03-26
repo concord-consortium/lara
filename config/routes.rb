@@ -12,6 +12,7 @@ LightweightStandalone::Application.routes.draw do
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
+      get 'summary'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do

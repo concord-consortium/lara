@@ -10,11 +10,11 @@ describe InteractivePage do
     p
   end
   
-  it 'should have valid attributes' do
+  it 'has valid attributes' do
     page.valid?
   end
 
-  it 'should belong to a lightweight activity' do
+  it 'belongs to a lightweight activity' do
     activity = FactoryGirl.create(:activity)
 
     page.lightweight_activity = activity
@@ -27,7 +27,7 @@ describe InteractivePage do
     activity.pages.first.should == page
   end
 
-  it 'should have interactives' do
+  it 'has interactives' do
     # The factory has an interactive by default
     [3,1,2].each do |i|
       inter = FactoryGirl.create(:mw_interactive)
@@ -38,7 +38,7 @@ describe InteractivePage do
     page.interactives.size.should == 4 
   end
 
-  it 'should have interactives in the correct order' do
+  it 'has interactives in the correct order' do
     [3,1,2].each do |i|
       inter = FactoryGirl.create(:mw_interactive, :name => "inter #{i}", :url => "http://www.concord.org/#{i}")
       page.add_interactive(inter, i)
@@ -49,16 +49,16 @@ describe InteractivePage do
     page.interactives.last.name.should == "inter 3"
   end
 
-  it 'should have embeddables' do
+  it 'has embeddables' do
     page.embeddables.size.should == 3
   end
 
-  it 'should have embeddables in the correct order' do
+  it 'has embeddables in the correct order' do
     page.embeddables.first.content.should == "This is the 1st embeddable"
     page.embeddables.last.name.should == "embeddable 3"
   end
 
-  it 'should insert embeddables at the end if position is not provided' do
+  it 'inserts embeddables at the end if position is not provided' do
     embed_count = page.embeddables.length
     embed4 = FactoryGirl.create(:xhtml, :name => 'Embeddable 4')
     page.add_embeddable(embed4)
