@@ -70,22 +70,6 @@ describe LightweightActivity do
     end
   end
 
-  describe '#session_guid' do
-    it 'generates different hashes for each run' do
-      first_guid = activity.session_guid
-      second_guid = activity.session_guid
-
-      first_guid.should_not === second_guid
-    end
-
-    it 'generates different hashes with a user than without' do
-      first_guid = activity.session_guid
-      with_user_guid = activity.session_guid(author)
-
-      with_user_guid.should_not === first_guid
-    end
-  end
-
   context 'it has embeddables' do
     before :each do
       [3,1,2].each do |i|

@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
          # :confirmable
          # confirmable is waiting on a glitch: http://stackoverflow.com/q/15207154/306084
 
+  has_many :activity_responses
+  has_many :activities, :class_name => LightweightActivity
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author
   # attr_accessible :title, :body

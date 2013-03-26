@@ -5,6 +5,7 @@ class LightweightActivity < ActiveRecord::Base
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
+  has_many  :activity_responses
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
 
@@ -42,17 +43,5 @@ class LightweightActivity < ActiveRecord::Base
   # Returns an array of strings representing the storage_keys of all the questions
   def question_keys
     return questions.map { |q| q.storage_key }
-  end
-
-  # Generates a GUID for a particular run of an activity
-  def session_guid(user = nil)
-    if user.present?
-      # We're assuming a single user won't generate multiple guids per second - but even
-      # if they did, it's fine if they're not unique.
-      return Digest::MD5.hexdigest("#{name}_#{user.email}_#{DateTime.now().to_s}")[0..15]
-    else
-      # Add some pseudo-randomness to make sure they don't overlap with concurrent requests from other users
-      return Digest::MD5.hexdigest("#{name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
-    end
   end
 end
