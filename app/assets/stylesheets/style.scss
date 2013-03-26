@@ -399,8 +399,14 @@ button.disabled span.edit_trigger.disabled {
     margin: 3px 0 0 10px;
   }
 }
-body.summary .question { 
-  padding: 10px 0; 
+body.summary {
+  .question { 
+    padding: 10px 0; 
+  }
+  .print {
+    clear: right;
+    float: right;
+  }
 } 
 #footer {
   background: #bddfdf;
