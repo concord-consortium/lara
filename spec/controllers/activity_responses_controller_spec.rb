@@ -32,12 +32,22 @@ describe ActivityResponsesController do
     end
   end
 
+  describe '#index' do
+    it 'creates a new object and redirects to #show' do
+      existing_responses = ActivityResponse.count
+      get :index, :activity_id => activity.id
+      assigns(:response).should_not be_nil
+      assigns(:response).activity.should === activity
+      response.should redirect_to :action => 'show', :activity_id => activity.id, :id => assigns(:response).key
+    end
+  end
+
   describe '#show' do
     context 'with valid ID' do
       it 'returns a JSON object with that ID' do
         get :show, :id => act_response.key, :activity_id => activity.id
         response.code.should == '200'
-        response.body.should match /\{.*#{act_response.responses}.*\}/ 
+        response.body.should match /\{.*#{act_response.responses}.*\}/
       end
     end
 
@@ -48,16 +58,6 @@ describe ActivityResponsesController do
         response.code.should == '200'
         # TODO: Check that the response body includes the new key
         ActivityResponse.count.should == existing_responses+1
-      end
-    end
-
-    context 'with no ID' do
-      it 'creates a new object and redirects with ID' do
-        existing_responses = ActivityResponse.count
-        get :show, :activity_id => activity.id
-        assigns(:response).should_not be_nil
-        assigns(:response).activity.should === activity
-        response.should redirect_to activity_activity_response(:response, activity)
       end
     end
   end
@@ -77,6 +77,7 @@ describe ActivityResponsesController do
         post :update, {:_method => 'put', :id => act_response.key, :activity_id => activity.id, :activity_response => { :responses => "{ 'key': 'Updated response' }" } }
         act_response.reload
         act_response.responses.should == "{ 'key': 'Updated response' }"
+        response.body.should match /\{.*#{act_response.responses}.*\}/
       end
     end
   end
