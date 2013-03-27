@@ -1,6 +1,8 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
+# TODO: It would be nice to tag and avoid some of the slow tests
+
 guard 'rspec', :cli => '--format Fuubar --color', :version => 2 do
   watch(%r{^spec/.+_spec\.rb$})
   # watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
