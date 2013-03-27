@@ -22,6 +22,7 @@ LightweightStandalone::Application.routes.draw do
         get 'move_down', :controller => 'lightweight_activities'
       end
     end
+    resources :activity_responses, :only => [:show, :update], :constraints => { :id => /\w{16}/, :activity_id => /\d+/ }
   end
   
   # These don't need index or show pages - though there might be something to be said for an

@@ -23,4 +23,8 @@ class ActivityResponse < ActiveRecord::Base
       return Digest::MD5.hexdigest("#{activity.name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
     end
   end
+
+  def to_param
+    key
+  end
 end
