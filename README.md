@@ -1,10 +1,11 @@
 # Lightweight Activities Standalone
 
-This is a Rails application intended to provide a platform for authoring and using Lightweight activities. It is developed as a standalone version of the code original developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). Much of the code (including this README) has been migrated directly from that plugin.
+This is a Rails application intended to provide a platform for authoring and using Lightweight activities.
 
 ## Getting started
 
 1. Check out the code: if you have access, use
+
         git clone git@github.com:concord-consortium/lightweight-standalone.git
 
 otherwise, use
@@ -16,11 +17,9 @@ otherwise, use
         cd lightweight-standalone
         bundle install
 
-3. Initialize the database, with seed data:
+3. Initialize the database:
 
-        rake db:drop db:create db:load
-
-(If you would prefer to start with an empty database, use `db:migrate` instead of `db:load`.)
+        rake db:drop db:create db:migrate
 
 4. Launch the application
 
@@ -38,14 +37,18 @@ Some details about the relative authorization privileges of the author, admin an
 
 ## Deploying
 
-If you have rights to deploy to [http://lightweight-mw.concord.org](http://lightweight-mw.concord.org)
+If you have rights to deploy to [http://lightweight-mw.concord.org](http://lightweight-mw.concord.org) or [http://lightweight-mw.staging.concord.org](http://lightweight-mw.staging.concord.org),
 
-        cap deploy
+    cap production deploy
 
-should be sufficient to deploy from the master branch of this repository. If you're using a different branch, or deploying to a different server, you will want to edit `config/deploy.rb`.
+or
+        
+    cap staging deploy
+
+respectively, should be sufficient to deploy from the "production" and "staging" branches of this repository. If you're using a different branch, or deploying to a different server, you will want to edit `config/deploy/staging.rb` or `config/deploy/production.rb`.
 
 ## Running RSpec tests
-From the main plugin directory, run
+From the application root, run
 
       RAILS_ENV=test rspec spec
 
@@ -53,11 +56,15 @@ You may first need to initialize the test database:
 
       RAILS_ENV=test rake db:create db:migrate
 
-The RSpec tests live in spec/.
-
 To re-initialize the test database, use the "initialize the database" command above:
 
       RAILS_ENV=test rake db:drop db:create db:migrate
+
+The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via Poltergeist to run Capybara tests, so you will need to have PhantomJS installed; it may be [downloaded](http://phantomjs.org/download.html) or installed with Homebrew:
+
+      brew update && brew install phantomjs
+
+If you wish to run tests continuously, Guard is configured; a simple `guard` should start it.
 
 ### Adding Embeddable support
 
@@ -69,3 +76,8 @@ To support new Embeddables:
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)
 * Add the Embeddable's name as a string to the the `SUPPORTED_EMBEDDABLES` constant in `config/initializers/embeddables.rb`.
+* There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
+
+## History
+
+This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). Much of the code (including this README) has been migrated directly from that plugin.
