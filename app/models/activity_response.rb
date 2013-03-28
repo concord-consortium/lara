@@ -2,9 +2,11 @@ class ActivityResponse < ActiveRecord::Base
   belongs_to :activity, :class_name => LightweightActivity
   belongs_to :user
   
-  attr_accessible :activity, :key, :responses, :user_id
+  attr_accessible :activity, :key, :responses, :user
 
-  before_save :check_key
+  before_validation :check_key
+
+  validates :key, :format => { :with => /\A[a-zA-Z0-9]*\z/ }, :length => { :is => 16 }
 
   def check_key
     unless key.present?

@@ -9,6 +9,26 @@ describe ActivityResponse do
   }
   let (:user) { FactoryGirl.create(:user) }
 
+  describe 'validation' do
+    it 'ensures session keys are 16 characters' do
+      response.key = 'short'
+      response.should_not be_valid
+      response.key = 'thiskeyistoolongtobevalid'
+      response.should_not be_valid
+      response.key = '1234567890123456'
+      response.should be_valid
+    end
+
+    it 'ensures session keys only have letters and numbers' do
+      response.key = 'ABCDEabcde123456'
+      response.should be_valid
+      response.key = 'ABCD/abcd-12345;'
+      response.should_not be_valid
+      response.key = 'abcd ABCD_1234--'
+      response.should_not be_valid
+    end
+  end
+
   describe '#session_guid' do
     it 'generates different hashes for each run' do
       first_guid = response.session_guid
@@ -29,8 +49,9 @@ describe ActivityResponse do
     it 'creates a key for an object where key is nil' do
       response.key = nil
       response.key.should be_nil
-      response.save
+      response.should be_valid # Validation triggers the key generation
       response.key.should_not be_nil
+      response.should be_valid
     end
   end
 end

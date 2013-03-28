@@ -6,7 +6,7 @@ class ActivityResponsesController < ApplicationController
     # This is actually a special case of show - create an ActivityResponse and show it
     # - so we'll do that work here and redirect there
     @activity = LightweightActivity.find(params[:activity_id])
-    @response = ActivityResponse.create(:activity => @activity)
+    @response = ActivityResponse.create(:activity => @activity, :user => current_user)
     redirect_to activity_activity_response_url(@activity, @response)
   end
 
@@ -15,6 +15,10 @@ class ActivityResponsesController < ApplicationController
   end
 
   def update
+    # If this response isn't owned by a registered user, and is updated by one, that user now owns it
+    if @response.user.blank? && current_user
+      @response.user = current_user
+    end
     @response.update_attributes(params[:activity_response])
     @response.reload
     render :json => @response.to_json
