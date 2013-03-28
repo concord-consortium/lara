@@ -23,7 +23,6 @@ describe ActivityResponsesController do
     end
 
     it 'requires 16 character IDs' do
-      pending 'Constraints are problematic'
       begin
         get :show, :id => 'short', :activity_id => activity.id
         throw 'Should not be able to route with id "short"'
