@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node */
+/*global $, Node, response_key */
 
 // TODO: These variable names should be refactored to follow convention, i.e. only prepend with $ when it contains a jQuery object
 var $content_box;
@@ -218,7 +218,7 @@ function getResponse (answerKey) {
 }
 
 // Set up questions on the page with previous responses
-function restoreAnswers() {
+function restoreAnswers () {
     $('[data-storage_key]').each( function () {
         var storageKey, storedResponse;
         storageKey = $(this).data('storage_key');
@@ -242,6 +242,66 @@ function restoreAnswers() {
             }
         } 
     });
+}
+
+// Returns a string serializing the JSON of activity responses for storage on the server
+function buildActivityResponseBlob () {
+    var blob, activity_data;
+    blob = {};
+    activity_data = sessionStorage.getItem(response_key);
+    // Build data into the blob
+    // {
+    //     'activity_id': 11111,
+    //     'response_key': 'abcdeABCDE123456',
+    //     'last_page': -1,
+    //     'responses': [{
+    //         'storage_key': '1_2_3_name',
+    //         'question': 'lorem',
+    //         'answer': 'ipsum'
+    //     }]
+    // }
+    blob.activity_id = activity_data.activity_id;
+    blob.response_key = response_key;
+    blob.last_page = activity_data.last_page;
+    blob.responses = [];
+    activity_data.storage_keys.each( function () {
+        var local_response, push_response;
+        local_response = getResponse(this);
+        push_response = {
+            'storage_key': this,
+            'question': local_response.question,
+            'answer': local_response.answer
+        };
+        blob.responses.push(push_response);
+    });
+    return JSON.stringify(blob);
+}
+
+// Splits out responses from an ActivityReponse blob into data in sessionStore
+function parseActivityResponseBlob (blob) {
+    var working, activity_data;
+    working = JSON.parse(blob);
+    // Build activity_data object
+    activity_data = {
+        'activity_id': working.activity_id,
+        'last_page': working.last_page
+    };
+    // Store activity_data object
+    sessionStorage.setItem(working.response_key, JSON.stringify(activity_data));
+    // Store responses
+    working.responses.each( function () {
+        sessionStorage.setItem(this.storage_key, JSON.stringify({ 'question': this.question, 'answer': this.answer }));
+    });
+}
+
+// Updates server's version of this activity's responses
+function updateServer () {
+    
+}
+
+// Update sessionStore with 
+function updateSessionStore () {
+    
 }
 
 // Update the modal edit window with a returned partial
