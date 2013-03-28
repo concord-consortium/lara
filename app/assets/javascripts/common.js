@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node, response_key */
+/*global $, Node */
 
 // TODO: These variable names should be refactored to follow convention, i.e. only prepend with $ when it contains a jQuery object
 var $content_box;
@@ -14,7 +14,7 @@ var $header_height;
 var $scroll_start;
 var $scroll_end;
 
-var fullScreen, exitFullScreen, minHeader, maxHeader;
+var fullScreen, exitFullScreen, minHeader, maxHeader, response_key;
 
 var $scroll_handler = function () {
     // Don't do anything if the model is taller than the info/assessment block.
@@ -379,5 +379,10 @@ $(document).ready(function () {
             }
         });
     }
-});
 
+    if ($('body[data-session-key]').length) {
+        response_key = $('body[data-session-key]').data('session-key');
+    } else {
+        response_key = null;
+    }
+});
