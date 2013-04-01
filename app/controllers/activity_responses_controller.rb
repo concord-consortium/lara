@@ -11,7 +11,7 @@ class ActivityResponsesController < ApplicationController
   end
 
   def show
-    render :json => @response.to_json
+    render :json => @response.to_json(:methods => [:last_page, :storage_keys])
   end
 
   def update
@@ -21,7 +21,7 @@ class ActivityResponsesController < ApplicationController
     end
     @response.update_attributes(params[:activity_response])
     @response.reload
-    render :json => @response.to_json
+    render :json => @response.to_json(:methods => [:last_page, :storage_keys])
   end
   
   private

@@ -54,4 +54,22 @@ describe ActivityResponse do
       response.should be_valid
     end
   end
+
+  describe '#to_json' do
+    it 'contains the proper keys and values' do
+      json_blob = response.to_json(:methods => [:last_page, :storage_keys])
+      json_blob.should match /activity_id/
+      json_blob.should match /last_page/
+      json_blob.should match /storage_keys/
+      json_blob.should match /"key":"#{response.key}",/
+      json_blob.should match /responses/
+      # {
+      # activity_id: 1,
+      # last_page: null,
+      # storage_keys: []
+      # key: "be19b7a04a2ea471",
+      # responses: null,
+      # }
+    end
+  end
 end

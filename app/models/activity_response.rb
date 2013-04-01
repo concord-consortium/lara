@@ -29,4 +29,12 @@ class ActivityResponse < ActiveRecord::Base
   def to_param
     key
   end
+
+  def last_page
+    return nil
+  end
+
+  def storage_keys
+    activity.question_keys.join(',')
+  end
 end
