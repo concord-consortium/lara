@@ -223,7 +223,7 @@ function restoreAnswers () {
         var storageKey, storedResponse;
         storageKey = $(this).data('storage_key');
         storedResponse = getResponse(storageKey);
-        if (storedResponse !== '') {
+        if (storedResponse) {
             // Is it open response?
             if ($(this).find('textarea').length > 0) {
                 $(this).find('textarea').val(storedResponse.answer);
@@ -248,12 +248,13 @@ function restoreAnswers () {
 function buildActivityResponseBlob () {
     var blob, activity_data;
     blob = {};
-    activity_data = sessionStorage.getItem(response_key);
+    activity_data = JSON.parse(sessionStorage.getItem(response_key));
     // Build data into the blob
     // {
     //     'activity_id': 11111,
-    //     'response_key': 'abcdeABCDE123456',
+    //     'key': 'abcdeABCDE123456',
     //     'last_page': -1,
+    //     'storage_keys': ['1_2_3_lorem'],
     //     'responses': [{
     //         'storage_key': '1_2_3_name',
     //         'question': 'lorem',
@@ -264,44 +265,70 @@ function buildActivityResponseBlob () {
     blob.response_key = response_key;
     blob.last_page = activity_data.last_page;
     blob.responses = [];
-    activity_data.storage_keys.each( function () {
+    activity_data.storage_keys.split(',').forEach( function (storageKey) {
         var local_response, push_response;
-        local_response = getResponse(this);
-        push_response = {
-            'storage_key': this,
-            'question': local_response.question,
-            'answer': local_response.answer
-        };
-        blob.responses.push(push_response);
+        local_response = getResponse(storageKey);
+        if (local_response) {
+            push_response = {
+                'storage_key': storageKey,
+                'question': local_response.question,
+                'answer': local_response.answer
+            };
+            blob.responses.push(push_response);
+        }
     });
     return JSON.stringify(blob);
 }
 
 // Splits out responses from an ActivityReponse blob into data in sessionStore
 function parseActivityResponseBlob (blob) {
-    var working, activity_data;
-    working = JSON.parse(blob);
+    var activity_data;
     // Build activity_data object
     activity_data = {
-        'activity_id': working.activity_id,
-        'last_page': working.last_page
+        'activity_id': blob.activity_id,
+        'last_page': blob.last_page,
+        'storage_keys': blob.storage_keys
     };
     // Store activity_data object
-    sessionStorage.setItem(working.response_key, JSON.stringify(activity_data));
+    sessionStorage.setItem(blob.key, JSON.stringify(activity_data));
     // Store responses
-    working.responses.each( function () {
-        sessionStorage.setItem(this.storage_key, JSON.stringify({ 'question': this.question, 'answer': this.answer }));
-    });
+    try {
+        blob.responses.each( function () {
+            sessionStorage.setItem(this.storage_key, JSON.stringify({ 'question': this.question, 'answer': this.answer }));
+        });
+    }
+    catch(e) {
+        console.warn(e);
+    }
 }
 
 // Updates server's version of this activity's responses
 function updateServer () {
-    
+    var activity_id;
+    if (response_key) {
+        activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        $.ajax({
+            url: '/activities/' + activity_id + '/activity_responses/' + response_key,
+            type: 'PUT',
+            data: buildActivityResponseBlob(),
+            success: function (data) {
+                console.log(data);
+                parseActivityResponseBlob(data);
+            }
+        });
+    }
 }
 
-// Update sessionStore with 
+// Update sessionStore with any data stored on the server
 function updateSessionStore () {
-    
+    var activity_id;
+    if (response_key) {
+        activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        $.get('/activities/' + activity_id + '/activity_responses/' + response_key, function(data) {
+            console.log(data);
+            parseActivityResponseBlob(data);
+        });
+    }
 }
 
 // Update the modal edit window with a returned partial
@@ -363,7 +390,7 @@ $(document).ready(function () {
 
     if (sessionStorage && $("[data-storage_key]").length) {
         // Set up to store responses
-        $(window).unload(function () {
+        $(window).unload(function () { // TODO: Let's do this on-blur for the questions, not on window.unload
             storeResponses();
         });
         // Restore previously stored responses
