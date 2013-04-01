@@ -4,6 +4,7 @@ require 'spec_helper'
 describe LightweightActivitiesController do
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
+  let (:ar) { FactoryGirl.create(:activity_response, :activity_id => act.id) }
   
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
@@ -63,7 +64,7 @@ describe LightweightActivitiesController do
       page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page.add_embeddable(FactoryGirl.create(:mc_embeddable))
 
-      get :summary, :id => act.id
+      get :summary, :id => act.id, :response_key => ar.key
 
       response.body.should match /<h1>\n?Response Summary for/
       response.body.should match /<div[^>]+data-storage_key='[^']+'/
