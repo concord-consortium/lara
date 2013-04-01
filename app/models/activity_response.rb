@@ -2,7 +2,7 @@ class ActivityResponse < ActiveRecord::Base
   belongs_to :activity, :class_name => LightweightActivity
   belongs_to :user
   
-  attr_accessible :activity, :key, :responses, :user
+  attr_accessible :activity, :key, :responses, :user, :last_page
 
   before_validation :check_key
 

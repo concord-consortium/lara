@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130326180054) do
+ActiveRecord::Schema.define(:version => 20130401185220) do
 
   create_table "activity_responses", :force => true do |t|
     t.string   "key",         :null => false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20130326180054) do
     t.integer  "user_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "last_page"
   end
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
