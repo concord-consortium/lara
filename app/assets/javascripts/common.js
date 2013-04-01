@@ -171,6 +171,8 @@ function adjustWidth() {
     $('#footer div').css('width', width);
 }
 
+/*** Storing activity responses in sessionStorage ***/
+
 // For each data-storage_key in the page, stores the current response
 function storeResponses () {
     console.log('Storing answers locally.');
@@ -244,27 +246,25 @@ function restoreAnswers () {
     });
 }
 
+/*** Updating server with activity responses in sessionStorage ***/
+
 // Returns a string serializing the JSON of activity responses for storage on the server
 function buildActivityResponseBlob () {
-    var blob, activity_data;
+    var blob, activity_data, responses;
     blob = {};
     activity_data = JSON.parse(sessionStorage.getItem(response_key));
     // Build data into the blob
     // {
-    //     'activity_id': 11111,
-    //     'key': 'abcdeABCDE123456',
     //     'last_page': -1,
-    //     'storage_keys': ['1_2_3_lorem'],
     //     'responses': [{
     //         'storage_key': '1_2_3_name',
     //         'question': 'lorem',
     //         'answer': 'ipsum'
     //     }]
     // }
-    blob.activity_id = activity_data.activity_id;
-    blob.response_key = response_key;
+    // blob.key = response_key;
     blob.last_page = activity_data.last_page;
-    blob.responses = [];
+    responses = [];
     activity_data.storage_keys.split(',').forEach( function (storageKey) {
         var local_response, push_response;
         local_response = getResponse(storageKey);
@@ -274,16 +274,18 @@ function buildActivityResponseBlob () {
                 'question': local_response.question,
                 'answer': local_response.answer
             };
-            blob.responses.push(push_response);
+            responses.push(push_response);
         }
     });
-    return JSON.stringify(blob);
+    blob.responses = JSON.stringify(responses);
+    return { 'activity_response': blob };
 }
 
 // Splits out responses from an ActivityReponse blob into data in sessionStore
 function parseActivityResponseBlob (blob) {
     var activity_data;
     // Build activity_data object
+    // Note that activity_id and storage_keys always come from the server - we don't send them back
     activity_data = {
         'activity_id': blob.activity_id,
         'last_page': blob.last_page,
@@ -293,12 +295,13 @@ function parseActivityResponseBlob (blob) {
     sessionStorage.setItem(blob.key, JSON.stringify(activity_data));
     // Store responses
     try {
-        blob.responses.each( function () {
-            sessionStorage.setItem(this.storage_key, JSON.stringify({ 'question': this.question, 'answer': this.answer }));
+        JSON.parse(blob.responses).forEach( function (resp) {
+            sessionStorage.setItem(resp.storage_key, JSON.stringify({ 'question': resp.question, 'answer': resp.answer }));
         });
     }
     catch(e) {
         console.warn(e);
+        console.log(blob.responses);
     }
 }
 
@@ -306,7 +309,13 @@ function parseActivityResponseBlob (blob) {
 function updateServer () {
     var activity_id;
     if (response_key) {
-        activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        try {
+            activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        }
+        catch (e) {
+            console.warn('No activity_id in sessionStore; parsing from document.location.pathname instead.');
+            activity_id = /\/activities\/(\d+)/i.exec(document.location.pathname)[1];
+        }
         $.ajax({
             url: '/activities/' + activity_id + '/activity_responses/' + response_key,
             type: 'PUT',
@@ -323,13 +332,21 @@ function updateServer () {
 function updateSessionStore () {
     var activity_id;
     if (response_key) {
-        activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        try {
+            activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        }
+        catch (e) {
+            console.warn('No activity_id in sessionStore; parsing from document.location.pathname instead.');
+            activity_id = /\/activities\/(\d+)/i.exec(document.location.pathname)[1];
+        }
         $.get('/activities/' + activity_id + '/activity_responses/' + response_key, function(data) {
             console.log(data);
             parseActivityResponseBlob(data);
         });
     }
 }
+
+/*** End of response storage ***/
 
 // Update the modal edit window with a returned partial
 $(function () {
@@ -388,10 +405,31 @@ $(document).ready(function () {
         }
     });
 
+    if ($('body[data-session-key]').length) {
+        // Ongoing activity session: update sessionStore from the server
+        console.log('Setting response_key and updating from server');
+        response_key = $('body[data-session-key]').data('session-key');
+        updateSessionStore();
+    } else {
+        response_key = null;
+    }
+
     if (sessionStorage && $("[data-storage_key]").length) {
         // Set up to store responses
-        $(window).unload(function () { // TODO: Let's do this on-blur for the questions, not on window.unload
+        // Update sessionStore on-blur for the open response textarea
+        $("[data-storage_key] textarea").blur(function () {
+            console.log('Storing in sessionStore');
             storeResponses();
+        });
+        // Update sessionStore on-click for the multiple choice radio buttons
+        $("[data-storage_key] input:radio").click(function () {
+            console.log('Storing in sessionStore');
+            storeResponses();
+        });
+        // Post up to the server on unload
+        $(window).unload(function () { 
+            console.log('Updating to server');
+            // updateServer();
         });
         // Restore previously stored responses
         restoreAnswers();
@@ -399,17 +437,12 @@ $(document).ready(function () {
 
     // Display response summary
     if ($('body.summary [data-storage_key]').length) {
+        updateSessionStore();
         $('[data-storage_key]').each( function () {
             var qResponse = getResponse($(this).data('storage_key'));
             if (qResponse) {
                 $(this).html('<p class="question">' + qResponse.question + '</p><p class="response">' + qResponse.answer + '</p>'); 
             }
         });
-    }
-
-    if ($('body[data-session-key]').length) {
-        response_key = $('body[data-session-key]').data('session-key');
-    } else {
-        response_key = null;
     }
 });
