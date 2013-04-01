@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# There's a slow test in here somewhere.
 describe LightweightActivitiesController do
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
@@ -146,7 +147,8 @@ describe LightweightActivitiesController do
         response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"/
       end
 
-      it 'should provide in-place editing of description and sidebar', :js => true do
+      it 'should provide in-place editing of description and sidebar', :js => true, :slow => true do
+        
         act
 
         visit new_user_session_path

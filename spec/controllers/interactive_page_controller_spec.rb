@@ -135,29 +135,11 @@ describe InteractivePagesController do
       response.body.should_not match /<a class='next'>/
     end
 
-    it 'displays previous answers when viewed again' do
-      pending "There will be a new structure for user data persistence"
+    it 'displays previous answers when viewed again', :js => true do
+      pending "This needs to be updated to reflect sessionStorage storage"
       # TODO: Get factories in here when it's out of pending
-      @offering = Portal::Offering.create!
-      @offering.runnable = act
-      @offering.save
 
-      choice = @multiple_choice.choices.last
-
-      controller.stub(:setup_portal_student) { mock_model('Learner', :id => 1) }
-
-      # To create a saveable with a learner_id, we need to do it directly - posts to Offering#answer won't work, because it's a stub action which isn't learner-aware.
-      saveable_open_response = Saveable::OpenResponse.find_or_create_by_learner_id_and_offering_id_and_open_response_id(1, @offering.id, @open_response.id)
-      if saveable_open_response.response_count == 0 || saveable_open_response.answers.last.answer != "This is an OR answer"
-        saveable_open_response.answers.create(:answer => "This is an OR answer")
-      end
-
-      saveable_mc = Saveable::MultipleChoice.find_or_create_by_learner_id_and_offering_id_and_multiple_choice_id(1, @offering.id, @multiple_choice.id)
-      if saveable_mc.answers.empty? || saveable_mc.answers.last.answer != choice
-        saveable_mc.answers.create(:choice_id => choice.id)
-      end
-
-      get :show, :id => @page.id, :offering_id => @offering.id
+      get :show, :id => @page.id
 
       or_regex = /<textarea.*?name='questions\[embeddable__open_response_(\d+)\].*?>[^<]*This is an OR answer[^<]*<\/textarea>/m
       response.body.should =~ or_regex
@@ -288,8 +270,7 @@ describe InteractivePagesController do
           response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page1.text}<\/span>/
         end
 
-        it 'saves first edits made in the WYSIWYG editor', :js => true do
-          pending "This test is really slow"
+        it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
           page1.show_introduction = 1
           page1.show_interactive = 0
           page1.save
