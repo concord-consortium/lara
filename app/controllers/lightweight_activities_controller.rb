@@ -2,6 +2,7 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
+  before_filter :set_session_key, :only => [:summary]
 
   def index
     if can? :manage, LightweightActivity
@@ -111,6 +112,9 @@ class LightweightActivitiesController < ApplicationController
 
   def summary
     authorize! :read, @activity
+    if !params[:response_key]
+      redirect_to summary_with_response_path(@activity, @session_key) and return
+    end
   end
 
   private
