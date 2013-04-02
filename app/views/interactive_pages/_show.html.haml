@@ -41,7 +41,7 @@
   - if page.last?
     .summary
       = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(page.lightweight_activity, @session_key)
-    - if page.lightweight_activity.related.present?
+    - if has_good_content(page.lightweight_activity.related)
       .related
         != page.lightweight_activity.related
   - if page.interactives
