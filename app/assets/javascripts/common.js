@@ -14,7 +14,7 @@ var $header_height;
 var $scroll_start;
 var $scroll_end;
 
-var fullScreen, exitFullScreen, minHeader, maxHeader;
+var fullScreen, exitFullScreen, minHeader, maxHeader, response_key;
 
 var $scroll_handler = function () {
     // Don't do anything if the model is taller than the info/assessment block.
@@ -171,6 +171,8 @@ function adjustWidth() {
     $('#footer div').css('width', width);
 }
 
+/*** Storing activity responses in sessionStorage ***/
+
 // For each data-storage_key in the page, stores the current response
 function storeResponses () {
     console.log('Storing answers locally.');
@@ -218,12 +220,12 @@ function getResponse (answerKey) {
 }
 
 // Set up questions on the page with previous responses
-function restoreAnswers() {
+function restoreAnswers () {
     $('[data-storage_key]').each( function () {
         var storageKey, storedResponse;
         storageKey = $(this).data('storage_key');
         storedResponse = getResponse(storageKey);
-        if (storedResponse !== '') {
+        if (storedResponse) {
             // Is it open response?
             if ($(this).find('textarea').length > 0) {
                 $(this).find('textarea').val(storedResponse.answer);
@@ -243,6 +245,113 @@ function restoreAnswers() {
         } 
     });
 }
+
+/*** Updating server with activity responses in sessionStorage ***/
+
+// Returns a string serializing the JSON of activity responses for storage on the server
+function buildActivityResponseBlob () {
+    var blob, activity_data, responses;
+    blob = {};
+    activity_data = JSON.parse(sessionStorage.getItem(response_key));
+    // Build data into the blob
+    // {
+    //     'last_page': -1,
+    //     'responses': [{
+    //         'storage_key': '1_2_3_name',
+    //         'question': 'lorem',
+    //         'answer': 'ipsum'
+    //     }]
+    // }
+    // blob.key = response_key;
+    blob.last_page = activity_data.last_page;
+    responses = [];
+    activity_data.storage_keys.split(',').forEach( function (storageKey) {
+        var local_response, push_response;
+        local_response = getResponse(storageKey);
+        if (local_response) {
+            push_response = {
+                'storage_key': storageKey,
+                'question': local_response.question,
+                'answer': local_response.answer
+            };
+            responses.push(push_response);
+        }
+    });
+    blob.responses = JSON.stringify(responses);
+    return { 'activity_response': blob };
+}
+
+// Splits out responses from an ActivityReponse blob into data in sessionStore
+function parseActivityResponseBlob (blob) {
+    var activity_data, responses;
+    // Build activity_data object
+    // Note that activity_id and storage_keys always come from the server - we don't send them back
+    activity_data = {
+        'activity_id': blob.activity_id,
+        'last_page': blob.last_page,
+        'storage_keys': blob.storage_keys
+    };
+    // Store activity_data object
+    sessionStorage.setItem(blob.key, JSON.stringify(activity_data));
+    // Store responses
+    responses = JSON.parse(blob.responses);
+    if (responses) {
+        try {
+            responses.forEach( function (resp) {
+                sessionStorage.setItem(resp.storage_key, JSON.stringify({ 'question': resp.question, 'answer': resp.answer }));
+            });
+        }
+        catch(e) {
+            console.warn(e);
+            console.log(blob.responses);
+        }
+    } else {
+        console.log('No responses found in server data');
+    }
+}
+
+// Updates server's version of this activity's responses
+function updateServer () {
+    var activity_id;
+    if (response_key) {
+        try {
+            activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        }
+        catch (e) {
+            console.warn('No activity_id in sessionStore; parsing from document.location.pathname instead.');
+            activity_id = /\/activities\/(\d+)/i.exec(document.location.pathname)[1];
+        }
+        $.ajax({
+            url: '/activities/' + activity_id + '/activity_responses/' + response_key,
+            type: 'PUT',
+            data: buildActivityResponseBlob(),
+            success: function (data) {
+                console.log(data);
+                parseActivityResponseBlob(data);
+            }
+        });
+    }
+}
+
+// Update sessionStore with any data stored on the server
+function updateSessionStore () {
+    var activity_id;
+    if (response_key) {
+        try {
+            activity_id = JSON.parse(sessionStorage.getItem(response_key)).activity_id;
+        }
+        catch (e) {
+            console.warn('No activity_id in sessionStore; parsing from document.location.pathname instead.');
+            activity_id = /\/activities\/(\d+)/i.exec(document.location.pathname)[1];
+        }
+        $.get('/activities/' + activity_id + '/activity_responses/' + response_key, function(data) {
+            console.log(data);
+            parseActivityResponseBlob(data);
+        });
+    }
+}
+
+/*** End of response storage ***/
 
 // Update the modal edit window with a returned partial
 $(function () {
@@ -301,10 +410,33 @@ $(document).ready(function () {
         }
     });
 
+    if ($('body[data-session-key]').length) {
+        // Ongoing activity session: update sessionStore from the server
+        console.log('Setting response_key and updating from server');
+        response_key = $('body[data-session-key]').data('session-key');
+        updateSessionStore();
+    } else {
+        response_key = null;
+    }
+
     if (sessionStorage && $("[data-storage_key]").length) {
         // Set up to store responses
-        $(window).unload(function () {
+        // Update sessionStore on-blur for the open response textarea
+        $("[data-storage_key] textarea").blur(function () {
+            console.log('Storing in sessionStore');
             storeResponses();
+        });
+        // Update sessionStore on-click for the multiple choice radio buttons
+        $("[data-storage_key] input:radio").click(function () {
+            console.log('Storing in sessionStore');
+            storeResponses();
+        });
+        // Post up to the server on unload
+        // FIXME: Something's wrong here, in that the success callback doesn't get called and the server is not updated.
+        // The updateServer() method works when called by itself, but not when it's called here.
+        $(window).unload(function () { 
+            console.log('Updating to server');
+            updateServer();
         });
         // Restore previously stored responses
         restoreAnswers();
@@ -312,6 +444,7 @@ $(document).ready(function () {
 
     // Display response summary
     if ($('body.summary [data-storage_key]').length) {
+        updateSessionStore(); // TODO: Wait until this is done to move on.
         $('[data-storage_key]').each( function () {
             var qResponse = getResponse($(this).data('storage_key'));
             if (qResponse) {
@@ -320,4 +453,3 @@ $(document).ready(function () {
         });
     }
 });
-

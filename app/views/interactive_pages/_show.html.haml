@@ -40,7 +40,7 @@
       != page.sidebar
   - if page.last?
     .summary
-      = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_activity_path(page.lightweight_activity)
+      = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(page.lightweight_activity, @session_key)
     - if page.lightweight_activity.related.present?
       .related
         != page.lightweight_activity.related

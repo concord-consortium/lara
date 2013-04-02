@@ -2,10 +2,16 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
+  before_filter :set_session_key, :only => [:show]
 
   def show
     authorize! :read, @page
-    @all_pages = @activity.pages
+
+    if !params[:response_key]
+      redirect_to page_with_response_path(@activity, @page, @session_key) and return
+    else
+      @all_pages = @activity.pages
+    end
 
     respond_to do |format|
       format.html
