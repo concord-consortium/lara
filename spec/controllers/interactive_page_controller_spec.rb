@@ -16,6 +16,8 @@ describe InteractivePagesController do
     page3 = FactoryGirl.create(:page, :name => "Page 3", :text => "This is the last activity text.", :lightweight_activity => act)
   end
 
+  let (:ar) { FactoryGirl.create(:activity_response, :activity_id => act.id) }
+
   describe 'routing' do
     it 'recognizes and generates #show' do
       {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
@@ -65,7 +67,7 @@ describe InteractivePagesController do
       page1.add_embeddable(mc2)
 
       # get the rendering
-      get :show, :id => page1.id
+      get :show, :id => page1.id, :response_key => ar.key
 
       # verify the page is as expected
       response.body.should match /<iframe/m
@@ -82,7 +84,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id
+      get :show, :id => act.pages.first.id, :response_key => ar.key
 
       response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}"[^>]*>[^<]*1[^<]*<\/a>/
       response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}"[^>]*>[^<]*2[^<]*<\/a>/
@@ -92,7 +94,7 @@ describe InteractivePagesController do
     it 'only renders the forward navigation link on the first page' do
       page1
       page2
-      get :show, :id => act.pages.first.id
+      get :show, :id => act.pages.first.id, :response_key => ar.key
 
       response.body.should match /<a class='previous disabled'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>[^<]*&nbsp;[^<]*<\/a>/
@@ -102,7 +104,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages[1].id
+      get :show, :id => act.pages[1].id, :response_key => ar.key
 
       response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next ' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>[^<]*&nbsp;[^<]*<\/a>/
@@ -112,7 +114,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.last.id
+      get :show, :id => act.pages.last.id, :response_key => ar.key
 
       response.body.should match /<a class='previous ' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>[^<]*&nbsp;[^<]*<\/a>/
       response.body.should match /<a class='next disabled'>[^<]*&nbsp;[^<]*<\/a>/
@@ -122,42 +124,24 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id
+      get :show, :id => act.pages.first.id, :response_key => ar.key
 
       response.body.should match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}" class="active">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
       page1
-      get :show, :id => page1.id
+      get :show, :id => page1.id, :response_key => ar.key
 
       response.body.should_not match /<a class='prev'>/
       response.body.should_not match /<a class='next'>/
     end
 
-    it 'displays previous answers when viewed again' do
-      pending "There will be a new structure for user data persistence"
+    it 'displays previous answers when viewed again', :js => true do
+      pending "This needs to be updated to reflect sessionStorage storage"
       # TODO: Get factories in here when it's out of pending
-      @offering = Portal::Offering.create!
-      @offering.runnable = act
-      @offering.save
 
-      choice = @multiple_choice.choices.last
-
-      controller.stub(:setup_portal_student) { mock_model('Learner', :id => 1) }
-
-      # To create a saveable with a learner_id, we need to do it directly - posts to Offering#answer won't work, because it's a stub action which isn't learner-aware.
-      saveable_open_response = Saveable::OpenResponse.find_or_create_by_learner_id_and_offering_id_and_open_response_id(1, @offering.id, @open_response.id)
-      if saveable_open_response.response_count == 0 || saveable_open_response.answers.last.answer != "This is an OR answer"
-        saveable_open_response.answers.create(:answer => "This is an OR answer")
-      end
-
-      saveable_mc = Saveable::MultipleChoice.find_or_create_by_learner_id_and_offering_id_and_multiple_choice_id(1, @offering.id, @multiple_choice.id)
-      if saveable_mc.answers.empty? || saveable_mc.answers.last.answer != choice
-        saveable_mc.answers.create(:choice_id => choice.id)
-      end
-
-      get :show, :id => @page.id, :offering_id => @offering.id
+      get :show, :id => @page.id
 
       or_regex = /<textarea.*?name='questions\[embeddable__open_response_(\d+)\].*?>[^<]*This is an OR answer[^<]*<\/textarea>/m
       response.body.should =~ or_regex
@@ -168,17 +152,17 @@ describe InteractivePagesController do
 
     it 'shows sidebar content on pages which have it' do
       page1
-      get :show, :id => page1.id
+      get :show, :id => page1.id, :response_key => ar.key
 
       response.body.should match /<div class='sidebar'>/
     end
 
     it 'shows related content on the last page' do
       page1
-      get :show, :id => page1.id
+      get :show, :id => page1.id, :response_key => ar.key
 
       response.body.should match /<div class='related'>/
-      response.body.should match /<a href="\/activities\/#{act.id}\/summary">/
+      response.body.should match /<a href="\/activities\/#{act.id}\/summary\/#{ar.key}">/
     end
 
     it 'does not show related content on pages other than the last page' do
@@ -190,11 +174,11 @@ describe InteractivePagesController do
     end
 
     it 'does not show page areas which are not selected to be shown' do
-      get :show, :id => page1.id
+      get :show, :id => page1.id, :response_key => ar.key
       response.body.should match /<div class='sidebar'>/
       page2.show_sidebar = false
       page2.save
-      get :show, :id => page2.id
+      get :show, :id => page2.id, :response_key => ar.key
       response.body.should_not match /<div class='sidebar'>/
     end
 
@@ -288,8 +272,7 @@ describe InteractivePagesController do
           response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page1.text}<\/span>/
         end
 
-        it 'saves first edits made in the WYSIWYG editor', :js => true do
-          pending "This test is really slow"
+        it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
           page1.show_introduction = 1
           page1.show_interactive = 0
           page1.save

@@ -5,6 +5,7 @@ class LightweightActivity < ActiveRecord::Base
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
+  has_many  :activity_responses
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
 
@@ -42,5 +43,5 @@ class LightweightActivity < ActiveRecord::Base
   # Returns an array of strings representing the storage_keys of all the questions
   def question_keys
     return questions.map { |q| q.storage_key }
-  end  
+  end
 end

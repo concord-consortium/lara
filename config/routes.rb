@@ -7,8 +7,6 @@ LightweightStandalone::Application.routes.draw do
 
   root :to => 'lightweight_activities#index'
 
-  # HACK: Seems like these should be nested resources of the offering, but that's not really practical
-  # with the engine's URL scheme. Either way, we need to be able to optionally specify an offering ID.
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
@@ -22,6 +20,7 @@ LightweightStandalone::Application.routes.draw do
         get 'move_down', :controller => 'lightweight_activities'
       end
     end
+    resources :activity_responses, :only => [:index, :show, :update], :constraints => { :id => /\w{16}/, :activity_id => /\d+/ }
   end
   
   # These don't need index or show pages - though there might be something to be said for an
@@ -51,4 +50,6 @@ LightweightStandalone::Application.routes.draw do
   delete "/embeddable/multiple_choice/:id/remove_choice/:choice_id" => 'embeddable/multiple_choices#remove_choice', :as => 'remove_choice_embeddable_multiple_choice', :constraints => { :id => /\d+/, :choice_id => /\d+/ }
   post "/pages/:id/remove_embeddable/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
   get "/embeddable/multiple_choice/:id/check" => 'embeddable/multiple_choices#check', :as => 'check_multiple_choice_answer', :constraints => { :id => /\d+/ }
+  get "/activities/:activity_id/pages/:id/:response_key" => 'interactive_pages#show', :as => 'page_with_response', :constraints => { :id => /\d+/, :activity_id => /\d+/, :response_key => /\w{16}/ }
+  get "/activities/:activity_id/summary/:response_key" => 'lightweight_activities#summary', :as => 'summary_with_response', :constraints => { :activity_id => /\d+/, :response_key => /\w{16}/ }
 end

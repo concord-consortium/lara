@@ -18,4 +18,17 @@ class ApplicationController < ActionController::Base
     rescue
     end
   end
+
+  def set_session_key
+    if params[:response_key]
+      ar = ActivityResponse.find_or_create_by_key_and_activity_id(params[:response_key], @activity.id)
+      @session_key = ar.key
+    elsif current_user
+      ar = ActivityResponse.find_or_create_by_activity_id_and_user_id(@activity.id, current_user.id)
+      @session_key = ar.key
+    else
+      ar = ActivityResponse.create(:activity => @activity)
+      @session_key = ar.key
+    end
+  end
 end
