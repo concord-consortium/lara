@@ -82,8 +82,8 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.string   "workflow_state"
   end
 
-  add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "altered_interactive_pages_by_activity_idx"
-  add_index "interactive_pages", ["user_id"], :name => "altered_interactive_pages_user_idx"
+  add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
+  add_index "interactive_pages", ["user_id"], :name => "interactive_pages_user_idx"
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -97,8 +97,8 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.integer  "changed_by_id"
   end
 
-  add_index "lightweight_activities", ["publication_status"], :name => "altered_lightweight_activities_publication_status_idx"
-  add_index "lightweight_activities", ["user_id"], :name => "altered_lightweight_activities_user_idx"
+  add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
+  add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
