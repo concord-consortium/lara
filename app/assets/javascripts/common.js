@@ -283,7 +283,7 @@ function buildActivityResponseBlob () {
 
 // Splits out responses from an ActivityReponse blob into data in sessionStore
 function parseActivityResponseBlob (blob) {
-    var activity_data;
+    var activity_data, responses;
     // Build activity_data object
     // Note that activity_id and storage_keys always come from the server - we don't send them back
     activity_data = {
@@ -294,14 +294,19 @@ function parseActivityResponseBlob (blob) {
     // Store activity_data object
     sessionStorage.setItem(blob.key, JSON.stringify(activity_data));
     // Store responses
-    try {
-        JSON.parse(blob.responses).forEach( function (resp) {
-            sessionStorage.setItem(resp.storage_key, JSON.stringify({ 'question': resp.question, 'answer': resp.answer }));
-        });
-    }
-    catch(e) {
-        console.warn(e);
-        console.log(blob.responses);
+    responses = JSON.parse(blob.responses);
+    if (responses) {
+        try {
+            responses.forEach( function (resp) {
+                sessionStorage.setItem(resp.storage_key, JSON.stringify({ 'question': resp.question, 'answer': resp.answer }));
+            });
+        }
+        catch(e) {
+            console.warn(e);
+            console.log(blob.responses);
+        }
+    } else {
+        console.log('No responses found in server data');
     }
 }
 
@@ -427,9 +432,11 @@ $(document).ready(function () {
             storeResponses();
         });
         // Post up to the server on unload
+        // FIXME: Something's wrong here, in that the success callback doesn't get called and the server is not updated.
+        // The updateServer() method works when called by itself, but not when it's called here.
         $(window).unload(function () { 
             console.log('Updating to server');
-            // updateServer();
+            updateServer();
         });
         // Restore previously stored responses
         restoreAnswers();
@@ -437,7 +444,7 @@ $(document).ready(function () {
 
     // Display response summary
     if ($('body.summary [data-storage_key]').length) {
-        updateSessionStore();
+        updateSessionStore(); // TODO: Wait until this is done to move on.
         $('[data-storage_key]').each( function () {
             var qResponse = getResponse($(this).data('storage_key'));
             if (qResponse) {
