@@ -415,11 +415,11 @@ div.summary {
   background: #bddfdf;
   clear: both;
   color: #3a878b;
-  height: 110px;
   margin-top: 20px;
+  display: block;
+  padding: 1em;
   div {
     margin: 0 auto;
-    padding-top: 20px;
     width: 960px;
   }
 }
