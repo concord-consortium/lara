@@ -22,9 +22,7 @@
   </div>
   <div id="content" class="content">
     <nav><%= yield :nav %></nav>
-    <div id="session">
-      <%= render :partial => 'shared/session' %>
-    </div>
+    <%= yield :session %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
