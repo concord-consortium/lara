@@ -1,0 +1,32 @@
+table.session {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  td:nth-child(odd) {
+    text-align: right
+  }
+  td:nth-child(even) {
+    text-align: left
+  }
+  td { padding: 0.3em;}
+  label {
+    font-weight: bold;
+  }
+  border: 1px solid gray;
+  width:100%;
+}
+
+div.session {
+  display: block;
+  clear: both;
+  margin: auto;
+  padding: 1em;
+  width: 400px;
+}
+
+#session_links {
+  display: block;
+}
+
+span.session_link {
+  padding-right: 0.5em;
+}
