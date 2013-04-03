@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
@@ -19,7 +19,7 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
@@ -400,8 +400,8 @@ button.disabled span.edit_trigger.disabled {
   }
 }
 body.summary {
-  .question { 
-    padding: 10px 0; 
+  .question {
+    padding: 10px 0;
   }
   .print {
     clear: right;
@@ -636,12 +636,16 @@ div.block-empty {
 }
 /* These are unique to the edit view */
 div.edit-meta {
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   position: fixed;
-  padding: 1.5em;
+  padding: .6em;
   left: 10px;
-  top: 70px;
-  max-width: 200px;
+  top: 80px;
+  max-width: 180px;
+  z-index: 2;
+  background-color: white;
+  box-shadow: 2px 2px 5px gray;
+
   .page-section-controls li {
     list-style: none;
   }
