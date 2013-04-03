@@ -12,6 +12,8 @@ class HasOwnDisplayName
 end
 
 class TestClass
+  # Object doesn't automatically include this method.
+  include ::DisplayNameMethod
 end
 
 describe "Object#display_name" do
