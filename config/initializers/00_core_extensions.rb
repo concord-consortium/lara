@@ -122,8 +122,12 @@ module DisplayNameMethod
   end
 end
 
-# include #display_name everywhere
-Object.send(:include, ::DisplayNameMethod)
+# include #display_name everywhere  ✖ (boo)
+# Adding this method to all objects broke action mailer's duck typing:
+# TODO: Fix in rails portal project.
+# Lines in lib/mail on github: http://bit.ly/17dc8kO
+# Original stack exchange post: http://bit.ly/17dcrfv
+# Object.send(:include, ::DisplayNameMethod)
 
 
 module Enumerable
