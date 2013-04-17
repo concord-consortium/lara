@@ -1,6 +1,5 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
-    self.table_name_prefix = 'embeddable_'
     attr_accessible :name, :prompt
     has_many :page_items, :as => :embeddable
     has_many :interactive_pages, :through => :page_items

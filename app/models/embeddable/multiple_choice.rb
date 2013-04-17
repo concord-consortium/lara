@@ -1,7 +1,5 @@
 module Embeddable
   class MultipleChoice < ActiveRecord::Base
-    self.table_name_prefix = 'embeddable_'
-
     has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
     has_many :page_items, :as => :embeddable
     has_many :interactive_pages, :through => :page_items

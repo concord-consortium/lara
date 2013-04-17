@@ -1,7 +1,5 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
-    self.table_name_prefix = 'embeddable_'
-
     attr_accessible :answer_ids, :answer_texts, :run_id
     serialize  :answer_ids,   Array
     serialize  :answer_texts, Array
