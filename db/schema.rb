@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401185220) do
+ActiveRecord::Schema.define(:version => 20130417214322) do
 
   create_table "activity_responses", :force => true do |t|
     t.string   "key",         :null => false
@@ -21,6 +21,15 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "last_page"
+  end
+
+  create_table "embeddable_multiple_choice_answers", :force => true do |t|
+    t.text     "answer_ids"
+    t.text     "answer_texts"
+    t.integer  "run_id"
+    t.integer  "multiple_choice_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
@@ -37,6 +46,14 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.text     "prompt"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "embeddable_open_response_answers", :force => true do |t|
+    t.text     "answer_text"
+    t.integer  "run_id"
+    t.integer  "open_response_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "embeddable_open_responses", :force => true do |t|
@@ -121,6 +138,13 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+  end
+
+  create_table "runs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "run_count"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

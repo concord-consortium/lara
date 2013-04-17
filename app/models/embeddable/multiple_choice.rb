@@ -6,6 +6,10 @@ module Embeddable
     has_many :page_items, :as => :embeddable
     has_many :interactive_pages, :through => :page_items
 
+    has_many :answers,
+      :class_name => 'Embeddable::MultipleChoiceAnswer',
+      :foreign_key => 'multiple_choice_id'
+
     attr_accessible :name, :prompt, :choices_attributes
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
