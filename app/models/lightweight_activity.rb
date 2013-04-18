@@ -23,10 +23,6 @@ class LightweightActivity < ActiveRecord::Base
     where(:user_id => user.id)
   end
 
-  def run_format
-    :run_html
-  end
-
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []

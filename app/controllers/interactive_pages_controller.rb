@@ -16,7 +16,6 @@ class InteractivePagesController < ApplicationController
     respond_to do |format|
       format.html
       format.xml
-      # format.run_html { render :show }
     end
   end
 
