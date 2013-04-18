@@ -1,4 +1,51 @@
 = content_for :title do 
   = "#{@page.name}"
--# TODO: This should become the authoring view
-= render :partial => 'interactive_pages/show', :locals => {:page => @page, :all_pages => @all_pages}
+-# How do we do the next/previous buttons in the navigation block?
+- next_class = "next #{'disabled' if @page.lower_item.nil?}"
+- next_href = @page.lower_item.nil? ? nil : activity_page_path(@page.lightweight_activity, @page.lower_item)
+- previous_class = "previous #{'disabled' if @page.higher_item.nil?}"
+- previous_href = @page.higher_item.nil? ? nil : activity_page_path(@page.lightweight_activity, @page.higher_item)
+-# How wide are our embeddables stacked?
+- el = @page.embeddables.length
+- ec = ["questions"]
+- ec << "full-width" unless @page.show_interactive && !@page.fullwidth_interactive
+- ec << "two" if ec.include?("full-width") && (el%2 == 0 || el%3 == 1)
+- ec << "three" if !ec.include?("two") && ec.include?("full-width")
+- embeddable_display = ec.join(" ")
+.content
+  .page-nav
+    %a{ :class => previous_class, :href => previous_href }
+      ! &nbsp;
+    - page_counter = 1
+    - @all_pages.each do |p|
+      = link_to page_counter, activity_page_path(p.lightweight_activity, p), :class => (p === @page) ? 'active' : ''
+      - page_counter = page_counter + 1
+    %a{:class => next_class, :href => next_href}
+      ! &nbsp;
+  %h1.title
+    = @page.lightweight_activity.name
+  %p.question= @page.name
+  - if @page.show_introduction
+    .instructions!= @page.text
+  %div{:class => (@page.show_interactive ? 'text' : 'text full-width')}
+    - if @page.show_info_assessment && !@page.fullwidth_interactive
+      = render :partial => 'list_embeddables', :locals => { :page => @page, :embeddable_classes => embeddable_display }
+  - if @page.show_interactive
+    %div{:class => (@page.fullwidth_interactive ? 'other full-width' : 'other')}
+      - @page.interactives.each do |interactive|
+        - i_type = interactive.class.name.underscore
+        = render :partial => "#{i_type.pluralize}/show", :locals => {:interactive => interactive}
+  - if @page.fullwidth_interactive && @page.show_info_assessment
+    = render :partial => 'list_embeddables', :locals => { :page => @page, :embeddable_classes => embeddable_display }
+  - if @page.show_sidebar && @page.sidebar.present?
+    .sidebar
+      != @page.sidebar
+  - if @page.last?
+    .summary
+      = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(@page.lightweight_activity, @session_key)
+    - if has_good_content(@page.lightweight_activity.related)
+      .related
+        != @page.lightweight_activity.related
+  - if @page.interactives
+    #embed
+    #share
