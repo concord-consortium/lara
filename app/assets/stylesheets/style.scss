@@ -843,6 +843,13 @@ body.admin.edit {
   }
 }
 
+.multiple_choice {
+  .answer {
+    label {
+      display: inline;
+    }
+  }
+}
 @media print {
     #footer, #header, nav, #session, button.print {
         display: none;

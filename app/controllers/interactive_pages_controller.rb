@@ -11,7 +11,9 @@ class InteractivePagesController < ApplicationController
       redirect_to page_with_response_path(@activity, @page, @session_key) and return
     else
       @all_pages = @activity.pages
-      @modules = @page.embeddables
+      run    = Run.create() # TODO, pass in response_key
+      finder = Embeddable::AnswerFinder.new(run)
+      @modules = @page.embeddables.map { |e| finder.find_answer(e) }
       # TODO: Take the @page.embeddables array and replace OpenResponse and MultipleChoice items with the appropriate corresponding OpenResponseAnswer and MultipleChoiceAnswer items.
     end
 
