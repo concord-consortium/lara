@@ -74,12 +74,12 @@ describe LightweightActivitiesController do
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     describe '#index' do
-      it 'provides a link to create a new Lightweight Activity on the index page' do
+      it 'provides a link to create a new Lightweight Activity on the index page', :slow => true do
         get :index
         response.body.should match /<a[^>]+href="\/activities\/new"[^>]*>/
       end
 
-      it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
+      it 'provides a list of authored Lightweight Activities with edit and run links on the index page', :slow => true do
         act
         get :index
         response.body.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
