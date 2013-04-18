@@ -25,4 +25,16 @@ describe Embeddable::OpenResponseAnswer do
       run.reload.open_response_answers.should include @answer
     end
   end
+
+  describe "delegated methods" do
+    describe "prompt" do
+      it "should delegate to question" do
+        question = mock_model(Embeddable::OpenResponse)
+        question.should_receive(:prompt).and_return(:some_prompt)
+        @answer.question = question
+        @answer.prompt.should == :some_prompt
+      end
+    end
+  end
+
 end

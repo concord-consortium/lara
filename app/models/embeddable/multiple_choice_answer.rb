@@ -19,5 +19,7 @@ module Embeddable
       {:conditions => { :run_id => r.id }}
     }
 
+    delegate :prompt,  :to  => :question
+    delegate :choices, :to  => :question
   end
 end

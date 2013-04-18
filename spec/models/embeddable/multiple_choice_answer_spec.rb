@@ -12,8 +12,7 @@ describe Embeddable::MultipleChoiceAnswer do
 
   describe "model associations" do
     it "should belong to a multipe choice" do
-      question = Embeddable::MultipleChoice.create()
-      @answer.question = question
+      @answer.question = question = FactoryGirl.create(:multiple_choice)
       @answer.save
       @answer.reload.question.should == question
       question.reload.answers.should include @answer
@@ -39,5 +38,26 @@ describe Embeddable::MultipleChoiceAnswer do
         @answer.reload.answer_ids.should include a[:id]
       end
     end
+  end
+
+  describe "delegated methods" do
+    describe "choices" do
+      it "should delegate to question" do
+        question = mock_model(Embeddable::MultipleChoice)
+        question.should_receive(:choices).and_return(:some_choices)
+        @answer.question = question
+        @answer.choices.should == :some_choices
+      end
+    end
+
+    describe "prompt" do
+      it "should delegate to question" do
+        question = mock_model(Embeddable::MultipleChoice)
+        question.should_receive(:prompt).and_return(:some_prompt)
+        @answer.question = question
+        @answer.prompt.should == :some_prompt
+      end
+    end
+
   end
 end
