@@ -1,4 +1,11 @@
 / %div{ :data => { :storage_key => embeddable.storage_key } }
 .prompt
   != embeddable.prompt
-%textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
+= form_for embeddable,
+  :remote => true,
+  :html => {:'data-type' => 'json'} do |f|
+  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]", :class => 'live-submit'}
+:javascript
+  $('textarea.live-submit').live('blur',function() {
+    $(this).parents('form:first').submit();
+  });
