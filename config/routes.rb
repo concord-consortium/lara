@@ -30,9 +30,11 @@ LightweightStandalone::Application.routes.draw do
         get 'move_down', :controller => 'lightweight_activities'
       end
     end
-    resources :activity_responses, :only => [:index, :show, :update], :constraints => { :id => /\w{16}/, :activity_id => /\d+/ }
+    resources :runs, :only => [:index, :show ], :constraints => { :id => /\w{16}/, :activity_id => /\d+/ }
   end
-  
+
+  resources :runs, :only => [:index, :show ], :constraints => { :id => /\w{16}/ }
+
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show

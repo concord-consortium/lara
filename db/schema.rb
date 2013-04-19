@@ -11,17 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417214322) do
-
-  create_table "activity_responses", :force => true do |t|
-    t.string   "key",         :null => false
-    t.text     "responses"
-    t.integer  "activity_id", :null => false
-    t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "last_page"
-  end
+ActiveRecord::Schema.define(:version => 20130419192813) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.text     "answer_ids"
@@ -143,8 +133,10 @@ ActiveRecord::Schema.define(:version => 20130417214322) do
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "key"
+    t.integer  "activity_id"
   end
 
   create_table "users", :force => true do |t|
