@@ -21,14 +21,15 @@ class ApplicationController < ActionController::Base
 
   def set_session_key
     if params[:response_key]
-      ar = ActivityResponse.find_or_create_by_key_and_activity_id(params[:response_key], @activity.id)
-      @session_key = ar.key
+      @run = Run.find_or_create_by_key_and_activity_id(params[:response_key], @activity.id)
+      @session_key = @run.key
+
     elsif current_user
-      ar = ActivityResponse.find_or_create_by_activity_id_and_user_id(@activity.id, current_user.id)
-      @session_key = ar.key
+      @run = Run.find_or_create_by_activity_id_and_user_id(@activity.id, current_user.id)
+      @session_key = @run.key
     else
-      ar = ActivityResponse.create(:activity => @activity)
-      @session_key = ar.key
+      @run = Run.create(:activity => @activity)
+      @session_key = @run.key
     end
   end
 end

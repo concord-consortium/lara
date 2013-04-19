@@ -11,12 +11,12 @@ describe InteractivePagesController do
   let (:page2) do
     page2 = FactoryGirl.create(:page, :name => "Page 2", :text => "This is the next activity text.", :lightweight_activity => act)
   end
-  
+
   let (:page3) do
     page3 = FactoryGirl.create(:page, :name => "Page 3", :text => "This is the last activity text.", :lightweight_activity => act)
   end
 
-  let (:ar) { FactoryGirl.create(:activity_response, :activity_id => act.id) }
+  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -201,10 +201,10 @@ describe InteractivePagesController do
       Embeddable::MultipleChoiceChoice.create(:choice => '7', :multiple_choice => mc2)
 
       xhtml1 = Embeddable::Xhtml.create!(:name => "Xhtml 1")
-      xhtml1.content = %Q{<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at lectus mauris, sit amet commodo nunc. Maecenas auctor, magna sagittis mollis sagittis, nisi arcu mollis nisi, euismod malesuada massa nibh eget mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam sit amet velit lectus. Curabitur elementum semper purus ultrices adipiscing. Vestibulum ornare dui a ante vehicula ut tempus est pharetra. Aenean sit amet augue sapien. Integer erat dui, dictum ut ornare vitae, fermentum in ligula. Aenean pulvinar iaculis arcu ut viverra.</p> 
-        <p>Quisque ut enim erat, ut tempor arcu. Vestibulum molestie dignissim sodales. Cras ullamcorper tincidunt eros vel commodo. Vestibulum in enim sed turpis consectetur fermentum. Donec sit amet est ac massa iaculis blandit. Praesent vitae consectetur arcu. Suspendisse tristique libero vitae magna semper sagittis. Etiam ac nibh nisi. Aliquam ac nibh tortor, et ultricies enim. Integer elementum facilisis quam, quis auctor lacus feugiat vitae. Vestibulum ut laoreet urna. Fusce varius, est vel fermentum convallis, velit enim tincidunt turpis, vitae lobortis nunc erat vitae diam. Pellentesque nec lorem metus, quis consectetur velit. Aliquam at mi nunc. Nunc nec leo eleifend elit tincidunt hendrerit sit amet sit amet nisi.</p> 
-        <p>Nullam faucibus arcu sit amet ante aliquam et vehicula nisl bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec tempor faucibus ligula, non feugiat velit dignissim et. Nam in tellus ac diam dignissim suscipit. Vestibulum dapibus vestibulum viverra. Nam dapibus egestas elit ut varius. Duis quis leo augue, ac aliquet diam. Aliquam et turpis id lacus malesuada pellentesque eget vitae elit. Pellentesque sed mauris at lectus adipiscing scelerisque.</p> 
-        <p>Curabitur commodo arcu vitae urna tristique vulputate. Nulla a leo dolor, a ullamcorper orci. Praesent nec purus turpis. Aliquam nec posuere lacus. Maecenas nec ligula ut leo ullamcorper viverra ut non lacus. Sed sit amet lorem lorem. Aliquam erat volutpat. Nulla at est libero.</p> 
+      xhtml1.content = %Q{<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at lectus mauris, sit amet commodo nunc. Maecenas auctor, magna sagittis mollis sagittis, nisi arcu mollis nisi, euismod malesuada massa nibh eget mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam sit amet velit lectus. Curabitur elementum semper purus ultrices adipiscing. Vestibulum ornare dui a ante vehicula ut tempus est pharetra. Aenean sit amet augue sapien. Integer erat dui, dictum ut ornare vitae, fermentum in ligula. Aenean pulvinar iaculis arcu ut viverra.</p>
+        <p>Quisque ut enim erat, ut tempor arcu. Vestibulum molestie dignissim sodales. Cras ullamcorper tincidunt eros vel commodo. Vestibulum in enim sed turpis consectetur fermentum. Donec sit amet est ac massa iaculis blandit. Praesent vitae consectetur arcu. Suspendisse tristique libero vitae magna semper sagittis. Etiam ac nibh nisi. Aliquam ac nibh tortor, et ultricies enim. Integer elementum facilisis quam, quis auctor lacus feugiat vitae. Vestibulum ut laoreet urna. Fusce varius, est vel fermentum convallis, velit enim tincidunt turpis, vitae lobortis nunc erat vitae diam. Pellentesque nec lorem metus, quis consectetur velit. Aliquam at mi nunc. Nunc nec leo eleifend elit tincidunt hendrerit sit amet sit amet nisi.</p>
+        <p>Nullam faucibus arcu sit amet ante aliquam et vehicula nisl bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec tempor faucibus ligula, non feugiat velit dignissim et. Nam in tellus ac diam dignissim suscipit. Vestibulum dapibus vestibulum viverra. Nam dapibus egestas elit ut varius. Duis quis leo augue, ac aliquet diam. Aliquam et turpis id lacus malesuada pellentesque eget vitae elit. Pellentesque sed mauris at lectus adipiscing scelerisque.</p>
+        <p>Curabitur commodo arcu vitae urna tristique vulputate. Nulla a leo dolor, a ullamcorper orci. Praesent nec purus turpis. Aliquam nec posuere lacus. Maecenas nec ligula ut leo ullamcorper viverra ut non lacus. Sed sit amet lorem lorem. Aliquam erat volutpat. Nulla at est libero.</p>
         <p>Sed feugiat mattis vehicula. Vestibulum at lorem leo, a rutrum mauris. In id libero tellus, ac tincidunt tellus. Etiam at sem velit, at tristique est. Vestibulum fringilla sem metus. Donec elementum, dolor eget mollis mattis, metus massa porttitor nisi, non posuere felis quam sed odio. Sed rhoncus placerat eros, vel varius urna auctor vel.</p> }
 
       page1.add_embeddable(mc1)
@@ -223,7 +223,7 @@ describe InteractivePagesController do
       page.execute_script "window.scroll(0, 150);"
       currpos = first('.other > .model-container')[:style].match(/top: (\d+)px;/)[1].to_i
       currpos.should == startpos + 70
-      
+
     end
   end
 
@@ -435,7 +435,7 @@ describe InteractivePagesController do
         response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
       end
     end
-  
+
     describe 'remove_embeddable' do
       it 'removes the identified embeddable from the page' do
         embeddable = FactoryGirl.create(:xhtml)

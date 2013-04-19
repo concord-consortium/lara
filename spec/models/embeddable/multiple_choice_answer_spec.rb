@@ -19,7 +19,7 @@ describe Embeddable::MultipleChoiceAnswer do
     end
 
     it "should belong to a run" do
-      run = Run.create()
+      run = Run.create(:activity => FactoryGirl.create(:activity))
       @answer.run = run
       @answer.save
       @answer.reload.run.should == run
