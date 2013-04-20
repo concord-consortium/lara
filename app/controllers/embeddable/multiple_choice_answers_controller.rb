@@ -2,15 +2,19 @@ class Embeddable::MultipleChoiceAnswersController < ApplicationController
 
   # TODO: ensure the user can change this....
   def update
-    id     = params[:id]
-    values = params['embeddable_multiple_choice_answer']
-    binding.pry
     answer = Embeddable::MultipleChoiceAnswer.find(params[:id])
-    values = params['embeddable_multiple_choice_answer']
-    # TODO: something like this:
-    # params = params[:embeddable_multiple_choice_answer]
-    # answer.answer_texts = [params['answer_texts']]
-    # answer.save
+    # binding.pry
+    # FIXME: Below fails because form submits a single "c" rather than the expected array.
+    if answer.update_attributes(params['embeddable_multiple_choice_answer'])
+      # success
+      respond_to do |format|
+        format.json { render :json => "OK" }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => answer.errors }
+      end
+    end
   end
 
 end

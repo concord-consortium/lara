@@ -1,10 +1,16 @@
 class Embeddable::OpenResponseAnswersController < ApplicationController
   # TODO: ensure the user can change this....
   def update
-    answer = Embeddable::MultipleChoiceAnswer.find(params[:id])
-    # TODO: something like this:
-    # params = params[:embeddable_multiple_choice_answer]
-    # answer.answer_texts = [params['answer_texts']]
-    # answer.save
+    answer = Embeddable::OpenResponseAnswer.find(params[:id])
+    # FIXME: This succeeds, but doesn't update because the params aren't properly structured
+    if answer.update_attributes(params[:embeddable_open_response_answer])
+      respond_to do |format|
+        format.json { render :json => answer }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => answer.errors }
+      end
+    end
   end
 end
