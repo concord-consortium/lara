@@ -58,6 +58,23 @@ describe Embeddable::MultipleChoiceAnswer do
         @answer.prompt.should == :some_prompt
       end
     end
+  end
 
+  describe 'updating' do
+    it 'accepts both strings and arrays as answer_ids' do
+      @answer.answer_ids=[1,2]
+      @answer.answer_ids.kind_of?(Array)
+      @answer.answer_ids.length.should be(2)
+      @answer.answer_ids="1"
+      @answer.answer_ids.kind_of?(Array)
+      @answer.answer_ids.length.should be(1)
+    end
+
+    it 'syncs answer_texts with answer_ids' do
+      @answer.answer_ids=[1]
+      @answer.answer_texts.kind_of?(Array)
+      @answer.answer_texts.length.should be(1)
+      @answer.answer_texts.first.should == 'answer_one'
+    end
   end
 end
