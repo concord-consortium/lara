@@ -4,6 +4,12 @@ module Embeddable
 
     belongs_to :multiple_choice, :class_name => "Embeddable::MultipleChoice"
 
+    has_and_belongs_to_many :answers,
+      :class_name => 'Embeddable::MultipleChoiceAnswer',
+      :join_table => 'mc_answer_choices',
+      :foreign_key => 'choice_id',
+      :association_foreign_key => 'answer_id'
+
     def to_hash
       hash = {
         'choice' => is_correct,

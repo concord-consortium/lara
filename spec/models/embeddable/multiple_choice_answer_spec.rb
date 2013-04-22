@@ -5,8 +5,7 @@ describe Embeddable::MultipleChoiceAnswer do
   let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
   let(:question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer,
-                    :answer_texts => [a1.choice, a2.choice],
-                    :answer_ids => [a1.id, a2.id],
+                    :answers  => [a1, a2],
                     :question => question)
                   }
 
@@ -25,17 +24,10 @@ describe Embeddable::MultipleChoiceAnswer do
       answer.reload.run.should == run
       run.reload.multiple_choice_answers.should include answer
     end
-  end
 
-  describe "model serializations" do
-    it "should unpack answer_texts" do
+    it "should have answers" do
       [a1,a2].each do |a|
-        answer.reload.answer_texts.should include a.choice
-      end
-    end
-    it "should unpack answer_ids" do
-      [a1,a2].each do |a|
-        answer.reload.answer_ids.should include a.id
+        answer.reload.answers.should include a
       end
     end
   end
