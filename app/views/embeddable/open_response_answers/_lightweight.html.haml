@@ -4,7 +4,7 @@
 = form_for embeddable,
   :remote => true,
   :html => {:'data-type' => 'json'} do |f|
-  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]", :class => 'live-submit'}
+  = f.text_area :answer_text, :class => 'live-submit'
 
 -# TODO: Pull this JS out into the site script rather than putting it inline
 :javascript
