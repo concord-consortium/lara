@@ -8,10 +8,9 @@
       %p
         - embeddable.choices.each do |choice|
           .button_group
-            = f.radio_button :answer_texts, choice.choice, :class => 'live_submit'
+            = f.radio_button :answer_ids, choice.choice, :class => 'live_submit'
             -# TODO: I'd like these labels to function better with the radio button, so clicking the label selects the relevant choice.
             = f.label choice.choice
-      %p
   %button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" }
     Check Answer
 
