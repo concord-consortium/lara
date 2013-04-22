@@ -67,7 +67,6 @@ describe LightweightActivitiesController do
       get :summary, :id => act.id, :response_key => ar.key
 
       response.body.should match /<h1>\n?Response Summary for/
-      response.body.should match /<div[^>]+data-storage_key='[^']+'/
     end
   end
 
