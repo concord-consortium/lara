@@ -1,9 +1,9 @@
-/ %div{ :data => { :storage_key => embeddable.storage_key } }
 .prompt
   != embeddable.prompt
 = form_for embeddable,
   :remote => true,
   :html => {:'data-type' => 'json'} do |f|
+  -# FIXME: Needs to be populated with the existing answer content - why isn't that showing up?
   = f.text_area :answer_text, :class => 'live-submit'
 
 -# TODO: Pull this JS out into the site script rather than putting it inline
