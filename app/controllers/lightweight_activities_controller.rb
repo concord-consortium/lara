@@ -115,6 +115,7 @@ class LightweightActivitiesController < ApplicationController
     if !params[:response_key]
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
+    @answers = @activity.answers(@run)
   end
 
   private

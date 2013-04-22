@@ -39,4 +39,10 @@ class LightweightActivity < ActiveRecord::Base
   def question_keys
     return questions.map { |q| q.storage_key }
   end
+
+  def answers(run)
+    finder = Embeddable::AnswerFinder.new(run)
+    questions.map { |q| finder.find_answer(q) }
+  end
+
 end
