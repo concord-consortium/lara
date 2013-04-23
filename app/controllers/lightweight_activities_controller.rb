@@ -16,7 +16,7 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
-    redirect_to activity_page_path(@activity, @activity.pages.first)
+    @run.increment_run_count!
     redirect_to activity_page_path(@activity, @run.last_page)
   end
 

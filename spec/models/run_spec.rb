@@ -118,6 +118,24 @@ describe Run do
     end
   end
 
+  describe "#increment_run_count" do
+    describe "when unset"  do
+      it "should set the runcount to 1" do
+        run.increment_run_count!
+        run.reload
+        run.run_count.should == 0
+      end
+    describe "when set to 1"
+      it "should set the runcount to 2" do
+        run.run_count = 1
+        run.save
+        run.increment_run_count!
+        run.reload
+        run.run_count.should == 1
+      end
+    end
+  end
+
   describe '#to_json' do
     it 'contains the proper keys and values' do
       json_blob = run.to_json(:methods => [:last_page, :storage_keys])

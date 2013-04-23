@@ -34,8 +34,8 @@ class Run < ActiveRecord::Base
   end
 
   # Generates a GUID for a particular run of an activity
-  def session_guid(user = nil)
-    if user.present?
+  def session_guid
+    if self.user
       # We're assuming a single user won't generate multiple guids per second - but even
       # if they did, it's fine if they're not unique.
       return Digest::MD5.hexdigest("#{activity.name}_#{user.email}_#{DateTime.now().to_s}")[0..15]
@@ -78,6 +78,11 @@ class Run < ActiveRecord::Base
   # TODO: generate storage keys?
   def storage_keys
     []
+  end
+
+  def increment_run_count!
+    self.run_count ||= 0
+    increment!(run_count)
   end
 
   # TODO: do we ever want to call this?
