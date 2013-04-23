@@ -13,10 +13,3 @@
             = f.label choice.choice
   -# %button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" }
     -# Check Answer
-
--# TODO: Pull this JS out into the site script rather than putting it inline
-:javascript
-  // TODO: live() is deprecated http://api.jquery.com/live/
-  $('.live_submit').live('change',function() {
-    $(this).parents('form:first').submit();
-  });

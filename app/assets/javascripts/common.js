@@ -200,6 +200,16 @@ $(document).ready(function () {
         fullScreen();
         return false;
     });
+    // submit multiple choice on change event
+    // TODO: live() is deprecated http://api.jquery.com/live/
+    $('.live_submit').live('change',function() {
+      $(this).parents('form:first').submit();
+    });
+    // submit textarea on blur event
+    // TODO: live() is deprecated http://api.jquery.com/live/
+    $('textarea.live-submit').live('blur',function() {
+      $(this).parents('form:first').submit();
+    });
 
     // Adjust iframe to have correct aspect ratio
     setIframeHeight();

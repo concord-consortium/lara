@@ -4,10 +4,3 @@
   :remote => true,
   :html => {:'data-type' => 'json'} do |f|
   = f.text_area :answer_text, :class => 'live-submit'
-
--# TODO: Pull this JS out into the site script rather than putting it inline
-:javascript
-  // TODO: live() is deprecated http://api.jquery.com/live/
-  $('textarea.live-submit').live('blur',function() {
-    $(this).parents('form:first').submit();
-  });
