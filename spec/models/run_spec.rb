@@ -30,8 +30,8 @@ describe Run do
   end
 
   describe '#session_guid' do
-    it 'generates different hashes for each run' do
-      first_guid = run.session_guid
+    it 'generates different hashes for each activity run' do
+      first_guid  = run.session_guid
       second_guid = run.session_guid
 
       first_guid.should_not === second_guid
@@ -39,7 +39,8 @@ describe Run do
 
     it 'generates different hashes with a user than without' do
       first_guid = run.session_guid
-      with_user_guid = run.session_guid(user)
+      run.user = user
+      with_user_guid = run.session_guid
 
       with_user_guid.should_not === first_guid
     end
@@ -72,6 +73,50 @@ describe Run do
     end
   end
 
+
+  describe "self.lookup(key,activity,user=nil,remote_id=nil)" do
+    describe "with a key" do
+      it "should simply use the key" do
+        Run.stub!(:by_key => [run])
+        Run.lookup("sdfsdfsdf",nil,nil,nil).should == run
+      end
+    end
+
+    describe "without a key" do
+      describe "with no user" do
+        it "should create a new run" do
+          Run.should_receive(:create).and_return(run)
+          Run.lookup(nil,activity,nil,nil).should == run
+        end
+      end
+
+      describe "with no remote_id" do
+
+        describe "with an existing user" do
+          describe "when the user has run it before" do
+            it "should find the existing users run for the activity" do
+              Run.should_receive(:find)
+                .with(:first, :conditions =>
+                  hash_including(:user_id => user.id, :activity_id => activity.id))
+                .and_return(run)
+              Run.lookup(nil,activity,user,nil).should == run
+            end
+          end
+
+          describe "when this is the first time for the user" do
+            it "should create a new run for the user and activity" do
+              Run.should_receive(:find)
+                .with(:first, :conditions =>
+                  hash_including(:user_id => user.id, :activity_id => activity.id))
+                .and_return(nil)
+              Run.should_receive(:create).and_return(run)
+              Run.lookup(nil,activity,user,nil).should == run
+            end
+          end
+        end
+      end
+    end
+  end
 
   describe '#to_json' do
     it 'contains the proper keys and values' do

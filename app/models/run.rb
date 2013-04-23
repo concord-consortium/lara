@@ -1,5 +1,5 @@
 class Run < ActiveRecord::Base
-  attr_accessible :run_count, :user_id, :key, :activity, :user
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :activity_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -18,7 +18,14 @@ class Run < ActiveRecord::Base
     :dependent => :destroy
 
   before_validation :check_key
-  validates :key, :format => { :with => /\A[a-zA-Z0-9]*\z/ }, :length => { :is => 16 }
+
+  scope :by_key, lambda { |k|
+      {:conditions => { :key => k } }
+    }
+
+  validates :key,
+    :format => { :with => /\A[a-zA-Z0-9]*\z/ },
+    :length => { :is => 16 }
 
   def check_key
     unless key.present?
@@ -36,6 +43,27 @@ class Run < ActiveRecord::Base
       # Add some pseudo-randomness to make sure they don't overlap with concurrent requests from other users
       return Digest::MD5.hexdigest("#{activity.name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
     end
+  end
+
+  def self.for_key(key)
+    return nil if key.nil?
+    self.by_key(key).first
+  end
+
+  def self.for_user_activity_and_remote_id(user,activity,remote_id)
+    conditions = {
+      :user_id => user.id,
+      :activity_id => activity.id
+    }
+    conditions[:remote_id] = remote_id if remote_id
+    found = self.find(:first, :conditions => conditions)
+    return found || self.create(conditions)
+  end
+
+  def self.lookup(key,activity,user=nil,remote_id=nil)
+    return self.for_key(key) if key
+    return self.for_user_activity_and_remote_id(user,activity,remote_id) if user
+    return self.create(:activity => activity, :remote_id => :remote_id)
   end
 
   def to_param
