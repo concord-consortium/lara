@@ -73,6 +73,7 @@ function showPrompts() {
     }
 }
 
+// FIXME: This is broken with the changes to saving
 function checkAnswer(q_id) {
     // check for valid answer
     if (!$('input:radio[name="questions[' + q_id + ']"]:checked').val()) {
@@ -175,6 +176,7 @@ function adjustWidth() {
 $(function () {
     $('[data-remote][data-replace]')
         .data('type', 'html')
+        // TODO: live() is deprecated http://api.jquery.com/live/
         .live('ajax:success', function (event, data) {
             var $this = $(this);
             $($this.data('replace')).html(data.html);
@@ -189,13 +191,16 @@ $(document).ready(function () {
         $(document).bind('scroll', $scroll_handler);
     }
 
-    // add event listeners
+    // add event listeners:
+    // enable check answer when there is an answer
     $('input[type=radio]').click(function () {
         $('#check').removeClass('disabled');
     });
+    // exit from fullscreen event
     $('#overlay').click(function () {
         exitFullScreen();
     });
+    // enter fullscreen event
     $('.full-screen-toggle').click(function () {
         fullScreen();
         return false;
@@ -214,7 +219,8 @@ $(document).ready(function () {
     // Adjust iframe to have correct aspect ratio
     setIframeHeight();
 
-    // Set up sortable list
+    // Set up sortable lists:
+    // Embeddables in page edit
     $('#sort_embeddables').sortable({ handle: '.drag_handle',
         opacity: 0.8,
         tolerance: 'pointer',
@@ -226,6 +232,7 @@ $(document).ready(function () {
             });
         }
     });
+    // Pages in activity edit
     $('#sort-pages').sortable({ handle: '.drag_handle',
         opacity: 0.8,
         tolerance: 'pointer',
