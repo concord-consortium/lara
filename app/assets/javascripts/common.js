@@ -36,27 +36,28 @@ $(function () {
         });
 });
 
+// Everything to run at page load time
 $(document).ready(function () {
+    // *** add event listeners: ***
     // prepare for scrolling model
     if ($('.model-container').length) {
         calculateDimensions();
         $(document).bind('scroll', scroll_handler());
     }
 
-    // add event listeners:
     // enable check answer when there is an answer
     $('input[type=radio]').click(function () {
         $('#check').removeClass('disabled');
     });
-    // exit from fullscreen event
-    $('#overlay').click(function () {
-        exitFullScreen(); // Defined in full-screen.js
-    });
-    // enter fullscreen event
-    $('.full-screen-toggle').click(function () {
-        fullScreen();
-        return false;
-    });
+    // // exit from fullscreen event
+    // $('#overlay').click(function () {
+    //     exitFullScreen(); // Defined in full-screen.js
+    // });
+    // // enter fullscreen event
+    // $('.full-screen-toggle').click(function () {
+    //     fullScreen();
+    //     return false;
+    // });
     // submit multiple choice on change event
     // TODO: live() is deprecated http://api.jquery.com/live/
     $('.live_submit').live('change',function() {
