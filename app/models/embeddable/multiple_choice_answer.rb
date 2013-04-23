@@ -1,6 +1,6 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
-    attr_accessible :answer_ids, :answer_texts, :run, :question
+    attr_accessible :answers, :run, :question
 
     belongs_to :question,
       :class_name  => 'Embeddable::MultipleChoice',
@@ -30,6 +30,15 @@ module Embeddable
       self.answers.map { |a| a.choice }
     end
 
+    # Expects a parameters hash. Normalizes to allow update_attributes.
+    def update_from_form_params(params)
+      if params[:answers].kind_of?(Array)
+        params[:answers] = params[:answers].map { |a| Embeddable::MultipleChoiceChoice.find(a) }
+      else
+        params[:answers] = [Embeddable::MultipleChoiceChoice.find(params[:answers])]
+      end
+      return self.update_attributes(params)
+    end
   end
 
 end
