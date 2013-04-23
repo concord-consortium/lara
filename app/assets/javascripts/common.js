@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node */
+/*global $, Node, exitFullScreen, fullScreen */
 
 // TODO: These variable names should be refactored to follow convention, i.e. only prepend with $ when it contains a jQuery object
 var $content_box;
@@ -14,9 +14,9 @@ var $header_height;
 var $scroll_start;
 var $scroll_end;
 
-var fullScreen, exitFullScreen, minHeader, maxHeader, response_key;
+var minHeader, maxHeader, response_key;
 
-var $scroll_handler = function () {
+function scroll_handler () {
     // Don't do anything if the model is taller than the info/assessment block.
     if ($content_height > $model_height) {
         if (($(document).scrollTop() > $scroll_start) && ($(document).scrollTop() < $scroll_end)) {
@@ -33,7 +33,7 @@ var $scroll_handler = function () {
             $('.model-container').css({'position': 'absolute', 'top': $model_start + 'px', 'width': $model_width});
         }
     }
-};
+}
 
 function calculateDimensions() {
     if ($('.text') && $('.model-container')) {
@@ -77,49 +77,6 @@ function setIframeHeight() {
     $('iframe[data-aspect_ratio]').height(targetHeight);
 }
 
-fullScreen = function () {
-    $(document).unbind('scroll');
-    $('#overlay').fadeIn('fast');
-    $('.model').fadeOut('fast');
-
-    $('.full-screen-toggle').attr('onclick', '').click(function () {
-        exitFullScreen();
-        return false;
-    });
-    $('.full-screen-toggle').html('Exit Full Screen');
-    $('.model').css({'height': '90%', 'left': '5%', 'margin': '0', 'position': 'fixed', 'top': '5%', 'width': '90%', 'z-index': '100'});
-    $('.model iframe').css({'height': '100%', 'width': '100%'});
-    $('.model').fadeIn('fast');
-};
-
-exitFullScreen = function () {
-    if (!($('body').hasClass('full'))) {
-        $(document).bind('scroll', $scroll_handler());
-    }
-    $('#tutorial').fadeOut('fast');
-    $('.model').fadeOut('fast');
-    $('.full-screen-toggle').unbind('click').click(function () {
-        fullScreen();
-        return false;
-    });
-    $('.full-screen-toggle').html('Full Screen');
-    $('.model').css({'height': '510px', 'left': 'auto', 'margin': '13px 0 20px', 'position': 'relative', 'top': 'auto', 'width': '100%', 'z-index': '1'});
-    $('#overlay').fadeOut('slow');
-    $('.model').fadeIn('fast');
-};
-
-function nextQuestion(num) {
-    var curr_q = '.q' + (num - 1),
-        next_q = '.q' + num;
-    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
-}
-
-function prevQuestion(num) {
-    var curr_q = '.q' + (num + 1),
-        next_q = '.q' + num;
-    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
-}
-
 function adjustWidth() {
     var model_width, width;
     if ($('.content').css('width') === '960px') {
@@ -134,6 +91,18 @@ function adjustWidth() {
     $('.content').css('width', width);
     $('div.model').css('width', model_width);
     $('#footer div').css('width', width);
+}
+
+function nextQuestion(num) {
+    var curr_q = '.q' + (num - 1),
+        next_q = '.q' + num;
+    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
+}
+
+function prevQuestion(num) {
+    var curr_q = '.q' + (num + 1),
+        next_q = '.q' + num;
+    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
 }
 
 // Update the modal edit window with a returned partial
@@ -152,7 +121,7 @@ $(document).ready(function () {
     // prepare for scrolling model
     if ($('.model-container').length) {
         calculateDimensions();
-        $(document).bind('scroll', $scroll_handler);
+        $(document).bind('scroll', scroll_handler());
     }
 
     // add event listeners:
@@ -162,7 +131,7 @@ $(document).ready(function () {
     });
     // exit from fullscreen event
     $('#overlay').click(function () {
-        exitFullScreen();
+        exitFullScreen(); // Defined in full-screen.js
     });
     // enter fullscreen event
     $('.full-screen-toggle').click(function () {

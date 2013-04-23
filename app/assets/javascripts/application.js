@@ -22,6 +22,7 @@
 //= require jquery.jeditable.wysiwyg
 //= require modals
 //= require check-answer
+//= require full-screen
 //= require_tree .
 //= require ./common.js
 
