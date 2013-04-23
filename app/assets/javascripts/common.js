@@ -65,11 +65,6 @@ $(window).resize(function () {
     calculateDimensions();
 });
 
-function showTutorial() {
-    $('#overlay').fadeIn('fast');
-    $('#tutorial').fadeIn('fast');
-}
-
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
     var aspectRatio = $('iframe[data-aspect_ratio]').attr('data-aspect_ratio'),
@@ -91,18 +86,6 @@ function adjustWidth() {
     $('.content').css('width', width);
     $('div.model').css('width', model_width);
     $('#footer div').css('width', width);
-}
-
-function nextQuestion(num) {
-    var curr_q = '.q' + (num - 1),
-        next_q = '.q' + num;
-    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
-}
-
-function prevQuestion(num) {
-    var curr_q = '.q' + (num + 1),
-        next_q = '.q' + num;
-    $(curr_q).fadeOut('fast', function () { $(next_q).fadeIn(); });
 }
 
 // Update the modal edit window with a returned partial
