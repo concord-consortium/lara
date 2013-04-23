@@ -5,6 +5,8 @@ class Run < ActiveRecord::Base
 
   belongs_to :user
 
+  belongs_to :page, :class_name => InteractivePage # last page
+
   has_many :multiple_choice_answers,
     :class_name  => 'Embeddable::MultipleChoiceAnswer',
     :foreign_key => 'run_id',
@@ -42,7 +44,7 @@ class Run < ActiveRecord::Base
 
   # TODO: calculate last page?
   def last_page
-    "TODO: calculate last page?"
+    return self.page || self.activity.pages.first
   end
 
   # TODO: generate storage keys?

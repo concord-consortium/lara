@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_session_key, :only => [:summary]
+  before_filter :set_session_key, :only => [:summary, :show]
 
   def index
     if can? :manage, LightweightActivity
@@ -17,6 +17,7 @@ class LightweightActivitiesController < ApplicationController
   def show
     authorize! :read, @activity
     redirect_to activity_page_path(@activity, @activity.pages.first)
+    redirect_to activity_page_path(@activity, @run.last_page)
   end
 
   def new

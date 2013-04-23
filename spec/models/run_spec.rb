@@ -56,6 +56,23 @@ describe Run do
     end
   end
 
+  describe "#last_page" do
+    it "should default to the first page" do
+      activity.stub!(:pages => [:a,:b,:c])
+      run.page.should be_nil
+      run.last_page.should == :a
+    end
+    it "should remember the last page set by the controller" do
+      run.page.should be_nil
+      page = FactoryGirl.create(:page)
+      run.page = page
+      run.save
+      run.reload
+      run.last_page.should == page
+    end
+  end
+
+
   describe '#to_json' do
     it 'contains the proper keys and values' do
       json_blob = run.to_json(:methods => [:last_page, :storage_keys])

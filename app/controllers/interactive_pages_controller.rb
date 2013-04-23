@@ -12,8 +12,9 @@ class InteractivePagesController < ApplicationController
     else
       @all_pages = @activity.pages
       finder = Embeddable::AnswerFinder.new(@run)
+      @run.update_attribute(:page, @page)
       @modules = @page.embeddables.map { |e| finder.find_answer(e) }
-      # TODO: Take the @page.embeddables array and replace OpenResponse and MultipleChoice items with the appropriate corresponding OpenResponseAnswer and MultipleChoiceAnswer items.
+
     end
 
     respond_to do |format|
