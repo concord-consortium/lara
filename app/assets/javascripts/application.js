@@ -21,6 +21,7 @@
 //= require wysiwyg.table
 //= require jquery.jeditable.wysiwyg
 //= require modals
+//= require scroll-handler
 //= require check-answer
 //= require full-screen
 //= require_tree .
