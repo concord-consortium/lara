@@ -21,6 +21,7 @@
 //= require wysiwyg.table
 //= require jquery.jeditable.wysiwyg
 //= require modals
+//= require check-answer
 //= require_tree .
 //= require ./common.js
 
