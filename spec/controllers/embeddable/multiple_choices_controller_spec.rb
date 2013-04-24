@@ -4,16 +4,15 @@ describe Embeddable::MultipleChoicesController do
 
   # it_should_behave_like 'an embeddable controller'
   describe '#check' do
-    let (:correct) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is correct', :is_correct => true) }
-    let (:incorrect) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false) }
-    let (:with_prompt) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => 'Consider what would happen if this was true.') }
+    let (:multiple) { FactoryGirl.create(:mc_embeddable, :custom => true ) }
+    let (:correct) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is correct', :is_correct => true, :multiple_choice => multiple) }
+    let (:incorrect) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :multiple_choice => multiple) }
+    let (:with_prompt) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is incorrect', :is_correct => false, :prompt => 'Consider what would happen if this was true.', :multiple_choice => multiple) }
 
     context 'the choice has an owning page' do
       it 'redirects HTML requests to the owning page' do
-        mc = FactoryGirl.create(:mc_with_choices)
         page = FactoryGirl.create(:page)
-        page.add_embeddable(mc)
-        mc.choices << correct
+        page.add_embeddable(multiple)
         get :check, :id => correct.id, :format => 'html'
         response.should redirect_to(interactive_page_path(page))
       end
