@@ -218,7 +218,8 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   # disabling certificates is suggested by the Devise site on OS X
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
-  config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'], ENV['CONCORD_PORTAL_CLIENT_SECRET'], :scope => 'user,public_repo'
+  config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
+    ENV['CONCORD_PORTAL_CLIENT_SECRET'], :scope => 'user,public_repo'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
