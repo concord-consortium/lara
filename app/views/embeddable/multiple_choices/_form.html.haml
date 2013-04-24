@@ -11,6 +11,7 @@
   = field_set_tag 'Choices' do
     %label
       Custom Feedback
+      -# TODO: This should be unobtrusive JS and not onclick
       = check_box_tag "custom", 'custom', @embeddable.custom, :onclick => "showPrompts();"
     .choices
       %ul
