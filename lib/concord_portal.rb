@@ -3,11 +3,11 @@ module OmniAuth
   module Strategies
     class ConcordPortal < OmniAuth::Strategies::OAuth2
       option :name, 'concord_portal'
-      CUSTOM_PROVIDER_URL = 'http://localhost:3000'
+      concord_portal_url = ENV['CONCORD_PORTAL_URL']
       option :client_options, {
-        :site =>  CUSTOM_PROVIDER_URL,
-        :authorize_url => "#{CUSTOM_PROVIDER_URL}/auth/concord_id/authorize",
-        :access_token_url => "#{CUSTOM_PROVIDER_URL}/auth/concord_id/access_token"
+        :site =>  concord_portal_url,
+        :authorize_url => "#{concord_portal_url}/auth/concord_id/authorize",
+        :access_token_url => "#{concord_portal_url}/auth/concord_id/access_token"
       }
       uid { raw_info['id'] }
       info do
