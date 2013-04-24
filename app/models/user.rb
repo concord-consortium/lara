@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   has_many :activities, :class_name => LightweightActivity
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author, :provider, :uid
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
+    :provider, :uid
   # attr_accessible :title, :body
 
   def admin?
