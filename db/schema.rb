@@ -167,6 +167,8 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "is_admin",               :default => false
     t.boolean  "is_author",              :default => false
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
