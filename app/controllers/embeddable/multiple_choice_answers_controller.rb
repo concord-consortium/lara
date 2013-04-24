@@ -1,6 +1,5 @@
 class Embeddable::MultipleChoiceAnswersController < ApplicationController
 
-  # TODO: ensure the user can change this....
   def update
     answer = Embeddable::MultipleChoiceAnswer.find(params[:id])
     if answer.update_from_form_params(params['embeddable_multiple_choice_answer'])
