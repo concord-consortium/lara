@@ -9,7 +9,7 @@ function showPrompts() {
     }
 }
 
-// FIXME: This is broken with the changes to saving
+// TODO: This is broken with the changes to saving
 function checkAnswer(q_id) {
     // check for valid answer
     if (!$('input:radio[name="questions[' + q_id + ']"]:checked').val()) {

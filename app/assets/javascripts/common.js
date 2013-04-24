@@ -28,8 +28,7 @@ function adjustWidth() {
 $(function () {
     $('[data-remote][data-replace]')
         .data('type', 'html')
-        // TODO: live() is deprecated http://api.jquery.com/live/
-        .live('ajax:success', function (event, data) {
+        .on('ajax:success', function (event, data) {
             var $this = $(this);
             $($this.data('replace')).html(data.html);
             $this.trigger('ajax:replaced');
@@ -59,13 +58,11 @@ $(document).ready(function () {
     //     return false;
     // });
     // submit multiple choice on change event
-    // TODO: live() is deprecated http://api.jquery.com/live/
-    $('.live_submit').live('change',function() {
+    $('.live_submit').on('change',function() {
       $(this).parents('form:first').submit();
     });
     // submit textarea on blur event
-    // TODO: live() is deprecated http://api.jquery.com/live/
-    $('textarea.live-submit').live('blur',function() {
+    $('textarea.live-submit').on('blur',function() {
       $(this).parents('form:first').submit();
     });
 
