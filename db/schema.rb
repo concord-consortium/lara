@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423202919) do
+ActiveRecord::Schema.define(:version => 20130424194346) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -32,8 +32,9 @@ ActiveRecord::Schema.define(:version => 20130423202919) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "custom",     :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|

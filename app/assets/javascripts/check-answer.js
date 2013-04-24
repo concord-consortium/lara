@@ -2,7 +2,7 @@
 /*global $, Node */
 
 function showPrompts() {
-    if ($('#custom').is(':checked')) {
+    if ($('#embeddable_multiple_choice_custom').is(':checked')) {
         $('.choices .custom-hidden').show();
     } else {
         $('.choices .custom-hidden').hide();
