@@ -13,6 +13,8 @@ gem 'multi_json'
 gem 'devise'
 # authorization
 gem 'cancan'
+gem 'omniauth'
+gem 'omniauth-oauth2'
 
 gem 'default_value_for'
 # Easy (or at least easier) database dumps and reloads

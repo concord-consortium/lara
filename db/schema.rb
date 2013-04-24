@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423202919) do
+ActiveRecord::Schema.define(:version => 20130424154226) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(:version => 20130423202919) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "is_admin",               :default => false
     t.boolean  "is_author",              :default => false
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
