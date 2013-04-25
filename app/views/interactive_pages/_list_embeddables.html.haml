@@ -1,4 +1,4 @@
 %div{:class => embeddable_classes}
-  - page.embeddables.each do |e|
+  - @modules.each do |m|
     .embeddable
-      = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
+      = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}

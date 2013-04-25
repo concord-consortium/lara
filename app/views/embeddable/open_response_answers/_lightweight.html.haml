@@ -1,0 +1,6 @@
+.prompt
+  != embeddable.prompt
+= form_for embeddable,
+  :remote => true,
+  :html => {:'data-type' => 'json'} do |f|
+  = f.text_area :answer_text, :class => 'live-submit'

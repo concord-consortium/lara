@@ -4,8 +4,8 @@ require 'spec_helper'
 describe LightweightActivitiesController do
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
-  let (:ar) { FactoryGirl.create(:activity_response, :activity_id => act.id) }
-  
+  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
+
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
@@ -67,19 +67,18 @@ describe LightweightActivitiesController do
       get :summary, :id => act.id, :response_key => ar.key
 
       response.body.should match /<h1>\n?Response Summary for/
-      response.body.should match /<div[^>]+data-storage_key='[^']+'/
     end
   end
 
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     describe '#index' do
-      it 'provides a link to create a new Lightweight Activity on the index page' do
+      it 'provides a link to create a new Lightweight Activity on the index page', :slow => true do
         get :index
         response.body.should match /<a[^>]+href="\/activities\/new"[^>]*>/
       end
 
-      it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
+      it 'provides a list of authored Lightweight Activities with edit and run links on the index page', :slow => true do
         act
         get :index
         response.body.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
@@ -149,7 +148,7 @@ describe LightweightActivitiesController do
       end
 
       it 'should provide in-place editing of description and sidebar', :js => true, :slow => true do
-        
+
         act
 
         visit new_user_session_path
@@ -159,7 +158,7 @@ describe LightweightActivitiesController do
         visit edit_activity_path(act)
 
         find("#lightweight_activity_description_trigger").click
-        page.should have_xpath('//*[@name="lightweight_activity[description]"]')
+        page.should have_selector('#lightweight_activity_description-wysiwyg-iframe')
       end
     end
 
@@ -320,7 +319,7 @@ describe LightweightActivitiesController do
       end
 
       it 'rearranges activity pages to match order in request' do
-        # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
+        # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2
         # Should provide a list of IDs in reverse order
         get :reorder_pages, {:id => act.id, :item_interactive_page => act.pages.map { |p| p.id }.reverse }
         act.reload

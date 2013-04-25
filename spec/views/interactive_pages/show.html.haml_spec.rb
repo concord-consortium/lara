@@ -4,12 +4,7 @@ def related_section_rgx
   /<div\s+class=["']related["']>/
 end
 
-def renderIt(locals)
-  assign(:session_key,"3"*16)
-  render :partial => "interactive_pages/show", :locals => locals
-end
-
-describe "interactive_pages/_show" do
+describe "interactive_pages/show" do
 
   let(:activity)  { stub_model(LightweightActivity, :id => 1)}
 
@@ -20,14 +15,23 @@ describe "interactive_pages/_show" do
       :lightweight_activity => activity)
   end
 
+  let(:all_pages) { [page] }
+
+  before :each do
+    assign(:session_key,"3"*16)
+    assign(:page, page)
+    assign(:all_pages, all_pages)
+  end
+
   it "renders the page title" do
-    renderIt(:page => page, :all_pages => [page])
+    render
     rendered.should match page.name
   end
+
   describe "when the activity has a completed related content section" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "related content")}
     it "should render the related section" do
-      renderIt({:page => page, :all_pages => [page]})
+      render
       rendered.should match related_section_rgx
     end
   end
@@ -35,7 +39,7 @@ describe "interactive_pages/_show" do
   describe "when the activity has an empty related content section" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "")}
     it "shouldn't render the related section" do
-      renderIt({:page => page, :all_pages => [page]})
+      render
       rendered.should_not match related_section_rgx
     end
   end
@@ -43,7 +47,7 @@ describe "interactive_pages/_show" do
   describe "when the activity has a white-space only related content section" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => " \n")}
     it "shouldn't render the related section" do
-      renderIt({:page => page, :all_pages => [page]})
+      render
       rendered.should_not match related_section_rgx
     end
   end
@@ -51,7 +55,7 @@ describe "interactive_pages/_show" do
   describe "when the activity has only <br/> entities only related content section" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "<br/><p>\n")}
     it "shouldn't render the related section" do
-      renderIt({:page => page, :all_pages => [page]})
+      render
       rendered.should_not match related_section_rgx
     end
   end
@@ -59,7 +63,7 @@ describe "interactive_pages/_show" do
   describe "when the activity has no related content" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => nil)}
     it "shouldn't render the related section" do
-      renderIt({:page => page, :all_pages => [page]})
+      render
       rendered.should_not match related_section_rgx
     end
   end

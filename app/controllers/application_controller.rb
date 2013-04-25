@@ -19,16 +19,28 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_session_key
+  protected
+
+  def get_response_key
+    session[:response_key] ||= {}
     if params[:response_key]
-      ar = ActivityResponse.find_or_create_by_key_and_activity_id(params[:response_key], @activity.id)
-      @session_key = ar.key
-    elsif current_user
-      ar = ActivityResponse.find_or_create_by_activity_id_and_user_id(@activity.id, current_user.id)
-      @session_key = ar.key
-    else
-      ar = ActivityResponse.create(:activity => @activity)
-      @session_key = ar.key
+      session[:response_key][@activity.id] = params[:response_key]
     end
+    session[:response_key][@activity.id]
+  end
+
+  def external_id
+    if params[:external_domain] && params[:external_id]
+      key = "#{params[:external_domain]}#{params[:external_id]}"
+      return key.gsub(/[^a-zA-Z0-9 -]/,"")
+    end
+    return nil
+  end
+
+  def set_session_key
+    response_key = get_response_key
+    @run = Run.lookup(response_key,@activity,current_user, external_id)
+    @session_key = session[:response_key][@activity.id] = @run.key
+    # TODO: clear this hash on logout for logged-in users - requires finding callback in Devise
   end
 end

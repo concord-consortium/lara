@@ -47,6 +47,9 @@ group :test, :development do
   gem "capybara"
 
   gem 'pry'
+  gem 'pry-stack_explorer'
+  gem 'pry-exception_explorer'
+  gem 'pry-debugger'
   # Guard runs tests automatically when the files they test (or the tests
   # themselves) change
   gem 'guard-rspec'

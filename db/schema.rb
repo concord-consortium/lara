@@ -11,16 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401185220) do
+ActiveRecord::Schema.define(:version => 20130424194346) do
 
-  create_table "activity_responses", :force => true do |t|
-    t.string   "key",         :null => false
-    t.text     "responses"
-    t.integer  "activity_id", :null => false
-    t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-    t.integer  "last_page"
+  create_table "embeddable_multiple_choice_answers", :force => true do |t|
+    t.integer  "run_id"
+    t.integer  "multiple_choice_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
@@ -35,8 +32,17 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "custom",     :default => false
+  end
+
+  create_table "embeddable_open_response_answers", :force => true do |t|
+    t.text     "answer_text"
+    t.integer  "run_id"
+    t.integer  "open_response_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "embeddable_open_responses", :force => true do |t|
@@ -100,6 +106,14 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
+  create_table "mc_answer_choices", :id => false, :force => true do |t|
+    t.integer "answer_id"
+    t.integer "choice_id"
+  end
+
+  add_index "mc_answer_choices", ["answer_id", "choice_id"], :name => "index_mc_answer_choices_on_answer_id_and_choice_id"
+  add_index "mc_answer_choices", ["choice_id", "answer_id"], :name => "index_mc_answer_choices_on_choice_id_and_answer_id"
+
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
@@ -121,6 +135,17 @@ ActiveRecord::Schema.define(:version => 20130401185220) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+  end
+
+  create_table "runs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "run_count"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.string   "key"
+    t.integer  "activity_id"
+    t.string   "remote_id"
+    t.integer  "page_id",     :default => 0
   end
 
   create_table "users", :force => true do |t|

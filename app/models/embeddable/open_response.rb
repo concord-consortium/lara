@@ -1,9 +1,12 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
-    self.table_name_prefix = 'embeddable_'
     attr_accessible :name, :prompt
     has_many :page_items, :as => :embeddable
     has_many :interactive_pages, :through => :page_items
+
+    has_many :answers,
+      :class_name  => 'Embeddable::OpenResponseAnswer',
+      :foreign_key => 'open_response_id'
 
     def activity
       if interactive_pages.length > 0

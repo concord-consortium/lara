@@ -1,16 +1,12 @@
-# Lightweight Activities Standalone
+# Lightweight Activities Runtime and Authoring (LARA)
 
-This is a Rails application intended to provide a platform for authoring and using Lightweight activities.
+This is a Rails application intended to provide a platform for authoring and using "Lightweight" activities.
 
 ## Getting started
 
-1. Check out the code: if you have access, use
+1. Check out the code:
 
-        git clone git@github.com:concord-consortium/lightweight-standalone.git
-
-otherwise, use
-
-        git clone https://github.com/pjmorse/lightweight-standalone.git
+        git clone https://github.com/concord-consortium/lightweight-standalone.git
 
 2. Install the necessary gems:
 
@@ -19,7 +15,7 @@ otherwise, use
 
 3. Initialize the database:
 
-        rake db:drop db:create db:migrate
+        rake db:setup
 
 4. Launch the application
 
@@ -29,44 +25,34 @@ otherwise, use
 
 ## Users and administration
 
-Currently, new users aren't confirmed, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
+User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
 
-On a local development copy, you can make an admin user by registering a new user at the link above, then running `rake lightweight:admin_last_user` in your shell. That will make the most-recently-created user an administrator. Needless to say, this task *will not* run in the production environment.
+On a local development instance, you can make an admin user by registering a new user at the link above, then running `rake lightweight:admin_last_user` in your shell. That will make the most-recently-created user an administrator. Needless to say, this task *will not* run in the production environment.
 
 Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
 
-## Deploying
-
-If you have rights to deploy to [http://lightweight-mw.concord.org](http://lightweight-mw.concord.org) or [http://lightweight-mw.staging.concord.org](http://lightweight-mw.staging.concord.org),
-
-    cap production deploy
-
-or
-        
-    cap staging deploy
-
-respectively, should be sufficient to deploy from the "production" and "staging" branches of this repository. If you're using a different branch, or deploying to a different server, you will want to edit `config/deploy/staging.rb` or `config/deploy/production.rb`.
-
 ## Running RSpec tests
-From the application root, run
+If you haven't run tests on this project before, you first need to initialize the test database.
+
+      RAILS_ENV=test rake db:setup
+
+Then, from the application root, run
 
       RAILS_ENV=test rspec spec
 
-You may first need to initialize the test database:
+To re-initialize the test database, should that be necessary:
 
-      RAILS_ENV=test rake db:create db:migrate
+      RAILS_ENV=test rake db:drop db:setup
 
-To re-initialize the test database, use the "initialize the database" command above:
-
-      RAILS_ENV=test rake db:drop db:create db:migrate
-
-The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via Poltergeist to run Capybara tests, so you will need to have PhantomJS installed; it may be [downloaded](http://phantomjs.org/download.html) or installed with Homebrew:
+The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via [Poltergeist](https://github.com/jonleighton/poltergeist) to run [Capybara](http://jnicklas.github.io/capybara/) tests, so you will need to have PhantomJS installed; it may be [downloaded](http://phantomjs.org/download.html) or installed with Homebrew:
 
       brew update && brew install phantomjs
 
-If you wish to run tests continuously, Guard is configured; a simple `guard` should start it.
+If you wish to run tests continuously, Guard is configured; a simple `guard` should start it. Guard will skip some tests tagged "slow" in order to keep cycles short.
 
 ### Adding Embeddable support
+
+_This may be obsolete as of April 2013_
 
 To support new Embeddables:
 
@@ -78,6 +64,10 @@ To support new Embeddables:
 * Add the Embeddable's name as a string to the the `SUPPORTED_EMBEDDABLES` constant in `config/initializers/embeddables.rb`.
 * There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
+## Current work: reporting
+
+LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
+
 ## History
 
-This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). Much of the code (including this README) has been migrated directly from that plugin.
+This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin).

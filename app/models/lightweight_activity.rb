@@ -5,7 +5,6 @@ class LightweightActivity < ActiveRecord::Base
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
-  has_many  :activity_responses
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
 
@@ -21,10 +20,6 @@ class LightweightActivity < ActiveRecord::Base
   # * Find all activities for one user (regardless of publication status)
   def self.my(user)
     where(:user_id => user.id)
-  end
-
-  def run_format
-    :run_html
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
@@ -44,4 +39,10 @@ class LightweightActivity < ActiveRecord::Base
   def question_keys
     return questions.map { |q| q.storage_key }
   end
+
+  def answers(run)
+    finder = Embeddable::AnswerFinder.new(run)
+    questions.map { |q| finder.find_answer(q) }
+  end
+
 end
