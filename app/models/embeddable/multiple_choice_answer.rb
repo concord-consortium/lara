@@ -30,6 +30,16 @@ module Embeddable
       self.answers.map { |a| a.choice }
     end
 
+    def to_json
+      hash = {
+        "type"          => "multiple_choice",
+        "question_id"   => question.id.to_s,
+        "answer_ids"    => answers.map { |a| a.id.to_s },
+        "answer_texts"  => answer_texts
+      }
+      return hash.to_json
+    end
+
     # Expects a parameters hash. Normalizes to allow update_attributes.
     def update_from_form_params(params)
       if params[:answers].kind_of?(Array)
