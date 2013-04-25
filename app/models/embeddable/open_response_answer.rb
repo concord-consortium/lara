@@ -17,5 +17,14 @@ module Embeddable
     }
 
     delegate :prompt,  :to  => :question
+
+    def to_json
+      hash = {
+        "type" => "open_response",
+        "question_id" => question.id.to_s,
+        "answer" => answer_text
+      }
+      return hash.to_json
+    end
   end
 end

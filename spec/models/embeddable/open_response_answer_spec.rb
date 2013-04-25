@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Embeddable::OpenResponseAnswer do
-  let(:answer) { Embeddable::OpenResponseAnswer.create({ :answer_text => "the answer" }) }
+  let(:question) { FactoryGirl.create(:or_embeddable) }
+  let(:answer) { Embeddable::OpenResponseAnswer.create({ :answer_text => "the answer", :question => question }) }
 
   describe "model associations" do
 
@@ -19,6 +20,14 @@ describe Embeddable::OpenResponseAnswer do
       answer.save
       answer.reload.run.should == run
       run.reload.open_response_answers.should include answer
+    end
+  end
+
+  describe '#to_json' do
+    let(:expected) { '{ "type": "open_response", "question_id": "' + question.id.to_s + '", "answer": "the answer" }' }
+
+    it "serializes to expected JSON" do
+      JSON.parse(answer.to_json).should == JSON.parse(expected)
     end
   end
 
