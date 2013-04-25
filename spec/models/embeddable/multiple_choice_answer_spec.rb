@@ -32,12 +32,19 @@ describe Embeddable::MultipleChoiceAnswer do
     end
   end
 
-  describe '#to_json' do
-    let(:expected) { '{ "type": "multiple_choice", "question_id": "' + question.id.to_s + '", "answer_ids": ["' + a1.id.to_s + '"], "answer_texts": ["' + a1.choice + '"] }' }
+  describe '#portal_hash' do
+    let(:expected) { 
+                    { 
+                      "type"         => "multiple_choice",
+                      "question_id"  => question.id.to_s,
+                      "answer_ids"   => [a1.id.to_s],
+                      "answer_texts" => [a1.choice]
+                    }
+                   }
 
     it "serializes to expected JSON" do
       answer.answers = [a1]
-      JSON.parse(answer.to_json).should == JSON.parse(expected)
+      answer.portal_hash.should == expected
     end
   end
 

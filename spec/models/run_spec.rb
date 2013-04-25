@@ -136,21 +136,22 @@ describe Run do
     end
   end
 
-  describe '#to_json' do
-    it 'contains the proper keys and values' do
-      json_blob = run.to_json(:methods => [:last_page, :storage_keys])
-      json_blob.should match /activity_id/
-      json_blob.should match /last_page/
-      json_blob.should match /storage_keys/
-      json_blob.should match /"key":"#{run.key}",/
-      json_blob.should match /run_count/
-      # {
-      # activity_id: 1,
-      # last_page: null,
-      # storage_keys: []
-      # key: "be19b7a04a2ea471",
-      # run_count: null,
-      # }
+  describe '#responses_for_portal' do
+    let(:or_question) { FactoryGirl.create(:or_embeddable) }
+    let(:or_answer) { Embeddable::OpenResponseAnswer.create({ :answer_text => "the answer", :question => or_question }) }
+    let(:a1)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+    let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+    let(:mc_question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+    let(:mc_answer)   { FactoryGirl.create(:multiple_choice_answer,
+                      :answers  => [a1],
+                      :question => mc_question)
+                    }
+    let(:expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }, { "type": "multiple_choice", "question_id": "' + mc_question.id.to_s + '", "answer_ids": ["' + a1.id.to_s + '"], "answer_texts": ["' + a1.choice + '"] }]' }
+
+    it 'matches the expected JSON' do
+      run.open_response_answers << or_answer
+      run.multiple_choice_answers << mc_answer
+      JSON.parse(run.responses_for_portal).should == JSON.parse(expected)
     end
   end
 end

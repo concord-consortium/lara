@@ -23,11 +23,17 @@ describe Embeddable::OpenResponseAnswer do
     end
   end
 
-  describe '#to_json' do
-    let(:expected) { '{ "type": "open_response", "question_id": "' + question.id.to_s + '", "answer": "the answer" }' }
+  describe '#portal_hash' do
+    let(:expected) { 
+                     {  
+                        "type"        => "open_response",
+                        "question_id" => question.id.to_s,
+                        "answer"      => answer.answer_text 
+                      } 
+                    }
 
-    it "serializes to expected JSON" do
-      JSON.parse(answer.to_json).should == JSON.parse(expected)
+    it "matches the expected hash" do
+      answer.portal_hash.should == expected
     end
   end
 

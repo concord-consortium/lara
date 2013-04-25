@@ -69,6 +69,7 @@ class Run < ActiveRecord::Base
   end
 
   # TODO: generate storage keys?
+  # This was intended to generate a list of keys corresponding to each embeddable/question in an activity, to be used by local browser storage. We won't need this until we return to local storage.
   def storage_keys
     []
   end
@@ -76,6 +77,10 @@ class Run < ActiveRecord::Base
   def increment_run_count!
     self.run_count ||= 0
     increment!(:run_count)
+  end
+
+  def responses_for_portal
+    (self.open_response_answers.map { |ora| ora.portal_hash } + self.multiple_choice_answers.map { |mca| mca.portal_hash }).to_json
   end
 
   # TODO: do we ever want to call this?

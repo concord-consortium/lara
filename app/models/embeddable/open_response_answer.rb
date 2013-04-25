@@ -18,13 +18,16 @@ module Embeddable
 
     delegate :prompt,  :to  => :question
 
-    def to_json
-      hash = {
+    def portal_hash
+      {
         "type" => "open_response",
         "question_id" => question.id.to_s,
         "answer" => answer_text
       }
-      return hash.to_json
+    end
+
+    def to_json
+      portal_hash.to_json
     end
   end
 end
