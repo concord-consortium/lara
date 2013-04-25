@@ -79,8 +79,22 @@ class Run < ActiveRecord::Base
     increment!(:run_count)
   end
 
-  def responses_for_portal
+  # Takes an answer or array of answers and generates a portal response JSON string from them.
+  def response_for_portal(answer)
+    if answer.kind_of?(Array)
+      answer.map { |ans| ans.portal_hash }.to_json
+    else
+      "[#{answer.portal_hash.to_json}]"
+    end
+  end
+
+  def all_responses_for_portal
     (self.open_response_answers.map { |ora| ora.portal_hash } + self.multiple_choice_answers.map { |mca| mca.portal_hash }).to_json
+  end
+
+  def send_to_portal(answers)
+    payload = response_for_portal(answers)
+    # TODO: Post payload to portal
   end
 
   # TODO: do we ever want to call this?

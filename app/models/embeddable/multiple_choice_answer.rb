@@ -39,6 +39,10 @@ module Embeddable
       }
     end
 
+    def send_to_portal
+      run.send_to_portal(self)
+    end
+
     def to_json
       portal_hash.to_json
     end
