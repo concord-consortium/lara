@@ -24,8 +24,8 @@ class Run < ActiveRecord::Base
     }
 
   validates :key,
-    :format => { :with => /\A[a-zA-Z0-9]*\z/ },
-    :length => { :is => 16 }
+    :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
+    :length => { :is => 36 }
 
   def check_key
     unless key.present?
@@ -35,14 +35,7 @@ class Run < ActiveRecord::Base
 
   # Generates a GUID for a particular run of an activity
   def session_guid
-    if self.user
-      # We're assuming a single user won't generate multiple guids per second - but even
-      # if they did, it's fine if they're not unique.
-      return Digest::MD5.hexdigest("#{activity.name}_#{user.email}_#{DateTime.now().to_s}")[0..15]
-    else
-      # Add some pseudo-randomness to make sure they don't overlap with concurrent requests from other users
-      return Digest::MD5.hexdigest("#{activity.name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
-    end
+    UUIDTools::UUID.random_create.to_s
   end
 
   def self.for_key(key)
