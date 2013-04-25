@@ -68,6 +68,11 @@ To support new Embeddables:
 
 LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
+## Single Signon ##
+
+If you want to use a single signon provider, you will need to configure a client in the signon authority (eg: The portal).  You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as approprtiate. 
+
+
 ## History
 
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin).
