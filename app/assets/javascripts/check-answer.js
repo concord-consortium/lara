@@ -9,7 +9,6 @@ function showPrompts() {
     }
 }
 
-// TODO: This is broken with the changes to saving
 function checkAnswer(q_id) {
     // check for valid answer
     if (!$('#' + q_id + ' input:radio:checked').val()) {
