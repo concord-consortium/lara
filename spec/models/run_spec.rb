@@ -123,7 +123,7 @@ describe Run do
       it "should set the runcount to 1" do
         run.increment_run_count!
         run.reload
-        run.run_count.should == 0
+        run.run_count.should == 1
       end
     describe "when set to 1"
       it "should set the runcount to 2" do
@@ -131,7 +131,7 @@ describe Run do
         run.save
         run.increment_run_count!
         run.reload
-        run.run_count.should == 1
+        run.run_count.should == 2
       end
     end
   end

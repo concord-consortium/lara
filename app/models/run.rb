@@ -82,7 +82,7 @@ class Run < ActiveRecord::Base
 
   def increment_run_count!
     self.run_count ||= 0
-    increment!(run_count)
+    increment!(:run_count)
   end
 
   # TODO: do we ever want to call this?
