@@ -43,4 +43,10 @@ class ApplicationController < ActionController::Base
     @session_key = session[:response_key][@activity.id] = @run.key
     # TODO: clear this hash on logout for logged-in users - requires finding callback in Devise
   end
+
+  # override devise's built in method so we can go back to the path
+  # from which authentication was initiated
+  def after_sign_in_path_for(resource)
+    session.delete(:auth_return_url) || request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
+  end
 end
