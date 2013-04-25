@@ -1,5 +1,5 @@
 class Run < ActiveRecord::Base
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :activity_id
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -94,7 +94,9 @@ class Run < ActiveRecord::Base
 
   def send_to_portal(answers)
     payload = response_for_portal(answers)
-    # TODO: Post payload to portal
+    if !payload.blank? and !self.remote_endpoint.blank?
+      # TODO: Post payload to portal
+    end
   end
 
   # TODO: do we ever want to call this?
