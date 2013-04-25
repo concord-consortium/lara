@@ -10,29 +10,28 @@ describe Run do
   let (:user) { FactoryGirl.create(:user) }
 
   describe 'validation' do
-    it 'ensures session keys are 16 characters' do
+    it 'ensures session keys are 36 characters' do
       run.key = 'short'
       run.should_not be_valid
-      run.key = 'thiskeyistoolongtobevalid'
+      run.key = 'thiskeyistoolongtobevalidreallyitisseriouslylongevenforauuidIpromisethisislongerthan36charactersnowaythisisshort'
       run.should_not be_valid
-      run.key = '1234567890123456'
+      run.key = '123456789012345678901234567890123456'
       run.should be_valid
     end
 
-    it 'ensures session keys only have letters and numbers' do
-      run.key = 'ABCDEabcde123456'
+    it 'ensures session keys only have hyphens, letters and numbers' do
+      run.key = '88e0aff5-db3f-4087-8fda-49ec579980ee'
       run.should be_valid
-      run.key = 'ABCD/abcd-12345;'
+      run.key = '88e0aff5/db3f-4087-8fda-49ec579980e;'
       run.should_not be_valid
-      run.key = 'abcd ABCD_1234--'
+      run.key = '88e0aff5 db3f_4087-8fda-49ec579980ee'
       run.should_not be_valid
     end
   end
 
-  describe '#session_guid', :slow => true do
+  describe '#session_guid' do
     it 'generates different hashes for each activity run' do
       first_guid  = run.session_guid
-      sleep 1
       second_guid = run.session_guid
 
       first_guid.should_not === second_guid

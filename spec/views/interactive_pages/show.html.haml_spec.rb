@@ -18,7 +18,7 @@ describe "interactive_pages/show" do
   let(:all_pages) { [page] }
 
   before :each do
-    assign(:session_key,"3"*16)
+    assign(:session_key,"3"*36)
     assign(:page, page)
     assign(:all_pages, all_pages)
   end
