@@ -29,9 +29,10 @@ describe Run do
     end
   end
 
-  describe '#session_guid' do
+  describe '#session_guid', :slow => true do
     it 'generates different hashes for each activity run' do
       first_guid  = run.session_guid
+      sleep 1
       second_guid = run.session_guid
 
       first_guid.should_not === second_guid
