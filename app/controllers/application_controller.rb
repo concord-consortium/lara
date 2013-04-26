@@ -30,8 +30,8 @@ class ApplicationController < ActionController::Base
   end
 
   def external_id
-    if params[:external_domain] && params[:external_id]
-      key = "#{params[:external_domain]}#{params[:external_id]}"
+    if params[:domain] && params[:externalId]
+      key = "#{params[:domain]}#{params[:externalId]}"
       return key.gsub(/[^a-zA-Z0-9 -]/,"")
     end
     return nil
