@@ -14,7 +14,9 @@ module Embeddable
       hash = {
         'choice' => is_correct,
       }
-      hash['prompt'] = prompt unless prompt.blank?
+      if prompt && multiple_choice.custom
+        hash['prompt'] = prompt
+      end
       hash
     end
 

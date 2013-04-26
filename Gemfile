@@ -21,6 +21,8 @@ gem 'default_value_for'
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
 gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
+gem 'uuidtools'
+
 gem "sqlite3"
 
 group :production do

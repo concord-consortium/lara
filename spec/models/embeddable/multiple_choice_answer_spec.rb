@@ -32,6 +32,22 @@ describe Embeddable::MultipleChoiceAnswer do
     end
   end
 
+  describe '#portal_hash' do
+    let(:expected) { 
+                    { 
+                      "type"         => "multiple_choice",
+                      "question_id"  => question.id.to_s,
+                      "answer_ids"   => [a1.id.to_s],
+                      "answer_texts" => [a1.choice]
+                    }
+                   }
+
+    it "serializes to expected JSON" do
+      answer.answers = [a1]
+      answer.portal_hash.should == expected
+    end
+  end
+
   describe "delegated methods" do
     describe "choices" do
       it "should delegate to question" do

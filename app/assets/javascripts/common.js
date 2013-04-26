@@ -45,8 +45,8 @@ $(document).ready(function () {
     }
 
     // enable check answer when there is an answer
-    $('input[type=radio]').click(function () {
-        $('#check').removeClass('disabled');
+    $('input[type=radio]').one('click', function () {
+        $('#check').removeAttr('disabled');
     });
     // // exit from fullscreen event
     // $('#overlay').click(function () {

@@ -10,21 +10,21 @@ describe Run do
   let (:user) { FactoryGirl.create(:user) }
 
   describe 'validation' do
-    it 'ensures session keys are 16 characters' do
+    it 'ensures session keys are 36 characters' do
       run.key = 'short'
       run.should_not be_valid
-      run.key = 'thiskeyistoolongtobevalid'
+      run.key = 'thiskeyistoolongtobevalidreallyitisseriouslylongevenforauuidIpromisethisislongerthan36charactersnowaythisisshort'
       run.should_not be_valid
-      run.key = '1234567890123456'
+      run.key = '123456789012345678901234567890123456'
       run.should be_valid
     end
 
-    it 'ensures session keys only have letters and numbers' do
-      run.key = 'ABCDEabcde123456'
+    it 'ensures session keys only have hyphens, letters and numbers' do
+      run.key = '88e0aff5-db3f-4087-8fda-49ec579980ee'
       run.should be_valid
-      run.key = 'ABCD/abcd-12345;'
+      run.key = '88e0aff5/db3f-4087-8fda-49ec579980e;'
       run.should_not be_valid
-      run.key = 'abcd ABCD_1234--'
+      run.key = '88e0aff5 db3f_4087-8fda-49ec579980ee'
       run.should_not be_valid
     end
   end
@@ -123,7 +123,7 @@ describe Run do
       it "should set the runcount to 1" do
         run.increment_run_count!
         run.reload
-        run.run_count.should == 0
+        run.run_count.should == 1
       end
     describe "when set to 1"
       it "should set the runcount to 2" do
@@ -131,26 +131,44 @@ describe Run do
         run.save
         run.increment_run_count!
         run.reload
-        run.run_count.should == 1
+        run.run_count.should == 2
       end
     end
   end
 
-  describe '#to_json' do
-    it 'contains the proper keys and values' do
-      json_blob = run.to_json(:methods => [:last_page, :storage_keys])
-      json_blob.should match /activity_id/
-      json_blob.should match /last_page/
-      json_blob.should match /storage_keys/
-      json_blob.should match /"key":"#{run.key}",/
-      json_blob.should match /run_count/
-      # {
-      # activity_id: 1,
-      # last_page: null,
-      # storage_keys: []
-      # key: "be19b7a04a2ea471",
-      # run_count: null,
-      # }
+  describe 'posting to portal' do
+    let(:or_question) { FactoryGirl.create(:or_embeddable) }
+    let(:or_answer) { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+    let(:a1)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+    let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+    let(:mc_question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+    let(:mc_answer)   { FactoryGirl.create(:multiple_choice_answer,
+                      :answers  => [a1],
+                      :question => mc_question)
+                    }
+    let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
+    let(:all_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }, { "type": "multiple_choice", "question_id": "' + mc_question.id.to_s + '", "answer_ids": ["' + a1.id.to_s + '"], "answer_texts": ["' + a1.choice + '"] }]' }
+
+    describe '#response_for_portal' do
+      it 'matches the expected JSON for a single specified answer' do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
+      end
+
+      it "matches the expected JSON for multiple specified answers" do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.response_for_portal([or_answer, mc_answer])).should == JSON.parse(all_expected)
+      end
+    end
+
+    describe '#all_responses_for_portal' do
+      it 'matches the expected JSON for all responses' do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.all_responses_for_portal).should == JSON.parse(all_expected)
+      end
     end
   end
 end

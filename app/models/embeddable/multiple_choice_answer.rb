@@ -30,6 +30,23 @@ module Embeddable
       self.answers.map { |a| a.choice }
     end
 
+    def portal_hash
+      {
+        "type"          => "multiple_choice",
+        "question_id"   => question.id.to_s,
+        "answer_ids"    => answers.map { |a| a.id.to_s },
+        "answer_texts"  => answer_texts
+      }
+    end
+
+    def send_to_portal
+      run.send_to_portal(self)
+    end
+
+    def to_json
+      portal_hash.to_json
+    end
+
     # Expects a parameters hash. Normalizes to allow update_attributes.
     def update_from_form_params(params)
       if params[:answers].kind_of?(Array)

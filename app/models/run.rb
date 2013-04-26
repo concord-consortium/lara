@@ -1,5 +1,5 @@
 class Run < ActiveRecord::Base
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :activity_id
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -24,8 +24,8 @@ class Run < ActiveRecord::Base
     }
 
   validates :key,
-    :format => { :with => /\A[a-zA-Z0-9]*\z/ },
-    :length => { :is => 16 }
+    :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
+    :length => { :is => 36 }
 
   def check_key
     unless key.present?
@@ -35,14 +35,7 @@ class Run < ActiveRecord::Base
 
   # Generates a GUID for a particular run of an activity
   def session_guid
-    if self.user
-      # We're assuming a single user won't generate multiple guids per second - but even
-      # if they did, it's fine if they're not unique.
-      return Digest::MD5.hexdigest("#{activity.name}_#{user.email}_#{DateTime.now().to_s}")[0..15]
-    else
-      # Add some pseudo-randomness to make sure they don't overlap with concurrent requests from other users
-      return Digest::MD5.hexdigest("#{activity.name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
-    end
+    UUIDTools::UUID.random_create.to_s
   end
 
   def self.for_key(key)
@@ -76,13 +69,34 @@ class Run < ActiveRecord::Base
   end
 
   # TODO: generate storage keys?
+  # This was intended to generate a list of keys corresponding to each embeddable/question in an activity, to be used by local browser storage. We won't need this until we return to local storage.
   def storage_keys
     []
   end
 
   def increment_run_count!
     self.run_count ||= 0
-    increment!(run_count)
+    increment!(:run_count)
+  end
+
+  # Takes an answer or array of answers and generates a portal response JSON string from them.
+  def response_for_portal(answer)
+    if answer.kind_of?(Array)
+      answer.map { |ans| ans.portal_hash }.to_json
+    else
+      "[#{answer.portal_hash.to_json}]"
+    end
+  end
+
+  def all_responses_for_portal
+    (self.open_response_answers.map { |ora| ora.portal_hash } + self.multiple_choice_answers.map { |mca| mca.portal_hash }).to_json
+  end
+
+  def send_to_portal(answers)
+    payload = response_for_portal(answers)
+    if !payload.blank? and !self.remote_endpoint.blank?
+      # TODO: Post payload to portal
+    end
   end
 
   # TODO: do we ever want to call this?
