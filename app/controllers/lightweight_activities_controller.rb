@@ -17,9 +17,9 @@ class LightweightActivitiesController < ApplicationController
   def show
     authorize! :read, @activity
     @run.increment_run_count!
-    # TODO check logged in status, and auth if not logged in
+    # check logged in status, and auth if not logged in and we were launched remotely
     url = activity_page_path(@activity, @run.last_page)
-    if current_user.nil?
+    if current_user.nil? && params[:domain] && params[:externalId]
       session[:auth_return_url] = url
       redirect_to user_omniauth_authorize_path(:concord_portal)
     else
