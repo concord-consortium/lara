@@ -1,4 +1,3 @@
-%div{:class => embeddable_classes}
-  - @modules.each do |m|
-    .embeddable
-      = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+- @modules.each do |m|
+  .question
+    = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}

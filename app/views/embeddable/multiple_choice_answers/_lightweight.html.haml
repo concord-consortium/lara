@@ -1,15 +1,15 @@
-- embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
-.multiple_choice{:id => embeddable_string}
-  .prompt= embeddable.prompt.html_safe
-  .answer
-    = form_for embeddable,
-      :remote => true,
-      :html => {:'data-type' => 'json'} do |f|
-      %p
-        - embeddable.choices.each do |choice|
-          .button_group
-            = f.radio_button :answers, choice.id, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
-            = f.label :answers, choice.choice, :value => choice.id
+.question-hdr
+	%h5.h5= embeddable.name
+.question-bd
+  .question-txt
+    = embeddable.prompt.html_safe
+  = form_for embeddable,
+    :remote => true,
+    :html => {:'data-type' => 'json'} do |f|
+		%fieldset.options
+      - embeddable.choices.each do |choice|
+        = f.radio_button :answers, choice.id, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
+        = f.label :answers, choice.choice, :value => choice.id
   -# TODO: use unobtrusive JS here instead of onclick
   %button{ :id => 'check', :disabled => !(embeddable.answers.length > 0), :onclick => "checkAnswer('#{embeddable_string}');" }
     Check Answer

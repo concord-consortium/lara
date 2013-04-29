@@ -17,6 +17,7 @@ module Embeddable
     }
 
     delegate :prompt,  :to  => :question
+    delegate :name,    :to  => :question
 
     def portal_hash
       {
