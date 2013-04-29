@@ -23,6 +23,9 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 6. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
 
+## Editing CSS
+This project uses [Compass](http://compass-style.org/) extensively (but not exclusively) for CSS. If you are editing files in the `app/assets/stylesheets/` tree, you should issue `compass watch` in order to update the built CSS when changes are made.
+
 ## Users and administration
 
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
