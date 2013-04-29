@@ -1,12 +1,13 @@
+- embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 .question-hdr
-	%h5.h5= embeddable.name
+  %h5.h5= embeddable.name
 .question-bd
   .question-txt
     = embeddable.prompt.html_safe
   = form_for embeddable,
     :remote => true,
     :html => {:'data-type' => 'json'} do |f|
-		%fieldset.options
+    %fieldset.options
       - embeddable.choices.each do |choice|
         = f.radio_button :answers, choice.id, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
         = f.label :answers, choice.choice, :value => choice.id

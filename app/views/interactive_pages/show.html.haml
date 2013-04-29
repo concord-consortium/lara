@@ -7,86 +7,41 @@
 .intro-mod
   %h4.h4
     = @page.name
-	.intro-txt!= @page.text
+  .intro-txt!= @page.text
 
 =# TODO: Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
 .content-mod.l-6040
-	.ui-block-1
-		= render :partial => 'interactive'
+  .ui-block-1
+    = render :partial => 'interactive'
 
-	.questions-mod.ui-block-2
-		= render :partial => 'list_embeddables'
+  .questions-mod.ui-block-2
+    = render :partial => 'list_embeddables'
 
-		<div class="submit">
-		    <input class="button" type="submit" value="Generate a report of my work">
-		</div>
+    - if @page.last?
+      .submit
+        = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(@page.lightweight_activity, @session_key)
 
-	</div> <!-- end questions-mod -->
+  -# -- Add expanded class to sidebar-mod for expanded view. -->
+  - unless @page.sidebar.blank?
+    .sidebar-mod
+      .sidebar-hdr
+        %h5.h5
+          -# TODO: Content for this head
+          Did you know?
+      .sidebar-bd
+        .sidebar-bd-close
+          X
+        %h4.h4
+          -# TODO: Content for this head
+          -# Why does chewing gum prevent your ears from popping?
+        .sidebar-txt
+          != @page.sidebar
 
-
-</div> <!-- end content-mod -->
-
-
-
-<!-- Add expanded class to sidebar-mod for expanded view. -->
-	<div class="sidebar-mod">
-
-			<div class="sidebar-hdr">
-				<h5 class="h5">Did you know?</h5>
-			</div> <!-- end sidebar-hdr -->
-
-		<div class="sidebar-bd">
-			<div class="sidebar-bd-close">X</div>
-			<h4 class="h4">Why does chewing gum prevent your ears from popping?</h4>
-			<p class="sidebar-txt">It has to do with your Eustachian tubes (see the image to the right).</p>
-			<p class="sidebar-txt">Each ear has two pathways to the outside: the canal you can see from the outside and the Eustachian tube. The Eustachian tube connects your inner ear to your nose and mouth.</p>
-			<p class="sidebar-txt">Because the Eustachian tubes are so little, they can easily be blocked, especially if you have a stuffy nose! When you chew gum, your moving jaw causes the Eustachian tubes to move and open up. When the tubes are open, the pressure between the inner and outer ear can be equalized, and the pain goes away!</p>
-			<p class="sidebar-txt">You can achieve the same result without chewing gum—just move your mouth! Yawning and swallowing are other ways to prevent ear pain while flying.</p>
-			<div class="content-img img-reg">
-				<figure>
-					<img src="http://concord-consortium.github.io/lab-resources/next-gen/319px-Eustachian_Tube_(PSF).png" alt="" />
-					<figcaption>Pearson Scott Foresman. Donated to the Wikimedia Foundation.</figcaption>
-				</figure>
-			</div> <!-- end content-img -->
-		</div> <!-- end sidebar-bd -->
-
-	</div> <!-- end sidebar-mod -->
-
-	<div class="related-mod">
-
-		<div class="related-hdr">
-			<h5 class="h5">Related activities</h5>
-		</div> <!-- end related-hdr -->
-
-		<div class="related-bd">
-			<ul class="related-items">
-				<li class="related-item">
-					<div class="related-img">
-						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/states-matter.png" alt="">
-					</div>
-					<h6 class="h6">States of Matter</h6>
-					<p class="related-item-txt">Learn about phase change -- a major factor in creating climate on Earth among many other interesting phenomena.</p>
-					<p class="related-item-txt"><a href="#">Run activity</a></p>
-				</li> <!-- end related-item -->
-
-				<li class="related-item">
-					<div class="related-img">
-						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/boiling-point.png" alt="">
-					</div>
-					<h6 class="h6">Boiling Point</h6>
-					<p class="related-item-txt">The temperature at which substances boil is determined by intermolecular attractions. Explore how these forces affect a substance's boiling point.</p>
-					<p class="related-item-txt"><a href="#">Run activity</a></p>
-				</li> <!-- end related-item -->
-
-				<li class="related-item">
-					<div class="related-img">
-						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/solubility.png" alt="">
-					</div>
-					<h6 class="h6">Solubility</h6>
-					<p class="related-item-txt">Have you ever wondered why oil and water don't mix? Discover why some substances dissolve in water while others do not.</p>
-					<p class="related-item-txt"><a href="#">Run activity</a></p>
-				</li> <!-- end related-item -->
-			</ul> <!-- end related-items -->
-		</div> <!-- end related-bd -->
-
-	</div> <!-- end related-mod -->
+  - if @page.last? && has_good_content(@page.lightweight_activity.related)
+    .related-mod
+      .related-hdr
+        %h5.h5
+          Related activities
+      .related-bd
+        -# TODO: More structured related content
+        != @page.lightweight_activity.related
