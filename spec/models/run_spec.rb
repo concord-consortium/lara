@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe Run do
-  let (:activity) { FactoryGirl.create(:activity) }
+  let (:activity)        { FactoryGirl.create(:activity) }
+  let (:remote_endpoint) { nil }
   let (:run) {
     r = FactoryGirl.create(:run)
     r.activity = activity
+    r.remote_endpoint = remote_endpoint
     r
   }
   let (:user) { FactoryGirl.create(:user) }
@@ -137,12 +139,12 @@ describe Run do
   end
 
   describe 'posting to portal' do
-    let(:or_question) { FactoryGirl.create(:or_embeddable) }
-    let(:or_answer) { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
-    let(:a1)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-    let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-    let(:mc_question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-    let(:mc_answer)   { FactoryGirl.create(:multiple_choice_answer,
+    let(:or_question){ FactoryGirl.create(:or_embeddable) }
+    let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+    let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+    let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+    let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+    let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
                       :answers  => [a1],
                       :question => mc_question)
                     }
@@ -168,6 +170,44 @@ describe Run do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
         JSON.parse(run.all_responses_for_portal).should == JSON.parse(all_expected)
+      end
+    end
+
+    describe "#send_to_portal" do
+      describe "when there is no remote_endpoint" do
+        let(:remote_endpoint) { nil }
+        it "no http request is made" do
+          HTTParty.should_not_receive(:post)
+          run.send_to_portal([or_answer,mc_answer]).should be_false
+        end
+      end
+
+      describe "when there are no new answers" do
+        let(:remote_endpoint) { nil }
+        it "no http request is made" do
+          HTTParty.should_not_receive(:post)
+          run.send_to_portal([]).should be_false
+        end
+      end
+
+      describe "with an endpoint and answers" do
+        let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
+        describe "with a positive response from the server" do
+          it "should be successful" do
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "OK", # TODO: What returns?
+              :status => 200)
+            run.send_to_portal([or_answer,mc_answer]).should be_true
+          end
+        end
+        describe "when the server reports an error" do
+          it "should fail" do
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "boo", # TODO: What returns?
+              :status => 503)
+            run.send_to_portal([or_answer,mc_answer]).should be_false
+          end
+        end
       end
     end
   end
