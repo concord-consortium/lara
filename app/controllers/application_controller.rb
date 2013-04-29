@@ -30,8 +30,8 @@ class ApplicationController < ActionController::Base
   end
 
   def external_id
-    if params[:external_domain] && params[:external_id]
-      key = "#{params[:external_domain]}#{params[:external_id]}"
+    if params[:domain] && params[:externalId]
+      key = "#{params[:domain]}#{params[:externalId]}"
       return key.gsub(/[^a-zA-Z0-9 -]/,"")
     end
     return nil
@@ -42,5 +42,11 @@ class ApplicationController < ActionController::Base
     @run = Run.lookup(response_key,@activity,current_user, external_id)
     @session_key = session[:response_key][@activity.id] = @run.key
     # TODO: clear this hash on logout for logged-in users - requires finding callback in Devise
+  end
+
+  # override devise's built in method so we can go back to the path
+  # from which authentication was initiated
+  def after_sign_in_path_for(resource)
+    session.delete(:auth_return_url) || request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 end

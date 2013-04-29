@@ -25,14 +25,26 @@ class User < ActiveRecord::Base
 
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
     user = User.where(provider: auth.provider, uid: auth.uid).first
-    unless user
-      email = auth.info.email || "#{Devise.friendly_token[0,20]}@example.com"
-      user = User.create(provider: auth.provider,
-                         uid:      auth.uid,
-                         email:    email,
-                         password: Devise.friendly_token[0,20]
-                        )
+    return user if user
+    email = auth.info.email || "#{Devise.friendly_token[0,20]}@example.com"
+
+    existing_by_email = User.where(email: email)
+    if existing_by_email.size > 0
+      usable_email = existing_by_email.where(provider: nil, uid: nil).first
+      usable_email.update_attributes(
+        provider: auth.provider,
+        uid: auth.uid
+      )
+      return usable_email if usable_email
+      throw "Can't have duplicate email addresses" if existing_by_email
     end
-    user
+
+    # return a new one:
+    User.create(
+      provider: auth.provider,
+      uid:      auth.uid,
+      email:    email,
+      password: Devise.friendly_token[0,20]
+    )
   end
 end
