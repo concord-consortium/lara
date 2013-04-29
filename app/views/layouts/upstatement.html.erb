@@ -7,20 +7,19 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>Concord<!-- TODO: Needs :yield --></title>
+	<title><%= yield :title %></title>
 	<!-- TODO: Populate meta tags -->
   <meta name="description" content="">
 	<meta name="author" content="">
 
 	<!-- Icons -->
-  <!-- TODO: Link proper favicon -->
-	<link rel="shortcut icon" href="/favicon.ico">
+  <%= favicon_link_tag %>
 
 	<!-- Stylesheets -->
-  <!-- TODO: Rails tag -->
-	<link rel="stylesheet" href="../_css/screen.css?v=2">
+  <%= stylesheet_link_tag 'screen', :media => 'all' %>
 
 	<!-- Scripts -->
+  <!-- TODO: Rails tag -->
 	<!--[if IE 8 ]>
 	<script type="text/javascript" src="_js/libs/respond.js"></script>
 	<![endif]-->

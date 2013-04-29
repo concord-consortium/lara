@@ -10,7 +10,7 @@ class InteractivePagesController < ApplicationController
     authorize! :read, @page
 
     if !params[:response_key]
-      redirect_to page_with_response_path(@activity, @page, @session_key) and return
+      redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     else
       @all_pages = @activity.pages
       finder = Embeddable::AnswerFinder.new(@run)
