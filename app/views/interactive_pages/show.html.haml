@@ -1,0 +1,275 @@
+= content_for :title do 
+  = "#{@page.name}"
+
+.content-hdr
+  %h2.h2
+    = @page.lightweight_activity.name
+.intro-mod
+	%h4.h4
+    = @page.name
+	.intro-txt!= @page.text
+
+=# TODO: Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
+.content-mod.l-6040
+	.ui-block-1
+		= render :partial => 'interactive'
+
+	.questions-mod.ui-block-2
+		.question.challenge
+			.question-hdr
+        -# TODO: Where's the content for this coming from?
+				%h5.h5
+          Interactive challenge
+			.question-bd
+				%p.question-txt
+          This block will related to explaining what the Interactive is displaying and how what a student should glean from it.
+
+		<div class="question challenge">
+			<div class="question-bd">
+				<p class="question-txt">This is a block that isn't a question or an explainer of what an interactive demonstrates, rather a simple text block relating information.</p>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #1</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<ol>
+					<li>This is an ordered number list item.</li>
+					<li>This is an ordered number list item.</li>
+					<li>This is an ordered number list item.
+						<ol>
+							<li>This is a nested ordered list item</li>
+							<li>This is a nested ordered list item</li>
+						</ol>
+					</li>
+					<li>This is an ordered number list item.</li>
+				</ol>
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #2</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<ul>
+					<li>This is an unordered list item.</li>
+					<li>This is an unordered list item.</li>
+					<li>This is an unordered list item.
+						<ul>
+							<li>This is a nested list item.</li>
+							<li>This is a nested list item.</li>
+						</ul>
+					</li>
+				</ul>
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #3</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<dl>
+					<dt>This is a term.</dt>
+				    <dd>This is the definition of that term, which both live in a <code>dl</code>.</dd>
+				    <dt>Here is another term.</dt>
+				    <dd>And it gets a definition too, which is this line.</dd>
+				    <dt>Here is term that shares a definition with the term below.</dt>
+				    <dd>Here's another definittion here</dd>
+				</dl>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #4</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<form>
+					<div>
+						<textarea id="textarea" rows="8" placeholder="Type answer here"></textarea>
+					</div>
+				</form>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #5</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<form>
+					<fieldset class="options">
+					    <label for="radio1"><input id="radio1" name="radio" type="radio" class="radio"> Option 1</label>
+					     <label for="radio2"><input id="radio2" name="radio" type="radio" class="radio"> Option 2</label>
+					</fieldset>
+				</form>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #x</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				
+				<fieldset>
+				    <label for="checkbox1"><input id="checkbox1" name="checkbox" type="checkbox" checked="checked"> Choice A</label>
+				     <label for="checkbox2"><input id="checkbox2" name="checkbox" type="checkbox"> Choice B</label>
+				     <label for="checkbox3"><input id="checkbox3" name="checkbox" type="checkbox"> Choice C</label>
+				</fieldset>
+				
+				<div class="submit">
+				    <input class="button" type="button" value="Check answer">
+				</div>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #6</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">Configure the interactive at right to represent a system in Equilibrium. When you've got it, take a screenshot using the button below.</p>
+				
+				<div class="image-answer">
+					<div class="submit">
+					    <input class="button" type="button" value="Take screenshot">
+					</div>
+				</div><!-- screenshot answer -->						
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #7</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">Configure the interactive at right to represent a system in Equilibrium. When you've got it, take a screenshot using the button below.</p>
+				
+				<div class="image-answer complete">
+					<div class="image-file">
+						<img src="http://www.nasa.gov/centers/ames/images/content/278550main_BERNSTEIN_PAH_Award_paper_092308.jpg" alt="">
+						<!-- <p>Screenshot chosen</p> -->
+						<a href="#">Take another screenshot</a>
+					</div>
+				</div><!-- screenshot answer -->
+				<form>
+					<div>
+						<textarea id="textarea" rows="8" placeholder="Annotate screen shot"></textarea>
+					</div>
+				</form>						
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #x</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="question">
+			<div class="question-hdr">
+				<h5 class="h5">Question #x</h5>
+			</div>
+			<div class="question-bd">
+				<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
+				<div class="content-img img-reg">
+					<div class="img-expandable"></div>
+					<figure>
+						<img src="http://concord-consortium.github.io/lab-resources/next-gen/319px-Eustachian_Tube_(PSF).png" alt="" />
+					</figure>
+				</div> <!-- end content-img -->
+			</div> <!-- end question-bd -->
+		</div> <!-- end question -->
+
+		<div class="submit">
+		    <input class="button" type="submit" value="Generate a report of my work">
+		</div>
+
+	</div> <!-- end questions-mod -->
+
+
+</div> <!-- end content-mod -->
+
+
+
+<!-- Add expanded class to sidebar-mod for expanded view. -->
+	<div class="sidebar-mod">
+
+			<div class="sidebar-hdr">
+				<h5 class="h5">Did you know?</h5>
+			</div> <!-- end sidebar-hdr -->
+
+		<div class="sidebar-bd">
+			<div class="sidebar-bd-close">X</div>
+			<h4 class="h4">Why does chewing gum prevent your ears from popping?</h4>
+			<p class="sidebar-txt">It has to do with your Eustachian tubes (see the image to the right).</p>
+			<p class="sidebar-txt">Each ear has two pathways to the outside: the canal you can see from the outside and the Eustachian tube. The Eustachian tube connects your inner ear to your nose and mouth.</p>
+			<p class="sidebar-txt">Because the Eustachian tubes are so little, they can easily be blocked, especially if you have a stuffy nose! When you chew gum, your moving jaw causes the Eustachian tubes to move and open up. When the tubes are open, the pressure between the inner and outer ear can be equalized, and the pain goes away!</p>
+			<p class="sidebar-txt">You can achieve the same result without chewing gum—just move your mouth! Yawning and swallowing are other ways to prevent ear pain while flying.</p>
+			<div class="content-img img-reg">
+				<figure>
+					<img src="http://concord-consortium.github.io/lab-resources/next-gen/319px-Eustachian_Tube_(PSF).png" alt="" />
+					<figcaption>Pearson Scott Foresman. Donated to the Wikimedia Foundation.</figcaption>
+				</figure>
+			</div> <!-- end content-img -->
+		</div> <!-- end sidebar-bd -->
+
+	</div> <!-- end sidebar-mod -->
+
+	<div class="related-mod">
+
+		<div class="related-hdr">
+			<h5 class="h5">Related activities</h5>
+		</div> <!-- end related-hdr -->
+
+		<div class="related-bd">
+			<ul class="related-items">
+				<li class="related-item">
+					<div class="related-img">
+						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/states-matter.png" alt="">
+					</div>
+					<h6 class="h6">States of Matter</h6>
+					<p class="related-item-txt">Learn about phase change -- a major factor in creating climate on Earth among many other interesting phenomena.</p>
+					<p class="related-item-txt"><a href="#">Run activity</a></p>
+				</li> <!-- end related-item -->
+
+				<li class="related-item">
+					<div class="related-img">
+						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/boiling-point.png" alt="">
+					</div>
+					<h6 class="h6">Boiling Point</h6>
+					<p class="related-item-txt">The temperature at which substances boil is determined by intermolecular attractions. Explore how these forces affect a substance's boiling point.</p>
+					<p class="related-item-txt"><a href="#">Run activity</a></p>
+				</li> <!-- end related-item -->
+
+				<li class="related-item">
+					<div class="related-img">
+						<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/solubility.png" alt="">
+					</div>
+					<h6 class="h6">Solubility</h6>
+					<p class="related-item-txt">Have you ever wondered why oil and water don't mix? Discover why some substances dissolve in water while others do not.</p>
+					<p class="related-item-txt"><a href="#">Run activity</a></p>
+				</li> <!-- end related-item -->
+			</ul> <!-- end related-items -->
+		</div> <!-- end related-bd -->
+
+	</div> <!-- end related-mod -->
