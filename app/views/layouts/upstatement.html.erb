@@ -19,12 +19,11 @@
   <%= stylesheet_link_tag 'screen', :media => 'all' %>
 
 	<!-- Scripts -->
-  <!-- TODO: Rails tag -->
 	<!--[if IE 8 ]>
-	<script type="text/javascript" src="_js/libs/respond.js"></script>
+  <%= javascript_include_tag 'respond' %>
 	<![endif]-->
-  <!-- TODO: Get this from a CDN or js-tag it -->
-	<script type="text/javascript" src="../_js/libs/modernizr-2.6.1.min.js"></script>
+  <!-- TODO: We should be making a custom build of Modernizr instead of using a dev version from CDN: http://modernizr.com/news/modernizr-and-cdns/ -->
+  <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js' %>
 
 </head>
 
@@ -42,19 +41,14 @@
 			<div class="site-logo-mod site-width">
 				<div class="site-logo logo-l">
 					<h2>
-						<a href="http://mw.concord.org/nextgen/">
-              <!-- TODO: This is probably going to be set per-activity, so make it dynamic with a default -->
-							<img src="../_img/high_science.png" alt="">
-						</a>
+            <!-- TODO: This is probably going to be set per-activity, so make it dynamic with a default -->
+            <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
 					</h2>
 				</div> <!-- end site-logo logo-l -->
 
 				<div class="site-logo logo-r">
 					<h2>
-						<a href="http://concord.org/">
-              <!-- TODO: proper Rails image tag -->
-							<img src="http://mw.concord.org/nextgen/activities/_assets/img/cc-logo.png?v=012013" alt="">
-						</a>
+            <%= link_to image_tag("cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo"), "http://concord.org/", :title => "The Concord Consortium" %>
 					</h2>
 				</div> <!-- end site-logo logo-r -->
 
@@ -78,34 +72,7 @@
 
 					<div class="l-nav site-width">
 
-
-            <!-- TODO: Partial for nav -->
-						<div class="activity-nav-logo ui-block-1">
-							<h2 class="h2">Intermolecular Attractions and Boiling Point</h2>
-						</div>
-					
-						<nav class="activity-nav ui-block-2">
-							
-							<a class="next" href="#"> </a>
-							<a class="prev" href="#"> </a>
-
-							<div class="pages">
-								<ul class="pagination">
-									<li class="pagination-item home-link"><a href="/_templates/interactive-index.html" class="pagination-link">H</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">1</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">2</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">3</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">4</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">5</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">6</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">7</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">8</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link">9</a></li>
-									<li class="pagination-item"><a href="" class="pagination-link selected">10</a></li>
-								</ul>
-							</div> <!-- end pages-->
-						</nav> <!-- end activity-nav ui-block-2 -->
-            <!-- TODO: End nav partial -->
+						<%= render :partial => 'interactive_pages/activity_nav' %>
 
 					</div><!-- end l-nav site-width -->
 
@@ -115,288 +82,8 @@
 
 				<div class="site-width">
 					
-          <!-- TODO: Begin main yield -->
-					<div class="content-hdr">
-						<h2 class="h2">Intermolecular Attractions and Boiling Point</h2>
-					</div> <!-- end content-hdr -->
-					
-					<div class="intro-mod">
-						<h4 class="h4">All molecules attract to each other</h4>
-						<p class="intro-txt">TK TK A long intro goes here with words TK. This is where the intro goes that can be very long or very short. It can have images or not. And all kinds of cool content and stuffs. K TK A long intro goes here with words TK. This is where the intro goes that can be very long or very short. It can have images or not. And all kinds of cool content and stuffs. K TK A long intro goes here with words TK. This is where the intro goes that can be very long or very short. It can have images or not. And all kinds of cool content and stuffs.</p>
-					</div> <!-- end intro-mod  -->
+          <%= yield %>
 
-          <!-- TODO: Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030 -->
-					<div class="content-mod l-6040">
-
-						<div class="ui-block-1">
-              <!-- TODO: Interactive partial -->
-							<div class="interactive-mod pinned">
-									<iframe width="576px" height="439px" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="http://lab.concord.org/examples/interactives/embeddable.html#interactives/sam/intermolecular-attractions/6-hydrogen-bonds-a-special-type-of-attraction.json"></iframe>
-							</div> <!-- end interactive-mod -->
-              <!-- TODO: End interactive partial -->
-						</div> <!-- end ui-block-1 -->
-
-						<div class="questions-mod ui-block-2">
-
-							<div class="question challenge">
-								<div class="question-hdr">
-									<h5 class="h5">Interactive challenge</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will related to explaining what the Interactive is displaying and how what a student should glean from it.</p>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question challenge">
-								<div class="question-bd">
-									<p class="question-txt">This is a block that isn't a question or an explainer of what an interactive demonstrates, rather a simple text block relating information.</p>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #1</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<ol>
-										<li>This is an ordered number list item.</li>
-										<li>This is an ordered number list item.</li>
-										<li>This is an ordered number list item.
-											<ol>
-												<li>This is a nested ordered list item</li>
-												<li>This is a nested ordered list item</li>
-											</ol>
-										</li>
-										<li>This is an ordered number list item.</li>
-									</ol>
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #2</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<ul>
-										<li>This is an unordered list item.</li>
-										<li>This is an unordered list item.</li>
-										<li>This is an unordered list item.
-											<ul>
-												<li>This is a nested list item.</li>
-												<li>This is a nested list item.</li>
-											</ul>
-										</li>
-									</ul>
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #3</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<dl>
-										<dt>This is a term.</dt>
-									    <dd>This is the definition of that term, which both live in a <code>dl</code>.</dd>
-									    <dt>Here is another term.</dt>
-									    <dd>And it gets a definition too, which is this line.</dd>
-									    <dt>Here is term that shares a definition with the term below.</dt>
-									    <dd>Here's another definittion here</dd>
-									</dl>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #4</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<form>
-										<div>
-											<textarea id="textarea" rows="8" placeholder="Type answer here"></textarea>
-										</div>
-									</form>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #5</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<form>
-										<fieldset class="options">
-										    <label for="radio1"><input id="radio1" name="radio" type="radio" class="radio"> Option 1</label>
-										     <label for="radio2"><input id="radio2" name="radio" type="radio" class="radio"> Option 2</label>
-										</fieldset>
-									</form>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #x</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									
-									<fieldset>
-									    <label for="checkbox1"><input id="checkbox1" name="checkbox" type="checkbox" checked="checked"> Choice A</label>
-									     <label for="checkbox2"><input id="checkbox2" name="checkbox" type="checkbox"> Choice B</label>
-									     <label for="checkbox3"><input id="checkbox3" name="checkbox" type="checkbox"> Choice C</label>
-									</fieldset>
-									
-									<div class="submit">
-									    <input class="button" type="button" value="Check answer">
-									</div>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #6</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">Configure the interactive at right to represent a system in Equilibrium. When you've got it, take a screenshot using the button below.</p>
-									
-									<div class="image-answer">
-										<div class="submit">
-										    <input class="button" type="button" value="Take screenshot">
-										</div>
-									</div><!-- screenshot answer -->						
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #7</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">Configure the interactive at right to represent a system in Equilibrium. When you've got it, take a screenshot using the button below.</p>
-									
-									<div class="image-answer complete">
-										<div class="image-file">
-											<img src="http://www.nasa.gov/centers/ames/images/content/278550main_BERNSTEIN_PAH_Award_paper_092308.jpg" alt="">
-											<!-- <p>Screenshot chosen</p> -->
-											<a href="#">Take another screenshot</a>
-										</div>
-									</div><!-- screenshot answer -->
-									<form>
-										<div>
-											<textarea id="textarea" rows="8" placeholder="Annotate screen shot"></textarea>
-										</div>
-									</form>						
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #x</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="question">
-								<div class="question-hdr">
-									<h5 class="h5">Question #x</h5>
-								</div>
-								<div class="question-bd">
-									<p class="question-txt">This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that. This block will contain questions, text and stuff like that.</p>
-									<div class="content-img img-reg">
-										<div class="img-expandable"></div>
-										<figure>
-											<img src="http://concord-consortium.github.io/lab-resources/next-gen/319px-Eustachian_Tube_(PSF).png" alt="" />
-										</figure>
-									</div> <!-- end content-img -->
-								</div> <!-- end question-bd -->
-							</div> <!-- end question -->
-
-							<div class="submit">
-							    <input class="button" type="submit" value="Generate a report of my work">
-							</div>
-
-						</div> <!-- end questions-mod -->
-
-
-					</div> <!-- end content-mod -->
-
-
-
-<!-- Add expanded class to sidebar-mod for expanded view. -->
-						<div class="sidebar-mod">
-
-								<div class="sidebar-hdr">
-									<h5 class="h5">Did you know?</h5>
-								</div> <!-- end sidebar-hdr -->
-
-							<div class="sidebar-bd">
-								<div class="sidebar-bd-close">X</div>
-								<h4 class="h4">Why does chewing gum prevent your ears from popping?</h4>
-								<p class="sidebar-txt">It has to do with your Eustachian tubes (see the image to the right).</p>
-								<p class="sidebar-txt">Each ear has two pathways to the outside: the canal you can see from the outside and the Eustachian tube. The Eustachian tube connects your inner ear to your nose and mouth.</p>
-								<p class="sidebar-txt">Because the Eustachian tubes are so little, they can easily be blocked, especially if you have a stuffy nose! When you chew gum, your moving jaw causes the Eustachian tubes to move and open up. When the tubes are open, the pressure between the inner and outer ear can be equalized, and the pain goes away!</p>
-								<p class="sidebar-txt">You can achieve the same result without chewing gum—just move your mouth! Yawning and swallowing are other ways to prevent ear pain while flying.</p>
-								<div class="content-img img-reg">
-									<figure>
-										<img src="http://concord-consortium.github.io/lab-resources/next-gen/319px-Eustachian_Tube_(PSF).png" alt="" />
-										<figcaption>Pearson Scott Foresman. Donated to the Wikimedia Foundation.</figcaption>
-									</figure>
-								</div> <!-- end content-img -->
-							</div> <!-- end sidebar-bd -->
-
-						</div> <!-- end sidebar-mod -->
-
-						<div class="related-mod">
-
-							<div class="related-hdr">
-								<h5 class="h5">Related activities</h5>
-							</div> <!-- end related-hdr -->
-
-							<div class="related-bd">
-								<ul class="related-items">
-									<li class="related-item">
-										<div class="related-img">
-											<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/states-matter.png" alt="">
-										</div>
-										<h6 class="h6">States of Matter</h6>
-										<p class="related-item-txt">Learn about phase change -- a major factor in creating climate on Earth among many other interesting phenomena.</p>
-										<p class="related-item-txt"><a href="#">Run activity</a></p>
-									</li> <!-- end related-item -->
-
-									<li class="related-item">
-										<div class="related-img">
-											<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/boiling-point.png" alt="">
-										</div>
-										<h6 class="h6">Boiling Point</h6>
-										<p class="related-item-txt">The temperature at which substances boil is determined by intermolecular attractions. Explore how these forces affect a substance's boiling point.</p>
-										<p class="related-item-txt"><a href="#">Run activity</a></p>
-									</li> <!-- end related-item -->
-
-									<li class="related-item">
-										<div class="related-img">
-											<img src="http://mw.concord.org/nextgen/_assets/img/thumbs/solubility.png" alt="">
-										</div>
-										<h6 class="h6">Solubility</h6>
-										<p class="related-item-txt">Have you ever wondered why oil and water don't mix? Discover why some substances dissolve in water while others do not.</p>
-										<p class="related-item-txt"><a href="#">Run activity</a></p>
-									</li> <!-- end related-item -->
-								</ul> <!-- end related-items -->
-							</div> <!-- end related-bd -->
-
-						</div> <!-- end related-mod -->
-            <!-- TODO: End main yield -->
 				</div> <!-- end site-width -->
 
 			</div> <!-- end activity-mod -->
