@@ -464,7 +464,7 @@ ul.quiet_list {
       width: 82%;
     }
     .action_menu_header_right {
-      width: 18%;
+      width: 25%;
     }
     .tiny {
       clear: both;
@@ -600,6 +600,14 @@ li.run a {
 }
 li.delete a {
   background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+  background-size: 14px;
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
+}
+li.publish a {
+  background: transparent url(/assets/icons/publish.png) 0 0 no-repeat;
   background-size: 14px;
   color: #333;
   height: 14px;

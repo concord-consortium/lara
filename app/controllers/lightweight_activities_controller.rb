@@ -1,6 +1,9 @@
 require_dependency "application_controller"
+require 'concord_portal_publishing'
 
 class LightweightActivitiesController < ApplicationController
+  include ConcordPortalPublishing
+
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_session_key, :only => [:summary, :show]
 
@@ -124,6 +127,17 @@ class LightweightActivitiesController < ApplicationController
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
     @answers = @activity.answers(@run)
+  end
+
+  def publish
+    authorize! :publish, @activity
+    success = portal_publish(@activity)
+    if success
+      flash[:notice] = "Successfully published activity!"
+    else
+      flash[:alert] = "Failed to publish activity! Check that you're logged in to the portal, and have permissions to author."
+    end
+    redirect_to activities_path
   end
 
   private
