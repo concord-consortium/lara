@@ -7,6 +7,7 @@ describe Run do
     r = FactoryGirl.create(:run)
     r.activity = activity
     r.remote_endpoint = remote_endpoint
+    r.user = user
     r
   }
   let (:user) { FactoryGirl.create(:user) }
@@ -192,12 +193,20 @@ describe Run do
 
       describe "with an endpoint and answers" do
         let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
+        let(:auth_token) { "xyzzy" }
         describe "with a positive response from the server" do
           it "should be successful" do
+            payload = run.response_for_portal([or_answer,mc_answer])
+            user.stub(:authentication_token => auth_token)
             stub_http_request(:post, remote_endpoint).to_return(
               :body   => "OK", # TODO: What returns?
               :status => 200)
             run.send_to_portal([or_answer,mc_answer]).should be_true
+            WebMock.should have_requested(:post, remote_endpoint).
+              with(:body => {
+                "oauth_token" => auth_token,
+                "content"     => payload
+              })
           end
         end
         describe "when the server reports an error" do

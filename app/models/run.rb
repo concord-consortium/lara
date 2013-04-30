@@ -94,7 +94,8 @@ class Run < ActiveRecord::Base
   end
 
   def oauth_token
-    "TODO: Make an OAuthToken"
+    return user.authentication_token if user
+    # TODO: throw "no oauth_token for runs without users"
   end
 
   # TODO: Alias to all_responses_for_portal
