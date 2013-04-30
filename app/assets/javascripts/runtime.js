@@ -14,5 +14,7 @@
 //= require jquery-ui
 //= require waypoints
 //= require waypoints-sticky
+//= require modals
+//= require check-answer
 //= require script
 //= require jquery.placeholder

@@ -1,7 +1,7 @@
 - embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 .question-hdr
   %h5.h5= embeddable.name
-.question-bd
+.question-bd{ :id => embeddable_string }
   .question-txt
     = embeddable.prompt.html_safe
   = form_for embeddable,

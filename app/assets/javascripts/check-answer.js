@@ -2,6 +2,7 @@
 /*global $, Node */
 
 function showPrompts() {
+    // This is for admin
     if ($('#embeddable_multiple_choice_custom').is(':checked')) {
         $('.choices .custom-hidden').show();
     } else {
@@ -29,7 +30,7 @@ function checkAnswer(q_id) {
             }
             $modal.html('<div class="check-answer"><p class="response">' + response + '</p></div>')
                   .prepend(modal_close)
-                  .css('top', $(window).scrollTop() + 40)
+                  .css('top', $(window).scrollTop() + 80)
                   .show();
             $modal_container.show();
         });
