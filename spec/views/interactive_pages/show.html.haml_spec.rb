@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 def related_section_rgx
-  /<div\s+class=["']related["']>/
+  /<div\s+class=["']related-mod["']>/
 end
 
 describe "interactive_pages/show" do

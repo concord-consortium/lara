@@ -22,7 +22,7 @@
         = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(@page.lightweight_activity, @session_key)
 
   -# -- Add expanded class to sidebar-mod for expanded view. -->
-  - unless @page.sidebar.blank?
+  - if @page.show_sidebar && !@page.sidebar.blank?
     .sidebar-mod
       .sidebar-hdr
         %h5.h5

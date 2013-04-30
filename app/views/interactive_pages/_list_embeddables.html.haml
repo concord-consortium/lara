@@ -1,3 +1,4 @@
-- @modules.each do |m|
-  .question
-    = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+- unless @modules.blank?
+  - @modules.each do |m|
+    .question
+      = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
