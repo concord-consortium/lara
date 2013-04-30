@@ -38,6 +38,30 @@ describe Embeddable::MultipleChoiceAnswersController do
         end
       end
     end
+    describe "with a run without a remote endpoint (not run from portal)" do
+      let(:run)  {
+        FactoryGirl.create(
+          :run,
+          :remote_endpoint => nil
+        )
+      }
+      describe "with valid params" do
+        let(:new_answer) { "this answer has been changed "}
+        it "should update the answer" do
+          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+            :answers => [a_answer.id]
+          }
+          answer.reload
+          answer.answers.should == [a_answer]
+        end
+        it "should fire off a web request to update the portal" do
+          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+            :answers => [a_answer.id]
+          }
+          assert_not_requested :post, endpoint
+        end
+      end
+    end
   end
 
 
