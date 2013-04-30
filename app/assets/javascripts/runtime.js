@@ -1,4 +1,4 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
+// This is a manifest file that'll be compiled into runtime.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
@@ -10,20 +10,9 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
 //= require jquery_ujs
 //= require jquery-ui
-//= require jquery_nested_form
-//= require jquery.jeditable
-//= require jquery.wysiwyg
-//= require wysiwyg.image
-//= require wysiwyg.link
-//= require wysiwyg.table
-//= require jquery.jeditable.wysiwyg
-//= require modals
-//= require scroll-handler
-//= require check-answer
-//= require full-screen
-//= require ./common.js
-
-//#= require_tree .
+//= require waypoints
+//= require waypoints-sticky
+//= require script
+//= require jquery.placeholder
