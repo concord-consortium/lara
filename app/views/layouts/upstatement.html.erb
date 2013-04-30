@@ -94,9 +94,7 @@
 
 				<div class="site-logo logo-c">
 					<h2>
-						<a href="http://concord.org/">
-							<img src="http://mw.concord.org/nextgen/activities/_assets/img/cc-logo.png?v=012013" alt="">
-						</a>
+            <%= link_to image_tag("cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo"), "http://concord.org/", :title => "The Concord Consortium" %>
 					</h2>
 				</div> <!-- end site-logo -->
 
@@ -126,29 +124,26 @@
 	<!-- Scripts					-->
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-  <!-- TODO: CDN or include? -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="../_js/libs/jquery-1.7.2.min.js"><\/script>')</script>  	
+  <!-- TODO: CDN or include? Lab is using 1.8.3 but self-hosting. -->
+  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' %>
+  <!-- TODO: Include the 1.8.3 version in the assets -->
+	<script>// window.jQuery || document.write('<script src="../_js/libs/jquery-1.7.2.min.js"><\/script>')</script>
 
   	<!-- Project-Specific stuff, start with up-base and go into script.js for your code --> 
-	<!-- TODO: Pull this: <script type="text/javascript" src="_js/up-base.js"></script>-->
   <!-- TODO: Get un-minified versions of these -->
-  <!-- TODO: Rails include tag -->
-	<script type="text/javascript" src="../_js/libs/waypoints.min.js"></script>
-	<script type="text/javascript" src="../_js/libs/waypoints-sticky.min.js"></script>
-	<script type="text/javascript" src="../_js/script.js"></script>
+  <%= javascript_include_tag 'waypoints.min' %>
+  <%= javascript_include_tag 'waypoints-sticky.min' %>
+  <%= javascript_include_tag 'script' %>
 
 	<!-- Placeholder Polyfill -->
-	<script src="../_js/libs/jquery.placeholder.min.js"></script>
+  <%= javascript_include_tag 'jquery.placeholder.min' %>
 
 	<!-- end scripts-->
-
-
 
 	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
        chromium.org/developers/how-tos/chrome-frame-getting-started -->
 	<!--[if lt IE 7 ]>
-    	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js' %>
 		<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
 	<![endif]-->
 
