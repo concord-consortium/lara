@@ -18,6 +18,8 @@ module Embeddable
 
     delegate :prompt,  :to  => :question
 
+    after_update :send_to_portal
+
     def portal_hash
       {
         "type" => "open_response",
