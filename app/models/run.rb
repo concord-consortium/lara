@@ -63,15 +63,8 @@ class Run < ActiveRecord::Base
     key
   end
 
-  # TODO: calculate last page?
   def last_page
     return self.page || self.activity.pages.first
-  end
-
-  # TODO: generate storage keys?
-  # This was intended to generate a list of keys corresponding to each embeddable/question in an activity, to be used by local browser storage. We won't need this until we return to local storage.
-  def storage_keys
-    []
   end
 
   def increment_run_count!
@@ -88,23 +81,45 @@ class Run < ActiveRecord::Base
     end
   end
 
+  def answers
+    open_response_answers + multiple_choice_answers
+  end
+
+  def answers_hash
+    answers.map {|a| a.portal_hash}
+  end
+
   def all_responses_for_portal
-    (self.open_response_answers.map { |ora| ora.portal_hash } + self.multiple_choice_answers.map { |mca| mca.portal_hash }).to_json
+    answers_hash.to_json
   end
 
-  def send_to_portal(answers)
-    payload = response_for_portal(answers)
-    if !payload.blank? and !self.remote_endpoint.blank?
-      # TODO: Post payload to portal
-    end
+  def oauth_token
+    "TODO: Make an OAuthToken"
   end
 
-  # TODO: do we ever want to call this?
+  # TODO: Alias to all_responses_for_portal
   def responses
     {
       'multiple_choice_answers' => self.multiple_choice_answers,
       'open_response_answers' => self.open_response_answers
     }
+  end
+
+  # return true if we saved.
+  def send_to_portal(answers)
+    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    payload = response_for_portal(answers)
+    return false if payload.nil? || payload.blank?
+    response = HTTParty.post(
+      remote_endpoint, {
+        :body => {
+          :oauth_token => oauth_token,
+          :content => payload
+        }
+      }
+    )
+    # TODO: better error detection?
+    response.code == 200
   end
 
 end

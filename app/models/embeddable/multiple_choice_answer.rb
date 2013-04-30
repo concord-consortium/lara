@@ -26,6 +26,8 @@ module Embeddable
     delegate :prompt,  :to  => :question
     delegate :choices, :to  => :question
 
+    after_update :send_to_portal
+
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
@@ -41,7 +43,7 @@ module Embeddable
     end
 
     def send_to_portal
-      run.send_to_portal(self)
+      run.send_to_portal(self) if run
     end
 
     def to_json

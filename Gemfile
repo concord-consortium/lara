@@ -25,6 +25,8 @@ gem 'uuidtools'
 
 gem "sqlite3"
 
+gem "httparty"
+
 group :production do
   gem 'mysql2'
   gem 'therubyracer',         "~>0.10.2"
@@ -64,6 +66,11 @@ group :test, :development do
   gem 'fuubar'
   # Javascript tests with PhantomJS
   gem 'poltergeist'
+end
+
+group :test do
+  # test webservices
+  gem 'webmock'
 end
 
 # To use ActiveModel has_secure_password

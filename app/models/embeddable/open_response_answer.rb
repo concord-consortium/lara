@@ -19,6 +19,8 @@ module Embeddable
     delegate :prompt,  :to  => :question
     delegate :name,    :to  => :question
 
+    after_update :send_to_portal
+
     def portal_hash
       {
         "type" => "open_response",
@@ -28,7 +30,7 @@ module Embeddable
     end
 
     def send_to_portal
-      run.send_to_portal(self)
+      run.send_to_portal(self) if run
     end
 
     def to_json

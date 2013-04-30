@@ -72,12 +72,14 @@ describe User do
 
   describe "#find_for_concord_portal_oauth" do
     let(:auth_email)    { "testuser@concord.org" }
-    let(:auth_provider) { "portal.concord.org"      }
+    let(:auth_provider) { "portal.concord.org"   }
     let(:auth_uid)      { "23"                   }
+    let(:auth_token)    { "xyzzy"                }
 
     let(:auth) do
       auth_obj = mock(:provider => auth_provider, :uid => auth_uid)
       auth_obj.stub_chain(:info, :email).and_return(auth_email)
+      auth_obj.stub_chain(:credentials, :token).and_return(auth_token)
       auth_obj
     end
 

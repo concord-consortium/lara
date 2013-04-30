@@ -4,7 +4,7 @@ class Embeddable::OpenResponseAnswersController < ApplicationController
     answer = Embeddable::OpenResponseAnswer.find(params[:id])
     if answer.update_attributes(params[:embeddable_open_response_answer])
       respond_to do |format|
-        format.json { render :json => answer }
+        format.json { render :json => answer.to_json }
       end
     else
       respond_to do |format|
