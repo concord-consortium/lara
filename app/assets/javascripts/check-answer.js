@@ -33,6 +33,7 @@ function checkAnswer(q_id) {
                   .css('top', $(window).scrollTop() + 80)
                   .show();
             $modal_container.show();
+            // TODO: This has issues with appearing under the pinned nav and sometimes under the pinned interactive.
         });
     }
 }
