@@ -234,12 +234,12 @@ footer {
 
   .prev {
     float: right;
-    background-image: url(../_img/prev.png);
+    background-image: url(/assets/prev.png);
   }
 
   .next {
     float: right;
-    background-image: url(../_img/next.png);
+    background-image: url(/assets/next.png);
   }
 
   .pages {
@@ -295,7 +295,7 @@ footer {
   &.home-link {
     text-indent: -9999px;
     .pagination-link {
-      background-image: url(../_img/home_blue.png);
+      background-image: url(/assets/home_blue.png);
       background-repeat: no-repeat;
       background-size: 80%;
       background-position: 50% 50%;
@@ -305,7 +305,7 @@ footer {
 
   &.home-link {
     .selected {
-      background-image: url(../_img/home_white.png);
+      background-image: url(/assets/home_white.png);
     }
   }
 } // end .pagination-item
@@ -759,7 +759,7 @@ button[type="button"] {
 .sidebar-hdr {
   cursor: pointer;
   left: 0;
-  background: lighten($drk-orange, 5%) url('../_img/question.png') no-repeat 50% 10px;
+  background: lighten($drk-orange, 5%) url('/assets/question.png') no-repeat 50% 10px;
   border-right: 4px solid $drk-orange;
   width: 85px;
   height: 79px;
@@ -969,7 +969,7 @@ button[type="button"] {
   right: 0;
   width: 28px;
   height: 28px;
-  background: $med-blue url(../_img/plus.png) no-repeat center;
+  background: $med-blue url(/assets/plus.png) no-repeat center;
   @include box-shadow(-1px 1px 2px rgba(0, 0, 0, 0.3) );
   @include trans;
 

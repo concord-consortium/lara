@@ -57,7 +57,7 @@
 		</header>
 
 
-    <!-- TODO: Partial? -->
+    <!-- TODO: Hook this to actual save events -->
 		<div id="save">
 			Saving ...
 		</div>
@@ -71,9 +71,7 @@
 				<div class="activity-nav-mod">
 
 					<div class="l-nav site-width">
-
 						<%= render :partial => 'interactive_pages/activity_nav' %>
-
 					</div><!-- end l-nav site-width -->
 
 				</div> <!-- end activity-nav-mod -->
@@ -128,8 +126,7 @@
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' %>
 	<script>// window.jQuery || document.write('<script src="/assets/jquery-1.8.3.min.js"><\/script>')</script>
 
-  	<!-- Project-Specific stuff, start with up-base and go into script.js for your code --> 
-  <!-- TODO: Get un-minified versions of these -->
+	<!-- Project-Specific stuff, start with up-base and go into script.js for your code -->
   <%= javascript_include_tag 'waypoints' %>
   <%= javascript_include_tag 'waypoints-sticky' %>
   <%= javascript_include_tag 'script' %>
