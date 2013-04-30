@@ -29,7 +29,7 @@ module Embeddable
     end
 
     def send_to_portal
-      run.send_to_portal(self)
+      run.send_to_portal(self) if run
     end
 
     def to_json
