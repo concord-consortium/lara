@@ -1,12 +1,43 @@
+/*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
+/*global $ */
+
+var saveTimer;
+
+function saveFailed () {
+    $("#save").html("Save failed!");
+}
+
+function showSaved () {
+    // Wait a few seconds before actually running
+    saveTimer = setTimeout( function () {
+        $("#save").html("Saved.");
+        // Fade out.
+        $("#save").animate({'opacity': '0'}, 'slow');
+    }, 2000);
+}
+
+function showSaving () {
+	$("#save").html("Saving...");
+	$("#save").animate({'opacity': '1.0'}, 'slow');
+}
+
+function saveForm ($form) {
+    // Show "Saving..."
+    showSaving();
+    // Submit form
+    $form.submit();
+    // We should be evaluating the response to that and calling either showSaved() or saveFailed().
+    showSaved();
+}
+
 $(document).ready(function(){
 
-	var header_top = $('.content-hdr').offset().top;
-	var interactive_top = $('.interactive-mod').offset().top;
-	var content_top = $('.content-mod').offset().top;
-	
-	var q_height = $('.content-mod').height();
-	var i_width =$('.pinned').width();
-	var i_height = $('.pinned').height();
+	var header_top = $('.content-hdr').offset().top,
+	    content_top = $('.content-mod').offset().top,
+	    i_width =$('.pinned').width(),
+	    i_height = $('.pinned').height();
+    // var interactive_top = $('.interactive-mod').offset().top;
+    // var q_height = $('.content-mod').height();
 
 
 
@@ -39,7 +70,7 @@ $(document).ready(function(){
 
 	//This fixes the interactive mod when the window hits the questions
 	$('.pinned').waypoint(function(direction){
-		if(direction=='down'){
+		if(direction==='down'){
 			$('.pinned').addClass('stuck');
 			$('.pinned').css({
 				'width':i_width
@@ -48,7 +79,7 @@ $(document).ready(function(){
 				'margin-top':i_height+52
 			});
 		}
-		if(direction=='up'){
+		if(direction==='up'){
 			$('.pinned').removeClass('stuck');
 			$('.questions-full').css({
 				'margin-top': 0
@@ -59,11 +90,11 @@ $(document).ready(function(){
 
 	//this un-fixes it when we scroll past its track
 	$('.related-mod').waypoint(function(direction){
-		if(direction=='down'){
+		if(direction==='down'){
 			$('.pinned').removeClass('stuck');
 			$('.pinned').addClass('bottomed');
 		}
-		if(direction=='up'){
+		if(direction==='up'){
 			$('.pinned').addClass('stuck');
 			$('.pinned').removeClass('bottomed');
 		}
@@ -71,18 +102,18 @@ $(document).ready(function(){
 	);
 
 
-	// prototyping save interaction
-	var i = 0;
-	setInterval(function(){
-		$("#save").toggleClass('saved');
-		if(i==0){
-			$("#save").html("Saved.");
-			$("#save").animate({'opacity': '0'}, 'slow');
-		} else {
-			$("#save").animate({'opacity': '1.0'}, 'slow');
-			$("#save").html("Saving...");
-		}
-		i = 1-i;
-	}, 5000);
+    // enable check answer when there is an answer
+    $('input[type=radio]').one('click', function () {
+        $('#check').removeAttr('disabled');
+    });
 
+    // submit multiple choice on change event
+    $('.live_submit').on('change',function() {
+      saveForm($(this).parents('form:first'));
+    });
+
+    // submit textarea on blur event
+    $('textarea.live-submit').on('blur',function() {
+      saveForm($(this).parents('form:first'));
+    });
 });  // end document.ready

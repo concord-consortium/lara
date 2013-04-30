@@ -7,7 +7,7 @@
   = form_for embeddable,
     :remote => true,
     :html => {:'data-type' => 'json'} do |f|
-    %fieldset.options
+    %fieldset.options.live-update
       - embeddable.choices.each do |choice|
         %label{ :for => "embeddable_multiple_choice_answer_answers_#{choice.id}" }
           = f.radio_button :answers, choice.id, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
