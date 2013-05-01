@@ -203,9 +203,12 @@ describe Run do
               :status => 200)
             run.send_to_portal([or_answer,mc_answer]).should be_true
             WebMock.should have_requested(:post, remote_endpoint).
-              with(:body => {
-                "oauth_token" => auth_token,
-                "content"     => payload
+              with({
+                :body => payload,
+                :headers => {
+                  "Authorization" => bearer_token,
+                  "Content-Type" => 'application/json'
+                }
               })
           end
         end

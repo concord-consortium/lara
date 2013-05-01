@@ -111,11 +111,13 @@ class Run < ActiveRecord::Base
     return false if remote_endpoint.nil? || remote_endpoint.blank?
     payload = response_for_portal(answers)
     return false if payload.nil? || payload.blank?
+    bearer_token = 'Bearer %s' % oauth_token
     response = HTTParty.post(
       remote_endpoint, {
-        :body => {
-          :oauth_token => oauth_token,
-          :content => payload
+        :body => payload,
+        :headers => {
+          "Authorization" => bearer_token,
+          "Content-Type" => 'application/json'
         }
       }
     )
