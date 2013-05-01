@@ -98,6 +98,10 @@ class Run < ActiveRecord::Base
     # TODO: throw "no oauth_token for runs without users"
   end
 
+  def bearer_token
+    'Bearer %s' % oauth_token
+  end
+
   # TODO: Alias to all_responses_for_portal
   def responses
     {
@@ -111,7 +115,6 @@ class Run < ActiveRecord::Base
     return false if remote_endpoint.nil? || remote_endpoint.blank?
     payload = response_for_portal(answers)
     return false if payload.nil? || payload.blank?
-    bearer_token = 'Bearer %s' % oauth_token
     response = HTTParty.post(
       remote_endpoint, {
         :body => payload,

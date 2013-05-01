@@ -206,7 +206,7 @@ describe Run do
               with({
                 :body => payload,
                 :headers => {
-                  "Authorization" => bearer_token,
+                  "Authorization" => run.bearer_token,
                   "Content-Type" => 'application/json'
                 }
               })
