@@ -9,8 +9,8 @@
     = @page.name
   .intro-txt!= @page.text
 
-=# TODO: Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
-.content-mod.l-6040
+-# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
+.content-mod{ :class => @page.layout }
   .ui-block-1
     = render :partial => 'interactive'
 
@@ -21,7 +21,7 @@
       .submit
         = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(@page.lightweight_activity, @session_key)
 
-  -# -- Add expanded class to sidebar-mod for expanded view. -->
+  -# -- Add expanded class to sidebar-mod for expanded view.
   - if @page.show_sidebar && !@page.sidebar.blank?
     .sidebar-mod
       .sidebar-hdr

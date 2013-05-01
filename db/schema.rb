@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130425202328) do
+ActiveRecord::Schema.define(:version => 20130501131150) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20130425202328) do
     t.boolean  "show_interactive",        :default => false
     t.boolean  "show_info_assessment",    :default => false
     t.string   "workflow_state"
+    t.string   "layout",                  :default => "l-6040"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"

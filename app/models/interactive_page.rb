@@ -1,9 +1,15 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
+  attr_accessible :lightweight_activity, :name, :position, :user, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 
   acts_as_list :scope => :lightweight_activity
+
+  LAYOUT_OPTIONS = [{ :name => 'Full Width', :class_val => 'l-full-width' },
+                    { :name => '60-40',      :class_val => 'l-6040' },
+                    { :name => '70-30',      :class_val => 'l-7030' }]
+
+  validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
 
   has_many :interactive_items, :order => :position
 
@@ -12,19 +18,9 @@ class InteractivePage < ActiveRecord::Base
   end
 
   has_many :page_items, :order => :position
+
   def embeddables
     self.page_items.collect{|qi| qi.embeddable}
-  end
-
-  # Should the interactive block be full-width? N.B. when we put more than one 
-  # interactive/assessment block on a page, this should move to the block model.
-  def fullwidth_interactive
-    fullwidth = self.interactives.count { |ii| ii.fullwidth }
-    if fullwidth > 0 || !self.show_info_assessment
-      return true
-    else
-      return false
-    end
   end
 
   def show_interactive=(value)
