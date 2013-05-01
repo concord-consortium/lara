@@ -18,3 +18,7 @@
 //= require check-answer
 //= require script
 //= require jquery.placeholder
+//= require modernizr-2.6.1.min.js
+//= require respond
+//= require waypoints
+//= require waypoints-sticky
