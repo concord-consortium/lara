@@ -24,6 +24,6 @@
 //= require scroll-handler
 //= require check-answer
 //= require full-screen
-//= require_tree .
 //= require ./common.js
 
+//#= require_tree .
