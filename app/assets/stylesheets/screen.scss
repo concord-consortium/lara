@@ -1,4 +1,4 @@
-/* ## Bring in all Compass Helpers */ 
+/* ## Bring in all Compass Helpers */
 @import "partials/base";
 @import "project/fonts";
 
@@ -41,8 +41,8 @@ footer {
   color: white;
 }
 
-footer { 
-  margin-bottom: 0; 
+footer {
+  margin-bottom: 0;
   padding: 26px;
 }
 
@@ -207,7 +207,7 @@ footer {
   margin-top: 8px;
   position: relative;
   @extend .cf;
-  
+
   .prev,
   .next {
     background-color: lighten($med-blue, 5%);
@@ -226,7 +226,7 @@ footer {
     &:hover {
       background-color: darken($med-blue, 5%);
     }
-    
+
     &:active {
       background-color: darken($med-blue, 20%);
     }
@@ -383,7 +383,7 @@ footer {
 
   .h2 {
     // font-family: $lato-light;
-    font-size: 36px; 
+    font-size: 36px;
     // font-weight: normal;
     letter-spacing: -1px;
     color: $drk-orange;
@@ -394,14 +394,14 @@ footer {
 
 // Intro block
 .intro-mod {
-  font-size: 16px;  
+  font-size: 16px;
   line-height: 1.45em;
   font-family: $lato-reg;
   margin-bottom: 39px;
 
  .h4 {
     font-weight: normal;
-    font-size: 20px; 
+    font-size: 20px;
     margin-bottom: 13px;
     color: $med-blue;
   }
@@ -525,10 +525,10 @@ footer {
 .content-mod {
   font-size: 16px;
   line-height: 1.35em;
-  ol, 
-  ul, 
+  ol,
+  ul,
   dl,
-  blockquote, 
+  blockquote,
   p {
     margin-top: 16px;
     margin-bottom: 16px;
@@ -689,7 +689,7 @@ footer {
 }
 
 // submit
-input[type="submit"], 
+input[type="submit"],
 button[type="submit"] {
   display: block;
   margin: 0 auto;
@@ -731,10 +731,10 @@ button[type="button"] {
 
   //transitions for "close" action
   -moz-transition: 0.4s right,
-                      0.85s background-color, 
+                      0.85s background-color,
                       0.20s 0.05s ease box-shadow;
   -webkit-transition: 0.4s right,
-                      0.85s background-color, 
+                      0.85s background-color,
                       0.20s 0.05s ease box-shadow;
           transition: 0.4s right,
                       0.85s background-color,
@@ -782,7 +782,7 @@ button[type="button"] {
     font-family: $lato-reg;
     text-transform: none;
     color: #fff;
-    font-size: 14px; 
+    font-size: 14px;
     line-height: 1.15em;
     margin-top: 33px;
     @include drk-txt-shadow($drk-orange);
@@ -857,7 +857,7 @@ button[type="button"] {
   padding: 6px 13px;
   margin-bottom: 8px;
   @include box-shadow(0 2px 5px -1px $black-15);
-  @extend .drk-text-shadow; 
+  //@extend .drk-text-shadow;
 }
 
 .related-bd {
@@ -945,8 +945,8 @@ button[type="button"] {
 
 .img-reg { max-width: 60%; }
 
-.img-inset { 
-  max-width: 30%; 
+.img-inset {
+  max-width: 30%;
   float: right;
   margin-left: 2em;
 }
@@ -1010,7 +1010,7 @@ footer {
     color: $black-75;
     @include lt-txt-shadow(#fff);
     font-family: $lato-reg;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -1077,7 +1077,7 @@ footer {
     }
   } // end intro-mod
 
-  input[type="submit"], 
+  input[type="submit"],
   button[type="submit"] {
     font-size: 20px;
     padding: 20px 86px;
@@ -1098,7 +1098,7 @@ footer {
           @include lt-txt-shadow(#fff);
         }
 
-        a { 
+        a {
           color: #666;
           color: $med-blue;
           @include trans;
@@ -1111,7 +1111,7 @@ footer {
             color: darken($med-blue, 20%);
           }
 
-          
+
         }//a
       }//li
     }//ul,ol
