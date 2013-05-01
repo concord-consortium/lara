@@ -23,7 +23,8 @@ module ConcordPortalPublishing
           embeddable.choices.each do |choice|
             choices.push({
               "id" => choice.id,
-              "content" => choice.choice
+              "content" => choice.choice,
+              "correct" => choice.is_correct
             })
           end
           mc_data = {
@@ -39,7 +40,7 @@ module ConcordPortalPublishing
         end
       end
       pages.push({
-        "name" => "Response",
+        "name" => page.name,
         "elements" => elements
       })
     end
