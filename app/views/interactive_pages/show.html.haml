@@ -12,7 +12,8 @@
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
 .content-mod{ :class => @page.layout }
   .ui-block-1
-    = render :partial => 'interactive'
+    - if @page.interactives.length > 0 && @page.show_interactive
+      = render :partial => 'interactive'
 
   .questions-mod.ui-block-2
     = render :partial => 'list_embeddables'
