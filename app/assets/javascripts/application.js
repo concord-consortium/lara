@@ -25,5 +25,3 @@
 //= require check-answer
 //= require full-screen
 //= require ./common.js
-
-//#= require_tree .
