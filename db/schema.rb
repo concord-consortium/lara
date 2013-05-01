@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(:version => 20130501131150) do
     t.text     "text"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
-    t.integer  "offerings_count"
     t.text     "sidebar"
     t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
