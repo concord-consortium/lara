@@ -14,6 +14,17 @@ describe InteractivePage do
     page.valid?
   end
 
+  describe 'layouts' do
+    it 'has an array of hashes describing valid layouts' do
+      InteractivePage::LAYOUT_OPTIONS.length.should be > 0
+    end
+
+    it 'does not validate with layouts not in the hash' do
+      page.layout = 'invalid-layout-string'
+      page.valid?.should be_false
+    end
+  end
+
   it 'belongs to a lightweight activity' do
     activity = FactoryGirl.create(:activity)
 
