@@ -62,6 +62,8 @@
   
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
+  = form_for @page, :remote => true do |f|
+    = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  {:onchange => 'this.form.submit();'}
   - if @page.show_introduction
     .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
       %h2 Introduction
