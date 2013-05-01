@@ -43,20 +43,20 @@ class Run < ActiveRecord::Base
     self.by_key(key).first
   end
 
-  def self.for_user_activity_and_remote_id(user,activity,remote_id)
+  def self.for_user_activity_and_remote_endpoint(user,activity,remote_endpoint)
     conditions = {
       :user_id => user.id,
       :activity_id => activity.id
     }
-    conditions[:remote_id] = remote_id if remote_id
+    conditions[:remote_endpoint] = remote_endpoint if remote_endpoint
     found = self.find(:first, :conditions => conditions)
     return found || self.create(conditions)
   end
 
-  def self.lookup(key,activity,user=nil,remote_id=nil)
+  def self.lookup(key,activity,user=nil,remote_endpoint=nil)
+    return self.for_user_activity_and_remote_endpoint(user,activity,remote_endpoint) if user
     return self.for_key(key) if key
-    return self.for_user_activity_and_remote_id(user,activity,remote_id) if user
-    return self.create(:activity => activity, :remote_id => :remote_id)
+    return self.create(:activity => activity, :remote_endpoint => remote_endpoint)
   end
 
   def to_param
