@@ -11,6 +11,6 @@
  *= require_self
  *= require jquery.wysiwyg
  *= require jquery-ui
- *= require_tree .
+ *= // require_tree .
  *= require style
  */
