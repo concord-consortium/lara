@@ -12,13 +12,10 @@
 //
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.placeholder
 //= require waypoints
 //= require waypoints-sticky
+//= require common
+//= require script
 //= require modals
 //= require check-answer
-//= require script
-//= require jquery.placeholder
-//= require modernizr-2.6.1.min.js
-//= require respond
-//= require waypoints
-//= require waypoints-sticky
