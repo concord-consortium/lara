@@ -13,4 +13,5 @@
  *= require jquery-ui
  *= // require_tree .
  *= require style
+ *= require modal
  */
