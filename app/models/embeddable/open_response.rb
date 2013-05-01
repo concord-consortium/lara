@@ -8,6 +8,8 @@ module Embeddable
       :class_name  => 'Embeddable::OpenResponseAnswer',
       :foreign_key => 'open_response_id'
 
+    default_value_for :prompt, "why does ..."
+
     def activity
       if interactive_pages.length > 0
         if interactive_pages.first.lightweight_activity.present?

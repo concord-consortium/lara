@@ -12,6 +12,7 @@ module Embeddable
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     default_value_for :name, "Multiple Choice Question element"
+    default_value_for :prompt, "why does ..."
 
     def activity
       if interactive_pages.length > 0
