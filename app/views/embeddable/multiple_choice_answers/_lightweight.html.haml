@@ -3,7 +3,7 @@
   %h5.h5= embeddable.name
 .question-bd{ :id => embeddable_string }
   .question-txt
-    = embeddable.prompt.html_safe
+    != embeddable.prompt
   = form_for embeddable,
     :remote => true,
     :html => {:'data-type' => 'json'} do |f|
