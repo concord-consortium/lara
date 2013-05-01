@@ -24,6 +24,7 @@ class LightweightActivitiesController < ApplicationController
     url = activity_page_path(@activity, @run.last_page)
     if current_user.nil? && params[:domain] && params[:externalId]
       session[:auth_return_url] = url
+      session[:update_run_user] = true
       redirect_to user_omniauth_authorize_path(:concord_portal)
     else
       redirect_to url
