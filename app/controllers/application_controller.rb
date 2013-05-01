@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
   def set_session_key
     response_key = get_response_key
     @run = Run.lookup(response_key,@activity,current_user, external_id)
+    if params[:returnUrl]
+      @run.remote_endpoint = params[:returnUrl]
+      @run.save
+    end
     @session_key = session[:response_key][@activity.id] = @run.key
     # TODO: clear this hash on logout for logged-in users - requires finding callback in Devise
   end
