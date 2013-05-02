@@ -20,7 +20,8 @@
 
     - if @page.last?
       .submit
-        = link_to button_tag("Generate a report of my work.", :type => 'button'), summary_with_response_path(@page.lightweight_activity, @session_key)
+        %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
+          %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
 
   -# -- Add expanded class to sidebar-mod for expanded view.
   - if @page.show_sidebar && !@page.sidebar.blank?
