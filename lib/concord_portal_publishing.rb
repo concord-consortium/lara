@@ -1,4 +1,8 @@
 module ConcordPortalPublishing
+  def portal_url
+    (ENV['CONCORD_PORTAL_URL'] || "http://localhost:3000") + '/external_activities/publish'
+  end
+
   def portal_publish(activity)
     data = {
       "name" => activity.name,
@@ -51,7 +55,6 @@ module ConcordPortalPublishing
     }
 
     data["sections"] = [section]
-    portal_url = (ENV['CONCORD_PORTAL_URL'] || "http://localhost:3000") + '/external_activities/publish'
     bearer_token = 'Bearer %s' % current_user.authentication_token
     response = HTTParty.post(portal_url, :body => data.to_json, :headers => {"Authorization" => bearer_token, "Content-Type" => 'application/json'})
     # report success

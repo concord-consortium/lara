@@ -45,4 +45,7 @@ class LightweightActivity < ActiveRecord::Base
     questions.map { |q| finder.find_answer(q) }
   end
 
+  def publish!
+    update_attribute(:publication_status, 'public')
+  end
 end

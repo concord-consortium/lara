@@ -102,4 +102,12 @@ describe LightweightActivity do
       end
     end
   end
+
+  describe "#publish!" do
+    it "should change the publication status to public" do
+      activity.publication_status = 'draft'
+      activity.publish!
+      activity.publication_status.should == 'public'
+    end
+  end
 end

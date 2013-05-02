@@ -4,7 +4,8 @@ require 'spec_helper'
 describe LightweightActivitiesController do
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
-  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
+  let (:private_act) { FactoryGirl.create(:activity)}
+  let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
 
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
@@ -326,6 +327,23 @@ describe LightweightActivitiesController do
         act.pages.first.name.should == "Page 3"
         act.pages.last.name.should == "Page 1"
       end
+    end
+  end
+
+  describe "#publish" do
+    before(:each) do
+      @url = controller.portal_url
+      stub_request(:post, @url)
+    end
+
+    it "should call 'publish!' on the activity" do
+      act.should_not_receive(:publish!).and_return(true)
+      get :publish, {:id => act.id }
+    end
+
+    it "should attempt to publish to the portal" do
+      get :publish, {:id => act.id }
+      WebMock.should have_requested(:post, @url)
     end
   end
 end

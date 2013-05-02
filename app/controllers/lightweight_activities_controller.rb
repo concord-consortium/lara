@@ -132,6 +132,7 @@ class LightweightActivitiesController < ApplicationController
 
   def publish
     authorize! :publish, @activity
+    @activity.publish!
     success = portal_publish(@activity)
     if success
       flash[:notice] = "Successfully published activity!"
