@@ -43,6 +43,15 @@ describe LightweightActivitiesController do
 
       response.should redirect_to activity_page_url(act, page)
     end
+
+    describe "when called from the portal" do
+      it "should force a new user session" do
+        controller.should_receive(:sign_out).and_return(:true)
+        page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+        get :show, :id => act.id, :domain => "foo", :externalId => "bar"
+        response.should redirect_to user_omniauth_authorize_path(:concord_portal)
+      end
+    end
   end
 
   describe '#summary' do
