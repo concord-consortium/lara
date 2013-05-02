@@ -29,7 +29,11 @@ module Embeddable
     after_update :send_to_portal
 
     def question_index
-      self.run.activity.questions.index(self.question) + 1
+      if self.run && self.run.activity
+        self.run.activity.questions.index(self.question) + 1
+      else
+        nil
+      end
     end
 
     # render the text of the answers

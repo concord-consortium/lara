@@ -22,7 +22,11 @@ module Embeddable
     after_update :send_to_portal
 
     def question_index
-      self.run.activity.questions.index(self.question) + 1
+      if self.run && self.run.activity
+        self.run.activity.questions.index(self.question) + 1
+      else
+        nil
+      end
     end
 
     def portal_hash
