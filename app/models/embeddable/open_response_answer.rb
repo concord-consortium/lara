@@ -21,6 +21,10 @@ module Embeddable
 
     after_update :send_to_portal
 
+    def question_index
+      self.run.activity.questions.index(self.question) + 1
+    end
+
     def portal_hash
       {
         "type" => "open_response",

@@ -28,6 +28,10 @@ module Embeddable
 
     after_update :send_to_portal
 
+    def question_index
+      self.run.activity.questions.index(self.question) + 1
+    end
+
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
