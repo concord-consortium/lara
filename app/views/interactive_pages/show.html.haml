@@ -23,28 +23,26 @@
         %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
           %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
 
-  -# -- Add expanded class to sidebar-mod for expanded view.
-  - if @page.show_sidebar && !@page.sidebar.blank?
-    .sidebar-mod
-      .sidebar-hdr
-        %h5.h5
-          -# TODO: Content for this head
-          Did you know?
-      .sidebar-bd
-        .sidebar-bd-close
-          X
-        %h4.h4
-          -# TODO: Content for this head
-          -# Why does chewing gum prevent your ears from popping?
-        .sidebar-txt
-          != @page.sidebar
+-# -- Add expanded class to sidebar-mod for expanded view.
+- if @page.show_sidebar && !@page.sidebar.blank?
+  .sidebar-mod
+    .sidebar-hdr
+      %h5.h5
+        -# TODO: Content for this head
+        Did you know?
+    .sidebar-bd
+      .sidebar-bd-close
+        X
+      %h4.h4
+        -# TODO: Content for this head
+        -# Why does chewing gum prevent your ears from popping?
+      .sidebar-txt
+        != @page.sidebar
 
-  -# TODO: This layout is pretty awful
-  - if @page.last? && has_good_content(@page.lightweight_activity.related)
-    .related-mod
-      .related-hdr
-        %h5.h5
-          Related activities
-      .related-bd
-        -# TODO: More structured related content
-        != @page.lightweight_activity.related
+- if @page.last? && has_good_content(@page.lightweight_activity.related)
+  .related-mod
+    .related-hdr
+      %h5.h5
+        Related activities
+    .related-bd
+      != @page.lightweight_activity.related
