@@ -1,5 +1,6 @@
-.interactive-mod.pinned
-	%iframe{ :width => "576px",
+.interactive-mod{ :class => (@page.layout == 'l-full-width') ? nil : 'pinned' }
+  -# TODO: Fix dimensions
+  %iframe{ :width => "576px",
            :height => "439px",
            :frameborder => "no",
            :scrolling => "no",
