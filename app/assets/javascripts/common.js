@@ -3,25 +3,11 @@
 
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
-    var aspectRatio = $('iframe[data-aspect_ratio]').attr('data-aspect_ratio'),
-        targetHeight = $('.model, .model-edit').width() / aspectRatio;
+    var $iframe = $('iframe[data-aspect_ratio]'),
+        aspectRatio = $iframe.attr('data-aspect_ratio'),
+        currWidth = $iframe.width(),
+        targetHeight = currWidth/aspectRatio;
     $('iframe[data-aspect_ratio]').height(targetHeight);
-}
-
-function adjustWidth() {
-    var model_width, width;
-    if ($('.content').css('width') === '960px') {
-        model_width = '60%';
-        width = '95%';
-    } else {
-        model_width = '576px';
-        width = '960px';
-    }
-
-    $('#header div').css('width', width);
-    $('.content').css('width', width);
-    $('div.model').css('width', model_width);
-    $('#footer div').css('width', width);
 }
 
 // Update the modal edit window with a returned partial
