@@ -10,4 +10,5 @@
     %label{:for => control_id}
       %input{:type => "radio", :name => control_name, :id => control_id, :value => control_id }
       = choice.choice
-  %button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" } Check Answer
+  - if embeddable.enable_check_answer
+    %button{ :onclick => "checkAnswer('embeddable__#{embeddable_string}');" } Check Answer

@@ -22,9 +22,10 @@ module Embeddable
       {:conditions => { :run_id => r.id }}
     }
 
-    delegate :name,    :to  => :question
-    delegate :prompt,  :to  => :question
-    delegate :choices, :to  => :question
+    delegate :name,                :to  => :question
+    delegate :prompt,              :to  => :question
+    delegate :choices,             :to  => :question
+    delegate :enable_check_answer, :to  => :question
 
     after_update :send_to_portal
 

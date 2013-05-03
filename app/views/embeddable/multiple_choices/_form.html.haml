@@ -27,5 +27,8 @@
               Message:
               = choice_form.text_field :prompt
       = f.link_to_add "Add choice", :choices
+    %label
+      Allow users to check answers
+      = f.check_box :enable_check_answer
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
