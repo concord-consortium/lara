@@ -1,10 +1,9 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :user, :width, :native_width, :native_height, :fullwidth
+  attr_accessible :name, :url, :user, :native_width, :native_height
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
 
-  validates_numericality_of :width, :less_than_or_equal_to => 100, :greater_than => 5
   validates_numericality_of :native_width
   validates_numericality_of :native_height
 
