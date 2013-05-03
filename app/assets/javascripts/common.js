@@ -52,7 +52,7 @@ $(document).ready(function () {
       $(this).parents('form:first').submit();
     });
 
-    // Adjust iframe to have correct aspect ratio
+    // Adjust interactive iframe to have correct aspect ratio
     setIframeHeight();
 
     // Set up sortable lists:
