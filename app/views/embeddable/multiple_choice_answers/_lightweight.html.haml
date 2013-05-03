@@ -13,10 +13,9 @@
           = f.radio_button :answers, choice.id, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
           = choice.choice
   - if embeddable.enable_check_answer
-    -# TODO: use unobtrusive JS here instead of onclick
     %input{ :class => 'button',
             :type => 'button',
             :value => 'Check answer',
             :id => 'check',
             :disabled => !(embeddable.answers.length > 0),
-            :onclick => "checkAnswer('#{embeddable_string}');" }
+            :data => { :check => embeddable_string } }

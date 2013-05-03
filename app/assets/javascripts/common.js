@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler */
+/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler, checkAnswer */
 
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
@@ -29,6 +29,11 @@ $(document).ready(function () {
         calculateDimensions();
         $(document).bind('scroll', scroll_handler());
     }
+
+    // Set up check answer button
+    $('#check').on('click', function() {
+        checkAnswer($('#check').data('check'));
+    });
 
     // enable check answer when there is an answer
     $('input[type=radio]').one('click', function () {
