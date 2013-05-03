@@ -42,7 +42,7 @@ describe User do
     end
 
     context 'when is a user' do
-      pending 'currently same as anonymous'
+      # pending 'currently same as anonymous'
     end
 
     context 'when is anonymous' do
