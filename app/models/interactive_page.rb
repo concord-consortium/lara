@@ -24,7 +24,9 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def show_interactive=(value)
-    if value.to_i != 0
+    if value.kind_of?(TrueClass)
+      self[:show_interactive] = value
+    elsif value.to_i != 0
       if self.interactives.length < 1
         interactive = MwInteractive.create!
         self.add_interactive(interactive)
