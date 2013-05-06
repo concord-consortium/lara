@@ -108,23 +108,24 @@ describe InteractivePage do
 
   describe '#duplicate' do
     it 'returns a new page with values from the source instance' do
-      page.duplicate.should be_a_new(InteractivePage).with( name: "Copy of #{page.name}",
-                                                            position: page.position,
-                                                            text: page.text,
-                                                            layout: page.layout,
-                                                            sidebar: page.sidebar,
-                                                            show_introduction: page.show_introduction,
-                                                            show_sidebar: page.show_sidebar,
-                                                            show_interactive: page.show_interactive,
-                                                            show_info_assessment: page.show_info_assessment )
+      dupe = page.duplicate
+      dupe.should be_a(InteractivePage)
+      dupe.name.should == "Copy of #{page.name}"
+      dupe.text.should == page.text
     end
 
     it 'has the current user as owner' do
       pending 'Not sure how to stub current_user to test this'
     end
 
-    it 'has copies of the original embeddables and interactives' do
-      pending 'Copies of associations are not yet supported'
+    it 'has copies of the original interactives' do
+      dupe = page.duplicate
+      dupe.reload.interactives.length.should be(page.interactives.length)
+    end
+
+    it 'has copies of the original embeddables' do
+      # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
+      page.duplicate.embeddables.length.should be(page.embeddables.length)
     end
   end
 end

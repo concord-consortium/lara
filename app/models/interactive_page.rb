@@ -88,7 +88,12 @@ class InteractivePage < ActiveRecord::Base
     if defined? current_user
       new_page.user = current_user
     end
-    # TODO: Association of interactives and embeddables
+    self.interactives.each do |inter|
+      new_page.add_interactive(inter.duplicate)
+    end
+    self.embeddables.each do |embed|
+      new_page.add_embeddable(embed.duplicate)
+    end
     return new_page
     # N.B. the duplicate hasn't been saved yet
   end
