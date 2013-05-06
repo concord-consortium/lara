@@ -15,5 +15,16 @@ module Embeddable
         return nil
       end
     end
+
+    def to_hash
+      {
+        name: name,
+        content: content
+      }
+    end
+
+    def duplicate
+      return Embeddable::Xhtml.new(self.to_hash)
+    end
   end
 end

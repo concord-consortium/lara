@@ -52,5 +52,23 @@ module Embeddable
       self.save
       new_choice
     end
+
+    def to_hash
+      # Leaving out "choices"
+      {
+        name: name,
+        prompt: prompt,
+        custom: custom,
+        enable_check_answer: enable_check_answer
+      }
+    end
+
+    def duplicate
+      mc = Embeddable::MultipleChoice.new(self.to_hash)
+      self.choices.each do |choice|
+        mc.choices << choice.duplicate
+      end
+      return mc
+    end
   end
 end

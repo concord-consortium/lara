@@ -37,5 +37,16 @@ module Embeddable
       end
       sk
     end
+
+    def to_hash
+      {
+        name: name,
+        prompt: prompt
+      }
+    end
+
+    def duplicate
+      return Embeddable::OpenResponse.new(self.to_hash)
+    end
   end
 end
