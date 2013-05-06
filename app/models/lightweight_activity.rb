@@ -48,4 +48,32 @@ class LightweightActivity < ActiveRecord::Base
   def publish!
     update_attribute(:publication_status, 'public')
   end
+
+  def to_hash
+    # We're intentionally not copying:
+    # - Publication status (the copy should start as draft like everything else)
+    # - user_id (the copying user should be the owner)
+    # - Pages (associations will be done differently)
+    {
+      name: name,
+      related: related,
+      description: description
+    }
+  end
+
+  def duplicate
+    # Hash of attributes we want to duplicate
+    new_attributes = self.to_hash
+    # New one from that hash
+    new_activity = LightweightActivity.new(new_attributes)
+    # Clarify name
+    new_activity.name = "Copy of #{new_activity.name}"
+    # User association
+    if defined? current_user
+      new_activity.user = current_user
+    end
+    # TODO: Page duplication and association
+    return new_activity
+    # N.B. the duplicate hasn't been saved yet
+  end
 end

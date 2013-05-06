@@ -110,4 +110,27 @@ describe LightweightActivity do
       activity.publication_status.should == 'public'
     end
   end
+
+  describe '#to_hash' do
+    it 'returns a hash with relevant values for activity duplication' do
+      expected = { name: activity.name, related: activity.related, description: activity.description }
+      activity.to_hash.should == expected
+    end
+  end
+
+  describe '#duplicate' do
+    it 'creates a new LightweightActivity with attributes from the original' do
+      activity.duplicate.should be_a_new(LightweightActivity).with( name: "Copy of #{activity.name}", related: activity.related, description: activity.description)
+    end
+
+    it 'has the current user as the owner' do
+      pending 'how to stub current_user here'
+      current_user = author
+      activity.duplicate.should be_a_new(LightweightActivity).with( user_id: author.id )
+    end
+
+    it 'has the same number of pages as the source activity' do
+      pending 'page copying needs to be written'
+    end
+  end
 end
