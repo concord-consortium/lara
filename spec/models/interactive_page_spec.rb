@@ -88,4 +88,43 @@ describe InteractivePage do
     page.reload
     page.interactives.length.should > 0
   end
+
+  describe '#to_hash' do
+    it 'has values from the source instance' do
+      expected = {
+        name: page.name,
+        position: page.position,
+        text: page.text,
+        layout: page.layout,
+        sidebar: page.sidebar,
+        show_introduction: page.show_introduction,
+        show_sidebar: page.show_sidebar,
+        show_interactive: page.show_interactive,
+        show_info_assessment: page.show_info_assessment
+      }
+      page.to_hash.should == expected
+    end
+  end
+
+  describe '#duplicate' do
+    it 'returns a new page with values from the source instance' do
+      page.duplicate.should be_a_new(InteractivePage).with( name: "Copy of #{page.name}",
+                                                            position: page.position,
+                                                            text: page.text,
+                                                            layout: page.layout,
+                                                            sidebar: page.sidebar,
+                                                            show_introduction: page.show_introduction,
+                                                            show_sidebar: page.show_sidebar,
+                                                            show_interactive: page.show_interactive,
+                                                            show_info_assessment: page.show_info_assessment )
+    end
+
+    it 'has the current user as owner' do
+      pending 'Not sure how to stub current_user to test this'
+    end
+
+    it 'has copies of the original embeddables and interactives' do
+      pending 'Copies of associations are not yet supported'
+    end
+  end
 end

@@ -61,4 +61,38 @@ class InteractivePage < ActiveRecord::Base
       join.move_to_bottom
     end
   end
+
+  def to_hash
+    # Intentionally leaving out:
+    # - lightweight_activity association will be added there
+    # - user will get the new user
+    # - Associations will be done later
+    {
+      name: name,
+      position: position,
+      text: text,
+      layout: layout,
+      sidebar: sidebar,
+      show_introduction: show_introduction,
+      show_sidebar: show_sidebar,
+      show_interactive: show_interactive,
+      show_info_assessment: show_info_assessment
+    }
+  end
+
+  def duplicate
+    # Hash of attributes we want to copy
+    new_page_hash = self.to_hash
+    # New instance with those attributes
+    new_page = InteractivePage.new(new_page_hash)
+    # Clarify name
+    new_page.name = "Copy of #{new_page.name}"
+    # User association
+    if defined? current_user
+      new_page.user = current_user
+    end
+    # TODO: Association of interactives and embeddables
+    return new_page
+    # N.B. the duplicate hasn't been saved yet
+  end
 end
