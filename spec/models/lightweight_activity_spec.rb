@@ -130,7 +130,10 @@ describe LightweightActivity do
     end
 
     it 'has the same number of pages as the source activity' do
-      pending 'page copying needs to be written'
+      2.times do
+        activity.pages << FactoryGirl.create(:page)
+      end
+      activity.duplicate.pages.length.should be(activity.pages.length)
     end
   end
 end

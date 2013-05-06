@@ -72,7 +72,9 @@ class LightweightActivity < ActiveRecord::Base
     if defined? current_user
       new_activity.user = current_user
     end
-    # TODO: Page duplication and association
+    self.pages.each do |p|
+      new_activity.pages << p.duplicate
+    end
     return new_activity
     # N.B. the duplicate hasn't been saved yet
   end
