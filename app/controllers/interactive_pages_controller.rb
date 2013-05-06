@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_session_key, :only => [:show]
+  before_filter :set_run_key, :only => [:show]
 
   layout 'upstatement', :only => [:show]
 

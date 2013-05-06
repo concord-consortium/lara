@@ -5,7 +5,7 @@ class LightweightActivitiesController < ApplicationController
   include ConcordPortalPublishing
 
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_session_key, :only => [:summary, :show]
+  before_filter :set_run_key, :only => [:summary, :show]
 
   def index
     if can? :manage, LightweightActivity
@@ -21,15 +21,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     @run.increment_run_count!
 
-    url = activity_page_path(@activity, @run.last_page)
-    if params[:domain] && params[:externalId]
-      sign_out(current_user)
-      session[:auth_return_url] = url
-      session[:update_run_user] = true
-      redirect_to user_omniauth_authorize_path(:concord_portal)
-    else
-      redirect_to url
-    end
+    redirect_to activity_page_path(@activity, @run.last_page)
   end
 
   def new
@@ -106,7 +98,7 @@ class LightweightActivitiesController < ApplicationController
   def reorder_pages
     authorize! :update, @activity
     params[:item_interactive_page].each do |p|
-      # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
+      # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2
       page = @activity.pages.find(p)
       # If we move everything to the bottom in order, the first one should be at the top
       page.move_to_bottom
