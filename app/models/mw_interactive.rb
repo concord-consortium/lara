@@ -36,10 +36,8 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def duplicate
-    # Get a hash of the relevant values
-    new_interactive_hash = self.to_hash
     # Generate a new object with those values
-    new_interactive = MwInteractive.new(new_interactive_hash)
+    new_interactive = MwInteractive.new(self.to_hash)
     # Clarify the name
     new_interactive.name = "Copy of #{new_interactive.name}"
     # Set the user

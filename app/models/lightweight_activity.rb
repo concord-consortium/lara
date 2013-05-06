@@ -62,10 +62,7 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def duplicate
-    # Hash of attributes we want to duplicate
-    new_attributes = self.to_hash
-    # New one from that hash
-    new_activity = LightweightActivity.new(new_attributes)
+    new_activity = LightweightActivity.new(self.to_hash)
     # Clarify name
     new_activity.name = "Copy of #{new_activity.name}"
     # User association

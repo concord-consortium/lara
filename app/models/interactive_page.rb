@@ -81,10 +81,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def duplicate
-    # Hash of attributes we want to copy
-    new_page_hash = self.to_hash
-    # New instance with those attributes
-    new_page = InteractivePage.new(new_page_hash)
+    new_page = InteractivePage.new(self.to_hash)
     # Clarify name
     new_page.name = "Copy of #{new_page.name}"
     # User association
