@@ -24,4 +24,29 @@ class MwInteractive < ActiveRecord::Base
   def height(width)
     return width/self.aspect_ratio
   end
+
+  def to_hash
+    # Deliberately ignoring user (will be set in duplicate)
+    {
+      name: name,
+      url: url,
+      native_width: native_width,
+      native_height: native_height
+    }
+  end
+
+  def duplicate
+    # Get a hash of the relevant values
+    new_interactive_hash = self.to_hash
+    # Generate a new object with those values
+    new_interactive = MwInteractive.new(new_interactive_hash)
+    # Clarify the name
+    new_interactive.name = "Copy of #{new_interactive.name}"
+    # Set the user
+    if defined? current_user
+      new_interactive.user = current_user
+    end
+    return new_interactive
+    # N.B. the duplicate hasn't been saved yet
+  end
 end
