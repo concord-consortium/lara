@@ -87,6 +87,20 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  def duplicate
+    # Check that we can read the original activity, then copy it
+    authorize! :read, @activity
+    new_activity = @activity.duplicate
+    # Check that we're authorized to create stuff, and save the new activity
+    authorize! :create, new_activity
+    if new_activity.save
+      # OK, on to editing
+      redirect_to edit_activity_path(new_activity)
+    else
+      redirect_to edit_activity_path(@activity)
+    end
+  end
+
   def move_up
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
