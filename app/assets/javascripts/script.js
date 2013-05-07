@@ -1,34 +1,7 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
-var saveTimer;
 
-function saveFailed () {
-    $("#save").html("Save failed!");
-}
-
-function showSaved () {
-    // Wait a few seconds before actually running
-    saveTimer = setTimeout( function () {
-        $("#save").html("Saved.");
-        // Fade out.
-        $("#save").animate({'opacity': '0'}, 'slow');
-    }, 2000);
-}
-
-function showSaving () {
-	$("#save").html("Saving...");
-	$("#save").animate({'opacity': '1.0'}, 'slow');
-}
-
-function saveForm ($form) {
-    // Show "Saving..."
-    showSaving();
-    // Submit form
-    $form.submit();
-    // We should be evaluating the response to that and calling either showSaved() or saveFailed().
-    showSaved();
-}
 
 $(document).ready(function(){
 
@@ -111,13 +84,4 @@ $(document).ready(function(){
         $('#check').removeAttr('disabled');
     });
 
-    // submit multiple choice on change event
-    $('.live_submit').on('change',function() {
-      saveForm($(this).parents('form:first'));
-    });
-
-    // submit textarea on blur event
-    $('textarea.live-submit').on('blur',function() {
-      saveForm($(this).parents('form:first'));
-    });
 });  // end document.ready

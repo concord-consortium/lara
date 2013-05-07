@@ -48,14 +48,6 @@ $(document).ready(function () {
     //     fullScreen();
     //     return false;
     // });
-    // submit multiple choice on change event
-    $('.live_submit').on('change',function() {
-      $(this).parents('form:first').submit();
-    });
-    // submit textarea on blur event
-    $('textarea.live-submit').on('blur',function() {
-      $(this).parents('form:first').submit();
-    });
 
     // Adjust interactive iframe to have correct aspect ratio
     setIframeHeight();

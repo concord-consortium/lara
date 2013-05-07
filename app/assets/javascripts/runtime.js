@@ -19,3 +19,4 @@
 //= require script
 //= require modals
 //= require check-answer
+//= require save-on-change
