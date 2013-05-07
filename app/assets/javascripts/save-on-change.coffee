@@ -39,7 +39,6 @@ schedule = (elem) ->
 
 
 $(document).ready ->
-  console.log "loaded this stuff"
   # Fire inputs field changes on 'change' events with no scheduled_jobs
   $('.live_submit').on 'change', (e) ->
     saveElement(this)
