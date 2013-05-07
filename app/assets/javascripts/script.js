@@ -33,7 +33,7 @@ function saveForm ($form) {
 $(document).ready(function(){
 
 	var header_top = $('.content-hdr').offset().top,
-	    content_top = $('.content-mod').offset().top,
+        // content_top = $('.content-mod').offset().top, // We don't use this anymore
 	    i_width =$('.pinned').width(),
 	    i_height = $('.pinned').height();
     // var interactive_top = $('.interactive-mod').offset().top;
@@ -56,12 +56,15 @@ $(document).ready(function(){
 			$('.activity-nav-mod .activity-nav-logo .h2').removeClass('visible');
 		}
 
-		// reveal sidebar-mod
-		if( window_top >= content_top/2 ) {
-			$('.sidebar-mod').fadeIn(2000);
-		}
+		// reveal sidebar-mod once the page is scrolled at least halfway to the content.
+        // This means the sidebar never shows up if the page can't be scrolled that far!
+        // if( window_top >= content_top/2 ) {
+        //     $('.sidebar-mod').fadeIn(2000);
+        // }
 	});
 
+    // Just fade the sidebar in over three seconds
+    $('.sidebar-mod').fadeIn(3000);
 
 	// adding expanded class to .sidebar-mod
 	$('.sidebar-hdr').add('.sidebar-bd-close').click(function() {
