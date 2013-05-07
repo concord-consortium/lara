@@ -24,7 +24,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def show_interactive=(value)
-    if value.kind_of?(TrueClass)
+    if value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
       self[:show_interactive] = value
     elsif value.to_i != 0
       if self.interactives.length < 1
@@ -82,8 +82,6 @@ class InteractivePage < ActiveRecord::Base
 
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
-    # Clarify name
-    new_page.name = "Copy of #{new_page.name}"
     # User association
     if defined? current_user
       new_page.user = current_user

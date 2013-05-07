@@ -110,7 +110,7 @@ describe InteractivePage do
     it 'returns a new page with values from the source instance' do
       dupe = page.duplicate
       dupe.should be_a(InteractivePage)
-      dupe.name.should == "Copy of #{page.name}"
+      dupe.name.should == page.name
       dupe.text.should == page.text
     end
 
