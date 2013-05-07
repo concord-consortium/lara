@@ -105,6 +105,7 @@ $(document).ready(function(){
 	);
 
 
+    // FIXME: The three following stanzas appear to be duplicated between script.js and common.js
     // enable check answer when there is an answer
     $('input[type=radio]').one('click', function () {
         $('#check').removeAttr('disabled');
