@@ -464,7 +464,7 @@ ul.quiet_list {
       width: 82%;
     }
     .action_menu_header_right {
-      width: 25%;
+      width: 30%;
     }
     .tiny {
       clear: both;
@@ -581,6 +581,14 @@ ul#new {
     padding-left: 18px;
     text-decoration: none;
   }
+}
+li.copy a {
+    /* We need an URL icon */
+    background-size: 14px;
+    color: #333;
+    height: 14px;
+    padding-left: 18px;
+    text-decoration: none;
 }
 li.edit a {
   background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
