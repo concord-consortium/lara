@@ -19,30 +19,18 @@
         %li#desc-toggle= toggle_all 'activity descriptions'
 
 
-%h1.title
-  Activities
+- community_activities = @activities.select{ |a| a.is_official == false}
+- official_activities  = @activities.select{ |a| a.is_official == true }
+- if official_activities.size > 0
+  #official_listing_heading
+    %h1 Activities:
+  %ul.quiet_list.official_listing
+    - official_activities.each do |activity|
+      =render :partial => "index_item", :locals => {:activity => activity}
 
-.item_collection
-  %ul.quiet_list
-    - @activities.each do |activity|
-      %li{ :id => dom_id_for(activity, :item), :class => 'item' }
-        %div.action_menu
-          %div.action_menu_header_left
-            = link_to activity.name, activity_path(activity), :class => 'container_link', :title => 'Preview Activity'
-          %div.action_menu_header_right
-            %ul.menu
-              %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :create, LightweightActivity
-              %li.edit= link_to "Edit", edit_activity_path(activity) unless cannot? :edit, activity
-              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' } unless cannot? :destroy, activity
-              %li.publish= link_to 'Publish', publish_activity_path(activity) unless cannot? :publish, activity
-              %li.run= link_to "Run", activity_path(activity), :target => 'new'
-
-        %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
-          - if activity.user && activity.user.email.present?
-            %p.author
-              = "by #{activity.user.email}"
-          %p.updated
-            = "last updated at #{activity.updated_at.to_formatted_s(:long)}"
-            - if (can? :create, LightweightActivity) && activity.changed_by.present?
-              = "by #{activity.changed_by.email}"
-          != activity.description
+- if community_activities.size > 0
+  #community_listing_heading
+    %h1 Community activities:
+  %ul.quiet_list.community_listing
+    - community_activities.each do |activity|
+      =render :partial => "index_item", :locals => {:activity => activity}

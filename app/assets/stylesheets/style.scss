@@ -449,11 +449,12 @@ div.summary {
 }
 ul.quiet_list {
   border-top: dashed 1px #ddd;
-  margin-top: 30px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   clear: both;
   list-style: none;
   li.item {
-    padding: 20px 5px;
+    padding: 10px 5px;
     margin: 0;
     border-bottom: dashed 1px #ddd;
     .action_menu_header_left {
