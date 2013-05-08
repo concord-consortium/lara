@@ -114,10 +114,6 @@ describe InteractivePage do
       dupe.text.should == page.text
     end
 
-    it 'has the current user as owner' do
-      pending 'Not sure how to stub current_user to test this'
-    end
-
     it 'has copies of the original interactives' do
       dupe = page.duplicate
       dupe.reload.interactives.length.should be(page.interactives.length)

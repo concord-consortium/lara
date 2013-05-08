@@ -111,6 +111,13 @@ describe LightweightActivity do
     end
   end
 
+  describe '#set_user' do
+    it 'should set the user to the user object provided as an argument' do
+      activity.set_user(author)
+      activity.user.should be(author)
+    end
+  end
+
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
       expected = { name: activity.name, related: activity.related, description: activity.description }
@@ -122,12 +129,6 @@ describe LightweightActivity do
     it 'creates a new LightweightActivity with attributes from the original' do
       # We won't check name here in case the generated name is long enough to trigger truncation
       activity.duplicate.should be_a_new(LightweightActivity).with( related: activity.related, description: activity.description )
-    end
-
-    it 'has the current user as the owner' do
-      pending 'how to stub current_user here'
-      current_user = author
-      activity.duplicate.should be_a_new(LightweightActivity).with( user_id: author.id )
     end
 
     it 'has pages in the same order as the source activity' do
