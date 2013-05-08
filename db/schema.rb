@@ -31,9 +31,9 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
 
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
-    t.text     "prompt"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.text     "prompt",              :default => "Why does ..."
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.boolean  "custom",              :default => false
     t.boolean  "enable_check_answer", :default => true
   end
@@ -48,9 +48,9 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
-    t.text     "prompt"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.text     "prompt",     :default => "Why does ..."
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -78,8 +78,8 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
     t.integer  "user_id"
     t.integer  "position"
     t.text     "text"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.text     "sidebar"
     t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
@@ -139,12 +139,12 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
-    t.integer  "page_id"
+    t.integer  "page_id",         :default => 0
     t.string   "remote_endpoint"
   end
 

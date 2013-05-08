@@ -6,8 +6,4 @@
     |
     = link_to "User Admin", admin_users_path
 - else
-  = link_to "Log In", new_user_session_path
-  |
-  = link_to "Log In thru Portal", user_omniauth_authorize_path(:concord_portal)
-  |
-  = link_to "Register", new_user_registration_path
+  = link_to "Log In", user_omniauth_authorize_path(:concord_portal)
