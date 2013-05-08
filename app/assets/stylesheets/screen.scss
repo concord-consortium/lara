@@ -1125,7 +1125,7 @@ footer {
   color: #666;
 }
 
-.question {
+.question, .intro-mod, .related-mod{
   a {
     @include trans;
     text-decoration: underline;
@@ -1137,6 +1137,7 @@ footer {
     }
   }
 }
+
 // social tools on index page
 .social-media-mod {
   margin-bottom: 12px;
