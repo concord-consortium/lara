@@ -129,11 +129,16 @@ describe LightweightActivity do
       activity.duplicate.should be_a_new(LightweightActivity).with( user_id: author.id )
     end
 
-    it 'has the same number of pages as the source activity' do
+    it 'has pages in the same order as the source activity' do
       2.times do
         activity.pages << FactoryGirl.create(:page)
       end
-      activity.duplicate.pages.length.should be(activity.pages.length)
+      duplicate = activity.duplicate
+      [0..1].each do |i|
+        duplicate.pages[i].name.should == activity.pages[i].name
+        duplicate.pages[i].position.should be(activity.pages[i].position)
+        duplicate.pages[i].last?.should be(activity.pages[i].last?)
+      end
     end
   end
 end
