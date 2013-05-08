@@ -1,4 +1,4 @@
-= content_for :title do 
+= content_for :title do
   = "Edit #{@activity.name}"
 = content_for :nav do
   .breadcrumbs
@@ -14,6 +14,9 @@
       = f.submit "Save", :id => 'save-top'
     = field_set_tag 'Activity Name' do
       = f.text_field :name, :maxlength => 50
+    - if current_user.is_admin
+      = field_set_tag "Official CC Activity" do
+        = f.check_box :is_official
     = field_set_tag 'Publication status' do
       = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @activity.publication_status)
     = field_set_tag 'Activity Description' do
