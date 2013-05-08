@@ -21,24 +21,31 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def get_response_key
+  def update_portal_session
+    if params[:domain] && params[:externalId]
+      session[:auth_return_url] = request.url
+      unless session[:did_reauthenticate]
+        session[:did_reauthenticate] = true
+        sign_out(current_user)
+        redirect_to user_omniauth_authorize_path(:concord_portal)
+      end
+    end
+  end
+
+  def update_anonymous_session
     session[:response_key] ||= {}
     if params[:response_key]
       session[:response_key][@activity.id] = params[:response_key]
     end
-    session[:response_key][@activity.id]
+    @session_key = session[:response_key][@activity.id]
   end
 
-  def remote_endpoint
-    return params[:returnUrl]
-  end
-
-  def set_session_key
-    response_key = get_response_key
-    @run = Run.lookup(response_key,@activity,current_user, remote_endpoint)
-    @run.update_attribute(:user_id, current_user.id) if !current_user.nil? && session.delete(:update_run_user)
-    @session_key = session[:response_key][@activity.id] = @run.key
-    # TODO: clear this hash on logout for logged-in users - requires finding callback in Devise
+  def set_run_key
+    update_anonymous_session if current_user.nil?
+    update_portal_session unless session.delete(:did_reauthenticate)
+    portal = RemotePortal.new(params)
+    @run = Run.lookup(@session_key, @activity, current_user, portal)
+    @session_key = @run.key
   end
 
   # override devise's built in method so we can go back to the path

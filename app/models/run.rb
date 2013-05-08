@@ -38,25 +38,37 @@ class Run < ActiveRecord::Base
     UUIDTools::UUID.random_create.to_s
   end
 
-  def self.for_key(key)
-    return nil if key.nil?
-    self.by_key(key).first
-  end
 
-  def self.for_user_activity_and_remote_endpoint(user,activity,remote_endpoint)
+  def self.for_user_and_portal(user,activity,portal)
     conditions = {
-      :user_id => user.id,
-      :activity_id => activity.id
+      remote_endpoint: portal.remote_endpoint,
+      remote_id:       portal.remote_id,
+      user_id:         user.id
+      #TODO: add domain
     }
-    conditions[:remote_endpoint] = remote_endpoint if remote_endpoint
+    conditions[:activity_id]     = activity.id if activity
     found = self.find(:first, :conditions => conditions)
     return found || self.create(conditions)
   end
 
-  def self.lookup(key,activity,user=nil,remote_endpoint=nil)
-    return self.for_user_activity_and_remote_endpoint(user,activity,remote_endpoint) if user
-    return self.for_key(key) if key
-    return self.create(:activity => activity, :remote_endpoint => remote_endpoint)
+  def self.for_user_and_activity(user,activity)
+    conditions = {
+      activity_id:     activity.id,
+      user_id:         user.id
+    }
+    found = self.find(:first, :conditions => conditions)
+    return found || self.create(conditions)
+  end
+
+  def self.for_key(key, activity)
+    self.by_key(key).first || self.create(activity: activity)
+  end
+
+  def self.lookup(key, activity, user, portal)
+    return self.for_user_and_portal(user, activity, portal) if user && portal && portal.valid?
+    return self.for_key(key, activity) if (key && activity)
+    return self.for_user_and_activity(user,activity) if (user && activity)
+    return self.create(activity: activity)
   end
 
   def to_param

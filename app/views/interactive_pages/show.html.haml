@@ -7,7 +7,8 @@
 .intro-mod
   %h4.h4
     = @page.name
-  .intro-txt!= @page.text
+  - if @page.show_introduction
+    .intro-txt!= @page.text
 
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
 .content-mod{ :class => @page.layout }
@@ -16,7 +17,8 @@
       = render :partial => 'interactive'
 
   .questions-mod.ui-block-2
-    = render :partial => 'list_embeddables'
+    - if @page.show_info_assessment
+      = render :partial => 'list_embeddables'
 
     - if @page.last?
       .submit

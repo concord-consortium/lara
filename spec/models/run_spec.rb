@@ -77,11 +77,11 @@ describe Run do
   end
 
 
-  describe "self.lookup(key,activity,user=nil,remote_id=nil)" do
+  describe "self.lookup(key,activity,user=nil,portal)" do
     describe "with a key" do
       it "should simply use the key" do
         Run.stub!(:by_key => [run])
-        Run.lookup("sdfsdfsdf",nil,nil,nil).should == run
+        Run.lookup("sdfsdfsdf",activity, user, nil).should == run
       end
     end
 
@@ -93,7 +93,7 @@ describe Run do
         end
       end
 
-      describe "with no remote_id" do
+      describe "with no endpoint" do
 
         describe "with an existing user" do
           describe "when the user has run it before" do
@@ -116,6 +116,29 @@ describe Run do
               Run.lookup(nil,activity,user,nil).should == run
             end
           end
+        end
+      end
+
+      describe "with a remote endpoint" do
+        let(:remote) do
+          RemotePortal.new({
+            externalId: "23",
+            returnUrl: "http://foo.bar/",
+            domain: "blah"
+          })
+        end
+
+        it "should find a run by using a remote_endpoint" do
+          Run.should_receive(:find)
+            .with(:first, :conditions =>
+              hash_including(
+                :user_id => user.id,
+                :activity_id => activity.id,
+                :remote_endpoint => remote.remote_endpoint,
+                :remote_id => remote.remote_id
+            ))
+            .and_return(run)
+          Run.lookup(nil,activity, user, remote).should == run
         end
       end
     end
