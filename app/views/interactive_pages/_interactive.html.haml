@@ -1,10 +1,10 @@
 .interactive-mod{ :class => (@page.layout == 'l-full-width') ? nil : 'pinned' }
-  -# TODO: Fix dimensions
-  %iframe{ :width => '100%',
-           :frameborder => "no",
-           :scrolling => "no",
-           :allowfullscreen => "true",
-           :webkitallowfullscreen => "true",
-           :mozallowfullscreen => "true",
-           :src => @page.interactives.first.url,
-           :data => { :aspect_ratio => @page.interactives.first.aspect_ratio } }
+  - if @page.interactives.first
+    %iframe{ :width => '100%',
+             :frameborder => "no",
+             :scrolling => "no",
+             :allowfullscreen => "true",
+             :webkitallowfullscreen => "true",
+             :mozallowfullscreen => "true",
+             :src => @page.interactives.first.url,
+             :data => { :aspect_ratio => @page.interactives.first.aspect_ratio } }
