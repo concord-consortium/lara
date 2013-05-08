@@ -32,9 +32,9 @@
           %div.action_menu_header_right
             %ul.menu
               %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :create, LightweightActivity
-              %li.edit= link_to "Edit", edit_activity_path(activity) unless cannot? :edit, activity
-              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' } unless cannot? :destroy, activity
-              %li.publish= link_to 'Publish', publish_activity_path(activity) unless cannot? :publish, activity
+              %li.edit= link_to "Edit", edit_activity_path(activity) if can? :edit, activity
+              %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, activity
+              %li.publish= link_to 'Publish', publish_activity_path(activity) if can? :publish, activity
               %li.run= link_to "Run", activity_path(activity), :target => 'new'
 
         %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
