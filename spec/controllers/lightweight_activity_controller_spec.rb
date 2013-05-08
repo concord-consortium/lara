@@ -346,13 +346,27 @@ describe LightweightActivitiesController do
     end
 
     it "should call 'publish!' on the activity" do
-      act.should_not_receive(:publish!).and_return(true)
       get :publish, {:id => act.id }
+      act.publication_status.should == 'public'
     end
 
     it "should attempt to publish to the portal" do
       get :publish, {:id => act.id }
       WebMock.should have_requested(:post, @url)
+    end
+  end
+
+  describe '#duplicate' do
+    it "should call 'duplicate' on the activity" do
+      get :duplicate, { :id => act.id }
+      assigns(:new_activity).should be_a(LightweightActivity)
+      assigns(:new_activity).name.should match /^Copy of #{assigns(:activity).name[0..30]}/
+      assigns(:new_activity).user.should == @user
+    end
+
+    it 'should redirect to edit the new activity' do
+      get :duplicate, { :id => act.id }
+      response.should redirect_to(edit_activity_url(assigns(:new_activity)))
     end
   end
 end

@@ -45,6 +45,11 @@ class LightweightActivity < ActiveRecord::Base
     questions.map { |q| finder.find_answer(q) }
   end
 
+  def set_user(receiving_user)
+    self.user = receiving_user
+    self.save
+  end
+
   def publish!
     update_attribute(:publication_status, 'public')
   end
@@ -67,10 +72,6 @@ class LightweightActivity < ActiveRecord::Base
     new_activity.name = "Copy of #{new_activity.name}"
     if new_activity.name.length > 50
       new_activity.name = "#{new_activity.name[0..46]}..."
-    end
-    # User association
-    if defined? current_user
-      new_activity.user = current_user
     end
     self.pages.each do |p|
       new_activity.pages << p.duplicate
