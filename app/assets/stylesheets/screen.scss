@@ -1127,13 +1127,14 @@ footer {
 
 .question, .intro-mod, .related-mod{
   a {
+    color: darken($med-blue, 20%);
     @include trans;
     text-decoration: underline;
     &:visited {
       color: #aaa;
     }
     &:hover {
-      color: darken($med-blue, 20%);
+      color: $med-blue;
     }
   }
 }
