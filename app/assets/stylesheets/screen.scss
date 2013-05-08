@@ -1125,7 +1125,18 @@ footer {
   color: #666;
 }
 
-
+.question {
+  a {
+    @include trans;
+    text-decoration: underline;
+    &:visited {
+      color: #aaa;
+    }
+    &:hover {
+      color: darken($med-blue, 20%);
+    }
+  }
+}
 // social tools on index page
 .social-media-mod {
   margin-bottom: 12px;
