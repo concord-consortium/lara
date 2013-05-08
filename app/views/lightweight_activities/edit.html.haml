@@ -12,9 +12,6 @@
     = f.error_messages
     .submit
       = f.submit "Save", :id => 'save-top'
-    =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
-    - if defined?(session[:user_id])
-      = f.hidden_field 'user_id', :value => session[:user_id]
     = field_set_tag 'Activity Name' do
       = f.text_field :name, :maxlength => 50
     = field_set_tag 'Publication status' do
