@@ -80,19 +80,18 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def duplicate
-    # Check that we can read the original activity, then copy it
-    authorize! :read, @activity
+    authorize! :create, LightweightActivity
     @new_activity = @activity.duplicate
-    # Check that we're authorized to create stuff, and save the new activity
-    authorize! :create, @new_activity
     # Set ownership - doing this in the instance methods isn't practical
-    @new_activity.set_user(current_user)
-    @new_activity.reload
+
+    @new_activity.set_user!(current_user)
+
     if @new_activity.save
-      # OK, on to editing
+      @new_activity.reload
       redirect_to edit_activity_path(@new_activity)
     else
-      redirect_to edit_activity_path(@activity)
+      flash[:warning] = "Copy failed"
+      redirect_to activities.path
     end
   end
 

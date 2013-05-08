@@ -45,9 +45,8 @@ class LightweightActivity < ActiveRecord::Base
     questions.map { |q| finder.find_answer(q) }
   end
 
-  def set_user(receiving_user)
-    self.user = receiving_user
-    self.save
+  def set_user!(receiving_user)
+    update_attribute(:user_id, receiving_user.id)
   end
 
   def publish!

@@ -111,10 +111,10 @@ describe LightweightActivity do
     end
   end
 
-  describe '#set_user' do
+  describe '#set_user!' do
     it 'should set the user to the user object provided as an argument' do
-      activity.set_user(author)
-      activity.user.should be(author)
+      activity.set_user!(author)
+      activity.reload.user.should == author
     end
   end
 
