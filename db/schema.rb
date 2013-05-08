@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130503192210) do
+ActiveRecord::Schema.define(:version => 20130508152414) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
   create_table "interactive_pages", :force => true do |t|
     t.string   "name"
     t.integer  "lightweight_activity_id"
-    t.integer  "user_id"
     t.integer  "position"
     t.text     "text"
     t.datetime "created_at",                                    :null => false
@@ -90,7 +89,6 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
-  add_index "interactive_pages", ["user_id"], :name => "interactive_pages_user_idx"
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -118,14 +116,11 @@ ActiveRecord::Schema.define(:version => 20130503192210) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "native_width"
     t.integer  "native_height"
   end
-
-  add_index "mw_interactives", ["user_id"], :name => "mw_interactives_user_idx"
 
   create_table "page_items", :force => true do |t|
     t.integer  "interactive_page_id"

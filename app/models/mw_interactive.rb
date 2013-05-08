@@ -1,5 +1,5 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :user, :native_width, :native_height
+  attr_accessible :name, :url, :native_width, :native_height
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -40,10 +40,6 @@ class MwInteractive < ActiveRecord::Base
     new_interactive = MwInteractive.new(self.to_hash)
     # Clarify the name
     new_interactive.name = "Copy of #{new_interactive.name}"
-    # Set the user
-    if defined? current_user
-      new_interactive.user = current_user
-    end
     return new_interactive
     # N.B. the duplicate hasn't been saved yet
   end

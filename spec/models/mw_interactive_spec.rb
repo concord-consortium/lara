@@ -41,9 +41,5 @@ describe MwInteractive do
     it 'is a new instance of MwInteractive with values' do
       interactive.duplicate.should be_a_new(MwInteractive).with( name: "Copy of #{interactive.name}", url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height )
     end
-
-    it 'has the current user as owner' do
-      pending 'Not sure how to stub current_user to test this'
-    end
   end
 end

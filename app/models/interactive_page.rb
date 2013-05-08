@@ -1,5 +1,5 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :user, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
+  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 
@@ -82,10 +82,6 @@ class InteractivePage < ActiveRecord::Base
 
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
-    # User association
-    if defined? current_user
-      new_page.user = current_user
-    end
     self.interactives.each do |inter|
       new_page.add_interactive(inter.duplicate)
     end
