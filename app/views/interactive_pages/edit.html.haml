@@ -82,8 +82,7 @@
   - if @page.show_interactive
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
       - @page.interactives.each do |interactive|
-        - i_type = interactive.class.name.underscore
-        = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
+        = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive}
       = link_to "Add interactive", new_page_mw_interactive_path(@page) unless @page.interactives.length > 0
       -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
   - if @page.show_sidebar
