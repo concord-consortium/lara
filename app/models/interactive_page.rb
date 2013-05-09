@@ -11,14 +11,19 @@ class InteractivePage < ActiveRecord::Base
 
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
 
-  has_many :interactive_items, :order => :position
+  has_many :interactive_items, :order => :position, :dependent => :destroy
+  # InteractiveItem is a join model; if this is deleted, it should go too
 
+  # This is a sort of polymorphic has_many :through.
   def interactives
     self.interactive_items.collect{|ii| ii.interactive}
   end
 
-  has_many :page_items, :order => :position
+  has_many :page_items, :order => :position, :dependent => :destroy
+  # Like InteractiveItems, PageItems are join models, so they should not 
+  # survive the deletion of associated instances of InteractivePage.
 
+  # This is a sort of polymorphic has_many :through.
   def embeddables
     self.page_items.collect{|qi| qi.embeddable}
   end
