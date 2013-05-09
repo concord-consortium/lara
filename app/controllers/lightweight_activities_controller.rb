@@ -87,7 +87,6 @@ class LightweightActivitiesController < ApplicationController
     @new_activity.set_user!(current_user)
 
     if @new_activity.save
-      @new_activity.reload
       redirect_to edit_activity_path(@new_activity)
     else
       flash[:warning] = "Copy failed"
