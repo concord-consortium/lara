@@ -1,22 +1,18 @@
-# This file should be "required" into your `application.js` via the Asset Pipeline.
-#
-# Source : https://gist.github.com/1456815
+# displays a modal JQuery UI dialog
+modal = (correct, feedback) ->
+  if correct
+    title        = "Correct"
+    dialogClass  = "correct"
+    feedback   ||= "Yes! You are correct."
+  else
+    title        = "Incorrect"
+    dialogClass  = "incorrect"
+    feedback   ||= "Sorry, that is incorrect."
 
-$ ->
-  $modal = $('#modal')
-  $modal_close = $modal.find('.close')
-  $modal_container = $('#modal-container')
+  $('#modal').html "<div class='check-answer'><p class='response'>#{feedback}</p></div"
 
-  # Handle modal links with the data-remote attribute
-  $(document).on 'ajax:success', 'a[data-remote]', (xhr, data, status) ->
-    $modal
-      .html(data.html)
-      .prepend($modal_close)
-      .css('top', $(window).scrollTop() + 40)
-      .show()
-    $modal_container.show();
+  # dialog is from jquery UI
+  $('#modal').dialog(title: title, modal: true, dialogClass: dialogClass)
 
-  $(document).on 'click', '#modal .close', ->
-    $modal_container.hide()
-    $modal.hide()
-    false
+# export
+window.modal = modal
