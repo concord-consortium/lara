@@ -18,5 +18,6 @@
 //= require common
 //= require script
 //= require modals
+//= require modal-dialog
 //= require check-answer
 //= require save-on-change

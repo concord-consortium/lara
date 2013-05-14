@@ -1,45 +1,45 @@
 /* This partial should be @imported into your layout Sass file, or included via the Asset Pipeline */
 /* Source : https://gist.github.com/1456815 */
 
+#modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.4);
+}
+
 #modal {
-  font: 400 100% lato, arial, helvetica, sans-serif;
-}
+  display: none;
+  position: absolute;
+  width: 350px;
+  left: 50%;
+  margin-left: (-350px - 40px) / 2;
+  padding: 20px;
+  background: #fff;
+  border: 5px solid #eee;
 
-.ui-dialog {
-  background: #fef7e0;
-  box-shadow: 0 0 15px #aaa;
-  border: none !important;
-  font-size: .9em;
-  line-height: 150%;
+  & > .close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: #666;
+    &:hover, &:active {
+      color: #000;
+    }
   }
 
-.ui-dialog-titlebar {
-  color: #fff;
-}
-
-.correct {
-  .ui-dialog-titlebar {
-    background: #75a643;
-    border-color: #fef7e0 !important;
+  input.close {
+    float: right;
+    margin: 1em 1em 5px 0;
+    line-height: 1em;
+    height: 1.6em;
   }
-}
 
-.incorrect {
-  .ui-dialog-titlebar {
-    background: #b45532;
+  input.embeddable-save {
+    float: right;
+    margin: 1em;
   }
-}
-
-.ui-dialog-title {
-  font: 700 1.2em lato, arial, helvetica, sans-serif;
-}
-
-.ui-widget-content {
-  p.response {
-    font-size: 1.1em;
-  }
-}
-
-.ui-button.ui-widget {
-  outline: none;
 }

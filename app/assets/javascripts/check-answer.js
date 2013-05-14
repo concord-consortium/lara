@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, modal */
+/*global $, modalDialog */
 
 function showPrompts() {
     // This is for admin
@@ -19,7 +19,7 @@ function checkAnswer(q_id) {
         var a_id          = $('input:radio:checked').val();
 
         $.getJSON('/embeddable/multiple_choice/' + a_id + '/check', function (data) {
-            modal(data.choice, data.prompt);
+            modalDialog(data.choice, data.prompt);
         });
     }
 }
