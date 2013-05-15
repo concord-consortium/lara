@@ -706,7 +706,9 @@ button[type="button"] {
   border: 0;
   @include btn;
 }
-
+input:disabled {
+  opacity: 0.3;
+}
 
 // ******************************************
 //  10. Sidebar

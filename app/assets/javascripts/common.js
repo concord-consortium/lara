@@ -30,25 +30,7 @@ $(document).ready(function () {
         $(document).bind('scroll', scroll_handler());
     }
 
-    // Set up check answer button
-    $('#check').on('click', function() {
-        checkAnswer($('#check').data('check'));
-    });
-
-    // enable check answer when there is an answer
-    $('input[type=radio]').one('click', function () {
-        $('#check').removeAttr('disabled');
-    });
-    // // exit from fullscreen event
-    // $('#overlay').click(function () {
-    //     exitFullScreen(); // Defined in full-screen.js
-    // });
-    // // enter fullscreen event
-    // $('.full-screen-toggle').click(function () {
-    //     fullScreen();
-    //     return false;
-    // });
-
+    // Click-handler for check answer moved to check-answer.js
     // Adjust interactive iframe to have correct aspect ratio
     setIframeHeight();
 

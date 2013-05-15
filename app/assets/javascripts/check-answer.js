@@ -10,16 +10,33 @@ function showPrompts() {
     }
 }
 
-function checkAnswer(q_id) {
-    // check for valid answer
-    if (!$('#' + q_id + ' input:radio:checked').val()) {
-        alert('Please select an answer before checking.');
+function addClickHanders() {
+    $('.check_answer_button').click(function() {
+        checkAnswer($(this));
+    });
+
+    // Enable the check-answer button if answered:
+    $('input[type=radio]').click(function () {
+        var button_id = $(this).data('button-id');
+        $("#" + button_id).removeAttr('disabled');
+    });
+}
+
+function checkAnswer($question) {
+    var q_id = $question.data('check');
+    var $answers = $('#' + q_id + ' input:radio:checked');
+    var answer = $answers.val();
+    var answered = answer && answer.length > 0;
+    if (!answered) {
+        modalDialog(false, 'Please select an answer before checking.');
     }
     else {
-        var a_id          = $('input:radio:checked').val();
-
-        $.getJSON('/embeddable/multiple_choice/' + a_id + '/check', function (data) {
+        $.getJSON('/embeddable/multiple_choice/' + answer + '/check', function (data) {
             modalDialog(data.choice, data.prompt);
         });
     }
 }
+
+$(document).ready(function () {
+    addClickHanders();
+});
