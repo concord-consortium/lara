@@ -21,7 +21,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     @run.increment_run_count!
 
-    redirect_to activity_page_path(@activity, @run.last_page)
+    redirect_to page_with_response_path(@activity, @run.last_page, @session_key)
   end
 
   def new

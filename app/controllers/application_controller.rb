@@ -21,8 +21,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def save_portal_info
+    session[:portal] = RemotePortal.new(params)
+  end
+
   def update_portal_session
     if params[:domain] && params[:externalId]
+      save_portal_info
       session[:auth_return_url] = request.url
       unless session[:did_reauthenticate]
         session[:did_reauthenticate] = true
@@ -32,25 +37,46 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def update_anonymous_session
+  def clear_session_response_key
+    session.delete(:response_key)
+  end
+
+  def session_response_key(new_val=nil?)
+    return nil unless current_user.nil?
     session[:response_key] ||= {}
-    if params[:response_key]
-      session[:response_key][@activity.id] = params[:response_key]
-    end
-    @session_key = session[:response_key][@activity.id]
+    session[:response_key][@activity.id] = new_val if new_val
+    session[:response_key][@activity.id]
+  end
+
+  def set_response_key(key)
+    @session_key = key
+    session_response_key(@session_key)
+    params[:response_key] =   key
+  end
+
+  def update_response_key
+    set_response_key(params[:response_key] || session_response_key)
   end
 
   def set_run_key
-    update_anonymous_session if current_user.nil?
-    update_portal_session unless session.delete(:did_reauthenticate)
-    portal = RemotePortal.new(params)
+    update_response_key
+    portal = RemotePortal.new({})
+    if session.delete(:did_reauthenticate)
+      portal = session.delete(:portal)
+    else
+      update_portal_session
+    end
     @run = Run.lookup(@session_key, @activity, current_user, portal)
-    @session_key = @run.key
+    set_response_key(@run.key)
   end
+
 
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
+    clear_session_response_key
     session.delete(:auth_return_url) || request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
+
+
 end
