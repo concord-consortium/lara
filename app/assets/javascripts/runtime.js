@@ -11,7 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery_ujs
-//= require jquery-ui
 //= require jquery.placeholder
 //= require waypoints
 //= require waypoints-sticky

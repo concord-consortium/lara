@@ -24,12 +24,6 @@ $(function () {
 // Everything to run at page load time
 $(document).ready(function () {
     // *** add event listeners: ***
-    // prepare for scrolling model
-    if ($('.model-container').length) {
-        calculateDimensions();
-        $(document).bind('scroll', scroll_handler());
-    }
-
     // Click-handler for check answer moved to check-answer.js
     // Adjust interactive iframe to have correct aspect ratio
     setIframeHeight();

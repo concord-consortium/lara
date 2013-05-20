@@ -22,7 +22,6 @@
 //= require jquery.jeditable.wysiwyg
 //= require modals
 //= require modal-dialog
-//= require scroll-handler
 //= require check-answer
 //= require full-screen
 //= require ./common.js
