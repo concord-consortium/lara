@@ -48,9 +48,9 @@ $(document).ready(function(){
     // It depends on the interactive having the "pinned" class and works
     // by adding and removing the "stuck" class, and tweaking CSS.
     // Also, it depends on the 'i_width' and 'i_height' variables being set.
-	$('.pinned').waypoint(function(direction){
 		if(direction==='down'){
 			$('.pinned').addClass('stuck');
+	$('.content-mod').waypoint( function (direction) {
 			$('.pinned').css({
 				'width':i_width
 			});
