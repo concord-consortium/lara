@@ -41,6 +41,7 @@
       .sidebar-txt
         != @page.sidebar
 
+#end-scroll-track
 - if @page.last? && has_good_content(@page.lightweight_activity.related)
   .related-mod
     .related-hdr

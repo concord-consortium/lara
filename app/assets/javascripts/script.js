@@ -65,7 +65,7 @@ $(document).ready(function(){
 	);
 
 	//this un-fixes it when we scroll past its track
-	$('.related-mod').waypoint(function(direction){
+	$('#end-scroll-track').waypoint(function(direction){
 		if(direction==='down'){
 			$('.pinned').removeClass('stuck');
 			$('.pinned').addClass('bottomed');
