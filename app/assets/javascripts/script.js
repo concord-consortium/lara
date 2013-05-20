@@ -45,6 +45,9 @@ $(document).ready(function(){
 	});
 
 	//This fixes the interactive mod when the window hits the questions
+    // It depends on the interactive having the "pinned" class and works
+    // by adding and removing the "stuck" class, and tweaking CSS.
+    // Also, it depends on the 'i_width' and 'i_height' variables being set.
 	$('.pinned').waypoint(function(direction){
 		if(direction==='down'){
 			$('.pinned').addClass('stuck');
