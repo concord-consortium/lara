@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508164752) do
+ActiveRecord::Schema.define(:version => 20130520193900) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20130508164752) do
     t.datetime "updated_at",                                      :null => false
     t.boolean  "custom",              :default => false
     t.boolean  "enable_check_answer", :default => true
+    t.boolean  "multi_answer",        :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
