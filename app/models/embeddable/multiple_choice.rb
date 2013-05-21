@@ -61,7 +61,8 @@ module Embeddable
         name: name,
         prompt: prompt,
         custom: custom,
-        enable_check_answer: enable_check_answer
+        enable_check_answer: enable_check_answer,
+        multi_answer: multi_answer
       }
     end
 

@@ -45,7 +45,7 @@ describe Embeddable::MultipleChoice do
       
     describe '#to_hash' do
       it 'returns a hash with copied attributes' do
-        expected = { name: multichoice.name, prompt: multichoice.prompt, custom: multichoice.custom, enable_check_answer: multichoice.enable_check_answer }
+        expected = { name: multichoice.name, prompt: multichoice.prompt, custom: multichoice.custom, enable_check_answer: multichoice.enable_check_answer, multi_answer: multichoice.multi_answer }
         multichoice.to_hash.should == expected
       end
     end
