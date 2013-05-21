@@ -85,21 +85,44 @@ describe Embeddable::MultipleChoiceAnswer do
   end
 
   describe "delegated methods" do
+    let (:question) { mock_model(Embeddable::MultipleChoice) }
+
+    before(:each) do
+      answer.question = question
+    end
+
     describe "choices" do
       it "should delegate to question" do
-        question = mock_model(Embeddable::MultipleChoice)
         question.should_receive(:choices).and_return(:some_choices)
-        answer.question = question
         answer.choices.should == :some_choices
       end
     end
 
     describe "prompt" do
       it "should delegate to question" do
-        question = mock_model(Embeddable::MultipleChoice)
         question.should_receive(:prompt).and_return(:some_prompt)
-        answer.question = question
         answer.prompt.should == :some_prompt
+      end
+    end
+
+    describe 'name' do
+      it 'should delegate to question' do
+        question.should_receive(:name).and_return(:string)
+        answer.name.should == :string
+      end
+    end
+
+    describe 'enable_check_answer' do
+      it 'should delegate to question' do
+        question.should_receive(:enable_check_answer).and_return(true)
+        answer.enable_check_answer.should be_true
+      end
+    end
+
+    describe 'multi_answer' do
+      it 'should delegate to question' do
+        question.should_receive(:multi_answer).and_return(true)
+        answer.multi_answer.should be_true
       end
     end
   end
