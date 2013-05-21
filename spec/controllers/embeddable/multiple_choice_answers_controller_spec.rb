@@ -52,6 +52,15 @@ describe Embeddable::MultipleChoiceAnswersController do
           answer.reload
           answer.answers.should == [a_answer]
         end
+
+        it 'should accept multiple answers if provided' do
+          post 'update', :id => answer.id, :embeddable_multiple_choice_answer => {
+            :answers => [b_answer.id, c_answer.id]
+          }
+          answer.reload
+          answer.answers.should == [b_answer, c_answer]
+        end
+
         it "should fire off a web request to update the portal" do
           post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
             :answers => [a_answer.id]
