@@ -22,7 +22,6 @@ describe Embeddable::MultipleChoiceAnswersController do
         )
       }
       describe "with valid params" do
-        let(:new_answer) { "this answer has been changed "}
         it "should update the answer" do
           post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
             :answers => [a_answer.id]
@@ -46,7 +45,6 @@ describe Embeddable::MultipleChoiceAnswersController do
         )
       }
       describe "with valid params" do
-        let(:new_answer) { "this answer has been changed "}
         it "should update the answer" do
           post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
             :answers => [a_answer.id]
