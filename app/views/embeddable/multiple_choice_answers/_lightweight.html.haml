@@ -12,7 +12,7 @@
       - embeddable.choices.each do |choice|
         %label{ :for => "embeddable_multiple_choice_answer_answers_#{choice.id}" }
           - if embeddable.multi_answer
-            = check_box_tag :answers, choice.id, false, :id => "embeddable_multiple_choice_answer_answers_#{choice.id}"
+            = check_box_tag 'embeddable_multiple_choice_answer[answers][]', choice.id, embeddable.answers.include?(choice), :id => "embeddable_multiple_choice_answer_answers_#{choice.id}", :class => 'live_submit', :data => {:button_id => check_button_string}
           - else
             = f.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
           = choice.choice
