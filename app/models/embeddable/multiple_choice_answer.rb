@@ -26,6 +26,7 @@ module Embeddable
     delegate :prompt,              :to  => :question
     delegate :choices,             :to  => :question
     delegate :enable_check_answer, :to  => :question
+    delegate :multi_answer,        :to  => :question
 
     after_update :send_to_portal
 
