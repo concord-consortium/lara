@@ -15,17 +15,19 @@ gem 'devise'
 gem 'cancan'
 gem 'omniauth'
 gem 'omniauth-oauth2'
-
 gem 'default_value_for'
+
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
 gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
 gem 'uuidtools'
-
-gem "sqlite3"
-
 gem "httparty"
+gem 'airbrake'
+
+# We're not using sqlite in production, but moving this into the test/development groups
+# causes problems.
+gem "sqlite3"
 
 group :production do
   gem 'mysql2'

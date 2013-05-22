@@ -49,3 +49,6 @@ set :branch, "master"
 set :use_sudo, false
 
 after 'deploy:update_code', 'deploy:shared_symlinks'
+
+        require './config/boot'
+        require 'airbrake/capistrano'
