@@ -8,8 +8,8 @@ class InteractivePage < ActiveRecord::Base
   LAYOUT_OPTIONS = [{ :name => 'Full Width',               :class_val => 'l-full-width' },
                     { :name => '60-40',                    :class_val => 'l-6040' },
                     { :name => '70-30',                    :class_val => 'l-7030' },
-                    { :name => '40-60 (interactive left)', :class_val => 'r-4060' },
-                    { :name => '30-70 (interactive left)', :class_val => 'r-3070' }]
+                    { :name => '60-40 (interactive left)', :class_val => 'r-4060' },
+                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' }]
 
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
 

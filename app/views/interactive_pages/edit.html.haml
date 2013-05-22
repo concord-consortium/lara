@@ -39,7 +39,7 @@
     %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
     %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
   
-%div{:class => ["content", "editing"]}
+%div{:class => ["content", "editing", @page.layout.match(/^r-/) ? "stacked-right" : nil]}
   .page-nav
     - if @page.higher_item
       %a{:class => 'previous', :href => edit_activity_page_path(@activity, @page.higher_item)}
