@@ -102,4 +102,45 @@ describe LightweightActivity do
       end
     end
   end
+
+  describe "#publish!" do
+    it "should change the publication status to public" do
+      activity.publication_status = 'draft'
+      activity.publish!
+      activity.publication_status.should == 'public'
+    end
+  end
+
+  describe '#set_user!' do
+    it 'should set the user to the user object provided as an argument' do
+      activity.set_user!(author)
+      activity.reload.user.should == author
+    end
+  end
+
+  describe '#to_hash' do
+    it 'returns a hash with relevant values for activity duplication' do
+      expected = { name: activity.name, related: activity.related, description: activity.description }
+      activity.to_hash.should == expected
+    end
+  end
+
+  describe '#duplicate' do
+    it 'creates a new LightweightActivity with attributes from the original' do
+      # We won't check name here in case the generated name is long enough to trigger truncation
+      activity.duplicate.should be_a_new(LightweightActivity).with( related: activity.related, description: activity.description )
+    end
+
+    it 'has pages in the same order as the source activity' do
+      2.times do
+        activity.pages << FactoryGirl.create(:page)
+      end
+      duplicate = activity.duplicate
+      duplicate.pages.each_with_index do |p, i|
+        duplicate.pages[i].name.should == p.name
+        duplicate.pages[i].position.should be(p.position)
+        duplicate.pages[i].last?.should be(p.last?)
+      end
+    end
+  end
 end

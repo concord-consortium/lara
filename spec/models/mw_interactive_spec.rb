@@ -29,4 +29,17 @@ describe MwInteractive do
   it 'returns a calculated height from a supplied width, based on aspect ratio' do
     interactive.height(800).should === 604.1666666666666
   end
+
+  describe '#to_hash' do
+    it 'has useful values' do
+      expected = { name: interactive.name, url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height }
+      interactive.to_hash.should == expected
+    end
+  end
+
+  describe '#duplicate' do
+    it 'is a new instance of MwInteractive with values' do
+      interactive.duplicate.should be_a_new(MwInteractive).with( name: "Copy of #{interactive.name}", url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height )
+    end
+  end
 end

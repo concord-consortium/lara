@@ -11,9 +11,9 @@ describe MwInteractivesController do
   let (:int) { FactoryGirl.create(:mw_interactive, :name => 'Test Interactive', :url => 'http://concord.org') }
 
   describe 'index' do
-    it 'returns a list of available MW Interactives' do
-      pending 'Future feature'
-    end
+    # it 'returns a list of available MW Interactives' do
+    #   pending 'Future feature'
+    # end
   end
 
   describe 'show' do
@@ -109,7 +109,7 @@ describe MwInteractivesController do
         end
 
         it 'returns to the edit page with an error on failure' do
-          new_values_hash = { :width => nil }
+          new_values_hash = { :native_width => 'Ha!' }
           post :update, :id => int.id, :mw_interactive => new_values_hash
           response.should redirect_to(edit_mw_interactive_path(int))
           flash[:warning].should == 'There was a problem updating your MW Interactive'

@@ -31,5 +31,9 @@ module Embeddable
         return nil
       end
     end
+
+    def duplicate
+      return Embeddable::MultipleChoiceChoice.new( choice: self.choice, prompt: self.prompt, is_correct: self.is_correct )
+    end
   end
 end

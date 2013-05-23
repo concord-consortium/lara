@@ -38,6 +38,7 @@ namespace :deploy do
     # This is part of the setup necessary for using newrelics reporting gem
     # run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
     run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml"
+    run "ln -nfs #{shared_path}/config/app_environment_variables.rb #{release_path}/config/app_environment_variables.rb"
   end
 end
 
@@ -48,3 +49,6 @@ set :branch, "master"
 set :use_sudo, false
 
 after 'deploy:update_code', 'deploy:shared_symlinks'
+
+        require './config/boot'
+        require 'airbrake/capistrano'

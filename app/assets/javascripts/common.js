@@ -1,27 +1,13 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler */
+/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler, checkAnswer */
 
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
-    var aspectRatio = $('iframe[data-aspect_ratio]').attr('data-aspect_ratio'),
-        targetHeight = $('.model, .model-edit').width() / aspectRatio;
+    var $iframe = $('iframe[data-aspect_ratio]'),
+        aspectRatio = $iframe.attr('data-aspect_ratio'),
+        currWidth = $iframe.width(),
+        targetHeight = currWidth/aspectRatio;
     $('iframe[data-aspect_ratio]').height(targetHeight);
-}
-
-function adjustWidth() {
-    var model_width, width;
-    if ($('.content').css('width') === '960px') {
-        model_width = '60%';
-        width = '95%';
-    } else {
-        model_width = '576px';
-        width = '960px';
-    }
-
-    $('#header div').css('width', width);
-    $('.content').css('width', width);
-    $('div.model').css('width', model_width);
-    $('#footer div').css('width', width);
 }
 
 // Update the modal edit window with a returned partial
@@ -38,35 +24,8 @@ $(function () {
 // Everything to run at page load time
 $(document).ready(function () {
     // *** add event listeners: ***
-    // prepare for scrolling model
-    if ($('.model-container').length) {
-        calculateDimensions();
-        $(document).bind('scroll', scroll_handler());
-    }
-
-    // enable check answer when there is an answer
-    $('input[type=radio]').one('click', function () {
-        $('#check').removeAttr('disabled');
-    });
-    // // exit from fullscreen event
-    // $('#overlay').click(function () {
-    //     exitFullScreen(); // Defined in full-screen.js
-    // });
-    // // enter fullscreen event
-    // $('.full-screen-toggle').click(function () {
-    //     fullScreen();
-    //     return false;
-    // });
-    // submit multiple choice on change event
-    $('.live_submit').on('change',function() {
-      $(this).parents('form:first').submit();
-    });
-    // submit textarea on blur event
-    $('textarea.live-submit').on('blur',function() {
-      $(this).parents('form:first').submit();
-    });
-
-    // Adjust iframe to have correct aspect ratio
+    // Click-handler for check answer moved to check-answer.js
+    // Adjust interactive iframe to have correct aspect ratio
     setIframeHeight();
 
     // Set up sortable lists:

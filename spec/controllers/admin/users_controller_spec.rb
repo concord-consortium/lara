@@ -19,6 +19,8 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe Admin::UsersController do
+  let(:target) { FactoryGirl.create(:user) }
+
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
@@ -40,17 +42,16 @@ describe Admin::UsersController do
 
   describe "GET index" do
     it "assigns all users as @users" do
-      user = FactoryGirl.create(:user)
+      target
       get :index, {}, valid_session
-      assigns(:users).include?(user).should be_true
+      assigns(:users).include?(target).should be_true
     end
   end
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      user = FactoryGirl.create(:user)
-      get :show, {:id => user.to_param}, valid_session
-      assigns(:user).should eq(user)
+      get :show, {:id => target.to_param}, valid_session
+      assigns(:user).should eq(target)
     end
   end
 
@@ -63,9 +64,8 @@ describe Admin::UsersController do
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      user = FactoryGirl.create(:user)
-      get :edit, {:id => user.to_param}, valid_session
-      assigns(:user).should eq(user)
+      get :edit, {:id => target.to_param}, valid_session
+      assigns(:user).should eq(target)
     end
   end
 
@@ -108,44 +108,31 @@ describe Admin::UsersController do
 
   describe "PUT update" do
     describe "with valid params" do
-      it "updates the requested user" do
-        pending "unsafe assumption - probably several admin users by now"
-        user = FactoryGirl.create(:user)
-        # Assuming there are no other admin_users in the database, this
-        # specifies that the User created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        User.last.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => user.to_param, :user => {'these' => 'params'}}
-      end
-
-      it "assigns the requested user as @user" do
-        user = FactoryGirl.create(:user)
-        put :update, {:id => user.to_param, :user => valid_attributes}
-        assigns(:user).should eq(user)
+      it "assigns the requested user as @user and updates it" do
+        post :update, {:_method => 'put', :id => target.to_param, :user => {:is_admin => true, :is_author => true}}
+        assigns(:user).should eq(target)
+        assigns(:user).admin?.should be_true
+        assigns(:user).author?.should be_true
       end
 
       it "redirects to the user edit page" do
-        user = FactoryGirl.create(:user)
-        put :update, {:id => user.to_param, :user => valid_attributes}
-        response.should redirect_to(edit_admin_user_path(user))
+        post :update, {:_method => 'put', :id => target.to_param, :user => valid_attributes}
+        response.should redirect_to(edit_admin_user_path(target))
       end
     end
 
     describe "with invalid params" do
       it "assigns the user as @user" do
-        user = FactoryGirl.create(:user)
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.stub(:save).and_return(false)
-        put :update, {:id => user.to_param, :user => {}}
-        assigns(:user).should eq(user)
+        put :update, {:id => target.to_param, :user => {}}
+        assigns(:user).should eq(target)
       end
 
       it "re-renders the 'edit' template" do
-        user = FactoryGirl.create(:user)
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.stub(:save).and_return(false)
-        put :update, {:id => user.to_param, :user => {}}
+        put :update, {:id => target.to_param, :user => {}}
         response.should render_template("edit")
       end
     end
@@ -153,6 +140,7 @@ describe Admin::UsersController do
 
   describe "DELETE destroy" do
     it "destroys the requested user" do
+      # Using the let-created user in these specs isn't useful
       user = FactoryGirl.create(:user)
       expect {
         delete :destroy, {:id => user.to_param}

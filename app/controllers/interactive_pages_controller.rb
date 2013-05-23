@@ -2,13 +2,15 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_session_key, :only => [:show]
+  before_filter :set_run_key, :only => [:show]
+
+  layout 'upstatement', :only => [:show]
 
   def show
     authorize! :read, @page
 
     if !params[:response_key]
-      redirect_to page_with_response_path(@activity, @page, @session_key) and return
+      redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     else
       @all_pages = @activity.pages
       finder = Embeddable::AnswerFinder.new(@run)

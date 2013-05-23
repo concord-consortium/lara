@@ -12,7 +12,7 @@ describe RunsController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => 'activities/3/runs/foobarbaz1234567'}.should route_to(:controller => 'runs', :action => 'show', :activity_id => "3", :id => 'foobarbaz1234567')
+      {:get => 'activities/3/runs/88e0aff5-db3f-4087-8fda-49ec579980ee'}.should route_to(:controller => 'runs', :action => 'show', :activity_id => "3", :id => '88e0aff5-db3f-4087-8fda-49ec579980ee')
     end
 
     it 'does not route without activity ID' do
@@ -55,7 +55,7 @@ describe RunsController do
     context 'with new ID' do
       it 'creates a new object with that key and returns that object' do
         existing_responses = Run.count
-        get :show, :id => 'thisisanewrespon', :activity_id => activity.id
+        get :show, :id => '88e0aff5-db3f-4087-8fda-49ec579980ef', :activity_id => activity.id
         response.code.should == '200'
         # TODO: Check that the response body includes the new key
         Run.count.should == existing_responses+1

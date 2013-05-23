@@ -4,7 +4,8 @@ require 'spec_helper'
 describe LightweightActivitiesController do
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
-  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
+  let (:private_act) { FactoryGirl.create(:activity)}
+  let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
 
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
@@ -39,8 +40,18 @@ describe LightweightActivitiesController do
 
       # get the rendering
       get :show, :id => act.id
+      key = assigns[:session_key]
+      key.should_not be_nil
+      response.should redirect_to page_with_response_path(act, page,key)
+    end
 
-      response.should redirect_to activity_page_url(act, page)
+    describe "when called from the portal" do
+      it "should force a new user session" do
+        controller.should_receive(:sign_out).and_return(:true)
+        page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+        get :show, :id => act.id, :domain => "foo", :externalId => "bar"
+        response.should redirect_to user_omniauth_authorize_path(:concord_portal)
+      end
     end
   end
 
@@ -326,6 +337,37 @@ describe LightweightActivitiesController do
         act.pages.first.name.should == "Page 3"
         act.pages.last.name.should == "Page 1"
       end
+    end
+  end
+
+  describe "#publish" do
+    before(:each) do
+      @url = controller.portal_url
+      stub_request(:post, @url)
+    end
+
+    it "should call 'publish!' on the activity" do
+      get :publish, {:id => act.id }
+      act.publication_status.should == 'public'
+    end
+
+    it "should attempt to publish to the portal" do
+      get :publish, {:id => act.id }
+      WebMock.should have_requested(:post, @url)
+    end
+  end
+
+  describe '#duplicate' do
+    it "should call 'duplicate' on the activity" do
+      get :duplicate, { :id => act.id }
+      assigns(:new_activity).should be_a(LightweightActivity)
+      assigns(:new_activity).name.should match /^Copy of #{assigns(:activity).name[0..30]}/
+      assigns(:new_activity).user.should == @user
+    end
+
+    it 'should redirect to edit the new activity' do
+      get :duplicate, { :id => act.id }
+      response.should redirect_to(edit_activity_url(assigns(:new_activity)))
     end
   end
 end

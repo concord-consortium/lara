@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424194346) do
+ActiveRecord::Schema.define(:version => 20130520193900) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -31,10 +31,12 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
 
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
-    t.text     "prompt"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "custom",     :default => false
+    t.text     "prompt",              :default => "Why does ..."
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.boolean  "custom",              :default => false
+    t.boolean  "enable_check_answer", :default => true
+    t.boolean  "multi_answer",        :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -47,9 +49,9 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
-    t.text     "prompt"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.text     "prompt",     :default => "Why does ..."
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -74,22 +76,20 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
   create_table "interactive_pages", :force => true do |t|
     t.string   "name"
     t.integer  "lightweight_activity_id"
-    t.integer  "user_id"
     t.integer  "position"
     t.text     "text"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.integer  "offerings_count"
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.text     "sidebar"
     t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
     t.boolean  "show_interactive",        :default => false
     t.boolean  "show_info_assessment",    :default => false
     t.string   "workflow_state"
+    t.string   "layout",                  :default => "l-6040"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
-  add_index "interactive_pages", ["user_id"], :name => "interactive_pages_user_idx"
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
     t.text     "related"
     t.text     "description"
     t.integer  "changed_by_id"
+    t.boolean  "is_official",        :default => false
   end
 
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
@@ -117,16 +118,11 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.integer  "user_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.float    "width",         :default => 60.0
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "fullwidth",     :default => false
   end
-
-  add_index "mw_interactives", ["user_id"], :name => "mw_interactives_user_idx"
 
   create_table "page_items", :force => true do |t|
     t.integer  "interactive_page_id"
@@ -140,12 +136,13 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
-    t.integer  "page_id",     :default => 0
+    t.integer  "page_id",         :default => 0
+    t.string   "remote_endpoint"
   end
 
   create_table "users", :force => true do |t|
@@ -167,6 +164,8 @@ ActiveRecord::Schema.define(:version => 20130424194346) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "is_admin",               :default => false
     t.boolean  "is_author",              :default => false
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

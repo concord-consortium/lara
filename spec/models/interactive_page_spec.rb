@@ -14,6 +14,17 @@ describe InteractivePage do
     page.valid?
   end
 
+  describe 'layouts' do
+    it 'has an array of hashes describing valid layouts' do
+      InteractivePage::LAYOUT_OPTIONS.length.should be > 0
+    end
+
+    it 'does not validate with layouts not in the hash' do
+      page.layout = 'invalid-layout-string'
+      page.valid?.should be_false
+    end
+  end
+
   it 'belongs to a lightweight activity' do
     activity = FactoryGirl.create(:activity)
 
@@ -76,5 +87,41 @@ describe InteractivePage do
     page.save
     page.reload
     page.interactives.length.should > 0
+  end
+
+  describe '#to_hash' do
+    it 'has values from the source instance' do
+      expected = {
+        name: page.name,
+        position: page.position,
+        text: page.text,
+        layout: page.layout,
+        sidebar: page.sidebar,
+        show_introduction: page.show_introduction,
+        show_sidebar: page.show_sidebar,
+        show_interactive: page.show_interactive,
+        show_info_assessment: page.show_info_assessment
+      }
+      page.to_hash.should == expected
+    end
+  end
+
+  describe '#duplicate' do
+    it 'returns a new page with values from the source instance' do
+      dupe = page.duplicate
+      dupe.should be_a(InteractivePage)
+      dupe.name.should == page.name
+      dupe.text.should == page.text
+    end
+
+    it 'has copies of the original interactives' do
+      dupe = page.duplicate
+      dupe.reload.interactives.length.should be(page.interactives.length)
+    end
+
+    it 'has copies of the original embeddables' do
+      # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
+      page.duplicate.embeddables.length.should be(page.embeddables.length)
+    end
   end
 end

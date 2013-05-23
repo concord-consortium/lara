@@ -1,6 +1,6 @@
 = nested_form_for @embeddable do |f|
   = f.error_messages
-  = field_set_tag 'Name' do
+  = field_set_tag 'Heading' do
     = f.text_field :name
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5
@@ -9,6 +9,9 @@
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
   = field_set_tag 'Choices' do
+    %label
+      Allow multiple answers
+      = f.check_box :multi_answer
     %label
       Custom Feedback
       -# TODO: This should be unobtrusive JS and not onclick
@@ -27,5 +30,8 @@
               Message:
               = choice_form.text_field :prompt
       = f.link_to_add "Add choice", :choices
+    %label
+      Allow users to check answers
+      = f.check_box :enable_check_answer
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

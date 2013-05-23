@@ -1,7 +1,7 @@
 class LightweightActivity < ActiveRecord::Base
   PUB_STATUSES = %w(draft private public archive)
 
-  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description
+  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description, :is_official
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -45,4 +45,37 @@ class LightweightActivity < ActiveRecord::Base
     questions.map { |q| finder.find_answer(q) }
   end
 
+  def set_user!(receiving_user)
+    update_attribute(:user_id, receiving_user.id)
+  end
+
+  def publish!
+    update_attribute(:publication_status, 'public')
+  end
+
+  def to_hash
+    # We're intentionally not copying:
+    # - Publication status (the copy should start as draft like everything else)
+    # - user_id (the copying user should be the owner)
+    # - Pages (associations will be done differently)
+    {
+      name: name,
+      related: related,
+      description: description
+    }
+  end
+
+  def duplicate
+    new_activity = LightweightActivity.new(self.to_hash)
+    # Clarify name
+    new_activity.name = "Copy of #{new_activity.name}"
+    if new_activity.name.length > 50
+      new_activity.name = "#{new_activity.name[0..46]}..."
+    end
+    self.pages.each do |p|
+      new_activity.pages << p.duplicate
+    end
+    return new_activity
+    # N.B. the duplicate hasn't been saved yet
+  end
 end

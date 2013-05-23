@@ -17,5 +17,32 @@ module Embeddable
     }
 
     delegate :prompt,  :to  => :question
+    delegate :name,    :to  => :question
+
+    after_update :send_to_portal
+
+    def question_index
+      if self.run && self.run.activity
+        self.run.activity.questions.index(self.question) + 1
+      else
+        nil
+      end
+    end
+
+    def portal_hash
+      {
+        "type" => "open_response",
+        "question_id" => question.id.to_s,
+        "answer" => answer_text
+      }
+    end
+
+    def send_to_portal
+      run.send_to_portal(self) if run
+    end
+
+    def to_json
+      portal_hash.to_json
+    end
   end
 end

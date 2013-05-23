@@ -13,12 +13,20 @@ gem 'multi_json'
 gem 'devise'
 # authorization
 gem 'cancan'
-
+gem 'omniauth'
+gem 'omniauth-oauth2'
 gem 'default_value_for'
+
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
 gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
+gem 'uuidtools'
+gem "httparty"
+gem 'airbrake'
+
+# We're not using sqlite in production, but moving this into the test/development groups
+# causes problems.
 gem "sqlite3"
 
 group :production do
@@ -31,11 +39,13 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem 'compass-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem "turbo-sprockets-rails3"
 end
 
 group :test, :development do
@@ -59,6 +69,11 @@ group :test, :development do
   gem 'fuubar'
   # Javascript tests with PhantomJS
   gem 'poltergeist'
+end
+
+group :test do
+  # test webservices
+  gem 'webmock'
 end
 
 # To use ActiveModel has_secure_password

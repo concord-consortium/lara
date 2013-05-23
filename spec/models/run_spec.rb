@@ -1,38 +1,40 @@
 require 'spec_helper'
 
 describe Run do
-  let (:activity) { FactoryGirl.create(:activity) }
+  let (:activity)        { FactoryGirl.create(:activity) }
+  let (:remote_endpoint) { nil }
   let (:run) {
     r = FactoryGirl.create(:run)
     r.activity = activity
+    r.remote_endpoint = remote_endpoint
+    r.user = user
     r
   }
   let (:user) { FactoryGirl.create(:user) }
 
   describe 'validation' do
-    it 'ensures session keys are 16 characters' do
+    it 'ensures session keys are 36 characters' do
       run.key = 'short'
       run.should_not be_valid
-      run.key = 'thiskeyistoolongtobevalid'
+      run.key = 'thiskeyistoolongtobevalidreallyitisseriouslylongevenforauuidIpromisethisislongerthan36charactersnowaythisisshort'
       run.should_not be_valid
-      run.key = '1234567890123456'
+      run.key = '123456789012345678901234567890123456'
       run.should be_valid
     end
 
-    it 'ensures session keys only have letters and numbers' do
-      run.key = 'ABCDEabcde123456'
+    it 'ensures session keys only have hyphens, letters and numbers' do
+      run.key = '88e0aff5-db3f-4087-8fda-49ec579980ee'
       run.should be_valid
-      run.key = 'ABCD/abcd-12345;'
+      run.key = '88e0aff5/db3f-4087-8fda-49ec579980e;'
       run.should_not be_valid
-      run.key = 'abcd ABCD_1234--'
+      run.key = '88e0aff5 db3f_4087-8fda-49ec579980ee'
       run.should_not be_valid
     end
   end
 
-  describe '#session_guid', :slow => true do
+  describe '#session_guid' do
     it 'generates different hashes for each activity run' do
       first_guid  = run.session_guid
-      sleep 1
       second_guid = run.session_guid
 
       first_guid.should_not === second_guid
@@ -75,11 +77,11 @@ describe Run do
   end
 
 
-  describe "self.lookup(key,activity,user=nil,remote_id=nil)" do
+  describe "self.lookup(key,activity,user=nil,portal)" do
     describe "with a key" do
       it "should simply use the key" do
         Run.stub!(:by_key => [run])
-        Run.lookup("sdfsdfsdf",nil,nil,nil).should == run
+        Run.lookup("sdfsdfsdf",activity, user, nil).should == run
       end
     end
 
@@ -91,7 +93,7 @@ describe Run do
         end
       end
 
-      describe "with no remote_id" do
+      describe "with no endpoint" do
 
         describe "with an existing user" do
           describe "when the user has run it before" do
@@ -116,6 +118,29 @@ describe Run do
           end
         end
       end
+
+      describe "with a remote endpoint" do
+        let(:remote) do
+          RemotePortal.new({
+            externalId: "23",
+            returnUrl: "http://foo.bar/",
+            domain: "blah"
+          })
+        end
+
+        it "should find a run by using a remote_endpoint" do
+          Run.should_receive(:find)
+            .with(:first, :conditions =>
+              hash_including(
+                :user_id => user.id,
+                :activity_id => activity.id,
+                :remote_endpoint => remote.remote_endpoint,
+                :remote_id => remote.remote_id
+            ))
+            .and_return(run)
+          Run.lookup(nil,activity, user, remote).should == run
+        end
+      end
     end
   end
 
@@ -137,21 +162,88 @@ describe Run do
     end
   end
 
-  describe '#to_json' do
-    it 'contains the proper keys and values' do
-      json_blob = run.to_json(:methods => [:last_page, :storage_keys])
-      json_blob.should match /activity_id/
-      json_blob.should match /last_page/
-      json_blob.should match /storage_keys/
-      json_blob.should match /"key":"#{run.key}",/
-      json_blob.should match /run_count/
-      # {
-      # activity_id: 1,
-      # last_page: null,
-      # storage_keys: []
-      # key: "be19b7a04a2ea471",
-      # run_count: null,
-      # }
+  describe 'posting to portal' do
+    let(:or_question){ FactoryGirl.create(:or_embeddable) }
+    let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+    let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+    let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+    let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+    let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+                      :answers  => [a1],
+                      :question => mc_question)
+                    }
+    let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
+    let(:all_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }, { "type": "multiple_choice", "question_id": "' + mc_question.id.to_s + '", "answer_ids": ["' + a1.id.to_s + '"], "answer_texts": ["' + a1.choice + '"] }]' }
+
+    describe '#response_for_portal' do
+      it 'matches the expected JSON for a single specified answer' do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
+      end
+
+      it "matches the expected JSON for multiple specified answers" do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.response_for_portal([or_answer, mc_answer])).should == JSON.parse(all_expected)
+      end
+    end
+
+    describe '#all_responses_for_portal' do
+      it 'matches the expected JSON for all responses' do
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        JSON.parse(run.all_responses_for_portal).should == JSON.parse(all_expected)
+      end
+    end
+
+    describe "#send_to_portal" do
+      describe "when there is no remote_endpoint" do
+        let(:remote_endpoint) { nil }
+        it "no http request is made" do
+          HTTParty.should_not_receive(:post)
+          run.send_to_portal([or_answer,mc_answer]).should be_false
+        end
+      end
+
+      describe "when there are no new answers" do
+        let(:remote_endpoint) { nil }
+        it "no http request is made" do
+          HTTParty.should_not_receive(:post)
+          run.send_to_portal([]).should be_false
+        end
+      end
+
+      describe "with an endpoint and answers" do
+        let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
+        let(:auth_token) { "xyzzy" }
+        describe "with a positive response from the server" do
+          it "should be successful" do
+            payload = run.response_for_portal([or_answer,mc_answer])
+            user.stub(:authentication_token => auth_token)
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "OK", # TODO: What returns?
+              :status => 200)
+            run.send_to_portal([or_answer,mc_answer]).should be_true
+            WebMock.should have_requested(:post, remote_endpoint).
+              with({
+                :body => payload,
+                :headers => {
+                  "Authorization" => run.bearer_token,
+                  "Content-Type" => 'application/json'
+                }
+              })
+          end
+        end
+        describe "when the server reports an error" do
+          it "should fail" do
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "boo", # TODO: What returns?
+              :status => 503)
+            run.send_to_portal([or_answer,mc_answer]).should be_false
+          end
+        end
+      end
     end
   end
 end

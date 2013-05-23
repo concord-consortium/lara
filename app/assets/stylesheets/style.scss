@@ -113,10 +113,9 @@ button.disabled span.edit_trigger.disabled {
     min-height: 1em;
   }
   nav {
-    clear: left;
-    float: left;
     padding: 10px 0;
     width: 79%;
+    margin: 1em;
   }
   .breadcrumbs {
     height: auto;
@@ -128,7 +127,6 @@ button.disabled span.edit_trigger.disabled {
     height: auto;
     padding: 10px 0;
     text-align: right;
-    width: 20%;
   }
   #activity-actions {
     clear: both;
@@ -451,11 +449,12 @@ div.summary {
 }
 ul.quiet_list {
   border-top: dashed 1px #ddd;
-  margin-top: 30px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   clear: both;
   list-style: none;
   li.item {
-    padding: 20px 5px;
+    padding: 10px 5px;
     margin: 0;
     border-bottom: dashed 1px #ddd;
     .action_menu_header_left {
@@ -465,7 +464,7 @@ ul.quiet_list {
       width: 82%;
     }
     .action_menu_header_right {
-      width: 18%;
+      width: 33%;
     }
     .tiny {
       clear: both;
@@ -583,6 +582,14 @@ ul#new {
     text-decoration: none;
   }
 }
+li.copy a {
+    /* We need an URL icon */
+    background-size: 14px;
+    color: #333;
+    height: 14px;
+    padding-left: 18px;
+    text-decoration: none;
+}
 li.edit a {
   background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
   background-size: 14px;
@@ -601,6 +608,14 @@ li.run a {
 }
 li.delete a {
   background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+  background-size: 14px;
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
+}
+li.publish a {
+  background: transparent url(/assets/icons/publish.png) 0 0 no-repeat;
   background-size: 14px;
   color: #333;
   height: 14px;

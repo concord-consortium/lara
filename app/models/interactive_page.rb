@@ -1,34 +1,37 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :user, :text, :theme, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
+  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
 
   acts_as_list :scope => :lightweight_activity
 
-  has_many :interactive_items, :order => :position
+  LAYOUT_OPTIONS = [{ :name => 'Full Width', :class_val => 'l-full-width' },
+                    { :name => '60-40',      :class_val => 'l-6040' },
+                    { :name => '70-30',      :class_val => 'l-7030' }]
 
+  validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
+
+  has_many :interactive_items, :order => :position, :dependent => :destroy
+  # InteractiveItem is a join model; if this is deleted, it should go too
+
+  # This is a sort of polymorphic has_many :through.
   def interactives
     self.interactive_items.collect{|ii| ii.interactive}
   end
 
-  has_many :page_items, :order => :position
+  has_many :page_items, :order => :position, :dependent => :destroy
+  # Like InteractiveItems, PageItems are join models, so they should not 
+  # survive the deletion of associated instances of InteractivePage.
+
+  # This is a sort of polymorphic has_many :through.
   def embeddables
     self.page_items.collect{|qi| qi.embeddable}
   end
 
-  # Should the interactive block be full-width? N.B. when we put more than one 
-  # interactive/assessment block on a page, this should move to the block model.
-  def fullwidth_interactive
-    fullwidth = self.interactives.count { |ii| ii.fullwidth }
-    if fullwidth > 0 || !self.show_info_assessment
-      return true
-    else
-      return false
-    end
-  end
-
   def show_interactive=(value)
-    if value.to_i != 0
+    if value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
+      self[:show_interactive] = value
+    elsif value.to_i != 0
       if self.interactives.length < 1
         interactive = MwInteractive.create!
         self.add_interactive(interactive)
@@ -62,5 +65,35 @@ class InteractivePage < ActiveRecord::Base
     unless position
       join.move_to_bottom
     end
+  end
+
+  def to_hash
+    # Intentionally leaving out:
+    # - lightweight_activity association will be added there
+    # - user will get the new user
+    # - Associations will be done later
+    {
+      name: name,
+      position: position,
+      text: text,
+      layout: layout,
+      sidebar: sidebar,
+      show_introduction: show_introduction,
+      show_sidebar: show_sidebar,
+      show_interactive: show_interactive,
+      show_info_assessment: show_info_assessment
+    }
+  end
+
+  def duplicate
+    new_page = InteractivePage.new(self.to_hash)
+    self.interactives.each do |inter|
+      new_page.add_interactive(inter.duplicate)
+    end
+    self.embeddables.each do |embed|
+      new_page.add_embeddable(embed.duplicate)
+    end
+    return new_page
+    # N.B. the duplicate hasn't been saved yet
   end
 end

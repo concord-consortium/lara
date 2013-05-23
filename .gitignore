@@ -23,3 +23,6 @@
 # Brakeman reports
 /public/brakeman*
 bin
+
+# Ignore private configurations:
+config/app_environment_variables.rb

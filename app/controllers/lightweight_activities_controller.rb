@@ -1,8 +1,11 @@
 require_dependency "application_controller"
+require 'concord_portal_publishing'
 
 class LightweightActivitiesController < ApplicationController
+  include ConcordPortalPublishing
+
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_session_key, :only => [:summary, :show]
+  before_filter :set_run_key, :only => [:summary, :show]
 
   def index
     if can? :manage, LightweightActivity
@@ -17,7 +20,8 @@ class LightweightActivitiesController < ApplicationController
   def show
     authorize! :read, @activity
     @run.increment_run_count!
-    redirect_to activity_page_path(@activity, @run.last_page)
+
+    redirect_to page_with_response_path(@activity, @run.last_page, @session_key)
   end
 
   def new
@@ -75,6 +79,21 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  def duplicate
+    authorize! :create, LightweightActivity
+    @new_activity = @activity.duplicate
+    # Set ownership - doing this in the instance methods isn't practical
+
+    @new_activity.set_user!(current_user)
+
+    if @new_activity.save
+      redirect_to edit_activity_path(@new_activity)
+    else
+      flash[:warning] = "Copy failed"
+      redirect_to activities.path
+    end
+  end
+
   def move_up
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
@@ -94,7 +113,7 @@ class LightweightActivitiesController < ApplicationController
   def reorder_pages
     authorize! :update, @activity
     params[:item_interactive_page].each do |p|
-      # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2  
+      # Format: item_interactive_page[]=1&item_interactive_page[]=3&item_interactive_page[]=11&item_interactive_page[]=12&item_interactive_page[]=13&item_interactive_page[]=21&item_interactive_page[]=20&item_interactive_page[]=2
       page = @activity.pages.find(p)
       # If we move everything to the bottom in order, the first one should be at the top
       page.move_to_bottom
@@ -117,6 +136,18 @@ class LightweightActivitiesController < ApplicationController
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
     @answers = @activity.answers(@run)
+  end
+
+  def publish
+    authorize! :publish, @activity
+    @activity.publish!
+    success = portal_publish(@activity)
+    if success
+      flash[:notice] = "Successfully published activity!"
+    else
+      flash[:alert] = "Failed to publish activity! Check that you're logged in to the portal, and have permissions to author."
+    end
+    redirect_to activities_path
   end
 
   private

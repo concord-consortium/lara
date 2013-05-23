@@ -62,6 +62,8 @@
   
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
+  = form_for @page, :remote => true do |f|
+    = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  {:onchange => 'this.form.submit();'}
   - if @page.show_introduction
     .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
       %h2 Introduction
@@ -80,8 +82,7 @@
   - if @page.show_interactive
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
       - @page.interactives.each do |interactive|
-        - i_type = interactive.class.name.underscore
-        = render :partial => "#{i_type.pluralize}/author", :locals => {:interactive => interactive}
+        = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive}
       = link_to "Add interactive", new_page_mw_interactive_path(@page) unless @page.interactives.length > 0
       -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
   - if @page.show_sidebar

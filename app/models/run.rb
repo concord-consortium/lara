@@ -1,5 +1,5 @@
 class Run < ActiveRecord::Base
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :activity_id
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -24,8 +24,8 @@ class Run < ActiveRecord::Base
     }
 
   validates :key,
-    :format => { :with => /\A[a-zA-Z0-9]*\z/ },
-    :length => { :is => 16 }
+    :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
+    :length => { :is => 36 }
 
   def check_key
     unless key.present?
@@ -35,49 +35,48 @@ class Run < ActiveRecord::Base
 
   # Generates a GUID for a particular run of an activity
   def session_guid
-    if self.user
-      # We're assuming a single user won't generate multiple guids per second - but even
-      # if they did, it's fine if they're not unique.
-      return Digest::MD5.hexdigest("#{activity.name}_#{user.email}_#{DateTime.now().to_s}")[0..15]
-    else
-      # Add some pseudo-randomness to make sure they don't overlap with concurrent requests from other users
-      return Digest::MD5.hexdigest("#{activity.name}_#{rand.to_s}_#{DateTime.now().to_s}")[0..15]
-    end
+    UUIDTools::UUID.random_create.to_s
   end
 
-  def self.for_key(key)
-    return nil if key.nil?
-    self.by_key(key).first
-  end
 
-  def self.for_user_activity_and_remote_id(user,activity,remote_id)
+  def self.for_user_and_portal(user,activity,portal)
     conditions = {
-      :user_id => user.id,
-      :activity_id => activity.id
+      remote_endpoint: portal.remote_endpoint,
+      remote_id:       portal.remote_id,
+      user_id:         user.id
+      #TODO: add domain
     }
-    conditions[:remote_id] = remote_id if remote_id
+    conditions[:activity_id]     = activity.id if activity
     found = self.find(:first, :conditions => conditions)
     return found || self.create(conditions)
   end
 
-  def self.lookup(key,activity,user=nil,remote_id=nil)
-    return self.for_key(key) if key
-    return self.for_user_activity_and_remote_id(user,activity,remote_id) if user
-    return self.create(:activity => activity, :remote_id => :remote_id)
+  def self.for_user_and_activity(user,activity)
+    conditions = {
+      activity_id:     activity.id,
+      user_id:         user.id
+    }
+    found = self.find(:first, :conditions => conditions)
+    return found || self.create(conditions)
+  end
+
+  def self.for_key(key, activity)
+    self.by_key(key).first || self.create(activity: activity)
+  end
+
+  def self.lookup(key, activity, user, portal)
+    return self.for_user_and_portal(user, activity, portal) if user && portal && portal.valid?
+    return self.for_key(key, activity) if (key && activity)
+    return self.for_user_and_activity(user,activity) if (user && activity)
+    return self.create(activity: activity)
   end
 
   def to_param
     key
   end
 
-  # TODO: calculate last page?
   def last_page
     return self.page || self.activity.pages.first
-  end
-
-  # TODO: generate storage keys?
-  def storage_keys
-    []
   end
 
   def increment_run_count!
@@ -85,12 +84,60 @@ class Run < ActiveRecord::Base
     increment!(:run_count)
   end
 
-  # TODO: do we ever want to call this?
+  # Takes an answer or array of answers and generates a portal response JSON string from them.
+  def response_for_portal(answer)
+    if answer.kind_of?(Array)
+      answer.map { |ans| ans.portal_hash }.to_json
+    else
+      "[#{answer.portal_hash.to_json}]"
+    end
+  end
+
+  def answers
+    open_response_answers + multiple_choice_answers
+  end
+
+  def answers_hash
+    answers.map {|a| a.portal_hash}
+  end
+
+  def all_responses_for_portal
+    answers_hash.to_json
+  end
+
+  def oauth_token
+    return user.authentication_token if user
+    # TODO: throw "no oauth_token for runs without users"
+  end
+
+  def bearer_token
+    'Bearer %s' % oauth_token
+  end
+
+  # TODO: Alias to all_responses_for_portal
   def responses
     {
       'multiple_choice_answers' => self.multiple_choice_answers,
       'open_response_answers' => self.open_response_answers
     }
+  end
+
+  # return true if we saved.
+  def send_to_portal(answers)
+    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    payload = response_for_portal(answers)
+    return false if payload.nil? || payload.blank?
+    response = HTTParty.post(
+      remote_endpoint, {
+        :body => payload,
+        :headers => {
+          "Authorization" => bearer_token,
+          "Content-Type" => 'application/json'
+        }
+      }
+    )
+    # TODO: better error detection?
+    response.code == 200
   end
 
 end
