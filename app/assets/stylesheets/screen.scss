@@ -333,6 +333,15 @@ footer {
   @include ui-grid-rl(70%, 30%, 2%);
 }
 
+.r-4060 {
+  @extend .cf;
+  @include ui-grid-lr(60%, 40%, 2%);
+} // end .r-4060
+
+.r-3070 {
+  @extend .cf;
+  @include ui-grid-lr(70%, 30%, 2%);
+}
 
 // Layout: full-width
 .l-full-width {
