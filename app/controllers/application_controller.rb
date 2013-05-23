@@ -44,6 +44,11 @@ class ApplicationController < ActionController::Base
   def session_response_key(new_val=nil?)
     return nil unless current_user.nil?
     session[:response_key] ||= {}
+    # If there is a response key in the session which doesn't match up to a
+    # current run, return nil (as though there's no session key)
+    if Run.for_key(session[:response_key][@activity.id], @activity).nil?
+      return nil
+    end
     session[:response_key][@activity.id] = new_val if new_val
     session[:response_key][@activity.id]
   end
