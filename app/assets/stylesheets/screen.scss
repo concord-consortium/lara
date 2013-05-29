@@ -1136,7 +1136,7 @@ footer {
   color: #666;
 }
 
-.question, .intro-mod, .related-mod{
+.question, .intro-mod, .related-mod, .sidebar-mod {
   a {
     color: darken($med-blue, 20%);
     @include trans;
