@@ -18,6 +18,7 @@ function checkAnswer($question) {
         // Try checkboxes if there are no radio buttons
         $answers = $('#' + q_id + ' input:checkbox:checked');
     }
+    // TODO: This only returns one answer; we will need to send all checked answers if there are >1.
     answer = $answers.val();
     answered = answer && answer.length > 0;
     if (!answered) {

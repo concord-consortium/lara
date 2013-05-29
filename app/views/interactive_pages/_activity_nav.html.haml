@@ -11,8 +11,8 @@
 
   .pages
     %ul.pagination
-      %li.pagination-item.home-link
-        = link_to 'H', activities_url, :class => 'pagination-link'
+      -# %li.pagination-item.home-link
+        =# link_to 'H', activities_url, :class => 'pagination-link'
       - page_counter = 1
       - @activity.pages.each do |p|
         %li.pagination-item
