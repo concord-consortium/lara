@@ -1,14 +1,20 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $, modalDialog */
 
-function showPrompts() {
-    // This is for admin
-    if ($('#embeddable_multiple_choice_custom').is(':checked')) {
-        $('.choices .custom-hidden').show();
+
+// Constructor for class to represent the custom feedback form fields in the admin
+var CustomFeedback = function (el) {
+    this.el = $(el);
+    return this;
+};
+
+CustomFeedback.prototype.show = function (control) {
+    if (control.is(':checked')) {
+        this.el.show();
     } else {
-        $('.choices .custom-hidden').hide();
+        this.el.hide();
     }
-}
+};
 
 function checkAnswer($question) {
     var q_id = $question.data('check'),
@@ -29,6 +35,15 @@ function checkAnswer($question) {
             modalDialog(data.choice, data.prompt);
         });
     }
+}
+
+function addModalClickHandlers () {
+    var customFeedbackToggle = $('#embeddable_multiple_choice_custom'),
+        customFeedbackPrompts = new CustomFeedback($('.choices .custom-hidden'));
+
+    customFeedbackToggle.click(function () {
+        customFeedbackPrompts.show(customFeedbackToggle);
+    });
 }
 
 function addClickHanders() {
