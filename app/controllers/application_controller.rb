@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   # What to do if authorization fails
+  # TODO: This needs to be fixed, see https://www.pivotaltracker.com/story/show/50383631
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to new_user_session_url, :alert => exception.message
   end
