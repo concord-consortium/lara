@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler, checkAnswer */
+/*global $  */
 
 function setIframeHeight() {
     // This depends on a data-aspect_ratio attribute being set in the HTML.
