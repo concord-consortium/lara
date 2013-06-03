@@ -4,9 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   # What to do if authorization fails
-  # TODO: This needs to be fixed, see https://www.pivotaltracker.com/story/show/50383631
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to new_user_session_url, :alert => exception.message
+    redirect_to user_omniauth_authorize_path(:concord_portal), :alert => exception.message
   end
 
   # For modal edit windows. Source: https://gist.github.com/1456815
