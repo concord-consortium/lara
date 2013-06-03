@@ -16,27 +16,35 @@ CustomFeedback.prototype.show = function (control) {
     }
 };
 
-function checkAnswer($question) {
-    var q_id = $question.data('check'),
-        $answers, answer, answered;
-    $answers = $('#' + q_id + ' input:radio:checked');
-    if ($answers.length === 0) {
-        // Try checkboxes if there are no radio buttons
-        $answers = $('#' + q_id + ' input:checkbox:checked');
+var AnswerChecker = function ($question) {
+    // The question is the div containing the form and options.
+    // From that we extract the question ID and answers
+    this.q_id = $question.data('check');
+    this.answers = $('#' + this.q_id + ' input:radio:checked');
+    if (this.answers.length === 0) {
+        // Try checkboxes if there are no checked radio buttons
+        this.answers = $('#' + this.q_id + ' input:checkbox:checked');
     }
+    // console.log(this.answers);
+    console.log('There are ' + this.answers.length + ' answers found by the constructor.');
     // TODO: This only returns one answer; we will need to send all checked answers if there are >1.
-    answer = $answers.val();
-    answered = answer && answer.length > 0;
-    if (!answered) {
-        modalDialog(false, 'Please select an answer before checking.');
-    }
-    else {
-        $.getJSON('/embeddable/multiple_choice/' + answer + '/check', function (data) {
+    // Extract the answer value
+    this.answer = this.answers.val();
+};
+
+AnswerChecker.prototype.check = function () {
+    // If there are answers, send them to the server and use the response in a modal dialog
+    if (this.answer && (this.answer.length > 0)) {
+        $.getJSON('/embeddable/multiple_choice/' + this.answer + '/check', function (data) {
             modalDialog(data.choice, data.prompt);
         });
     }
-}
+    else {
+        modalDialog(false, 'Please select an answer before checking.');
+    }
+};
 
+// Adds some click handlers to DOM elements which don't exist at page load
 function addModalClickHandlers () {
     var customFeedbackToggle = $('#embeddable_multiple_choice_custom'),
         customFeedbackPrompts = new CustomFeedback($('.choices .custom-hidden'));
@@ -48,7 +56,7 @@ function addModalClickHandlers () {
 
 function addClickHanders() {
     $('.check_answer_button').click(function() {
-        checkAnswer($(this));
+        new AnswerChecker($(this)).check();
     });
 
     // Enable the check-answer button if answered:
