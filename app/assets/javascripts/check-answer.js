@@ -1,6 +1,8 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $, modalDialog */
 
+// TODO: This module has been refactored to make it more testable. Now it needs
+// to be (a) tested, and (b) perhaps packaged as a jQuery plugin.
 
 // Constructor for class to represent the custom feedback form fields in the admin
 var CustomFeedback = function (el) {
@@ -19,23 +21,26 @@ CustomFeedback.prototype.show = function (control) {
 var AnswerChecker = function ($question) {
     // The question is the div containing the form and options.
     // From that we extract the question ID and answers
+    var $answers, values;
     this.q_id = $question.data('check');
-    this.answers = $('#' + this.q_id + ' input:radio:checked');
-    if (this.answers.length === 0) {
+    $answers = $('#' + this.q_id + ' input:radio:checked');
+    if ($answers.length === 0) {
         // Try checkboxes if there are no checked radio buttons
-        this.answers = $('#' + this.q_id + ' input:checkbox:checked');
+        $answers = $('#' + this.q_id + ' input:checkbox:checked');
     }
-    // console.log(this.answers);
-    console.log('There are ' + this.answers.length + ' answers found by the constructor.');
-    // TODO: This only returns one answer; we will need to send all checked answers if there are >1.
-    // Extract the answer value
-    this.answer = this.answers.val();
+    // Extract the answer value(s)
+    values = [];
+    $answers.each( function () {
+        values.push($(this).val());
+    });
+    this.answer = values.join(',');
 };
 
 AnswerChecker.prototype.check = function () {
     // If there are answers, send them to the server and use the response in a modal dialog
     if (this.answer && (this.answer.length > 0)) {
-        $.getJSON('/embeddable/multiple_choice/' + this.answer + '/check', function (data) {
+        var mc_id = this.q_id.match(/\d+/);
+        $.getJSON('/embeddable/multiple_choice/' + mc_id + '/check', 'choices=' + this.answer, function (data) {
             modalDialog(data.choice, data.prompt);
         });
     }
