@@ -11,10 +11,10 @@ class InteractivePage < ActiveRecord::Base
                     { :name => '60-40 (interactive left)', :class_val => 'r-4060' },
                     { :name => '70-30 (interactive left)', :class_val => 'r-3070' }]
 
-  EMBEDDBALE_DISPLAY_OPTIONS = ['stacked','carousel']
+  EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
-  validates :embeddable_display_mode, :inclusion => { :in => EMBEDDBALE_DISPLAY_OPTIONS }
+  validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
 
   has_many :interactive_items, :order => :position, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, it should go too
