@@ -25,6 +25,17 @@ describe InteractivePage do
     end
   end
 
+  describe 'embeddable display modes' do
+    it 'has an array of strings which are valid as embeddable display modes' do
+      InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS.length.should be > 0
+    end
+
+    it 'does not validate with modes not in the array' do
+      page.embeddable_display_mode = 'invalid-display-mode'
+      page.valid?.should be_false
+    end
+  end
+
   it 'belongs to a lightweight activity' do
     activity = FactoryGirl.create(:activity)
 

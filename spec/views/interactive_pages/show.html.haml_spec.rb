@@ -8,11 +8,14 @@ describe "interactive_pages/show" do
 
   let(:activity)  { stub_model(LightweightActivity, :id => 1)}
 
-  let(:page) do
-    stub_model(InteractivePage,
-      :name => "fake page",
-      :last? => true,
-      :lightweight_activity => activity)
+  let (:page) do
+    p = FactoryGirl.create(:page, :name => "fake page", :lightweight_activity => activity, :embeddable_display_mode => 'carousel')
+    p.stub(:last? => true)
+    [3,1,2].each do |i|
+      embed = FactoryGirl.create(:xhtml, :name => "embeddable #{i}", :content => "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
+      p.add_embeddable(embed, i)
+    end
+    p
   end
 
   let(:all_pages) { [page] }
@@ -68,4 +71,16 @@ describe "interactive_pages/show" do
     end
   end
 
+  describe 'when the embeddable display mode is carousel and there are embeddables' do
+    it 'should have a div with class jcarousel' do
+      render
+      rendered.should match /div class='jcarousel/
+    end
+
+    it 'should have next and previous links' do
+      render
+      rendered.should match /a class='jcarousel-prev/
+      rendered.should match /a class='jcarousel-next/
+    end
+  end
 end
