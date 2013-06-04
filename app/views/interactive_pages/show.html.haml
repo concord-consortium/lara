@@ -22,7 +22,7 @@
       = render :partial => 'list_embeddables'
 
     .buttons
-      - if @page.embeddable_display_mode == 'carousel'
+      - if @page.embeddable_display_mode == 'carousel' && @page.embeddables.length > 1
         %a.jcarousel-prev{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => '<< Previous' }
         %a.jcarousel-next{ :href => '#' }
