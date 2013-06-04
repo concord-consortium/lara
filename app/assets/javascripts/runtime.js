@@ -12,6 +12,7 @@
 //
 //= require jquery_ujs
 //= require jquery.placeholder
+//= require jquery.jcarousel
 //= require waypoints
 //= require waypoints-sticky
 //= require common

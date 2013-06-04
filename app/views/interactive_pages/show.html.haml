@@ -17,7 +17,7 @@
     - if @page.interactives.length > 0 && @page.show_interactive
       = render :partial => 'interactive'
 
-  .questions-mod.ui-block-2
+  .questions-mod.ui-block-2.jcarousel
     - if @page.show_info_assessment
       = render :partial => 'list_embeddables'
 

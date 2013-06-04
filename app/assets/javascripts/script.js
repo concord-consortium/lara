@@ -77,4 +77,12 @@ $(document).ready(function () {
 	}, { offset: i_height + 180 }
 	);
 
+    // Set up the jQuery Carousel if it's active
+    $(function() {
+        $('.jcarousel').jcarousel({
+            'list': '.embeddables',
+            'items': '.question'
+        });
+    });
+
 });  // end document.ready
