@@ -17,15 +17,16 @@
     - if @page.interactives.length > 0 && @page.show_interactive
       = render :partial => 'interactive'
 
-  .questions-mod.ui-block-2.jcarousel
+  .questions-mod.ui-block-2{ :class => @page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
     - if @page.show_info_assessment
       = render :partial => 'list_embeddables'
 
     .buttons
-      %a.jcarousel-prev{ :href => '#' }
-        %input{ :class => 'button', :type => 'submit', :value => '<< Previous' }
-      %a.jcarousel-next{ :href => '#' }
-        %input{ :class => 'button', :type => 'submit', :value => 'Next >>' }
+      - if @page.embeddable_display_mode == 'carousel'
+        %a.jcarousel-prev{ :href => '#' }
+          %input{ :class => 'button', :type => 'submit', :value => '<< Previous' }
+        %a.jcarousel-next{ :href => '#' }
+          %input{ :class => 'button', :type => 'submit', :value => 'Next >>' }
 
       - if @page.last?
         .submit

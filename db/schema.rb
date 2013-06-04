@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520193900) do
+ActiveRecord::Schema.define(:version => 20130604160443) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -78,8 +78,8 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.integer  "lightweight_activity_id"
     t.integer  "position"
     t.text     "text"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.text     "sidebar"
     t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.boolean  "show_info_assessment",    :default => false
     t.string   "workflow_state"
     t.string   "layout",                  :default => "l-6040"
+    t.string   "embeddable_display_mode", :default => "stacked"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
