@@ -1,17 +1,30 @@
 .jcarousel {
-    position: relative;
-    overflow: hidden;
-    /* You need at least a height, adjust this to your needs */
-    height: 500px;
-    .embeddables {
-        position: absolute;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        width: 200000em;
-    }
-    .question {
-        float: left;
-        width: 374px; /* Magic number ugh */
-    }
+  position: relative;
+  overflow: hidden;
+  /* You need at least a height, adjust this to your needs */
+  height: 500px;
+  .embeddables {
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 200000em;
+  }
+  .question {
+    float: left;
+    width: 374px; /* Magic number ugh */
+  }
+  .buttons {
+    position: absolute;
+    width: 100%;
+    bottom: 5px;
+  }
+  .jcarousel-prev {
+    float: left;
+    margin-bottom: 5px;
+  }
+  .jcarousel-next {
+    float: right;
+    margin-bottom: 5px;
+  }
 }

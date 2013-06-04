@@ -21,10 +21,16 @@
     - if @page.show_info_assessment
       = render :partial => 'list_embeddables'
 
-    - if @page.last?
-      .submit
-        %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
-          %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
+    .buttons
+      %a.jcarousel-prev{ :href => '#' }
+        %input{ :class => 'button', :type => 'submit', :value => '<< Previous' }
+      %a.jcarousel-next{ :href => '#' }
+        %input{ :class => 'button', :type => 'submit', :value => 'Next >>' }
+
+      - if @page.last?
+        .submit
+          %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
+            %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
 
 -# -- Add expanded class to sidebar-mod for expanded view.
 - if @page.show_sidebar && !@page.sidebar.blank?
