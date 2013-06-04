@@ -1,20 +1,17 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
+$(document).ready(function () {
 
-
-$(document).ready(function(){
-
-	var header_top = $('.content-hdr').offset().top,
+	// Calculate some sizes
+    var header_top = $('.content-hdr').offset().top,
         // content_top = $('.content-mod').offset().top, // We don't use this anymore
 	    i_width =$('.pinned').width(),
 	    i_height = $('.pinned').height();
     // var interactive_top = $('.interactive-mod').offset().top;
     // var q_height = $('.content-mod').height();
 
-
-
-	$(window).scroll(function(){
+    $(window).scroll( function () {
 		var window_top = $(window).scrollTop();
 
 		// Activity nav fixing
@@ -44,7 +41,7 @@ $(document).ready(function(){
 		$('.sidebar-mod').toggleClass('expanded');
 	});
 
-	//This fixes the interactive mod when the window hits the questions
+	// This fixes the interactive mod when the window hits the questions
     // It depends on the interactive having the "pinned" class and works
     // by adding and removing the "stuck" class, and tweaking CSS.
     // Also, it depends on the 'i_width' and 'i_height' variables being set.
@@ -79,10 +76,5 @@ $(document).ready(function(){
 		}
 	}, { offset: i_height + 180 }
 	);
-
-    // enable check answer when there is an answer
-    $('input[type=radio]').one('click', function () {
-        $('#check').removeAttr('disabled');
-    });
 
 });  // end document.ready
