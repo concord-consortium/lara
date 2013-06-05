@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130604160443) do
+ActiveRecord::Schema.define(:version => 20130605195153) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -57,6 +57,14 @@ ActiveRecord::Schema.define(:version => 20130604160443) do
   create_table "embeddable_xhtmls", :force => true do |t|
     t.string   "name"
     t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "image_interactives", :force => true do |t|
+    t.string   "url"
+    t.text     "caption"
+    t.text     "credit"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

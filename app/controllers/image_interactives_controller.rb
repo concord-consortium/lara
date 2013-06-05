@@ -1,0 +1,2 @@
+class ImageInteractivesController < ApplicationController
+end
