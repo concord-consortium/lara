@@ -69,6 +69,8 @@ group :test, :development do
   gem 'fuubar'
   # Javascript tests with PhantomJS
   gem 'poltergeist'
+  # JS unit tests
+  gem 'jasmine'
 end
 
 group :test do
