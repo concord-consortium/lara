@@ -1,13 +1,9 @@
 LightweightStandalone::Application.routes.draw do
+
   namespace :embeddable do
     resources :open_response_answers
-  end
-
-
-  namespace :embeddable do
     resources :multiple_choice_answers
   end
-
 
   namespace :admin do
     resources :users
