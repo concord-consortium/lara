@@ -72,6 +72,7 @@ group :test, :development do
   # JS unit tests
   gem 'jasmine'
   gem 'guard-jasmine'
+  gem 'jasminerice' # guard-jasmine uses this
 end
 
 group :test do
