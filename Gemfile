@@ -71,6 +71,7 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
+  gem 'guard-jasmine'
 end
 
 group :test do
