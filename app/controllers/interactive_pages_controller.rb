@@ -55,7 +55,7 @@ class InteractivePagesController < ApplicationController
           else
             @page.reload
             flash[:notice] = "Page #{@page.name} was updated."
-            redirect_to edit_activity_page_path(@activity, @page, param)
+            redirect_to edit_activity_page_path(@activity, @page)
           end
         end
       else
