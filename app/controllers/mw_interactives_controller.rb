@@ -15,7 +15,7 @@ class MwInteractivesController < ApplicationController
       InteractiveItem.create!(:interactive_page => @page, :interactive => @interactive)
       flash[:notice] = "Your new MW Interactive has been created."
       update_activity_changed_by
-      redirect_to edit_activity_page_path(@activity, @page, :edit_int => @interactive.id)
+      redirect_to edit_activity_page_path(@activity, @page, :edit_mw_int => @interactive.id)
     else
       @interactive = MwInteractive.create!()
       flash[:notice] = "Your new MW Interactive has been created."

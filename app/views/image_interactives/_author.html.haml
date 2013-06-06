@@ -1,0 +1,14 @@
+.model-edit
+  .toolbar
+    = link_to "Edit", edit_page_image_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
+    |
+    = link_to "Delete", page_image_interactive_path(@page, interactive), :method => :delete
+    - if params[:edit_img_int].to_i == interactive.id
+      :javascript
+        $("a[id^=edit-int-#{interactive.id}]").click()
+
+  %img{ :src => interactive.url }
+  .caption
+    = interactive.caption
+  .credit
+    = interactive.credit

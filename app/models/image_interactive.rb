@@ -3,7 +3,6 @@ class ImageInteractive < ActiveRecord::Base
 
   has_one :interactive_item, :as => :interactive, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, that instance should go too
-  # TODO: This will need updating to make the polymorphic relationship work properly
 
   has_one :interactive_page, :through => :interactive_item
 

@@ -13,7 +13,7 @@ class ImageInteractivesController < ApplicationController
       InteractiveItem.create!(:interactive_page => @page, :interactive => @interactive)
       flash[:notice] = "Your new Image has been created."
       update_activity_changed_by
-      redirect_to edit_activity_page_path(@activity, @page, :edit_int => @interactive.id)
+      redirect_to edit_activity_page_path(@activity, @page, :edit_img_int => @interactive.id)
     else
       @interactive = ImageInteractive.create!()
       flash[:notice] = "Your new Image has been created."

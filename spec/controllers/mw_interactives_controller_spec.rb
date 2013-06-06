@@ -44,7 +44,7 @@ describe MwInteractivesController do
           act
           get :new, :page_id => page.id
           new_id = MwInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(act, page, :edit_int => new_id))
+          response.should redirect_to(edit_activity_page_path(act, page, :edit_mw_int => new_id))
         end
       end
 
@@ -63,7 +63,7 @@ describe MwInteractivesController do
           act
           post :create, :page_id => page.id
           new_id = MwInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(act, page, :edit_int => new_id))
+          response.should redirect_to(edit_activity_page_path(act, page, :edit_mw_int => new_id))
         end
       end
     end

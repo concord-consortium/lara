@@ -16,7 +16,6 @@ class InteractivePagesController < ApplicationController
       finder = Embeddable::AnswerFinder.new(@run)
       @run.update_attribute(:page, @page)
       @modules = @page.embeddables.map { |e| finder.find_answer(e) }
-
     end
 
     respond_to do |format|
@@ -46,7 +45,6 @@ class InteractivePagesController < ApplicationController
 
   def update
     authorize! :update, @page
-    had_interactive = @page.interactives.length
     update_activity_changed_by
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
@@ -56,10 +54,6 @@ class InteractivePagesController < ApplicationController
             render :text => params[:interactive_page].values.first
           else
             @page.reload
-            param = {}
-            if @page.interactives.length > had_interactive
-              param = { :edit_int => @page.interactives.last.id }
-            end
             flash[:notice] = "Page #{@page.name} was updated."
             redirect_to edit_activity_page_path(@activity, @page, param)
           end
