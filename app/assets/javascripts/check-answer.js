@@ -1,8 +1,7 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $, modalDialog */
 
-// TODO: This module has been refactored to make it more testable. Now it needs
-// to be (a) tested, and (b) perhaps packaged as a jQuery plugin.
+// TODO: Should this module be packaged as a jQuery plugin?
 
 // Constructor for class to represent the custom feedback form fields in the admin
 var CustomFeedback = function (el) {
