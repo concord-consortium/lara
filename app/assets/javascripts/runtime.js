@@ -21,5 +21,6 @@
 //= require modals
 //= require modal-dialog
 //= require check-answer
+//= require scroll-interactive-mod
 //= require save-on-change
 //= require jquery.colorbox
