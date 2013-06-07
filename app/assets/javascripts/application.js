@@ -23,5 +23,4 @@
 //= require modals
 //= require modal-dialog
 //= require check-answer
-//= require full-screen
 //= require ./common.js
