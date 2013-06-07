@@ -93,4 +93,7 @@ $(document).ready(function () {
         });
     });
 
+    // Set up colorbox for ImageInteractives
+    $('.interactive-mod .colorbox').colorbox({});
+
 });  // end document.ready

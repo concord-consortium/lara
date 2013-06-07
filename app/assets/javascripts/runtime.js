@@ -22,3 +22,4 @@
 //= require modal-dialog
 //= require check-answer
 //= require save-on-change
+//= require jquery.colorbox
