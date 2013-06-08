@@ -3,7 +3,7 @@
 
 $(document).ready(function () {
 
-	// Calculate some sizes
+	// Calculate header size
     var header_top = $('.content-hdr').offset().top;
 
     $(window).scroll( function () {
@@ -35,22 +35,6 @@ $(document).ready(function () {
 	$('.sidebar-hdr').add('.sidebar-bd-close').click(function() {
 		$('.sidebar-mod').toggleClass('expanded');
 	});
-
-    // Set up the jQuery Carousel if it's active
-    $(function() {
-        $('.jcarousel').jcarousel({
-            'list': '.embeddables',
-            'items': '.question'
-        });
-
-        $('.jcarousel-prev').jcarouselControl({
-            target: '-=1'
-        });
-
-        $('.jcarousel-next').jcarouselControl({
-            target: '+=1'
-        });
-    });
 
     // Set up colorbox for ImageInteractives
     $('.interactive-mod .colorbox').colorbox({});

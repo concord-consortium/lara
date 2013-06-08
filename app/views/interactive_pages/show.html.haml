@@ -24,9 +24,9 @@
     .buttons
       - if @page.embeddable_display_mode == 'carousel' && @page.embeddables.length > 1
         %a.jcarousel-prev{ :href => '#' }
-          %input{ :class => 'button', :type => 'submit', :value => '<< Previous' }
+          %input{ :class => 'button', :type => 'submit', :value => '<< Previous', :disabled => true }
         %a.jcarousel-next{ :href => '#' }
-          %input{ :class => 'button', :type => 'submit', :value => 'Next >>' }
+          %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
 
       - if @page.last?
         .submit

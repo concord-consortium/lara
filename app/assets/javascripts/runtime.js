@@ -22,5 +22,6 @@
 //= require modal-dialog
 //= require check-answer
 //= require scroll-interactive-mod
+//= require embeddable-carousel
 //= require save-on-change
 //= require jquery.colorbox
