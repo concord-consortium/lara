@@ -13,7 +13,6 @@
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
-//= require jquery.jcarousel-control
 //= require waypoints
 //= require waypoints-sticky
 //= require common
