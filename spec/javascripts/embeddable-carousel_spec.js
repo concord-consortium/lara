@@ -72,9 +72,9 @@ describe('EmbeddableCarousel', function () {
     });
 
     describe('setWidth()', function () {
-        it('adjusts the width of the container', function () {
+        it('adjusts the width of the embeddables', function () {
             carousel.setWidth('338px');
-            expect(carousel.container).toHaveCss({width: '338px'});
+            expect($('.question')).toHaveCss({width: '338px'});
         });
     });
 

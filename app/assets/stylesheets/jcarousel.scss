@@ -2,7 +2,6 @@
   position: relative;
   overflow: hidden;
   /* You need at least a height, adjust this to your needs */
-  height: 500px;
   .embeddables {
     position: absolute;
     list-style: none;
@@ -12,12 +11,12 @@
   }
   .question {
     float: left;
-    width: 374px; /* Magic number ugh */
+    overflow: hidden;
   }
   .buttons {
     position: absolute;
     width: 100%;
-    bottom: 5px;
+    bottom: 0;
   }
   .jcarousel-prev {
     float: left;

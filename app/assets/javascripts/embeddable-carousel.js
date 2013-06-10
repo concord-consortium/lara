@@ -27,11 +27,14 @@ var EmbeddableCarousel = function (element) {
 // Set the height of the container
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight);
+    // Adjust embeddable containers to allow for buttons
+    var embeddableHeight = newHeight - 63;
+    $('.question').css('height', embeddableHeight);
 };
 
-// Set the width of the container
+// Set the width of the embeddables
 EmbeddableCarousel.prototype.setWidth = function (newWidth) {
-    this.container.css('width', newWidth);
+    $('.question').css('width', newWidth);
 };
 
 // Update state of carousel controls
@@ -83,6 +86,34 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
 
 // Setup
 $(document).ready(function () {
+    var newHeight, newWidth, tallest, available;
+    // Adjust height and width
+    if ($('.content-mod').hasClass('l-full-width')) {
+        // If full-width, set height of carousel to height of tallest embeddable or available screen, whichever is less
+        tallest = 0;
+        available = $(window).height() - $('.activity-nav-mod').height();
+        $('.question').each( function () {
+            tallest = Math.max(tallest, $(this).height() + 63); // 63 = extra height for buttons
+        });
+        newHeight = Math.min(tallest, available);
+        // If full-width, set width of carousel to X
+        newWidth = 960;
+    } else {
+        // If not full-width, set height of carousel to height of interactive box
+        newHeight = $('.interactive-mod').height();
+        if ($('.content-mod').hasClass('l-6040') || $('.content-mod').hasClass('r-6040')) {
+            // If 60-40, set width of carousel to Y
+            newWidth = 374;
+        } else {
+            // If 70-30, set width of carousel to Z
+            newWidth = 278;
+        }
+    }
+
     // Set up the jQuery Carousel if it's active
     carousel = new EmbeddableCarousel($('.jcarousel'));
+
+    carousel.setHeight(newHeight + 'px');
+    carousel.setWidth(newWidth + 'px');
+    carousel.container.jcarousel('reload'); // recalculate scroll values for new dimensions
 });
