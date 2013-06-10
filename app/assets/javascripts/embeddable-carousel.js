@@ -36,20 +36,18 @@ EmbeddableCarousel.prototype.setWidth = function (newWidth) {
 
 // Update state of carousel controls
 EmbeddableCarousel.prototype.updateControls = function (carousel) {
+    // "carousel" here is a carousel object from jcarousel
     var list = carousel.items();
     if (list.index(carousel.target()) === 0) {
         // If at start of list, turn off "prev" and on "next"
-        console.log("We're at start");
         this.turnOffPrev();
         this.turnOnNext();
     } else if (list.index(carousel.target()) === (list.length - 1)) {
         // If at end of list, turn off "next" and on "prev"
-        console.log("We're at end");
         this.turnOffNext();
         this.turnOnPrev();
     } else {
         // Otherwise turn on both
-        console.log("We're in the middle");
         this.turnOnPrev();
         this.turnOnNext();
     }
