@@ -1,0 +1,2 @@
+class VideoInteractivesController < ApplicationController
+end
