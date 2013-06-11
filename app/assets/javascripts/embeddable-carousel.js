@@ -26,15 +26,15 @@ var EmbeddableCarousel = function (element) {
 
 // Set the height of the container
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
-    this.container.css('height', newHeight);
+    this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
     var embeddableHeight = newHeight - 63;
-    $('.question').css('height', embeddableHeight);
+    $('.question').css('max-height', embeddableHeight + 'px');
 };
 
 // Set the width of the embeddables
 EmbeddableCarousel.prototype.setWidth = function (newWidth) {
-    $('.question').css('width', newWidth);
+    $('.question').css('width', newWidth + 'px');
 };
 
 // Update state of carousel controls
@@ -86,6 +86,8 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
 
 // Setup
 $(document).ready(function () {
+    // TODO: It feels like some of this can be refactored into the EmbeddableCarousel object?
+    // This calculates the proper height and width for the carousel container.
     var newHeight, newWidth, tallest, available;
     // Adjust height and width
     if ($('.content-mod').hasClass('l-full-width')) {
@@ -113,7 +115,7 @@ $(document).ready(function () {
     // Set up the jQuery Carousel if it's active
     carousel = new EmbeddableCarousel($('.jcarousel'));
 
-    carousel.setHeight(newHeight + 'px');
-    carousel.setWidth(newWidth + 'px');
+    carousel.setHeight(newHeight);
+    carousel.setWidth(newWidth);
     carousel.container.jcarousel('reload'); // recalculate scroll values for new dimensions
 });
