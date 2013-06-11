@@ -8,7 +8,7 @@ describe VideoInteractive do
     video_interactive.valid?
   end
 
-  it 'can to associate an interactive page' do
+  it 'can associate to an interactive page' do
     page.add_interactive(video_interactive)
 
     video_interactive.reload
