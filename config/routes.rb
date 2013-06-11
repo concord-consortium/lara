@@ -1,6 +1,5 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :video_interactives
 
 
   namespace :embeddable do
@@ -40,11 +39,13 @@ LightweightStandalone::Application.routes.draw do
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
   resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show
+  resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show
 
   # This is so we can build the InteractiveItem at the same time as the Interactive
   resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
     resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
     resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show
+    resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show
   end
 
   # the in-place editor needed interactive_page_path

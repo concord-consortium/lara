@@ -1,0 +1,10 @@
+-# TODO: use video markup, not image
+%img{ :src => interactive.url, :alt => interactive.caption, :style => "width: 100%;" }
+.under-image
+  .fullscreen
+    =# TODO: Feed the right data to Colorbox to embed the video
+    = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => interactive.caption, :class => 'colorbox'}
+  .caption
+    = interactive.caption
+  .credit
+    = interactive.credit

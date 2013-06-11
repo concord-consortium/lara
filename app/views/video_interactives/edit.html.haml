@@ -1,0 +1,11 @@
+- form_url = defined?(@page) ? page_video_interactive_path(@page, @interactive) : video_interactive_path(@interactive)
+= form_for @interactive, :url => form_url do |f|
+  = f.error_messages
+  = field_set_tag 'URL' do
+    = f.text_field :url
+  = field_set_tag 'Caption' do
+    = f.text_area :caption
+  = field_set_tag 'Credit' do
+    = f.text_area :credit
+  = f.button "Cancel", :class => 'close', :type => 'button'
+  = f.submit "Save", :class => 'embeddable-save', :default => 'default'
