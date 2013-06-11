@@ -26,15 +26,15 @@ var EmbeddableCarousel = function (element) {
 
 // Set the height of the container
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
-    this.container.css('height', newHeight);
+    this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
     var embeddableHeight = newHeight - 63;
-    $('.question').css('height', embeddableHeight);
+    $('.question').css('max-height', embeddableHeight + 'px');
 };
 
 // Set the width of the embeddables
 EmbeddableCarousel.prototype.setWidth = function (newWidth) {
-    $('.question').css('width', newWidth);
+    $('.question').css('width', newWidth + 'px');
 };
 
 // Update state of carousel controls
@@ -113,7 +113,7 @@ $(document).ready(function () {
     // Set up the jQuery Carousel if it's active
     carousel = new EmbeddableCarousel($('.jcarousel'));
 
-    carousel.setHeight(newHeight + 'px');
-    carousel.setWidth(newWidth + 'px');
+    carousel.setHeight(newHeight);
+    carousel.setWidth(newWidth);
     carousel.container.jcarousel('reload'); // recalculate scroll values for new dimensions
 });

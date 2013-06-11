@@ -66,14 +66,15 @@ describe('EmbeddableCarousel', function () {
     // Methods
     describe('setHeight()', function () {
         it('adjusts the height of the container', function () {
-            carousel.setHeight('550px');
+            carousel.setHeight(550);
             expect(carousel.container).toHaveCss({height: '550px'});
+            expect($('.question')).toHaveCss({'max-height': '487px'});
         });
     });
 
     describe('setWidth()', function () {
         it('adjusts the width of the embeddables', function () {
-            carousel.setWidth('338px');
+            carousel.setWidth(338);
             expect($('.question')).toHaveCss({width: '338px'});
         });
     });

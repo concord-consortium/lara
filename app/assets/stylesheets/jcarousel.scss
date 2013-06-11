@@ -11,7 +11,9 @@
   }
   .question {
     float: left;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
   }
   .buttons {
     position: absolute;
