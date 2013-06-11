@@ -86,6 +86,8 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
 
 // Setup
 $(document).ready(function () {
+    // TODO: It feels like some of this can be refactored into the EmbeddableCarousel object?
+    // This calculates the proper height and width for the carousel container.
     var newHeight, newWidth, tallest, available;
     // Adjust height and width
     if ($('.content-mod').hasClass('l-full-width')) {
