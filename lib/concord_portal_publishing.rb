@@ -57,8 +57,12 @@ module ConcordPortalPublishing
     data["sections"] = [section]
     bearer_token = 'Bearer %s' % current_user.authentication_token
     response = HTTParty.post(portal_url, :body => data.to_json, :headers => {"Authorization" => bearer_token, "Content-Type" => 'application/json'})
-    # report success
-    # TODO Probably this should be better about saying why it failed, if it does...
-    return response.code == 201
+    # report success or put details in flash
+    if response.code == 201
+      return true
+    else
+      flash[:warning] = "Got response code #{response.code} from the portal: #{response.body}"
+      return false
+    end
   end
 end
