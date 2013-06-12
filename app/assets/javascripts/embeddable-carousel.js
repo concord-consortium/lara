@@ -122,5 +122,7 @@ EmbeddableCarousel.prototype.adjustSize = function () {
 // Setup
 $(document).ready(function () {
     // Set up the jQuery Carousel if it's active
-    carousel = new EmbeddableCarousel($('.jcarousel'));
+    if ($('.jcarousel').length > 0) {
+        carousel = new EmbeddableCarousel($('.jcarousel'));
+    }
 });
