@@ -145,7 +145,7 @@ class LightweightActivitiesController < ApplicationController
     if success
       flash[:notice] = "Successfully published activity!"
     else
-      flash[:alert] = "Failed to publish activity! Check that you're logged in to the portal, and have permissions to author."
+      flash[:alert] << "Failed to publish activity! Check that you're logged in to the portal, and have permissions to author."
     end
     redirect_to activities_path
   end

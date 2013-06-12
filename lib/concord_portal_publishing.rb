@@ -61,7 +61,7 @@ module ConcordPortalPublishing
     if response.code == 201
       return true
     else
-      flash[:warning] = "Got response code #{response.code} from the portal: #{response.message}"
+      flash[:alert] = "Got response code #{response.code} from the portal: #{response.message}"
       return false
     end
   end
