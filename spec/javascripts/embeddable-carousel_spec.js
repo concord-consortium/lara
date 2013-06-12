@@ -24,6 +24,11 @@ describe('EmbeddableCarousel', function () {
         expect(carousel.controlPrev).toHaveClass('jcarousel-prev');
     });
 
+    it('has "bestHeight" and "bestWidth" attributes', function () {
+        expect(carousel.bestHeight).toBeDefined();
+        expect(carousel.bestWidth).toBeDefined();
+    });
+
     it('sets "next" active to begin with', function () {
         expect(carousel.controlNext.find('.button')).not.toHaveAttr('disabled');
     });
@@ -106,5 +111,9 @@ describe('EmbeddableCarousel', function () {
             carousel.turnOffPrev();
             expect(carousel.controlPrev.find('.button')).toHaveAttr('disabled');
         });
+    });
+
+    describe('adjustSize()', function () {
+        // This is called from the constructor, so some basic function has already been verified
     });
 });
