@@ -24,3 +24,4 @@
 //= require embeddable-carousel
 //= require save-on-change
 //= require jquery.colorbox
+//= require video
