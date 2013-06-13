@@ -481,6 +481,14 @@ footer {
   .under-image {
     .fullscreen {
       float: right;
+      a {
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+      }
       img {
         height: 35px;
         width: 35px;

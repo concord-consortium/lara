@@ -22,6 +22,12 @@ var EmbeddableCarousel = function (element) {
     this.controlPrev = $('.jcarousel-prev');
     // Assume we start at the first item
     this.turnOnNext();
+    // Set 'bestHeight' and 'bestWidth' values
+    this.adjustSize();
+    // Set the carousel to those values and reload it
+    this.setHeight(this.bestHeight);
+    this.setWidth(this.bestWidth);
+    this.container.jcarousel('reload'); // recalculate scroll values for new dimensions
 };
 
 // Set the height of the container
@@ -84,9 +90,7 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
     this.controlPrev.find('.button').prop('disabled', true);
 };
 
-// Setup
-$(document).ready(function () {
-    // TODO: It feels like some of this can be refactored into the EmbeddableCarousel object?
+EmbeddableCarousel.prototype.adjustSize = function () {
     // This calculates the proper height and width for the carousel container.
     var newHeight, newWidth, tallest, available;
     // Adjust height and width
@@ -111,11 +115,14 @@ $(document).ready(function () {
             newWidth = 278;
         }
     }
+    this.bestHeight = newHeight;
+    this.bestWidth = newWidth;
+};
 
+// Setup
+$(document).ready(function () {
     // Set up the jQuery Carousel if it's active
-    carousel = new EmbeddableCarousel($('.jcarousel'));
-
-    carousel.setHeight(newHeight);
-    carousel.setWidth(newWidth);
-    carousel.container.jcarousel('reload'); // recalculate scroll values for new dimensions
+    if ($('.jcarousel').length > 0) {
+        carousel = new EmbeddableCarousel($('.jcarousel'));
+    }
 });
