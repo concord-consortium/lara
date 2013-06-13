@@ -88,6 +88,7 @@
         -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
         = link_to "Add MW interactive", new_page_mw_interactive_path(@page)
         = link_to "Add image", new_page_image_interactive_path(@page)
+        = link_to "Add video", new_page_video_interactive_path(@page)
   - if @page.show_sidebar
     .sidebar
       %h2 Sidebar
