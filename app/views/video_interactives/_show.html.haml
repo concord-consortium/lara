@@ -4,9 +4,6 @@
   %source{ src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' }
   %source{ src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' }
 .under-image
-  .fullscreen
-    =# TODO: Feed the right data to Colorbox to embed the video
-    = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => interactive.caption, :class => 'colorbox'}
   .caption
     = interactive.caption
   .credit
