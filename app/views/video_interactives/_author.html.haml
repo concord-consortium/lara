@@ -7,9 +7,4 @@
       :javascript
         $("a[id^=edit-int-#{interactive.id}]").click()
 
-  -# TODO: video code not img here
-  %img{ :src => interactive.url }
-  .caption
-    = interactive.caption
-  .credit
-    = interactive.credit
+  = render :partial => 'video_interactives/show', :locals => { :interactive => interactive }
