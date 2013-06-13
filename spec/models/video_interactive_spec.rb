@@ -3,6 +3,7 @@ require 'spec_helper'
 describe VideoInteractive do
   let (:video_interactive) { FactoryGirl.create(:video_interactive) }
   let (:page) { FactoryGirl.create(:page) }
+  let (:source) { FactoryGirl.create(:video_source) }
 
   it 'has valid attributes' do
     video_interactive.valid?
@@ -15,6 +16,14 @@ describe VideoInteractive do
     page.reload
 
     video_interactive.interactive_page.should == page
+  end
+
+  it 'may have sources' do
+    source_count = video_interactive.video_sources.length
+    video_interactive.video_sources << source
+    video_interactive.video_sources.length.should be(source_count + 1)
+    video_interactive.video_sources.last.should be(source)
+    source.video_interactive_id.should be(video_interactive.id)
   end
 
   describe '#to_hash' do

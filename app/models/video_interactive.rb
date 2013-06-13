@@ -5,6 +5,8 @@ class VideoInteractive < ActiveRecord::Base
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
   has_one :interactive_page, :through => :interactive_item
+  has_many :video_sources, :dependent => :destroy
+  accepts_nested_attributes_for :video_sources, :allow_destroy => true
 
   def to_hash
     {
@@ -15,6 +17,8 @@ class VideoInteractive < ActiveRecord::Base
   end
 
   def duplicate
-    return VideoInteractive.new(self.to_hash)
+    vi = VideoInteractive.new(self.to_hash)
+    vi.video_sources = self.video_sources.map { |vs| vs.duplicate }
+    return vi
   end
 end

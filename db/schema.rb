@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130610190050) do
+ActiveRecord::Schema.define(:version => 20130613172335) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -184,11 +184,19 @@ ActiveRecord::Schema.define(:version => 20130610190050) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "video_interactives", :force => true do |t|
-    t.string   "url"
+    t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "video_sources", :force => true do |t|
+    t.string   "url",                  :null => false
+    t.string   "format",               :null => false
+    t.integer  "video_interactive_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
 end
