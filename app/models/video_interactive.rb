@@ -1,5 +1,5 @@
 class VideoInteractive < ActiveRecord::Base
-  attr_accessible :url, :caption, :credit
+  attr_accessible :poster_url, :caption, :credit
 
   has_one :interactive_item, :as => :interactive, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, that instance should go too
@@ -8,7 +8,7 @@ class VideoInteractive < ActiveRecord::Base
 
   def to_hash
     {
-      url: url,
+      poster_url: poster_url,
       caption: caption,
       credit: credit
     }

@@ -4,7 +4,7 @@ describe VideoInteractivesController do
   render_views
   let (:activity) { FactoryGirl.create(:activity_with_page) }
   let (:page) { activity.pages.first }
-  let (:int) { FactoryGirl.create(:video_interactive, :url => '') } # TODO: Find an URL for a video
+  let (:int) { FactoryGirl.create(:video_interactive, :poster_url => 'http://example.com/poster.png') }
 
   describe 'show' do
     it 'is not routable' do
@@ -66,7 +66,7 @@ describe VideoInteractivesController do
           response.body.should match /<form[^>]+action="\/video_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
           response.body.should match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
 
-          response.body.should match /<input[^<]+id="video_interactive_url"[^<]+name="video_interactive\[url\]"[^<]+type="text"[^>]+value="#{int.url}"[^<]*\/>/
+          response.body.should match /<input[^<]+id="video_interactive_poster_url"[^<]+name="video_interactive\[poster_url\]"[^<]+type="text"[^>]+value="#{int.poster_url}"[^<]*\/>/
           # TODO: These may be textareas
           response.body.should match /<textarea[^<]+id="video_interactive_caption"[^<]+name="video_interactive\[caption\]"[^<]*>#{int.caption}/
           response.body.should match /<textarea[^<]+id="video_interactive_credit"[^<]+name="video_interactive\[credit\]"[^<]*>#{int.credit}/
@@ -83,16 +83,16 @@ describe VideoInteractivesController do
 
       describe 'update' do
         it 'replaces the values of the Video Interactive to match submitted values' do
-          new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
+          new_values_hash = { :caption => 'I made this up', :poster_url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
           post :update, :id => int.id, :video_interactive => new_values_hash
 
           int.reload
           int.caption.should == new_values_hash[:caption]
-          int.url.should == new_values_hash[:url]
+          int.poster_url.should == new_values_hash[:poster_url]
         end
 
         it 'returns to the edit page with a message indicating success' do
-          new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
+          new_values_hash = { :caption => 'I made this up', :poster_url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
           post :update, :id => int.id, :video_interactive => new_values_hash
           response.should redirect_to(edit_video_interactive_path(int))
           flash[:notice].should == 'Your video was updated'
