@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613172335) do
+ActiveRecord::Schema.define(:version => 20130614175457) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -187,8 +187,10 @@ ActiveRecord::Schema.define(:version => 20130613172335) do
     t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "width",      :default => 556, :null => false
+    t.integer  "height",     :default => 240, :null => false
   end
 
   create_table "video_sources", :force => true do |t|

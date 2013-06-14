@@ -1,7 +1,4 @@
--# TODO: width and height
--# TODO: poster
--# TODO: sources (have URL and video)
-%video{ :id => "example_video_1", :class => "video-js vjs-default-skin", :controls => '', :preload => "auto", :width => "640", :height => "264", :poster => interactive.poster_url, :data => { :setup => '{"example_option":true}' } }
+%video{ id: "video-interactive-#{interactive.id}", class: "video-js vjs-default-skin", controls: '', preload: "auto", width: interactive.width, height: interactive.height, poster: interactive.poster_url, data: { setup: '{"example_option":true}', aspect_ratio: interactive.aspect_ratio } }
   - interactive.sources.each do |source|
     %source{ :src => source.url, :type => source.format }
 .under-image

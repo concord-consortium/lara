@@ -1,7 +1,13 @@
-= nested_form_for @interactive do |f|
+- form_url = defined?(@page) ? page_video_interactive_path(@page, @interactive) : video_interactive_path(@interactive)
+= nested_form_for @interactive, :url => form_url do |f|
   = f.error_messages
   = field_set_tag 'Poster URL' do
     = f.text_field :poster_url
+  = field_set_tag 'Size in pixels' do
+    Width:
+    = f.text_field :width
+    Height:
+    = f.text_field :height
   = field_set_tag 'Caption' do
     = f.text_area :caption
   = field_set_tag 'Credit' do

@@ -26,16 +26,32 @@ describe VideoInteractive do
     source.video_interactive_id.should be(video_interactive.id)
   end
 
+  describe '#aspect_ratio' do
+    it 'returns a ratio of width to height' do
+      # Default values
+      video_interactive.height.should be(240)
+      video_interactive.width.should be(556)
+      video_interactive.aspect_ratio.should == 2.316666666666667
+    end
+  end
+
+  describe '#calculated_height' do
+    it 'uses #aspect_ratio to return a height given a width' do
+      video_interactive.aspect_ratio.should == 2.316666666666667
+      video_interactive.calculated_height(695).to_i.should be(300)
+    end
+  end
+
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit }
+      expected = { poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit, width: video_interactive.width, height: video_interactive.height }
       video_interactive.to_hash.should == expected
     end
   end
 
   describe '#duplicate' do
     it 'is a new instance of VideoInteractive with values' do
-      video_interactive.duplicate.should be_a_new(VideoInteractive).with( poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit )
+      video_interactive.duplicate.should be_a_new(VideoInteractive).with( poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit, width: video_interactive.width, height: video_interactive.height )
     end
   end
 end

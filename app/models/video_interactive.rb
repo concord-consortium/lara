@@ -6,9 +6,26 @@ class VideoInteractive < ActiveRecord::Base
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
 
-  attr_accessible :poster_url, :caption, :credit, :sources_attributes
+  attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes
 
   accepts_nested_attributes_for :sources, :allow_destroy => true
+
+  validates_numericality_of :height, :width
+
+  # returns the aspect ratio of the interactive, determined by dividing the width by the height.
+  # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
+  # will be 2.
+  def aspect_ratio
+    if self.width && self.height
+      return self.width/self.height.to_f
+    else
+      return 1.324 # Derived from the default values, above
+    end
+  end
+
+  def calculated_height(width)
+    return width/self.aspect_ratio
+  end
 
   def activity
     if interactive_page
@@ -22,7 +39,9 @@ class VideoInteractive < ActiveRecord::Base
     {
       poster_url: poster_url,
       caption: caption,
-      credit: credit
+      credit: credit,
+      height: height,
+      width: width
     }
   end
 
