@@ -90,7 +90,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:notice] = 'New choice was added.'
+        flash[:notice] = 'Choice was removed.'
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
         format.json
