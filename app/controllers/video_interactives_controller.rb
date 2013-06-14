@@ -6,22 +6,24 @@ class VideoInteractivesController < ApplicationController
   end
 
   def create
+    @interactive = VideoInteractive.create!()
+    @interactive.sources << VideoSource.new() # If we don't have one, weird stuff happens
+    flash[:notice] = "Your new video has been created."
     if (params[:page_id])
       @page = InteractivePage.find(params[:page_id])
       @activity = @page.lightweight_activity
-      @interactive = VideoInteractive.create!()
       InteractiveItem.create!(:interactive_page => @page, :interactive => @interactive)
-      flash[:notice] = "Your new video has been created."
       update_activity_changed_by
       redirect_to edit_activity_page_path(@activity, @page, :edit_vid_int => @interactive.id)
     else
-      @interactive = VideoInteractive.create!()
-      flash[:notice] = "Your new video has been created."
       redirect_to edit_video_interactive_path(@interactive)
     end
   end
 
   def edit
+    if @interactive.sources.length < 1
+      @interactive.sources << VideoSource.new() # If we don't have one, weird stuff happens
+    end
     respond_to do |format|
       format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       format.html
