@@ -1,10 +1,22 @@
-- form_url = defined?(@page) ? page_video_interactive_path(@page, @interactive) : video_interactive_path(@interactive)
-= form_for @interactive, :url => form_url do |f|
+= nested_form_for @interactive do |f|
   = f.error_messages
   = field_set_tag 'Poster URL' do
+    = f.text_field :poster_url
   = field_set_tag 'Caption' do
     = f.text_area :caption
   = field_set_tag 'Credit' do
     = f.text_area :credit
+  = field_set_tag 'Sources' do
+    %ul
+      - @interactive.sources.each do |source|
+        = f.fields_for :sources, source do |source_form|
+          %li
+            Source:
+            = source_form.text_field :url
+            Format:
+            = source_form.select :format, VideoSource::SUPPORTED_MIME_TYPES
+            = source_form.link_to_remove "Delete"
+    = f.link_to_add "Add source", :sources
+
   = f.button "Cancel", :class => 'close', :type => 'button'
-  = f.submit "Save", :class => 'embeddable-save', :default => 'default'
+  = f.submit "Save", :default => 'default'

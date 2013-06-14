@@ -19,10 +19,10 @@ describe VideoInteractive do
   end
 
   it 'may have sources' do
-    source_count = video_interactive.video_sources.length
-    video_interactive.video_sources << source
-    video_interactive.video_sources.length.should be(source_count + 1)
-    video_interactive.video_sources.last.should be(source)
+    source_count = video_interactive.sources.length
+    video_interactive.sources << source
+    video_interactive.sources.length.should be(source_count + 1)
+    video_interactive.sources.last.should be(source)
     source.video_interactive_id.should be(video_interactive.id)
   end
 

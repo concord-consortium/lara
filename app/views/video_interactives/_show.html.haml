@@ -2,7 +2,7 @@
 -# TODO: poster
 -# TODO: sources (have URL and video)
 %video{ :id => "example_video_1", :class => "video-js vjs-default-skin", :controls => '', :preload => "auto", :width => "640", :height => "264", :poster => interactive.poster_url, :data => { :setup => '{"example_option":true}' } }
-  - interactive.video_sources.each do |source|
+  - interactive.sources.each do |source|
     %source{ :src => source.url, :type => source.format }
 .under-image
   .caption

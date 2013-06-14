@@ -57,6 +57,45 @@ class VideoInteractivesController < ApplicationController
     end
   end
 
+  def add_source
+    @source = VideoSource.new(:video_interactive => @interactive)
+    @interactive.reload
+    @activity = @interactive.activity
+    update_activity_changed_by unless @activity.nil?
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      end
+    else
+      respond_to do |format|
+        flash[:notice] = 'New choice was added.'
+        format.html { redirect_to(:back) }
+        format.xml  { head :ok }
+        format.json
+      end
+    end
+  end
+
+  def remove_source
+    @source = @interactive.video_sources.find(params[:source_id])
+    @source.destroy
+    @interactive.reload
+    @activity = @interactive.activity
+    update_activity_changed_by unless @activity.nil?
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      end
+    else
+      respond_to do |format|
+        flash[:notice] = 'New source was added.'
+        format.html { redirect_to(:back) }
+        format.xml  { head :ok }
+        format.json
+      end
+    end
+  end
+
   private
   def set_interactive
     @interactive = VideoInteractive.find(params[:id])
