@@ -6,17 +6,63 @@
 describe('InteractiveObject', function () {
     var interactive;
 
-    // TODO: Fixtures to manipulate
-    beforeEach(function () {
-        interactive = new InteractiveObject();
+    describe('when the interactive is a video', function () {
+        beforeEach(function () {
+            loadFixtures('interactive-sizing-video.html');
+            interactive = new InteractiveObject($('video[data-aspect_ratio]'));
+        });
+
+        // Attributes
+        it('has defined attributes', function () {
+            expect(interactive.element).toBe('video');
+            expect(interactive.aspectRatio).toBeDefined();
+            expect(interactive.currWidth).toBeDefined();
+            expect(interactive.targetHeight).toBeDefined();
+        });
+
+        describe('fixSize()', function () {
+            beforeEach(function () {
+                interactive.fixSize();
+            });
+
+            it('has height matching targetHeight', function () {
+                expect(interactive.element).toHaveAttr('height', interactive.targetHeight);
+            });
+
+            it('has width matching currWidth', function () {
+                expect(interactive.element).toHaveAttr('width', interactive.currWidth);
+            });
+        });
     });
 
-    // Attributes
-    it('has defined attributes', function () {
-// TODO: toBeDefined() for attributes        
-    });
+    describe('when the interactive is an iframe', function () {
+        // NOTE: PhantomJS 1.8.1 didn't like this fixture. PhantomJS 1.9.0 worked. If this 
+        // set of specs breaks, try upgrading PhantomJS.
+        beforeEach(function () {
+            loadFixtures('interactive-sizing-iframe.html');
+            interactive = new InteractiveObject($('iframe[data-aspect_ratio]'));
+        });
 
-    describe('fixSize()', function () {
-        // TODO: call attributes on targets
+        // Attributes
+        it('has defined attributes', function () {
+            expect(interactive.element).toBe('iframe');
+            expect(interactive.aspectRatio).toBeDefined();
+            expect(interactive.currWidth).toBeDefined();
+            expect(interactive.targetHeight).toBeDefined();
+        });
+
+        describe('fixSize()', function () {
+            beforeEach(function () {
+                interactive.fixSize();
+            });
+
+            it('has height matching targetHeight', function () {
+                expect(interactive.element).toHaveAttr('height', interactive.targetHeight);
+            });
+
+            it('has width matching currWidth', function () {
+                expect(interactive.element).toHaveAttr('width', interactive.currWidth);
+            });
+        });
     });
 });
