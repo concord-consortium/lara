@@ -50,24 +50,24 @@ describe InteractivePage do
   end
 
   it 'has interactives' do
-    # The factory has an interactive by default
     [3,1,2].each do |i|
       inter = FactoryGirl.create(:mw_interactive)
       page.add_interactive(inter, i)
     end
     page.reload
 
-    page.interactives.size.should == 4 
+    page.interactives.size.should == 3
   end
 
   it 'has interactives in the correct order' do
+    # We're adding these with a "position" parameter, so they're being added as 3, 1, 2 but the order should be 1, 2, 3
     [3,1,2].each do |i|
       inter = FactoryGirl.create(:mw_interactive, :name => "inter #{i}", :url => "http://www.concord.org/#{i}")
       page.add_interactive(inter, i)
     end
     page.reload
 
-    page.interactives[1].url.should == "http://www.concord.org/1"
+    page.interactives[1].url.should == "http://www.concord.org/2"
     page.interactives.last.name.should == "inter 3"
   end
 
@@ -89,15 +89,6 @@ describe InteractivePage do
     page.embeddables.length.should == embed_count + 1
     page.embeddables.first.content.should == "This is the 1st embeddable"
     page.embeddables.last.name.should == "Embeddable 4"
-  end
-
-
-  it 'adds a new MwInteractive when show_interactive is set to true' do
-    int_count = page.interactives.length
-    page.show_interactive = "1"
-    page.save
-    page.reload
-    page.interactives.length.should > 0
   end
 
   describe '#to_hash' do

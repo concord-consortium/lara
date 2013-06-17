@@ -33,21 +33,6 @@ class InteractivePage < ActiveRecord::Base
     self.page_items.collect{|qi| qi.embeddable}
   end
 
-  def show_interactive=(value)
-    if value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
-      self[:show_interactive] = value
-    elsif value.to_i != 0
-      if self.interactives.length < 1
-        interactive = MwInteractive.create!
-        self.add_interactive(interactive)
-      else
-        self[:show_interactive] = true;
-      end
-    else
-      self[:show_interactive] = false;
-    end
-  end
-
   def add_interactive(interactive, position = nil)
     self[:show_interactive] = true;
     self.save

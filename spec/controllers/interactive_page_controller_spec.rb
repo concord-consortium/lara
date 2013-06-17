@@ -18,6 +18,8 @@ describe InteractivePagesController do
 
   let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
 
+  let (:interactive) { FactoryGirl.create(:mw_interactive) }
+
   describe 'routing' do
     it 'recognizes and generates #show' do
       {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
@@ -65,6 +67,7 @@ describe InteractivePagesController do
       page1.add_embeddable(xhtml1)
       page1.add_embeddable(or2)
       page1.add_embeddable(mc2)
+      page1.add_interactive(interactive)
 
       # get the rendering
       get :show, :id => page1.id, :response_key => ar.key
@@ -257,9 +260,9 @@ describe InteractivePagesController do
           response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
         end
 
-        it 'shows navigation links ' do
-          page2
+        it 'shows navigation links' do
           page1
+          page2
           get :edit, :id => page1.id, :activity_id => act.id
 
           response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
