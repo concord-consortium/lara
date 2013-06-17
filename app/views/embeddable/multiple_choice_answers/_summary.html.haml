@@ -1,4 +1,9 @@
+.number
+  %p="#{answer.question_index}:"
 .prompt!= answer.prompt
 .answer
-  - answer.answer_texts.each do |answer|
-    .answer_item= answer
+  - if !answer.answer_texts.empty?
+    - answer.answer_texts.each do |answer|
+      .answer_item= answer
+  - else
+    %p! &nbsp;

@@ -634,10 +634,21 @@ div.wysiwyg ul.toolbar {
   height: inherit;
   margin: 0;
 }
+
+/* Summary page */
 .prompt {
   font-weight: bold;
   margin: 5px;
 }
+.number {
+  float: left;
+  font-weight: bold;
+  margin: 5px;
+}
+.answer {
+  clear: left;
+}
+
 div.block-empty {
   border: 1px solid #ffcccc;
   min-height: 2em;
