@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe InteractivePagesController do
+  # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
+
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
 
