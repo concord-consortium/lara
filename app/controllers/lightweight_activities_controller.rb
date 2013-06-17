@@ -80,7 +80,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def duplicate
-    authorize! :create, LightweightActivity
+    authorize! :duplicate, LightweightActivity
     @new_activity = @activity.duplicate
     # Set ownership - doing this in the instance methods isn't practical
 

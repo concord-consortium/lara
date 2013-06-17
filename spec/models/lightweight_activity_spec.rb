@@ -8,6 +8,7 @@ describe LightweightActivity do
   it 'should have valid attributes' do
     activity.name.should_not be_blank
     activity.publication_status.should == "private"
+    activity.is_locked.should be_false
   end
 
   it 'should not allow long names' do

@@ -7,12 +7,21 @@ describe User do
     subject  { ability }
     let (:ability) { Ability.new(user) }
     let (:user) { nil }
+    let (:locked_activity) do
+      la = FactoryGirl.create(:locked_activity)
+      la.pages << FactoryGirl.create(:page)
+      la.user = FactoryGirl.create(:admin)
+      la.save
+      la
+    end
+
     context 'when is an administrator' do
       let (:user) { FactoryGirl.build(:admin) }
 
       it { should be_able_to(:manage, User) }
       it { should be_able_to(:manage, LightweightActivity) }
       it { should be_able_to(:manage, InteractivePage) }
+      it { should be_able_to(:manage, locked_activity) }
     end
 
     context 'when is an author' do
@@ -39,6 +48,11 @@ describe User do
       it { should_not be_able_to(:update, other_activity) }
       it { should be_able_to(:read, other_activity) }
       it { should be_able_to(:read, other_activity.pages.first) }
+      it { should be_able_to(:duplicate, other_activity) }
+      # Can't edit locked activities
+      it { should_not be_able_to(:update, locked_activity) }
+      it { should be_able_to(:read, other_activity.pages.first) }
+      it { should_not be_able_to(:duplicate, locked_activity) }
     end
 
     context 'when is a user' do
