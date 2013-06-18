@@ -3,7 +3,10 @@
 .prompt!= answer.prompt
 .answer
   - if !answer.answer_texts.empty?
-    - answer.answer_texts.each do |answer|
-      .answer_item= answer
+    - if answer.multi_answer
+      - answer.answer_texts.each do |answer|
+        .answer_item= answer
+    - else
+      .answer_item= answer.answer_tests.last
   - else
     %p! &nbsp;
