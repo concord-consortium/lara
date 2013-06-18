@@ -1,7 +1,7 @@
 class InteractivePage < ActiveRecord::Base
   attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment, :embeddable_display_mode
 
-  belongs_to :lightweight_activity, :class_name => 'LightweightActivity'
+  belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
 
   acts_as_list :scope => :lightweight_activity
 
@@ -12,6 +12,10 @@ class InteractivePage < ActiveRecord::Base
                     { :name => '70-30 (interactive left)', :class_val => 'r-3070' }]
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
+
+  INTERACTIVE_TYPES = [{ :name => 'Image',  :class_name => 'ImageInteractive' },
+                       { :name => 'Iframe', :class_name => 'MwInteractive' },
+                       { :name => 'Video',  :class_name => 'VideoInteractive' }]
 
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
   validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }

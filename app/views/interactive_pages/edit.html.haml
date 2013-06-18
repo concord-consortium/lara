@@ -82,16 +82,12 @@
             = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
   - if @page.show_interactive
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
+      = form_tag add_interactive_activity_page_path, :class => 'interactives-form' do
+        = select_tag :interactive_type, options_for_select(InteractivePage::INTERACTIVE_TYPES.map { |t| [t[:name], t[:class_name]] })
+        = submit_tag 'Add Interactive'
       - @page.interactives.each do |interactive|
         = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive}
-      -unless @page.interactives.length > 0
-        -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
-        = link_to "Add MW interactive", new_page_mw_interactive_path(@page)
-        = link_to "Add image", new_page_image_interactive_path(@page)
-        = link_to "Add video", new_page_video_interactive_path(@page)
   - if @page.show_sidebar
     .sidebar
       %h2 Sidebar
       = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
-
-  =# javascript_tag("focus_first_field();");

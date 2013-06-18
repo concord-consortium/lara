@@ -1,7 +1,5 @@
 LightweightStandalone::Application.routes.draw do
 
-
-
   namespace :embeddable do
     resources :open_response_answers
     resources :multiple_choice_answers
@@ -26,6 +24,7 @@ LightweightStandalone::Application.routes.draw do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
+        post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
       end
