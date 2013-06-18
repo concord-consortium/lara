@@ -262,6 +262,13 @@ describe InteractivePagesController do
           response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
         end
 
+        it 'has links for adding Interactives to the page' do
+          get :edit, :id => page1.id, :activity_id => act.id
+
+          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_interactive"[^<]*>/
+          response.body.should match /<select[^>]+name="interactive_type"[^>]*>/
+        end
+
         it 'shows navigation links' do
           page1
           page2
@@ -360,6 +367,25 @@ describe InteractivePagesController do
         page1.embeddables[2].should == xhtml1
         act.reload
         act.changed_by.should == @user
+      end
+    end
+
+    describe 'add_interactive' do
+      it 'creates an arbitrary interactive and adds it to the page' do
+        images_count = ImageInteractive.count()
+        interactives_count = page1.interactives.length
+        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
+        page1.reload
+        page1.interactives.count.should == interactives_count + 1
+        ImageInteractive.count().should == interactives_count + 1
+      end
+
+      it 'redirects to the edit page' do
+        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
+        interactive_id = page1.interactives.last.id
+        act.reload
+        act.changed_by.should == @user
+        response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
     end
 
