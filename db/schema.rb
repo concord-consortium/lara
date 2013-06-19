@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619144551) do
+ActiveRecord::Schema.define(:version => 20130619165644) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20130619144551) do
     t.integer  "time_to_complete"
     t.boolean  "is_locked",          :default => false
     t.text     "notes"
+    t.string   "thumbnail_url"
   end
 
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
@@ -170,6 +171,7 @@ ActiveRecord::Schema.define(:version => 20130619144551) do
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "user_id"
   end
 
   create_table "users", :force => true do |t|
