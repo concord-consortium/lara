@@ -2,7 +2,6 @@ LightweightStandalone::Application.routes.draw do
 
   resources :sequences
 
-
   namespace :embeddable do
     resources :open_response_answers
     resources :multiple_choice_answers
