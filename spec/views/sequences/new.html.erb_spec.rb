@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe "sequences/new" do
   before(:each) do
+    @user ||= FactoryGirl.create(:admin)
+    sign_in @user
+
     assign(:sequence, stub_model(Sequence,
       :title => "MyString",
       :description => "MyText"
