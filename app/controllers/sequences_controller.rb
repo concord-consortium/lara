@@ -25,7 +25,7 @@ class SequencesController < ApplicationController
   # GET /sequences/new
   # GET /sequences/new.json
   def new
-    @sequence = Sequence.new
+    @sequence = Sequence.new(:user_id => current_user.id)
     authorize! :create, @sequence
     @activities = LightweightActivity.public + LightweightActivity.my(current_user)
 
@@ -46,6 +46,9 @@ class SequencesController < ApplicationController
   def create
     @sequence = Sequence.new(params[:sequence])
     authorize! :create, @sequence
+    if @sequence.user != current_user
+      @sequence.user = current_user
+    end
 
     respond_to do |format|
       if @sequence.save
