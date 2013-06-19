@@ -1,0 +1,19 @@
+%h1 Listing sequences
+
+%table
+  %tr
+    %th Title
+    %th Description
+    %th
+    %th
+
+  - @sequences.each do |sequence|
+    %tr
+      %td= link_to sequence.title, sequence
+      %td= sequence.description
+      %td= link_to 'Edit', edit_sequence_path(sequence) if can? :update, sequence
+      %td= link_to 'Destroy', sequence, method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence
+
+%br
+
+= link_to 'New Sequence', new_sequence_path

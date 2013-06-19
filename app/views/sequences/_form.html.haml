@@ -1,0 +1,21 @@
+= form_for(@sequence) do |f|
+  - if @sequence.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@sequence.errors.count, "error")
+        prohibited this sequence from being saved:
+      %ul
+        - @sequence.errors.full_messages.each do |msg|
+          %li= msg
+
+  = hidden_field :user_id, current_user.id
+  .field
+    = f.label :title
+    %br
+    = f.text_field :title
+  .field
+    = f.label :description
+    %br
+    = f.text_area :description
+  .actions
+    = f.submit
