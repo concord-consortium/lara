@@ -1,14 +1,35 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = @sequence.title
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to 'All Sequences', sequences_path
+      %li= "/ #{@sequence.title.html_safe}"
+
 %p#notice= notice
 
-%p
-  %b Title:
-  = @sequence.title
+%h1.title= @sequence.title
 
-%p
-  %b Description:
+.description
   = @sequence.description
 
+.estimated-time
+  Estimated Time to Complete This Module:
+  = @sequence.time_to_complete
+  minutes
 
-= link_to 'Edit', edit_sequence_path(@sequence)
-|
-= link_to 'Back', sequences_path
+.activities
+  - @sequence.lightweight_activities_sequences.each do |las|
+    - activity = las.lightweight_activity
+    .activity
+      .position
+        = las.position.to_s
+      .title
+        = link_to activity.name, activity
+      .thumbnail
+        = link_to image_tag(activity.thumbnail_url), activity unless activity.thumbnail_url.blank?
+
+= link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence

@@ -1,3 +1,15 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = "Edit #{@sequence.title}"
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to 'All Sequences', sequences_path
+      %li=! "/ #{@sequence.title}"
+
+
 %h1 Editing sequence
 
 = render 'form'

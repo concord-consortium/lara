@@ -1,19 +1,25 @@
-%h1 Listing sequences
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Sequences
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li
+        All Sequences
 
-%table
-  %tr
-    %th Title
-    %th Description
-    %th
-    %th
+.action_menu#activity-actions
+  .action_menu_header
+    .action_menu_header_left
+    .action_menu_header_right.index
+      %ul#new-menu
+        - if can? :create, Sequence
+          %li#add= link_to 'create new sequence', new_sequence_path
+        %li#desc-toggle= toggle_all 'sequence descriptions'
 
+#official_listing_heading
+  %h1 Activity Sequences
+%ul.quiet_list.official_listing
   - @sequences.each do |sequence|
-    %tr
-      %td= link_to sequence.title, sequence
-      %td= sequence.description
-      %td= link_to 'Edit', edit_sequence_path(sequence) if can? :update, sequence
-      %td= link_to 'Destroy', sequence, method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence
-
-%br
-
-= link_to 'New Sequence', new_sequence_path
+    = render :partial => "index_item", :locals => {:sequence => sequence}
