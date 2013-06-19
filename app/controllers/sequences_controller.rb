@@ -1,4 +1,6 @@
 class SequencesController < ApplicationController
+  before_filter :set_sequence, :except => [:index, :new, :create]
+
   # GET /sequences
   # GET /sequences.json
   def index
@@ -13,8 +15,7 @@ class SequencesController < ApplicationController
   # GET /sequences/1
   # GET /sequences/1.json
   def show
-    @sequence = Sequence.find(params[:id])
-
+    authorize! :read, @sequence
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @sequence }
@@ -25,6 +26,8 @@ class SequencesController < ApplicationController
   # GET /sequences/new.json
   def new
     @sequence = Sequence.new
+    authorize! :create, @sequence
+    @activities = LightweightActivity.public + LightweightActivity.my(current_user)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,13 +37,15 @@ class SequencesController < ApplicationController
 
   # GET /sequences/1/edit
   def edit
-    @sequence = Sequence.find(params[:id])
+    authorize! :update, @sequence
+    @activities = LightweightActivity.public + LightweightActivity.my(current_user)
   end
 
   # POST /sequences
   # POST /sequences.json
   def create
     @sequence = Sequence.new(params[:sequence])
+    authorize! :create, @sequence
 
     respond_to do |format|
       if @sequence.save
@@ -56,8 +61,7 @@ class SequencesController < ApplicationController
   # PUT /sequences/1
   # PUT /sequences/1.json
   def update
-    @sequence = Sequence.find(params[:id])
-
+    authorize! :update, @sequence
     respond_to do |format|
       if @sequence.update_attributes(params[:sequence])
         format.html { redirect_to @sequence, notice: 'Sequence was successfully updated.' }
@@ -72,12 +76,17 @@ class SequencesController < ApplicationController
   # DELETE /sequences/1
   # DELETE /sequences/1.json
   def destroy
-    @sequence = Sequence.find(params[:id])
     @sequence.destroy
+    authorize! :update, @sequence
 
     respond_to do |format|
       format.html { redirect_to sequences_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_sequence
+    @sequence = Sequence.find(params[:id])
   end
 end

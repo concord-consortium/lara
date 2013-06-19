@@ -19,6 +19,7 @@ describe User do
       let (:user) { FactoryGirl.build(:admin) }
 
       it { should be_able_to(:manage, User) }
+      it { should be_able_to(:manage, Sequence) }
       it { should be_able_to(:manage, LightweightActivity) }
       it { should be_able_to(:manage, InteractivePage) }
       it { should be_able_to(:manage, locked_activity) }
@@ -40,10 +41,15 @@ describe User do
         oa.save
         oa
       end
+      let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
+      let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
 
+      it { should be_able_to(:create, Sequence) }
       it { should be_able_to(:create, LightweightActivity) }
       it { should be_able_to(:create, InteractivePage) }
-      # Can edit activities they own
+      # Can edit activities, etc. which they own
+      it { should be_able_to(:update, self_sequence) }
+      it { should_not be_able_to(:update, other_sequence) }
       it { should be_able_to(:update, self_activity) }
       it { should_not be_able_to(:update, other_activity) }
       it { should be_able_to(:read, other_activity) }
@@ -79,6 +85,7 @@ describe User do
       it { should_not be_able_to(:manage, User) }
       it { should_not be_able_to(:update, LightweightActivity) }
       it { should_not be_able_to(:create, LightweightActivity) }
+      it { should be_able_to(:read, Sequence) }
       it { should be_able_to(:read, public_activity) }
       it { should_not be_able_to(:read, private_activity) }
     end

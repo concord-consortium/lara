@@ -13,8 +13,10 @@ class Ability
       can :manage, :all
     elsif user.author?
       # Authors can create new items and manage those they created
+      can :create, Sequence
       can :create, LightweightActivity
       can :create, InteractivePage
+      can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
       # and duplicate unlocked activities
@@ -23,6 +25,7 @@ class Ability
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
     else
+      can :read, Sequence
       # Everyone can read public activities
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
