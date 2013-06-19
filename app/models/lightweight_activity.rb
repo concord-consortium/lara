@@ -7,6 +7,8 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :changed_by, :class_name => 'User'
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+  has_many :lightweight_activities_sequences, :dependent => :destroy
+  has_many :sequences, :through => :lightweight_activities_sequences
 
   default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
@@ -61,7 +63,8 @@ class LightweightActivity < ActiveRecord::Base
     {
       name: name,
       related: related,
-      description: description
+      description: description,
+      time_to_complete: time_to_complete
     }
   end
 

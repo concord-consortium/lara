@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130617180357) do
+ActiveRecord::Schema.define(:version => 20130619144551) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -119,6 +119,14 @@ ActiveRecord::Schema.define(:version => 20130617180357) do
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
+  create_table "lightweight_activities_sequences", :force => true do |t|
+    t.integer  "lightweight_activity_id", :default => 1, :null => false
+    t.integer  "sequence_id",             :default => 1, :null => false
+    t.integer  "position",                :default => 1, :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"
     t.integer "choice_id"
@@ -155,6 +163,13 @@ ActiveRecord::Schema.define(:version => 20130617180357) do
     t.string   "remote_id"
     t.integer  "page_id",         :default => 0
     t.string   "remote_endpoint"
+  end
+
+  create_table "sequences", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
