@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520193900) do
+ActiveRecord::Schema.define(:version => 20130614175457) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "image_interactives", :force => true do |t|
+    t.string   "url"
+    t.text     "caption"
+    t.text     "credit"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactive_items", :force => true do |t|
     t.integer  "interactive_page_id"
     t.integer  "interactive_id"
@@ -78,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.integer  "lightweight_activity_id"
     t.integer  "position"
     t.text     "text"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.text     "sidebar"
     t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
@@ -87,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.boolean  "show_info_assessment",    :default => false
     t.string   "workflow_state"
     t.string   "layout",                  :default => "l-6040"
+    t.string   "embeddable_display_mode", :default => "stacked"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
@@ -102,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
     t.text     "description"
     t.integer  "changed_by_id"
     t.boolean  "is_official",        :default => false
+    t.integer  "time_to_complete"
   end
 
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
@@ -172,5 +182,23 @@ ActiveRecord::Schema.define(:version => 20130520193900) do
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "video_interactives", :force => true do |t|
+    t.string   "poster_url"
+    t.text     "caption"
+    t.text     "credit"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "width",      :default => 556, :null => false
+    t.integer  "height",     :default => 240, :null => false
+  end
+
+  create_table "video_sources", :force => true do |t|
+    t.string   "url",                  :null => false
+    t.string   "format",               :null => false
+    t.integer  "video_interactive_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
 end

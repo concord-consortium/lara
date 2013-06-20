@@ -16,7 +16,7 @@
           - else
             = f.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
           = choice.choice
-  - if embeddable.enable_check_answer && !embeddable.multi_answer
+  - if embeddable.enable_check_answer # && !embeddable.multi_answer
     %input{ :class => 'button check_answer_button',
             :type => 'button',
             :id => check_button_string,

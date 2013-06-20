@@ -40,7 +40,7 @@ class MwInteractive < ActiveRecord::Base
   def duplicate
     # Generate a new object with those values
     new_interactive = MwInteractive.new(self.to_hash)
-    # Clarify the name
+    # Clarify the name # Not sure why we do this
     new_interactive.name = "Copy of #{new_interactive.name}"
     return new_interactive
     # N.B. the duplicate hasn't been saved yet

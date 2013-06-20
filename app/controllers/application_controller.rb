@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to new_user_session_url, :alert => exception.message
+    redirect_to user_omniauth_authorize_path(:concord_portal), :alert => exception.message
   end
 
   # For modal edit windows. Source: https://gist.github.com/1456815

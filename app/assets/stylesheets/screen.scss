@@ -477,6 +477,33 @@ footer {
   img {
     max-width: 100%;
   }
+
+  .under-image {
+    .fullscreen {
+      float: right;
+      a {
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+      }
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
+    .caption {
+      float: left;
+      width: 85%;
+    }
+    .credit {
+      clear: left;
+      float: left;
+      width: 80%;
+    }
+  }
 }
 
 .questions-mod {
@@ -1150,7 +1177,7 @@ footer {
   }
 }
 
-// social tools on index page
+/* social tools on index page */
 .social-media-mod {
   margin-bottom: 12px;
 

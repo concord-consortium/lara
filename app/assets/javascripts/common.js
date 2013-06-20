@@ -1,14 +1,5 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $, Node, exitFullScreen, fullScreen, calculateDimensions, scroll_handler, checkAnswer */
-
-function setIframeHeight() {
-    // This depends on a data-aspect_ratio attribute being set in the HTML.
-    var $iframe = $('iframe[data-aspect_ratio]'),
-        aspectRatio = $iframe.attr('data-aspect_ratio'),
-        currWidth = $iframe.width(),
-        targetHeight = currWidth/aspectRatio;
-    $('iframe[data-aspect_ratio]').height(targetHeight);
-}
+/*global $  */
 
 // Update the modal edit window with a returned partial
 $(function () {
@@ -24,11 +15,10 @@ $(function () {
 // Everything to run at page load time
 $(document).ready(function () {
     // *** add event listeners: ***
-    // Click-handler for check answer moved to check-answer.js
-    // Adjust interactive iframe to have correct aspect ratio
-    setIframeHeight();
+    // NOTE that there are other event listeners set up in other .js files
 
     // Set up sortable lists:
+    // TODO: Refactor this into an object
     // Embeddables in page edit
     $('#sort_embeddables').sortable({ handle: '.drag_handle',
         opacity: 0.8,

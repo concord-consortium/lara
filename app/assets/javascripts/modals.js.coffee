@@ -15,6 +15,8 @@ $ ->
       .css('top', $(window).scrollTop() + 40)
       .show()
     $modal_container.show();
+    # for check-answer.js - add click handlers for the new elements
+    addModalClickHandlers()
 
   $(document).on 'click', '#modal .close', ->
     $modal_container.hide()

@@ -17,14 +17,21 @@
     - if @page.interactives.length > 0 && @page.show_interactive
       = render :partial => 'interactive'
 
-  .questions-mod.ui-block-2
+  .questions-mod.ui-block-2{ :class => @page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
     - if @page.show_info_assessment
       = render :partial => 'list_embeddables'
 
-    - if @page.last?
-      .submit
-        %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
-          %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
+    .buttons
+      - if @page.embeddable_display_mode == 'carousel' && @page.embeddables.length > 1
+        %a.jcarousel-prev{ :href => '#' }
+          %input{ :class => 'button', :type => 'submit', :value => '<< Previous', :disabled => true }
+        %a.jcarousel-next{ :href => '#' }
+          %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
+
+      - if @page.last?
+        .submit
+          %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
+            %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
 
 -# -- Add expanded class to sidebar-mod for expanded view.
 - if @page.show_sidebar && !@page.sidebar.blank?

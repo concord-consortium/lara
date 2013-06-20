@@ -14,8 +14,7 @@
       = f.check_box :multi_answer
     %label
       Custom Feedback
-      -# TODO: This should be unobtrusive JS and not onclick
-      = f.check_box :custom, :onclick => "showPrompts();"
+      = f.check_box :custom
     .choices
       %ul
         - @embeddable.choices.each do |choice|

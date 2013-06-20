@@ -63,7 +63,8 @@
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
   = form_for @page, :remote => true do |f|
-    = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  {:onchange => 'this.form.submit();'}
+    = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
+    = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
   - if @page.show_introduction
     .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
       %h2 Introduction
@@ -83,8 +84,11 @@
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
       - @page.interactives.each do |interactive|
         = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive}
-      = link_to "Add interactive", new_page_mw_interactive_path(@page) unless @page.interactives.length > 0
-      -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
+      -unless @page.interactives.length > 0
+        -# TODO: When we're supporting more than one interactive, the above conditional (unless...) should come out
+        = link_to "Add MW interactive", new_page_mw_interactive_path(@page)
+        = link_to "Add image", new_page_image_interactive_path(@page)
+        = link_to "Add video", new_page_video_interactive_path(@page)
   - if @page.show_sidebar
     .sidebar
       %h2 Sidebar

@@ -12,6 +12,7 @@
 //
 //= require jquery_ujs
 //= require jquery.placeholder
+//= require jquery.jcarousel
 //= require waypoints
 //= require waypoints-sticky
 //= require common
@@ -19,4 +20,9 @@
 //= require modals
 //= require modal-dialog
 //= require check-answer
+//= require scroll-interactive-mod
+//= require embeddable-carousel
 //= require save-on-change
+//= require jquery.colorbox
+//= require video
+//= require interactive-sizing
