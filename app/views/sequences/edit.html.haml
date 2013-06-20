@@ -15,6 +15,15 @@
 
 = render 'form'
 
+/ Add activity
+
+/ List activities
+%ul.activities
+  - @sequence.activities.each do |activity|
+    %li
+      = link_to activity.name, activity
+      = link_to "(Remove)", sequence_remove_activity_path(@sequence, :activity_id => activity.id)
+
 = link_to 'Show', @sequence
 |
 = link_to 'Back', sequences_path

@@ -76,6 +76,30 @@ class SequencesController < ApplicationController
     end
   end
 
+  def add_activity
+    authorize! :update, @sequence
+    activity = LightweightActivity.find(params[:activity_id])
+    if @sequence.lightweight_activities << activity
+      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was successfully added.' }
+      format.json { head :no_content }
+    else
+      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was not added.' }
+      format.json { render json: @sequence.errors, status: :unprocessable_entity }
+    end
+  end
+
+  def remove_activity
+    authorize! :update, @sequence
+    activity = @sequence.lightweight_activities.find(params[:activity_id])
+    if @sequence.lightweight_activities.delete(activity)
+      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was successfully removed.' }
+      format.json { head :no_content }
+    else
+      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was not removed.' }
+      format.json { render json: @sequence.errors, status: :unprocessable_entity }
+    end
+  end
+
   # DELETE /sequences/1
   # DELETE /sequences/1.json
   def destroy

@@ -1,6 +1,11 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :sequences
+  resources :sequences do
+    member do
+      post :add_activity
+      post :remove_activity
+    end
+  end
 
   namespace :embeddable do
     resources :open_response_answers
