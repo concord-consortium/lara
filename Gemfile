@@ -24,6 +24,7 @@ gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
+gem 'exception_notification'
 
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
