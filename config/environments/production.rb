@@ -50,7 +50,7 @@ LightweightStandalone::Application.configure do
   config.assets.precompile += %w( runtime.css runtime.js respond.js)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'lightweight-mw.concord.org' }
+  config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }
 
   # Enable threaded mode
   # config.threadsafe!
@@ -66,3 +66,8 @@ LightweightStandalone::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
+
+LightweightStandalone::Application.config.middleware.use ExceptionNotifier,
+  :email_prefix => "[LARA Exception] ",
+  :sender_address => %{"notifier" <notifier@authoring.concord.org>},
+  :exception_recipients => %w{pmorse@concord.org}

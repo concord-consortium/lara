@@ -8,6 +8,17 @@ class ApplicationController < ActionController::Base
     redirect_to user_omniauth_authorize_path(:concord_portal), :alert => exception.message
   end
 
+  ### Log some data for 404s
+  # This should be temporary, as debugging for an issue where links to an activity return 404 errors for
+  # some people but not others.
+  rescue_from ActiveRecord::RecordNotFound, :with => :not_found
+    
+  def not_found(exception)
+    ExceptionNotifier::Notifier.exception_notification(request.env, exception,
+      :data => {:message => "raised a Not Found exception"}).deliver
+    redirect_to root, :alert => exception.message
+  end
+
   # For modal edit windows. Source: https://gist.github.com/1456815
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
