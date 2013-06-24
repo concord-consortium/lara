@@ -9,7 +9,7 @@ class Sequence < ActiveRecord::Base
 
   def time_to_complete
     time = 0
-    lightweight_activities.map { |a| time = time + a.time_to_complete }
+    lightweight_activities.map { |a| time = time + (a.time_to_complete ? a.time_to_complete : 0) }
     time
   end
 
