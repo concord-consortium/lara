@@ -38,7 +38,8 @@ describe SequencesController do
       activity
       get :new, {}
       assigns(:sequence).should be_a_new(Sequence)
-      assigns(:activities).should eq([activity])
+      # User is an admin, so we should see all activities
+      assigns(:activities).should eq(LightweightActivity.all)
     end
   end
 
@@ -47,7 +48,8 @@ describe SequencesController do
       activity
       get :edit, {:id => sequence.to_param}
       assigns(:sequence).should eq(sequence)
-      assigns(:activities).should eq([activity])
+      # User is an admin, so we should see all activities
+      assigns(:activities).should eq(LightweightActivity.all)
     end
   end
 
@@ -125,6 +127,34 @@ describe SequencesController do
         put :update, {:id => sequence.to_param, :sequence => {}}
         response.should render_template("edit")
       end
+    end
+  end
+
+  describe 'POST add_activity' do
+    it 'adds a designated activity to the sequence' do
+      sequence.activities.length.should be(0)
+      post :add_activity, { :id => sequence.to_param, :activity_id => activity.id }
+      sequence.reload.activities.length.should be(1)
+      sequence.activities.first.should == activity
+    end
+
+    it "redirects to that sequence's edit page" do
+      post :add_activity, { :id => sequence.to_param, :activity_id => activity.id }
+      response.should redirect_to edit_sequence_path(sequence)
+    end
+  end
+
+  describe 'POST remove_activity' do
+    it 'removes the designated activity from the sequence' do
+      sequence.lightweight_activities << activity
+      sequence.activities.length.should be(1)
+      post :remove_activity, { :id => sequence.to_param, :activity_id => activity.id }
+      sequence.reload.activities.length.should be(0)
+    end
+
+    it "redirects to that sequence's edit page" do
+      post :remove_activity, { :id => sequence.to_param, :activity_id => activity.id }
+      response.should redirect_to edit_sequence_path(sequence)
     end
   end
 

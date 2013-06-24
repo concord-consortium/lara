@@ -15,19 +15,18 @@
 
 = render 'form'
 
-/ Add activity
-= form_tag add_activity_sequence_path(@sequence) do
-  = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name)
-  = submit_tag "Add"
+- if @activities
+  = form_tag add_activity_sequence_path(@sequence) do
+    = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name)
+    = submit_tag "Add"
 
-/ List activities
-%ul.activities
-  - @sequence.activities.each do |activity|
-    %li
-      = link_to activity.name, activity_path(activity)
-      = form_tag remove_activity_sequence_path(@sequence) do
-        = hidden_field_tag :activity_id, activity.id
-        = submit_tag "Remove"
+  %ul.activities
+    - @sequence.activities.each do |activity|
+      %li
+        = link_to activity.name, activity_path(activity)
+        = form_tag remove_activity_sequence_path(@sequence) do
+          = hidden_field_tag :activity_id, activity.id
+          = submit_tag "Remove"
 
 = link_to 'Show', @sequence
 |
