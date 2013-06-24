@@ -221,7 +221,7 @@ button.disabled span.edit_trigger.disabled {
 .full .title h2 {
   margin: 20px 0 0;
 }
-.instructions h2, .model-instructions h2 {
+.instructions h2, .model-instructions h2, h2.activity-list {
   color: #75a643 !important;
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
@@ -931,6 +931,11 @@ body.admin.edit {
       img {
         width: 100%;
       }
+    }
+    li.drag_handle {
+      padding: 5px;
+      cursor: move;
+      padding-top: 0;
     }
   }
 }

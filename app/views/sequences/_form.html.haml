@@ -16,6 +16,6 @@
   .field
     = f.label :description
     %br
-    = f.text_area :description, { :class => 'wysiwyg-text' }
+    = f.text_area :description, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }
   .actions
     = f.submit
