@@ -1,6 +1,6 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :sequences do
+  resources :sequences, :constraints => { :id => /\d+/ } do
     member do
       post :add_activity
       post :remove_activity
