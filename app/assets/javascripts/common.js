@@ -43,4 +43,23 @@ $(document).ready(function () {
             });
         }
     });
+
+    // WYSIWYG editing, if that's needed
+    $('.wysiwyg-text').wysiwyg({
+        "controls": {
+            "html": {
+                "visible": true
+            },
+            "h1": {
+                "visible": false
+            },
+            "h2": {
+                "visible": false
+            },
+            "h3": {
+                "visible": false
+            }
+        }
+    });
+
 });
