@@ -66,8 +66,3 @@ LightweightStandalone::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 end
-
-LightweightStandalone::Application.config.middleware.use ExceptionNotifier,
-  :email_prefix => "[LARA Exception] ",
-  :sender_address => %{"notifier" <pmorse+laranotifier@concord.org>},
-  :exception_recipients => %w{pmorse@concord.org}
