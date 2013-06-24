@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   def not_found(exception)
     ExceptionNotifier::Notifier.exception_notification(request.env, exception,
       :data => {:message => "raised a Not Found exception"}).deliver
-    redirect_to root, :alert => exception.message
+    redirect_to root_url, :alert => exception.message
   end
 
   # For modal edit windows. Source: https://gist.github.com/1456815
