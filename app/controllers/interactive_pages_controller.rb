@@ -64,7 +64,7 @@ class InteractivePagesController < ApplicationController
             # *** repond with the old value ***
             render :text => @page[params[:interactive_page].keys.first]
           else
-            flash[warning] = "There was a problem updating Page #{@page.name}."
+            flash[:warning] = "There was a problem updating Page #{@page.name}."
             redirect_to edit_activity_page_path(@activity, @page)
           end
         end

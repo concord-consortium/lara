@@ -296,15 +296,13 @@ describe InteractivePagesController do
         response.should redirect_to(edit_activity_page_path(act, page1))
       end
 
-      # it 'redirects to the edit page with a message if there is an error' do
-      #   pending "Without validations, it's hard to feed this invalid data"
-      # 
-      #   # This actually generates an exception and a 500 error, not a failed update
-      #   post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This page now has sidebar text.' }}
-      # 
-      #   flash[:warning].should == "There was a problem updating Page #{page1.name}."
-      #   response.should redirect_to(edit_activity_page_path(act, page1))
-      # end
+      it 'redirects to the edit page with a message if there is an error' do
+        InteractivePage.any_instance.stub(:save).and_return(false)
+        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+
+        flash[:warning].should == "There was a problem updating Page #{page1.name}."
+        response.should redirect_to(edit_activity_page_path(act, page1))
+      end
     end
 
     describe 'destroy' do
