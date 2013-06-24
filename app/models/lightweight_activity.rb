@@ -25,6 +25,15 @@ class LightweightActivity < ActiveRecord::Base
     where(:user_id => user.id)
   end
 
+  # * Find all activities visible (readable) to the given user
+  def self.can_see(user)
+    if user.is_admin?
+      return LightweightActivity.all
+    else
+      return LightweightActivity.public + LightweightActivity.my(user)
+    end
+  end
+
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []

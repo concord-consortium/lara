@@ -27,7 +27,7 @@ class SequencesController < ApplicationController
   def new
     @sequence = Sequence.new(:user_id => current_user.id)
     authorize! :create, @sequence
-    @activities = LightweightActivity.public + LightweightActivity.my(current_user)
+    @activities = LightweightActivity.can_see(current_user)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,7 +38,7 @@ class SequencesController < ApplicationController
   # GET /sequences/1/edit
   def edit
     authorize! :update, @sequence
-    @activities = LightweightActivity.public + LightweightActivity.my(current_user)
+    @activities = LightweightActivity.can_see(current_user)
   end
 
   # POST /sequences
