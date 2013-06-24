@@ -79,24 +79,29 @@ class SequencesController < ApplicationController
   def add_activity
     authorize! :update, @sequence
     activity = LightweightActivity.find(params[:activity_id])
-    if @sequence.lightweight_activities << activity
-      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was successfully added.' }
-      format.json { head :no_content }
-    else
-      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was not added.' }
-      format.json { render json: @sequence.errors, status: :unprocessable_entity }
+    respond_to do |format|
+      if @sequence.lightweight_activities << activity
+        # binding.pry
+        format.html { redirect_to edit_sequence_url(@sequence) }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to edit_sequence_url(@sequence), notice: 'Activity was not added.' }
+        format.json { render json: @sequence.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def remove_activity
     authorize! :update, @sequence
-    activity = @sequence.lightweight_activities.find(params[:activity_id])
-    if @sequence.lightweight_activities.delete(activity)
-      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was successfully removed.' }
-      format.json { head :no_content }
-    else
-      format.html { redirect_to sequence_edit_path(@sequence), notice: 'Activity was not removed.' }
-      format.json { render json: @sequence.errors, status: :unprocessable_entity }
+    activity = LightweightActivity.find(params[:activity_id])
+    respond_to do |format|
+      if @sequence.lightweight_activities.delete(activity)
+        format.html { redirect_to edit_sequence_url(@sequence), notice: 'Activity was successfully removed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to edit_sequence_url(@sequence), notice: 'Activity was not removed.' }
+        format.json { render json: @sequence.errors, status: :unprocessable_entity }
+      end
     end
   end
 
