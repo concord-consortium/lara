@@ -6,6 +6,16 @@ LightweightStandalone::Application.routes.draw do
 
   root :to => 'home#home'
 
+  namespace :embeddable do
+    resources :image_question_answers
+  end
+
+
+  namespace :embeddable do
+    resources :image_questions
+  end
+
+
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do
       post :add_activity

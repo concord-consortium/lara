@@ -1,5 +1,6 @@
 class LightweightActivity < ActiveRecord::Base
-  PUB_STATUSES = %w(draft private public archive)
+  PUB_STATUSES   = %w(draft private public archive)
+  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
 
   attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
     :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
@@ -41,7 +42,7 @@ class LightweightActivity < ActiveRecord::Base
     q = []
     pages.each do |p|
       p.embeddables.each do |e|
-        if e.class == Embeddable::MultipleChoice || e.class == Embeddable::OpenResponse
+        if QUESTION_TYPES.include? e.class
           q << e
         end
       end

@@ -13,6 +13,24 @@
 
 ActiveRecord::Schema.define(:version => 20130709144032) do
 
+  create_table "embeddable_image_question_answers", :force => true do |t|
+    t.integer  "run_id"
+    t.text     "answer_text"
+    t.string   "image_url"
+    t.integer  "image_question_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
+
+  create_table "embeddable_image_questions", :force => true do |t|
+    t.string   "name"
+    t.text     "prompt"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
     t.integer  "multiple_choice_id"
