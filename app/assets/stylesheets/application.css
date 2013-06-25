@@ -10,7 +10,7 @@
  *
  *= require_self
  *= require jquery.wysiwyg
- *= require jquery-ui
+ *= require jquery.ui.all
  *= // require_tree .
  *= require style
  *= require modal

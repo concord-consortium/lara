@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem "jquery-rails", "~> 2.1.3"
-gem "haml", "~> 3.1.4"
-gem "dynamic_form", "~> 1.1.4"
+gem "jquery-rails"
+gem 'jquery-ui-rails'
+gem "haml"
+gem "dynamic_form"
 gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiwyg-rails.git"
 # gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
 gem 'acts_as_list'
@@ -32,14 +33,14 @@ gem "sqlite3"
 
 group :production do
   gem 'mysql2'
-  gem 'therubyracer',         "~>0.10.2"
+  gem 'therubyracer'
 end
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'compass-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
