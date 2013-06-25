@@ -1,5 +1,7 @@
 LightweightStandalone::Application.routes.draw do
 
+  root :to => 'home#home'
+
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do
       post :add_activity
@@ -18,8 +20,6 @@ LightweightStandalone::Application.routes.draw do
   end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-
-  root :to => 'lightweight_activities#index'
 
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do

@@ -1,0 +1,19 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Lightweight Activities Runtime and Authoring
+
+-if @activities
+  #activity_listing_head
+    %h1 Activities:
+  %ul.quiet_list.activities
+    - @activities.each do |activity|
+      =render :partial => "lightweight_activities/index_item", :locals => {:activity => activity}
+
+-if @sequences
+  #sequence_listing_head
+    %h1 Sequences:
+  %ul.quiet_list.sequences
+    - @sequences.each do |sequence|
+      =render :partial => "sequences/index_item", :locals => {:sequence => sequence}
