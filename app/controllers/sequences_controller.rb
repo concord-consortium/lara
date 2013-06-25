@@ -105,6 +105,25 @@ class SequencesController < ApplicationController
     end
   end
 
+  def reorder_activities
+    authorize! :update, @sequence
+    params[:item_lightweight_activities_sequence].each do |a|
+      # Format: item_lightweight_activities_sequence[]=1&item_lightweight_activities_sequence[]=3
+      activity = @sequence.lightweight_activities_sequences.find(a)
+      # If we move everything to the bottom in order, the first one should be at the top
+      activity.move_to_bottom
+    end
+    # Respond with 200
+    if request.xhr?
+      respond_to do |format|
+        format.js { render :nothing => true }
+        format.html { render :nothing => true }
+      end
+    else
+      redirect_to edit_sequence_path(@sequence)
+    end
+  end
+
   # DELETE /sequences/1
   # DELETE /sequences/1.json
   def destroy

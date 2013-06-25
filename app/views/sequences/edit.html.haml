@@ -25,8 +25,9 @@
     #activities
       %h2 Activities in sequence
       %ul#sort-activities.ui-sortable
-        - @sequence.activities.each do |activity|
-          %li{ :id => dom_id_for(activity, :item), :class => 'item' }
+        - @sequence.lightweight_activities_sequences.each do |las|
+          - activity = las.lightweight_activity
+          %li{ :id => dom_id_for(las, :item), :class => 'item' }
             = truncate(activity.name, :length => 20, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_path(activity)

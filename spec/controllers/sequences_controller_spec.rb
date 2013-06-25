@@ -158,6 +158,35 @@ describe SequencesController do
     end
   end
 
+  describe 'GET reorder_activities' do
+    let (:a1) { stub_model(LightweightActivity, :id => 1001, :name => 'Activity One')}
+    let (:a2) { stub_model(LightweightActivity, :id => 1002, :name => 'Activity Two')}
+
+    before (:each) do
+      unless sequence.lightweight_activities.length > 1
+        sequence.lightweight_activities << [a1, a2]
+      end
+    end
+
+    it 'rearranges activity pages to match order in request' do
+      # Format: item_lightweight_activity[]=1&item_lightweight_activity[]=3&item_lightweight_activity[]=11&item_lightweight_activity[]=12&item_lightweight_activity[]=13&item_lightweight_activity[]=21&item_lightweight_activity[]=20&item_lightweight_activity[]=2
+      first_join = sequence.lightweight_activities_sequences.first
+      get :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
+      first_join.reload.position.should be(2)
+    end
+
+    it 'redirects to the sequence edit page if request is html' do
+      get :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
+      response.should redirect_to edit_sequence_path(sequence)
+    end
+
+    it 'returns nothing to xhr requests', :slow => true do
+      pending "This takes forever and isn't terribly important"
+      xhr :get, :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
+      response.should == ''
+    end
+  end
+
   describe "DELETE destroy" do
     it "destroys the requested sequence" do
       sequence = Sequence.create! valid_attributes

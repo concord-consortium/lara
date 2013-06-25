@@ -4,6 +4,7 @@ LightweightStandalone::Application.routes.draw do
     member do
       post :add_activity
       post :remove_activity
+      get :reorder_activities
     end
   end
 
