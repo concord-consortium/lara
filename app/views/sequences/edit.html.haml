@@ -21,24 +21,25 @@
   = link_to 'Back', sequences_path
 
 #rightcol
-  %h2.activity-list Activities
-
   #menu
-    - if @activities
-      = form_tag add_activity_sequence_path(@sequence) do
-        = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name)
-        = submit_tag "Add"
-
     #activities
+      %h2 Activities in sequence
       %ul#sort-activities.ui-sortable
         - @sequence.activities.each do |activity|
           %li{ :id => dom_id_for(activity, :item), :class => 'item' }
-            = link_to truncate(activity.name, :length => 40, :omission => "…"), activity_path(activity)
+            = truncate(activity.name, :length => 20, :omission => "…")
             %ul.menu
+              %li.edit= link_to "Edit", edit_activity_path(activity)
+              %li.run= link_to "Run", activity_path(activity)
               %li.delete
                 = form_tag remove_activity_sequence_path(@sequence) do
                   = hidden_field_tag :activity_id, activity.id
                   = submit_tag "Remove"
               %li.drag_handle
                 &nbsp;
+      - if @activities
+        = form_tag add_activity_sequence_path(@sequence) do
+          = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name)
+          = submit_tag "Add"
+
 
