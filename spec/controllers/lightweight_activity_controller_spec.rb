@@ -232,6 +232,7 @@ describe LightweightActivitiesController do
 
     describe 'move_up' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
@@ -278,6 +279,7 @@ describe LightweightActivitiesController do
 
     describe 'move_down' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
@@ -324,6 +326,7 @@ describe LightweightActivitiesController do
 
     describe 'reorder_pages' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
