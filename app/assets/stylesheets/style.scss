@@ -897,8 +897,18 @@ body.admin.edit {
   padding: 10px 10px 10px 40px;
 }
 
-#activities ul.menu .delete form {
+#activities ul.menu li.delete form {
   display: inline;
+  input[type="submit"] {
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+    background-size: 16px;
+    color: #333;
+    height: 16px;
+    padding-left: 18px;
+  }
 }
 
 .activities {
