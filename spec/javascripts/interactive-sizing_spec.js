@@ -9,7 +9,7 @@ describe('InteractiveObject', function () {
     describe('when the interactive is a video', function () {
         beforeEach(function () {
             loadFixtures('interactive-sizing-video.html');
-            interactive = new InteractiveObject($('video[data-aspect_ratio]'));
+            interactive = new InteractiveObject($('video[data-aspect-ratio]'));
         });
 
         // Attributes
@@ -40,7 +40,7 @@ describe('InteractiveObject', function () {
         // set of specs breaks, try upgrading PhantomJS.
         beforeEach(function () {
             loadFixtures('interactive-sizing-iframe.html');
-            interactive = new InteractiveObject($('iframe[data-aspect_ratio]'));
+            interactive = new InteractiveObject($('iframe[data-aspect-ratio]'));
         });
 
         // Attributes

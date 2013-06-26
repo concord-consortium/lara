@@ -6,7 +6,7 @@ var interactive;
 // Object to handle sizing of interactive object
 var InteractiveObject = function (element) {
     this.element = element;
-    this.aspectRatio = this.element.data('aspect_ratio');
+    this.aspectRatio = this.element.data('aspect-ratio');
     this.currWidth = $('.interactive-mod').width();
     this.targetHeight = this.currWidth/this.aspectRatio;
 };
@@ -19,6 +19,6 @@ InteractiveObject.prototype.fixSize = function () {
 
 // Setup
 $(document).ready(function () {
-    interactive = new InteractiveObject($('[data-aspect_ratio]'));
+    interactive = new InteractiveObject($('[data-aspect-ratio]'));
     interactive.fixSize();
 });
