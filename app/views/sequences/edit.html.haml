@@ -30,7 +30,7 @@
           %li{ :id => dom_id_for(las, :item), :class => 'item' }
             = truncate(activity.name, :length => 20, :omission => "…")
             %ul.menu
-              %li.edit= link_to "Edit", edit_activity_path(activity)
+              %li.edit= link_to "Edit", edit_activity_path(activity) if can? :update, activity
               %li.run= link_to "Run", activity_path(activity)
               %li.delete
                 = form_tag remove_activity_sequence_path(@sequence) do
