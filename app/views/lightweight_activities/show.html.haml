@@ -58,5 +58,6 @@
       %li
         = link_to page.name, activity_page_path(@activity, page)
 
-  .submit
-    %input.button{ :type => "submit", :value => "Begin activity" }
+  %a{ :href => activity_page_path(@activity, @activity.pages.first) }
+    .submit
+      %input.button{ :type => "submit", :value => "Begin activity" }
