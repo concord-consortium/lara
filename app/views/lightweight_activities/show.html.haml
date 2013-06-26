@@ -47,6 +47,10 @@
 .intro-mod.index-mod
   .intro-txt
     = @activity.description.html_safe
+  - if @activity.time_to_complete
+    .estimated-txt
+      Estimated Time to Complete This Activity:
+      = "#{@activity.time_to_complete} minutes"
   %ol
     -# %h4.index-list-header
       =# Subgroups inside activities
