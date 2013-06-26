@@ -10,6 +10,8 @@
   %ul.quiet_list.activities
     - @activities.each do |activity|
       =render :partial => "lightweight_activities/index_item", :locals => {:activity => activity}
+  .activities-link
+    = link_to "See all activities", activities_path
 
 -if @sequences
   #sequence_listing_head
@@ -17,3 +19,5 @@
   %ul.quiet_list.sequences
     - @sequences.each do |sequence|
       =render :partial => "sequences/index_item", :locals => {:sequence => sequence}
+  .sequences-link
+    = link_to "See all sequences", sequences_path
