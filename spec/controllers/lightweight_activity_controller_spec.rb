@@ -42,7 +42,7 @@ describe LightweightActivitiesController do
       get :show, :id => act.id
       key = assigns[:session_key]
       key.should_not be_nil
-      response.should redirect_to page_with_response_path(act, page,key)
+      response.should be_success
     end
 
     describe "when called from the portal" do
