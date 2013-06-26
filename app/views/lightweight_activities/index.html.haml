@@ -6,8 +6,8 @@
 = content_for :nav do
   .breadcrumbs
     %ul
-      %li
-        All Activities
+      %li= link_to "Home", root_path
+      %li \/ All Activities
 
 .action_menu#activity-actions
   .action_menu_header

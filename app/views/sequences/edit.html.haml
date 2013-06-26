@@ -6,7 +6,10 @@
 = content_for :nav do
   .breadcrumbs
     %ul
-      %li= link_to 'All Sequences', sequences_path
+      %li= link_to "Home", root_path
+      %li
+        \/
+        = link_to 'All Sequences', sequences_path
       %li
         != "/ #{@sequence.title}"
 

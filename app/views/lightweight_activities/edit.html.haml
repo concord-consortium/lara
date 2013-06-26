@@ -6,7 +6,10 @@
 = content_for :nav do
   .breadcrumbs
     %ul
-      %li= link_to 'All Activities', activities_path
+      %li= link_to "Home", root_path
+      %li
+        \/
+        = link_to 'All Activities', activities_path
       %li= "/ #{@activity.name}".html_safe
 
 %h1.title Edit activity
