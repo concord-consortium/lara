@@ -45,6 +45,11 @@ describe InteractivePagesController do
       end
     end
 
+    it 'assigns a run key' do
+      get :show, :id => page1.id, :response_key => ar.key
+      assigns(:run).should_not be_nil
+    end
+
     it 'renders the page if it exists' do
 
       # Add embeddables
