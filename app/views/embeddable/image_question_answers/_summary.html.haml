@@ -1,0 +1,9 @@
+.number
+  %p="#{answer.question_index}."
+.prompt
+  != answer.prompt
+.answer
+  - if !answer.answer_text.blank?
+    = answer.answer_text
+  - else
+    %p! &nbsp;

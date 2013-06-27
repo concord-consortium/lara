@@ -17,6 +17,8 @@ module Embeddable
       case question
       when Embeddable::OpenResponse
         return Embeddable::OpenResponseAnswer
+      when Embeddable::ImageQuestion
+        return Embeddable::ImageQuestionAnswer
       when Embeddable::MultipleChoice
         return Embeddable::MultipleChoiceAnswer
       end
