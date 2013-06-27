@@ -6,6 +6,7 @@ describe LightweightActivitiesController do
   let (:act) { FactoryGirl.create(:public_activity) }
   let (:private_act) { FactoryGirl.create(:activity)}
   let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
+  let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
 
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
@@ -34,21 +35,24 @@ describe LightweightActivitiesController do
       end
     end
 
-    it 'renders the activity if it exists and is public' do
-      # setup
-      page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+    it 'assigns a run key' do
+      page
+      get :show, :id => act.id
+      assigns(:run).should_not be_nil
+    end
 
-      # get the rendering
+    it 'renders the activity if it exists and is public' do
+      page
       get :show, :id => act.id
       key = assigns[:session_key]
       key.should_not be_nil
-      response.should redirect_to page_with_response_path(act, page,key)
+      response.should be_success
     end
 
     describe "when called from the portal" do
       it "should force a new user session" do
         controller.should_receive(:sign_out).and_return(:true)
-        page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
+        page
         get :show, :id => act.id, :domain => "foo", :externalId => "bar"
         response.should redirect_to user_omniauth_authorize_path(:concord_portal)
       end
@@ -232,6 +236,7 @@ describe LightweightActivitiesController do
 
     describe 'move_up' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
@@ -278,6 +283,7 @@ describe LightweightActivitiesController do
 
     describe 'move_down' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
@@ -324,6 +330,7 @@ describe LightweightActivitiesController do
 
     describe 'reorder_pages' do
       before do
+        # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end

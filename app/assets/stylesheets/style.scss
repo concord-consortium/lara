@@ -221,7 +221,7 @@ button.disabled span.edit_trigger.disabled {
 .full .title h2 {
   margin: 20px 0 0;
 }
-.instructions h2, .model-instructions h2 {
+.instructions h2, .model-instructions h2, h2.activity-list {
   color: #75a643 !important;
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
@@ -533,7 +533,7 @@ form.edit_lightweight_activity {
     }
   }
 }
-#pages {
+#pages, #activities {
 	background: #c9e9e6;
 	padding: 15px;
 	-moz-border-radius: 8px;
@@ -634,10 +634,21 @@ div.wysiwyg ul.toolbar {
   height: inherit;
   margin: 0;
 }
+
+/* Summary page */
 .prompt {
   font-weight: bold;
-  margin: 5px;
+  margin: 5px 5px 5px 0;
 }
+.number {
+  float: left;
+  font-weight: bold;
+  margin: 5px 5px 5px 0;
+}
+.answer {
+  clear: left;
+}
+
 div.block-empty {
   border: 1px solid #ffcccc;
   min-height: 2em;
@@ -770,6 +781,12 @@ fieldset {
       border-radius: 0;
     }
   }
+  /* Interactives block */
+  div.other {
+    form.interactives-form {
+      margin-top: 8px;
+    }
+  }
   div.sidebar {
     background: 0;
     border-radius: 0;
@@ -865,6 +882,81 @@ body.admin.edit {
     }
   }
 }
+
+/* Sequences */
+.description {
+  margin: 10px 0;
+}
+
+.estimated-time {
+  margin: 10px 0;
+  background-color: #ddd;
+  background-image: url(/assets/icons/clock.svg); /* Add a clock background image, anchored left */
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  padding: 10px 10px 10px 40px;
+}
+
+#activities ul.menu li.delete form {
+  display: inline;
+  input[type="submit"] {
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+    background-size: 16px;
+    color: #333;
+    height: 16px;
+    padding-left: 18px;
+  }
+}
+
+.activities {
+  .activity {
+    border: 1px solid #000;
+    width: 300px;
+    min-height: 300px;
+    overflow: hidden;
+    float: left;
+    margin-right: 18px;
+    .position {
+      color: #fff;
+      font-weight: bold;
+      background-color: #000;
+      font-size: 3em;
+      height: 50px;
+      width: 50px;
+      text-align: center;
+      float: left;
+    }
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+      float: left;
+      width: 240px;
+      margin: 4px;
+      text-align: center;
+    }
+    .thumbnail {
+      clear: left;
+      width: 300px;
+      border-top: 5px solid #000;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+.activities-link, .sequences-link {
+  text-align: right;
+  margin: 0 0 15px 0;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-bottom: #ddd dashed 1px;
+}
+
 @media print {
     #footer, #header, nav, #session, button.print {
         display: none;

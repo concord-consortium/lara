@@ -1,0 +1,27 @@
+= content_for :title do
+  = @sequence.title
+
+%p#notice= notice
+
+%h1.title= @sequence.title
+
+.description
+  = @sequence.description.html_safe
+
+.estimated-time
+  Estimated Time to Complete This Module:
+  = @sequence.time_to_complete
+  minutes
+
+.activities
+  - @sequence.lightweight_activities_sequences.each do |las|
+    - activity = las.lightweight_activity
+    .activity
+      .position
+        = las.position.to_s
+      .title
+        = link_to activity.name, activity_path(activity)
+      .thumbnail
+        = link_to image_tag(activity.thumbnail_url), activity_path(activity) unless activity.thumbnail_url.blank?
+
+= link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence

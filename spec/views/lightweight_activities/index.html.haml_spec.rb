@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 def have_community_listing_section
   have_css "#community_listing_heading"
 end
@@ -52,7 +51,7 @@ describe "lightweight_activities/index" do
     assign(:activities, activities)
   end
 
-  describe "with official ativities" do
+  describe "with official activities" do
     let(:activities){ 5.times.map{ official_activity() } }
 
     it "should not have a community section" do
@@ -100,6 +99,17 @@ describe "lightweight_activities/index" do
       rendered.should have_official_listing_section
       rendered.should have_official_listing_count(5)
     end
+  end
+
+  it 'provides a link to create a new Lightweight Activity on the index page', :slow => true do
+    render
+    rendered.should match /<a[^>]+href="\/activities\/new"[^>]*>/
+  end
+
+  it 'provides a list of authored Lightweight Activities with edit and run links on the index page', :slow => true do
+    render
+    rendered.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
+    rendered.body.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
   end
 
 end

@@ -7,12 +7,22 @@ describe User do
     subject  { ability }
     let (:ability) { Ability.new(user) }
     let (:user) { nil }
+    let (:locked_activity) do
+      la = FactoryGirl.create(:locked_activity)
+      la.pages << FactoryGirl.create(:page)
+      la.user = FactoryGirl.create(:admin)
+      la.save
+      la
+    end
+
     context 'when is an administrator' do
       let (:user) { FactoryGirl.build(:admin) }
 
       it { should be_able_to(:manage, User) }
+      it { should be_able_to(:manage, Sequence) }
       it { should be_able_to(:manage, LightweightActivity) }
       it { should be_able_to(:manage, InteractivePage) }
+      it { should be_able_to(:manage, locked_activity) }
     end
 
     context 'when is an author' do
@@ -31,14 +41,24 @@ describe User do
         oa.save
         oa
       end
+      let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
+      let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
 
+      it { should be_able_to(:create, Sequence) }
       it { should be_able_to(:create, LightweightActivity) }
       it { should be_able_to(:create, InteractivePage) }
-      # Can edit activities they own
+      # Can edit activities, etc. which they own
+      it { should be_able_to(:update, self_sequence) }
+      it { should_not be_able_to(:update, other_sequence) }
       it { should be_able_to(:update, self_activity) }
       it { should_not be_able_to(:update, other_activity) }
       it { should be_able_to(:read, other_activity) }
       it { should be_able_to(:read, other_activity.pages.first) }
+      it { should be_able_to(:duplicate, other_activity) }
+      # Can't edit locked activities
+      it { should_not be_able_to(:update, locked_activity) }
+      it { should be_able_to(:read, other_activity.pages.first) }
+      it { should_not be_able_to(:duplicate, locked_activity) }
     end
 
     context 'when is a user' do
@@ -65,6 +85,7 @@ describe User do
       it { should_not be_able_to(:manage, User) }
       it { should_not be_able_to(:update, LightweightActivity) }
       it { should_not be_able_to(:create, LightweightActivity) }
+      it { should be_able_to(:read, Sequence) }
       it { should be_able_to(:read, public_activity) }
       it { should_not be_able_to(:read, private_activity) }
     end

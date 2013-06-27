@@ -64,7 +64,7 @@ class InteractivePagesController < ApplicationController
             # *** repond with the old value ***
             render :text => @page[params[:interactive_page].keys.first]
           else
-            flash[warning] = "There was a problem updating Page #{@page.name}."
+            flash[:warning] = "There was a problem updating Page #{@page.name}."
             redirect_to edit_activity_page_path(@activity, @page)
           end
         end
@@ -82,6 +82,21 @@ class InteractivePagesController < ApplicationController
       flash[:warning] = "There was a problem deleting page #{@page.name}."
       redirect_to edit_activity_path(@activity)
     end
+  end
+
+  def add_interactive
+    authorize! :update, @page
+    update_activity_changed_by
+    i = params[:interactive_type].constantize.create!
+    @page.add_interactive(i)
+    if i.instance_of?(ImageInteractive)
+      param = { :edit_img_int => i.id }
+    elsif i.instance_of?(MwInteractive)
+      param = { :edit_mw_int => i.id }
+    elsif i.instance_of?(VideoInteractive)
+      param = { :edit_vid_int => i.id }
+    end
+    redirect_to edit_activity_page_path(@activity, @page, param)
   end
 
   def add_embeddable

@@ -7,6 +7,8 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key, :only => [:summary, :show]
 
+  layout 'upstatement', :only => [:show]
+
   def index
     if can? :manage, LightweightActivity
       @activities = LightweightActivity.all
@@ -21,7 +23,7 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     @run.increment_run_count!
 
-    redirect_to page_with_response_path(@activity, @run.last_page, @session_key)
+    @pages = @activity.pages
   end
 
   def new
@@ -80,7 +82,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def duplicate
-    authorize! :create, LightweightActivity
+    authorize! :duplicate, LightweightActivity
     @new_activity = @activity.duplicate
     # Set ownership - doing this in the instance methods isn't practical
 

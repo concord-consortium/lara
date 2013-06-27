@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   devise :omniauthable, :omniauth_providers => [:concord_portal]
 
   has_many :activities, :class_name => LightweightActivity
+  has_many :sequences
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,

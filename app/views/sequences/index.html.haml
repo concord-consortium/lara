@@ -1,0 +1,25 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Sequences
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li / All Sequences
+
+.action_menu#activity-actions
+  .action_menu_header
+    .action_menu_header_left
+    .action_menu_header_right.index
+      %ul#new-menu
+        - if can? :create, Sequence
+          %li#add= link_to 'create new sequence', new_sequence_path
+        %li#desc-toggle= toggle_all 'sequence descriptions'
+
+#official_listing_heading
+  %h1 Activity Sequences
+%ul.quiet_list.official_listing
+  - @sequences.each do |sequence|
+    = render :partial => "index_item", :locals => {:sequence => sequence}

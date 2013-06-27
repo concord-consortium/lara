@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe InteractivePagesController do
+  # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
+
   render_views
   let (:act) { FactoryGirl.create(:public_activity) }
 
@@ -17,6 +19,8 @@ describe InteractivePagesController do
   end
 
   let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
+
+  let (:interactive) { FactoryGirl.create(:mw_interactive) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -39,6 +43,11 @@ describe InteractivePagesController do
       rescue ActionController::RoutingError
       rescue ActiveRecord::RecordNotFound
       end
+    end
+
+    it 'assigns a run key' do
+      get :show, :id => page1.id, :response_key => ar.key
+      assigns(:run).should_not be_nil
     end
 
     it 'renders the page if it exists' do
@@ -65,6 +74,7 @@ describe InteractivePagesController do
       page1.add_embeddable(xhtml1)
       page1.add_embeddable(or2)
       page1.add_embeddable(mc2)
+      page1.add_interactive(interactive)
 
       # get the rendering
       get :show, :id => page1.id, :response_key => ar.key
@@ -257,9 +267,16 @@ describe InteractivePagesController do
           response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
         end
 
-        it 'shows navigation links ' do
-          page2
+        it 'has links for adding Interactives to the page' do
+          get :edit, :id => page1.id, :activity_id => act.id
+
+          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_interactive"[^<]*>/
+          response.body.should match /<select[^>]+name="interactive_type"[^>]*>/
+        end
+
+        it 'shows navigation links' do
           page1
+          page2
           get :edit, :id => page1.id, :activity_id => act.id
 
           response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
@@ -284,15 +301,13 @@ describe InteractivePagesController do
         response.should redirect_to(edit_activity_page_path(act, page1))
       end
 
-      # it 'redirects to the edit page with a message if there is an error' do
-      #   pending "Without validations, it's hard to feed this invalid data"
-      # 
-      #   # This actually generates an exception and a 500 error, not a failed update
-      #   post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This page now has sidebar text.' }}
-      # 
-      #   flash[:warning].should == "There was a problem updating Page #{page1.name}."
-      #   response.should redirect_to(edit_activity_page_path(act, page1))
-      # end
+      it 'redirects to the edit page with a message if there is an error' do
+        InteractivePage.any_instance.stub(:save).and_return(false)
+        post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+
+        flash[:warning].should == "There was a problem updating Page #{page1.name}."
+        response.should redirect_to(edit_activity_page_path(act, page1))
+      end
     end
 
     describe 'destroy' do
@@ -355,6 +370,25 @@ describe InteractivePagesController do
         page1.embeddables[2].should == xhtml1
         act.reload
         act.changed_by.should == @user
+      end
+    end
+
+    describe 'add_interactive' do
+      it 'creates an arbitrary interactive and adds it to the page' do
+        images_count = ImageInteractive.count()
+        interactives_count = page1.interactives.length
+        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
+        page1.reload
+        page1.interactives.count.should == interactives_count + 1
+        ImageInteractive.count().should == interactives_count + 1
+      end
+
+      it 'redirects to the edit page' do
+        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
+        interactive_id = page1.interactives.last.id
+        act.reload
+        act.changed_by.should == @user
+        response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
     end
 

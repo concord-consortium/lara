@@ -1,6 +1,14 @@
 LightweightStandalone::Application.routes.draw do
 
+  root :to => 'home#home'
 
+  resources :sequences, :constraints => { :id => /\d+/ } do
+    member do
+      post :add_activity
+      post :remove_activity
+      get :reorder_activities
+    end
+  end
 
   namespace :embeddable do
     resources :open_response_answers
@@ -13,8 +21,6 @@ LightweightStandalone::Application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  root :to => 'lightweight_activities#index'
-
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
@@ -26,6 +32,7 @@ LightweightStandalone::Application.routes.draw do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
+        post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
       end

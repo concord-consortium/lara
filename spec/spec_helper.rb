@@ -38,6 +38,8 @@ RSpec.configure do |config|
 
   # Include Devise helpers
   config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :view
+
   Devise.stretches = 1
   WebMock.disable_net_connect!(:allow_localhost => true)
 end

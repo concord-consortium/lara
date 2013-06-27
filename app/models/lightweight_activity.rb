@@ -1,12 +1,15 @@
 class LightweightActivity < ActiveRecord::Base
   PUB_STATUSES = %w(draft private public archive)
 
-  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description, :is_official, :time_to_complete
+  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
+    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+  has_many :lightweight_activities_sequences, :dependent => :destroy
+  has_many :sequences, :through => :lightweight_activities_sequences
 
   default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
@@ -20,6 +23,15 @@ class LightweightActivity < ActiveRecord::Base
   # * Find all activities for one user (regardless of publication status)
   def self.my(user)
     where(:user_id => user.id)
+  end
+
+  # * Find all activities visible (readable) to the given user
+  def self.can_see(user)
+    if user.is_admin?
+      return LightweightActivity.all
+    else
+      return LightweightActivity.public + LightweightActivity.my(user)
+    end
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
@@ -61,7 +73,8 @@ class LightweightActivity < ActiveRecord::Base
     {
       name: name,
       related: related,
-      description: description
+      description: description,
+      time_to_complete: time_to_complete
     }
   end
 

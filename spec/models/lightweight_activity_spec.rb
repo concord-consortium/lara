@@ -8,6 +8,7 @@ describe LightweightActivity do
   it 'should have valid attributes' do
     activity.name.should_not be_blank
     activity.publication_status.should == "private"
+    activity.is_locked.should be_false
   end
 
   it 'should not allow long names' do
@@ -120,7 +121,7 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, description: activity.description }
+      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete }
       activity.to_hash.should == expected
     end
   end
@@ -128,7 +129,7 @@ describe LightweightActivity do
   describe '#duplicate' do
     it 'creates a new LightweightActivity with attributes from the original' do
       # We won't check name here in case the generated name is long enough to trigger truncation
-      activity.duplicate.should be_a_new(LightweightActivity).with( related: activity.related, description: activity.description )
+      activity.duplicate.should be_a_new(LightweightActivity).with( related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete )
     end
 
     it 'has pages in the same order as the source activity' do
