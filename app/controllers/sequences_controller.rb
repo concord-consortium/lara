@@ -25,14 +25,8 @@ class SequencesController < ApplicationController
   # GET /sequences/new
   # GET /sequences/new.json
   def new
-    @sequence = Sequence.new(:user_id => current_user.id)
-    authorize! :create, @sequence
-    @activities = LightweightActivity.can_see(current_user)
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @sequence }
-    end
+    # Create a "blank" sequence in #create and head directly to #edit
+    create
   end
 
   # GET /sequences/1/edit
@@ -44,7 +38,7 @@ class SequencesController < ApplicationController
   # POST /sequences
   # POST /sequences.json
   def create
-    @sequence = Sequence.new(params[:sequence])
+    @sequence = Sequence.new(params[:sequence], :user_id => current_user.id)
     authorize! :create, @sequence
     if @sequence.user != current_user
       @sequence.user = current_user
@@ -52,7 +46,7 @@ class SequencesController < ApplicationController
 
     respond_to do |format|
       if @sequence.save
-        format.html { redirect_to @sequence, notice: 'Sequence was successfully created.' }
+        format.html { redirect_to edit_sequence_url(@sequence), notice: 'Sequence was successfully created.' }
         format.json { render json: @sequence, status: :created, location: @sequence }
       else
         format.html { render action: "new" }
