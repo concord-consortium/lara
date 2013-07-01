@@ -135,6 +135,8 @@ GEM
     faye-websocket (0.4.7)
       eventmachine (>= 0.12.0)
     ffi (1.9.0)
+    font-awesome-rails (3.2.1.1)
+      railties (>= 3.2, < 5.0)
     formatador (0.2.4)
     fssm (0.2.10)
     fuubar (1.1.1)
@@ -361,6 +363,7 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails
   faker
+  font-awesome-rails
   fuubar
   guard-jasmine
   guard-rspec
