@@ -74,13 +74,13 @@ describe "interactive_pages/show" do
   describe 'when the embeddable display mode is carousel and there are embeddables' do
     it 'should have a div with class jcarousel' do
       render
-      rendered.should match /div class='jcarousel/
+      rendered.should have_css('div.jcarousel')
     end
 
     it 'should have next and previous links' do
       render
-      rendered.should match /a class='jcarousel-prev/
-      rendered.should match /a class='jcarousel-next/
+      rendered.should have_css('a.jcarousel-prev')
+      rendered.should have_css('a.jcarousel-next')
     end
   end
 end

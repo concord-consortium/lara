@@ -101,15 +101,18 @@ describe "lightweight_activities/index" do
     end
   end
 
-  it 'provides a link to create a new Lightweight Activity on the index page', :slow => true do
+  it 'provides a link to create a new Lightweight Activity on the index page' do
     render
     rendered.should match /<a[^>]+href="\/activities\/new"[^>]*>/
   end
 
-  it 'provides a list of authored Lightweight Activities with edit and run links on the index page', :slow => true do
-    render
-    rendered.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
-    rendered.body.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
-  end
+  describe 'with all activities' do
+    let(:activities) { 2.times.map{ official_activity() } }
 
+    it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
+      render
+      rendered.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
+      rendered.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
+    end
+  end
 end
