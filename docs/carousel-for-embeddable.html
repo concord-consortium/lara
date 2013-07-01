@@ -1,0 +1,33 @@
+<style type="text/css" media="screen">
+.embeddable-jcarousel {
+    position: relative;
+    overflow: hidden;
+    height: 500px;
+}
+.embeddable-jcarousel ul {
+    width: 20000em;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.embeddable-jcarousel li {float: left;}
+.embeddable-jcarousel-prev {float: left;}
+.embeddable-jcarousel-next {float: right;}
+</style>
+<div class="embeddable-jcarousel">
+  <ul>
+    <li><a href="http://www.flickr.com/photos/flashesofpanic/4437785903/" title="Dhow and KDF Islamic Center by pjmorse, on Flickr"><img src="http://farm5.staticflickr.com/4043/4437785903_3ddaa1636d.jpg" width="375" height="500" alt="Dhow and KDF Islamic Center"></a></li>
+    <li><a href="http://www.flickr.com/photos/flashesofpanic/4437785233/" title="Skyline through arcade by pjmorse, on Flickr"><img src="http://farm5.staticflickr.com/4007/4437785233_452eb8c9c7.jpg" width="500" height="375" alt="Skyline through arcade"></a></li>
+    <li><a href="http://www.flickr.com/photos/flashesofpanic/4437783325/" title="Arcade fountains by pjmorse, on Flickr"><img src="http://farm3.staticflickr.com/2714/4437783325_605413e5d8.jpg" width="500" height="375" alt="Arcade fountains"></a></li>
+  </ul>
+</div>
+<a class="embeddable-jcarousel-prev" href="#">&laquo; Previous</a>
+<a class="embeddable-jcarousel-next" href="#">Next &raquo;</a>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.embeddable-jcarousel').jcarousel({});
+    $('.embeddable-jcarousel-prev').jcarouselControl({target: '-=1'});
+    $('.embeddable-jcarousel-next').jcarouselControl({target: '+=1'});
+});
+</script>
