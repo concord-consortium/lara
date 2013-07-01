@@ -34,12 +34,10 @@ describe SequencesController do
   end
 
   describe "GET new" do
-    it "assigns a new sequence as @sequence" do
-      activity
+    it "redirects to edit" do
       get :new, {}
-      assigns(:sequence).should be_a_new(Sequence)
-      # User is an admin, so we should see all activities
-      assigns(:activities).should eq(LightweightActivity.all)
+      assigns(:sequence).should be_a(Sequence)
+      response.should redirect_to(edit_sequence_url(assigns(:sequence)))
     end
   end
 
@@ -69,7 +67,7 @@ describe SequencesController do
 
       it "redirects to the created sequence" do
         post :create, {:sequence => valid_attributes}
-        response.should redirect_to(Sequence.last)
+        response.should redirect_to(edit_sequence_url(Sequence.last))
       end
     end
 
