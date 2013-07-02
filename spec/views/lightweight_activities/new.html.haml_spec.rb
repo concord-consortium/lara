@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe "lightweight_activities/new" do
 
+  let(:user)      { stub_model(User, :is_admin => false)      }
+
+  before(:each) do
+    view.stub!(:current_user).and_return(user)
+  end
+
   it 'provides a form for naming and describing a Lightweight Activity' do
     assign(:activity, mock_model(LightweightActivity))
     render

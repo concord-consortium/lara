@@ -56,6 +56,12 @@ describe "lightweight_activities/edit" do
     #   rendered.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
     # end
 
+    it 'should provide a select menu of themes' do
+      render
+      rendered.should have_css('select#lightweight_activity_theme')
+      rendered.should have_css('select#lightweight_activity_theme option')
+    end
+
     it 'should provide a link to add new pages' do
       render
       rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"/

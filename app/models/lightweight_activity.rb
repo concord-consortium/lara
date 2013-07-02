@@ -2,7 +2,7 @@ class LightweightActivity < ActiveRecord::Base
   PUB_STATUSES = %w(draft private public archive)
 
   attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url
+    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'

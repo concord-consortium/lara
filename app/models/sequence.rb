@@ -1,5 +1,5 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :user_id
+  attr_accessible :description, :title, :theme, :user_id
 
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
