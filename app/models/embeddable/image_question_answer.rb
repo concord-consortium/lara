@@ -26,6 +26,10 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
     end
   end
 
+  def has_snapshot?
+    !image_url.blank?
+  end
+
   def portal_hash
     {
       "type" => "image_question",
