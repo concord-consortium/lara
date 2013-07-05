@@ -8,5 +8,10 @@
     - if params[:edit_embed_iq].to_i == embeddable.id
       :javascript
         $("a[id^=edit-embed-iq-#{embeddable.id}]").click()
+
+
+
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
-  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
+  %button.image_question.button{:type => 'submit', :id => 'image_snapshot_button'}
+    %i.icon-camera
+    take snapshot
