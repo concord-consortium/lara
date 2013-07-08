@@ -49,4 +49,18 @@ describe ThemesController do
       response.should redirect_to(edit_theme_path(theme))
     end
   end
+
+  describe '#destroy' do
+    it 'removes the specified theme from the database' do
+      theme = Theme.create(:name => 'Born to die', :css_file => 'temporary')
+      expect {
+        delete :destroy, {:id => theme.id}
+      }.to change(Theme, :count).by(-1)
+    end
+
+    it "redirects to the themes list" do
+      delete :destroy, {:id => theme.id}
+      response.should redirect_to(themes_url)
+    end
+  end
 end

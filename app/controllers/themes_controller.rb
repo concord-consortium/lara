@@ -35,4 +35,12 @@ class ThemesController < ApplicationController
       end
     end
   end
+
+  def destroy
+    if @theme.destroy
+      redirect_to themes_url, notice: 'Theme was deleted'
+    else
+      redirect_to themes_url, notice: 'Theme was not deleted'
+    end
+  end
 end
