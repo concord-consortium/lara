@@ -21,7 +21,7 @@
     = field_set_tag 'Activity Name' do
       = f.text_field :name, :maxlength => 50
     = field_set_tag 'Theme' do
-      = f.select :theme, options_for_select(THEMES, @activity.theme), { :include_blank => true }
+      = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => true }
     - if current_user.is_admin
       = field_set_tag "Official CC Activity" do
         = f.check_box :is_official

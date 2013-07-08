@@ -16,7 +16,7 @@
   .field
     = f.label :theme
     %br
-    = f.select :theme, options_for_select(THEMES, @sequence.theme), { :include_blank => true }
+    = f.select :theme, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => true }
   .field
     = f.label :description
     %br

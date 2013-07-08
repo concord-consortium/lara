@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708135213) do
+ActiveRecord::Schema.define(:version => 20130708181917) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20130708135213) do
     t.boolean  "is_locked",          :default => false
     t.text     "notes"
     t.string   "thumbnail_url"
-    t.string   "theme"
+    t.integer  "theme_id"
   end
 
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(:version => 20130708135213) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
-    t.string   "theme"
+    t.integer  "theme_id"
   end
 
   create_table "themes", :force => true do |t|

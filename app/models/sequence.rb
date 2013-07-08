@@ -4,6 +4,7 @@ class Sequence < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
   belongs_to :user
+  belongs_to :theme
 
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 
