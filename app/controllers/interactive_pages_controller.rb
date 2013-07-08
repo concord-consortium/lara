@@ -4,7 +4,7 @@ class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
   before_filter :set_run_key, :only => [:show]
 
-  layout 'upstatement', :only => [:show]
+  layout 'runtime', :only => [:show]
 
   def show
     authorize! :read, @page

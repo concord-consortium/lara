@@ -7,7 +7,7 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key, :only => [:summary, :show]
 
-  layout 'upstatement', :only => [:show]
+  layout 'runtime', :only => [:show]
 
   def index
     if can? :manage, LightweightActivity
