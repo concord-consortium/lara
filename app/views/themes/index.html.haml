@@ -25,8 +25,10 @@
       %div.action_menu
         %div.action_menu_header_left
           = link_to theme.name, edit_theme_path(theme), :class => 'container_link'
-        %div.action_menu_header_right
+        %div.action_menu_header_right.themes
           %ul.menu
             %li.edit= link_to "Edit", edit_theme_path(theme) if can? :update, theme
             %li.delete= link_to 'Delete', theme_path(theme), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, theme
-    
+      %div.tiny
+        uses
+        = link_to stylesheet_path(theme.css_file), stylesheet_path(theme.css_file)
