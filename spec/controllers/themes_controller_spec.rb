@@ -34,13 +34,19 @@ describe ThemesController do
 
   describe '#create' do
     it 'creates a new theme with supplied attributes' do
-      pending "Write this test"
+      oldcount = Theme.count
+      put :create, :theme => { :name => 'ThemeName', :footer => 'Ipsum', :css_file => 'themename' }
+      response.should redirect_to(edit_theme_path(assigns(:theme)))
+      assigns(:theme).name.should == 'ThemeName'
+      Theme.count.should be(oldcount + 1)
     end
   end
 
   describe '#update' do
     it 'updates the specified theme with supplied attributes' do
-      pending "Write this test"
+      post :update, :id => theme.id, :theme => { :css_file => 'newcssmanifest' }
+      theme.reload.css_file.should == 'newcssmanifest'
+      response.should redirect_to(edit_theme_path(theme))
     end
   end
 end

@@ -27,7 +27,7 @@ class ThemesController < ApplicationController
   def update
     respond_to do |format|
       if @theme.update_attributes(params[:theme])
-        format.html { redirect_to @theme, notice: 'Theme was successfully updated.' }
+        format.html { redirect_to edit_theme_url(@theme), notice: 'Theme was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
