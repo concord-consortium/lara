@@ -8,10 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ * This is the stylesheet for the AUTHORING section of the site
+ *
  *= require_self
  *= require jquery.wysiwyg
  *= require jquery.ui.all
- *= // require_tree .
  *= require style
  *= require modal
  */

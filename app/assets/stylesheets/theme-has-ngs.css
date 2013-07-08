@@ -11,7 +11,7 @@
  * This is a theme stylesheet manifest for the RUNTIME section of the site
  *
  *= require_self
- *= require mw-styles
+ *= require has-styles
  *= require modal
  *= require modal-dialog
  *= require jcarousel
