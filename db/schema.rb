@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702200251) do
+ActiveRecord::Schema.define(:version => 20130708135213) do
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -174,6 +174,14 @@ ActiveRecord::Schema.define(:version => 20130702200251) do
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
     t.string   "theme"
+  end
+
+  create_table "themes", :force => true do |t|
+    t.string   "name"
+    t.text     "footer"
+    t.string   "css_file"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

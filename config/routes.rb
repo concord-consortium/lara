@@ -1,5 +1,7 @@
 LightweightStandalone::Application.routes.draw do
 
+  resources :themes
+
   root :to => 'home#home'
 
   resources :sequences, :constraints => { :id => /\d+/ } do
