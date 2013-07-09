@@ -16,6 +16,8 @@ class SequencesController < ApplicationController
   # GET /sequences/1.json
   def show
     authorize! :read, @sequence
+    current_theme
+    current_project
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @sequence }

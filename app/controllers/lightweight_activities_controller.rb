@@ -21,6 +21,8 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
+    current_theme
+    current_project
     @run.increment_run_count!
 
     @pages = @activity.pages
@@ -134,6 +136,8 @@ class LightweightActivitiesController < ApplicationController
 
   def summary
     authorize! :read, @activity
+    current_theme
+    current_project
     if !params[:response_key]
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end

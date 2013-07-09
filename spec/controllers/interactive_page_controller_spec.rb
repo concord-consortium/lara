@@ -50,6 +50,12 @@ describe InteractivePagesController do
       assigns(:run).should_not be_nil
     end
 
+    it 'assigns a project and theme' do
+      get :show, :id => page1.id, :response_key => ar.key
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
+    end
+
     it 'renders the page if it exists' do
 
       # Add embeddables

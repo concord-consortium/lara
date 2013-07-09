@@ -31,6 +31,12 @@ describe SequencesController do
       get :show, {:id => sequence.to_param}
       assigns(:sequence).should eq(sequence)
     end
+
+    it 'assigns a project and a theme' do
+      get :show, {:id => sequence.to_param}
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
+    end
   end
 
   describe "GET new" do

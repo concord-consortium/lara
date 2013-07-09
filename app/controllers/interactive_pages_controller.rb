@@ -8,6 +8,8 @@ class InteractivePagesController < ApplicationController
 
   def show
     authorize! :read, @page
+    current_theme
+    current_project
 
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return

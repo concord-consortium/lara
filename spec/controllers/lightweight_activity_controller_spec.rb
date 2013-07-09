@@ -41,6 +41,13 @@ describe LightweightActivitiesController do
       assigns(:run).should_not be_nil
     end
 
+    it 'assigns a project and theme' do
+      page
+      get :show, :id => act.id
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
+    end
+
     it 'renders the activity if it exists and is public' do
       page
       get :show, :id => act.id
@@ -73,6 +80,12 @@ describe LightweightActivitiesController do
         get :summary, :id => 9876548376394
       rescue ActiveRecord::RecordNotFound
       end
+    end
+
+    it 'assigns a project and theme' do
+      get :summary, :id => act.id, :response_key => ar.key
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
     end
 
     it 'renders the summary page if the activity exists and is public' do
