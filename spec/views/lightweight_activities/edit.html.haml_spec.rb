@@ -17,6 +17,8 @@ describe "lightweight_activities/edit" do
   end
 
   describe "the form" do
+    let (:user) { stub_model(User, :is_admin => true)}
+
     describe "is_official checkbox" do
       context "when the current user is an admin" do
         let (:user) { stub_model(User, :is_admin => true)}
@@ -58,8 +60,14 @@ describe "lightweight_activities/edit" do
 
     it 'should provide a select menu of themes' do
       render
-      rendered.should have_css('select#lightweight_activity_theme')
-      rendered.should have_css('select#lightweight_activity_theme option')
+      rendered.should have_css('select#lightweight_activity_theme_id')
+      rendered.should have_css('select#lightweight_activity_theme_id option')
+    end
+
+    it 'should provide a select menu of projects' do
+      render
+      rendered.should have_css('select#lightweight_activity_project_id')
+      rendered.should have_css('select#lightweight_activity_project_id option')
     end
 
     it 'should provide a link to add new pages' do

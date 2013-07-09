@@ -16,11 +16,11 @@
   .field
     = f.label :theme
     %br
-    = f.select :theme, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => true }
+    = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => true }
   .field
     = f.label :project
     %br
-    = f.select :project, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
+    = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
   .field
     = f.label :description
     %br
