@@ -7,10 +7,6 @@ describe Theme do
     theme.name.should_not be_blank
   end
 
-  it 'has footer text which may be blank' do
-    theme.respond_to?(:footer)
-  end
-
   it 'has a CSS filename' do
     theme.css_file.should_not be_blank
   end

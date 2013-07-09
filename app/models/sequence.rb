@@ -1,10 +1,11 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme, :user_id
+  attr_accessible :description, :title, :theme, :project, :user_id
 
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
   belongs_to :user
   belongs_to :theme
+  belongs_to :project
 
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 

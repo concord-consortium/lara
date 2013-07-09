@@ -1,5 +1,7 @@
 LightweightStandalone::Application.routes.draw do
 
+  resources :projects
+
   resources :themes
 
   root :to => 'home#home'

@@ -2,7 +2,7 @@ class LightweightActivity < ActiveRecord::Base
   PUB_STATUSES = %w(draft private public archive)
 
   attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme
+    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme, :project
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -11,6 +11,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   belongs_to :theme
+  belongs_to :project
 
   default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"

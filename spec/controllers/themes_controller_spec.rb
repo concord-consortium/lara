@@ -35,7 +35,7 @@ describe ThemesController do
   describe '#create' do
     it 'creates a new theme with supplied attributes' do
       oldcount = Theme.count
-      put :create, :theme => { :name => 'ThemeName', :footer => 'Ipsum', :css_file => 'themename' }
+      put :create, :theme => { :name => 'ThemeName', :css_file => 'themename' }
       response.should redirect_to(edit_theme_path(assigns(:theme)))
       assigns(:theme).name.should == 'ThemeName'
       Theme.count.should be(oldcount + 1)
