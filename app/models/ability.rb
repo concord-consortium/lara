@@ -29,6 +29,9 @@ class Ability
       # Everyone can read public activities
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
+      # Private activities can be read, too, but they're not in the lists
+      can :read, LightweightActivity, :publication_status => 'private'
+      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'private' }
     end
   end
 end
