@@ -2,16 +2,16 @@
   #session
     = render :partial => 'shared/session'
 = content_for :title do
-  = "Edit #{@theme.name}"
+  New Project
 = content_for :nav do
   .breadcrumbs
     %ul
       %li= link_to "Home", root_path
       %li 
         \/
-        = link_to 'All Themes', themes_path
-      %li= "/ Edit #{@theme.name}"
+        = link_to 'All Projects', projects_path
+      %li / New Project
 
-%h1.title= "Edit #{@theme.name}"
+%h1.title New Project
 
 =render :partial => 'form'
