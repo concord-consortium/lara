@@ -18,6 +18,10 @@
     %br
     = f.select :theme, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => true }
   .field
+    = f.label :project
+    %br
+    = f.select :project, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
+  .field
     = f.label :description
     %br
     = f.text_area :description, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }

@@ -58,8 +58,8 @@ describe "lightweight_activities/edit" do
 
     it 'should provide a select menu of themes' do
       render
-      rendered.should have_css('select#lightweight_activity_theme_id')
-      rendered.should have_css('select#lightweight_activity_theme_id option')
+      rendered.should have_css('select#lightweight_activity_theme')
+      rendered.should have_css('select#lightweight_activity_theme option')
     end
 
     it 'should provide a link to add new pages' do
