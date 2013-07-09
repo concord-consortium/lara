@@ -87,7 +87,7 @@ describe User do
       it { should_not be_able_to(:create, LightweightActivity) }
       it { should be_able_to(:read, Sequence) }
       it { should be_able_to(:read, public_activity) }
-      it { should_not be_able_to(:read, private_activity) }
+      it { should be_able_to(:read, private_activity) } # But it won't be in lists
     end
   end
 
