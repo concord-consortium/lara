@@ -17,7 +17,11 @@
 
 	<!-- Stylesheets -->
   <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css' %>
-  <%= stylesheet_link_tag 'runtime', :media => 'all' %>
+  <%- if @theme && @theme.css_file %>
+    <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
+  <%- else -%>
+    <%= stylesheet_link_tag 'runtime', :media => 'all' %>
+  <%- end -%>
 
 	<!-- Scripts -->
 	<!--[if IE 8 ]>
@@ -45,8 +49,11 @@
 			<div class="site-logo-mod site-width">
 				<div class="site-logo logo-l">
 					<h2>
-            <!-- TODO: This is probably going to be set per-activity, so make it dynamic with a default -->
-            <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
+            <%- if @project and @project.logo -%>
+              <%= link_to image_tag(@project.logo, :alt => @project.title, :id => 'mw-logo'), @project.url, :title => @project.title %>
+            <%- else -%>
+              <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
+            <%- end -%>
 					</h2>
 				</div> <!-- end site-logo logo-l -->
 
