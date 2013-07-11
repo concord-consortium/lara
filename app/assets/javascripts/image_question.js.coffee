@@ -2,8 +2,13 @@ origin = () ->
   document.location.href.match(/(.*?\/\/.*?)\//)[1]
 
 class image_question
-  constructor: (@prompt='why do you think...' ,@answer='because ...', @image_url='')->
-    @$content         = $('#image_question_answer_form')
+  constructor: (@image_question_id="blank")->
+    @prompt="why do you think..."
+    @answer="because ..."
+    @image_url=""
+    @form_sel   = "#image_question_answer_form_#{@image_question_id}"
+    @button_sel = "#image_question_#{@image_question_id}"
+    @$content  = $(@form_sel)
 
     @$content.dialog({
       autoOpen: false,
@@ -12,22 +17,22 @@ class image_question
       modal: true
     })
 
-    @shutterbug       = new Shutterbug('iframe',null, (image_tag)=>
+    @shutterbug       = new Shutterbug("iframe", null,(image_tag)=>
       @set_image(image_tag)
-    );
-    @$answer_text     = $('#image_answer_text')
+    ,@image_question_id)
 
-    @$snapshot_button = $('#image_snapshot_button')
-    @$done_button     = $('#image_done_button')
+    @$answer_text     = $("#{@form_sel} .image_answer_text")
 
-    @$delete_button   = $('#image_delete_button')
-    @$redo_button     = $('#image_redo_button')
-    @$reset_button    = $('#image_reset_button')
-    @$cancel_button   = $('#image_cancel_button')
+    @$snapshot_button = $("#{@button_sel} .image_snapshot_button")
+    @$done_button     = $("#{@form_sel} .image_done_button")
+
+    @$delete_button   = $("#{@form_sel} .image_delete_button")
+    @$redo_button     = $("#{@form_sel} .image_redo_button")
+    @$reset_button    = $("#{@form_sel} .image_reset_button")
+    @$cancel_button   = $("#{@form_sel} .image_cancel_button")
 
     @create_hooks()
-    @current_src = $("[name='embeddable_image_question_answer[image_url]']").val()
-    window.addEventListener('message', @snapshot_updater, false)
+    @current_src = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
@@ -40,9 +45,9 @@ class image_question
 
 
     @$done_button.click =>
-      hidden = $("[name='embeddable_image_question_answer[image_url]']")
+      hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
       hidden.val(@current_src)
-      @$done_button.parents('form:first').submit()
+      @$done_button.parents("form:first").submit()
       @hide()
       @save()
 
@@ -53,11 +58,11 @@ class image_question
       @reset_image()
 
   update_display: ->
-    $('#snpashot_thumbnail').show()
-    $('#take_snapshot').html('replace snapshot')
-    $('#snpashot_thumbnail').attr('src',@current_src)
-    $('#snpashot_thumbnail').hide() unless @current_src
-    $('#take_snapshot').html('take snapshot') unless @current_src
+    $("#{@button_sel} .snapshot_thumbnail").show()
+    $("#{@button_sel} .take_snapshot").html("replace snapshot")
+    $("#{@button_sel} .snapshot_thumbnail").attr("src",@current_src)
+    $("#{@button_sel} .snapshot_thumbnail").hide() unless @current_src
+    $("#{@button_sel} .take_snapshot").html("take snapshot") unless @current_src
 
   save_failed: ->
     $("#save").html("Save failed!")
@@ -66,12 +71,12 @@ class image_question
     @saveTimer = setTimeout ->
       $("#save").html("Saved.")
       # Fade out.
-      $("#save").animate({'opacity': '0'}, 'slow')
+      $("#save").animate({"opacity": "0"}, "slow")
     , 1000
 
   show_saving: ->
     $("#save").html("Saving...")
-    $("#save").animate({'opacity': '1.0'}, 'fast')
+    $("#save").animate({"opacity": "1.0"}, "fast")
 
   cancel: ->
     @hide()
@@ -79,7 +84,7 @@ class image_question
   save: ->
       @show_saving()
 
-      # $(elem).parents('form:first').submit()
+      # $(elem).parents("form:first").submit()
       # We should be evaluating the response to that and calling either showSaved() or saveFailed().
       @show_saved();
 
@@ -89,8 +94,8 @@ class image_question
   set_image:(html) ->
     $value = $(html)
     @last_src = @current_src
-    @current_src = $value.attr('src')
-    $('#snapshot_image').attr('src',@current_src)
+    @current_src = $value.attr("src")
+    $("#{@form_sel} .snapshot_image").attr("src",@current_src)
     @update_display()
 
   reset_image:()->
@@ -98,21 +103,21 @@ class image_question
       tmp = @current_src
       @current_src = @last_src
       @last_src = tmp
-      $('#snapshot_image').attr('src',@current_src)
+      $("#{@form_sel} .snapshot_image").attr("src",@current_src)
     @update_display()
 
   delete_image:() ->
     @last_src = @current_src
     @current_src = null
-    $('#snapshot_image').attr('src',"missing")
+    $("#{@form_sel} .snapshot_image").attr("src","missing")
     @update_display()
 
   snapshot_updater: (e) =>
     data = e.data
-    if typeof(data) == 'string'
+    if typeof(data) == "string"
       data = JSON.parse(data)
     type = data.type
-    if type == 'png'
+    if type == "png"
       @set_image(data.values)
 
   hide: () ->
