@@ -26,6 +26,7 @@ gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
 gem 'exception_notification'
+gem 'shutterbug', '~>0.0.8'
 
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
