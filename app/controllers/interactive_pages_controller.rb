@@ -116,7 +116,6 @@ class InteractivePagesController < ApplicationController
     elsif e.instance_of?(Embeddable::Xhtml)
       param = { :edit_embed_xhtml => e.id }
     end
-    binding.pry
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)
   end
