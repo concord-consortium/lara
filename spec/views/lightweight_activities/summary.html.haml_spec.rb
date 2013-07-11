@@ -8,10 +8,12 @@ describe 'lightweight_activities/summary' do
   let(:or1) { stub_model(Embeddable::OpenResponseAnswer, :prompt => 'prompt three', :question_index => '3', :answer_text => 'I wrote a bunch of stuff') }
   let(:mc3) { stub_model(Embeddable::MultipleChoiceAnswer, :prompt => 'prompt four', :question_index => '4', :answer_texts => ['This should not show', 'This should show'], :multi_answer => false) }
   let(:or2) { stub_model(Embeddable::OpenResponseAnswer, :prompt => 'prompt five', :question_index => '5', :answer_text => nil) }
+  let(:image_answer_url) { 'http://foo.com/bar.png' }
+  let(:image_answer)  { stub_model(Embeddable::ImageQuestionAnswer, :prompt => 'prompt six', :question_index => '6', :answer_text => 'this is my image answer', :image_url => image_answer_url)}
 
   before(:each) do
     assign(:activity, activity)
-    assign(:answers, [mc1, mc2, or1, mc3, or2])
+    assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
   end
 
   it 'shows print buttons at top and bottom' do
@@ -26,9 +28,9 @@ describe 'lightweight_activities/summary' do
 
   it 'lists the questions with numbers and prompts' do
     render
-    rendered.should have_css "div.prompt", :count => 5
-    rendered.should have_css "div.number", :count => 5
-    words = ['zero', 'one', 'two', 'three', 'four', 'five']
+    rendered.should have_css "div.prompt", :count => 6
+    rendered.should have_css "div.number", :count => 6
+    words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six']
     (1..5).each do |i|
       rendered.should match /#{i}\./
       rendered.should match /prompt #{words[i]}/
@@ -37,7 +39,7 @@ describe 'lightweight_activities/summary' do
 
   it 'shows response text with the questions' do
     render
-    rendered.should have_css 'div.answer', :count => 5
+    rendered.should have_css 'div.answer', :count => 6
     # OR answer
     rendered.should match /I wrote a bunch of stuff/
     # MC answer, single
@@ -54,4 +56,12 @@ describe 'lightweight_activities/summary' do
     rendered.should match /This should show/
     rendered.should_not match /This should not show/
   end
+
+  it 'shows image question anwer text, and image url' do
+    render
+    rendered.should have_css 'div.answer', :count => 6
+    rendered.should have_css 'div.image_answer', :count => 1
+    rendered.should match /<img[^>]*="#{image_answer_url}"/
+  end
+
 end
