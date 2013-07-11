@@ -1,11 +1,3 @@
-post_to_iframe = (_message) ->
-  message = _message
-  origin = window.embeddable_origin || "*"
-  unless(typeof(message) == 'String')
-    message = JSON.stringify(message)
-  $('iframe')[0].contentWindow.postMessage(message, origin);
-
-
 origin = () ->
   document.location.href.match(/(.*?\/\/.*?)\//)[1]
 
@@ -20,6 +12,9 @@ class image_question
       modal: true
     })
 
+    @shutterbug       = new Shutterbug('iframe',null, (image_tag)=>
+      @set_image(image_tag)
+    );
     @$answer_text     = $('#image_answer_text')
 
     @$snapshot_button = $('#image_snapshot_button')
@@ -37,11 +32,7 @@ class image_question
 
   create_hooks: ->
     @$snapshot_button.click =>
-      request_snapshot = {
-        'type': 'getInteractiveSnapshot'
-        # 'origin': origin()
-      }
-      post_to_iframe(request_snapshot)
+      @shutterbug.getDomSnapshot()
       @show()
 
     @$cancel_button.click =>
@@ -130,22 +121,3 @@ class image_question
 # export our class
 window.ImageQuestion = image_question
 
-
-#
-# TODO: Right now this is the handshake for the lab frameworks
-# parent window messaging API.  We don't need to follow this
-# we could create our own API for shutterbug which would be simpler.
-#
-hello_handler = (e) ->
-  data = e.data
-  if typeof(data) == 'string'
-    data = JSON.parse(data)
-  type = data.type
-  window.embeddable_origin = data.origin
-  if type == 'hello'
-    message =
-      type: 'hello',
-      origin: origin()
-    post_to_iframe(message)
-
-window.addEventListener('message', hello_handler, false)
