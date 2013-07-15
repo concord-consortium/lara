@@ -21,6 +21,7 @@
 //= require wysiwyg.link
 //= require wysiwyg.table
 //= require jquery.jeditable.wysiwyg
+//= require jquery.jcarousel
 //= require modals
 //= require modal-dialog
 //= require check-answer
