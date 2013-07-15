@@ -4,45 +4,7 @@
 .content-hdr
   %h2.h2= @activity.name
 
-.social-media-mod.site-width
-  = link_to image_tag('icons/fb-button.png', :title => 'Share on Facebook', :alt => 'Share on Facebook', :width => 46, :height => 20), 'http://www.facebook.com/share.php?u=#', :class => 'fb-link'
-  &nbsp;
-  %iframe{ :allowtransparency => "true",
-           :frameborder => "0",
-           :scrolling => "no",
-           :src => "http://platform.twitter.com/widgets/tweet_button.1366232305.html#_=1366636611037&amp;count=none&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=#",
-           :class => "twitter-share-button twitter-count-none",
-           :style => "width: 56px; height: 20px;",
-           :title => "Twitter Tweet Button",
-           :data => { :twttr_rendered => "true" } }
-  %script{ :type => "text/javascript", :src => "https://platform.twitter.com/widgets.js" }
-  %script{ :type => "text/javascript", :src => "https://platform.linkedin.com/in.js" }
-  &nbsp;
-  %span.IN-widget{ :style => "line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;" }
-    %span{ :style => "padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;" }
-      %span#li_ui_li_gen_1366636611137_0
-        %a#li_ui_li_gen_1366636611137_0-link{ :href => "javascript:void(0);" }
-          %span#li_ui_li_gen_1366636611137_0-logo
-            in
-          %span#li_ui_li_gen_1366636611137_0-title
-            %span#li_ui_li_gen_1366636611137_0-mark
-            %span#li_ui_li_gen_1366636611137_0-title-text
-              Share
-  %script{ :type => "in/share+init", :data => { :url => "#" } }
-  &nbsp;
-  #___plusone_0(style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 32px; height: 20px; background-position: initial initial; background-repeat: initial initial;")
-    -# TODO: The +1 button src is busted
-    %iframe(frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 32px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1366636611106" name="I0_1366636611106" src="https://plusone.google.com/_/+1/fastbutton?bsv&size=medium&annotation=none&hl=en-US" allowtransparency="true" data-gapiattached="true" title="+1")
-
-  :javascript
-    (function() {
-      var po = document.createElement('script');
-      po.type = 'text/javascript';
-      po.async = true;
-      po.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(po, s);
-    })();
+= render :partial => 'shared/social'
 
 .intro-mod.index-mod
   .intro-txt
@@ -56,8 +18,8 @@
       =# Subgroups inside activities
     - @pages.each do |page|
       %li
-        = link_to page.name, activity_page_path(@activity, page)
+        = link_to page.name, activity_page_path(@activity, page.id)
 
-  %a{ :href => activity_page_path(@activity, @activity.pages.first) }
+  %a{ :href => activity_page_path(@activity, @activity.pages.first.id ) }
     .submit
       %input.button{ :type => "submit", :value => "Begin activity" }

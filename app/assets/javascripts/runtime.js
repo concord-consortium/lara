@@ -26,3 +26,4 @@
 //= require video
 //= require interactive-sizing
 //= require embeddable-carousel
+//= require image_question

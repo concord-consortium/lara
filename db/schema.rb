@@ -11,7 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619165644) do
+ActiveRecord::Schema.define(:version => 20130709144032) do
+
+  create_table "embeddable_image_question_answers", :force => true do |t|
+    t.integer  "run_id"
+    t.text     "answer_text"
+    t.string   "image_url"
+    t.integer  "image_question_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
+
+  create_table "embeddable_image_questions", :force => true do |t|
+    t.string   "name"
+    t.text     "prompt"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
@@ -115,6 +133,8 @@ ActiveRecord::Schema.define(:version => 20130619165644) do
     t.boolean  "is_locked",          :default => false
     t.text     "notes"
     t.string   "thumbnail_url"
+    t.integer  "theme_id"
+    t.integer  "project_id"
   end
 
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
@@ -154,6 +174,15 @@ ActiveRecord::Schema.define(:version => 20130619165644) do
     t.datetime "updated_at",          :null => false
   end
 
+  create_table "projects", :force => true do |t|
+    t.string   "title"
+    t.string   "logo"
+    t.string   "url"
+    t.text     "footer"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
@@ -172,6 +201,15 @@ ActiveRecord::Schema.define(:version => 20130619165644) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.integer  "theme_id"
+    t.integer  "project_id"
+  end
+
+  create_table "themes", :force => true do |t|
+    t.string   "name"
+    t.string   "css_file"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

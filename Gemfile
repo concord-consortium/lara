@@ -26,6 +26,8 @@ gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
 gem 'exception_notification'
+gem 'shutterbug', '~>0.0.9'
+# gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
@@ -95,3 +97,6 @@ end
 gem 'capistrano'
 
 gem 'brakeman', :require => false
+
+# put font-awesome in asset pipeline Alternately we could use a CDN.
+gem "font-awesome-rails"

@@ -4,10 +4,12 @@ class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
   before_filter :set_run_key, :only => [:show]
 
-  layout 'upstatement', :only => [:show]
+  layout 'runtime', :only => [:show]
 
   def show
     authorize! :read, @page
+    current_theme
+    current_project
 
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
@@ -109,6 +111,8 @@ class InteractivePagesController < ApplicationController
       param = { :edit_embed_mc => e.id }
     elsif e.instance_of?(Embeddable::OpenResponse)
       param = { :edit_embed_or => e.id }
+    elsif e.instance_of?(Embeddable::ImageQuestion)
+      param = { :edit_embed_iq => e.id }
     elsif e.instance_of?(Embeddable::Xhtml)
       param = { :edit_embed_xhtml => e.id }
     end

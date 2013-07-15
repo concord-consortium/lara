@@ -41,6 +41,13 @@ describe LightweightActivitiesController do
       assigns(:run).should_not be_nil
     end
 
+    it 'assigns a project and theme' do
+      page
+      get :show, :id => act.id
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
+    end
+
     it 'renders the activity if it exists and is public' do
       page
       get :show, :id => act.id
@@ -75,12 +82,19 @@ describe LightweightActivitiesController do
       end
     end
 
+    it 'assigns a project and theme' do
+      get :summary, :id => act.id, :response_key => ar.key
+      assigns(:project).should_not be_nil
+      assigns(:theme).should_not be_nil
+    end
+
     it 'renders the summary page if the activity exists and is public' do
       page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page.add_embeddable(FactoryGirl.create(:mc_embeddable))
 
       get :summary, :id => act.id, :response_key => ar.key
 
+      assigns(:answers).should_not be_nil
       response.body.should match /<h1>\n?Response Summary for/
     end
   end
@@ -88,26 +102,19 @@ describe LightweightActivitiesController do
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     describe '#index' do
-      it 'provides a link to create a new Lightweight Activity on the index page', :slow => true do
+      it 'has a list of public and owned activities' do
+        # User is an admin, so all activities
         get :index
-        response.body.should match /<a[^>]+href="\/activities\/new"[^>]*>/
-      end
-
-      it 'provides a list of authored Lightweight Activities with edit and run links on the index page', :slow => true do
-        act
-        get :index
-        response.body.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
-        response.body.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
+        assigns(:activities).should_not be_nil
+        assigns(:activities).length.should be(LightweightActivity.count)
       end
     end
 
     describe '#new' do
-
-      it 'provides a form for naming and describing a Lightweight Activity' do
+      it 'should return success' do
         get :new
-        response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
-        response.body.should match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
-        response.body.should match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
+        assigns(:activity).should_not be_nil
+        response.should be_success
       end
     end
 
@@ -143,37 +150,13 @@ describe LightweightActivitiesController do
     end
 
     describe 'edit' do
-      it 'should display a form showing the current name and description' do
+      it 'should assign an activity and return success' do
         act
         get :edit, {:id => act.id}
-
-        response.body.should match /<form[^>]+action="\/activities\/#{act.id}"[^>]+method="post"[^<]*>/
-        response.body.should match /<input[^>]+name="_method"[^>]+type="hidden"[^>]+value="put"[^<]+\/>/
-        response.body.should match /<input[^>]+id="lightweight_activity_name"[^>]+name="lightweight_activity\[name\]"[^>]+type="text"[^<]+value="#{act.name}"[^<]*\/>/
-        response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[description\]"[^<]*>/
-        response.body.should match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[related\]"[^<]*>/
-        response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
-      end
-
-      it 'should include a link to add pages' do
-        act = LightweightActivity.create!(:name => 'This Activity needs pages', :description => 'Activity to add pages to')
-        get :edit, {:id => act.id}
-
-        response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"/
-      end
-
-      it 'should provide in-place editing of description and sidebar', :js => true, :slow => true do
-
-        act
-
-        visit new_user_session_path
-        fill_in "Email", :with => @user.email
-        fill_in "Password", :with => @user.password
-        click_button "Sign in"
-        visit edit_activity_path(act)
-
-        find("#lightweight_activity_description_trigger").click
-        page.should have_selector('#lightweight_activity_description-wysiwyg-iframe')
+        
+        assigns(:activity).should_not be_nil
+        assigns(:activity).should == act
+        response.should be_success
       end
     end
 

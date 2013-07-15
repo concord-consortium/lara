@@ -1,0 +1,39 @@
+#image_question_answer_form {
+  .image_gallery {
+    font: 400 100% lato, arial, helvetica, sans-serif;
+    font-family:  lato, arial, helvetica, sans-serif;
+    font-size: 1.2em;
+    .title {
+      font-weight: bold;
+      font-size: 2em;
+      margin-bottom: 0.5em
+    }
+    table {
+      width: 100%;
+      margin-bottom: 2em;
+      td {
+        padding: 1em;
+        padding-bottom: 2em;
+      }
+      td.text_response {
+        width: 65%;
+      }
+    }
+    textarea.answer {
+      margin-top: 1em;
+      width: 100%;
+    }
+    button {
+      margin-right: 1em;
+    }
+    img {
+      min-height: 100px;
+      min-width: 200px;
+      border: none;
+      background-color: white;
+    }
+  }
+  img.thumbnail {
+    height: 25px;
+  }
+}

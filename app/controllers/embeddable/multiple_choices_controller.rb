@@ -131,6 +131,8 @@ class Embeddable::MultipleChoicesController < ApplicationController
         # All correct
         @response = { choice: true }
       end
+      # @choice needs to be set anyway
+      @choice = @choices.first
     else
       # One answer: sending the choice to get rendered as JSON by the action
       @response = @choice = @choices.first

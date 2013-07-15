@@ -1,6 +1,20 @@
 LightweightStandalone::Application.routes.draw do
 
+  resources :projects
+
+  resources :themes
+
   root :to => 'home#home'
+
+  namespace :embeddable do
+    resources :image_question_answers
+  end
+
+
+  namespace :embeddable do
+    resources :image_questions
+  end
+
 
   resources :sequences, :constraints => { :id => /\d+/ } do
     member do

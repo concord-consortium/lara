@@ -30,6 +30,35 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_theme
+    # Assigns @theme
+    # This counts on @activity and/or @sequence being already assigned.
+    if defined?(@sequence) && @sequence.theme
+      @theme = @sequence.theme
+    elsif defined?(@activity) && @activity.theme
+      @theme = @activity.theme
+    # elsif project setting
+    else
+      @theme = Theme.find_by_name('Default')
+    end
+    @theme
+  end
+
+  def current_project
+    # Assigns @project
+    # This counts on @activity and/or @sequence being already assigned.
+    if defined?(@sequence) && @sequence.project
+      # Sequence project overrides activity and default
+      @project = @sequence.project
+    elsif defined?(@activity) && @activity.project
+      # Activity project overrides default
+      @project = @activity.project
+    else
+      @project = Project.find_by_title('Molecular Workbench') # default
+    end
+    @project
+  end
+
   protected
 
   def save_portal_info
@@ -86,13 +115,11 @@ class ApplicationController < ActionController::Base
     set_response_key(@run.key)
   end
 
-
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
     clear_session_response_key
     session.delete(:auth_return_url) || request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
-
 
 end

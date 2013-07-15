@@ -1,0 +1,52 @@
+.question-hdr
+  %h5.h5= "Question ##{embeddable.question_index}"
+.question-bd
+  .question-txt
+    != embeddable.prompt
+    %div{:id => "image_question_#{embeddable.id}"}
+      %img.snapshot_thumbnail{:src => embeddable.image_url, :width => 200}
+      %br
+      %button.image_question.button.image_snapshot_button{:type => 'button'}
+        %i.icon-camera
+        %span.take_snapshot
+          take snapshot
+
+%div{:id => "image_question_answer_form_#{embeddable.id}"}
+  .image_gallery
+    .title
+    .instructions
+    .answer
+    = form_for embeddable, :remote => true, :html => {:'data-type' => 'json'} do |f|
+
+      %table
+        %tr
+          %td
+            .image_block
+              %img.snapshot_image
+              .under_image
+                %button.button.image_reset_button{:type =>'button'}
+                  %i.icon-undo.btn
+                    Reset
+                %button.button.image_delete_button{:type =>'button'}
+                  %i.icon-warning-sign.btn
+                    Delete
+          %td.annotations
+            %p Use the tools below to make notes on the snapshot
+        %tr
+          %td.text_response
+            %p.prompt.image_prompt!= embeddable.prompt
+            = f.text_area :answer_text, :class => 'live-submit answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
+            = f.hidden_field 'image_url'
+          %td
+            %button.button.image_done_button{:type => 'button' }
+              %i.icon-ok.btn
+                Done
+            %button.button.image_cancel_button{:type => 'button' }
+              %i.icon-remove.btn
+                Cancel
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      window.iq = new ImageQuestion(#{embeddable.id});
+    });

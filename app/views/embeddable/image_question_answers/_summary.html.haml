@@ -1,0 +1,11 @@
+.number
+  %p="#{answer.question_index}."
+.prompt
+  != answer.prompt
+.answer
+  - if !answer.answer_text.blank?
+    = answer.answer_text
+  - else
+    %p! &nbsp;
+.image_answer
+  = image_tag(answer.image_url)
