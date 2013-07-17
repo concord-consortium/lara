@@ -99,7 +99,7 @@ class Run < ActiveRecord::Base
   end
 
   def answers
-    open_response_answers + multiple_choice_answers
+    open_response_answers + multiple_choice_answers + image_question_answers
   end
 
   def answers_hash
@@ -123,7 +123,8 @@ class Run < ActiveRecord::Base
   def responses
     {
       'multiple_choice_answers' => self.multiple_choice_answers,
-      'open_response_answers' => self.open_response_answers
+      'open_response_answers' => self.open_response_answers,
+      'image_question_answers' => self.image_question_answers
     }
   end
 

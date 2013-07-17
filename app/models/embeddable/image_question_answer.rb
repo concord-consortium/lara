@@ -34,7 +34,8 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
     {
       "type" => "image_question",
       "question_id" => question.id.to_s,
-      "answer" => answer_text
+      "answer" => answer_text,
+      "image_url" => image_url
     }
   end
 

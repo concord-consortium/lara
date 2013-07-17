@@ -165,6 +165,11 @@ describe Run do
   describe 'posting to portal' do
     let(:or_question){ FactoryGirl.create(:or_embeddable) }
     let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+    let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+    let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
+      { :answer_text => "the image question answer",
+        :question => image_quest,
+        :image_url => "http://foo.com/bar.jpg" }) }
     let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
     let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
     let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
@@ -173,19 +178,41 @@ describe Run do
                       :question => mc_question)
                     }
     let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
-    let(:all_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }, { "type": "multiple_choice", "question_id": "' + mc_question.id.to_s + '", "answer_ids": ["' + a1.id.to_s + '"], "answer_texts": ["' + a1.choice + '"] }]' }
+    let(:all_expected) do
+      [
+        {
+          "type" => "open_response",
+          "question_id" => or_question.id.to_s,
+          "answer" => or_answer.answer_text
+        },
+        {
+          "type" => "multiple_choice",
+          "question_id" => mc_question.id.to_s,
+          "answer_ids" => [ a1.id.to_s],
+          "answer_texts" => [ a1.choice]
+        },
+        {
+          "type" => "image_question",
+          "question_id" => iq_answer.id.to_s,
+          "answer" => iq_answer.answer_text,
+          "image_url" => iq_answer.image_url
+        },
+      ].to_json
+    end
 
     describe '#response_for_portal' do
       it 'matches the expected JSON for a single specified answer' do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
+        run.image_question_answers << iq_answer
         JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
       end
 
       it "matches the expected JSON for multiple specified answers" do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
-        JSON.parse(run.response_for_portal([or_answer, mc_answer])).should == JSON.parse(all_expected)
+        run.image_question_answers << iq_answer
+        JSON.parse(run.response_for_portal([or_answer, mc_answer,iq_answer])).should == JSON.parse(all_expected)
       end
     end
 
@@ -193,6 +220,7 @@ describe Run do
       it 'matches the expected JSON for all responses' do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
+        run.image_question_answers << iq_answer
         JSON.parse(run.all_responses_for_portal).should == JSON.parse(all_expected)
       end
     end

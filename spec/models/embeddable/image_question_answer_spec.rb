@@ -25,13 +25,14 @@ describe Embeddable::ImageQuestionAnswer do
   end
 
   describe '#portal_hash' do
-    let(:expected) {
-                     {
-                        "type"        => "image_question",
-                        "question_id" => question.id.to_s,
-                        "answer"      => answer.answer_text
-                      }
-                    }
+    let(:expected) do
+      {
+        "type"        => "image_question",
+        "question_id" => question.id.to_s,
+        "answer"      => answer.answer_text,
+        "image_url"   => answer.image_url
+      }
+    end
 
     it "matches the expected hash" do
       answer.portal_hash.should == expected
@@ -54,9 +55,9 @@ describe Embeddable::ImageQuestionAnswer do
       mc2 = FactoryGirl.create(:mc_with_choices, :name => 'Two')
       mc3 = FactoryGirl.create(:mc_with_choices, :name => 'Three')
 
-      or1 = FactoryGirl.create(:or_embeddable, :name => 'one')
-      or2 = FactoryGirl.create(:or_embeddable, :name => 'two')
-      or3 = FactoryGirl.create(:or_embeddable, :name => 'three')
+      or1 = FactoryGirl.create(:open_response, :name => 'one')
+      or2 = FactoryGirl.create(:open_response, :name => 'two')
+      or3 = FactoryGirl.create(:open_response, :name => 'three')
 
       page1.add_embeddable(mc1)
       page1.add_embeddable(or1)
