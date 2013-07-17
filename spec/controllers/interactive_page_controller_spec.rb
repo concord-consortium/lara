@@ -396,6 +396,14 @@ describe InteractivePagesController do
         act.changed_by.should == @user
         response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
+
+      it 'raises an error on invalid interactive_type' do
+        begin
+          # post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'BogusInteractive'
+          raise 'Should not have been able to post a bogus interactive_type'
+        rescue RuntimeError
+        end
+      end
     end
 
     describe 'add_embeddable' do
@@ -418,6 +426,14 @@ describe InteractivePagesController do
         act.changed_by.should == @user
 
         response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
+      end
+
+      it 'raises an error on invalid embeddable_type' do
+        begin
+          post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus'
+          raise 'Should not have been able to post a bogus embeddable_type'
+        rescue RuntimeError
+        end
       end
     end
 

@@ -89,7 +89,11 @@ class InteractivePagesController < ApplicationController
   def add_interactive
     authorize! :update, @page
     update_activity_changed_by
-    i = params[:interactive_type].constantize.create!
+    if %w(ImageInteractive MwInteractive VideoInteractive).include?(params[:interactive_type])
+      i = params[:interactive_type].constantize.create!
+    else
+      raise 'Not a valid Interactive type'
+    end
     @page.add_interactive(i)
     if i.instance_of?(ImageInteractive)
       param = { :edit_img_int => i.id }
@@ -104,7 +108,11 @@ class InteractivePagesController < ApplicationController
   def add_embeddable
     authorize! :update, @page
     update_activity_changed_by
-    e = params[:embeddable_type].constantize.create!
+    if SUPPORTED_EMBEDDABLES.include?(params[:embeddable_type])
+      e = params[:embeddable_type].constantize.create!
+    else
+      raise 'Not a valid Embeddable type'
+    end
     @page.add_embeddable(e)
     if e.instance_of?(Embeddable::MultipleChoice)
       e.create_default_choices
