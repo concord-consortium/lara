@@ -6,7 +6,7 @@ app_environment_variables = File.join(Rails.root, 'config', 'app_environment_var
 if File.exists?(app_environment_variables)
   load(app_environment_variables)
 else
-  #TODO: Sould we just die here otherwise?
+  # TODO: Should we just die here otherwise?
   puts "please create the file #{app_environment_variables}, or set ENV"
 end
 

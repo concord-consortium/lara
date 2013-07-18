@@ -58,5 +58,12 @@ module LightweightStandalone
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
+    config.middleware.use Rack::Environmental,
+                            :staging =>     { :url => /staging\..+$/,
+                                              :color => "purple"     },
+                            :development => { :url => /^localhost.+$/,
+                                              :color => "red"        }
   end
 end
