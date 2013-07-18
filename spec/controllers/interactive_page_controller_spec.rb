@@ -172,7 +172,7 @@ describe InteractivePagesController do
     it 'does not show related content on pages other than the last page' do
       page1
       page2
-      get :show, :id => act.pages.first.id
+      get :show, :id => act.pages.first.id, :response_key => ar.key
 
       response.body.should_not match /<div class='related-mod'>/
     end
