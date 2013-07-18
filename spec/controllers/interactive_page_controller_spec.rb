@@ -399,9 +399,9 @@ describe InteractivePagesController do
 
       it 'raises an error on invalid interactive_type' do
         begin
-          # post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'BogusInteractive'
+          post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'BogusInteractive'
           raise 'Should not have been able to post a bogus interactive_type'
-        rescue RuntimeError
+        rescue ArgumentError
         end
       end
     end
@@ -432,7 +432,7 @@ describe InteractivePagesController do
         begin
           post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus'
           raise 'Should not have been able to post a bogus embeddable_type'
-        rescue RuntimeError
+        rescue ArgumentError
         end
       end
     end

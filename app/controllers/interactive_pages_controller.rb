@@ -92,7 +92,7 @@ class InteractivePagesController < ApplicationController
     if %w(ImageInteractive MwInteractive VideoInteractive).include?(params[:interactive_type])
       i = params[:interactive_type].constantize.create!
     else
-      raise 'Not a valid Interactive type'
+      raise ArgumentError, 'Not a valid Interactive type'
     end
     @page.add_interactive(i)
     if i.instance_of?(ImageInteractive)
@@ -111,7 +111,7 @@ class InteractivePagesController < ApplicationController
     if SUPPORTED_EMBEDDABLES.include?(params[:embeddable_type])
       e = params[:embeddable_type].constantize.create!
     else
-      raise 'Not a valid Embeddable type'
+      raise ArgumentError, 'Not a valid Embeddable type'
     end
     @page.add_embeddable(e)
     if e.instance_of?(Embeddable::MultipleChoice)
