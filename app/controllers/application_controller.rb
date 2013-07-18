@@ -111,8 +111,8 @@ class ApplicationController < ActionController::Base
     else
       update_portal_session
     end
-    @run = Run.lookup(@session_key, @activity, current_user, portal)
-    set_response_key(@run.key)
+    @run = Run.lookup(@session_key, @activity, current_user, portal) # This creates a new key if one didn't exist before
+    set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
   end
 
   # override devise's built in method so we can go back to the path
