@@ -22,6 +22,12 @@ module ConcordPortalPublishing
             "id" => embeddable.id,
             "prompt" => embeddable.prompt
           })
+        when Embeddable::ImageQuestion
+          elements.push({
+            "type" => "image_question",
+            "id" => embeddable.id,
+            "prompt" => embeddable.prompt
+          })
         when Embeddable::MultipleChoice
           choices = []
           embeddable.choices.each do |choice|

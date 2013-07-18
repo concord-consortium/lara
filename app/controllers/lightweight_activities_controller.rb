@@ -23,6 +23,9 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     current_theme
     current_project
+    if !params[:response_key]
+      redirect_to activity_with_response_path(@activity, @session_key) and return
+    end
     @run.increment_run_count!
 
     @pages = @activity.pages

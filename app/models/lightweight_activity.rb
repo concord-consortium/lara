@@ -89,7 +89,9 @@ class LightweightActivity < ActiveRecord::Base
       new_activity.name = "#{new_activity.name[0..46]}..."
     end
     self.pages.each do |p|
-      new_activity.pages << p.duplicate
+      new_page = p.duplicate
+      new_page.lightweight_activity = new_activity
+      new_page.set_list_position(p.position)
     end
     return new_activity
     # N.B. the duplicate hasn't been saved yet

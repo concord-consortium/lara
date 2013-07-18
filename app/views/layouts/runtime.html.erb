@@ -38,7 +38,6 @@
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>
-  <%= javascript_include_tag '/shutterbug/shutterbug.js' %>
 </head>
 
 
@@ -140,7 +139,7 @@
 	<!-- Project-Specific stuff, start with up-base and go into script.js for your code -->
   <%= javascript_include_tag 'runtime' %>
   <!-- snapshot server -->
-  <%= javascript_include_tag '//shutterbug.herokuapp.com/shutterbug/shutterbug.js' %>
+  <%= javascript_include_tag 'http://shutterbug.herokuapp.com/shutterbug/shutterbug.js' %>
 	<!-- end scripts-->
 
 	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.

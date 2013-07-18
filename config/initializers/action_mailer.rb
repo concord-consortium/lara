@@ -1,3 +1,6 @@
+# Whitelist config options for SMTP
+CONFIG_OPTIONS = %w(default_options logger smtp_options sendmail_settings file_settings raise_delivery_errors delivery_method perform_deliveries deliveries)
+
 if File.exists?("#{::Rails.root.to_s}/config/mailer.yml") || ::Rails.env == "test" || ::Rails.env == "cucumber"
   require "action_mailer"
   if ::Rails.env == "test" || ::Rails.env == "cucumber"
@@ -10,7 +13,11 @@ if File.exists?("#{::Rails.root.to_s}/config/mailer.yml") || ::Rails.env == "tes
         key = :smtp_settings
       end
       begin
-        ActionMailer::Base.send("#{key}=".to_sym, val)
+        if CONFIG_OPTIONS.include?(key.to_s)
+          ActionMailer::Base.send("#{key}=".to_sym, val)
+        else
+          raise "Not an ActionMailer configuration option"
+        end
       rescue Exception => e
         $stderr.puts "Problem processing key '#{key}' in config/mailer.yml"
         $stderr.puts "#{e}"

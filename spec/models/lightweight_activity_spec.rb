@@ -133,14 +133,14 @@ describe LightweightActivity do
     end
 
     it 'has pages in the same order as the source activity' do
-      2.times do
+      5.times do
         activity.pages << FactoryGirl.create(:page)
       end
       duplicate = activity.duplicate
       duplicate.pages.each_with_index do |p, i|
-        duplicate.pages[i].name.should == p.name
-        duplicate.pages[i].position.should be(p.position)
-        duplicate.pages[i].last?.should be(p.last?)
+        activity.pages[i].name.should == p.name
+        activity.pages[i].position.should be(p.position)
+        activity.pages[i].last?.should be(p.last?)
       end
     end
   end
