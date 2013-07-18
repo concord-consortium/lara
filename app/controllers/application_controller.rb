@@ -96,7 +96,6 @@ class ApplicationController < ActionController::Base
   def set_response_key(key)
     @session_key = key
     session_response_key(@session_key)
-    params[:response_key] =   key
   end
 
   def update_response_key
