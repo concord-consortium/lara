@@ -18,6 +18,8 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
   delegate :prompt,  :to  => :question
   delegate :name,    :to  => :question
 
+  after_update :send_to_portal
+
   def question_index
     if self.run && self.run.activity
       self.run.activity.questions.index(self.question) + 1
