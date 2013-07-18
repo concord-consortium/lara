@@ -90,7 +90,7 @@ class LightweightActivity < ActiveRecord::Base
     end
     self.pages.each do |p|
       new_page = p.duplicate
-      new_activity.pages << new_page
+      new_page.lightweight_activity = new_activity
       new_page.set_list_position(p.position)
     end
     return new_activity
