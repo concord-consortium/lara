@@ -22,4 +22,10 @@ describe Theme do
       theme.css_file_exists?.should_not be_true
     end
   end
+
+  describe "Theme.default" do
+    subject    { Theme.default }
+    its(:name) { should == Theme::DefaultName}
+  end
+
 end

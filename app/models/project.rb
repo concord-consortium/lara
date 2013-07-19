@@ -1,7 +1,19 @@
 class Project < ActiveRecord::Base
+  DefaultName = 'Molecular Workbench'
+
   attr_accessible :footer, :logo, :title, :url
   has_many :sequences
   has_many :lightweight_activities
+
+  protected
+  def self.create_default
+    self.create(:title => DefaultName, :logo => 'mw-logo.png', :url => 'http://mw.concord.org/nextgen')
+  end
+
+  public
+  def self.default
+    self.find_by_title(DefaultName) || self.create_default
+  end
 
   # Derive an OpenGraph-custom logo path from the provided path, or return the provided path if the OG logo doesn't exist
   def og_logo
