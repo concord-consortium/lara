@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130709144032) do
+ActiveRecord::Schema.define(:version => 20130719180027) do
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(:version => 20130709144032) do
     t.string   "remote_id"
     t.integer  "page_id",         :default => 0
     t.string   "remote_endpoint"
+    t.integer  "sequence_id"
   end
 
   create_table "sequences", :force => true do |t|

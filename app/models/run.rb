@@ -7,6 +7,8 @@ class Run < ActiveRecord::Base
 
   belongs_to :page, :class_name => InteractivePage # last page
 
+  belongs_to :sequence # optional
+
   has_many :multiple_choice_answers,
     :class_name  => 'Embeddable::MultipleChoiceAnswer',
     :foreign_key => 'run_id',
