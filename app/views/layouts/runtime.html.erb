@@ -12,9 +12,9 @@
   <meta name="description" content="">
 	<meta name="author" content="">
   <%- if @project and @project.og_logo -%>
-    <meta property="og:image" content="<%= image_path @project.og_logo %>" />
+    <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path @project.og_logo %>" />
   <%- else -%>
-    <meta property="og:image" content="<%= image_path 'mw-logo-og.jpg' %>" />
+    <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path 'mw-logo-og.jpg' %>" />
   <%- end -%>
 
 	<!-- Icons -->

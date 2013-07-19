@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
       @theme = @activity.theme
     # elsif project setting
     else
-      @theme = Theme.find_by_name('Default')
+      @theme = Theme.default
     end
     @theme
   end
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
       # Activity project overrides default
       @project = @activity.project
     else
-      @project = Project.find_by_title('Molecular Workbench') # default
+      @project = Project.default
     end
     @project
   end

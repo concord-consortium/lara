@@ -22,4 +22,27 @@ describe Theme do
       theme.css_file_exists?.should_not be_true
     end
   end
+
+  describe "Theme.default" do
+    before(:each) do
+      Theme.destroy_all
+      @existant = Theme.send(:create_default)
+    end
+
+    describe "When the default Theme doesn't exist" do
+      it "should create a new default Theme" do
+        Theme.should_receive(:find_by_name).and_return(nil)
+        default = Theme.default
+        default.name.should == Theme::DefaultName
+        default.should_not == @existant
+      end
+    end
+
+    describe "When the default Theme already exists" do
+      it "should use the one the existing default project" do
+        Theme.default.should == @existant
+      end
+    end
+  end
+
 end
