@@ -61,8 +61,10 @@ module LightweightStandalone
 
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
-                            :staging =>     { :url => /staging\..+$/,
+                            :staging     => { :url => /staging\..+$/,
                                               :color => "blueviolet" },
+                            :test        => { :url => /jasmine/,
+                                              :style => :none },
                             :development => { :url => /^localhost.+$/,
                                               :color => "red"        }
   end
