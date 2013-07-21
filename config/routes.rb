@@ -22,6 +22,7 @@ LightweightStandalone::Application.routes.draw do
       post :remove_activity
       get :reorder_activities
     end
+    resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end
 
   namespace :embeddable do

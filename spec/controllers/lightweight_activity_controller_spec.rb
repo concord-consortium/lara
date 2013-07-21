@@ -52,7 +52,7 @@ describe LightweightActivitiesController do
     describe 'when it is part of a sequence' do
       before(:each) do
         # Add the activity to the sequence
-        act.sequence_id = sequence.id
+        act.sequences = [sequence]
         act.save
       end
 
@@ -65,6 +65,7 @@ describe LightweightActivitiesController do
       it 'assigns a sequence if one is in the run' do
         page
         ar.sequence = sequence
+        ar.save
         get :show, :id => act.id, :response_key => ar.key
         assigns(:sequence).should == sequence
       end

@@ -59,6 +59,17 @@ class ApplicationController < ActionController::Base
     @project
   end
 
+  def set_sequence
+    if params[:sequence_id]
+      @sequence = Sequence.find(params[:sequence_id])
+    end
+    if @sequence && @run
+      @run.sequence = @sequence
+    elsif @run && @run.sequence
+      @sequence ||= @run.sequence
+    end
+  end
+
   protected
 
   def save_portal_info
