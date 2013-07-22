@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130719180027) do
+ActiveRecord::Schema.define(:version => 20130722151403) do
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20130719180027) do
     t.text     "footer"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "theme_id"
   end
 
   create_table "runs", :force => true do |t|

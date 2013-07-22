@@ -37,7 +37,8 @@ class ApplicationController < ActionController::Base
       @theme = @sequence.theme
     elsif defined?(@activity) && @activity.theme
       @theme = @activity.theme
-    # elsif project setting
+    elsif defined?(@project) && @project.theme
+      @theme = @project.theme
     else
       @theme = Theme.default
     end
