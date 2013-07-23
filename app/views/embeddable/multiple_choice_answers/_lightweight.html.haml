@@ -9,7 +9,7 @@
     :remote => true,
     :html => {:'data-type' => 'json'} do |f|
     %fieldset.options.live-update
-      - if true # Conditional for this later
+      - if embeddable.show_as_menu
         = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', embeddable.answers.last), { :include_blank => "Pick one" }
       - else
         - embeddable.choices.each do |choice|
@@ -19,7 +19,7 @@
             - else
               = f.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :class => 'live_submit', :checked => (embeddable.answers.include?(choice))
             = choice.choice
-  - if embeddable.enable_check_answer # && !embeddable.multi_answer
+  - if embeddable.enable_check_answer
     %input{ :class => 'button check_answer_button',
             :type => 'button',
             :id => check_button_string,

@@ -125,5 +125,12 @@ describe Embeddable::MultipleChoiceAnswer do
         answer.multi_answer.should be_true
       end
     end
+
+    describe 'show_as_menu' do
+      it 'should delegate to question' do
+        question.should_receive(:show_as_menu).and_return(true)
+        answer.show_as_menu.should be_true
+      end
+    end
   end
 end
