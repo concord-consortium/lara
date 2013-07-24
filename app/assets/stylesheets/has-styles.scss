@@ -160,12 +160,13 @@ footer {
   margin: 0 0 40px;
   position: relative;
   width: 100%;
+  height: 50px;
   color: #fff;
   @extend .cf;
   @include trans;
 
 
-  &.fixed {
+/*  &.fixed {
     position: fixed;
     top: 0;
     background-color: lighten($lt-blue, 15%);
@@ -173,6 +174,7 @@ footer {
     padding: 10px 6px;
     z-index: 9999;
   }
+*/
 }
 
 .activity-nav-logo {
@@ -183,17 +185,12 @@ footer {
   }
 
   .h2 {
-    font-family: $lato-reg;
     font-size: 18px;
     font-weight: normal;
-    color: $drk-orange;
-    opacity: 0;
     line-height: 36px;
-    opacity: 0;
-    @include trans;
-
-    &.visible {
-      opacity: 1;
+    color: #fff;
+    &:before {
+      content: 'ACTIVITY: '
     }
   }
 }
@@ -201,35 +198,22 @@ footer {
 // This controlls the layout of the nav
 .l-nav {
       @include ui-grid-2(50%, 50%, 5%);
+      background-color: #414546;
+      height: 50px;
+}
+
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  display: none;
 }
 
 .activity-nav {
-  margin-top: 8px;
   position: relative;
   @extend .cf;
 
   .prev,
   .next {
-    background-color: lighten($med-blue, 5%);
-    border: 1px solid $med-blue;
-    @include border-radius(3px);
-    line-height: 22px;
-    text-align: center;
-    margin-left: 8px;
-    width: 40px;
-    @include trans;
-    height: 24px;
-    background-repeat: no-repeat;
-    background-size: 40%;
-    background-position: 48% 50%;
-
-    &:hover {
-      background-color: darken($med-blue, 5%);
-    }
-
-    &:active {
-      background-color: darken($med-blue, 20%);
-    }
+    display: none;
   }
 
   .prev {
@@ -258,10 +242,11 @@ footer {
   @extend .cf;
   text-align: center;
   margin-right: 8px;
+  height: 50px;
 }
 
 .pagination-item {
-  margin-left: 6px;
+  margin-left: -2px;
   @include border-radius(10px);
   text-align: center;
   display: inline-block;
@@ -271,39 +256,36 @@ footer {
   }
 
   .pagination-link {
-    background-color: lighten($med-blue, 27%);
-    color: $med-blue;
-    @include border-radius(3px);
-    @include lt-txt-shadow(#fff);
-    border: 1px solid lighten($med-blue, 18%);
-    padding: 3px 5px;
+    margin-top: 12px;
+    background-color: #f4f4f4;
+    color: #8d8d8d;
+    width: 24px;
+    height: 24px;
+    @include border-radius(13px);
+    border: 3px solid #616768;
+    padding-top: 1px;
     display: block;
     @include trans;
 
-    &:hover {
+/*    &:hover {
       background: lighten($med-blue, 5%);
       @include drk-txt-shadow($med-blue);
       color: #fff;
-    }
+    } */
 
     &.selected {
-      background: darken($med-blue, 12%);
+      background: #64c500;
       color: #fff;
-      border: 1px solid darken($med-blue, 10%);
-      @include drk-txt-shadow($med-blue);
+      height: 28px;
+      width: 28px;
+      padding-top: 3px;
+      @include border-radius(14px);
+      @include drk-txt-shadow(#64c500);
     }
   } // end .pagination-link
 
   &.home-link {
-    text-indent: -9999px;
-    .pagination-link {
-      background-image: url('/assets/home_blue.png');
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRDQ4MDg2NEEwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRDQ4MDg2M0EwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDg4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4bkDIfAAADmElEQVR42uyYS2gTURSGb5JJMpOZSWaSSWP6CKIBxRetIChSXOiiIiLShaigILhxowii4kIEtaKCLxRBBAUFFyoiogtXFqmIFRUtVoUuxJ0P2iYmtbTG/4QLvlrtI8nMNPfARzOTdDL55t57zrmeueduMAdGI2gDfrAXPGEODa/D7qcBXARPNTPaopmx5Xj9GFwHs4XA0SMMDoI3asTYYtWnvLKqMVlVGV57VMNsxXsvwQVQ7ySBHpunME3RreCAooetkB5mHu/ozzSX6We5vt48Xp4FR8Dnaha4FhyVNS2tqDrz+f1j+qdCocDyJLK/rxeHx8BpkK2mKbwYdASU0M2IVZPWjOiY5RWfuMfDQuEIiybrDIzaQzj1FmwDgakuMM2TQYcejS0Jxyzml+WJ37jPx7BeMjORTGIU05TuAhsqPSgq8WUWn2ZdasRspaQQDKkluziNXhrFkXgijetepQwOVlZKoFTGaytgO9iNKWdQgsD8K182CgaLBEOhxoFs9u7gQP4BryEfuW0E0jU3gW5F19uiyVqD1qxyyvs1ArLCwlacYZlYJgWCHTh1C8xxi8AVoBNT6bJRk0hhymKtkpgdQcsE7gHT21zDa8hLIOVUgfPBPX9Qvo/k0ISnz/D0HVHoyppOxbgXCWczDt+BE3xddoTAWt56PcdC3hKJ1zCUJ47sWVHysFhdQwDLyQ4c9oD9QLOrkKYv3gN24oaU4hrnovg+PMzy2QwV5B95C3keDFZiBEq8aO3BE90Xq613nbzfashpybii6aeoB+eJz1tOgdR6vaKiFcVrnG7gX32rG8In+ZlqmJRsplPiw6kXYHWpBVLr1c5br1njbb3cEJTwKPGh/JmHMug2Tj0EzZMVSK3XNd56NU+29XJD/KwhraUoyttx6g5YMF6BFk/11HqtK3Xr5YZAN0OtIdPM6CocPgNXwIz/CaTWaxfVSpTqKeWjk2DVHLSpy2vIjTh8Dc6AxJ9lDElcDw5DWEqmvTlJYtUew0NDf537lvtK+5C093gSHAd9ZKoTNNEH8plMkZEreq2461ENke39wgay2Z4R3sqRR77bswi0kcCFY7koLlioFoH4rfRnpl27MVUVQqAQKAQKgUKgCCFQCBQChUAREwjbdg14v1mSa9nZp9s2Ark8Tyko1YMQU1gIFAKFQBFCoBAoBAqBIoRAIVAIFAJFCIFCoBA4xWNcG6qfPrx37A+x695+CDAAyz21HWnm6YoAAAAASUVORK5CYII=');
-      background-repeat: no-repeat;
-      background-size: 80%;
-      background-position: 50% 50%;
-      width: 24px;
-    }
+    display: none;
   } // end .home-link
 
   &.home-link {
