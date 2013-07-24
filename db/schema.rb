@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20130729134104) do
     t.integer  "image_question_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.text     "annotation"
   end
 
   add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"

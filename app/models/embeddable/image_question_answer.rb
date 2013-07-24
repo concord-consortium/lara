@@ -1,5 +1,5 @@
 class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
-  attr_accessible :answer_text, :image_url, :run, :question
+  attr_accessible :answer_text, :image_url, :run, :question, :annotation
 
   belongs_to :question,
     :class_name => 'Embeddable::ImageQuestion',
@@ -37,7 +37,8 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
       "type" => "image_question",
       "question_id" => question.id.to_s,
       "answer" => answer_text,
-      "image_url" => image_url
+      "image_url" => image_url,
+      "annotation" => annotation
     }
   end
 

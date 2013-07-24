@@ -29,7 +29,8 @@ gem 'exception_notification'
 gem 'shutterbug', '~>0.0.10'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git"
-
+# gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
+gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git"
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
 gem "sqlite3"

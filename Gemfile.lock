@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/concord-consortium/sketchily.git
+  revision: 09d019e2ad10916aeaff0d9874cb24ca327eaa73
+  specs:
+    sketchily (1.5.0)
+      jquery-rails
+      nokogiri
+      rails (>= 3.1)
+
+GIT
   remote: git://github.com/lostapathy/yaml_db.git
   revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
   specs:
@@ -403,6 +412,7 @@ DEPENDENCIES
   rspec-rails (~> 2.10.1)
   sass-rails
   shutterbug (~> 0.0.10)
+  sketchily!
   sqlite3
   therubyracer
   turbo-sprockets-rails3
