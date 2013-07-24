@@ -1,6 +1,6 @@
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
-@import "project/fonts";
+@import "project/has-ngs_fonts";
 
 
 // *********************************************
@@ -31,7 +31,7 @@
 // *********************************************
 
 a     {   text-decoration: none; color: inherit; }
-b, strong  { font-weight: bold; font-family: $lato-bold;  }
+b, strong  { font-weight: bold; font-family: $helv-bold;  }
 em    { font-style: italic; }
 
 header,
@@ -75,7 +75,7 @@ footer {
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
   font-size: 15px;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   padding: 9px 13px;
   background: $color1;
   background-image: -webkit-linear-gradient( top, $color1, $color2);
@@ -123,7 +123,7 @@ footer {
 .activity-mod {
   margin-bottom: 26px;
   position: relative;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
 }
 
 // Site header
@@ -200,6 +200,7 @@ footer {
       @include ui-grid-2(50%, 50%, 5%);
       background-color: #414546;
       height: 50px;
+      @include border-radius(2px);
 }
 
 ul.nav-menu-top {
@@ -369,11 +370,11 @@ ul.nav-menu-top {
 
 // Headline block
 .content-hdr {
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   margin-bottom: 30px;
 
   .h2 {
-    // font-family: $lato-light;
+    // font-family: $helv-light;
     font-size: 36px;
     // font-weight: normal;
     letter-spacing: -1px;
@@ -387,7 +388,7 @@ ul.nav-menu-top {
 .intro-mod {
   font-size: 16px;
   line-height: 1.45em;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   margin-bottom: 39px;
 
  .h4 {
@@ -519,7 +520,7 @@ ul.nav-menu-top {
   clear: both;
 
   .h5 {
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     font-weight: normal;
     position: relative;
     color: #fff;
@@ -649,7 +650,7 @@ ul.nav-menu-top {
     width: 100%;
     padding: 16px;
     border: 1px solid $black-15;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     @include border-radius(8px);
   }
 
@@ -735,7 +736,7 @@ input:disabled {
 .sidebar-mod {
   position: fixed;
   top: 20%;
-  font-family: $lato-light;
+  font-family: $helv-light;
   text-align: left;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -799,7 +800,7 @@ input:disabled {
 
   .h5 {
     // text-transform: uppercase;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     text-transform: none;
     color: #fff;
     font-size: 14px;
@@ -811,7 +812,7 @@ input:disabled {
 
 .sidebar-bd {
   padding: 30px 30px 30px 105px;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   font-size: 16px;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -820,7 +821,7 @@ input:disabled {
 
   .h4 {
     font-size: 24px;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     font-weight: 400;
     margin-bottom: 14px;
   }
@@ -1029,7 +1030,7 @@ footer {
     margin-bottom: 13px;
     color: $black-75;
     @include lt-txt-shadow(#fff);
-    font-family: $lato-reg;
+    font-family: $helv-reg;
 
     &:last-child {
       margin-bottom: 0;
