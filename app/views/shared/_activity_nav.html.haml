@@ -5,7 +5,7 @@
       - if @sequence
         - @sequence.lightweight_activities_sequences.each do |las|
           - activity = las.lightweight_activity
-          %li.activity
+          %li.activity{ :class => @activity == activity ? 'active' : '' }
             = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
             - if @activity == activity
               %ul.pages.in-sequence
