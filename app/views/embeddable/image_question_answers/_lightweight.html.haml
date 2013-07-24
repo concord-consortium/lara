@@ -23,7 +23,7 @@
           %td
             .image_block
               %img.snapshot_image
-              = f.sketchily :annotation, :width => 600, :height => 400
+              = f.sketchily :annotation, :width => 600, :height => 400, :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true
               .under_image
                 %button.button.image_reset_button{:type =>'button'}
                   %i.icon-undo.btn
