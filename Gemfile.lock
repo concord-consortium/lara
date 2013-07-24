@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/concord-consortium/sketchily.git
-  revision: 09d019e2ad10916aeaff0d9874cb24ca327eaa73
+  revision: 0e33ccdf68605875ea3c582e756c79c65558bdc8
+  branch: concord
   specs:
     sketchily (1.5.0)
       jquery-rails
@@ -326,7 +327,7 @@ GEM
       rubyzip
       websocket (~> 1.0.4)
     sexp_processor (4.2.1)
-    shutterbug (0.0.10)
+    shutterbug (0.0.11)
       rack
     slim (1.3.9)
       temple (~> 0.6.3)
@@ -411,7 +412,7 @@ DEPENDENCIES
   rspec (~> 2.10.0)
   rspec-rails (~> 2.10.1)
   sass-rails
-  shutterbug (~> 0.0.10)
+  shutterbug (~> 0.0.11)
   sketchily!
   sqlite3
   therubyracer
