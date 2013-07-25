@@ -184,7 +184,7 @@ describe LightweightActivitiesController do
       it 'should assign an activity and return success' do
         act
         get :edit, {:id => act.id}
-        
+
         assigns(:activity).should_not be_nil
         assigns(:activity).should == act
         response.should be_success
@@ -362,19 +362,30 @@ describe LightweightActivitiesController do
   end
 
   describe "#publish" do
+    let(:act_one) do
+      LightweightActivity.create!(:name => 'Activity One',
+                                  :description => 'Activity One Description',
+                                  :publication_status => 'public')
+    end
+    let(:good_body) { '{"type":"Activity","name":"Activity One","description":"Activity One Description","url":"http://test.host/activities/4","create_url":"http://test.host/activities/4","sections":[{"name":"Activity One Section","pages":[]}]}' }
+
     before(:each) do
       @url = controller.portal_url
       stub_request(:post, @url)
     end
 
     it "should call 'publish!' on the activity" do
-      get :publish, {:id => act.id }
+      get :publish, {:id => act_one.id }
       act.publication_status.should == 'public'
     end
 
+    it "should attempt to publish to the correct portal endpoint" do
+      @url.should == "#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2"
+    end
+
     it "should attempt to publish to the portal" do
-      get :publish, {:id => act.id }
-      WebMock.should have_requested(:post, @url)
+      get :publish, {:id => act_one.id }
+      WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
     end
   end
 

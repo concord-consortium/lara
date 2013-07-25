@@ -10,7 +10,7 @@ describe SequencesController do
   def valid_attributes
     {}
   end
-  
+
   before(:each) do
     # We're testing access control in spec/models/user_spec.rb, so for this
     # suite we use a user with global permissions
@@ -202,6 +202,25 @@ describe SequencesController do
     it "redirects to the sequences list" do
       delete :destroy, {:id => sequence.to_param}
       response.should redirect_to(sequences_url)
+    end
+  end
+
+  describe "#publish" do
+    let(:seq_one) { Sequence.create!(:title => 'Sequence One',:description => 'Sequence One Description') }
+    let(:good_body) {'{"type":"Sequence","name":"Sequence One","description":"Sequence One Description","url":"http://test.host/sequences/1","create_url":"http://test.host/sequences/1","activities":[]}' }
+
+    before(:each) do
+      @url = controller.portal_url
+      stub_request(:post, @url)
+    end
+
+    it "should attempt to publish to the correct portal endpoint" do
+      @url.should == "#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2"
+    end
+
+    it "should attempt to publish to the portal" do
+      get :publish, {:id => seq_one.id }
+      WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
     end
   end
 

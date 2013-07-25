@@ -18,4 +18,17 @@ class Sequence < ActiveRecord::Base
   def activities
     lightweight_activities
   end
+
+  def serialize_for_portal(local_url)
+    data = {
+      'type' => "Sequence",
+      'name' => self.title,
+      'description' => self.description,
+      "url" => local_url,
+      "create_url" => local_url
+    }
+    data['activities'] = self.activities.map(&:serialize_for_portal)
+    data
+  end
+
 end
