@@ -73,6 +73,7 @@ footer {
 .extra-pad { padding-top: 70px; }
 
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
+/* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
   font-size: 15px;
   font-family: $helv-reg;
@@ -161,7 +162,7 @@ footer {
   position: relative;
   width: 100%;
   height: 50px;
-  color: #fff;
+  color: white;
   @extend .cf;
   @include trans;
 
@@ -188,7 +189,9 @@ footer {
     font-size: 18px;
     font-weight: normal;
     line-height: 36px;
-    color: #fff;
+    color: white;
+    margin-top: 8px;
+    margin-left: 180px;
     &:before {
       content: 'ACTIVITY: '
     }
@@ -198,7 +201,7 @@ footer {
 // This controlls the layout of the nav
 .l-nav {
       @include ui-grid-2(60%, 40%, 5%);
-      background-color: #414546;
+      background-color: $capecod;
       height: 50px;
       @include border-radius(2px);
 }
@@ -210,12 +213,46 @@ footer {
   margin-left: 30px;
   font-size: 18px;
   padding-top: 15px;
-  border-right: 2px solid #fff;
+  border-right: 2px solid white;
   float: left;
+  /* TODO: down-arrow glyph */
+  a#menu-trigger {
+    cursor: pointer;
+  }
 }
+
 ul.nav-menu-top {
   /* This is the drop-down navigation menu */
   display: none;
+  background-color: white;
+  border: 1px solid $emperor;
+  width: 450px;
+  position: relative;
+  top: 15px;
+  left: -20px;
+  color: $emperor;
+  padding: 8px 10px;
+  /* TODO: The indicator bump in the border - how is that done? */
+  li.activity {
+    /* TODO: These blocks should have drop shadows */
+    line-height: 33px;
+    background-color: $alabaster;
+    padding: 10px;
+    border-width: 0 2px 2px 0;
+    border-color: $black-15;
+    a {
+    }
+    a:before {
+      content: 'ACTIVITY: ';
+    }
+    li.page {
+      font-size: 0.8em;
+      line-height: 1.3em;
+      a:before {
+        content: '';
+      };
+    }
+  }
 }
 
 .activity-nav {
@@ -268,8 +305,8 @@ ul.nav-menu-top {
 
   .pagination-link {
     margin-top: 12px;
-    background-color: #f4f4f4;
-    color: #8d8d8d;
+    background-color: $wildsand;
+    color: $gray;
     width: 24px;
     height: 24px;
     @include border-radius(13px);
@@ -285,7 +322,7 @@ ul.nav-menu-top {
     } */
 
     &.selected {
-      background: #64c500;
+      background: $seagreen;
       color: #fff;
       height: 28px;
       width: 28px;
@@ -389,6 +426,7 @@ ul.nav-menu-top {
     // font-weight: normal;
     letter-spacing: -1px;
     color: $drk-orange;
+    display: none;
   }
 }
 

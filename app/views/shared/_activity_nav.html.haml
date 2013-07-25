@@ -1,6 +1,7 @@
 .activity-nav-logo.ui-block-1
   .nav-menu
-    MENU
+    %a{name: 'menu-trigger', id: 'menu-trigger'} MENU
+    -# TODO: That 'MENU' needs a glyph
     %ul.nav-menu-top
       - if @sequence
         - @sequence.lightweight_activities_sequences.each do |las|
@@ -8,11 +9,13 @@
           %li.activity{ :class => @activity == activity ? 'active' : '' }
             = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
             - if @activity == activity
-              %ul.pages.in-sequence
+              %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
       - else
-        %ul.pages.in-activity
-          = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
+        %li.activity
+          = link_to "#{@activity.name}", activity_path(@activity)
+          %ol.pages.in-activity
+            = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
 
   %h2.h2
     = @activity.name
