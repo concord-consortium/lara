@@ -97,7 +97,8 @@ class LightweightActivity < ActiveRecord::Base
     # N.B. the duplicate hasn't been saved yet
   end
 
-  def serialize_for_portal(local_url)
+  def serialize_for_portal(host)
+    local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
     data = {
       'type' => "Activity",
       "name" => self.name,

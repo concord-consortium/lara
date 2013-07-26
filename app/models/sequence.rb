@@ -19,7 +19,8 @@ class Sequence < ActiveRecord::Base
     lightweight_activities
   end
 
-  def serialize_for_portal(local_url)
+  def serialize_for_portal(host)
+    local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {
       'type' => "Sequence",
       'name' => self.title,
@@ -27,7 +28,7 @@ class Sequence < ActiveRecord::Base
       "url" => local_url,
       "create_url" => local_url
     }
-    data['activities'] = self.activities.map(&:serialize_for_portal)
+    data['activities'] = self.activities.map{ |a| a.serialize_for_portal(host) }
     data
   end
 

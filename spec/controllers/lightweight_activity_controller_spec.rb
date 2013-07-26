@@ -367,7 +367,9 @@ describe LightweightActivitiesController do
                                   :description => 'Activity One Description',
                                   :publication_status => 'public')
     end
-    let(:good_body) { '{"type":"Activity","name":"Activity One","description":"Activity One Description","url":"http://test.host/activities/4","create_url":"http://test.host/activities/4","sections":[{"name":"Activity One Section","pages":[]}]}' }
+    #let(:good_body) { act_one.serialize_for_portal('http://test.host').to_json }
+
+    let(:good_body) { '{"type":"Activity","name":"Activity One","description":"Activity One Description","url":"http://test.host/activities/1","create_url":"http://test.host/activities/1","sections":[{"name":"Activity One Section","pages":[]}]}' }
 
     before(:each) do
       @url = controller.portal_url
