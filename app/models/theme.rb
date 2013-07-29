@@ -1,6 +1,6 @@
 class Theme < ActiveRecord::Base
   DefaultName = "Default"
-  attr_accessible :name, :footer, :css_file
+  attr_accessible :name, :css_file
 
   protected
   def self.create_default
