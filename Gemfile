@@ -26,9 +26,9 @@ gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
 gem 'exception_notification'
-gem 'shutterbug', '~>0.0.9'
+gem 'shutterbug', '~>0.0.10'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
-gem 'rack-environmental'
+gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git"
 
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.

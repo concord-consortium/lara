@@ -203,6 +203,13 @@ footer {
       @include ui-grid-2(50%, 50%, 5%);
 }
 
+div.nav-menu,
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  /* MW and default don't use it */
+  display: none;
+}
+
 .activity-nav {
   margin-top: 8px;
   position: relative;

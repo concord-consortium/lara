@@ -21,6 +21,7 @@ describe InteractivePagesController do
   let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
+  let (:sequence) { FactoryGirl.create(:sequence) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -54,6 +55,14 @@ describe InteractivePagesController do
       get :show, :id => page1.id, :response_key => ar.key
       assigns(:project).should_not be_nil
       assigns(:theme).should_not be_nil
+    end
+
+    it 'assigns a sequence if one is in the run' do
+      page
+      ar.sequence = sequence
+      ar.save
+      get :show, :id => page1.id, :response_key => ar.key
+      assigns(:sequence).should == sequence
     end
 
     it 'renders the page if it exists' do

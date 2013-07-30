@@ -7,6 +7,7 @@ describe LightweightActivitiesController do
   let (:private_act) { FactoryGirl.create(:activity)}
   let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
   let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  let (:sequence) { FactoryGirl.create(:sequence) }
 
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
@@ -46,6 +47,37 @@ describe LightweightActivitiesController do
       get :show, :id => act.id
       assigns(:project).should_not be_nil
       assigns(:theme).should_not be_nil
+    end
+
+    describe 'when it is part of a sequence' do
+      before(:each) do
+        # Add the activity to the sequence
+        act.sequences = [sequence]
+        act.save
+      end
+
+      it 'assigns a sequence if one is in the URL' do
+        page
+        get :show, :id => act.id, :sequence_id => sequence.id
+        assigns(:sequence).should_not be_nil
+      end
+
+      it 'assigns a sequence if one is in the run' do
+        page
+        ar.sequence = sequence
+        ar.save
+        get :show, :id => act.id, :response_key => ar.key
+        assigns(:sequence).should == sequence
+      end
+
+      it 'assigns the sequence from the URL to the run' do
+        page
+        ar.sequence = nil
+        ar.save
+        ar.reload
+        get :show, :id => act.id, :response_key => ar.key, :sequence_id => sequence.id
+        ar.reload.sequence_id.should be(sequence.id)
+      end
     end
 
     it 'renders the activity if it exists and is public' do

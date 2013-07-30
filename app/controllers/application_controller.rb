@@ -37,7 +37,8 @@ class ApplicationController < ActionController::Base
       @theme = @sequence.theme
     elsif defined?(@activity) && @activity.theme
       @theme = @activity.theme
-    # elsif project setting
+    elsif defined?(@project) && @project.theme
+      @theme = @project.theme
     else
       @theme = Theme.default
     end
@@ -57,6 +58,17 @@ class ApplicationController < ActionController::Base
       @project = Project.default
     end
     @project
+  end
+
+  def set_sequence
+    if params[:sequence_id]
+      @sequence = Sequence.find(params[:sequence_id])
+    end
+    if @sequence && @run
+      @run.sequence = @sequence
+    elsif @run && @run.sequence
+      @sequence ||= @run.sequence
+    end
   end
 
   protected

@@ -1,6 +1,6 @@
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
-@import "project/fonts";
+@import "project/has-ngs_fonts";
 
 
 // *********************************************
@@ -31,21 +31,34 @@
 // *********************************************
 
 a     {   text-decoration: none; color: inherit; }
-b, strong  { font-weight: bold; font-family: $lato-bold;  }
+b, strong  { font-weight: bold; font-family: $helv-bold;  }
 em    { font-style: italic; }
 
 header,
 footer {
   margin: 0 0 26px;
-  background-color: #b7e1df;
   color: white;
+}
+
+body {
+  background-size: 100%;
 }
 
 footer {
   margin-bottom: 0;
   padding: 26px;
+
+  div.site-width {
+    background-color: #d0e4ec;
+    color: $emperor;
+    padding: 5px;
+  }
 }
 
+div.activity-mod>div.site-width {
+  background-color: rgba(255,255,255,0.7);
+  padding: 5px;
+}
 
 // *********************************************
 //  2. Molecular Workbench Helpers
@@ -73,9 +86,10 @@ footer {
 .extra-pad { padding-top: 70px; }
 
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
+/* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
   font-size: 15px;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   padding: 9px 13px;
   background: $color1;
   background-image: -webkit-linear-gradient( top, $color1, $color2);
@@ -123,7 +137,7 @@ footer {
 .activity-mod {
   margin-bottom: 26px;
   position: relative;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
 }
 
 // Site header
@@ -160,12 +174,13 @@ footer {
   margin: 0 0 40px;
   position: relative;
   width: 100%;
-  color: #fff;
+  height: 50px;
+  color: white;
   @extend .cf;
   @include trans;
 
 
-  &.fixed {
+/*  &.fixed {
     position: fixed;
     top: 0;
     background-color: lighten($lt-blue, 15%);
@@ -173,6 +188,7 @@ footer {
     padding: 10px 6px;
     z-index: 9999;
   }
+*/
 }
 
 .activity-nav-logo {
@@ -183,53 +199,82 @@ footer {
   }
 
   .h2 {
-    font-family: $lato-reg;
     font-size: 18px;
     font-weight: normal;
-    color: $drk-orange;
-    opacity: 0;
     line-height: 36px;
-    opacity: 0;
-    @include trans;
-
-    &.visible {
-      opacity: 1;
+    color: white;
+    margin-top: 8px;
+    margin-left: 180px;
+    &:before {
+      content: 'ACTIVITY: '
     }
   }
 }
 
 // This controlls the layout of the nav
 .l-nav {
-      @include ui-grid-2(50%, 50%, 5%);
+      @include ui-grid-2(60%, 40%, 5%);
+      background-color: $capecod;
+      height: 50px;
+      @include border-radius(2px);
+}
+
+.nav-menu {
+  height: 50px;
+  width: 130px;
+  font-family: $helv-light;
+  margin-left: 30px;
+  font-size: 18px;
+  padding-top: 15px;
+  border-right: 2px solid white;
+  float: left;
+  /* TODO: down-arrow glyph */
+  a#menu-trigger {
+    cursor: pointer;
+  }
+}
+
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  display: none;
+  background-color: white;
+  border: 1px solid $emperor;
+  width: 450px;
+  position: relative;
+  top: 15px;
+  left: -20px;
+  color: $emperor;
+  padding: 8px 10px;
+  /* TODO: The indicator bump in the border - how is that done? */
+  li.activity {
+    /* TODO: These blocks should have drop shadows */
+    line-height: 33px;
+    background-color: $alabaster;
+    padding: 10px;
+    border-width: 0 2px 2px 0;
+    border-color: $black-15;
+    a {
+    }
+    a:before {
+      content: 'ACTIVITY: ';
+    }
+    li.page {
+      font-size: 0.8em;
+      line-height: 1.3em;
+      a:before {
+        content: '';
+      };
+    }
+  }
 }
 
 .activity-nav {
-  margin-top: 8px;
   position: relative;
   @extend .cf;
 
   .prev,
   .next {
-    background-color: lighten($med-blue, 5%);
-    border: 1px solid $med-blue;
-    @include border-radius(3px);
-    line-height: 22px;
-    text-align: center;
-    margin-left: 8px;
-    width: 40px;
-    @include trans;
-    height: 24px;
-    background-repeat: no-repeat;
-    background-size: 40%;
-    background-position: 48% 50%;
-
-    &:hover {
-      background-color: darken($med-blue, 5%);
-    }
-
-    &:active {
-      background-color: darken($med-blue, 20%);
-    }
+    display: none;
   }
 
   .prev {
@@ -258,10 +303,11 @@ footer {
   @extend .cf;
   text-align: center;
   margin-right: 8px;
+  height: 50px;
 }
 
 .pagination-item {
-  margin-left: 6px;
+  margin-left: -2px;
   @include border-radius(10px);
   text-align: center;
   display: inline-block;
@@ -271,39 +317,36 @@ footer {
   }
 
   .pagination-link {
-    background-color: lighten($med-blue, 27%);
-    color: $med-blue;
-    @include border-radius(3px);
-    @include lt-txt-shadow(#fff);
-    border: 1px solid lighten($med-blue, 18%);
-    padding: 3px 5px;
+    margin-top: 12px;
+    background-color: $wildsand;
+    color: $gray;
+    width: 24px;
+    height: 24px;
+    @include border-radius(13px);
+    border: 3px solid #616768;
+    padding-top: 1px;
     display: block;
     @include trans;
 
-    &:hover {
+/*    &:hover {
       background: lighten($med-blue, 5%);
       @include drk-txt-shadow($med-blue);
       color: #fff;
-    }
+    } */
 
     &.selected {
-      background: darken($med-blue, 12%);
+      background: $seagreen;
       color: #fff;
-      border: 1px solid darken($med-blue, 10%);
-      @include drk-txt-shadow($med-blue);
+      height: 28px;
+      width: 28px;
+      padding-top: 3px;
+      @include border-radius(14px);
+      @include drk-txt-shadow(#64c500);
     }
   } // end .pagination-link
 
   &.home-link {
-    text-indent: -9999px;
-    .pagination-link {
-      background-image: url('/assets/home_blue.png');
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRDQ4MDg2NEEwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRDQ4MDg2M0EwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDg4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4bkDIfAAADmElEQVR42uyYS2gTURSGb5JJMpOZSWaSSWP6CKIBxRetIChSXOiiIiLShaigILhxowii4kIEtaKCLxRBBAUFFyoiogtXFqmIFRUtVoUuxJ0P2iYmtbTG/4QLvlrtI8nMNPfARzOTdDL55t57zrmeueduMAdGI2gDfrAXPGEODa/D7qcBXARPNTPaopmx5Xj9GFwHs4XA0SMMDoI3asTYYtWnvLKqMVlVGV57VMNsxXsvwQVQ7ySBHpunME3RreCAooetkB5mHu/ozzSX6We5vt48Xp4FR8Dnaha4FhyVNS2tqDrz+f1j+qdCocDyJLK/rxeHx8BpkK2mKbwYdASU0M2IVZPWjOiY5RWfuMfDQuEIiybrDIzaQzj1FmwDgakuMM2TQYcejS0Jxyzml+WJ37jPx7BeMjORTGIU05TuAhsqPSgq8WUWn2ZdasRspaQQDKkluziNXhrFkXgijetepQwOVlZKoFTGaytgO9iNKWdQgsD8K182CgaLBEOhxoFs9u7gQP4BryEfuW0E0jU3gW5F19uiyVqD1qxyyvs1ArLCwlacYZlYJgWCHTh1C8xxi8AVoBNT6bJRk0hhymKtkpgdQcsE7gHT21zDa8hLIOVUgfPBPX9Qvo/k0ISnz/D0HVHoyppOxbgXCWczDt+BE3xddoTAWt56PcdC3hKJ1zCUJ47sWVHysFhdQwDLyQ4c9oD9QLOrkKYv3gN24oaU4hrnovg+PMzy2QwV5B95C3keDFZiBEq8aO3BE90Xq613nbzfashpybii6aeoB+eJz1tOgdR6vaKiFcVrnG7gX32rG8In+ZlqmJRsplPiw6kXYHWpBVLr1c5br1njbb3cEJTwKPGh/JmHMug2Tj0EzZMVSK3XNd56NU+29XJD/KwhraUoyttx6g5YMF6BFk/11HqtK3Xr5YZAN0OtIdPM6CocPgNXwIz/CaTWaxfVSpTqKeWjk2DVHLSpy2vIjTh8Dc6AxJ9lDElcDw5DWEqmvTlJYtUew0NDf537lvtK+5C093gSHAd9ZKoTNNEH8plMkZEreq2461ENke39wgay2Z4R3sqRR77bswi0kcCFY7koLlioFoH4rfRnpl27MVUVQqAQKAQKgUKgCCFQCBQChUAREwjbdg14v1mSa9nZp9s2Ark8Tyko1YMQU1gIFAKFQBFCoBAoBAqBIoRAIVAIFAJFCIFCoBA4xWNcG6qfPrx37A+x695+CDAAyz21HWnm6YoAAAAASUVORK5CYII=');
-      background-repeat: no-repeat;
-      background-size: 80%;
-      background-position: 50% 50%;
-      width: 24px;
-    }
+    display: none;
   } // end .home-link
 
   &.home-link {
@@ -387,15 +430,16 @@ footer {
 
 // Headline block
 .content-hdr {
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   margin-bottom: 30px;
 
   .h2 {
-    // font-family: $lato-light;
+    // font-family: $helv-light;
     font-size: 36px;
     // font-weight: normal;
     letter-spacing: -1px;
     color: $drk-orange;
+    display: none;
   }
 }
 
@@ -405,7 +449,7 @@ footer {
 .intro-mod {
   font-size: 16px;
   line-height: 1.45em;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   margin-bottom: 39px;
 
  .h4 {
@@ -537,7 +581,7 @@ footer {
   clear: both;
 
   .h5 {
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     font-weight: normal;
     position: relative;
     color: #fff;
@@ -667,7 +711,7 @@ footer {
     width: 100%;
     padding: 16px;
     border: 1px solid $black-15;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     @include border-radius(8px);
   }
 
@@ -753,7 +797,7 @@ input:disabled {
 .sidebar-mod {
   position: fixed;
   top: 20%;
-  font-family: $lato-light;
+  font-family: $helv-light;
   text-align: left;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -817,7 +861,7 @@ input:disabled {
 
   .h5 {
     // text-transform: uppercase;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     text-transform: none;
     color: #fff;
     font-size: 14px;
@@ -829,7 +873,7 @@ input:disabled {
 
 .sidebar-bd {
   padding: 30px 30px 30px 105px;
-  font-family: $lato-reg;
+  font-family: $helv-reg;
   font-size: 16px;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -838,7 +882,7 @@ input:disabled {
 
   .h4 {
     font-size: 24px;
-    font-family: $lato-reg;
+    font-family: $helv-reg;
     font-weight: 400;
     margin-bottom: 14px;
   }
@@ -1047,7 +1091,7 @@ footer {
     margin-bottom: 13px;
     color: $black-75;
     @include lt-txt-shadow(#fff);
-    font-family: $lato-reg;
+    font-family: $helv-reg;
 
     &:last-child {
       margin-bottom: 0;

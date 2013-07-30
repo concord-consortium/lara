@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130709144032) do
+ActiveRecord::Schema.define(:version => 20130729134104) do
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20130709144032) do
     t.boolean  "custom",              :default => false
     t.boolean  "enable_check_answer", :default => true
     t.boolean  "multi_answer",        :default => false
+    t.boolean  "show_as_menu",        :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -181,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20130709144032) do
     t.text     "footer"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "theme_id"
   end
 
   create_table "runs", :force => true do |t|
@@ -193,6 +195,7 @@ ActiveRecord::Schema.define(:version => 20130709144032) do
     t.string   "remote_id"
     t.integer  "page_id",         :default => 0
     t.string   "remote_endpoint"
+    t.integer  "sequence_id"
   end
 
   create_table "sequences", :force => true do |t|

@@ -1,5 +1,5 @@
 # Whitelist config options for SMTP
-CONFIG_OPTIONS = %w(default_options logger smtp_options sendmail_settings file_settings raise_delivery_errors delivery_method perform_deliveries deliveries)
+CONFIG_OPTIONS = %w(default_options logger smtp_settings sendmail_settings file_settings raise_delivery_errors delivery_method perform_deliveries deliveries)
 
 if File.exists?("#{::Rails.root.to_s}/config/mailer.yml") || ::Rails.env == "test" || ::Rails.env == "cucumber"
   require "action_mailer"

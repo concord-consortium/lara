@@ -8,14 +8,17 @@
       :javascript
         $("a[id^=edit-embed-mc-#{embeddable.id}]").click()
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
-  - embeddable.choices.each do |choice|
-    - control_name = "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"
-    - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"
-    %label{:for => control_id}
-      - if embeddable.multi_answer
-        = check_box_tag control_name, choice.id, false, :id => control_id
-      - else
-        %input{:type => 'radio', :name => control_name, :id => control_id, :value => control_id}
-      = choice.choice
+  - if embeddable.show_as_menu
+    = select embeddable, :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', embeddable.answers.last), { :include_blank => "Pick one" }
+  - else
+    - embeddable.choices.each do |choice|
+      - control_name = "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"
+      - control_id = "embeddable__#{choice.class.to_s.demodulize.underscore}_#{choice.id}"
+      %label{:for => control_id}
+        - if embeddable.multi_answer
+          = check_box_tag control_name, choice.id, false, :id => control_id
+        - else
+          %input{:type => 'radio', :name => control_name, :id => control_id, :value => control_id}
+        = choice.choice
   - if embeddable.enable_check_answer
     %button= "Check Answer"
