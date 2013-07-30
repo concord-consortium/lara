@@ -22,7 +22,7 @@ module OmniAuth
         }
       end
       def raw_info
-        @raw_info ||= access_token.get("/auth/concord_id/user.json?oauth_token=#{access_token.token}").parsed
+        @raw_info ||= access_token.get("/auth/concord_id/user.json").parsed
       end
     end
   end
