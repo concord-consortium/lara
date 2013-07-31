@@ -235,7 +235,7 @@ ul.nav-menu-top {
   /* This is the drop-down navigation menu */
   display: none;
   background-color: white;
-  border: 1px solid $emperor;
+  border: 1px solid $black-15;
   width: 450px;
   position: relative;
   top: 15px;
@@ -243,7 +243,7 @@ ul.nav-menu-top {
   color: $emperor;
   padding: 8px 10px;
   z-index: 10; /* Ensure this appears above content from the page */
-  /* TODO: The indicator bump in the border - how is that done? */
+  /* TODO: Try http://jonrohan.me/guide/css/creating-triangles-in-css/ to do the indicator bump? */
   li.activity {
     line-height: 33px;
     background-color: $alabaster;
