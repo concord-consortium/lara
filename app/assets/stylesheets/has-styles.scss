@@ -82,9 +82,6 @@ div.activity-mod>div.site-width {
 // Clearfix
 .cf { @include pie-clearfix; }
 
-// Extra padding applied via JS when nav is in fixed position
-.extra-pad { padding-top: 70px; }
-
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
 /* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
