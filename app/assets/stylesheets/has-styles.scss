@@ -242,17 +242,33 @@ ul.nav-menu-top {
   width: 450px;
   position: relative;
   top: 15px;
-  left: -20px;
+  left: 0px;
   color: $emperor;
   padding: 8px 10px;
+  z-index: 10; /* Ensure this appears above content from the page */
   /* TODO: The indicator bump in the border - how is that done? */
   li.activity {
-    /* TODO: These blocks should have drop shadows */
     line-height: 33px;
     background-color: $alabaster;
     padding: 10px;
+    margin: 10px 5px;
     border-width: 0 2px 2px 0;
     border-color: $black-15;
+    border-style: solid;
+    &.active {
+      >a {
+        display: block;
+        width: 100%;
+        @include border-radius(2px);
+        padding: 10px;
+        margin: 0 0 10px 0;
+        color: white;
+        background-color: $shakespeare;
+      }
+      li.page {
+        color: $shakespeare;
+      }
+    }
     a {
     }
     a:before {
@@ -264,6 +280,9 @@ ul.nav-menu-top {
       a:before {
         content: '';
       };
+    }
+    ol.pages {
+      margin-left: 3em;
     }
   }
 }
@@ -342,6 +361,7 @@ ul.nav-menu-top {
       padding-top: 3px;
       @include border-radius(14px);
       @include drk-txt-shadow(#64c500);
+      /* TODO: gradient? */
     }
   } // end .pagination-link
 
