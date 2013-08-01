@@ -231,7 +231,7 @@ div.activity-mod>div.site-width {
   }
 }
 
-ul.nav-menu-top {
+div.nav-menu-top {
   /* This is the drop-down navigation menu */
   display: none;
   background-color: white;
@@ -243,7 +243,7 @@ ul.nav-menu-top {
   color: $emperor;
   padding: 8px 10px;
   z-index: 10; /* Ensure this appears above content from the page */
-  /* TODO: Try http://jonrohan.me/guide/css/creating-triangles-in-css/ to do the indicator bump? */
+  margin-top: 10px;
   li.activity {
     line-height: 33px;
     background-color: $alabaster;
@@ -283,6 +283,31 @@ ul.nav-menu-top {
     ol.pages {
       margin-left: 3em;
     }
+  }
+  /* The arrow at the top of the menu */
+  /* Adapted from http://jonrohan.me/guide/css/creating-triangles-in-css/ */
+  /* Basically it's two divs contorted to present triangles with the bottom borders */
+  /* Then overlapped so the upper one (white) covers all but the "border" of the lower */
+  /* one (gray). */
+  .nav-menu-arrow-border {
+    border-color: transparent transparent $black-15 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -20px;
+    left: 55px;
+  }
+  .nav-menu-arrow {
+    border-color: transparent transparent $black-15 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -18px;
+    left: 55px;
   }
 }
 

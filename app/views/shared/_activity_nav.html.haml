@@ -2,20 +2,23 @@
   .nav-menu
     %a{name: 'menu-trigger', id: 'menu-trigger'} MENU
     -# TODO: That 'MENU' needs a glyph
-    %ul.nav-menu-top
-      - if @sequence
-        - @sequence.lightweight_activities_sequences.each do |las|
-          - activity = las.lightweight_activity
-          %li.activity{ :class => @activity == activity ? 'active' : '' }
-            = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
-            - if @activity == activity
-              %ol.pages.in-sequence
-                = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
-      - else
-        %li.activity
-          = link_to "#{@activity.name}", activity_path(@activity)
-          %ol.pages.in-activity
-            = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
+    .nav-menu-top
+      .nav-menu-arrow-border
+      .nav-menu-arrow
+      %ul
+        - if @sequence
+          - @sequence.lightweight_activities_sequences.each do |las|
+            - activity = las.lightweight_activity
+            %li.activity{ :class => @activity == activity ? 'active' : '' }
+              = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
+              - if @activity == activity
+                %ol.pages.in-sequence
+                  = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
+        - else
+          %li.activity
+            = link_to "#{@activity.name}", activity_path(@activity)
+            %ol.pages.in-activity
+              = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
 
   %h2.h2
     = @activity.name

@@ -18,7 +18,7 @@ describe('MenuControl', function () {
 
     it('has a jQuery object attribute "menu"', function () {
         expect(menu.menu).toBeDefined();
-        expect(menu.menu).toBe('ul.nav-menu-top');
+        expect(menu.menu).toBe('div.nav-menu-top');
     });
 
     it('calls `toggle()` on the menu when trigger is clicked', function () {

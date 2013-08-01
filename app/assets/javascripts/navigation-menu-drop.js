@@ -3,7 +3,7 @@
 
 var MenuControl = function (object) {
     this.trigger = object.find('a#menu-trigger');
-    this.menu = object.find('ul.nav-menu-top');
+    this.menu = object.find('div.nav-menu-top');
     var menu = this.menu;
     this.trigger.click(function () {
         menu.toggle();
