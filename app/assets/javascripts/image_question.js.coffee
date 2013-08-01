@@ -17,7 +17,7 @@ class image_question
       modal: true
     })
 
-    @shutterbug       = new Shutterbug(".interactive-mod > *", null,(image_tag)=>
+    @shutterbug       = new Shutterbug(".interactive-mod > *:first-child", null,(image_tag)=>
       @set_image(image_tag)
     ,@image_question_id)
 
