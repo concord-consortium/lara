@@ -107,7 +107,7 @@ EmbeddableCarousel.prototype.adjustSize = function () {
     } else {
         // If not full-width, set height of carousel to height of interactive box
         newHeight = $('.interactive-mod').height();
-        if ($('.content-mod').hasClass('l-6040') || $('.content-mod').hasClass('r-6040')) {
+        if ($('.content-mod').hasClass('l-6040') || $('.content-mod').hasClass('r-4060')) {
             // If 60-40, set width of carousel to Y
             newWidth = 374;
         } else {
