@@ -10,7 +10,7 @@
     :html => {:'data-type' => 'json'} do |f|
     %fieldset.options.live-update
       - if embeddable.show_as_menu
-        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', embeddable.answers.last), { :include_blank => "Pick one" }
+        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => "Pick one" }, { :data => {:button_id => check_button_string}, :class => 'live_submit' }
       - else
         - embeddable.choices.each do |choice|
           %label{ :for => "embeddable_multiple_choice_answer_answers_#{choice.id}" }
