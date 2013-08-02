@@ -7,6 +7,7 @@ var carousel;
 var EmbeddableCarousel = function (element) {
     var self = this;
     this.container = element;
+    this.buttonHeight = this.container.find('.buttons').height();
     // Set up the carousel
     this.container.jcarousel({
         'list': '.embeddables',
@@ -34,7 +35,7 @@ var EmbeddableCarousel = function (element) {
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
-    var embeddableHeight = newHeight - 63;
+    var embeddableHeight = newHeight - this.buttonHeight;
     $('.question').css('max-height', embeddableHeight + 'px');
 };
 
@@ -99,7 +100,7 @@ EmbeddableCarousel.prototype.adjustSize = function () {
         tallest = 0;
         available = $(window).height() - $('.activity-nav-mod').height();
         $('.question').each( function () {
-            tallest = Math.max(tallest, $(this).height() + 63); // 63 = extra height for buttons
+            tallest = Math.max(tallest, $(this).height() + this.buttonHeight);
         });
         newHeight = Math.min(tallest, available);
         // If full-width, set width of carousel to X

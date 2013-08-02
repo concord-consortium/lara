@@ -29,6 +29,10 @@ describe('EmbeddableCarousel', function () {
         expect(carousel.bestWidth).toBeDefined();
     });
 
+    it('has "buttonHeight" attribute', function () {
+        expect(carousel.buttonHeight).toBeDefined();
+    });
+
     it('sets "next" active to begin with', function () {
         expect(carousel.controlNext.find('.button')).not.toHaveAttr('disabled');
     });
@@ -73,7 +77,8 @@ describe('EmbeddableCarousel', function () {
         it('adjusts the height of the container', function () {
             carousel.setHeight(550);
             expect(carousel.container).toHaveCss({height: '550px'});
-            expect($('.question')).toHaveCss({'max-height': '487px'});
+            var targetHeight = 550 - carousel.buttonHeight;
+            expect($('.question')).toHaveCss({'max-height': targetHeight + 'px'});
         });
     });
 
