@@ -734,10 +734,10 @@ fieldset {
       background: 0;
       color: #126eac;
     }
-    .editable button[type=submit] {
+    .editable button.jeditable-submit {
       right: 55px;
     }
-    .editable button[type=submit]:after {
+    .editable button.jeditable-submit:after {
       content: " |";
     }
   }
