@@ -225,7 +225,6 @@ div.activity-mod>div.site-width {
   padding-top: 15px;
   border-right: 2px solid white;
   float: left;
-  /* TODO: down-arrow glyph */
   a#menu-trigger {
     cursor: pointer;
     padding-right: 20px;
@@ -240,7 +239,7 @@ div.activity-mod>div.site-width {
 }
 
 div.nav-menu-top {
-  /* This is the drop-down navigation menu */
+  /* This is the drop-down part of the navigation menu */
   display: none;
   background-color: white;
   border: 1px solid $black-15;
@@ -274,6 +273,9 @@ div.nav-menu-top {
       li.page {
         color: $shakespeare;
       }
+      ol.pages {
+        display: block;
+      }
     }
     >a {
       width: 100%;
@@ -289,7 +291,7 @@ div.nav-menu-top {
         padding-top: 5px;
       }
     }
-    a:before {
+    >a:before {
       content: 'ACTIVITY: ';
     }
     li.page {
@@ -301,6 +303,7 @@ div.nav-menu-top {
     }
     ol.pages {
       margin-left: 3em;
+      display: none;
     }
   }
   /* The arrow at the top of the menu */
