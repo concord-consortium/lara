@@ -23,12 +23,30 @@ var EmbeddableCarousel = function (element) {
     this.controlPrev = $('.jcarousel-prev');
     // Assume we start at the first item
     this.turnOnNext();
+    // Two cases here: one, we have an image which may take a bit to load and thus define
+    // the height of the .interactive-mod which is what we're using to get the height.
+    // Two, we have an iframe or video tag which has already been height-adjusted (or the
+    // image is already loaded and we don't need to wait.)
+	if (($('.interactive-mod img').length > 1) && !$('.interactive-mod img')[0].complete) {
+		// console.log('Deferring setCarouselSize()');
+		$('.interactive-mod img')[0].once('load', function () {
+			// console.log('Running deferred setCarouselSize()');
+			this.setCarouselSize();
+		});
+	} else {
+		// console.log('Size is ready, running setCarouselSize right away');
+		this.setCarouselSize();
+	}
+};
+
+EmbeddableCarousel.prototype.setCarouselSize = function () {
     // Set 'bestHeight' and 'bestWidth' values
     this.adjustSize();
     // Set the carousel to those values and reload it
     this.setHeight(this.bestHeight);
     this.setWidth(this.bestWidth);
-    this.container.jcarousel('reload'); // recalculate scroll values for new dimensions
+	// recalculate scroll values for new dimensions
+    this.container.jcarousel('reload');
 };
 
 // Set the height of the container
