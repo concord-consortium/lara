@@ -14,11 +14,11 @@
     %br
     = f.text_field :title
   .field
-    = f.label :theme
+    = f.label :theme_id, "Theme"
     %br
     = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => "None (inherit from project, or site default)" }
   .field
-    = f.label :project
+    = f.label :project_id, "Project"
     %br
     = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
   .field

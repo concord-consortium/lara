@@ -63,12 +63,14 @@ class ApplicationController < ActionController::Base
   def set_sequence
     if params[:sequence_id]
       @sequence = Sequence.find(params[:sequence_id])
-    end
-    if @sequence && @run
-      @run.sequence = @sequence
+      if @sequence && @run
+        @run.sequence = @sequence
+        @run.save
+      end
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
     end
+    @sequence
   end
 
   protected

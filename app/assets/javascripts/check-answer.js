@@ -27,6 +27,10 @@ var AnswerChecker = function ($question) {
         // Try checkboxes if there are no checked radio buttons
         $answers = $('#' + this.q_id + ' input:checkbox:checked');
     }
+    if ($answers.length === 0) {
+        // Still none? Try a select menu
+        $answers = $('#' + this.q_id + ' option:selected');
+    }
     // Extract the answer value(s)
     values = [];
     $answers.each( function () {
@@ -65,6 +69,11 @@ function addClickHanders() {
 
     // Enable the check-answer button if answered:
     $('input[type=radio], input[type=checkbox]').click(function () {
+        var button_id = $(this).data('button-id');
+        $("#" + button_id).removeAttr('disabled');
+    });
+
+    $('select.live_submit').on('change', function () {
         var button_id = $(this).data('button-id');
         $("#" + button_id).removeAttr('disabled');
     });

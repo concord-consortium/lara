@@ -82,9 +82,6 @@ div.activity-mod>div.site-width {
 // Clearfix
 .cf { @include pie-clearfix; }
 
-// Extra padding applied via JS when nav is in fixed position
-.extra-pad { padding-top: 70px; }
-
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
 /* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
@@ -231,29 +228,66 @@ div.activity-mod>div.site-width {
   /* TODO: down-arrow glyph */
   a#menu-trigger {
     cursor: pointer;
+    padding-right: 20px;
+    background-position: right;
+    background-repeat: no-repeat;
+    i.icon-angle-down {
+      font-size: 15pt;
+      font-weight: bold;
+      margin-left: 3px;
+    }
   }
 }
 
-ul.nav-menu-top {
+div.nav-menu-top {
   /* This is the drop-down navigation menu */
   display: none;
   background-color: white;
-  border: 1px solid $emperor;
+  border: 1px solid $black-15;
   width: 450px;
   position: relative;
-  top: 15px;
-  left: -20px;
+  top: 5px;
+  left: 0px;
   color: $emperor;
   padding: 8px 10px;
-  /* TODO: The indicator bump in the border - how is that done? */
+  z-index: 10; /* Ensure this appears above content from the page */
+  margin-top: 10px;
   li.activity {
-    /* TODO: These blocks should have drop shadows */
     line-height: 33px;
     background-color: $alabaster;
     padding: 10px;
+    margin: 10px 5px;
     border-width: 0 2px 2px 0;
     border-color: $black-15;
-    a {
+    border-style: solid;
+    font-size: 12pt;
+    &.active {
+      >a {
+        @include border-radius(2px);
+        padding: 10px 20px 10px 10px;
+        margin: 0 0 10px 0;
+        color: white;
+        background-color: $shakespeare;
+        background-image: -webkit-linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+        background-image:         linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+      }
+      li.page {
+        color: $shakespeare;
+      }
+    }
+    >a {
+      width: 100%;
+      display: block;
+      padding-right: 20px;
+      background-position-x: 96%;
+      background-position-y: 50%;
+      background-repeat: no-repeat;
+      i {
+        font-size: 15pt;
+        font-weight: bold;
+        float: right;
+        padding-top: 5px;
+      }
     }
     a:before {
       content: 'ACTIVITY: ';
@@ -265,6 +299,34 @@ ul.nav-menu-top {
         content: '';
       };
     }
+    ol.pages {
+      margin-left: 3em;
+    }
+  }
+  /* The arrow at the top of the menu */
+  /* Adapted from http://jonrohan.me/guide/css/creating-triangles-in-css/ */
+  /* Basically it's two divs contorted to present triangles with the bottom borders */
+  /* Then overlapped so the upper one (white) covers all but the "border" of the lower */
+  /* one (gray). */
+  .nav-menu-arrow-border {
+    border-color: transparent transparent $black-15 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -20px;
+    left: 55px;
+  }
+  .nav-menu-arrow {
+    border-color: transparent transparent white transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -18px;
+    left: 55px;
   }
 }
 
@@ -342,6 +404,7 @@ ul.nav-menu-top {
       padding-top: 3px;
       @include border-radius(14px);
       @include drk-txt-shadow(#64c500);
+      /* TODO: gradient? */
     }
   } // end .pagination-link
 
