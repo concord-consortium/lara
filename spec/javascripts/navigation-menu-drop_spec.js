@@ -24,6 +24,7 @@ describe('MenuControl', function () {
 
         it('has a jQuery object attribute "active"', function () {
             expect(menu.active).toBeDefined();
+            expect(menu.openActivity).toBeDefined();
         });
 
         it('calls `toggle()` on the menu when trigger is clicked', function () {
@@ -56,21 +57,22 @@ describe('MenuControl', function () {
 
         it('has an element in the "active" attribute', function () {
             expect(menu.active).toBe('li.activity.active');
+            expect(menu.openActivity).toBe('li.activity.on');
         });
 
         it('calls changeActive when activities are clicked', function () {
             spyOn(menu, 'changeActive');
-            $('.activity>a').first().trigger('click');
+            $('li.activity').first().find('a.open-close').trigger('click');
             expect(menu.changeActive).toHaveBeenCalled();
         });
 
         describe('changeActive', function () {
             it('changes the currently active activity', function () {
                 var currActive = menu.active;
-                menu.changeActive($('.activity>a').first().parent());
+                menu.changeActive($('.activity a.open-close').parent().parent());
                 expect(menu.active).not.toEqual(currActive);
-                expect(currActive).not.toBe('li.activity.active');
-                expect(menu.active).toBe('li.activity.active');
+                expect(currActive).not.toBe('li.activity.on');
+                expect(menu.active).toBe('li.activity.on');
                 expect(menu.active.find('ol li.page')[0]).toBeVisible();
             });
         });

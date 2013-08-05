@@ -261,7 +261,7 @@ div.nav-menu-top {
     border-style: solid;
     font-size: 12pt;
     &.active {
-      >a {
+      .activity-list-head {
         @include border-radius(2px);
         padding: 10px 20px 10px 10px;
         margin: 0 0 10px 0;
@@ -273,11 +273,16 @@ div.nav-menu-top {
       li.page {
         color: $shakespeare;
       }
+    }
+    &.on {
       ol.pages {
         display: block;
       }
     }
-    >a {
+    a.open-close {
+      cursor: pointer;
+    }
+    .activity-list-head {
       width: 100%;
       display: block;
       padding-right: 20px;
@@ -290,10 +295,10 @@ div.nav-menu-top {
         float: right;
         padding-top: 5px;
       }
-    }
-    >a:before {
-      content: 'ACTIVITY: ';
-    }
+/*      >a:before {
+        content: 'ACTIVITY: ';
+      }
+*/    }
     li.page {
       font-size: 0.8em;
       line-height: 1.3em;

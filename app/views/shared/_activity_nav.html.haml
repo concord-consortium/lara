@@ -10,10 +10,11 @@
         - if @sequence
           - @sequence.lightweight_activities_sequences.each do |las|
             - activity = las.lightweight_activity
-            %li.activity{ :class => @activity == activity ? 'active' : '' }
-              %a
-                = "#{las.position.to_s}. #{activity.name}"
-                %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
+            %li.activity{ :class => @activity == activity ? %w(active on) : '' }
+              .activity-list-head
+                = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
+                %a.open-close
+                  %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
               %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
         - else
