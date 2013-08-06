@@ -16,12 +16,12 @@
                 %a.open-close
                   %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
               %ol.pages.in-sequence
-                = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
+                = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
         - else
           %li.activity.active
             = link_to "#{@activity.name}", activity_path(@activity)
             %ol.pages.in-activity
-              = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages }
+              = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
   %h2.h2
     = @activity.name
