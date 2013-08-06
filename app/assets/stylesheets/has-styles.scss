@@ -44,17 +44,6 @@ body {
   background-size: 100%;
 }
 
-footer {
-  margin-bottom: 0;
-  padding: 26px;
-
-  div.site-width {
-    background-color: #d0e4ec;
-    color: $emperor;
-    padding: 5px;
-  }
-}
-
 div.activity-mod>div.site-width {
   background-color: rgba(255,255,255,0.7);
   padding: 5px;
@@ -1158,28 +1147,39 @@ input:disabled {
 // ******************************************
 
 footer {
-  .footer-txt {
-    margin-bottom: 13px;
-    color: $black-75;
-    @include lt-txt-shadow(#fff);
+  .has-footer {
+    background-color: rgba(255,255,255,0.8);
+    @include border-radius(3px);
+    color: $dovegrey;
     font-family: $helv-reg;
+    padding: 10px;
+    p {
+      margin: 13px;
+      /* @include lt-txt-shadow(#fff); */
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    a {
-      color: darken($black-75, 5%);
-      font-weight: bold;
-      @include trans;
-
-      &:hover {
-        color: darken($lt-blue, 55%);
+      &:last-child {
+        margin-bottom: 0;
       }
-    }//a
-  }//footer-txt
-}//footer
 
+      a {
+        color: darken($black-75, 5%);
+        font-weight: bold;
+        @include trans;
+
+        &:hover {
+          color: darken($lt-blue, 55%);
+        }
+      } /* a */
+    } /* p */
+    .has-footer-logobox {
+      .has-footer-logo {
+        text-align: center;
+        margin: 10px;
+        display: inline-block;
+      }
+    }
+  } /* has-footer */
+} /* footer */
 
 
 // ******************************************
