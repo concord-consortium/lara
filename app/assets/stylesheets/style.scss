@@ -639,19 +639,22 @@ div.wysiwyg ul.toolbar {
 }
 
 /* Summary page */
-.prompt {
-  font-weight: bold;
-  margin: 5px 5px 5px 0;
+body.summary {
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image-answer {
+    clear: left;
+    margin-left: 16px;
+  }
 }
-.number {
-  float: left;
-  font-weight: bold;
-  margin: 5px 5px 5px 0;
-}
-.answer {
-  clear: left;
-  margin-left: 16px;
-}
+
 
 
 div.block-empty {
