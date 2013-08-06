@@ -1,6 +1,6 @@
 .number
   %p="#{answer.question_index}."
-.prompt!= answer.prompt
+.prompt= strip_tags(answer.prompt)
 .answer
   - if !answer.answer_texts.empty?
     - if answer.multi_answer
