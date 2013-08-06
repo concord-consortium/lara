@@ -19,6 +19,7 @@ class image_question
 
     @shutterbug       = new Shutterbug(".interactive-mod > *:first-child", null,(image_tag)=>
       @set_image(image_tag)
+      @set_svg_background()
     ,@image_question_id)
 
     @$answer_text     = $("#{@form_sel} .image_answer_text")
@@ -63,6 +64,9 @@ class image_question
     $("#{@button_sel} .snapshot_thumbnail").attr("src",@current_src)
     $("#{@button_sel} .snapshot_thumbnail").hide() unless @current_src
     $("#{@button_sel} .take_snapshot").html("take snapshot") unless @current_src
+
+  set_svg_background: =>
+    svgCanvas.embeddable_image_question_answer_annotation.setBackground('#FFF', @current_src)(@set_svg_background_cb)
 
   save_failed: ->
     $("#save").html("Save failed!")
@@ -125,4 +129,3 @@ class image_question
 
 # export our class
 window.ImageQuestion = image_question
-
