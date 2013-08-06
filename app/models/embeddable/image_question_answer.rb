@@ -28,6 +28,15 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
     end
   end
 
+  def prompt_no_itals
+    parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
+    itals = parsed_prompt.at_css "i"
+    if itals
+      itals.content = nil
+    end
+    parsed_prompt.to_html
+  end
+
   def has_snapshot?
     !image_url.blank?
   end

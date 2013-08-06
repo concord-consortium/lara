@@ -39,6 +39,15 @@ module Embeddable
       end
     end
 
+    def prompt_no_itals
+      parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
+      itals = parsed_prompt.at_css "i"
+      if itals
+        itals.content = nil
+      end
+      parsed_prompt.to_html
+    end
+
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
