@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   DefaultName = 'Molecular Workbench'
 
-  attr_accessible :footer, :logo, :title, :url
+  attr_accessible :footer, :logo, :title, :url, :theme_id
   has_many :sequences
   has_many :lightweight_activities
   belongs_to :theme
