@@ -30,7 +30,8 @@ describe Embeddable::ImageQuestionAnswer do
         "type"        => "image_question",
         "question_id" => question.id.to_s,
         "answer"      => answer.answer_text,
-        "image_url"   => answer.image_url
+        "image_url"   => answer.image_url,
+        "annotation"  => nil
       }
     end
 

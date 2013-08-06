@@ -195,7 +195,8 @@ describe Run do
           "type" => "image_question",
           "question_id" => iq_answer.id.to_s,
           "answer" => iq_answer.answer_text,
-          "image_url" => iq_answer.image_url
+          "image_url" => iq_answer.image_url,
+          "annotation" => nil
         },
       ].to_json
     end
