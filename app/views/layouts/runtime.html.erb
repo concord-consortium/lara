@@ -54,7 +54,7 @@
 			<div class="site-logo-mod site-width">
 				<div class="site-logo logo-l">
 					<h2>
-            <%- if @project and @project.logo -%>
+            <%- if @project and !@project.logo.blank? -%>
               <%= link_to image_tag(@project.logo, :alt => @project.title, :id => 'mw-logo'), @project.url, :title => @project.title %>
             <%- else -%>
               <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
