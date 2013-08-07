@@ -1,7 +1,8 @@
 %img{ :src => interactive.url, :alt => interactive.caption, :style => "width: 100%;" }
 .under-image
-  .fullscreen
-    = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => interactive.caption, :class => 'colorbox'}
+  - if interactive.show_lightbox
+    .fullscreen
+      = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => interactive.caption, :class => 'colorbox'}
   .caption
     = interactive.caption
   .credit

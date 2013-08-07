@@ -4,6 +4,8 @@
   =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
   = field_set_tag 'URL' do
     = f.text_field :url
+  = field_set_tag 'Allow image to be shown in lightbox?' do
+    = f.check_box :show_lightbox
   = field_set_tag 'Caption' do
     = f.text_area :caption
   = field_set_tag 'Credit' do

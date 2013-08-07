@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130729134104) do
+ActiveRecord::Schema.define(:version => 20130807095046) do
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -85,8 +85,9 @@ ActiveRecord::Schema.define(:version => 20130729134104) do
     t.string   "url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "show_lightbox", :default => true
   end
 
   create_table "interactive_items", :force => true do |t|
