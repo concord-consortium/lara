@@ -46,11 +46,14 @@ class image_question
 
 
     @$done_button.click =>
-      hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-      hidden.val(@current_src)
-      @$done_button.parents("form:first").submit()
-      @hide()
-      @save()
+      svgCanvas.embeddable_image_question_answer_annotation.getSvgString() (data, error) =>
+        $input = $('#embeddable_image_question_answer_annotation')
+        $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + data));
+        hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+        hidden.val(@current_src)
+        @$done_button.parents("form:first").submit()
+        @hide()
+        @save()
 
     @$delete_button.click =>
       @delete_image()
