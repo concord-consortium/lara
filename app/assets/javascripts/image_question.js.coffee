@@ -44,12 +44,6 @@ class image_question
       @show()
 
     @$edit_button.click =>
-      # pull image from form data...
-      # @set_image(image_tag)
-      # @set_svg_background()
-      # hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-      # @current_src ||= hiddeen.val()
-      # # @set_image(@current_src)
       @set_svg_background()
       @show()
 
