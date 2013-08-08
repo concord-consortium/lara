@@ -47,8 +47,8 @@ class image_question
 
 
     @$done_button.click =>
-      svgCanvas.embeddable_image_question_answer_annotation.getSvgString() (data, error) =>
-        $input = $('#embeddable_image_question_answer_annotation')
+      @get_svg_canvas().getSvgString() (data, error) =>
+        $input = $("##{@svg_canvas_id}")
         $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + data));
         hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
         hidden.val(@current_src)

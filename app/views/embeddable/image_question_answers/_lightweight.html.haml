@@ -6,10 +6,12 @@
     %div{:id => "image_question_#{embeddable.id}"}
       %img.snapshot_thumbnail{:src => embeddable.image_url, :width => 200}
       %br
-      %button.image_question.button.image_snapshot_button{:type => 'button'}
+      %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
         %i.icon-camera
-        %span.take_snapshot
-          take snapshot
+        take snapshot
+      %button.image_question.button.image_snapshot_button.edit_answer.snapshot{:type => 'button'}
+        %i.icon-camera
+        edit answer
 
 %div{:id => "image_question_answer_form_#{embeddable.id}"}
   .image_gallery
@@ -22,7 +24,6 @@
         %tr
           %td
             .image_block
-              %img.snapshot_image
               = f.sketchily :annotation, :id=>"image_question_annotation_for_#{embeddable.id}", :width => 600, :height => 400, :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true, :canvas_expansion => 1
               .under_image
                 %button.button.image_reset_button{:type =>'button'}
