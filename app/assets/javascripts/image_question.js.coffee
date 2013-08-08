@@ -7,6 +7,7 @@ class image_question
     @answer="because ..."
     @image_url=""
     @form_sel   = "#image_question_answer_form_#{@image_question_id}"
+    @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
     @button_sel = "#image_question_#{@image_question_id}"
     @$content  = $(@form_sel)
 
@@ -68,9 +69,11 @@ class image_question
     $("#{@button_sel} .snapshot_thumbnail").hide() unless @current_src
     $("#{@button_sel} .take_snapshot").html("take snapshot") unless @current_src
 
+  get_svg_canvas: =>
+    svgCanvas["#{@svg_canvas_id}"]
+
   set_svg_background: =>
-    console.log('set_svg_background to ' + @current_src )
-    svgCanvas.embeddable_image_question_answer_annotation.setBackground('#FFF', @current_src)(@set_svg_background_cb)
+    @get_svg_canvas().setBackground('#FFF', @current_src)(@set_svg_background_cb)
 
   save_failed: ->
     $("#save").html("Save failed!")
