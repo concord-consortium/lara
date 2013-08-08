@@ -25,7 +25,8 @@ class image_question
 
     @$answer_text     = $("#{@form_sel} .image_answer_text")
 
-    @$snapshot_button = $("#{@button_sel} .image_snapshot_button")
+    @$snapshot_button = $("#{@button_sel} .take_snapshot")
+    @$edit_button     = $("#{@button_sel} .edit_answer")
     @$done_button     = $("#{@form_sel} .image_done_button")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
@@ -40,6 +41,16 @@ class image_question
   create_hooks: ->
     @$snapshot_button.click =>
       @shutterbug.getDomSnapshot()
+      @show()
+
+    @$edit_button.click =>
+      # pull image from form data...
+      # @set_image(image_tag)
+      # @set_svg_background()
+      # hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+      # @current_src ||= hiddeen.val()
+      # # @set_image(@current_src)
+      @set_svg_background()
       @show()
 
     @$cancel_button.click =>
@@ -64,10 +75,10 @@ class image_question
 
   update_display: ->
     $("#{@button_sel} .snapshot_thumbnail").show()
-    $("#{@button_sel} .take_snapshot").html("replace snapshot")
+    $("#{@button_sel} .take_snapshot_label").html("replace snapshot")
     $("#{@button_sel} .snapshot_thumbnail").attr("src",@current_src)
     $("#{@button_sel} .snapshot_thumbnail").hide() unless @current_src
-    $("#{@button_sel} .take_snapshot").html("take snapshot") unless @current_src
+    $("#{@button_sel} .take_snapshot_label").html("take snapshot") unless @current_src
 
   get_svg_canvas: =>
     svgCanvas["#{@svg_canvas_id}"]
