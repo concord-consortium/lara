@@ -8,6 +8,7 @@ class image_question
     @image_url=""
     @form_sel   = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
+    @$annotation_field = $("##{@svg_canvas_id}")
     @button_sel = "#image_question_#{@image_question_id}"
     @sb_svg_src = "#sb_svg_src_#{@image_question_id}"
     @$sb_svg_src = $(@sb_svg_src)
