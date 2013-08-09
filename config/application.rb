@@ -61,6 +61,8 @@ module LightweightStandalone
 
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
+                            :svg_edit    => { :url => /svg-editor/,
+                                               :style => :none},
                             :staging     => { :url => /staging\..+$/,
                                               :color => "blueviolet" },
                             :test        => { :url => /jasmine/,
