@@ -43,9 +43,11 @@ class image_question
     @$done_button     = $("#{@form_sel} .image_done_button")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
-    @$redo_button     = $("#{@form_sel} .image_redo_button")
-    @$reset_button    = $("#{@form_sel} .image_reset_button")
+    @$retake_button   = $("#{@form_sel} .take_snapshot")
+    @$undo_button     = $("#{@form_sel} .image_reset_button")
     @$cancel_button   = $("#{@form_sel} .image_cancel_button")
+
+    @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
 
     @create_hooks()
     @current_src = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
@@ -55,14 +57,15 @@ class image_question
     @$snapshot_button.click =>
       @shutterbug.getDomSnapshot()
       @show()
-
-    @$edit_button.click =>
-      @set_svg_background()
+    @$retake_button.click =>
+      @shutterbug.getDomSnapshot()
       @show()
+    @$edit_button.click =>
+      @show()
+      @set_svg_background()
 
     @$cancel_button.click =>
       @cancel()
-
 
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
@@ -78,15 +81,27 @@ class image_question
     @$delete_button.click =>
       @delete_image()
 
-    @$reset_button.click =>
+    @$undo_button.click =>
       @reset_image()
 
   update_display: ->
-    $("#{@button_sel} .snapshot_thumbnail").show()
-    $("#{@button_sel} .take_snapshot_label").html("replace snapshot")
-    $("#{@button_sel} .snapshot_thumbnail").attr("src",@current_src)
-    $("#{@button_sel} .snapshot_thumbnail").hide() unless @current_src
-    $("#{@button_sel} .take_snapshot_label").html("take snapshot") unless @current_src
+    @$thumbnail.show()
+    @$thumbnail.attr("src",@current_src)
+    @$thumbnail.hide()
+    if @current_src
+      @$thumbnail.show()
+
+    @$snapshot_button.show()
+    @$edit_button.hide()
+
+    if @current_src
+      @$edit_button.show()
+      @$snapshot_button.hide()
+
+    if @undo_button
+      @undo_button.hide()
+    if @last_src
+      @$undo_button.show()
 
   get_svg_canvas: =>
     svgCanvas["#{@svg_canvas_id}"]
@@ -113,9 +128,7 @@ class image_question
 
   save: ->
       @show_saving()
-
-      # $(elem).parents("form:first").submit()
-      # We should be evaluating the response to that and calling either showSaved() or saveFailed().
+      # TODO: validate response and calling showSaved() or saveFailed().
       @show_saved();
 
   show: ->
@@ -127,6 +140,7 @@ class image_question
     @current_src = $value.attr("src")
     $("#{@form_sel} .snapshot_image").attr("src",@current_src)
     @update_display()
+    @set_svg_background()
 
   set_sb_svg_background:(html) =>
     $value= $(html)
@@ -153,14 +167,16 @@ class image_question
       tmp = @current_src
       @current_src = @last_src
       @last_src = tmp
-      $("#{@form_sel} .snapshot_image").attr("src",@current_src)
-    @update_display()
+      @update_display()
+      @set_svg_background()
+
 
   delete_image:() ->
     @last_src = @current_src
-    @current_src = null
-    $("#{@form_sel} .snapshot_image").attr("src","missing")
+    @current_src = ""
     @update_display()
+    @set_svg_background()
+
 
   snapshot_updater: (e) =>
     data = e.data
