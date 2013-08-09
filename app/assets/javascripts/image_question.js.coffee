@@ -15,6 +15,7 @@ class image_question
     @$content  = $(@form_sel)
     @$frame = $(".interactive-mod > *:first-child")
 
+    @last_svg = null
     @$content.dialog({
       autoOpen: false,
       width: 800,
@@ -169,11 +170,17 @@ class image_question
       @last_src = tmp
       @update_display()
       @set_svg_background()
+    if(@last_svg)
+      @get_svg_canvas().setSvgString(@last_svg)()
 
 
   delete_image:() ->
     @last_src = @current_src
     @current_src = ""
+    @get_svg_canvas().getSvgString() (data,error) =>
+      @last_svg = data
+    @get_svg_canvas().clear()()
+    @$annotation_field.attr('value',"")
     @update_display()
     @set_svg_background()
 
