@@ -96,12 +96,15 @@ class image_question
       @undo_button.hide()
     if @last_src
       @$undo_button.show()
+    @set_svg_background()
 
   get_svg_canvas: =>
     svgCanvas["#{@svg_canvas_id}"]
 
   set_svg_background: =>
-    @get_svg_canvas().setBackground('#FFF', @current_src)(@set_svg_background_cb)
+    canv = @get_svg_canvas()
+    if (canv && canv.setBackground)
+      canv.setBackground('#FFF', @current_src)()
 
   save_failed: ->
     $("#save").html("Save failed!")
@@ -126,13 +129,13 @@ class image_question
   show: ->
     @$content.dialog("open");
 
-  set_image:(html) ->
-    $value = $(html)
+  set_image_source: (src) ->
     @last_src = @current_src
-    @current_src = $value.attr("src")
-    $("#{@form_sel} .snapshot_image").attr("src",@current_src)
+    @current_src = src
     @update_display()
-    @set_svg_background()
+
+  set_image:(html) ->
+    @set_image_source($(html).attr("src"))
 
   set_sb_svg_background:(html) =>
     $value= $(html)
@@ -156,24 +159,18 @@ class image_question
 
   reset_image:()->
     if(@last_src)
-      tmp = @current_src
-      @current_src = @last_src
-      @last_src = tmp
-      @update_display()
-      @set_svg_background()
+      @set_image_source(@last_src)
+
     if(@last_svg)
       @get_svg_canvas().setSvgString(@last_svg)()
 
 
   delete_image:() ->
-    @last_src = @current_src
-    @current_src = ""
     @get_svg_canvas().getSvgString() (data,error) =>
       @last_svg = data
     @get_svg_canvas().clear()()
     @$annotation_field.attr('value',"")
-    @update_display()
-    @set_svg_background()
+    @set_image_source("")
 
 
   snapshot_updater: (e) =>
