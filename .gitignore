@@ -28,3 +28,13 @@ bin
 
 # Ignore private configurations:
 config/app_environment_variables.rb
+
+# Ignore floobits stuff:
+.floo
+.flooignore
+
+# ignore project files
+.sublime-project
+
+# ignore vim backup files
+*~
