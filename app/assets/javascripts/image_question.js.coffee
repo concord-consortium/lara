@@ -9,7 +9,11 @@ class image_question
     @form_sel   = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
     @button_sel = "#image_question_#{@image_question_id}"
+    @sb_svg_src = "#sb_svg_src_#{@image_question_id}"
+    @$sb_svg_src = $(@sb_svg_src)
+    @svg_annotation_data = ""
     @$content  = $(@form_sel)
+    @$frame = $(".interactive-mod > *:first-child")
 
     @$content.dialog({
       autoOpen: false,
@@ -21,7 +25,16 @@ class image_question
     @shutterbug       = new Shutterbug(".interactive-mod > *:first-child", null,(image_tag)=>
       @set_image(image_tag)
       @set_svg_background()
+      # set the background image for the div that is the source
+      # sent to shutterbug when building the annotated image.
+      @set_sb_svg_background(image_tag)
     ,@image_question_id)
+
+    @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
+      @set_svg_input(image_tag)
+      @submit_svg_form()
+      @$sb_svg_src.empty().hide()
+    ,"svg_" + @image_question_id)
 
     @$answer_text     = $("#{@form_sel} .image_answer_text")
 
@@ -53,11 +66,12 @@ class image_question
 
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
-        $input = $("##{@svg_canvas_id}")
-        $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + data));
-        hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-        hidden.val(@current_src)
-        @$done_button.parents("form:first").submit()
+        @svg_annotation_data = data
+        @$sb_svg_src.append(data)
+        h = @$frame.height()
+        w = @$frame.width()
+        @$sb_svg_src.width(w).height(h).show();
+        @shutterbug_svg.getDomSnapshot()
         @hide()
         @save()
 
@@ -113,6 +127,26 @@ class image_question
     @current_src = $value.attr("src")
     $("#{@form_sel} .snapshot_image").attr("src",@current_src)
     @update_display()
+
+  set_sb_svg_background:(html) =>
+    $value= $(html)
+    $src = $value.attr("src")
+    @$sb_svg_src.css('background-image', 'url(' + $src + ')')
+
+
+  set_svg_input:(html) =>
+    console.log("html returned from shutterbug is " + html)
+    $value= $(html)
+    $src = $value.attr("src")
+    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
+    hidden.val($src)
+
+  submit_svg_form: ->
+    $input = $("##{@svg_canvas_id}")
+    $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + @svg_annotation_data))
+    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+    hidden.val(@current_src)
+    @$done_button.parents("form:first").submit()
 
   reset_image:()->
     if(@last_src)
