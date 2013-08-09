@@ -46,7 +46,6 @@ class image_question
     @$delete_button   = $("#{@form_sel} .image_delete_button")
     @$retake_button   = $("#{@form_sel} .take_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
-    @$cancel_button   = $("#{@form_sel} .image_cancel_button")
 
     @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
 
@@ -65,8 +64,6 @@ class image_question
       @show()
       @set_svg_background()
 
-    @$cancel_button.click =>
-      @cancel()
 
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
@@ -124,8 +121,6 @@ class image_question
     $("#save").html("Saving...")
     $("#save").animate({"opacity": "1.0"}, "fast")
 
-  cancel: ->
-    @hide()
 
   save: ->
       @show_saving()
