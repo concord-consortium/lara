@@ -1,6 +1,3 @@
-origin = () ->
-  document.location.href.match(/(.*?\/\/.*?)\//)[1]
-
 class image_question
   constructor: (@image_question_id="blank")->
     @prompt="why do you think..."
