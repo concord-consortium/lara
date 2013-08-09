@@ -11,16 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807095046) do
+ActiveRecord::Schema.define(:version => 20130809221257) do
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
     t.text     "answer_text"
     t.string   "image_url"
     t.integer  "image_question_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.text     "annotation"
+    t.string   "annotated_image_url"
   end
 
   add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"

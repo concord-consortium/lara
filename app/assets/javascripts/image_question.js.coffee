@@ -31,7 +31,7 @@ class image_question
 
     @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
       @set_svg_input(image_tag)
-      @submit_svg_form
+      @submit_svg_form()
       @$sb_svg_src.empty();
     ,"svg_" + @image_question_id)
 
@@ -133,6 +133,9 @@ class image_question
     console.log("html returned from shutterbug is " + html)
     $value= $(html)
     $src = $value.attr("src")
+    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
+    hidden.val($src)
+
     # set the form input field here
     #
 
@@ -141,7 +144,7 @@ class image_question
     $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + @svg_annotation_data))
     hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
     hidden.val(@current_src)
-    # @$done_button.parents("form:first").submit()
+    @$done_button.parents("form:first").submit()
 
   reset_image:()->
     if(@last_src)
