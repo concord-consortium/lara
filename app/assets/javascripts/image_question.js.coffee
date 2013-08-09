@@ -1,7 +1,5 @@
 class image_question
   constructor: (@image_question_id="blank")->
-    @prompt="why do you think..."
-    @answer="because ..."
     @image_url=""
     @form_sel   = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
