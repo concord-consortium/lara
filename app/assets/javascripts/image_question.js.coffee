@@ -13,6 +13,7 @@ class image_question
     @$sb_svg_src = $(@sb_svg_src)
     @svg_annotation_data = ""
     @$content  = $(@form_sel)
+    @$frame = $(".interactive-mod > *:first-child")
 
     @$content.dialog({
       autoOpen: false,
@@ -32,7 +33,7 @@ class image_question
     @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
       @set_svg_input(image_tag)
       @submit_svg_form()
-      @$sb_svg_src.empty();
+      @$sb_svg_src.empty().hide()
     ,"svg_" + @image_question_id)
 
     @$answer_text     = $("#{@form_sel} .image_answer_text")
@@ -67,6 +68,9 @@ class image_question
       @get_svg_canvas().getSvgString() (data, error) =>
         @svg_annotation_data = data
         @$sb_svg_src.append(data)
+        h = @$frame.height()
+        w = @$frame.width()
+        @$sb_svg_src.width(w).height(h).show();
         @shutterbug_svg.getDomSnapshot()
         @hide()
         @save()
@@ -129,15 +133,13 @@ class image_question
     $src = $value.attr("src")
     @$sb_svg_src.css('background-image', 'url(' + $src + ')')
 
+
   set_svg_input:(html) =>
     console.log("html returned from shutterbug is " + html)
     $value= $(html)
     $src = $value.attr("src")
     hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
     hidden.val($src)
-
-    # set the form input field here
-    #
 
   submit_svg_form: ->
     $input = $("##{@svg_canvas_id}")
