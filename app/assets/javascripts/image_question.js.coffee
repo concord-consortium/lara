@@ -9,7 +9,7 @@ class image_question
     @$sb_svg_src = $(@sb_svg_src)
     @svg_annotation_data = ""
     @$content  = $(@form_sel)
-    @$frame = $(".interactive-mod > *:first-child")
+    @$frame = $(".interactive-mod")
 
     @last_svg = null
     @$content.dialog({
@@ -19,12 +19,10 @@ class image_question
       modal: true
     })
 
-    @shutterbug       = new Shutterbug(".interactive-mod > *:first-child", null,(image_tag)=>
+    @shutterbug       = new Shutterbug(".interactive-mod", null,(image_tag)=>
       @set_image(image_tag)
       @set_svg_background()
-      # set the background image for the div that is the source
-      # sent to shutterbug when building the annotated image.
-      @set_sb_svg_background(image_tag)
+
     ,@image_question_id)
 
     @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
@@ -47,6 +45,7 @@ class image_question
 
     @create_hooks()
     @current_src = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
@@ -64,10 +63,18 @@ class image_question
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
         @svg_annotation_data = data
-        @$sb_svg_src.append(data)
-        h = @$frame.height()
-        w = @$frame.width()
-        @$sb_svg_src.width(w).height(h).show();
+        $svg = $(data)
+
+        @$sb_svg_src.show();
+        w = $svg.attr('width')
+        h = $svg.attr('height')
+
+        @$sb_svg_src.css('width',w)
+        @$sb_svg_src.css('height',h)
+        @$sb_svg_src.css('background-image',  "url(#{@current_src})")
+
+        @$sb_svg_src.css('background-size', "#{w}px #{h}px")
+        @$sb_svg_src.html(data)
         @shutterbug_svg.getDomSnapshot()
         @hide()
         @save()
@@ -80,9 +87,9 @@ class image_question
 
   update_display: ->
     @$thumbnail.show()
-    @$thumbnail.attr("src",@current_src)
+    @$thumbnail.attr("src", @current_thumbnail)
     @$thumbnail.hide()
-    if @current_src
+    if @current_thumbnail
       @$thumbnail.show()
 
     @$snapshot_button.show()
@@ -137,18 +144,13 @@ class image_question
   set_image:(html) ->
     @set_image_source($(html).attr("src"))
 
-  set_sb_svg_background:(html) =>
-    $value= $(html)
-    $src = $value.attr("src")
-    @$sb_svg_src.css('background-image', 'url(' + $src + ')')
-
-
   set_svg_input:(html) =>
-    console.log("html returned from shutterbug is " + html)
     $value= $(html)
     $src = $value.attr("src")
     hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
     hidden.val($src)
+    @current_thumbnail = $src
+    @update_display()
 
   submit_svg_form: ->
     $input = $("##{@svg_canvas_id}")

@@ -4,7 +4,7 @@
   .question-txt
     != embeddable.prompt
     %div{:id => "image_question_#{embeddable.id}"}
-      %img.snapshot_thumbnail{:src => embeddable.image_url, :width => 200}
+      %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => 200}
       %br
       %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
         %i.icon-camera
@@ -13,7 +13,7 @@
       %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
         Edit answer
 
-%div{:id => "sb_svg_src_#{embeddable.id}" }
+%div.tmp_svg{:id => "sb_svg_src_#{embeddable.id}" }
 %div{:id => "image_question_answer_form_#{embeddable.id}"}
   .image_gallery
     .title
@@ -42,7 +42,7 @@
         %p.prompt.image_prompt!= embeddable.prompt
         = f.text_area :answer_text, :class => 'live-submit answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
         = f.hidden_field 'image_url'
-		 = f.hidden_field 'annotated_image_url'
+        = f.hidden_field 'annotated_image_url'
 
 
 - content_for :extra_javascript do
