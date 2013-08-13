@@ -9,7 +9,7 @@ class image_question
     @$sb_svg_src = $(@sb_svg_src)
     @svg_annotation_data = ""
     @$content  = $(@form_sel)
-    @$frame = $(".interactive-mod")
+    @interactive_selector = ".interactive-mod > *:first-child"
 
     @last_svg = null
     @$content.dialog({
@@ -19,10 +19,8 @@ class image_question
       modal: true
     })
 
-    @shutterbug       = new Shutterbug(".interactive-mod", null,(image_tag)=>
+    @shutterbug       = new Shutterbug(@interactive_selector, null,(image_tag)=>
       @set_image(image_tag)
-      @set_svg_background()
-
     ,@image_question_id)
 
     @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
@@ -38,13 +36,14 @@ class image_question
     @$done_button     = $("#{@form_sel} .image_done_button")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
-    @$retake_button   = $("#{@form_sel} .take_snapshot")
+    @$retake_button   = $("#{@form_sel} .retake_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
 
     @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
 
     @create_hooks()
-    @current_src = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+    @current_src = @$current_src_field.val()
     @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
     @update_display()
 
@@ -52,9 +51,10 @@ class image_question
     @$snapshot_button.click =>
       @shutterbug.getDomSnapshot()
       @show()
+
     @$retake_button.click =>
       @shutterbug.getDomSnapshot()
-      @show()
+
     @$edit_button.click =>
       @show()
       @set_svg_background()
@@ -139,6 +139,7 @@ class image_question
   set_image_source: (src) ->
     @last_src = @current_src
     @current_src = src
+    @$current_src_field.val(src)
     @update_display()
 
   set_image:(html) ->
