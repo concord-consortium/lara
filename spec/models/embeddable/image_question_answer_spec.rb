@@ -25,18 +25,41 @@ describe Embeddable::ImageQuestionAnswer do
   end
 
   describe '#portal_hash' do
-    let(:expected) do
-      {
-        "type"        => "image_question",
-        "question_id" => question.id.to_s,
-        "answer"      => answer.answer_text,
-        "image_url"   => answer.image_url,
-        "annotation"  => nil
-      }
-    end
+    describe 'without an annotated_image_url' do
+      let(:expected) do
+        {
+          "type"        => "image_question",
+          "question_id" => question.id.to_s,
+          "answer"      => answer.answer_text,
+          "image_url"   => answer.image_url,
+          "annotation"  => nil
+        }
+      end
 
-    it "matches the expected hash" do
-      answer.portal_hash.should == expected
+      it "matches the expected hash" do
+        answer.portal_hash.should == expected
+      end
+    end
+    describe 'with an annotated_image_url' do
+      let(:answer) do
+        FactoryGirl.create(:image_question_answer,
+          :question    => question,
+          :annotated_image_url => 'http://annotation.com/foo.png',
+          :run => run )
+      end
+      let(:expected) do
+        {
+          "type"        => "image_question",
+          "question_id" => question.id.to_s,
+          "answer"      => answer.answer_text,
+          "image_url"   => answer.annotated_image_url,
+          "annotation"  => nil
+        }
+      end
+
+      it "matches the expected hash" do
+        answer.portal_hash.should == expected
+      end
     end
   end
 

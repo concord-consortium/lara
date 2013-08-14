@@ -46,7 +46,7 @@ class Embeddable::ImageQuestionAnswer < ActiveRecord::Base
       "type" => "image_question",
       "question_id" => question.id.to_s,
       "answer" => answer_text,
-      "image_url" => image_url,
+      "image_url" => annotated_image_url || image_url,
       "annotation" => annotation
     }
   end
