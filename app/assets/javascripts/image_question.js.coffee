@@ -34,17 +34,17 @@ class image_question
       @$sb_svg_src.empty().hide()
     ,"svg_" + @image_question_id)
 
-    @$answer_text     = $("#{@form_sel} .image_answer_text")
-
     @$snapshot_button = $("#{@button_sel} .take_snapshot")
     @$edit_button     = $("#{@button_sel} .edit_answer")
     @$done_button     = $("#{@form_sel} .image_done_button")
+    @$svg_form        = $("#{@form_sel} form")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
     @$retake_button   = $("#{@form_sel} .retake_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
 
     @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
+    @$displayed_answer =$("#{@button_sel} .answer_text")
 
     @create_hooks()
     @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
@@ -89,6 +89,16 @@ class image_question
 
     @$undo_button.click =>
       @reset_image()
+
+    @$svg_form.on('ajax:success', (e, data, status, xhr) =>
+      # update at least the answer perhaps the thumbnail
+      # we might also want to delay the closing the dialog until this happens
+      @$displayed_answer.html(data.answer_html)
+    ).bind 'ajax:error', (e, xhr, status, error) =>
+      # don't update the answer and possibly revert the thumbnail if it was
+      # updated
+      # should show "<p>ERROR</p>" somewhere
+      # if the form is still open it would make sense to put the error there
 
   update_display: ->
     @$thumbnail.show()
@@ -163,7 +173,7 @@ class image_question
     $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + @svg_annotation_data))
     hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
     hidden.val(@current_src)
-    @$done_button.parents("form:first").submit()
+    @$svg_form.submit()
 
   reset_image:()->
     if(@last_src)
