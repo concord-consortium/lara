@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/concord-consortium/sketchily.git
-  revision: dabde09011a411722e3959dce213836b17488d5d
+  revision: 660c0bbff0d3795411f7f17b2e0c918b422f1800
   branch: concord
   specs:
     sketchily (1.5.0)
