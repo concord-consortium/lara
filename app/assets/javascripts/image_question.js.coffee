@@ -16,7 +16,12 @@ class image_question
       autoOpen: false,
       width: 800,
       title: "Snapshot",
-      modal: true
+      modal: true,
+      open: =>
+        # re-check browser features and update unit calculations
+        canv = @get_svg_canvas()
+        if (canv && canv.recheckBrowserFeatures)
+          canv.recheckBrowserFeatures()
     })
 
     @shutterbug       = new Shutterbug(@interactive_selector, null,(image_tag)=>
