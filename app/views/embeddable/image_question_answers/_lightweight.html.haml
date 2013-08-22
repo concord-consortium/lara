@@ -6,6 +6,8 @@
     %div{:id => "image_question_#{embeddable.id}"}
       %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => 200}
       %br
+      -# this 'formating' is duplicated in image_question_answers_controller
+      %div.answer_text= simple_format h(truncate(embeddable.answer_text, length:140))
       %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
         %i.icon-camera
         %span.take_snapshot_label

@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
     :provider, :uid, :authentication_token
   # attr_accessible :title, :body
 
+  has_many :authentications
+
   def admin?
     return is_admin
   end
@@ -24,32 +26,53 @@ class User < ActiveRecord::Base
     return is_author
   end
 
-  def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
-    user = User.where(provider: auth.provider, uid: auth.uid).first
-    email = auth.info.email || "#{Devise.friendly_token[0,20]}@example.com"
-    unless user
-      existing_by_email = User.where(email: email)
-      if existing_by_email.size > 0
-        user = existing_by_email.where(provider: nil, uid: nil).first
-        throw "Can't have duplicate email addresses" unless user
-        user.update_attributes(
-          provider: auth.provider,
-          uid: auth.uid,
-          authentication_token: auth.credentials.token
-        )
-        return user
-      else
-        # make a new user:
-        user = User.create(
-          provider: auth.provider,
-          uid:      auth.uid,
-          email:    email,
-          password: Devise.friendly_token[0,20]
-        )
-      end
+  def authentication_token
+    # this is temporary until we really support multiple authentication providers
+    auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
+    if auth
+      auth.token
+    else
+      nil
     end
-    # update the authentication token:
-    user.update_attribute(:authentication_token, auth.credentials.token);
+  end
+
+  def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
+    authentication = Authentication.find_by_provider_and_uid auth.provider, auth.uid
+    if authentication
+      # update the authentication token for this user to make sure it stays fresh
+      authentication.update_attribute(:token, auth.credentials.token)
+      return authentication.user
+    end
+
+    # there is no authentication for this provider and uid
+    # see if we should create a new authentication for an existing user
+    # or make a whole new user
+    email = auth.info.email || "#{Devise.friendly_token[0,20]}@example.com"
+
+    # the devise validatable model enforces unique emails, so no need find_all
+    existing_user_by_email = User.find_by_email email
+
+    if existing_user_by_email
+      if existing_user_by_email.authentications.find_by_provider auth.provider
+        throw "Can't have duplicate email addresses: #{email}. " +
+              "There is an user with an authentication for this provider #{auth.provider} " +
+              "and the same email already."
+      end
+      # There is no authentication for this provider and user
+      user = existing_user_by_email
+    else
+      # no user with this email, so make a new user with a random password
+      user = User.create(
+        email:    email,
+        password: Devise.friendly_token[0,20]
+      )
+    end
+    # create new authentication for this user that we found or created
+    user.authentications.create(
+      provider: auth.provider,
+      uid:      auth.uid,
+      token:    auth.credentials.token
+    )
     user
   end
 end

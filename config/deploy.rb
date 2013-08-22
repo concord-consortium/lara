@@ -1,5 +1,6 @@
 require "bundler/capistrano"
 require 'capistrano/ext/multistage'
+require 'haml'
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lara.git"
@@ -10,6 +11,13 @@ set :scm, :git # You can set :scm explicitly or Capistrano will make an intellig
 set :stages, %w(staging production dev)
 
 set :default_stage, "staging"
+
+def render(file,opts={})
+  template = File.read(file)
+  haml_engine = Haml::Engine.new(template)
+  output = haml_engine.render(nil,opts)
+  output
+end
 
 # if you want to clean up old releases on each deploy uncomment this:
 after "deploy:restart", "deploy:cleanup"
@@ -50,5 +58,37 @@ set :use_sudo, false
 
 after 'deploy:update_code', 'deploy:shared_symlinks'
 
-        require './config/boot'
-        require 'airbrake/capistrano'
+require './config/boot'
+require 'airbrake/capistrano'
+
+#############################################################
+#  Maintenance mode
+#############################################################
+namespace :deploy do
+  namespace :web do
+    task :disable, :roles => :web do
+
+      on_rollback { delete "#{shared_path}/system/maintenance.html"    }
+
+      site_name = Capistrano::CLI.ui.ask("site name? ") { |q| q.default = "LARA"         }
+      back_up   = Capistrano::CLI.ui.ask("back up?   ") { |q| q.default = "in 12 minutes" }
+      message   = Capistrano::CLI.ui.ask("message?   ") { |q| q.default = ""              }
+
+      maintenance = render("./app/views/layouts/maintenance.haml",
+                           {
+                             :back_up   => back_up,
+                             :message   => message,
+                             :site_name => site_name
+                           })
+
+      # File.open(File.expand_path("~/Desktop/index.html"),"w") do |f|
+      #   f.write(maintenance)
+      # end
+      run "mkdir -p #{shared_path}/system/"
+      put maintenance, "#{shared_path}/system/maintenance.html",
+                       :mode => 0644
+    end
+  end
+end
+
+

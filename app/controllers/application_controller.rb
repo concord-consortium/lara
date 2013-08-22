@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, :with => :not_found
     
   def not_found(exception)
-    ExceptionNotifier::Notifier.exception_notification(request.env, exception,
-      :data => {:message => "raised a Not Found exception"}).deliver
+    ExceptionNotifier.notify_exception(exception,
+      :env => request.env, :data => {:message => "raised a Not Found exception"})
     redirect_to root_url, :alert => exception.message
   end
 

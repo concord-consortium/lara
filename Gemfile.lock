@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/concord-consortium/sketchily.git
-  revision: bab8f6fdc5cc8c2a56ef1e3e059d54c37839fcba
+  revision: 660c0bbff0d3795411f7f17b2e0c918b422f1800
   branch: concord
   specs:
     sketchily (1.5.0)
@@ -215,9 +215,9 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
-    mime-types (1.23)
+    mime-types (1.24)
     mini_portile (0.5.1)
-    multi_json (1.7.8)
+    multi_json (1.7.9)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     mysql2 (0.3.13)
@@ -347,7 +347,7 @@ GEM
       ref
     thor (0.18.1)
     tilt (1.4.1)
-    treetop (1.4.14)
+    treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
     turbo-sprockets-rails3 (0.3.6)

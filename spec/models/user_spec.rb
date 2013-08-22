@@ -107,8 +107,9 @@ describe User do
     describe "with matching provider and user" do
       it "should return the matching user" do
 
-        expected = FactoryGirl.create(:user, {
-          :provider => auth_provider, :uid => auth_uid})
+        expected = FactoryGirl.create(:user)
+        authentication = FactoryGirl.create(:authentication,
+          {:user => expected, :provider => auth_provider, :uid => auth_uid})
 
         User.find_for_concord_portal_oauth(auth).should == expected
       end
@@ -117,31 +118,43 @@ describe User do
     describe "with matching email address and no provider" do
       it "should return the found user" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email, :provider => nil, :uid => nil } )
+          { :email => auth_email } )
         User.find_for_concord_portal_oauth(auth).should == expected
       end
       it "should update the provider and user to match found" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email, :provider => nil, :uid => nil } )
+          { :email => auth_email } )
         found = User.find_for_concord_portal_oauth(auth)
         found.email.should    == expected.email
-        found.provider.should == auth.provider
-        found.uid.should      == auth.uid
+        authentication = found.authentications.first
+        authentication.provider.should == auth.provider
+        authentication.uid.should      == auth.uid
       end
     end
 
-    describe "with matching email address and wrong provider" do
-      it "should throw an exception" do
+    describe "with matching email address and different provider" do
+      it "should create a new authentication with the provider and uid" do
+
         expected = FactoryGirl.create(:user,
-          { :email => auth_email, :provider => 'some other provider', :uid => auth_uid} )
-        expect { User.find_for_concord_portal_oauth(auth) }.to raise_error
+          { :email => auth_email }  )
+        authentication = FactoryGirl.create(:authentication,
+          {:user => expected, :provider => 'some other provider', :uid => auth_uid})
+        found = User.find_for_concord_portal_oauth(auth)
+        found.email.should                == expected.email
+        found.authentications.size.should == 2
+
+        authentication = found.authentications.find_by_provider auth.provider
+        authentication.should_not == nil
+        authentication.uid.should == auth.uid
       end
     end
 
     describe "with matching email address and wrong uid" do
       it "should throw an excpetion" do
         expected = FactoryGirl.create(:user,
-          { :email => auth_email, :provider => auth_provider, :uid => "222" } )
+          { :email => auth_email}  )
+        authentication = FactoryGirl.create(:authentication,
+          {:user => expected, :provider => auth_provider, :uid => "222"})
         expect { User.find_for_concord_portal_oauth(auth) }.to raise_error
       end
     end
