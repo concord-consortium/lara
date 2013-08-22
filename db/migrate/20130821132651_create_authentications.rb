@@ -1,7 +1,9 @@
 class CreateAuthentications < ActiveRecord::Migration
   class User < ActiveRecord::Base
+    attr_protected :non_existint_field # make other attrs accessable.
   end
   class Authentication < ActiveRecord::Base
+    attr_protected :non_existint_field # make other attrs accessable.
   end
 
   def up
