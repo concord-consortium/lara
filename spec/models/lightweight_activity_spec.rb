@@ -54,7 +54,7 @@ describe LightweightActivity do
     it 'returns activities owned by a given author' do
       activity.user = author
       activity.save
-    
+
       LightweightActivity.my(author).should == [activity]
     end
   end
@@ -88,7 +88,7 @@ describe LightweightActivity do
       activity.pages.last.add_embeddable(or2)
     end
 
-    
+
     describe '#questions' do
       it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
         activity.questions.length.should be(4)
@@ -144,4 +144,20 @@ describe LightweightActivity do
       end
     end
   end
+
+  describe '#serialize_for_portal' do
+    let(:simple_portal_hash) do
+      url = "http://test.host/activities/#{activity.id}"
+      {"type"=>"Activity", "name"=> activity.name, "description"=> activity.description,
+        "url"=> url,
+        "create_url"=> url,
+        "sections"=>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
+      }
+    end
+
+    it 'returns a simple hash that can be consumed by the Portal' do
+      activity.serialize_for_portal('http://test.host').should == simple_portal_hash
+    end
+  end
+
 end

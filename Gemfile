@@ -26,10 +26,13 @@ gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
 gem 'exception_notification'
-gem 'shutterbug', '~>0.0.10'
+gem 'shutterbug', '~>0.0.11'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git"
-
+# gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
+# use bundle update sketchily to force newest SHA from github, or uncomment above
+# to work locally.
+gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :branch => "concord"
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
 gem "sqlite3"
@@ -101,3 +104,6 @@ gem 'brakeman', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"
+
+# this is to fix a pulled version of safe_yaml (0.9.4)
+gem "safe_yaml", "~> 0.9.5"

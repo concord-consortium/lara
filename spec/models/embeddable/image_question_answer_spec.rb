@@ -25,17 +25,41 @@ describe Embeddable::ImageQuestionAnswer do
   end
 
   describe '#portal_hash' do
-    let(:expected) do
-      {
-        "type"        => "image_question",
-        "question_id" => question.id.to_s,
-        "answer"      => answer.answer_text,
-        "image_url"   => answer.image_url
-      }
-    end
+    describe 'without an annotated_image_url' do
+      let(:expected) do
+        {
+          "type"        => "image_question",
+          "question_id" => question.id.to_s,
+          "answer"      => answer.answer_text,
+          "image_url"   => answer.image_url,
+          "annotation"  => nil
+        }
+      end
 
-    it "matches the expected hash" do
-      answer.portal_hash.should == expected
+      it "matches the expected hash" do
+        answer.portal_hash.should == expected
+      end
+    end
+    describe 'with an annotated_image_url' do
+      let(:answer) do
+        FactoryGirl.create(:image_question_answer,
+          :question    => question,
+          :annotated_image_url => 'http://annotation.com/foo.png',
+          :run => run )
+      end
+      let(:expected) do
+        {
+          "type"        => "image_question",
+          "question_id" => question.id.to_s,
+          "answer"      => answer.answer_text,
+          "image_url"   => answer.annotated_image_url,
+          "annotation"  => nil
+        }
+      end
+
+      it "matches the expected hash" do
+        answer.portal_hash.should == expected
+      end
     end
   end
 
@@ -75,6 +99,13 @@ describe Embeddable::ImageQuestionAnswer do
       join.move_to_bottom # i.e. move or2 into position 5 and bump our answer up to position 4
       answer.reload
       answer.question_index.should be(4)
+    end
+  end
+
+  describe '#prompt_no_itals' do
+    it 'strips the content from any HTML `i` containers in the prompt' do
+      question.prompt = '<p>This prompt is <i>not</i> free of italicized content.</p>'
+      answer.prompt_no_itals.should_not match /not/
     end
   end
 

@@ -3,7 +3,7 @@ class LightweightActivity < ActiveRecord::Base
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
 
   attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-    :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -49,7 +49,7 @@ class LightweightActivity < ActiveRecord::Base
     end
     return q
   end
-  
+
   # Returns an array of strings representing the storage_keys of all the questions
   def question_keys
     return questions.map { |q| q.storage_key }
@@ -96,4 +96,67 @@ class LightweightActivity < ActiveRecord::Base
     return new_activity
     # N.B. the duplicate hasn't been saved yet
   end
+
+  def serialize_for_portal(host)
+    local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
+    data = {
+      'type' => "Activity",
+      "name" => self.name,
+      "description" => self.description,
+      "url" => local_url,
+      "create_url" => local_url
+    }
+
+    pages = []
+    self.pages.each do |page|
+      elements = []
+      page.embeddables.each do |embeddable|
+        case embeddable
+        when Embeddable::OpenResponse
+          elements.push({
+                          "type" => "open_response",
+                          "id" => embeddable.id,
+                          "prompt" => embeddable.prompt
+                        })
+        when Embeddable::ImageQuestion
+          elements.push({
+                          "type" => "image_question",
+                          "id" => embeddable.id,
+                          "prompt" => embeddable.prompt
+                        })
+        when Embeddable::MultipleChoice
+          choices = []
+          embeddable.choices.each do |choice|
+            choices.push({
+                           "id" => choice.id,
+                           "content" => choice.choice,
+                           "correct" => choice.is_correct
+                         })
+          end
+          mc_data = {
+            "type" => "multiple_choice",
+            "id" => embeddable.id,
+            "prompt" => embeddable.prompt,
+            "choices" => choices
+          }
+          elements.push(mc_data)
+        else
+          # We don't suppoert this embeddable type right now
+        end
+      end
+      pages.push({
+                   "name" => page.name,
+                   "elements" => elements
+                 })
+    end
+
+    section = {
+      "name" => "#{self.name} Section",
+      "pages" => pages
+    }
+
+    data["sections"] = [section]
+    data
+  end
+
 end

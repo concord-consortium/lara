@@ -7,6 +7,7 @@
         -# %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :duplicate, activity
         %li.edit= link_to "Edit", edit_sequence_path(sequence) if can? :update, sequence
         %li.delete= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence
+        %li.publish= link_to 'Publish', publish_sequence_path(sequence) unless cannot? :publish, sequence
         -# %li.publish= link_to 'Publish', publish_activity_path(activity) unless cannot? :publish, activity
         -# %li.run= link_to "Show", activity_path(activity), :target => 'new'
 

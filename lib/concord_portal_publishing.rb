@@ -1,68 +1,20 @@
 module ConcordPortalPublishing
+
   def portal_url
-    (ENV['CONCORD_PORTAL_URL'] || "http://localhost:3000") + '/external_activities/publish'
+    (ENV['CONCORD_PORTAL_URL'] || "http://localhost:3000") + '/external_activities/publish/v2'
   end
 
-  def portal_publish(activity)
-    data = {
-      "name" => activity.name,
-      "description" => activity.description,
-      "url" => activity_url(activity),
-      "create_url" => activity_url(activity)
-    }
+  # publish an activity or sequence to the portal
+  def portal_publish(publishable)
 
-    pages = []
-    activity.pages.each do |page|
-      elements = []
-      page.embeddables.each do |embeddable|
-        case embeddable
-        when Embeddable::OpenResponse
-          elements.push({
-            "type" => "open_response",
-            "id" => embeddable.id,
-            "prompt" => embeddable.prompt
-          })
-        when Embeddable::ImageQuestion
-          elements.push({
-            "type" => "image_question",
-            "id" => embeddable.id,
-            "prompt" => embeddable.prompt
-          })
-        when Embeddable::MultipleChoice
-          choices = []
-          embeddable.choices.each do |choice|
-            choices.push({
-              "id" => choice.id,
-              "content" => choice.choice,
-              "correct" => choice.is_correct
-            })
-          end
-          mc_data = {
-            "type" => "multiple_choice",
-            "id" => embeddable.id,
-            "prompt" => embeddable.prompt,
-            "choices" => choices
-          }
+    # TODO: better error handling
+    raise "#{publishable.class.name} is Not Publishable" unless publishable.respond_to?(:serialize_for_portal)
 
-          elements.push(mc_data)
-        else
-          # We don't suppoert this embeddable type right now
-        end
-      end
-      pages.push({
-        "name" => page.name,
-        "elements" => elements
-      })
-    end
+    host = "#{request.protocol}#{request.host_with_port}"
+    data = publishable.serialize_for_portal(host)
 
-    section = {
-      "name" => "#{activity.name} Section",
-      "pages" => pages
-    }
-
-    data["sections"] = [section]
     bearer_token = 'Bearer %s' % current_user.authentication_token
-    logger.info "Attempting to publish activity #{activity.name} to #{portal_url}."
+    logger.info "Attempting to publish #{publishable.class.name} #{data['name']} to #{portal_url}."
     logger.info "Data will be #{data.to_json}"
     logger.info "Auth header will use #{bearer_token}."
     response = HTTParty.post(portal_url, :body => data.to_json, :headers => {"Authorization" => bearer_token, "Content-Type" => 'application/json'})
@@ -74,5 +26,6 @@ module ConcordPortalPublishing
       flash[:alert] = "Got response code #{response.code} from the portal: #{response.message}"
       return false
     end
+
   end
 end

@@ -27,16 +27,8 @@ var EmbeddableCarousel = function (element) {
     // the height of the .interactive-mod which is what we're using to get the height.
     // Two, we have an iframe or video tag which has already been height-adjusted (or the
     // image is already loaded and we don't need to wait.)
-	if (($('.interactive-mod img').length > 1) && !$('.interactive-mod img')[0].complete) {
-		// console.log('Deferring setCarouselSize()');
-		$('.interactive-mod img')[0].once('load', function () {
-			// console.log('Running deferred setCarouselSize()');
-			this.setCarouselSize();
-		});
-	} else {
-		// console.log('Size is ready, running setCarouselSize right away');
-		this.setCarouselSize();
-	}
+    // The first solution was pretty wonky, so I set a minimum height of 300 for those cases.
+	this.setCarouselSize();
 };
 
 EmbeddableCarousel.prototype.setCarouselSize = function () {
@@ -125,7 +117,7 @@ EmbeddableCarousel.prototype.adjustSize = function () {
         newWidth = 960;
     } else {
         // If not full-width, set height of carousel to height of interactive box
-        newHeight = $('.interactive-mod').height();
+        newHeight = Math.max($('.interactive-mod').height(), 300);
         if ($('.content-mod').hasClass('l-6040') || $('.content-mod').hasClass('r-4060')) {
             // If 60-40, set width of carousel to Y
             newWidth = 374;

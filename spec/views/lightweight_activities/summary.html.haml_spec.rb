@@ -26,6 +26,16 @@ describe 'lightweight_activities/summary' do
     rendered.should match /Response Summary for Activity Name/
   end
 
+  context 'when a prompt includes HTML tags' do
+    let(:or2) { stub_model(Embeddable::OpenResponseAnswer, :prompt => '<p>This<img src="/assets/mw-logo.png" /> is the <em>prompt</em>.</p>', :question_index => '5', :answer_text => nil) }
+
+    it 'strips HTML from the prompts' do
+      render
+      rendered.should match /This is the prompt\./
+    end
+  end
+
+
   it 'lists the questions with numbers and prompts' do
     render
     rendered.should have_css "div.prompt", :count => 6

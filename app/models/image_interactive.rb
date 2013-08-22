@@ -1,5 +1,5 @@
 class ImageInteractive < ActiveRecord::Base
-  attr_accessible :url, :caption, :credit
+  attr_accessible :url, :caption, :credit, :show_lightbox
 
   has_one :interactive_item, :as => :interactive, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, that instance should go too
