@@ -21,11 +21,18 @@ footer#footer {
   width: 100%;
   color: white;
   padding: 26px;
+  clear: both;
 }
 
+.sequence_info {
+  background-color: white;
+  opacity: 0.8;
+  padding: 10px;
+  margin: 8px;
+}
 
 .estimated-time {
-  margin: 10px 0;
+  margin: 8px;
   background-color: #ddd;
   background-image: url(/assets/icons/clock.svg); /* Add a clock background image, anchored left */
   background-repeat: no-repeat;
@@ -55,6 +62,8 @@ footer#footer {
     height: 300px;
     overflow: hidden;
     float: left;
+    background: white;
+    opacity: 0.85;
     margin: 9px;
     .position {
       color: #fff;

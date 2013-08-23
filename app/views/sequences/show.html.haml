@@ -3,10 +3,11 @@
 
 %p#notice= notice
 
-%h1.title= @sequence.title
+.sequence_info
+  %h1.title= @sequence.title
 
-.description
-  = @sequence.description.html_safe
+  .description
+    = @sequence.description.html_safe
 
 .estimated-time
   Estimated Time to Complete This Module:
