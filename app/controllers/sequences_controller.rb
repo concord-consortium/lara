@@ -2,7 +2,7 @@ require 'concord_portal_publishing'
 
 class SequencesController < ApplicationController
   include ConcordPortalPublishing
-
+  layout 'sequence_run', :only => [:show]
   before_filter :set_sequence, :except => [:index, :new, :create]
 
   # GET /sequences
