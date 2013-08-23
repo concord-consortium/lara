@@ -17,10 +17,8 @@ h1 {
 }
 
 footer#footer {
-  position: absolute;
   margin: 0px;
   width: 100%;
-  bottom: 0;
   color: white;
   padding: 26px;
 }
@@ -57,7 +55,7 @@ footer#footer {
     height: 300px;
     overflow: hidden;
     float: left;
-    margin-right: 18px;
+    margin: 9px;
     .position {
       color: #fff;
       font-weight: bold;
