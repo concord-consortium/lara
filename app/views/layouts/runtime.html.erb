@@ -52,17 +52,13 @@
 			<div class="site-logo-mod site-width">
 				<div class="site-logo logo-l">
 					<h2>
-            <%- if @project and !@project.logo.blank? -%>
-              <%= link_to image_tag(@project.logo, :alt => @project.title, :id => 'mw-logo'), @project.url, :title => @project.title %>
-            <%- else -%>
-              <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
-            <%- end -%>
+            <%= left_logo_tag %>
 					</h2>
 				</div> <!-- end site-logo logo-l -->
 
 				<div class="site-logo logo-r">
 					<h2>
-            <%= link_to image_tag("cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo"), "http://concord.org/", :title => "The Concord Consortium" %>
+            <%= right_logo_tag %>
 					</h2>
 				</div> <!-- end site-logo logo-r -->
 
