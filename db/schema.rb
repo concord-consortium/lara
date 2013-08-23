@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130821132651) do
+ActiveRecord::Schema.define(:version => 20130823150925) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20130821132651) do
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
+    t.text     "logo"
   end
 
   create_table "themes", :force => true do |t|
