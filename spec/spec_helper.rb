@@ -10,9 +10,12 @@ require 'webmock/rspec'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
+
 # this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
+# otherwise Capybara or poltergeist will fail not being able to load shutterbug.js
 Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FILE__)).first
-# this fixes allows loading of assets by save_and_open_page pages. You'll need to have
+
+# this fixes loading of assets by save_and_open_page pages. You'll need to have
 # a server running at this location that serves the assets required by the page.
 # this isn't documented other than the discussion in this pull request:
 # https://github.com/jnicklas/capybara/pull/958
