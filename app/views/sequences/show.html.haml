@@ -21,12 +21,7 @@
       .position
         = las.position.to_s
       .title
-        - if @sequence_run
-          - run = @sequence_run.run_for_activity(activity)
-          - activity_url = activity_with_response_path(activity.id, run.key)
-        - else
-          - activity_url = sequence_activity_path(@sequence, activity)
-        = link_to activity.name, activity_url
+        = link_to activity.name, runnable_activity_path(activity)
       .thumbnail
         = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
 
