@@ -1,5 +1,5 @@
 class Run < ActiveRecord::Base
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -8,6 +8,8 @@ class Run < ActiveRecord::Base
   belongs_to :page, :class_name => InteractivePage # last page
 
   belongs_to :sequence # optional
+
+  belongs_to :sequence_run # optional
 
   has_many :multiple_choice_answers,
     :class_name  => 'Embeddable::MultipleChoiceAnswer',

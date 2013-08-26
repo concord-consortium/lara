@@ -4,6 +4,7 @@ class SequencesController < ApplicationController
   include ConcordPortalPublishing
   layout 'sequence_run', :only => [:show]
   before_filter :set_sequence, :except => [:index, :new, :create]
+  before_filter :find_or_create_sequence_run, :only => [:show]
 
   # GET /sequences
   # GET /sequences.json
@@ -152,4 +153,16 @@ class SequencesController < ApplicationController
   def set_sequence
     @sequence = Sequence.find(params[:id])
   end
+
+  def find_or_create_sequence_run
+    portal = RemotePortal.new({})
+    if session.delete(:did_reauthenticate)
+      portal = session.delete(:portal)
+      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+    else
+      update_portal_session
+    end
+    # This creates a new sequnce_run if it doesn't exist.
+  end
+
 end
