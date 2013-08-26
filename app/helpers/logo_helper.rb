@@ -20,7 +20,12 @@ module LogoHelper
     sequence = @sequence
     return nil unless sequence
     logo = sequence.logo || "home_blue.png"
-    url = url_for(sequence)
+
+    if @sequence_run
+      url = sequence_path(:id => sequence.id, :sequence_run => @sequence_run.id)
+    else
+      url = url_for(sequence)
+    end
     logo_tag(logo, sequence.title, url)
   end
 

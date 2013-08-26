@@ -155,6 +155,11 @@ class SequencesController < ApplicationController
   end
 
   def find_or_create_sequence_run
+    if sequence_run_id = params['sequence_run']
+      @sequence_run = SequenceRun.find(sequence_run_id)
+      return @sequence_run if @sequence_run
+    end
+
     portal = RemotePortal.new({})
     if session.delete(:did_reauthenticate)
       portal = session.delete(:portal)

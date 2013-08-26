@@ -125,6 +125,7 @@ class ApplicationController < ActionController::Base
       update_portal_session
     end
     @run = Run.lookup(@session_key, @activity, current_user, portal) # This creates a new key if one didn't exist before
+    @sequence_run = @run.sequence_run if @run.sequence_run
     set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
   end
 
