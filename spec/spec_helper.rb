@@ -21,6 +21,13 @@ Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FI
 # https://github.com/jnicklas/capybara/pull/958
 Capybara.asset_host = 'http://localhost:3000'
 
+OmniAuth.config.test_mode = true
+OmniAuth.config.add_mock(:concord_portal, {
+  :uid      => 'fake_concord_user',
+  :provider => 'concord_portal',
+  :credentials => {:token => 'token'} }
+)
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
