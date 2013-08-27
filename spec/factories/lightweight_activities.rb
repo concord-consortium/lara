@@ -20,6 +20,15 @@ FactoryGirl.define do
     pages { [FactoryGirl.create(:page)] }
   end
 
+  factory :activity_with_page_and_or, :class => LightweightActivity do
+    name { generate(:name) }
+    publication_status 'public'
+    related { generate(:related) }
+    description { generate(:description) }
+    pages { [FactoryGirl.create(:interactive_page_with_or)] }
+  end
+
+
   factory :public_activity, :class => LightweightActivity do
     name { generate(:name) }
     publication_status 'public'

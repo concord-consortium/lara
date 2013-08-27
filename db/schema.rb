@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130823150925) do
+ActiveRecord::Schema.define(:version => 20130826175627) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -212,6 +212,16 @@ ActiveRecord::Schema.define(:version => 20130823150925) do
     t.integer  "page_id",         :default => 0
     t.string   "remote_endpoint"
     t.integer  "sequence_id"
+    t.integer  "sequence_run_id"
+  end
+
+  create_table "sequence_runs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "sequence_id"
+    t.string   "remote_id"
+    t.string   "remote_endpoint"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "sequences", :force => true do |t|
