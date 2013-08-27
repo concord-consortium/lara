@@ -17,12 +17,19 @@ feature "Activity is run from the portal", :js => true do
 
     visit url
 
-    save_and_open_page
     click_button "Begin activity"
+
+    stub = stub_request(:post, "http://portal.com/return/1234").
+	  with(:body => "[{\"type\":\"open_response\",\"question_id\":\"1\",\"answer\":\"something\"}]",
+	       :headers => {'Authorization'=>'Bearer token', 'Content-Type'=>'application/json'}).
+	  to_return(:status => 200, :body => "", :headers => {})
+
     fill_in 'embeddable_open_response_answer[answer_text]', :with => 'something'
     page.should have_content "Saving"
     page.should have_content "Saved"
-    save_and_open_page
+
+    # The 'Bearer token' comes from the mocked omniauth authentication
+	stub.should have_been_requested.twice
   end
 end
 
