@@ -68,6 +68,13 @@ RSpec.configure do |config|
 
   Devise.stretches = 1
   WebMock.disable_net_connect!(:allow_localhost => true)
+
+  # on Scott's OS X 10.6 machine, phantom needs to visit a simple page before
+  # it works reliably
+  config.before(:each, :js => true) {
+    ENV['RUNNING_JS_TEST'] = 'true'
+    visit '/404.html'
+  }
 end
 
 class ActiveRecord::Base
