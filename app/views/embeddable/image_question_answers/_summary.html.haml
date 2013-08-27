@@ -8,4 +8,8 @@
   - else
     %p! &nbsp;
 .image_answer
-  = image_tag(answer.annotated_image_url || answer.image_url)
+  - answer_url = answer.annotated_image_url || answer.image_url
+  - if answer_url.blank?
+    = "Not Ansered"
+  - else
+    = image_tag(answer_url)
