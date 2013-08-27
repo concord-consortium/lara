@@ -26,14 +26,15 @@
   &nbsp;
   #___plusone_0(style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 32px; height: 20px; background-position: initial initial; background-repeat: initial initial;")
     -# TODO: The +1 button src is busted
-    %iframe(frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 32px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1366636611106" name="I0_1366636611106" src="https://plusone.google.com/_/+1/fastbutton?bsv&size=medium&annotation=none&hl=en-US" allowtransparency="true" data-gapiattached="true" title="+1")
+    -# this was breaking phantomjs tests
+    -# %iframe(frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 32px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1366636611106" name="I0_1366636611106" src="https://plusone.google.com/_/+1/fastbutton?bsv&size=medium&annotation=none&hl=en-US" allowtransparency="true" data-gapiattached="true" title="+1")
 
-  :javascript
-    (function() {
-      var po = document.createElement('script');
-      po.type = 'text/javascript';
-      po.async = true;
-      po.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(po, s);
-    })();
+  / :javascript
+  /   (function() {
+  /     var po = document.createElement('script');
+  /     po.type = 'text/javascript';
+  /     po.async = true;
+  /     po.src = 'https://apis.google.com/js/plusone.js';
+  /     var s = document.getElementsByTagName('script')[0];
+  /     s.parentNode.insertBefore(po, s);
+  /   })();
