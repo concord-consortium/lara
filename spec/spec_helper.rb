@@ -9,6 +9,10 @@ require 'webmock/rspec'
 # Javascript testing with PhantomJS
 require 'capybara/rspec'
 require 'capybara/poltergeist'
+
+# https://github.com/dtao/safe_yaml/issues/10
+SafeYAML::OPTIONS[:deserialize_symbols] = true
+
 Capybara.javascript_driver = :poltergeist
 
 # this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
