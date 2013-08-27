@@ -160,9 +160,8 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    portal = RemotePortal.new({})
+    portal = RemotePortal.new(params)
     if session.delete(:did_reauthenticate)
-      portal = session.delete(:portal)
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
     else
       update_portal_session

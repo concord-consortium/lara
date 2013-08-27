@@ -75,19 +75,19 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def save_portal_info
-    session[:portal] = RemotePortal.new(params)
-  end
-
   def update_portal_session
-    if params[:domain] && params[:externalId]
-      save_portal_info
-      session[:auth_return_url] = request.url
-      unless session[:did_reauthenticate]
-        session[:did_reauthenticate] = true
-        sign_out(current_user)
-        redirect_to user_omniauth_authorize_path(:concord_portal)
-      end
+    if params[:domain] && params[:externalId] && !session[:did_reauthenticate]
+      sign_out(current_user)
+
+      # the sign out creates a new session, so we need to set this after
+      # signout. This way when we are called back this session info will be available
+      session[:did_reauthenticate] = true
+
+      # we set the origin here which will become request.env['omniauth.origin']
+      # in the callback phase, by default omniauth will use use
+      # the referer and that is not changed during redirects. More info:
+      # https://github.com/intridea/omniauth/wiki/Saving-User-Location
+      redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url)
     end
   end
 
@@ -118,12 +118,12 @@ class ApplicationController < ActionController::Base
 
   def set_run_key
     update_response_key
-    portal = RemotePortal.new({})
-    if session.delete(:did_reauthenticate)
-      portal = session.delete(:portal)
-    else
+    portal = RemotePortal.new(params)
+    unless session.delete(:did_reauthenticate)
       update_portal_session
     end
+
+    # FIXME this will create a run even if update_portal_session causes a redirect
     @run = Run.lookup(@session_key, @activity, current_user, portal) # This creates a new key if one didn't exist before
     @sequence_run = @run.sequence_run if @run.sequence_run
     set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
     clear_session_response_key
-    session.delete(:auth_return_url) || request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
+    request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
 end
