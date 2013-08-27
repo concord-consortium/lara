@@ -9,20 +9,13 @@ feature "Activity is run from the portal", :js => true do
   	activity = FactoryGirl.create(:activity_with_page_and_or)
     user     = FactoryGirl.create(:user_with_authentication)
 
-    domain       = 'http://portal.com'
-    external_id  = '1234'
-    external_url = 'http://portal.com/return/1234'
+    url = activity_path(activity, :params => {
+		     :domain     => 'http://portal.com',
+		     :externalId => '1234',
+		     :returnUrl  => 'http://portal.com/return/1234'
+		     })
 
-    url = activity_path(activity)
-
-    uri = URI.parse(url)
-    uri.query = {
-     :domain     => domain,
-     :externalId => external_id,
-     :returnUrl  => external_url
-    }.to_query
-
-    visit uri.to_s
+    visit url
 
     save_and_open_page
     click_button "Begin activity"
