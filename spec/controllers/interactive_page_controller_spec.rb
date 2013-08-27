@@ -112,9 +112,9 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}"[^>]*>[^<]*1[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}"[^>]*>[^<]*2[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}"[^>]*>[^<]*3[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
+      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}"[^>]*>[^<]*3[^<]*<\/a>/
     end
 
     it 'only renders the forward navigation link on the first page' do
@@ -123,7 +123,7 @@ describe InteractivePagesController do
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
       response.body.should match /<a class='disabled prev'>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}'>/
+      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}'>/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -132,8 +132,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages[1].id, :response_key => ar.key
 
-      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}'>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}'>/
+      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
+      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -142,7 +142,7 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.last.id, :response_key => ar.key
 
-      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}'>/
+      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
       response.body.should match /<a class='disabled next'>/
     end
 
@@ -152,7 +152,7 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}" class="pagination-link selected">1<\/a>/
+      response.body.should match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
