@@ -92,7 +92,7 @@ describe LightweightActivitiesController do
         controller.should_receive(:sign_out).and_return(:true)
         page
         get :show, :id => act.id, :domain => "foo", :externalId => "bar"
-        response.should redirect_to user_omniauth_authorize_path(:concord_portal)
+        response.should redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url)
       end
     end
   end

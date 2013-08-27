@@ -8,6 +8,14 @@ FactoryGirl.define do
     password 'passwrod...'
     password_confirmation 'passwrod...'
     is_admin false
+    factory :user_with_authentication do
+      authentications {
+        [ FactoryGirl.create(
+        :authentication,
+        :uid      => 'fake_concord_user',
+        :provider => 'concord_portal')
+      ]}
+    end
   end
 
   factory :admin, :class => User do

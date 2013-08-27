@@ -7,8 +7,30 @@ require 'factory_girl'
 require 'webmock/rspec'
 
 # Javascript testing with PhantomJS
+require 'capybara/rspec'
 require 'capybara/poltergeist'
+
+# https://github.com/dtao/safe_yaml/issues/10
+SafeYAML::OPTIONS[:deserialize_symbols] = true
+
 Capybara.javascript_driver = :poltergeist
+
+# this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
+# otherwise Capybara or poltergeist will fail not being able to load shutterbug.js
+Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FILE__)).first
+
+# this fixes loading of assets by save_and_open_page pages. You'll need to have
+# a server running at this location that serves the assets required by the page.
+# this isn't documented other than the discussion in this pull request:
+# https://github.com/jnicklas/capybara/pull/958
+Capybara.asset_host = 'http://localhost:3000'
+
+OmniAuth.config.test_mode = true
+OmniAuth.config.add_mock(:concord_portal, {
+  :uid      => 'fake_concord_user',
+  :provider => 'concord_portal',
+  :credentials => {:token => 'token'} }
+)
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -39,6 +61,10 @@ RSpec.configure do |config|
   # Include Devise helpers
   config.include Devise::TestHelpers, :type => :controller
   config.include Devise::TestHelpers, :type => :view
+
+  # this really doesn't seem like it should be necessary, so I wonder about
+  # wether the require capybara/rspec is working or needed above
+  config.include Rails.application.routes.url_helpers, :type => :feature
 
   Devise.stretches = 1
   WebMock.disable_net_connect!(:allow_localhost => true)

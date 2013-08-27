@@ -18,8 +18,8 @@
       =# Subgroups inside activities
     - @pages.each do |page|
       %li
-        = link_to page.name, activity_page_path(@activity, page.id)
+        = link_to page.name, runnable_activity_page_path(@activity, page)
 
-  %a{ :href => activity_page_path(@activity, @activity.pages.first.id ) }
+  %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
     .submit
       %input.button{ :type => "submit", :value => "Begin activity" }

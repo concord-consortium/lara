@@ -13,5 +13,13 @@ FactoryGirl.define do
     show_sidebar 1
     show_interactive 1
     show_info_assessment 1
+
+    factory :interactive_page_with_or do
+      name "page with open response"
+      after(:create) do |page, evaluator|
+        # page.page_items  { [ FactoryGirl.create(:page_item, :interactive_page => page) ] }
+        FactoryGirl.create_list(:page_item, 1, :interactive_page => page)
+      end
+    end
   end
 end

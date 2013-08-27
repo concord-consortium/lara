@@ -86,6 +86,8 @@ end
 group :test do
   # test webservices
   gem 'webmock'
+  # needed for capybara's save_and_open_page
+  gem 'launchy'
 end
 
 # To use ActiveModel has_secure_password

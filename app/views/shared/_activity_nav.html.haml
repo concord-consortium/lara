@@ -12,14 +12,14 @@
             - activity = las.lightweight_activity
             %li.activity{ :class => @activity == activity ? %w(active on) : '' }
               .activity-list-head
-                = link_to "#{las.position.to_s}. #{activity.name}", sequence_activity_path(@sequence, activity)
+                = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity)
                 %a.open-close
                   %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
               %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
         - else
           %li.activity.active
-            = link_to "#{@activity.name}", activity_path(@activity)
+            = link_to "#{@activity.name}", runnable_activity_path(@activity)
             %ol.pages.in-activity
               = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
@@ -27,17 +27,17 @@
     = @activity.name
 %nav.activity-nav.ui-block-2
   -if @page
-    - next_href = @page.lower_item.nil? ? nil : activity_page_path(@page.lightweight_activity, @page.lower_item)
-    - previous_href = @page.higher_item.nil? ? nil : activity_page_path(@page.lightweight_activity, @page.higher_item)
+    - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
+    - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
     %a.next{ :class => ('disabled' if @page.lower_item.nil?), :href => next_href }
     %a.prev{ :class => ('disabled' if @page.higher_item.nil?), :href => previous_href }
 
   .pages
     %ul.pagination
       %li.pagination-item.home-link
-        = link_to 'H', activity_path(@activity), :class => @page.blank? ? 'pagination-link selected' : 'pagination-link'
+        = link_to 'H', runnable_activity_path(@activity), :class => @page.blank? ? 'pagination-link selected' : 'pagination-link'
       - page_counter = 1
       - @activity.pages.each do |p|
         %li.pagination-item
-          = link_to page_counter, activity_page_path(@activity, p), :class => (p === @page) ? 'pagination-link selected' : 'pagination-link'
+          = link_to page_counter, runnable_activity_page_path(@activity, p), :class => (p === @page) ? 'pagination-link selected' : 'pagination-link'
           - page_counter = page_counter + 1
