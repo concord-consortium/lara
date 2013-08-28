@@ -10,6 +10,6 @@
 .image_answer
   - answer_url = answer.annotated_image_url || answer.image_url
   - if answer_url.blank?
-    = "Not Ansered"
+    = "Not Answered"
   - else
     = image_tag(answer_url)
