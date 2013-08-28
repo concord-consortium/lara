@@ -1,7 +1,7 @@
 = content_for :session do
   #session
     = render :partial => 'shared/session'
-= content_for :title do 
+= content_for :title do
   = "Edit #{@page.name}"
 = content_for :nav do
   .breadcrumbs
@@ -41,9 +41,9 @@
             = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
             Page sidebar text
   %ul.tasks
-    %li= link_to "See this page", activity_page_path(@activity, @page), :target => 'new'
+    %li= link_to "Preview", activity_page_path(@activity, @page), :target => 'new'
     %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
-  
+
 %div{:class => ["content", "editing", @page.layout.match(/^r-/) ? "stacked-right" : nil]}
   .page-nav
     - if @page.higher_item
@@ -64,7 +64,7 @@
 
   %h1.title
     = @activity.name
-  
+
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
   = form_for @page, :remote => true do |f|
