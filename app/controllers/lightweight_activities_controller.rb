@@ -13,11 +13,11 @@ class LightweightActivitiesController < ApplicationController
 
   def index
     if can? :manage, LightweightActivity
-      @activities = LightweightActivity.all
+      @activities = LightweightActivity.by_newest
     elsif current_user.present?
-      @activities = LightweightActivity.my(current_user) + LightweightActivity.public
+      @activities = LightweightActivity.my(current_user).by_newest + LightweightActivity.public.by_newest
     else
-      @activities ||= LightweightActivity.public
+      @activities ||= LightweightActivity.public.by_newest
     end
   end
 

@@ -23,6 +23,7 @@ class LightweightActivity < ActiveRecord::Base
 
   # * Find all public activities
   scope :public, where(:publication_status => 'public')
+  scope :by_newest, order("updated_at DESC")
 
   # * Find all activities for one user (regardless of publication status)
   def self.my(user)
