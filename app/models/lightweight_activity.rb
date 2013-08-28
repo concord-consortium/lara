@@ -11,6 +11,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
+  has_many :runs, :foreign_key => 'activity_id'
   belongs_to :theme
   belongs_to :project
 
