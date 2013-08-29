@@ -1,22 +1,5 @@
 require 'spec_helper'
 
-# TODO: make a more generic matcher?
-RSpec::Matchers.define :be_in_modification_order do |expected|
-  match do |actual|
-    # descending order:
-    sorted = actual.sort{ |a,b| b.updated_at <=> a.updated_at}
-    sorted.each_with_index do |a,i|
-      fail if actual[i] != a
-    end
-  end
-end
-
-def make_pub_activity_with_rand_modication_time
-  Timecop.travel(rand(Date.parse('2011-01-01')..Date.parse('2012-12-01')))
-  FactoryGirl.create(:public_activity)
-  Timecop.return
-end
-
 # There's a slow test in here somewhere.
 describe LightweightActivitiesController do
   render_views
@@ -150,7 +133,7 @@ describe LightweightActivitiesController do
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     before(:each) do
-      0.upto(6) { |n| make_pub_activity_with_rand_modication_time }
+      make_collection_with_rand_modication_time(:activity,7)
     end
 
     describe '#index' do
@@ -158,7 +141,7 @@ describe LightweightActivitiesController do
         # User is an admin, so all activities
         get :index
         assigns(:activities).should have(7).items
-        assigns(:activities).should be_in_modification_order
+        assigns(:activities).should be_ordered_by 'updated_at_desc'
         assigns(:activities).length.should be(LightweightActivity.count)
       end
     end

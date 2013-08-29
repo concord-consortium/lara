@@ -19,10 +19,13 @@ describe SequencesController do
   end
 
   describe "GET index" do
-    it "assigns all sequences as @sequences" do
-      sequence
+    before(:each) do
+      make_collection_with_rand_modication_time(:sequence,20)
       get :index, {}
-      assigns(:sequences).should eq([sequence])
+    end
+
+    it "assigns all sequences as @sequences" do
+      assigns(:sequences).should be_ordered_by(:updated_at_desc)
     end
   end
 

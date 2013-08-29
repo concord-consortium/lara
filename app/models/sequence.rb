@@ -7,6 +7,8 @@ class Sequence < ActiveRecord::Base
   belongs_to :theme
   belongs_to :project
 
+
+  scope :newest, order("updated_at DESC")
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 
   def time_to_complete

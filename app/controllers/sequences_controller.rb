@@ -9,7 +9,7 @@ class SequencesController < ApplicationController
   # GET /sequences
   # GET /sequences.json
   def index
-    @sequences = Sequence.all
+    @sequences = Sequence.newest
 
     respond_to do |format|
       format.html # index.html.erb
