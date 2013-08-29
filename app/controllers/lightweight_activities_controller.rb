@@ -17,7 +17,7 @@ class LightweightActivitiesController < ApplicationController
     elsif current_user.present?
       @activities = LightweightActivity.my_or_public(current_user).newest
     else
-      @activities ||= LightweightActivity.public.by_newest
+      @activities ||= LightweightActivity.public.newest
     end
   end
 
