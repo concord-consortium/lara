@@ -11,6 +11,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
+  has_many :runs, :foreign_key => 'activity_id'
   belongs_to :theme
   belongs_to :project
 
@@ -22,10 +23,16 @@ class LightweightActivity < ActiveRecord::Base
 
   # * Find all public activities
   scope :public, where(:publication_status => 'public')
+  scope :newest, order("updated_at DESC")
 
   # * Find all activities for one user (regardless of publication status)
   def self.my(user)
     where(:user_id => user.id)
+  end
+
+  # * Find a users activities and the public activities
+  def self.my_or_public(user)
+    where("user_id = ? OR publication_status = 'public'", user.id)
   end
 
   # * Find all activities visible (readable) to the given user
@@ -33,7 +40,7 @@ class LightweightActivity < ActiveRecord::Base
     if user.is_admin?
       return LightweightActivity.all
     else
-      return LightweightActivity.public + LightweightActivity.my(user)
+      return LightweightActivity.my_or_public(user)
     end
   end
 

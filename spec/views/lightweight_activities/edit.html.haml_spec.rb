@@ -75,7 +75,7 @@ describe "lightweight_activities/edit" do
       rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"/
     end
 
-    it 'should provide in-place editing of description and sidebar', :js => true, :slow => true do
+    it 'should provide in-place editing of description and sidebar'  do
       pending "Rewrite for view specs"
       act
       visit new_user_session_path

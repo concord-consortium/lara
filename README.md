@@ -1,5 +1,8 @@
 # Lightweight Activities Runtime and Authoring (LARA)
 
+[![Code Climate](https://codeclimate.com/github/concord-consortium/lara.png)](https://codeclimate.com/github/concord-consortium/lara)
+[![Build Status](https://travis-ci.org/concord-consortium/lara.png?branch=master)](https://travis-ci.org/concord-consortium/lara)
+
 This is a Rails application intended to provide a platform for authoring and using "Lightweight" activities.
 
 ## Getting started

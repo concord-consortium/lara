@@ -63,7 +63,7 @@ group :test, :development do
   gem "factory_girl_rails"
   gem "faker"
   gem "capybara"
-
+  gem "timecop"
   gem 'pry'
   gem 'pry-stack_explorer'
   gem 'pry-exception_explorer'

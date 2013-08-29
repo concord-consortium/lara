@@ -160,4 +160,36 @@ describe LightweightActivity do
     end
   end
 
+  describe "named scopes" do
+    subject   { LightweightActivity }
+    before(:each) do
+      # 5 private activities
+      make_collection_with_rand_modication_time(:activity, 5)
+      # 5 public activities
+      make_collection_with_rand_modication_time(:public_activity, 5)
+      # 5 of my activities
+      make_collection_with_rand_modication_time(:activity, 5, {:user => author })
+    end
+
+    describe "the newest scope" do
+      it "should return all items, the most recent items first" do
+        subject.newest.should have(15).items
+        subject.newest.should be_ordered_by "updated_at_desc"
+      end
+    end
+    describe "the public scope" do
+      it "should return 5 public activities" do
+        subject.public.should have(5).items
+        subject.public.each { |a| a.publication_status.should == 'public'}
+      end
+    end
+    describe "my_or_public  scope" do
+      it "should return 10 activities that are either mine or public" do
+        subject.my_or_public(author).should have(10).items
+        subject.my_or_public(author).select{|a| a.user_id == author.id}.should have(5).items
+        subject.my_or_public(author).select{|a| a.publication_status == 'public'}.should have(5).items
+      end
+    end
+  end
+
 end

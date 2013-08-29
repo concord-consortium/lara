@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - "1.9.3"
+
+env:
+  -DEFAULT_AUTH_PROVIDER=concord_portal CONCORD_PORTAL_URL='http://foo.org' CONCORD_PORTAL_CLIENT_ID=localhost CONCORD_PORTAL_CLIENT_SECRET=secret SECRET_TOKEN=111111111111111111111111111111111111111111111111111111111111
+
+# uncomment this line if your project needs to run something other than `rake`:
+script: bundle exec rake db:migrate; bundle exec rake
