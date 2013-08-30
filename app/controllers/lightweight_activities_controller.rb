@@ -6,9 +6,8 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key, :only => [:summary, :show]
-  before_filter :set_sequence, :only => [:summary, :show]
-
+  before_filter :set_run_key,  :only   => [:summary, :show]
+  before_filter :set_sequence, :only   => [:summary, :show]
   layout 'runtime', :only => [:show]
 
   def index
