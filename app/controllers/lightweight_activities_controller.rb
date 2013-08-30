@@ -12,13 +12,9 @@ class LightweightActivitiesController < ApplicationController
   layout 'runtime', :only => [:show]
 
   def index
-    if can? :manage, LightweightActivity
-      @activities = LightweightActivity.newest
-    elsif current_user.present?
-      @activities = LightweightActivity.my_or_public(current_user).newest
-    else
-      @activities ||= LightweightActivity.public.newest
-    end
+    @filter       = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    @community_activities = @filter.collection.community
+    @official_activities  = @filter.collection.official
   end
 
   def show

@@ -43,16 +43,20 @@ describe "lightweight_activities/index" do
 #  let(:activity)  { stub_model(LightweightActivity, :id => 1) }
   let(:user)       { stub_model(User, :is_admin => false)      }
   let(:activities) { [] }
+  let(:official)    { [] }
+  let(:community)  { [] }
 
   before(:each) do
     view.stub!(:current_user).and_return(user)
     view.stub!(:can?).and_return(true)     # stub-out can-can features
     view.stub!(:cannot?).and_return(false) # stub-out can-can features
     assign(:activities, activities)
+    assign(:official_activities, official)
+    assign(:community_activities, community)
   end
 
   describe "with official activities" do
-    let(:activities){ 5.times.map{ official_activity() } }
+    let(:official){ 5.times.map{ official_activity() } }
 
     it "should not have a community section" do
       render
@@ -68,7 +72,7 @@ describe "lightweight_activities/index" do
   end
 
   describe "with only non-official activities" do
-    let(:activities){ 5.times.map{ community_activity() } }
+    let(:community){ 5.times.map{ community_activity() } }
 
     it "should have community section" do
       render
@@ -84,9 +88,9 @@ describe "lightweight_activities/index" do
   end
 
   describe "and non-official activities" do
-    let(:offical)    { 5.times.map{ official_activity()  }}
+    let(:official)    { 5.times.map{ official_activity()  }}
     let(:community)  { 3.times.map{ community_activity() }}
-    let(:activities) { offical + community                }
+    let(:activities) { official + community                }
 
     it "should have a community section" do
       render
@@ -107,7 +111,7 @@ describe "lightweight_activities/index" do
   end
 
   describe 'with all activities' do
-    let(:activities) { 2.times.map{ official_activity() } }
+    let(:official) { 2.times.map{ official_activity() } }
 
     it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
       render

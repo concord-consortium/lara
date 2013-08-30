@@ -18,19 +18,16 @@
           %li#add= link_to 'create new activity', new_activity_path
         %li#desc-toggle= toggle_all 'activity descriptions'
 
-
-- community_activities = @activities.select{ |a| a.is_official == false}
-- official_activities  = @activities.select{ |a| a.is_official == true }
-- if official_activities.size > 0
+- if @official_activities.size > 0
   #official_listing_heading
     %h1 Activities:
   %ul.quiet_list.official_listing
-    - official_activities.each do |activity|
+    - @official_activities.each do |activity|
       =render :partial => "index_item", :locals => {:activity => activity}
 
-- if community_activities.size > 0
+- if @community_activities.size > 0
   #community_listing_heading
     %h1 Community activities:
   %ul.quiet_list.community_listing
-    - community_activities.each do |activity|
+    - @community_activities.each do |activity|
       =render :partial => "index_item", :locals => {:activity => activity}
