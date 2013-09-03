@@ -65,14 +65,14 @@ To support new Embeddables:
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)
-* Add the Embeddable's name as a string to the the `SUPPORTED_EMBEDDABLES` constant in `config/initializers/embeddables.rb`.
+* Add the Embeddable's name as a string to the the `Embeddable::Types` constant in `app/models/embeddable.rb`.
 * There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
 ## Current work: reporting
 LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
 ## Single Sign-On
-If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate. 
+If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
 
 
 ## History

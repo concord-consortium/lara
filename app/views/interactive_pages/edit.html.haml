@@ -79,7 +79,7 @@
       .questions
         %h2 Info/Assess
         = form_tag add_embeddable_activity_page_path, :class => 'embeddables-form' do
-          = select_tag :embeddable_type, options_for_select(SUPPORTED_EMBEDDABLES.map { |e| [e[/::(\w+)$/,1], e] })
+          = embeddable_selector
           = submit_tag 'Add Embeddable'
         #sort_embeddables
           - @page.embeddables.each do |e|

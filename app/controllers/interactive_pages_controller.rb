@@ -109,20 +109,18 @@ class InteractivePagesController < ApplicationController
   def add_embeddable
     authorize! :update, @page
     update_activity_changed_by
-    if SUPPORTED_EMBEDDABLES.include?(params[:embeddable_type])
-      e = params[:embeddable_type].constantize.create!
-    else
-      raise ArgumentError, 'Not a valid Embeddable type'
-    end
+    e = Embeddable.create_for_string(params[:embeddable_type])
+
     @page.add_embeddable(e)
-    if e.instance_of?(Embeddable::MultipleChoice)
+    case e
+    when Embeddable::MultipleChoice
       e.create_default_choices
       param = { :edit_embed_mc => e.id }
-    elsif e.instance_of?(Embeddable::OpenResponse)
+    when Embeddable::OpenResponse
       param = { :edit_embed_or => e.id }
-    elsif e.instance_of?(Embeddable::ImageQuestion)
+    when Embeddable::ImageQuestion
       param = { :edit_embed_iq => e.id }
-    elsif e.instance_of?(Embeddable::Xhtml)
+    when Embeddable::Xhtml
       param = { :edit_embed_xhtml => e.id }
     end
     # Add parameter to open new embeddable modal
