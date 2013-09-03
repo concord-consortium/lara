@@ -3,7 +3,7 @@ module Embeddable
       Embeddable::ImageQuestion  => "Image question",
       Embeddable::MultipleChoice => "Multiple choice",
       Embeddable::OpenResponse   => "Open response",
-      Embeddable::Xhtml          => "Text area"
+      Embeddable::Xhtml          => "Text box"
     }
 
   def self.table_name_prefix
