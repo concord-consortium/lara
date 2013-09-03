@@ -5,7 +5,7 @@ describe HomeController do
   describe '#home' do
     before(:each) do
       make_collection_with_rand_modication_time(:public_activity,15)
-      make_collection_with_rand_modication_time(:sequence,15)
+      make_collection_with_rand_modication_time(:sequence,15,:publication_status => 'public')
       get :home
     end
 

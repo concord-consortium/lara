@@ -9,7 +9,8 @@ class SequencesController < ApplicationController
   # GET /sequences
   # GET /sequences.json
   def index
-    @sequences = Sequence.newest
+    @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
+    @sequences = @filter.collection
 
     respond_to do |format|
       format.html # index.html.erb

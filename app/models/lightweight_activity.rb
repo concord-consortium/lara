@@ -1,9 +1,9 @@
 class LightweightActivity < ActiveRecord::Base
-  PUB_STATUSES   = %w(draft private public archive)
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
+  include Publishable # models/publishable.rb defines pub & official
 
-  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-  :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  attr_accessible :name, :user_id, :pages, :related, :description,
+  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -15,34 +15,9 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :theme
   belongs_to :project
 
-  default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
-  validates :publication_status, :inclusion => { :in => PUB_STATUSES }
   validates_length_of :name, :maximum => 50
-
-  # * Find all public activities
-  scope :public, where(:publication_status => 'public')
-  scope :newest, order("updated_at DESC")
-
-  # * Find all activities for one user (regardless of publication status)
-  def self.my(user)
-    where(:user_id => user.id)
-  end
-
-  # * Find a users activities and the public activities
-  def self.my_or_public(user)
-    where("user_id = ? OR publication_status = 'public'", user.id)
-  end
-
-  # * Find all activities visible (readable) to the given user
-  def self.can_see(user)
-    if user.is_admin?
-      return LightweightActivity.all
-    else
-      return LightweightActivity.my_or_public(user)
-    end
-  end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions

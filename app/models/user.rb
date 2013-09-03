@@ -18,6 +18,13 @@ class User < ActiveRecord::Base
 
   has_many :authentications
 
+  # access cancan outside of current_user
+  # see https://github.com/ryanb/cancan/wiki/ability-for-other-users
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, :to => :ability
+
   def admin?
     return is_admin
   end

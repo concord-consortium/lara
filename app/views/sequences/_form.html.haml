@@ -26,6 +26,14 @@
     %br
     = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
   .field
+    = f.label :publication_status, "Publication status"
+    %br
+    = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @sequence.publication_status)
+  .field
+    = f.label :is_official, "Offical CC Activity"
+    = f.check_box :is_official
+
+  .field
     = f.label :description
     %br
     = f.text_area :description, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }

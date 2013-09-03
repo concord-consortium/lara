@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130826175627) do
+ActiveRecord::Schema.define(:version => 20130830204358) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -227,12 +227,14 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
   create_table "sequences", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
     t.text     "logo"
+    t.string   "publication_status", :default => "draft"
+    t.boolean  "is_official",        :default => false
   end
 
   create_table "themes", :force => true do |t|

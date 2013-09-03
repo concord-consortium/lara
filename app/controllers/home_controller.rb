@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
   def home
-    @sequences  = Sequence.newest.last(10)
-    @activities = LightweightActivity.public.newest.last(10)
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    @activities = @filter.collection.last(10)
+    @filter.klass = Sequence
+    @sequences  = @filter.collection.last(10)
   end
 end

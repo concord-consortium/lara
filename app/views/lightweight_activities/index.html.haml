@@ -9,28 +9,22 @@
       %li= link_to "Home", root_path
       %li / All Activities
 
-.action_menu#activity-actions
-  .action_menu_header
-    .action_menu_header_left
-    .action_menu_header_right.index
-      %ul#new-menu
-        - if can? :create, LightweightActivity
-          %li#add= link_to 'create new activity', new_activity_path
-        %li#desc-toggle= toggle_all 'activity descriptions'
+%ul#new-menu
+  - if can? :create, LightweightActivity
+    %li#add= link_to 'create new activity', new_activity_path
+  %li#desc-toggle= toggle_all 'activity descriptions'
+  %li#collection_filter= collection_filter_tag @filter
 
-
-- community_activities = @activities.select{ |a| a.is_official == false}
-- official_activities  = @activities.select{ |a| a.is_official == true }
-- if official_activities.size > 0
+- if @official_activities.size > 0
   #official_listing_heading
     %h1 Activities:
   %ul.quiet_list.official_listing
-    - official_activities.each do |activity|
+    - @official_activities.each do |activity|
       =render :partial => "index_item", :locals => {:activity => activity}
 
-- if community_activities.size > 0
+- if @community_activities.size > 0
   #community_listing_heading
     %h1 Community activities:
   %ul.quiet_list.community_listing
-    - community_activities.each do |activity|
+    - @community_activities.each do |activity|
       =render :partial => "index_item", :locals => {:activity => activity}
