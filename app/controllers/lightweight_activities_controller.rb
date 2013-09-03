@@ -11,7 +11,7 @@ class LightweightActivitiesController < ApplicationController
   layout 'runtime', :only => [:show]
 
   def index
-    @filter       = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
     @community_activities = @filter.collection.community
     @official_activities  = @filter.collection.official
   end
