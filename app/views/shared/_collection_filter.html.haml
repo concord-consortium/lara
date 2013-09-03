@@ -1,0 +1,11 @@
+%form{:action => 'activities', :method => "get"}
+  Show mine:
+  =check_box_tag 'filter[my]', 'show mine', filter.my
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      $('#filter_my').click(function() {
+        $(this).parent('form').submit();
+      });
+    });

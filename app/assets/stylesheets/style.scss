@@ -907,6 +907,17 @@ body.admin.edit {
   }
 }
 
+ul#new-menu {
+  float: right;
+  width: 100%;
+  li {
+    display: inline;
+    list-style-type: none;
+    padding-left: 15px;
+    float: right;
+  }
+}
+
 @media print {
     #footer, #header, nav, #session, button.print {
         display: none;
