@@ -124,10 +124,9 @@ EmbeddableCarousel.prototype.isFullWidth = function() {
 /** Calculates the proper height for the carousel container. */
 EmbeddableCarousel.prototype.calculateHeight = function() {
     var interactiveHeight = $('.interactive-mod').height();
-    var available = $(window).height() - $('.activity-nav-mod').height();
-    available = available - $('header').height();
+    var offset = $('.content-mod').offset();
 
-
+    var available = $(window).height() - offset.top;
     if (this.isFullWidth()) {
         this.bestHeight = Math.min(this.tallestQuestion(), available);
     }
@@ -170,3 +169,10 @@ $(window).load(function () {
         carousel = new EmbeddableCarousel($('.jcarousel'));
     }
 });
+
+$(window).resize(function () {
+    if (typeof carousel !== 'undefined') {
+        carousel.setCarouselSize();
+    }
+});
+
