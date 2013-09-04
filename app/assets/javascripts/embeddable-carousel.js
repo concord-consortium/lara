@@ -45,7 +45,7 @@ EmbeddableCarousel.prototype.setCarouselSize = function () {
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
-    var embeddableHeight = newHeight - this.buttonHeight;
+    var embeddableHeight = newHeight - this.buttonHeight -2;
     $('.question').css('max-height', embeddableHeight + 'px');
 };
 
@@ -101,6 +101,7 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
     this.controlPrev.find('.button').prop('disabled', true);
 };
 
+/** Return the height of the tallest question element in our list */
 EmbeddableCarousel.prototype.tallestQuestion = function() {
     var tallest = 0;
     var current = 0;
@@ -112,18 +113,25 @@ EmbeddableCarousel.prototype.tallestQuestion = function() {
     return tallest;
 };
 
+/** Return true if we are in full-width layout */
 EmbeddableCarousel.prototype.isFullWidth = function() {
     return $('.content-mod').hasClass('l-full-width');
 };
 
 /** Calculates the proper height for the carousel container. */
 EmbeddableCarousel.prototype.calculateHeight = function() {
+    var interactiveHeight = $('.interactive-mod').height();
     var available = $(window).height() - $('.activity-nav-mod').height();
+    available = available - $('header').height();
+
+
     if (this.isFullWidth()) {
         this.bestHeight = Math.min(this.tallestQuestion(), available);
     }
     else {
-        this.bestHeight = Math.max($('.interactive-mod').height(), this.tallestQuestion());
+        this.bestHeight = Math.max(interactiveHeight, this.tallestQuestion());
+        // limit to the window?
+        this.bestHeight = Math.min(this.bestHeight, available);
     }
 };
 
