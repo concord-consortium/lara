@@ -107,6 +107,9 @@ EmbeddableCarousel.prototype.tallestQuestion = function() {
     var current = 0;
     var self = this;
     $('.question').each( function () {
+        // force text-box content into our current computed width
+        // this helps to get an accurate measurement.
+        $(this).width(self.bestWidth);
         current = $(this).height() + self.buttonHeight;
         tallest = Math.max(tallest, current);
     });
@@ -154,8 +157,8 @@ EmbeddableCarousel.prototype.calculateWidth = function() {
 
 /** Calculates the proper width & height the carousel container. */
 EmbeddableCarousel.prototype.calculateSize = function () {
-    this.calculateHeight();
     this.calculateWidth();
+    this.calculateHeight();
 };
 
 // unlike document.ready window.load() is called
