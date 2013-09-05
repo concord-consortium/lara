@@ -1074,31 +1074,6 @@ footer {
 
 
 
-// ******************************************
-//  15. Saved Label
-// ******************************************
-
-#save {
-  padding: 6px 12px;
-  width: 90px;
-  text-align: center;
-  position: fixed;
-  z-index: 10000;
-  bottom: 20px;
-  right: 20px;
-  background-color: rgba( lighten($med-blue, 20%), 0.9 );
-  border: 1px solid lighten($med-blue, 17%);
-  @include border-radius(3px);
-  @include trans;
-
-  &.saved {
-    // background-color: #EEE;
-  }
-}//save
-
-
-
-
 
 // ******************************************
 //  16. Activity Index Page
