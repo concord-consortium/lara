@@ -108,3 +108,12 @@ footer.sequence_run {
   font-size: 1.2em;
   border-bottom: #ddd dashed 1px;
 }
+
+.sequence_logo_block {
+  display: block;
+  h3, h2, h1 {
+    padding-left: 0.5em;
+    display: inline;
+    clear: none;
+  }
+}
