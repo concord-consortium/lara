@@ -1,7 +1,7 @@
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
 @import "project/has-ngs_fonts";
-
+@import "project/has-ngs-styleguide";
 
 // *********************************************
 // Table of Contents
@@ -135,18 +135,21 @@ div.activity-mod>div.site-width {
 }
 
 .site-logo {
-  width: 20%;
-
+  padding-left: 0px;
+  padding-right: 0px;
   img {
     max-width: 100%;
   }
 
   &.logo-l {
+    min-width: 75%;
     float: left;
+    text-align: left;
   }
 
   &.logo-r {
     float: right;
+    text-align: right;
   }
 
 }

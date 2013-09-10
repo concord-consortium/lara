@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830204358) do
+ActiveRecord::Schema.define(:version => 20130910164154) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(:version => 20130830204358) do
     t.text     "logo"
     t.string   "publication_status", :default => "draft"
     t.boolean  "is_official",        :default => false
+    t.string   "display_title"
   end
 
   create_table "themes", :force => true do |t|
