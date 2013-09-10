@@ -1,5 +1,5 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo
+  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title
   include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
