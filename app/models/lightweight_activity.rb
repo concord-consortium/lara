@@ -141,4 +141,8 @@ class LightweightActivity < ActiveRecord::Base
     data
   end
 
+  def for_sequence(seq)
+    lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
+  end
+
 end
