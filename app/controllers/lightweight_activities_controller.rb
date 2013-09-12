@@ -6,19 +6,14 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key, :only => [:summary, :show]
-  before_filter :set_sequence, :only => [:summary, :show]
-
+  before_filter :set_run_key,  :only   => [:summary, :show]
+  before_filter :set_sequence, :only   => [:summary, :show]
   layout 'runtime', :only => [:show]
 
   def index
-    if can? :manage, LightweightActivity
-      @activities = LightweightActivity.all
-    elsif current_user.present?
-      @activities = LightweightActivity.my(current_user) + LightweightActivity.public
-    else
-      @activities ||= LightweightActivity.public
-    end
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    @community_activities = @filter.collection.community
+    @official_activities  = @filter.collection.official
   end
 
   def show

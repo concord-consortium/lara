@@ -1,9 +1,9 @@
 class LightweightActivity < ActiveRecord::Base
-  PUB_STATUSES   = %w(draft private public archive)
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
+  include Publishable # models/publishable.rb defines pub & official
 
-  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-  :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  attr_accessible :name, :user_id, :pages, :related, :description,
+  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -11,31 +11,13 @@ class LightweightActivity < ActiveRecord::Base
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
+  has_many :runs, :foreign_key => 'activity_id'
   belongs_to :theme
   belongs_to :project
 
-  default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
-  validates :publication_status, :inclusion => { :in => PUB_STATUSES }
   validates_length_of :name, :maximum => 50
-
-  # * Find all public activities
-  scope :public, where(:publication_status => 'public')
-
-  # * Find all activities for one user (regardless of publication status)
-  def self.my(user)
-    where(:user_id => user.id)
-  end
-
-  # * Find all activities visible (readable) to the given user
-  def self.can_see(user)
-    if user.is_admin?
-      return LightweightActivity.all
-    else
-      return LightweightActivity.public + LightweightActivity.my(user)
-    end
-  end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
@@ -157,6 +139,10 @@ class LightweightActivity < ActiveRecord::Base
 
     data["sections"] = [section]
     data
+  end
+
+  def for_sequence(seq)
+    lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
   end
 
 end

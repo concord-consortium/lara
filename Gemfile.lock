@@ -349,6 +349,7 @@ GEM
       ref
     thor (0.18.1)
     tilt (1.4.1)
+    timecop (0.6.3)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -421,6 +422,7 @@ DEPENDENCIES
   sketchily!
   sqlite3
   therubyracer
+  timecop
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   uuidtools

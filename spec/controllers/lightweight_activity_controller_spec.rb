@@ -132,12 +132,19 @@ describe LightweightActivitiesController do
 
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
+    before(:each) do
+      make_collection_with_rand_modication_time(:activity,3, :publication_status => 'public', :is_official => false)
+      make_collection_with_rand_modication_time(:activity,4, :publication_status => 'public', :is_official => true)
+    end
+
     describe '#index' do
       it 'has a list of public and owned activities' do
-        # User is an admin, so all activities
+        # User is an admin, so all public activities will be shown
         get :index
-        assigns(:activities).should_not be_nil
-        assigns(:activities).length.should be(LightweightActivity.count)
+        assigns(:community_activities).should have(3).items
+        assigns(:official_activities).should have(4).items
+        assigns(:community_activities).should be_ordered_by 'updated_at_desc'
+        assigns(:official_activities).should be_ordered_by 'updated_at_desc'
       end
     end
 

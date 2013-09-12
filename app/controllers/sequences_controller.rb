@@ -9,7 +9,8 @@ class SequencesController < ApplicationController
   # GET /sequences
   # GET /sequences.json
   def index
-    @sequences = Sequence.all
+    @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
+    @sequences = @filter.collection
 
     respond_to do |format|
       format.html # index.html.erb
@@ -96,7 +97,9 @@ class SequencesController < ApplicationController
     authorize! :update, @sequence
     activity = LightweightActivity.find(params[:activity_id])
     respond_to do |format|
-      if @sequence.lightweight_activities.delete(activity)
+      act_sequence = activity.for_sequence(@sequence)
+      if act_sequence && act_sequence.remove_from_list
+        act_sequence.delete
         format.html { redirect_to edit_sequence_url(@sequence), notice: 'Activity was successfully removed.' }
         format.json { head :no_content }
       else

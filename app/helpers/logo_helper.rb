@@ -29,7 +29,13 @@ module LogoHelper
     else
       url = url_for(sequence)
     end
-    logo_tag(logo, sequence.title, url)
+    buffer = logo_tag(logo, sequence.display_title, url)
+    title  = @sequence.display_title.blank? ? @sequence.title : @sequence.display_title
+    unless title.blank?
+      link = content_tag(:a, title, :class => "sequence_title", :href=> url)
+      buffer << content_tag(:h2, link)
+    end
+    return content_tag(:div, buffer, :class => "sequence_logo_block")
   end
 
   def concord_logo_tag

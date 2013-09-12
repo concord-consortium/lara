@@ -269,7 +269,7 @@ describe InteractivePagesController do
         it 'has links to show the page, return to the activity, or add another page' do
           get :edit, :id => page1.id, :activity_id => act.id
 
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[\s]*See this page[\s]*<\/a>/
+          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[\s]*Preview[\s]*<\/a>/
           response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/edit"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
           response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{act.name}[\s]*<\/a>/
           response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/

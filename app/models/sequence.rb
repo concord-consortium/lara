@@ -1,12 +1,14 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo
-
+  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title
+  include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
   belongs_to :user
   belongs_to :theme
   belongs_to :project
 
+
+  scope :newest, order("updated_at DESC")
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 
   def time_to_complete

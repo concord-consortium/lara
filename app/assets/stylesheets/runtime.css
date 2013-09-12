@@ -11,6 +11,7 @@
  * This is a theme stylesheet manifest for the RUNTIME section of the site
  *
  *= require_self
+ *= require save-on-change
  *= require mw-styles
  *= require modal
  *= require modal-dialog

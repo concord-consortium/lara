@@ -14,6 +14,8 @@ require 'capybara/poltergeist'
 SafeYAML::OPTIONS[:deserialize_symbols] = true
 
 Capybara.javascript_driver = :poltergeist
+# Capybars default wait of 2s is too slow for some of our tests in travis
+Capybara.default_wait_time = 5
 
 # this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
 # otherwise Capybara or poltergeist will fail not being able to load shutterbug.js
@@ -68,6 +70,13 @@ RSpec.configure do |config|
 
   Devise.stretches = 1
   WebMock.disable_net_connect!(:allow_localhost => true)
+
+  # on Scott's OS X 10.6 machine, phantom needs to visit a simple page before
+  # it works reliably
+  config.before(:each, :js => true) {
+    ENV['RUNNING_JS_TEST'] = 'true'
+    visit '/404.html'
+  }
 end
 
 class ActiveRecord::Base

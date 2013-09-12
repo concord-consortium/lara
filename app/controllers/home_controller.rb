@@ -1,6 +1,10 @@
 class HomeController < ApplicationController
   def home
-    @sequences = Sequence.last(10)
-    @activities = LightweightActivity.public.last(10)
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    # TODO: Add 'oficial' to the criteron?
+    @activities = @filter.collection.first(10)
+    @filter.klass = Sequence
+    # TODO: Add 'oficial' to the criteron?
+    @sequences  = @filter.collection.first(10)
   end
 end

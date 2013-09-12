@@ -4,7 +4,8 @@
 .content-hdr
   %h2.h2= @activity.name
 
-= render :partial => 'shared/social'
+- unless ENV['RUNNING_JS_TEST']
+  = render :partial => 'shared/social'
 
 .intro-mod.index-mod
   .intro-txt
