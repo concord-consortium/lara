@@ -9,11 +9,11 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 1. Check out the code:
 
-        git clone https://github.com/concord-consortium/lightweight-standalone.git
+        git clone https://github.com/concord-consortium/lara.git
 
 2. Install the necessary gems:
 
-        cd lightweight-standalone
+        cd lara
         bundle install
 
 3. Initialize the database:
