@@ -19,6 +19,10 @@ This is a Rails application intended to provide a platform for authoring and usi
 3. Initialize the database:
 
         rake db:setup
+        
+3a. If you have seed data, create it now.
+
+4. Set environment variables, particularly the cookie encryption key, by copying the file `config/app_environment_variables.sample.rb` to `config/app_environment_variables.rb` and editing its values as appropriate. For development purposes, you should just need a cookie key (the 'SECRET_TOKEN' value).
 
 4. Launch the application
 
