@@ -45,15 +45,15 @@ saveElement = (elem) ->
 # remove events scheduled for elem
 unschedule = (elem) ->
   job = scheduled_jobs[elem]
-  clearTimeout job if job
+  clearTimeout(job) if job
   scheduled_jobs[elem] = null
 
 schedule = (elem) ->
-  unschedule elem # remove any existing events
+  unschedule(elem) # remove any existing events
   action = ->
     saveElement(elem)
 
-  scheduled_jobs[elem] = setTimeout action, update_interval_s * 1000
+  scheduled_jobs[elem] = setTimeout(action, update_interval_s * 1000)
 
 
 $(document).ready ->
