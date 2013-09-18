@@ -28,7 +28,7 @@ showSaving = ->
 saveElement = (elem) ->
     showSaving()
     $(elem).parents('form:first').submit()
-    # We should be evaluating the response to that and calling either showSaved() or saveFailed().
+    unschedule elem
 
 
 # remove events scheduled for elem
