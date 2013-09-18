@@ -38,7 +38,6 @@ saveElement = (elem) ->
       data: form.serialize(),
       success:  (response) ->
         previous_values[elem] = data
-        console.log response
     })
     # unschedule elem
 
