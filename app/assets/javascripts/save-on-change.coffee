@@ -1,5 +1,6 @@
 
 scheduled_jobs     = {}
+previous_values    = {}
 update_interval_s  = 0.6
 saveTimer          = null
 
@@ -26,9 +27,20 @@ showSaving = ->
   $("#save").animate({'opacity': '1.0'}, 'fast')
 
 saveElement = (elem) ->
+    form = $(elem).parents('form:first')
+    data = $(elem).parents('form:first').serialize()
+    last_data = previous_values[elem]
+    return if last_data == data
     showSaving()
-    $(elem).parents('form:first').submit()
-    unschedule elem
+    $.ajax({
+      type: "POST",
+      url: form.attr( 'action' ),
+      data: form.serialize(),
+      success:  (response) ->
+        previous_values[elem] = data
+        console.log response
+    })
+    # unschedule elem
 
 
 # remove events scheduled for elem
