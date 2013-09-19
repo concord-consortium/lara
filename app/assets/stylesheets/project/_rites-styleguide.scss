@@ -1,0 +1,54 @@
+/*
+ * From the design document from Celerity
+   "Concord Consortium Web Style Guide July 9, 2013"
+*/
+
+$emperor: #525252;
+$shakespeare: #459ACE;
+$malibu: #7FA8F8;
+
+
+  body {
+    font-family: Arial, Helvetica, "Lucida Grande", sans-serif;
+    font-size: 10pt;
+  }
+
+  h6 {
+    color: $emperor;
+    font-weight: lighter;
+    font-size: 13pt;
+  }
+  h5 {
+    color: $emperor;
+    font-weight: lighter;
+    font-size: 14pt;
+  }
+  h4 {
+    color: $shakespeare;
+    font-weight: lighter;
+    font-size: 16pt;
+  }
+  h3 {
+    color: $shakespeare;
+    font-weight: normal;
+    font-size: 18pt;
+  }
+  h2 {
+    color: $shakespeare;
+    font-weight: bold;
+    font-size: 24pt;
+  }
+  h1 {
+    color: $shakespeare;
+    font-weight: bolder;
+    font-size: 28pt;
+  }
+
+  /* links  */
+  a {
+    text-decoration: none;
+    color: $malibu;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
