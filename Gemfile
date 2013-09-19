@@ -79,6 +79,7 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
+  gem 'jasmine-ajax'
   gem 'guard-jasmine'
   gem 'jasminerice' # guard-jasmine uses this
 end
