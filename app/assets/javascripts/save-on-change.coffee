@@ -1,77 +1,84 @@
 
-scheduled_jobs     = {}
-previous_values    = {}
-update_interval_s  = 0.6
-saveTimer          = null
+class SaveIndicator
+  constructor: (@$elem=$("#save")) ->
+    @saveTimer  = null
+    @$elem      = $("#save")
+    @clear()  # start hidden.
 
-showSaveFailed = ->
-  $("#save").removeClass("pending")
-  $("#save").addClass("error")
-  $("#save").html("Save failed!")
+  clear: () ->
+    @$elem.removeClass('error')
+    @$elem.css('opacity',0)
 
-showSaved  = ->
-  # Wait a few seconds before actually running
-  saveTimer = setTimeout ->
-    $("#save").removeClass("error")
-    $("#save").removeClass("pending")
-    $("#save").html("Saved.")
-    # Fade out.
-    $("#save").animate({'opacity': '0'}, 'slow')
-  , 2000
+  showSaveFailed: (message="Save failed!") ->
+    @$elem.removeClass("pending")
+    @$elem.addClass("error")
+    @$elem.html(message)
 
-showSaving = ->
-  $("#save").removeClass("error")
-  $("#save").addClass("pending")
-  $("#save").html("Saving...")
-  $("#save").css({'opacity': '0.5'})
-  $("#save").animate({'opacity': '1.0'}, 'fast')
+  showSaved: (message="Saved.") ->
+    # Wait a ½ second before actually displaying:
+    @saveTimer = setTimeout =>
+      @$elem.removeClass("error")
+      @$elem.removeClass("pending")
+      @$elem.html(message)
+      @$elem.animate({'opacity': '0'}, 'slow') # Fade out.
+    , 500
 
-saveElement = (elem) ->
-    form = $(elem).parents('form:first')
-    data = $(elem).parents('form:first').serialize()
-    last_data = previous_values[elem]
-    return if last_data == data
-    showSaving()
-    $.ajax({
-      type: "POST",
-      url: form.attr( 'action' ),
-      data: form.serialize(),
-      success:  (response) ->
-        previous_values[elem] = data
-    })
-    # unschedule elem
+  showSaving: ->
+    @$elem.removeClass("error")
+    @$elem.addClass("pending")
+    @$elem.html("Saving...")
+    @$elem.css({'opacity': '0.5'})
+    @$elem.animate({'opacity': '1.0'}, 'fast')
 
 
-# remove events scheduled for elem
-unschedule = (elem) ->
-  job = scheduled_jobs[elem]
-  clearTimeout(job) if job
-  scheduled_jobs[elem] = null
+class SaveOnChange
+  constructor: (@$elem) ->
+    @scheduled_job      = null
+    @previous_value     = null
+    @update_interval_s  = 0.6
+    @$form              = $(@$elem).parents('form:first')
+    @save_indicator     = new SaveIndicator($("#save"))
+    @setupEvents()
 
-schedule = (elem) ->
-  unschedule(elem) # remove any existing events
-  action = ->
-    saveElement(elem)
+  setupEvents: ->
+    # Fire inputs field changes on 'change' events with no scheduled_jobs
+    @$elem.on 'change', (e) =>
+      console.log("Freaking saw the event yo")
+      @saveElement()
+    @$elem.on 'blur', (e) =>
+      @saveElement()
+    @$elem.on 'keyup', (e) =>
+      @schedule()
 
-  scheduled_jobs[elem] = setTimeout(action, update_interval_s * 1000)
+  saveElement: ->
+      data = @$form.serialize()
+      return if @previous_value == data
+      @save_indicator.showSaving()
+      $.ajax({
+        type: "POST",
+        url: @$form.attr( 'action' ),
+        data: @$form.serialize(),
+        success: (response) =>
+          @previous_value = data
+          @save_indicator.showSaved()
+        error: (jqxhr, status, error) =>
+          @save_indicator.showSaveFailed()
+      })
+      # unschedule elem
 
+  # remove events scheduled for elem
+  unschedule: () ->
+    clearTimeout(@scheduled_job) if @scheduled_job
+    @scheduled_job = null
+
+  schedule:  () ->
+    @unschedule() # remove any existing events
+    action = () =>
+      @saveElement()
+    @scheduled_job = setTimeout(action, @update_interval_s * 1000)
 
 $(document).ready ->
-  $("#save").removeClass('error')
-  $("#save").css('opacity',0)
-  $(document).ajaxSuccess (e) =>
-    showSaved()
-  $(document).ajaxError (e) =>
-    showSaveFailed()
+  window.SaveOnChange = SaveOnChange
+  $('.live_submit').each (i,e) =>
+    new SaveOnChange($(e))
 
-  # Fire inputs field changes on 'change' events with no scheduled_jobs
-  $('.live_submit').on 'change', (e) ->
-    saveElement(this)
-
-  # Fire textarea changes on 'blur' events
-  $('textarea.live-submit').on 'blur', (e) ->
-    saveElement(this)
-
-  # Qeue textarea changes on 'keyup' events
-  $('textarea.live-submit').on 'keyup', (e) ->
-    schedule(this)
