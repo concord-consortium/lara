@@ -2,7 +2,7 @@
 #= require mock-ajax
 
 
-# TODO: Figure out how to
+# TODO: make these availabe via SpecHelper.js
 send_char = (elem, character) ->
   char_code = character.charCodeAt(0)
   e2 = jQuery.Event("keyup", {'keyCode': char_code })
