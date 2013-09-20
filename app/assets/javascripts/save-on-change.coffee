@@ -1,5 +1,6 @@
 
 scheduled_jobs     = {}
+previous_values    = {}
 update_interval_s  = 0.6
 saveTimer          = null
 
@@ -26,23 +27,33 @@ showSaving = ->
   $("#save").animate({'opacity': '1.0'}, 'fast')
 
 saveElement = (elem) ->
+    form = $(elem).parents('form:first')
+    data = $(elem).parents('form:first').serialize()
+    last_data = previous_values[elem]
+    return if last_data == data
     showSaving()
-    $(elem).parents('form:first').submit()
-    # We should be evaluating the response to that and calling either showSaved() or saveFailed().
+    $.ajax({
+      type: "POST",
+      url: form.attr( 'action' ),
+      data: form.serialize(),
+      success:  (response) ->
+        previous_values[elem] = data
+    })
+    # unschedule elem
 
 
 # remove events scheduled for elem
 unschedule = (elem) ->
   job = scheduled_jobs[elem]
-  clearTimeout job if job
+  clearTimeout(job) if job
   scheduled_jobs[elem] = null
 
 schedule = (elem) ->
-  unschedule elem # remove any existing events
+  unschedule(elem) # remove any existing events
   action = ->
     saveElement(elem)
 
-  scheduled_jobs[elem] = setTimeout action, update_interval_s * 1000
+  scheduled_jobs[elem] = setTimeout(action, update_interval_s * 1000)
 
 
 $(document).ready ->

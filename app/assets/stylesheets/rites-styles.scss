@@ -420,7 +420,38 @@ div.nav-menu-top {
   }
 } // end .pagination-item
 
+<<<<<<< HEAD
 
+=======
+/* Next and previous page links at bottom of each page */
+.intra-page-nav {
+  clear: both;
+  .next-page, .last-page {
+    @include btn(#459ace, #2b6fba);
+    height: 35px;
+    width: 120px;
+    padding: 6px 13px;
+    margin: 15px;
+    a {
+      text-decoration: none;
+    }
+    &.disabled {
+      background: none;
+      border: 0;
+      color: #2b6fba;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: inherit;
+    }
+  }
+  .next-page {
+    float: right;
+  }
+  .last-page {
+    float: left;
+  }
+}
+>>>>>>> refs/heads/master
 
 // *********************************************
 //  5. Layout modes

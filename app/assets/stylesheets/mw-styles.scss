@@ -210,6 +210,11 @@ ul.nav-menu-top {
   display: none;
 }
 
+div.intra-page-nav {
+  /* Page navigation links at bottom of each page. MW and default don't use them. */
+  display: none;
+}
+
 .activity-nav {
   margin-top: 8px;
   position: relative;
