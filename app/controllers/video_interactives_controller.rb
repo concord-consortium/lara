@@ -1,9 +1,5 @@
-class VideoInteractivesController < ApplicationController
+class VideoInteractivesController < InteractiveController
   before_filter :set_interactive, :except => [:new, :create]
-
-  def new
-    create
-  end
 
   def create
     @interactive = VideoInteractive.create!()
@@ -45,17 +41,6 @@ class VideoInteractivesController < ApplicationController
       else
         format.html { redirect_to edit_video_interactive_path(@interactive) }
       end
-    end
-  end
-
-  def destroy
-    @interactive.interactive_item.delete
-    if @interactive.delete
-      @activity = @page.lightweight_activity
-      update_activity_changed_by
-      redirect_to edit_activity_page_path(@activity, @page), :flash => { :notice => 'Your video was deleted.' }
-    else
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page), :flash => { :warning => 'There was a problem deleting the video.' }
     end
   end
 
@@ -101,8 +86,6 @@ class VideoInteractivesController < ApplicationController
   private
   def set_interactive
     @interactive = VideoInteractive.find(params[:id])
-    if params[:page_id]
-      @page = InteractivePage.find(params[:page_id])
-    end
+    set_page
   end
 end
