@@ -1301,6 +1301,11 @@ footer {
   text-decoration: none;
 }
 
+/* Button links shouldn't have underline */
+div.submit a:hover {
+  text-decoration: none;
+}
+
 /* social tools on index page */
 .social-media-mod {
   margin-bottom: 12px;
