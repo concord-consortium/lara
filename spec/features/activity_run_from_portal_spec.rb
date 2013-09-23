@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'uri'
 
-feature "Activity is run from the portal", :js => true do
+feature "Activity is run from the portal", :js => true, :slow => true do
 
   scenario "with a domain, external_id, and return url" do
 
