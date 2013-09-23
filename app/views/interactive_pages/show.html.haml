@@ -28,18 +28,18 @@
         %a.jcarousel-next{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
 
-      - if @page.last?
-        .submit
-          %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
-            %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
+  - if @page.last?
+    .submit.report
+      %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
+        %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
   .intra-page-nav
     - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
     - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
-    .next-page{ :class => ('disabled' if @page.lower_item.nil?) }
-      - if next_href
-        = link_to 'Next >', next_href, { :class => 'next' }
+    .next-page
+      - if @page.lower_item.nil?
+        = link_to "Up to Table of Contents", activity_with_response_path(@page.lightweight_activity, @session_key), { :title => @page.lightweight_activity.name }
       - else
-        Next >
+        = link_to 'Next >', next_href, { :class => 'next' }
     .last-page{ :class => ('disabled' if @page.higher_item.nil?) }
       - if previous_href
         = link_to '< Back', previous_href, { :class => 'prev' }

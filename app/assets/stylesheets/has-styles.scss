@@ -426,7 +426,7 @@ div.nav-menu-top {
   .next-page, .last-page {
     @include btn(#459ace, #2b6fba);
     height: 35px;
-    width: 120px;
+    min-width: 120px;
     padding: 6px 13px;
     margin: 15px;
     a {
@@ -878,6 +878,11 @@ button[type="button"] {
 }
 input:disabled {
   opacity: 0.3;
+}
+
+/* "Report of my work" button */
+.submit.report .button {
+  margin: 0;
 }
 
 // ******************************************
