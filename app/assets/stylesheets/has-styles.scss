@@ -449,6 +449,33 @@ div.nav-menu-top {
   }
 }
 
+/* Next activity and last activity, for sequences */
+.intra-sequence-nav {
+  display: inline-block;
+  width: 100%;
+  .next-activity, .last-activity {
+    @include btn(#459ace, #2b6fba);
+    height: 35px;
+    min-width: 120px;
+    padding: 6px 13px;
+    margin: 15px;
+    &.disabled {
+      background: none;
+      border:0;
+      color: #2b6fba;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: inherit;
+    }
+  }
+  .next-activity {
+    float: right;
+  }
+  .last-activity {
+    float: left;
+  }
+}
+
 // *********************************************
 //  5. Layout modes
 // *********************************************

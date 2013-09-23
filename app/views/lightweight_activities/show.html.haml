@@ -24,3 +24,6 @@
   %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
     .submit
       %input.button{ :type => "submit", :value => "Begin activity" }
+
+- if @sequence
+  = render :partial => 'shared/sequence_next_prev', :locals => { :sequence => @sequence, :activity => @activity }
