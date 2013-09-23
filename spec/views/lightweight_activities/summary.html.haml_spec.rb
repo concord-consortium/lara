@@ -18,7 +18,7 @@ describe 'lightweight_activities/summary' do
 
   it 'shows print buttons at top and bottom' do
     render
-    rendered.should have_css "button.print", :count => 2
+    rendered.should have_css ".print", :count => 2
   end
 
   it 'shows the activity title' do

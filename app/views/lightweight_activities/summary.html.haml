@@ -1,12 +1,16 @@
-= content_for :title do
-  = "Response Summary for #{@activity.name}"
+.summary-mod
+  = content_for :title do
+    = "Response Summary for #{@activity.name}"
 
-%button.print{ :onclick => 'window.print();'} Print
+  .print{ :onclick => 'window.print();'} Print
 
-%h1
-  = "Response Summary for #{@activity.name}"
-- @answers.each do |answer|
-  = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
-    :locals => {:answer => answer}
+  %h2.h2
+    = "Response Summary for #{@activity.name}"
+  - @answers.each do |answer|
+    = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
+      :locals => {:answer => answer}
 
-%button.print{ :onclick => 'window.print();' } Print
+  .print{ :onclick => 'window.print();' } Print
+
+  - if @sequence
+    = render :partial => 'shared/sequence_next_prev', :locals => { :sequence => @sequence, :activity => @activity }

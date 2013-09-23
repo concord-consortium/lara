@@ -24,6 +24,7 @@
 //  14. Site Footer
 //  15. Saved Label
 //  16. Activity Index Page
+//  17. Activity Summary Page
 
 
 // *********************************************
@@ -1314,6 +1315,36 @@ footer {
   margin: 36px 0 20px;
   color: #666;
 }
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+.summary-mod {
+  padding: 15px;
+  .print {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+    position: relative;
+    left: 50%;
+    margin-left: -60px;
+  }
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image_answer {
+    clear: left;
+    margin-left: 16px;
+  }
+}
+
+/* Miscellaneous junk */
 
 .question, .intro-mod, .related-mod, .sidebar-mod {
   a {

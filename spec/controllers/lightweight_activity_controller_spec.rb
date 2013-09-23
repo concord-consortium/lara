@@ -126,7 +126,7 @@ describe LightweightActivitiesController do
       get :summary, :id => act.id, :response_key => ar.key
 
       assigns(:answers).should_not be_nil
-      response.body.should match /<h1>\n?Response Summary for/
+      response.body.should match /Response Summary for/
     end
   end
 
