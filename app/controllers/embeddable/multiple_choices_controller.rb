@@ -49,13 +49,11 @@ class Embeddable::MultipleChoicesController < ApplicationController
   def add_choice
     @embeddable.add_choice("New choice")
     update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
-    if request.xhr?
-      respond_to do |format|
+    respond_to do |format|
+      if request.xhr?
         @embeddable.reload
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      end
-    else
-      respond_to do |format|
+      else
         flash[:notice] = 'New choice was added.'
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
@@ -65,16 +63,13 @@ class Embeddable::MultipleChoicesController < ApplicationController
   end
 
   def remove_choice
-    @choice = @embeddable.choices.find(params[:choice_id])
-    @choice.destroy
+    @embeddable.choices.find(params[:choice_id]).destroy
     @embeddable.reload
     update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
-    if request.xhr?
-      respond_to do |format|
+    respond_to do |format|
+      if request.xhr?
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      end
-    else
-      respond_to do |format|
+      else
         flash[:notice] = 'Choice was removed.'
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
@@ -94,6 +89,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
   end
 
   def build_response
+    # TODO: can this be refactored into the model?
     # @choice needs to be set anyway
     @choice = @choices.first
     if @multiple_choice.multi_answer
