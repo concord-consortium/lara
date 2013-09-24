@@ -1,6 +1,7 @@
 class Embeddable::MultipleChoicesController < ApplicationController
+  before_filter :set_embeddable, :except => [:check, :remove_choice]
+
   def edit
-    @embeddable = Embeddable::MultipleChoice.find(params[:id])
     respond_to do |format|
       format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       format.html
@@ -9,31 +10,23 @@ class Embeddable::MultipleChoicesController < ApplicationController
 
   def update
     cancel = params[:commit] == "Cancel"
-    @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
-    if request.xhr?
-      respond_to do |format|
-        if cancel || @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
-          @multiple_choice.reload
-          @activity = @multiple_choice.activity
-          update_activity_changed_by unless @activity.nil?
+    updated = @embeddable.update_attributes(params[:embeddable_multiple_choice])
+    if updated
+      update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
+      @embeddable.reload
+      flash[:notice] = 'Multiple choice was successfully updated.'
+    end
+    respond_to do |format|
+      if cancel || updated
+        if request.xhr?
           format.xml { render :edit, :layout => false }
         else
-          format.xml { render :xml => @multiple_choice.errors, :status => :unprocessable_entity }
-        end
-      end
-    else
-      respond_to do |format|
-        if @multiple_choice.update_attributes(params[:embeddable_multiple_choice])
-          flash[:notice] = 'Multiple choice was successfully updated.'
-          redirect_path = request.env['HTTP_REFERER'].sub(/\?.+/, '') # Strip the edit-me param
-          @activity = @multiple_choice.activity
-          update_activity_changed_by unless @activity.nil?
-          format.html { redirect_to(redirect_path) }
+          format.html { redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, '')) } # Strip the edit-me param
           format.xml  { head :ok }
-        else
-          format.html { render :edit }
-          format.xml  { render :xml => @multiple_choice.errors, :status => :unprocessable_entity }
         end
+      else
+        format.html { render :edit }
+        format.xml { render :xml => @embeddable.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -41,14 +34,12 @@ class Embeddable::MultipleChoicesController < ApplicationController
   def check
     @multiple_choice = Embeddable::MultipleChoiceAnswer.find(params[:id]).question
     parse_choices
-    build_response
+    build_response # sets @choice
 
-    if request.xhr?
-      respond_to do |format|
+    respond_to do |format|
+      if request.xhr?
         format.js { render :json => @response.to_json }
-      end
-    else
-      respond_to do |format|
+      else
         format.html { redirect_to interactive_page_path(@choice.page) unless @choice.page.nil? }
         format.json { render :json => @response.to_json }
       end
@@ -56,14 +47,11 @@ class Embeddable::MultipleChoicesController < ApplicationController
   end
 
   def add_choice
-    @multiple_choice = Embeddable::MultipleChoice.find(params[:id])
-    @multiple_choice.add_choice("New choice")
-    @embeddable = @multiple_choice
-    @activity = @multiple_choice.activity
-    update_activity_changed_by unless @activity.nil?
+    @embeddable.add_choice("New choice")
+    update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
     if request.xhr?
       respond_to do |format|
-        @multiple_choice.reload
+        @embeddable.reload
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
       end
     else
@@ -77,13 +65,10 @@ class Embeddable::MultipleChoicesController < ApplicationController
   end
 
   def remove_choice
-    @multiple_choice = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
-    @choice = @multiple_choice.choices.find(params[:choice_id])
+    @choice = @embeddable.choices.find(params[:choice_id])
     @choice.destroy
-    @multiple_choice.reload
-    @embeddable = @multiple_choice
-    @activity = @multiple_choice.activity
-    update_activity_changed_by unless @activity.nil?
+    @embeddable.reload
+    update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
     if request.xhr?
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
@@ -102,18 +87,15 @@ class Embeddable::MultipleChoicesController < ApplicationController
   def parse_choices
     begin
       choice_ids = params[:choices].split(',').map{ |i| i.to_i }
-    rescue NoMethodError
-      choice_ids = nil
-    end
-
-    if choice_ids
       @choices = @multiple_choice.choices.find(choice_ids)
-    else
+    rescue NoMethodError
       @choices = []
     end
   end
 
   def build_response
+    # @choice needs to be set anyway
+    @choice = @choices.first
     if @multiple_choice.multi_answer
       selected_incorrect = @choices.select { |c| !c.is_correct }
       selected_correct = @choices - selected_incorrect
@@ -131,11 +113,13 @@ class Embeddable::MultipleChoicesController < ApplicationController
         # All correct
         @response = { choice: true }
       end
-      # @choice needs to be set anyway
-      @choice = @choices.first
     else
       # One answer: sending the choice to get rendered as JSON by the action
-      @response = @choice = @choices.first
+      @response = @choice
     end
+  end
+
+  def set_embeddable
+    @embeddable = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
   end
 end
