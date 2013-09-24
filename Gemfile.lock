@@ -25,9 +25,10 @@ GIT
 
 GIT
   remote: git://github.com/pjmorse/rack-environmental.git
-  revision: b9407e2e549abb4cd3200830ee34847dfb856b2d
+  revision: 9198219216b45adc9b4604cf2551a8024ecc3c6d
+  branch: concord
   specs:
-    rack-environmental (1.2.0)
+    rack-environmental (1.4.0)
       rack-plastic (>= 0.1.1)
 
 GEM
