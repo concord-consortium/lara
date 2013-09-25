@@ -136,4 +136,10 @@ class ApplicationController < ActionController::Base
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
+  def respond_with_edit_form
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
 end

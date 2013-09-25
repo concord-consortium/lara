@@ -2,10 +2,7 @@ class Embeddable::MultipleChoicesController < ApplicationController
   before_filter :set_embeddable, :except => [:check, :remove_choice]
 
   def edit
-    respond_to do |format|
-      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      format.html
-    end
+    respond_with_edit_form
   end
 
   def update
