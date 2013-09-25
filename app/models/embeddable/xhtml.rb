@@ -30,5 +30,17 @@ module Embeddable
     def duplicate
       return Embeddable::Xhtml.new(self.to_hash)
     end
+
+    def self.name_as_param
+      :embeddable_xhtml
+    end
+
+    def self.display_partial
+      :xhtml
+    end
+
+    def self.human_description
+      "XHTML block"
+    end
   end
 end

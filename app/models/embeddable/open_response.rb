@@ -50,5 +50,17 @@ module Embeddable
     def duplicate
       return Embeddable::OpenResponse.new(self.to_hash)
     end
+
+    def self.name_as_param
+      :embeddable_open_response
+    end
+
+    def self.display_partial
+      :open_response
+    end
+
+    def self.human_description
+      "Multiple choice question"
+    end
   end
 end

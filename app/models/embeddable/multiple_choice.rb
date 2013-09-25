@@ -74,5 +74,17 @@ module Embeddable
       end
       return mc
     end
+
+    def self.name_as_param
+      :embeddable_multiple_choice
+    end
+
+    def self.display_partial
+      :multiple_choice
+    end
+
+    def self.human_description
+      "Multiple choice question"
+    end
   end
 end

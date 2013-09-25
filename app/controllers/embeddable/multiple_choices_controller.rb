@@ -1,32 +1,5 @@
-class Embeddable::MultipleChoicesController < ApplicationController
+class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
   before_filter :set_embeddable, :except => [:check, :remove_choice]
-
-  def edit
-    respond_with_edit_form
-  end
-
-  def update
-    cancel = params[:commit] == "Cancel"
-    updated = @embeddable.update_attributes(params[:embeddable_multiple_choice])
-    if updated
-      update_activity_changed_by(@embeddable.activity) unless @embeddable.activity.nil?
-      @embeddable.reload
-      flash[:notice] = 'Multiple choice was successfully updated.'
-    end
-    respond_to do |format|
-      if cancel || updated
-        if request.xhr?
-          format.xml { render :edit, :layout => false }
-        else
-          format.html { redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, '')) } # Strip the edit-me param
-          format.xml  { head :ok }
-        end
-      else
-        format.html { render :edit }
-        format.xml { render :xml => @embeddable.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
 
   def check
     @multiple_choice = Embeddable::MultipleChoiceAnswer.find(params[:id]).question

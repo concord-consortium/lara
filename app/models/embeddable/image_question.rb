@@ -33,4 +33,16 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   def duplicate
     return Embeddable::ImageQuestion.new(self.to_hash)
   end
+
+  def self.name_as_param
+    :embeddable_image_question
+  end
+
+  def self.display_partial
+    :image_question
+  end
+
+  def self.human_description
+    "Image question"
+  end
 end
