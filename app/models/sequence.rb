@@ -21,6 +21,26 @@ class Sequence < ActiveRecord::Base
     lightweight_activities
   end
 
+  def next_activity(activity)
+    # Given an activity, return the next one in the sequence
+    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
+    if join && join.lower_item
+      return join.lower_item.lightweight_activity
+    else
+      return nil
+    end
+  end
+
+  def previous_activity(activity)
+    # Given an activity, return the previous one in the sequence
+    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
+    if join.higher_item
+      return join.higher_item.lightweight_activity
+    else
+      return nil
+    end
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {

@@ -1,14 +1,13 @@
-- join = sequence.lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
-- next_href = join.lower_item.nil? ? nil : sequence_activity_path(sequence, join.lower_item.lightweight_activity)
-- last_href = join.higher_item.nil? ? nil : sequence_activity_path(sequence, join.higher_item.lightweight_activity)
+- next_activity = sequence.next_activity(activity)
+- previous_activity = sequence.previous_activity(activity)
 .intra-sequence-nav
-  .next-activity{ :class => ('disabled' if join.lower_item.nil?) }
+  .next-activity{ :class => ('disabled' if next_activity.nil?) }
     - if next_href
-      = link_to 'Next Activity >', next_href, { :title => join.lower_item.lightweight_activity.name }
+      = link_to 'Next Activity >', sequence_activity_path(sequence, next_activity), { :title => next_activity.name }
     - else
       Next Activity >
-  .last-activity{ :class => ('disabled' if join.higher_item.nil?) }
+  .last-activity{ :class => ('disabled' if previous_activity.nil?) }
     - if last_href
-      = link_to "< Last Activity", last_href, { :title => join.higher_item.lightweight_activity.name }
+      = link_to "< Last Activity", sequence_activity_path(sequence, previous_activity), { :title => previous_activity.name }
     - else
       &lt; Last Activity
