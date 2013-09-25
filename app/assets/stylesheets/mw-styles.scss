@@ -26,7 +26,6 @@
 //  16. Activity Index Page
 //  17. Activity Summary Page
 
-
 // *********************************************
 //  1. Universal
 // *********************************************
@@ -1113,6 +1112,20 @@ footer {
     font-size: 20px;
     padding: 20px 86px;
     margin: 0 auto 24px;
+  }
+
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
   }
 
   &.intro-mod {

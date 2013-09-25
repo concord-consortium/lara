@@ -21,9 +21,12 @@
       %li
         = link_to page.name, runnable_activity_page_path(@activity, page)
 
-  %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
-    .submit
-      %input.button{ :type => "submit", :value => "Begin activity" }
+  .nav-buttons
+    %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ), :class => ('in-sequence' if @sequence) }
+      .submit
+        %input.button{ :type => "submit", :value => "Begin activity >" }
 
-- if @sequence
-  = render :partial => 'shared/sequence_next_prev', :locals => { :sequence => @sequence, :activity => @activity }
+    - if @sequence
+      %a{ :href => sequence_path(@sequence), :title => @sequence.title, :class => 'back-sequence' }
+        .submit
+          %input.button{ :type => "submit", :value => "< Back to #{@sequence.title}" }
