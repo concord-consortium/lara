@@ -72,7 +72,7 @@ module Embeddable
 
     # Expects a parameters hash. Normalizes to allow update_attributes.
     def update_from_form_params(params)
-      if params[:answers].kind_of?(Array)
+      if params && params[:answers].kind_of?(Array)
         params[:answers] = params[:answers].map { |a| Embeddable::MultipleChoiceChoice.find(a) }
       else
         params[:answers] = [Embeddable::MultipleChoiceChoice.find(params[:answers])]
