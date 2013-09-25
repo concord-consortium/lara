@@ -43,6 +43,42 @@ module Embeddable
       end
     end
 
+    def parse_choices(choice_string)
+      choice_ids = choice_string.split(',').map{ |i| i.to_i } unless choice_string.blank?
+      if choices && !choice_ids.blank?
+        return choices.find(choice_ids)
+      else
+        return []
+      end
+    end
+
+    def check(choice_string)
+      # Takes a comma-delimited string of choice IDs, returns a hash response describing the correctness
+      # of the answer described by that string.
+      selected_choices = parse_choices(choice_string)
+      if multi_answer
+        selected_incorrect = selected_choices.select { |c| !c.is_correct }
+        selected_correct = selected_choices - selected_incorrect
+        actual_correct = choices.select { |c| c.is_correct }
+        if selected_choices.length == 0
+          # No answer
+          return { prompt: 'Please select an answer before checking.'}
+        elsif selected_incorrect.length > 0
+          # Incorrect answer(s)
+          return { prompt: selected_incorrect.map { |w| w.prompt.blank? ? "'#{w.choice}' is incorrect" : w.prompt }.join("; ") }
+        elsif selected_correct.length != actual_correct.length and selected_incorrect.length == 0
+          # Right answers, but not all
+          return { prompt: "You're on the right track, but you didn't select all the right answers yet."}
+        else selected_correct.length == actual_correct.length
+          # All correct
+          return { choice: true }
+        end
+      else
+        # One answer: sending the choice to get rendered as JSON by the action
+        return selected_choices.first
+      end
+    end
+
     def create_default_choices
       self.add_choice('a')
       self.add_choice('b')

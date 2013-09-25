@@ -3,14 +3,13 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
 
   def check
     @multiple_choice = Embeddable::MultipleChoiceAnswer.find(params[:id]).question
-    parse_choices
-    build_response # sets @choice
+    @response = @multiple_choice.check(params[:choices])
 
     respond_to do |format|
       if request.xhr?
         format.js { render :json => @response.to_json }
       else
-        format.html { redirect_to interactive_page_path(@choice.page) unless @choice.page.nil? }
+        format.html { redirect_to interactive_page_path(@multiple_choice.interactive_pages.last) unless @multiple_choice.interactive_pages.last.nil? }
         format.json { render :json => @response.to_json }
       end
     end
@@ -49,42 +48,6 @@ class Embeddable::MultipleChoicesController < Embeddable::EmbeddablesController
   end
 
   private
-  def parse_choices
-    begin
-      choice_ids = params[:choices].split(',').map{ |i| i.to_i }
-      @choices = @multiple_choice.choices.find(choice_ids)
-    rescue NoMethodError
-      @choices = []
-    end
-  end
-
-  def build_response
-    # TODO: can this be refactored into the model?
-    # @choice needs to be set anyway
-    @choice = @choices.first
-    if @multiple_choice.multi_answer
-      selected_incorrect = @choices.select { |c| !c.is_correct }
-      selected_correct = @choices - selected_incorrect
-      actual_correct = @multiple_choice.choices.select { |c| c.is_correct }
-      if @choices.length == 0
-        # No answer
-        @response = { prompt: 'Please select an answer before checking.'}
-      elsif selected_incorrect.length > 0
-        # Incorrect answer(s)
-        @response = { prompt: selected_incorrect.map { |w| w.prompt.blank? ? "'#{w.choice}' is incorrect" : w.prompt }.join("; ") }
-      elsif selected_correct.length != actual_correct.length and selected_incorrect.length == 0
-        # Right answers, but not all
-        @response = { prompt: "You're on the right track, but you didn't select all the right answers yet."}
-      else selected_correct.length == actual_correct.length
-        # All correct
-        @response = { choice: true }
-      end
-    else
-      # One answer: sending the choice to get rendered as JSON by the action
-      @response = @choice
-    end
-  end
-
   def set_embeddable
     @embeddable = Embeddable::MultipleChoice.find(params[:id], :include => :choices)
   end
