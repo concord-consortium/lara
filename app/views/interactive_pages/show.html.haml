@@ -28,19 +28,24 @@
         %a.jcarousel-next{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
 
+.bottom-buttons
   - if @page.last?
-    .submit.report
-      %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
+    .submit{ :class => (@sequence ? 'sequence-report' : 'report') }
+      - if @sequence
+        %a{ :href => sequence_path(@sequence), :class => 'sequence' }
+          %input{ :class => 'button', :type => 'submit', :value => "Back to #{@sequence.title}" }
+      %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report' }
         %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
   .intra-page-nav
     - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
     - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
+    - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
     .next-page
-      - if @page.lower_item.nil?
-        = link_to "Up to Table of Contents", activity_with_response_path(@page.lightweight_activity, @session_key), { :title => @page.lightweight_activity.name }
-      - else
+      - if @page.last? && next_activity
+        = link_to "Next Activity >", sequence_activity_path(@sequence, next_activity), { :title => next_activity.name }
+      - elsif @page.lower_item
         = link_to 'Next >', next_href, { :class => 'next' }
-    .last-page{ :class => ('disabled' if @page.higher_item.nil?) }
+    .last-page{ :class => ('disabled' if @page.first?) }
       - if previous_href
         = link_to '< Back', previous_href, { :class => 'prev' }
       - else

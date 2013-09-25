@@ -445,6 +445,18 @@ div.nav-menu-top {
   }
 }
 
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  /* "Generate a summary" button */
+  .report {
+    position: relative;
+    left: 50%;
+    margin-left: -120px;
+  }
+}
+
 /* Next activity and last activity, for sequences */
 .intra-sequence-nav {
   display: inline-block;

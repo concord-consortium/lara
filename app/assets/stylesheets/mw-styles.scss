@@ -215,6 +215,18 @@ div.intra-page-nav {
   display: none;
 }
 
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  /* "Generate a summary" button */
+  .report {
+    position: relative;
+    left: 50%;
+    margin-left: -120px;
+  }
+}
+
 .activity-nav {
   margin-top: 8px;
   position: relative;
