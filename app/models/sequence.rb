@@ -23,22 +23,12 @@ class Sequence < ActiveRecord::Base
 
   def next_activity(activity)
     # Given an activity, return the next one in the sequence
-    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
-    if join && join.lower_item
-      return join.lower_item.lightweight_activity
-    else
-      return nil
-    end
+    get_neighbor(activity, false)
   end
 
   def previous_activity(activity)
     # Given an activity, return the previous one in the sequence
-    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
-    if join.higher_item
-      return join.higher_item.lightweight_activity
-    else
-      return nil
-    end
+    get_neighbor(activity, true)
   end
 
   def serialize_for_portal(host)
@@ -54,4 +44,17 @@ class Sequence < ActiveRecord::Base
     data
   end
 
+  private
+  def get_neighbor(activity, higher)
+    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
+    if join.blank? || (join.first? && higher) || (join.last? && !higher)
+      return nil
+    elsif join && higher
+      return join.higher_item.lightweight_activity
+    elsif join && !higher
+      return join.lower_item.lightweight_activity
+    else
+      return nil
+    end
+  end
 end
