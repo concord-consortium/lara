@@ -28,6 +28,7 @@
         %a.jcarousel-next{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
 
+#end-scroll-track
 .bottom-buttons
   - if @page.last?
     .submit{ :class => (@sequence ? 'sequence-report' : 'report') }
@@ -67,7 +68,6 @@
       .sidebar-txt
         != @page.sidebar
 
-#end-scroll-track
 - if @page.last? && has_good_content(@page.lightweight_activity.related)
   .related-mod
     .related-hdr
