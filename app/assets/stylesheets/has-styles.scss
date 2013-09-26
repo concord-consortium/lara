@@ -425,16 +425,25 @@ div.nav-menu-top {
 .intra-page-nav {
   clear: both;
   .next-page, .last-page {
-    @include btn(#459ace, #2b6fba);
-    height: 35px;
-    min-width: 120px;
-    padding: 6px 13px;
-    margin: 15px;
     a {
       text-decoration: none;
     }
     &.disabled {
       display: none;
+    }
+    input[type="submit"],
+    button[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      @include btn ( #459ace, #2b6fba );
+      padding: 15px 30px;
+      font-size: 15px;
+      color: #fff;
+      @include drk-txt-shadow(#459ace);
+      height: 35px;
+      min-width: 120px;
+      padding: 6px 13px;
+      margin: 15px;
     }
   }
   .next-page {
