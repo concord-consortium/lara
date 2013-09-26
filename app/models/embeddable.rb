@@ -24,12 +24,8 @@ module Embeddable
   end
 
   def activity
-    if interactive_pages.length > 0
-      if interactive_pages.first.lightweight_activity.present?
-        return interactive_pages.first.lightweight_activity
-      else
-        return nil
-      end
+    if interactive_pages.length > 0 && interactive_pages.first.lightweight_activity.present?
+      return interactive_pages.first.lightweight_activity
     else
       return nil
     end
