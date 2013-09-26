@@ -3,6 +3,7 @@
     = "Response Summary for #{@activity.name}"
 
   .print{ :onclick => 'window.print();'} Print
+  .close{ :onclick => 'window.close();'} Close
 
   %h2.h2
     = "Response Summary for #{@activity.name}"
@@ -11,6 +12,4 @@
       :locals => {:answer => answer}
 
   .print{ :onclick => 'window.print();' } Print
-
-  - if @sequence
-    = render :partial => 'shared/sequence_next_prev', :locals => { :sequence => @sequence, :activity => @activity }
+  .close{ :onclick => 'window.close();'} Close
