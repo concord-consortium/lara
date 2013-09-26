@@ -216,7 +216,7 @@ describe SequencesController do
 
   describe "#publish" do
     let(:seq_one) { Sequence.create!(:title => 'Sequence One',:description => 'Sequence One Description') }
-    let(:good_body) {'{"type":"Sequence","name":"Sequence One","description":"Sequence One Description","url":"http://test.host/sequences/1","create_url":"http://test.host/sequences/1","activities":[]}' }
+    let(:good_body) { "{\"type\":\"Sequence\",\"name\":\"Sequence One\",\"description\":\"Sequence One Description\",\"url\":\"http://test.host/sequences/#{seq_one.id}\",\"create_url\":\"http://test.host/sequences/#{seq_one.id}\",\"activities\":[]}" }
 
     before(:each) do
       @url = controller.portal_url

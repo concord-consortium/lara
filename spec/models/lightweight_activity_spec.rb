@@ -173,7 +173,7 @@ describe LightweightActivity do
 
     describe "the newest scope" do
       it "should return all items, the most recent items first" do
-        subject.newest.should have(15).items
+        subject.newest.should have_at_least(15).items
         subject.newest.should be_ordered_by "updated_at_desc"
       end
     end
