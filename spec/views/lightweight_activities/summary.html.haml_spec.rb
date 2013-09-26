@@ -16,9 +16,10 @@ describe 'lightweight_activities/summary' do
     assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
   end
 
-  it 'shows print buttons at top and bottom' do
+  it 'shows close and print buttons at top and bottom' do
     render
     rendered.should have_css ".print", :count => 2
+    rendered.should have_css ".close", :count => 2
   end
 
   it 'shows the activity title' do
