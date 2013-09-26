@@ -1,5 +1,8 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
   attr_accessible :name, :prompt
+
+  include Embeddable
+
   has_many :page_items, :as => :embeddable, :dependent => :destroy
   has_many :interactive_pages, :through => :page_items
 
@@ -9,19 +12,6 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     :dependent   => :destroy
 
   default_value_for :prompt, "why does ..."
-
-  # TODO: Extract this common method to module
-  def activity
-    if interactive_pages.length > 0
-      if interactive_pages.first.lightweight_activity.present?
-        return interactive_pages.first.lightweight_activity
-      else
-        return nil
-      end
-    else
-      return nil
-    end
-  end
 
   def to_hash
     {

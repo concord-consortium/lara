@@ -1,5 +1,8 @@
 module Embeddable
   class MultipleChoice < ActiveRecord::Base
+
+    include Embeddable
+
     has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     # PageItem instances are join models, so if the embeddable is gone
@@ -15,33 +18,6 @@ module Embeddable
 
     default_value_for :name, "Multiple Choice Question element"
     default_value_for :prompt, "why does ..."
-
-    def activity
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity.present?
-          return interactive_pages.first.lightweight_activity
-        else
-          return nil
-        end
-      else
-        return nil
-      end
-    end
-
-    # A unique key to use for local storage
-    def storage_key
-      sk = "#{id}"
-      if name.present?
-        sk = "#{sk}_#{name.downcase.gsub(/ /, '_')}"
-      end
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity
-          sk = "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{sk}"
-        else
-          sk = "#{interactive_pages.first.id}_#{sk}"
-        end
-      end
-    end
 
     def parse_choices(choice_string)
       choice_ids = choice_string.split(',').map{ |i| i.to_i } unless choice_string.blank?
