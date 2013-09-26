@@ -450,10 +450,19 @@ div.nav-menu-top {
   display: inline-block;
   width: 100%;
   /* "Generate a summary" button */
-  .report {
+  .report { /* centered by itself */
     position: relative;
     left: 50%;
     margin-left: -120px;
+  }
+  .sequence-report { /* Float left/right when there are two */
+    padding: 15px;
+    a.sequence {
+      float: left;
+    }
+    a.gen-report {
+      float: right;
+    }
   }
 }
 
