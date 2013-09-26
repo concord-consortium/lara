@@ -23,7 +23,7 @@ describe 'lightweight_activities/summary' do
 
   it 'shows the activity title' do
     render
-    rendered.should match /Response Summary for Activity Name/
+    rendered.should match /#{activity.name}/
   end
 
   context 'when a prompt includes HTML tags' do
