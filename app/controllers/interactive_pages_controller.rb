@@ -50,25 +50,23 @@ class InteractivePagesController < ApplicationController
     update_activity_changed_by
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
+        if request.xhr?
+          # *** respond with the new value ***
+          render :text => params[:interactive_page].values.first
+        end
         format.html do
-          if request.xhr?
-            # *** respond with the new value ***
-            render :text => params[:interactive_page].values.first
-          else
-            @page.reload
-            flash[:notice] = "Page #{@page.name} was updated."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
+          @page.reload
+          flash[:notice] = "Page #{@page.name} was updated."
+          redirect_to edit_activity_page_path(@activity, @page)
         end
       else
+        if request.xhr?
+          # *** respond with the old value ***
+          render :text => @page[params[:interactive_page].keys.first]
+        end
         format.html do
-          if request.xhr?
-            # *** repond with the old value ***
-            render :text => @page[params[:interactive_page].keys.first]
-          else
-            flash[:warning] = "There was a problem updating Page #{@page.name}."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
+          flash[:warning] = "There was a problem updating Page #{@page.name}."
+          redirect_to edit_activity_page_path(@activity, @page)
         end
       end
     end
