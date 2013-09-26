@@ -41,7 +41,7 @@
     - if @page.last? && next_activity
       .next-page
         %a{ :href => sequence_activity_path(@sequence, next_activity), :title => next_activity.name }
-          %input{ :class => 'button', :type => 'submit', :value => "Next Activity >" }
+          %input{ :class => 'button', :type => 'submit', :value => "Begin Next Activity >" }
     - elsif @page.lower_item
       .next-page
         %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.lower_item), :class => 'next' }
