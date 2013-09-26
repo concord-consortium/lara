@@ -34,7 +34,7 @@
       - if @sequence
         %a{ :href => sequence_path(@sequence), :class => 'sequence' }
           %input{ :class => 'button', :type => 'submit', :value => "Back to #{@sequence.title}" }
-      %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report' }
+      %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report', :target => 'new' }
         %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
   .intra-page-nav
     - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
