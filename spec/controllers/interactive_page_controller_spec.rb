@@ -175,7 +175,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id, :response_key => ar.key
 
       response.body.should match /<div class='related-mod'>/
-      response.body.should match /<a href='\/activities\/#{act.id}\/summary\/#{ar.key}'>/
+      response.body.should match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
     end
 
     it 'does not show related content on pages other than the last page' do
