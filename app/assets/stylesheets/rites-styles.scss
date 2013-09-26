@@ -1356,12 +1356,21 @@ footer {
 
 .summary-mod {
   padding: 15px;
-  .print {
-    @include btn(#459ace, #2b6fba);
-    width: 120px;
-    position: relative;
-    left: 50%;
-    margin-left: -60px;
+  .actions {
+    display: inline-block;
+    clear: right;
+    float: right;
+    .print {
+      @include btn(#459ace, #2b6fba);
+      width: 120px;
+    }
+    .close {
+      @include btn(#459ace, #2b6fba);
+      width: 120px;
+    }
+    &.bottom {
+      margin-top: -50px;
+    }
   }
   .prompt {
     font-weight: bold;

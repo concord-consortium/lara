@@ -2,14 +2,17 @@
   = content_for :title do
     = "Response Summary for #{@activity.name}"
 
-  .print{ :onclick => 'window.print();'} Print
-  .close{ :onclick => 'window.close();'} Close
+  .actions
+    .print{ :onclick => 'window.print();'} Print
+    .close{ :onclick => 'window.close();'} Close
 
-  %h2.h2
-    = "Response Summary for #{@activity.name}"
+  %p The activity questions are shown in bold and your answers are presented in order below.
+
+  %h2.h2= @activity.name
   - @answers.each do |answer|
     = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
       :locals => {:answer => answer}
 
-  .print{ :onclick => 'window.print();' } Print
-  .close{ :onclick => 'window.close();'} Close
+  .actions.bottom
+    .print{ :onclick => 'window.print();'} Print
+    .close{ :onclick => 'window.close();'} Close
