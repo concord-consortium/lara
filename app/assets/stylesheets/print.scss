@@ -1,0 +1,310 @@
+/* ## Bring in all Compass Helpers */
+@import "partials/base";
+@import "project/fonts";
+
+
+// *********************************************
+// Table of Contents
+// *********************************************
+
+
+//   1. Universal
+//   2. Molecular Workbench Helpers
+//   3. Project Styles
+//   4. Activity nav
+//   5. Layout modes
+//   6. Headline + Intro
+//   7. Sticky Interactives
+//   8. Interactive + Questions
+//   9. Styling for typographic elements
+//  10. Sidebar
+//  11. Related Module
+//  12. Image Types
+//  13. Activity Footer
+//  14. Site Footer
+//  15. Saved Label
+//  16. Activity Index Page
+//  17. Activity Summary Page
+
+// *********************************************
+//  1. Universal
+// *********************************************
+
+a     {   text-decoration: none; color: inherit; }
+b, strong  { font-weight: bold; font-family: $lato-bold;  }
+em    { font-style: italic; }
+
+header,
+footer {
+  display: none;
+}
+
+
+// *********************************************
+//  2. Molecular Workbench Helpers
+// *********************************************
+
+// Text shadows included on various elements
+@mixin drk-txt-shadow($color: $black-50) {
+  @include text-shadow(0 -1px 0 darken($color, 15%));
+}
+
+@mixin lt-txt-shadow($color: #fff) {
+  @include text-shadow(0 1px 0 lighten($color, 10%));
+}
+
+// Border used on questions and related-mod
+.mod-border-rounded {
+  border: 1px solid $black-10;
+  @include border-radius(0 0 13px 13px);
+}
+
+// Clearfix
+.cf { @include pie-clearfix; }
+
+// Extra padding applied via JS when nav is in fixed position
+.extra-pad { padding-top: 70px; }
+
+// Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
+@mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
+}
+
+
+// *********************************************
+//  3. Project Styles
+// *********************************************
+
+// Site Width
+.site-width {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.activity-mod {
+  margin-bottom: 26px;
+  position: relative;
+  font-family: $lato-reg;
+}
+
+// Site header
+// --------------------------------
+
+.site-logo-mod {
+  @extend .cf;
+  display: none;
+}
+
+
+// *********************************************
+//  4. Activity nav
+// *********************************************
+
+.activity-nav-mod {
+  display: none;
+}
+
+div.nav-menu,
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  /* MW and default don't use it */
+  display: none;
+}
+
+div.intra-page-nav {
+  /* Page navigation links at bottom of each page. MW and default don't use them. */
+  display: none;
+}
+
+
+
+// *********************************************
+//  6. Headline + Intro
+// *********************************************
+
+
+// Headline block
+.content-hdr {
+  font-family: $lato-reg;
+  margin-bottom: 30px;
+
+  .h2 {
+    // font-family: $lato-light;
+    font-size: 36px;
+    // font-weight: normal;
+    letter-spacing: -1px;
+    color: $drk-orange;
+  }
+}
+
+
+
+// Intro block
+.intro-mod {
+  font-size: 16px;
+  line-height: 1.45em;
+  font-family: $lato-reg;
+  margin-bottom: 39px;
+
+ .h4 {
+    font-weight: normal;
+    font-size: 20px;
+    margin-bottom: 13px;
+    color: $med-blue;
+  }
+
+  .intro-txt {
+    max-width: 75%;
+  }
+}
+
+
+// *********************************************
+//  9. Styling for typographic elements
+// *********************************************
+
+.intro-mod,
+.content-mod {
+  font-size: 16px;
+  line-height: 1.35em;
+  ol,
+  ul,
+  dl,
+  blockquote,
+  p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+// disable extra margin on first and last paragraphs in a module
+.intro-mod,
+.question-bd {
+  p {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ordered lists
+
+.intro-mod,
+.content-mod {
+  ol {
+    counter-reset: li;
+    list-style: none;
+    *list-style: decimal;
+    padding: 0;
+    margin: 16px 0;
+
+    ol, ul {
+      margin: 16px 0 16px 16px;
+    }
+
+    > li {
+      margin-bottom: 13px;
+      position: relative;
+      &:before {
+        content:counter(li)".";
+        counter-increment:li;
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 0.65em;
+        padding: 3px 5px;
+        background-color: $black-5;
+        position: relative;
+        top: -2px;
+        @include border-radius(2px);
+      }
+    } //li
+  }//ol
+}//content-mod
+
+
+// unordered lists
+.intro-mod,
+.content-mod {
+  ul {
+    list-style: square;
+    margin-left: 16px;
+
+    ul, ol {
+      margin: 16px 0 16px 16px;
+    }
+
+    li {
+      margin-bottom: 13px;
+    }
+  }//ul
+}//content-mod
+
+
+//definition lists
+.intro-mod,
+.content-mod {
+  dl {
+
+  }
+  dt {
+    font-weight: bold;
+    margin-top: 13px;
+  }
+  dd {
+    margin-left: 16px;
+  }
+}
+
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+.summary-mod {
+  padding: 15px;
+  .h2 {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  .actions {
+    display: none;
+  }
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image_answer {
+    clear: left;
+    margin-left: 16px;
+  }
+}
+
+/* Miscellaneous junk */
+
+.question, .intro-mod, .related-mod, .sidebar-mod {
+  a {
+    color: darken($med-blue, 20%);
+    @include trans;
+    text-decoration: underline;
+    &:visited {
+      color: #aaa;
+    }
+    &:hover {
+      color: $med-blue;
+    }
+  }
+}
+
+.intro-mod.index-mod a {
+  text-decoration: none;
+}
