@@ -1,5 +1,7 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
+    include Answer
+
     attr_accessible :answers, :run, :question
 
     belongs_to :question,
@@ -31,23 +33,6 @@ module Embeddable
 
     after_update :send_to_portal
 
-    def question_index
-      if self.run && self.run.activity
-        self.run.activity.questions.index(self.question) + 1
-      else
-        nil
-      end
-    end
-
-    def prompt_no_itals
-      parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
-      itals = parsed_prompt.at_css "i"
-      if itals
-        itals.content = nil
-      end
-      parsed_prompt.to_html
-    end
-
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
@@ -60,14 +45,6 @@ module Embeddable
         "answer_ids"    => answers.map { |a| a.id.to_s },
         "answer_texts"  => answer_texts
       }
-    end
-
-    def send_to_portal
-      run.send_to_portal(self) if run
-    end
-
-    def to_json
-      portal_hash.to_json
     end
 
     # Expects a parameters hash. Normalizes to allow update_attributes.
