@@ -31,12 +31,12 @@
 #end-scroll-track
 .bottom-buttons
   - if @page.last?
-    .submit{ :class => (@sequence ? 'sequence-report' : 'report') }
-      - if @sequence
+    .submit.report
+      - if false # Hiding this button for now
         %a{ :href => sequence_path(@sequence), :class => 'sequence' }
           %input{ :class => 'button', :type => 'submit', :value => "Back to #{@sequence.title}" }
       %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report', :target => 'new' }
-        %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
+        %input{ :class => 'button', :type => 'submit', :value => 'Generate a report' }
   .intra-page-nav
     - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
     - if @page.last? && next_activity
