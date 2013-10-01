@@ -423,7 +423,6 @@ div.nav-menu-top {
 
 /* Next and previous page links at bottom of each page */
 .intra-page-nav {
-  clear: both;
   .next-page, .last-page {
     a {
       text-decoration: none;
@@ -461,6 +460,7 @@ div.nav-menu-top {
   /* "Generate a summary" button */
   .report { /* centered by itself */
     position: relative;
+    top: 64px;
     left: 50%;
     margin-left: -120px;
   }
