@@ -215,11 +215,39 @@ div.intra-page-nav {
   display: none;
 }
 
+/* Next and previous page links at bottom of each page */
+
 .bottom-buttons {
   clear: both;
   display: inline-block;
   width: 100%;
-  /* "Generate a summary" button */
+  .next-page, .last-page {
+    display: none;
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    min-height: 10px;
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
 }
 
 .activity-nav {

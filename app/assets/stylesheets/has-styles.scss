@@ -422,7 +422,11 @@ div.nav-menu-top {
 } // end .pagination-item
 
 /* Next and previous page links at bottom of each page */
-.intra-page-nav {
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
   .next-page, .last-page {
     a {
       text-decoration: none;
@@ -445,32 +449,27 @@ div.nav-menu-top {
       margin: 15px;
     }
   }
-  .next-page {
+  .button-right {
     float: right;
+    div {
+      float: right;
+    }
   }
-  .last-page {
+  .button-left, .button-center {
     float: left;
   }
-}
-
-.bottom-buttons {
-  clear: both;
-  display: inline-block;
-  width: 100%;
-  /* "Generate a summary" button */
-  .report { /* centered by itself */
-    position: relative;
-    top: 64px;
-    left: 50%;
-    margin-left: -120px;
+  .button-left, .button-right {
+    width: 300px;
   }
-  .sequence-report { /* Float left/right when there are two */
-    padding: 15px;
-    a.sequence {
-      float: left;
-    }
-    a.gen-report {
-      float: right;
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
     }
   }
 }
