@@ -103,7 +103,11 @@ end
 # Deploy with Capistrano
 gem 'capistrano'
 
+# Tools
+# Security scan
 gem 'brakeman', :require => false
+# Log analysis
+gem 'request-log-analyzer', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"
