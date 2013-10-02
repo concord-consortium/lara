@@ -24,9 +24,4 @@
   .nav-buttons
     %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ), :class => ('in-sequence' if @sequence) }
       .submit
-        %input.button{ :type => "submit", :value => "Begin activity >" }
-
-    - if @sequence
-      %a{ :href => sequence_path(@sequence), :title => @sequence.title, :class => 'back-sequence' }
-        .submit
-          %input.button{ :type => "submit", :value => "< Back to #{@sequence.title}" }
+        %input.button{ :type => "submit", :value => "Begin activity" }
