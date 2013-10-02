@@ -15,6 +15,6 @@
     = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
       :locals => {:answer => answer}
 
-  .actions.bottom
-    .print{ :onclick => 'window.print();'} Print
-    .close{ :onclick => 'window.close();'} Close
+  -# .actions.bottom
+    -# .print{ :onclick => 'window.print();'} Print
+    -# .close{ :onclick => 'window.close();'} Close
