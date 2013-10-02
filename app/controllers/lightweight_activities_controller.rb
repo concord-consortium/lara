@@ -8,8 +8,7 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key,  :only   => [:summary, :show]
   before_filter :set_sequence, :only   => [:summary, :show]
-  layout 'runtime', :only => [:show]
-  layout 'summary', :only => [:summary]
+  layout :set_layout
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
@@ -164,6 +163,17 @@ class LightweightActivitiesController < ApplicationController
       @activity = LightweightActivity.find(params[:activity_id])
     else
       @activity = LightweightActivity.find(params[:id])
+    end
+  end
+
+  def set_layout
+    case params[:action]
+    when 'show'
+      return 'runtime'
+    when 'summary'
+      return 'summary'
+    else
+      return 'application'
     end
   end
 end
