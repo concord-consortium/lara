@@ -22,6 +22,6 @@
         = link_to page.name, runnable_activity_page_path(@activity, page)
 
   .nav-buttons
-    %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ), :class => ('in-sequence' if @sequence) }
+    %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
       .submit
         %input.button{ :type => "submit", :value => "Begin activity" }
