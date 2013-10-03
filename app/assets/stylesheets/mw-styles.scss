@@ -1208,24 +1208,26 @@ footer {
 //  17. Activity Summary Page
 // ******************************************
 
-.summary-mod {
-  padding: 15px;
-  .actions {
-    display: inline-block;
-    clear: right;
-    float: right;
-    .print {
-      @include btn(#459ace, #2b6fba);
-      width: 120px;
-    }
-    .close {
-      @include btn(#459ace, #2b6fba);
-      width: 120px;
-    }
-    &.bottom {
-      margin-top: -50px;
-    }
+.summary-actions {
+  position: fixed;
+  top: 230px;
+  margin-left: 820px;
+  .print {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
   }
+  .close {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  &.bottom {
+    margin-top: -50px;
+  }
+}
+
+.summary-mod {
+  margin-right: 150px;
+  padding: 15px;
   .prompt {
     font-weight: bold;
     margin: 5px 5px 5px 0;

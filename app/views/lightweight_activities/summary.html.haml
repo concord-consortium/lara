@@ -2,11 +2,7 @@
   = content_for :title do
     = "Response Summary for #{@activity.name}"
 
-  .actions
-    .print{ :onclick => 'window.print();'} Print
-    .close{ :onclick => 'window.close();'} Close
-
-  %p The activity questions are shown in bold and your answers are presented in order below.
+  %p.summary-instructions The activity questions are shown in bold and your answers are presented in order below.
 
   %h2.h2= @activity.name
   - if @sequence
@@ -18,3 +14,8 @@
   -# .actions.bottom
     -# .print{ :onclick => 'window.print();'} Print
     -# .close{ :onclick => 'window.close();'} Close
+
+.summary-actions
+  .print{ :onclick => 'window.print();'} Print
+  .close{ :onclick => 'window.close();'} Close
+
