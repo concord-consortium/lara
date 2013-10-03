@@ -95,6 +95,10 @@ describe Run do
         run.mark_dirty
         run.reload.is_dirty.should be_true
       end
+
+      it 'enqueues itself to be pushed to the portal' do
+        pending "Set up background job manager, stub, write test"
+      end
     end
 
     describe '#mark_clean' do
@@ -155,14 +159,19 @@ describe Run do
 
   describe '#set_answers_clean' do
     describe 'when the args are empty' do
-      it 'does nothing and returns nil' do
-        pending "Write this test"
+      it 'does nothing and returns an empty array' do
+        run.set_answers_clean([]).should == []
       end
     end
 
     describe 'when there is an array of answers' do
       it 'calls is_dirty=false on each answer in the array' do
         pending "Mock answers and write test to check the mocks"
+        # TODO: This is not much better than pseudocode
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        run.set_answers_clean [or_answer, mc_answer]
+        mocked_answers should have received mark_clean
       end
     end
   end
@@ -384,7 +393,8 @@ describe Run do
     describe '#submit_dirty_answers' do
       describe 'when there are no dirty answers' do
         it 'does nothing and returns true' do
-          pending 'write this test'
+          # OK, no answers at all
+          run.submit_dirty_answers.should be_true
         end
       end
 

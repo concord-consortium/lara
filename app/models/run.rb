@@ -158,7 +158,9 @@ class Run < ActiveRecord::Base
   def submit_dirty_answers
     # Find array of dirty answers and send them to the portal
     da = dirty_answers
-    if send_to_portal da
+    if da.empty?
+      return true
+    elsif send_to_portal da
       set_answers_clean da # We're only cleaning the same set we sent to the portal
       return true
     else
@@ -166,7 +168,7 @@ class Run < ActiveRecord::Base
     end
   end
 
-  def set_answers_clean(answers)
+  def set_answers_clean(answers=[])
     # Takes an array of answers and sets their is_dirty bits to clean
     answers.each do |answer|
       answer.mark_clean
