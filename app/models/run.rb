@@ -151,8 +151,8 @@ class Run < ActiveRecord::Base
   end
 
   def dirty_answers
-    # TODO: Return an array of answers which have a dirty bit set
-    return []
+    # Returns an array of answers which have a dirty bit set
+    return answers.select{ |a| a.dirty? }
   end
 
   def submit_dirty_answers
@@ -169,8 +169,7 @@ class Run < ActiveRecord::Base
   def set_answers_clean(answers)
     # Takes an array of answers and sets their is_dirty bits to clean
     answers.each do |answer|
-      answer.is_dirty = false
-      answer.save
+      answer.mark_clean
     end
   end
 
@@ -178,14 +177,14 @@ class Run < ActiveRecord::Base
     is_dirty
   end
 
-  def set_dirty
-    is_dirty = true
+  def mark_dirty
+    self.is_dirty = true
     self.save
     # TODO: enqueue
   end
 
-  def set_clean
-    is_dirty = false
+  def mark_clean
+    self.is_dirty = false
     self.save
   end
 

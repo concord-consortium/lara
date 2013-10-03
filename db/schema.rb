@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131003191319) do
+ActiveRecord::Schema.define(:version => 20131003191849) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -207,8 +207,8 @@ ActiveRecord::Schema.define(:version => 20131003191319) do
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
@@ -216,6 +216,7 @@ ActiveRecord::Schema.define(:version => 20131003191319) do
     t.string   "remote_endpoint"
     t.integer  "sequence_id"
     t.integer  "sequence_run_id"
+    t.boolean  "is_dirty",        :default => false
   end
 
   create_table "sequence_runs", :force => true do |t|

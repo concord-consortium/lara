@@ -90,31 +90,27 @@ describe Run do
   end
 
   describe 'dirty bit management' do
-    describe '#set_dirty' do
+    describe '#mark_dirty' do
       it 'sets is_dirty bit to true' do
-        pending "Set up this field"
-        run.set_dirty
+        run.mark_dirty
         run.reload.is_dirty.should be_true
       end
     end
 
-    describe '#set_clean' do
+    describe '#mark_clean' do
       it 'sets is_dirty to false' do
-        pending "Set up this field"
-        run.set_clean
+        run.mark_clean
         run.reload.is_dirty.should be_false
       end
     end
 
     describe '#dirty?' do
       it 'returns true when is_dirty is true' do
-        pending "Set up this field"
-        run.set_dirty
+        run.mark_dirty
         run.dirty?.should be_true
       end
 
       it 'returns false when is_dirty is false' do
-        pending "Set up this field"
         # Default value is false
         run.dirty?.should be_false
       end
@@ -133,6 +129,8 @@ describe Run do
         # Add answers
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
+        or_answer.mark_clean
+        mc_answer.mark_clean
       end
 
       it 'returns an empty array' do
@@ -145,12 +143,10 @@ describe Run do
         # Add answers
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
-        # or_answer.is_dirty = true
-        # or_answer.save
+        mc_answer.mark_clean
       end
 
       it 'returns an array including only the dirty answers' do
-        pending "Set up this field on the answers"
         run.dirty_answers.should == [or_answer]
         run.dirty_answers.length.should be(1)
       end
