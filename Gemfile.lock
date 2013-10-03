@@ -244,6 +244,7 @@ GEM
     net-ssh (2.6.8)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.6.7.159)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
@@ -421,6 +422,7 @@ DEPENDENCIES
   multi_json
   mysql2
   nested_form
+  newrelic_rpm
   omniauth
   omniauth-oauth2
   poltergeist
