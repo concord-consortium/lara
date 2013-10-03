@@ -10,7 +10,21 @@ describe Run do
     r.user = user
     r
   }
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user)       { FactoryGirl.create(:user) }
+  let (:or_question){ FactoryGirl.create(:or_embeddable) }
+  let (:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let (:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+  let (:iq_answer)  { FactoryGirl.create(:image_question_answer,
+    { :answer_text => "the image question answer",
+      :question => image_quest,
+      :image_url => "http://foo.com/bar.jpg" }) }
+  let (:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+  let (:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+  let (:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+  let (:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+                    :answers  => [a1],
+                    :question => mc_question)
+                  }
 
   describe 'validation' do
     it 'ensures session keys are 36 characters' do
@@ -47,7 +61,6 @@ describe Run do
 
       with_user_guid.should_not === first_guid
     end
-
   end
 
   describe '#check_key' do
@@ -76,6 +89,87 @@ describe Run do
     end
   end
 
+  describe 'dirty bit management' do
+    describe '#set_dirty' do
+      it 'sets is_dirty bit to true' do
+        pending "Set up this field"
+        run.set_dirty
+        run.reload.is_dirty.should be_true
+      end
+    end
+
+    describe '#set_clean' do
+      it 'sets is_dirty to false' do
+        pending "Set up this field"
+        run.set_clean
+        run.reload.is_dirty.should be_false
+      end
+    end
+
+    describe '#dirty?' do
+      it 'returns true when is_dirty is true' do
+        pending "Set up this field"
+        run.set_dirty
+        run.dirty?.should be_true
+      end
+
+      it 'returns false when is_dirty is false' do
+        pending "Set up this field"
+        # Default value is false
+        run.dirty?.should be_false
+      end
+    end
+  end
+
+  describe '#dirty_answers' do
+    describe 'when there are no answers' do
+      it 'returns an empty array' do
+        run.dirty_answers.should == []
+      end
+    end
+
+    describe 'when there are answers, but none are dirty' do
+      before(:each) do
+        # Add answers
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+      end
+
+      it 'returns an empty array' do
+        run.dirty_answers.should == []
+      end
+    end
+
+    describe 'when there are dirty answers' do
+      before(:each) do
+        # Add answers
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        # or_answer.is_dirty = true
+        # or_answer.save
+      end
+
+      it 'returns an array including only the dirty answers' do
+        pending "Set up this field on the answers"
+        run.dirty_answers.should == [or_answer]
+        run.dirty_answers.length.should be(1)
+      end
+    end
+  end
+
+  describe '#set_answers_clean' do
+    describe 'when the args are empty' do
+      it 'does nothing and returns nil' do
+        pending "Write this test"
+      end
+    end
+
+    describe 'when there is an array of answers' do
+      it 'calls is_dirty=false on each answer in the array' do
+        pending "Mock answers and write test to check the mocks"
+      end
+    end
+  end
 
   describe "self.lookup(key,activity,user=nil,portal)" do
     describe "with a key" do
@@ -163,20 +257,6 @@ describe Run do
   end
 
   describe 'posting to portal' do
-    let(:or_question){ FactoryGirl.create(:or_embeddable) }
-    let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
-    let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
-    let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
-      { :answer_text => "the image question answer",
-        :question => image_quest,
-        :image_url => "http://foo.com/bar.jpg" }) }
-    let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-    let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-    let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-    let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
-                      :answers  => [a1],
-                      :question => mc_question)
-                    }
     let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
     let(:all_expected) do
       [
@@ -271,6 +351,54 @@ describe Run do
               :status => 503)
             run.send_to_portal([or_answer,mc_answer]).should be_false
           end
+        end
+      end
+    end
+
+    describe '#update_portal' do
+      describe 'when dirty? is false' do
+        it 'does nothing' do
+          pending 'test mocks to ensure nothing happens'
+        end
+      end
+
+      describe 'when dirty? is true' do
+        it 'calls #submit_dirty_answers' do
+          pending 'write mock and test'
+        end
+
+        it 'checks for more dirty answers' do
+          pending 'write mock and test'
+        end
+
+        describe 'when #submit_dirty_answers returns false' do
+          it 'requeues' do
+            pending 'code for enqueueing self'
+          end
+        end
+
+        describe 'when #submit_dirty_answers returns true but there are still dirty answers (perhaps new ones)' do
+          it 'requeues' do
+            pending 'code for enqueueing self'
+          end
+        end
+      end
+    end
+
+    describe '#submit_dirty_answers' do
+      describe 'when there are no dirty answers' do
+        it 'does nothing and returns true' do
+          pending 'write this test'
+        end
+      end
+
+      describe 'when there are dirty answers' do
+        it 'calls send_to_portal with the dirty answers as argument' do
+          pending 'write this test'
+        end
+
+        it 'calls set_answers_clean with the dirty answers' do
+          pending 'write this test'
         end
       end
     end
