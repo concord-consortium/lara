@@ -11,6 +11,8 @@ describe Embeddable::MultipleChoiceAnswer do
                     :run => run)
                   }
 
+  it_behaves_like "an answer"
+
   describe "model associations" do
     it "should belong to a multiple choice" do
       answer.question.should == question
@@ -84,12 +86,6 @@ describe Embeddable::MultipleChoiceAnswer do
     end
   end
 
-  describe '#prompt_no_itals' do
-    it 'strips the content from any HTML `i` containers in the prompt' do
-      question.prompt = '<p>This prompt is <i>not</i> free of italicized content.</p>'
-      answer.prompt_no_itals.should_not match /not/
-    end
-  end
 
   describe "delegated methods" do
     let (:question) { mock_model(Embeddable::MultipleChoice) }
