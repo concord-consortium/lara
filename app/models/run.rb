@@ -150,4 +150,50 @@ class Run < ActiveRecord::Base
     response.code == 200
   end
 
+  def dirty_answers
+    # TODO: Return an array of answers which have a dirty bit set
+    return []
+  end
+
+  def submit_dirty_answers
+    # Find array of dirty answers and send them to the portal
+    da = dirty_answers
+    if send_to_portal da
+      set_answers_clean da # We're only cleaning the same set we sent to the portal
+      return true
+    else
+      return false
+    end
+  end
+
+  def set_answers_clean(answers)
+    # Takes an array of answers and sets their is_dirty bits to clean
+    answers.each do |answer|
+      answer.is_dirty = false
+      answer.save
+    end
+  end
+
+  def dirty?
+    is_dirty
+  end
+
+  def set_dirty
+    is_dirty = true
+    self.save
+    # TODO: enqueue
+  end
+
+  def set_clean
+    is_dirty = false
+    self.save
+  end
+
+  def update_portal
+    if dirty?
+      unless submit_dirty_answers && dirty_answers.empty?
+        # TODO: If the portal update didn't succeed or there are new dirty answers, requeue
+      end
+    end
+  end
 end
