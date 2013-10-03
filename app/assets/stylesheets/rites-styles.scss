@@ -24,6 +24,7 @@
 //  14. Site Footer
 //  15. Saved Label
 //  16. Activity Index Page
+//  17. Activity Summary Page
 
 
 // *********************************************
@@ -420,7 +421,85 @@ div.nav-menu-top {
   }
 } // end .pagination-item
 
+/* Next and previous page links at bottom of each page */
 
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    a {
+      text-decoration: none;
+    }
+    &.disabled {
+      display: none;
+    }
+    input[type="submit"],
+    button[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      @include btn ( #459ace, #2b6fba );
+      padding: 15px 30px;
+      font-size: 15px;
+      color: #fff;
+      @include drk-txt-shadow(#459ace);
+      height: 35px;
+      min-width: 120px;
+      padding: 6px 13px;
+      margin: 15px;
+    }
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
+}
+
+/* Next activity and last activity, for sequences */
+.intra-sequence-nav {
+  display: inline-block;
+  width: 100%;
+  .next-activity, .last-activity {
+    @include btn(#459ace, #2b6fba);
+    height: 35px;
+    min-width: 120px;
+    padding: 6px 13px;
+    margin: 15px;
+    &.disabled {
+      background: none;
+      border:0;
+      color: #2b6fba;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: inherit;
+    }
+  }
+  .next-activity {
+    float: right;
+  }
+  .last-activity {
+    float: left;
+  }
+}
 
 // *********************************************
 //  5. Layout modes
@@ -1215,6 +1294,20 @@ footer {
     margin: 0 auto 24px;
   }
 
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
+  }
+
   &.intro-mod {
 
     ul, ol {
@@ -1255,6 +1348,47 @@ footer {
   margin: 36px 0 20px;
   color: #666;
 }
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+.summary-actions {
+  position: fixed;
+  top: 230px;
+  margin-left: 820px;
+  .print {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  .close {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  &.bottom {
+    margin-top: -50px;
+  }
+}
+
+.summary-mod {
+  margin-right: 150px;
+  padding: 15px;
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image_answer {
+    clear: left;
+    margin-left: 16px;
+  }
+}
+
+/* Miscellaneous junk */
 
 .question, .intro-mod, .related-mod, .sidebar-mod {
   a {

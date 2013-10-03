@@ -27,6 +27,7 @@
   <%- else -%>
     <%= stylesheet_link_tag 'runtime', :media => 'all' %>
   <%- end -%>
+  <%= stylesheet_link_tag 'print-summary', :media => 'print' %>
 
 	<!-- Scripts -->
 	<!--[if IE 8 ]>
@@ -66,25 +67,13 @@
 
 		</header>
 
-		<div id="save" class="error" style="opacity: 1.0">
-			Your data will not be saved.
-		</div>
-
 		<div id="main" role="main">
 
 			<div class="activity-mod">
 
         <!-- Add class of fixed to activity-nav-mod for fixed nav -->
         <!-- TODO: How to control that? -->
-				<div class="activity-nav-mod">
-
-					<div class="l-nav site-width">
-						<%= render :partial => 'shared/activity_nav' %>
-					</div><!-- end l-nav site-width -->
-
-				</div> <!-- end activity-nav-mod -->
-
-
+				<div class="activity-nav-mod"></div>
 
 				<div class="site-width">
 

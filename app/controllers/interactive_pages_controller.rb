@@ -9,17 +9,16 @@ class InteractivePagesController < ApplicationController
 
   def show
     authorize! :read, @page
-    current_theme
-    current_project
-
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
-    else
-      @all_pages = @activity.pages
-      finder = Embeddable::AnswerFinder.new(@run)
-      @run.update_attribute(:page, @page)
-      @modules = @page.embeddables.map { |e| finder.find_answer(e) }
     end
+
+    current_theme
+    current_project
+    @all_pages = @activity.pages
+    @run.update_attribute(:page, @page)
+    finder = Embeddable::AnswerFinder.new(@run)
+    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
 
     respond_to do |format|
       format.html
@@ -51,25 +50,23 @@ class InteractivePagesController < ApplicationController
     update_activity_changed_by
     respond_to do |format|
       if @page.update_attributes(params[:interactive_page])
+        if request.xhr?
+          # *** respond with the new value ***
+          render :text => params[:interactive_page].values.first
+        end
         format.html do
-          if request.xhr?
-            # *** respond with the new value ***
-            render :text => params[:interactive_page].values.first
-          else
-            @page.reload
-            flash[:notice] = "Page #{@page.name} was updated."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
+          @page.reload
+          flash[:notice] = "Page #{@page.name} was updated."
+          redirect_to edit_activity_page_path(@activity, @page)
         end
       else
+        if request.xhr?
+          # *** respond with the old value ***
+          render :text => @page[params[:interactive_page].keys.first]
+        end
         format.html do
-          if request.xhr?
-            # *** repond with the old value ***
-            render :text => @page[params[:interactive_page].keys.first]
-          else
-            flash[:warning] = "There was a problem updating Page #{@page.name}."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
+          flash[:warning] = "There was a problem updating Page #{@page.name}."
+          redirect_to edit_activity_page_path(@activity, @page)
         end
       end
     end

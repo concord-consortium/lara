@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Sequence do
   let (:sequence) { FactoryGirl.create(:sequence) }
-  let (:activity1) { stub_model(LightweightActivity, :id => 10, :time_to_complete => 45) }
-  let (:activity2) { stub_model(LightweightActivity, :id => 20, :time_to_complete => 40) }
+  let (:activity1) { FactoryGirl.create(:activity, :time_to_complete => 45) }
+  let (:activity2) { FactoryGirl.create(:activity, :time_to_complete => 40) }
 
   it 'has valid attributes' do
     sequence.should be_valid
@@ -19,6 +19,38 @@ describe Sequence do
     sequence.activities.should == sequence.lightweight_activities
     sequence.lightweight_activities = [activity1, activity2]
     sequence.activities.should == sequence.lightweight_activities
+  end
+
+  describe '#next_activity' do
+
+    before(:all) do
+      sequence.lightweight_activities = []
+      sequence.lightweight_activities = [activity1, activity2]
+    end
+
+    it 'returns the activity with the next-highest position value in the sequence' do
+      sequence.next_activity(sequence.activities.first).should == sequence.activities.last
+    end
+
+    it 'returns nil if there is no next activity' do
+      sequence.next_activity(sequence.activities.last).should be_nil
+    end
+  end
+
+  describe '#previous_activity' do
+
+    before(:all) do
+      sequence.lightweight_activities = []
+      sequence.lightweight_activities = [activity1, activity2]
+    end
+
+    it 'returns the activity with the next-lowest position value in the sequence' do
+      sequence.previous_activity(sequence.activities.last).should == sequence.activities.first
+    end
+
+    it 'returns nil if there is no previous activity' do
+      sequence.previous_activity(sequence.activities.first).should be_nil
+    end
   end
 
   describe '#serialize_for_portal' do

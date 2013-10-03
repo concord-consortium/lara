@@ -42,7 +42,7 @@
 
       .text_response
         %p.prompt.image_prompt!= embeddable.prompt
-        = f.text_area :answer_text, :class => 'live-submit answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
+        = f.text_area :answer_text, :class => 'live_submit answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
         = f.hidden_field 'image_url'
         = f.hidden_field 'annotated_image_url'
 

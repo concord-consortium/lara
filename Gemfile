@@ -26,9 +26,10 @@ gem 'uuidtools'
 gem "httparty"
 gem 'airbrake'
 gem 'exception_notification'
-gem 'shutterbug', '~>0.0.11'
+gem 'newrelic_rpm'
+gem 'shutterbug', '~>0.1.1'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
-gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git"
+gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 # gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
 # use bundle update sketchily to force newest SHA from github, or uncomment above
 # to work locally.
@@ -79,6 +80,7 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
+  gem 'jasmine-ajax'
   gem 'guard-jasmine'
   gem 'jasminerice' # guard-jasmine uses this
 end
@@ -102,7 +104,11 @@ end
 # Deploy with Capistrano
 gem 'capistrano'
 
+# Tools
+# Security scan
 gem 'brakeman', :require => false
+# Log analysis
+gem 'request-log-analyzer', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"

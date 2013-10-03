@@ -1,6 +1,9 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
     attr_accessible :name, :prompt
+
+    include Embeddable
+
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
@@ -12,34 +15,6 @@ module Embeddable
 
     default_value_for :prompt, "why does ..."
 
-    def activity
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity.present?
-          return interactive_pages.first.lightweight_activity
-        else
-          return nil
-        end
-      else
-        return nil
-      end
-    end
-
-    # A unique key to use for local storage
-    def storage_key
-      sk = "#{id}"
-      if name.present?
-        sk = "#{sk}_#{name.downcase.gsub(/ /, '_')}"
-      end
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity
-          sk = "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{sk}"
-        else
-          sk = "#{interactive_pages.first.id}_#{sk}"
-        end
-      end
-      sk
-    end
-
     def to_hash
       {
         name: name,
@@ -49,6 +24,18 @@ module Embeddable
 
     def duplicate
       return Embeddable::OpenResponse.new(self.to_hash)
+    end
+
+    def self.name_as_param
+      :embeddable_open_response
+    end
+
+    def self.display_partial
+      :open_response
+    end
+
+    def self.human_description
+      "Multiple choice question"
     end
   end
 end

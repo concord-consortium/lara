@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'uri'
 
-feature "Activity is run from the portal", :js => true do
+feature "Activity is run from the portal", :js => true, :slow => true do
 
   scenario "with a domain, external_id, and return url" do
 
@@ -29,7 +29,9 @@ feature "Activity is run from the portal", :js => true do
     page.should have_content "Saved"
 
     # The 'Bearer token' comes from the mocked omniauth authentication
-	stub.should have_been_requested.twice
+    # TODO: Not quite sure why this happens 3x on my machine and 2x
+    # on travis....
+	  stub.should have_been_requested.twice
   end
 end
 

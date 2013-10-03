@@ -126,7 +126,7 @@ describe LightweightActivitiesController do
       get :summary, :id => act.id, :response_key => ar.key
 
       assigns(:answers).should_not be_nil
-      response.body.should match /<h1>\n?Response Summary for/
+      response.body.should match /Response Summary for/
     end
   end
 
@@ -141,7 +141,7 @@ describe LightweightActivitiesController do
       it 'has a list of public and owned activities' do
         # User is an admin, so all public activities will be shown
         get :index
-        assigns(:community_activities).should have(3).items
+        assigns(:community_activities).should have_at_least(3).items
         assigns(:official_activities).should have(4).items
         assigns(:community_activities).should be_ordered_by 'updated_at_desc'
         assigns(:official_activities).should be_ordered_by 'updated_at_desc'
@@ -376,7 +376,7 @@ describe LightweightActivitiesController do
     end
     #let(:good_body) { act_one.serialize_for_portal('http://test.host').to_json }
 
-    let(:good_body) { '{"type":"Activity","name":"Activity One","description":"Activity One Description","url":"http://test.host/activities/1","create_url":"http://test.host/activities/1","sections":[{"name":"Activity One Section","pages":[]}]}' }
+    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
 
     before(:each) do
       @url = controller.portal_url

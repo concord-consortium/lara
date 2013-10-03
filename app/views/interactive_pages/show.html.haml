@@ -28,10 +28,29 @@
         %a.jcarousel-next{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => 'Next >>', :disabled => true }
 
-      - if @page.last?
-        .submit
-          %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key) }
-            %input{ :class => 'button', :type => 'submit', :value => 'Generate a report of my work' }
+#end-scroll-track
+.bottom-buttons
+  - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
+  - unless @page.first?
+    .button-left
+      .last-page
+        %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.higher_item), :class => 'prev' }
+          %input{ :class => 'button', :type => 'submit', :value => '< Back' }
+  - if @page.last?
+    .button-center
+      .submit.report
+        %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report', :target => 'new' }
+          %input{ :class => 'button', :type => 'submit', :value => 'Generate a report' }
+  - if @page.last? && next_activity
+    .button-right
+      .next-page
+        %a{ :href => sequence_activity_path(@sequence, next_activity), :title => next_activity.name }
+          %input{ :class => 'button', :type => 'submit', :value => "Begin next activity >" }
+  - elsif @page.lower_item
+    .button-right
+      .next-page
+        %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.lower_item), :class => 'next' }
+          %input{ :class => 'button', :type => 'submit', :value => 'Next >' }
 
 -# -- Add expanded class to sidebar-mod for expanded view.
 - if @page.show_sidebar && !@page.sidebar.blank?
@@ -49,7 +68,6 @@
       .sidebar-txt
         != @page.sidebar
 
-#end-scroll-track
 - if @page.last? && has_good_content(@page.lightweight_activity.related)
   .related-mod
     .related-hdr

@@ -131,7 +131,7 @@ describe MwInteractivesController do
           MwInteractive.count().should == interactive_count - 1
           page.reload
           page.interactives.length.should == page_count - 1
-          flash[:notice].should == 'Your interactive was deleted.'
+          flash[:notice].should == 'Your Mw interactive was deleted.'
         end
       end
     end

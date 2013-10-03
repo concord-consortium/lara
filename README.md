@@ -9,22 +9,26 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 1. Check out the code:
 
-        git clone https://github.com/concord-consortium/lightweight-standalone.git
+        git clone https://github.com/concord-consortium/lara.git
 
 2. Install the necessary gems:
 
-        cd lightweight-standalone
+        cd lara
         bundle install
 
 3. Initialize the database:
 
         rake db:setup
+        
+4. If you have seed data, create it now.
 
-4. Launch the application
+5. Set environment variables, particularly the cookie encryption key, by copying the file `config/app_environment_variables.sample.rb` to `config/app_environment_variables.rb` and editing its values as appropriate. For development purposes, you should just need a cookie key (the 'SECRET_TOKEN' value).
+
+6. Launch the application
 
         rails s
 
-6. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
+7. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
 
 ## Editing CSS
 This project uses [Compass](http://compass-style.org/) extensively (but not exclusively) for CSS. If you are editing files in the `app/assets/stylesheets/` tree, you should issue `compass watch` in order to update the built CSS when changes are made.
@@ -76,4 +80,4 @@ If you want to use a single sign-on provider, you will need to configure a clien
 
 
 ## History
-This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin).
+This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.

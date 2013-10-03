@@ -34,7 +34,7 @@
     %br
     = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @sequence.publication_status)
   .field
-    = f.label :is_official, "Offical CC Activity"
+    = f.label :is_official, "Offical CC Sequence"
     = f.check_box :is_official
 
   .field

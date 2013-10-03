@@ -22,10 +22,10 @@ class ApplicationController < ActionController::Base
   # For modal edit windows. Source: https://gist.github.com/1456815
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
-  def update_activity_changed_by
-    @activity.changed_by = current_user
+  def update_activity_changed_by(activity=@activity)
+    activity.changed_by = current_user
     begin
-      @activity.save
+      activity.save
     rescue
     end
   end
@@ -136,4 +136,10 @@ class ApplicationController < ActionController::Base
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
+  def respond_with_edit_form
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
 end

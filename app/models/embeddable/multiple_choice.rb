@@ -1,5 +1,8 @@
 module Embeddable
   class MultipleChoice < ActiveRecord::Base
+
+    include Embeddable
+
     has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     # PageItem instances are join models, so if the embeddable is gone
@@ -16,30 +19,39 @@ module Embeddable
     default_value_for :name, "Multiple Choice Question element"
     default_value_for :prompt, "why does ..."
 
-    def activity
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity.present?
-          return interactive_pages.first.lightweight_activity
-        else
-          return nil
-        end
+    def parse_choices(choice_string)
+      choice_ids = choice_string.split(',').map{ |i| i.to_i } unless choice_string.blank?
+      if choices && !choice_ids.blank?
+        return choices.find(choice_ids)
       else
-        return nil
+        return []
       end
     end
 
-    # A unique key to use for local storage
-    def storage_key
-      sk = "#{id}"
-      if name.present?
-        sk = "#{sk}_#{name.downcase.gsub(/ /, '_')}"
-      end
-      if interactive_pages.length > 0
-        if interactive_pages.first.lightweight_activity
-          sk = "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{sk}"
-        else
-          sk = "#{interactive_pages.first.id}_#{sk}"
+    def check(choice_string)
+      # Takes a comma-delimited string of choice IDs, returns a hash response describing the correctness
+      # of the answer described by that string.
+      selected_choices = parse_choices(choice_string)
+      if multi_answer
+        selected_incorrect = selected_choices.select { |c| !c.is_correct }
+        selected_correct = selected_choices - selected_incorrect
+        actual_correct = choices.select { |c| c.is_correct }
+        if selected_choices.length == 0
+          # No answer
+          return { prompt: 'Please select an answer before checking.'}
+        elsif selected_incorrect.length > 0
+          # Incorrect answer(s)
+          return { prompt: selected_incorrect.map { |w| w.prompt.blank? ? "'#{w.choice}' is incorrect" : w.prompt }.join("; ") }
+        elsif selected_correct.length != actual_correct.length and selected_incorrect.length == 0
+          # Right answers, but not all
+          return { prompt: "You're on the right track, but you didn't select all the right answers yet."}
+        else selected_correct.length == actual_correct.length
+          # All correct
+          return { choice: true }
         end
+      else
+        # One answer: sending the choice to get rendered as JSON by the action
+        return selected_choices.first
       end
     end
 
@@ -73,6 +85,18 @@ module Embeddable
         mc.choices << choice.duplicate
       end
       return mc
+    end
+
+    def self.name_as_param
+      :embeddable_multiple_choice
+    end
+
+    def self.display_partial
+      :multiple_choice
+    end
+
+    def self.human_description
+      "Multiple choice question"
     end
   end
 end

@@ -7,10 +7,6 @@ describe Embeddable::OpenResponse do
     open_response.should be_valid
   end
 
-  it 'has a self-generated storage key' do
-    open_response.storage_key.should_not be_nil
-  end
-
   describe '#to_hash' do
     it 'has interesting attributes' do
       expected = { name: open_response.name, prompt: open_response.prompt }

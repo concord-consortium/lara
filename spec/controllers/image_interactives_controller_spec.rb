@@ -122,7 +122,7 @@ describe ImageInteractivesController do
           ImageInteractive.count().should == interactive_count - 1
           page.reload
           page.interactives.length.should == page_count - 1
-          flash[:notice].should == 'Your image was deleted.'
+          flash[:notice].should == 'Your Image interactive was deleted.'
         end
       end
     end

@@ -38,3 +38,4 @@ config/app_environment_variables.rb
 
 # ignore vim backup files
 *~
+public/snapshots

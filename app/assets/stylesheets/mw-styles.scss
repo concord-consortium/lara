@@ -24,7 +24,7 @@
 //  14. Site Footer
 //  15. Saved Label
 //  16. Activity Index Page
-
+//  17. Activity Summary Page
 
 // *********************************************
 //  1. Universal
@@ -208,6 +208,46 @@ ul.nav-menu-top {
   /* This is the drop-down navigation menu */
   /* MW and default don't use it */
   display: none;
+}
+
+div.intra-page-nav {
+  /* Page navigation links at bottom of each page. MW and default don't use them. */
+  display: none;
+}
+
+/* Next and previous page links at bottom of each page */
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    display: none;
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    min-height: 10px;
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
 }
 
 .activity-nav {
@@ -1109,6 +1149,20 @@ footer {
     margin: 0 auto 24px;
   }
 
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
+  }
+
   &.intro-mod {
 
     ul, ol {
@@ -1149,6 +1203,47 @@ footer {
   margin: 36px 0 20px;
   color: #666;
 }
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+.summary-actions {
+  position: fixed;
+  top: 230px;
+  margin-left: 820px;
+  .print {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  .close {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  &.bottom {
+    margin-top: -50px;
+  }
+}
+
+.summary-mod {
+  margin-right: 150px;
+  padding: 15px;
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image_answer {
+    clear: left;
+    margin-left: 16px;
+  }
+}
+
+/* Miscellaneous junk */
 
 .question, .intro-mod, .related-mod, .sidebar-mod {
   a {

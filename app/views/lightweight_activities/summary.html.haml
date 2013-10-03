@@ -1,12 +1,21 @@
-= content_for :title do
-  = "Response Summary for #{@activity.name}"
+.summary-mod
+  = content_for :title do
+    = "Response Summary for #{@activity.name}"
 
-%button.print{ :onclick => 'window.print();'} Print
+  %p.summary-instructions The activity questions are shown in bold and your answers are presented in order below.
 
-%h1
-  = "Response Summary for #{@activity.name}"
-- @answers.each do |answer|
-  = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
-    :locals => {:answer => answer}
+  %h2.h2= @activity.name
+  - if @sequence
+    %h3= "in #{@sequence.title}"
+  - @answers.each do |answer|
+    = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
+      :locals => {:answer => answer}
 
-%button.print{ :onclick => 'window.print();' } Print
+  -# .actions.bottom
+    -# .print{ :onclick => 'window.print();'} Print
+    -# .close{ :onclick => 'window.close();'} Close
+
+.summary-actions
+  .print{ :onclick => 'window.print();'} Print
+  .close{ :onclick => 'window.close();'} Close
+

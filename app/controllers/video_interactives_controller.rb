@@ -1,9 +1,5 @@
-class VideoInteractivesController < ApplicationController
+class VideoInteractivesController < InteractiveController
   before_filter :set_interactive, :except => [:new, :create]
-
-  def new
-    create
-  end
 
   def create
     @interactive = VideoInteractive.create!()
@@ -13,7 +9,7 @@ class VideoInteractivesController < ApplicationController
       @page = InteractivePage.find(params[:page_id])
       @activity = @page.lightweight_activity
       InteractiveItem.create!(:interactive_page => @page, :interactive => @interactive)
-      update_activity_changed_by
+      update_activity_changed_by(@activity)
       redirect_to edit_activity_page_path(@activity, @page, :edit_vid_int => @interactive.id)
     else
       redirect_to edit_video_interactive_path(@interactive)
@@ -24,10 +20,7 @@ class VideoInteractivesController < ApplicationController
     if @interactive.sources.length < 1
       @interactive.sources << VideoSource.new() # If we don't have one, weird stuff happens
     end
-    respond_to do |format|
-      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      format.html
-    end
+    respond_with_edit_form
   end
 
   def update
@@ -39,8 +32,7 @@ class VideoInteractivesController < ApplicationController
     end
     respond_to do |format|
       if @page
-        @activity = @page.lightweight_activity
-        update_activity_changed_by
+        update_activity_changed_by(@page.lightweight_activity) unless @page.lightweight_activity.nil?
         format.html { redirect_to edit_activity_page_path(@activity, @page) }
       else
         format.html { redirect_to edit_video_interactive_path(@interactive) }
@@ -48,29 +40,15 @@ class VideoInteractivesController < ApplicationController
     end
   end
 
-  def destroy
-    @interactive.interactive_item.delete
-    if @interactive.delete
-      @activity = @page.lightweight_activity
-      update_activity_changed_by
-      redirect_to edit_activity_page_path(@activity, @page), :flash => { :notice => 'Your video was deleted.' }
-    else
-      redirect_to edit_activity_page_path(@page.lightweight_activity, @page), :flash => { :warning => 'There was a problem deleting the video.' }
-    end
-  end
-
   def add_source
     @source = VideoSource.new(:video_interactive => @interactive)
     @interactive.reload
-    @activity = @interactive.activity
-    update_activity_changed_by unless @activity.nil?
-    if request.xhr?
-      respond_to do |format|
+    update_activity_changed_by(@interactive.activity) unless @interactive.activity.nil?
+    respond_to do |format|
+      if request.xhr?
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      end
-    else
-      respond_to do |format|
-        flash[:notice] = 'New choice was added.'
+      else
+        flash[:notice] = 'New source was added.'
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
         format.json
@@ -79,18 +57,14 @@ class VideoInteractivesController < ApplicationController
   end
 
   def remove_source
-    @source = @interactive.video_sources.find(params[:source_id])
-    @source.destroy
+    @interactive.video_sources.find(params[:source_id]).destroy
     @interactive.reload
-    @activity = @interactive.activity
-    update_activity_changed_by unless @activity.nil?
-    if request.xhr?
-      respond_to do |format|
+    update_activity_changed_by(@interactive.activity) unless @interactive.activity.nil?
+    respond_to do |format|
+      if request.xhr?
         format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
-      end
-    else
-      respond_to do |format|
-        flash[:notice] = 'New source was added.'
+      else
+        flash[:notice] = 'Source removed.'
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
         format.json
@@ -101,8 +75,6 @@ class VideoInteractivesController < ApplicationController
   private
   def set_interactive
     @interactive = VideoInteractive.find(params[:id])
-    if params[:page_id]
-      @page = InteractivePage.find(params[:page_id])
-    end
+    set_page
   end
 end
