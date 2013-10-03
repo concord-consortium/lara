@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910182555) do
+ActiveRecord::Schema.define(:version => 20131003191319) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -31,10 +31,11 @@ ActiveRecord::Schema.define(:version => 20130910182555) do
     t.text     "answer_text"
     t.string   "image_url"
     t.integer  "image_question_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.text     "annotation"
     t.string   "annotated_image_url"
+    t.boolean  "is_dirty",            :default => false
   end
 
   add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
@@ -49,8 +50,9 @@ ActiveRecord::Schema.define(:version => 20130910182555) do
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
     t.integer  "multiple_choice_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "is_dirty",           :default => false
   end
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
@@ -77,8 +79,9 @@ ActiveRecord::Schema.define(:version => 20130910182555) do
     t.text     "answer_text"
     t.integer  "run_id"
     t.integer  "open_response_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.boolean  "is_dirty",         :default => false
   end
 
   create_table "embeddable_open_responses", :force => true do |t|

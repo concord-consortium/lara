@@ -1,6 +1,6 @@
 shared_examples "an answer" do
   let(:run)      { mock_model(Run) }
-  let(:answer)   { described_class.new }
+  let(:answer)   { described_class.create }
 
   describe "question_index" do
     describe "without a run" do
@@ -36,6 +36,7 @@ shared_examples "an answer" do
         answer.stub(:run => run)
         run.should_receive(:send_to_portal).with(answer)
         answer.send_to_portal
+        answer.should be_dirty
       end
     end
 
@@ -56,5 +57,16 @@ shared_examples "an answer" do
       answer.to_json.should == answer.portal_hash.to_json
     end
   end
+
+  describe "reset_to_clean" do
+    let(:answer) { described_class.create(:is_dirty => true) }
+    it "should remove the is_dirty flag without invoking callbacks" do
+      answer.should_not_receive(:send_to_portal)
+      answer.mark_clean
+      answer.reload
+      answer.should_not be_dirty
+    end
+  end
+
 
 end

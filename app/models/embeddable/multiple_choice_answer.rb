@@ -2,7 +2,7 @@ module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
     include Answer
 
-    attr_accessible :answers, :run, :question
+    attr_accessible :answers, :run, :question, :is_dirty
 
     belongs_to :question,
       :class_name  => 'Embeddable::MultipleChoice',

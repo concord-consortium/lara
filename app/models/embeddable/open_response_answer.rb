@@ -2,7 +2,7 @@ module Embeddable
   class OpenResponseAnswer < ActiveRecord::Base
     include Answer
 
-    attr_accessible :answer_text, :run, :question
+    attr_accessible :answer_text, :run, :question, :is_dirty
 
     belongs_to :question,
       :class_name => 'Embeddable::OpenResponse',
