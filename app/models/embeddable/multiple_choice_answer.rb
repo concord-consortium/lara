@@ -1,6 +1,6 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
-    include Answer
+    include Answer # Common methods for Answer models
 
     attr_accessible :answers, :run, :question, :is_dirty
 

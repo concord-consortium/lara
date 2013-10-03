@@ -1,6 +1,6 @@
 module Embeddable
   class OpenResponseAnswer < ActiveRecord::Base
-    include Answer
+    include Answer # Common methods for Answer models
 
     attr_accessible :answer_text, :run, :question, :is_dirty
 
