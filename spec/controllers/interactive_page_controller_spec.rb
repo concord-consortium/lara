@@ -343,6 +343,9 @@ describe InteractivePagesController do
           throw "Should not have been able to find this page"
         rescue ActiveRecord::RecordNotFound
         end
+
+        page2.reload
+        page2.position.should == 1
       end
 
       it 'does not route with no ID' do

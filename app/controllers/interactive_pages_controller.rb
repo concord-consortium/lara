@@ -75,7 +75,8 @@ class InteractivePagesController < ApplicationController
   def destroy
     authorize! :destroy, @page
     update_activity_changed_by
-    if @page.delete
+    if @page.remove_from_list
+      @page.delete
       flash[:notice] = "Page #{@page.name} was deleted."
       redirect_to edit_activity_path(@activity)
     else
