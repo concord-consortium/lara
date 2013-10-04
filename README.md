@@ -78,6 +78,29 @@ LARA's runtime is being rebuilt to support reporting student answers and progres
 ## Single Sign-On
 If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
 
+## Delayed Job background job processing
+
+see the readme at the [github page](https://github.com/collectiveidea/delayed_job)
+
+Delayed Job will run in synchronous mode unless one of two conditions is
+met:
+
+   1. Rails is running in production mode, eg: `RAILS_ENV=production rails s`
+   2. The environment variable DELAYEDJOB is set, eg: `DELAYEDJOB=1 rails s`
+
+This configuration check happens in the initializer `config/initializers/delayed_job_config.rb`
+
+To enque a job simply add `handle_asynchronously :method_name` to your models. eg:
+
+    class Device
+      def deliver
+        # long running method
+      end
+      handle_asynchronously :deliver
+    end
+
+There are other methods for enqueing jobs, but this is probably the easiest.
+
 
 ## History
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
