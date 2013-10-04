@@ -21,7 +21,7 @@ module Embeddable
     delegate :prompt,  :to  => :question
     delegate :name,    :to  => :question
 
-    after_update :send_to_portal
+    after_update :queue_for_portal
 
     def has_snapshot?
       !image_url.blank?

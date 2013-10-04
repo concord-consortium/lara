@@ -21,7 +21,7 @@ module Embeddable
     delegate :prompt,  :to  => :question
     delegate :name,    :to  => :question
 
-    after_update :send_to_portal
+    after_update :queue_for_portal
 
     def portal_hash
       {
