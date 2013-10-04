@@ -34,7 +34,7 @@ shared_examples "an answer" do
     describe "with a run" do
       it "should call run.send_to_portal(self)" do
         answer.stub(:run => run)
-        run.should_receive(:send_to_portal).with(answer)
+        run.should_receive(:queue_for_portal).with(answer)
         answer.send_to_portal
         answer.should be_dirty
       end
@@ -42,7 +42,7 @@ shared_examples "an answer" do
 
     describe "with out a run" do
       it "wont call run.send_to_portal(self)" do
-        run.should_not_receive(:send_to_portal).with(answer)
+        run.should_not_receive(:queue_for_portal).with(answer)
         answer.send_to_portal
       end
     end
@@ -61,7 +61,7 @@ shared_examples "an answer" do
   describe "reset_to_clean" do
     let(:answer) { described_class.create(:is_dirty => true) }
     it "should remove the is_dirty flag without invoking callbacks" do
-      answer.should_not_receive(:send_to_portal)
+      answer.should_not_receive(:queue_for_portal)
       answer.mark_clean
       answer.reload
       answer.should_not be_dirty
