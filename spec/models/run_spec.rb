@@ -95,10 +95,6 @@ describe Run do
         run.mark_dirty
         run.reload.is_dirty.should be_true
       end
-
-      it 'enqueues itself to be pushed to the portal' do
-        pending "Set up background job manager, stub, write test"
-      end
     end
 
     describe '#mark_clean' do
@@ -165,13 +161,12 @@ describe Run do
     end
 
     describe 'when there is an array of answers' do
+      let(:mocked_answers){ 5.times.map {|x| mock("mock_answer_#{x}")}}
       it 'calls is_dirty=false on each answer in the array' do
-        pending "Mock answers and write test to check the mocks"
-        # TODO: This is not much better than pseudocode
-        run.open_response_answers << or_answer
-        run.multiple_choice_answers << mc_answer
-        run.set_answers_clean [or_answer, mc_answer]
-        mocked_answers should have received mark_clean
+        mocked_answers.each do |a|
+          a.should_receive :mark_clean
+        end
+        run.set_answers_clean mocked_answers
       end
     end
   end
@@ -330,7 +325,7 @@ describe Run do
 
       describe "with an endpoint and answers" do
         let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
-        let(:auth_token) { "xyzzy" }
+        let(:auth_token)      { "xyzzy" }
         describe "with a positive response from the server" do
           it "should be successful" do
             payload = run.response_for_portal([or_answer,mc_answer])
@@ -360,52 +355,104 @@ describe Run do
       end
     end
 
-    describe '#update_portal' do
-      describe 'when dirty? is false' do
-        it 'does nothing' do
-          pending 'test mocks to ensure nothing happens'
-        end
-      end
-
-      describe 'when dirty? is true' do
-        it 'calls #submit_dirty_answers' do
-          pending 'write mock and test'
-        end
-
-        it 'checks for more dirty answers' do
-          pending 'write mock and test'
-        end
-
-        describe 'when #submit_dirty_answers returns false' do
-          it 'requeues' do
-            pending 'code for enqueueing self'
-          end
-        end
-
-        describe 'when #submit_dirty_answers returns true but there are still dirty answers (perhaps new ones)' do
-          it 'requeues' do
-            pending 'code for enqueueing self'
-          end
-        end
-      end
-    end
 
     describe '#submit_dirty_answers' do
+      let(:answers) {[]}
+      let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
+      let(:auth_token)      { "xyzzy" }
+      let(:result_status)   { 200 }
+      before(:each) do
+        stub_http_request(:post, remote_endpoint).to_return(
+          :body   => "OK", # TODO: What returns?
+          :status => result_status)
+        run.stub(:answers => answers)
+        run.mark_dirty
+      end
       describe 'when there are no dirty answers' do
         it 'does nothing and returns true' do
-          # OK, no answers at all
+          run.stub(:answers => answers)
           run.submit_dirty_answers.should be_true
         end
       end
 
       describe 'when there are dirty answers' do
-        it 'calls send_to_portal with the dirty answers as argument' do
-          pending 'write this test'
+        let(:answers) do
+          answers = []
+          5.times.map do |i|
+            q = FactoryGirl.create(:image_question_answer, :run => run, :question => FactoryGirl.create(:image_question))
+            q.mark_dirty
+            answers << q
+          end
+          answers
         end
 
-        it 'calls set_answers_clean with the dirty answers' do
-          pending 'write this test'
+        describe "when the portal answers positively" do
+          let(:result_status) { 200 }
+
+          it "calls send_to_portal with the dirty answers as argument" do
+            run.submit_dirty_answers.should be_true
+          end
+
+          it "cleans all the answers afer a successful update" do
+            run.submit_dirty_answers
+            run.answers.each do |a|
+              a.should_not be_dirty
+            end
+          end
+
+          it "marks itself as clean after a successful update" do
+            run.submit_dirty_answers
+            run.should_not be_dirty
+          end
+
         end
+
+        describe "when the portal answers with an error" do
+          let(:result_status) { 500 }
+
+          it "Raises PortalUpdateIncomplete to keep the job in the queue" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+          end
+
+          it "The run is not cleaned" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.should be_dirty
+          end
+
+          it "doesn't clean any of the answers afer a borked update" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.answers.each do |a|
+              a.should be_dirty
+            end
+          end
+        end
+
+        describe "when there are still dirty answers after the update" do
+          before(:each) do
+            answers.each do |a|
+              a.should_receive(:mark_clean).and_return false
+            end
+            run.stub(:dirty_answers => answers)
+          end
+
+          it "Raises PortalUpdateIncomplete to keep the job in the queue" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+          end
+
+          it "The run is not cleaned" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.should be_dirty
+          end
+
+          it "doesn't clean any of the answers afer a borked update" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.answers.each do |a|
+              a.should be_dirty
+            end
+          end
+        end
+
+
       end
     end
   end

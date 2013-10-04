@@ -1,4 +1,8 @@
 class Run < ActiveRecord::Base
+
+  # Trigger whenever a portal update job needs to be re-run
+  class PortalUpdateIncomplete < StandardError; end
+
   attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
   belongs_to :activity, :class_name => LightweightActivity
@@ -155,18 +159,29 @@ class Run < ActiveRecord::Base
     return answers.select{ |a| a.dirty? }
   end
 
+  def abort_job_and_requeue
+    # If a method throws an exception it will be rerun later.
+    # The method will be retried up to 25 times with exp. falloff.
+    raise PortalUpdateIncomplete.new
+  end
+
   def submit_dirty_answers
     # Find array of dirty answers and send them to the portal
     da = dirty_answers
-    if da.empty?
-      return true
-    elsif send_to_portal da
+    return if da.empty?
+    if send_to_portal da
       set_answers_clean da # We're only cleaning the same set we sent to the portal
-      return true
+      self.reload
+      if dirty_answers.empty?
+        self.mark_clean
+      else
+        abort_job_and_requeue
+      end
     else
-      return false
+      abort_job_and_requeue
     end
   end
+  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 1.minutes.from_now }
 
   def set_answers_clean(answers=[])
     # Takes an array of answers and sets their is_dirty bits to clean
@@ -190,11 +205,4 @@ class Run < ActiveRecord::Base
     self.save
   end
 
-  def update_portal
-    if dirty?
-      unless submit_dirty_answers && dirty_answers.empty?
-        # TODO: If the portal update didn't succeed or there are new dirty answers, requeue
-      end
-    end
-  end
 end
