@@ -32,22 +32,20 @@ class SaveIndicator
 
 
 class SaveOnChange
-  constructor: (@$elem) ->
+  constructor: (@$form) ->
     @scheduled_job      = null
     @previous_value     = null
     @update_interval_s  = 0.6
-    @$form              = $(@$elem).parents('form:first')
     @save_indicator     = new SaveIndicator($("#save"))
     @setupEvents()
 
   setupEvents: ->
     # Fire inputs field changes on 'change' events with no scheduled_jobs
-    @$elem.on 'change', (e) =>
-      console.log("Freaking saw the event yo")
+    @$form.find('input,textarea').on 'change', (e) =>
       @saveElement()
-    @$elem.on 'blur', (e) =>
+    @$form.find('input,textarea').on 'blur',   (e) =>
       @saveElement()
-    @$elem.on 'keyup', (e) =>
+    @$form.find('input,textarea').on 'keyup',  (e) =>
       @schedule()
 
   saveElement: ->
@@ -64,7 +62,6 @@ class SaveOnChange
         error: (jqxhr, status, error) =>
           @save_indicator.showSaveFailed()
       })
-      # unschedule elem
 
   # remove events scheduled for elem
   unschedule: () ->

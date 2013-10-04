@@ -27,7 +27,7 @@ describe 'SaveOnChange', () ->
   beforeEach () ->
     loadFixtures "save-on-change.html"
     jasmine.Ajax.useMock()
-    save_on_change = new SaveOnChange($("#live-textarea"));
+    save_on_change = new SaveOnChange($("#openresponse"));
 
   describe "a sane testing environment", () ->
     it 'has an instance of save_on_change defined', () ->
@@ -53,19 +53,41 @@ describe 'SaveOnChange', () ->
 
   describe "clicking on a live multiple choice button", () ->
     beforeEach () ->
-      new SaveOnChange($("#answer_a"));
-      new SaveOnChange($("#answer_b"));
-      new SaveOnChange($("#answer_c"));
+      new SaveOnChange($("#multiplechoice"))
+
     it 'should send an ajax request with the current of the selected checkbox', ->
       runs ->
-        expect($("#answer_b")).toHaveProp('checked', false);
+        expect($("#answer_b")).toHaveProp('checked', false)
         click_element($("#answer_b"))
+
       runs ->
-        expect($("#answer_b")).toHaveProp('checked', true);
-        request = mostRecentAjaxRequest();
-        expect(request.url).toBe('/embeddable/multiple_choice_answers/255');
-        expect(request.method).toBe('POST');
-        expect(request.params).toEqual('mc_answer%5Banswers%5D=b');
-    it "shouldn't get request more than once", ->
+        expect($("#answer_b")).toHaveProp('checked', true)
+        request = mostRecentAjaxRequest()
+        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
+        expect(request.method).toBe('POST')
+        expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
+
+      runs ->
+        click_element($("#answer_a"))
+
+      runs ->
+        expect($("#answer_a")).toHaveProp('checked', true)
+        request = mostRecentAjaxRequest()
+        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
+        expect(request.method).toBe('POST')
+        expect(request.params).toEqual('mc_answer%5Banswers%5D=a')
+
+      runs ->
+        click_element($("#answer_b"))
+        click_element($("#answer_a"))
+        click_element($("#answer_b"))
+
+      runs ->
+        expect($("#answer_b")).toHaveProp('checked', true)
+        request = mostRecentAjaxRequest()
+        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
+        expect(request.method).toBe('POST')
+        expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
+
 
 
