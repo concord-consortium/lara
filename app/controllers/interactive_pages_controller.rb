@@ -57,7 +57,7 @@ class InteractivePagesController < ApplicationController
         format.html do
           @page.reload
           flash[:notice] = "Page #{@page.name} was updated."
-          redirect_to edit_activity_page_path(@activity, @page)
+          redirect_to edit_activity_page_path(@activity, @page) and return
         end
       else
         if request.xhr?
@@ -66,7 +66,7 @@ class InteractivePagesController < ApplicationController
         end
         format.html do
           flash[:warning] = "There was a problem updating Page #{@page.name}."
-          redirect_to edit_activity_page_path(@activity, @page)
+          redirect_to edit_activity_page_path(@activity, @page) and return
         end
       end
     end
