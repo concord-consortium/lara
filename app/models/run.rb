@@ -156,7 +156,7 @@ class Run < ActiveRecord::Base
 
   def queue_for_portal(answers)
     return false if remote_endpoint.nil? || remote_endpoint.blank?
-    return false if answers.nil || answers.empty?
+    return false if answers.nil?
     if dirty?
       # no-op: only queue one time
     else
