@@ -154,7 +154,7 @@ class Run < ActiveRecord::Base
     response.code == 200
   end
 
-  def queue_for_portal(answers)
+  def queue_for_portal(answer)
     return false if remote_endpoint.nil? || remote_endpoint.blank?
     return false if answers.nil?
     if dirty?
