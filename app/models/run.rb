@@ -1,4 +1,8 @@
 class Run < ActiveRecord::Base
+
+  # Trigger whenever a portal update job needs to be re-run
+  class PortalUpdateIncomplete < StandardError; end
+
   attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
   belongs_to :activity, :class_name => LightweightActivity
@@ -147,7 +151,69 @@ class Run < ActiveRecord::Base
       }
     )
     # TODO: better error detection?
-    response.code == 200
+    response.success?
+  end
+
+  def queue_for_portal(answer)
+    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    return false if answers.nil?
+    if dirty?
+      # no-op: only queue one time
+    else
+      mark_dirty
+      submit_dirty_answers #will happen asyncronously sometime in the future...
+    end
+  end
+
+  def dirty_answers
+    # Returns an array of answers which have a dirty bit set
+    return answers.select{ |a| a.dirty? }
+  end
+
+  def abort_job_and_requeue
+    # If a method throws an exception it will be rerun later.
+    # The method will be retried up to 25 times with exp. falloff.
+    raise PortalUpdateIncomplete.new
+  end
+
+  def submit_dirty_answers
+    # Find array of dirty answers and send them to the portal
+    da = dirty_answers
+    return if da.empty?
+    if send_to_portal da
+      set_answers_clean da # We're only cleaning the same set we sent to the portal
+      self.reload
+      if dirty_answers.empty?
+        self.mark_clean
+      else
+        abort_job_and_requeue
+      end
+    else
+      abort_job_and_requeue
+    end
+  end
+  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 1.minutes.from_now }
+
+  def set_answers_clean(answers=[])
+    # Takes an array of answers and sets their is_dirty bits to clean
+    answers.each do |answer|
+      answer.mark_clean
+    end
+  end
+
+  def dirty?
+    is_dirty
+  end
+
+  def mark_dirty
+    self.is_dirty = true
+    self.save
+    # TODO: enqueue
+  end
+
+  def mark_clean
+    self.is_dirty = false
+    self.save
   end
 
 end

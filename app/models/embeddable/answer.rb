@@ -17,10 +17,27 @@ module Embeddable::Answer
   end
 
   def send_to_portal
-    run.send_to_portal(self) if run
+    if run
+      mark_dirty
+      run.queue_for_portal(self)
+    end
   end
 
   def to_json
     portal_hash.to_json
+  end
+
+  def dirty?
+    is_dirty?
+  end
+
+  def mark_dirty
+    # wont invoke callbacks
+    update_column(:is_dirty, true)
+  end
+
+  def mark_clean
+    # wont invoke callbacks
+    update_column(:is_dirty, false)
   end
 end

@@ -5,6 +5,7 @@ describe Embeddable::OpenResponseAnswer do
   let(:run) { FactoryGirl.create(:run, :activity => FactoryGirl.create(:activity) ) }
   let(:answer) { FactoryGirl.create(:or_answer, :answer_text => "the answer", :question => question, :run => run ) }
 
+  it_behaves_like "an answer"
   describe "model associations" do
 
     it "should belong to an open response" do
@@ -70,13 +71,6 @@ describe Embeddable::OpenResponseAnswer do
       join.move_to_bottom # i.e. move or2 into position 5 and bump our answer up to position 4
       answer.reload
       answer.question_index.should be(4)
-    end
-  end
-
-  describe '#prompt_no_itals' do
-    it 'strips the content from any HTML `i` containers in the prompt' do
-      question.prompt = '<p>This prompt is <i>not</i> free of italicized content.</p>'
-      answer.prompt_no_itals.should_not match /not/
     end
   end
 

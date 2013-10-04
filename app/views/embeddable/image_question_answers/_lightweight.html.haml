@@ -21,7 +21,7 @@
     .title
     .instructions
     .answer
-    = form_for embeddable, :remote => true, :html => {:'data-type' => 'json'} do |f|
+    = form_for embeddable, :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
 
       .image_block
         = f.sketchily :annotation, :id=>"image_question_annotation_for_#{embeddable.id}", :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true, :canvas_expansion => 1
@@ -42,7 +42,7 @@
 
       .text_response
         %p.prompt.image_prompt!= embeddable.prompt
-        = f.text_area :answer_text, :class => 'live_submit answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
+        = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
         = f.hidden_field 'image_url'
         = f.hidden_field 'annotated_image_url'
 

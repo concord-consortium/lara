@@ -5,5 +5,5 @@
     != embeddable.prompt
   = form_for embeddable,
     :remote => true,
-    :html => {:'data-type' => 'json'} do |f|
-    = f.text_area :answer_text, :class => 'live_submit', :rows => "8", :placeholder => "Type answer here"
+    :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
+    = f.text_area :answer_text, :rows => "8", :placeholder => "Type answer here"
