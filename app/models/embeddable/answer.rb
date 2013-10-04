@@ -19,7 +19,7 @@ module Embeddable::Answer
   def send_to_portal
     if run
       mark_dirty
-      run.send_to_portal(self)
+      run.queue_for_portal(self)
     end
   end
 

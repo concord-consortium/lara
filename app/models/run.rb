@@ -154,6 +154,17 @@ class Run < ActiveRecord::Base
     response.code == 200
   end
 
+  def queue_for_portal(answers)
+    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    return false if answers.nil || answers.empty?
+    if dirty?
+      # no-op: only queue one time
+    else
+      mark_dirty
+      submit_dirty_answers #will happen asyncronously sometime in the future...
+    end
+  end
+
   def dirty_answers
     # Returns an array of answers which have a dirty bit set
     return answers.select{ |a| a.dirty? }
