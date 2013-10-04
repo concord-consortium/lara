@@ -151,7 +151,7 @@ class Run < ActiveRecord::Base
       }
     )
     # TODO: better error detection?
-    response.code == 200
+    response.success?
   end
 
   def queue_for_portal(answer)
