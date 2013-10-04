@@ -31,7 +31,7 @@ module Embeddable
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
 
-    after_update :queue_for_portal
+    after_update :send_to_portal
 
     # render the text of the answers
     def answer_texts
