@@ -23,14 +23,6 @@ GIT
       jquery-rails
       rails (~> 3.2.0)
 
-GIT
-  remote: git://github.com/pjmorse/rack-environmental.git
-  revision: 9198219216b45adc9b4604cf2551a8024ecc3c6d
-  branch: concord
-  specs:
-    rack-environmental (1.4.0)
-      rack-plastic (>= 0.1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -286,6 +278,8 @@ GEM
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-environmental (1.3.1)
+      rack-plastic (>= 0.1.1)
     rack-plastic (0.1.3)
       nokogiri (~> 1.4)
       rack (~> 1.0)
@@ -438,7 +432,7 @@ DEPENDENCIES
   pry-debugger
   pry-exception_explorer
   pry-stack_explorer
-  rack-environmental!
+  rack-environmental
   rails (= 3.2.13)
   rb-fsevent
   request-log-analyzer
