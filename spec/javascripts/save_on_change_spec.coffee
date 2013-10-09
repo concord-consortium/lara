@@ -21,6 +21,12 @@ click_element = (elem) ->
   e2.target = elem
   elem.trigger(e2)
 
+select_element = (elem,val) ->
+  elem.val(val)
+  e2 = jQuery.Event("change")
+  e2.target = elem
+  elem.trigger(e2)
+
 describe 'SaveOnChange', () ->
   save_on_change   = null
 
@@ -67,16 +73,7 @@ describe 'SaveOnChange', () ->
         expect(request.method).toBe('POST')
         expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
 
-      runs ->
-        click_element($("#answer_a"))
-
-      runs ->
-        expect($("#answer_a")).toHaveProp('checked', true)
-        request = mostRecentAjaxRequest()
-        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
-        expect(request.method).toBe('POST')
-        expect(request.params).toEqual('mc_answer%5Banswers%5D=a')
-
+    it 'should send an ajax request even when the same answer has been sent before', ->
       runs ->
         click_element($("#answer_b"))
         click_element($("#answer_a"))
@@ -89,5 +86,19 @@ describe 'SaveOnChange', () ->
         expect(request.method).toBe('POST')
         expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
 
+  describe "selecting something from a pulldown list", () ->
+    beforeEach () ->
+      new SaveOnChange($("#pulldown"))
+
+    it 'should send an ajax request with the current pulldown selection', ->
+      runs ->
+        expect($("#select").val()).toBe("")
+        select_element($("#select"),'select_b')
+
+      runs ->
+        request = mostRecentAjaxRequest()
+        expect(request.url).toBe('/embeddable/multiple_choice_answers/279')
+        expect(request.method).toBe('POST')
+        expect(request.params).toEqual('pulldown%5Banswers%5D=select_b')
 
 

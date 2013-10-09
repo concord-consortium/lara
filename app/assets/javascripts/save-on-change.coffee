@@ -41,11 +41,11 @@ class SaveOnChange
 
   setupEvents: ->
     # Fire inputs field changes on 'change' events with no scheduled_jobs
-    @$form.find('input,textarea').on 'change', (e) =>
+    @$form.find('input,textarea,select').on 'change', (e) =>
       @saveElement()
-    @$form.find('input,textarea').on 'blur',   (e) =>
+    @$form.find('input,textarea,select').on 'blur',   (e) =>
       @saveElement()
-    @$form.find('input,textarea').on 'keyup',  (e) =>
+    @$form.find('input,textarea,select').on 'keyup',  (e) =>
       @schedule()
 
   saveElement: ->
