@@ -29,7 +29,8 @@ gem 'exception_notification'
 gem 'newrelic_rpm'
 gem 'shutterbug', '~>0.1.1'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
-gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
+# gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
+gem 'rack-environmental'
 # gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
 # use bundle update sketchily to force newest SHA from github, or uncomment above
 # to work locally.
