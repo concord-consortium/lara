@@ -192,7 +192,7 @@ class Run < ActiveRecord::Base
       abort_job_and_requeue
     end
   end
-  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 1.minutes.from_now }
+  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 30.seconds.from_now }
 
   def set_answers_clean(answers=[])
     # Takes an array of answers and sets their is_dirty bits to clean
