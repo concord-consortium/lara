@@ -18,4 +18,6 @@
 .summary-actions
   .print{ :onclick => 'window.print();'} Print
   .close{ :onclick => 'window.close();'} Close
-
+  - if can? :manage, User
+    .close
+      = link_to 'Resubmit answers', resubmit_answers_for_run_path(@activity, @run), { :title => "Not to be done lightly. Might break."}
