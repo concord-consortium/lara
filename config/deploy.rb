@@ -39,7 +39,7 @@ namespace :deploy do
   task :shared_symlinks do
     run "mkdir -p #{shared_path}/system/"
     run "mkdir -p #{shared_path}/snapshots"
-    run "mkdir -p #{shared_path}/tmp/pids"
+    run "mkdir -p #{shared_path}/pids"
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     # 2012-11-07: Not sure if the below are needed at this point, but here they are
     run "ln -nfs #{shared_path}/config/aws_s3.yml #{release_path}/config/aws_s3.yml"
@@ -53,7 +53,7 @@ namespace :deploy do
     # run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
     run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml"
     run "ln -nfs #{shared_path}/config/app_environment_variables.rb #{release_path}/config/app_environment_variables.rb"
-    run "ln -nfs #{shared_path}/tmp/pids #{release_path}/tmp/pids"
+    run "ln -nfs #{shared_path}/pids #{release_path}/tmp/pids"
   end
 end
 
