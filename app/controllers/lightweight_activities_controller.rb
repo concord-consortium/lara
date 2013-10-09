@@ -6,7 +6,7 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show]
+  before_filter :set_run_key,  :only   => [:summary, :show, :resubmit_answers]
   before_filter :set_sequence, :only   => [:summary, :show]
   layout :set_layout
 
@@ -142,6 +142,23 @@ class LightweightActivitiesController < ApplicationController
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
     @answers = @activity.answers(@run)
+  end
+
+  def resubmit_answers
+    authorize! :manage, :all
+    if !params[:response_key]
+      redirect_to summary_with_response_path(@activity, @session_key) and return
+    end
+    answers = @activity.answers(@run)
+    answers.each do |a|
+      if a == answers.last
+        a.send_to_portal
+      else
+        a.mark_dirty
+      end
+    end
+    flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
+    redirect_to :back
   end
 
   def publish
