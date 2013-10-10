@@ -168,14 +168,14 @@ class Run < ActiveRecord::Base
     response.success?
   end
 
-  def queue_for_portal(answer)
+  def queue_for_portal(answer, auth_key=nil)
     return false if remote_endpoint.nil? || remote_endpoint.blank?
     return false if answers.nil?
     if dirty?
       # no-op: only queue one time
     else
       mark_dirty
-      submit_dirty_answers #will happen asyncronously sometime in the future...
+      submit_dirty_answers(auth_key) #will happen asyncronously sometime in the future...
     end
   end
 
@@ -190,11 +190,11 @@ class Run < ActiveRecord::Base
     raise PortalUpdateIncomplete.new
   end
 
-  def submit_dirty_answers
+  def submit_dirty_answers(auth_key=nil)
     # Find array of dirty answers and send them to the portal
     da = dirty_answers
     return if da.empty?
-    if send_to_portal da
+    if send_to_portal da, auth_key
       set_answers_clean da # We're only cleaning the same set we sent to the portal
       self.reload
       if dirty_answers.empty?

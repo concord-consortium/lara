@@ -344,6 +344,26 @@ describe Run do
               })
           end
         end
+
+        describe 'with an optional token override' do
+          it 'should send the supplied token for authorization' do
+            new_token = "fakeTokenString"
+            payload = run.response_for_portal([or_answer,mc_answer])
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "OK", # TODO: What returns?
+              :status => 200)
+            run.send_to_portal([or_answer,mc_answer], new_token).should be_true
+            WebMock.should have_requested(:post, remote_endpoint).
+              with({
+                :body => payload,
+                :headers => {
+                  "Authorization" => new_token,
+                  "Content-Type" => 'application/json'
+                }
+              })
+          end
+        end
+
         describe "when the server reports an error" do
           it "should fail" do
             stub_http_request(:post, remote_endpoint).to_return(
@@ -390,7 +410,15 @@ describe Run do
           let(:result_status) { 200 }
 
           it "calls send_to_portal with the dirty answers as argument" do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, nil)
             run.submit_dirty_answers.should be_true
+          end
+
+          it 'calls send_to_portal with a supplied authorization token' do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, auth_token)
+            run.submit_dirty_answers(auth_token)
           end
 
           it "cleans all the answers afer a successful update" do
