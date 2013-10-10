@@ -282,17 +282,17 @@ describe Run do
     end
 
     describe '#response_for_portal' do
-      it 'matches the expected JSON for a single specified answer' do
+      before(:each) do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
         run.image_question_answers << iq_answer
+      end
+
+      it 'matches the expected JSON for a single specified answer' do
         JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
       end
 
       it "matches the expected JSON for multiple specified answers" do
-        run.open_response_answers << or_answer
-        run.multiple_choice_answers << mc_answer
-        run.image_question_answers << iq_answer
         JSON.parse(run.response_for_portal([or_answer, mc_answer,iq_answer])).should == JSON.parse(all_expected)
       end
     end
