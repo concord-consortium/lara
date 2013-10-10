@@ -16,10 +16,10 @@ module Embeddable::Answer
     parsed_prompt.to_html
   end
 
-  def send_to_portal
+  def send_to_portal(auth_key=nil)
     if run
       mark_dirty
-      run.queue_for_portal(self)
+      run.queue_for_portal(self, auth_key)
     end
   end
 

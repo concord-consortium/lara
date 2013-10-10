@@ -152,7 +152,7 @@ class LightweightActivitiesController < ApplicationController
     answers = @activity.answers(@run)
     answers.each do |a|
       if a == answers.last
-        a.send_to_portal
+        a.send_to_portal('Bearer %s' % current_user.authentication_token)
       else
         a.mark_dirty
       end

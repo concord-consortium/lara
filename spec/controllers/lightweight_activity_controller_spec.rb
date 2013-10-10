@@ -411,4 +411,46 @@ describe LightweightActivitiesController do
       response.should redirect_to(edit_activity_url(assigns(:new_activity)))
     end
   end
+
+  describe '#resubmit_answers' do
+    context 'without a response key' do
+      it 'redirects to summary' do
+        get :resubmit_answers, { :id => act.id }
+        response.should redirect_to summary_with_response_path(act.id, assigns(:session_key))
+      end
+    end
+
+    context 'with a response key' do
+      let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
+      let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
+
+      before(:each) do
+        act.stub(:answers => [answer1, answer2])
+        LightweightActivity.stub(:find => act)
+        request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
+      end
+
+      it 'marks answers as dirty' do
+        # pending "message watching isn't working"
+        [answer1, answer2]
+        ar.answers.length.should_not be(0)
+        answer1.should_receive(:mark_dirty)
+        answer1.should_not_receive(:send_to_portal)
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+      end
+
+      it 'calls send_to_portal for the last answer' do
+        # pending "message watching isn't working"
+        [answer1, answer2]
+        ar.answers.length.should_not be(0)
+        answer2.should_receive(:send_to_portal).with('Bearer ')
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+      end
+
+      it 'sets a flash notice for success' do
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+        flash[:notice].should match /requeued for submission/
+      end
+    end
+  end
 end

@@ -282,17 +282,17 @@ describe Run do
     end
 
     describe '#response_for_portal' do
-      it 'matches the expected JSON for a single specified answer' do
+      before(:each) do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
         run.image_question_answers << iq_answer
+      end
+
+      it 'matches the expected JSON for a single specified answer' do
         JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
       end
 
       it "matches the expected JSON for multiple specified answers" do
-        run.open_response_answers << or_answer
-        run.multiple_choice_answers << mc_answer
-        run.image_question_answers << iq_answer
         JSON.parse(run.response_for_portal([or_answer, mc_answer,iq_answer])).should == JSON.parse(all_expected)
       end
     end
@@ -311,7 +311,7 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([or_answer,mc_answer]).should be_false
+          run.send_to_portal([or_answer,mc_answer]).should be_true # Take this out of the queue
         end
       end
 
@@ -319,7 +319,7 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([]).should be_false
+          run.send_to_portal([]).should be_true # Take it out of the queue
         end
       end
 
@@ -344,6 +344,26 @@ describe Run do
               })
           end
         end
+
+        describe 'with an optional token override' do
+          it 'should send the supplied token for authorization' do
+            new_token = "fakeTokenString"
+            payload = run.response_for_portal([or_answer,mc_answer])
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "OK", # TODO: What returns?
+              :status => 200)
+            run.send_to_portal([or_answer,mc_answer], new_token).should be_true
+            WebMock.should have_requested(:post, remote_endpoint).
+              with({
+                :body => payload,
+                :headers => {
+                  "Authorization" => new_token,
+                  "Content-Type" => 'application/json'
+                }
+              })
+          end
+        end
+
         describe "when the server reports an error" do
           it "should fail" do
             stub_http_request(:post, remote_endpoint).to_return(
@@ -390,7 +410,15 @@ describe Run do
           let(:result_status) { 200 }
 
           it "calls send_to_portal with the dirty answers as argument" do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, nil)
             run.submit_dirty_answers.should be_true
+          end
+
+          it 'calls send_to_portal with a supplied authorization token' do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, auth_token)
+            run.submit_dirty_answers(auth_token)
           end
 
           it "cleans all the answers afer a successful update" do
