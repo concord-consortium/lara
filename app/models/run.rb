@@ -2,6 +2,7 @@ class Run < ActiveRecord::Base
 
   # Trigger whenever a portal update job needs to be re-run
   class PortalUpdateIncomplete < StandardError; end
+  class InvalidJobState < StandardError; end
 
   attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
@@ -121,6 +122,7 @@ class Run < ActiveRecord::Base
   def oauth_token
     return user.authentication_token if user
     # TODO: throw "no oauth_token for runs without users"
+    # TODO: we actually need to check & maintain expiration of this token as well
   end
 
   def bearer_token

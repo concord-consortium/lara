@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
 
   def authentication_token
     # this is temporary until we really support multiple authentication providers
+    # TODO: token expiration
     auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
     if auth
       auth.token
