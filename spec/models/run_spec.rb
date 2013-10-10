@@ -311,7 +311,7 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([or_answer,mc_answer]).should be_false
+          run.send_to_portal([or_answer,mc_answer]).should be_true # Take this out of the queue
         end
       end
 
@@ -319,7 +319,7 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([]).should be_false
+          run.send_to_portal([]).should be_true # Take it out of the queue
         end
       end
 
