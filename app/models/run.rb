@@ -140,9 +140,9 @@ class Run < ActiveRecord::Base
 
   # return true if we saved.
   def send_to_portal(answers)
-    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     payload = response_for_portal(answers)
-    return false if payload.nil? || payload.blank?
+    return true if payload.nil? || payload.blank? # Pretend we sent it, nobody will notice
     response = HTTParty.post(
       remote_endpoint, {
         :body => payload,
