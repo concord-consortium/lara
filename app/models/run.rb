@@ -139,15 +139,27 @@ class Run < ActiveRecord::Base
   end
 
   # return true if we saved.
-  def send_to_portal(answers)
+  def send_to_portal(answers, auth_token=nil)
     return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     payload = response_for_portal(answers)
     return true if payload.nil? || payload.blank? # Pretend we sent it, nobody will notice
+    # What's the logic here? Use the run's token unless it's expired, then
+    # the supplied token, and if it's still nil then abort?
+    auth_token ||= bearer_token
+    # TODO: This needs more careful treatment.
+    # If there is no auth token, we actually need to stop trying to push to the portal and
+    # avoid the Delayed Job falloff cycle. If we get into the falloff cycle, a user might
+    # log in and provide a valid token, but then have that new token expire before DelayedJob
+    # retries the job.
+    # Something like this, but this is incomplete.
+    # if auth_token.blank? # TODO: Or expired, when we know how to check that.
+    #   raise InvalidJobState, "No authentication token - try re-authenticating"
+    # end
     response = HTTParty.post(
       remote_endpoint, {
         :body => payload,
         :headers => {
-          "Authorization" => bearer_token,
+          "Authorization" => auth_token,
           "Content-Type" => 'application/json'
         }
       }
