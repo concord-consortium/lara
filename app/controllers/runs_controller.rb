@@ -21,10 +21,11 @@ class RunsController < ApplicationController
   # end
 
   def dirty
-    authorize! :manage, :all # admins
     @runs = Run.where('is_dirty = ?', true).where('updated_at < ?', 5.minutes.ago).order(:updated_at)
     respond_to do |format|
-      format.html
+      format.html do
+        authorize! :manage, :all # admins
+      end
       format.json { render :json => { :dirty_runs => @runs.length }.to_json }
     end
   end

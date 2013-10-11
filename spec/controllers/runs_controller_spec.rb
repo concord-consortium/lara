@@ -44,22 +44,18 @@ describe RunsController do
   describe '#dirty' do
     let (:dirty_run) { FactoryGirl.create(:run, :is_dirty => true, :created_at => 15.minutes.ago, :updated_at => 14.minutes.ago) }
 
-    before(:each) do
-      # We're testing access control in spec/models/user_spec.rb, so for this
-      # suite we use a user with global permissions
+    it 'assigns @runs with dirty runs older than 5 minutes' do
+      dirty_run
+      # Have to be logged in
       @user ||= FactoryGirl.create(:admin)
       sign_in @user
-    end
-
-    it 'assigns @runs with dirty runs older than 5 minutes' do
-      # Have to be logged in
-      dirty_run
       get :dirty
       assigns(:runs).should == [dirty_run]
       response.should render_template('dirty')
     end
 
     it 'returns simple JSON when requested' do
+      # JSON request can be anonymous
       dirty_run
       get :dirty, :format => 'json'
       assigns(:runs).should == [dirty_run]
