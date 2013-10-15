@@ -37,36 +37,36 @@ InteractiveModule.prototype.getHeight = function () {
 };
 
 $(document).ready(function () {
-    var interactive = new InteractiveModule($('.pinned'));
+    var scrollingInteractive = new InteractiveModule($('.pinned'));
 
 	// These blocks use jquery.waypoints
     // Set the top waypoint and call relevant functions from it
     $('.content-mod').waypoint( function (direction) {
 		if (direction==='down') {
-            interactive.fixTop();
+            scrollingInteractive.fixTop();
             $('.questions-full').css({
                 'margin-top': this.i_height+52
             });
 		}
 		if (direction==='up') {
-            interactive.unFixTop();
+            scrollingInteractive.unFixTop();
             $('.questions-full').css({
                 'margin-top': 0
             });
 		}
 	}, {
-        offset: 120
+        offset: 120 // Is this right for all layouts?
     });
 
     // Set the bottom waypoint and call the relevant function there too
 	$('#end-scroll-track').waypoint(function (direction) {
 		if (direction === 'down') {
-            interactive.unFixBottom();
+            scrollingInteractive.unFixBottom();
 		}
 		if (direction === 'up') {
-            interactive.fixBottom();
+            scrollingInteractive.fixBottom();
 		}
 	}, { 
-        offset: interactive.getHeight() + 180 
-    }); 
+        offset: scrollingInteractive.getHeight() + 180
+    });
 });
