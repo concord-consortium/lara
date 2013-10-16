@@ -53,7 +53,7 @@ $(document).ready(function () {
     // and the bottom of the scroll track ($('#end-scroll-track').offset().top). (I've added 
     // a few pixels to that Just In Case - we don't need to wiggle back and forth 10 pixels just
     // because there's room to do so.)
-    if (scrollingInteractive.getHeightWithMargin() < ($('#end-scroll-track').offset().top - $('.content-mod').offset().top) - 10) {
+    if ((scrollingInteractive.getHeightWithMargin() + 20) < ($('#end-scroll-track').offset().top - $('.content-mod').offset().top)) {
         // These blocks use jquery.waypoints
         // Set the top waypoint and call relevant functions from it
         $('.content-mod').waypoint( function (direction) {
@@ -70,7 +70,7 @@ $(document).ready(function () {
                 });
             }
         }, {
-            context: '#container',
+            // context: '#container',
             offset: 120 // Is this right for all layouts?
         });
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
                 scrollingInteractive.fixBottom();
             }
         }, {
-            context: '#container',
+            // context: '#container',
             offset: scrollingInteractive.getHeight() + 180
         });
     }
