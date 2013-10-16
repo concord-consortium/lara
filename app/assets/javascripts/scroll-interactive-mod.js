@@ -53,7 +53,11 @@ $(document).ready(function () {
     // and the bottom of the scroll track ($('#end-scroll-track').offset().top). (I've added 
     // a few pixels to that Just In Case - we don't need to wiggle back and forth 10 pixels just
     // because there's room to do so.)
+    console.log('Height of scroll track is ' + ($('#end-scroll-track').offset().top - $('.content-mod').offset().top));
+    console.log('Height of interactive is ' + scrollingInteractive.getHeightWithMargin());
     if ((scrollingInteractive.getHeightWithMargin() + 20) < ($('#end-scroll-track').offset().top - $('.content-mod').offset().top)) {
+        console.log('Setting waypoints');
+        // Safari is in this block even though it shouldn't be.
         // These blocks use jquery.waypoints
         // Set the top waypoint and call relevant functions from it
         $('.content-mod').waypoint( function (direction) {
@@ -87,4 +91,6 @@ $(document).ready(function () {
             offset: scrollingInteractive.getHeight() + 180
         });
     }
+
+    console.log($.waypoints().vertical.length + ' waypoints set.');
 });
