@@ -1,33 +1,50 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true */
-/*global $, it, describe, xit, xdescribe, expect, beforeEach, spyOn, InteractiveModule */
+/*global $, it, describe, xit, xdescribe, expect, beforeEach, loadFixtures, spyOn, InteractiveModule */
 
 //= require scroll-interactive-mod
 
 describe('InteractiveModule', function () {
-    var interactive,
-        interactive_mod = $('<div class="pinned"></div>');
+    var interactive;
 
     beforeEach(function () {
-        interactive = new InteractiveModule(interactive_mod);
+        loadFixtures('interactive-scrolling.html');
+        interactive = new InteractiveModule($('.pinned'));
     });
 
-    it('has attributes i_height, i_width, and module', function () {
-        expect(interactive.i_height).toBeDefined();
-        expect(interactive.i_width).toBeDefined();
+    it('has attributes', function () {
+        expect(interactive.iHeight).toBeDefined();
+        expect(interactive.iWidth).toBeDefined();
+        expect(interactive.bMargin).toBeDefined();
+        expect(interactive.fudgeFactor).toBeDefined();
+        expect(interactive.trackHeight).toBeDefined();
         expect(interactive.module).toBe('div.pinned');
     });
 
     describe('fixTop()', function () {
-        beforeEach(function () {
-            interactive.fixTop();
+        describe('when the interactive is taller than its column', function () {
+            beforeEach(function () {
+                interactive.trackHeight = 300;
+                interactive.iHeight = 600;
+                interactive.fixTop();
+            });
+
+            it('does nothing', function () {
+                expect(interactive.module).not.toHaveClass('stuck');
+            });
         });
 
-        it('adds the "stuck" class', function () {
-            expect(interactive.module).toHaveClass('stuck');
-        });
+        describe('when the interactive is shorter than its column', function () {
+            beforeEach(function () {
+                interactive.fixTop();
+            });
 
-        it('adds a CSS width', function () {
-            expect(interactive.module.css('width')).toBe(interactive.i_width + 'px');
+            it('adds the "stuck" class', function () {
+                expect(interactive.module).toHaveClass('stuck');
+            });
+
+            it('adds a CSS width', function () {
+                expect(interactive.module.css('width')).toBe(interactive.iWidth + 'px');
+            });
         });
     });
 
@@ -71,7 +88,7 @@ describe('InteractiveModule', function () {
 
     describe('getHeight()', function () {
         it('returns the value of the i_height attribute', function () {
-            expect(interactive.getHeight()).toBe(interactive.i_height);
+            expect(interactive.getHeight()).toBe(interactive.iHeight);
         });
     });
 });

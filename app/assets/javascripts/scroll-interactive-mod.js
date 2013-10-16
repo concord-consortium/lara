@@ -3,18 +3,22 @@
 
 // Object to handle fixing of the interactive module
 var InteractiveModule = function (object) {
-    this.module = object;
-    this.i_width = object.width();
-    this.i_height = object.height();
-    this.b_margin = parseInt(object.css('margin-bottom'), 10);
+    this.module      = object;
+    this.iWidth      = object.width();
+    this.iHeight     = object.height();
+    this.bMargin     = parseInt(object.css('margin-bottom'), 10);
+    this.fudgeFactor = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
+    this.trackHeight = $('#end-scroll-track').offset().top - $('.content-mod').offset().top;
 };
 
 // Fixes the interactive mod when the window hits the questions scrolling down
 InteractiveModule.prototype.fixTop = function () {
-    this.module.addClass('stuck');
-    this.module.css({
-        'width': this.i_width
-    });
+	if (this.trackHeight > (this.iHeight + this.fudgeFactor)) {
+        this.module.addClass('stuck');
+        this.module.css({
+            'width': this.iWidth
+        });
+    }
 };
 
 // Un-fixes the interactive mod when the window hits the questions scrolling up
@@ -24,8 +28,10 @@ InteractiveModule.prototype.unFixTop = function () {
 
 // Fixes the interactive mod when the window hits the bottom marker scrolling up
 InteractiveModule.prototype.fixBottom = function () {
-	this.module.addClass('stuck');
-	this.module.removeClass('bottomed');
+	if (this.trackHeight > (this.iHeight + this.fudgeFactor)) {
+        this.module.addClass('stuck');
+        this.module.removeClass('bottomed');
+	}
 };
 
 InteractiveModule.prototype.unFixBottom = function () {
@@ -34,15 +40,15 @@ InteractiveModule.prototype.unFixBottom = function () {
 };
 
 InteractiveModule.prototype.getHeight = function () {
-    return this.i_height;
+    return this.iHeight;
 };
 
 InteractiveModule.prototype.getBottomMargin = function () {
-    return this.b_margin;
+    return this.bMargin;
 };
 
 InteractiveModule.prototype.getHeightWithMargin = function () {
-    return this.i_height + this.b_margin;
+    return this.iHeight + this.bMargin;
 };
 
 $(document).ready(function () {
