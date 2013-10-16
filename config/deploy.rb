@@ -71,7 +71,6 @@ after "deploy:start",   "delayed_job:start"
 after "deploy:restart", "delayed_job:restart"
 
 require './config/boot'
-require 'airbrake/capistrano'
 
 #############################################################
 #  Maintenance mode
