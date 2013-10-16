@@ -76,6 +76,9 @@ class SaveOnChange
 
 $(document).ready ->
   window.SaveOnChange = SaveOnChange
-  $('.live_submit').each (i,e) =>
-    new SaveOnChange($(e))
-
+  if $('.live_submit').length
+    $('.live_submit').each (i,e) =>
+      new SaveOnChange($(e))
+  else
+    # construct the indicator so it will enter its clear state
+    indicator = new SaveIndicator($("#save"))
