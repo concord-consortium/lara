@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.14'
 gem "jquery-rails"
 gem 'jquery-ui-rails'
 gem "haml"
@@ -24,7 +24,6 @@ gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
 gem 'uuidtools'
 gem "httparty"
-gem 'airbrake'
 gem 'exception_notification'
 gem 'newrelic_rpm'
 gem 'shutterbug', '~>0.1.1'

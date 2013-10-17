@@ -1,17 +1,17 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
-var interactive;
+var resizingInteractive;
 
 // Object to handle sizing of interactive object
-var InteractiveObject = function (element) {
+var ResizableInteractive = function (element) {
     this.element = element;
     this.aspectRatio = this.element.data('aspect-ratio');
     this.currWidth = $('.interactive-mod').width();
     this.targetHeight = this.currWidth/this.aspectRatio;
 };
 
-InteractiveObject.prototype.fixSize = function () {
+ResizableInteractive.prototype.fixSize = function () {
     // Hitting the width and height attrs should work for both video and iframe
     this.element.attr('width', this.currWidth);
     this.element.attr('height', this.targetHeight);
@@ -19,6 +19,6 @@ InteractiveObject.prototype.fixSize = function () {
 
 // Setup
 $(document).ready(function () {
-    interactive = new InteractiveObject($('[data-aspect-ratio]'));
-    interactive.fixSize();
+    resizingInteractive = new ResizableInteractive($('[data-aspect-ratio]'));
+    resizingInteractive.fixSize();
 });
