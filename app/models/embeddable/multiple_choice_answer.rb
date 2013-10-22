@@ -41,7 +41,7 @@ module Embeddable
     def portal_hash
       {
         "type"          => "multiple_choice",
-        "question_id"   => question.id.to_s,
+        "question_id"   => multiple_choice_id.to_s,
         "answer_ids"    => answers.map { |a| a.id.to_s },
         "answer_texts"  => answer_texts
       }
