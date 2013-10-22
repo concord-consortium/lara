@@ -13,7 +13,10 @@ guard 'rspec', :cli => '--format Fuubar --color --tag ~slow', :version => 2 do
   watch(%r{^spec/support/(.+)\.rb$})                  { "spec" }
   watch('config/routes.rb')                           { "spec/controllers" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
+  watch('app/controllers/embeddable/embeddables_controller.rb') { 'spec/controllers/embeddable' }
   watch('app/models/ability.rb')                      { "spec/models/user_spec.rb" }
+  watch('app/models/embeddable.rb')                   { "spec/models/embeddable" }
+  watch('app/models/embeddable/answer.rb')            { "spec/models/embeddable" }
   
   # Capybara request specs
   # watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
