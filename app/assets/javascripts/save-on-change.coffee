@@ -35,7 +35,7 @@ class SaveOnChange
   constructor: (@$form) ->
     @scheduled_job      = null
     @previous_value     = null
-    @update_interval_s  = 0.6
+    @update_interval_s  = 2.0
     @save_indicator     = new SaveIndicator($("#save"))
     @setupEvents()
 
