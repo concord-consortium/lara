@@ -11,13 +11,15 @@ class ApplicationController < ActionController::Base
   ### Log some data for 404s
   # This should be temporary, as debugging for an issue where links to an activity return 404 errors for
   # some people but not others.
-  rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-    
-  def not_found(exception)
-    ExceptionNotifier.notify_exception(exception,
-      :env => request.env, :data => {:message => "raised a Not Found exception"})
-    redirect_to root_url, :alert => exception.message
-  end
+  # See https://www.pivotaltracker.com/story/show/52313089
+  # Turned off 21Oct2013 - pjm
+  # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
+  #   
+  # def not_found(exception)
+  #   ExceptionNotifier.notify_exception(exception,
+  #     :env => request.env, :data => {:message => "raised a Not Found exception"})
+  #   redirect_to root_url, :alert => exception.message
+  # end
 
   # For modal edit windows. Source: https://gist.github.com/1456815
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
@@ -27,6 +29,9 @@ class ApplicationController < ActionController::Base
     begin
       activity.save
     rescue
+      # We don't want to return a server error if this update fails; it's not important
+      # enough to derail the user.
+      logger.debug "changed_by update for Activity #{@activity.id} failed."
     end
   end
 
@@ -61,12 +66,16 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sequence
+    # First, respect the sequence ID in the request params if one is provided
     if params[:sequence_id]
       @sequence = Sequence.find(params[:sequence_id])
+      # Save this in the run
       if @sequence && @run
         @run.sequence = @sequence
         @run.save
       end
+    # Second, if there's no sequence ID in the request params, there's an existing 
+    # run, and a sequence is set for that run, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
     end
