@@ -111,6 +111,8 @@ gem 'capistrano'
 gem 'brakeman', :require => false
 # Log analysis
 gem 'request-log-analyzer', :require => false
+# Database analysis
+gem 'lol_dba', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"
