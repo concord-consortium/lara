@@ -94,6 +94,11 @@ group :test do
   gem 'launchy'
 end
 
+group :development do
+  # Evaluate database query efficiency
+  gem 'bullet'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
