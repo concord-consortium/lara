@@ -20,7 +20,7 @@ class InteractivePage < ActiveRecord::Base
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
   validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
 
-  has_many :interactive_items, :order => :position, :dependent => :destroy
+  has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
   # InteractiveItem is a join model; if this is deleted, it should go too
 
   # This is a sort of polymorphic has_many :through.
@@ -28,7 +28,7 @@ class InteractivePage < ActiveRecord::Base
     self.interactive_items.collect{|ii| ii.interactive}
   end
 
-  has_many :page_items, :order => :position, :dependent => :destroy
+  has_many :page_items, :order => :position, :dependent => :destroy, :include => [:embeddable]
   # Like InteractiveItems, PageItems are join models, so they should not 
   # survive the deletion of associated instances of InteractivePage.
 

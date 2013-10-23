@@ -1,19 +1,31 @@
 module Embeddable::Answer
+
+  @@question_index = nil
   def question_index
-    if self.run && self.run.activity
-      self.run.activity.questions.index(self.question) + 1
+    if @@question_index.blank?
+      begin
+        self.run.activity.questions.index(self.question) + 1
+      rescue StandardError => e
+        logger.warn "Rescued #{e.class}: #{e.message}"
+        return nil
+      end
     else
-      nil
+      @@question_index
     end
   end
 
+  @@cleaned_prompt = nil
   def prompt_no_itals
-    parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
-    itals = parsed_prompt.at_css "i"
-    if itals
-      itals.content = nil
+    if @@cleaned_prompt.blank?
+      parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
+      itals = parsed_prompt.at_css "i"
+      if itals
+        itals.content = nil
+      end
+      return parsed_prompt.to_html
+    else
+      return @@cleaned_prompt
     end
-    parsed_prompt.to_html
   end
 
   def send_to_portal(auth_key=nil)

@@ -94,6 +94,11 @@ group :test do
   gem 'launchy'
 end
 
+group :development do
+  # Evaluate database query efficiency
+  gem 'bullet'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -111,6 +116,8 @@ gem 'capistrano'
 gem 'brakeman', :require => false
 # Log analysis
 gem 'request-log-analyzer', :require => false
+# Database analysis
+gem 'lol_dba', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"

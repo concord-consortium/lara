@@ -3,12 +3,16 @@
 
 // Object to handle fixing of the interactive module
 var InteractiveModule = function (object) {
-    this.module      = object;
-    this.iWidth      = object.width();
-    this.iHeight     = object.height();
-    this.bMargin     = parseInt(object.css('margin-bottom'), 10);
-    this.fudgeFactor = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
-    this.trackHeight = $('#end-scroll-track').offset().top - $('.content-mod').offset().top;
+    this.module          = object;
+    this.iWidth          = object.width();
+    this.iHeight         = object.height();
+    this.bMargin         = parseInt(object.css('margin-bottom'), 10);
+    this.fudgeFactor     = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
+    if ($('#end-scroll-track').length > 0) {
+        this.trackHeight = $('#end-scroll-track').offset().top - $('.content-mod').offset().top;
+    } else {
+        this.trackHeight = 0;
+    }
 };
 
 // Fixes the interactive mod when the window hits the questions scrolling down
@@ -52,18 +56,21 @@ InteractiveModule.prototype.getHeightWithMargin = function () {
 };
 
 $(document).ready(function () {
-    var scrollingInteractive = new InteractiveModule($('.pinned'));
+    var scrollingInteractive = new InteractiveModule($('.pinned')),
+        $trackEnd = $('#end-scroll-track'),
+        $contentMod = $('.content-mod');
 
     // Does the interactive actually have enough room to scroll? It does if its height is
     // less than the difference between its starting position ($('.content-mod').offset().top)
     // and the bottom of the scroll track ($('#end-scroll-track').offset().top). (I've added 
     // a few pixels to that Just In Case - we don't need to wiggle back and forth 10 pixels just
     // because there's room to do so.)
-    if ((scrollingInteractive.getHeightWithMargin() + 20) < ($('#end-scroll-track').offset().top - $('.content-mod').offset().top)) {
+    if (($trackEnd.length > 0) && ($contentMod.length > 0) &&
+        ((scrollingInteractive.getHeightWithMargin() + 20) < ($trackEnd.offset().top - $contentMod.offset().top))) {
         // Safari is in this block even though it shouldn't be.
         // These blocks use jquery.waypoints
         // Set the top waypoint and call relevant functions from it
-        $('.content-mod').waypoint( function (direction) {
+        $contentMod.waypoint( function (direction) {
             if (direction==='down') {
                 scrollingInteractive.fixTop();
                 $('.questions-full').css({
@@ -82,7 +89,7 @@ $(document).ready(function () {
         });
 
         // Set the bottom waypoint and call the relevant function there too
-        $('#end-scroll-track').waypoint(function (direction) {
+        $trackEnd.waypoint(function (direction) {
             if (direction === 'down') {
                 scrollingInteractive.unFixBottom();
             }

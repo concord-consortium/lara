@@ -26,7 +26,7 @@ module Embeddable
     def portal_hash
       {
         "type" => "open_response",
-        "question_id" => question.id.to_s,
+        "question_id" => open_response_id.to_s,
         "answer" => answer_text
       }
     end

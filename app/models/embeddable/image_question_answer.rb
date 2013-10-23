@@ -30,7 +30,7 @@ module Embeddable
     def portal_hash
       {
         "type" => "image_question",
-        "question_id" => question.id.to_s,
+        "question_id" => image_question_id.to_s,
         "answer" => answer_text,
         "image_url" => annotated_image_url || image_url,
         "annotation" => annotation
