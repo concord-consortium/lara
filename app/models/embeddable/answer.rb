@@ -1,5 +1,9 @@
 module Embeddable::Answer
 
+  def by_run(r)
+    where(:run_id => r.id)
+  end
+
   @@question_index = nil
   def question_index
     if @@question_index.blank?

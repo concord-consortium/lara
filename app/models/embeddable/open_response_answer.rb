@@ -10,18 +10,14 @@ module Embeddable
 
     belongs_to :run
 
-    scope :by_question, lambda { |q|
-      {:conditions => { :open_response_id => q.id}}
-    }
-
-    scope :by_run, lambda { |r|
-      {:conditions => { :run_id => r.id }}
-    }
-
     delegate :prompt,  :to  => :question
     delegate :name,    :to  => :question
 
     after_update :send_to_portal
+
+    def by_question(q)
+      where(:open_response_id => q.id)
+    end
 
     def portal_hash
       {
