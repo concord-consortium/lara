@@ -1,7 +1,10 @@
 module Embeddable::Answer
-
-  def self.by_run(r)
-    where(:run_id => r.id)
+  def self.included base
+    base.instance_eval do
+      def self.by_run(r)
+        where(:run_id => r.id)
+      end
+    end
   end
 
   @@question_index = nil
