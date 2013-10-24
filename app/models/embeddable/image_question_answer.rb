@@ -15,7 +15,7 @@ module Embeddable
 
     after_update :send_to_portal
 
-    def by_question(q)
+    def self.by_question(q)
       where(:image_question_id => q.id)
     end
 

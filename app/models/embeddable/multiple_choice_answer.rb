@@ -25,7 +25,7 @@ module Embeddable
 
     after_update :send_to_portal
 
-    def by_question(q)
+    def self.by_question(q)
       where(:multiple_choice_id => q.id)
     end
 

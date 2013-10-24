@@ -1,6 +1,6 @@
 module Embeddable::Answer
 
-  def by_run(r)
+  def self.by_run(r)
     where(:run_id => r.id)
   end
 
