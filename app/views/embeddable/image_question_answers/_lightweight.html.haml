@@ -38,10 +38,11 @@
           %button.button.image_delete_button{:type =>'button'}
             %i.icon-warning-sign.btn
               Delete
-          %button.image_question.button.image_snapshot_button.retake_snapshot{:type => 'button'}
-            %i.icon-camera
-            %span.take_snapshot_label
-              Replace snapshot
+          - if embeddable.is_shutterbug?
+            %button.image_question.button.image_snapshot_button.retake_snapshot{:type => 'button'}
+              %i.icon-camera
+              %span.take_snapshot_label
+                Replace snapshot
           %button.button.image_done_button{:type => 'button' }
             %i.icon-ok.btn
               Done
