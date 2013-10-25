@@ -1,5 +1,5 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt
+  attr_accessible :name, :prompt, :bg_source
 
   include Embeddable
 
@@ -16,12 +16,25 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   def to_hash
     {
       name: name,
-      prompt: prompt
+      prompt: prompt,
+      bg_source: bg_source
     }
   end
 
   def duplicate
     return Embeddable::ImageQuestion.new(self.to_hash)
+  end
+
+  def is_shutterbug?
+    bg_source == 'Shutterbug'
+  end
+
+  def is_drawing?
+    bg_source == 'Drawing'
+  end
+
+  def is_annotation?
+    bg_source.match /^http/
   end
 
   def self.name_as_param

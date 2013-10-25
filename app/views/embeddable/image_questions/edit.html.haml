@@ -8,5 +8,7 @@
       $(function() {
           $('#embeddable_image_question_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
+  = field_set_tag 'Background source' do
+    = f.select :bg_source, ['Shutterbug', 'Drawing']
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

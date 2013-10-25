@@ -13,7 +13,7 @@ describe Embeddable::ImageQuestionAnswer do
   it_behaves_like "an answer"
 
   describe "model associations" do
-    it "should belong to an open response" do
+    it "should belong to an image question" do
       answer.question = question
       answer.save
       answer.reload.question.should == question
@@ -42,6 +42,7 @@ describe Embeddable::ImageQuestionAnswer do
         answer.portal_hash.should == expected
       end
     end
+
     describe 'with an annotated_image_url' do
       let(:answer) do
         FactoryGirl.create(:image_question_answer,
@@ -106,12 +107,22 @@ describe Embeddable::ImageQuestionAnswer do
 
 
   describe "delegated methods" do
-    describe "prompt" do
+    before(:each) do
+      @question = mock_model(Embeddable::ImageQuestion)
+      answer.question = @question
+    end
+
+    describe "prompt" do # And name
       it "should delegate to question" do
-        question = mock_model(Embeddable::ImageQuestion)
-        question.should_receive(:prompt).and_return(:some_prompt)
-        answer.question = question
+        @question.should_receive(:prompt).and_return(:some_prompt)
         answer.prompt.should == :some_prompt
+      end
+    end
+
+    describe 'is_shutterbug?' do # And similar methods for the bg_source attribute
+      it "should delegate to question" do
+        @question.should_receive(:is_shutterbug?).and_return(true)
+        answer.is_shutterbug?.should be_true
       end
     end
   end
