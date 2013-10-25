@@ -116,8 +116,9 @@ class image_question
     @$snapshot_button.show()
     @$edit_button.hide()
 
-    if @current_src
+    if @current_src or @current_thumbnail
       @$edit_button.show()
+      @$drawing_button.hide()
       @$snapshot_button.hide()
 
     if @undo_button
