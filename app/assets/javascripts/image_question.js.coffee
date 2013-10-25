@@ -43,6 +43,8 @@ class image_question
     @$retake_button   = $("#{@form_sel} .retake_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
 
+    @$drawing_button  = $("#{@button_sel} .drawing_button")
+
     @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
     @$displayed_answer =$("#{@button_sel} .answer_text")
 
@@ -55,6 +57,10 @@ class image_question
   create_hooks: ->
     @$snapshot_button.click =>
       @shutterbug.getDomSnapshot()
+      @show()
+
+    @$drawing_button.click =>
+      # Same as snapshot, but without taking the snapshot.
       @show()
 
     @$retake_button.click =>
