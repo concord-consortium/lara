@@ -1,5 +1,5 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt, :bg_source
+  attr_accessible :name, :prompt, :bg_source, :bg_url
 
   include Embeddable
 
@@ -17,7 +17,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     {
       name: name,
       prompt: prompt,
-      bg_source: bg_source
+      bg_source: bg_source,
+      bg_url: bg_url
     }
   end
 
@@ -31,10 +32,6 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   def is_drawing?
     bg_source == 'Drawing'
-  end
-
-  def is_annotation?
-    bg_source.match /^http/
   end
 
   def self.name_as_param

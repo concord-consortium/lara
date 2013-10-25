@@ -14,7 +14,6 @@ module Embeddable
     delegate :name,           :to => :question
     delegate :is_shutterbug?, :to => :question
     delegate :is_drawing?,    :to => :question
-    delegate :is_annotation?, :to => :question
 
     after_update :send_to_portal
 
