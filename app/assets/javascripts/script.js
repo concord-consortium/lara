@@ -42,6 +42,6 @@ $(document).ready(function () {
 	});
 
     // Set up colorbox for ImageInteractives
-    $('.interactive-mod .colorbox').colorbox({ maxWidth: "100%", maxHeight: "100%" });
+    $('.interactive-mod .colorbox').colorbox({ maxWidth: "100%", maxHeight: "100%", minWidth: "960px" });
 
 });  // end document.ready
