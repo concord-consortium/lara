@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025132253) do
+ActiveRecord::Schema.define(:version => 20131025183106) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20131025132253) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.string   "bg_source",  :default => "Shutterbug"
+    t.string   "bg_url"
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
