@@ -981,16 +981,28 @@
 
 				if (settings.scalePhotos) {
 					setResize = function () {
-						photo.height -= photo.height * percent;
-						photo.width -= photo.width * percent;
+                        if (percent < 1) {
+    						photo.height -= photo.height * percent;
+    						photo.width -= photo.width * percent;
+                        } else {
+                            photo.height = photo.height * percent;
+                            photo.width = photo.width * percent;
+                        }
 					};
 					if (settings.mw && photo.width > settings.mw) {
 						percent = (photo.width - settings.mw) / photo.width;
 						setResize();
+					} else if (settings.mw && photo.width < settings.mw) {
+                        // Expand photo to fill colorbox
+					    percent = settings.mw / photo.width;
+                        setResize();
 					}
 					if (settings.mh && photo.height > settings.mh) {
 						percent = (photo.height - settings.mh) / photo.height;
 						setResize();
+					} else if (settings.mh && photo.height < settings.mh) {
+					    percent = settings.mh / photo.height;
+                        setResize();
 					}
 				}
 				
