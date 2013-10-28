@@ -10,6 +10,10 @@ module Embeddable
       type = answer_type(question)
       return question if type.nil?
       conditions = { :run => self.run, :question => question }
+      # If this is an ImageQuestion with an author-defined background image, we want to copy that into the answer.
+      if type == Embeddable::ImageQuestionAnswer and !question.is_shutterbug? and !question.bg_url.blank?
+        conditions[:image_url] = question.bg_url
+      end
       type.by_run(run).by_question(question).first || type.create(conditions)
     end
 
