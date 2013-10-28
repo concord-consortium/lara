@@ -8,7 +8,13 @@
       $(function() {
           $('#embeddable_image_question_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
-  = field_set_tag 'Background source' do
-    = f.select :bg_source, ['Shutterbug', 'Drawing']
+  = field_set_tag 'Background' do
+    %label
+      Source
+      = f.select :bg_source, ['Shutterbug', 'Drawing']
+    %br{ :style => 'clear: both;' }
+    %label
+      Background image URL (optional, will be ignored for Shutterbug)
+      = f.text_field :bg_url
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
