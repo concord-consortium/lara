@@ -1,3 +1,6 @@
+/*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
+/*global $ */
+
 /*!
 	Colorbox v1.4.32 - 2013-10-16
 	jQuery lightbox and modal window plugin
@@ -985,6 +988,7 @@
     						photo.height -= photo.height * percent;
     						photo.width -= photo.width * percent;
                         } else {
+                            // Scale photos *up*, too
                             photo.height = photo.height * percent;
                             photo.width = photo.width * percent;
                         }
