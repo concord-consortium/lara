@@ -2,12 +2,18 @@
   %h5.h5= "Question ##{embeddable.question_index}"
 .question-bd
   .question-txt
-    != embeddable.prompt
+    != embeddable.drawing_prompt
     %div{:id => "image_question_#{embeddable.id}"}
-      %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => 200}
+      - if embeddable.annotated_image_url
+        %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => 200}
+      - elsif embeddable.image_url
+        %img.snapshot_thumbnail{:src => embeddable.image_url, :width => 200}
       %br
-      -# this 'formating' is duplicated in image_question_answers_controller
-      %div.answer_text= simple_format h(truncate(embeddable.answer_text, length:140))
+      - if embeddable.prompt
+        .text_prompt
+          != embeddable.prompt
+        -# this 'formatting' is duplicated in image_question_answers_controller
+        .answer_text= simple_format h(truncate(embeddable.answer_text, length:140))
       - if embeddable.is_shutterbug?
         %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
           %i.icon-camera
@@ -26,33 +32,23 @@
   .image_gallery
     .title
     .instructions
+      != embeddable.drawing_prompt
     .answer
     = form_for embeddable, :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
 
       .image_block
         = f.sketchily :annotation, :id=>"image_question_annotation_for_#{embeddable.id}", :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true, :canvas_expansion => 1
         .under_image
-          %button.button.image_reset_button{:type =>'button'}
-            %i.icon-undo.btn
-              Undo
-          %button.button.image_delete_button{:type =>'button'}
-            %i.icon-warning-sign.btn
-              Delete
-          - if embeddable.is_shutterbug?
-            %button.image_question.button.image_snapshot_button.retake_snapshot{:type => 'button'}
-              %i.icon-camera
-              %span.take_snapshot_label
-                Replace snapshot
+          - unless embeddable.prompt.blank?
+            .text_response
+              %p.prompt.image_prompt!= embeddable.prompt
+              = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
+          = f.hidden_field 'image_url'
+          = f.hidden_field 'annotated_image_url'
           %button.button.image_done_button{:type => 'button' }
             %i.icon-ok.btn
               Done
-
-      .text_response
-        %p.prompt.image_prompt!= embeddable.prompt
-        = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
-        = f.hidden_field 'image_url'
-        = f.hidden_field 'annotated_image_url'
-
+          -# TODO: Cancel button
 
 - content_for :extra_javascript do
   :javascript

@@ -1,5 +1,5 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt, :bg_source, :bg_url
+  attr_accessible :name, :prompt, :bg_source, :bg_url, :drawing_prompt
 
   include Embeddable
 
@@ -17,6 +17,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     {
       name: name,
       prompt: prompt,
+      drawing_prompt: drawing_prompt,
       bg_source: bg_source,
       bg_url: bg_url
     }
