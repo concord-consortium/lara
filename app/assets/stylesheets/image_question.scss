@@ -19,10 +19,6 @@
         width: 65%;
       }
     }
-    textarea.answer {
-      margin-top: 1em;
-      width: 100%;
-    }
     button {
       margin-right: 1em;
     }
@@ -40,7 +36,23 @@
 .tmp_svg {
   border: 0px;
   margin: 0px;
-  postition: fixed;
+  position: fixed;
   z-index: 1000;
   background-repeat: no-repeat;
+}
+.under_image {
+  .text_response {
+    .prompt {
+      float: left;
+      width: 250px;
+    }
+    textarea.answer {
+      margin-top: 1em;
+      width: 250px;
+      float: left;
+    }
+  }
+  button.button {
+    margin: 8px;
+  }
 }
