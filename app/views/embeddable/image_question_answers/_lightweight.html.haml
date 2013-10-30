@@ -41,7 +41,7 @@
         .under_image
           - unless embeddable.prompt.blank?
             .text_response
-              %p.prompt.image_prompt!= embeddable.prompt
+              .prompt.image_prompt!= embeddable.prompt
               = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
           = f.hidden_field 'image_url'
           = f.hidden_field 'annotated_image_url'
