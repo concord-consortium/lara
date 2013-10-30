@@ -51,7 +51,8 @@ class image_question
     @create_hooks()
     @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
     @current_src = @$current_src_field.val()
-    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
+    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
+                         $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
@@ -107,6 +108,8 @@ class image_question
       # if the form is still open it would make sense to put the error there
 
   update_display: ->
+    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
+                         $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
     @$thumbnail.hide()
