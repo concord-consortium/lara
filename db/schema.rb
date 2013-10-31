@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131030141617) do
+ActiveRecord::Schema.define(:version => 20131031195119) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20131030141617) do
     t.boolean  "is_dirty",            :default => false
   end
 
+  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_multiple_choice_answers_on_run_and_question"
   add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
 
   create_table "embeddable_image_questions", :force => true do |t|
@@ -102,6 +103,8 @@ ActiveRecord::Schema.define(:version => 20131030141617) do
     t.datetime "updated_at",                          :null => false
     t.boolean  "is_dirty",         :default => false
   end
+
+  add_index "embeddable_open_response_answers", ["run_id", "open_response_id"], :name => "index_open_response_answers_on_run_and_question"
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
