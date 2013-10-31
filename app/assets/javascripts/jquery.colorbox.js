@@ -203,7 +203,7 @@
 		var i,
 			data = $.data(element, colorbox);
 		
-		if (data == null) {
+		if (data === null) {
 			settings = $.extend({}, defaults);
 			if (console && console.log) {
 				console.log('Error: cboxElement missing settings object');
@@ -905,26 +905,28 @@
 				settings.innerWidth && setSize(settings.innerWidth, 'x');
 		
 		// Sets the minimum dimensions for use in image scaling
-		settings.mw = settings.w;
-		settings.mh = settings.h;
+		settings.maxw = settings.w;
+		settings.maxh = settings.h;
         settings.minw = settings.w;
         settings.minh = settings.h;
 		
 		// Re-evaluate the minimum width and height based on maxWidth and maxHeight values.
-		// If the width or height exceed the maxWidth or maxHeight, use the maximum values instead.
+		// If the specified width or height exceed the maxWidth or maxHeight, use the maximum values instead
 		if (settings.maxWidth) {
-			settings.mw = setSize(settings.maxWidth, 'x') - loadedWidth - interfaceWidth;
-			settings.mw = settings.w && settings.w < settings.mw ? settings.w : settings.mw;
+            // Set maxw to settings.maxWidth (translated to pixels)
+			settings.maxw = setSize(settings.maxWidth, 'x') - loadedWidth - interfaceWidth;
+            // If settings.w exists and is *smaller* than maxw, use that setting; if it's bigger, constrain to the maxw instead
+			settings.maxw = settings.w && settings.w < settings.maxw ? settings.w : settings.maxw;
 		}
-        if(settings.minWidth){
+        if (settings.minWidth) {
             settings.minw = setSize(settings.minWidth, 'x') - loadedWidth - interfaceWidth;
             settings.minw = settings.w && settings.w > settings.minw ? settings.w : settings.minw;
         }
 		if (settings.maxHeight) {
-			settings.mh = setSize(settings.maxHeight, 'y') - loadedHeight - interfaceHeight;
-			settings.mh = settings.h && settings.h < settings.mh ? settings.h : settings.mh;
+			settings.maxh = setSize(settings.maxHeight, 'y') - loadedHeight - interfaceHeight;
+			settings.maxh = settings.h && settings.h < settings.maxh ? settings.h : settings.maxh;
 		}
-        if(settings.minHeight){
+        if (settings.minHeight) {
             settings.minh = setSize(settings.minHeight, 'y') - loadedHeight - interfaceHeight;
             settings.minh = settings.h && settings.h > settings.minh ? settings.h : settings.minh;
         }
@@ -985,33 +987,47 @@
 				if (settings.scalePhotos) {
 					setResize = function () {
                         if (percent < 1) {
-    						photo.height -= photo.height * percent;
-    						photo.width -= photo.width * percent;
+                            photo.height -= photo.height * percent;
+                            photo.width -= photo.width * percent;
                         } else {
                             // Scale photos *up*, too
                             photo.height = photo.height * percent;
                             photo.width = photo.width * percent;
                         }
 					};
-					if (settings.mw && photo.width > settings.mw) {
-						percent = (photo.width - settings.mw) / photo.width;
-						setResize();
-					} else if (settings.mw && photo.width < settings.mw) {
-                        // Expand photo to fill colorbox
-					    percent = settings.mw / photo.width;
-                        setResize();
-					}
-					if (settings.mh && photo.height > settings.mh) {
-						percent = (photo.height - settings.mh) / photo.height;
-						setResize();
-					} else if (settings.mh && photo.height < settings.mh) {
-					    percent = settings.mh / photo.height;
-                        setResize();
-					}
+                    if (photo.width > photo.height) {
+                        if (settings.maxw && photo.width > settings.maxw) {
+                            // Reduce to the max width
+                            percent = (photo.width - settings.maxw) / photo.width;
+                            setResize();
+                        } else if (settings.minw && photo.width < settings.minw) {
+                            // Expand photo to the minimum width
+                            percent = settings.minw / photo.width;
+                            setResize();
+                        } else if (settings.maxw && photo.width < settings.maxw) {
+                            // Expand photo to the max width
+                            percent = settings.maxw / photo.width;
+                            setResize();
+                        }
+                    } else {
+                        if (settings.maxh && photo.height > settings.maxh) {
+                            // Reduce to the max height
+                            percent = (photo.height - settings.mh) / photo.height;
+                            setResize();
+                        } else if (settings.minh && photo.height < settings.minh) {
+                            // Expand photo to the minimum height
+                            percent = settings.minh / photo.height
+                            setResize();
+                        } else if (settings.maxh && photo.height < settings.maxh) {
+                            // Expand to the max height
+                            percent = settings.maxh / photo.height;
+                            setResize();
+                        }
+                    }
 				}
 				
 				if (settings.h) {
-					photo.style.marginTop = Math.max(settings.mh - photo.height, 0) / 2 + 'px';
+					photo.style.marginTop = Math.max(settings.maxh - photo.height, 0) / 2 + 'px';
 				}
 				
 				if ($related[1] && (settings.loop || $related[index + 1])) {

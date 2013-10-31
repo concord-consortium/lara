@@ -41,7 +41,7 @@ $(document).ready(function () {
 		$('.sidebar-mod').toggleClass('expanded');
 	});
 
-    // Set up colorbox for ImageInteractives
+    // Set up colorbox for ImageInteractives - see jquery.colorbox.js
     $('.interactive-mod .colorbox').colorbox({ maxWidth: "100%", maxHeight: "100%", minWidth: "960px" });
 
 });  // end document.ready
