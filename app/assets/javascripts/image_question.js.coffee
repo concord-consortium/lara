@@ -37,11 +37,15 @@ class image_question
     @$snapshot_button = $("#{@button_sel} .take_snapshot")
     @$edit_button     = $("#{@button_sel} .edit_answer")
     @$done_button     = $("#{@form_sel} .image_done_button")
+    @$cancel_button   = $("#{@form_sel} .image_cancel_button")
     @$svg_form        = $("#{@form_sel} form")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
-    @$retake_button   = $("#{@form_sel} .retake_snapshot")
+    @$replace_button  = $("#{@button_sel} .replace_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
+
+    @$saved_response  = $("#{@button_sel} .answer_text")
+    @$text_response   = $("#{@form_sel} .text_response textarea")
 
     @$drawing_button  = $("#{@button_sel} .drawing_button")
 
@@ -50,9 +54,9 @@ class image_question
 
     @create_hooks()
     @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-    @current_src = @$current_src_field.val()
-    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
-                         $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @current_src        = @$current_src_field.val()
+    @current_thumbnail  = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
+                          $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
@@ -64,13 +68,19 @@ class image_question
       # Same as snapshot, but without taking the snapshot.
       @show()
 
-    @$retake_button.click =>
+    @$replace_button.click =>
+      @delete_image()
       @shutterbug.getDomSnapshot()
+      @show()
 
     @$edit_button.click =>
       @show()
       @set_svg_background()
 
+    @$cancel_button.click =>
+      @reset_image() # This doesn't seem to remove active drawing elements
+      @clear_text_response()
+      @hide()
 
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
@@ -117,10 +127,12 @@ class image_question
       @$thumbnail.show()
 
     @$snapshot_button.show()
+    @$replace_button.hide()
     @$edit_button.hide()
 
-    if @current_src or @current_thumbnail
+    if (@current_src or @current_thumbnail) and (@$text_response.val() != '')
       @$edit_button.show()
+      @$replace_button.show()
       @$drawing_button.hide()
       @$snapshot_button.hide()
 
@@ -192,6 +204,9 @@ class image_question
     if(@last_svg)
       @get_svg_canvas().setSvgString(@last_svg)()
 
+  clear_text_response: ()->
+    if @$text_response.val() != @$saved_response.data('raw')
+      @$text_response.val(@$saved_response.data('raw'))
 
   delete_image:() ->
     @get_svg_canvas().getSvgString() (data,error) =>

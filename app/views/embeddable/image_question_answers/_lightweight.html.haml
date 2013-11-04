@@ -11,19 +11,24 @@
         .text_prompt
           != embeddable.prompt
         -# this 'formatting' is duplicated in image_question_answers_controller
-        .answer_text= simple_format h(truncate(embeddable.answer_text, length:140))
+        .answer_text{ :data => { :raw => embeddable.answer_text } }
+          = simple_format h(truncate(embeddable.answer_text, length:140))
       - if embeddable.is_shutterbug?
         %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
           %i.icon-camera
           %span.take_snapshot_label
             Take snapshot
+        %button.image_question.button.image_snapshot_button.replace_snapshot{:type => 'button'}
+          %i.icon-camera
+          %span.replace_snapshot_label
+            Replace snapshot
       - elsif embeddable.is_drawing?
         %button.image_question.button.image_drawing_button.drawing_button{:type => 'button'}
           %i.icon-pencil
           %span.make_drawing_label
             Make drawing
       %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
-        Edit answer
+        Edit
 
 %div.tmp_svg{:id => "sb_svg_src_#{embeddable.id}" }
 %div{:id => "image_question_answer_form_#{embeddable.id}"}
@@ -43,10 +48,12 @@
               = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
           = f.hidden_field 'image_url'
           = f.hidden_field 'annotated_image_url'
-          %button.button.image_done_button{:type => 'button' }
+          %button.button.image_done_button{ :type => 'button' }
             %i.icon-ok.btn
               Done
-          -# TODO: Cancel button
+          %button.button.image_cancel_button{ :type => 'button' }
+            %i.icon-cancel.btn
+              Cancel
 
 - content_for :extra_javascript do
   :javascript
