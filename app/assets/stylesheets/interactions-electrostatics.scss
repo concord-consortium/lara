@@ -5,3 +5,13 @@ body {
   background-image: url('/assets/interactions/jacobs_ladder.jpg'); /* default */
   background-position-x: -550px;
 }
+
+.sequence_logo_block {
+  width: 800px; /* Leave room for logo in header */
+  img {
+    float: left;
+  }
+  h2 {
+    padding-left: 3em;
+  }
+}
