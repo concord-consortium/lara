@@ -50,7 +50,7 @@
   .text_response {
     .prompt {
       float: left;
-      width: 250px;
+      width: 330px;
       margin-top: 1em;
     }
     textarea.answer {
@@ -60,6 +60,6 @@
     }
   }
   button.button {
-    margin: 1em;
+    margin: 1em 0 1em 4px;
   }
 }
