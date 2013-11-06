@@ -100,6 +100,7 @@ class image_question
 
         @$sb_svg_src.css('width',w)
         @$sb_svg_src.css('height',h)
+        @$sb_svg_src.css('background-color', '#ffffff')
         @$sb_svg_src.css('background-image',  "url(#{@current_src})")
         @$sb_svg_src.css('background-repeat', 'no-repeat')
         @$sb_svg_src.css('background-position', 'center')
