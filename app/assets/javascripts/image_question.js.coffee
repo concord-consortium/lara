@@ -94,8 +94,9 @@ class image_question
         @$sb_svg_src.css('width',w)
         @$sb_svg_src.css('height',h)
         @$sb_svg_src.css('background-image',  "url(#{@current_src})")
-
-        @$sb_svg_src.css('background-size', "#{w}px #{h}px")
+        @$sb_svg_src.css('background-repeat', 'no-repeat')
+        @$sb_svg_src.css('background-position', 'center')
+        @$sb_svg_src.css('background-size', "contain")
         @$sb_svg_src.html(data)
         @shutterbug_svg.getDomSnapshot()
         @hide()
