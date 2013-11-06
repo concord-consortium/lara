@@ -127,6 +127,7 @@ class image_question
   update_display: ->
     @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
                          $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @current_annotation = $("#image_question_annotation_for_#{@image_question_id}").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
     @$thumbnail.hide()
@@ -137,17 +138,24 @@ class image_question
     @$replace_button.hide()
     @$edit_button.hide()
 
-    if (@current_src or @current_thumbnail) and (@$text_response.val() != '')
-      @$edit_button.show()
-      @$replace_button.show()
-      @$drawing_button.hide()
-      @$snapshot_button.hide()
+    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
+      # This is a shutterbug question, so it's answered if there's a thumbnail
+      @show_edit_buttons()
+    else if (@$drawing_button.length > 0) and @current_annotation
+      # This is a drawing question, so an annotation is needed for it to be answered
+      @show_edit_buttons()
 
     if @undo_button
       @undo_button.hide()
     if @last_src
       @$undo_button.show()
     @set_svg_background()
+
+  show_edit_buttons: =>
+    @$edit_button.show()
+    @$replace_button.show()
+    @$drawing_button.hide()
+    @$snapshot_button.hide()
 
   get_svg_canvas: =>
     svgCanvas["#{@svg_canvas_id}"]
