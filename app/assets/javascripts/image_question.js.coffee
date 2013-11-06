@@ -61,24 +61,30 @@ class image_question
 
   create_hooks: ->
     @$snapshot_button.click =>
+      @last_svg = ' '
       @shutterbug.getDomSnapshot()
       @show()
 
     @$drawing_button.click =>
       # Same as snapshot, but without taking the snapshot.
+      @last_svg = ' '
       @show()
 
     @$replace_button.click =>
       @delete_image()
+      @last_svg = ' '
       @shutterbug.getDomSnapshot()
       @show()
 
     @$edit_button.click =>
+      # Save @last_svg so cancel will work
+      @last_svg = sketchily_decode64($("#image_question_annotation_for_#{@image_question_id}").val())
       @show()
       @set_svg_background()
 
     @$cancel_button.click =>
-      @reset_image() # This doesn't seem to remove active drawing elements
+      @last_svg = ' ' unless @last_svg
+      @reset_image()
       @clear_text_response()
       @hide()
 
