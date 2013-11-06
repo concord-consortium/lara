@@ -126,8 +126,8 @@ class image_question
       # if the form is still open it would make sense to put the error there
 
   update_display: ->
-    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
-                         $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @annotated_url = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
+    @current_thumbnail = @annotated_url || $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @current_annotation = $("#image_question_annotation_for_#{@image_question_id}").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
@@ -142,7 +142,7 @@ class image_question
     if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
       # This is a shutterbug question, so it's answered if there's a thumbnail
       @show_edit_buttons()
-    else if (@$drawing_button.length > 0) and @current_annotation
+    else if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
       # This is a drawing question, so an annotation is needed for it to be answered
       @show_edit_buttons()
 
