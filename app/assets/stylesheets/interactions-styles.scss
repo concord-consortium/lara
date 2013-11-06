@@ -1,7 +1,8 @@
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
-@import "project/rites_fonts";
-@import "project/rites-styleguide";
+/* NOTE HAS imports although this isn't HAS. */
+@import "project/has-ngs_fonts";
+@import "project/has-ngs-styleguide";
 
 // *********************************************
 // Table of Contents
@@ -936,6 +937,11 @@ input:disabled {
   opacity: 0.3;
 }
 
+/* "Report of my work" button */
+.submit.report .button {
+  margin: 0;
+}
+
 // ******************************************
 //  10. Sidebar
 // ******************************************
@@ -1409,6 +1415,11 @@ footer {
 }
 
 .intro-mod.index-mod a {
+  text-decoration: none;
+}
+
+/* Button links shouldn't have underline */
+div.submit a:hover {
   text-decoration: none;
 }
 

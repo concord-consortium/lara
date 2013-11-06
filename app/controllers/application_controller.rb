@@ -133,8 +133,7 @@ class ApplicationController < ActionController::Base
     end
 
     # FIXME this will create a run even if update_portal_session causes a redirect
-    @run = Run.includes([:image_question_answers, :open_response_answers, :multiple_choice_answers]).
-               lookup(@session_key, @activity, current_user, portal) # This creates a new key if one didn't exist before
+    @run = Run.lookup(@session_key, @activity, current_user, portal) # This creates a new key if one didn't exist before
     @sequence_run = @run.sequence_run if @run.sequence_run
     set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
   end

@@ -700,6 +700,10 @@ div.nav-menu-top {
 .question {
   margin: 0 0 52px;
   @extend .cf;
+  .answer_text {
+    font-style: italic;
+    font-size: 0.9em;
+  }
 }
 
 .challenge {

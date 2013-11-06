@@ -50,7 +50,7 @@ describe 'SaveOnChange', () ->
       runs ->
         enter_text_area($("#live-textarea"),text_to_type)
         expect($("#live-textarea").text()).toBe text_to_type
-      waits 700 #wait-interval-s
+      waits 2100 #wait-interval-s - NOTE dependence on magic number from main script
       runs ->
         request = mostRecentAjaxRequest();
         expect(request.url).toBe('/embeddable/open_response_answers/165');

@@ -1,38 +1,40 @@
-#image_question_answer_form {
-  .image_gallery {
-    font: 400 100% lato, arial, helvetica, sans-serif;
-    font-family:  lato, arial, helvetica, sans-serif;
-    font-size: 1.2em;
-    .title {
-      font-weight: bold;
-      font-size: 2em;
-      margin-bottom: 0.5em
+.image_gallery {
+  font: 400 100% lato, arial, helvetica, sans-serif;
+  font-family:  lato, arial, helvetica, sans-serif;
+  font-size: 1.2em;
+  .title {
+    font-weight: bold;
+    font-size: 2em;
+    margin-bottom: 0.5em
+  }
+  .instructions {
+    font-weight: bold;
+    font-size: 1.3em;
+    line-height: 1.5em;
+    padding: 5px;
+  }
+  table {
+    width: 100%;
+    margin-bottom: 2em;
+    td {
+      padding: 1em;
+      padding-bottom: 2em;
     }
-    table {
-      width: 100%;
-      margin-bottom: 2em;
-      td {
-        padding: 1em;
-        padding-bottom: 2em;
-      }
-      td.text_response {
-        width: 65%;
-      }
-    }
-    textarea.answer {
-      margin-top: 1em;
-      width: 100%;
-    }
-    button {
-      margin-right: 1em;
-    }
-    img {
-      min-height: 100px;
-      min-width: 200px;
-      border: none;
-      background-color: white;
+    td.text_response {
+      width: 65%;
     }
   }
+  button {
+    margin-right: 1em;
+  }
+  img {
+    min-height: 100px;
+    min-width: 200px;
+    border: none;
+    background-color: white;
+  }
+}
+#image_question_answer_form {
   img.thumbnail {
     height: 25px;
   }
@@ -40,7 +42,24 @@
 .tmp_svg {
   border: 0px;
   margin: 0px;
-  postition: fixed;
+  position: fixed;
   z-index: 1000;
   background-repeat: no-repeat;
+}
+.under_image {
+  .text_response {
+    .prompt {
+      float: left;
+      width: 330px;
+      margin-top: 1em;
+    }
+    textarea.answer {
+      margin-top: 1em;
+      width: 250px;
+      float: left;
+    }
+  }
+  button.button {
+    margin: 1em 0 1em 4px;
+  }
 }

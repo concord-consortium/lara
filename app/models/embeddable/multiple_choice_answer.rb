@@ -16,14 +16,6 @@ module Embeddable
       :foreign_key => 'answer_id',
       :association_foreign_key => 'choice_id'
 
-    scope :by_question, lambda { |q|
-      {:conditions => { :multiple_choice_id => q.id}}
-    }
-
-    scope :by_run, lambda { |r|
-      {:conditions => { :run_id => r.id }}
-    }
-
     delegate :name,                :to  => :question
     delegate :prompt,              :to  => :question
     delegate :choices,             :to  => :question
@@ -32,6 +24,10 @@ module Embeddable
     delegate :show_as_menu,        :to  => :question
 
     after_update :send_to_portal
+
+    def self.by_question(q)
+      where(:multiple_choice_id => q.id)
+    end
 
     # render the text of the answers
     def answer_texts

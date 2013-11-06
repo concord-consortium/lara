@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/concord-consortium/sketchily.git
-  revision: 660c0bbff0d3795411f7f17b2e0c918b422f1800
+  revision: 29f0a66659692d606d8698038a4159217d635380
   branch: concord
   specs:
     sketchily (1.5.0)
@@ -211,7 +211,7 @@ GEM
     jquery-ui-rails (4.0.4)
       jquery-rails
       railties (>= 3.1.0)
-    json (1.8.0)
+    json (1.8.1)
     jwt (0.1.8)
       multi_json (>= 1.5)
     launchy (2.3.0)
@@ -231,7 +231,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25)
-    mini_portile (0.5.1)
+    mini_portile (0.5.2)
     multi_json (1.8.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
@@ -244,7 +244,7 @@ GEM
     net-ssh (2.6.8)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    newrelic_rpm (3.6.7.159)
+    newrelic_rpm (3.6.8.168)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
