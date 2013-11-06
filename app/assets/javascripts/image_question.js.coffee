@@ -68,6 +68,7 @@ class image_question
     @$drawing_button.click =>
       # Same as snapshot, but without taking the snapshot.
       @last_svg = ' '
+      @set_svg_background()
       @show()
 
     @$replace_button.click =>
