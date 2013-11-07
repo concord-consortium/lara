@@ -738,6 +738,9 @@
 
 		$loaded = $tag(div, 'LoadedContent').append(object);
 		
+        // Hide the "Saving" box so it won't interfere with the close link
+        $('#save').css('display', 'none');
+
 		function getWidth() {
 			settings.w = settings.w || $loaded.width();
             settings.w = settings.minw && settings.minw > settings.w ? settings.minw : settings.w;
@@ -1114,6 +1117,9 @@
 			
 			$overlay.fadeTo(settings.fadeOut || 0, 0);
 			
+            // Restore save box
+            $('#save').css('display', 'inherit');
+
 			$box.stop().fadeTo(settings.fadeOut || 0, 0, function () {
 			
 				$box.add($overlay).css({'opacity': 1, cursor: 'auto'}).hide();
