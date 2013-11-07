@@ -17,7 +17,7 @@ class LightweightActivity < ActiveRecord::Base
 
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
-  validates_length_of :name, :maximum => 50
+  # validates_length_of :name, :maximum => 50
 
   # Just a way of getting self.pages with the embeddables eager-loaded
   def pages_with_embeddables
