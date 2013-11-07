@@ -143,7 +143,6 @@ div.activity-mod>div.site-width {
   }
 
   &.logo-l {
-    min-width: 75%;
     float: left;
     text-align: left;
   }
@@ -1415,6 +1414,11 @@ footer {
 
 .intro-mod.index-mod a {
   text-decoration: none;
+}
+
+/* Sequences */
+.logo-l .sequence_logo_block {
+  width: 630px; /* Narrower because of the wide HAS logo */
 }
 
 /* Button links shouldn't have underline */
