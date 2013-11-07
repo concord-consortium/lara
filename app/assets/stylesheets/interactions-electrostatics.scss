@@ -1,19 +1,8 @@
 body {
-  background-image: url('/assets/interactions/560070main_lightning_lg.jpg'); /* 1 */
-  background-image: url('/assets/interactions/molnii-10.jpg');               /* 2 */
-  background-image: url('/assets/interactions/Natural_Phenomena.jpg');       /* 3 */
-  background-image: url('/assets/interactions/jacobs_ladder.jpg'); /* default */
-  background-position-x: -550px;
-}
-
-.sequence_logo_block {
-  width: 800px; /* Leave room for logo in header */
-  img {
-    float: left;
-  }
-  h2 {
-    padding-left: 0;
-    left: 10px;
-    position: relative;
-  }
+  /* Proposed background images - hold for later 07Nov2013 */
+  /* background-image: url('/assets/interactions/560070main_lightning_lg.jpg'); */
+  /* background-image: url('/assets/interactions/molnii-10.jpg'); */
+  /* background-image: url('/assets/interactions/Natural_Phenomena.jpg'); */
+  /* background-image: url('/assets/interactions/jacobs_ladder.jpg'); */
+  /* background-position-x: -550px; Move the last one to the left */
 }

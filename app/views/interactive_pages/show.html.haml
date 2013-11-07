@@ -4,10 +4,12 @@
 .content-hdr
   %h2.h2
     = @page.lightweight_activity.name
+
 .intro-mod
-  %h4.h4
-    = @page.name
-  - if @page.show_introduction
+  - unless @page.name.blank?
+    %h4.h4
+      = @page.name
+  - if @page.show_introduction && !@page.text.blank?
     .intro-txt!= @page.text
 
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030

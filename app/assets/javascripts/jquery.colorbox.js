@@ -738,6 +738,9 @@
 
 		$loaded = $tag(div, 'LoadedContent').append(object);
 		
+        // Hide the "Saving" box so it won't interfere with the close link
+        $('#save').css('display', 'none');
+
 		function getWidth() {
 			settings.w = settings.w || $loaded.width();
             settings.w = settings.minw && settings.minw > settings.w ? settings.minw : settings.w;
@@ -997,30 +1000,58 @@
 					};
                     if (photo.width > photo.height) {
                         if (settings.maxw && photo.width > settings.maxw) {
-                            // Reduce to the max width
+                            // Reduce to the max width || max height
                             percent = (photo.width - settings.maxw) / photo.width;
+                            if (photo.height - (photo.height * percent) > settings.maxh) {
+                                // Still too big, do it by height
+                                percent = (photo.height - settings.maxh) / photo.height;
+                            }
                             setResize();
                         } else if (settings.minw && photo.width < settings.minw) {
                             // Expand photo to the minimum width
                             percent = settings.minw / photo.width;
+                            // Validate that we aren't over height
+                            if (settings.maxh && (photo.height * percent) > settings.maxh) {
+                                // Get a better percent
+                                percent = settings.maxh / photo.height;
+                            }
                             setResize();
                         } else if (settings.maxw && photo.width < settings.maxw) {
                             // Expand photo to the max width
                             percent = settings.maxw / photo.width;
+                            // Validate that we aren't over height
+                            if (settings.maxh && (photo.height * percent) > settings.maxh) {
+                                // Get a better percent
+                                percent = settings.maxh / photo.height;
+                            }
                             setResize();
                         }
                     } else {
                         if (settings.maxh && photo.height > settings.maxh) {
-                            // Reduce to the max height
-                            percent = (photo.height - settings.mh) / photo.height;
+                            // Reduce to the max width || max height
+                            percent = (photo.height - settings.maxh) / photo.height;
+                            if (photo.width - (photo.width * percent) > settings.maxw) {
+                                // Still too wide, use maxw
+                                percent = (photo.width - settings.maxw) / photo.width;
+                            }
                             setResize();
                         } else if (settings.minh && photo.height < settings.minh) {
                             // Expand photo to the minimum height
-                            percent = settings.minh / photo.height
+                            percent = settings.minh / photo.height;
+                            // Validate that we aren't over width
+                            if (settings.maxw && (photo.width * percent) > settings.maxw) {
+                                // Get a better percent
+                                percent = settings.maxw / photo.width;
+                            }
                             setResize();
                         } else if (settings.maxh && photo.height < settings.maxh) {
                             // Expand to the max height
                             percent = settings.maxh / photo.height;
+                            // Validate that we aren't over width
+                            if (settings.maxw && (photo.width * percent) > settings.maxw) {
+                                // Get a better percent
+                                percent = settings.maxw / photo.width;
+                            }
                             setResize();
                         }
                     }
@@ -1086,6 +1117,9 @@
 			
 			$overlay.fadeTo(settings.fadeOut || 0, 0);
 			
+            // Restore save box
+            $('#save').css('display', 'inherit');
+
 			$box.stop().fadeTo(settings.fadeOut || 0, 0, function () {
 			
 				$box.add($overlay).css({'opacity': 1, cursor: 'auto'}).hide();
