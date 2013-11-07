@@ -6,15 +6,3 @@ body {
   /* background-image: url('/assets/interactions/jacobs_ladder.jpg'); */
   /* background-position-x: -550px; Move the last one to the left */
 }
-
-.sequence_logo_block {
-  width: 800px; /* Leave room for logo in header */
-  img {
-    float: left;
-  }
-  h2 {
-    padding-left: 0;
-    left: 10px;
-    position: relative;
-  }
-}

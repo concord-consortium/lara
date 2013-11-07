@@ -111,8 +111,14 @@ footer.sequence_run {
 
 .sequence_logo_block {
   display: block;
+  width: 780px; /* Leave room for logo in header */
+  img {
+    float: left;
+  }
   h3, h2, h1 {
-    padding-left: 0.5em;
+    padding-left: 0;
+    left: 10px;
+    position: relative;
     display: inline;
     clear: none;
   }
