@@ -3,9 +3,10 @@
 
 %p#notice= notice
 
-.sequence_info
-  .description
-    = @sequence.description.html_safe
+- unless @sequence.description.blank?
+  .sequence_info
+    .description
+      = @sequence.description.html_safe
 
 .estimated-time
   Estimated Time to Complete This Module:
