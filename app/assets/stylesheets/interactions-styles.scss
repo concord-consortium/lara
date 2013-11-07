@@ -38,7 +38,7 @@ em    { font-style: italic; }
 
 header,
 footer {
-  margin: 0 0 26px;
+  margin: 0 0 13px;
   color: white;
 }
 
@@ -133,7 +133,7 @@ div.activity-mod>div.site-width {
 
 .site-logo-mod {
   @extend .cf;
-  padding: 13px 0;
+  padding: 13px 0 0;
 }
 
 .site-logo {
@@ -162,7 +162,7 @@ div.activity-mod>div.site-width {
 // *********************************************
 
 .activity-nav-mod {
-  margin: 0 0 40px;
+  margin: 0 0 20px;
   position: relative;
   width: 100%;
   height: 50px;
@@ -204,7 +204,7 @@ div.activity-mod>div.site-width {
 
 // This controlls the layout of the nav
 .l-nav {
-      @include ui-grid-2(60%, 40%, 5%);
+      @include ui-grid-2(70%, 30%, 5%);
       background-color: $capecod;
       height: 50px;
       @include border-radius(2px);
@@ -573,8 +573,9 @@ div.nav-menu-top {
 
 // Headline block
 .content-hdr {
+  display: none;
   font-family: $helv-reg;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 
   .h2 {
     // font-family: $helv-light;
@@ -582,7 +583,6 @@ div.nav-menu-top {
     // font-weight: normal;
     letter-spacing: -1px;
     color: $drk-orange;
-    display: none;
   }
 }
 
@@ -593,7 +593,7 @@ div.nav-menu-top {
   font-size: 16px;
   line-height: 1.45em;
   font-family: $helv-reg;
-  margin-bottom: 39px;
+  margin-bottom: 19px;
 
  .h4 {
     font-weight: normal;
