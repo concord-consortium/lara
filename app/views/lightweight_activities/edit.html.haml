@@ -19,7 +19,7 @@
     .submit
       = f.submit "Save", :id => 'save-top'
     = field_set_tag 'Activity Name' do
-      = f.text_field :name, :maxlength => 50
+      = f.text_field :name
     = field_set_tag 'Theme' do
       = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
     - if current_user.is_admin
