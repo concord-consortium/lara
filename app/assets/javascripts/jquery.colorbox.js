@@ -997,30 +997,58 @@
 					};
                     if (photo.width > photo.height) {
                         if (settings.maxw && photo.width > settings.maxw) {
-                            // Reduce to the max width
+                            // Reduce to the max width || max height
                             percent = (photo.width - settings.maxw) / photo.width;
+                            if (photo.height - (photo.height * percent) > settings.maxh) {
+                                // Still too big, do it by height
+                                percent = (photo.height - settings.maxh) / photo.height;
+                            }
                             setResize();
                         } else if (settings.minw && photo.width < settings.minw) {
                             // Expand photo to the minimum width
                             percent = settings.minw / photo.width;
+                            // Validate that we aren't over height
+                            if (settings.maxh && (photo.height * percent) > settings.maxh) {
+                                // Get a better percent
+                                percent = settings.maxh / photo.height;
+                            }
                             setResize();
                         } else if (settings.maxw && photo.width < settings.maxw) {
                             // Expand photo to the max width
                             percent = settings.maxw / photo.width;
+                            // Validate that we aren't over height
+                            if (settings.maxh && (photo.height * percent) > settings.maxh) {
+                                // Get a better percent
+                                percent = settings.maxh / photo.height;
+                            }
                             setResize();
                         }
                     } else {
                         if (settings.maxh && photo.height > settings.maxh) {
-                            // Reduce to the max height
-                            percent = (photo.height - settings.mh) / photo.height;
+                            // Reduce to the max width || max height
+                            percent = (photo.height - settings.maxh) / photo.height;
+                            if (photo.width - (photo.width * percent) > settings.maxw) {
+                                // Still too wide, use maxw
+                                percent = (photo.width - settings.maxw) / photo.width;
+                            }
                             setResize();
                         } else if (settings.minh && photo.height < settings.minh) {
                             // Expand photo to the minimum height
-                            percent = settings.minh / photo.height
+                            percent = settings.minh / photo.height;
+                            // Validate that we aren't over width
+                            if (settings.maxw && (photo.width * percent) > settings.maxw) {
+                                // Get a better percent
+                                percent = settings.maxw / photo.width;
+                            }
                             setResize();
                         } else if (settings.maxh && photo.height < settings.maxh) {
                             // Expand to the max height
                             percent = settings.maxh / photo.height;
+                            // Validate that we aren't over width
+                            if (settings.maxw && (photo.width * percent) > settings.maxw) {
+                                // Get a better percent
+                                percent = settings.maxw / photo.width;
+                            }
                             setResize();
                         }
                     }
