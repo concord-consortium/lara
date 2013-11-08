@@ -202,7 +202,7 @@ div.activity-mod>div.site-width {
 
 // This controlls the layout of the nav
 .l-nav {
-      @include ui-grid-2(60%, 40%, 5%);
+      @include ui-grid-2(70%, 30%, 5%);
       background-color: $capecod;
       height: 50px;
       @include border-radius(2px);
@@ -588,6 +588,7 @@ div.nav-menu-top {
 
 // Intro block
 .intro-mod {
+  clear: left;
   font-size: 16px;
   line-height: 1.45em;
   font-family: $helv-reg;
