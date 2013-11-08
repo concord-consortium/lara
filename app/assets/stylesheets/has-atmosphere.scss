@@ -1,3 +1,5 @@
+@import "partials/base";
+
 body {
   background-image: url('/assets/has-bg/airPollution_background2.jpg');
   background-position-y: 45%;
@@ -6,4 +8,5 @@ body {
 .sequence_logo_block h2 {
   color: #6d6d6d;
   font-family: $helv-bold;
+  font-size: 24pt;
 }
