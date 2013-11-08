@@ -52,7 +52,7 @@ class InteractivePagesController < ApplicationController
       if @page.update_attributes(params[:interactive_page])
         if request.xhr?
           # *** respond with the new value ***
-          render :text => params[:interactive_page].values.first
+          render :text => params[:interactive_page].values.first and return
         end
         format.html do
           @page.reload
@@ -62,7 +62,7 @@ class InteractivePagesController < ApplicationController
       else
         if request.xhr?
           # *** respond with the old value ***
-          render :text => @page[params[:interactive_page].keys.first]
+          render :text => @page[params[:interactive_page].keys.first] and return
         end
         format.html do
           flash[:warning] = "There was a problem updating Page #{@page.name}."
