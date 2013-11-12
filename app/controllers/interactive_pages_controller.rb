@@ -144,10 +144,7 @@ class InteractivePagesController < ApplicationController
     end
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end
