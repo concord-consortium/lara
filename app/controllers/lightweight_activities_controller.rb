@@ -153,7 +153,7 @@ class LightweightActivitiesController < ApplicationController
     answers = @activity.answers(@run)
     answers.each { |a| a.mark_dirty }
     # Kick off a resubmit
-    @run.submit_dirty_answers('Bearer %s' % current_user.authentication_token)
+    answers.last.send_to_portal('Bearer %s' % current_user.authentication_token)
     flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
     redirect_to :back
   end
