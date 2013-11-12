@@ -47,7 +47,7 @@ module Embeddable
     def update_from_form_params(params)
       if params && params[:answers].kind_of?(Array)
         params[:answers] = params[:answers].map { |a| Embeddable::MultipleChoiceChoice.find(a) }
-      elsif !params[:answers].blank?
+      elsif params && !params[:answers].blank?
         params[:answers] = [Embeddable::MultipleChoiceChoice.find(params[:answers])]
       else
         params[:answers] = []
