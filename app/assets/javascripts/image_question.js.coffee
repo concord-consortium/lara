@@ -147,10 +147,10 @@ class image_question
       # This is a drawing question, so an annotation is needed for it to be answered
       @show_edit_buttons()
 
-    if @undo_button
-      @undo_button.hide()
-    if @last_src
-      @$undo_button.show()
+    # if @undo_button
+    #   @undo_button.hide()
+    # if @last_src
+    #   @$undo_button.show()
     @set_svg_background()
 
   show_edit_buttons: =>
