@@ -151,4 +151,12 @@ class ApplicationController < ActionController::Base
       format.html
     end
   end
+
+  def respond_with_nothing
+    # This is useful for AJAX actions, because it returns a 200 status code but doesn't bother generating an actual response.
+    respond_to do |format|
+      format.js { render :nothing => true }
+      format.html { render :nothing => true }
+    end
+  end
 end
