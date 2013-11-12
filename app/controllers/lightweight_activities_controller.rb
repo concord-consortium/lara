@@ -16,6 +16,8 @@ class LightweightActivitiesController < ApplicationController
     @official_activities  = @filter.collection.official
   end
 
+  # These are the runtime (student-facing) actions, show and summary
+
   def show
     authorize! :read, @activity
     current_theme
@@ -27,6 +29,18 @@ class LightweightActivitiesController < ApplicationController
 
     @pages = @activity.pages
   end
+
+  def summary
+    authorize! :read, @activity
+    current_theme
+    current_project
+    if !params[:response_key]
+      redirect_to summary_with_response_path(@activity, @session_key) and return
+    end
+    @answers = @activity.answers(@run)
+  end
+
+  # The remaining actions are all authoring actions.
 
   def new
     @activity = LightweightActivity.new()
@@ -129,16 +143,6 @@ class LightweightActivitiesController < ApplicationController
     else
       redirect_to edit_activity_path(@activity)
     end
-  end
-
-  def summary
-    authorize! :read, @activity
-    current_theme
-    current_project
-    if !params[:response_key]
-      redirect_to summary_with_response_path(@activity, @session_key) and return
-    end
-    @answers = @activity.answers(@run)
   end
 
   def resubmit_answers
