@@ -68,21 +68,20 @@ class LightweightActivitiesController < ApplicationController
   def update
     authorize! :update, @activity
     update_activity_changed_by
-    if @activity.update_attributes(params[:lightweight_activity])
-      if request.xhr?
+    if request.xhr?
+      if @activity.update_attributes(params[:lightweight_activity])
         render :text => params[:lightweight_activity].values.first
       else
-        flash[:notice] = "Activity #{@activity.name} was updated."
-        redirect_to edit_activity_path(@activity)
+        render :text => "There was a problem updating your activity. Please reload the page and try again."
       end
     else
-      # I'd like to use the activity name here, but what if that's what's the invalid update?
-      if request.xhr?
-        render :text => "There was a problem updating your activity. Please reload the page and try again."
+      if @activity.update_attributes(params[:lightweight_activity])
+        flash[:notice] = "Activity #{@activity.name} was updated."
       else
+        # I'd like to use the activity name here, but what if that's what's the invalid update?
         flash[:warning] = "There was a problem updating your activity."
-        redirect_to edit_activity_path(@activity)
       end
+      redirect_to edit_activity_path(@activity)
     end
   end
 
@@ -148,16 +147,13 @@ class LightweightActivitiesController < ApplicationController
   def resubmit_answers
     authorize! :manage, :all
     if !params[:response_key]
+      # If we don't know the run, we can't do this.
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
     answers = @activity.answers(@run)
-    answers.each do |a|
-      if a == answers.last
-        a.send_to_portal('Bearer %s' % current_user.authentication_token)
-      else
-        a.mark_dirty
-      end
-    end
+    answers.each { |a| a.mark_dirty }
+    # Kick off a resubmit
+    @run.submit_dirty_answers('Bearer %s' % current_user.authentication_token)
     flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
     redirect_to :back
   end
