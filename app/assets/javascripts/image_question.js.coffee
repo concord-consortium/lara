@@ -191,7 +191,7 @@ class image_question
     @$content.dialog("open");
 
   set_image_source: (src) ->
-    @last_src = @current_src
+    @last_src = @current_src unless @current_src == ""
     @current_src = src
     @$current_src_field.val(src)
     @update_display()
