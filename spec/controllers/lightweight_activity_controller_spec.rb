@@ -175,10 +175,10 @@ describe LightweightActivitiesController do
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
-        pending "Long names are no longer invalid, make this invalid another way"
+        LightweightActivity.any_instance.stub(:save).and_return(false)
         existing_activities = LightweightActivity.count
 
-        post :create, {:lightweight_activity => {:name => 'This actvity has a really, really long name, so long it should fail to be created because the validation on the save should fail, remember there is a limit on the length of names somewhere, right? I mean, seriously, how much text do you expect to fit in a title block. You would think the designer would be ready for it to wrap, but no.'}}
+        post :create, {:lightweight_activity => { :name => 'This update will fail.'} }
 
         flash[:warning].should == 'There was a problem creating the new Lightweight Activity.'
         response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
@@ -215,9 +215,9 @@ describe LightweightActivitiesController do
       end
 
       it "should redirect to the activity's edit page on error" do
-        pending "Long names are no longer invalid, make this invalid another way"
+        LightweightActivity.any_instance.stub(:save).and_return(false)
         act
-        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This is another one of those really long names, hopefully long enough to trip validation and get this to be an invalid update'}}
+        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This update will fail' } }
 
         flash[:warning].should == "There was a problem updating your activity."
         response.should redirect_to(edit_activity_path(act))
@@ -433,7 +433,6 @@ describe LightweightActivitiesController do
       end
 
       it 'marks answers as dirty' do
-        # pending "message watching isn't working"
         [answer1, answer2]
         ar.answers.length.should_not be(0)
         answer1.should_receive(:mark_dirty)
@@ -442,7 +441,6 @@ describe LightweightActivitiesController do
       end
 
       it 'calls send_to_portal for the last answer' do
-        # pending "message watching isn't working"
         [answer1, answer2]
         ar.answers.length.should_not be(0)
         answer2.should_receive(:send_to_portal).with('Bearer ')
