@@ -98,6 +98,6 @@ LightweightStandalone::Application.routes.draw do
   get "/activities/:activity_id/pages/:id/:response_key" => 'interactive_pages#show', :as => 'page_with_response', :constraints => { :id => /\d+/, :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/summary/:response_key" => 'lightweight_activities#summary', :as => 'summary_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/resubmit_answers/:response_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/:response_key" => 'lightweight_activities#show', :as => 'activity_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
+  # get "/activities/:activity_id/:response_key" => 'lightweight_activities#show', :as => 'activity_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
 end
