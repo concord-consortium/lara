@@ -323,6 +323,22 @@ describe InteractivePagesController do
         flash[:warning].should == "There was a problem updating Page #{page1.name}."
         response.should redirect_to(edit_activity_page_path(act, page1))
       end
+
+      context 'when the request is XHR' do
+        it 'returns the new text of the first value' do
+          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+
+          response.body.should match /This page now has sidebar text./
+        end
+
+        it 'returns the old text if the update fails' do
+          InteractivePage.any_instance.stub(:update_attributes).and_return(false)
+          old_name = page1.name
+          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This new name will fail.' }}
+
+          response.body.should match /#{old_name}/
+        end
+      end
     end
 
     describe 'destroy' do
