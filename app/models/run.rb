@@ -115,6 +115,12 @@ class Run < ActiveRecord::Base
     answers.map {|a| a.portal_hash}
   end
 
+  def clear_answers
+    # It can be beneficial, particularly for authors, to come to a page/activity
+    # with previous answers erased, so let's make it easy to clear them.
+    answers.each { |a| a.destroy }
+  end
+
   def all_responses_for_portal
     answers_hash.to_json
   end

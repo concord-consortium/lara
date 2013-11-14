@@ -44,6 +44,7 @@ LightweightStandalone::Application.routes.draw do
       get 'resubmit_answers'
       get 'publish'
       get 'duplicate'
+      get 'preview'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do

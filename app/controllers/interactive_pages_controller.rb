@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_run_key, :only => [:show]
+  before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
   layout 'runtime', :only => [:show]
@@ -24,6 +24,13 @@ class InteractivePagesController < ApplicationController
       format.html
       format.xml
     end
+  end
+
+  def preview
+    # This is "show" but it clears answers first
+    authorize! :update, @page # Authors only
+    @run.clear_answers
+    show
   end
 
   def new
