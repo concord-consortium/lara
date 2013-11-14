@@ -25,15 +25,7 @@ class ThemesController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @theme.update_attributes(params[:theme])
-        format.html { redirect_to edit_theme_url(@theme), notice: 'Theme was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @theme.errors, status: :unprocessable_entity }
-      end
-    end
+    simple_update(@theme)
   end
 
   def destroy

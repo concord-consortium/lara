@@ -200,6 +200,9 @@ class Run < ActiveRecord::Base
       if dirty_answers.empty?
         self.mark_clean
       else
+        # I'm not sure about using this method here, because it raises an error when the
+        # "problem" may just be that (a) new dirty answer(s) were submitted between the
+        # send_to_portal call and the check here.
         abort_job_and_requeue
       end
     else

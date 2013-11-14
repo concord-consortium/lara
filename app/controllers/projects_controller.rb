@@ -35,15 +35,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    respond_to do |format|
-      if @project.update_attributes(params[:project])
-        format.html { redirect_to edit_project_url(@project), notice: 'Project was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
-    end
+    simple_update(@project)
   end
 
   # DELETE /projects/1

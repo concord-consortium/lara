@@ -48,26 +48,24 @@ class InteractivePagesController < ApplicationController
   def update
     authorize! :update, @page
     update_activity_changed_by
-    respond_to do |format|
+    if request.xhr?
       if @page.update_attributes(params[:interactive_page])
-        if request.xhr?
-          # *** respond with the new value ***
-          render :text => params[:interactive_page].values.first and return
-        end
-        format.html do
-          @page.reload
-          flash[:notice] = "Page #{@page.name} was updated."
-          redirect_to edit_activity_page_path(@activity, @page) and return
-        end
+        # *** respond with the new value ***
+        render :text => params[:interactive_page].values.first and return
       else
-        if request.xhr?
-          # *** respond with the old value ***
-          render :text => @page[params[:interactive_page].keys.first] and return
-        end
-        format.html do
+        # *** respond with the old value ***
+        render :text => @page[params[:interactive_page].keys.first] and return
+      end
+    end
+    respond_to do |format|
+      format.html do
+        if @page.update_attributes(params[:interactive_page])
+          @page.reload # In case it's the name we updated
+          flash[:notice] = "Page #{@page.name} was updated."
+        else
           flash[:warning] = "There was a problem updating Page #{@page.name}."
-          redirect_to edit_activity_page_path(@activity, @page) and return
         end
+        redirect_to edit_activity_page_path(@activity, @page) and return
       end
     end
   end
@@ -94,12 +92,10 @@ class InteractivePagesController < ApplicationController
       raise ArgumentError, 'Not a valid Interactive type'
     end
     @page.add_interactive(i)
-    if i.instance_of?(ImageInteractive)
-      param = { :edit_img_int => i.id }
-    elsif i.instance_of?(MwInteractive)
-      param = { :edit_mw_int => i.id }
-    elsif i.instance_of?(VideoInteractive)
-      param = { :edit_vid_int => i.id }
+    param = case i.class.name
+    when "ImageInteractive"   then { :edit_img_int => i.id }
+    when "MwInteractive"      then { :edit_mw_int => i.id }
+    when "VideoInteractive"   then { :edit_vid_int => i.id }
     end
     redirect_to edit_activity_page_path(@activity, @page, param)
   end
@@ -144,10 +140,7 @@ class InteractivePagesController < ApplicationController
     end
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end

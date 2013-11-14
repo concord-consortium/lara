@@ -47,6 +47,30 @@ describe Embeddable::MultipleChoiceAnswer do
     end
   end
 
+  describe '#update_from_form_params' do
+    before(:each) do
+      answer.answers = []
+    end
+
+    it 'turns an array of choice IDs into an array of choices' do
+      answer.update_from_form_params( { :answers => [a1.id, a2.id] } )
+      answer.answers.should include a1
+      answer.answers.should include a2
+    end
+
+    it 'turns a single choice ID into an array with one choice' do
+      answer.update_from_form_params( { :answers => a1.id } )
+      answer.answers.should include a1
+      answer.answers.should_not include a2
+    end
+
+    it 'turns an empty ID into an empty array' do
+      answer.update_from_form_params( { :answers => nil } )
+      answer.answers.should_not include a1
+      answer.answers.should_not include a2
+    end
+  end
+
   describe '#question_index' do
     it 'returns nil if there is no activity' do
       answer.run = nil

@@ -13,6 +13,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   default_value_for :prompt, "why does ..."
 
+  # NOTE: publishing to portal doesn't use this hash. See app/models/lightweight_activity.rb
+  # for the hash used in portal publishing.
   def to_hash
     {
       name: name,

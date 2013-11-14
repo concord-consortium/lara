@@ -99,6 +99,8 @@ class LightweightActivity < ActiveRecord::Base
       elements = []
       page.embeddables.each do |embeddable|
         case embeddable
+          # Why aren't we using the to_hash methods for each embeddable here?
+          # Probably because they don't include the "type" attribute
         when Embeddable::OpenResponse
           elements.push({
                           "type" => "open_response",
@@ -109,7 +111,8 @@ class LightweightActivity < ActiveRecord::Base
           elements.push({
                           "type" => "image_question",
                           "id" => embeddable.id,
-                          "prompt" => embeddable.prompt
+                          "prompt" => embeddable.prompt,
+                          "drawing_prompt" => embeddable.drawing_prompt
                         })
         when Embeddable::MultipleChoice
           choices = []
@@ -128,7 +131,7 @@ class LightweightActivity < ActiveRecord::Base
           }
           elements.push(mc_data)
         else
-          # We don't suppoert this embeddable type right now
+          # We don't support this embeddable type right now
         end
       end
       pages.push({

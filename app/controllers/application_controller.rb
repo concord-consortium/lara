@@ -151,4 +151,24 @@ class ApplicationController < ActionController::Base
       format.html
     end
   end
+
+  def respond_with_nothing
+    # This is useful for AJAX actions, because it returns a 200 status code but doesn't bother generating an actual response.
+    respond_to do |format|
+      format.js { render :nothing => true }
+      format.html { render :nothing => true }
+    end
+  end
+
+  def simple_update(subject)
+    respond_to do |format|
+      if subject.update_attributes(params[subject.class.to_s.downcase.to_sym]) # Surely there's a simpler way?
+        format.html { redirect_to edit_polymorphic_url(subject), notice: "#{subject.class.to_s} was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: subject.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 end

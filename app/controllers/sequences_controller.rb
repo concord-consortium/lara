@@ -117,10 +117,7 @@ class SequencesController < ApplicationController
     end
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_sequence_path(@sequence)
     end
@@ -163,11 +160,12 @@ class SequencesController < ApplicationController
 
     portal = RemotePortal.new(params)
     if session.delete(:did_reauthenticate)
+      # FIXME: what if current_user is nil?
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
     else
       update_portal_session
     end
-    # This creates a new sequnce_run if it doesn't exist.
+    # This creates a new sequence_run if it doesn't exist.
   end
 
 end
