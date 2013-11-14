@@ -89,6 +89,11 @@ describe Run do
     end
   end
 
+  describe '#clear_answers' do
+    it 'removes all answers from the run' do
+    end
+  end
+
   describe 'dirty bit management' do
     describe '#mark_dirty' do
       it 'sets is_dirty bit to true' do

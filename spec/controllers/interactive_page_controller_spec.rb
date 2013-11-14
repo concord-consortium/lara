@@ -203,6 +203,14 @@ describe InteractivePagesController do
       sign_in @user
     end
 
+    describe 'preview' do
+      it 'clears answers from the run' do
+      end
+
+      it 'renders show' do
+      end
+    end
+
     describe 'new' do
       it 'creates a new page and redirects to its edit page' do
         get :new, :activity_id => act.id
