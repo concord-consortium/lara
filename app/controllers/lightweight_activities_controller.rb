@@ -189,6 +189,8 @@ class LightweightActivitiesController < ApplicationController
     case params[:action]
     when 'show'
       return 'runtime'
+    when 'preview'
+      return 'runtime'
     when 'summary'
       return 'summary'
     else

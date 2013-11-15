@@ -5,7 +5,7 @@ class InteractivePagesController < ApplicationController
   before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
-  layout 'runtime', :only => [:show]
+  layout 'runtime', :only => [:show, :preview]
 
   def show
     authorize! :read, @page

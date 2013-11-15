@@ -41,7 +41,7 @@
             = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
             Page sidebar text
   %ul.tasks
-    %li= link_to "Preview", activity_page_path(@activity, @page), :target => 'new'
+    %li= link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
     %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
 
 %div{:class => ["content", "editing", @page.layout.match(/^r-/) ? "stacked-right" : nil]}
