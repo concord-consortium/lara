@@ -20,21 +20,19 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
-    current_theme
-    current_project
     if params[:response_key]
       redirect_to activity_path(@activity) and return
     end
     @run.increment_run_count!
-
-    @pages = @activity.pages
+    setup_show
   end
 
   def preview
     # This is "show" but it clears answers first
     authorize! :update, @activity # Authors only
     @run.clear_answers
-    show
+    setup_show
+    render :show
   end
 
   def summary
@@ -196,5 +194,11 @@ class LightweightActivitiesController < ApplicationController
     else
       return 'application'
     end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @pages = @activity.pages
   end
 end

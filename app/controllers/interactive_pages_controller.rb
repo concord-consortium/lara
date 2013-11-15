@@ -12,14 +12,7 @@ class InteractivePagesController < ApplicationController
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
-
-    current_theme
-    current_project
-    @all_pages = @activity.pages
-    @run.update_attribute(:page, @page)
-    finder = Embeddable::AnswerFinder.new(@run)
-    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
-
+    setup_show
     respond_to do |format|
       format.html
       format.xml
@@ -30,7 +23,8 @@ class InteractivePagesController < ApplicationController
     # This is "show" but it clears answers first
     authorize! :update, @page # Authors only
     @run.clear_answers
-    show
+    setup_show
+    render :show
   end
 
   def new
@@ -164,5 +158,14 @@ class InteractivePagesController < ApplicationController
       @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
       @activity = @page.lightweight_activity
     end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @all_pages = @activity.pages
+    @run.update_attribute(:page, @page)
+    finder = Embeddable::AnswerFinder.new(@run)
+    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
   end
 end
