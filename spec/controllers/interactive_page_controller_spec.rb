@@ -205,9 +205,15 @@ describe InteractivePagesController do
 
     describe 'preview' do
       it 'clears answers from the run' do
+        page1
+        ar.should_receive(:clear_answers)
+        Run.should_receive(:find).and_return(ar)
+        get :preview, :id => page1.id
       end
 
       it 'renders show' do
+        get :preview, :id => page1.id
+        response.should render_template('interactive_pages/show')
       end
     end
 
