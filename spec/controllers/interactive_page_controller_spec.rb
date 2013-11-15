@@ -247,68 +247,11 @@ describe InteractivePagesController do
 
     describe 'edit' do
       context 'when editing an existing page' do
-        it 'displays page fields with edit-in-place capacity' do
-          page1.show_introduction = 1
-          page1.save
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{page1.name}<\/span>/
-          response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page1.text}<\/span>/
-        end
-
-        it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
-          pending 'This is an issue with the editor, not this application'
-          page1.show_introduction = 1
-          page1.show_interactive = 0
-          page1.save
-
-          visit new_user_session_path
-          fill_in "Email", :with => @user.email
-          fill_in "Password", :with => @user.password
-          click_button "Sign in"
-          visit edit_activity_page_path(act, page1)
-
-          find('#interactive_page_text_trigger').click
-          find('#interactive_page_text')
-          within_frame('interactive_page_text-wysiwyg-iframe') do
-            page.should have_content(page1.text)
-            # TODO: How can I put content in the WYSIWYG editor?
-          end
-          find('.wysiwyg li.html').click()
-          fill_in 'interactive_page[text]', :with => 'This is edited text'
-          find('.editable button[type="submit"]').click
-          page.should have_content('This is edited text')
-        end
-
-        it 'has links to show the page, return to the activity, or add another page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[\s]*Preview[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/edit"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{act.name}[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
-        end
-
-        it 'has links for adding Embeddables to the page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_embeddable"[^<]*>/
-          response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
-        end
-
-        it 'has links for adding Interactives to the page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_interactive"[^<]*>/
-          response.body.should match /<select[^>]+name="interactive_type"[^>]*>/
-        end
-
-        it 'shows navigation links' do
-          page1
-          page2
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
+        it 'assigns variables' do
+          get :edit, :activity_id => act.id, :id => page1.id
+          assigns(:page).should == page1
+          assigns(:activity).should == act
+          assigns(:all_pages).should_not be_nil
         end
       end
     end
