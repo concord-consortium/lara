@@ -27,13 +27,23 @@ select_element = (elem,val) ->
   e2.target = elem
   elem.trigger(e2)
 
+ajax_matching = (url, params, delay=2100, method="POST") ->
+  waits delay
+  runs ->
+    request = mostRecentAjaxRequest();
+    expect(request.url).toBe(url)
+    expect(request.method).toBe(method)
+    expect(request.params).toEqual(params)
+
 describe 'SaveOnChange', () ->
   save_on_change   = null
 
   beforeEach () ->
     loadFixtures "save-on-change.html"
     jasmine.Ajax.useMock()
-    save_on_change = new SaveOnChange($("#openresponse"));
+    SaveOnChange.keyUpinterval = 300 # speed things up for test
+    page = new SaveOnChangePage()
+    save_on_change = new SaveOnChange($("#openresponse"), page);
 
   describe "a sane testing environment", () ->
     it 'has an instance of save_on_change defined', () ->
@@ -50,28 +60,28 @@ describe 'SaveOnChange', () ->
       runs ->
         enter_text_area($("#live-textarea"),text_to_type)
         expect($("#live-textarea").text()).toBe text_to_type
-      waits 2100 #wait-interval-s - NOTE dependence on magic number from main script
       runs ->
-        request = mostRecentAjaxRequest();
-        expect(request.url).toBe('/embeddable/open_response_answers/165');
-        expect(request.method).toBe('POST');
-        expect(request.params).toEqual('embeddable_open_response_answer%5Banswer_text%5D=this+is+a+test');
+        ajax_matching(
+          '/embeddable/open_response_answers/165',
+          'embeddable_open_response_answer%5Banswer_text%5D=this+is+a+test'
+        )
+
 
   describe "clicking on a live multiple choice button", () ->
     beforeEach () ->
-      new SaveOnChange($("#multiplechoice"))
+      page = new SaveOnChangePage()
+      new SaveOnChange($("#multiplechoice"),page)
 
     it 'should send an ajax request with the current of the selected checkbox', ->
       runs ->
         expect($("#answer_b")).toHaveProp('checked', false)
         click_element($("#answer_b"))
-
       runs ->
         expect($("#answer_b")).toHaveProp('checked', true)
-        request = mostRecentAjaxRequest()
-        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
-        expect(request.method).toBe('POST')
-        expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
+        ajax_matching(
+          '/embeddable/multiple_choice_answers/255',
+          'mc_answer%5Banswers%5D=b'
+        )
 
     it 'should send an ajax request even when the same answer has been sent before', ->
       runs ->
@@ -81,14 +91,15 @@ describe 'SaveOnChange', () ->
 
       runs ->
         expect($("#answer_b")).toHaveProp('checked', true)
-        request = mostRecentAjaxRequest()
-        expect(request.url).toBe('/embeddable/multiple_choice_answers/255')
-        expect(request.method).toBe('POST')
-        expect(request.params).toEqual('mc_answer%5Banswers%5D=b')
+        ajax_matching(
+          '/embeddable/multiple_choice_answers/255',
+          'mc_answer%5Banswers%5D=b'
+        )
 
   describe "selecting something from a pulldown list", () ->
     beforeEach () ->
-      new SaveOnChange($("#pulldown"))
+      page = new SaveOnChangePage()
+      new SaveOnChange($("#pulldown"), page)
 
     it 'should send an ajax request with the current pulldown selection', ->
       runs ->
@@ -96,9 +107,25 @@ describe 'SaveOnChange', () ->
         select_element($("#select"),'select_b')
 
       runs ->
-        request = mostRecentAjaxRequest()
-        expect(request.url).toBe('/embeddable/multiple_choice_answers/279')
-        expect(request.method).toBe('POST')
-        expect(request.params).toEqual('pulldown%5Banswers%5D=select_b')
+        ajax_matching(
+          '/embeddable/multiple_choice_answers/279',
+          'pulldown%5Banswers%5D=select_b'
+        )
+
+  describe "page noticing dirty items", () ->
+    page     = null
+    pulldown = null
+    beforeEach () ->
+      page     = new SaveOnChangePage()
+      pulldown = new SaveOnChange($("#pulldown"), page)
+
+    it 'should notice when items get dirty or save', ->
+      spyOn(pulldown, 'saveNow');
+      runs ->
+        expect($("#select").val()).toBe("")
+        select_element($("#select"),'select_b')
+        click_element($("#navigationlink"))
+        expect(pulldown.saveNow).toHaveBeenCalled();
+
 
 
