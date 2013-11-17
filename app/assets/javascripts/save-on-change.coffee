@@ -32,53 +32,90 @@ class SaveIndicator
 
 
 class SaveOnChange
-  constructor: (@$form) ->
+  changeInterval: 200  # Fire change and blur events almost instantly.
+  keyUpinterval:  2000 # Fire keyup events with a larger delay
+  constructor: (@$form, @page) ->
     @scheduled_job      = null
     @previous_value     = null
-    @update_interval_s  = 2.0
-    @save_indicator     = new SaveIndicator($("#save"))
     @setupEvents()
 
   setupEvents: ->
-    # Fire inputs field changes on 'change' events with no scheduled_jobs
-    @$form.find('input,textarea,select').on 'change', (e) =>
-      @saveElement()
-    @$form.find('input,textarea,select').on 'blur',   (e) =>
-      @saveElement()
-    @$form.find('input,textarea,select').on 'keyup',  (e) =>
-      @schedule()
 
-  saveElement: ->
-      data = @$form.serialize()
-      return if @previous_value == data
-      @save_indicator.showSaving()
-      $.ajax({
-        type: "POST",
-        url: @$form.attr( 'action' ),
-        data: @$form.serialize(),
-        success: (response) =>
-          @previous_value = data
-          @save_indicator.showSaved()
-        error: (jqxhr, status, error) =>
-          @save_indicator.showSaveFailed()
-      })
+    @$form.find('input,textarea,select').on 'change blur', (e) =>
+      @schedule(@changeInterval)
+    @$form.find('input,textarea').on 'keyup',  (e) =>
+      @schedule(@keyUpinterval)
+
+  saveElement:(async = true) ->
+    data = @$form.serialize()
+    @page.saving()
+    $.ajax({
+      type: "POST",
+      async: async,
+      url: @$form.attr( 'action' ),
+      data: @$form.serialize(),
+      success: (response) =>
+        @previous_value = data
+        @page.saved(@)
+        @dirty = false
+      error: (jqxhr, status, error) =>
+        @page.failed(@)
+    })
+
+  saveNow: ->
+    @unschedule()
+    @saveElement(false)
 
   # remove events scheduled for elem
   unschedule: () ->
     clearTimeout(@scheduled_job) if @scheduled_job
     @scheduled_job = null
 
-  schedule:  () ->
+  schedule:  (interval) ->
     @unschedule() # remove any existing events
-    action = () =>
-      @saveElement()
-    @scheduled_job = setTimeout(action, @update_interval_s * 1000)
+    dirty = (@previous_value != @$form.serialize())
+    if dirty
+      @page.mark_dirty(this)
+      action = () =>
+        @saveElement()
+      @scheduled_job = setTimeout(action, interval)
+
+
+class SaveOnChangePage
+  constructor: () ->
+    @save_indicator = new SaveIndicator($("#save"))
+    @intercept_navigation()
+    @forms = []
+    if $('.live_submit').length
+      $('.live_submit').each (i,e) =>
+        @forms.push(new SaveOnChange($(e),@))
+    @dirty_forms = {}
+
+  intercept_navigation: ->
+    $("a").on 'click', (e) =>
+      @force_save_dirty()
+
+  saving: (form) ->
+    @save_indicator.showSaving()
+
+  saved: (form) ->
+    @save_indicator.showSaved()
+    @mark_clean(form)
+
+  failed: (form) ->
+    @save_indicator.showSaveFailed()
+
+  mark_dirty: (form) ->
+    @dirty_forms[form] = form;
+
+  mark_clean: (form) ->
+    delete @dirty_forms[form]
+
+  force_save_dirty: ->
+    for item, value of @dirty_forms
+      value.saveNow()
 
 $(document).ready ->
-  window.SaveOnChange = SaveOnChange
-  if $('.live_submit').length
-    $('.live_submit').each (i,e) =>
-      new SaveOnChange($(e))
-  else
-    # construct the indicator so it will enter its clear state
-    indicator = new SaveIndicator($("#save"))
+  window.SaveOnChangePage = SaveOnChangePage
+  window.SaveOnChange     = SaveOnChange
+  new SaveOnChangePage()
