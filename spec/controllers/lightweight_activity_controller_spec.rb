@@ -82,7 +82,7 @@ describe LightweightActivitiesController do
 
     it 'renders the activity if it exists and is public' do
       page
-      get :show, :id => act.id, :response_key => ar.key
+      get :show, :id => act.id
       assigns[:session_key].should_not be_nil
       response.should be_success
     end
