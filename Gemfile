@@ -26,7 +26,7 @@ gem 'uuidtools'
 gem "httparty"
 gem 'exception_notification'
 gem 'newrelic_rpm'
-gem 'shutterbug', '~>0.1.1'
+gem 'shutterbug', '~>0.1.2'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 # gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 gem 'rack-environmental'

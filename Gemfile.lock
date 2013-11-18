@@ -348,7 +348,7 @@ GEM
       rubyzip
       websocket (~> 1.0.4)
     sexp_processor (4.2.1)
-    shutterbug (0.1.1)
+    shutterbug (0.1.2)
       fog
       rack
     slim (2.0.1)
@@ -444,7 +444,7 @@ DEPENDENCIES
   rspec-rails (~> 2.10.1)
   safe_yaml (~> 0.9.5)
   sass-rails
-  shutterbug (~> 0.1.1)
+  shutterbug (~> 0.1.2)
   sketchily!
   sqlite3
   therubyracer
