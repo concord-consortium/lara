@@ -72,3 +72,6 @@ module LightweightStandalone
                                               :color => "red"        }
   end
 end
+
+# Mute warnings
+SafeYAML::OPTIONS[:default_mode] = :safe
