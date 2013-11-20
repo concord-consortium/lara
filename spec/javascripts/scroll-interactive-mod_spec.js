@@ -152,6 +152,7 @@ describe('InteractiveModule', function () {
 
         describe('setWaypoints', function () {
             it('sets two waypoints', function () {
+                // Actually, it's setting four waypoints, but at two places.
                 expect($.waypoints().vertical.length).toBe(2);
             });
         });
@@ -165,6 +166,7 @@ describe('InteractiveModule', function () {
         });
 
         describe('disableWaypoints', function () {
+            // Not clear how to test this
             xit('disables existing waypoints', function () {
                 expect($.waypoints().vertical.length).toBe(2);
                 interactive.disableWaypoints();
@@ -173,6 +175,7 @@ describe('InteractiveModule', function () {
         });
 
         describe('enableWaypoints', function () {
+            // Not clear how to test this
             xit('enables disabled waypoints', function () {
                 expect($.waypoints().vertical.length).toBe(4);
                 interactive.enableWaypoints();
@@ -182,8 +185,8 @@ describe('InteractiveModule', function () {
     });
 
     describe('getHeight()', function () {
-        it('returns the value of the i_height attribute', function () {
-            expect(interactive.getHeight()).toBe(interactive.iHeight);
+        it('returns the height of the box', function () {
+            expect(interactive.getHeight()).toBe(interactive.module.height());
         });
     });
 });
