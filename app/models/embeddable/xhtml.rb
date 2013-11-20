@@ -10,6 +10,8 @@ module Embeddable
 
     has_many :interactive_pages, :through => :page_items
 
+    validates :content, :html => true
+
     def to_hash
       {
         name: name,

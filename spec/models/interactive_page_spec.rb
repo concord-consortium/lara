@@ -14,6 +14,22 @@ describe InteractivePage do
     page.valid?
   end
 
+  describe 'validation of HTML inputs' do
+    it 'rejects invalid HTML for text' do
+      page.text = '<p>This HTML is invalid.<p>Tag soup.</p>'
+      page.valid?.should be_false
+      page.text = 'This HTML is valid.'
+      page.valid?
+    end
+
+    it 'rejects invalid HTML for the sidebar' do
+      page.sidebar = '<p class="invalid-attribute>This has an invalid attribute.</p>'
+      page.valid?.should be_false
+      page.sidebar = '<p class="valid-attribute">Much better.</p>'
+      page.valid?
+    end
+  end
+
   describe 'layouts' do
     it 'has an array of hashes describing valid layouts' do
       InteractivePage::LAYOUT_OPTIONS.length.should be > 0
