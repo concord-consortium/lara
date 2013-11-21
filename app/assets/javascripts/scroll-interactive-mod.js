@@ -43,6 +43,7 @@ ScrollTrack.prototype.isScrollable = function (interactiveHeight) {
 var InteractiveModule = function (object, scrollTrack) {
     this.module          = object;
     this.lastHeight      = object.height();
+    this.heightCount     = 0;
     this.bMargin         = parseInt(object.css('margin-bottom'), 10);
     this.topBuffer       = 120; // Magic number: how far is the interactive from the page top when we pin it?
     this.fudgeFactor     = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
@@ -172,6 +173,13 @@ $(document).ready(function () {
             scrollingInteractive.lastHeight = $intMod.height();
             scrollingInteractive.clearWaypoints();
             scrollingInteractive.setWaypoints();
+        } else {
+            scrollingInteractive.heightCount++;
+        }
+        // Don't do this forever if it isn't changing.
+        if (scrollingInteractive.heightCount > 2) {
+            console.log('Interactive height seems set, stopping watching.');
+            clearInterval(waypointWatcher);
         }
     }, 2500);
 });
