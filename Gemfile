@@ -83,6 +83,7 @@ group :test, :development do
   # JS unit tests
   gem 'jasmine'
   gem 'jasmine-ajax'
+  gem 'jasmine-jquery-rails'
   gem 'guard-jasmine'
   gem 'jasminerice' # guard-jasmine uses this
 end
