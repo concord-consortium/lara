@@ -1,7 +1,7 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
-var scrollingInteractive, scrollTrack;
+var scrollingInteractive, scrollTrack, waypointWatcher;
 
 // FIXME: This doesn't do well with interactives that change their size on load, i.e. iframes.
 // FIXME: How do we ensure waypoints are set when an image is completely loaded? 
@@ -42,10 +42,13 @@ ScrollTrack.prototype.isScrollable = function (interactiveHeight) {
 // Object to handle fixing of the interactive module
 var InteractiveModule = function (object, scrollTrack) {
     this.module          = object;
+    this.lastHeight      = object.height();
     this.bMargin         = parseInt(object.css('margin-bottom'), 10);
     this.topBuffer       = 120; // Magic number: how far is the interactive from the page top when we pin it?
     this.fudgeFactor     = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
     this.scrollTrack     = scrollTrack;
+
+    this.setWaypoints();
 };
 
 // Wrap the ScrollTrack's isScrollable method
@@ -154,24 +157,22 @@ InteractiveModule.prototype.getHeightWithMargin = function () {
 };
 
 $(document).ready(function () {
-    var $trackEnd = $('#end-scroll-track'),
-        $contentMod = $('.content-mod');
+    var $trackEnd   = $('#end-scroll-track'),
+        $contentMod = $('.content-mod'),
+        $intMod     = $('.pinned');
 
     scrollTrack = new ScrollTrack($contentMod, $trackEnd);
-    scrollingInteractive = new InteractiveModule($('.pinned'), scrollTrack);
+    scrollingInteractive = new InteractiveModule($intMod, scrollTrack);
 
-    // If the interactive is an image, wait for it to load before setting waypoints
-    if ($('.pinned>img').length > 0) {
-        console.log('^^^ Setting event handlers on image.');
-        $('.pinned>img').load( function () {
-            console.log('^^^ Image loaded, setting waypoints.');
+    // Watch for changes to size and re-build waypoints if needed.
+    waypointWatcher = setInterval(function () {
+        // console.log('Checking if height is still ' + scrollingInteractive.lastHeight + 'px.');
+        if (scrollingInteractive.lastHeight !== $intMod.height()) {
+            console.log('Interactive height has changed, clearing and re-setting waypoints.');
+            scrollingInteractive.lastHeight = $intMod.height();
+            scrollingInteractive.clearWaypoints();
             scrollingInteractive.setWaypoints();
-        }).error( function () {
-            console.log('^^^ Image load failed.');
-        });
-    } else {
-        console.log('^^^ No image, setting waypoints.');
-        scrollingInteractive.setWaypoints();
-    }
+        }
+    }, 2500);
 });
 
