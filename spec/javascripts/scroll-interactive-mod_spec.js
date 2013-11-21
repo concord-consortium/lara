@@ -151,6 +151,7 @@ describe('InteractiveModule', function () {
 
     describe('waypoints control', function () {
         beforeEach(function () {
+            $.waypoints('destroy'); // Clear existing waypoints
             interactive.setWaypoints();
         });
 
@@ -163,7 +164,7 @@ describe('InteractiveModule', function () {
 
         describe('clearWaypoints', function () {
             it('removes established waypoints', function () {
-                expect($.waypoints().vertical.length).toBe(4);
+                expect($.waypoints().vertical.length).toBe(2);
                 interactive.clearWaypoints();
                 expect($.waypoints().vertical.length).toBe(0);
             });
