@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/bradphelan/jasminerice.git
+  revision: 091349c27343bfa728b8e5745675f9ddbb7d9699
+  specs:
+    jasminerice (0.1.0)
+      coffee-rails
+
+GIT
   remote: git://github.com/concord-consortium/sketchily.git
   revision: 29f0a66659692d606d8698038a4159217d635380
   branch: concord
@@ -201,9 +208,6 @@ GEM
     jasmine-ajax (0.0.2)
     jasmine-core (1.3.1)
     jasmine-jquery-rails (1.5.9)
-    jasminerice (0.0.10)
-      coffee-rails
-      haml
     journey (1.0.4)
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
@@ -420,7 +424,7 @@ DEPENDENCIES
   jasmine
   jasmine-ajax
   jasmine-jquery-rails
-  jasminerice
+  jasminerice!
   jeditable_wysiwyg_rails!
   jquery-rails
   jquery-ui-rails

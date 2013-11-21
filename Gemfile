@@ -85,7 +85,7 @@ group :test, :development do
   gem 'jasmine-ajax'
   gem 'jasmine-jquery-rails'
   gem 'guard-jasmine'
-  gem 'jasminerice' # guard-jasmine uses this
+  gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
 end
 
 group :test do
