@@ -79,12 +79,16 @@ describe('InteractiveModule', function () {
     describe('fixTop()', function () {
         describe('when the interactive is taller than its column', function () {
             beforeEach(function () {
-                interactive.trackHeight = 300;
-                interactive.iHeight = 600;
-                interactive.fixTop();
+                spyOn(ScrollTrack.prototype, 'isScrollable').andReturn(false);
+                // Have to re-create the test objects to incorporate the spy
+                scrollTrack = new ScrollTrack($('.content-mod'), $('#end-scroll-track'));
+                interactive = new InteractiveModule($('.pinned'), scrollTrack);
+                interactive.module.removeClass('stuck');
             });
 
             it('does nothing', function () {
+                interactive.fixTop();
+                expect(scrollTrack.isScrollable).toHaveBeenCalled();
                 expect(interactive.module).not.toHaveClass('stuck');
             });
         });
