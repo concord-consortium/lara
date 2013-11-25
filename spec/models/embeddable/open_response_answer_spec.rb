@@ -69,8 +69,8 @@ describe Embeddable::OpenResponseAnswer do
       # Order changes should be respected
       join = PageItem.find_by_interactive_page_id_and_embeddable_id(page2.id, or2.id)
       join.move_to_bottom # i.e. move or2 into position 5 and bump our answer up to position 4
-      answer.reload
-      answer.question_index.should be(4)
+      answer.reload # This doesn't reset the memoized question index, so we force it with the true argument
+      answer.question_index(true).should be(4)
     end
   end
 
