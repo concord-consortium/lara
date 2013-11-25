@@ -1,6 +1,6 @@
 shared_examples "an answer" do
-  let(:run)      { mock_model(Run) }
-  let(:answer)   { described_class.create }
+  let (:run)      { mock_model(Run) }
+  let (:answer)   { described_class.create }
 
   describe "question_index" do
     describe "without a run" do
@@ -20,13 +20,52 @@ shared_examples "an answer" do
     end
   end
 
-
   describe "prompt_no_itals" do
+    let (:answer_a) { described_class.create }
+    let (:answer_b) { described_class.create }
+
     it "strips the content from any HTML `i` containers in the prompt" do
       test_html = "<h1> this is a test</h1> <p> <i>with</i> italics </p>"
       expected  = "<h1> this is a test</h1> <p> <i></i> italics </p>"
       answer.stub(:prompt => test_html)
       answer.prompt_no_itals.should == expected
+    end
+
+    it "should work for two consecutive calls on different objects" do
+      answer_a.stub(:prompt => '<i>Prompt</i> A')
+      answer_b.stub(:prompt => '<i>Prompt</i> B')
+      answer_a.prompt_no_itals.should == '<i></i> A'
+      answer_b.prompt_no_itals.should == '<i></i> B'
+    end
+  end
+
+  describe '#question_index' do
+    let (:question) { mock("question") }
+    it 'returns nil if there is no activity' do
+      answer.run = nil
+      answer.save
+      answer.reload.question_index.should be_nil
+    end
+
+    it 'returns an integer reflecting position among all questions for the activity' do
+      answer.run = run
+      answer.stub(:question => question)
+
+      q1   = mock_model(Embeddable::OpenResponse)
+      q2   = mock_model(Embeddable::OpenResponse)
+      q3   = mock_model(Embeddable::MultipleChoice)
+      q4   = mock_model(Embeddable::MultipleChoice)
+      activity = mock_model(LightweightActivity, :questions => [q1, q2, q3, q4, question])
+      run.stub(:activity => activity)
+
+      answer.question_index.should be(5)
+
+      # Order changes should be respected
+      activity.stub(:questions => [q1, q2, q3, question, q4])
+      answer.reload
+      answer.run = run
+      answer.stub(:question => question)
+      answer.question_index(true).should be(4)
     end
   end
 
