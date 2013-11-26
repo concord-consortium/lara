@@ -74,7 +74,7 @@ div.activity-mod>div.site-width {
 
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
 /* TODO: HAS-NGS uses different buttons */
-@mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
+@mixin btn( $color1: lighten($btn-green2, 5%), $color2: darken($btn-green, 5%) ) {
   font-size: 15px;
   font-family: $helv-reg;
   padding: 9px 13px;
@@ -830,15 +830,16 @@ div.nav-menu-top {
 }
 
 // submit
+/* test to change submit button to green instead */
 input[type="submit"],
 button[type="submit"] {
   display: block;
   margin: 0 auto;
-  @include btn ( lighten($btn-orange, 8%), $btn-orange2 );
+  @include btn ( lighten($btn-green, 8%), $btn-green2 );
   padding: 15px 30px;
   font-size: 15px;
   color: #fff;
-  @include drk-txt-shadow($btn-orange);
+  @include drk-txt-shadow($btn-green);
 }
 
 // button
