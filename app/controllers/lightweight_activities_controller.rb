@@ -112,7 +112,7 @@ class LightweightActivitiesController < ApplicationController
       redirect_to edit_activity_path(@new_activity)
     else
       flash[:warning] = "Copy failed"
-      redirect_to activities.path
+      redirect_to activities_path
     end
   end
 
