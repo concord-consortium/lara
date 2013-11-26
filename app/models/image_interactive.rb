@@ -6,6 +6,10 @@ class ImageInteractive < ActiveRecord::Base
 
   has_one :interactive_page, :through => :interactive_item
 
+  def self.string_name
+    "image interactive"
+  end
+
   def to_hash
     {
       url: url,
