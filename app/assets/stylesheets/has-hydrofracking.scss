@@ -1,3 +1,11 @@
+@import "partials/base";
+
 body {
   background-image: url('/assets/has-bg/hydrofracking_background.png');
+}
+
+.sequence_logo_block h2 {
+  color: #472213;
+  font-family: $helv-bold;
+  font-size: 24pt;
 }

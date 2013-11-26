@@ -1,3 +1,11 @@
+@import "partials/base";
+
 body {
   background-image: url('/assets/has-bg/landManagement_background2.jpg');
+}
+
+.sequence_logo_block h2 {
+  color: #81b700;
+  font-family: $helv-bold;
+  font-size: 24pt;
 }
