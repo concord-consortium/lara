@@ -22,6 +22,24 @@ class InteractiveController < ApplicationController
     end
   end
 
+  def update
+    set_page
+    if (@interactive.update_attributes(get_interactive_params))
+      # respond success
+      flash[:notice] = "Your #{@interactive.class.string_name} was updated."
+    else
+      flash[:warning] = "There was a problem updating your #{@interactive.class.string_name}."
+    end
+    respond_to do |format|
+      if @page
+        update_activity_changed_by(@activity)
+        format.html { redirect_to edit_activity_page_path(@activity, @page) }
+      else
+        format.html { redirect_to :back }
+      end
+    end
+  end
+
   def destroy
     @interactive.interactive_item.delete
     typestring = @interactive.class.to_s.match(/(.+)Interactive/)[1]

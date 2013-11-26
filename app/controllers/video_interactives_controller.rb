@@ -8,23 +8,6 @@ class VideoInteractivesController < InteractiveController
     super
   end
 
-  def update
-    if (@interactive.update_attributes(params[:video_interactive]))
-      # respond success
-      flash[:notice] = 'Your video was updated'
-    else
-      flash[:warning] = "There was a problem updating your video"
-    end
-    respond_to do |format|
-      if @page
-        update_activity_changed_by(@page.lightweight_activity) unless @page.lightweight_activity.nil?
-        format.html { redirect_to edit_activity_page_path(@activity, @page) }
-      else
-        format.html { redirect_to edit_video_interactive_path(@interactive) }
-      end
-    end
-  end
-
   def add_source
     @source = VideoSource.new(:video_interactive => @interactive)
     @interactive.reload
@@ -67,5 +50,9 @@ class VideoInteractivesController < InteractiveController
     @interactive = VideoInteractive.create!()
     @interactive.sources << VideoSource.new() # If we don't have one, weird stuff happens
     @params = { edit_vid_int: @interactive.id }
+  end
+
+  def get_interactive_params
+    @input_params = params[:video_interactive]
   end
 end
