@@ -7,32 +7,35 @@ module Embeddable::Answer
     end
   end
 
-  @@question_index = nil
-  def question_index
-    if @@question_index.blank?
-      begin
-        self.run.activity.questions.index(self.question) + 1
-      rescue StandardError => e
-        logger.warn "Rescued #{e.class}: #{e.message}"
-        return nil
-      end
-    else
-      @@question_index
+  @question_index = nil
+  def question_index(skip_cache=false)
+    # To skip the memoization and generate again, pass :true as an argument
+    if skip_cache
+      @question_index = nil
     end
+    begin
+      @question_index ||= self.run.activity.questions.index(self.question) + 1
+    rescue StandardError => e
+      logger.warn "Rescued #{e.class}: #{e.message}"
+      return nil
+    end
+    @question_index
   end
 
-  @@cleaned_prompt = nil
-  def prompt_no_itals
-    if @@cleaned_prompt.blank?
+  # Removes all content which is in italics from the prompt.
+  # See https://www.pivotaltracker.com/story/show/50555355 for rationale.
+  @cleaned_prompt = nil
+  def prompt_no_itals(skip_cache=false)
+    # To skip the memoization and generate again, pass :true as an argument
+    if @cleaned_prompt.blank? || skip_cache
       parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
       itals = parsed_prompt.at_css "i"
       if itals
         itals.content = nil
       end
-      return parsed_prompt.to_html
-    else
-      return @@cleaned_prompt
+      @cleaned_prompt = parsed_prompt.to_html
     end
+    return @cleaned_prompt
   end
 
   def send_to_portal(auth_key=nil)

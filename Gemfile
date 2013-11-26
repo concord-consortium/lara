@@ -26,7 +26,7 @@ gem 'uuidtools'
 gem "httparty"
 gem 'exception_notification'
 gem 'newrelic_rpm'
-gem 'shutterbug', '~>0.1.1'
+gem 'shutterbug', '~>0.1.2'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 # gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 gem 'rack-environmental'
@@ -83,8 +83,9 @@ group :test, :development do
   # JS unit tests
   gem 'jasmine'
   gem 'jasmine-ajax'
+  gem 'jasmine-jquery-rails'
   gem 'guard-jasmine'
-  gem 'jasminerice' # guard-jasmine uses this
+  gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
 end
 
 group :test do

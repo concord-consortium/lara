@@ -97,6 +97,21 @@ describe LightweightActivitiesController do
     end
   end
 
+  describe '#preview' do
+    it 'calls clear_answers on the run' do
+      page
+      ar.should_receive(:clear_answers).and_return(:true)
+      Run.should_receive(:find).and_return(ar)
+      get :preview, :id => act.id
+    end
+
+    it 'renders show' do
+      page
+      get :preview, :id => act.id
+      response.should render_template('lightweight_activities/show')
+    end
+  end
+
   describe '#summary' do
     it 'does not route when id is not valid' do
       begin

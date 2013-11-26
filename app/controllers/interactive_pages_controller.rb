@@ -2,28 +2,29 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_run_key, :only => [:show]
+  before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
-  layout 'runtime', :only => [:show]
+  layout 'runtime', :only => [:show, :preview]
 
   def show
     authorize! :read, @page
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
-
-    current_theme
-    current_project
-    @all_pages = @activity.pages
-    @run.update_attribute(:page, @page)
-    finder = Embeddable::AnswerFinder.new(@run)
-    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
-
+    setup_show
     respond_to do |format|
       format.html
       format.xml
     end
+  end
+
+  def preview
+    # This is "show" but it clears answers first
+    authorize! :update, @page # Authors only
+    @run.clear_answers
+    setup_show
+    render :show
   end
 
   def new
@@ -157,5 +158,14 @@ class InteractivePagesController < ApplicationController
       @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
       @activity = @page.lightweight_activity
     end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @all_pages = @activity.pages
+    @run.update_attribute(:page, @page)
+    finder = Embeddable::AnswerFinder.new(@run)
+    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
   end
 end

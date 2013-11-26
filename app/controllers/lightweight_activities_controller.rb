@@ -6,7 +6,7 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show, :resubmit_answers]
+  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
   before_filter :set_sequence, :only   => [:summary, :show]
   layout :set_layout
 
@@ -20,14 +20,19 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
-    current_theme
-    current_project
     if params[:response_key]
       redirect_to activity_path(@activity) and return
     end
     @run.increment_run_count!
+    setup_show
+  end
 
-    @pages = @activity.pages
+  def preview
+    # This is "show" but it clears answers first
+    authorize! :update, @activity # Authors only
+    @run.clear_answers
+    setup_show
+    render :show
   end
 
   def summary
@@ -184,10 +189,18 @@ class LightweightActivitiesController < ApplicationController
     case params[:action]
     when 'show'
       return 'runtime'
+    when 'preview'
+      return 'runtime'
     when 'summary'
       return 'summary'
     else
       return 'application'
     end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @pages = @activity.pages
   end
 end

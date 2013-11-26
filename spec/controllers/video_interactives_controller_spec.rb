@@ -83,7 +83,7 @@ describe VideoInteractivesController do
       describe 'update' do
         it 'replaces the values of the Video Interactive to match submitted values' do
           new_values_hash = { :caption => 'I made this up', :poster_url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
-          post :update, :id => int.id, :video_interactive => new_values_hash
+          post :update, :id => int.id, :page_id => page.id, :video_interactive => new_values_hash
 
           int.reload
           int.caption.should == new_values_hash[:caption]
@@ -92,9 +92,9 @@ describe VideoInteractivesController do
 
         it 'returns to the edit page with a message indicating success' do
           new_values_hash = { :caption => 'I made this up', :poster_url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
-          post :update, :id => int.id, :video_interactive => new_values_hash
-          response.should redirect_to(edit_video_interactive_path(int))
-          flash[:notice].should == 'Your video was updated'
+          post :update, :id => int.id, :page_id => page.id, :video_interactive => new_values_hash
+          response.should redirect_to(edit_activity_page_path(activity, page))
+          flash[:notice].should == 'Your video interactive was updated.'
         end
 
         # it 'returns to the edit page with an error on failure' do

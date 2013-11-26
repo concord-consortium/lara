@@ -55,7 +55,7 @@
             = truncate(p.name, :length => 18, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
-              %li.run= link_to "Show", activity_page_path(@activity, p), :target => 'new'
+              %li.run= link_to "Preview", preview_activity_page_path(@activity, p), :target => 'new'
               %li.delete= link_to "Delete", activity_page_path(@activity, p), method: :delete, data: { confirm: 'Are you sure?' }
               %li.drag_handle
                 &nbsp;

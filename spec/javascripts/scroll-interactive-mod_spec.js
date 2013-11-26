@@ -1,34 +1,94 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true */
-/*global $, it, describe, xit, xdescribe, expect, beforeEach, loadFixtures, spyOn, InteractiveModule */
+/*global $, it, describe, xit, xdescribe, expect, beforeEach, loadFixtures, spyOn, InteractiveModule, ScrollTrack */
 
+//= require waypoints
+//= require waypoints-sticky
 //= require scroll-interactive-mod
 
-describe('InteractiveModule', function () {
-    var interactive;
+describe('ScrollTrack', function () {
+    var scrollTrack;
 
     beforeEach(function () {
         loadFixtures('interactive-scrolling.html');
-        interactive = new InteractiveModule($('.pinned'));
+        scrollTrack = new ScrollTrack($('.content-mod'), $('#end-scroll-track'));
     });
 
     it('has attributes', function () {
-        expect(interactive.iHeight).toBeDefined();
-        expect(interactive.iWidth).toBeDefined();
+        expect(scrollTrack.contentModule).toBeDefined();
+        expect(scrollTrack.trackEnd).toBeDefined();
+        expect(scrollTrack.contentModule).toBe('div.content-mod');
+        expect(scrollTrack.trackEnd).toBe('div#end-scroll-track');
+    });
+
+    describe('getTop', function () {
+        it('returns the offset of the content module', function () {
+            expect(scrollTrack.getTop()).toBe($('.content-mod').offset().top);
+        });
+    });
+
+    describe('getBottom', function () {
+        it('returns the offset of the end-scroll-track div', function () {
+            expect(scrollTrack.getBottom()).toBe($('#end-scroll-track').offset().top);
+        });
+    });
+
+    describe('getHeight', function () {
+        it('returns the difference between its top and its bottom', function () {
+            expect(scrollTrack.getHeight()).toBe($('#end-scroll-track').offset().top - $('.content-mod').offset().top);
+        });
+    });
+
+    describe('isScrollable', function () {
+        describe('when the track is taller than the interactive', function () {
+            it('returns true', function () {
+                expect(scrollTrack.isScrollable(200)).toBe(true);
+            });
+        });
+
+        describe('when the track is shorter than the interactive', function () {
+            it('returns false', function () {
+                expect(scrollTrack.isScrollable(800)).toBe(false);
+            });
+        });
+
+        describe('when the track is undefined', function () {
+            it('returns false', function () {
+                scrollTrack.trackEnd = $('#noSuchDiv');
+                expect(scrollTrack.isScrollable(200)).toBe(false);
+            });
+        });
+    });
+});
+
+describe('InteractiveModule', function () {
+    var interactive, scrollTrack;
+
+    beforeEach(function () {
+        loadFixtures('interactive-scrolling.html');
+        scrollTrack = new ScrollTrack($('.content-mod'), $('#end-scroll-track'));
+        interactive = new InteractiveModule($('.pinned'), scrollTrack);
+    });
+
+    it('has attributes', function () {
         expect(interactive.bMargin).toBeDefined();
+        expect(interactive.topBuffer).toBeDefined();
         expect(interactive.fudgeFactor).toBeDefined();
-        expect(interactive.trackHeight).toBeDefined();
         expect(interactive.module).toBe('div.pinned');
     });
 
     describe('fixTop()', function () {
         describe('when the interactive is taller than its column', function () {
             beforeEach(function () {
-                interactive.trackHeight = 300;
-                interactive.iHeight = 600;
-                interactive.fixTop();
+                spyOn(ScrollTrack.prototype, 'isScrollable').andReturn(false);
+                // Have to re-create the test objects to incorporate the spy
+                scrollTrack = new ScrollTrack($('.content-mod'), $('#end-scroll-track'));
+                interactive = new InteractiveModule($('.pinned'), scrollTrack);
+                interactive.module.removeClass('stuck');
             });
 
             it('does nothing', function () {
+                interactive.fixTop();
+                expect(scrollTrack.isScrollable).toHaveBeenCalled();
                 expect(interactive.module).not.toHaveClass('stuck');
             });
         });
@@ -42,7 +102,7 @@ describe('InteractiveModule', function () {
                 expect(interactive.module).toHaveClass('stuck');
             });
 
-            it('adds a CSS width', function () {
+            xit('adds a CSS width', function () {
                 expect(interactive.module.css('width')).toBe(interactive.iWidth + 'px');
             });
         });
@@ -50,6 +110,7 @@ describe('InteractiveModule', function () {
 
     describe('unFixTop()', function () {
         beforeEach(function () {
+            interactive.module.addClass('stuck');
             interactive.unFixTop();
         });
 
@@ -60,9 +121,10 @@ describe('InteractiveModule', function () {
 
     describe('fixBottom()', function () {
         beforeEach(function () {
+            interactive.module.addClass('bottomed');
             interactive.fixBottom();
         });
-        
+
         it('adds the "stuck" class', function () {
             expect(interactive.module).toHaveClass('stuck');
         });
@@ -74,6 +136,7 @@ describe('InteractiveModule', function () {
 
     describe('unFixBottom()', function () {
         beforeEach(function () {
+            interactive.module.addClass('stuck');
             interactive.unFixBottom();
         });
 
@@ -86,9 +149,49 @@ describe('InteractiveModule', function () {
         });
     });
 
+    describe('waypoints control', function () {
+        beforeEach(function () {
+            $.waypoints('destroy'); // Clear existing waypoints
+            interactive.setWaypoints();
+        });
+
+        describe('setWaypoints', function () {
+            it('sets two waypoints', function () {
+                // Actually, it's setting four waypoints, but at two places.
+                expect($.waypoints().vertical.length).toBe(2);
+            });
+        });
+
+        describe('clearWaypoints', function () {
+            it('removes established waypoints', function () {
+                expect($.waypoints().vertical.length).toBe(2);
+                interactive.clearWaypoints();
+                expect($.waypoints().vertical.length).toBe(0);
+            });
+        });
+
+        describe('disableWaypoints', function () {
+            // Not clear how to test this
+            xit('disables existing waypoints', function () {
+                expect($.waypoints().vertical.length).toBe(2);
+                interactive.disableWaypoints();
+                expect($.waypoints().vertical[0].enabled).toBe(false);
+            });
+        });
+
+        describe('enableWaypoints', function () {
+            // Not clear how to test this
+            xit('enables disabled waypoints', function () {
+                expect($.waypoints().vertical.length).toBe(4);
+                interactive.enableWaypoints();
+                expect($.waypoints().vertical[0].enabled).toBe(true);
+            });
+        });
+    });
+
     describe('getHeight()', function () {
-        it('returns the value of the i_height attribute', function () {
-            expect(interactive.getHeight()).toBe(interactive.iHeight);
+        it('returns the height of the box', function () {
+            expect(interactive.getHeight()).toBe(interactive.module.height());
         });
     });
 });

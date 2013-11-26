@@ -50,6 +50,22 @@ describe LightweightActivity do
     !activity.valid?
   end
 
+  describe 'validation of HTML blocks' do
+    it 'rejects invalid HTML for related text' do
+      activity.related = '<p>This HTML is invalid.<p>Tag soup.</p>'
+      activity.valid?.should be_false
+      activity.related = 'This HTML is valid.'
+      activity.valid?
+    end
+
+    it 'rejects invalid HTML for the activity description' do
+      activity.description = '<p class="invalid-attribute>This has an invalid attribute.</p>'
+      activity.valid?.should be_false
+      activity.description = '<p class="valid-attribute">Much better.</p>'
+      activity.valid?
+    end
+  end
+
   describe "#my" do
     it 'returns activities owned by a given author' do
       activity.user = author

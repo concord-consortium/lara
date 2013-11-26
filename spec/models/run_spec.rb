@@ -79,6 +79,7 @@ describe Run do
       run.page.should be_nil
       run.last_page.should == :a
     end
+
     it "should remember the last page set by the controller" do
       run.page.should be_nil
       page = FactoryGirl.create(:page)
@@ -86,6 +87,22 @@ describe Run do
       run.save
       run.reload
       run.last_page.should == page
+    end
+  end
+
+  describe '#clear_answers' do
+    before(:each) do
+      # Add answers
+      run.open_response_answers << or_answer
+      run.multiple_choice_answers << mc_answer
+      or_answer.mark_clean
+      mc_answer.mark_clean
+    end
+
+    it 'removes all answers from the run' do
+      run.answers.length.should == 2
+      run.clear_answers
+      run.reload.answers.length.should == 0
     end
   end
 

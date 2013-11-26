@@ -1,7 +1,15 @@
+@import "partials/base";
+
 body {
   background-image: url('/assets/has-bg/climate_background.jpg');
 }
 
 div.activity-mod>div.site-width {
   background-color: rgba(255,255,255,0.95);
+}
+
+.sequence_logo_block h2 {
+  color: #6c6c6c;
+  font-family: $helv-bold;
+  font-size: 24pt;
 }

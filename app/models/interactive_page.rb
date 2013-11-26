@@ -20,6 +20,11 @@ class InteractivePage < ActiveRecord::Base
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
   validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
 
+  # Reject invalid HTML inputs
+  # See https://www.pivotaltracker.com/story/show/60459320
+  validates :text, :sidebar, :html => true
+  # validates :sidebar, :html => true
+
   has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
   # InteractiveItem is a join model; if this is deleted, it should go too
 
