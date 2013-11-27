@@ -5,8 +5,8 @@ describe Embeddable::Xhtml do
 
   describe 'HTML validation' do
     it 'rejects invalid HTML' do
-      xhtml.content = '<p>This is invalid HTML.<p>Tag soup, ugh!</p>'
-      xhtml.valid?.should be_false
+      xhtml.content = '<p>This is invalid but parseable HTML.<p>Tag soup, ugh!</p>'
+      xhtml.valid?.should be_true # Ugh, but this is HTML not XML
       xhtml.content = '<p class="bad_attribute>This is also invalid.</p>'
       xhtml.valid?.should be_false
       xhtml.content = 'This is valid.'

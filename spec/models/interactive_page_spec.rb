@@ -17,7 +17,7 @@ describe InteractivePage do
   describe 'validation of HTML inputs' do
     it 'rejects invalid HTML for text' do
       page.text = '<p>This HTML is invalid.<p>Tag soup.</p>'
-      page.valid?.should be_false
+      page.valid?.should be_true # Ugh, but HTML not XML
       page.text = 'This HTML is valid.'
       page.valid?
     end
