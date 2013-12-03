@@ -73,9 +73,6 @@ class LightweightActivity < ActiveRecord::Base
     new_activity = LightweightActivity.new(self.to_hash)
     # Clarify name
     new_activity.name = "Copy of #{new_activity.name}"
-    if new_activity.name.length > 50
-      new_activity.name = "#{new_activity.name[0..46]}..."
-    end
     self.pages.each do |p|
       new_page = p.duplicate
       new_page.lightweight_activity = new_activity
