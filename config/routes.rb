@@ -41,8 +41,10 @@ LightweightStandalone::Application.routes.draw do
     member do
       get 'reorder_pages'
       get 'summary'
+      get 'resubmit_answers'
       get 'publish'
       get 'duplicate'
+      get 'preview'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
@@ -51,6 +53,7 @@ LightweightStandalone::Application.routes.draw do
         post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
+        get 'preview'
       end
     end
     resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/, :activity_id => /\d+/ }
@@ -73,6 +76,9 @@ LightweightStandalone::Application.routes.draw do
     resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
     resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show
     resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show
+    member do
+      get 'preview'
+    end
   end
 
   # the in-place editor needed interactive_page_path
@@ -96,5 +102,7 @@ LightweightStandalone::Application.routes.draw do
   get "/embeddable/multiple_choice/:id/check" => 'embeddable/multiple_choices#check', :as => 'check_multiple_choice_answer', :constraints => { :id => /\d+/ }
   get "/activities/:activity_id/pages/:id/:response_key" => 'interactive_pages#show', :as => 'page_with_response', :constraints => { :id => /\d+/, :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/summary/:response_key" => 'lightweight_activities#summary', :as => 'summary_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/resubmit_answers/:response_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/:response_key" => 'lightweight_activities#show', :as => 'activity_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
+  get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
 end

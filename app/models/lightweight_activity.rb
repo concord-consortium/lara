@@ -1,9 +1,9 @@
 class LightweightActivity < ActiveRecord::Base
-  PUB_STATUSES   = %w(draft private public archive)
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
+  include Publishable # models/publishable.rb defines pub & official
 
-  attr_accessible :name, :publication_status, :user_id, :pages, :related, :description,
-  :is_official, :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  attr_accessible :name, :user_id, :pages, :related, :description,
+  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -15,39 +15,20 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :theme
   belongs_to :project
 
-  default_value_for :publication_status, 'draft'
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
-  validates :publication_status, :inclusion => { :in => PUB_STATUSES }
-  validates_length_of :name, :maximum => 50
+  # validates_length_of :name, :maximum => 50
+  validates :description, :related, :html => true
 
-  # * Find all public activities
-  scope :public, where(:publication_status => 'public')
-  scope :newest, order("updated_at DESC")
-
-  # * Find all activities for one user (regardless of publication status)
-  def self.my(user)
-    where(:user_id => user.id)
-  end
-
-  # * Find a users activities and the public activities
-  def self.my_or_public(user)
-    where("user_id = ? OR publication_status = 'public'", user.id)
-  end
-
-  # * Find all activities visible (readable) to the given user
-  def self.can_see(user)
-    if user.is_admin?
-      return LightweightActivity.all
-    else
-      return LightweightActivity.my_or_public(user)
-    end
+  # Just a way of getting self.pages with the embeddables eager-loaded
+  def pages_with_embeddables
+    return InteractivePage.includes(:page_items => :embeddable).where(:lightweight_activity_id => self.id)
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []
-    pages.each do |p|
+    pages_with_embeddables.each do |p|
       p.embeddables.each do |e|
         if QUESTION_TYPES.include? e.class
           q << e
@@ -92,9 +73,6 @@ class LightweightActivity < ActiveRecord::Base
     new_activity = LightweightActivity.new(self.to_hash)
     # Clarify name
     new_activity.name = "Copy of #{new_activity.name}"
-    if new_activity.name.length > 50
-      new_activity.name = "#{new_activity.name[0..46]}..."
-    end
     self.pages.each do |p|
       new_page = p.duplicate
       new_page.lightweight_activity = new_activity
@@ -119,6 +97,8 @@ class LightweightActivity < ActiveRecord::Base
       elements = []
       page.embeddables.each do |embeddable|
         case embeddable
+          # Why aren't we using the to_hash methods for each embeddable here?
+          # Probably because they don't include the "type" attribute
         when Embeddable::OpenResponse
           elements.push({
                           "type" => "open_response",
@@ -129,7 +109,8 @@ class LightweightActivity < ActiveRecord::Base
           elements.push({
                           "type" => "image_question",
                           "id" => embeddable.id,
-                          "prompt" => embeddable.prompt
+                          "prompt" => embeddable.prompt,
+                          "drawing_prompt" => embeddable.drawing_prompt
                         })
         when Embeddable::MultipleChoice
           choices = []
@@ -148,7 +129,7 @@ class LightweightActivity < ActiveRecord::Base
           }
           elements.push(mc_data)
         else
-          # We don't suppoert this embeddable type right now
+          # We don't support this embeddable type right now
         end
       end
       pages.push({
@@ -164,6 +145,10 @@ class LightweightActivity < ActiveRecord::Base
 
     data["sections"] = [section]
     data
+  end
+
+  def for_sequence(seq)
+    lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
   end
 
 end

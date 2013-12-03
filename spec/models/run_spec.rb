@@ -10,7 +10,21 @@ describe Run do
     r.user = user
     r
   }
-  let (:user) { FactoryGirl.create(:user) }
+  let (:user)       { FactoryGirl.create(:user) }
+  let (:or_question){ FactoryGirl.create(:or_embeddable) }
+  let (:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let (:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+  let (:iq_answer)  { FactoryGirl.create(:image_question_answer,
+    { :answer_text => "the image question answer",
+      :question => image_quest,
+      :image_url => "http://foo.com/bar.jpg" }) }
+  let (:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+  let (:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+  let (:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+  let (:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+                    :answers  => [a1],
+                    :question => mc_question)
+                  }
 
   describe 'validation' do
     it 'ensures session keys are 36 characters' do
@@ -47,7 +61,6 @@ describe Run do
 
       with_user_guid.should_not === first_guid
     end
-
   end
 
   describe '#check_key' do
@@ -66,6 +79,7 @@ describe Run do
       run.page.should be_nil
       run.last_page.should == :a
     end
+
     it "should remember the last page set by the controller" do
       run.page.should be_nil
       page = FactoryGirl.create(:page)
@@ -76,6 +90,103 @@ describe Run do
     end
   end
 
+  describe '#clear_answers' do
+    before(:each) do
+      # Add answers
+      run.open_response_answers << or_answer
+      run.multiple_choice_answers << mc_answer
+      or_answer.mark_clean
+      mc_answer.mark_clean
+    end
+
+    it 'removes all answers from the run' do
+      run.answers.length.should == 2
+      run.clear_answers
+      run.reload.answers.length.should == 0
+    end
+  end
+
+  describe 'dirty bit management' do
+    describe '#mark_dirty' do
+      it 'sets is_dirty bit to true' do
+        run.mark_dirty
+        run.reload.is_dirty.should be_true
+      end
+    end
+
+    describe '#mark_clean' do
+      it 'sets is_dirty to false' do
+        run.mark_clean
+        run.reload.is_dirty.should be_false
+      end
+    end
+
+    describe '#dirty?' do
+      it 'returns true when is_dirty is true' do
+        run.mark_dirty
+        run.dirty?.should be_true
+      end
+
+      it 'returns false when is_dirty is false' do
+        # Default value is false
+        run.dirty?.should be_false
+      end
+    end
+  end
+
+  describe '#dirty_answers' do
+    describe 'when there are no answers' do
+      it 'returns an empty array' do
+        run.dirty_answers.should == []
+      end
+    end
+
+    describe 'when there are answers, but none are dirty' do
+      before(:each) do
+        # Add answers
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        or_answer.mark_clean
+        mc_answer.mark_clean
+      end
+
+      it 'returns an empty array' do
+        run.dirty_answers.should == []
+      end
+    end
+
+    describe 'when there are dirty answers' do
+      before(:each) do
+        # Add answers
+        run.open_response_answers << or_answer
+        run.multiple_choice_answers << mc_answer
+        mc_answer.mark_clean
+      end
+
+      it 'returns an array including only the dirty answers' do
+        run.dirty_answers.should == [or_answer]
+        run.dirty_answers.length.should be(1)
+      end
+    end
+  end
+
+  describe '#set_answers_clean' do
+    describe 'when the args are empty' do
+      it 'does nothing and returns an empty array' do
+        run.set_answers_clean([]).should == []
+      end
+    end
+
+    describe 'when there is an array of answers' do
+      let(:mocked_answers){ 5.times.map {|x| mock("mock_answer_#{x}")}}
+      it 'calls is_dirty=false on each answer in the array' do
+        mocked_answers.each do |a|
+          a.should_receive :mark_clean
+        end
+        run.set_answers_clean mocked_answers
+      end
+    end
+  end
 
   describe "self.lookup(key,activity,user=nil,portal)" do
     describe "with a key" do
@@ -163,20 +274,6 @@ describe Run do
   end
 
   describe 'posting to portal' do
-    let(:or_question){ FactoryGirl.create(:or_embeddable) }
-    let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
-    let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
-    let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
-      { :answer_text => "the image question answer",
-        :question => image_quest,
-        :image_url => "http://foo.com/bar.jpg" }) }
-    let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-    let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-    let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-    let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
-                      :answers  => [a1],
-                      :question => mc_question)
-                    }
     let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
     let(:all_expected) do
       [
@@ -202,17 +299,17 @@ describe Run do
     end
 
     describe '#response_for_portal' do
-      it 'matches the expected JSON for a single specified answer' do
+      before(:each) do
         run.open_response_answers << or_answer
         run.multiple_choice_answers << mc_answer
         run.image_question_answers << iq_answer
+      end
+
+      it 'matches the expected JSON for a single specified answer' do
         JSON.parse(run.response_for_portal(or_answer)).should == JSON.parse(one_expected)
       end
 
       it "matches the expected JSON for multiple specified answers" do
-        run.open_response_answers << or_answer
-        run.multiple_choice_answers << mc_answer
-        run.image_question_answers << iq_answer
         JSON.parse(run.response_for_portal([or_answer, mc_answer,iq_answer])).should == JSON.parse(all_expected)
       end
     end
@@ -231,7 +328,7 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([or_answer,mc_answer]).should be_false
+          run.send_to_portal([or_answer,mc_answer]).should be_true # Take this out of the queue
         end
       end
 
@@ -239,13 +336,13 @@ describe Run do
         let(:remote_endpoint) { nil }
         it "no http request is made" do
           HTTParty.should_not_receive(:post)
-          run.send_to_portal([]).should be_false
+          run.send_to_portal([]).should be_true # Take it out of the queue
         end
       end
 
       describe "with an endpoint and answers" do
         let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
-        let(:auth_token) { "xyzzy" }
+        let(:auth_token)      { "xyzzy" }
         describe "with a positive response from the server" do
           it "should be successful" do
             payload = run.response_for_portal([or_answer,mc_answer])
@@ -264,6 +361,26 @@ describe Run do
               })
           end
         end
+
+        describe 'with an optional token override' do
+          it 'should send the supplied token for authorization' do
+            new_token = "fakeTokenString"
+            payload = run.response_for_portal([or_answer,mc_answer])
+            stub_http_request(:post, remote_endpoint).to_return(
+              :body   => "OK", # TODO: What returns?
+              :status => 200)
+            run.send_to_portal([or_answer,mc_answer], new_token).should be_true
+            WebMock.should have_requested(:post, remote_endpoint).
+              with({
+                :body => payload,
+                :headers => {
+                  "Authorization" => new_token,
+                  "Content-Type" => 'application/json'
+                }
+              })
+          end
+        end
+
         describe "when the server reports an error" do
           it "should fail" do
             stub_http_request(:post, remote_endpoint).to_return(
@@ -272,6 +389,115 @@ describe Run do
             run.send_to_portal([or_answer,mc_answer]).should be_false
           end
         end
+      end
+    end
+
+
+    describe '#submit_dirty_answers' do
+      let(:answers) {[]}
+      let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
+      let(:auth_token)      { "xyzzy" }
+      let(:result_status)   { 200 }
+      before(:each) do
+        stub_http_request(:post, remote_endpoint).to_return(
+          :body   => "OK", # TODO: What returns?
+          :status => result_status)
+        run.stub(:answers => answers)
+        run.mark_dirty
+      end
+      describe 'when there are no dirty answers' do
+        it 'does nothing and returns true' do
+          run.stub(:answers => answers)
+          run.submit_dirty_answers.should be_true
+        end
+      end
+
+      describe 'when there are dirty answers' do
+        let(:answers) do
+          answers = []
+          5.times.map do |i|
+            q = FactoryGirl.create(:image_question_answer, :run => run, :question => FactoryGirl.create(:image_question))
+            q.mark_dirty
+            answers << q
+          end
+          answers
+        end
+
+        describe "when the portal answers positively" do
+          let(:result_status) { 200 }
+
+          it "calls send_to_portal with the dirty answers as argument" do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, nil)
+            run.submit_dirty_answers.should be_true
+          end
+
+          it 'calls send_to_portal with a supplied authorization token' do
+            run.stub(:send_to_portal => true)
+            run.should_receive(:send_to_portal).with(answers, auth_token)
+            run.submit_dirty_answers(auth_token)
+          end
+
+          it "cleans all the answers afer a successful update" do
+            run.submit_dirty_answers
+            run.answers.each do |a|
+              a.should_not be_dirty
+            end
+          end
+
+          it "marks itself as clean after a successful update" do
+            run.submit_dirty_answers
+            run.should_not be_dirty
+          end
+
+        end
+
+        describe "when the portal answers with an error" do
+          let(:result_status) { 500 }
+
+          it "Raises PortalUpdateIncomplete to keep the job in the queue" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+          end
+
+          it "The run is not cleaned" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.should be_dirty
+          end
+
+          it "doesn't clean any of the answers afer a borked update" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.answers.each do |a|
+              a.should be_dirty
+            end
+          end
+        end
+
+        describe "when there are still dirty answers after the update" do
+          before(:each) do
+            answers.each do |a|
+              a.should_receive(:mark_clean).and_return false
+            end
+            run.stub(:dirty_answers => answers)
+          end
+
+          it "Raises PortalUpdateIncomplete to keep the job in the queue" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+          end
+
+          it "The run is not cleaned" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.should be_dirty
+          end
+
+          it "doesn't clean any of the answers afer a borked update" do
+            expect { run.submit_dirty_answers}.to raise_error(Run::PortalUpdateIncomplete)
+            run.answers.each do |a|
+              a.should be_dirty
+            end
+          end
+        end
+
+
       end
     end
   end

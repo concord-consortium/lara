@@ -1,4 +1,9 @@
 class Run < ActiveRecord::Base
+
+  # Trigger whenever a portal update job needs to be re-run
+  class PortalUpdateIncomplete < StandardError; end
+  class InvalidJobState < StandardError; end
+
   attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
   belongs_to :activity, :class_name => LightweightActivity
@@ -110,6 +115,12 @@ class Run < ActiveRecord::Base
     answers.map {|a| a.portal_hash}
   end
 
+  def clear_answers
+    # It can be beneficial, particularly for authors, to come to a page/activity
+    # with previous answers erased, so let's make it easy to clear them.
+    answers.each { |a| a.destroy }
+  end
+
   def all_responses_for_portal
     answers_hash.to_json
   end
@@ -117,6 +128,7 @@ class Run < ActiveRecord::Base
   def oauth_token
     return user.authentication_token if user
     # TODO: throw "no oauth_token for runs without users"
+    # TODO: we actually need to check & maintain expiration of this token as well
   end
 
   def bearer_token
@@ -132,22 +144,99 @@ class Run < ActiveRecord::Base
     }
   end
 
-  # return true if we saved.
-  def send_to_portal(answers)
-    return false if remote_endpoint.nil? || remote_endpoint.blank?
+  # return true if we want to take this run out of the queue: either for success, or any
+  # other case where retrying is pointless (e.g. nowhere to send the data, no data to send).
+  def send_to_portal(answers, auth_token=nil)
+    return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     payload = response_for_portal(answers)
-    return false if payload.nil? || payload.blank?
+    return true if payload.nil? || payload.blank? # Pretend we sent it, nobody will notice
+    # Use a supplied token if there is one, otherwise check the run's own token
+    auth_token ||= bearer_token
+    # TODO: This needs more careful treatment.
+    # If there is no auth token here, we actually need to stop trying to push to the portal and
+    # avoid the Delayed Job falloff cycle. If we get into the falloff cycle, a user might
+    # log in and provide a valid token, but then have that new token expire before DelayedJob
+    # retries the job.
+    # Something like this, but this is incomplete.
+    # if auth_token.blank? # TODO: Or expired, when we know how to check that.
+    #   raise InvalidJobState, "No authentication token - try re-authenticating"
+    # end
     response = HTTParty.post(
       remote_endpoint, {
         :body => payload,
         :headers => {
-          "Authorization" => bearer_token,
+          "Authorization" => auth_token,
           "Content-Type" => 'application/json'
         }
       }
     )
     # TODO: better error detection?
-    response.code == 200
+    response.success?
+  end
+
+  def queue_for_portal(answer, auth_key=nil)
+    return false if remote_endpoint.nil? || remote_endpoint.blank?
+    return false if answers.nil?
+    if dirty?
+      # no-op: only queue one time
+    else
+      mark_dirty
+      submit_dirty_answers(auth_key) #will happen asyncronously sometime in the future...
+    end
+  end
+
+  def dirty_answers
+    # Returns an array of answers which have a dirty bit set
+    return answers.select{ |a| a.dirty? }
+  end
+
+  def abort_job_and_requeue
+    # If a method throws an exception it will be rerun later.
+    # The method will be retried up to 25 times with exp. falloff.
+    raise PortalUpdateIncomplete.new
+  end
+
+  def submit_dirty_answers(auth_key=nil)
+    # Find array of dirty answers and send them to the portal
+    da = dirty_answers
+    return if da.empty?
+    if send_to_portal da, auth_key
+      set_answers_clean da # We're only cleaning the same set we sent to the portal
+      self.reload
+      if dirty_answers.empty?
+        self.mark_clean
+      else
+        # I'm not sure about using this method here, because it raises an error when the
+        # "problem" may just be that (a) new dirty answer(s) were submitted between the
+        # send_to_portal call and the check here.
+        abort_job_and_requeue
+      end
+    else
+      abort_job_and_requeue
+    end
+  end
+  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 30.seconds.from_now }
+
+  def set_answers_clean(answers=[])
+    # Takes an array of answers and sets their is_dirty bits to clean
+    answers.each do |answer|
+      answer.mark_clean
+    end
+  end
+
+  def dirty?
+    is_dirty
+  end
+
+  def mark_dirty
+    self.is_dirty = true
+    self.save
+    # TODO: enqueue
+  end
+
+  def mark_clean
+    self.is_dirty = false
+    self.save
   end
 
 end

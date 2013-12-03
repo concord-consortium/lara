@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.15'
 gem "jquery-rails"
 gem 'jquery-ui-rails'
 gem "haml"
@@ -24,11 +24,12 @@ gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
 
 gem 'uuidtools'
 gem "httparty"
-gem 'airbrake'
 gem 'exception_notification'
-gem 'shutterbug', '~>0.0.11'
+gem 'newrelic_rpm'
+gem 'shutterbug', '~>0.1.2'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
-gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git"
+# gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
+gem 'rack-environmental'
 # gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
 # use bundle update sketchily to force newest SHA from github, or uncomment above
 # to work locally.
@@ -36,6 +37,8 @@ gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :b
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
 gem "sqlite3"
+gem "delayed_job_active_record"
+gem "daemons"
 
 group :production do
   gem 'mysql2'
@@ -79,8 +82,10 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
+  gem 'jasmine-ajax'
+  gem 'jasmine-jquery-rails'
   gem 'guard-jasmine'
-  gem 'jasminerice' # guard-jasmine uses this
+  gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
 end
 
 group :test do
@@ -88,6 +93,11 @@ group :test do
   gem 'webmock'
   # needed for capybara's save_and_open_page
   gem 'launchy'
+end
+
+group :development do
+  # Evaluate database query efficiency
+  gem 'bullet'
 end
 
 # To use ActiveModel has_secure_password
@@ -102,7 +112,13 @@ end
 # Deploy with Capistrano
 gem 'capistrano'
 
+# Tools
+# Security scan
 gem 'brakeman', :require => false
+# Log analysis
+gem 'request-log-analyzer', :require => false
+# Database analysis
+gem 'lol_dba', :require => false
 
 # put font-awesome in asset pipeline Alternately we could use a CDN.
 gem "font-awesome-rails"

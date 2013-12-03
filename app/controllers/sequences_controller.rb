@@ -9,7 +9,8 @@ class SequencesController < ApplicationController
   # GET /sequences
   # GET /sequences.json
   def index
-    @sequences = Sequence.newest
+    @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
+    @sequences = @filter.collection
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,11 +46,9 @@ class SequencesController < ApplicationController
   # POST /sequences
   # POST /sequences.json
   def create
-    @sequence = Sequence.new(params[:sequence], :user_id => current_user.id)
+    @sequence = Sequence.new(params[:sequence])
     authorize! :create, @sequence
-    if @sequence.user != current_user
-      @sequence.user = current_user
-    end
+    @sequence.user = current_user
 
     respond_to do |format|
       if @sequence.save
@@ -96,7 +95,9 @@ class SequencesController < ApplicationController
     authorize! :update, @sequence
     activity = LightweightActivity.find(params[:activity_id])
     respond_to do |format|
-      if @sequence.lightweight_activities.delete(activity)
+      act_sequence = activity.for_sequence(@sequence)
+      if act_sequence && act_sequence.remove_from_list
+        act_sequence.delete
         format.html { redirect_to edit_sequence_url(@sequence), notice: 'Activity was successfully removed.' }
         format.json { head :no_content }
       else
@@ -116,10 +117,7 @@ class SequencesController < ApplicationController
     end
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_sequence_path(@sequence)
     end
@@ -162,11 +160,12 @@ class SequencesController < ApplicationController
 
     portal = RemotePortal.new(params)
     if session.delete(:did_reauthenticate)
+      # FIXME: what if current_user is nil?
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
     else
       update_portal_session
     end
-    # This creates a new sequnce_run if it doesn't exist.
+    # This creates a new sequence_run if it doesn't exist.
   end
 
 end

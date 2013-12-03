@@ -18,6 +18,13 @@ class User < ActiveRecord::Base
 
   has_many :authentications
 
+  # access cancan outside of current_user
+  # see https://github.com/ryanb/cancan/wiki/ability-for-other-users
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, :to => :ability
+
   def admin?
     return is_admin
   end
@@ -28,6 +35,7 @@ class User < ActiveRecord::Base
 
   def authentication_token
     # this is temporary until we really support multiple authentication providers
+    # TODO: token expiration
     auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
     if auth
       auth.token

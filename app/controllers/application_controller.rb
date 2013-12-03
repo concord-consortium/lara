@@ -11,22 +11,27 @@ class ApplicationController < ActionController::Base
   ### Log some data for 404s
   # This should be temporary, as debugging for an issue where links to an activity return 404 errors for
   # some people but not others.
-  rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-    
-  def not_found(exception)
-    ExceptionNotifier.notify_exception(exception,
-      :env => request.env, :data => {:message => "raised a Not Found exception"})
-    redirect_to root_url, :alert => exception.message
-  end
+  # See https://www.pivotaltracker.com/story/show/52313089
+  # Turned off 21Oct2013 - pjm
+  # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
+  #   
+  # def not_found(exception)
+  #   ExceptionNotifier.notify_exception(exception,
+  #     :env => request.env, :data => {:message => "raised a Not Found exception"})
+  #   redirect_to root_url, :alert => exception.message
+  # end
 
   # For modal edit windows. Source: https://gist.github.com/1456815
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
-  def update_activity_changed_by
-    @activity.changed_by = current_user
+  def update_activity_changed_by(activity=@activity)
+    activity.changed_by = current_user
     begin
-      @activity.save
+      activity.save
     rescue
+      # We don't want to return a server error if this update fails; it's not important
+      # enough to derail the user.
+      logger.debug "changed_by update for Activity #{@activity.id} failed."
     end
   end
 
@@ -61,12 +66,16 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sequence
+    # First, respect the sequence ID in the request params if one is provided
     if params[:sequence_id]
       @sequence = Sequence.find(params[:sequence_id])
+      # Save this in the run
       if @sequence && @run
         @run.sequence = @sequence
         @run.save
       end
+    # Second, if there's no sequence ID in the request params, there's an existing 
+    # run, and a sequence is set for that run, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
     end
@@ -136,4 +145,30 @@ class ApplicationController < ActionController::Base
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
+  def respond_with_edit_form
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('edit')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+
+  def respond_with_nothing
+    # This is useful for AJAX actions, because it returns a 200 status code but doesn't bother generating an actual response.
+    respond_to do |format|
+      format.js { render :nothing => true }
+      format.html { render :nothing => true }
+    end
+  end
+
+  def simple_update(subject)
+    respond_to do |format|
+      if subject.update_attributes(params[subject.class.to_s.downcase.to_sym]) # Surely there's a simpler way?
+        format.html { redirect_to edit_polymorphic_url(subject), notice: "#{subject.class.to_s} was successfully updated." }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: subject.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 end

@@ -33,7 +33,7 @@ var EmbeddableCarousel = function (element) {
 
 EmbeddableCarousel.prototype.setCarouselSize = function () {
     // Set 'bestHeight' and 'bestWidth' values
-    this.adjustSize();
+    this.calculateSize();
     // Set the carousel to those values and reload it
     this.setHeight(this.bestHeight);
     this.setWidth(this.bestWidth);
@@ -45,7 +45,7 @@ EmbeddableCarousel.prototype.setCarouselSize = function () {
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
-    var embeddableHeight = newHeight - this.buttonHeight;
+    var embeddableHeight = newHeight - this.buttonHeight -2;
     $('.question').css('max-height', embeddableHeight + 'px');
 };
 
@@ -101,39 +101,78 @@ EmbeddableCarousel.prototype.turnOffPrev = function () {
     this.controlPrev.find('.button').prop('disabled', true);
 };
 
-EmbeddableCarousel.prototype.adjustSize = function () {
-    // This calculates the proper height and width for the carousel container.
-    var newHeight, newWidth, tallest, available;
-    // Adjust height and width
-    if ($('.content-mod').hasClass('l-full-width')) {
-        // If full-width, set height of carousel to height of tallest embeddable or available screen, whichever is less
-        tallest = 0;
-        available = $(window).height() - $('.activity-nav-mod').height();
-        $('.question').each( function () {
-            tallest = Math.max(tallest, $(this).height() + this.buttonHeight);
-        });
-        newHeight = Math.min(tallest, available);
-        // If full-width, set width of carousel to X
-        newWidth = 960;
-    } else {
-        // If not full-width, set height of carousel to height of interactive box
-        newHeight = Math.max($('.interactive-mod').height(), 300);
-        if ($('.content-mod').hasClass('l-6040') || $('.content-mod').hasClass('r-4060')) {
-            // If 60-40, set width of carousel to Y
-            newWidth = 374;
-        } else {
-            // If 70-30, set width of carousel to Z
-            newWidth = 278;
-        }
-    }
-    this.bestHeight = newHeight;
-    this.bestWidth = newWidth;
+/** Return the height of the tallest question element in our list */
+EmbeddableCarousel.prototype.tallestQuestion = function() {
+    var tallest = 0;
+    var current = 0;
+    var self = this;
+    $('.question').each( function () {
+        // force text-box content into our current computed width
+        // this helps to get an accurate measurement.
+        $(this).width(self.bestWidth);
+        current = $(this).height() + self.buttonHeight;
+        tallest = Math.max(tallest, current);
+    });
+    return tallest;
 };
 
-// Setup
-$(document).ready(function () {
+/** Return true if we are in full-width layout */
+EmbeddableCarousel.prototype.isFullWidth = function() {
+    return $('.content-mod').hasClass('l-full-width');
+};
+
+/** Calculates the proper height for the carousel container. */
+EmbeddableCarousel.prototype.calculateHeight = function() {
+    var interactiveHeight = $('.interactive-mod').height();
+    var offset = $('.content-mod').offset();
+
+    var available = $(window).height() - offset.top;
+    if (this.isFullWidth()) {
+        this.bestHeight = Math.min(this.tallestQuestion(), available);
+    }
+    else {
+        this.bestHeight = Math.max(interactiveHeight, this.tallestQuestion());
+        // limit to the window?
+        this.bestHeight = Math.min(this.bestHeight, available);
+    }
+};
+
+/** Calculates the proper width for the carousel container. */
+EmbeddableCarousel.prototype.calculateWidth = function() {
+    if (this.isFullWidth()) {
+        this.bestWidth = 960;
+        return;
+    }
+    if ($('.content-mod').hasClass('l-6040')) {
+        this.bestWidth = 374;
+        return;
+    }
+    if ($('.content-mod').hasClass('r-4060')) {
+        this.bestWidth =  374;
+        return;
+    }
+    this.bestWidth = 278;
+};
+
+/** Calculates the proper width & height the carousel container. */
+EmbeddableCarousel.prototype.calculateSize = function () {
+    this.calculateWidth();
+    this.calculateHeight();
+};
+
+// unlike document.ready window.load() is called
+// after all layout has completed.
+// Handy for when you need to get $(foo).height()
+$(window).load(function () {
     // Set up the jQuery Carousel if it's active
     if ($('.jcarousel').length > 0) {
         carousel = new EmbeddableCarousel($('.jcarousel'));
     }
 });
+
+$(window).resize(function () {
+    if (typeof carousel !== 'undefined') {
+        carousel.setCarouselSize();
+    }
+});
+

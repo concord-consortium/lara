@@ -2,12 +2,8 @@ require 'spec_helper'
 
 describe MwInteractivesController do
   render_views
-  let (:page) { FactoryGirl.create(:page) }
-  let (:act) { 
-    act = FactoryGirl.create(:public_activity) 
-    act.pages << page
-    act
-  }
+  let (:activity) { FactoryGirl.create(:activity_with_page) }
+  let (:page) { activity.pages.first }
   let (:int) { FactoryGirl.create(:mw_interactive, :name => 'Test Interactive', :url => 'http://concord.org') }
 
   describe 'index' do
@@ -31,7 +27,7 @@ describe MwInteractivesController do
     context 'and an InteractivePage ID is provided' do
       describe 'new' do
         it 'automatically creates a new interactive' do
-          act
+          activity
           starting_count = MwInteractive.count()
           join_count = InteractiveItem.count()
           get :new, :page_id => page.id
@@ -41,16 +37,16 @@ describe MwInteractivesController do
         end
 
         it 'redirects the submitter back to the page edit page' do
-          act
+          activity
           get :new, :page_id => page.id
           new_id = MwInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(act, page, :edit_mw_int => new_id))
+          response.should redirect_to(edit_activity_page_path(activity, page, :edit_mw_int => new_id))
         end
       end
 
       describe 'create' do
         it 'creates an empty MW Interactive' do
-          act
+          activity
           starting_count = MwInteractive.count()
           join_count = InteractiveItem.count()
           post :create, :page_id => page.id
@@ -60,10 +56,10 @@ describe MwInteractivesController do
         end
 
         it 'redirects the submitter to the page edit page' do
-          act
+          activity
           post :create, :page_id => page.id
           new_id = MwInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(act, page, :edit_mw_int => new_id))
+          response.should redirect_to(edit_activity_page_path(activity, page, :edit_mw_int => new_id))
         end
       end
     end
@@ -94,7 +90,7 @@ describe MwInteractivesController do
       describe 'update' do
         it 'replaces the values of the MW Interactive to match submitted values' do
           new_values_hash = { :name => 'Edited name', :url => 'http://lab.concord.org' }
-          post :update, :id => int.id, :mw_interactive => new_values_hash
+          post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
 
           mw_int = MwInteractive.find(int.id)
           mw_int.name.should == new_values_hash[:name]
@@ -103,22 +99,22 @@ describe MwInteractivesController do
 
         it 'returns to the edit page with a message indicating success' do
           new_values_hash = { :name => 'Edited name', :url => 'http://lab.concord.org' }
-          post :update, :id => int.id, :mw_interactive => new_values_hash
-          response.should redirect_to(edit_mw_interactive_path(int))
-          flash[:notice].should == 'Your MW Interactive was updated'
+          post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
+          response.should redirect_to(edit_activity_page_path(activity, page))
+          flash[:notice].should == 'Your iframe interactive was updated.'
         end
 
         it 'returns to the edit page with an error on failure' do
           new_values_hash = { :native_width => 'Ha!' }
-          post :update, :id => int.id, :mw_interactive => new_values_hash
-          response.should redirect_to(edit_mw_interactive_path(int))
-          flash[:warning].should == 'There was a problem updating your MW Interactive'
+          post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
+          response.should redirect_to(edit_activity_page_path(activity, page))
+          flash[:warning].should == 'There was a problem updating your iframe interactive.'
         end
       end
 
       describe 'destroy' do
         it 'removes the requested MW Interactive from the database and page and redirects to the page edit page' do
-          act
+          activity
           int
           InteractiveItem.create!(:interactive_page => page, :interactive => int)
           interactive_count = MwInteractive.count()
@@ -127,11 +123,11 @@ describe MwInteractivesController do
 
           post :destroy, :id => int.id, :page_id => page.id
 
-          response.should redirect_to(edit_activity_page_path(act, page))
+          response.should redirect_to(edit_activity_page_path(activity, page))
           MwInteractive.count().should == interactive_count - 1
           page.reload
           page.interactives.length.should == page_count - 1
-          flash[:notice].should == 'Your interactive was deleted.'
+          flash[:notice].should == 'Your Mw interactive was deleted.'
         end
       end
     end

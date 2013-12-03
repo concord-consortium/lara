@@ -1,0 +1,1424 @@
+/* ## Bring in all Compass Helpers */
+@import "partials/base";
+@import "project/rites_fonts";
+@import "project/rites-styleguide";
+
+// *********************************************
+// Table of Contents
+// *********************************************
+
+
+//   1. Universal
+//   2. Molecular Workbench Helpers
+//   3. Project Styles
+//   4. Activity nav
+//   5. Layout modes
+//   6. Headline + Intro
+//   7. Sticky Interactives
+//   8. Interactive + Questions
+//   9. Styling for typographic elements
+//  10. Sidebar
+//  11. Related Module
+//  12. Image Types
+//  13. Activity Footer
+//  14. Site Footer
+//  15. Saved Label
+//  16. Activity Index Page
+//  17. Activity Summary Page
+
+
+// *********************************************
+//  1. Universal
+// *********************************************
+
+a     {   text-decoration: none; color: inherit; }
+b, strong  { font-weight: bold; font-family: $helv-bold;  }
+em    { font-style: italic; }
+
+header,
+footer {
+  margin: 0 0 13px;
+  color: white;
+}
+
+body {
+  background-size: 100%;
+}
+
+div.activity-mod>div.site-width {
+  background-color: rgba(255,255,255,0.85);
+  padding: 12px;
+}
+
+// *********************************************
+//  2. Molecular Workbench Helpers
+// *********************************************
+
+// Text shadows included on various elements
+@mixin drk-txt-shadow($color: $black-50) {
+  @include text-shadow(0 -1px 0 darken($color, 15%));
+}
+
+@mixin lt-txt-shadow($color: #fff) {
+  @include text-shadow(0 1px 0 lighten($color, 10%));
+}
+
+// Border used on questions and related-mod
+.mod-border-rounded {
+  border: 1px solid $black-10;
+  @include border-radius(0 0 13px 13px);
+}
+
+// Clearfix
+.cf { @include pie-clearfix; }
+
+// Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
+/* TODO: HAS-NGS uses different buttons */
+@mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
+  font-size: 15px;
+  font-family: $helv-reg;
+  padding: 9px 13px;
+  background: $color1;
+  background-image: -webkit-linear-gradient( top, $color1, $color2);
+  background-image:         linear-gradient( top, $color1, $color2);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
+                      rgba(0, 0, 0, 0.2) 0 1px 2px;
+          box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
+                      rgba(0, 0, 0, 0.2) 0 1px 2px;
+  @include border-radius(4px);
+  @include drk-txt-shadow( darken($color1, 10%) );
+  border: 1px solid $color2;
+  margin-top: 13px;
+  cursor: pointer;
+  text-transform: none;
+  text-align: center;
+  @include trans;
+  color: #fcfcfc;
+
+  &:hover {
+    background-color: darken($color1, 5%);
+    background-image: -webkit-linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
+    background-image:         linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
+  }
+
+  &:active {
+    @include drk-txt-shadow( darken($color1, 10%) );
+    background-color: darken($color1, 10%);
+    background-image: -webkit-linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
+    background-image:         linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
+  }
+}
+
+
+// *********************************************
+//  3. Project Styles
+// *********************************************
+
+// Site Width
+.site-width {
+  width: 960px;
+  margin: 0 auto;
+}
+
+
+.activity-mod {
+  margin-bottom: 26px;
+  position: relative;
+  font-family: $helv-reg;
+}
+
+// Site header
+// --------------------------------
+
+.site-logo-mod {
+  @extend .cf;
+  padding: 13px 0 0;
+}
+
+.site-logo {
+  padding-left: 0px;
+  padding-right: 0px;
+  img {
+    max-width: 100%;
+  }
+
+  &.logo-l {
+    min-width: 75%;
+    float: left;
+    text-align: left;
+  }
+
+  &.logo-r {
+    float: right;
+    text-align: right;
+  }
+
+}
+
+
+// *********************************************
+//  4. Activity nav
+// *********************************************
+
+.activity-nav-mod {
+  margin: 0 0 20px;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  color: white;
+  @extend .cf;
+  @include trans;
+
+
+/*  &.fixed {
+    position: fixed;
+    top: 0;
+    background-color: lighten($lt-blue, 15%);
+    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.2) );
+    padding: 10px 6px;
+    z-index: 9999;
+  }
+*/
+}
+
+.activity-nav-logo {
+  float: left;
+
+  img {
+    max-width: 100%;
+  }
+
+  .h2 {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 36px;
+    color: white;
+    margin-top: 8px;
+    margin-left: 120px;
+    &:before {
+      content: 'ACTIVITY: '
+    }
+  }
+}
+
+// This controlls the layout of the nav
+.l-nav {
+      @include ui-grid-2(75%, 25%, 5%);
+      background-color: $capecod;
+      height: 50px;
+      @include border-radius(2px);
+}
+
+.nav-menu {
+  height: 50px;
+  width: 90px;
+  font-family: $helv-light;
+  margin-left: 15px;
+  font-size: 18px;
+  padding-top: 15px;
+  border-right: 2px solid white;
+  float: left;
+  a#menu-trigger {
+    cursor: pointer;
+    padding-right: 20px;
+    background-position: right;
+    background-repeat: no-repeat;
+    i.icon-angle-down {
+      font-size: 15pt;
+      font-weight: bold;
+      margin-left: 3px;
+    }
+  }
+}
+
+div.nav-menu-top {
+  /* This is the drop-down part of the navigation menu */
+  display: none;
+  background-color: white;
+  border: 1px solid $black-15;
+  width: 450px;
+  position: relative;
+  top: 5px;
+  left: 0px;
+  color: $emperor;
+  padding: 8px 10px;
+  z-index: 10; /* Ensure this appears above content from the page */
+  margin-top: 10px;
+  li.activity {
+    line-height: 33px;
+    background-color: $alabaster;
+    padding: 10px;
+    margin: 10px 5px;
+    border-width: 0 2px 2px 0;
+    border-color: $black-15;
+    border-style: solid;
+    font-size: 12pt;
+    &.active {
+      .activity-list-head {
+        @include border-radius(2px);
+        padding: 10px 20px 10px 10px;
+        margin: 0 0 10px 0;
+        color: white;
+        background-color: $shakespeare;
+        background-image: -webkit-linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+        background-image:         linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+      }
+      li.page {
+        color: $shakespeare;
+      }
+    }
+    &.on {
+      ol.pages {
+        display: block;
+      }
+    }
+    a.open-close {
+      cursor: pointer;
+    }
+    .activity-list-head {
+      width: 100%;
+      display: block;
+      padding-right: 20px;
+      background-position-x: 96%;
+      background-position-y: 50%;
+      background-repeat: no-repeat;
+      i {
+        font-size: 15pt;
+        font-weight: bold;
+        float: right;
+        padding-top: 5px;
+      }
+/*      >a:before {
+        content: 'ACTIVITY: ';
+      }
+*/    }
+    li.page {
+      font-size: 0.8em;
+      line-height: 1.3em;
+      a:before {
+        content: '';
+      };
+    }
+    ol.pages {
+      margin-left: 3em;
+      display: none;
+    }
+  }
+  /* The arrow at the top of the menu */
+  /* Adapted from http://jonrohan.me/guide/css/creating-triangles-in-css/ */
+  /* Basically it's two divs contorted to present triangles with the bottom borders */
+  /* Then overlapped so the upper one (white) covers all but the "border" of the lower */
+  /* one (gray). */
+  .nav-menu-arrow-border {
+    border-color: transparent transparent $black-15 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -20px;
+    left: 55px;
+  }
+  .nav-menu-arrow {
+    border-color: transparent transparent white transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -18px;
+    left: 55px;
+  }
+}
+
+.activity-nav {
+  position: relative;
+  @extend .cf;
+
+  .prev,
+  .next {
+    display: none;
+  }
+
+  .prev {
+    float: right;
+    background-image: url('/assets/prev.png');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGQzdGMTE3NDA3MjA2ODExODA4M0IxODUyNUFENjlEMCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2QjAzQjM4NDlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2QjAzQjM4MzlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkQ3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkM3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4WDkbDAAAB6UlEQVR42tyaTShEYRSGv2uGhUZJKc1YSXZqspRs1Sg/i0mJpZIspJA1CyIlIRsbM/lJEZG12ApLTVZ+Nn4WWCCN9+RMzYqZZu6d7/XWU7O789x7v++cc+91ksmk+Q8p8vBYo+wiPjAFhtw8iN9liWKwANrcPltuipSCVdDsxX3rlkg5iIEGrxagGyJVYAPUMe9aNWDPa4l8i9SDHVDNXEcawTaoZC6ILSAOygpZ2Z0cW5QuMKtFrxAJ5uOK9IO5AkrkvP06YBwM2tQ0ZisiZ38adNvW/WYjUgIWQauNbXymIgHtm5psnUcyEanQvils82D1l0gIrINa5glR/vwug8RvImGVCDHP7LKgt3Rt0D58iOjCDhiypItIkVvRemFYRaTdmLGlb8pFxKc9lGEXmQdj4ItdRLIGBsAnu4hkH/SCN3YRybFOfs/sIpIz0Anu2UUkV6AdXLOLSG5AB7hkF5E8gCg4ZReRvIAecMQuInkHfWCTXcRo5R8Gy+wiEnk0OQEm9TetSCpLYMSW/szJw+vpiEplMscEbbwiqRzqjvbKemul50RrzSO7iORC+7NbdhFJQvuzBLuI5E5lztlFjM4yUV071CJGp0zZzQ7YRSQf5ucVXdxtEb8HJ0sqv3zi9GR7Zbci3wIMAJi+UXx+jukIAAAAAElFTkSuQmCC');
+  }
+
+  .next {
+    float: right;
+    background-image: url('/assets/next.png');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGQzdGMTE3NDA3MjA2ODExODA4M0IxODUyNUFENjlEMCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2QjAzQjM4ODlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2QjAzQjM4NzlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkQ3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkM3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5lCWipAAAB1ElEQVR42tyauy8EURjF73g1thGdbMe2HjV/AIl4FEKCRkOIDiFRagiFQhRKWYJNiIREK7SCUkTFRiEUVoHIOl/mbEEi8djZceYkv/bu/oy593wXL5vNuiikKOD1p4AXBZFRMAeK1UUsvWAZlKqLWFpBEpSri1iawBaoUBex1IMdUKUuYklQpkZdxBIH26BOXcRSyXemUV3EEuNu1vLXhbxPFSUdktAbmADrqk8kFzv558GwuohjJ5smnrJILvZUFn7az/6jiKUHrIAydRFLM3e0mLqI4xmT4pkjLWKpZaWJq4tYqimTUBdxbMwm06Au4jjLbHK2kRZxnDKTnDqlRRznf7sH6FMXyfWzWeff1EiLfEiJ8He36j/J90VW5AWMgD3lJ5IBA+BI+Vfrwfk3l6fK70ia9f5S+WS3L9/+lYSKyBnoADfK7dde6C5wrzyP7LOCZJQnxDUwyPNCdmZfAuM8uSUril15zrDVynYt++mPgY3fLuAF/Ofp79wlP4MhcKDcfh/Zm46Va/wdt9dz5Xnkmr3pKl8LhrH9XoC2fEqEIXICOsFtvhcupMgh6OZM4VRFdkE/eArqAwohssr5+jXIDwl611p0/t1T4PGi8o9n7wIMAMJfVLym7VShAAAAAElFTkSuQmCC');
+  }
+
+  .pages {
+    float: left;
+
+    @media screen and (min-width: 1100px) {
+      float: right;
+    }
+  }
+} // end .activity-nav
+
+
+.pagination {
+  @extend .cf;
+  text-align: center;
+  margin-right: 8px;
+  height: 50px;
+}
+
+.pagination-item {
+  margin-left: -2px;
+  @include border-radius(10px);
+  text-align: center;
+  display: inline-block;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .pagination-link {
+    margin-top: 12px;
+    background-color: $wildsand;
+    color: $gray;
+    width: 24px;
+    height: 24px;
+    @include border-radius(13px);
+    border: 3px solid #616768;
+    padding-top: 1px;
+    display: block;
+    @include trans;
+
+/*    &:hover {
+      background: lighten($med-blue, 5%);
+      @include drk-txt-shadow($med-blue);
+      color: #fff;
+    } */
+
+    &.selected {
+      background: $seagreen;
+      color: #fff;
+      height: 28px;
+      width: 28px;
+      padding-top: 3px;
+      @include border-radius(14px);
+      @include drk-txt-shadow(#64c500);
+      /* TODO: gradient? */
+    }
+  } // end .pagination-link
+
+  &.home-link {
+    display: none;
+  } // end .home-link
+
+  &.home-link {
+    .selected {
+      background-image: url('/assets/home_white.png');
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZBNjY3QUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZBNjY3OUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDE4MDExNzQwNzIwNjgxMTgyMkFFQkJEMTk0QkM0NjEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7Q8BpbAAAEE0lEQVR42uya/U8TdxzHe32wFHrtyV171+YOih05C7JCAYFqnPEh1viID4QYk2X7wV+3H/arf4N/gD8YliwzSsyGbrLM6IwCCiZmM1FA1G1o6QMFChqDIWHv73ZmzJlJeVjv7PeTvAL90h7HK/f9PHwD81nPoEmnUQ6OACs4B57o8SatOrynUtAKtnyq+qssDMOcHnxWhdd3QCcYowLfHg6wB8Tag1JVk+guZ0wmhvzgVFT13x2fUb8cjkfw8gb4BkxQgX/fw0fg0MGAd0OL6A7YLWbbwjcQixGBLavlVaU/lVXPPkpEsXQFXALPC1lgPWiPKUJ9o8cl80U253+92cyYmGYIrve4lL7klHrhSWorlr8HP4DZQhIYBMeiIhfFEycrziI+lw/bzIxli29tMCK45P50NtT1a3o7lrvAdTD3PgsUQRtoOBGSN1StLfEt52JOm8W+zV9aGS5lfQPp6Zru0fEYli+AW2D+fRLIggNg2/FKXwhbsJxZwYuTrR9T+PVh3indSmbD18cmb2P5PPjF6AJJMdgF9h5ZJ1ZHRXeFmWHMq/XLfMV2rrXCy9UKrNibmIrgqezResgRowkkD9gmcHhfuaeuyesuw3Yr+r/yRAXr8BCQI6Ubicmm+5Mvrmki40YQWE0qK3JT80avW5aK17jzVeJDyLEE9JBSx3C8Dks3tRyZ0aNAhRSIOoHduknklA/cxV69dOi4J6VWUGX0kJVfjyRatB7yIpjRg0CObFUyen2i+kNhnpX1OLOSqQapJNDgcZX1JbOVnY+TpHm/rDGbD4F2sI+MXm1BMdQicoHXo5eeA7O1ebPEBesFNOOpqfXoIXdg+VtwbSk95FIEWgCZAFr3Bzw12K7/Gr2MEA6reQ3pISO8yz+QzlZ/9/v4bi0/9uTSQ+YqkIxebRi9GhczehkhOLu1ZKfMqzWlrIQcWXM1PtGvnfrcXUmBZPRqx+i1eSmjlxGCdAvYUe4PeaeIHFl3O5Xt1ZrxoeUIFLUC0bQSo5cRIsA6BEJEYKWbiamN9yae/6SJHM1FIKsViB2rMXoZIVSuRCL8nJmRzgzFw1jq03Jk6h/V/Y0jfVIMdoL9ZPTCdq2wrOLoZZRARZm/k57+7auHY4NatSZVe3qhQPKAkQbzKBm9Gr0uxWWzOgpd3PSruZdvrmFLj51/nLxv+usM8jIRGMI3x0DZuy4YU3gZFThUCPK6R8cfdI9m3laJZxf0izMkBz4AJxd30UxH4QjMPMWXL971voLPb8sNKpAKpAKpQCqQBhVIBVKBVCANKpAKNFzk9d/btBOPp0v9vB5Oh/Is8E95Hy/j83k/HaJbmAqkAqlAKpAGFUgFUoFUIA0qkAqkAqlAGjlFzqcxn/cO/ainPyDf9/OHAAMAk6sLm1uGWagAAAAASUVORK5CYII=');
+    }
+  }
+} // end .pagination-item
+
+/* Next and previous page links at bottom of each page */
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    a {
+      text-decoration: none;
+    }
+    &.disabled {
+      display: none;
+    }
+    input[type="submit"],
+    button[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      @include btn ( #459ace, #2b6fba );
+      padding: 15px 30px;
+      font-size: 15px;
+      color: #fff;
+      @include drk-txt-shadow(#459ace);
+      height: 35px;
+      min-width: 120px;
+      padding: 6px 13px;
+      margin: 15px;
+    }
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
+}
+
+/* Next activity and last activity, for sequences */
+.intra-sequence-nav {
+  display: inline-block;
+  width: 100%;
+  .next-activity, .last-activity {
+    @include btn(#459ace, #2b6fba);
+    height: 35px;
+    min-width: 120px;
+    padding: 6px 13px;
+    margin: 15px;
+    &.disabled {
+      background: none;
+      border:0;
+      color: #2b6fba;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: inherit;
+    }
+  }
+  .next-activity {
+    float: right;
+  }
+  .last-activity {
+    float: left;
+  }
+}
+
+// *********************************************
+//  5. Layout modes
+// *********************************************
+
+// Layout: 6040
+.l-6040 {
+  @extend .cf;
+  @include ui-grid-rl(60%, 40%, 2%);
+} // end .l-6040
+
+
+// Layout: 7030
+.l-7030 {
+  @extend .cf;
+  @include ui-grid-rl(70%, 30%, 2%);
+}
+
+.r-4060 {
+  @extend .cf;
+  @include ui-grid-lr(60%, 40%, 2%);
+} // end .r-4060
+
+.r-3070 {
+  @extend .cf;
+  @include ui-grid-lr(70%, 30%, 2%);
+}
+
+// Layout: full-width
+.l-full-width {
+
+  .question-hdr {
+    width: 28%;
+    float: left;
+  }
+
+  .question-bd {
+    width: 70%;
+    float: right;
+  }
+
+  .challenge {
+    .h5 {
+      &:after {
+        border-left-color: darken($black-15, 3%);
+      }
+    }
+  }
+
+  .h5 {
+    &:after {
+      position: absolute;
+      content: "\0020";
+      right: -28px;
+      top: -1px;
+      border: 12px solid $med-blue;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+} // .l-full-width
+
+
+
+// *********************************************
+//  6. Headline + Intro
+// *********************************************
+
+
+// Headline block
+.content-hdr {
+  display: none;
+  font-family: $helv-reg;
+  /* margin-bottom: 30px; */
+
+  .h2 {
+    // font-family: $helv-light;
+    font-size: 36px;
+    // font-weight: normal;
+    letter-spacing: -1px;
+    color: $drk-orange;
+  }
+}
+
+
+
+// Intro block
+.intro-mod {
+  clear: left;
+  font-size: 16px;
+  line-height: 1.45em;
+  font-family: $helv-reg;
+  margin-bottom: 19px;
+
+ .h4 {
+    font-weight: normal;
+    font-size: 20px;
+    margin-bottom: 13px;
+    color: $med-blue;
+  }
+
+  .intro-txt {
+   /* max-width: 75%; */
+  }
+}
+
+
+
+
+
+// *********************************************
+//  7. Sticky Interactives
+// *********************************************
+
+.sticky-wrapper { margin-bottom: 52px; }
+
+.interactive-mod {
+  &.stuck {
+    position: fixed;
+    top: 65px;
+  }
+
+  &.bottomed {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+
+// .sticky-wrapper need to have hard px widths to work correctly in fixed state
+.l-7030 {
+
+  .sticky-wrapper {
+    width: 672px;
+    float: right;
+  }
+
+  .interactive-mod {
+    width: 672px;
+  }
+
+}
+
+
+// *********************************************
+//  8. Interactive + Questions
+// *********************************************
+
+.content-mod {
+  @extend .cf;
+  position: relative;
+}
+
+
+.interactive-mod {
+  margin-bottom: 52px;
+  width: 100%;
+  z-index: 100;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+  }
+
+  .under-image {
+    .fullscreen {
+      float: right;
+      a {
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+      }
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
+    .caption {
+      float: left;
+      width: 85%;
+    }
+    .credit {
+      clear: left;
+      float: left;
+      width: 80%;
+    }
+  }
+}
+
+.questions-mod {
+  /* margin-bottom: 52px; */
+  position: relative;
+}
+
+.question {
+  margin: 0 0 52px;
+  @extend .cf;
+  .answer_text {
+    font-style: italic;
+    font-size: 0.9em;
+  }
+}
+
+.challenge {
+  .question-hdr, .question-hdr-collapse {
+    background: darken($black-15, 3%);
+
+    .h5 {
+      @include drk-txt-shadow($black-15);
+    }
+  }
+  .question-bd {
+    background: $black-5;
+  }
+} // end .challenge
+
+
+.question-hdr, .question-hdr-collapse {
+  background: $med-blue;
+  position: relative;
+  padding: 4px 8px;
+  clear: both;
+
+  .h5 {
+    font-family: $helv-reg;
+    font-weight: normal;
+    position: relative;
+    color: #fff;
+    font-size: 16px;
+    @include drk-txt-shadow($med-blue);
+  }
+}
+
+.question-bd {
+  padding: 26px;
+  @extend .mod-border-rounded;
+}
+
+
+
+// *********************************************
+//  9. Styling for typographic elements
+// *********************************************
+
+.intro-mod,
+.content-mod {
+  font-size: 16px;
+  line-height: 1.35em;
+  ol,
+  ul,
+  dl,
+  blockquote,
+  p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+// disable extra margin on first and last paragraphs in a module
+.intro-mod,
+.question-bd {
+  p {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ordered lists
+
+.intro-mod,
+.content-mod {
+  ol {
+    counter-reset: li;
+    list-style: none;
+    *list-style: decimal;
+    padding: 0;
+    margin: 16px 0;
+
+    ol, ul {
+      margin: 16px 0 16px 16px;
+    }
+
+    > li {
+      margin-bottom: 13px;
+      position: relative;
+      &:before {
+        content:counter(li)".";
+        counter-increment:li;
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 0.65em;
+        padding: 3px 5px;
+        background-color: $black-5;
+        position: relative;
+        top: -2px;
+        @include border-radius(2px);
+      }
+    } //li
+  }//ol
+}//content-mod
+
+
+// unordered lists
+.intro-mod,
+.content-mod {
+  ul {
+    list-style: square;
+    margin-left: 16px;
+
+    ul, ol {
+      margin: 16px 0 16px 16px;
+    }
+
+    li {
+      margin-bottom: 13px;
+    }
+  }//ul
+}//content-mod
+
+
+//definition lists
+.intro-mod,
+.content-mod {
+  dl {
+
+  }
+  dt {
+    font-weight: bold;
+    margin-top: 13px;
+  }
+  dd {
+    margin-left: 16px;
+  }
+}
+
+
+// text areas
+.intro-mod,
+.content-mod {
+  form {
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+  textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid $black-15;
+    font-family: $helv-reg;
+    @include border-radius(8px);
+  }
+
+  em {
+    display: block;
+    font-size: 0.75em;
+    text-align: right;
+    color: $black-15;
+  }
+}
+
+// radio buttons
+.intro-mod,
+.content-mod {
+  label {
+    margin-bottom: 13px;
+  }
+  input {
+    margin-right: 8px;
+  }
+}
+
+// screen shot answer
+.image-answer {
+  border: 3px dashed $lt-blue;
+  padding: 40px;
+  text-align: center;
+  @include border-radius(10px);
+
+  &.complete {
+    margin-bottom: 12px;
+  }
+}
+
+.image-file {
+  @include border-radius(5px);
+  background-color: #FFF;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    opacity: 0.6;
+    @include border-radius(5px);
+  }
+
+  p {
+    margin: 0;
+  }
+  a {
+    font-size: 11px;
+    color: $btn-blue;
+    text-transform: uppercase;
+    float: right;
+  }
+}
+
+// submit
+input[type="submit"],
+button[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  @include btn ( lighten($btn-orange, 8%), $btn-orange2 );
+  padding: 15px 30px;
+  font-size: 15px;
+  color: #fff;
+  @include drk-txt-shadow($btn-orange);
+}
+
+// button
+input[type="button"],
+button[type="button"] {
+  border: 0;
+  @include btn;
+}
+input:disabled {
+  opacity: 0.3;
+}
+
+// ******************************************
+//  10. Sidebar
+// ******************************************
+
+.sidebar-mod {
+  position: fixed;
+  top: 20%;
+  font-family: $helv-light;
+  text-align: left;
+  @include border-radius(0 0 0 8px);
+  background-color: transparent;
+  display: none;
+  z-index: 200;
+  width: 600px;
+  right: -515px;
+
+  @media screen and (min-width: 1024px) {
+    right: -715px;
+    width: 800px;
+  }
+
+  //transitions for "close" action
+  -moz-transition: 0.4s right,
+                      0.85s background-color,
+                      0.20s 0.05s ease box-shadow;
+  -webkit-transition: 0.4s right,
+                      0.85s background-color,
+                      0.20s 0.05s ease box-shadow;
+          transition: 0.4s right,
+                      0.85s background-color,
+                      0.20s 0.05s ease box-shadow;
+
+  &.expanded {
+    right: 0;
+    background-color: #fff;
+
+    box-shadow: -3px 2px 15px rgba(0, 0, 0, 0.3),
+                0 0 0 8000px rgba(68, 68, 68, 0.1),
+                0 0 0 8000px rgba(255, 255, 255, 0.7);
+
+    .sidebar-hdr {
+      position: absolute;
+      left: -85px;
+    }
+
+    .sidebar-bd {
+      padding: 30px;
+      background-color: #fff;
+    }
+  } // end .expanded
+} // end sidebar-mod
+
+.sidebar-hdr {
+  cursor: pointer;
+  left: 0;
+  background: lighten($drk-orange, 5%) url('/assets/question.png') no-repeat 50% 10px;
+  background: lighten($drk-orange, 5%) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2MTJGRTM0OEEwNzQxMUUyOUE2MkM1N0M3NTQ0M0ZDMyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2MTJGRTM0OUEwNzQxMUUyOUE2MkM1N0M3NTQ0M0ZDMyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjYxMkZFMzQ2QTA3NDExRTI5QTYyQzU3Qzc1NDQzRkMzIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjYxMkZFMzQ3QTA3NDExRTI5QTYyQzU3Qzc1NDQzRkMzIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+1dIF3QAAAZ5JREFUeNqclc8vw2AYx9eui7BJmIgdhBIkLLg57+7u7uyP8KeIa+/uPbshSBBGXDYxslERW+v7yLfJ403blSf5dG3evp8+769nVhRFBSOKYBLMgCkwAcbZ1gOv4Bm0wAsY6M6WIRwBC2COIocfsNgeUdCn+AHcgc8kYRmsAheMFfJFAJrgErxroQjWwDIoqQ4NsAXqfJbOx8CPBYgvcA0u5AMilGEtgU0OOQ4R7aVkJuJ99SxDPgE3IquCeUNWYCbx0H1OyQ6zdvnrq7kXR8fGpcYFSApfdZIhHqi2svGuOGo2MyzmXISGuj9P2G5VR22PYbHNIceZN432H5dcKjlkuyq7I+ClvFcRYQjsDFldyTwK0yIUUZcnIC1cdZ8lE0dXMuzwrJYy9pyXY1rkOHZkY8vpWM85l1nxBs5sVo0ns2oYq3tI0mJAR8tmSbrnQf9vBHT04uIgc7kINv5QabTsFNzKPDpqQpvcQissrNYQUcRCe8W62E8qsDYr9SyYZrajRoH9YFYyZ49cg1Afl18bE7RZ44KcfwGhFnwLMABgdHwtnXk12wAAAABJRU5ErkJggg==') no-repeat 50% 10px;
+  border-right: 4px solid $drk-orange;
+  width: 85px;
+  height: 79px;
+  text-align: center;
+  padding: 8px;
+  float: left;
+  @include border-radius(3px 0 0 3px);
+
+  &:hover {
+    background-color: darken($drk-orange, 5%);
+  }
+
+  .h5 {
+    // text-transform: uppercase;
+    font-family: $helv-reg;
+    text-transform: none;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.15em;
+    margin-top: 33px;
+    @include drk-txt-shadow($drk-orange);
+  }
+}//sidebar-hdr
+
+.sidebar-bd {
+  padding: 30px 30px 30px 105px;
+  font-family: $helv-reg;
+  font-size: 16px;
+  @include border-radius(0 0 0 8px);
+  background-color: transparent;
+  height: 500px;
+  overflow: scroll;
+
+  .h4 {
+    font-size: 24px;
+    font-family: $helv-reg;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+
+  .sidebar-txt {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }//sidebar-txt
+} // end sidebar-bd
+
+.sidebar-bd-close {
+  position: absolute;
+  background-color: $black-15;
+  padding: 2px 6px;
+  top: 16px;
+  right: 32px;
+  color: #fff;
+  cursor: pointer;
+  @include border-radius(5px);
+  @include trans;
+
+  &:hover {
+    background-color: darken($black-15, 15%);
+  }
+}//sidebar-bd-close
+
+
+
+
+
+
+// ******************************************
+//  11. Related Module
+// ******************************************
+
+.related-mod {
+  margin-bottom: 50px;
+  margin-top: 50px;
+  border-top: none;
+  background-color: lighten($related-green, 40%);
+  border: 1px solid lighten($related-green, 30%);
+  @extend .mod-border-rounded;
+  @extend .cf;
+}
+
+.related-hdr {
+  // background-color: $med-blue;
+  background-color: $related-green;
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 13px;
+  margin-bottom: 8px;
+  @include box-shadow(0 2px 5px -1px $black-15);
+  //@extend .drk-text-shadow;
+}
+
+.related-bd {
+  padding: 16px 26px 30px;
+  @extend .cf;
+}
+
+.related-items {
+  @extend .cf;
+}
+
+.related-item {
+  width: 30%;
+  margin-left: 5%;
+  float: left;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .h6 {
+    font-size: 16px;
+    margin-bottom: 3px;
+    color: #000;
+  }
+
+  .related-item-txt {
+    font-size: 14px;
+    line-height: 1.35em;
+
+    a {
+      // @include btn;
+      display: inline-block;
+      padding: 7px 11px;
+      color: lighten($btn-blue2, 40%);
+      margin-top: 13px;
+      background-color: lighten($btn-blue2, 2%);
+      @include drk-txt-shadow($btn-blue2);
+      @include trans;
+
+      &:hover {
+        background-color: darken($btn-blue2, 4%);
+      }
+
+      &:active {
+        background-color: darken($btn-blue2, 10%);
+      }
+    }//a
+  }//related-item-txt
+} //related-item
+
+
+.related-img {
+  margin-bottom: 16px;
+  width: 25%;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+// ******************************************
+//  12. Image Types
+// ******************************************
+
+.content-img {
+  position: relative;
+
+  img {
+    max-width: 100%;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border: 1px solid #e9e9e9;
+  }
+
+  figcaption {
+    margin-top: 5px;
+    font-size: 12px;
+  }
+} // .content-img
+
+.img-reg { max-width: 60%; }
+
+.img-inset {
+  max-width: 30%;
+  float: right;
+  margin-left: 2em;
+}
+
+// img inside a question
+.question-bd {
+  .content-img {
+    position: relative;
+    img {
+      padding: 0;
+      background-color: transparent;
+      // border: 0;
+    }
+  }
+
+  .img-reg {
+    max-width: 100%;
+  }
+} //question-bd
+
+// expandable img icon
+.img-expandable {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: $med-blue url('/assets/plus.png') no-repeat center;
+  background: $med-blue url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowNDgwMTE3NDA3MjA2ODExODIyQUE0NzczNTQ2ODgzRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3RDI1OEQ3RUEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3RDI1OEQ3REEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7eT1LfAAAALElEQVR42mL4//8/Axac9h8VYKhhYiATDCGNII/O/E8GGBinjsYjtTUCBBgAZiiR6+hReNkAAAAASUVORK5CYII=') no-repeat center;
+  @include box-shadow(-1px 1px 2px rgba(0, 0, 0, 0.3) );
+  @include trans;
+
+  &:hover {
+    background-color: darken($med-blue, 8%);
+  }
+}//img-expandable
+
+
+
+// ******************************************
+//  13. Activity Footer
+// ******************************************
+
+.activity-footer-mod {
+  margin-bottom: 48px;
+
+  .site-logo {
+    margin: 0 auto;
+  }
+}
+
+
+
+// ******************************************
+//  14. Site Footer
+// ******************************************
+
+footer {
+  .has-footer {
+    background-color: rgba(255,255,255,0.8);
+    @include border-radius(3px);
+    color: $dovegrey;
+    font-family: $helv-reg;
+    padding: 10px;
+    p {
+      margin: 13px;
+      /* @include lt-txt-shadow(#fff); */
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: darken($black-75, 5%);
+        font-weight: bold;
+        @include trans;
+
+        &:hover {
+          color: darken($lt-blue, 55%);
+        }
+      } /* a */
+    } /* p */
+    .has-footer-logobox {
+      .has-footer-logo {
+        text-align: center;
+        margin: 10px;
+        display: inline-block;
+      }
+    }
+  } /* has-footer */
+} /* footer */
+
+
+
+// ******************************************
+//  16. Activity Index Page
+// ******************************************
+
+.index-width {
+  width: 675px;
+  margin: 0 auto;
+}
+
+.index-mod {
+  text-align: left;
+
+  .intro-mod {
+    margin-bottom: 60px;
+
+    .intro-txt {
+      font-size: 20px;
+      line-height: 1.35em;
+      max-width: 100%;
+    }
+  } // end intro-mod
+
+  input[type="submit"],
+  button[type="submit"] {
+    font-size: 20px;
+    padding: 20px 86px;
+    margin: 0 auto 24px;
+  }
+
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
+  }
+
+  &.intro-mod {
+
+    ul, ol {
+      font-size: 20px;
+
+      li {
+        margin-bottom: 24px;
+        &:before {
+          background-color: lighten($med-blue, 27%);
+          border: 1px solid lighten($med-blue, 18%);
+          color: $med-blue;
+          @include lt-txt-shadow(#fff);
+        }
+
+        a {
+          color: #666;
+          color: $med-blue;
+          @include trans;
+
+          &:visited {
+            color: #aaa;
+          }
+
+          &:hover {
+            color: darken($med-blue, 20%);
+          }
+
+
+        }//a
+      }//li
+    }//ul,ol
+  } // end &.intro-mod
+} // end index-mod
+
+.index-list-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 36px 0 20px;
+  color: #666;
+}
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+.summary-actions {
+  position: fixed;
+  top: 230px;
+  margin-left: 820px;
+  .print {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  .close {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+  &.bottom {
+    margin-top: -50px;
+  }
+}
+
+.summary-mod {
+  margin-right: 150px;
+  padding: 15px;
+  .prompt {
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .number {
+    float: left;
+    font-weight: bold;
+    margin: 5px 5px 5px 0;
+  }
+  .answer, .image_answer {
+    clear: left;
+    margin-left: 16px;
+  }
+}
+
+/* Miscellaneous junk */
+
+.question, .intro-mod, .related-mod, .sidebar-mod {
+  a {
+    color: darken($med-blue, 20%);
+    @include trans;
+    text-decoration: underline;
+    &:visited {
+      color: #aaa;
+    }
+    &:hover {
+      color: $med-blue;
+    }
+  }
+}
+
+.intro-mod.index-mod a {
+  text-decoration: none;
+}
+
+/* social tools on index page */
+.social-media-mod {
+  margin-bottom: 12px;
+
+  .fb-link {
+    position: relative;
+    top: -7px;
+  }
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130826175627) do
+ActiveRecord::Schema.define(:version => 20131107202220) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -26,32 +26,58 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
   add_index "authentications", ["uid", "provider"], :name => "index_authentications_on_uid_and_provider", :unique => true
   add_index "authentications", ["user_id", "provider"], :name => "index_authentications_on_user_id_and_provider", :unique => true
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0, :null => false
+    t.integer  "attempts",   :default => 0, :null => false
+    t.text     "handler",                   :null => false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
     t.text     "answer_text"
     t.string   "image_url"
     t.integer  "image_question_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.text     "annotation"
     t.string   "annotated_image_url"
+    t.boolean  "is_dirty",            :default => false
   end
 
+  add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_embeddable_image_question_answers_on_image_question_id"
+  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_multiple_choice_answers_on_run_and_question"
   add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
 
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.string   "bg_source",      :default => "Shutterbug"
+    t.string   "bg_url"
+    t.text     "drawing_prompt"
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
     t.integer  "run_id"
     t.integer  "multiple_choice_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "is_dirty",           :default => false
   end
+
+  add_index "embeddable_multiple_choice_answers", ["multiple_choice_id"], :name => "index_embeddable_multiple_choice_answers_on_multiple_choice_id"
+  add_index "embeddable_multiple_choice_answers", ["run_id"], :name => "index_embeddable_multiple_choice_answers_on_run_id"
 
   create_table "embeddable_multiple_choice_choices", :force => true do |t|
     t.integer  "multiple_choice_id"
@@ -61,6 +87,8 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.datetime "updated_at",         :null => false
     t.text     "prompt"
   end
+
+  add_index "embeddable_multiple_choice_choices", ["multiple_choice_id"], :name => "index_embeddable_multiple_choice_choices_on_multiple_choice_id"
 
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
@@ -77,9 +105,14 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.text     "answer_text"
     t.integer  "run_id"
     t.integer  "open_response_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.boolean  "is_dirty",         :default => false
   end
+
+  add_index "embeddable_open_response_answers", ["open_response_id"], :name => "index_embeddable_open_response_answers_on_open_response_id"
+  add_index "embeddable_open_response_answers", ["run_id", "open_response_id"], :name => "index_open_response_answers_on_run_and_question"
+  add_index "embeddable_open_response_answers", ["run_id"], :name => "index_embeddable_open_response_answers_on_run_id"
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
@@ -154,16 +187,22 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.integer  "project_id"
   end
 
+  add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
+  add_index "lightweight_activities", ["project_id"], :name => "index_lightweight_activities_on_project_id"
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
+  add_index "lightweight_activities", ["theme_id"], :name => "index_lightweight_activities_on_theme_id"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
   create_table "lightweight_activities_sequences", :force => true do |t|
     t.integer  "lightweight_activity_id", :default => 1, :null => false
     t.integer  "sequence_id",             :default => 1, :null => false
-    t.integer  "position",                :default => 1, :null => false
+    t.integer  "position",                :default => 1
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
   end
+
+  add_index "lightweight_activities_sequences", ["lightweight_activity_id"], :name => "index_activities_sequence_join_by_activity"
+  add_index "lightweight_activities_sequences", ["sequence_id"], :name => "index_activities_sequence_join_by_sequence"
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"
@@ -191,6 +230,9 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.datetime "updated_at",          :null => false
   end
 
+  add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"
+  add_index "page_items", ["interactive_page_id"], :name => "index_page_items_on_interactive_page_id"
+
   create_table "projects", :force => true do |t|
     t.string   "title"
     t.string   "logo"
@@ -201,11 +243,13 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.integer  "theme_id"
   end
 
+  add_index "projects", ["theme_id"], :name => "index_projects_on_theme_id"
+
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
@@ -213,7 +257,17 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.string   "remote_endpoint"
     t.integer  "sequence_id"
     t.integer  "sequence_run_id"
+    t.boolean  "is_dirty",        :default => false
   end
+
+  add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
+  add_index "runs", ["key"], :name => "index_runs_on_key"
+  add_index "runs", ["remote_endpoint"], :name => "index_runs_on_remote_endpoint"
+  add_index "runs", ["sequence_id"], :name => "index_runs_on_sequence_id"
+  add_index "runs", ["sequence_run_id"], :name => "index_runs_on_sequence_run_id"
+  add_index "runs", ["user_id", "activity_id"], :name => "index_runs_on_user_id_and_activity_id"
+  add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "index_runs_on_user_id_and_remote_id_and_remote_endpoint"
+  add_index "runs", ["user_id"], :name => "index_runs_on_user_id"
 
   create_table "sequence_runs", :force => true do |t|
     t.integer  "user_id"
@@ -224,16 +278,26 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.datetime "updated_at",      :null => false
   end
 
+  add_index "sequence_runs", ["sequence_id"], :name => "index_sequence_runs_on_sequence_id"
+  add_index "sequence_runs", ["user_id"], :name => "index_sequence_runs_on_user_id"
+
   create_table "sequences", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
     t.text     "logo"
+    t.string   "publication_status", :default => "draft"
+    t.boolean  "is_official",        :default => false
+    t.string   "display_title"
   end
+
+  add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
+  add_index "sequences", ["theme_id"], :name => "index_sequences_on_theme_id"
+  add_index "sequences", ["user_id"], :name => "index_sequences_on_user_id"
 
   create_table "themes", :force => true do |t|
     t.string   "name"
@@ -283,5 +347,7 @@ ActiveRecord::Schema.define(:version => 20130826175627) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  add_index "video_sources", ["video_interactive_id"], :name => "index_video_sources_on_video_interactive_id"
 
 end

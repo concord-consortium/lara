@@ -649,7 +649,7 @@ body.summary {
     font-weight: bold;
     margin: 5px 5px 5px 0;
   }
-  .answer, .image-answer {
+  .answer, .image_answer {
     clear: left;
     margin-left: 16px;
   }
@@ -891,8 +891,6 @@ body.admin.edit {
   }
 }
 
-
-
 #activities ul.menu li.delete form {
   display: inline;
   input[type="submit"] {
@@ -904,6 +902,17 @@ body.admin.edit {
     color: #333;
     height: 16px;
     padding-left: 18px;
+  }
+}
+
+ul#new-menu {
+  float: right;
+  width: 100%;
+  li {
+    display: inline;
+    list-style-type: none;
+    padding-left: 15px;
+    float: right;
   }
 }
 

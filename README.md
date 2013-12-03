@@ -9,22 +9,26 @@ This is a Rails application intended to provide a platform for authoring and usi
 
 1. Check out the code:
 
-        git clone https://github.com/concord-consortium/lightweight-standalone.git
+        git clone https://github.com/concord-consortium/lara.git
 
 2. Install the necessary gems:
 
-        cd lightweight-standalone
+        cd lara
         bundle install
 
 3. Initialize the database:
 
         rake db:setup
+        
+4. If you have seed data, create it now.
 
-4. Launch the application
+5. Set environment variables, particularly the cookie encryption key, by copying the file `config/app_environment_variables.sample.rb` to `config/app_environment_variables.rb` and editing its values as appropriate. For development purposes, you should just need a cookie key (the 'SECRET_TOKEN' value).
+
+6. Launch the application
 
         rails s
 
-6. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
+7. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
 
 ## Editing CSS
 This project uses [Compass](http://compass-style.org/) extensively (but not exclusively) for CSS. If you are editing files in the `app/assets/stylesheets/` tree, you should issue `compass watch` in order to update the built CSS when changes are made.
@@ -65,15 +69,38 @@ To support new Embeddables:
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)
-* Add the Embeddable's name as a string to the the `SUPPORTED_EMBEDDABLES` constant in `config/initializers/embeddables.rb`.
+* Add the Embeddable's name as a string to the the `Embeddable::Types` constant in `app/models/embeddable.rb`.
 * There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
 ## Current work: reporting
 LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
 ## Single Sign-On
-If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate. 
+If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
+
+## Delayed Job background job processing
+
+see the readme at the [github page](https://github.com/collectiveidea/delayed_job)
+
+Delayed Job will run in synchronous mode unless one of two conditions is
+met:
+
+   1. Rails is running in production mode, eg: `RAILS_ENV=production rails s`
+   2. The environment variable DELAYEDJOB is set, eg: `DELAYEDJOB=1 rails s`
+
+This configuration check happens in the initializer `config/initializers/delayed_job_config.rb`
+
+To enque a job simply add `handle_asynchronously :method_name` to your models. eg:
+
+    class Device
+      def deliver
+        # long running method
+      end
+      handle_asynchronously :deliver
+    end
+
+There are other methods for enqueing jobs, but this is probably the easiest.
 
 
 ## History
-This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin).
+This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.

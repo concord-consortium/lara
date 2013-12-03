@@ -1,5 +1,5 @@
 class RunsController < ApplicationController
-  layout false
+  layout false, :except => [:dirty]
   before_filter :set_run, :except => [:index]
 
   def index
@@ -19,6 +19,16 @@ class RunsController < ApplicationController
   # If this run isn't owned by a registered user, and is updated by one, that user now owns it
   # def update
   # end
+
+  def dirty
+    @runs = Run.where('is_dirty = ?', true).where('updated_at < ?', 5.minutes.ago).order(:updated_at)
+    respond_to do |format|
+      format.html do
+        authorize! :manage, :all # admins
+      end
+      format.json { render :json => { :dirty_runs => @runs.length }.to_json }
+    end
+  end
 
   private
   def set_run

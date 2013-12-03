@@ -41,6 +41,28 @@ describe RunsController do
     end
   end
 
+  describe '#dirty' do
+    let (:dirty_run) { FactoryGirl.create(:run, :is_dirty => true, :created_at => 15.minutes.ago, :updated_at => 14.minutes.ago) }
+
+    it 'assigns @runs with dirty runs older than 5 minutes' do
+      dirty_run
+      # Have to be logged in
+      @user ||= FactoryGirl.create(:admin)
+      sign_in @user
+      get :dirty
+      assigns(:runs).should == [dirty_run]
+      response.should render_template('dirty')
+    end
+
+    it 'returns simple JSON when requested' do
+      # JSON request can be anonymous
+      dirty_run
+      get :dirty, :format => 'json'
+      assigns(:runs).should == [dirty_run]
+      response.body.should match /\"dirty_runs\":\w*1/
+    end
+  end
+
   describe '#show' do
     context 'with valid ID' do
       it 'returns a JSON object with that ID' do

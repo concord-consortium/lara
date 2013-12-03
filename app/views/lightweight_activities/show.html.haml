@@ -1,6 +1,8 @@
 = content_for :title do 
   = "#{@activity.name}"
 
+/
+  = @session_key
 .content-hdr
   %h2.h2= @activity.name
 
@@ -21,6 +23,7 @@
       %li
         = link_to page.name, runnable_activity_page_path(@activity, page)
 
-  %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
-    .submit
-      %input.button{ :type => "submit", :value => "Begin activity" }
+  .nav-buttons
+    %a{ :href => runnable_activity_page_path(@activity, @activity.pages.first ) }
+      .submit
+        %input.button{ :type => "submit", :value => "Begin activity" }

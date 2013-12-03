@@ -6,32 +6,46 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key, :only => [:summary, :show]
-  before_filter :set_sequence, :only => [:summary, :show]
-
-  layout 'runtime', :only => [:show]
+  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
+  before_filter :set_sequence, :only   => [:summary, :show]
+  layout :set_layout
 
   def index
-    if can? :manage, LightweightActivity
-      @activities = LightweightActivity.newest
-    elsif current_user.present?
-      @activities = LightweightActivity.my_or_public(current_user).newest
-    else
-      @activities ||= LightweightActivity.public.newest
-    end
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    @community_activities = @filter.collection.community
+    @official_activities  = @filter.collection.official
   end
 
+  # These are the runtime (student-facing) actions, show and summary
+
   def show
+    authorize! :read, @activity
+    if params[:response_key]
+      redirect_to activity_path(@activity) and return
+    end
+    @run.increment_run_count!
+    setup_show
+  end
+
+  def preview
+    # This is "show" but it clears answers first
+    authorize! :update, @activity # Authors only
+    @run.clear_answers
+    setup_show
+    render :show
+  end
+
+  def summary
     authorize! :read, @activity
     current_theme
     current_project
     if !params[:response_key]
-      redirect_to activity_with_response_path(@activity, @session_key) and return
+      redirect_to summary_with_response_path(@activity, @session_key) and return
     end
-    @run.increment_run_count!
-
-    @pages = @activity.pages
+    @answers = @activity.answers(@run)
   end
+
+  # The remaining actions are all authoring actions.
 
   def new
     @activity = LightweightActivity.new()
@@ -59,21 +73,20 @@ class LightweightActivitiesController < ApplicationController
   def update
     authorize! :update, @activity
     update_activity_changed_by
-    if @activity.update_attributes(params[:lightweight_activity])
-      if request.xhr?
+    if request.xhr?
+      if @activity.update_attributes(params[:lightweight_activity])
         render :text => params[:lightweight_activity].values.first
       else
-        flash[:notice] = "Activity #{@activity.name} was updated."
-        redirect_to edit_activity_path(@activity)
+        render :text => "There was a problem updating your activity. Please reload the page and try again."
       end
     else
-      # I'd like to use the activity name here, but what if that's what's the invalid update?
-      if request.xhr?
-        render :text => "There was a problem updating your activity. Please reload the page and try again."
+      if @activity.update_attributes(params[:lightweight_activity])
+        flash[:notice] = "Activity #{@activity.name} was updated."
       else
+        # I'd like to use the activity name here, but what if that's what's the invalid update?
         flash[:warning] = "There was a problem updating your activity."
-        redirect_to edit_activity_path(@activity)
       end
+      redirect_to edit_activity_path(@activity)
     end
   end
 
@@ -99,7 +112,7 @@ class LightweightActivitiesController < ApplicationController
       redirect_to edit_activity_path(@new_activity)
     else
       flash[:warning] = "Copy failed"
-      redirect_to activities.path
+      redirect_to activities_path
     end
   end
 
@@ -130,23 +143,24 @@ class LightweightActivitiesController < ApplicationController
     update_activity_changed_by
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_activity_path(@activity)
     end
   end
 
-  def summary
-    authorize! :read, @activity
-    current_theme
-    current_project
+  def resubmit_answers
+    authorize! :manage, :all
     if !params[:response_key]
+      # If we don't know the run, we can't do this.
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
-    @answers = @activity.answers(@run)
+    answers = @activity.answers(@run)
+    answers.each { |a| a.mark_dirty }
+    # Kick off a resubmit
+    answers.last.send_to_portal('Bearer %s' % current_user.authentication_token)
+    flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
+    redirect_to :back
   end
 
   def publish
@@ -169,5 +183,24 @@ class LightweightActivitiesController < ApplicationController
     else
       @activity = LightweightActivity.find(params[:id])
     end
+  end
+
+  def set_layout
+    case params[:action]
+    when 'show'
+      return 'runtime'
+    when 'preview'
+      return 'runtime'
+    when 'summary'
+      return 'summary'
+    else
+      return 'application'
+    end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @pages = @activity.pages
   end
 end

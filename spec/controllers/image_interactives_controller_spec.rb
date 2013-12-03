@@ -84,7 +84,7 @@ describe ImageInteractivesController do
       describe 'update' do
         it 'replaces the values of the Image Interactive to match submitted values' do
           new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
-          post :update, :id => int.id, :image_interactive => new_values_hash
+          post :update, :id => int.id, :page_id => page.id, :image_interactive => new_values_hash
 
           int.reload
           int.caption.should == new_values_hash[:caption]
@@ -93,9 +93,9 @@ describe ImageInteractivesController do
 
         it 'returns to the edit page with a message indicating success' do
           new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
-          post :update, :id => int.id, :image_interactive => new_values_hash
-          response.should redirect_to(edit_image_interactive_path(int))
-          flash[:notice].should == 'Your image was updated'
+          post :update, :id => int.id, :page_id => page.id, :image_interactive => new_values_hash
+          response.should redirect_to(edit_activity_page_path(activity, page))
+          flash[:notice].should == 'Your image interactive was updated.'
         end
 
         # it 'returns to the edit page with an error on failure' do
@@ -122,7 +122,7 @@ describe ImageInteractivesController do
           ImageInteractive.count().should == interactive_count - 1
           page.reload
           page.interactives.length.should == page_count - 1
-          flash[:notice].should == 'Your image was deleted.'
+          flash[:notice].should == 'Your Image interactive was deleted.'
         end
       end
     end

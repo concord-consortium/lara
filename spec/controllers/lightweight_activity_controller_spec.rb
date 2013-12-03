@@ -82,7 +82,7 @@ describe LightweightActivitiesController do
 
     it 'renders the activity if it exists and is public' do
       page
-      get :show, :id => act.id, :response_key => ar.key
+      get :show, :id => act.id
       assigns[:session_key].should_not be_nil
       response.should be_success
     end
@@ -94,6 +94,21 @@ describe LightweightActivitiesController do
         get :show, :id => act.id, :domain => "foo", :externalId => "bar"
         response.should redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url)
       end
+    end
+  end
+
+  describe '#preview' do
+    it 'calls clear_answers on the run' do
+      page
+      ar.should_receive(:clear_answers).and_return(:true)
+      Run.should_receive(:find).and_return(ar)
+      get :preview, :id => act.id
+    end
+
+    it 'renders show' do
+      page
+      get :preview, :id => act.id
+      response.should render_template('lightweight_activities/show')
     end
   end
 
@@ -126,23 +141,25 @@ describe LightweightActivitiesController do
       get :summary, :id => act.id, :response_key => ar.key
 
       assigns(:answers).should_not be_nil
-      response.body.should match /<h1>\n?Response Summary for/
+      response.body.should match /Response Summary for/
     end
   end
 
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     before(:each) do
-      make_collection_with_rand_modication_time(:activity,7)
+      make_collection_with_rand_modication_time(:activity,3, :publication_status => 'public', :is_official => false)
+      make_collection_with_rand_modication_time(:activity,4, :publication_status => 'public', :is_official => true)
     end
 
     describe '#index' do
       it 'has a list of public and owned activities' do
-        # User is an admin, so all activities
+        # User is an admin, so all public activities will be shown
         get :index
-        assigns(:activities).should have(7).items
-        assigns(:activities).should be_ordered_by 'updated_at_desc'
-        assigns(:activities).length.should be(LightweightActivity.count)
+        assigns(:community_activities).should have_at_least(3).items
+        assigns(:official_activities).should have(4).items
+        assigns(:community_activities).should be_ordered_by 'updated_at_desc'
+        assigns(:official_activities).should be_ordered_by 'updated_at_desc'
       end
     end
 
@@ -173,9 +190,10 @@ describe LightweightActivitiesController do
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
+        LightweightActivity.any_instance.stub(:save).and_return(false)
         existing_activities = LightweightActivity.count
 
-        post :create, {:lightweight_activity => {:name => 'This actvity has a really, really long name, so long it should fail to be created because the validation on the save should fail, remember there is a limit on the length of names somewhere, right? I mean, seriously, how much text do you expect to fit in a title block. You would think the designer would be ready for it to wrap, but no.'}}
+        post :create, {:lightweight_activity => { :name => 'This update will fail.'} }
 
         flash[:warning].should == 'There was a problem creating the new Lightweight Activity.'
         response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
@@ -212,8 +230,9 @@ describe LightweightActivitiesController do
       end
 
       it "should redirect to the activity's edit page on error" do
+        LightweightActivity.any_instance.stub(:save).and_return(false)
         act
-        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This is another one of those really long names, hopefully long enough to trip validation and get this to be an invalid update'}}
+        post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This update will fail' } }
 
         flash[:warning].should == "There was a problem updating your activity."
         response.should redirect_to(edit_activity_path(act))
@@ -374,7 +393,7 @@ describe LightweightActivitiesController do
     end
     #let(:good_body) { act_one.serialize_for_portal('http://test.host').to_json }
 
-    let(:good_body) { '{"type":"Activity","name":"Activity One","description":"Activity One Description","url":"http://test.host/activities/1","create_url":"http://test.host/activities/1","sections":[{"name":"Activity One Section","pages":[]}]}' }
+    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
 
     before(:each) do
       @url = controller.portal_url
@@ -407,6 +426,46 @@ describe LightweightActivitiesController do
     it 'should redirect to edit the new activity' do
       get :duplicate, { :id => act.id }
       response.should redirect_to(edit_activity_url(assigns(:new_activity)))
+    end
+  end
+
+  describe '#resubmit_answers' do
+    context 'without a response key' do
+      it 'redirects to summary' do
+        get :resubmit_answers, { :id => act.id }
+        response.should redirect_to summary_with_response_path(act.id, assigns(:session_key))
+      end
+    end
+
+    context 'with a response key' do
+      let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
+      let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
+
+      before(:each) do
+        act.stub(:answers => [answer1, answer2])
+        LightweightActivity.stub(:find => act)
+        request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
+      end
+
+      it 'marks answers as dirty' do
+        [answer1, answer2]
+        ar.answers.length.should_not be(0)
+        answer1.should_receive(:mark_dirty)
+        answer1.should_not_receive(:send_to_portal)
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+      end
+
+      it 'calls send_to_portal for the last answer' do
+        [answer1, answer2]
+        ar.answers.length.should_not be(0)
+        answer2.should_receive(:send_to_portal).with('Bearer ')
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+      end
+
+      it 'sets a flash notice for success' do
+        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+        flash[:notice].should match /requeued for submission/
+      end
     end
   end
 end

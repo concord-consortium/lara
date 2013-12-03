@@ -1,6 +1,6 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo
-
+  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title
+  include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
   belongs_to :user
@@ -21,6 +21,16 @@ class Sequence < ActiveRecord::Base
     lightweight_activities
   end
 
+  def next_activity(activity)
+    # Given an activity, return the next one in the sequence
+    get_neighbor(activity, false)
+  end
+
+  def previous_activity(activity)
+    # Given an activity, return the previous one in the sequence
+    get_neighbor(activity, true)
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {
@@ -34,4 +44,17 @@ class Sequence < ActiveRecord::Base
     data
   end
 
+  private
+  def get_neighbor(activity, higher)
+    join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)
+    if join.blank? || (join.first? && higher) || (join.last? && !higher)
+      return nil
+    elsif join && higher
+      return join.higher_item.lightweight_activity
+    elsif join && !higher
+      return join.lower_item.lightweight_activity
+    else
+      return nil
+    end
+  end
 end

@@ -16,14 +16,15 @@ describe 'lightweight_activities/summary' do
     assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
   end
 
-  it 'shows print buttons at top and bottom' do
+  it 'shows close and print buttons at top' do
     render
-    rendered.should have_css "button.print", :count => 2
+    rendered.should have_css ".print", :count => 1
+    rendered.should have_css ".close", :count => 1
   end
 
   it 'shows the activity title' do
     render
-    rendered.should match /Response Summary for Activity Name/
+    rendered.should match /#{activity.name}/
   end
 
   context 'when a prompt includes HTML tags' do

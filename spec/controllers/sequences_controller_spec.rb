@@ -154,9 +154,15 @@ describe SequencesController do
   describe 'POST remove_activity' do
     it 'removes the designated activity from the sequence' do
       sequence.lightweight_activities << activity
-      sequence.activities.length.should be(1)
+      5.times do |i|
+        sequence.lightweight_activities << FactoryGirl.create(:public_activity)
+      end
+      sequence.activities.length.should be(6)
       post :remove_activity, { :id => sequence.to_param, :activity_id => activity.id }
-      sequence.reload.activities.length.should be(0)
+      sequence.reload.activities.length.should be(5)
+      sequence.lightweight_activities_sequences.each_with_index do |act, index|
+        act.position.should == index + 1
+      end
     end
 
     it "redirects to that sequence's edit page" do
@@ -210,7 +216,7 @@ describe SequencesController do
 
   describe "#publish" do
     let(:seq_one) { Sequence.create!(:title => 'Sequence One',:description => 'Sequence One Description') }
-    let(:good_body) {'{"type":"Sequence","name":"Sequence One","description":"Sequence One Description","url":"http://test.host/sequences/1","create_url":"http://test.host/sequences/1","activities":[]}' }
+    let(:good_body) { "{\"type\":\"Sequence\",\"name\":\"Sequence One\",\"description\":\"Sequence One Description\",\"url\":\"http://test.host/sequences/#{seq_one.id}\",\"create_url\":\"http://test.host/sequences/#{seq_one.id}\",\"activities\":[]}" }
 
     before(:each) do
       @url = controller.portal_url

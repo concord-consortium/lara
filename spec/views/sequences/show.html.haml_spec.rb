@@ -11,7 +11,6 @@ describe "sequences/show" do
   it "renders attributes" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select 'h1.title', :text => 'Title'
     assert_select 'div.description', :text => 'MyText'
     assert_select 'div.activities'
   end

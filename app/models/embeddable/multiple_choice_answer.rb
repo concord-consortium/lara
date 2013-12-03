@@ -1,6 +1,8 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
-    attr_accessible :answers, :run, :question
+    include Answer # Common methods for Answer models
+
+    attr_accessible :answers, :run, :question, :is_dirty
 
     belongs_to :question,
       :class_name  => 'Embeddable::MultipleChoice',
@@ -14,14 +16,6 @@ module Embeddable
       :foreign_key => 'answer_id',
       :association_foreign_key => 'choice_id'
 
-    scope :by_question, lambda { |q|
-      {:conditions => { :multiple_choice_id => q.id}}
-    }
-
-    scope :by_run, lambda { |r|
-      {:conditions => { :run_id => r.id }}
-    }
-
     delegate :name,                :to  => :question
     delegate :prompt,              :to  => :question
     delegate :choices,             :to  => :question
@@ -31,21 +25,8 @@ module Embeddable
 
     after_update :send_to_portal
 
-    def question_index
-      if self.run && self.run.activity
-        self.run.activity.questions.index(self.question) + 1
-      else
-        nil
-      end
-    end
-
-    def prompt_no_itals
-      parsed_prompt = Nokogiri::HTML::DocumentFragment.parse(prompt)
-      itals = parsed_prompt.at_css "i"
-      if itals
-        itals.content = nil
-      end
-      parsed_prompt.to_html
+    def self.by_question(q)
+      where(:multiple_choice_id => q.id)
     end
 
     # render the text of the answers
@@ -56,26 +37,20 @@ module Embeddable
     def portal_hash
       {
         "type"          => "multiple_choice",
-        "question_id"   => question.id.to_s,
+        "question_id"   => multiple_choice_id.to_s,
         "answer_ids"    => answers.map { |a| a.id.to_s },
         "answer_texts"  => answer_texts
       }
     end
 
-    def send_to_portal
-      run.send_to_portal(self) if run
-    end
-
-    def to_json
-      portal_hash.to_json
-    end
-
     # Expects a parameters hash. Normalizes to allow update_attributes.
     def update_from_form_params(params)
-      if params[:answers].kind_of?(Array)
+      if params && params[:answers].kind_of?(Array)
         params[:answers] = params[:answers].map { |a| Embeddable::MultipleChoiceChoice.find(a) }
-      else
+      elsif params && !params[:answers].blank?
         params[:answers] = [Embeddable::MultipleChoiceChoice.find(params[:answers])]
+      else
+        params[:answers] = []
       end
       return self.update_attributes(params)
     end

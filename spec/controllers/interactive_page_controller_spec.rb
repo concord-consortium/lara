@@ -175,7 +175,7 @@ describe InteractivePagesController do
       get :show, :id => page1.id, :response_key => ar.key
 
       response.body.should match /<div class='related-mod'>/
-      response.body.should match /<a href='\/activities\/#{act.id}\/summary\/#{ar.key}'>/
+      response.body.should match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
     end
 
     it 'does not show related content on pages other than the last page' do
@@ -201,6 +201,20 @@ describe InteractivePagesController do
     before(:each) do
       @user ||= FactoryGirl.create(:admin)
       sign_in @user
+    end
+
+    describe 'preview' do
+      it 'clears answers from the run' do
+        page1
+        ar.should_receive(:clear_answers)
+        Run.should_receive(:find).and_return(ar)
+        get :preview, :id => page1.id
+      end
+
+      it 'renders show' do
+        get :preview, :id => page1.id
+        response.should render_template('interactive_pages/show')
+      end
     end
 
     describe 'new' do
@@ -233,68 +247,11 @@ describe InteractivePagesController do
 
     describe 'edit' do
       context 'when editing an existing page' do
-        it 'displays page fields with edit-in-place capacity' do
-          page1.show_introduction = 1
-          page1.save
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{page1.name}<\/span>/
-          response.body.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page1.text}<\/span>/
-        end
-
-        it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
-          pending 'This is an issue with the editor, not this application'
-          page1.show_introduction = 1
-          page1.show_interactive = 0
-          page1.save
-
-          visit new_user_session_path
-          fill_in "Email", :with => @user.email
-          fill_in "Password", :with => @user.password
-          click_button "Sign in"
-          visit edit_activity_page_path(act, page1)
-
-          find('#interactive_page_text_trigger').click
-          find('#interactive_page_text')
-          within_frame('interactive_page_text-wysiwyg-iframe') do
-            page.should have_content(page1.text)
-            # TODO: How can I put content in the WYSIWYG editor?
-          end
-          find('.wysiwyg li.html').click()
-          fill_in 'interactive_page[text]', :with => 'This is edited text'
-          find('.editable button[type="submit"]').click
-          page.should have_content('This is edited text')
-        end
-
-        it 'has links to show the page, return to the activity, or add another page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/#{page1.id}"[^>]*>[\s]*Preview[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/edit"[^>]*>[\s]*#{act.name}[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities\/#{act.id}\/pages\/new"[^>]*>[\s]*Add another page to #{act.name}[\s]*<\/a>/
-          response.body.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
-        end
-
-        it 'has links for adding Embeddables to the page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_embeddable"[^<]*>/
-          response.body.should match /<select[^>]+name="embeddable_type"[^>]*>/
-        end
-
-        it 'has links for adding Interactives to the page' do
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<form[^>]+action="\/activities\/#{act.id}\/pages\/#{page1.id}\/add_interactive"[^<]*>/
-          response.body.should match /<select[^>]+name="interactive_type"[^>]*>/
-        end
-
-        it 'shows navigation links' do
-          page1
-          page2
-          get :edit, :id => page1.id, :activity_id => act.id
-
-          response.body.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{act.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
+        it 'assigns variables' do
+          get :edit, :activity_id => act.id, :id => page1.id
+          assigns(:page).should == page1
+          assigns(:activity).should == act
+          assigns(:all_pages).should_not be_nil
         end
       end
     end
@@ -323,6 +280,22 @@ describe InteractivePagesController do
         flash[:warning].should == "There was a problem updating Page #{page1.name}."
         response.should redirect_to(edit_activity_page_path(act, page1))
       end
+
+      context 'when the request is XHR' do
+        it 'returns the new text of the first value' do
+          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
+
+          response.body.should match /This page now has sidebar text./
+        end
+
+        it 'returns the old text if the update fails' do
+          InteractivePage.any_instance.stub(:update_attributes).and_return(false)
+          old_name = page1.name
+          xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This new name will fail.' }}
+
+          response.body.should match /#{old_name}/
+        end
+      end
     end
 
     describe 'destroy' do
@@ -343,6 +316,9 @@ describe InteractivePagesController do
           throw "Should not have been able to find this page"
         rescue ActiveRecord::RecordNotFound
         end
+
+        page2.reload
+        page2.position.should == 1
       end
 
       it 'does not route with no ID' do

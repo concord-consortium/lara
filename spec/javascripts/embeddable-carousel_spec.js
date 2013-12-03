@@ -77,7 +77,7 @@ describe('EmbeddableCarousel', function () {
         it('adjusts the height of the container', function () {
             carousel.setHeight(550);
             expect(carousel.container).toHaveCss({height: '550px'});
-            var targetHeight = 550 - carousel.buttonHeight;
+            var targetHeight = 550 - carousel.buttonHeight -2;
             expect($('.question')).toHaveCss({'max-height': targetHeight + 'px'});
         });
     });

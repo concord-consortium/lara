@@ -4,6 +4,10 @@
 = content_for :title do
   Lightweight Activities Runtime and Authoring
 
+%ul#new-menu
+  %li#desc-toggle= toggle_all 'descriptions'
+  %li#collection_filter= collection_filter_tag @filter
+
 -if @activities
   #activity_listing_head
     %h1 Activities:

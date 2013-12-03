@@ -37,33 +37,57 @@ class image_question
     @$snapshot_button = $("#{@button_sel} .take_snapshot")
     @$edit_button     = $("#{@button_sel} .edit_answer")
     @$done_button     = $("#{@form_sel} .image_done_button")
+    @$cancel_button   = $("#{@form_sel} .image_cancel_button")
     @$svg_form        = $("#{@form_sel} form")
 
     @$delete_button   = $("#{@form_sel} .image_delete_button")
-    @$retake_button   = $("#{@form_sel} .retake_snapshot")
+    @$replace_button  = $("#{@button_sel} .replace_snapshot")
     @$undo_button     = $("#{@form_sel} .image_reset_button")
+
+    @$saved_response  = $("#{@button_sel} .answer_text")
+    @$text_response   = $("#{@form_sel} .text_response textarea")
+
+    @$drawing_button  = $("#{@button_sel} .drawing_button")
 
     @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
     @$displayed_answer =$("#{@button_sel} .answer_text")
 
     @create_hooks()
     @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-    @current_src = @$current_src_field.val()
-    @current_thumbnail = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
+    @current_src        = @$current_src_field.val()
+    @current_thumbnail  = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
+                          $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
     @$snapshot_button.click =>
+      @last_svg = ' '
       @shutterbug.getDomSnapshot()
       @show()
 
-    @$retake_button.click =>
+    @$drawing_button.click =>
+      # Same as snapshot, but without taking the snapshot.
+      @last_svg = ' '
+      @set_svg_background()
+      @show()
+
+    @$replace_button.click =>
+      @delete_image()
+      @last_svg = ' '
       @shutterbug.getDomSnapshot()
+      @show()
 
     @$edit_button.click =>
+      # Save @last_svg so cancel will work
+      @last_svg = sketchily_decode64($("#image_question_annotation_for_#{@image_question_id}").val())
       @show()
       @set_svg_background()
 
+    @$cancel_button.click =>
+      @last_svg = ' ' unless @last_svg
+      @reset_image()
+      @clear_text_response()
+      @hide()
 
     @$done_button.click =>
       @get_svg_canvas().getSvgString() (data, error) =>
@@ -76,9 +100,11 @@ class image_question
 
         @$sb_svg_src.css('width',w)
         @$sb_svg_src.css('height',h)
+        @$sb_svg_src.css('background-color', '#ffffff')
         @$sb_svg_src.css('background-image',  "url(#{@current_src})")
-
-        @$sb_svg_src.css('background-size', "#{w}px #{h}px")
+        @$sb_svg_src.css('background-repeat', 'no-repeat')
+        @$sb_svg_src.css('background-position', 'center')
+        @$sb_svg_src.css('background-size', "contain")
         @$sb_svg_src.html(data)
         @shutterbug_svg.getDomSnapshot()
         @hide()
@@ -101,6 +127,9 @@ class image_question
       # if the form is still open it would make sense to put the error there
 
   update_display: ->
+    @annotated_url = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
+    @current_thumbnail = @annotated_url || $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @current_annotation = $("#image_question_annotation_for_#{@image_question_id}").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
     @$thumbnail.hide()
@@ -108,17 +137,27 @@ class image_question
       @$thumbnail.show()
 
     @$snapshot_button.show()
+    @$replace_button.hide()
     @$edit_button.hide()
 
-    if @current_src
-      @$edit_button.show()
-      @$snapshot_button.hide()
+    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
+      # This is a shutterbug question, so it's answered if there's a thumbnail
+      @show_edit_buttons()
+    else if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
+      # This is a drawing question, so an annotation is needed for it to be answered
+      @show_edit_buttons()
 
-    if @undo_button
-      @undo_button.hide()
-    if @last_src
-      @$undo_button.show()
+    # if @undo_button
+    #   @undo_button.hide()
+    # if @last_src
+    #   @$undo_button.show()
     @set_svg_background()
+
+  show_edit_buttons: =>
+    @$edit_button.show()
+    @$replace_button.show()
+    @$drawing_button.hide()
+    @$snapshot_button.hide()
 
   get_svg_canvas: =>
     svgCanvas["#{@svg_canvas_id}"]
@@ -152,7 +191,7 @@ class image_question
     @$content.dialog("open");
 
   set_image_source: (src) ->
-    @last_src = @current_src
+    @last_src = @current_src unless @current_src == ""
     @current_src = src
     @$current_src_field.val(src)
     @update_display()
@@ -182,6 +221,9 @@ class image_question
     if(@last_svg)
       @get_svg_canvas().setSvgString(@last_svg)()
 
+  clear_text_response: ()->
+    if @$text_response.val() != @$saved_response.data('raw')
+      @$text_response.val(@$saved_response.data('raw'))
 
   delete_image:() ->
     @get_svg_canvas().getSvgString() (data,error) =>

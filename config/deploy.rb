@@ -1,9 +1,11 @@
 require "bundler/capistrano"
 require 'capistrano/ext/multistage'
 require 'haml'
+require "delayed/recipes"
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lara.git"
+set :rails_env,   "production" #added for delayed job
 
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
@@ -35,6 +37,9 @@ namespace :deploy do
 
   desc "link in some shared resources, such as database.yml"
   task :shared_symlinks do
+    run "mkdir -p #{shared_path}/system/"
+    run "mkdir -p #{shared_path}/snapshots"
+    run "mkdir -p #{shared_path}/pids"
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     # 2012-11-07: Not sure if the below are needed at this point, but here they are
     run "ln -nfs #{shared_path}/config/aws_s3.yml #{release_path}/config/aws_s3.yml"
@@ -43,10 +48,12 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/initializers/site_keys.rb #{release_path}/config/initializers/site_keys.rb"
     run "ln -nfs #{shared_path}/config/initializers/subdirectory.rb #{release_path}/config/initializers/subdirectory.rb"
     run "ln -nfs #{shared_path}/system #{release_path}/public/system" # paperclip file attachment location
+    run "ln -nfs #{shared_path}/snapshots #{release_path}/public/snapshots" # paperclip file attachment location
     # This is part of the setup necessary for using newrelics reporting gem
     # run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
     run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml"
     run "ln -nfs #{shared_path}/config/app_environment_variables.rb #{release_path}/config/app_environment_variables.rb"
+    run "ln -nfs #{shared_path}/pids #{release_path}/tmp/pids"
   end
 end
 
@@ -58,8 +65,12 @@ set :use_sudo, false
 
 after 'deploy:update_code', 'deploy:shared_symlinks'
 
+# delayed job tasks:
+after "deploy:stop",    "delayed_job:stop"
+after "deploy:start",   "delayed_job:start"
+after "deploy:restart", "delayed_job:restart"
+
 require './config/boot'
-require 'airbrake/capistrano'
 
 #############################################################
 #  Maintenance mode

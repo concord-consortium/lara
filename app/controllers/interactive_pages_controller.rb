@@ -2,29 +2,29 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_run_key, :only => [:show]
+  before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
-  layout 'runtime', :only => [:show]
+  layout 'runtime', :only => [:show, :preview]
 
   def show
     authorize! :read, @page
-    current_theme
-    current_project
-
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
-    else
-      @all_pages = @activity.pages
-      finder = Embeddable::AnswerFinder.new(@run)
-      @run.update_attribute(:page, @page)
-      @modules = @page.embeddables.map { |e| finder.find_answer(e) }
     end
-
+    setup_show
     respond_to do |format|
       format.html
       format.xml
     end
+  end
+
+  def preview
+    # This is "show" but it clears answers first
+    authorize! :update, @page # Authors only
+    @run.clear_answers
+    setup_show
+    render :show
   end
 
   def new
@@ -49,28 +49,24 @@ class InteractivePagesController < ApplicationController
   def update
     authorize! :update, @page
     update_activity_changed_by
-    respond_to do |format|
+    if request.xhr?
       if @page.update_attributes(params[:interactive_page])
-        format.html do
-          if request.xhr?
-            # *** respond with the new value ***
-            render :text => params[:interactive_page].values.first
-          else
-            @page.reload
-            flash[:notice] = "Page #{@page.name} was updated."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
-        end
+        # *** respond with the new value ***
+        render :text => params[:interactive_page].values.first and return
       else
-        format.html do
-          if request.xhr?
-            # *** repond with the old value ***
-            render :text => @page[params[:interactive_page].keys.first]
-          else
-            flash[:warning] = "There was a problem updating Page #{@page.name}."
-            redirect_to edit_activity_page_path(@activity, @page)
-          end
+        # *** respond with the old value ***
+        render :text => @page[params[:interactive_page].keys.first] and return
+      end
+    end
+    respond_to do |format|
+      format.html do
+        if @page.update_attributes(params[:interactive_page])
+          @page.reload # In case it's the name we updated
+          flash[:notice] = "Page #{@page.name} was updated."
+        else
+          flash[:warning] = "There was a problem updating Page #{@page.name}."
         end
+        redirect_to edit_activity_page_path(@activity, @page) and return
       end
     end
   end
@@ -78,7 +74,8 @@ class InteractivePagesController < ApplicationController
   def destroy
     authorize! :destroy, @page
     update_activity_changed_by
-    if @page.delete
+    if @page.remove_from_list
+      @page.delete
       flash[:notice] = "Page #{@page.name} was deleted."
       redirect_to edit_activity_path(@activity)
     else
@@ -96,12 +93,10 @@ class InteractivePagesController < ApplicationController
       raise ArgumentError, 'Not a valid Interactive type'
     end
     @page.add_interactive(i)
-    if i.instance_of?(ImageInteractive)
-      param = { :edit_img_int => i.id }
-    elsif i.instance_of?(MwInteractive)
-      param = { :edit_mw_int => i.id }
-    elsif i.instance_of?(VideoInteractive)
-      param = { :edit_vid_int => i.id }
+    param = case i.class.name
+    when "ImageInteractive"   then { :edit_img_int => i.id }
+    when "MwInteractive"      then { :edit_mw_int => i.id }
+    when "VideoInteractive"   then { :edit_vid_int => i.id }
     end
     redirect_to edit_activity_page_path(@activity, @page, param)
   end
@@ -109,20 +104,18 @@ class InteractivePagesController < ApplicationController
   def add_embeddable
     authorize! :update, @page
     update_activity_changed_by
-    if SUPPORTED_EMBEDDABLES.include?(params[:embeddable_type])
-      e = params[:embeddable_type].constantize.create!
-    else
-      raise ArgumentError, 'Not a valid Embeddable type'
-    end
+    e = Embeddable.create_for_string(params[:embeddable_type])
+
     @page.add_embeddable(e)
-    if e.instance_of?(Embeddable::MultipleChoice)
+    case e
+    when Embeddable::MultipleChoice
       e.create_default_choices
       param = { :edit_embed_mc => e.id }
-    elsif e.instance_of?(Embeddable::OpenResponse)
+    when Embeddable::OpenResponse
       param = { :edit_embed_or => e.id }
-    elsif e.instance_of?(Embeddable::ImageQuestion)
+    when Embeddable::ImageQuestion
       param = { :edit_embed_iq => e.id }
-    elsif e.instance_of?(Embeddable::Xhtml)
+    when Embeddable::Xhtml
       param = { :edit_embed_xhtml => e.id }
     end
     # Add parameter to open new embeddable modal
@@ -148,10 +141,7 @@ class InteractivePagesController < ApplicationController
     end
     # Respond with 200
     if request.xhr?
-      respond_to do |format|
-        format.js { render :nothing => true }
-        format.html { render :nothing => true }
-      end
+      respond_with_nothing
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end
@@ -168,5 +158,14 @@ class InteractivePagesController < ApplicationController
       @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
       @activity = @page.lightweight_activity
     end
+  end
+
+  def setup_show
+    current_theme
+    current_project
+    @all_pages = @activity.pages
+    @run.update_attribute(:page, @page)
+    finder = Embeddable::AnswerFinder.new(@run)
+    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
   end
 end

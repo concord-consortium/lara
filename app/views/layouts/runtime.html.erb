@@ -66,8 +66,8 @@
 
 		</header>
 
-		<div id="save" style="opacity: 0;">
-			Saving ...
+		<div id="save" class="error" style="opacity: 1.0">
+			Your data will not be saved.
 		</div>
 
 		<div id="main" role="main">
@@ -133,7 +133,7 @@
 	<!-- Project-Specific stuff, start with up-base and go into script.js for your code -->
   <%= javascript_include_tag 'runtime' %>
   <!-- snapshot server -->
-  <%= javascript_include_tag Shutterbug::Configuration.instance.js_path %>
+  <%= javascript_include_tag Shutterbug::Handlers::JsFileHandler.js_path %>
 	<!-- end scripts-->
 
 	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
