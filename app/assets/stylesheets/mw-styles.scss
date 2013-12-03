@@ -780,11 +780,11 @@ input[type="submit"],
 button[type="submit"] {
   display: block;
   margin: 0 auto;
-  @include btn ( lighten($btn-green, 8%), $btn-green2 );
+  @include btn ( lighten($btn-orange, 8%), $btn-orange2 );
   padding: 15px 30px;
   font-size: 15px;
   color: #fff;
-  @include drk-txt-shadow($btn-green);
+  @include drk-txt-shadow($btn-orange);
 }
 
 // button
