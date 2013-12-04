@@ -65,7 +65,10 @@ class LightweightActivity < ActiveRecord::Base
       name: name,
       related: related,
       description: description,
-      time_to_complete: time_to_complete
+      time_to_complete: time_to_complete,
+      project_id: project_id,
+      theme_id: theme_id,
+      thumbnail_url: thumbnail_url
     }
   end
 
