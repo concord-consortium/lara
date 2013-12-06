@@ -84,6 +84,12 @@ class InteractivePage < ActiveRecord::Base
     }
   end
 
+  def set_list_position(index)
+    # Overloads the acts_as_list version
+    position = index
+    save(:validations => false) # This is the part we need to override
+  end
+
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
     self.interactives.each do |inter|
