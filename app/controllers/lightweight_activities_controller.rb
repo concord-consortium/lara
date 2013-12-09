@@ -108,7 +108,11 @@ class LightweightActivitiesController < ApplicationController
 
     @new_activity.set_user!(current_user)
 
-    if @new_activity.save
+    unless @new_activity.valid?
+      flash[:warning] = "<p>The duplicated activity had validation issues:</p> #{@new_activity.errors} <p>Work carefully with the new activity.</p>"
+    end
+
+    if @new_activity.save(:validations => false) # If the old activity is invalid
       redirect_to edit_activity_path(@new_activity)
     else
       flash[:warning] = "Copy failed"
