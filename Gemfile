@@ -40,6 +40,12 @@ gem "sqlite3"
 gem "delayed_job_active_record"
 gem "daemons"
 
+# put font-awesome in asset pipeline. Alternately we could use a CDN.
+gem "font-awesome-rails"
+
+# this is to fix a pulled version of safe_yaml (0.9.4)
+gem "safe_yaml", "~> 0.9.5"
+
 group :production do
   gem 'mysql2'
   gem 'therubyracer'
@@ -67,10 +73,6 @@ group :test, :development do
   gem "faker"
   gem "capybara"
   gem "timecop"
-  gem 'pry'
-  gem 'pry-stack_explorer'
-  gem 'pry-exception_explorer'
-  gem 'pry-debugger'
   # Guard runs tests automatically when the files they test (or the tests
   # themselves) change
   gem 'guard-rspec'
@@ -96,6 +98,10 @@ group :test do
 end
 
 group :development do
+  gem 'pry'
+  gem 'pry-stack_explorer'
+  gem 'pry-exception_explorer'
+  gem 'pry-debugger'
   # Evaluate database query efficiency
   gem 'bullet'
 end
@@ -119,9 +125,3 @@ gem 'brakeman', :require => false
 gem 'request-log-analyzer', :require => false
 # Database analysis
 gem 'lol_dba', :require => false
-
-# put font-awesome in asset pipeline Alternately we could use a CDN.
-gem "font-awesome-rails"
-
-# this is to fix a pulled version of safe_yaml (0.9.4)
-gem "safe_yaml", "~> 0.9.5"
