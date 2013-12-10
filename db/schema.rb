@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131107202220) do
+ActiveRecord::Schema.define(:version => 20131204203316) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -232,6 +232,16 @@ ActiveRecord::Schema.define(:version => 20131107202220) do
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"
   add_index "page_items", ["interactive_page_id"], :name => "index_page_items_on_interactive_page_id"
+
+  create_table "portal_publications", :force => true do |t|
+    t.string   "portal_url"
+    t.string   "response"
+    t.boolean  "success"
+    t.integer  "publishable_id"
+    t.string   "publishable_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "projects", :force => true do |t|
     t.string   "title"

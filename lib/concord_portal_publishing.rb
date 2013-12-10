@@ -10,16 +10,22 @@ module ConcordPortalPublishing
     # TODO: better error handling
     raise "#{publishable.class.name} is Not Publishable" unless publishable.respond_to?(:serialize_for_portal)
 
-    host = "#{request.protocol}#{request.host_with_port}"
-    data = publishable.serialize_for_portal(host)
+    logger.info "Attempting to publish #{publishable.class.name} #{publishable.id} to #{portal_url}."
 
-    bearer_token = 'Bearer %s' % current_user.authentication_token
-    logger.info "Attempting to publish #{publishable.class.name} #{data['name']} to #{portal_url}."
-    logger.info "Data will be #{data.to_json}"
-    logger.info "Auth header will use #{bearer_token}."
-    response = HTTParty.post(portal_url, :body => data.to_json, :headers => {"Authorization" => bearer_token, "Content-Type" => 'application/json'})
+    response = HTTParty.post(portal_url,
+      :body => publishable.serialize_for_portal("#{request.protocol}#{request.host_with_port}").to_json,
+      :headers => {"Authorization" => ('Bearer %s' % current_user.authentication_token), "Content-Type" => 'application/json'})
+
     # report success or put details in flash
     logger.info "Response: #{response.inspect}"
+    # TODO: add a publication record to the publishable
+    publishable.portal_publications.create({
+      portal_url: portal_url,
+      response: response.inspect,
+      success: ( response.code == 201 ) ? true : false,
+      publishable: publishable
+    })
+
     if response.code == 201
       return true
     else
