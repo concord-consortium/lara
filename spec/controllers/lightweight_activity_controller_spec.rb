@@ -401,7 +401,7 @@ describe LightweightActivitiesController do
     end
 
     it "should call 'publish!' on the activity" do
-      get :publish, {:id => act_one.id }
+      get :publish, { :id => act_one.id }
       act.publication_status.should == 'public'
     end
 
@@ -410,8 +410,14 @@ describe LightweightActivitiesController do
     end
 
     it "should attempt to publish to the portal" do
-      get :publish, {:id => act_one.id }
+      get :publish, { :id => act_one.id }
       WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
+    end
+
+    it 'creates a new PortalPublication record' do
+      old_publication_count = act_one.portal_publications.length
+      get :publish, { :id => act_one.id }
+      act_one.reload.portal_publications.length.should == old_publication_count + 1
     end
   end
 
