@@ -7,3 +7,13 @@ env:
 
 # uncomment this line if your project needs to run something other than `rake`:
 script: bundle exec rake db:migrate; bundle exec rake
+
+cache: bundler
+
+bundler_args: --without development
+
+# blacklist - these branches aren't feature branches and shouldn't be getting direct commits
+branches:
+  except:
+    - staging
+    - production

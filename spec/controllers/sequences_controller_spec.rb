@@ -231,6 +231,12 @@ describe SequencesController do
       get :publish, {:id => seq_one.id }
       WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
     end
+
+    it 'adds a new PortalPublication instance' do
+      old_publication_count = seq_one.portal_publications.length
+      get :publish, {:id => seq_one.id }
+      seq_one.reload.portal_publications.length.should == old_publication_count + 1
+    end
   end
 
 end

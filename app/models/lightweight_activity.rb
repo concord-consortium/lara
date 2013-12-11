@@ -12,6 +12,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
+  has_many :portal_publications, :as => :publishable
   belongs_to :theme
   belongs_to :project
 
@@ -68,7 +69,8 @@ class LightweightActivity < ActiveRecord::Base
       time_to_complete: time_to_complete,
       project_id: project_id,
       theme_id: theme_id,
-      thumbnail_url: thumbnail_url
+      thumbnail_url: thumbnail_url,
+      notes: notes
     }
   end
 
