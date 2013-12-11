@@ -31,15 +31,11 @@ class User < ActiveRecord::Base
     return is_author
   end
 
-  def authentication_token
+  def authentication_token(provider=ENV['DEFAULT_AUTH_PROVIDER'])
     # this is temporary until we really support multiple authentication providers
     # TODO: token expiration
-    auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
-    if auth
-      auth.token
-    else
-      nil
-    end
+    auth = authentications.find_by_provider provider
+    auth ? auth.token : nil
   end
 
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
