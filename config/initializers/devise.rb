@@ -224,7 +224,8 @@ Devise.setup do |config|
 
   PORTAL_SETUP_PROC = lambda do |env|
     req = Rack::Request.new(env)
-    env['omniauth.strategy'].options[:portal_url] = 'http://localhost:3030'
+    # Let's not try to do anything too hardcore just yet
+    Rails.logger.debug "=============> Setting up Omniauth."
   end
 
   config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
