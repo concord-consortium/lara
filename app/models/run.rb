@@ -89,6 +89,16 @@ class Run < ActiveRecord::Base
     key
   end
 
+  def get_auth_provider
+    if self.remote_endpoint
+      uri = URI.parse(self.remote_endpoint)
+      auth_url = (uri.port == 80) ? "#{uri.scheme}://#{uri.host}" : "#{uri.scheme}://#{uri.host}:#{uri.port}"
+      return CONCORD_PORTALS.invert[auth_url]
+    else
+      nil
+    end
+  end
+
   def last_page
     return self.page || self.activity.pages.first
   end
