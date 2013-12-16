@@ -4,7 +4,6 @@ module OmniAuth
     class ConcordPortal < OmniAuth::Strategies::OAuth2
       portal_url = ENV['CONCORD_PORTAL_URL'] # Gotta replace this with an argument?
       option :name, 'concord_portal'
-      option :portal_url, portal_url
       option :client_options, {
         :site =>  portal_url,
         :authorize_url => "#{portal_url}/auth/concord_id/authorize",
