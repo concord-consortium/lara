@@ -224,13 +224,13 @@ Devise.setup do |config|
 
   PORTAL_SETUP_PROC = lambda do |env|
     req = Rack::Request.new(env)
-    Rails.logger.debug "=============> Setting up Omniauth."
-    portal_url = 'http://has.staging.concord.org'
+    portal_url = (req.params['portal'] && CONCORD_PORTALS[req.params['portal'].to_sym]) ? CONCORD_PORTALS[req.params['portal'].to_sym] : 'http://localhost:9000'
     env['omniauth.strategy'].options[:client_options] = {
       :site =>  portal_url,
       :authorize_url => "#{portal_url}/auth/concord_id/authorize",
       :access_token_url => "#{portal_url}/auth/concord_id/access_token"
     }
+    env['omniauth.strategy'].options[:name] = (req.params['portal'] && CONCORD_PORTALS[req.params['portal'].to_sym]) ? req.params['portal'] : 'concord_portal'
   end
 
   config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
