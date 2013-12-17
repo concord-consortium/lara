@@ -1,0 +1,14 @@
+development:
+  dev: 'http://localhost:9000'
+  has_staging: 'http://has.staging.concord.org'
+  nextgen_staging: 'http://nextgen.staging.concord.org'
+
+test:
+  dev: 'http://localhost:9000'
+  test_portal: 'http://example.com'
+
+production:
+  has_staging: 'http://has.staging.concord.org'
+  has_production: 'http://has.portal.concord.org'
+  nextgen_staging: 'http://nextgen.staging.concord.org'
+  nextgen_production: 'http://nextgen.concord.org'

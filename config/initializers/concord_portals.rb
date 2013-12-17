@@ -1,9 +1,4 @@
-# TODO: RITES, etc - and maybe store this in YAML?
-CONCORD_PORTALS = {
-  :concord_portal     => ENV['CONCORD_PORTAL_URL'], # Supports old stuff
-  :dev                => 'http://localhost:9000',
-  :has_staging        => 'http://has.staging.concord.org',
-  :has_production     => 'http://has.portal.concord.org',
-  :nextgen_staging    => 'http://nextgen.staging.concord.org',
-  :nextgen_production => 'http://nextgen.concord.org'
-}
+raw_portal_config = File.read("#{Rails.root}/config/portal_config.yml")
+CONCORD_PORTALS = YAML.load(raw_portal_config)[Rails.env]
+# TODO: add logo_image, client_id and client_secret to YAML
+# TODO: Move current YAML to sample and configure real 'secrets' in Chef

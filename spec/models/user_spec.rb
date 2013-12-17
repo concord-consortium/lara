@@ -171,12 +171,12 @@ describe User do
 
     it 'should get providers from previous authentications' do
       user.authentications << auth
-      user.auth_providers.should include(:concord_portal)
+      user.auth_providers.should include('concord_portal')
     end
 
     it 'should get providers from previous runs' do
       user.runs << run
-      user.auth_providers.should include(:dev)
+      user.auth_providers.should include('dev')
     end
   end
 end
