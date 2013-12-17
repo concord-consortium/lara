@@ -4,12 +4,11 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-         # :confirmable
-         # confirmable is waiting on a glitch: http://stackoverflow.com/q/15207154/306084
   devise :omniauthable, :omniauth_providers => [:concord_portal]
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences
+  has_many :runs
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
@@ -33,15 +32,11 @@ class User < ActiveRecord::Base
     return is_author
   end
 
-  def authentication_token
+  def authentication_token(provider=ENV['DEFAULT_AUTH_PROVIDER'])
     # this is temporary until we really support multiple authentication providers
     # TODO: token expiration
-    auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
-    if auth
-      auth.token
-    else
-      nil
-    end
+    auth = authentications.find_by_provider provider
+    auth ? auth.token : nil
   end
 
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
@@ -82,5 +77,11 @@ class User < ActiveRecord::Base
       token:    auth.credentials.token
     )
     user
+  end
+
+  # Return a list of providers for this user by checking previous authorizations
+  # and available runs
+  def auth_providers
+    ( authentications.map { |auth| auth.provider.to_sym } + runs.map { |run| run.get_auth_provider } ).uniq
   end
 end

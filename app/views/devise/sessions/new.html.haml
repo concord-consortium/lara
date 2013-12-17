@@ -1,21 +1,22 @@
 %div.session
   %h2 Sign in
-  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    %table.session
-      %tr
-        %td= f.label :email
-        %td= f.email_field :email, :autofocus => true
-      %tr
-        %td= f.label :password
-        %td= f.password_field :password
-      - if devise_mapping.rememberable?
+  - if Rails.env == 'development' # Only show the login form on localhost
+    = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+      %table.session
         %tr
-          %td
-          %td
-            = f.check_box :remember_me
-            = f.label :remember_me
+          %td= f.label :email
+          %td= f.email_field :email, :autofocus => true
         %tr
-          %td= f.submit "Sign in"
-          %td
-    %div
+          %td= f.label :password
+          %td= f.password_field :password
+        - if devise_mapping.rememberable?
+          %tr
+            %td
+            %td
+              = f.check_box :remember_me
+              = f.label :remember_me
+          %tr
+            %td= f.submit "Sign in"
+            %td
+      %div
   = render "devise/shared/links"
