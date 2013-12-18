@@ -14,6 +14,11 @@ development:
     img: ''
     client_id: 'localhost'
     client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
+  interactions_staging:
+    url: 'http://interactions.staging.concord.org'
+    img: 'http://interactions.staging.concord.org/assets/banners/interactions-03dbc658e3833a133929f2f49b6765c4.png'
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
 
 test:
   dev:
@@ -31,5 +36,10 @@ production:
   has_staging:
     url: 'http://has.staging.concord.org'
     img: 'http://authoring.concord.org/assets/has-logo.png'
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
+  interactions_staging:
+    url: 'http://interactions.staging.concord.org'
+    img: 'http://interactions.staging.concord.org/assets/banners/interactions-03dbc658e3833a133929f2f49b6765c4.png'
     client_id: 'localhost'
     client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
