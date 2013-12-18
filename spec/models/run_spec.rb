@@ -108,8 +108,9 @@ describe Run do
 
   describe '#get_authorization_provider' do
     it 'returns a string designating the authorization provider for its endpoint' do
-      run.remote_endpoint = 'http://example.com/data_service/1'
-      run.get_auth_provider.should == 'test_portal'
+      pending "Set environment variables for testing"
+      run.remote_endpoint = 'http://localhost:9000/data_service/1'
+      run.get_auth_provider.should == 'LOCAL'
     end
 
     it 'returns nil when there is no endpoint' do

@@ -82,6 +82,6 @@ class User < ActiveRecord::Base
   # Return a list of providers for this user by checking previous authorizations
   # and available runs
   def auth_providers
-    ( authentications.map { |auth| auth.provider } + runs.map { |run| run.get_auth_provider } ).uniq
+    ( authentications.map { |auth| auth.provider.upcase } + runs.map { |run| run.get_auth_provider } ).uniq
   end
 end
