@@ -88,7 +88,7 @@ class Run < ActiveRecord::Base
   def self.auth_provider(remote_endpoint)
     uri = URI.parse(remote_endpoint)
     auth_url = (uri.port == 80) ? "#{uri.scheme}://#{uri.host}" : "#{uri.scheme}://#{uri.host}:#{uri.port}"
-    CONCORD_PORTALS.invert[auth_url]
+    CONCORD_PORTALS.select { |k,v| v['url'] == auth_url }.first[0]
   end
 
   def to_param

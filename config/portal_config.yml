@@ -1,14 +1,35 @@
 development:
-  dev: 'http://localhost:9000'
-  has_staging: 'http://has.staging.concord.org'
-  nextgen_staging: 'http://nextgen.staging.concord.org'
+  dev:
+    url: 'http://localhost:9000'
+    img: ''
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
+  has_staging:
+    url: 'http://has.staging.concord.org'
+    img: 'http://authoring.concord.org/assets/has-logo.png'
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
+  nextgen_staging:
+    url: 'http://nextgen.staging.concord.org'
+    img: ''
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
 
 test:
-  dev: 'http://localhost:9000'
-  test_portal: 'http://example.com'
+  dev:
+    url: 'http://localhost:9000'
+    img: ''
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
+  test_portal:
+    url: 'http://example.com'
+    img: 'http://example.com/images/logo.png'
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
 
 production:
-  has_staging: 'http://has.staging.concord.org'
-  has_production: 'http://has.portal.concord.org'
-  nextgen_staging: 'http://nextgen.staging.concord.org'
-  nextgen_production: 'http://nextgen.concord.org'
+  has_staging:
+    url: 'http://has.staging.concord.org'
+    img: 'http://authoring.concord.org/assets/has-logo.png'
+    client_id: 'localhost'
+    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
