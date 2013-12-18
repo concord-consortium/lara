@@ -230,7 +230,7 @@ Devise.setup do |config|
       :authorize_url => "#{portal_url}/auth/concord_id/authorize",
       :access_token_url => "#{portal_url}/auth/concord_id/access_token"
     }
-    env['omniauth.strategy'].options[:name] = (req.params['portal'] && CONCORD_PORTALS[req.params['portal']]) ? req.params['portal'] : 'concord_portal'
+    # env['omniauth.strategy'].options[:name] = (req.params['portal'] && CONCORD_PORTALS[req.params['portal']]) ? req.params['portal'] : 'concord_portal'
   end
 
   config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
