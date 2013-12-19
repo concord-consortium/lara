@@ -236,7 +236,7 @@ Devise.setup do |config|
     end
   end
 
-  config.omniauth :concord_portal, ENV["SSO_CLIENT_ID"], ENV["CONCORD_#{ENV['CONFIGURED_PORTALS'].split.first}_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
+  config.omniauth :concord_portal, ENV["SSO_CLIENT_ID"], ENV["CONCORD_HAS_STAGING_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
