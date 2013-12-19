@@ -21,7 +21,7 @@ feature "Activity is run from the portal", :js => true, :slow => true do
 
     stub = stub_request(:post, "http://portal.com/return/1234").
 	  with(:body => "[{\"type\":\"open_response\",\"question_id\":\"1\",\"answer\":\"something\"}]",
-	       :headers => {'Authorization'=>'Bearer token', 'Content-Type'=>'application/json'}).
+	       :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'}).
 	  to_return(:status => 200, :body => "", :headers => {})
 
     fill_in 'embeddable_open_response_answer[answer_text]', :with => 'something'
