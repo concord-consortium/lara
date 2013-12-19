@@ -3,7 +3,7 @@ module OmniAuth
   module Strategies
     class ConcordPortal < OmniAuth::Strategies::OAuth2
       option :name, 'concord_portal' # Designates the callback URL, so leave it alone
-      site_key = ENV['CONFIGURED_PORTALS'].first
+      site_key = 'HAS_STAGING'
       # Default, will be replaced at login time:
       option :client_options, {
         :site =>  ENV["CONCORD_#{site_key}_URL"],
