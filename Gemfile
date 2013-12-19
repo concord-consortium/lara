@@ -15,7 +15,8 @@ gem 'devise', '~>3.0.1'
 # authorization
 gem 'cancan'
 gem 'omniauth'
-gem 'omniauth-oauth2'
+# Github
+gem 'omniauth-oauth2', :git => 'git@github.com:intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
 # Easy (or at least easier) database dumps and reloads
