@@ -31,7 +31,7 @@ GIT
       rails (~> 3.2.0)
 
 GIT
-  remote: git@github.com:intridea/omniauth-oauth2.git
+  remote: https://github.com/intridea/omniauth-oauth2.git
   revision: a88f9c86dff747f77813f09848e65b61aa1af3e3
   specs:
     omniauth-oauth2 (1.1.1)
