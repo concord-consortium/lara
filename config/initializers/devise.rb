@@ -234,8 +234,7 @@ Devise.setup do |config|
     # env['omniauth.strategy'].options[:name] = (req.params['portal'] && CONCORD_PORTALS[req.params['portal']]) ? req.params['portal'] : 'concord_portal'
   end
 
-  config.omniauth :concord_portal, ENV["CONCORD_#{ENV['CONFIGURED_PORTALS'].split.first}_CLIENT_ID"],
-    ENV["CONCORD_#{ENV['CONFIGURED_PORTALS'].split.first}_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
+  config.omniauth :concord_portal, ENV["SSO_CLIENT_ID"], ENV["CONCORD_#{ENV['CONFIGURED_PORTALS'].split.first}_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
