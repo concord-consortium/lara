@@ -2,6 +2,14 @@ require 'spec_helper'
 require "cancan/matchers"
 
 describe User do
+  # In production these would be defined in config/app_environment_variables.rb
+  ENV['SSO_CLIENT_ID']                      ||= 'localhost'
+  ENV['CONFIGURED_PORTALS']                 ||= 'LOCAL CONCORD_PORTAL' # First one is default
+  ENV['CONCORD_LOCAL_URL']                  ||= 'http://localhost:9000'
+  ENV['CONCORD_LOCAL_CLIENT_SECRET']        ||= 'abf0a91d-f761-499c-83a6-5816d5428d38'
+  ENV['CONCORD_CONCORD_PORTAL_URL']         ||= ''
+  ENV['CONCORD_CONCORD_PORTAL_CLIENT_SECRET'] ||= ''
+
   # Tests User authorization for various actions.
   describe 'abilities' do
     subject  { ability }
