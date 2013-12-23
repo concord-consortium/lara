@@ -406,7 +406,7 @@ describe LightweightActivitiesController do
     end
 
     it "should attempt to publish to the correct portal endpoint" do
-      @url.should == "http://localhost:3000/external_activities/publish/v2" # No endpoint defined for test
+      @url.should match /\/external_activities\/publish\/v2/ # No host defined for test
     end
 
     it "should attempt to publish to the portal" do
