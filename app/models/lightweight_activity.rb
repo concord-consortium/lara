@@ -156,4 +156,7 @@ class LightweightActivity < ActiveRecord::Base
     lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
   end
 
+  def active_runs
+    self.runs.select { |run| !run.remote_endpoint.blank? }.count
+  end
 end

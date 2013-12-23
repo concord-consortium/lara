@@ -477,6 +477,12 @@ ul.quiet_list {
     .author, .updated {
         font-size: 0.8em;
     }
+    .active-runs {
+      color: red;
+      float: right;
+      border: 1px solid red;
+      padding: 2px;
+    }
   }
   li.item:hover {
     background: #fef7e0;

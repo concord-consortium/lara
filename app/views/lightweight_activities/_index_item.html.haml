@@ -20,4 +20,7 @@
       = "last updated at #{activity.updated_at.to_formatted_s(:long)}"
       - if (can? :create, LightweightActivity) && activity.changed_by.present?
         = "by #{activity.changed_by.email}"
+    - if (activity.active_runs > 0) && (can? :edit, activity)
+      %p.active-runs
+        = "Has been used by #{activity.active_runs} learners."
     != activity.description
