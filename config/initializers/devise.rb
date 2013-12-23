@@ -224,7 +224,7 @@ Devise.setup do |config|
 
   PORTAL_SETUP_PROC = lambda do |env|
     req = Rack::Request.new(env)
-    portal_url = (req.params['portal'] && CONCORD_PORTALS[req.params['portal']]) ? CONCORD_PORTALS[req.params['portal']]['url'] : 'http://localhost:9000'
+    portal_url = (req.params['portal'] && CONCORD_PORTALS[req.params['portal']]) ? CONCORD_PORTALS[req.params['portal']['url']] : 'http://localhost:9000'
     env['omniauth.strategy'].options[:client_options] = {
       :site =>  portal_url,
       :authorize_url => "#{portal_url}/auth/concord_id/authorize",
