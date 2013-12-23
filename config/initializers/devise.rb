@@ -222,13 +222,8 @@ Devise.setup do |config|
   OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
-  PORTAL_SETUP_PROC = lambda do |env|
-    req = Rack::Request.new(env)
-    env['omniauth.strategy'].options[:portal_url] = 'http://localhost:3030'
-  end
-
   config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
-    ENV['CONCORD_PORTAL_CLIENT_SECRET'], setup: PORTAL_SETUP_PROC
+    ENV['CONCORD_PORTAL_CLIENT_SECRET'], :scope => 'user'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
