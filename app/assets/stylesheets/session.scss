@@ -20,9 +20,7 @@ div.session {
   clear: both;
   margin: auto;
   padding: 1em;
-  form {
-    width: 400px;
-  }
+  width: 400px;
 }
 
 #session_links {
@@ -31,15 +29,4 @@ div.session {
 
 span.session_link {
   padding-right: 0.5em;
-}
-
-li.session_link {
-  display: block;
-  float: left;
-  border: 1px solid gray;
-  margin: 0 5px 5px 0;
-  width: 200px;
-  height: 150px;
-  text-align: center;
-  padding: 5px;
 }
