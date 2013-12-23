@@ -11,7 +11,7 @@ gem 'acts_as_list'
 gem 'nested_form'
 gem 'multi_json'
 # authentication
-gem 'devise', '~>3.0.1'
+gem 'devise'
 # authorization
 gem 'cancan'
 gem 'omniauth'
