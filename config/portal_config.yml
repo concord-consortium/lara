@@ -31,11 +31,6 @@ test:
     img: 'http://example.com/images/logo.png'
     client_id: 'localhost'
     client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
-  feature_portal:
-    url: 'http://portal.com'
-    img: ''
-    client_id: 'localhost'
-    client_secret: 'abcdef01-2345-6789-abcd-ef0123456789'
 
 production:
   has_staging:
