@@ -107,9 +107,17 @@ describe Run do
   end
 
   describe '#get_authorization_provider' do
-    it 'returns a string designating the authorization provider for its endpoint' do
+    before(:all) do
+      # Redefining this constant generates errors in the console
+      CONCORD_PORTALS = {
+        :test_portal => 'http://example.com',
+        :dev         => 'http://localhost:9000'
+      }
+    end
+
+    it 'returns a symbol designating the authorization provider for its endpoint' do
       run.remote_endpoint = 'http://example.com/data_service/1'
-      run.get_auth_provider.should == 'test_portal'
+      run.get_auth_provider.should be(:test_portal)
     end
 
     it 'returns nil when there is no endpoint' do
