@@ -15,9 +15,7 @@ gem 'devise', '~>3.0.1'
 # authorization
 gem 'cancan'
 gem 'omniauth'
-# Fork for token-request debugging
-gem 'oauth2', :git => 'git://github.com/pjmorse/oauth2', :branch => 'debugging'
-# Github for a newer version
+# Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
