@@ -92,14 +92,11 @@ class ApplicationController < ActionController::Base
       # signout. This way when we are called back this session info will be available
       session[:did_reauthenticate] = true
 
-      # Use the source portal, if there is one, as the authentication provider
-      auth_portal = Run.auth_provider(params[:returnUrl]).to_s unless params[:returnUrl].blank?
-
       # we set the origin here which will become request.env['omniauth.origin']
       # in the callback phase, by default omniauth will use use
       # the referer and that is not changed during redirects. More info:
       # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-      redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url, :portal => auth_portal )
+      redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url)
     end
   end
 
