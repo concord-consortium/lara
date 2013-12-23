@@ -136,6 +136,12 @@ button.disabled span.edit_trigger.disabled {
     float: right;
     margin-top: 10px;
   }
+  p.active-runs {
+    color: red;
+    border: 1px solid red;
+    padding: 3px;
+    margin: 5px;
+  }
 }
 .title {
   padding: 1% 0;
