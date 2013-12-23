@@ -18,11 +18,7 @@
     - if CONCORD_PORTALS # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed
       %ul.login_portals
         - CONCORD_PORTALS.each do |portal|
-          %li.session_link
-            = link_to "Sign in with #{portal[0].to_s.titleize}", omniauth_authorize_path(resource_name, :concord_portal, { :portal => portal[0] })
-            - unless portal[1]['img'].blank?
-              %a{ :href => omniauth_authorize_path(resource_name, :concord_portal, { :portal => portal[0] }), :title => "Sign in with #{portal[0].to_s.titleize}" }
-                = image_tag portal[1]['img'], :alt => "Logo for #{portal[0].to_s.titleize}"
+          %li.session_link= link_to "Sign in with #{portal[0].to_s.titleize}", omniauth_authorize_path(resource_name, :concord_portal, { :portal => portal[0] })
     - else
       - resource_class.omniauth_providers.each do |provider|
         %span.session_link= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
