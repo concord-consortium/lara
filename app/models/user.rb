@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences
-  has_many :runs
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
@@ -77,11 +76,5 @@ class User < ActiveRecord::Base
       token:    auth.credentials.token
     )
     user
-  end
-
-  # Return a list of providers for this user by checking previous authorizations
-  # and available runs
-  def auth_providers
-    ( authentications.map { |auth| auth.provider.to_sym } + runs.map { |run| run.get_auth_provider } ).uniq
   end
 end

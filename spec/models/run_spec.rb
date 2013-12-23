@@ -106,25 +106,6 @@ describe Run do
     end
   end
 
-  describe '#get_authorization_provider' do
-    before(:all) do
-      # Redefining this constant generates errors in the console
-      CONCORD_PORTALS = {
-        :test_portal => 'http://example.com',
-        :dev         => 'http://localhost:9000'
-      }
-    end
-
-    it 'returns a symbol designating the authorization provider for its endpoint' do
-      run.remote_endpoint = 'http://example.com/data_service/1'
-      run.get_auth_provider.should be(:test_portal)
-    end
-
-    it 'returns nil when there is no endpoint' do
-      run.get_auth_provider.should be_nil
-    end
-  end
-
   describe 'dirty bit management' do
     describe '#mark_dirty' do
       it 'sets is_dirty bit to true' do

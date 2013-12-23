@@ -158,25 +158,7 @@ describe User do
         expect { User.find_for_concord_portal_oauth(auth) }.to raise_error
       end
     end
+
   end
 
-  describe '#auth_providers' do
-    let (:user) { FactoryGirl.create(:user) }
-    let (:run)  { FactoryGirl.create(:run, :remote_endpoint => 'http://localhost:9000') }
-    let (:auth) { FactoryGirl.create(:authentication, :provider => 'concord_portal') }
-
-    it 'should return an array of symbols' do
-      user.auth_providers.should == []
-    end
-
-    it 'should get providers from previous authentications' do
-      user.authentications << auth
-      user.auth_providers.should include(:concord_portal)
-    end
-
-    it 'should get providers from previous runs' do
-      user.runs << run
-      user.auth_providers.should include(:dev)
-    end
-  end
 end
