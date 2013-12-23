@@ -137,7 +137,7 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes }
+      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url }
       activity.to_hash.should == expected
     end
   end
