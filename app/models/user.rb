@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-         # :confirmable
-         # confirmable is waiting on a glitch: http://stackoverflow.com/q/15207154/306084
   devise :omniauthable, :omniauth_providers => [:concord_portal]
 
   has_many :activities, :class_name => LightweightActivity

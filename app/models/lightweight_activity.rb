@@ -12,7 +12,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
-  has_many :portal_publications, :as => :publishable
+  has_many :portal_publications, :as => :publishable, :order => :updated_at
   belongs_to :theme
   belongs_to :project
 
@@ -83,6 +83,7 @@ class LightweightActivity < ActiveRecord::Base
       new_page.lightweight_activity = new_activity
       new_page.set_list_position(p.position)
     end
+    self.fix_page_positions
     return new_activity
     # N.B. the duplicate hasn't been saved yet
   end
@@ -156,4 +157,11 @@ class LightweightActivity < ActiveRecord::Base
     lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
   end
 
+  def active_runs
+    self.runs.select { |run| !run.remote_endpoint.blank? }.count
+  end
+
+  def fix_page_positions
+    self.pages.map { |page| page.set_list_position(self.pages.index(page)+1) }
+  end
 end
