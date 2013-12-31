@@ -83,6 +83,7 @@ class LightweightActivity < ActiveRecord::Base
       new_page.lightweight_activity = new_activity
       new_page.set_list_position(p.position)
     end
+    self.fix_page_positions
     return new_activity
     # N.B. the duplicate hasn't been saved yet
   end
@@ -158,5 +159,9 @@ class LightweightActivity < ActiveRecord::Base
 
   def active_runs
     self.runs.select { |run| !run.remote_endpoint.blank? }.count
+  end
+
+  def fix_page_positions
+    self.pages.map { |page| page.set_list_position(self.pages.index(page)+1) }
   end
 end
