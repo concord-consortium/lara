@@ -170,7 +170,7 @@ class LightweightActivity < ActiveRecord::Base
     fail_count = 0
     self.runs.select { |run| !run.remote_endpoint.blank?}.each do |run|
       if run.submit_answers_now(auth_key)
-        success_count = fail_count + 1
+        success_count = success_count + 1
       else
         fail_count = fail_count + 1
       end
