@@ -164,4 +164,19 @@ class LightweightActivity < ActiveRecord::Base
   def fix_page_positions
     self.pages.map { |page| page.set_list_position(self.pages.index(page)+1) }
   end
+
+  def fix_broken_portal_runs(auth_key=nil)
+    success_count = 0
+    fail_count = 0
+    self.runs.select { |run| !run.remote_endpoint.blank?}.each do |run|
+      if run.submit_answers_now(auth_key)
+        success_count = fail_count + 1
+      else
+        fail_count = fail_count + 1
+      end
+    end
+    Rails.logger.info("fix broken portal runs for activity #{self.id} fail_count: #{fail_count} success_count: #{success_count}")
+    return { activity_id: self.id, fail_count: fail_count, success_count: success_count}
+  end
+
 end

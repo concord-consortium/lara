@@ -196,6 +196,18 @@ class Run < ActiveRecord::Base
     raise PortalUpdateIncomplete.new
   end
 
+  def submit_answers_now(auth_key=nil)
+    if send_to_portal(self.answers, auth_key)
+      set_answers_clean(self.answers)
+      self.reload
+      if dirty_answers.empty?
+        self.mark_clean
+        return true
+      end
+    end
+    return false
+  end
+
   def submit_dirty_answers(auth_key=nil)
     # Find array of dirty answers and send them to the portal
     da = dirty_answers

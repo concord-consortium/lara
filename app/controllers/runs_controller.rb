@@ -1,6 +1,6 @@
 class RunsController < ApplicationController
   layout false, :except => [:dirty]
-  before_filter :set_run, :except => [:index]
+  before_filter :set_run, :except => [:index, :fix_broken_portal_runs]
 
   def index
     # This is actually a special case of show - create an Run and show it
@@ -27,6 +27,21 @@ class RunsController < ApplicationController
         authorize! :manage, :all # admins
       end
       format.json { render :json => { :dirty_runs => @runs.length }.to_json }
+    end
+  end
+
+  def fix_broken_portal_runs
+    if current_user.is_admin
+      activity_id = params[:activity_id]
+      activity = LightweightActivity.find(activity_id)
+      if activity
+        results = activity.fix_broken_portal_runs('Bearer %s' % current_user.authentication_token)
+        render :json => results
+      else
+        render :text => "must specify an activity_id"
+      end
+    else
+      render :text => "must be admin"
     end
   end
 
