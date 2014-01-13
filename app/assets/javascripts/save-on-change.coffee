@@ -114,6 +114,10 @@ class SaveOnChangePage
   force_save_dirty: ->
     for item, value of @dirty_forms
       value.saveNow()
+    for iframe in IFrameSaver.instances
+      iframe.save()
+    debugger
+
 
 $(document).ready ->
   window.SaveOnChangePage = SaveOnChangePage

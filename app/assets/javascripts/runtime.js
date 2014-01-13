@@ -28,3 +28,4 @@
 //= require embeddable-carousel
 //= require image_question
 //= require navigation-menu-drop
+//= require iframe-saver
