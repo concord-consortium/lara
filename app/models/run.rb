@@ -31,6 +31,8 @@ class Run < ActiveRecord::Base
     :foreign_key => 'run_id',
     :dependent => :destroy
 
+  has_many :interactive_run_states
+
   before_validation :check_key
 
   scope :by_key, lambda { |k|

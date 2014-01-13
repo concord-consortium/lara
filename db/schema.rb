@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131204203316) do
+ActiveRecord::Schema.define(:version => 20140110193231) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -168,6 +168,15 @@ ActiveRecord::Schema.define(:version => 20131204203316) do
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
 
+  create_table "interactive_run_states", :force => true do |t|
+    t.integer  "interactive_id"
+    t.string   "interactive_type"
+    t.integer  "run_id"
+    t.text     "raw_data"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
@@ -215,10 +224,11 @@ ActiveRecord::Schema.define(:version => 20131204203316) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.integer  "native_width"
     t.integer  "native_height"
+    t.boolean  "save_state",    :default => false
   end
 
   create_table "page_items", :force => true do |t|

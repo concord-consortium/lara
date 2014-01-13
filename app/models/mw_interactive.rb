@@ -11,6 +11,10 @@ class MwInteractive < ActiveRecord::Base
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
   has_one :interactive_page, :through => :interactive_item
+  has_many :interactive_run_states
+  def save_state
+    true
+  end
 
   def self.string_name
     "iframe interactive"
