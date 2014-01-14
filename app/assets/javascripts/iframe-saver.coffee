@@ -3,17 +3,19 @@ instances = []
 class IFrameSaver
   @instances: []
 
-  constructor: (@$frame, @$save_button=$("#save_interactive"), @revert_button=$("#revert_interactive")) ->
+  constructor: (@$frame, @$save_button=$("#save_interactive"), @$revert_button=$("#revert_interactive")) ->
     IFrameSaver.instances.push @
-    @url = @$save_button.data('postBackUrl')
+    @post_url = @$save_button.data('postBackUrl')
+    @get_url  = @$revert_button.data('postBackUrl')
 
-    @iframePhone = new Lab.IFramePhone @$frame, null, =>
-      console.log  "IFramePone: systems go"
-      if @interactive
+    @iframePhone = new Lab.IFramePhone @$frame, =>
         @load_interactive()
-      @iframePhone.addListener 'interactiveState', (interactive_json) =>
-        @interactive = interactive_json
-        @save()
+      , =>
+        console.log  "IFramePone: systems go"
+        @iframePhone.addListener 'interactiveState', (interactive_json) =>
+          @interactive = interactive_json
+          @save()
+
 
     @$save_button.on 'click', (e) =>
       @iframePhone.post({ type:'getInteractiveState' })
@@ -23,13 +25,12 @@ class IFrameSaver
       # setInterval(pull_interactive_json,1000)
 
   save: () ->
-    console.log "INTERACTIVE_JSON: #{@interactive}"
     data =
       raw_data: @interactive
     $.ajax
       type: "PUT",
       async: false, #TODO: For now we can only save this synchronously....
-      url: @url
+      url: @post_url
       data: JSON.stringify(data)
       contentType: "application/json; charset=utf-8",
       dataType: "json",
@@ -38,9 +39,22 @@ class IFrameSaver
       error: (jqxhr, status, error) =>
         console.log error
 
-  load_interactive: (interactive_json) ->
-    @interactive = interactive_json
-    @iframePhone.post({ type:'loadInteractive', data:@interactive  });
+  load_interactive: () ->
+    data = null
+    $.ajax
+      url: @get_url
+      success: (response) =>
+        if response['raw_data']
+          @interactive = JSON.parse(response['raw_data'])
+          url = @interactive.models[0].url
+          @interactive.models[0].url = "http://lab.concord.org/#{url}"
+          # debugger
+          # @iframePhone.post({ type:'loadInteractive', data:@interactive  });
+
+      error: (jqxhr, status, error) =>
+        # debugger
+        console.log error
+
 
 $(document).ready ->
   iframe = $("#interactive")[0]
