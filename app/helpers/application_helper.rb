@@ -76,4 +76,15 @@ module ApplicationHelper
     id_string = id.to_s
     "#{prefix}#{class_name}_#{id_string}"
   end
+
+  def button_tag(value,extra)
+    attributes = extra.merge({
+      "class" => "button",
+      "type" => "button",
+      "value" => value})
+    capture_haml do
+      haml_tag :input, attributes
+    end
+
+  end
 end

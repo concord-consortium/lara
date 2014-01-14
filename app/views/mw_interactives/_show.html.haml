@@ -9,3 +9,7 @@
   Your browser does not support inline frames, or is currently not configured to display inline frames.
   Content can be viewed at the actual source page:
   = link_to interactive.url, interactive.url
+.below_interactive
+  - if interactive.save_state
+    = save_interactive_button_tag(  @run, interactive)
+    = revert_interactive_button_tag(@run, interactive)
