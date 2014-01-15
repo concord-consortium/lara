@@ -8,8 +8,7 @@ class InteractiveRunStatesController < ApplicationController
   end
 
   def update
-    # store it as JSON, not as a ruby hash:
-    @run.raw_data = params['raw_data'].to_json
+    @run.raw_data = params['raw_data']
     if @run.save
       render :json => @run
     else

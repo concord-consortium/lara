@@ -9,34 +9,33 @@ class IFrameSaver
     @get_url  = @$revert_button.data('postBackUrl')
 
     @iframePhone = new Lab.IFramePhone @$frame, null, =>
-        console.log  "IFramePone: systems go"
-        @iframePhone.addListener 'interactiveState', (interactive_json) =>
-          @interactive = interactive_json
-          @save()
+
+      @iframePhone.addListener 'interactiveState', (interactive_json) =>
+        @interactive = interactive_json
+        @save()
 
       @$save_button.on 'click', (e) =>
         @iframePhone.post({ type:'getInteractiveState' })
 
       @$revert_button.on 'click', (e) =>
         @load_interactive()
-      # pull_interactive_json = =>
-      #   @iframePhone.post({ type:'getInteractiveState' })
-      # setInterval(pull_interactive_json,1000)
+
+  error: (msg) ->
+    console.log msg
 
   save: () ->
     data =
-      raw_data: @interactive
+      raw_data: JSON.stringify(@interactive)
     $.ajax
       type: "PUT",
       async: false, #TODO: For now we can only save this synchronously....
+      dataType: 'json',
       url: @post_url
-      data: JSON.stringify(data)
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      data: data
       success: (response) =>
-        alert "we saved our interactive"
+        return
       error: (jqxhr, status, error) =>
-        console.log error
+        @error(error)
 
   load_interactive: () ->
     data = null
@@ -45,14 +44,10 @@ class IFrameSaver
       success: (response) =>
         if response['raw_data']
           @interactive = JSON.parse(response['raw_data'])
-          url = @interactive.models[0].url
-          @interactive.models[0].url = "http://lab.concord.org/#{url}"
-          @iframePhone.post({ type:'loadInteractive', data:@interactive  });
-          alert "we loaded our interactive"
+          @iframePhone.post({ type:'loadInteractive', content:@interactive  });
 
       error: (jqxhr, status, error) =>
-        # debugger
-        console.log error
+        @error(error)
 
 
 $(document).ready ->
