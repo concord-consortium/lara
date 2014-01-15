@@ -8,9 +8,7 @@ class IFrameSaver
     @post_url = @$save_button.data('postBackUrl')
     @get_url  = @$revert_button.data('postBackUrl')
 
-    @iframePhone = new Lab.IFramePhone @$frame, =>
-        @load_interactive()
-      , =>
+    @iframePhone = new Lab.IFramePhone @$frame, null, =>
         console.log  "IFramePone: systems go"
         @iframePhone.addListener 'interactiveState', (interactive_json) =>
           @interactive = interactive_json
@@ -49,6 +47,7 @@ class IFrameSaver
           @interactive = JSON.parse(response['raw_data'])
           url = @interactive.models[0].url
           @interactive.models[0].url = "http://lab.concord.org/#{url}"
+          @iframePhone.post({ type:'loadInteractive', data:@interactive  });
           alert "we loaded our interactive"
 
       error: (jqxhr, status, error) =>
