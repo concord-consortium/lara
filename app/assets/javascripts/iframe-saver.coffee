@@ -16,10 +16,11 @@ class IFrameSaver
           @interactive = interactive_json
           @save()
 
+      @$save_button.on 'click', (e) =>
+        @iframePhone.post({ type:'getInteractiveState' })
 
-    @$save_button.on 'click', (e) =>
-      @iframePhone.post({ type:'getInteractiveState' })
-
+      @$revert_button.on 'click', (e) =>
+        @load_interactive()
       # pull_interactive_json = =>
       #   @iframePhone.post({ type:'getInteractiveState' })
       # setInterval(pull_interactive_json,1000)
@@ -48,8 +49,7 @@ class IFrameSaver
           @interactive = JSON.parse(response['raw_data'])
           url = @interactive.models[0].url
           @interactive.models[0].url = "http://lab.concord.org/#{url}"
-          # debugger
-          # @iframePhone.post({ type:'loadInteractive', data:@interactive  });
+          alert "we loaded our interactive"
 
       error: (jqxhr, status, error) =>
         # debugger
