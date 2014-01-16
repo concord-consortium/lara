@@ -93,7 +93,9 @@ class SaveOnChangePage
 
   intercept_navigation: ->
     $("a").on 'click', (e) =>
+      @stored_location = e.target.href
       @force_save_dirty()
+      e.preventDefault()
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -108,12 +110,25 @@ class SaveOnChangePage
   mark_dirty: (form) ->
     @dirty_forms[form] = form;
 
+  navigate_away: ->
+    window.location = @stored_location
+
   mark_clean: (form) ->
     delete @dirty_forms[form]
 
   force_save_dirty: ->
     for item, value of @dirty_forms
       value.saveNow()
+    waiting_on = IFrameSaver.instances.length
+    found      = 0
+    if waiting_on > 0
+      for count, saver of IFrameSaver.instances
+        saver.save =>
+          found = found + 1
+          if (found + 1 ) >= waiting_on
+            @navigate_away()
+    else
+      @navigate_away()
 
 
 $(document).ready ->
