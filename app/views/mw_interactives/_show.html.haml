@@ -8,3 +8,8 @@
     = interactive_data_div(interactive,@run)
     = save_interactive_button_tag(  @run, interactive)
     = revert_interactive_button_tag(@run, interactive)
+    - content_for :extra_javascript do
+      :javascript
+        $(document).ready(function() {
+          var saver = new IFrameSaver();
+        });
