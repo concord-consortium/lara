@@ -14,6 +14,7 @@ class IFrameSaver
   constructor: (iframe=IFrameSaver.default_iframe, $data_div=IFrameSaver.default_data) ->
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
+    @save_indicator = SaveIndicator.instance()
 
     if (@put_url or @get_url)
       IFrameSaver.instances.push @
@@ -37,7 +38,7 @@ class IFrameSaver
     console.log "saved"
 
   error: (msg) ->
-    console.log msg
+    @save_indicator.showSaveFailed(msg)
 
   save: (success_callback=null) ->
     @success_callback = success_callback
@@ -47,6 +48,7 @@ class IFrameSaver
 
   save_to_server: (interactive_json) ->
     return unless @put_url
+    @save_indicator.showSaving()
     data =
       raw_data: JSON.stringify(interactive_json)
     $.ajax
@@ -60,9 +62,11 @@ class IFrameSaver
           @success_callback()
         else
           @default_success
+        @save_indicator.showSaved("Saved Interactive")
 
-      error: (jqxhr, status, error) ->
-        @error(error)
+
+      error: (jqxhr, status, error) =>
+        @error("couldn't save interactive")
 
   load_interactive: () ->
     data = null
@@ -75,7 +79,7 @@ class IFrameSaver
           @iframePhone.post({ type:'loadInteractive', content:interactive  })
 
       error: (jqxhr, status, error) =>
-        @error(error)
+        @error("couldn't load interactive")
 
 $(document).ready ->
   window.IFrameSaver = IFrameSaver

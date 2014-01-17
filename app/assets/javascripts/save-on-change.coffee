@@ -1,36 +1,4 @@
 
-class SaveIndicator
-  constructor: (@$elem=$("#save")) ->
-    @saveTimer  = null
-    @$elem      = $("#save")
-    @clear()  # start hidden.
-
-  clear: () ->
-    @$elem.removeClass('error')
-    @$elem.css('opacity',0)
-
-  showSaveFailed: (message="Save failed!") ->
-    @$elem.removeClass("pending")
-    @$elem.addClass("error")
-    @$elem.html(message)
-
-  showSaved: (message="Saved.") ->
-    # Wait a ½ second before actually displaying:
-    @saveTimer = setTimeout =>
-      @$elem.removeClass("error")
-      @$elem.removeClass("pending")
-      @$elem.html(message)
-      @$elem.animate({'opacity': '0'}, 'slow') # Fade out.
-    , 500
-
-  showSaving: ->
-    @$elem.removeClass("error")
-    @$elem.addClass("pending")
-    @$elem.html("Saving...")
-    @$elem.css({'opacity': '0.5'})
-    @$elem.animate({'opacity': '1.0'}, 'fast')
-
-
 class SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
   keyUpinterval:  2000 # Fire keyup events with a larger delay
@@ -83,7 +51,7 @@ class SaveOnChange
 
 class SaveOnChangePage
   constructor: () ->
-    @save_indicator = new SaveIndicator($("#save"))
+    @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
     if $('.live_submit').length
