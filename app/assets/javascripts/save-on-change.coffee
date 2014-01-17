@@ -61,7 +61,7 @@ class SaveOnChangePage
 
   intercept_navigation: ->
     $("a").on 'click', (e) =>
-      @stored_location = e.target.href
+      @stored_location = e.currentTarget.href
       @force_save_dirty()
       e.preventDefault()
 
@@ -79,7 +79,8 @@ class SaveOnChangePage
     @dirty_forms[form] = form;
 
   navigate_away: ->
-    window.location = @stored_location
+    if @stored_location
+      window.location = @stored_location
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
