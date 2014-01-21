@@ -5,13 +5,15 @@ instances = []
 class IFrameSaver
 
   @instances:      []  # save-on-change.coffee looks these up.
-  @default_data:   $('#interactive_data_div')
-  @default_iframe: $("#interactive")[0]
+  @default_data:   () ->
+    $('#interactive_data_div')
+  @default_iframe: () ->
+    $("#interactive")[0]
 
   # @param iframe    : an iframe to save data from.
   # @param $data_div : a qjuery element that includes data-* attributes
   # which describe where we post back to.
-  constructor: (iframe=IFrameSaver.default_iframe, $data_div=IFrameSaver.default_data) ->
+  constructor: (iframe=IFrameSaver.default_iframe(), $data_div=IFrameSaver.default_data()) ->
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
     @save_indicator = SaveIndicator.instance()
