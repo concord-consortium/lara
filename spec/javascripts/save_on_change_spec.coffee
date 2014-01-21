@@ -1,3 +1,5 @@
+#= require iframe-saver
+#= require save-indicator
 #= require save-on-change
 #= require mock-ajax
 
