@@ -96,7 +96,9 @@ class InteractivePage < ActiveRecord::Base
       new_page.add_interactive(inter.duplicate)
     end
     self.embeddables.each do |embed|
-      new_page.add_embeddable(embed.duplicate)
+      copy = embed.duplicate
+      copy.save(validate: false)
+      new_page.add_embeddable(copy)
     end
     return new_page
     # N.B. the duplicate hasn't been saved yet
