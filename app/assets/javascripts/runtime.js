@@ -21,6 +21,7 @@
 //= require modal-dialog
 //= require check-answer
 //= require scroll-interactive-mod
+//= require save-indicator
 //= require save-on-change
 //= require jquery.colorbox
 //= require video
@@ -28,3 +29,4 @@
 //= require embeddable-carousel
 //= require image_question
 //= require navigation-menu-drop
+//= require iframe-saver

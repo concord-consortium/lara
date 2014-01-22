@@ -31,6 +31,8 @@ class Run < ActiveRecord::Base
     :foreign_key => 'run_id',
     :dependent => :destroy
 
+  has_many :interactive_run_states
+
   before_validation :check_key
 
   scope :by_key, lambda { |k|
@@ -209,6 +211,18 @@ class Run < ActiveRecord::Base
     # If a method throws an exception it will be rerun later.
     # The method will be retried up to 25 times with exp. falloff.
     raise PortalUpdateIncomplete.new
+  end
+
+  def submit_answers_now(auth_key=nil)
+    if send_to_portal(self.answers, auth_key)
+      set_answers_clean(self.answers)
+      self.reload
+      if dirty_answers.empty?
+        self.mark_clean
+        return true
+      end
+    end
+    return false
   end
 
   def submit_dirty_answers(auth_key=nil)

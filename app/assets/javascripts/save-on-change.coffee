@@ -1,36 +1,4 @@
 
-class SaveIndicator
-  constructor: (@$elem=$("#save")) ->
-    @saveTimer  = null
-    @$elem      = $("#save")
-    @clear()  # start hidden.
-
-  clear: () ->
-    @$elem.removeClass('error')
-    @$elem.css('opacity',0)
-
-  showSaveFailed: (message="Save failed!") ->
-    @$elem.removeClass("pending")
-    @$elem.addClass("error")
-    @$elem.html(message)
-
-  showSaved: (message="Saved.") ->
-    # Wait a ½ second before actually displaying:
-    @saveTimer = setTimeout =>
-      @$elem.removeClass("error")
-      @$elem.removeClass("pending")
-      @$elem.html(message)
-      @$elem.animate({'opacity': '0'}, 'slow') # Fade out.
-    , 500
-
-  showSaving: ->
-    @$elem.removeClass("error")
-    @$elem.addClass("pending")
-    @$elem.html("Saving...")
-    @$elem.css({'opacity': '0.5'})
-    @$elem.animate({'opacity': '1.0'}, 'fast')
-
-
 class SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
   keyUpinterval:  2000 # Fire keyup events with a larger delay
@@ -83,7 +51,7 @@ class SaveOnChange
 
 class SaveOnChangePage
   constructor: () ->
-    @save_indicator = new SaveIndicator($("#save"))
+    @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
     if $('.live_submit').length
@@ -93,7 +61,9 @@ class SaveOnChangePage
 
   intercept_navigation: ->
     $("a").on 'click', (e) =>
+      @stored_location = e.currentTarget.href
       @force_save_dirty()
+      e.preventDefault()
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -108,12 +78,27 @@ class SaveOnChangePage
   mark_dirty: (form) ->
     @dirty_forms[form] = form;
 
+  navigate_away: ->
+    if @stored_location
+      window.location = @stored_location
+
   mark_clean: (form) ->
     delete @dirty_forms[form]
 
   force_save_dirty: ->
     for item, value of @dirty_forms
       value.saveNow()
+    waiting_on = IFrameSaver.instances.length
+    found      = 0
+    if waiting_on > 0
+      for count, saver of IFrameSaver.instances
+        saver.save =>
+          found = found + 1
+          if (found + 1 ) >= waiting_on
+            @navigate_away()
+    else
+      @navigate_away()
+
 
 $(document).ready ->
   window.SaveOnChangePage = SaveOnChangePage

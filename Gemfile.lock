@@ -416,7 +416,7 @@ DEPENDENCIES
   daemons
   default_value_for
   delayed_job_active_record
-  devise (~> 3.0.1)
+  devise
   dynamic_form
   exception_notification
   factory_girl_rails

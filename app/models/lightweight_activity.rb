@@ -12,7 +12,7 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
-  has_many :portal_publications, :as => :publishable
+  has_many :portal_publications, :as => :publishable, :order => :updated_at
   belongs_to :theme
   belongs_to :project
 
@@ -83,6 +83,7 @@ class LightweightActivity < ActiveRecord::Base
       new_page.lightweight_activity = new_activity
       new_page.set_list_position(p.position)
     end
+    self.fix_page_positions
     return new_activity
     # N.B. the duplicate hasn't been saved yet
   end
@@ -154,6 +155,28 @@ class LightweightActivity < ActiveRecord::Base
 
   def for_sequence(seq)
     lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
+  end
+
+  def active_runs
+    self.runs.select { |run| !run.remote_endpoint.blank? }.count
+  end
+
+  def fix_page_positions
+    self.pages.map { |page| page.set_list_position(self.pages.index(page)+1) }
+  end
+
+  def fix_broken_portal_runs(auth_key=nil)
+    success_count = 0
+    fail_count = 0
+    self.runs.select { |run| !run.remote_endpoint.blank?}.each do |run|
+      if run.submit_answers_now(auth_key)
+        success_count = success_count + 1
+      else
+        fail_count = fail_count + 1
+      end
+    end
+    Rails.logger.info("fix broken portal runs for activity #{self.id} fail_count: #{fail_count} success_count: #{success_count}")
+    return { activity_id: self.id, fail_count: fail_count, success_count: success_count}
   end
 
 end

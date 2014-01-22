@@ -4,4 +4,8 @@ class PortalPublication < ActiveRecord::Base
 
   # What got published - usually one of these, not both
   belongs_to :publishable, :polymorphic => true
+
+  def portal_domain
+    URI.parse(self.portal_url).host
+  end
 end

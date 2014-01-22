@@ -20,4 +20,10 @@
       = "last updated at #{activity.updated_at.to_formatted_s(:long)}"
       - if (can? :create, LightweightActivity) && activity.changed_by.present?
         = "by #{activity.changed_by.email}"
+    - if activity.portal_publications.length > 0
+      %p.published
+        = "last published at #{activity.portal_publications.last.updated_at.to_formatted_s(:long)} to #{activity.portal_publications.last.portal_domain}"
+    - if (activity.active_runs > 0) && (can? :edit, activity)
+      %p.active-runs
+        = "Has been used by #{activity.active_runs} learners."
     != activity.description

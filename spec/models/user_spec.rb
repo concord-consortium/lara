@@ -166,7 +166,6 @@ describe User do
         expect { User.find_for_concord_portal_oauth(auth) }.to raise_error
       end
     end
-  end
 
   describe '#auth_providers' do
     let (:user) { FactoryGirl.create(:user) }
@@ -187,4 +186,5 @@ describe User do
       user.auth_providers.should include('LOCAL')
     end
   end
+
 end
