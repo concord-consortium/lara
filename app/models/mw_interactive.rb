@@ -1,5 +1,5 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :native_width, :native_height
+  attr_accessible :name, :url, :native_width, :native_height, :save_state
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -11,6 +11,7 @@ class MwInteractive < ActiveRecord::Base
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
   has_one :interactive_page, :through => :interactive_item
+  has_many :interactive_run_states
 
   def self.string_name
     "iframe interactive"

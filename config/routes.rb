@@ -60,7 +60,7 @@ LightweightStandalone::Application.routes.draw do
   end
 
   resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/ }
-
+  resources :interactive_run_states
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
