@@ -60,7 +60,7 @@ class SaveOnChangePage
     @dirty_forms = {}
 
   intercept_navigation: ->
-    $("a").not('.colorbox').on 'click', (e) =>
+    $("a").not('.colorbox').not('[target]').on 'click', (e) =>
       @stored_location = e.currentTarget.href
       @force_save_dirty()
       e.preventDefault()
