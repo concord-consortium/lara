@@ -17,6 +17,11 @@ class IFrameSaver
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
     @learner_url = null
+    @$delete_button = $('#delete_interactive_data')
+    @$delete_button.click () =>
+      @delete_data()
+    @$delete_button.hide()
+
     @save_indicator = SaveIndicator.instance()
 
     if (@put_url or @get_url)
@@ -61,6 +66,17 @@ class IFrameSaver
     # will call back into "@save_to_server)
     @iframePhone.post({ type:'getInteractiveState' })
 
+  confirm_delete: (callback) ->
+    if (window.confirm("Are you sure you want to restart your work in this model?"))
+      callback()
+
+  delete_data: () ->
+    @success_callback = () =>
+      window.location.reload()
+    @confirm_delete () =>
+      @learner_url = null
+      @save_to_server(null,"")
+
   save_to_server: (interactive_json, learner_url) ->
     return unless @put_url
     @save_indicator.showSaving()
@@ -85,14 +101,15 @@ class IFrameSaver
         @error("couldn't save interactive")
 
   load_interactive: () ->
-    data = null
     return unless @get_url
     $.ajax
       url: @get_url
       success: (response) =>
         if response['raw_data']
           interactive = JSON.parse(response['raw_data'])
-          @iframePhone.post({ type:'loadInteractive', content:interactive  })
+          if interactive
+            @iframePhone.post({ type:'loadInteractive', content:interactive  })
+            @$delete_button.show()
 
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
