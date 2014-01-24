@@ -1,9 +1,10 @@
-= interactive_iframe_tag(interactive) do
+= interactive_iframe_tag(interactive,@run) do
 
   Your browser does not support inline frames, or is currently not configured to display inline frames.
   Content can be viewed at the actual source page:
   = link_to interactive.url, interactive.url
 .below_interactive
+
   - if interactive.save_state
     = interactive_data_div(interactive,@run)
     - content_for :extra_javascript do
