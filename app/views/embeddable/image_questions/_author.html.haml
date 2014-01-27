@@ -15,9 +15,9 @@
     = embeddable.prompt.html_safe unless embeddable.prompt.blank?
   - if embeddable.is_shutterbug?
     %button.image_question.button{:type => 'submit', :id => 'image_snapshot_button'}
-      %i.icon-camera
+      %i.fa.fa-camera
       Take snapshot
   - elsif embeddable.is_drawing?
     %button.image_question.button{:type => 'submit', :id => 'image_drawing_button'}
-      %i.icon-pencil
+      %i.fa.fa-pencil
       Make drawing
