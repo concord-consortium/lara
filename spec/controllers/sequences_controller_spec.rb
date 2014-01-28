@@ -224,7 +224,8 @@ describe SequencesController do
     end
 
     it "should attempt to publish to the correct portal endpoint" do
-      @url.should match /\/external_activities\/publish\/v2/ # Host not defined for test
+      pending "New portal configuration"
+      @url.should == "#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2"
     end
 
     it "should attempt to publish to the portal" do
