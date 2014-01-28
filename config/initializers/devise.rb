@@ -222,8 +222,21 @@ Devise.setup do |config|
   OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
-  config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
-    ENV['CONCORD_PORTAL_CLIENT_SECRET']
+  PORTAL_SETUP_PROC = lambda do |env|
+    req = Rack::Request.new(env)
+    portal_url = (req.params['portal'] && ENV['CONFIGURED_PORTALS'].split.include?(req.params['portal'].upcase)) ? ENV["CONCORD_#{req.params['portal'].upcase}_URL"] : 'http://localhost:9000'
+    env['omniauth.strategy'].options[:client_options] = {
+      :site =>  portal_url,
+      :authorize_url => "#{portal_url}/auth/concord_id/authorize",
+      :access_token_url => "#{portal_url}/auth/concord_id/access_token"
+    }
+    # set client_secret
+    if req.params['portal'] && ENV['CONFIGURED_PORTALS'].split.include?(req.params['portal'].upcase)
+      env['omniauth.strategy'].options[:client_secret] = ENV["CONCORD_#{req.params['portal'].upcase}_CLIENT_SECRET"]
+    end
+  end
+
+  config.omniauth :concord_portal, ENV["SSO_CLIENT_ID"], ENV["CONCORD_HAS_STAGING_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

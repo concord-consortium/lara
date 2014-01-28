@@ -2,12 +2,13 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class ConcordPortal < OmniAuth::Strategies::OAuth2
-      option :name, 'concord_portal'
-      concord_portal_url = ENV['CONCORD_PORTAL_URL']
+      option :name, 'concord_portal' # Designates the callback URL, so leave it alone
+      site_key = 'HAS_STAGING'
+      # Default, will be replaced at login time:
       option :client_options, {
-        :site =>  concord_portal_url,
-        :authorize_url => "#{concord_portal_url}/auth/concord_id/authorize",
-        :access_token_url => "#{concord_portal_url}/auth/concord_id/access_token"
+        :site =>  ENV["CONCORD_#{site_key}_URL"],
+        :authorize_url => "#{ENV["CONCORD_#{site_key}_URL"]}/auth/concord_id/authorize",
+        :access_token_url => "#{ENV["CONCORD_#{site_key}_URL"]}/auth/concord_id/access_token"
       }
       uid { raw_info['id'] }
       info do
