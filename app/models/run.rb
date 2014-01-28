@@ -87,8 +87,23 @@ class Run < ActiveRecord::Base
     return self.create(activity: activity)
   end
 
+  def self.auth_provider(remote_endpoint)
+    uri = URI.parse(remote_endpoint)
+    auth_url = (uri.port == 80) ? "#{uri.scheme}://#{uri.host}" : "#{uri.scheme}://#{uri.host}:#{uri.port}"
+    ENV['CONFIGURED_PORTALS'].split.each do |cp|
+      if ENV["CONCORD_#{cp}_URL"] == auth_url
+        return cp
+      end
+      return nil
+    end
+  end
+
   def to_param
     key
+  end
+
+  def get_auth_provider
+    self.remote_endpoint.blank? ? nil : Run.auth_provider(self.remote_endpoint)
   end
 
   def last_page
