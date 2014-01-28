@@ -2,6 +2,14 @@ require 'spec_helper'
 require "cancan/matchers"
 
 describe User do
+  # In production these would be defined in config/app_environment_variables.rb
+  ENV['SSO_CLIENT_ID']                      ||= 'localhost'
+  ENV['CONFIGURED_PORTALS']                 ||= 'LOCAL CONCORD_PORTAL' # First one is default
+  ENV['CONCORD_LOCAL_URL']                  ||= 'http://localhost:9000'
+  ENV['CONCORD_LOCAL_CLIENT_SECRET']        ||= 'abf0a91d-f761-499c-83a6-5816d5428d38'
+  ENV['CONCORD_CONCORD_PORTAL_URL']         ||= ''
+  ENV['CONCORD_CONCORD_PORTAL_CLIENT_SECRET'] ||= ''
+
   # Tests User authorization for various actions.
   describe 'abilities' do
     subject  { ability }
@@ -159,6 +167,24 @@ describe User do
       end
     end
 
+  describe '#auth_providers' do
+    let (:user) { FactoryGirl.create(:user) }
+    let (:run)  { FactoryGirl.create(:run, :remote_endpoint => 'http://localhost:9000') }
+    let (:auth) { FactoryGirl.create(:authentication, :provider => 'concord_portal') }
+
+    it 'should return an array of symbols' do
+      user.auth_providers.should == []
+    end
+
+    it 'should get providers from previous authentications' do
+      user.authentications << auth
+      user.auth_providers.should include('CONCORD_PORTAL')
+    end
+
+    it 'should get providers from previous runs' do
+      user.runs << run
+      user.auth_providers.should include('LOCAL')
+    end
   end
 
 end
