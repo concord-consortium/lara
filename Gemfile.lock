@@ -30,6 +30,14 @@ GIT
       jquery-rails
       rails (~> 3.2.0)
 
+GIT
+  remote: https://github.com/intridea/omniauth-oauth2.git
+  revision: a88f9c86dff747f77813f09848e65b61aa1af3e3
+  specs:
+    omniauth-oauth2 (1.1.1)
+      oauth2 (~> 0.9.0)
+      omniauth (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -250,18 +258,16 @@ GEM
     newrelic_rpm (3.6.9.171)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
-    oauth2 (0.8.1)
+    oauth2 (0.9.2)
       faraday (~> 0.8)
-      httpauth (~> 0.1)
+      httpauth (~> 0.2)
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
+      multi_xml (~> 0.5)
       rack (~> 1.2)
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
-    omniauth-oauth2 (1.1.1)
-      oauth2 (~> 0.8.0)
-      omniauth (~> 1.0)
     orm_adapter (0.5.0)
     poltergeist (1.4.1)
       capybara (~> 2.1.0)
@@ -435,7 +441,7 @@ DEPENDENCIES
   nested_form
   newrelic_rpm
   omniauth
-  omniauth-oauth2
+  omniauth-oauth2!
   poltergeist
   pry
   pry-debugger
