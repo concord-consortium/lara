@@ -224,19 +224,15 @@ Devise.setup do |config|
 
   PORTAL_SETUP_PROC = lambda do |env|
     req = Rack::Request.new(env)
-    portal_url = (req.params['portal'] && ENV['CONFIGURED_PORTALS'].split.include?(req.params['portal'].upcase)) ? ENV["CONCORD_#{req.params['portal'].upcase}_URL"] : 'http://localhost:9000'
-    env['omniauth.strategy'].options[:client_options] = {
-      :site =>  portal_url,
-      :authorize_url => "#{portal_url}/auth/concord_id/authorize",
-      :access_token_url => "#{portal_url}/auth/concord_id/access_token"
-    }
-    # set client_secret
-    if req.params['portal'] && ENV['CONFIGURED_PORTALS'].split.include?(req.params['portal'].upcase)
-      env['omniauth.strategy'].options[:client_secret] = ENV["CONCORD_#{req.params['portal'].upcase}_CLIENT_SECRET"]
-    end
+    default_portal = "HAS_STAGING"
+    requested_portal = (req.params['portal']||default_portal).upcase
+    binding.pry
+    portal_auth = Concord::AuthPortal.for_portal(requested_portal)
+    portal_auth.set_strategy_options(env)
   end
-
-  config.omniauth :concord_portal, ENV["SSO_CLIENT_ID"], ENV["CONCORD_HAS_STAGING_CLIENT_SECRET"], setup: PORTAL_SETUP_PROC
+ 
+  # the id and the secret are being ignored, because we are running the setup proc
+  config.omniauth :concord_portal, "ignored-id", "ignored-secret", setup: PORTAL_SETUP_PROC
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
