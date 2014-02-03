@@ -15,16 +15,12 @@
       %span.session_link= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
 
   - if devise_mapping.omniauthable?
-    - if ENV['CONFIGURED_PORTALS'].split.length > 1 # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed
+    - if Concord::AuthPortal.configured_portal_names.size > 1 # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed
       %ul.login_portals
-        - ENV['CONFIGURED_PORTALS'].split.each do |portal|
+        - Concord::AuthPortal.all.each_pair do |key,portal|
           %li.session_link
             .text-link
-              = link_to "Sign in with #{portal.titleize}", omniauth_authorize_path(resource_name, :concord_portal, { :portal => portal })
-            - unless ENV["CONCORD_#{portal}_IMG"].blank?
-              .image-link
-                %a{ :href => omniauth_authorize_path(resource_name, :concord_portal, { :portal => portal }), :title => "Sign in with #{portal.titleize}" }
-                  = image_tag ENV["CONCORD_#{portal}_IMG"], :alt => "Logo for #{portal.titleize}"
+              = link_to "Sign in with #{portal.name}", omniauth_authorize_path(resource_name, portal.strategy_name)
     - else
       - resource_class.omniauth_providers.each do |provider|
         %span.session_link= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)

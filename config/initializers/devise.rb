@@ -1,4 +1,4 @@
-require 'concord_portal'
+require 'concord/auth_portal'
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -222,17 +222,10 @@ Devise.setup do |config|
   OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
-  PORTAL_SETUP_PROC = lambda do |env|
-    req = Rack::Request.new(env)
-    default_portal = "HAS_STAGING"
-    requested_portal = (req.params['portal']||default_portal).upcase
-    binding.pry
-    portal_auth = Concord::AuthPortal.for_portal(requested_portal)
-    portal_auth.set_strategy_options(env)
+  Concord::AuthPortal.all.each_pair do |key,portal|
+    config.omniauth portal.name, portal.id, portal.secret
+
   end
- 
-  # the id and the secret are being ignored, because we are running the setup proc
-  config.omniauth :concord_portal, "ignored-id", "ignored-secret", setup: PORTAL_SETUP_PROC
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
