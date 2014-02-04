@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_ids
+  devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences

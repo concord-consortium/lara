@@ -81,7 +81,6 @@ class SequencesController < ApplicationController
     activity = LightweightActivity.find(params[:activity_id])
     respond_to do |format|
       if @sequence.lightweight_activities << activity
-        # binding.pry
         format.html { redirect_to edit_sequence_url(@sequence) }
         format.json { head :no_content }
       else

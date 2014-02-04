@@ -38,10 +38,10 @@ module Concord
       return self.for_portal_name(configured_portal_names.first)
     end
 
-    def self.all_underscored_names
-      self.all.values.map { |v| v.name.underscore }
+    def self.all_strategy_names
+      self.all.values.map { |v| v.strategy_name }
     end
-    
+
     def self.all
       self.configured_portal_names.each { |name| for_portal_name name }
       return ExistingPortals
