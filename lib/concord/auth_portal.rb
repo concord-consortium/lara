@@ -21,7 +21,7 @@ module Concord
     def self.secret_for_portal(name)
       lookup(name,"CLIENT_SECRET")
     end
-    
+
     def self.client_id_for_portal(name)
       lookup(name,"CLIENT_ID")
     end
