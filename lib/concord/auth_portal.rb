@@ -12,6 +12,10 @@ module Concord
       name_list.upcase.split
     end
 
+    def self.publishing_url
+      self.lookup("publishing","url") || "http://localhost:9000"
+    end
+
     def self.lookup(*_attr)
       attributes = ["CONCORD"].concat(_attr)
       key = attributes.join("_")
