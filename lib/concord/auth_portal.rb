@@ -13,7 +13,7 @@ module Concord
     end
 
     def self.publishing_url
-      self.lookup("publishing","url") || "http://localhost:9000"
+      self.lookup("PUBLISHING","URL") || "http://localhost:9000"
     end
 
     def self.lookup(*_attr)
