@@ -102,7 +102,7 @@ group :development do
   gem "binding_of_caller"
   gem 'pry'
   gem 'pry-stack_explorer'
-  gem 'pry-exception_explorer'
+  #gem 'pry-exception_explorer'
   gem 'pry-debugger'
   # Evaluate database query efficiency
   gem 'bullet'
