@@ -38,6 +38,7 @@ module Concord
       self.all.each_pair do |name,portal|
         return portal if url == portal.url
       end
+      return nil # we couldn't find one.
     end
 
     def self.strategy_name_for_url(url)
