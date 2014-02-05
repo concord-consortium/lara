@@ -32,10 +32,17 @@ class User < ActiveRecord::Base
     return is_author
   end
 
-  def authentication_token(provider=ENV['DEFAULT_AUTH_PROVIDER'])
-    # this is temporary until we really support multiple authentication providers
+  def most_recent_authentication
+    authentications.order("updated_at desc").first
+  end
+
+  def authentication_token(provider=nil)
     # TODO: token expiration
-    auth = authentications.find_by_provider provider
+    auth = nil
+    if provider
+      auth = authentications.find_by_provider provider
+    end 
+    auth ||= most_recent_authentication
     auth ? auth.token : nil
   end
 

@@ -1,7 +1,7 @@
 module ConcordPortalPublishing
 
   def portal_url
-    (ENV['CONCORD_PORTAL_URL'] || "http://localhost:3000") + '/external_activities/publish/v2'
+    Concord::AuthPortal.publishing_url + '/external_activities/publish/v2'
   end
 
   # publish an activity or sequence to the portal
@@ -11,10 +11,10 @@ module ConcordPortalPublishing
     raise "#{publishable.class.name} is Not Publishable" unless publishable.respond_to?(:serialize_for_portal)
 
     logger.info "Attempting to publish #{publishable.class.name} #{publishable.id} to #{portal_url}."
-
+    auth_token = 'Bearer %s' % current_user.authentication_token
     response = HTTParty.post(portal_url,
       :body => publishable.serialize_for_portal("#{request.protocol}#{request.host_with_port}").to_json,
-      :headers => {"Authorization" => ('Bearer %s' % current_user.authentication_token), "Content-Type" => 'application/json'})
+      :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
 
     # report success or put details in flash
     logger.info "Response: #{response.inspect}"

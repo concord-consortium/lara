@@ -29,7 +29,19 @@ module Concord
     def self.url_for_portal(name)
       lookup(name,"URL")
     end
+    
+    def self.portal_for_url(url)
+      self.all.each_pair do |name,portal|
+        return portal if url == portal.url
+      end
+    end
 
+    def self.strategy_name_for_url(url)
+      if portal = self.portal_for_url(url)
+        return portal.strategy_name
+      end
+      raise "Can't find a portal for #{url}"
+    end
     def self.for_portal_name(name)
       return ExistingPortals[name] || self.make_for_name(name)
     end
@@ -69,6 +81,7 @@ module Concord
         @strategy_name = strategy_name
         @site = site
         @auth_url = auth_url
+        @url = url
         @secret  = secret
         @access_token_url = access_token_url
         option :name, @strategy_name
@@ -100,6 +113,10 @@ module Concord
 
         def self.secret
           @secret
+        end
+
+        def self.url
+          @url
         end
         # This method generates the string for the strategies omniauth controller method
         # see app/controllers/user/omniauth_callbacks_controller

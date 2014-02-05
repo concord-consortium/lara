@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
       # in the callback phase, by default omniauth will use use
       # the referer and that is not changed during redirects. More info:
       # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-      redirect_to user_omniauth_authorize_path(Concord::Authportal.default.name, :origin => request.url)
+      redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(params[:domain]), :origin => request.url)
     end
   end
 
