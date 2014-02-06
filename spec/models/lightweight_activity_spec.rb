@@ -144,7 +144,11 @@ describe LightweightActivity do
 
   describe '#duplicate' do
     it 'creates a new LightweightActivity with attributes from the original' do
-      activity.duplicate.should be_a_new(LightweightActivity).with( related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete )
+      dup = activity.duplicate
+      dup.should be_a(LightweightActivity)
+      dup.related.should == activity.related
+      dup.description.should == activity.description
+      dup.time_to_complete.should == activity.time_to_complete
     end
 
     it 'has pages in the same order as the source activity' do
@@ -156,6 +160,25 @@ describe LightweightActivity do
         activity.pages[i].name.should == p.name
         activity.pages[i].position.should be(p.position)
         activity.pages[i].last?.should be(p.last?)
+      end
+    end
+    
+    describe "when a page in the activity fails validation" do
+      let(:bad_content)   {"</p> no closing div tag"}
+
+      it 'should still duplicate the page' do
+        first_page = FactoryGirl.create(:page)
+        first_page.text = bad_content
+        first_page.sidebar = bad_content
+        activity.pages << first_page
+        activity.fix_page_positions
+        duplicate = activity.duplicate
+        duplicate.pages.length.should == 1
+        duplicate.pages.each_with_index do |p, i|
+          activity.pages[i].name.should == p.name
+          activity.pages[i].position.should be(p.position)
+          activity.pages[i].last?.should be(p.last?)
+        end
       end
     end
   end
