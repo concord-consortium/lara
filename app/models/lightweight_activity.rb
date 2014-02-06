@@ -82,10 +82,11 @@ class LightweightActivity < ActiveRecord::Base
       new_page = p.duplicate
       new_page.lightweight_activity = new_activity
       new_page.set_list_position(p.position)
+      new_page.save(validate: false)
     end
-    self.fix_page_positions
+    new_activity.save(validate: false)
+    new_activity.fix_page_positions
     return new_activity
-    # N.B. the duplicate hasn't been saved yet
   end
 
   def serialize_for_portal(host)

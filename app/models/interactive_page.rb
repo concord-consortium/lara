@@ -87,7 +87,7 @@ class InteractivePage < ActiveRecord::Base
   def set_list_position(index)
     # Overloads the acts_as_list version
     self.position = index
-    self.save(:validations => false) # This is the part we need to override
+    self.save(:validate => false) # This is the part we need to override
   end
 
   def duplicate
