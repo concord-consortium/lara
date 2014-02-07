@@ -65,6 +65,7 @@ module Concord
     end
 
     def self.add(name,url,client_id,secret)
+      return ExistingPortals[name] if ExistingPortals[name]
       created = self.new_strategy(name,url,client_id,secret) if (name && url && secret)
       ExistingPortals[name] = created if created
       return created
