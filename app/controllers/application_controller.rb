@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to user_omniauth_authorize_path(:concord_portal), :alert => exception.message
+    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name), :alert => exception.message
   end
 
   ### Log some data for 404s

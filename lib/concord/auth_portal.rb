@@ -33,7 +33,7 @@ module Concord
     def self.url_for_portal(name)
       lookup(name,"URL")
     end
-    
+
     def self.portal_for_url(url)
       self.all.each_pair do |name,portal|
         return portal if url == portal.url
@@ -64,13 +64,17 @@ module Concord
       return ExistingPortals
     end
 
+    def self.add(name,url,client_id,secret)
+      created = self.new_strategy(name,url,client_id,secret) if (name && url && secret)
+      ExistingPortals[name] = created if created
+      return created
+    end
+
     def self.make_for_name(name)
       url = self.url_for_portal(name)
       secret = self.secret_for_portal(name)
       client_id = self.client_id_for_portal(name)
-      created = self.new_strategy(name,url,client_id,secret) if (name && url && secret)
-      ExistingPortals[name] = created if created
-      return created
+      return self.add(name,url,client_id,secret)
     end
 
     def self.new_strategy(name,url,client_id,secret)

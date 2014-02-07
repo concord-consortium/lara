@@ -28,11 +28,22 @@ Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FI
 Capybara.asset_host = 'http://localhost:3000'
 
 OmniAuth.config.test_mode = true
-OmniAuth.config.add_mock(:concord_portal, {
-  :uid      => 'fake_concord_user',
-  :provider => 'concord_portal',
-  :credentials => {:token => 'token'} }
-)
+
+def add_fake_authorization(strat_name)
+  url       = "http://#{strat_name}.org/"
+  client_id = strat_name
+  secret    = "secret"
+  strat = Concord::AuthPortal.add(strat_name,url,client_id,secret)
+  OmniAuth.config.add_mock(strat.strategy_name, {
+    :uid      => 'fake_concord_user',
+    :provider => strat.strategy_name,
+    :credentials => {:token => 'token'} }
+  )
+end
+
+
+add_fake_authorization('concord_portal')
+add_fake_authorization('portal')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
