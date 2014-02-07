@@ -141,5 +141,24 @@ describe InteractivePage do
       # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
       page.duplicate.embeddables.length.should be(page.embeddables.length)
     end
+
+    describe "with invalid markup" do
+      before(:each) do
+        page.text = "foo</p>"
+        page.save(:validate => false)
+      end
+      it "the page itself should not be valid" do
+        page.should_not be_valid
+      end
+      it 'has copies of the original interactives' do
+        dupe = page.duplicate
+        # dupe.reload.interactives.length.should be(page.interactives.length)
+      end
+
+      it 'has copies of the original embeddables' do
+        # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
+        page.duplicate.embeddables.length.should be(page.embeddables.length)
+      end
+    end
   end
 end
