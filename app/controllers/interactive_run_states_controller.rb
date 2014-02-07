@@ -9,6 +9,7 @@ class InteractiveRunStatesController < ApplicationController
 
   def update
     @run.raw_data = params['raw_data']
+    @run.learner_url = params['learner_url']
     if @run.save
       render :json => @run
     else

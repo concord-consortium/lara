@@ -28,9 +28,9 @@ MenuControl.prototype.changeActive = function (element) {
     // Show the new menu
     element.addClass('on');
     // Fix its caret
-    element.find('i.icon-angle-up').addClass('icon-angle-down').removeClass('icon-angle-up');
+    element.find('fa fa-angle-up').addClass('fa-angle-down').removeClass('fa-angle-up');
     // Fix the old activity's caret
-    this.active.find('i.icon-angle-down').addClass('icon-angle-up').removeClass('icon-angle-down');
+    this.active.find('fa fa-angle-down').addClass('fa-angle-up').removeClass('fa-angle-down');
     // Close the old activity
     this.active.removeClass('on');
     // Re-set current-active

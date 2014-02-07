@@ -15,16 +15,16 @@
           = simple_format h(truncate(embeddable.answer_text, length:140))
       - if embeddable.is_shutterbug?
         %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
-          %i.icon-camera
+          %i.fa.fa-camera
           %span.take_snapshot_label
             Take snapshot
         %button.image_question.button.image_snapshot_button.replace_snapshot{:type => 'button'}
-          %i.icon-camera
+          %i.fa.fa-camera
           %span.replace_snapshot_label
             Replace snapshot
       - elsif embeddable.is_drawing?
         %button.image_question.button.image_drawing_button.drawing_button{:type => 'button'}
-          %i.icon-pencil
+          %i.fa.fa-pencil
           %span.make_drawing_label
             Make drawing
       %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
@@ -49,10 +49,10 @@
           = f.hidden_field 'image_url'
           = f.hidden_field 'annotated_image_url'
           %button.button.image_done_button{ :type => 'button' }
-            %i.icon-ok.btn
+            %i.fa.fa-check.btn
               Done
           %button.button.image_cancel_button{ :type => 'button' }
-            %i.icon-cancel.btn
+            %i.fa.fa-cancel.btn
               Cancel
 
 - content_for :extra_javascript do
