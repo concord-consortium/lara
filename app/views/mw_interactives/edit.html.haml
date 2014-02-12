@@ -14,8 +14,12 @@
     = f.text_field :native_height
     .clear
     This width and height will be used to maintain a fixed aspect ratio for the interactive.
+  %br
   = field_set_tag 'Save Interactive state' do
     = f.label :save_state, 'Save State'
     = f.check_box :save_state
+    .clear
+    %em Warning: 
+    Please do not select this unless your interactive contains a serializable data set.
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
