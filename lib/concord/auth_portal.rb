@@ -6,6 +6,7 @@ module Concord
     ExistingPortals   = {}
     AuthorizeUrl      = "/auth/concord_id/authorize"
     AccessTokenUrl    = "/auth/concord_id/access_token"
+    PublishingPath    = "/external_activities/publish/v2"
 
     def self.configured_portal_names
       name_list = self.lookup('CONFIGURED_PORTALS') || ""
@@ -128,6 +129,11 @@ module Concord
         def self.url
           @url
         end
+
+        def self.publishing_url
+          self.url + PublishingPath
+        end
+        
         # This method generates the string for the strategies omniauth controller method
         # see app/controllers/user/omniauth_callbacks_controller
         def self.controller_action

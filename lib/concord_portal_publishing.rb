@@ -1,8 +1,5 @@
 module ConcordPortalPublishing
 
-  def portal_url
-    Concord::AuthPortal.publishing_url + '/external_activities/publish/v2'
-  end
 
   # publish an activity or sequence to the portal
   def portal_publish(publishable)
