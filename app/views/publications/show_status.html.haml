@@ -1,0 +1,22 @@
+
+.publication
+  .header
+    %span.title Publish #{@publishable.class} #{@publishable.name} to portal
+    %span.close.close_link
+      close (✖)
+  .info
+    %ul
+      - @portals.each do |portal|
+        %li
+          - if portal.published?
+            %span.published added
+          - else 
+            =link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+          =portal.name
+  .buttons
+    %button.botton
+      publish
+    %button.close
+      cancel
+  .message
+    =@message
