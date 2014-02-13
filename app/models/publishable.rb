@@ -14,6 +14,8 @@ module Publishable
       scope :official,  where(:is_official => true)
       scope :community, where(:is_official => false)
 
+      has_many :portal_publications, :as => :publishable, :order => :updated_at
+
       # * Find all activities for one user (regardless of publication status)
       def self.my(user)
         where(:user_id => user.id)
@@ -37,5 +39,19 @@ module Publishable
         self.can_see(user)
       end
     end
+  end
+
+  def find_portal_publication(concord_auth_portal)
+    self.portal_publications.where(:portal_url, concord_auth_portal.publishing_url).first
+  end
+  
+  def add_portal_publication(concord_auth_portal)
+   found = find_portal_publication(concord_auth_portal)
+   self.portal_publications.create(portal_url: concord_auth_portal.publishing_url) unless found
+  end
+
+  def remove_portal_publication(concord_auth_portal)
+    found = find_portal_publication(concord_auth_portal)
+    self.portal_publications.destroy(found) if found
   end
 end

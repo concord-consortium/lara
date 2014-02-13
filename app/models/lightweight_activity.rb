@@ -12,7 +12,6 @@ class LightweightActivity < ActiveRecord::Base
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
-  has_many :portal_publications, :as => :publishable, :order => :updated_at
   belongs_to :theme
   belongs_to :project
 

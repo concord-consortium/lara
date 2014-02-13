@@ -3,7 +3,6 @@ class Sequence < ActiveRecord::Base
   include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
-  has_many :portal_publications, :as => :publishable
   belongs_to :user
   belongs_to :theme
   belongs_to :project
