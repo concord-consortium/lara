@@ -107,8 +107,8 @@ group :development do
   # Evaluate database query efficiency
   gem 'bullet'
   gem 'better_errors'
-  gem "sextant"  # adds http://localhost:9000/rails/routes in dev mode
-  gem "xray-rails"
+  gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
+  gem "xray-rails" #cmd+shift+x in browser shows your view partials.
 end
 
 # To use ActiveModel has_secure_password
