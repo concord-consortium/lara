@@ -51,7 +51,7 @@ class PublicationsController < ApplicationController
     # TODO: we must not forget to actually publish this later, see publis_activity_path(activity)
     @portal = find_portal
     @message = ''
-    req_url = "{request.protocol}#{request.host_with_port}"
+    req_url = "#{request.protocol}#{request.host_with_port}"
     @publishable.portal_publish(current_user,@portal,req_url)
     redirect_to :action => 'show_status'
   end
