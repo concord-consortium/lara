@@ -1,5 +1,4 @@
 require_dependency "application_controller"
-require 'concord_portal_publishing'
 
 class LightweightActivitiesController < ApplicationController
 

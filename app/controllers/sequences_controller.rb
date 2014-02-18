@@ -1,4 +1,3 @@
-require 'concord_portal_publishing'
 
 class SequencesController < ApplicationController
   layout 'sequence_run', :only => [:show]
