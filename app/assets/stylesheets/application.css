@@ -15,5 +15,6 @@
  *= require jquery.ui.all
  *= require style
  *= require modal
+ *= require publication
  *= require font-awesome
  */
