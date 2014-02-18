@@ -42,9 +42,32 @@ module Publishable
   end
 
   def find_portal_publication(concord_auth_portal)
-    self.portal_publications.where(:portal_url, concord_auth_portal.publishing_url).first
+    self.portal_publications.last
   end
-  
+  alias_method :last_publication, :find_portal_publication
+  def portal_publish(user,auth_portal,self_url)
+
+    # TODO: better error handling
+    raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
+
+    Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
+    auth_token = 'Bearer %s' % user.authentication_token
+    response = HTTParty.post(auth_portal.publishing_url,
+      :body => self.serialize_for_portal(self_url).to_json,
+      :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
+
+    Rails.logger.info "Response: #{response.inspect}"
+    self.portal_publications.create({
+      portal_url: auth_portal.publishing_url,
+      response: response.inspect,
+      success: ( response.code == 201 ) ? true : false,
+      publishable: self
+    })
+
+    return true if response.code == 201
+    return false
+  end
+
   def add_portal_publication(concord_auth_portal)
    found = find_portal_publication(concord_auth_portal)
    self.portal_publications.create(portal_url: concord_auth_portal.publishing_url) unless found

@@ -2,7 +2,6 @@ require_dependency "application_controller"
 require 'concord_portal_publishing'
 
 class LightweightActivitiesController < ApplicationController
-  include ConcordPortalPublishing
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
@@ -167,18 +166,6 @@ class LightweightActivitiesController < ApplicationController
     redirect_to :back
   end
 
-  def publish
-    authorize! :publish, @activity
-    @activity.publish!
-    success = portal_publish(@activity)
-    if success
-      flash[:notice] = "Successfully published activity!"
-    else
-      # There should already be an error message from portal_publish in the flash hash
-      flash[:alert] << "<br />Failed to publish activity! Check that you're logged in to the portal, and have permissions to author."
-    end
-    redirect_to activities_path
-  end
 
   private
   def set_activity
