@@ -42,7 +42,7 @@ module Publishable
   end
 
   def find_portal_publication(concord_auth_portal)
-    self.portal_publications.last
+    self.portal_publications.where('portal_url' =>  concord_auth_portal.publishing_url).last
   end
   alias_method :last_publication, :find_portal_publication
   def portal_publish(user,auth_portal,self_url)
