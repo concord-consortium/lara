@@ -12,7 +12,9 @@
           - when "publish_ok"
             %span.published added
           - when "publish_fail"
-            %span.published.failed.error error
+            %span.published.failed.error
+              =link_to "error", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+
           - when "publishable"
             = link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
           - else
