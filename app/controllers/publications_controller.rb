@@ -10,6 +10,18 @@ class PublicationsController < ApplicationController
     def published?
       return @publishable.portal_publications.detect { |pp| pp.portal_url == @portal.publishing_url }
     end
+
+    def publishable?(user)
+      return user.authentications.detect { |p| p.provider == @portal.strategy_name }
+    end
+    def status(user)
+      last_publication = @publishable.last_publication(@portal)
+      if last_publication
+        return "publish_ok" if last_publication.success
+        return "publish_fail"
+      end
+      return "publishable" if publishable?(user)
+    end
     def id
       @portal.id
     end
@@ -39,7 +51,8 @@ class PublicationsController < ApplicationController
     # TODO: we must not forget to actually publish this later, see publis_activity_path(activity)
     @portal = find_portal
     @message = ''
-    @publishable.add_portal_publication(@portal)
+    req_url = "{request.protocol}#{request.host_with_port}"
+    @publishable.portal_publish(current_user,@portal,req_url)
     redirect_to :action => 'show_status'
   end
 

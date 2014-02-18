@@ -8,10 +8,16 @@
     %ul
       - @portals.each do |portal|
         %li
-          - if portal.published?
+          - case portal.status(current_user)
+          - when "publish_ok"
             %span.published added
-          - else 
-            =link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+          - when "publish_fail"
+            %span.published.failed.error error
+          - when "publishable"
+            = link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+          - else
+            = link_to "login-to-publish", user_omniauth_authorize_path(portal.name), {:class => "not_published"}
+
           =portal.name
   .buttons
     %button.botton
