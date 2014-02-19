@@ -11,6 +11,10 @@ class Sequence < ActiveRecord::Base
   scope :newest, order("updated_at DESC")
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 
+  def name
+    # activities have names, so to be consistent ...
+    self.title
+  end
   def time_to_complete
     time = 0
     lightweight_activities.map { |a| time = time + (a.time_to_complete ? a.time_to_complete : 0) }
