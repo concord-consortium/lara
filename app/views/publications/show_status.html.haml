@@ -21,6 +21,7 @@
             = link_to "login-to-publish", user_omniauth_authorize_path(portal.name), {:class => "not_published"}
 
           =portal.name
+          %span.tiny=portal.date
   .buttons
     %button.button
       = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}

@@ -22,6 +22,9 @@ class PublicationsController < ApplicationController
       end
       return "publishable" if publishable?(user)
     end
+    def date
+      return @publishable.last_publication(@portal).created_at.strftime("%F %R")
+    end
     def id
       @portal.id
     end
