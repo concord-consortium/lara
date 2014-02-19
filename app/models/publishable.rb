@@ -46,13 +46,20 @@ module Publishable
   end
   alias_method :last_publication, :find_portal_publication
   def portal_publish(user,auth_portal,self_url)
+    self.portal_publish_with_token(user.authentication_token,auth_portal,self_url)
+  end
 
+  def republish_for_portal(auth_portal,self_url)
+    portal_publish_with_token(auth_portal.secret,auth_portal,self_url)
+  end
+
+  def portal_publish_with_token(token,auth_portal,self_url)
     # TODO: better error handling
     raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
 
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
-    auth_token = 'Bearer %s' % user.authentication_token
-    response = HTTParty.post(auth_portal.publishing_url,
+    auth_token = 'Bearer %s' % "quick lazy fox" #token
+    response = HTTParty.post(auth_portal.republishing_url,
       :body => self.serialize_for_portal(self_url).to_json,
       :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
 
@@ -76,5 +83,12 @@ module Publishable
   def remove_portal_publication(concord_auth_portal)
     found = find_portal_publication(concord_auth_portal)
     self.portal_publications.destroy(found) if found
+  end
+
+  def publish_to_portals(self_url)
+    urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
+    urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
+      self.republish_for_portal(portal,self_url)
+    end
   end
 end

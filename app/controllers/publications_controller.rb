@@ -56,9 +56,16 @@ class PublicationsController < ApplicationController
     redirect_to :action => 'show_status'
   end
 
+  def publish
+    req_url = "#{request.protocol}#{request.host_with_port}"
+    @publishable.publish_to_portals(req_url)
+    redirect_to :action => 'show_status'
+  end
+
   private
-  def find_portal
-    Concord::AuthPortal.portal_for_url(params['portal_url'])
+  def find_portal(portal_url=nil)
+    portal_url ||= params['portal_url']
+    Concord::AuthPortal.portal_for_url(portal_url)
   end
 
   def setup

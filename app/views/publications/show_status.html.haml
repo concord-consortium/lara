@@ -22,9 +22,9 @@
 
           =portal.name
   .buttons
-    %button.botton
-      publish
-    %button.close
+    %button.button
+      = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}
+    %button.button.close
       cancel
   .message
     =@message

@@ -7,6 +7,7 @@ module Concord
     AuthorizeUrl      = "/auth/concord_id/authorize"
     AccessTokenUrl    = "/auth/concord_id/access_token"
     PublishingPath    = "/external_activities/publish/v2"
+    RePublishingPath  = "/external_activities/republish/v2"
 
     def self.configured_portal_names
       name_list = self.lookup('CONFIGURED_PORTALS') || ""
@@ -40,6 +41,10 @@ module Concord
         return portal if url == portal.url
       end
       return nil # we couldn't find one.
+    end
+
+    def self.portal_for_publishing_url(url)
+      self.all.values.detect { |v| v.publishing_url == url }
     end
 
     def self.strategy_name_for_url(url)
@@ -132,6 +137,10 @@ module Concord
 
         def self.publishing_url
           self.url + PublishingPath
+        end
+
+        def self.republishing_url
+          self.url + RePublishingPath
         end
         
         # This method generates the string for the strategies omniauth controller method
