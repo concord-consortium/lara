@@ -71,10 +71,11 @@ module Publishable
   def portal_publish_with_token(token,auth_portal,self_url,republish=false)
     # TODO: better error handling
     raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
-
+    url = auth_portal.publishing_url
+    url = auth_portal.republishing_url if republish
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
-    auth_token = 'Bearer %s' % "quick lazy fox" #token
-    response = HTTParty.post(auth_portal.republishing_url,
+    auth_token = 'Bearer %s' % token
+    response = HTTParty.post(url,
       :body => self.serialize_for_portal(self_url).to_json,
       :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
 
