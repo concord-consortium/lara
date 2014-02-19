@@ -50,10 +50,25 @@ module Publishable
   end
 
   def republish_for_portal(auth_portal,self_url)
-    portal_publish_with_token(auth_portal.secret,auth_portal,self_url)
+    portal_publish_with_token(auth_portal.secret,auth_portal,self_url,true)
   end
 
-  def portal_publish_with_token(token,auth_portal,self_url)
+  def publication_details
+    res = self.portal_publications.where(:success => true).group(:portal_url)
+    counts = res.size
+    return_vals = []
+    dates  = res.maximum(:created_at)
+    counts.keys.each do |url|
+      obj = OpenStruct.new
+      obj.url = url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 }
+      obj.count = counts[url]
+      obj.date  = dates[url].strftime('%F %R')
+      return_vals << obj
+    end
+    return return_vals
+  end
+
+  def portal_publish_with_token(token,auth_portal,self_url,republish=false)
     # TODO: better error handling
     raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
 

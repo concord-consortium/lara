@@ -15,6 +15,7 @@
 
 
 %h1 Editing sequence
+= render :partial => "publications/publication_details", :locals =>{ :publication => @sequence}
 
 #leftcol
   = render 'form'
