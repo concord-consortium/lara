@@ -46,6 +46,7 @@ module Publishable
   end
   alias_method :last_publication, :find_portal_publication
   def portal_publish(user,auth_portal,self_url)
+    self.update_attribute('publication_status','public')
     self.portal_publish_with_token(user.authentication_token,auth_portal,self_url)
   end
 
