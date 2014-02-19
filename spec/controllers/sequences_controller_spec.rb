@@ -214,30 +214,4 @@ describe SequencesController do
     end
   end
 
-  describe "#publish" do
-    let(:seq_one) { Sequence.create!(:title => 'Sequence One',:description => 'Sequence One Description') }
-    let(:good_body) { "{\"type\":\"Sequence\",\"name\":\"Sequence One\",\"description\":\"Sequence One Description\",\"url\":\"http://test.host/sequences/#{seq_one.id}\",\"create_url\":\"http://test.host/sequences/#{seq_one.id}\",\"activities\":[]}" }
-
-    before(:each) do
-      @url = controller.portal_url
-      stub_request(:post, @url)
-    end
-
-    it "should attempt to publish to the correct portal endpoint" do
-      pending "New portal configuration"
-      @url.should == "#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2"
-    end
-
-    it "should attempt to publish to the portal" do
-      get :publish, {:id => seq_one.id }
-      WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
-    end
-
-    it 'adds a new PortalPublication instance' do
-      old_publication_count = seq_one.portal_publications.length
-      get :publish, {:id => seq_one.id }
-      seq_one.reload.portal_publications.length.should == old_publication_count + 1
-    end
-  end
-
 end
