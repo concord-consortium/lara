@@ -1,0 +1,31 @@
+
+.publication
+  .header
+    %span.title Publish #{@publishable.name} to portals:
+    %span.close.close_link
+      close (✖)
+  .info
+    %ul
+      - @portals.each do |portal|
+        %li
+          - case portal.status(current_user)
+          - when "publish_ok"
+            %span.published added
+          - when "publish_fail"
+            %span.published.failed.error
+              =link_to "try again", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+
+          - when "publishable"
+            = link_to "add to", publication_add_portal_path(@publishable.class, @publishable.id, :portal_url => portal.url), {:remote => true}, {:class => "not_published"}
+          - else
+            = link_to "login-to-publish", user_omniauth_authorize_path(portal.name), {:class => "not_published"}
+
+          =portal.name
+          %span.tiny=portal.date
+  .buttons
+    %button.button
+      = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}
+    %button.button.close
+      cancel
+  .message
+    =@message

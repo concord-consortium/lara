@@ -4,10 +4,11 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  devise :omniauthable, :omniauth_providers => [:concord_portal]
+  devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
 
   has_many :activities, :class_name => LightweightActivity
   has_many :sequences
+  has_many :runs
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
@@ -31,15 +32,18 @@ class User < ActiveRecord::Base
     return is_author
   end
 
-  def authentication_token
-    # this is temporary until we really support multiple authentication providers
+  def most_recent_authentication
+    authentications.order("updated_at desc").first
+  end
+
+  def authentication_token(provider=nil)
     # TODO: token expiration
-    auth = authentications.find_by_provider ENV['DEFAULT_AUTH_PROVIDER']
-    if auth
-      auth.token
-    else
-      nil
-    end
+    auth = nil
+    if provider
+      auth = authentications.find_by_provider provider
+    end 
+    auth ||= most_recent_authentication
+    auth ? auth.token : nil
   end
 
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
@@ -80,5 +84,11 @@ class User < ActiveRecord::Base
       token:    auth.credentials.token
     )
     user
+  end
+
+  # Return a list of providers for this user by checking previous authorizations
+  # and available runs
+  def auth_providers
+    ( authentications.map { |auth| auth.provider.upcase } + runs.map { |run| run.get_auth_provider } ).uniq
   end
 end

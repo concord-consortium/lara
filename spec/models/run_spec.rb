@@ -106,6 +106,18 @@ describe Run do
     end
   end
 
+  describe '#get_authorization_provider' do
+    it 'returns a string designating the authorization provider for its endpoint' do
+      pending "Set environment variables for testing"
+      run.remote_endpoint = 'http://localhost:9000/data_service/1'
+      run.get_auth_provider.should == 'LOCAL'
+    end
+
+    it 'returns nil when there is no endpoint' do
+      run.get_auth_provider.should be_nil
+    end
+  end
+
   describe 'dirty bit management' do
     describe '#mark_dirty' do
       it 'sets is_dirty bit to true' do

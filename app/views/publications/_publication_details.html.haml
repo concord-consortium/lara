@@ -1,0 +1,18 @@
+- #provide a publishable to this view partial
+- size = publication.publication_details.size
+- if size > 0
+  .publication_details
+    .summary
+      This item has been published to #{size} portals.
+      Editing will require re-publication
+    %ul.details
+      - publication.publication_details.each do |deet|
+        %li.detail
+          %span.detail.url
+            #{deet.url} :
+          %span.detail.count
+            ( #{deet.count} times) –
+          %span.datail.date=deet.date
+
+    %button.button
+      = link_to "publish", publication_publish_path(publication.class, publication.id), {:remote => true}

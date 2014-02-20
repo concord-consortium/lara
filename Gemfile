@@ -15,7 +15,8 @@ gem 'devise'
 # authorization
 gem 'cancan'
 gem 'omniauth'
-gem 'omniauth-oauth2'
+# Github
+gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
 # Easy (or at least easier) database dumps and reloads
@@ -98,12 +99,16 @@ group :test do
 end
 
 group :development do
+  gem "binding_of_caller"
   gem 'pry'
   gem 'pry-stack_explorer'
-  gem 'pry-exception_explorer'
+  #gem 'pry-exception_explorer'
   gem 'pry-debugger'
   # Evaluate database query efficiency
   gem 'bullet'
+  gem 'better_errors'
+  gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
+  gem "xray-rails" #cmd+shift+x in browser shows your view partials.
 end
 
 # To use ActiveModel has_secure_password

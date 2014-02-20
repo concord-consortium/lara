@@ -1,4 +1,4 @@
-require 'concord_portal'
+require 'concord/auth_portal'
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -222,8 +222,10 @@ Devise.setup do |config|
   OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
-  config.omniauth :concord_portal, ENV['CONCORD_PORTAL_CLIENT_ID'],
-    ENV['CONCORD_PORTAL_CLIENT_SECRET']
+  Concord::AuthPortal.all.each_pair do |key,portal|
+    config.omniauth portal.name, portal.id, portal.secret
+
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

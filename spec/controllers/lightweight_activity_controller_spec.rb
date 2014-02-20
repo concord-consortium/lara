@@ -88,11 +88,15 @@ describe LightweightActivitiesController do
     end
 
     describe "when called from the portal" do
+      # TODO: we need to abstract away these specifics in the test:
+      let(:domain)    { 'http://portal.org/' }
+      let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
       it "should force a new user session" do
         controller.should_receive(:sign_out).and_return(:true)
         page
-        get :show, :id => act.id, :domain => "foo", :externalId => "bar"
-        response.should redirect_to user_omniauth_authorize_path(:concord_portal, :origin => request.url)
+
+        get :show, :id => act.id, :domain => domain, :externalId => "bar"
+        response.should redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
       end
     end
   end
@@ -382,42 +386,6 @@ describe LightweightActivitiesController do
         act.pages.first.name.should == "Page 3"
         act.pages.last.name.should == "Page 1"
       end
-    end
-  end
-
-  describe "#publish" do
-    let(:act_one) do
-      LightweightActivity.create!(:name => 'Activity One',
-                                  :description => 'Activity One Description',
-                                  :publication_status => 'public')
-    end
-    #let(:good_body) { act_one.serialize_for_portal('http://test.host').to_json }
-
-    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
-
-    before(:each) do
-      @url = controller.portal_url
-      stub_request(:post, @url)
-    end
-
-    it "should call 'publish!' on the activity" do
-      get :publish, { :id => act_one.id }
-      act.publication_status.should == 'public'
-    end
-
-    it "should attempt to publish to the correct portal endpoint" do
-      @url.should match /\/external_activities\/publish\/v2/ # No host defined for test
-    end
-
-    it "should attempt to publish to the portal" do
-      get :publish, { :id => act_one.id }
-      WebMock.should have_requested(:post, @url).with(:body => good_body, :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'})
-    end
-
-    it 'creates a new PortalPublication record' do
-      old_publication_count = act_one.portal_publications.length
-      get :publish, { :id => act_one.id }
-      act_one.reload.portal_publications.length.should == old_publication_count + 1
     end
   end
 

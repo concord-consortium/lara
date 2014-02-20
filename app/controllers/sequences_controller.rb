@@ -1,7 +1,5 @@
-require 'concord_portal_publishing'
 
 class SequencesController < ApplicationController
-  include ConcordPortalPublishing
   layout 'sequence_run', :only => [:show]
   before_filter :set_sequence, :except => [:index, :new, :create]
   before_filter :find_or_create_sequence_run, :only => [:show]
@@ -81,7 +79,6 @@ class SequencesController < ApplicationController
     activity = LightweightActivity.find(params[:activity_id])
     respond_to do |format|
       if @sequence.lightweight_activities << activity
-        # binding.pry
         format.html { redirect_to edit_sequence_url(@sequence) }
         format.json { head :no_content }
       else
@@ -133,18 +130,6 @@ class SequencesController < ApplicationController
       format.html { redirect_to sequences_url }
       format.json { head :no_content }
     end
-  end
-
-  def publish
-    authorize! :publish, @sequence
-    success = portal_publish(@sequence)
-    if success
-      flash[:notice] = "Successfully published sequence!"
-    else
-      # There should already be an error message from portal_publish in the flash hash
-      flash[:alert] << "<br />Failed to publish sequence! Check that you're logged in to the portal, and have permissions to author."
-    end
-    redirect_to sequences_path
   end
 
   private
