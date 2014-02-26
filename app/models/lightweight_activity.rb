@@ -158,7 +158,7 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def active_runs
-    self.runs.select { |run| !run.remote_endpoint.blank? }.count
+    self.runs.where('remote_endpoint IS NOT NULL').count
   end
 
   def fix_page_positions
