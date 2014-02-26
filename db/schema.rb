@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140124152812) do
+ActiveRecord::Schema.define(:version => 20140226205800) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
   add_index "lightweight_activities", ["project_id"], :name => "index_lightweight_activities_on_project_id"
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
   add_index "lightweight_activities", ["theme_id"], :name => "index_lightweight_activities_on_theme_id"
+  add_index "lightweight_activities", ["updated_at"], :name => "lightweight_activities_updated_at_idx"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
   create_table "lightweight_activities_sequences", :force => true do |t|
@@ -318,6 +319,7 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
   add_index "sequences", ["theme_id"], :name => "index_sequences_on_theme_id"
+  add_index "sequences", ["updated_at"], :name => "sequences_updated_at_idx"
   add_index "sequences", ["user_id"], :name => "index_sequences_on_user_id"
 
   create_table "themes", :force => true do |t|
