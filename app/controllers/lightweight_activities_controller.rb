@@ -10,8 +10,8 @@ class LightweightActivitiesController < ApplicationController
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
-    @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications,:runs).community
-    @official_activities  = @filter.collection.includes(:user,:changed_by,:portal_publications,:runs).official
+    @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications).community
+    @official_activities  = @filter.collection.includes(:user,:changed_by,:portal_publications).official
   end
 
   # These are the runtime (student-facing) actions, show and summary
