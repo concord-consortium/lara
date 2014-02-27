@@ -46,6 +46,25 @@ describe Run do
     end
   end
 
+  describe "after_create" do
+    describe "when there is a remote_endpoint" do
+      let(:remote_endpoint) { "blarg" }
+      it "increments the portal_run_count on the activity" do
+        last_count = activity.portal_run_count
+        Run.create(:activity => activity, :remote_endpoint => remote_endpoint)
+        activity.reload.portal_run_count.should == last_count + 1
+      end
+    end
+    describe "when there is no remote endpoint" do
+      let(:remote_endpoint) { "" }
+      it "The portal_run_count on the activity does not increase" do
+        last_count = activity.portal_run_count
+        Run.create(:activity => activity, :remote_endpoint => remote_endpoint)
+        activity.reload.portal_run_count.should == last_count
+      end
+    end
+  end
+  
   describe '#session_guid' do
     it 'generates different hashes for each activity run' do
       first_guid  = run.session_guid

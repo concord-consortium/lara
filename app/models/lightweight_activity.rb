@@ -3,7 +3,8 @@ class LightweightActivity < ActiveRecord::Base
   include Publishable # models/publishable.rb defines pub & official
 
   attr_accessible :name, :user_id, :pages, :related, :description,
-  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
+  :portal_run_count
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -158,7 +159,8 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def active_runs
-    self.runs.where('remote_endpoint IS NOT NULL').count
+    # stored in lightweight_activities table, incremented by run-model
+    self.portal_run_count
   end
 
   def fix_page_positions
