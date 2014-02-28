@@ -1,6 +1,4 @@
-.number
-  %p="#{answer.question_index}."
-.prompt= strip_tags(answer.prompt_no_itals)
+= render :partial => 'shared/answer_summary_prompts', :locals => {:answer => answer}
 .answer
   - if !answer.answer_texts.empty?
     - if answer.multi_answer
