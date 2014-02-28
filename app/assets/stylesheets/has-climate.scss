@@ -1,7 +1,15 @@
 @import "partials/base";
+html { 
+  background: url('/assets/has-bg/climate_background.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
 body {
-  background-image: url('/assets/has-bg/climate_background.jpg');
+  /*background-image: url('/assets/has-bg/climate_background.jpg');*/
+  background-image:none;
 }
 
 div.activity-mod>div.site-width {
