@@ -1385,6 +1385,9 @@ footer {
   margin-right: 150px;
   padding: 15px;
   .prompt {
+    // font-family is too agressively being set to helv.medium
+    // which includes a weight in the font.  Grr.
+    font-family: sans-serif;
     font-weight: bold;
     margin: 5px 5px 5px 0;
   }
