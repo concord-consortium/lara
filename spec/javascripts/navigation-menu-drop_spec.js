@@ -1,15 +1,16 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true */
-/*global $, it, describe, xit, xdescribe, expect, beforeEach, loadFixtures, spyOn, MenuControl */
+/*global $, it, describe, xit, xdescribe, expect, beforeEach, loadFixtures, spyOn, NavMenu */
 
 //= require navigation-menu-drop
+var NavMenu = window.NavMenu;
 
-describe('MenuControl', function () {
+describe('NavMenu', function () {
     var menu;
 
     describe('basic menu function', function () {
         beforeEach(function () {
             loadFixtures('navigation-menu.html');
-            menu = new MenuControl($('div.nav-menu'));
+            menu = new NavMenu($('div.nav-menu'));
         });
 
         it('has a jQuery object attribute "trigger"', function () {
@@ -52,7 +53,7 @@ describe('MenuControl', function () {
     describe('when the menu has a sequence', function () {
         beforeEach(function () {
             loadFixtures('navigation-menu-sequence.html');
-            menu = new MenuControl($('div.nav-menu'));
+            menu = new NavMenu($('div.nav-menu'));
         });
 
         it('has an element in the "active" attribute', function () {
