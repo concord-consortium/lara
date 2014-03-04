@@ -17,7 +17,7 @@ div.activity-mod>div.site-width {
 }
 
 .sequence_logo_block h2 {
-  color: #6c6c6c;
+  color: #1762b2;
   font-family: $helv-bold;
   font-size: 24pt;
 }
@@ -40,3 +40,10 @@ div.activity-mod>div.site-width {
     width: 100%;
   }
 }
+/* could also potentially use #A43900 drk orange */
+.activities .activity .title {
+  a {
+    color: #1762b2;
+  }
+}
+
