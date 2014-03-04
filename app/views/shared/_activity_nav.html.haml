@@ -11,9 +11,9 @@
           - @sequence.lightweight_activities_sequences.each do |las|
             - activity = las.lightweight_activity
             %li.activity{ :class => @activity == activity ? %w(active on) : '' }
-              .activity-list-head
+              .activity-list-head.open-close
                 = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity)
-                %a.open-close
+                %span
                   %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
               %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }

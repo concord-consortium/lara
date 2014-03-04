@@ -12,11 +12,11 @@ class NavMenu
       @menu.toggle()
       e.stopPropagation()
 
-    @menu.find('li.activity a.open-close').each (inx, elem) =>
+    @menu.find('li.activity .open-close').each (inx, elem) =>
       $elem = $(elem)
       $elem.click (e) =>
         console.log("open-close click")
-        @change_active($elem.parent().parent())
+        @change_active($elem.parent())
         e.stopPropagation()
 
     $('body').click () =>

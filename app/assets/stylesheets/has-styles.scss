@@ -218,6 +218,9 @@ div.activity-mod>div.site-width {
   padding-top: 15px;
   border-right: 2px solid white;
   float: left;
+  .open-close {
+    cursor: pointer;
+  }
   a#menu-trigger {
     cursor: pointer;
     padding-right: 20px;
