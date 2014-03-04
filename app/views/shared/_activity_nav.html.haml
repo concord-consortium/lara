@@ -2,7 +2,7 @@
   .nav-menu
     %a{name: 'menu-trigger', id: 'menu-trigger'}
       MENU
-      %i.fa.fa-angle-down
+      %i.fa.fa-bars
     .nav-menu-top
       .nav-menu-arrow-border
       .nav-menu-arrow
@@ -14,7 +14,7 @@
               .activity-list-head
                 = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity)
                 %a.open-close
-                  %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
+                  %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
               %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
         - else

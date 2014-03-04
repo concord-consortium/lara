@@ -24,15 +24,14 @@ class NavMenu
       @menu.hide()
 
   deactivate: (elm) ->
-    container = elm.find('fa-angle-up')
-    container.addClass('fa-angle-down')
+    container = elm.find('.fa-angle-up')
+    container.addClass('fa-bars')
     container.removeClass('fa-angle-up')
     elm.removeClass('on')
-
   activate: (elm) ->
-    container = elm.find('fa-angle-down')
+    container = elm.find('.fa-bars')
     container.addClass('fa-angle-up')
-    container.removeClass('fa-angle-down')
+    container.removeClass('fa-bars')
     elm.addClass('on')
 
   change_active: (elm) ->
