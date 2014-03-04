@@ -89,6 +89,13 @@ class LightweightActivity < ActiveRecord::Base
     return new_activity
   end
 
+  # TODO: Include acts_as_list? @pjmorse would hate that.
+  def position(seq)
+    seq.activities.each_with_index do |a,i|
+      return i+1 if a.id == self.id
+    end
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
     data = {

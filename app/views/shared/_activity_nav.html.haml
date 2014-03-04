@@ -23,8 +23,8 @@
             %ol.pages.in-activity
               = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
-    = @activity.name
   %h2
+    = activity_name_for_menu
 %nav.activity-nav.ui-block-2
   -if @page
     - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)

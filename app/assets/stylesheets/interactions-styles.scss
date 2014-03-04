@@ -196,9 +196,6 @@ div.activity-mod>div.site-width {
     color: white;
     margin-top: 8px;
     margin-left: 120px;
-    &:before {
-      content: 'ACTIVITY: '
-    }
   }
 }
 
@@ -289,10 +286,7 @@ div.nav-menu-top {
         float: right;
         padding-top: 5px;
       }
-/*      >a:before {
-        content: 'ACTIVITY: ';
-      }
-*/    }
+    }
     li.page {
       font-size: 0.8em;
       line-height: 1.3em;
