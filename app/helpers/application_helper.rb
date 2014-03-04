@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ApplicationHelper
   def edit_menu_for(component, form, options={:omit_cancel => true}, scope=false)
     component = (component.respond_to? :embeddable) ? component.embeddable : component
@@ -85,6 +86,39 @@ module ApplicationHelper
     capture_haml do
       haml_tag :input, attributes
     end
-
   end
+
+  def default_footer
+    <<-EOF
+      <p class="footer-txt">
+        Copyright © 2013 <a href="http://concord.org/">The Concord Consortium</a>. 
+        All rights reserved. This activity is licensed under a 
+        <a href="http://creativecommons.org/licenses/by/3.0/">
+          Creative Commons Attribution 3.0 Unported License
+        </a>. 
+        The software is licensed under 
+        <a href="http://opensource.org/licenses/BSD-2-Clause">
+          Simplified BSD
+        </a>, <a href="http://opensource.org/licenses/MIT">MIT</a>
+        or <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0</a> 
+        licenses. Please provide attribution to the Concord Consortium and 
+        the URL <a href="http://concord.org">http://concord.org</a>.
+     </p>
+      <p class="footer-txt">
+        This Next-Generation Molecular Workbench activity was developed with a grant from 
+        <a href="http://www.google.org/">Google.org</a>. 
+        The original <a href="http://mw.concord.org/modeler/">Classic Molecular Workbench</a> 
+        was supported by a series of grants from the 
+        <a href="http://nsf.gov/">National Science Foundation</a>.
+      </p>
+    EOF
+  end
+
+  def project_footer
+    return if @page # don't display footers when running on a page.
+    return default_footer unless @project
+    return default_footer if @project.footer.blank?
+    return @project.footer
+  end
+
 end
