@@ -36,10 +36,12 @@ footer.sequence_run {
 .estimated-time {
   margin: 8px;
   background-color: #ddd;
-  background-image: url(/assets/icons/clock.svg); /* Add a clock background image, anchored left */
-  background-repeat: no-repeat;
-  background-position: 2px 2px;
-  padding: 10px 10px 10px 40px;
+  padding: 10px;
+  .fa {
+    margin-right: 0.5em;
+  }
+  /*TODO: Include compass if appr.*/
+  /*@include border-radius(5px);*/
 }
 
 #activities ul.menu li.delete form {
