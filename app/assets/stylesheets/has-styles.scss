@@ -55,15 +55,6 @@ div.activity-mod>div.site-width {
 //  2. Molecular Workbench Helpers
 // *********************************************
 
-// Text shadows included on various elements
-@mixin drk-txt-shadow($color: $black-50) {
-  @include text-shadow(0 -1px 0 darken($color, 15%));
-}
-
-@mixin lt-txt-shadow($color: #fff) {
-  @include text-shadow(0 1px 0 lighten($color, 10%));
-}
-
 // Border used on questions and related-mod
 .mod-border-rounded {
   border: 1px solid $black-10;
@@ -73,42 +64,6 @@ div.activity-mod>div.site-width {
 // Clearfix
 .cf { @include pie-clearfix; }
 
-// Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
-/* TODO: HAS-NGS uses different buttons */
-@mixin btn( $color1: lighten($btn-green2, 5%), $color2: darken($btn-green, 5%) ) {
-  font-size: 15px;
-  font-family: $helv-reg;
-  padding: 9px 13px;
-  background: $color1;
-  background-image: -webkit-linear-gradient( top, $color1, $color2);
-  background-image:         linear-gradient( top, $color1, $color2);
-  -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
-                      rgba(0, 0, 0, 0.2) 0 1px 2px;
-          box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
-                      rgba(0, 0, 0, 0.2) 0 1px 2px;
-  @include border-radius(4px);
-  @include drk-txt-shadow( darken($color1, 10%) );
-  border: 1px solid $color2;
-  margin-top: 13px;
-  cursor: pointer;
-  text-transform: none;
-  text-align: center;
-  @include trans;
-  color: #fcfcfc;
-
-  &:hover {
-    background-color: darken($color1, 5%);
-    background-image: -webkit-linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
-    background-image:         linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
-  }
-
-  &:active {
-    @include drk-txt-shadow( darken($color1, 10%) );
-    background-color: darken($color1, 10%);
-    background-image: -webkit-linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
-    background-image:         linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
-  }
-}
 
 
 // *********************************************

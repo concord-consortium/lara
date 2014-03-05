@@ -1,4 +1,10 @@
 @import "partials/base";
+/*@import "partials/mixins";*/
+/*@import "partials/concords";*/
+
+$theme-color-a:  #165ba1;
+$theme-color-b:  #edaa3d;
+
 html { 
   background: url('/assets/has-bg/climate_background.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
@@ -6,7 +12,6 @@ html {
   -o-background-size: cover;
   background-size: cover;
 }
-
 body {
   /*background-image: url('/assets/has-bg/climate_background.jpg');*/
   background-image:none;
@@ -17,7 +22,7 @@ div.activity-mod>div.site-width {
 }
 
 .sequence_logo_block h2 {
-  color: #1762b2;
+  color: $theme-color-a;
   font-family: $helv-bold;
   font-size: 24pt;
 }
@@ -43,7 +48,7 @@ div.activity-mod>div.site-width {
 /* could also potentially use #A43900 drk orange */
 .activities .activity .title {
   a {
-    color: #1762b2;
+    color: $theme-color-a;
   }
 }
 
@@ -54,4 +59,41 @@ div.activity-mod>div.site-width {
   margin-bottom: 10px;
 }
 
+.question-hdr {
+  background-color: $theme-color-a;
+}
+
+// buttons
+input[type="button"],
+input[type="submit"],
+button[type="button"] {
+  border: 0;
+  @include btn($theme-color-b, darken($theme-color-b, 10%))
+  /*@include btn(lighten($theme-color-a, 10%), $theme-color-a);*/
+}
+
+.related-hdr {
+  background-color: $theme-color-b;
+}
+.bottom-buttons {
+  .next-page,
+  .prev {
+    input[type="submit"] {
+      border: 0;
+      @include btn($theme-color-b, darken($theme-color-b, 10%))
+    }
+  }
+}
+.index-mod.intro-mod {
+  ul li,
+  ol li, {
+    a,
+    a:visited {
+      color: $theme-color-a;
+    }
+    a:hover {
+      color: darken($theme-color-b, 10%);
+    }
+  }
+}
 
