@@ -79,8 +79,12 @@ button[type="button"] {
   .next-page,
   .prev {
     input[type="submit"] {
-      border: 0;
       @include btn($theme-color-b, darken($theme-color-b, 10%))
+    }
+  }
+  .gen-report {
+    input[type="submit"] {
+      @include btn($theme-color-a, darken($theme-color-a, 10%))
     }
   }
 }
