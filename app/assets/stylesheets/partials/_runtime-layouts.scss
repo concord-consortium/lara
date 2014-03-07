@@ -59,3 +59,25 @@
 
 
 
+// *****************************************
+// 2-Column layout w/ full width interactive
+// *****************************************
+.l-full-width  {
+  .question {
+    margin: 20px;
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+  }
+  .question-hdr {
+    width: 100%;
+  }
+  h5:after {
+    background-color: none;
+    display:none;
+  }
+  .question-bd {
+    width: 100%;
+  }
+}
+
