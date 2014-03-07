@@ -1,0 +1,164 @@
+
+.content-mod {
+  @extend .cf;
+  position: relative;
+}
+
+
+.interactive-mod {
+  margin-bottom: 52px;
+  width: 100%;
+  z-index: 100;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+  }
+
+  .under-image {
+    .fullscreen {
+      float: right;
+      a {
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+      }
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
+    .caption {
+      float: left;
+      width: 85%;
+    }
+    .credit {
+      clear: left;
+      float: left;
+      width: 80%;
+    }
+  }
+}
+
+.questions-mod {
+ /* margin-bottom: 52px; */
+  position: relative;
+}
+
+.question {
+  margin: 0 0 20px;
+  @extend .cf;
+  .answer_text {
+    font-style: italic;
+    font-size: 0.9em;
+  }
+}
+
+.challenge {
+  .question-hdr, .question-hdr-collapse {
+    background: darken($black-15, 3%);
+
+    .h5 {
+      @include drk-txt-shadow($black-15);
+    }
+  }
+  .question-bd {
+    background: $black-5;
+  }
+} // end .challenge
+
+
+.question-hdr, .question-hdr-collapse {
+  background: $med-blue;
+  position: relative;
+  padding: 4px 8px;
+  clear: both;
+
+  .h5 {
+    font-family: $helv-reg;
+    font-weight: normal;
+    position: relative;
+    color: #fff;
+    font-size: 16px;
+    @include drk-txt-shadow($med-blue);
+  }
+}
+
+.question-bd {
+  padding: 20px 20px 13px;
+  @extend .mod-border-rounded;
+}
+
+
+
+// radio buttons
+.intro-mod,
+.content-mod {
+  label {
+    margin-bottom: 13px;
+  }
+  input {
+    margin-right: 8px;
+  }
+}
+
+// screen shot answer
+.image-answer {
+  border: 3px dashed $lt-blue;
+  padding: 40px;
+  text-align: center;
+  @include border-radius(10px);
+
+  &.complete {
+    margin-bottom: 12px;
+  }
+}
+
+.image-file {
+  @include border-radius(5px);
+  background-color: #FFF;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    opacity: 0.6;
+    @include border-radius(5px);
+  }
+
+  p {
+    margin: 0;
+  }
+  a {
+    font-size: 11px;
+    color: $btn-blue;
+    text-transform: uppercase;
+    float: right;
+  }
+}
+
+// submit
+/* test to change submit button to green instead */
+input[type="submit"],
+button[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  @include btn ( lighten($btn-green, 8%), $btn-green2 );
+  padding: 15px 30px;
+  font-size: 15px;
+  color: #fff;
+  @include drk-txt-shadow($btn-green);
+}
+
+// button
+input[type="button"],
+button[type="button"] {
+  border: 0;
+  @include btn;
+}
+input:disabled {
+  opacity: 0.3;
+}
+

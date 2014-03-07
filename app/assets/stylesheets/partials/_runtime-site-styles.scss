@@ -1,0 +1,40 @@
+
+// Site Width
+.site-width {
+  width: 960px;
+  margin: 0 auto;
+}
+
+
+.activity-mod {
+  margin-bottom: 26px;
+  position: relative;
+  font-family: $helv-reg;
+}
+
+// Site header
+// --------------------------------
+
+.site-logo-mod {
+  @extend .cf;
+  padding: 13px 0 0;
+}
+
+.site-logo {
+  padding-left: 0px;
+  padding-right: 0px;
+  img {
+    max-width: 100%;
+  }
+
+  &.logo-l {
+    float: left;
+    text-align: left;
+  }
+
+  &.logo-r {
+    float: right;
+    text-align: right;
+  }
+
+}
