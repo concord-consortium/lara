@@ -27,6 +27,9 @@ div.activity-mod>div.site-width {
   font-size: 24pt;
 }
 
+.pagination-link.selected {
+  background-color: $theme-color-a;
+}
 
 /* could also potentially use #A43900 drk orange */
 .activities .activity .title {
@@ -81,6 +84,12 @@ button[type="button"] {
     a:hover {
       color: darken($theme-color-b, 10%);
     }
+  }
+}
+.intro-mod {
+  .h4 { 
+    color: $theme-color-a; 
+    font-weight: bold;
   }
 }
 .estimated-time {
