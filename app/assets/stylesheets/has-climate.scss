@@ -27,8 +27,8 @@ div.activity-mod>div.site-width {
   font-size: 24pt;
 }
 
-.pagination-link.selected {
-  background-color: $theme-color-a;
+.pagination-item .pagination-link.selected {
+  background-color: $theme-color-b;
 }
 
 /* could also potentially use #A43900 drk orange */
