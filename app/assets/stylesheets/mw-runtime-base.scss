@@ -394,12 +394,12 @@ div.intra-page-nav {
 .l-full-width {
 
   .question-hdr {
-    width: 28%;
+    width: 100%;
     float: left;
   }
 
   .question-bd {
-    width: 70%;
+    width: 100%;
     float: right;
   }
 
@@ -407,22 +407,26 @@ div.intra-page-nav {
     .h5 {
       &:after {
         border-left-color: darken($black-15, 3%);
+        background-color: none;
+        display: none;
       }
     }
   }
 
   .h5 {
     &:after {
-      position: absolute;
-      content: "\0020";
-      right: -28px;
-      top: -1px;
-      border: 12px solid $med-blue;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      border-bottom-color: transparent;
+      border-left-color: darken($black-15, 3%);
+      background-color: none;
+      display: none;
     }
   }
+  
+  .question {
+    margin: 20px;
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+ }
 } // .l-full-width
 
 
