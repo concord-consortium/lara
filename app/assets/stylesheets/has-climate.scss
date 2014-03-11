@@ -22,8 +22,9 @@ div.activity-mod>div.site-width {
 }
 
 .sequence_logo_block h2 {
+a.sequence_title{
   color: $theme-color-a;
-  font-family: $helv-bold;
+  @include helv-stack(bold);
   font-size: 24pt;
 }
 

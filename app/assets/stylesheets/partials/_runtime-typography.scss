@@ -109,7 +109,7 @@
     width: 100%;
     padding: 16px;
     border: 1px solid $black-15;
-    font-family: $helv-reg;
+    @include helv-stack(500);
     @include border-radius(8px);
   }
 

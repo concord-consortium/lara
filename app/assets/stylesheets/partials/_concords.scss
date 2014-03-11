@@ -4,7 +4,7 @@
 /* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-green2, 5%), $color2: darken($btn-green, 5%) ) {
   font-size: 15px;
-  font-family: $helv-reg;
+  @include helv-stack(500);
   padding: 9px 13px;
   background: $color1;
   background-image: -webkit-linear-gradient( top, $color1, $color2);

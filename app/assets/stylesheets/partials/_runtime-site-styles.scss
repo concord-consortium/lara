@@ -9,7 +9,7 @@
 .activity-mod {
   margin-bottom: 26px;
   position: relative;
-  font-family: $helv-reg;
+  @include helv-stack(500);
 }
 
 // Site header

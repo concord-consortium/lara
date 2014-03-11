@@ -6,6 +6,6 @@ body {
 
 .sequence_logo_block h2 {
   color: #4b88d4;
-  font-family: $helv-bold;
+  @include helv-stack(bold);
   font-size: 24pt;
 }

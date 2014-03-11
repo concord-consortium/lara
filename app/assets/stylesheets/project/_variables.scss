@@ -68,11 +68,12 @@ $btn-green2: #2FAC47;
 // These are also imported into screen.scss
 // ----------------------------------------
 
-// font variables for HAS-NGS
+// font variables for HAS-NGS SEE: helv-stack mixin in base-fonts
 // ----------------------------------------
-$helv-reg: "Helvetica-Medium", Helvetica, Arial, sans-serif;
-$helv-bold: "Helvetica-Bold", Helvetica, Arial, sans-serif;
-$helv-light: "Helvetica-Light", Helvetica, Arial, sans-serif;
+// TODO: Find instances of these, and change to @include helv-stack(weight)
+// $helv-reg: "Helvetica-Medium", Helvetica, Arial, sans-serif;
+// $helv-bold: "Helvetica-Bold", Helvetica, Arial, sans-serif;
+// $helv-light: "Helvetica-Light", Helvetica, Arial, sans-serif;
 
 // color
 // ----------------------------------------
