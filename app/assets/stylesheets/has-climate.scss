@@ -5,23 +5,11 @@
 $theme-color-a:  #165ba1;
 $theme-color-b:  #edaa3d;
 
-html { 
-  background: url('/assets/has-bg/climate_background.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-body {
-  /*background-image: url('/assets/has-bg/climate_background.jpg');*/
-  background-image:none;
-}
-
+@include theme_background('/assets/has-bg/climate_background.jpg');
 div.activity-mod>div.site-width {
   background-color: rgba(255,255,255,0.95);
 }
 
-.sequence_logo_block h2 {
 a.sequence_title{
   color: $theme-color-a;
   @include helv-stack(bold);
@@ -38,14 +26,6 @@ a.sequence_title{
     color: $theme-color-a;
   }
 }
-
-.site-logo-mod {
-  img {
-    max-height: 50px;
-  }
-  margin-bottom: 10px;
-}
-
 .question-hdr {
   background-color: $theme-color-a;
 }

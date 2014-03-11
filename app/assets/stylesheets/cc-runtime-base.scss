@@ -195,3 +195,25 @@ div.submit a:hover {
   text-decoration: none;
 }
 
+.logo-l .sequence_logo_block{
+  width: 700px;
+}
+
+.site-logo-mod {
+  img {
+    max-height: 50px;
+  }
+  margin-bottom: 10px;
+}
+@mixin theme_background($srcImage) {
+  html { 
+    background: url($srcImage) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  body {
+    background-image:none;
+  }
+}
