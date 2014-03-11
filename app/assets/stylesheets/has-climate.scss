@@ -1,79 +1,8 @@
-@import "partials/base";
-/*@import "partials/mixins";*/
-/*@import "partials/concords";*/
+@import "cc-runtime-base";
 
-$theme-color-a:  #165ba1;
-$theme-color-b:  #edaa3d;
+$src: '/assets/has-bg/climate_background.jpg';
+$c_a: #165ba1;
+$c_b: #edaa3d;
+$c_c: #edaa3d;
 
-@include theme_background('/assets/has-bg/climate_background.jpg');
-div.activity-mod>div.site-width {
-  background-color: rgba(255,255,255,0.95);
-}
-
-a.sequence_title{
-  color: $theme-color-a;
-  @include helv-stack(bold);
-  font-size: 24pt;
-}
-
-.pagination-item .pagination-link.selected {
-  background-color: $theme-color-b;
-}
-
-/* could also potentially use #A43900 drk orange */
-.activities .activity .title {
-  a {
-    color: $theme-color-a;
-  }
-}
-.question-hdr {
-  background-color: $theme-color-a;
-}
-
-// buttons
-input[type="button"],
-input[type="submit"],
-button[type="button"] {
-  border: 0;
-  @include btn($theme-color-b, darken($theme-color-b, 10%))
-  /*@include btn(lighten($theme-color-a, 10%), $theme-color-a);*/
-}
-
-.related-hdr {
-  background-color: $theme-color-b;
-}
-.bottom-buttons {
-  .next-page,
-  .prev {
-    input[type="submit"] {
-      @include btn($theme-color-b, darken($theme-color-b, 10%))
-    }
-  }
-  .gen-report {
-    input[type="submit"] {
-      @include btn($theme-color-a, darken($theme-color-a, 10%))
-    }
-  }
-}
-.index-mod.intro-mod {
-  ul li,
-  ol li, {
-    a,
-    a:visited {
-      color: $theme-color-a;
-    }
-    a:hover {
-      color: darken($theme-color-b, 10%);
-    }
-  }
-}
-.intro-mod {
-  .h4 { 
-    color: $theme-color-a; 
-    font-weight: bold;
-  }
-}
-.estimated-time {
-  background-color: lighten($theme-color-b, 30%);
-}
-
+@include theme($src, $c_a, $c_b, $c_c);
