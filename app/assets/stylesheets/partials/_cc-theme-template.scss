@@ -31,6 +31,9 @@
   }
   .question-hdr {
     background-color: $theme-color-a;
+    .h5 {
+      @include drk-txt-shadow(darken($theme-color-a,30%));
+    }
   }
 
   // buttons
@@ -79,4 +82,11 @@
   .estimated-time {
     background-color: lighten($theme-color-b, 30%);
   }
+  .index-mod.intro-mod ul li:before, 
+  .index-mod.intro-mod ol li:before {
+      background-color: lighten($theme-color-b, 20%);
+      border: 1px solid $theme-color-b;
+      color: darken($theme-color-b, 20%);
+      text-shadow: none;
 }
+  }
