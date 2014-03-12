@@ -49,8 +49,11 @@ class IFrameSaver
         #Save interactive every 42 seconds just to be safe:
         window.setInterval (()=> @save()), 42 * 1000
       @iframePhone.post('getLearnerUrl')
+      # TODO: There used to be a callback for model_did_load
+      # hopefully this will work
+      model_did_load()
 
-    @iframePhone      = new Lab.IFramePhone(iframe, model_did_load, phone_answered)
+    @iframePhone      = new iframePhone.ParentEndpoint(iframe, phone_answered)
 
 
 

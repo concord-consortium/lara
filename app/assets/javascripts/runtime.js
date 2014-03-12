@@ -29,4 +29,5 @@
 //= require embeddable-carousel
 //= require image_question
 //= require nav_menu
+//= require iframe-phone
 //= require iframe-saver
