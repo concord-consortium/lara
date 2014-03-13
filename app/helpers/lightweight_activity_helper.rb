@@ -20,9 +20,8 @@ module LightweightActivityHelper
     end
   end
 
-  # TODO i18n!
   def activity_name_for_menu
-    results = "ACTIVITY"
+    results = t("ACTIVITY")
     if @sequence
       results << " #{@activity.position(@sequence)}"
     end
