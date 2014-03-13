@@ -24,7 +24,7 @@ class ImageInteractive < ActiveRecord::Base
   end
 
   def credit_with_link
-    return self.credit if self.credit_url.blank?
+    return self.credit.html_safe if self.credit_url.blank?
     return "<a href='#{self.credit_url}' target='_blank'>#{self.credit}</a>".html_safe
   end
 end
