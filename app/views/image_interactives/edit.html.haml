@@ -10,5 +10,7 @@
     = f.text_area :caption
   = field_set_tag 'Credit' do
     = f.text_area :credit
+  = field_set_tag 'Credit Link' do
+    = f.text_field :credit_url
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140227151213) do
+ActiveRecord::Schema.define(:version => 20140313173915) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20140227151213) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.boolean  "show_lightbox", :default => true
+    t.string   "credit_url"
   end
 
   create_table "interactive_items", :force => true do |t|
@@ -248,12 +249,12 @@ ActiveRecord::Schema.define(:version => 20140227151213) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.string   "response"
+    t.text     "response",         :limit => 255
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "projects", :force => true do |t|

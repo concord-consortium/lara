@@ -31,14 +31,19 @@
         width: 35px;
       }
     }
-    .caption {
-      float: left;
-      width: 85%;
-    }
-    .credit {
-      clear: left;
-      float: left;
-      width: 80%;
+  }
+  .caption {
+    display: inline-block;
+    font-size: 14px;
+    font-style: italic;
+    margin: 0px;
+  }
+  .credit {
+    display: inline-block;
+    font-size: 10px;
+    margin: 0px;
+    a {
+      text-decoration: underline;
     }
   }
 }
