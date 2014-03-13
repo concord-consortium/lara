@@ -1,0 +1,23 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+es:
+  MENU: "MENÚ"
+  ACTIVITY: "Actividad"
+  QUESTION: "Question"
+  BEGIN_ACTIVITY: "Comenzar actividad"
+  BEGIN_NEXT_ACTIVITY: "Comenzar siguiente actividad"
+  TAKE_SNAPSHOT: "Capturar pantalla"
+  REPLACE_SNAPSHOT:  "Reemplazar captura de pantalla"
+  QUESTION: "Pregunta" 
+  TYPE_ANSWER_HERE: "Escribir la respuesta acá"
+  NEXT: "Siguiente >"
+  BACK: "< Anterior"
+  PICK_ONE: "Elegir una"
+  GENERATE_A_REPORT: "Generar un informe"
+  EDIT: "Editar"
+  DATA_WILL_NOT_BE_SAVED:  "No se guardarán los datos"
+  TIME_TO_COMPLETE: "Tiempo estimado para completar esta secuencia:"
+  MINUTES: "minutos"
+  DONE: "Hecho"
+  CANCEL: "Cancelar"
