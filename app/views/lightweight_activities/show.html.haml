@@ -15,8 +15,7 @@
   - if @activity.time_to_complete
     .estimated-time
       %i.fa.fa-clock-o.fa-2x
-      Estimated time to complete this activity:
-      = "#{@activity.time_to_complete} minutes"
+      = time_to_complete(@activity.time_to_complete)
   %ol
     -# %h4.index-list-header
       =# Subgroups inside activities

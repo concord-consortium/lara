@@ -120,5 +120,10 @@ module ApplicationHelper
     return default_footer if @project.footer.blank?
     return @project.footer
   end
-
+  def time_to_complete(min)
+    results = ""
+    results << t("TIME_TO_COMPLETE") << " #{min} "
+    results << t("MINUTES")
+    results
+  end
 end
