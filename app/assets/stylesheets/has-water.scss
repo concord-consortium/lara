@@ -1,11 +1,8 @@
-@import "partials/base";
+@import "cc-runtime-base";
 
-body {
-  background-image: url('/assets/has-bg/water_background.jpg');
-}
+$src: '/assets/has-bg/water_background.jpg';
+$c_a: #2f70b0;
+$c_b: #84c6cf;
+$c_c: #edaa3d;
 
-.sequence_logo_block h2 {
-  color: #4b88d4;
-  font-family: $helv-bold;
-  font-size: 24pt;
-}
+@include theme($src, $c_a, $c_b, $c_c);

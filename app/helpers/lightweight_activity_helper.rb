@@ -19,4 +19,12 @@ module LightweightActivityHelper
       activity_path(activity)
     end
   end
+
+  def activity_name_for_menu
+    results = t("ACTIVITY")
+    if @sequence
+      results << " #{@activity.position(@sequence)}"
+    end
+    return "#{results}: #{@activity.name}"
+  end
 end

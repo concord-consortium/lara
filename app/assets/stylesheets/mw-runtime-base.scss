@@ -1,7 +1,7 @@
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
-@import "project/rites_fonts";
-@import "project/rites-styleguide";
+@import "project/fonts";
+
 
 // *********************************************
 // Table of Contents
@@ -26,29 +26,26 @@
 //  16. Activity Index Page
 //  17. Activity Summary Page
 
-
 // *********************************************
 //  1. Universal
 // *********************************************
 
 a     {   text-decoration: none; color: inherit; }
-b, strong  { font-weight: bold; font-family: $helv-bold;  }
+b, strong  { font-weight: bold; font-family: $lato-bold;  }
 em    { font-style: italic; }
 
 header,
 footer {
-  margin: 0 0 13px;
+  margin: 0 0 26px;
+  background-color: #e5e5e5;
   color: white;
 }
 
-body {
-  background-size: 100%;
+footer {
+  margin-bottom: 0;
+  padding: 26px;
 }
 
-div.activity-mod>div.site-width {
-  background-color: rgba(255,255,255,0.85);
-  padding: 12px;
-}
 
 // *********************************************
 //  2. Molecular Workbench Helpers
@@ -72,11 +69,13 @@ div.activity-mod>div.site-width {
 // Clearfix
 .cf { @include pie-clearfix; }
 
+// Extra padding applied via JS when nav is in fixed position
+.extra-pad { padding-top: 70px; }
+
 // Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
-/* TODO: HAS-NGS uses different buttons */
 @mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
   font-size: 15px;
-  font-family: $helv-reg;
+  font-family: $lato-reg;
   padding: 9px 13px;
   background: $color1;
   background-image: -webkit-linear-gradient( top, $color1, $color2);
@@ -124,7 +123,7 @@ div.activity-mod>div.site-width {
 .activity-mod {
   margin-bottom: 26px;
   position: relative;
-  font-family: $helv-reg;
+  font-family: $lato-reg;
 }
 
 // Site header
@@ -132,25 +131,22 @@ div.activity-mod>div.site-width {
 
 .site-logo-mod {
   @extend .cf;
-  padding: 13px 0 0;
+  padding: 13px 0;
 }
 
 .site-logo {
-  padding-left: 0px;
-  padding-right: 0px;
+  width: 20%;
+
   img {
     max-width: 100%;
   }
 
   &.logo-l {
-    min-width: 75%;
     float: left;
-    text-align: left;
   }
 
   &.logo-r {
     float: right;
-    text-align: right;
   }
 
 }
@@ -161,16 +157,15 @@ div.activity-mod>div.site-width {
 // *********************************************
 
 .activity-nav-mod {
-  margin: 0 0 20px;
+  margin: 0 0 40px;
   position: relative;
   width: 100%;
-  height: 50px;
-  color: white;
+  color: #fff;
   @extend .cf;
   @include trans;
 
 
-/*  &.fixed {
+  &.fixed {
     position: fixed;
     top: 0;
     background-color: lighten($lt-blue, 15%);
@@ -178,7 +173,6 @@ div.activity-mod>div.site-width {
     padding: 10px 6px;
     z-index: 9999;
   }
-*/
 }
 
 .activity-nav-logo {
@@ -189,155 +183,100 @@ div.activity-mod>div.site-width {
   }
 
   .h2 {
+    font-family: $lato-reg;
     font-size: 18px;
     font-weight: normal;
+    color: $drk-orange;
+    opacity: 0;
     line-height: 36px;
-    color: white;
-    margin-top: 8px;
-    margin-left: 120px;
-    &:before {
-      content: 'ACTIVITY: '
+    opacity: 0;
+    @include trans;
+
+    &.visible {
+      opacity: 1;
     }
   }
 }
 
 // This controlls the layout of the nav
 .l-nav {
-      @include ui-grid-2(75%, 25%, 5%);
-      background-color: $capecod;
-      height: 50px;
-      @include border-radius(2px);
+      @include ui-grid-2(50%, 50%, 5%);
 }
 
-.nav-menu {
-  height: 50px;
-  width: 90px;
-  font-family: $helv-light;
-  margin-left: 15px;
-  font-size: 18px;
-  padding-top: 15px;
-  border-right: 2px solid white;
-  float: left;
-  a#menu-trigger {
-    cursor: pointer;
-    padding-right: 20px;
-    background-position: right;
-    background-repeat: no-repeat;
-    fa fa-angle-down {
-      font-size: 15pt;
-      font-weight: bold;
-      margin-left: 3px;
-    }
-  }
-}
-
-div.nav-menu-top {
-  /* This is the drop-down part of the navigation menu */
+div.nav-menu,
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  /* MW and default don't use it */
   display: none;
-  background-color: white;
-  border: 1px solid $black-15;
-  width: 450px;
-  position: relative;
-  top: 5px;
-  left: 0px;
-  color: $emperor;
-  padding: 8px 10px;
-  z-index: 10; /* Ensure this appears above content from the page */
-  margin-top: 10px;
-  li.activity {
-    line-height: 33px;
-    background-color: $alabaster;
-    padding: 10px;
-    margin: 10px 5px;
-    border-width: 0 2px 2px 0;
-    border-color: $black-15;
-    border-style: solid;
-    font-size: 12pt;
-    &.active {
-      .activity-list-head {
-        @include border-radius(2px);
-        padding: 10px 20px 10px 10px;
-        margin: 0 0 10px 0;
-        color: white;
-        background-color: $shakespeare;
-        background-image: -webkit-linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
-        background-image:         linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
-      }
-      li.page {
-        color: $shakespeare;
-      }
-    }
-    &.on {
-      ol.pages {
-        display: block;
-      }
-    }
-    a.open-close {
-      cursor: pointer;
-    }
-    .activity-list-head {
-      width: 100%;
-      display: block;
-      padding-right: 20px;
-      background-position-x: 96%;
-      background-position-y: 50%;
-      background-repeat: no-repeat;
-      i {
-        font-size: 15pt;
-        font-weight: bold;
-        float: right;
-        padding-top: 5px;
-      }
-/*      >a:before {
-        content: 'ACTIVITY: ';
-      }
-*/    }
-    li.page {
-      font-size: 0.8em;
-      line-height: 1.3em;
-      a:before {
-        content: '';
-      };
-    }
-    ol.pages {
-      margin-left: 3em;
-      display: none;
+}
+
+div.intra-page-nav {
+  /* Page navigation links at bottom of each page. MW and default don't use them. */
+  display: none;
+}
+
+/* Next and previous page links at bottom of each page */
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    display: none;
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
     }
   }
-  /* The arrow at the top of the menu */
-  /* Adapted from http://jonrohan.me/guide/css/creating-triangles-in-css/ */
-  /* Basically it's two divs contorted to present triangles with the bottom borders */
-  /* Then overlapped so the upper one (white) covers all but the "border" of the lower */
-  /* one (gray). */
-  .nav-menu-arrow-border {
-    border-color: transparent transparent $black-15 transparent;
-    border-style: solid;
-    border-width: 10px;
-    height:0;
-    width:0;
-    position:absolute;
-    top: -20px;
-    left: 55px;
+  .button-left, .button-center {
+    float: left;
   }
-  .nav-menu-arrow {
-    border-color: transparent transparent white transparent;
-    border-style: solid;
-    border-width: 10px;
-    height:0;
-    width:0;
-    position:absolute;
-    top: -18px;
+  .button-left, .button-right {
+    min-height: 10px;
+    width: 300px;
+  }
+  .button-center {
     left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
   }
 }
 
 .activity-nav {
+  margin-top: 8px;
   position: relative;
   @extend .cf;
 
   .prev,
   .next {
-    display: none;
+    background-color: lighten($med-blue, 5%);
+    border: 1px solid $med-blue;
+    @include border-radius(3px);
+    line-height: 22px;
+    text-align: center;
+    margin-left: 8px;
+    width: 40px;
+    @include trans;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: 48% 50%;
+
+    &:hover {
+      background-color: darken($med-blue, 5%);
+    }
+
+    &:active {
+      background-color: darken($med-blue, 20%);
+    }
   }
 
   .prev {
@@ -366,11 +305,10 @@ div.nav-menu-top {
   @extend .cf;
   text-align: center;
   margin-right: 8px;
-  height: 50px;
 }
 
 .pagination-item {
-  margin-left: -2px;
+  margin-left: 6px;
   @include border-radius(10px);
   text-align: center;
   display: inline-block;
@@ -380,37 +318,39 @@ div.nav-menu-top {
   }
 
   .pagination-link {
-    margin-top: 12px;
-    background-color: $wildsand;
-    color: $gray;
-    width: 24px;
-    height: 24px;
-    @include border-radius(13px);
-    border: 3px solid #616768;
-    padding-top: 1px;
+    background-color: lighten($med-blue, 27%);
+    color: $med-blue;
+    @include border-radius(3px);
+    @include lt-txt-shadow(#fff);
+    border: 1px solid lighten($med-blue, 18%);
+    padding: 3px 5px;
     display: block;
     @include trans;
 
-/*    &:hover {
+    &:hover {
       background: lighten($med-blue, 5%);
       @include drk-txt-shadow($med-blue);
       color: #fff;
-    } */
+    }
 
     &.selected {
-      background: $seagreen;
+      background: darken($med-blue, 12%);
       color: #fff;
-      height: 28px;
-      width: 28px;
-      padding-top: 3px;
-      @include border-radius(14px);
-      @include drk-txt-shadow(#64c500);
-      /* TODO: gradient? */
+      border: 1px solid darken($med-blue, 10%);
+      @include drk-txt-shadow($med-blue);
     }
   } // end .pagination-link
 
   &.home-link {
-    display: none;
+    text-indent: -9999px;
+    .pagination-link {
+      background-image: url('/assets/home_blue.png');
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRDQ4MDg2NEEwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRDQ4MDg2M0EwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDg4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4bkDIfAAADmElEQVR42uyYS2gTURSGb5JJMpOZSWaSSWP6CKIBxRetIChSXOiiIiLShaigILhxowii4kIEtaKCLxRBBAUFFyoiogtXFqmIFRUtVoUuxJ0P2iYmtbTG/4QLvlrtI8nMNPfARzOTdDL55t57zrmeueduMAdGI2gDfrAXPGEODa/D7qcBXARPNTPaopmx5Xj9GFwHs4XA0SMMDoI3asTYYtWnvLKqMVlVGV57VMNsxXsvwQVQ7ySBHpunME3RreCAooetkB5mHu/ozzSX6We5vt48Xp4FR8Dnaha4FhyVNS2tqDrz+f1j+qdCocDyJLK/rxeHx8BpkK2mKbwYdASU0M2IVZPWjOiY5RWfuMfDQuEIiybrDIzaQzj1FmwDgakuMM2TQYcejS0Jxyzml+WJ37jPx7BeMjORTGIU05TuAhsqPSgq8WUWn2ZdasRspaQQDKkluziNXhrFkXgijetepQwOVlZKoFTGaytgO9iNKWdQgsD8K182CgaLBEOhxoFs9u7gQP4BryEfuW0E0jU3gW5F19uiyVqD1qxyyvs1ArLCwlacYZlYJgWCHTh1C8xxi8AVoBNT6bJRk0hhymKtkpgdQcsE7gHT21zDa8hLIOVUgfPBPX9Qvo/k0ISnz/D0HVHoyppOxbgXCWczDt+BE3xddoTAWt56PcdC3hKJ1zCUJ47sWVHysFhdQwDLyQ4c9oD9QLOrkKYv3gN24oaU4hrnovg+PMzy2QwV5B95C3keDFZiBEq8aO3BE90Xq613nbzfashpybii6aeoB+eJz1tOgdR6vaKiFcVrnG7gX32rG8In+ZlqmJRsplPiw6kXYHWpBVLr1c5br1njbb3cEJTwKPGh/JmHMug2Tj0EzZMVSK3XNd56NU+29XJD/KwhraUoyttx6g5YMF6BFk/11HqtK3Xr5YZAN0OtIdPM6CocPgNXwIz/CaTWaxfVSpTqKeWjk2DVHLSpy2vIjTh8Dc6AxJ9lDElcDw5DWEqmvTlJYtUew0NDf537lvtK+5C093gSHAd9ZKoTNNEH8plMkZEreq2461ENke39wgay2Z4R3sqRR77bswi0kcCFY7koLlioFoH4rfRnpl27MVUVQqAQKAQKgUKgCCFQCBQChUAREwjbdg14v1mSa9nZp9s2Ark8Tyko1YMQU1gIFAKFQBFCoBAoBAqBIoRAIVAIFAJFCIFCoBA4xWNcG6qfPrx37A+x695+CDAAyz21HWnm6YoAAAAASUVORK5CYII=');
+      background-repeat: no-repeat;
+      background-size: 80%;
+      background-position: 50% 50%;
+      width: 24px;
+    }
   } // end .home-link
 
   &.home-link {
@@ -421,85 +361,7 @@ div.nav-menu-top {
   }
 } // end .pagination-item
 
-/* Next and previous page links at bottom of each page */
 
-.bottom-buttons {
-  clear: both;
-  display: inline-block;
-  width: 100%;
-  .next-page, .last-page {
-    a {
-      text-decoration: none;
-    }
-    &.disabled {
-      display: none;
-    }
-    input[type="submit"],
-    button[type="submit"] {
-      display: block;
-      margin: 0 auto;
-      @include btn ( #459ace, #2b6fba );
-      padding: 15px 30px;
-      font-size: 15px;
-      color: #fff;
-      @include drk-txt-shadow(#459ace);
-      height: 35px;
-      min-width: 120px;
-      padding: 6px 13px;
-      margin: 15px;
-    }
-  }
-  .button-right {
-    float: right;
-    div {
-      float: right;
-    }
-  }
-  .button-left, .button-center {
-    float: left;
-  }
-  .button-left, .button-right {
-    width: 300px;
-  }
-  .button-center {
-    left: 55px;
-    position: relative;
-  }
-  .report {
-    float: left;
-    width: 240px;
-    input {
-      width: 240px;
-    }
-  }
-}
-
-/* Next activity and last activity, for sequences */
-.intra-sequence-nav {
-  display: inline-block;
-  width: 100%;
-  .next-activity, .last-activity {
-    @include btn(#459ace, #2b6fba);
-    height: 35px;
-    min-width: 120px;
-    padding: 6px 13px;
-    margin: 15px;
-    &.disabled {
-      background: none;
-      border:0;
-      color: #2b6fba;
-      text-shadow: none;
-      box-shadow: none;
-      cursor: inherit;
-    }
-  }
-  .next-activity {
-    float: right;
-  }
-  .last-activity {
-    float: left;
-  }
-}
 
 // *********************************************
 //  5. Layout modes
@@ -532,12 +394,12 @@ div.nav-menu-top {
 .l-full-width {
 
   .question-hdr {
-    width: 28%;
+    width: 100%;
     float: left;
   }
 
   .question-bd {
-    width: 70%;
+    width: 100%;
     float: right;
   }
 
@@ -545,22 +407,26 @@ div.nav-menu-top {
     .h5 {
       &:after {
         border-left-color: darken($black-15, 3%);
+        background-color: none;
+        display: none;
       }
     }
   }
 
   .h5 {
     &:after {
-      position: absolute;
-      content: "\0020";
-      right: -28px;
-      top: -1px;
-      border: 12px solid $med-blue;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      border-bottom-color: transparent;
+      border-left-color: darken($black-15, 3%);
+      background-color: none;
+      display: none;
     }
   }
+  
+  .question {
+    margin: 20px;
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+ }
 } // .l-full-width
 
 
@@ -572,12 +438,11 @@ div.nav-menu-top {
 
 // Headline block
 .content-hdr {
-  display: none;
-  font-family: $helv-reg;
-  /* margin-bottom: 30px; */
+  font-family: $lato-reg;
+  margin-bottom: 30px;
 
   .h2 {
-    // font-family: $helv-light;
+    // font-family: $lato-light;
     font-size: 36px;
     // font-weight: normal;
     letter-spacing: -1px;
@@ -589,11 +454,10 @@ div.nav-menu-top {
 
 // Intro block
 .intro-mod {
-  clear: left;
   font-size: 16px;
   line-height: 1.45em;
-  font-family: $helv-reg;
-  margin-bottom: 19px;
+  font-family: $lato-reg;
+  margin-bottom: 39px;
 
  .h4 {
     font-weight: normal;
@@ -603,7 +467,7 @@ div.nav-menu-top {
   }
 
   .intro-txt {
-   /* max-width: 75%; */
+    max-width: 75%;
   }
 }
 
@@ -694,7 +558,7 @@ div.nav-menu-top {
 }
 
 .questions-mod {
-  /* margin-bottom: 52px; */
+  margin-bottom: 52px;
   position: relative;
 }
 
@@ -728,7 +592,7 @@ div.nav-menu-top {
   clear: both;
 
   .h5 {
-    font-family: $helv-reg;
+    font-family: $lato-reg;
     font-weight: normal;
     position: relative;
     color: #fff;
@@ -858,7 +722,7 @@ div.nav-menu-top {
     width: 100%;
     padding: 16px;
     border: 1px solid $black-15;
-    font-family: $helv-reg;
+    font-family: $lato-reg;
     @include border-radius(8px);
   }
 
@@ -944,7 +808,7 @@ input:disabled {
 .sidebar-mod {
   position: fixed;
   top: 20%;
-  font-family: $helv-light;
+  font-family: $lato-light;
   text-align: left;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -1008,7 +872,7 @@ input:disabled {
 
   .h5 {
     // text-transform: uppercase;
-    font-family: $helv-reg;
+    font-family: $lato-reg;
     text-transform: none;
     color: #fff;
     font-size: 14px;
@@ -1020,7 +884,7 @@ input:disabled {
 
 .sidebar-bd {
   padding: 30px 30px 30px 105px;
-  font-family: $helv-reg;
+  font-family: $lato-reg;
   font-size: 16px;
   @include border-radius(0 0 0 8px);
   background-color: transparent;
@@ -1029,7 +893,7 @@ input:disabled {
 
   .h4 {
     font-size: 24px;
-    font-family: $helv-reg;
+    font-family: $lato-reg;
     font-weight: 400;
     margin-bottom: 14px;
   }
@@ -1234,39 +1098,28 @@ input:disabled {
 // ******************************************
 
 footer {
-  .has-footer {
-    background-color: rgba(255,255,255,0.8);
-    @include border-radius(3px);
-    color: $dovegrey;
-    font-family: $helv-reg;
-    padding: 10px;
-    p {
-      margin: 13px;
-      /* @include lt-txt-shadow(#fff); */
+  .footer-txt {
+    margin-bottom: 13px;
+    color: $black-75;
+    @include lt-txt-shadow(#fff);
+    font-family: $lato-reg;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      a {
-        color: darken($black-75, 5%);
-        font-weight: bold;
-        @include trans;
-
-        &:hover {
-          color: darken($lt-blue, 55%);
-        }
-      } /* a */
-    } /* p */
-    .has-footer-logobox {
-      .has-footer-logo {
-        text-align: center;
-        margin: 10px;
-        display: inline-block;
-      }
+    &:last-child {
+      margin-bottom: 0;
     }
-  } /* has-footer */
-} /* footer */
+
+    a {
+      color: darken($black-75, 5%);
+      font-weight: bold;
+      @include trans;
+
+      &:hover {
+        color: darken($lt-blue, 55%);
+      }
+    }//a
+  }//footer-txt
+}//footer
+
 
 
 
@@ -1290,7 +1143,12 @@ footer {
       line-height: 1.35em;
       max-width: 100%;
     }
+
   } // end intro-mod
+
+  .estimated-txt {
+    margin-top: 0.6em;
+  }
 
   input[type="submit"],
   button[type="submit"] {
@@ -1379,6 +1237,7 @@ footer {
   margin-right: 150px;
   padding: 15px;
   .prompt {
+    font-family: sans-serif;
     font-weight: bold;
     margin: 5px 5px 5px 0;
   }

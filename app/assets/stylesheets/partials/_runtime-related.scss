@@ -1,0 +1,88 @@
+// ******************************************
+//  11. Related Module
+// ******************************************
+
+.related-mod {
+  margin-bottom: 50px;
+  margin-top: 50px;
+  border-top: none;
+  background-color: lighten($related-green, 40%);
+  border: 1px solid lighten($related-green, 30%);
+  @extend .mod-border-rounded;
+  @extend .cf;
+}
+
+.related-hdr {
+  // background-color: $med-blue;
+  background-color: $related-green;
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 13px;
+  margin-bottom: 8px;
+  @include box-shadow(0 2px 5px -1px $black-15);
+  //@extend .drk-text-shadow;
+}
+
+.related-bd {
+  padding: 16px 26px 30px;
+  @extend .cf;
+}
+
+.related-items {
+  @extend .cf;
+}
+
+.related-item {
+  width: 30%;
+  margin-left: 5%;
+  float: left;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .h6 {
+    font-size: 16px;
+    margin-bottom: 3px;
+    color: #000;
+  }
+
+  .related-item-txt {
+    font-size: 14px;
+    line-height: 1.35em;
+
+    a {
+      // @include btn;
+      display: inline-block;
+      padding: 7px 11px;
+      color: lighten($btn-blue2, 40%);
+      margin-top: 13px;
+      background-color: lighten($btn-blue2, 2%);
+      @include drk-txt-shadow($btn-blue2);
+      @include trans;
+
+      &:hover {
+        background-color: darken($btn-blue2, 4%);
+      }
+
+      &:active {
+        background-color: darken($btn-blue2, 10%);
+      }
+    }//a
+  }//related-item-txt
+} //related-item
+
+
+.related-img {
+  margin-bottom: 16px;
+  width: 25%;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+
+
+
+

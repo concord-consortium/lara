@@ -1,0 +1,80 @@
+.index-width {
+  width: 675px;
+  margin: 0 auto;
+}
+
+.index-mod {
+  text-align: left;
+
+  .intro-mod {
+    margin-bottom: 60px;
+
+    .intro-txt {
+      font-size: 20px;
+      line-height: 1.35em;
+      max-width: 100%;
+    }
+  } // end intro-mod
+
+  input[type="submit"],
+  button[type="submit"] {
+    font-size: 20px;
+    padding: 20px 86px;
+    margin: 0 auto 24px;
+  }
+
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
+  }
+
+  &.intro-mod {
+
+    ul, ol {
+      font-size: 20px;
+
+      li {
+        margin-bottom: 24px;
+        &:before {
+          background-color: lighten($med-blue, 27%);
+          border: 1px solid lighten($med-blue, 18%);
+          color: $med-blue;
+          @include lt-txt-shadow(#fff);
+        }
+
+        a {
+          color: #666;
+          color: $med-blue;
+          @include trans;
+
+          &:visited {
+            color: #aaa;
+          }
+
+          &:hover {
+            color: darken($med-blue, 20%);
+          }
+
+
+        }//a
+      }//li
+    }//ul,ol
+  } // end &.intro-mod
+} // end index-mod
+
+.index-list-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 36px 0 20px;
+  color: #666;
+}
+

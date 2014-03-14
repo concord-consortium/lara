@@ -8,7 +8,7 @@ class SequencesController < ApplicationController
   # GET /sequences.json
   def index
     @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
-    @sequences = @filter.collection
+    @sequences = @filter.collection.includes(:user,:lightweight_activities)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,0 +1,4 @@
+@mixin helv-stack($weight) {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: $weight;
+}

@@ -2,4 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  MENU: "Menu"
+  ACTIVITY: "Activity"
+  BEGIN_ACTIVITY: "Begin activity"
+  BEGIN_NEXT_ACTIVITY: "Begin activity"
+  TAKE_SNAPSHOT: "Take snapshot"
+  REPLACE_SNAPSHOT:  "Replace snapshot"
+  QUESTION: "Question"
+  TYPE_ANSWER_HERE: "Type answer here"
+  NEXT: "Next >"
+  BACK: "< Back"
+  PICK_ONE: "Pick one"
+  GENERATE_A_REPORT: "Generate a report"
+  EDIT: "Edit"
+  DATA_WILL_NOT_BE_SAVED:  "Data will not be saved"
+  TIME_TO_COMPLETE: "Estimated Time to Complete This Module:"
+  MINUTES: "minutes"
+  MAKE_DRAWING: "Make drawing"
+  DONE: "Done"
+  CANCEL: "Cancel"

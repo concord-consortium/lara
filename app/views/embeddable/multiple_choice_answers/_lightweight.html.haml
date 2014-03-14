@@ -1,7 +1,7 @@
 - embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 - check_button_string = "check_button_#{embeddable_string}"
 .question-hdr
-  %h5.h5= "Question ##{embeddable.question_index}"
+  %h5.h5= "#{t("QUESTION")} ##{embeddable.question_index}"
 .question-bd{ :id => embeddable_string }
   .question-txt
     != embeddable.prompt
@@ -10,7 +10,7 @@
     :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
     %fieldset.options
       - if embeddable.show_as_menu
-        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => "Pick one" }, { :data => {:button_id => check_button_string} }
+        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => t("PICK_ONE")}, { :data => {:button_id => check_button_string} }
       - else
         - embeddable.choices.each do |choice|
           %label{ :for => "embeddable_multiple_choice_answer_answers_#{choice.id}" }

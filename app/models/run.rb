@@ -34,6 +34,7 @@ class Run < ActiveRecord::Base
   has_many :interactive_run_states
 
   before_validation :check_key
+  after_create :update_activity_portal_run_count
 
   scope :by_key, lambda { |k|
       {:conditions => { :key => k } }
@@ -266,6 +267,12 @@ class Run < ActiveRecord::Base
   def mark_clean
     self.is_dirty = false
     self.save
+  end
+
+  def update_activity_portal_run_count
+    return unless self.activity
+    return if self.remote_endpoint.blank?
+    self.activity.increment!(:portal_run_count)
   end
 
 end

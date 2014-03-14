@@ -1,11 +1,7 @@
-@import "partials/base";
+@import "cc-runtime-base";
+$src: '/assets/has-bg/hydrofracking_background.png';
+$c_a: #602f1c;
+$c_b: #6b96ba;
+$c_c: #edaa3d;
 
-body {
-  background-image: url('/assets/has-bg/hydrofracking_background.png');
-}
-
-.sequence_logo_block h2 {
-  color: #472213;
-  font-family: $helv-bold;
-  font-size: 24pt;
-}
+@include theme($src, $c_a, $c_b, $c_c);

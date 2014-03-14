@@ -12,8 +12,6 @@
  *
  *= require_self
  *= require save-on-change
- *= require has-styles
- *= require has-landmanagement
  *= require modal
  *= require modal-dialog
  *= require jcarousel
@@ -22,4 +20,5 @@
  *= require font-awesome
  *= require image_question
  *= require activity-sequences
+ *= require has-landmanagement
  */

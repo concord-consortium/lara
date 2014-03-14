@@ -1,0 +1,43 @@
+footer {
+  .has-footer {
+    background-color: rgba(255,255,255,0.8);
+    @include border-radius(3px);
+    color: $dovegrey;
+    @include helv-stack(500);
+    padding: 10px;
+    p {
+      margin: 13px;
+      /* @include lt-txt-shadow(#fff); */
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: darken($black-75, 5%);
+        font-weight: bold;
+        @include trans;
+
+        &:hover {
+          color: darken($lt-blue, 55%);
+        }
+      } /* a */
+    } /* p */
+    .has-footer-logobox {
+      .has-footer-logo {
+        text-align: center;
+        margin: 10px;
+        display: inline-block;
+      }
+    }
+  } /* has-footer */
+} /* footer */
+
+.activity-footer-mod {
+  margin-bottom: 48px;
+
+  .site-logo {
+    margin: 0 auto;
+  }
+}
+

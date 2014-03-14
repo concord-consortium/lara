@@ -1,0 +1,343 @@
+
+
+// *********************************************
+//  4. Activity nav
+// *********************************************
+
+.activity-nav-mod {
+  margin: 0 0 20px;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  color: white;
+  @extend .cf;
+  @include trans;
+
+
+/*  &.fixed {
+    position: fixed;
+    top: 0;
+    background-color: lighten($lt-blue, 15%);
+    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.2) );
+    padding: 10px 6px;
+    z-index: 9999;
+  }
+*/
+}
+
+.activity-nav-logo {
+  float: left;
+
+  img {
+    max-width: 100%;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 36px;
+    color: white;
+    margin-top: 8px;
+    margin-left: 180px;
+  }
+}
+
+// This controlls the layout of the nav
+.l-nav {
+      @include ui-grid-2(70%, 30%, 5%);
+      background-color: $capecod;
+      height: 50px;
+      @include border-radius(2px);
+}
+
+.nav-menu {
+  height: 50px;
+  width: 130px;
+  @include helv-stack(100);
+  margin-left: 30px;
+  font-size: 18px;
+  padding-top: 15px;
+  border-right: 2px solid white;
+  float: left;
+  .open-close {
+    cursor: pointer;
+  }
+  a#menu-trigger {
+    cursor: pointer;
+    padding-right: 20px;
+    background-position: right;
+    background-repeat: no-repeat;
+    fa fa-angle-down {
+      font-size: 15pt;
+      font-weight: bold;
+      margin-left: 3px;
+    }
+  }
+}
+
+div.nav-menu-top {
+  /* This is the drop-down part of the navigation menu */
+  display: none;
+  background-color: white;
+  border: 1px solid $black-15;
+  width: 450px;
+  position: relative;
+  top: 5px;
+  left: 0px;
+  color: $emperor;
+  padding: 8px 10px;
+  z-index: 10; /* Ensure this appears above content from the page */
+  margin-top: 10px;
+  li.activity {
+    line-height: 33px;
+    background-color: $alabaster;
+    padding: 10px;
+    margin: 10px 5px;
+    border-width: 0 2px 2px 0;
+    border-color: $black-15;
+    border-style: solid;
+    font-size: 12pt;
+    &.active {
+      .activity-list-head {
+        @include border-radius(2px);
+        padding: 10px 20px 10px 10px;
+        margin: 0 0 10px 0;
+        color: white;
+        background-color: $shakespeare;
+        background-image: -webkit-linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+        background-image:         linear-gradient( top, rgba(255,255,255,0.28), rgba(0,0,0,0.28) );
+      }
+      li.page {
+        color: $shakespeare;
+      }
+    }
+    &.on {
+      ol.pages {
+        display: block;
+      }
+    }
+    a.open-close {
+      cursor: pointer;
+    }
+    .activity-list-head {
+      width: 100%;
+      display: block;
+      padding-right: 20px;
+      background-position-x: 96%;
+      background-position-y: 50%;
+      background-repeat: no-repeat;
+      i {
+        font-size: 15pt;
+        font-weight: bold;
+        float: right;
+        padding-top: 5px;
+      }
+    }
+    li.page {
+      font-size: 0.8em;
+      line-height: 1.3em;
+      a:before {
+        content: '';
+      };
+    }
+    ol.pages {
+      margin-left: 3em;
+      display: none;
+    }
+  }
+  /* The arrow at the top of the menu */
+  /* Adapted from http://jonrohan.me/guide/css/creating-triangles-in-css/ */
+  /* Basically it's two divs contorted to present triangles with the bottom borders */
+  /* Then overlapped so the upper one (white) covers all but the "border" of the lower */
+  /* one (gray). */
+  .nav-menu-arrow-border {
+    border-color: transparent transparent $black-15 transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -20px;
+    left: 55px;
+  }
+  .nav-menu-arrow {
+    border-color: transparent transparent white transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    position:absolute;
+    top: -18px;
+    left: 55px;
+  }
+}
+
+.activity-nav {
+  position: relative;
+  @extend .cf;
+
+  .prev,
+  .next {
+    display: none;
+  }
+
+  .prev {
+    float: right;
+    background-image: url('/assets/prev.png');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGQzdGMTE3NDA3MjA2ODExODA4M0IxODUyNUFENjlEMCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2QjAzQjM4NDlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2QjAzQjM4MzlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkQ3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkM3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4WDkbDAAAB6UlEQVR42tyaTShEYRSGv2uGhUZJKc1YSXZqspRs1Sg/i0mJpZIspJA1CyIlIRsbM/lJEZG12ApLTVZ+Nn4WWCCN9+RMzYqZZu6d7/XWU7O789x7v++cc+91ksmk+Q8p8vBYo+wiPjAFhtw8iN9liWKwANrcPltuipSCVdDsxX3rlkg5iIEGrxagGyJVYAPUMe9aNWDPa4l8i9SDHVDNXEcawTaoZC6ILSAOygpZ2Z0cW5QuMKtFrxAJ5uOK9IO5AkrkvP06YBwM2tQ0ZisiZ38adNvW/WYjUgIWQauNbXymIgHtm5psnUcyEanQvils82D1l0gIrINa5glR/vwug8RvImGVCDHP7LKgt3Rt0D58iOjCDhiypItIkVvRemFYRaTdmLGlb8pFxKc9lGEXmQdj4ItdRLIGBsAnu4hkH/SCN3YRybFOfs/sIpIz0Anu2UUkV6AdXLOLSG5AB7hkF5E8gCg4ZReRvIAecMQuInkHfWCTXcRo5R8Gy+wiEnk0OQEm9TetSCpLYMSW/szJw+vpiEplMscEbbwiqRzqjvbKemul50RrzSO7iORC+7NbdhFJQvuzBLuI5E5lztlFjM4yUV071CJGp0zZzQ7YRSQf5ucVXdxtEb8HJ0sqv3zi9GR7Zbci3wIMAJi+UXx+jukIAAAAAElFTkSuQmCC');
+  }
+
+  .next {
+    float: right;
+    background-image: url('/assets/next.png');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGQzdGMTE3NDA3MjA2ODExODA4M0IxODUyNUFENjlEMCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2QjAzQjM4ODlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2QjAzQjM4NzlFREExMUUyOUJENUJFNkJGMTFGNjQ4RiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkQ3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkM3RjExNzQwNzIwNjgxMTgwODNCMTg1MjVBRDY5RDAiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5lCWipAAAB1ElEQVR42tyauy8EURjF73g1thGdbMe2HjV/AIl4FEKCRkOIDiFRagiFQhRKWYJNiIREK7SCUkTFRiEUVoHIOl/mbEEi8djZceYkv/bu/oy593wXL5vNuiikKOD1p4AXBZFRMAeK1UUsvWAZlKqLWFpBEpSri1iawBaoUBex1IMdUKUuYklQpkZdxBIH26BOXcRSyXemUV3EEuNu1vLXhbxPFSUdktAbmADrqk8kFzv558GwuohjJ5smnrJILvZUFn7az/6jiKUHrIAydRFLM3e0mLqI4xmT4pkjLWKpZaWJq4tYqimTUBdxbMwm06Au4jjLbHK2kRZxnDKTnDqlRRznf7sH6FMXyfWzWeff1EiLfEiJ8He36j/J90VW5AWMgD3lJ5IBA+BI+Vfrwfk3l6fK70ia9f5S+WS3L9/+lYSKyBnoADfK7dde6C5wrzyP7LOCZJQnxDUwyPNCdmZfAuM8uSUril15zrDVynYt++mPgY3fLuAF/Ofp79wlP4MhcKDcfh/Zm46Va/wdt9dz5Xnkmr3pKl8LhrH9XoC2fEqEIXICOsFtvhcupMgh6OZM4VRFdkE/eArqAwohssr5+jXIDwl611p0/t1T4PGi8o9n7wIMAMJfVLym7VShAAAAAElFTkSuQmCC');
+  }
+
+  .pages {
+    float: left;
+
+    @media screen and (min-width: 1100px) {
+      float: right;
+    }
+  }
+} // end .activity-nav
+
+
+.pagination {
+  @extend .cf;
+  text-align: center;
+  margin-right: 8px;
+  height: 50px;
+}
+
+.pagination-item {
+  margin-left: -2px;
+  @include border-radius(10px);
+  text-align: center;
+  display: inline-block;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .pagination-link {
+    margin-top: 12px;
+    background-color: $wildsand;
+    color: $gray;
+    width: 24px;
+    height: 24px;
+    @include border-radius(13px);
+    border: 3px solid #616768;
+    padding-top: 1px;
+    display: block;
+    @include trans;
+
+/*    &:hover {
+      background: lighten($med-blue, 5%);
+      @include drk-txt-shadow($med-blue);
+      color: #fff;
+    } */
+
+    &.selected {
+      background: $seagreen;
+      color: #fff;
+      height: 28px;
+      width: 28px;
+      padding-top: 3px;
+      @include border-radius(14px);
+      @include drk-txt-shadow(#64c500);
+      /* TODO: gradient? */
+    }
+  } // end .pagination-link
+
+  &.home-link {
+    display: none;
+  } // end .home-link
+
+  &.home-link {
+    .selected {
+      background-image: url('/assets/home_white.png');
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZBNjY3QUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZBNjY3OUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDE4MDExNzQwNzIwNjgxMTgyMkFFQkJEMTk0QkM0NjEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7Q8BpbAAAEE0lEQVR42uya/U8TdxzHe32wFHrtyV171+YOih05C7JCAYFqnPEh1viID4QYk2X7wV+3H/arf4N/gD8YliwzSsyGbrLM6IwCCiZmM1FA1G1o6QMFChqDIWHv73ZmzJlJeVjv7PeTvAL90h7HK/f9PHwD81nPoEmnUQ6OACs4B57o8SatOrynUtAKtnyq+qssDMOcHnxWhdd3QCcYowLfHg6wB8Tag1JVk+guZ0wmhvzgVFT13x2fUb8cjkfw8gb4BkxQgX/fw0fg0MGAd0OL6A7YLWbbwjcQixGBLavlVaU/lVXPPkpEsXQFXALPC1lgPWiPKUJ9o8cl80U253+92cyYmGYIrve4lL7klHrhSWorlr8HP4DZQhIYBMeiIhfFEycrziI+lw/bzIxli29tMCK45P50NtT1a3o7lrvAdTD3PgsUQRtoOBGSN1StLfEt52JOm8W+zV9aGS5lfQPp6Zru0fEYli+AW2D+fRLIggNg2/FKXwhbsJxZwYuTrR9T+PVh3indSmbD18cmb2P5PPjF6AJJMdgF9h5ZJ1ZHRXeFmWHMq/XLfMV2rrXCy9UKrNibmIrgqezResgRowkkD9gmcHhfuaeuyesuw3Yr+r/yRAXr8BCQI6Ubicmm+5Mvrmki40YQWE0qK3JT80avW5aK17jzVeJDyLEE9JBSx3C8Dks3tRyZ0aNAhRSIOoHduknklA/cxV69dOi4J6VWUGX0kJVfjyRatB7yIpjRg0CObFUyen2i+kNhnpX1OLOSqQapJNDgcZX1JbOVnY+TpHm/rDGbD4F2sI+MXm1BMdQicoHXo5eeA7O1ebPEBesFNOOpqfXoIXdg+VtwbSk95FIEWgCZAFr3Bzw12K7/Gr2MEA6reQ3pISO8yz+QzlZ/9/v4bi0/9uTSQ+YqkIxebRi9GhczehkhOLu1ZKfMqzWlrIQcWXM1PtGvnfrcXUmBZPRqx+i1eSmjlxGCdAvYUe4PeaeIHFl3O5Xt1ZrxoeUIFLUC0bQSo5cRIsA6BEJEYKWbiamN9yae/6SJHM1FIKsViB2rMXoZIVSuRCL8nJmRzgzFw1jq03Jk6h/V/Y0jfVIMdoL9ZPTCdq2wrOLoZZRARZm/k57+7auHY4NatSZVe3qhQPKAkQbzKBm9Gr0uxWWzOgpd3PSruZdvrmFLj51/nLxv+usM8jIRGMI3x0DZuy4YU3gZFThUCPK6R8cfdI9m3laJZxf0izMkBz4AJxd30UxH4QjMPMWXL971voLPb8sNKpAKpAKpQCqQBhVIBVKBVCANKpAKNFzk9d/btBOPp0v9vB5Oh/Is8E95Hy/j83k/HaJbmAqkAqlAKpAGFUgFUoFUIA0qkAqkAqlAGjlFzqcxn/cO/ainPyDf9/OHAAMAk6sLm1uGWagAAAAASUVORK5CYII=');
+    }
+  }
+} // end .pagination-item
+
+/* Next and previous page links at bottom of each page */
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    a {
+      text-decoration: none;
+    }
+    &.disabled {
+      display: none;
+    }
+    input[type="submit"],
+    button[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      @include btn ( #459ace, #2b6fba );
+      padding: 15px 30px;
+      font-size: 15px;
+      color: #fff;
+      @include drk-txt-shadow(#459ace);
+      height: 35px;
+      min-width: 120px;
+      padding: 6px 13px;
+      margin: 15px;
+    }
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
+}
+
+/* Next activity and last activity, for sequences */
+.intra-sequence-nav {
+  display: inline-block;
+  width: 100%;
+  .next-activity, .last-activity {
+    @include btn(#459ace, #2b6fba);
+    height: 35px;
+    min-width: 120px;
+    padding: 6px 13px;
+    margin: 15px;
+    &.disabled {
+      background: none;
+      border:0;
+      color: #2b6fba;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: inherit;
+    }
+  }
+  .next-activity {
+    float: right;
+  }
+  .last-activity {
+    float: left;
+  }
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140124152812) do
+ActiveRecord::Schema.define(:version => 20140313173915) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.boolean  "show_lightbox", :default => true
+    t.string   "credit_url"
   end
 
   create_table "interactive_items", :force => true do |t|
@@ -195,12 +196,14 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
     t.string   "thumbnail_url"
     t.integer  "theme_id"
     t.integer  "project_id"
+    t.integer  "portal_run_count",   :default => 0
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
   add_index "lightweight_activities", ["project_id"], :name => "index_lightweight_activities_on_project_id"
   add_index "lightweight_activities", ["publication_status"], :name => "lightweight_activities_publication_status_idx"
   add_index "lightweight_activities", ["theme_id"], :name => "index_lightweight_activities_on_theme_id"
+  add_index "lightweight_activities", ["updated_at"], :name => "lightweight_activities_updated_at_idx"
   add_index "lightweight_activities", ["user_id"], :name => "lightweight_activities_user_idx"
 
   create_table "lightweight_activities_sequences", :force => true do |t|
@@ -246,12 +249,12 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.string   "response"
+    t.text     "response",         :limit => 255
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "projects", :force => true do |t|
@@ -318,6 +321,7 @@ ActiveRecord::Schema.define(:version => 20140124152812) do
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
   add_index "sequences", ["theme_id"], :name => "index_sequences_on_theme_id"
+  add_index "sequences", ["updated_at"], :name => "sequences_updated_at_idx"
   add_index "sequences", ["user_id"], :name => "index_sequences_on_user_id"
 
   create_table "themes", :force => true do |t|

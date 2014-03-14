@@ -3,7 +3,8 @@ class LightweightActivity < ActiveRecord::Base
   include Publishable # models/publishable.rb defines pub & official
 
   attr_accessible :name, :user_id, :pages, :related, :description,
-  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id
+  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
+  :portal_run_count
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -88,6 +89,13 @@ class LightweightActivity < ActiveRecord::Base
     return new_activity
   end
 
+  # TODO: Include acts_as_list? @pjmorse would hate that.
+  def position(seq)
+    seq.activities.each_with_index do |a,i|
+      return i+1 if a.id == self.id
+    end
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
     data = {
@@ -158,7 +166,8 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def active_runs
-    self.runs.select { |run| !run.remote_endpoint.blank? }.count
+    # stored in lightweight_activities table, incremented by run-model
+    self.portal_run_count
   end
 
   def fix_page_positions

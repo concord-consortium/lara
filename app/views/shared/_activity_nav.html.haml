@@ -1,8 +1,8 @@
 .activity-nav-logo.ui-block-1
   .nav-menu
     %a{name: 'menu-trigger', id: 'menu-trigger'}
-      MENU
-      %i.fa.fa-angle-down
+      = t ("MENU")
+      %i.fa.fa-bars
     .nav-menu-top
       .nav-menu-arrow-border
       .nav-menu-arrow
@@ -11,10 +11,10 @@
           - @sequence.lightweight_activities_sequences.each do |las|
             - activity = las.lightweight_activity
             %li.activity{ :class => @activity == activity ? %w(active on) : '' }
-              .activity-list-head
+              .activity-list-head.open-close
                 = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity)
-                %a.open-close
-                  %i{ :class => (@activity == activity) ? 'icon-angle-down' : 'icon-angle-up' }
+                %span
+                  %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
               %ol.pages.in-sequence
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
         - else
@@ -23,8 +23,8 @@
             %ol.pages.in-activity
               = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
-  %h2.h2
-    = @activity.name
+  %h2
+    = activity_name_for_menu
 %nav.activity-nav.ui-block-2
   -if @page
     - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)

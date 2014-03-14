@@ -1,0 +1,123 @@
+
+.intro-mod,
+.content-mod {
+  font-size: 16px;
+  line-height: 1.35em;
+  ol,
+  ul,
+  dl,
+  blockquote,
+  p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+// disable extra margin on first and last paragraphs in a module
+.intro-mod,
+.question-bd {
+  p {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ordered lists
+
+.intro-mod,
+.content-mod {
+  ol {
+    counter-reset: li;
+    list-style: none;
+    *list-style: decimal;
+    padding: 0;
+    margin: 16px 0;
+
+    ol, ul {
+      margin: 16px 0 16px 16px;
+    }
+
+    > li {
+      margin-bottom: 13px;
+      position: relative;
+      &:before {
+        content:counter(li)".";
+        counter-increment:li;
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 0.65em;
+        padding: 3px 5px;
+        background-color: $black-5;
+        position: relative;
+        top: -2px;
+        @include border-radius(2px);
+      }
+    } //li
+  }//ol
+}//content-mod
+
+
+// unordered lists
+.intro-mod,
+.content-mod {
+  ul {
+    list-style: square;
+    margin-left: 16px;
+
+    ul, ol {
+      margin: 16px 0 16px 16px;
+    }
+
+    li {
+      margin-bottom: 13px;
+    }
+  }//ul
+}//content-mod
+
+
+//definition lists
+.intro-mod,
+.content-mod {
+  dl {
+
+  }
+  dt {
+    font-weight: bold;
+    margin-top: 13px;
+  }
+  dd {
+    margin-left: 16px;
+  }
+}
+
+
+// text areas
+.intro-mod,
+.content-mod {
+  form {
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+  textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid $black-15;
+    @include helv-stack(500);
+    @include border-radius(8px);
+  }
+
+  em {
+    display: block;
+    font-size: 0.75em;
+    text-align: right;
+    color: $black-15;
+  }
+}
+

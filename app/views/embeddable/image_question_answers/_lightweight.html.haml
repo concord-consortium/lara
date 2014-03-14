@@ -1,5 +1,5 @@
 .question-hdr
-  %h5.h5= "Question ##{embeddable.question_index}"
+  %h5.h5= "#{t("QUESTION")} ##{embeddable.question_index}"
 .question-bd
   .question-txt
     != embeddable.drawing_prompt
@@ -17,18 +17,18 @@
         %button.image_question.button.image_snapshot_button.take_snapshot{:type => 'button'}
           %i.fa.fa-camera
           %span.take_snapshot_label
-            Take snapshot
+            =t("TAKE_SNAPSHOT")
         %button.image_question.button.image_snapshot_button.replace_snapshot{:type => 'button'}
           %i.fa.fa-camera
           %span.replace_snapshot_label
-            Replace snapshot
+            =t("REPLACE_SNAPSHOT")
       - elsif embeddable.is_drawing?
         %button.image_question.button.image_drawing_button.drawing_button{:type => 'button'}
           %i.fa.fa-pencil
           %span.make_drawing_label
-            Make drawing
+            =t("MAKE_DRAWING")
       %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
-        Edit
+        =t("EDIT")
 
 %div.tmp_svg{:id => "sb_svg_src_#{embeddable.id}" }
 %div{:id => "image_question_answer_form_#{embeddable.id}"}
@@ -50,10 +50,10 @@
           = f.hidden_field 'annotated_image_url'
           %button.button.image_done_button{ :type => 'button' }
             %i.fa.fa-check.btn
-              Done
+              =t("DONE")
           %button.button.image_cancel_button{ :type => 'button' }
             %i.fa.fa-cancel.btn
-              Cancel
+              =t("CANCEL")
 
 - content_for :extra_javascript do
   :javascript

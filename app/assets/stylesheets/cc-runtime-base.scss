@@ -1,0 +1,209 @@
+@import "partials/base";
+@import "project/base-fonts";
+@import "project/base-styleguide";
+
+// *********************************************
+// Table of Contents
+// *********************************************
+//   1. Universal
+//   2. Helpers
+//   3. Site Styles
+//   4. Activity nav
+//   5. Layout modes
+//   6. Headline + Intro
+//   7. Sticky Interactives
+//   8. Interactive + Questions
+//   9. Styling for typographic elements
+//  10. Sidebar ( see partials/runtime-sidebar)
+//  11. Related Module
+//  12. Image Types
+//  13. Activity Footer
+//  14. Site Footer
+//  15. Saved Label
+//  16. Activity Index Page
+//  17. Activity Summary Page
+
+// *********************************************
+//  1. Universal
+// *********************************************
+body       {  background-size: 100%;  }
+a          {   text-decoration: none; color: inherit; }
+b, strong  { 
+  @include helv-stack(bold); 
+}
+em         { font-style: italic; }
+
+header,
+footer {
+  margin: 0 0 13px;
+  color: white;
+}
+
+div.activity-mod>div.site-width {
+  background-color: rgba(255,255,255,0.85);
+  padding: 12px;
+}
+
+// *********************************************
+//  2. Shared / Extended Classes (.mod-border, and cf)
+//  used by later partials.
+// *********************************************
+
+// Border used on questions and related-mod
+.mod-border-rounded {
+  border: 1px solid $black-10;
+  @include border-radius(0 0 13px 13px);
+}
+
+.cf { @include pie-clearfix; }
+
+
+// *********************************************
+//  3. Site Styles
+// *********************************************
+@import "partials/runtime-site-styles";
+
+// *********************************************
+// 4. Activity Nav
+// *********************************************
+@import "partials/runtime-activity-nav";
+
+// *********************************************
+//  5. Layout modes
+// *********************************************
+@import "partials/runtime-layouts";
+
+// *********************************************
+//  6. Headline + Intro
+// *********************************************
+
+// Headline block
+.content-hdr {
+  @include helv-stack(500);
+  margin-bottom: 30px;
+  display: none;
+
+  .h2 {
+    // font-family: $helv-light;
+    font-size: 36px;
+    // font-weight: normal;
+    letter-spacing: -1px;
+    color: $drk-orange;
+  }
+}
+
+// Intro block
+.intro-mod {
+  clear: left;
+  font-size: 16px;
+  line-height: 1.45em;
+  @include helv-stack(500);
+  margin-bottom: 19px;
+
+ .h4 {
+    font-weight: normal;
+    font-size: 20px;
+    margin-bottom: 13px;
+    color: $med-blue;
+  }
+
+  .intro-txt {
+    /* max-width: 75%; */
+  }
+}
+
+// *********************************************
+//  7. Sticky Interactives
+// *********************************************
+@import "partials/runtime-sticky";
+
+// *********************************************
+//  8. Interactive + Questions
+// *********************************************
+@import "partials/runtime-interactives";
+
+// *********************************************
+//  9. Styling for typographic elements
+// *********************************************
+@import "partials/runtime-typography";
+
+// ******************************************
+// 10. Sidebar
+// ******************************************
+@import "partials/runtime-sidebar";
+
+// ******************************************
+//  11. Related Module
+// ******************************************
+@import "partials/runtime-related";
+
+// ******************************************
+//  12. Image Types
+// ******************************************
+@import "partials/runtime-image-types";
+
+// ******************************************
+//  13. Activity Footer
+//  14. Site Footer
+// ******************************************
+@import "partials/runtime-footer";
+
+// ******************************************
+//  16. Activity Index Page
+// ******************************************
+@import "partials/runtime-activity-index";
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+@import "partials/runtime-summary";
+
+// ******************************************
+//  18. Social
+// ******************************************
+@import "partials/runtime-social";
+
+// ******************************************
+//  19. Misc Changes
+// ******************************************
+
+.question, .intro-mod, .related-mod, .sidebar-mod {
+  a {
+    color: darken($med-blue, 20%);
+    @include trans;
+    text-decoration: underline;
+    &:visited {
+      color: #aaa;
+    }
+    &:hover {
+      color: $med-blue;
+    }
+  }
+}
+
+.intro-mod.index-mod a {
+  text-decoration: none;
+}
+
+/* Sequences */
+.logo-l .sequence_logo_block {
+  width: 630px; /* Narrower because of the wide HAS logo */
+}
+
+/* Button links shouldn't have underline */
+div.submit a:hover {
+  text-decoration: none;
+}
+
+.logo-l .sequence_logo_block{
+  width: 700px;
+}
+
+.site-logo-mod {
+  img {
+    max-height: 50px;
+  }
+  margin-bottom: 10px;
+}
+
+@import "partials/cc-theme-template";

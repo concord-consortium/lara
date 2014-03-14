@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ImageInteractive do
-  let (:image_interactive) { FactoryGirl.create(:image_interactive) }
-  let (:page) { FactoryGirl.create(:page) }
+  let(:image_interactive) { FactoryGirl.create(:image_interactive) }
+  let(:page) { FactoryGirl.create(:page) }
 
   it 'has valid attributes' do
     image_interactive.valid?
@@ -19,7 +19,7 @@ describe ImageInteractive do
 
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit }
+      expected = { url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit, credit_url: image_interactive.credit_url}
       image_interactive.to_hash.should == expected
     end
   end

@@ -9,9 +9,8 @@
       = @sequence.description.html_safe
 
 .estimated-time
-  Estimated Time to Complete This Module:
-  = @sequence.time_to_complete
-  minutes
+  %i.fa.fa-clock-o.fa-2x
+  = time_to_complete(@sequence.time_to_complete)
 
 .activities
   - @sequence.lightweight_activities_sequences.each do |las|

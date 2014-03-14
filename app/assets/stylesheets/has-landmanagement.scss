@@ -1,11 +1,9 @@
-@import "partials/base";
+@import "cc-runtime-base";
 
-body {
-  background-image: url('/assets/has-bg/landManagement_background2.jpg');
-}
+$src: '/assets/has-bg/landManagement_background2.jpg';
+$c_a: #497c25;
+$c_b: darken(#ba9772,10%);
+$c_c: #edaa3d;
 
-.sequence_logo_block h2 {
-  color: #81b700;
-  font-family: $helv-bold;
-  font-size: 24pt;
-}
+@include theme($src, $c_a, $c_b, $c_c);
+

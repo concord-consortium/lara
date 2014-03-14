@@ -1,0 +1,92 @@
+@mixin theme($srcImage, $theme-color-a, $theme-color-b, $theme-color-c) {
+  html { 
+    background: url($srcImage) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  body {
+    background-image:none;
+  }
+  div.activity-mod>div.site-width {
+    background-color: rgba(255,255,255,0.95);
+  }
+
+  a.sequence_title{
+    color: $theme-color-a;
+    @include helv-stack(bold);
+    font-size: 24pt;
+  }
+
+  .pagination-item .pagination-link.selected {
+    background-color: $theme-color-b;
+  }
+
+  /* could also potentially use #A43900 drk orange */
+  .activities .activity .title {
+    a {
+      color: $theme-color-a;
+    }
+  }
+  .question-hdr {
+    background-color: $theme-color-a;
+    .h5 {
+      @include drk-txt-shadow(darken($theme-color-a,30%));
+    }
+  }
+
+  // buttons
+  input[type="button"],
+  input[type="submit"],
+  button[type="button"] {
+    border: 0;
+    @include btn($theme-color-b, darken($theme-color-b, 10%))
+    /*@include btn(lighten($theme-color-a, 10%), $theme-color-a);*/
+  }
+
+  .related-hdr {
+    background-color: $theme-color-b;
+  }
+  .bottom-buttons {
+    .next-page,
+    .prev {
+      input[type="submit"] {
+        @include btn($theme-color-b, darken($theme-color-b, 10%))
+      }
+    }
+    .gen-report {
+      input[type="submit"] {
+        @include btn($theme-color-a, darken($theme-color-a, 10%))
+      }
+    }
+  }
+  .index-mod.intro-mod {
+    ul li,
+    ol li, {
+      a,
+      a:visited {
+        color: $theme-color-a;
+      }
+      a:hover {
+        color: darken($theme-color-b, 10%);
+      }
+    }
+  }
+  .intro-mod {
+    .h4 { 
+      color: $theme-color-a; 
+      font-weight: bold;
+    }
+  }
+  .estimated-time {
+    background-color: lighten($theme-color-b, 30%);
+  }
+  .index-mod.intro-mod ul li:before, 
+  .index-mod.intro-mod ol li:before {
+      background-color: lighten($theme-color-b, 20%);
+      border: 1px solid $theme-color-b;
+      color: darken($theme-color-b, 20%);
+      text-shadow: none;
+}
+  }

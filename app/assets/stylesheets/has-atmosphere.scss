@@ -1,12 +1,9 @@
-@import "partials/base";
+@import "cc-runtime-base";
 
-body {
-  background-image: url('/assets/has-bg/airPollution_background2.jpg');
-  background-position-y: 45%;
-}
+$src: '/assets/has-bg/airPollution_background2.jpg';
+$c_a: #763e4b;
+$c_b: #b6625f;
+$c_c: #edaa3d;
 
-.sequence_logo_block h2 {
-  color: #6d6d6d;
-  font-family: $helv-bold;
-  font-size: 24pt;
-}
+@include theme($src, $c_a, $c_b, $c_c);
+

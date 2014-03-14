@@ -28,5 +28,6 @@
 //= require interactive-sizing
 //= require embeddable-carousel
 //= require image_question
-//= require navigation-menu-drop
+//= require nav_menu
+//= require iframe-phone
 //= require iframe-saver

@@ -32,7 +32,7 @@ select_element = (elem,val) ->
 ajax_matching = (url, params, delay=2100, method="POST") ->
   waits delay
   runs ->
-    request = mostRecentAjaxRequest();
+    request = mostRecentAjaxRequest()
     expect(request.url).toBe(url)
     expect(request.method).toBe(method)
     expect(request.params).toEqual(params)
@@ -45,7 +45,7 @@ describe 'SaveOnChange', () ->
     jasmine.Ajax.useMock()
     SaveOnChange.keyUpinterval = 300 # speed things up for test
     page = new SaveOnChangePage()
-    save_on_change = new SaveOnChange($("#openresponse"), page);
+    save_on_change = new SaveOnChange($("#openresponse"), page)
 
   describe "a sane testing environment", () ->
     it 'has an instance of save_on_change defined', () ->
@@ -74,7 +74,7 @@ describe 'SaveOnChange', () ->
       page = new SaveOnChangePage()
       new SaveOnChange($("#multiplechoice"),page)
 
-    it 'should send an ajax request with the current of the selected checkbox', ->
+    it 'should send an ajax request with the current of the selected checkbox', () ->
       runs ->
         expect($("#answer_b")).toHaveProp('checked', false)
         click_element($("#answer_b"))
@@ -85,7 +85,7 @@ describe 'SaveOnChange', () ->
           'mc_answer%5Banswers%5D=b'
         )
 
-    it 'should send an ajax request even when the same answer has been sent before', ->
+    it 'should send an ajax request even when the same answer has been sent before', () ->
       runs ->
         click_element($("#answer_b"))
         click_element($("#answer_a"))
