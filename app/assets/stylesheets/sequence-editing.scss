@@ -1,0 +1,52 @@
+.thumbnail_info {
+  margin: 1em;
+  font-size:12px;
+  color: #444;
+  .activity_thumbnail {
+    display: none;
+    clear: both;
+    height: 250px;
+    width: 300px;
+    border: 2px solid #000;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+}
+.sequence_form {
+  .field {
+    margin-top: 0.5em;
+    padding: 0.5em;
+    background-color: #FFF6E5;
+    float: left;
+    width: 100%;
+    clear: both;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    label {
+      font-weight: bold;
+      color: #A68547;
+      display: inline-block;
+      width: 30%;
+      text-align: right;
+      margin-right: 1em;
+    }
+    input {
+      display: inline-block;
+      width: 45%;
+      clear: right;
+      text-align: right;
+    }
+  }
+}
+
+#leftcol {
+    clear: left;
+    float: left;
+    width: 50%;
+}
+#rightcol {
+	float: right;
+	width: 45%;
+}
