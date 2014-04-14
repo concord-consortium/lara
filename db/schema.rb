@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140313173915) do
+ActiveRecord::Schema.define(:version => 20140414192937) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -317,6 +317,7 @@ ActiveRecord::Schema.define(:version => 20140313173915) do
     t.string   "publication_status", :default => "draft"
     t.boolean  "is_official",        :default => false
     t.string   "display_title"
+    t.string   "thumbnail_url"
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"

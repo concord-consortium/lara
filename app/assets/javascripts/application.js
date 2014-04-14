@@ -26,3 +26,4 @@
 //= require modal-dialog
 //= require check-answer
 //= require ./common.js
+//= require edit_sequence
