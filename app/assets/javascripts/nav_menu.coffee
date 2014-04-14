@@ -20,7 +20,6 @@ class NavMenu
         e.stopPropagation()
 
     $('body').click () =>
-      console.log("body click")
       @menu.hide()
 
   deactivate: (elm) ->
