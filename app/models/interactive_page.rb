@@ -1,5 +1,5 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment, :embeddable_display_mode
+  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
 
@@ -16,7 +16,7 @@ class InteractivePage < ActiveRecord::Base
   INTERACTIVE_TYPES = [{ :name => 'Image',  :class_name => 'ImageInteractive' },
                        { :name => 'Iframe', :class_name => 'MwInteractive' },
                        { :name => 'Video',  :class_name => 'VideoInteractive' }]
-
+  validates :sidebar_title, presence: true
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
   validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
 
@@ -77,6 +77,7 @@ class InteractivePage < ActiveRecord::Base
       text: text,
       layout: layout,
       sidebar: sidebar,
+      sidebar_title: sidebar_title,
       show_introduction: show_introduction,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
