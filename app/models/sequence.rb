@@ -42,7 +42,8 @@ class Sequence < ActiveRecord::Base
       'name' => self.title,
       'description' => self.description,
       "url" => local_url,
-      "create_url" => local_url
+      "create_url" => local_url,
+      "thumbnail_url" => thumbnail_url
     }
     data['activities'] = self.activities.map{ |a| a.serialize_for_portal(host) }
     data

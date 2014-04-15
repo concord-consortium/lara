@@ -21,10 +21,12 @@
       = f.text_field :logo
     .field
       = f.label :thumbnail_url, "Thumbnail URL"
-      = f.text_field :thumbnail_url
+      = f.text_field :thumbnail_url, :class => "thumbnail_source"
       %br
-      %a.thumbnail_info#toggle_thumbnail_preview
-        (Your thumbnail image should be 300px x 250px)
+      .thumbnail_info.hint
+        Your thumbnail image should be 300px x 250px
+        %a#toggle_thumbnail_preview
+          [preview]
         .activity_thumbnail#thumbnail_preview
           %img
     .field

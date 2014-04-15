@@ -34,9 +34,27 @@
     }
     input {
       display: inline-block;
-      width: 45%;
+      max-width: 45%;
       clear: right;
+    }
+    textarea {
+      display: inline-block;
+      float: right;
+    }
+    .edit_trigger {
+      float: right;
       text-align: right;
+      display: inline-block;
+    }
+    a#toggle_thumbnail_preview {
+      margin-left: 1em;
+      font-size: 0.9em;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .hint {
+      font-size: 11px;
+      color: #A68547;
     }
   }
 }
