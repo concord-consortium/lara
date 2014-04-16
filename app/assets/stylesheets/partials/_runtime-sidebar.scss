@@ -53,14 +53,19 @@
 .sidebar-hdr {
   cursor: pointer;
   left: 0;
-  background: lighten($drk-orange, 5%) url('/assets/question.png') no-repeat 50% 10px;
-  background: lighten($drk-orange, 5%) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2MTJGRTM0OEEwNzQxMUUyOUE2MkM1N0M3NTQ0M0ZDMyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2MTJGRTM0OUEwNzQxMUUyOUE2MkM1N0M3NTQ0M0ZDMyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjYxMkZFMzQ2QTA3NDExRTI5QTYyQzU3Qzc1NDQzRkMzIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjYxMkZFMzQ3QTA3NDExRTI5QTYyQzU3Qzc1NDQzRkMzIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+1dIF3QAAAZ5JREFUeNqclc8vw2AYx9eui7BJmIgdhBIkLLg57+7u7uyP8KeIa+/uPbshSBBGXDYxslERW+v7yLfJ403blSf5dG3evp8+769nVhRFBSOKYBLMgCkwAcbZ1gOv4Bm0wAsY6M6WIRwBC2COIocfsNgeUdCn+AHcgc8kYRmsAheMFfJFAJrgErxroQjWwDIoqQ4NsAXqfJbOx8CPBYgvcA0u5AMilGEtgU0OOQ4R7aVkJuJ99SxDPgE3IquCeUNWYCbx0H1OyQ6zdvnrq7kXR8fGpcYFSApfdZIhHqi2svGuOGo2MyzmXISGuj9P2G5VR22PYbHNIceZN432H5dcKjlkuyq7I+ClvFcRYQjsDFldyTwK0yIUUZcnIC1cdZ8lE0dXMuzwrJYy9pyXY1rkOHZkY8vpWM85l1nxBs5sVo0ns2oYq3tI0mJAR8tmSbrnQf9vBHT04uIgc7kINv5QabTsFNzKPDpqQpvcQissrNYQUcRCe8W62E8qsDYr9SyYZrajRoH9YFYyZ49cg1Afl18bE7RZ44KcfwGhFnwLMABgdHwtnXk12wAAAABJRU5ErkJggg==') no-repeat 50% 10px;
+  background: lighten($drk-orange, 5%);
   border-right: 4px solid $drk-orange;
   width: 85px;
   height: 79px;
   text-align: center;
   padding: 8px;
   float: left;
+  i {
+    font-size: 24px;
+    color: #fff;
+    opacity:0.7;
+    @include drk-txt-shadow($drk-orange);
+  }
   @include border-radius(3px 0 0 3px);
 
   &:hover {
@@ -74,7 +79,7 @@
     color: #fff;
     font-size: 14px;
     line-height: 1.15em;
-    margin-top: 33px;
+    margin-top: 0.2em;
     @include drk-txt-shadow($drk-orange);
   }
 }//sidebar-hdr
