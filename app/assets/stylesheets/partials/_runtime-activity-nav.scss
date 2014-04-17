@@ -75,12 +75,12 @@ div.nav-menu-top {
   background-color: white;
   border: 1px solid $black-15;
   width: 450px;
-  position: relative;
+  position: absolute;
   top: 5px;
   left: 0px;
   color: $emperor;
   padding: 8px 10px;
-  z-index: 10; /* Ensure this appears above content from the page */
+  z-index: 100; /* Ensure this appears above content from the page */
   margin-top: 10px;
   li.activity {
     line-height: 33px;

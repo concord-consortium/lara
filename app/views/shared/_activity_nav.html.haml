@@ -27,18 +27,25 @@
       %td.activity-nav-title
         = activity_name_for_menu
       %td.activity-nav.ui-block-2
-        -if @page
-          - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
-          - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
-          %a.next{ :class => ('disabled' if @page.lower_item.nil?), :href => next_href }
-          %a.prev{ :class => ('disabled' if @page.higher_item.nil?), :href => previous_href }
 
         .pages
           %ul.pagination
-            %li.pagination-item.home-link
-              = link_to 'H', runnable_activity_path(@activity), :class => @page.blank? ? 'pagination-link selected' : 'pagination-link'
+            %li.pagination-item
+              - classes = @page.blank? ? 'pagination-link selected' : 'pagination-link'
+              %a{:href=> runnable_activity_path(@activity),:class => classes}
+                %i.fa.fa-home
             - page_counter = 1
             - @activity.pages.each do |p|
               %li.pagination-item
                 = link_to page_counter, runnable_activity_page_path(@activity, p), :class => (p === @page) ? 'pagination-link selected' : 'pagination-link'
                 - page_counter = page_counter + 1
+        -if @page
+          %td.activity-nav
+            .prev_and_next
+              - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
+              - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
+              %a.pagination-link.prev{ :class => ('disabled' if @page.higher_item.nil?), :href => previous_href }
+                %i.fa.fa-arrow-left
+              %a.pagination-link.next{ :class => ('disabled' if @page.lower_item.nil?), :href => next_href }
+                %i.fa.fa-arrow-right
+            

@@ -3,24 +3,36 @@ class NavMenu
   constructor: (obj) ->
     @trigger = obj.find('a#menu-trigger')
     @menu = obj.find('div.nav-menu-top')
+    @position_menu()
     @active = @menu.find('.active')
     @openActivity = @menu.find('.on')
     @register_handlers()
 
+  position_menu: () ->
+    o = @trigger.offset()
+    parent = @trigger.parent().parent()
+    po = parent.offset()
+    margin = 12
+    @menu.offset({
+      top: o.top + @trigger.height() + margin
+      left: o.left
+    })
   register_handlers: () ->
     @trigger.click (e) =>
       @menu.toggle()
+      @position_menu()
       e.stopPropagation()
 
     @menu.find('li.activity .open-close').each (inx, elem) =>
       $elem = $(elem)
       $elem.click (e) =>
-        console.log("open-close click")
         @change_active($elem.parent())
         e.stopPropagation()
 
     $('body').click () =>
       @menu.hide()
+    $(window).resize () =>
+      @position_menu()
 
   deactivate: (elm) ->
     container = elm.find('.fa-angle-up')
@@ -41,4 +53,4 @@ class NavMenu
 root = exports ? this
 root.NavMenu = NavMenu
 $('document').ready ->
-  root.navMenu = new NavMenu($('div.nav-menu'))
+  root.navMenu = new NavMenu($('.nav-menu'))
