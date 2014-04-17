@@ -1,5 +1,5 @@
 
-$nav-bar-height: 70px;
+$nav-bar-height: auto;
 // *********************************************
 //  4. Activity nav
 // *********************************************
@@ -26,39 +26,33 @@ $nav-bar-height: 70px;
 }
 
 .activity-nav-logo {
-  float: left;
-
+  width: 100%;
   img {
     max-width: 100%;
   }
 
-  h2 {
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 1.4em;
-    color: white;
-    margin-top: 8px;
-    margin-left: 180px;
-  }
 }
 
 // This controlls the layout of the nav
-.l-nav {
-      @include ui-grid-2(70%, 30%, 5%);
-      background-color: $capecod;
-      height: $nav-bar-height;
-      @include border-radius(2px);
+table.l-nav {
+    @include ui-grid-2(70%, 30%, 5%);
+    background-color: $capecod;
+    height: $nav-bar-height;
+    @include border-radius(2px);
+    td {
+      vertical-align: middle;
+    }
 }
 
 .nav-menu {
-  height: $nav-bar-height;
   width: 130px;
   @include helv-stack(100);
-  margin-left: 30px;
+  float: none;
   font-size: 18px;
-  padding-top: 15px;
+  padding: 8px;
+  padding-left: 30px;
+  height: 100%;
   border-right: 2px solid white;
-  float: left;
   .open-close {
     cursor: pointer;
   }
@@ -171,16 +165,21 @@ div.nav-menu-top {
     left: 55px;
   }
 }
+.activity-nav-title {
+  font-size: 18px;
+  font-weight: normal;
+  color: white;
+  padding: 8px;
+}
 
 .activity-nav {
-  position: relative;
   @extend .cf;
-
+  padding: 8px;
+  float: right;
   .prev,
   .next {
     display: none;
   }
-
   .prev {
     float: right;
     background-image: url('/assets/prev.png');
@@ -207,7 +206,6 @@ div.nav-menu-top {
   @extend .cf;
   text-align: left;
   width: 100%;
-  margin-right: 8px;
   height: $nav-bar-height;
 }
 
@@ -216,29 +214,24 @@ div.nav-menu-top {
   @include border-radius(10px);
   text-align: center;
   display: inline-block;
-
+  margin-bottom: 2px;
   &:first-child {
     margin-left: 0;
   }
 
   .pagination-link {
-    margin-top: 5px;
     background-color: $wildsand;
     color: $gray;
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
     @include border-radius(13px);
     border: 3px solid #616768;
-    padding-top: 1px;
+    padding: 2px;
+    text-align: center;
     display: block;
     @include trans;
-
-/*    &:hover {
-      background: lighten($med-blue, 5%);
-      @include drk-txt-shadow($med-blue);
-      color: #fff;
-    } */
-
+    margin: 0px;
     &.selected {
       background: $seagreen;
       color: #fff;
