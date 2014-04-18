@@ -1,5 +1,5 @@
 
-class SaveOnChange
+class @SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
   keyUpinterval:  2000 # Fire keyup events with a larger delay
   constructor: (@$form, @page) ->
@@ -49,7 +49,7 @@ class SaveOnChange
       @scheduled_job = setTimeout(action, interval)
 
 
-class SaveOnChangePage
+class @SaveOnChangePage
   constructor: () ->
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
