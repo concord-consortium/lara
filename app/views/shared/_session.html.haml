@@ -15,5 +15,16 @@
     |
     = link_to "Failed runs", dirty_runs_path
 - else
-  = link_to "Log In", user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name)
+  -#= link_to "Log In", user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name)
+  - if Concord::AuthPortal.configured_portal_names.size > 1 # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed
+    .login_portal
+      .login_portal_widget_toggle
+        Log In
+        %i.fa.fa-sign-in
+      .login_portals_widget
+        %ul
+          - Concord::AuthPortal.all.each_pair do |key,portal|
+            %li.session_link
+              .text-link
+                = link_to "Sign in via #{portal.human_name}", omniauth_authorize_path("user", portal.strategy_name)
   -#= link_to "Log In", user_omniauth_authorize_path(:concord_portal)

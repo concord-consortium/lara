@@ -1,43 +1,34 @@
-table.session {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  td:nth-child(odd) {
-    text-align: right
+.login_portal {
+  width: 200px;
+  padding: 10px;
+  margin: 0em;
+}
+.login_portal_widget_toggle {
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 10px;
+}
+.login_portals_widget {
+
+  -webkit-border-radius: 4px   4px;
+     -moz-border-radius: 4px / 4px;
+   -khtml-border-radius: 4px / 4px;
+          border-radius: 4px / 4px; 
+
+  display: none;
+  position: absolute;
+  width: 200px;
+  background-color: #bddfdf;
+  text-align: right;
+  padding: 10px;
+  ul {
+    padding: inherit;
+    margin: inherit;
+    list-style-type: none;
+    li {
+      padding: none;
+      margin: none;
+    }
   }
-  td:nth-child(even) {
-    text-align: left
-  }
-  td { padding: 0.3em;}
-  label {
-    font-weight: bold;
-  }
-  border: 1px solid gray;
-  width:100%;
 }
 
-div.session {
-  display: block;
-  clear: both;
-  margin: auto;
-  padding: 1em;
-  form {
-    width: 400px;
-  }
-}
-
-#session_links {
-  display: block;
-}
-
-span.session_link {
-  padding-right: 0.5em;
-}
-
-li.session_link {
-  display: block;
-  border: 1px solid gray;
-  margin: 0 5px 5px 0;
-  height: 100px;
-  padding: 5px;
-  overflow: hidden;
-}
