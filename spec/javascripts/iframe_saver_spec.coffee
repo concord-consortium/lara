@@ -1,4 +1,5 @@
 #= require save-indicator
+#= require iframe-phone
 #= require iframe-saver
 
 success_response =
@@ -27,9 +28,8 @@ describe 'IFrameSaver', () ->
   fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
 
   beforeEach () ->
-    window.Lab =
-      IFramePhone: () ->
-        return fake_phone
+    window.iframePhone.ParentEndpoint = () ->
+      return fake_phone
     loadFixtures "iframe-saver.html"
 
   describe "with an interactive in in iframe", ->

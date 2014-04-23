@@ -1,5 +1,5 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title
+  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title, :thumbnail_url
   include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences
@@ -42,7 +42,8 @@ class Sequence < ActiveRecord::Base
       'name' => self.title,
       'description' => self.description,
       "url" => local_url,
-      "create_url" => local_url
+      "create_url" => local_url,
+      "thumbnail_url" => thumbnail_url
     }
     data['activities'] = self.activities.map{ |a| a.serialize_for_portal(host) }
     data

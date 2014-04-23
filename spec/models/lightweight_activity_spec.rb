@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe LightweightActivity do
-  let (:valid) { FactoryGirl.build(:activity) }
-  let (:activity) { FactoryGirl.create(:activity) }
-  let (:author) { FactoryGirl.create(:author) }
+  let(:valid)         { FactoryGirl.build(:activity) }
+  let(:thumbnail_url) { "http://fake.url.com/image" }
+  let(:activity)      { FactoryGirl.create(:activity, :thumbnail_url => thumbnail_url) }
+  let(:author)        { FactoryGirl.create(:author) }
 
   it 'should have valid attributes' do
     activity.name.should_not be_blank
@@ -186,9 +187,12 @@ describe LightweightActivity do
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
-      {"type"=>"Activity", "name"=> activity.name, "description"=> activity.description,
-        "url"=> url,
-        "create_url"=> url,
+      { "type"          =>"Activity", 
+        "name"          => activity.name, 
+        "description"   => activity.description,
+        "url"           => url,
+        "create_url"    => url,
+        "thumbnail_url" => thumbnail_url,
         "sections"=>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end

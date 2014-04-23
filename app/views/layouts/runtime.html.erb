@@ -36,7 +36,6 @@
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>
-  <%= javascript_include_tag '//lab.dev.concord.org/lab/lab.iframe-phone.js' %>
 </head>
 
 
@@ -75,9 +74,7 @@
         <!-- TODO: How to control that? -->
 				<div class="activity-nav-mod">
 
-					<div class="l-nav site-width">
-						<%= render :partial => 'shared/activity_nav' %>
-					</div><!-- end l-nav site-width -->
+        <%= render :partial => 'shared/activity_nav' %>
 
 				</div> <!-- end activity-nav-mod -->
 

@@ -58,9 +58,9 @@
 - if @page.show_sidebar && !@page.sidebar.blank?
   .sidebar-mod
     .sidebar-hdr
+      %i.fa.fa-arrow-circle-left
       %h5.h5
-        -# TODO: Content for this head
-        Did you know?
+        = @page.sidebar_title
     .sidebar-bd
       .sidebar-bd-close
         X

@@ -17,7 +17,7 @@ describe PublicationsController do
         should route_to({
           :controller       => 'publications', 
           :action           => 'show_status',
-          :publishable_type => 'LightweigthActivity', 
+          :publishable_type => 'LightweigthActivity',
           :publishable_id   => "3"
       })
     end
@@ -25,16 +25,19 @@ describe PublicationsController do
 
   describe "#add_portal" do
     let(:act_one) do
-      LightweightActivity.create!(:name => 'Activity One',
-                                  :description => 'Activity One Description',
-                                  :publication_status => 'public')
+      LightweightActivity.create!({
+        :name => 'Activity One',
+        :description => 'Activity One Description',
+        :publication_status => 'public',
+        :thumbnail_url    => 'thumbnail',
+      })
     end
-    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
+    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"thumbnail_url\":\"thumbnail\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
     let(:publishing_url) { "http://foo.bar/publish/v2/blarg"}
     let(:url) { "http://foo.bar/"}
     let(:mock_portal) { mock(:publishing_url => publishing_url, :url => url) }
     let(:good_request) {{
-      :body => "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}",
+      :body => "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"thumbnail_url\":\"thumbnail\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}",
       :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'}
     }}
     let(:good_response)   { {:status => 201, :body => "", :headers => {} }}

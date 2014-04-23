@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe InteractivePage do
-  let (:page) do
-    p = FactoryGirl.create(:page)
+  let(:page) do
+    p = FactoryGirl.create(:page, :sidebar_title => "sidebar")
     [3,1,2].each do |i|
       embed = FactoryGirl.create(:xhtml, :name => "embeddable #{i}", :content => "This is the #{ActiveSupport::Inflector.ordinalize(i)} embeddable")
       p.add_embeddable(embed, i)
@@ -28,6 +28,24 @@ describe InteractivePage do
       page.sidebar = '<p class="valid-attribute">Much better.</p>'
       page.valid?
     end
+
+    it 'rejects empty sidebar titles' do
+      page.sidebar_title = ""
+      page.should_not be_valid
+      page.sidebar_title = "   "
+      page.should_not be_valid
+      page.sidebar_title = nil
+      page.should_not be_valid
+    end
+    it 'accepts non blank sidebar titles' do
+      page.sidebar_title = "sidebar"
+      page.should be_valid
+    end
+  end
+
+  describe 'default values' do
+    subject { InteractivePage.new }
+    its(:sidebar_title) { should == "Did you know?" }
   end
 
   describe 'layouts' do
@@ -115,6 +133,7 @@ describe InteractivePage do
         text: page.text,
         layout: page.layout,
         sidebar: page.sidebar,
+        sidebar_title: page.sidebar_title,
         show_introduction: page.show_introduction,
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,
@@ -130,6 +149,7 @@ describe InteractivePage do
       dupe.should be_a(InteractivePage)
       dupe.name.should == page.name
       dupe.text.should == page.text
+      dupe.sidebar_title.should == page.sidebar_title
     end
 
     it 'has copies of the original interactives' do

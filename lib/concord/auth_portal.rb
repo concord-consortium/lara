@@ -134,7 +134,9 @@ module Concord
         def self.url
           @url
         end
-
+        def self.human_name
+          strategy_name.gsub("cc_portal","").split('_').join(" ").strip
+        end
         def self.publishing_url
           self.url + PublishingPath
         end

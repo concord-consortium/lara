@@ -103,7 +103,8 @@ class LightweightActivity < ActiveRecord::Base
       "name" => self.name,
       "description" => self.description,
       "url" => local_url,
-      "create_url" => local_url
+      "create_url" => local_url,
+      "thumbnail_url" => thumbnail_url
     }
 
     pages = []

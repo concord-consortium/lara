@@ -54,9 +54,11 @@ describe Sequence do
   end
 
   describe '#serialize_for_portal' do
+    let(:thumbnail_url) { "http://i.huffpost.com/gen/1469621/thumbs/o-MARK-TWAIN-facebook.jpg" }
     let(:act1) { FactoryGirl.build(:activity_with_page) }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
+      seq.thumbnail_url = thumbnail_url
       seq.activities << act1
       seq.save!
       seq
@@ -67,6 +69,7 @@ describe Sequence do
       {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "url"=> url,
         "create_url"=> url,
+        "thumbnail_url" => nil, # our simple sequence doesn't have one
         "activities"=>[]
       }
     end
@@ -76,6 +79,7 @@ describe Sequence do
       {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "url"=> url,
         "create_url"=> url,
+        "thumbnail_url" => thumbnail_url,
         "activities"=>[act1.serialize_for_portal("http://test.host")]
       }
     end

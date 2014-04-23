@@ -122,8 +122,8 @@ describe InteractivePagesController do
       page2
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a class='disabled prev'>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}'>/
+      response.body.should match /<a class='pagination-link prev disabled'>/
+      response.body.should match /<a class='pagination-link'/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -132,8 +132,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages[1].id, :response_key => ar.key
 
-      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
-      response.body.should match /<a class='next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
+      response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
+      response.body.should match /<a class='pagination-link next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -142,8 +142,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.last.id, :response_key => ar.key
 
-      response.body.should match /<a class='prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
-      response.body.should match /<a class='disabled next'>/
+      response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
+      response.body.should match /<a class='pagination-link next disabled'>/
     end
 
     it 'indicates the active page with a DOM class attribute' do
