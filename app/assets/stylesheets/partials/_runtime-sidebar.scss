@@ -56,7 +56,7 @@
   background: lighten($drk-orange, 5%);
   border-right: 4px solid $drk-orange;
   width: 85px;
-  height: 79px;
+  min-height: 79px;
   text-align: center;
   padding: 8px;
   float: left;
