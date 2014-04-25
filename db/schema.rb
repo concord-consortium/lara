@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140415200310) do
+ActiveRecord::Schema.define(:version => 20140425210250) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
     t.text     "annotation"
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",            :default => false
+    t.boolean  "is_prediction",       :default => false
   end
 
   add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_embeddable_image_question_answers_on_image_question_id"
@@ -66,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
     t.string   "bg_source",      :default => "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
+    t.boolean  "is_prediction",  :default => false
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
@@ -74,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.boolean  "is_dirty",           :default => false
+    t.boolean  "is_prediction",      :default => false
   end
 
   add_index "embeddable_multiple_choice_answers", ["multiple_choice_id"], :name => "index_embeddable_multiple_choice_answers_on_multiple_choice_id"
@@ -99,6 +102,7 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
     t.boolean  "enable_check_answer", :default => true
     t.boolean  "multi_answer",        :default => false
     t.boolean  "show_as_menu",        :default => false
+    t.boolean  "is_prediction",       :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -108,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.boolean  "is_dirty",         :default => false
+    t.boolean  "is_prediction",    :default => false
   end
 
   add_index "embeddable_open_response_answers", ["open_response_id"], :name => "index_embeddable_open_response_answers_on_open_response_id"
@@ -116,9 +121,10 @@ ActiveRecord::Schema.define(:version => 20140415200310) do
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
-    t.text     "prompt",     :default => "Why does ..."
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.text     "prompt",        :default => "Why does ..."
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.boolean  "is_prediction", :default => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
