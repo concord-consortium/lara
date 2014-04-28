@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140425210250) do
+ActiveRecord::Schema.define(:version => 20140428133725) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(:version => 20140425210250) do
     t.text     "annotation"
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",            :default => false
-    t.boolean  "is_prediction",       :default => false
+    t.boolean  "is_final",            :default => false
   end
 
   add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_embeddable_image_question_answers_on_image_question_id"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20140425210250) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.boolean  "is_dirty",           :default => false
-    t.boolean  "is_prediction",      :default => false
+    t.boolean  "is_final",           :default => false
   end
 
   add_index "embeddable_multiple_choice_answers", ["multiple_choice_id"], :name => "index_embeddable_multiple_choice_answers_on_multiple_choice_id"
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(:version => 20140425210250) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.boolean  "is_dirty",         :default => false
-    t.boolean  "is_prediction",    :default => false
+    t.boolean  "is_final",         :default => false
   end
 
   add_index "embeddable_open_response_answers", ["open_response_id"], :name => "index_embeddable_open_response_answers_on_open_response_id"
