@@ -2,7 +2,7 @@ module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
     include Answer # Common methods for Answer models
 
-    attr_accessible :answers, :run, :question, :is_dirty
+    attr_accessible :answers, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
       :class_name  => 'Embeddable::MultipleChoice',
@@ -22,6 +22,7 @@ module Embeddable
     delegate :enable_check_answer, :to  => :question
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
+    delegate :is_prediction,       :to  => :question
 
     after_update :send_to_portal
 

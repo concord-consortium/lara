@@ -2,6 +2,8 @@
   = f.error_messages
   = field_set_tag 'Heading' do
     = f.text_field :name
+  = field_set_tag 'Prediction' do
+    = f.check_box :is_prediction
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5
     :javascript

@@ -2,7 +2,7 @@ module Embeddable
   class OpenResponseAnswer < ActiveRecord::Base
     include Answer # Common methods for Answer models
 
-    attr_accessible :answer_text, :run, :question, :is_dirty
+    attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
       :class_name => 'Embeddable::OpenResponse',
@@ -10,8 +10,9 @@ module Embeddable
 
     belongs_to :run
 
-    delegate :prompt,  :to  => :question
-    delegate :name,    :to  => :question
+    delegate :prompt,        :to  => :question
+    delegate :name,          :to  => :question
+    delegate :is_prediction, :to  => :question
 
     after_update :send_to_portal
 

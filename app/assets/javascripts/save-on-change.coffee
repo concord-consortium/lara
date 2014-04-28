@@ -85,6 +85,12 @@ class @SaveOnChangePage
   mark_clean: (form) ->
     delete @dirty_forms[form]
 
+  force_save_item: ($form_jq) ->
+    for f in @forms
+        do (f) ->
+          if f.$form[0] ==$form_jq[0]
+            f.saveElement(false)
+
   force_save_dirty: ->
     for item, value of @dirty_forms
       value.saveNow()
@@ -103,4 +109,4 @@ class @SaveOnChangePage
 $(document).ready ->
   window.SaveOnChangePage = SaveOnChangePage
   window.SaveOnChange     = SaveOnChange
-  new SaveOnChangePage()
+  SaveOnChangePage.instance = new SaveOnChangePage()

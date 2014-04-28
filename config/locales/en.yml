@@ -21,3 +21,5 @@ en:
   MAKE_DRAWING: "Make drawing"
   DONE: "Done"
   CANCEL: "Cancel"
+  PREDICTION_BUTTON: "Submit your prediction"
+  ANSWER_IS_FINAL: "Your answer can not be changed."
