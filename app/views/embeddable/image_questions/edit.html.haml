@@ -2,6 +2,8 @@
   = f.error_messages
   = field_set_tag 'Heading' do
     = f.text_field :name
+  = f.check_box :is_prediction
+  = t(:IS_PREDICTION_QUESTION)
   = field_set_tag 'Drawing Prompt' do
     %label
       This appears above the drawing area.
