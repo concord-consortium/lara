@@ -12,7 +12,10 @@ class RenameIsPredictionToIsFinalInAnswers < ActiveRecord::Migration
 
   def up
     table_names.each do |table_name|
-      remove_index table_name, index_name(table_name)
+      begin
+        remove_index table_name, index_name(table_name)
+      rescue
+      end
       change_table table_name do |t|
         t.rename :is_prediction, :is_final
       end
@@ -22,7 +25,10 @@ class RenameIsPredictionToIsFinalInAnswers < ActiveRecord::Migration
 
   def down
     table_names.each do |table_name|
-      remove_index table_name, index_name(table_name)
+      begin
+        remove_index table_name, index_name(table_name)
+      rescue
+      end
       change_table table_name do |t|
         t.rename :is_final, :is_prediction
       end
