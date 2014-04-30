@@ -1,7 +1,6 @@
 class RenameIsPredictionToIsFinalInAnswers < ActiveRecord::Migration
   def table_names
     %w[
-      embeddable_multiple_choice_answers
       embeddable_open_response_answers
       embeddable_image_question_answers
     ]
