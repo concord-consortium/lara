@@ -2,6 +2,8 @@
   = f.error_messages
   = field_set_tag 'Heading' do
     = f.text_field :name
+  = f.check_box :is_prediction
+  = t(:IS_PREDICTION_QUESTION)
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5
     :javascript
@@ -17,9 +19,6 @@
         %li
           = f.check_box :show_as_menu
           Show as drop-down menu
-        %li
-          = f.check_box :is_prediction
-          Prediction question
         %li
           = f.check_box :custom
           Custom Feedback
