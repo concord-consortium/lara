@@ -8,16 +8,22 @@
       $(function() {
           $('#embeddable_multiple_choice_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
       });
+  = field_set_tag 'Options' do
+    .options
+      %ul
+        %li
+          = f.check_box :multi_answer
+          Allow multiple answers
+        %li
+          = f.check_box :show_as_menu
+          Show as drop-down menu
+        %li
+          = f.check_box :is_prediction
+          Prediction question
+        %li
+          = f.check_box :custom
+          Custom Feedback
   = field_set_tag 'Choices' do
-    %label
-      Allow multiple answers
-      = f.check_box :multi_answer
-    %label
-      Show as drop-down menu
-      = f.check_box :show_as_menu
-    %label
-      Custom Feedback
-      = f.check_box :custom
     .choices
       %ul
         - @embeddable.choices.each do |choice|
