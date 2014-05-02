@@ -3,7 +3,7 @@ class Prediction
   constructor: (@$button) ->
     @$form = @$button.parent().parent()
     @$is_final = @$form.find('.hidden_is_final')
-    if @$is_final.val() == "t"
+    if @marked_final()
       @disable_form()
     else
       @enable_form()
@@ -11,6 +11,10 @@ class Prediction
     @$button.click (e) =>
       @record_answer()
       @disable_form()
+
+  marked_final: ->
+    val = @$is_final.val()
+    (val == "t" || val == "1")
 
   record_answer: ->
     @$is_final.val('1')
