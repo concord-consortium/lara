@@ -22,5 +22,5 @@ en:
   DONE: "Done"
   CANCEL: "Cancel"
   PREDICTION_BUTTON: "Submit your prediction"
-  ANSWER_IS_FINAL: "Your answer can not be changed."
+  ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Prediction Question?"
