@@ -1,11 +1,10 @@
 = form_for @embeddable do |f|
-  = f.error_messages
-  = field_set_tag 'Heading' do
-    = f.text_field :name
-  = f.check_box :is_prediction
-  = t(:IS_PREDICTION_QUESTION)
+  .errors
+    = f.error_messages
+  = f.label "Heading"
+  = f.text_field :name
   = field_set_tag 'Drawing Prompt' do
-    %label
+    .help
       This appears above the drawing area.
       = f.text_area :drawing_prompt, :rows => 5
       :javascript
@@ -13,22 +12,32 @@
             $('#embeddable_image_question_drawing_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
         });
   = field_set_tag 'Question Prompt' do
-    %label
+    .help
       This appears next to the text response area. If this is blank, the user will not be shown a text response area.
       = f.text_area :prompt, :rows => 5
       :javascript
         $(function() {
             $('#embeddable_image_question_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
         });
-  = field_set_tag 'Background' do
-    %label
-      Source
-      = f.select :bg_source, ['Shutterbug', 'Drawing']
-    %br{ :style => 'clear: both;' }
-    %label
-      Background image URL (Optional, will be ignored for Shutterbug questions): 
-      = f.text_field :bg_url
-    %br
-    %span.help The drawing canvas is 648 pixels wide by 496 pixels high. Smaller images will be centered in the canvas; larger images will be scaled to fit in the canvas, with aspect ratio preserved.
+  = field_set_tag "Options" do
+    %ul
+      %li
+        = f.check_box :is_prediction
+        = t(:IS_PREDICTION_QUESTION)
+
+      %li
+        %label
+          Source
+          = f.select :bg_source, ['Shutterbug', 'Drawing']
+      %li
+        %label
+          Background image URL
+          = f.text_field :bg_url
+          %span.help
+            Optional, will be ignored for Shutterbug questions. The drawing
+            canvas is 648 pixels wide by 496 pixels high.  Smaller images will
+            be centered in the canvas; larger images will be scaled to fit in
+            the canvas, with aspect ratio preserved.
+
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
