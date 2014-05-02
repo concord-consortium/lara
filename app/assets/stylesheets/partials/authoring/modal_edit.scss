@@ -1,0 +1,32 @@
+
+#modal {
+  #add_new_choice {
+    /* Hacky way of moving this out of flow and putting it a line above where it should be */
+    position: absolute;
+    right: 5px;
+    margin-top: -1em;
+  }
+  .choices {
+    .delete_choice {
+      position: relative;
+      left: 20px;
+    }
+  }
+  li {
+    list-style: none;
+  }
+  label {
+    font-weight: bold;
+  }
+  fieldset {
+    margin-top: 1em;
+  }
+  fieldset legend {
+    font-weight: bold;
+  }
+  button {
+    float: right;
+    margin: 1em;
+  }
+}
+

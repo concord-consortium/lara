@@ -819,31 +819,9 @@ fieldset {
 }
 /* Breadcrumbs */
 div.breadcrumbs li { list-style: none; float: left; margin-right: .5em; }
+
 /* Inside the modal edit window */
-#modal {
-  #add_new_choice {
-    /* Hacky way of moving this out of flow and putting it a line above where it should be */
-    position: absolute;
-    right: 5px;
-    margin-top: -1em;
-  }
-  .choices {
-    .delete_choice {
-      position: relative;
-      left: 20px;
-    }
-    li {
-      list-style: none;
-    }
-  }
-  fieldset legend {
-    font-weight: bold;
-  }
-  button {
-    float: right;
-    margin: 1em;
-  }
-}
+@import "partials/authoring/modal_edit";
 
 /* User admin stuff */
 body.admin {
