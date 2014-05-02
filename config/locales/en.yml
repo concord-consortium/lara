@@ -24,3 +24,4 @@ en:
   PREDICTION_BUTTON: "Submit your prediction"
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Prediction Question?"
+  LET_USERS_CHECK_MC_ANSWERS: "Allow users to check answers?"

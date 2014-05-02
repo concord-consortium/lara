@@ -1,9 +1,7 @@
 = nested_form_for @embeddable do |f|
   = f.error_messages
-  = field_set_tag 'Heading' do
-    = f.text_field :name
-  = f.check_box :is_prediction
-  = t(:IS_PREDICTION_QUESTION)
+  = f.label 'Heading'
+  = f.text_field :name
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5
     :javascript
@@ -22,23 +20,25 @@
         %li
           = f.check_box :custom
           Custom Feedback
+        %li
+          = f.check_box :is_prediction
+          = t(:IS_PREDICTION_QUESTION)
+        %li
+          = f.check_box :enable_check_answer
+          = t(:LET_USERS_CHECK_MC_ANSWERS)
   = field_set_tag 'Choices' do
-    .choices
-      %ul
-        - @embeddable.choices.each do |choice|
-          = f.fields_for :choices, choice do |choice_form|
-            %li
-              Choice:
-              = choice_form.text_field :choice
-              Correct:
-              = choice_form.check_box :is_correct
-              = choice_form.link_to_remove "Delete"
-            %li.custom-hidden{ :style => @embeddable.custom ? '' : 'display: none;' }
-              Message:
-              = choice_form.text_field :prompt
-      = f.link_to_add "Add choice", :choices
-    %label
-      Allow users to check answers
-      = f.check_box :enable_check_answer
+    %ul
+      - @embeddable.choices.each do |choice|
+        = f.fields_for :choices, choice do |choice_form|
+          %li
+            Choice:
+            = choice_form.text_field :choice
+            Correct:
+            = choice_form.check_box :is_correct
+            = choice_form.link_to_remove "Delete"
+          %li.custom-hidden{ :style => @embeddable.custom ? '' : 'display: none;' }
+            Message:
+            = choice_form.text_field :prompt
+    = f.link_to_add "Add choice", :choices
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
