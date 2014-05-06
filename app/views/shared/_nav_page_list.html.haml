@@ -1,9 +1,9 @@
 - pages.each do |page|
   - classes = ""
-  - if (@sequence)
+  - if (@sequence && @activity && activity && @page)
     - classes = "forward_nav" if (activity.position(@sequence) > @activity.position(@sequence))
     - classes = "forward_nav" if (@activity.position(@sequence) == activity.position(@sequence) && page.position > @page.position)
   - else
     - if (@page)
       - classes = "forward_nav" if page.position > @page.position
-  %li.page=page_link(activity,page)
+  %li.page=page_link(activity,page, {:class => classes})

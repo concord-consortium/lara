@@ -133,7 +133,7 @@ describe InteractivePagesController do
       get :show, :id => act.pages[1].id, :response_key => ar.key
 
       response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
-      response.body.should match /<a class='pagination-link next' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
+      response.body.should match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -143,7 +143,7 @@ describe InteractivePagesController do
       get :show, :id => act.pages.last.id, :response_key => ar.key
 
       response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
-      response.body.should match /<a class='pagination-link next disabled'>/
+      response.body.should match /<a class='pagination-link next forward_nav disabled'>/
     end
 
     it 'indicates the active page with a DOM class attribute' do
