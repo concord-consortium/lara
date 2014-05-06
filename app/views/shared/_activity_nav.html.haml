@@ -37,7 +37,11 @@
             - page_counter = 1
             - @activity.pages.each do |p|
               %li.pagination-item
-                = link_to page_counter, runnable_activity_page_path(@activity, p), :class => (p === @page) ? 'pagination-link selected' : 'pagination-link'
+                - classes = 'pagination-link'
+                - if @page
+                  - classes << ' selected' if p == @page
+                  - classes << ' forward_nav' if p.position > @page.position
+                = link_to page_counter, runnable_activity_page_path(@activity, p), :class => classes
                 - page_counter = page_counter + 1
         -if @page
           %td.activity-nav
@@ -45,7 +49,7 @@
               - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
               - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
               - prev_classes  = 'pagination-link prev'
-              - next_classes  = 'pagination-link next'
+              - next_classes  = 'pagination-link next forward_nav'
               - prev_classes << ' disabled' if @page.higher_item.nil?
               - next_classes << ' disabled' if @page.lower_item.nil?
               %a{ :class => prev_classes, :href => previous_href }

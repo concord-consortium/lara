@@ -54,16 +54,32 @@ class @SaveOnChangePage
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
+    @prevent_forward_navigation_count = 0
     if $('.live_submit').length
       $('.live_submit').each (i,e) =>
         @forms.push(new SaveOnChange($(e),@))
     @dirty_forms = {}
+    $(document).bind 'prevent_forward_navigation', (e) =>
+      @prevent_forward_navigation_count += 1
+      $('.forward_nav').addClass('disabled')
+    $(document).bind 'enable_forward_navigation', (e) =>
+      @prevent_forward_navigation_count -= 1
+      if (!@prevent_forward_navigation())
+        $('.forward_nav').removeClass('disabled')
 
   intercept_navigation: ->
     $("a").not('.colorbox').not('[target]').on 'click', (e) =>
       @stored_location = e.currentTarget.href
-      @force_save_dirty()
+      target = $(e.currentTarget)
+      allow_navigation = true
+      if(target.hasClass('forward_nav') && @prevent_forward_navigation())
+        allow_navigation= false
+      @force_save_dirty(allow_navigation)
       e.preventDefault()
+
+  prevent_forward_navigation: ->
+    return false if @prevent_forward_navigation_count < 1
+    return true
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -91,7 +107,7 @@ class @SaveOnChangePage
           if f.$form[0] ==$form_jq[0]
             f.saveElement(false)
 
-  force_save_dirty: ->
+  force_save_dirty: (allow_navigation=true)->
     for item, value of @dirty_forms
       value.saveNow()
     waiting_on = IFrameSaver.instances.length
@@ -101,9 +117,11 @@ class @SaveOnChangePage
         saver.save =>
           found = found + 1
           if (found + 1 ) >= waiting_on
-            @navigate_away()
+            if allow_navigation
+              @navigate_away()
     else
-      @navigate_away()
+      if allow_navigation
+        @navigate_away()
 
 
 $(document).ready ->

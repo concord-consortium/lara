@@ -26,6 +26,7 @@ class Prediction
     @$form.find('button').removeClass("disabled");
     @$form.find('.still_answering').show()
     @$form.find('.is_final').hide()
+    @disable_forward_navigation()
 
   disable_form: ->
     @$form.find(':input').prop("disabled", true);
@@ -33,6 +34,13 @@ class Prediction
     @$form.find('button').addClass("disabled");
     @$form.find('.still_answering').hide()
     @$form.find('.is_final').show()
+    @enable_forward_navigation()
+
+  disable_forward_navigation: ->
+    $(document).trigger("prevent_forward_navigation");
+
+  enable_forward_navigation: ->
+    $(document).trigger("enable_forward_navigation");
 
 window.Prediction = Prediction
 $(document).ready ->
