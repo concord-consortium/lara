@@ -37,10 +37,10 @@ class Prediction
     @enable_forward_navigation()
 
   disable_forward_navigation: ->
-    $(document).trigger("prevent_forward_navigation");
+    $(document).trigger("prevent_forward_navigation",{source: @$form})
 
   enable_forward_navigation: ->
-    $(document).trigger("enable_forward_navigation");
+    $(document).trigger("enable_forward_navigation",{source: @$form})
 
 window.Prediction = Prediction
 $(document).ready ->

@@ -48,9 +48,54 @@ class @SaveOnChange
         @saveElement()
       @scheduled_job = setTimeout(action, interval)
 
+class @ForwardBlocker
+  constructor: (@binding=$(document)) ->
+    @blockers = []
+    @blocking = false
+    @bind_events()
+
+  bind_events: ->
+    @binding.bind 'prevent_forward_navigation', (e,opts) =>
+      @prevent_forward_navigation_for(opts.source)
+    @binding.bind 'enable_forward_navigation', (e,opts) =>
+      @enable_forward_navigation_for(opts.source)
+    @binding.bind 'navigate_away', (e,opts) =>
+      @navigate_away(opts.click_element)
+
+  prevent_forward_navigation_for: (blocker) ->
+    if blocker not in @blockers
+      @blockers.push blocker
+      @update_display()
+
+  enable_forward_navigation_for: (blocker) ->
+    index = @blockers.indexOf(blocker)
+    if index > -1
+      @blockers.splice(index,1)
+      @update_display()
+
+  navigate_away: (click_element) ->
+    location = click_element.href
+    console.log "asked to navigate away by #{click_element}"
+    console.log "asked to navigate to #{location}"
+    unless @block_for_element(click_element)
+      window.location = location
+
+  update_display: () ->
+    num_blockers = @blockers.length
+    if num_blockers > 0
+      $('.forward_nav').addClass('disabled')
+      @blocking = true
+    else
+      $('.forward_nav').removeClass('disabled')
+      @blocking = false
+
+   block_for_element: (elm) ->
+     debugger
+     return false unless $(elm).hasClass('forward_nav')
+     return @blocking
 
 class @SaveOnChangePage
-  constructor: () ->
+  constructor: (@blocker = new ForwardBlocker()) ->
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
@@ -59,27 +104,12 @@ class @SaveOnChangePage
       $('.live_submit').each (i,e) =>
         @forms.push(new SaveOnChange($(e),@))
     @dirty_forms = {}
-    $(document).bind 'prevent_forward_navigation', (e) =>
-      @prevent_forward_navigation_count += 1
-      $('.forward_nav').addClass('disabled')
-    $(document).bind 'enable_forward_navigation', (e) =>
-      @prevent_forward_navigation_count -= 1
-      if (!@prevent_forward_navigation())
-        $('.forward_nav').removeClass('disabled')
 
   intercept_navigation: ->
     $("a").not('.colorbox').not('[target]').on 'click', (e) =>
-      @stored_location = e.currentTarget.href
-      target = $(e.currentTarget)
-      allow_navigation = true
-      if(target.hasClass('forward_nav') && @prevent_forward_navigation())
-        allow_navigation= false
-      @force_save_dirty(allow_navigation)
       e.preventDefault()
-
-  prevent_forward_navigation: ->
-    return false if @prevent_forward_navigation_count < 1
-    return true
+      @click_element   = e.currentTarget
+      @force_save_dirty()
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -95,8 +125,9 @@ class @SaveOnChangePage
     @dirty_forms[form] = form;
 
   navigate_away: ->
-    if @stored_location
-      window.location = @stored_location
+    if @click_element
+      args = {click_element: @click_element}
+      $(document).trigger('navigate_away', args)
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
@@ -107,7 +138,7 @@ class @SaveOnChangePage
           if f.$form[0] ==$form_jq[0]
             f.saveElement(false)
 
-  force_save_dirty: (allow_navigation=true)->
+  force_save_dirty: ()->
     for item, value of @dirty_forms
       value.saveNow()
     waiting_on = IFrameSaver.instances.length
@@ -117,11 +148,9 @@ class @SaveOnChangePage
         saver.save =>
           found = found + 1
           if (found + 1 ) >= waiting_on
-            if allow_navigation
-              @navigate_away()
+            @navigate_away()
     else
-      if allow_navigation
-        @navigate_away()
+      @navigate_away()
 
 
 $(document).ready ->
