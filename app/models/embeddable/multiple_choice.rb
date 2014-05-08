@@ -14,7 +14,8 @@ module Embeddable
       :foreign_key => 'multiple_choice_id'
 
     attr_accessible :name, :prompt, :custom, :choices_attributes, 
-      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction
+      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,
+      :give_prediction_feedback, :prediction_feedback
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     default_value_for :name, "Multiple Choice Question element"

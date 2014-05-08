@@ -1,6 +1,7 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
-    attr_accessible :name, :prompt, :is_prediction
+    attr_accessible :name, :prompt, :is_prediction,
+      :give_prediction_feedback, :prediction_feedback
 
     include Embeddable
 

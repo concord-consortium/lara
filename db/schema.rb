@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140428133725) do
+ActiveRecord::Schema.define(:version => 20140508153141) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -62,12 +62,14 @@ ActiveRecord::Schema.define(:version => 20140428133725) do
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
-    t.string   "bg_source",      :default => "Shutterbug"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+    t.string   "bg_source",                :default => "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
-    t.boolean  "is_prediction",  :default => false
+    t.boolean  "is_prediction",            :default => false
+    t.boolean  "give_prediction_feedback", :default => false
+    t.text     "prediction_feedback",      :default => ""
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
@@ -95,14 +97,16 @@ ActiveRecord::Schema.define(:version => 20140428133725) do
 
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
-    t.text     "prompt",              :default => "Why does ..."
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
-    t.boolean  "custom",              :default => false
-    t.boolean  "enable_check_answer", :default => true
-    t.boolean  "multi_answer",        :default => false
-    t.boolean  "show_as_menu",        :default => false
-    t.boolean  "is_prediction",       :default => false
+    t.text     "prompt",                   :default => "Why does ..."
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.boolean  "custom",                   :default => false
+    t.boolean  "enable_check_answer",      :default => true
+    t.boolean  "multi_answer",             :default => false
+    t.boolean  "show_as_menu",             :default => false
+    t.boolean  "is_prediction",            :default => false
+    t.boolean  "give_prediction_feedback", :default => false
+    t.text     "prediction_feedback",      :default => ""
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -121,10 +125,12 @@ ActiveRecord::Schema.define(:version => 20140428133725) do
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
-    t.text     "prompt",        :default => "Why does ..."
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.boolean  "is_prediction", :default => false
+    t.text     "prompt",                   :default => "Why does ..."
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.boolean  "is_prediction",            :default => false
+    t.boolean  "give_prediction_feedback", :default => false
+    t.text     "prediction_feedback",      :default => ""
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|

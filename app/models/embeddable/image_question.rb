@@ -1,5 +1,6 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt, :bg_source, :bg_url, :drawing_prompt, :is_prediction
+  attr_accessible :name, :prompt, :bg_source, :bg_url, :drawing_prompt,
+    :is_prediction, :give_prediction_feedback, :prediction_feedback
 
   include Embeddable
 

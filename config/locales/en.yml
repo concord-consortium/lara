@@ -25,3 +25,5 @@ en:
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Prediction Question?"
   LET_USERS_CHECK_MC_ANSWERS: "Allow users to check answers?"
+  GIVE_PREDICTION_FEEDBACK: "Provide prediction feedback?"
+  PREDICTION_FEEDBACK: "Prediction feedback"
