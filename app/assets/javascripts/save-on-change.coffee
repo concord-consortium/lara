@@ -1,3 +1,25 @@
+unless Array::filter
+  Array::filter = (callback) ->
+    element for element in this when callback(element)
+
+class @AnswerChecker
+  @FieldNames = [
+    "embeddable_open_response_answer[answer_text]"
+    "embeddable_multiple_choice_answer[answers]"
+    "embeddable_image_question_answer[annotation]"
+    "embeddable_image_question_answer[image_url]"
+    "embeddable_image_question_answer[annotated_image_url]"
+    "embeddable_image_question_answer[answer_text]"
+  ]
+  constructor: (@$form) ->
+    @data = @$form.serializeArray()
+    @data = @data.filter (obj) ->
+      obj.name in AnswerChecker.FieldNames
+    @data = @data.filter (obj) ->
+      !!obj.value
+
+  is_answered: () ->
+    @data.length > 0
 
 class @SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
@@ -16,6 +38,7 @@ class @SaveOnChange
 
   saveElement:(async = true) ->
     data = @$form.serialize()
+    checker = new AnswerChecker(@$form)
     @page.saving()
     $.ajax({
       type: "POST",
@@ -26,9 +49,21 @@ class @SaveOnChange
         @previous_value = data
         @page.saved(@)
         @dirty = false
+        if checker.is_answered()
+          @announce_data()
+        else
+          @announce_no_data()
       error: (jqxhr, status, error) =>
         @page.failed(@)
     })
+
+  announce_data: ->
+    console.log "we have data"
+    $(document).trigger("answer_for", {source: @$form.attr('id')})
+
+  announce_no_data: ->
+    console.log "we have no data"
+    $(document).trigger("no_answer_for", {source: @$form.attr('id')})
 
   saveNow: ->
     @unschedule()

@@ -1,16 +1,38 @@
 class Prediction
-
   constructor: (@$button) ->
     @$form = @$button.parent().parent()
     @$is_final = @$form.find('.hidden_is_final')
+    @register_listners()
     if @marked_final()
       @disable_form()
     else
       @enable_form()
 
+    @disable_submit_button()
+
+  register_listners: ->
     @$button.click (e) =>
-      @record_answer()
-      @disable_form()
+      if @question_answered
+        @record_answer()
+        @disable_form()
+    $(document).on "answer_for", (e,opts) =>
+      if opts.source == @$form.attr('id')
+        @enable_submit_button()
+    $(document).on "no_answer_for", (e,opts) =>
+      if opts.source == @$form.attr('id')
+        @disable_submit_button()
+
+  enable_submit_button: ->
+    console.log "enabled button"
+    @submit_enabled = true
+    @$button.prop("disabled", false)
+    @$button.removeClass("disabled")
+
+  disable_submit_button: ->
+    console.log "disabled button"
+    @submit_enabled = false
+    @$button.prop("disabled", true)
+    @$button.addClass("disabled")
 
   marked_final: ->
     val = @$is_final.val()
@@ -41,6 +63,8 @@ class Prediction
 
   enable_forward_navigation: ->
     $(document).trigger("enable_forward_navigation",{source: @$form})
+
+  question_answered: =>
 
 window.Prediction = Prediction
 $(document).ready ->
