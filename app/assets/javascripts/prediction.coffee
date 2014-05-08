@@ -21,17 +21,17 @@ class Prediction
     Prediction.saver.force_save_item(@$form)
 
   enable_form: ->
-    @$form.find(':input').prop("disabled", false);
-    @$form.find('button').prop("disabled", false);
-    @$form.find('button').removeClass("disabled");
+    @$form.find(':input').prop("disabled", false)
+    @$form.find('button').prop("disabled", false)
+    @$form.find('button').removeClass("disabled")
     @$form.find('.still_answering').show()
     @$form.find('.is_final').hide()
     @disable_forward_navigation()
 
   disable_form: ->
-    @$form.find(':input').prop("disabled", true);
-    @$form.find('button').prop("disabled", true);
-    @$form.find('button').addClass("disabled");
+    @$form.find(':input').prop("disabled", true)
+    @$form.find('button').prop("disabled", true)
+    @$form.find('button').addClass("disabled")
     @$form.find('.still_answering').hide()
     @$form.find('.is_final').slideDown()
     @enable_forward_navigation()
