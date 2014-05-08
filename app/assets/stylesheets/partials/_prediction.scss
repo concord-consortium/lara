@@ -1,0 +1,23 @@
+.prediction_button {
+  i.fa {
+    padding-left: 0.5em;
+  }
+}
+.is_final {
+  margin-top: 0.2em;
+  h5 {
+    display: block;
+    width: 100%;
+    margin: 0px;
+    background-color: #ededed;
+    padding: 0.2em;
+  }
+  .prediction_feedback {
+    display: block;
+    width: 100%;
+    margin: 0px;
+    border: 1px solid #ededed;
+    border-radius: 0 0 13px 13px;
+    padding: 1em;
+  }
+}
