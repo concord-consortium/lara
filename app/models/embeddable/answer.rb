@@ -12,6 +12,9 @@ module Embeddable::Answer
     end
   end
 
+  # DANGER TODO:  This memoization isn't going to work
+  # the way the author intended, because that instance var is going
+  # to be shared by every class that includes this module.
   @question_index = nil
   def question_index(skip_cache=false)
     # To skip the memoization and generate again, pass :true as an argument
