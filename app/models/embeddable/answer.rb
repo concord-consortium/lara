@@ -1,6 +1,8 @@
 module Embeddable::Answer
   def self.included base
     base.instance_eval do
+      delegate :name,                     :to => :question
+      delegate :prompt,                   :to => :question
       delegate :is_prediction,            :to  => :question
       delegate :give_prediction_feedback, :to => :question
       delegate :prediction_feedback,      :to => :question

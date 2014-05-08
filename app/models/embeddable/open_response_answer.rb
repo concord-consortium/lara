@@ -10,10 +10,6 @@ module Embeddable
 
     belongs_to :run
 
-    delegate :prompt,        :to  => :question
-    delegate :name,          :to  => :question
-    delegate :is_prediction, :to  => :question
-
     after_update :send_to_portal
 
     def self.by_question(q)

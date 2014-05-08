@@ -16,13 +16,11 @@ module Embeddable
       :foreign_key => 'answer_id',
       :association_foreign_key => 'choice_id'
 
-    delegate :name,                :to  => :question
-    delegate :prompt,              :to  => :question
     delegate :choices,             :to  => :question
     delegate :enable_check_answer, :to  => :question
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
-    delegate :is_prediction,       :to  => :question
+
 
     after_update :send_to_portal
 
