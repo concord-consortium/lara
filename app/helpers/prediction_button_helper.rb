@@ -21,7 +21,17 @@ module PredictionButtonHelper
       end
       haml_tag :div, :class => 'is_final' do
         haml_tag :div, :class => 'answer_is_final', 'data-is-final' => emb.is_final do
-          haml_concat t(:ANSWER_IS_FINAL)
+          haml_tag :h5 do
+            haml_concat t(:ANSWER_IS_FINAL)
+            haml_tag :i, :class => "fa fa-lock"
+          end
+          if emb.give_prediction_feedback
+            unless emb.prediction_feedback.blank?
+              haml_tag :div, :class => 'prediction_feedback reveal' do
+                haml_concat emb.prediction_feedback
+              end
+            end
+          end
         end
       end
     end

@@ -33,7 +33,7 @@ class Prediction
     @$form.find('button').prop("disabled", true);
     @$form.find('button').addClass("disabled");
     @$form.find('.still_answering').hide()
-    @$form.find('.is_final').show()
+    @$form.find('.is_final').slideDown()
     @enable_forward_navigation()
 
   disable_forward_navigation: ->
