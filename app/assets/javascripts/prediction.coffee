@@ -17,6 +17,10 @@ class Prediction
     $(document).on "no_answer_for", (e,opts) =>
       if opts.source == @$form.attr('id')
         @disable_submit_button()
+    @$button.click (e) =>
+      if @submit_enabled
+        @record_answer()
+        @disable_form()
 
   enable_submit_button: ->
     console.log "enabled button"
