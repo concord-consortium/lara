@@ -2,7 +2,7 @@ class Prediction
   constructor: (@$button) ->
     @$form = @$button.parent().parent()
     @$is_final = @$form.find('.hidden_is_final')
-    @register_listners()
+    @register_listeners()
     if @marked_final()
       @disable_form()
     else
@@ -10,11 +10,7 @@ class Prediction
 
     @disable_submit_button()
 
-  register_listners: ->
-    @$button.click (e) =>
-      if @question_answered
-        @record_answer()
-        @disable_form()
+  register_listeners: ->
     $(document).on "answer_for", (e,opts) =>
       if opts.source == @$form.attr('id')
         @enable_submit_button()
