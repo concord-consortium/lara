@@ -12,25 +12,35 @@ class @AnswerChecker
     "embeddable_image_question_answer[answer_text]"
   ]
   constructor: (@$form) ->
+    @data = []
+
+  is_answered: () ->
     @data = @$form.serializeArray()
     @data = @data.filter (obj) ->
       obj.name in AnswerChecker.FieldNames
     @data = @data.filter (obj) ->
       !!obj.value
 
-  is_answered: () ->
+    # we need to check answers when the page
+    # loads too... (?)
     @data.length > 0
 
 class @SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
   keyUpinterval:  2000 # Fire keyup events with a larger delay
+
   constructor: (@$form, @page) ->
     @scheduled_job      = null
     @previous_value     = null
     @setupEvents()
+    # don't send events until the doc
+    # is ready
+    $(document).ready () =>
+      @checker = new AnswerChecker(@$form)
+      @check_for_answer()
+
 
   setupEvents: ->
-
     @$form.find('input,textarea,select').on 'change blur', (e) =>
       @schedule(@changeInterval)
     @$form.find('input,textarea').on 'keyup',  (e) =>
@@ -38,7 +48,6 @@ class @SaveOnChange
 
   saveElement:(async = true) ->
     data = @$form.serialize()
-    checker = new AnswerChecker(@$form)
     @page.saving()
     $.ajax({
       type: "POST",
@@ -49,13 +58,16 @@ class @SaveOnChange
         @previous_value = data
         @page.saved(@)
         @dirty = false
-        if checker.is_answered()
-          @announce_data()
-        else
-          @announce_no_data()
+        @check_for_answer()
       error: (jqxhr, status, error) =>
         @page.failed(@)
     })
+
+  check_for_answer: ->
+    if @checker.is_answered()
+      @announce_data()
+    else
+      @announce_no_data()
 
   announce_data: ->
     console.log "we have data"

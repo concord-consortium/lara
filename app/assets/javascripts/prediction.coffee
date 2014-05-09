@@ -8,8 +8,6 @@ class Prediction
     else
       @enable_form()
 
-    @disable_submit_button()
-
   register_listeners: ->
     $(document).on "answer_for", (e,opts) =>
       if opts.source == @$form.attr('id')
