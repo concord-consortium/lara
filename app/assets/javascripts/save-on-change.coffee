@@ -169,7 +169,7 @@ class @SaveOnChangePage
     @save_indicator.showSaveFailed()
 
   mark_dirty: (form) ->
-    @dirty_forms[form] = form;
+    @dirty_forms[form] = form
 
   navigate_away: ->
     if @click_element
@@ -181,9 +181,9 @@ class @SaveOnChangePage
 
   force_save_item: ($form_jq) ->
     for f in @forms
-        do (f) ->
-          if f.$form[0] ==$form_jq[0]
-            f.saveElement(false)
+      do (f) ->
+        if f.$form[0] ==$form_jq[0]
+          f.saveElement(false)
 
   force_save_dirty: ()->
     for item, value of @dirty_forms

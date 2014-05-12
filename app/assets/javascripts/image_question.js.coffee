@@ -183,12 +183,12 @@ class image_question
 
 
   save: ->
-      @show_saving()
-      # TODO: validate response and calling showSaved() or saveFailed().
-      @show_saved();
+    @show_saving()
+    # TODO: validate response and calling showSaved() or saveFailed().
+    @show_saved()
 
   show: ->
-    @$content.dialog("open");
+    @$content.dialog("open")
 
   set_image_source: (src) ->
     @last_src = @current_src unless @current_src == ""
