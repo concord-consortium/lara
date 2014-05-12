@@ -2,7 +2,7 @@ unless Array::filter
   Array::filter = (callback) ->
     element for element in this when callback(element)
 
-class @AnswerChecker
+class @CompleteChecker
   @FieldNames = [
     "embeddable_open_response_answer[answer_text]"
     "embeddable_multiple_choice_answer[answers]"
@@ -18,7 +18,7 @@ class @AnswerChecker
   is_answered: () ->
     @data = @$form.serializeArray()
     @data = @data.filter (obj) ->
-      obj.name in AnswerChecker.FieldNames
+      obj.name in CompleteChecker.FieldNames
     @data = @data.filter (obj) ->
       !!obj.value
 
@@ -37,7 +37,7 @@ class @SaveOnChange
     # don't send events until the doc
     # is ready
     $(document).ready () =>
-      @checker = new AnswerChecker(@$form)
+      @checker = new CompleteChecker(@$form)
       @check_for_answer()
 
 
