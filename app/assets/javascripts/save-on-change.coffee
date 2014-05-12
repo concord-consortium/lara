@@ -6,6 +6,7 @@ class @AnswerChecker
   @FieldNames = [
     "embeddable_open_response_answer[answer_text]"
     "embeddable_multiple_choice_answer[answers]"
+    "embeddable_multiple_choice_answer[answers][]"
     "embeddable_image_question_answer[annotation]"
     "embeddable_image_question_answer[image_url]"
     "embeddable_image_question_answer[annotated_image_url]"
