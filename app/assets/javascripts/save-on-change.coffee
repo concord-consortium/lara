@@ -15,16 +15,42 @@ class @CompleteChecker
   constructor: (@$form) ->
     @data = []
 
-  is_answered: () ->
-    @data = @$form.serializeArray()
-    @data = @data.filter (obj) ->
+  filtered_data: (array) ->
+    array.filter(obj) ->
       obj.name in CompleteChecker.FieldNames
-    @data = @data.filter (obj) ->
-      !!obj.value
+  
+  mark_form_element_clean: (obj) ->
+    @$form.find("[name='#{obj.name}']").removeClass("missing_required")
 
-    # we need to check answers when the page
-    # loads too... (?)
-    @data.length > 0
+  mark_form_element_missing_required: (obj) ->
+    @$form.find("[name='#{obj.name}']").addClass("missing_required")
+
+  mark_form_missing_required: () ->
+    @$form.addClass("missing_required")
+
+  mark_form_clean: () ->
+    @$form.removeClass("missing_required")
+
+  is_answered: () ->
+    @mark_form_clean()
+    data = @$form.serializeArray()
+    @data = data.filter (obj) ->
+      obj.name in CompleteChecker.FieldNames
+
+    if @data.length == 0 # multiple choices
+      @mark_form_missing_required()
+      return false
+
+    @mark_form_element_clean(obj) for obj in @data
+    @unasnwered = @data.filter (obj) ->
+      !obj.value
+
+    if @unasnwered.length > 0
+      @mark_form_element_missing_required(obj) for obj in @unasnwered
+      return false
+
+    return true
+
 
 class @SaveOnChange
   changeInterval: 200  # Fire change and blur events almost instantly.
@@ -125,7 +151,10 @@ class @ForwardBlocker
     location = click_element.href
     console.log "asked to navigate away by #{click_element}"
     console.log "asked to navigate to #{location}"
-    unless @block_for_element(click_element)
+    if @block_for_element(click_element)
+      $('.question').addClass('did_try_to_navigate')
+      modalDialog(false, "Please submit your predictions.")
+    else
       window.location = location
 
   update_display: () ->
@@ -138,7 +167,6 @@ class @ForwardBlocker
       @blocking = false
 
    block_for_element: (elm) ->
-     debugger
      return false unless $(elm).hasClass('forward_nav')
      return @blocking
 

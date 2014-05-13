@@ -25,5 +25,27 @@
     // background-color: #EEE;
   }
 }//save
+.question.did_try_to_navigate {
+  .missing_required {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+    border: 2px solid red;
+    padding: 8px;
+  }
+  form {
+    .missing_required {
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -ms-border-radius: 8px;
+      -o-border-radius: 8px;
+      border-radius: 8px;
+      border: 2px solid red;
+      padding: 4px;
+    }
+  }
+}
 
 
