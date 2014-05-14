@@ -32,6 +32,11 @@ class image_question
       @set_svg_input(image_tag)
       @submit_svg_form()
       @$sb_svg_src.empty().hide()
+      @copy_annotation_to_live_submit("annotation")
+      @copy_annotation_to_live_submit("answer_text")
+      @hide()
+      # TODO: validate response and calling showSaved() or saveFailed().
+      @show_saved()
     ,"svg_" + @image_question_id)
 
     @$snapshot_button = $("#{@button_sel} .take_snapshot")
@@ -90,25 +95,8 @@ class image_question
       @hide()
 
     @$done_button.click =>
-      @get_svg_canvas().getSvgString() (data, error) =>
-        @svg_annotation_data = data
-        $svg = $(data)
+      @save()
 
-        @$sb_svg_src.show();
-        w = $svg.attr('width')
-        h = $svg.attr('height')
-
-        @$sb_svg_src.css('width',w)
-        @$sb_svg_src.css('height',h)
-        @$sb_svg_src.css('background-color', '#ffffff')
-        @$sb_svg_src.css('background-image',  "url(#{@current_src})")
-        @$sb_svg_src.css('background-repeat', 'no-repeat')
-        @$sb_svg_src.css('background-position', 'center')
-        @$sb_svg_src.css('background-size', "contain")
-        @$sb_svg_src.html(data)
-        @shutterbug_svg.getDomSnapshot()
-        @hide()
-        @save()
 
     @$delete_button.click =>
       @delete_image()
@@ -184,12 +172,25 @@ class image_question
 
   save: ->
     @show_saving()
-    # TODO: validate response and calling showSaved() or saveFailed().
-    @copy_annotation_to_live_submit("annotation")
-    @copy_annotation_to_live_submit("answer_text")
-    @show_saved()
+    @get_svg_canvas().getSvgString() (data, error) =>
+      @svg_annotation_data = data
+      $svg = $(data)
 
-  
+      @$sb_svg_src.show();
+      w = $svg.attr('width')
+      h = $svg.attr('height')
+
+      @$sb_svg_src.css('width',w)
+      @$sb_svg_src.css('height',h)
+      @$sb_svg_src.css('background-color', '#ffffff')
+      @$sb_svg_src.css('background-image',  "url(#{@current_src})")
+      @$sb_svg_src.css('background-repeat', 'no-repeat')
+      @$sb_svg_src.css('background-position', 'center')
+      @$sb_svg_src.css('background-size', "contain")
+      @$sb_svg_src.html(data)
+      @shutterbug_svg.getDomSnapshot()
+
+
   copy_annotation_to_live_submit: (name) ->
     field_name   = """ [name="embeddable_image_question_answer[#{name}]"] """
     live_field   = $("#{@button_sel} #{field_name}")
