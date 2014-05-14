@@ -31,8 +31,17 @@ class @CompleteChecker
   mark_form_clean: () ->
     @$form.removeClass("missing_required")
 
+  require_is_final: () ->
+    $required = @$form.find("input.hidden_is_final")
+    if $required.length > 0
+      completed = $required.val() == "t" || $required.val() == "1" || $required.val() == 1
+      if not completed
+        @mark_form_missing_required()
+
   is_answered: () ->
     @mark_form_clean()
+    hidden_final = @$form.find("input.hidden_is_final")
+    return true unless hidden_final.length > 0
     data = @$form.serializeArray()
     @data = data.filter (obj) ->
       obj.name in CompleteChecker.FieldNames
@@ -49,6 +58,7 @@ class @CompleteChecker
       @mark_form_element_missing_required(obj) for obj in @unasnwered
       return false
 
+    @require_is_final()
     return true
 
 
