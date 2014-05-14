@@ -25,6 +25,10 @@ module Embeddable
       !image_url.blank?
     end
 
+    def require_image_url
+      return true unless is_drawing?
+      return !question.bg_url.blank?
+    end
     def portal_hash
       {
         "type" => "image_question",

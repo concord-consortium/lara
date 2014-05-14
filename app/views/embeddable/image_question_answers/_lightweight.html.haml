@@ -30,7 +30,8 @@
               =t("MAKE_DRAWING")
         %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
           =t("EDIT")
-        = f.hidden_field 'image_url'
+        - if embeddable.require_image_url
+          = f.hidden_field 'image_url'
         = f.hidden_field 'annotated_image_url'
         = f.hidden_field 'annotation'
         - unless embeddable.prompt.blank?
