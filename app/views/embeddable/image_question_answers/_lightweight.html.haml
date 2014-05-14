@@ -4,7 +4,7 @@
   .question-txt
     != embeddable.drawing_prompt
     %div{:id => "image_question_#{embeddable.id}"}
-      = form_for embeddable, :namespace => 'buttons', :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
+      = form_for embeddable, :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
         -# The src of this thumbnail image will be rewritten by javascript
         %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => '100%'}
         %br
@@ -30,6 +30,11 @@
               =t("MAKE_DRAWING")
         %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
           =t("EDIT")
+        = f.hidden_field 'image_url'
+        = f.hidden_field 'annotated_image_url'
+        = f.hidden_field 'annotation'
+        - unless embeddable.prompt.blank?
+          = f.hidden_field 'answer_text'
         = prediction_button(embeddable,f)
 
 %div.tmp_svg{:id => "sb_svg_src_#{embeddable.id}" }
@@ -39,8 +44,7 @@
     .instructions
       != embeddable.drawing_prompt
     .answer
-    = form_for embeddable, :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
-
+    = form_for embeddable, :namespace => 'sketchily', :remote => true do |f|
       .image_block
         = f.sketchily :annotation, :id=>"image_question_annotation_for_#{embeddable.id}", :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true, :canvas_expansion => 1
         .under_image
@@ -48,8 +52,6 @@
             .text_response
               .prompt.image_prompt!= embeddable.prompt
               = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
-          = f.hidden_field 'image_url'
-          = f.hidden_field 'annotated_image_url'
           %button.button.image_done_button{ :type => 'button' }
             %i.fa.fa-check.btn
               =t("DONE")

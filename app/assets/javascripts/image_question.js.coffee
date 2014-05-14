@@ -3,7 +3,7 @@ class image_question
     @image_url=""
     @form_sel   = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
-    @$annotation_field = $("##{@svg_canvas_id}")
+    @$annotation_field = $("#sketchily_#{@svg_canvas_id}")
     @button_sel = "#image_question_#{@image_question_id}"
     @sb_svg_src = "#sb_svg_src_#{@image_question_id}"
     @$sb_svg_src = $(@sb_svg_src)
@@ -53,10 +53,10 @@ class image_question
     @$displayed_answer =$("#{@button_sel} .answer_text")
 
     @create_hooks()
-    @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+    @$current_src_field = $("#{@button_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
     @current_src        = @$current_src_field.val()
-    @current_thumbnail  = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
-                          $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @current_thumbnail  = $("#{@button_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
+                          $("#{@button_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
 
   create_hooks: ->
@@ -79,7 +79,7 @@ class image_question
 
     @$edit_button.click =>
       # Save @last_svg so cancel will work
-      @last_svg = sketchily_decode64($("#image_question_annotation_for_#{@image_question_id}").val())
+      @last_svg = sketchily_decode64(@$annotation_field.val())
       @show()
       @set_svg_background()
 
@@ -127,8 +127,8 @@ class image_question
       # if the form is still open it would make sense to put the error there
 
   update_display: ->
-    @annotated_url = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
-    @current_thumbnail = @annotated_url || $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @annotated_url = $("#{@button_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
+    @current_thumbnail = @annotated_url || $("#{@button_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @current_annotation = $("#image_question_annotation_for_#{@image_question_id}").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
@@ -185,7 +185,19 @@ class image_question
   save: ->
     @show_saving()
     # TODO: validate response and calling showSaved() or saveFailed().
+    @copy_annotation_to_live_submit("annotation")
+    @copy_annotation_to_live_submit("answer_text")
     @show_saved()
+
+  
+  copy_annotation_to_live_submit: (name) ->
+    field_name   = """ [name="embeddable_image_question_answer[#{name}]"] """
+    live_field   = $("#{@button_sel} #{field_name}")
+    dialog_field = $("#{@form_sel} #{field_name}")
+
+    dialog_value = dialog_field.val()
+    live_field.val(dialog_value)
+    live_field.trigger("change")
 
   show: ->
     @$content.dialog("open")
@@ -202,15 +214,15 @@ class image_question
   set_svg_input:(html) =>
     $value= $(html)
     $src = $value.attr("src")
-    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
+    hidden = $("#{@button_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
     hidden.val($src)
     @current_thumbnail = $src
     @update_display()
 
   submit_svg_form: ->
-    $input = $("##{@svg_canvas_id}")
+    $input = @$annotation_field
     $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + @svg_annotation_data))
-    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+    hidden = $("#{@button_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
     hidden.val(@current_src)
     @$svg_form.submit()
 
