@@ -31,11 +31,11 @@
         %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
           =t("EDIT")
         - if embeddable.require_image_url
-          = f.hidden_field 'image_url'
-        = f.hidden_field 'annotated_image_url'
-        = f.hidden_field 'annotation'
+          = f.hidden_field 'image_url', :id => "image_question_image_url_for_#{embeddable.id}"
+        = f.hidden_field 'annotated_image_url', :id => "image_question_annotation_url_for_#{embeddable.id}"
+        = f.hidden_field 'annotation', :id => "image_question_annotation_for_#{embeddable.id}"
         - unless embeddable.prompt.blank?
-          = f.hidden_field 'answer_text'
+          = f.hidden_field 'answer_text', :id => "embeddable_image_question_answer_text_for_#{embeddable.id}"
         = prediction_button(embeddable,f)
 
 %div.tmp_svg{:id => "sb_svg_src_#{embeddable.id}" }
@@ -45,13 +45,14 @@
     .instructions
       != embeddable.drawing_prompt
     .answer
-    = form_for embeddable, :namespace => 'sketchily', :remote => true do |f|
+    = form_for embeddable, :namespace => 'sketchily', :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit ignore_missing'} do |f|
       .image_block
         = f.sketchily :annotation, :id=>"image_question_annotation_for_#{embeddable.id}", :hide_rulers => true, :hide_menu => true, :hide_editor_panel => true, :hide_history_panel => true, :canvas_expansion => 1
         .under_image
           - unless embeddable.prompt.blank?
             .text_response
               .prompt.image_prompt!= embeddable.prompt
+              = f.hidden_field :is_final, :class => 'hidden_is_final', :rows => "2", :placeholder => "Type answer here", :cols => "30"
               = f.text_area :answer_text, :class => 'answer', :rows => "2", :placeholder => "Type answer here", :cols => "30"
           %button.button.image_done_button{ :type => 'button' }
             %i.fa.fa-check.btn

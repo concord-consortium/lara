@@ -16,7 +16,7 @@ module PredictionButtonHelper
              haml_tag :span do
                haml_concat t(:PREDICTION_BUTTON)
              end
-             haml_tag :i, :class => "fa fa-lock"
+             haml_tag :i, :class => "fa fa-lock required"
           end
       end
       haml_tag :div, :class => 'is_final' do

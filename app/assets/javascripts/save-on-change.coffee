@@ -18,7 +18,13 @@ class @CompleteChecker
   filtered_data: (array) ->
     array.filter(obj) ->
       obj.name in CompleteChecker.FieldNames
-  
+
+  mark_submit_clean: () ->
+    @$form.find("i.required").removeClass("submit_required")
+
+  mark_submit_required: () ->
+    @$form.find("i.required").addClass("submit_required")
+
   mark_form_element_clean: (obj) ->
     @$form.find("[name='#{obj.name}']").removeClass("missing_required")
 
@@ -26,7 +32,8 @@ class @CompleteChecker
     @$form.find("[name='#{obj.name}']").addClass("missing_required")
 
   mark_form_missing_required: () ->
-    @$form.addClass("missing_required")
+    unless @$form.hasClass("ignore_missing")
+      @$form.addClass("missing_required")
 
   mark_form_clean: () ->
     @$form.removeClass("missing_required")
@@ -36,7 +43,7 @@ class @CompleteChecker
     if $required.length > 0
       completed = $required.val() == "t" || $required.val() == "1" || $required.val() == 1
       if not completed
-        @mark_form_missing_required()
+        @mark_submit_required()
 
   is_answered: () ->
     @mark_form_clean()
@@ -56,6 +63,7 @@ class @CompleteChecker
 
     if @unasnwered.length > 0
       @mark_form_element_missing_required(obj) for obj in @unasnwered
+      @mark_form_missing_required()
       return false
 
     @require_is_final()
