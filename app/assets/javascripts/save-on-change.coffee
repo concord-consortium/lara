@@ -115,11 +115,9 @@ class @SaveOnChange
       @announce_no_data()
 
   announce_data: ->
-    console.log "we have data"
     $(document).trigger("answer_for", {source: @$form.attr('id')})
 
   announce_no_data: ->
-    console.log "we have no data"
     $(document).trigger("no_answer_for", {source: @$form.attr('id')})
 
   saveNow: ->
@@ -167,8 +165,6 @@ class @ForwardBlocker
 
   navigate_away: (click_element) ->
     location = click_element.href
-    console.log "asked to navigate away by #{click_element}"
-    console.log "asked to navigate to #{location}"
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
       modalDialog(false, "Please submit your predictions.")
