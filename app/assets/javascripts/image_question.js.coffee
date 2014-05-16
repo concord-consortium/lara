@@ -7,9 +7,9 @@ class ImageQuestion
 
     # Constant selectors:
     @form_prefix          = "embeddable_image_question_answer"
-    @dialog_sel             = "#image_question_answer_form_#{@image_question_id}"
+    @dialog_sel           = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id        = "image_question_annotation_for_#{@image_question_id}"
-    @form_sel           = "#image_question_#{@image_question_id}"
+    @form_sel             = "#image_question_#{@image_question_id}"
     @sb_svg_src           = "#sb_svg_src_#{@image_question_id}"
     @interactive_selector = ".interactive-mod > *:first-child"
 
@@ -30,25 +30,25 @@ class ImageQuestion
           canv.recheckBrowserFeatures()
     })
 
-    @$snapshot_button   = $("#{@form_sel} .take_snapshot")
-    @$edit_button       = $("#{@form_sel} .edit_answer")
-    @$done_button       = $("#{@dialog_sel} .image_done_button")
-    @$cancel_button     = $("#{@dialog_sel} .image_cancel_button")
-    @$svg_form          = $("#{@dialog_sel} form")
+    @$snapshot_button           = $("#{@form_sel} .take_snapshot")
+    @$edit_button               = $("#{@form_sel} .edit_answer")
+    @$done_button               = $("#{@dialog_sel} .image_done_button")
+    @$cancel_button             = $("#{@dialog_sel} .image_cancel_button")
+    @$svg_form                  = $("#{@dialog_sel} form")
 
-    @$delete_button     = $("#{@dialog_sel} .image_delete_button")
-    @$replace_button    = $("#{@form_sel} .replace_snapshot")
-    @$undo_button       = $("#{@dialog_sel} .image_reset_button")
+    @$delete_button             = $("#{@dialog_sel} .image_delete_button")
+    @$replace_button            = $("#{@form_sel} .replace_snapshot")
+    @$undo_button               = $("#{@dialog_sel} .image_reset_button")
 
-    @$saved_response    = $("#{@form_sel} .answer_text")
-    @$text_response     = $("#{@dialog_sel} .text_response textarea")
+    @$saved_response            = $("#{@form_sel} .answer_text")
+    @$text_response             = $("#{@dialog_sel} .text_response textarea")
 
-    @$drawing_button    = $("#{@form_sel} .drawing_button")
+    @$drawing_button            = $("#{@form_sel} .drawing_button")
 
-    @$thumbnail         = $("#{@form_sel} .snapshot_thumbnail")
-    @$displayed_answer  = $("#{@form_sel} .answer_text")
+    @$thumbnail                 = $("#{@form_sel} .snapshot_thumbnail")
+    @$displayed_answer          = $("#{@form_sel} .answer_text")
 
-    @$image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
+    @$image_url_field           = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
     @$annotated_image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[annotated_image_url]\"]")
 
 
@@ -59,7 +59,7 @@ class ImageQuestion
     @create_svg_shutterbug()
     @create_hooks()
     @update_display()
-  
+
   get_current_thumbnail: ->
     @$annotated_image_url_field.val() ||  @$image_url_field.val()
 
@@ -101,14 +101,22 @@ class ImageQuestion
       # we might also want to delay the closing the dialog until this happens
       @$displayed_answer.html(data.answer_html)
     ).bind 'ajax:error', (e, xhr, status, error) =>
-      # don't update the answer and possibly revert the thumbnail if it was
-      # updated
+      # don't update the answer and possibly revert the thumbnail 
       # should show "<p>ERROR</p>" somewhere
       # if the form is still open it would make sense to put the error there
 
+  clear_drawing_layer: -> 
+    svg = @get_svg_canvas()
+    svg.deleteCurrentLayer() () ->
+      svg.renameCurrentLayer("old") () ->
+        svg.createLayer("new") () ->
+          svg.setCurrentLayer("old") () ->
+            svg.deleteCurrentLayer() () ->
+              svg.setCurrentLayer("new")()
   create_snapshot_shutterbug: ->
     @shutterbug       = new Shutterbug(@interactive_selector, null,(image_tag)=>
       @set_image(image_tag)
+      @clear_drawing_layer()
     ,@image_question_id)
 
   create_svg_shutterbug: ->
@@ -122,6 +130,17 @@ class ImageQuestion
       # TODO: validate response and calling showSaved() or saveFailed().
       @show_saved()
     ,"svg_" + @image_question_id)
+
+  has_image_content: ->
+    # This is a shutterbug question, so it's answered if there's a thumbnail
+    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
+      @show_edit_buttons()
+      return true
+
+    # This is a drawing question, so an annotation is needed for it to be answered
+    if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
+      return true
+    return false
 
   update_display: ->
     @annotated_url = @$annotation_field.val()
@@ -137,11 +156,7 @@ class ImageQuestion
     @$replace_button.hide()
     @$edit_button.hide()
 
-    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
-      # This is a shutterbug question, so it's answered if there's a thumbnail
-      @show_edit_buttons()
-    else if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
-      # This is a drawing question, so an annotation is needed for it to be answered
+    if @has_image_content()
       @show_edit_buttons()
 
     @set_svg_background()
@@ -186,11 +201,11 @@ class ImageQuestion
 
       @$sb_svg_src.css('width',w)
       @$sb_svg_src.css('height',h)
-      @$sb_svg_src.css('background-color', '#ffffff')
       @$sb_svg_src.css('background-image',  "url(#{@current_src})")
-      @$sb_svg_src.css('background-repeat', 'no-repeat')
-      @$sb_svg_src.css('background-position', 'center')
-      @$sb_svg_src.css('background-size', "contain")
+      @$sb_svg_src.css('background-repeat',  "no-repeat")
+      @$sb_svg_src.css('background-position',  "center")
+      @$sb_svg_src.css('background-size',  "contain")
+      @$sb_svg_src.css('background-color',  "#ffffff")
       @$sb_svg_src.html(data)
       @shutterbug_svg.getDomSnapshot()
 
@@ -242,17 +257,9 @@ class ImageQuestion
       @$text_response.val(@$saved_response.data('raw'))
 
   replace_snapshot:() ->
-    @get_svg_canvas().getSvgString() (data,error) =>
-      @last_svg = data
-      @get_svg_canvas().clear() () =>
-        @get_svg_canvas().setSvgString(' ')()
-        @$annotation_field.attr('value',"")
-        @set_image_source("")
-        @last_svg = ' '
-        @create_svg_shutterbug()
-        @shutterbug.getDomSnapshot()
-        @show()
-
+    @show()
+    svg = @get_svg_canvas()
+    @clear_drawing_layer()
 
   snapshot_updater: (e) =>
     data = e.data
