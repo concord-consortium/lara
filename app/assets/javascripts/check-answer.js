@@ -52,7 +52,8 @@ AnswerChecker.prototype.check = function () {
     }
 };
 
-// Adds some click handlers to DOM elements which don't exist at page load
+// Used in authoring form view ( views/embeddable/multiple_choices/_form.html.haml )
+// toggles visibility of customFeedback fields.
 function addModalClickHandlers () {
     var customFeedbackToggle = $('#embeddable_multiple_choice_custom'),
         customFeedbackPrompts = new CustomFeedback($('.choices .custom-hidden'));

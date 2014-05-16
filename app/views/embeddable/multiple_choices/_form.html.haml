@@ -14,7 +14,7 @@
           = f.check_box :show_as_menu
           Show as drop-down menu
         %li
-          = f.check_box :custom
+          = f.check_box :custom, :id => "embeddable_multiple_choice_custom"
           Custom Feedback
         %li
           = f.check_box :enable_check_answer
@@ -22,7 +22,7 @@
         = render :partial => 'shared/edit_prediction', :locals => { :f => f }
 
   = field_set_tag 'Choices' do
-    %ul
+    %ul.choices
       - @embeddable.choices.each do |choice|
         = f.fields_for :choices, choice do |choice_form|
           %li
