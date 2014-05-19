@@ -13,6 +13,8 @@ module LightweightActivityHelper
     if @sequence_run
       run = @sequence_run.run_for_activity(activity)
       activity_with_response_path(activity.id, run.key)
+    elsif @run
+      activity_with_response_path(activity.id, @run.key)
     elsif @sequence
       sequence_activity_path(@sequence, activity)
     else
