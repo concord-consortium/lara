@@ -28,7 +28,6 @@ describe LightweightActivityHelper do
     describe "with a sequence" do
       it "should just use the activity path" do
         assign(:sequence, sequence)
-        puts subject
         subject.should eql(sequence_path)
       end
     end
