@@ -231,6 +231,10 @@ class @SaveOnChangePage
   force_save_dirty: ()->
     for item, value of @dirty_forms
       value.saveNow()
+    if (typeof IFrameSaver == "undefined")
+      @navigate_away()
+      return
+
     waiting_on = IFrameSaver.instances.length
     found      = 0
     if waiting_on > 0
