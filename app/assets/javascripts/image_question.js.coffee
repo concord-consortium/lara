@@ -138,7 +138,8 @@ class ImageQuestion
       return true
 
     # This is a drawing question, so an annotation is needed for it to be answered
-    if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
+    if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url or @current_thumbnail)
+      @show_edit_buttons()
       return true
     return false
 
