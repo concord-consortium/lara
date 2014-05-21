@@ -1,12 +1,20 @@
 module Embeddable::Answer
   def self.included base
     base.instance_eval do
+      delegate :name,                     :to => :question
+      delegate :prompt,                   :to => :question
+      delegate :is_prediction,            :to  => :question
+      delegate :give_prediction_feedback, :to => :question
+      delegate :prediction_feedback,      :to => :question
       def self.by_run(r)
         where(:run_id => r.id)
       end
     end
   end
 
+  # DANGER TODO:  This memoization isn't going to work
+  # the way the author intended, because that instance var is going
+  # to be shared by every class that includes this module.
   @question_index = nil
   def question_index(skip_cache=false)
     # To skip the memoization and generate again, pass :true as an argument

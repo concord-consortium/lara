@@ -194,6 +194,12 @@ div.activity-mod>div.site-width {
 div.submit a:hover {
   text-decoration: none;
 }
+input:disabled {
+  opacity: 0.3;
+}
+.disabled {
+  opacity: 0.3;
+}
 
 .logo-l .sequence_logo_block{
   width: 700px;
@@ -206,4 +212,5 @@ div.submit a:hover {
   margin-bottom: 10px;
 }
 
+@import "partials/prediction";
 @import "partials/cc-theme-template";

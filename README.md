@@ -31,7 +31,16 @@ This is a Rails application intended to provide a platform for authoring and usi
 7. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
 
 ## Editing CSS
-This project uses [Compass](http://compass-style.org/) extensively (but not exclusively) for CSS. If you are editing files in the `app/assets/stylesheets/` tree, you should issue `compass watch` in order to update the built CSS when changes are made.
+
+This project was setup with [Compass](http://compass-style.org/), however, you shouldn't ever need to run `compass watch`. The asset pipeline should take care of itself in development mode.
+This project does use [Sass](http://sass-lang.com/) for the stylesheets.
+
+## Themes
+
+The runtime environment supports the idea of themes. Themes mostly take
+the form of stylesheets. The themes come in two main families, the CC
+theme and the MW theme. You can look at `app/assets/stylesheets/cc-runtime-base.scss` or `app/assets/stylesheets/mw-runtime-base.scss` to see the two main families. Most themes inherit from cc-runtime-base, see for example has-atmosphere.scss which uses `partials/_cc-theme-template.scss` 
+
 
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).

@@ -86,5 +86,36 @@ describe Embeddable::ImageQuestionAnswer do
       end
     end
   end
+  
+  describe "require_image_url" do
+    before(:each) do
+      @question = mock_model(Embeddable::ImageQuestion)
+      answer.question = @question
+    end
 
+    describe "a snapshot" do
+      it "sould always be true" do
+        @question.should_receive(:is_drawing?).and_return(false)
+        answer.require_image_url.should == true
+      end
+    end
+    describe "a drawing" do
+
+      describe "if there is a background image" do
+        it "sould return true" do
+          @question.should_receive(:is_drawing?).and_return(true)
+          @question.should_receive(:bg_url).and_return("something")
+          answer.require_image_url.should == true
+        end
+      end
+      describe "if there is no background image" do
+        it "sould return false" do
+          @question.should_receive(:is_drawing?).and_return(true)
+          @question.should_receive(:bg_url).and_return("")
+          answer.require_image_url.should == false
+        end
+      end
+
+    end
+  end
 end

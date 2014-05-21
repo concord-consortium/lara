@@ -106,6 +106,7 @@
       </footer>
 
 	</div> <!-- eo #container -->
+  <%= render :partial => "shared/i18njs" %>
   <%= render :partial => 'shared/modal' %>
   <%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
 

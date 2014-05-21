@@ -19,10 +19,11 @@
             - else
               = f.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :checked => (embeddable.answers.include?(choice))
             = choice.choice
-  - if embeddable.enable_check_answer
-    %input{ :class => 'button check_answer_button',
-            :type => 'button',
-            :id => check_button_string,
-            :value => 'Check answer',
-            :disabled => (embeddable.answers.length == 0),
-            :data => { :check => embeddable_string } }
+    - if embeddable.enable_check_answer
+      %input{ :class => 'button check_answer_button',
+              :type => 'button',
+              :id => check_button_string,
+              :value => 'Check answer',
+              :disabled => (embeddable.answers.length == 0),
+              :data => { :check => embeddable_string } }
+    = prediction_button(embeddable,f)

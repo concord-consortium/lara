@@ -1,17 +1,23 @@
-class image_question
+class ImageQuestion
   constructor: (@image_question_id="blank")->
-    @image_url=""
-    @form_sel   = "#image_question_answer_form_#{@image_question_id}"
-    @svg_canvas_id = "image_question_annotation_for_#{@image_question_id}"
-    @$annotation_field = $("##{@svg_canvas_id}")
-    @button_sel = "#image_question_#{@image_question_id}"
-    @sb_svg_src = "#sb_svg_src_#{@image_question_id}"
-    @$sb_svg_src = $(@sb_svg_src)
-    @svg_annotation_data = ""
-    @$content  = $(@form_sel)
+    # Initial default values
+    @image_url            = ""
+    @svg_annotation_data  = ""
+    @last_svg             = null
+
+    # Constant selectors:
+    @form_prefix          = "embeddable_image_question_answer"
+    @dialog_sel           = "#image_question_answer_form_#{@image_question_id}"
+    @svg_canvas_id        = "image_question_annotation_for_#{@image_question_id}"
+    @form_sel             = "#image_question_#{@image_question_id}"
+    @sb_svg_src           = "#sb_svg_src_#{@image_question_id}"
     @interactive_selector = ".interactive-mod > *:first-child"
 
-    @last_svg = null
+    # Select the dom entities...
+    @$annotation_field    = $("#sketchily_#{@svg_canvas_id}")
+    @$sb_svg_src          = $(@sb_svg_src)
+    @$content             = $(@dialog_sel)
+
     @$content.dialog({
       autoOpen: false,
       width: 800,
@@ -24,40 +30,38 @@ class image_question
           canv.recheckBrowserFeatures()
     })
 
-    @shutterbug       = new Shutterbug(@interactive_selector, null,(image_tag)=>
-      @set_image(image_tag)
-    ,@image_question_id)
+    @$snapshot_button           = $("#{@form_sel} .take_snapshot")
+    @$edit_button               = $("#{@form_sel} .edit_answer")
+    @$done_button               = $("#{@dialog_sel} .image_done_button")
+    @$cancel_button             = $("#{@dialog_sel} .image_cancel_button")
+    @$svg_form                  = $("#{@dialog_sel} form")
 
-    @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
-      @set_svg_input(image_tag)
-      @submit_svg_form()
-      @$sb_svg_src.empty().hide()
-    ,"svg_" + @image_question_id)
+    @$delete_button             = $("#{@dialog_sel} .image_delete_button")
+    @$replace_button            = $("#{@form_sel} .replace_snapshot")
+    @$undo_button               = $("#{@dialog_sel} .image_reset_button")
 
-    @$snapshot_button = $("#{@button_sel} .take_snapshot")
-    @$edit_button     = $("#{@button_sel} .edit_answer")
-    @$done_button     = $("#{@form_sel} .image_done_button")
-    @$cancel_button   = $("#{@form_sel} .image_cancel_button")
-    @$svg_form        = $("#{@form_sel} form")
+    @$saved_response            = $("#{@form_sel} .answer_text")
+    @$text_response             = $("#{@dialog_sel} .text_response textarea")
 
-    @$delete_button   = $("#{@form_sel} .image_delete_button")
-    @$replace_button  = $("#{@button_sel} .replace_snapshot")
-    @$undo_button     = $("#{@form_sel} .image_reset_button")
+    @$drawing_button            = $("#{@form_sel} .drawing_button")
 
-    @$saved_response  = $("#{@button_sel} .answer_text")
-    @$text_response   = $("#{@form_sel} .text_response textarea")
+    @$thumbnail                 = $("#{@form_sel} .snapshot_thumbnail")
+    @$displayed_answer          = $("#{@form_sel} .answer_text")
 
-    @$drawing_button  = $("#{@button_sel} .drawing_button")
+    @$image_url_field           = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
+    @$annotated_image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[annotated_image_url]\"]")
 
-    @$thumbnail        =$("#{@button_sel} .snapshot_thumbnail")
-    @$displayed_answer =$("#{@button_sel} .answer_text")
 
+    @current_thumbnail  = @get_current_thumbnail()
+
+    @current_src        = @$image_url_field.val()
+    @create_snapshot_shutterbug()
+    @create_svg_shutterbug()
     @create_hooks()
-    @$current_src_field = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
-    @current_src        = @$current_src_field.val()
-    @current_thumbnail  = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val() ||
-                          $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
     @update_display()
+
+  get_current_thumbnail: ->
+    @$annotated_image_url_field.val() ||  @$image_url_field.val()
 
   create_hooks: ->
     @$snapshot_button.click =>
@@ -72,14 +76,11 @@ class image_question
       @show()
 
     @$replace_button.click =>
-      @delete_image()
-      @last_svg = ' '
-      @shutterbug.getDomSnapshot()
-      @show()
+      @replace_snapshot()
 
     @$edit_button.click =>
       # Save @last_svg so cancel will work
-      @last_svg = sketchily_decode64($("#image_question_annotation_for_#{@image_question_id}").val())
+      @last_svg = sketchily_decode64(@$annotation_field.val())
       @show()
       @set_svg_background()
 
@@ -90,28 +91,7 @@ class image_question
       @hide()
 
     @$done_button.click =>
-      @get_svg_canvas().getSvgString() (data, error) =>
-        @svg_annotation_data = data
-        $svg = $(data)
-
-        @$sb_svg_src.show();
-        w = $svg.attr('width')
-        h = $svg.attr('height')
-
-        @$sb_svg_src.css('width',w)
-        @$sb_svg_src.css('height',h)
-        @$sb_svg_src.css('background-color', '#ffffff')
-        @$sb_svg_src.css('background-image',  "url(#{@current_src})")
-        @$sb_svg_src.css('background-repeat', 'no-repeat')
-        @$sb_svg_src.css('background-position', 'center')
-        @$sb_svg_src.css('background-size', "contain")
-        @$sb_svg_src.html(data)
-        @shutterbug_svg.getDomSnapshot()
-        @hide()
-        @save()
-
-    @$delete_button.click =>
-      @delete_image()
+      @save()
 
     @$undo_button.click =>
       @reset_image()
@@ -121,14 +101,51 @@ class image_question
       # we might also want to delay the closing the dialog until this happens
       @$displayed_answer.html(data.answer_html)
     ).bind 'ajax:error', (e, xhr, status, error) =>
-      # don't update the answer and possibly revert the thumbnail if it was
-      # updated
+      # don't update the answer and possibly revert the thumbnail 
       # should show "<p>ERROR</p>" somewhere
       # if the form is still open it would make sense to put the error there
 
+  clear_drawing_layer: -> 
+    svg = @get_svg_canvas()
+    svg.deleteCurrentLayer() () ->
+      svg.renameCurrentLayer("old") () ->
+        svg.createLayer("new") () ->
+          svg.setCurrentLayer("old") () ->
+            svg.deleteCurrentLayer() () ->
+              svg.setCurrentLayer("new")()
+  create_snapshot_shutterbug: ->
+    @shutterbug       = new Shutterbug(@interactive_selector, null,(image_tag)=>
+      @set_image(image_tag)
+      @clear_drawing_layer()
+    ,@image_question_id)
+
+  create_svg_shutterbug: ->
+    @shutterbug_svg  = new Shutterbug(@sb_svg_src, null,(image_tag)=>
+      @set_svg_input(image_tag)
+      @submit_svg_form()
+      @$sb_svg_src.empty().hide()
+      @copy_annotation_to_live_submit("annotation")
+      @copy_annotation_to_live_submit("answer_text")
+      @hide()
+      # TODO: validate response and calling showSaved() or saveFailed().
+      @show_saved()
+    ,"svg_" + @image_question_id)
+
+  has_image_content: ->
+    # This is a shutterbug question, so it's answered if there's a thumbnail
+    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
+      @show_edit_buttons()
+      return true
+
+    # This is a drawing question, so an annotation is needed for it to be answered
+    if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url or @current_thumbnail)
+      @show_edit_buttons()
+      return true
+    return false
+
   update_display: ->
-    @annotated_url = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]").val()
-    @current_thumbnail = @annotated_url || $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]").val()
+    @annotated_url = @$annotation_field.val()
+    @current_thumbnail = @get_current_thumbnail()
     @current_annotation = $("#image_question_annotation_for_#{@image_question_id}").val()
     @$thumbnail.show()
     @$thumbnail.attr("src", @current_thumbnail)
@@ -140,17 +157,9 @@ class image_question
     @$replace_button.hide()
     @$edit_button.hide()
 
-    if (@$snapshot_button.length > 0) and (@current_src or @current_thumbnail)
-      # This is a shutterbug question, so it's answered if there's a thumbnail
-      @show_edit_buttons()
-    else if (@$drawing_button.length > 0) and (@current_annotation or @annotated_url)
-      # This is a drawing question, so an annotation is needed for it to be answered
+    if @has_image_content()
       @show_edit_buttons()
 
-    # if @undo_button
-    #   @undo_button.hide()
-    # if @last_src
-    #   @$undo_button.show()
     @set_svg_background()
 
   show_edit_buttons: =>
@@ -159,10 +168,10 @@ class image_question
     @$drawing_button.hide()
     @$snapshot_button.hide()
 
-  get_svg_canvas: =>
+  get_svg_canvas: ->
     svgCanvas["#{@svg_canvas_id}"]
 
-  set_svg_background: =>
+  set_svg_background: ->
     canv = @get_svg_canvas()
     if (canv && canv.setBackground)
       canv.setBackground('#FFF', @current_src)()
@@ -183,17 +192,41 @@ class image_question
 
 
   save: ->
-      @show_saving()
-      # TODO: validate response and calling showSaved() or saveFailed().
-      @show_saved();
+    @show_saving()
+    @get_svg_canvas().getSvgString() (data, error) =>
+      @svg_annotation_data = data
+      $svg = $(data)
+      @$sb_svg_src.show();
+      w = $svg.attr('width')
+      h = $svg.attr('height')
+
+      @$sb_svg_src.css('width',w)
+      @$sb_svg_src.css('height',h)
+      @$sb_svg_src.css('background-image',  "url(#{@current_src})")
+      @$sb_svg_src.css('background-repeat',  "no-repeat")
+      @$sb_svg_src.css('background-position',  "center")
+      @$sb_svg_src.css('background-size',  "contain")
+      @$sb_svg_src.css('background-color',  "#ffffff")
+      @$sb_svg_src.html(data)
+      @shutterbug_svg.getDomSnapshot()
+
+
+  copy_annotation_to_live_submit: (name) ->
+    field_name   = """ [name="#{@form_prefix}[#{name}]"] """
+    live_field   = $("#{@form_sel} #{field_name}")
+    dialog_field = $("#{@dialog_sel} #{field_name}")
+
+    dialog_value = dialog_field.val()
+    live_field.val(dialog_value)
+    live_field.trigger("change")
 
   show: ->
-    @$content.dialog("open");
+    @$content.dialog("open")
 
   set_image_source: (src) ->
     @last_src = @current_src unless @current_src == ""
     @current_src = src
-    @$current_src_field.val(src)
+    @$image_url_field.val(src)
     @update_display()
 
   set_image:(html) ->
@@ -202,15 +235,14 @@ class image_question
   set_svg_input:(html) =>
     $value= $(html)
     $src = $value.attr("src")
-    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[annotated_image_url]\"]")
-    hidden.val($src)
+    @$annotated_image_url_field.val($src)
     @current_thumbnail = $src
     @update_display()
 
   submit_svg_form: ->
-    $input = $("##{@svg_canvas_id}")
+    $input = @$annotation_field
     $input.attr("value", sketchily_encode64("<?xml version=\"1.0\"?>\n" + @svg_annotation_data))
-    hidden = $("#{@form_sel} [name=\"embeddable_image_question_answer[image_url]\"]")
+    hidden = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
     hidden.val(@current_src)
     @$svg_form.submit()
 
@@ -225,13 +257,10 @@ class image_question
     if @$text_response.val() != @$saved_response.data('raw')
       @$text_response.val(@$saved_response.data('raw'))
 
-  delete_image:() ->
-    @get_svg_canvas().getSvgString() (data,error) =>
-      @last_svg = data
-    @get_svg_canvas().clear()()
-    @$annotation_field.attr('value',"")
-    @set_image_source("")
-
+  replace_snapshot:() ->
+    @show()
+    svg = @get_svg_canvas()
+    @clear_drawing_layer()
 
   snapshot_updater: (e) =>
     data = e.data
@@ -245,4 +274,4 @@ class image_question
     @$content.dialog("close");
 
 # export our class
-window.ImageQuestion = image_question
+window.ImageQuestion = ImageQuestion

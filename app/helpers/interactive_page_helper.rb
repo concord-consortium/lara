@@ -10,9 +10,9 @@ module InteractivePageHelper
       nil
     end
   end
-  def page_link(activity,page)
+  def page_link(activity,page, opts={})
     name = "Page #{page.position}"
     name = page.name unless page.name.blank?
-    return link_to name, runnable_activity_page_path(activity,page)
+    return link_to name, runnable_activity_page_path(activity,page), opts
   end
 end

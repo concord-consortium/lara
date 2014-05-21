@@ -10,6 +10,7 @@ class NavMenu
 
   position_menu: () ->
     o = @trigger.offset()
+    return unless o
     parent = @trigger.parent().parent()
     po = parent.offset()
     margin = 12

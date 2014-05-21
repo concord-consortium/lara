@@ -31,3 +31,4 @@
 //= require nav_menu
 //= require iframe-phone
 //= require iframe-saver
+//= require prediction

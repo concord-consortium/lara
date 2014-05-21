@@ -1,0 +1,9 @@
+.li
+  = f.check_box :is_prediction
+  = t(:IS_PREDICTION_QUESTION)
+.li
+  = f.check_box :give_prediction_feedback
+  = t(:GIVE_PREDICTION_FEEDBACK)
+.li
+  = f.label t(:PREDICTION_FEEDBACK)
+  = f.text_area :prediction_feedback, :rows =>5, :class=>"wysiwyg"
