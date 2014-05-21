@@ -1,0 +1,24 @@
+:javascript
+  // definte (t) translation for i18n that uses the rails config/locales 
+  // taken from stack exchange http://bit.ly/SjkfJs 
+  var translations = #{I18n.backend.send(:translations)[I18n.locale].with_indifferent_access.to_json.html_safe}
+  window.t = function(key) {
+    if(!key){
+      return "N/A";
+    }
+
+    var keys = key.split(".");
+    var comp = translations;
+    $(keys).each(function(_, value) {
+      if(comp){
+        comp = comp[value];
+      }
+    });
+
+    if(!comp && console){
+      console.debug("No translation found for key: " + key);
+      return "N/A";
+    }
+
+    return comp;
+  };
