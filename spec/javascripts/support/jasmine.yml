@@ -13,7 +13,8 @@
 src_files:
   - assets/jquery-2.0.1.js
   - assets/runtime.js
-  
+  - assets/jasmine-jquery.js
+
 
 # stylesheets
 #
