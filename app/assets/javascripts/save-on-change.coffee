@@ -167,7 +167,7 @@ class @ForwardBlocker
     location = click_element.href
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
-      modalDialog(false, "Please submit your predictions.")
+      modalDialog(false, t('PLEASE_SUBMIT'))
     else
       window.location = location
 
