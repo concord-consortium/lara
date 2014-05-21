@@ -1,0 +1,31 @@
+<style>
+</style>
+
+<!-- Live TextArea input AKA Open Response Emeddable -->
+<form
+  accept-charset="UTF-8"
+  action="/embeddable/open_response_answers/165"
+  id="openresponse"
+  method="post">
+
+  <textarea id="live-textarea" class="live-textarea" cols="40"  name="embeddable_open_response_answer[answer_text]" placeholder="Type answer here" rows="8">previous data</textarea>
+  <div class="still_answering" style="display: none;">
+    <button class="button prediction_button" 
+            label="Submit your prediction" 
+            name="is_final" 
+            type="button" 
+            id = "prediction_button"
+            value="Submit your prediction" disabled="">
+      <span>
+        Submit your prediction
+      </span>
+      <i class="fa fa-lock"></i>
+    </button>
+  </div>
+  <div class="is_final" style="display: block;">
+    <div class="answer_is_final">
+      Your answer can not be changed.
+    </div>
+  </div>
+</form>
+
