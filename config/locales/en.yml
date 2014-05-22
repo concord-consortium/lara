@@ -5,7 +5,7 @@ en:
   MENU: "Menu"
   ACTIVITY: "Activity"
   BEGIN_ACTIVITY: "Begin activity"
-  BEGIN_NEXT_ACTIVITY: "Begin activity"
+  BEGIN_NEXT_ACTIVITY: "Next activity"
   TAKE_SNAPSHOT: "Take snapshot"
   REPLACE_SNAPSHOT:  "Replace snapshot"
   QUESTION: "Question"
