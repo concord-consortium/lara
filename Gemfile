@@ -38,6 +38,7 @@ gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :b
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
 gem "sqlite3"
+gem 'mysql2'
 gem "delayed_job_active_record"
 gem "daemons"
 
@@ -48,7 +49,6 @@ gem "font-awesome-rails"
 gem "safe_yaml", "~> 0.9.5"
 
 group :production do
-  gem 'mysql2'
   gem 'therubyracer'
 end
 
