@@ -34,7 +34,8 @@ config/app_environment_variables.rb
 .flooignore
 
 # ignore project files
-.sublime-project
+*.sublime-project
+*.sublime-workspace
 
 # ignore vim backup files
 *~
