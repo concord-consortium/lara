@@ -28,3 +28,5 @@ en:
   GIVE_PREDICTION_FEEDBACK: "Provide prediction feedback?"
   PREDICTION_FEEDBACK: "Prediction feedback"
   PLEASE_SUBMIT: "Please submit required answer(s)."
+  NEW_ACTIVITY_BUTTON: "Create new activity"
+  NEW_SEQUENCE_BUTTON: "Create new sequence"
