@@ -30,11 +30,11 @@ footer.sequence_run {
   background-color: white;
   opacity: 0.8;
   padding: 10px;
-  margin: 8px;
+  margin: 8px 0 8px 0;
 }
 
 .estimated-time {
-  margin: 8px;
+  margin: 8px 0 8px 0;
   background-color: #ddd;
   padding: 10px;
   .fa {
@@ -60,6 +60,9 @@ footer.sequence_run {
 .activities {
   float: left;
   clear: both;
+  background: rgba(255, 255, 255, 0.85);
+  width: 100%;
+
   .activity {
     border: 1px solid #000;
     width: 300px;
