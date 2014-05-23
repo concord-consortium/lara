@@ -3,6 +3,7 @@
 %li{ :id => dom_id_for(activity, :item), :class => item_class }
   %div.action_menu
     %div.action_menu_header_left
+      = activity.id.to_s + '.'
       = link_to activity.name, activity_path(activity), :class => 'container_link', :title => 'Preview Activity'
     %div.action_menu_header_right
       %ul.menu
