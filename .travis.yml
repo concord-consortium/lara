@@ -10,8 +10,13 @@ env:
   -CONCORD_PORTAL_CLIENT_SECRET=secret
   -SECRET_TOKEN=111111111111111111111111111111111111111111111111111111111111
 
+
+before_script:
+  - cp config/database.sample.yml config/database.yml
+  - bundle exec rake db:migrate
+    
 # uncomment this line if your project needs to run something other than `rake`:
-script: bundle exec rake db:migrate; bundle exec rake
+script: bundle exec rake
 
 cache: bundler
 
