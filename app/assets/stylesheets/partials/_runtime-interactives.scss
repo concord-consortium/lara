@@ -33,14 +33,14 @@
     }
   }
   .caption {
-    display: inline-block;
+    display: block;
     font-size: 14px;
-    font-style: italic;
     margin: 0px;
   }
   .credit {
-    display: inline-block;
+    display: block;
     font-size: 10px;
+    font-style: italic;
     margin: 0px;
     a {
       text-decoration: underline;
