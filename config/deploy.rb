@@ -2,7 +2,7 @@ require "bundler/capistrano"
 require "capistrano/ext/multistage"
 require "haml"
 require "delayed/recipes"
-load "config/deploy_extras/copy_activities.rb"
+# load "config/deploy_extras/copy_activities.rb"
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lara.git"
@@ -64,7 +64,7 @@ set :deploy_to, "/web/portal"
 set :branch, "master"
 set :use_sudo, false
 
-after "deploy:update_code", "deploy:shared_symlinks"
+before "deploy:assets:precompile", "deploy:shared_symlinks"
 
 # delayed job tasks:
 after "deploy:stop",    "delayed_job:stop"

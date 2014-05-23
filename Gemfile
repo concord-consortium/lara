@@ -86,7 +86,6 @@ group :test, :development do
   # JS unit tests
   gem 'jasmine'
   gem 'jasmine-ajax'
-  gem 'jasmine-jquery-rails'
   gem 'guard-jasmine'
   gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
   gem 'jasmine-jquery-rails'
