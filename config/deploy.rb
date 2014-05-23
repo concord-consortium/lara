@@ -2,7 +2,7 @@ require "bundler/capistrano"
 require "capistrano/ext/multistage"
 require "haml"
 require "delayed/recipes"
-# load "config/deploy_extras/copy_activities.rb"
+load "config/deploy_extras/copy_activities.rb"
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lara.git"
