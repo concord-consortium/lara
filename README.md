@@ -53,6 +53,7 @@ Some details about the relative authorization privileges of the author, admin an
 If you haven't run tests on this project before, you first need to initialize the test database.
 
       RAILS_ENV=test rake db:setup
+      rake db:test:prepare
 
 Then, from the application root, run
 
@@ -61,6 +62,7 @@ Then, from the application root, run
 To re-initialize the test database, should that be necessary:
 
       RAILS_ENV=test rake db:drop db:setup
+      rake db:test:prepare
 
 The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via [Poltergeist](https://github.com/jonleighton/poltergeist) to run [Capybara](http://jnicklas.github.io/capybara/) tests, so you will need to have PhantomJS installed; it may be [downloaded](http://phantomjs.org/download.html) or installed with Homebrew:
 
