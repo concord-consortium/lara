@@ -4,7 +4,6 @@
   margin: 10px 0;
 }
 
-
 #container {
   height: 100%;
   min-height: 100%;
@@ -26,15 +25,17 @@ footer.sequence_run {
   clear: both;
 }
 
+.sequence-page {
+  background: rgba(255, 255, 255, 0.85);
+}
+
 .sequence_info {
-  background-color: white;
-  opacity: 0.8;
   padding: 10px;
-  margin: 8px 0 8px 0;
+  margin: 8px;
 }
 
 .estimated-time {
-  margin: 8px 0 8px 0;
+  margin: 8px;
   background-color: #ddd;
   padding: 10px;
   .fa {
@@ -58,20 +59,17 @@ footer.sequence_run {
   }
 }
 .activities {
-  float: left;
-  clear: both;
-  background: rgba(255, 255, 255, 0.85);
   width: 100%;
 
   .activity {
     border: 1px solid #000;
     width: 300px;
     height: 300px;
+    display: inline-block;
     overflow: hidden;
-    float: left;
     background: white;
     opacity: 0.85;
-    margin: 9px;
+    margin: 8px;
     .position {
       color: #fff;
       font-weight: bold;

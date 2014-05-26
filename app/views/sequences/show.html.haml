@@ -3,24 +3,25 @@
 
 %p#notice= notice
 
-- unless @sequence.description.blank?
-  .sequence_info
-    .description
-      = @sequence.description.html_safe
+.sequence-page
+  - unless @sequence.description.blank?
+    .sequence_info
+      .description
+        = @sequence.description.html_safe
 
-.estimated-time
-  %i.fa.fa-clock-o.fa-2x
-  = time_to_complete(@sequence.time_to_complete)
+  .estimated-time
+    %i.fa.fa-clock-o.fa-2x
+    = time_to_complete(@sequence.time_to_complete)
 
-.activities
-  - @sequence.lightweight_activities_sequences.each do |las|
-    - activity = las.lightweight_activity
-    .activity
-      .position
-        = las.position.to_s
-      .title
-        = link_to activity.name, runnable_activity_path(activity)
-      .thumbnail
-        = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
+  .activities
+    - @sequence.lightweight_activities_sequences.each do |las|
+      - activity = las.lightweight_activity
+      .activity
+        .position
+          = las.position.to_s
+        .title
+          = link_to activity.name, runnable_activity_path(activity)
+        .thumbnail
+          = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
 
-  = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
+    = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
