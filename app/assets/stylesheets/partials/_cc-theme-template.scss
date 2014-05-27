@@ -1,6 +1,6 @@
 @mixin theme($srcImage, $theme-color-a, $theme-color-b, $theme-color-c) {
-  html { 
-    background: url($srcImage) no-repeat center center fixed; 
+  html {
+    background: url($srcImage) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -24,9 +24,12 @@
   }
 
   /* could also potentially use #A43900 drk orange */
-  .activities .activity .title {
-    a {
+  .activities .activity  {
+    .title, .position {
       color: $theme-color-a;
+    }
+    .activity-bg {
+      background: $theme-color-a;
     }
   }
   .question-hdr {
@@ -74,15 +77,15 @@
     }
   }
   .intro-mod {
-    .h4 { 
-      color: $theme-color-a; 
+    .h4 {
+      color: $theme-color-a;
       font-weight: bold;
     }
   }
   .estimated-time {
     background-color: lighten($theme-color-b, 30%);
   }
-  .index-mod.intro-mod ul li:before, 
+  .index-mod.intro-mod ul li:before,
   .index-mod.intro-mod ol li:before {
       background-color: lighten($theme-color-b, 20%);
       border: 1px solid $theme-color-b;

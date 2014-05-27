@@ -1,4 +1,5 @@
 /* Sequences */
+@import "project/base-fonts";
 
 .description {
   margin: 10px 0;
@@ -61,43 +62,44 @@ footer.sequence_run {
 .activities {
   width: 100%;
 
+  .activity-bg {
+    display: inline-block;
+    &:hover {
+      background: rgba(0, 0, 0, 0.03)
+    }
+  }
   .activity {
-    border: 1px solid #000;
+    border: 1px solid #EAEAEA;
     width: 300px;
     height: 300px;
-    display: inline-block;
     overflow: hidden;
     background: white;
     opacity: 0.85;
-    margin: 8px;
+    position: relative;
+    margin: 9px 8px 14px 9px;
     .position {
-      color: #fff;
-      font-weight: bold;
-      background-color: #000;
-      font-size: 3em;
-      height: 50px;
-      width: 50px;
-      text-align: center;
-      float: left;
+      @include helv-stack(normal);
+      font-size: 18pt;
+      display: inline-block;
+      margin: 5px 5px 5px 10px;
+      vertical-align: top;
     }
     .title {
-      font-size: 1.5em;
-      font-weight: bold;
-      float: left;
-      width: 240px;
-      padding: 0.5em;
-      text-align: center;
-      a {
-        text-decoration: underline;
-      }
+      @include helv-stack(lighter);
+      font-size: 17pt;
+      display: inline-block;
+      width: 245px;
+      height: 50px;
+      margin: 5px 5px 5px 0;
+      vertical-align: top;
       a:hover {
+        text-decoration: underline;
         opacity: 0.8;
       }
     }
     .thumbnail {
       clear: left;
       width: 300px;
-      border-top: 5px solid #000;
       overflow: hidden;
       img {
         width: 100%;
