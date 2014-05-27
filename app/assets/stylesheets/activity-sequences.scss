@@ -64,6 +64,7 @@ footer.sequence_run {
 
   .activity-bg {
     display: inline-block;
+    vertical-align: top;
     &:hover {
       background: rgba(0, 0, 0, 0.03)
     }
@@ -81,7 +82,7 @@ footer.sequence_run {
       @include helv-stack(normal);
       font-size: 18pt;
       display: inline-block;
-      margin: 5px 5px 5px 10px;
+      padding: 5px 5px 5px 10px;
       vertical-align: top;
     }
     .title {
@@ -90,7 +91,7 @@ footer.sequence_run {
       display: inline-block;
       width: 245px;
       height: 50px;
-      margin: 5px 5px 5px 0;
+      padding: 5px 5px 5px 0;
       vertical-align: top;
       a:hover {
         text-decoration: underline;
@@ -98,8 +99,8 @@ footer.sequence_run {
       }
     }
     .thumbnail {
-      clear: left;
       width: 300px;
+      height: 250px;
       overflow: hidden;
       img {
         width: 100%;
