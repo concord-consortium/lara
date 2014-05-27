@@ -114,4 +114,17 @@ There are other methods for enqueing jobs, but this is probably the easiest.
 
 
 ## History
-This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
+This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). 
+"Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
+
+
+## Deployment ##
+
+#### AWS Deployment. ####
+
+Prior to 2013-08-15 almost all deployment was done using Capistrano tasks, e.g. `cap deploy dev` or `cap deploy staging` Local App configuration is managed by a local app_environment_variables.rb file.  A developer typically copies data from app_environment_variables.sample.rb and adjust as needed. Remote provisioning and configuration was done using Chef scripts and Data Bags.
+
+#### Heroku Deployment. ####
+
+As of 2013-08-15 Lara can be deployed to Heroku without much trouble, using the typical `git push heroku master` and `heroku run rake db:migrate` workflow. To publish a branch other than master to Heroku, use this form: `git push heroku topic_branch_name:master` The one caviat is that the applications settings must be configured using `heroku config:set` as in `heroku config:set CONCORD_PORTAL_URL=http://nextgen.staging.concord.org CONCORD_PORTAL_CLIENT_ID=localhost CONCORD_PORTAL_CLIENT_SECRET=xxxx SECRET_TOKEN=xxxx`
+
