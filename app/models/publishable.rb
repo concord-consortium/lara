@@ -55,7 +55,7 @@ module Publishable
   end
 
   def publication_details
-    res = self.portal_publications.where(:success => true).group(:portal_url)
+    res = self.portal_publications.where(:success => true).group(:portal_url,:updated_at)
     counts = res.size
     return_vals = []
     dates  = res.maximum(:created_at)

@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '1.9.3'
 
 gem 'rails', '3.2.17'
 gem "jquery-rails"
@@ -37,8 +38,7 @@ gem 'rack-environmental'
 gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :branch => "concord"
 # We're not using sqlite in production, but moving this into the test/development groups
 # causes problems.
-gem "sqlite3"
-gem 'mysql2'
+gem "pg"
 gem "delayed_job_active_record"
 gem "daemons"
 
@@ -49,6 +49,7 @@ gem "font-awesome-rails"
 gem "safe_yaml", "~> 0.9.5"
 
 group :production do
+  gem 'rails_12factor'
   gem 'therubyracer'
 end
 
@@ -67,6 +68,9 @@ group :assets do
 end
 
 group :test, :development do
+  # We are going to insist that production is on pg
+  gem "sqlite3"
+  gem 'mysql2'
   gem "rspec",       "~> 2.10.0"
   gem "rspec-rails", "~> 2.10.1"
   gem "ci_reporter", "~> 1.7.0"
@@ -118,7 +122,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'

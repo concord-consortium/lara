@@ -59,7 +59,7 @@ module LightweightStandalone
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
+    config.assets.initialize_on_precompile = false
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
                             :svg_edit    => { :url => /svg-editor/,
