@@ -139,6 +139,7 @@ describe Sequence do
     end
 
     it 'keeps order of activities from the original' do
+      dup = sequence_with_activities.duplicate
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
         a.position.should == b.position
       end
