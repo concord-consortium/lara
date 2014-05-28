@@ -24,12 +24,14 @@
   }
 
   /* could also potentially use #A43900 drk orange */
-  .activities .activity  {
-    .title, .position {
-      color: $theme-color-a;
+  .activities {
+    .activity-bg:hover {
+      background: lighten($theme-color-a, 50%);
     }
-    .activity-bg {
-      background: $theme-color-a;
+    .activity  {
+      .title, .position {
+        color: $theme-color-a;
+      }
     }
   }
   .question-hdr {
