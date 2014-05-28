@@ -35,6 +35,35 @@ class Sequence < ActiveRecord::Base
     get_neighbor(activity, true)
   end
 
+  def to_hash
+    # We're intentionally not copying:
+    # - publication status (the copy should start as draft like everything else)
+    # - is_official (defaults to false, can be changed)
+    # - user_id (the copying user should be the owner)
+    {
+      title: title,
+      description: description,
+      theme_id: theme_id,
+      project_id: project_id,
+      logo: logo,
+      display_title: display_title,
+      thumbnail_url: thumbnail_url
+    }
+  end
+
+  def duplicate
+    new_sequence = Sequence.new(self.to_hash)
+    # Clarify title
+    new_sequence.title = "Copy of #{self.name}"
+    activities.each do |a|
+      new_a = a.duplicate
+      new_a.name.sub!('Copy of ', '')
+      new_sequence.activities << new_a
+    end
+    new_sequence.save(validate: false)
+    return new_sequence
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {
