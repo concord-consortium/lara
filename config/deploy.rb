@@ -1,7 +1,8 @@
 require "bundler/capistrano"
-require 'capistrano/ext/multistage'
-require 'haml'
+require "capistrano/ext/multistage"
+require "haml"
 require "delayed/recipes"
+load "config/deploy_extras/copy_activities.rb"
 
 set :application, "lightweight-standalone"
 set :repository,  "git://github.com/concord-consortium/lara.git"
@@ -24,7 +25,7 @@ end
 # if you want to clean up old releases on each deploy uncomment this:
 after "deploy:restart", "deploy:cleanup"
 
-# if you're still using the script/reaper helper you will need
+# if you"re still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
 # If you are using Passenger mod_rails uncomment this:
@@ -32,7 +33,7 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{File.join(current_path,'tmp','restart.txt')}"
+    run "touch #{File.join(current_path,"tmp","restart.txt")}"
   end
 
   desc "link in some shared resources, such as database.yml"
@@ -63,14 +64,14 @@ set :deploy_to, "/web/portal"
 set :branch, "master"
 set :use_sudo, false
 
-after 'deploy:update_code', 'deploy:shared_symlinks'
+before "deploy:assets:precompile", "deploy:shared_symlinks"
 
 # delayed job tasks:
 after "deploy:stop",    "delayed_job:stop"
 after "deploy:start",   "delayed_job:start"
 after "deploy:restart", "delayed_job:restart"
 
-require './config/boot'
+require "./config/boot"
 
 #############################################################
 #  Maintenance mode
@@ -101,5 +102,3 @@ namespace :deploy do
     end
   end
 end
-
-

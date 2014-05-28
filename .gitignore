@@ -34,8 +34,12 @@ config/app_environment_variables.rb
 .flooignore
 
 # ignore project files
-.sublime-project
+*.sublime-project
+*.sublime-workspace
 
 # ignore vim backup files
 *~
 public/snapshots
+
+# Ignore config/database.yml incase people want to use myslq or postgresql.
+config/database.yml

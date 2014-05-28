@@ -1,6 +1,7 @@
 %li{ :id => dom_id_for(sequence, :item), :class => 'item' }
   %div.action_menu
     %div.action_menu_header_left
+      = sequence.id.to_s + '.'
       = link_to sequence.title, sequence, :class => 'container_link', :title => 'Preview Sequence'
     %div.action_menu_header_right
       %ul.menu

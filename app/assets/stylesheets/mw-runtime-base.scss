@@ -276,7 +276,7 @@ div.intra-page-nav {
       text-align: center;
       margin-left: 8px;
       @include trans;
-      font-size: 14px; 
+      font-size: 14px;
       padding: 2px 10px;
       &:hover {
         background-color: darken($med-blue, 5%);
@@ -418,7 +418,7 @@ div.intra-page-nav {
       display: none;
     }
   }
-  
+
   .question {
     margin: 20px;
     display: inline-block;
@@ -544,13 +544,18 @@ div.intra-page-nav {
       }
     }
     .caption {
-      float: left;
-      width: 85%;
+      display: block;
+      font-size: 14px;
+      margin: 0px;
     }
     .credit {
-      clear: left;
-      float: left;
-      width: 80%;
+      display: block;
+      font-size: 10px;
+      font-style: italic;
+      margin: 0px;
+      a {
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -1149,6 +1154,10 @@ footer {
 
 .intro-mod.index-mod a {
   text-decoration: none;
+}
+
+.intro-mod.index-mod ol a:hover {
+  text-decoration: underline;
 }
 
 /* social tools on index page */

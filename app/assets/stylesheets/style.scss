@@ -902,3 +902,11 @@ ul#new-menu {
         display: none;
     }
 }
+
+#activity_listing_head, #sequence_listing_head {
+  h1 {
+    display: inline;
+    vertical-align: bottom;
+    margin-right: 20px;
+  }
+}

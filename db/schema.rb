@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
     t.text     "drawing_prompt"
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
-    t.text     "prediction_feedback",      :default => ""
+    t.text     "prediction_feedback"
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
@@ -97,16 +97,16 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
 
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
-    t.text     "prompt",                   :default => "Why does ..."
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.text     "prompt"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.boolean  "custom",                   :default => false
     t.boolean  "enable_check_answer",      :default => true
     t.boolean  "multi_answer",             :default => false
     t.boolean  "show_as_menu",             :default => false
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
-    t.text     "prediction_feedback",      :default => ""
+    t.text     "prediction_feedback"
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -125,12 +125,12 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
 
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
-    t.text     "prompt",                   :default => "Why does ..."
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.text     "prompt"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
-    t.text     "prediction_feedback",      :default => ""
+    t.text     "prediction_feedback"
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -262,12 +262,12 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.text     "response",         :limit => 255
+    t.text     "response"
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "projects", :force => true do |t|
@@ -290,7 +290,7 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
-    t.integer  "page_id",         :default => 0
+    t.integer  "page_id"
     t.string   "remote_endpoint"
     t.integer  "sequence_id"
     t.integer  "sequence_run_id"
