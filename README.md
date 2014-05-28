@@ -128,3 +128,16 @@ Prior to 2013-08-15 almost all deployment was done using Capistrano tasks, e.g. 
 
 As of 2013-08-15 Lara can be deployed to Heroku without much trouble, using the typical `git push heroku master` and `heroku run rake db:migrate` workflow. To publish a branch other than master to Heroku, use this form: `git push heroku topic_branch_name:master` The one caviat is that the applications settings must be configured using `heroku config:set` as in `heroku config:set CONCORD_PORTAL_URL=http://nextgen.staging.concord.org CONCORD_PORTAL_CLIENT_ID=localhost CONCORD_PORTAL_CLIENT_SECRET=xxxx SECRET_TOKEN=xxxx`
 
+#### Notes for copying production data to heroku ####
+
+    * Copy production data: `be cap production lara:copy_data`
+    * Copy LARA production to Mysql using SqlPro
+    * Run `mysql2psql`
+    * export PATH="/Applications/Postgres.app/Contents/Versions/9.3/bin:$PATH”
+    * pg_dump -Fc --no-acl --no-owner -h localhost -U <USERNAME>
+      lara_dev > lara_dev.dump
+    * mv ./lara_dev.dump <SOMEPLACE PUBLIC>
+    * restore `heroku pgbackups:restore HEROKU_POSTGRESQL_CRIMSON_URL '<PUBLIC_URL>'`
+
+
+
