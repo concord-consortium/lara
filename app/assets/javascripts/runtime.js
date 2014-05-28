@@ -32,3 +32,4 @@
 //= require iframe-phone
 //= require iframe-saver
 //= require prediction
+//= require activity-box-click
