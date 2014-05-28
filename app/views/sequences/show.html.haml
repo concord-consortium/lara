@@ -21,7 +21,7 @@
           %span.position
             = las.position.to_s
           %span.title
-            = link_to activity.name, runnable_activity_path(activity)
+            = link_to activity.name, sequence_activity_path(@sequence, activity)
           .thumbnail
             = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
 
