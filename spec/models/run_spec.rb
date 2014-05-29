@@ -1,27 +1,28 @@
 require 'spec_helper'
 
 describe Run do
-  let (:activity)        { FactoryGirl.create(:activity) }
-  let (:remote_endpoint) { nil }
-  let (:run) {
+  let(:activity)        { FactoryGirl.create(:activity) }
+  let(:seq)             { FactoryGirl.create(:sequence, :lightweight_activities => [activity]) }
+  let(:remote_endpoint) { nil }
+  let(:run) {
     r = FactoryGirl.create(:run)
     r.activity = activity
     r.remote_endpoint = remote_endpoint
     r.user = user
     r
   }
-  let (:user)       { FactoryGirl.create(:user) }
-  let (:or_question){ FactoryGirl.create(:or_embeddable) }
-  let (:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
-  let (:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
-  let (:iq_answer)  { FactoryGirl.create(:image_question_answer,
+  let(:user)       { FactoryGirl.create(:user) }
+  let(:or_question){ FactoryGirl.create(:or_embeddable) }
+  let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+  let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
     { :answer_text => "the image question answer",
       :question => image_quest,
       :image_url => "http://foo.com/bar.jpg" }) }
-  let (:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-  let (:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-  let (:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-  let (:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+  let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+  let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+  let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
                     :answers  => [a1],
                     :question => mc_question)
                   }
