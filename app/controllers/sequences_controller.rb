@@ -132,6 +132,12 @@ class SequencesController < ApplicationController
     end
   end
 
+  def duplicate
+    authorize! :duplicate, @sequence
+    @new_sequence = @sequence.duplicate(current_user)
+    redirect_to edit_sequence_path(@new_sequence)
+  end
+
   private
   def set_sequence
     @sequence = Sequence.find(params[:id])
@@ -147,7 +153,7 @@ class SequencesController < ApplicationController
     if session.delete(:did_reauthenticate)
       # FIXME: what if current_user is nil?
       # We see this happening from has.portal sometimes, eg
-      # in this stack trace: http://bit.ly/1qUAmu4 
+      # in this stack trace: http://bit.ly/1qUAmu4
       # PT: https://www.pivotaltracker.com/story/show/67843350
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
     else

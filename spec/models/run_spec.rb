@@ -1,27 +1,36 @@
 require 'spec_helper'
 
 describe Run do
-  let (:activity)        { FactoryGirl.create(:activity) }
-  let (:remote_endpoint) { nil }
-  let (:run) {
+  let(:activity)        { FactoryGirl.create(:activity) }
+  let(:seq)             { FactoryGirl.create(:sequence, :lightweight_activities => [activity]) }
+  let(:remote_endpoint) { nil }
+  let(:run) {
     r = FactoryGirl.create(:run)
     r.activity = activity
     r.remote_endpoint = remote_endpoint
     r.user = user
     r
   }
-  let (:user)       { FactoryGirl.create(:user) }
-  let (:or_question){ FactoryGirl.create(:or_embeddable) }
-  let (:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
-  let (:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
-  let (:iq_answer)  { FactoryGirl.create(:image_question_answer,
+  let(:run_in_sequence) {
+    r = FactoryGirl.create(:run)
+    r.activity = activity
+    r.sequence = seq
+    r.remote_endpoint = remote_endpoint
+    r.user = user
+    r
+  }
+  let(:user)       { FactoryGirl.create(:user) }
+  let(:or_question){ FactoryGirl.create(:or_embeddable) }
+  let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+  let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
     { :answer_text => "the image question answer",
       :question => image_quest,
       :image_url => "http://foo.com/bar.jpg" }) }
-  let (:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-  let (:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
-  let (:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-  let (:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+  let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
+  let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+  let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
+  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
                     :answers  => [a1],
                     :question => mc_question)
                   }
@@ -219,19 +228,27 @@ describe Run do
     end
   end
 
-  describe "self.lookup(key,activity,user=nil,portal)" do
+  describe "self.lookup(key,activity,user=nil,portal,seq_id)" do
     describe "with a key" do
       it "should simply use the key" do
         Run.stub!(:by_key => [run])
-        Run.lookup("sdfsdfsdf",activity, user, nil).should == run
+        Run.lookup("sdfsdfsdf",activity, user, nil,nil).should == run
       end
     end
 
+    describe "with a sequence, activity and user" do
+      it "should return the run with our user, activity, and sequence" do
+        found = Run.lookup(nil,activity,user,nil,seq.id)
+        run_in_sequence.sequence.should ==  found.sequence
+        run_in_sequence.user.should ==  found.user
+        run_in_sequence.activity.should ==  found.activity
+      end
+    end
     describe "without a key" do
       describe "with no user" do
         it "should create a new run" do
           Run.should_receive(:create).and_return(run)
-          Run.lookup(nil,activity,nil,nil).should == run
+          Run.lookup(nil,activity,nil,nil,nil).should == run
         end
       end
 
@@ -244,7 +261,7 @@ describe Run do
                 .with(:first, :conditions =>
                   hash_including(:user_id => user.id, :activity_id => activity.id))
                 .and_return(run)
-              Run.lookup(nil,activity,user,nil).should == run
+              Run.lookup(nil,activity,user,nil,nil).should == run
             end
           end
 
@@ -255,7 +272,7 @@ describe Run do
                   hash_including(:user_id => user.id, :activity_id => activity.id))
                 .and_return(nil)
               Run.should_receive(:create).and_return(run)
-              Run.lookup(nil,activity,user,nil).should == run
+              Run.lookup(nil,activity,user,nil,nil).should == run
             end
           end
         end
@@ -280,7 +297,7 @@ describe Run do
                 :remote_id => remote.remote_id
             ))
             .and_return(run)
-          Run.lookup(nil,activity, user, remote).should == run
+          Run.lookup(nil,activity, user, remote,nil).should == run
         end
       end
     end
