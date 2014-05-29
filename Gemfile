@@ -89,6 +89,9 @@ group :test, :development do
   gem 'guard-jasmine'
   gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
   gem 'jasmine-jquery-rails'
+  gem 'spork-rails'
+  gem 'guard-spork'
+  gem 'childprocess'
 end
 
 group :test do

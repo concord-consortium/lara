@@ -1,104 +1,147 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-require 'rspec/autorun'
-require 'factory_girl'
-require 'webmock/rspec'
+require 'rubygems'
+require 'spork'
+#uncomment the following line to use spork with the debugger
+#require 'spork/ext/ruby-debug'
 
-# Javascript testing with PhantomJS
-require 'capybara/rspec'
-require 'capybara/poltergeist'
+Spork.prefork do
+  # Loading more in this block will cause your tests to run faster. However,
+  # if you change any configuration or code from libraries loaded here, you'll
+  # need to restart spork for it take effect.
 
-# https://github.com/dtao/safe_yaml/issues/10
-SafeYAML::OPTIONS[:deserialize_symbols] = true
+  # This file is copied to spec/ when you run 'rails generate rspec:install'
+  ENV["RAILS_ENV"] ||= 'test'
+  require File.expand_path("../../config/environment", __FILE__)
+  require 'rspec/rails'
+  require 'rspec/autorun'
+  require 'factory_girl'
+  require 'webmock/rspec'
 
-Capybara.javascript_driver = :poltergeist
-# Capybars default wait of 2s is too slow for some of our tests in travis
-Capybara.default_wait_time = 5
+  # Javascript testing with PhantomJS
+  require 'capybara/rspec'
+  require 'capybara/poltergeist'
 
-# this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
-# otherwise Capybara or poltergeist will fail not being able to load shutterbug.js
-Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FILE__)).first
+  # https://github.com/dtao/safe_yaml/issues/10
+  SafeYAML::OPTIONS[:deserialize_symbols] = true
 
-# this fixes loading of assets by save_and_open_page pages. You'll need to have
-# a server running at this location that serves the assets required by the page.
-# this isn't documented other than the discussion in this pull request:
-# https://github.com/jnicklas/capybara/pull/958
-Capybara.asset_host = 'http://localhost:3000'
+  Capybara.javascript_driver = :poltergeist
+  # Capybars default wait of 2s is too slow for some of our tests in travis
+  Capybara.default_wait_time = 5
 
-OmniAuth.config.test_mode = true
+  # this is necessary so shutterbug is correctly initialized in the app that is being tested by Capybara
+  # otherwise Capybara or poltergeist will fail not being able to load shutterbug.js
+  Capybara.app = Rack::Builder.parse_file(File.expand_path('../../config.ru', __FILE__)).first
 
-def add_fake_authorization(strat_name)
-  url       = "http://#{strat_name}.org/"
-  client_id = strat_name
-  secret    = "secret"
-  strat = Concord::AuthPortal.add(strat_name,url,client_id,secret)
-  OmniAuth.config.add_mock(strat.strategy_name, {
-    :uid      => 'fake_concord_user',
-    :provider => strat.strategy_name,
-    :credentials => {:token => 'token'} }
-  )
-end
+  # this fixes loading of assets by save_and_open_page pages. You'll need to have
+  # a server running at this location that serves the assets required by the page.
+  # this isn't documented other than the discussion in this pull request:
+  # https://github.com/jnicklas/capybara/pull/958
+  Capybara.asset_host = 'http://localhost:3000'
+
+  OmniAuth.config.test_mode = true
+
+  def add_fake_authorization(strat_name)
+    url       = "http://#{strat_name}.org/"
+    client_id = strat_name
+    secret    = "secret"
+    strat = Concord::AuthPortal.add(strat_name,url,client_id,secret)
+    OmniAuth.config.add_mock(strat.strategy_name, {
+      :uid      => 'fake_concord_user',
+      :provider => strat.strategy_name,
+      :credentials => {:token => 'token'} }
+    )
+  end
 
 
-add_fake_authorization('concord_portal')
-add_fake_authorization('portal')
+  add_fake_authorization('concord_portal')
+  add_fake_authorization('portal')
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  # Requires supporting ruby files with custom matchers and macros, etc,
+  # in spec/support/ and its subdirectories.
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-RSpec.configure do |config|
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
+  RSpec.configure do |config|
+    # ## Mock Framework
+    #
+    # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
+    #
+    # config.mock_with :mocha
+    # config.mock_with :flexmock
+    # config.mock_with :rr
 
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+    # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
+    # If you're not using ActiveRecord, or you'd prefer not to run each of your
+    # examples within a transaction, remove the following line or assign false
+    # instead of true.
+    config.use_transactional_fixtures = true
 
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
+    # If true, the base class of anonymous controllers will be inferred
+    # automatically. This will be the default behavior in future versions of
+    # rspec-rails.
+    config.infer_base_class_for_anonymous_controllers = false
 
-  # Include Devise helpers
-  config.include Devise::TestHelpers, :type => :controller
-  config.include Devise::TestHelpers, :type => :view
+    # Include Devise helpers
+    config.include Devise::TestHelpers, :type => :controller
+    config.include Devise::TestHelpers, :type => :view
 
-  # this really doesn't seem like it should be necessary, so I wonder about
-  # wether the require capybara/rspec is working or needed above
-  config.include Rails.application.routes.url_helpers, :type => :feature
+    # this really doesn't seem like it should be necessary, so I wonder about
+    # wether the require capybara/rspec is working or needed above
+    config.include Rails.application.routes.url_helpers, :type => :feature
 
-  Devise.stretches = 1
-  WebMock.disable_net_connect!(:allow_localhost => true)
+    Devise.stretches = 1
+    WebMock.disable_net_connect!(:allow_localhost => true)
 
-  # on Scott's OS X 10.6 machine, phantom needs to visit a simple page before
-  # it works reliably
-  config.before(:each, :js => true) {
-    ENV['RUNNING_JS_TEST'] = 'true'
-    visit '/404.html'
-  }
-end
-
-class ActiveRecord::Base
-  mattr_accessor :shared_connection
-  @@shared_connection = nil
-
-  def self.connection
-    @@shared_connection || retrieve_connection
+    # on Scott's OS X 10.6 machine, phantom needs to visit a simple page before
+    # it works reliably
+    config.before(:each, :js => true) {
+      ENV['RUNNING_JS_TEST'] = 'true'
+      visit '/404.html'
+    }
   end
 end
 
-# Forces all threads to share the same connection. This works on
-# Capybara because it starts the web server in a thread.
-ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+Spork.each_run do
+  # This code will be run each time you run your specs.
+  class ActiveRecord::Base
+    mattr_accessor :shared_connection
+    @@shared_connection = nil
+
+    def self.connection
+      @@shared_connection || retrieve_connection
+    end
+  end
+
+  # Forces all threads to share the same connection. This works on
+  # Capybara because it starts the web server in a thread.
+  ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+end
+
+# --- Instructions ---
+# Sort the contents of this file into a Spork.prefork and a Spork.each_run
+# block.
+#
+# The Spork.prefork block is run only once when the spork server is started.
+# You typically want to place most of your (slow) initializer code in here, in
+# particular, require'ing any 3rd-party gems that you don't normally modify
+# during development.
+#
+# The Spork.each_run block is run each time you run your specs.  In case you
+# need to load files that tend to change during development, require them here.
+# With Rails, your application modules are loaded automatically, so sometimes
+# this block can remain empty.
+#
+# Note: You can modify files loaded *from* the Spork.each_run block without
+# restarting the spork server.  However, this file itself will not be reloaded,
+# so if you change any of the code inside the each_run block, you still need to
+# restart the server.  In general, if you have non-trivial code in this file,
+# it's advisable to move it into a separate file so you can easily edit it
+# without restarting spork.  (For example, with RSpec, you could move
+# non-trivial code into a file spec/support/my_helper.rb, making sure that the
+# spec/support/* files are require'd from inside the each_run block.)
+#
+# Any code that is left outside the two blocks will be run during preforking
+# *and* during each_run -- that's probably not what you want.
+#
+# These instructions should self-destruct in 10 seconds.  If they don't, feel
+# free to delete them.
