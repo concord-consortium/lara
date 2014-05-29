@@ -51,21 +51,30 @@ class Sequence < ActiveRecord::Base
     }
   end
 
-  def duplicate
+  def duplicate(new_owner)
     new_sequence = Sequence.new(self.to_hash)
-    # Clarify title
-    new_sequence.title = "Copy of #{self.name}"
-    positions = []
-    lightweight_activities_sequences.each do |sa|
-      new_a = sa.lightweight_activity.duplicate
-      new_a.name.sub!('Copy of ', '')
-      new_sequence.activities << new_a
-      positions << sa.position
-    end
-    new_sequence.save(validate: false)
-    # Make sure that positions are correct!
-    new_sequence.lightweight_activities_sequences.each_with_index do |sa, i|
-      sa.position = positions[i]
+    Sequence.transaction do
+      new_sequence.title = "Copy of #{self.name}"
+      new_sequence.user = new_owner
+      positions = []
+      lightweight_activities_sequences.each do |sa|
+        new_a = sa.lightweight_activity.duplicate
+        new_a.name = new_a.name.sub('Copy of ', '')
+        new_a.user = new_owner
+        new_a.save!
+        new_sequence.activities << new_a
+        positions << sa.position
+      end
+      new_sequence.save!
+      # This is not necessary, as 'lightweight_activities_sequences' is ordered by
+      # position, so we already copied and add activities in a right order. However
+      # copying exact position values seems to be safer and more resistant
+      # to possible errors in the future.
+      new_sequence.lightweight_activities_sequences.each_with_index do |sa, i|
+        sa.position = positions[i]
+        sa.save!
+      end
+      new_sequence.save!
     end
     return new_sequence
   end

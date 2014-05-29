@@ -103,6 +103,7 @@ describe Sequence do
   end
 
   describe '#duplicate' do
+    let(:owner) { FactoryGirl.create(:user) }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
       seq.thumbnail_url = thumbnail_url
@@ -114,8 +115,10 @@ describe Sequence do
     end
 
     it 'creates a new Sequence with attributes from the original' do
-      dup = sequence.duplicate
+      dup = sequence.duplicate(owner)
+      dup.reload # make sure that all changes are saved to db.
       dup.should be_a(Sequence)
+      dup.user.should == owner
       dup.title.should == "Copy of #{sequence.title}"
       dup.description.should == sequence.description
       dup.theme_id.should == sequence.theme_id
@@ -127,10 +130,12 @@ describe Sequence do
     end
 
     it 'performs deep copy of all activities included in a given sequence' do
-      dup = sequence_with_activities.duplicate
+      dup = sequence_with_activities.duplicate(owner)
+      dup.reload # make sure that all changes are saved to db.
       dup.activities.length.should == sequence_with_activities.activities.length
       dup.activities.zip(sequence_with_activities.activities).each do |a, b|
         a.should_not == b # deep copy!
+        a.user.should == owner
         a.name.should == b.name # we don't want "Copy of" prefix here
         a.related.should == b.related
         a.description.should == b.description
@@ -139,21 +144,24 @@ describe Sequence do
     end
 
     it 'keeps order of activities from the original' do
-      dup = sequence_with_activities.duplicate
+      dup = sequence_with_activities.duplicate(owner)
+      dup.reload # make sure that all changes are saved to db.
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
         a.position.should == b.position
+        a.lightweight_activity.name.should == b.lightweight_activity.name
       end
     end
 
     it 'keeps order of activities from the original even when it was modified' do
-      sequence_with_activities.lightweight_activities_sequences[0].position = 2
-      sequence_with_activities.lightweight_activities_sequences[1].position = 1
-      sequence_with_activities.lightweight_activities_sequences[2].position = 3
-
-      dup = sequence_with_activities.duplicate
+      sequence_with_activities.lightweight_activities_sequences[0].update_attributes!(position: 2)
+      sequence_with_activities.lightweight_activities_sequences[1].update_attributes!(position: 1)
+      sequence_with_activities.lightweight_activities_sequences[2].update_attributes!(position: 3)
+      dup = sequence_with_activities.duplicate(owner)
+      dup.reload # make sure that all changes are saved to db.
+      sequence_with_activities.reload # make sure that order is updated so test below makes sense.
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
-        a.lightweight_activity.name.should == b.lightweight_activity.name
         a.position.should == b.position
+        a.lightweight_activity.name.should == b.lightweight_activity.name
       end
     end
   end
