@@ -21,6 +21,7 @@ class Ability
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
       # and duplicate unlocked activities
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => 'public'
+      can :duplicate, Sequence, :is_locked => false, :publication_status => 'public'
       # Also, everyone can read public activities
       can :read, LightweightActivity, :publication_status => 'public'
       can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
