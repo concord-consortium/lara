@@ -55,12 +55,18 @@ class Sequence < ActiveRecord::Base
     new_sequence = Sequence.new(self.to_hash)
     # Clarify title
     new_sequence.title = "Copy of #{self.name}"
-    activities.each do |a|
-      new_a = a.duplicate
+    positions = []
+    lightweight_activities_sequences.each do |sa|
+      new_a = sa.lightweight_activity.duplicate
       new_a.name.sub!('Copy of ', '')
       new_sequence.activities << new_a
+      positions << sa.position
     end
     new_sequence.save(validate: false)
+    # Make sure that positions are correct!
+    new_sequence.lightweight_activities_sequences.each_with_index do |sa, i|
+      sa.position = positions[i]
+    end
     return new_sequence
   end
 

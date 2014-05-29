@@ -144,6 +144,18 @@ describe Sequence do
         a.position.should == b.position
       end
     end
+
+    it 'keeps order of activities from the original even when it was modified' do
+      sequence_with_activities.lightweight_activities_sequences[0].position = 2
+      sequence_with_activities.lightweight_activities_sequences[1].position = 1
+      sequence_with_activities.lightweight_activities_sequences[2].position = 3
+
+      dup = sequence_with_activities.duplicate
+      dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
+        a.lightweight_activity.name.should == b.lightweight_activity.name
+        a.position.should == b.position
+      end
+    end
   end
 
 end
