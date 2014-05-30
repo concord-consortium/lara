@@ -50,8 +50,9 @@ LightweightStandalone::Application.configure do
   config.assets.precompile += %w( runtime.css theme-has-ngs.css theme-mw.css theme-has-ngs-atmosphere.css theme-has-ngs-climate.css theme-has-ngs-hydrofracking.css theme-has-ngs-landmanagement.css theme-has-ngs-water.css theme-rites.css runtime.js respond.js modernizr.min.js print-summary.css theme-interactions-electrostatics.css)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }
-
+  # config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
   # Enable threaded mode
   # config.threadsafe!
 

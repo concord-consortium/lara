@@ -7,21 +7,7 @@ if File.exists?("#{::Rails.root.to_s}/config/mailer.yml") || ::Rails.env == "tes
     puts "Overriding ActionMailer config and setting test mode"
     ActionMailer::Base.delivery_method = :test
   else
-    c = YAML::load(File.open("#{::Rails.root.to_s}/config/mailer.yml"))
-    c.each do |key,val|
-      if key == :smtp || key == 'smtp'
-        key = :smtp_settings
-      end
-      begin
-        if CONFIG_OPTIONS.include?(key.to_s)
-          ActionMailer::Base.send("#{key}=".to_sym, val)
-        else
-          raise "Not an ActionMailer configuration option"
-        end
-      rescue Exception => e
-        $stderr.puts "Problem processing key '#{key}' in config/mailer.yml"
-        $stderr.puts "#{e}"
-      end
-    end
+    config_file = Rails.root.join("config", "mailer.yml")
+    ActionMailer::Base.smtp_settings = YAML.load_file(config_file)[Rails.env].try(:to_options)
   end
 end
