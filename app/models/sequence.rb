@@ -58,9 +58,8 @@ class Sequence < ActiveRecord::Base
       new_sequence.user = new_owner
       positions = []
       lightweight_activities_sequences.each do |sa|
-        new_a = sa.lightweight_activity.duplicate
+        new_a = sa.lightweight_activity.duplicate(new_owner)
         new_a.name = new_a.name.sub('Copy of ', '')
-        new_a.user = new_owner
         new_a.save!
         new_sequence.activities << new_a
         positions << sa.position
