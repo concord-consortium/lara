@@ -77,6 +77,7 @@ class LightweightActivity < ActiveRecord::Base
   def duplicate(new_owner)
     new_activity = LightweightActivity.new(self.to_hash)
     LightweightActivity.transaction do
+      new_activity.save!(validate: false)
       # Clarify name
       new_activity.name = "Copy of #{new_activity.name}"
       new_activity.user = new_owner
@@ -86,7 +87,6 @@ class LightweightActivity < ActiveRecord::Base
         new_page.set_list_position(p.position)
         new_page.save!(validate: false)
       end
-      new_activity.save!(validate: false)
       new_activity.fix_page_positions
     end
     return new_activity

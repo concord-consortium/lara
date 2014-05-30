@@ -176,6 +176,9 @@ describe LightweightActivity do
         first_page.sidebar = bad_content
         activity.pages << first_page
         activity.fix_page_positions
+        activity.description = bad_content
+        activity.save!(validate: false)
+        activity.should_not be_valid
         duplicate = activity.duplicate(owner)
         duplicate.pages.length.should == 1
         duplicate.pages.each_with_index do |p, i|
