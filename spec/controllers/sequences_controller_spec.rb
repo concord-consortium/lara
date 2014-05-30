@@ -97,6 +97,20 @@ describe SequencesController do
     end
   end
 
+  describe 'GET duplicate' do
+    it "should call 'duplicate' on the sequence" do
+      get :duplicate, { :id => sequence.id }
+      assigns(:new_sequence).should be_a(Sequence)
+      assigns(:new_sequence).title.should match(/^Copy of #{assigns(:sequence).title}/)
+      assigns(:new_sequence).user.should == @user
+    end
+
+    it 'should redirect to edit the new sequence' do
+      get :duplicate, { :id => sequence.id }
+      response.should redirect_to(edit_sequence_url(assigns(:new_sequence)))
+    end
+  end
+
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested sequence" do
