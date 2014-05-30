@@ -100,7 +100,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def duplicate
-    authorize! :duplicate, LightweightActivity
+    authorize! :duplicate, @activity
     @new_activity = @activity.duplicate(current_user)
 
     unless @new_activity.valid?
