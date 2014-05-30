@@ -35,6 +35,50 @@ class Sequence < ActiveRecord::Base
     get_neighbor(activity, true)
   end
 
+  def to_hash
+    # We're intentionally not copying:
+    # - publication status (the copy should start as draft like everything else)
+    # - is_official (defaults to false, can be changed)
+    # - user_id (the copying user should be the owner)
+    {
+      title: title,
+      description: description,
+      theme_id: theme_id,
+      project_id: project_id,
+      logo: logo,
+      display_title: display_title,
+      thumbnail_url: thumbnail_url
+    }
+  end
+
+  def duplicate(new_owner)
+    new_sequence = Sequence.new(self.to_hash)
+    Sequence.transaction do
+      new_sequence.title = "Copy of #{self.name}"
+      new_sequence.user = new_owner
+      positions = []
+      lightweight_activities_sequences.each do |sa|
+        new_a = sa.lightweight_activity.duplicate
+        new_a.name = new_a.name.sub('Copy of ', '')
+        new_a.user = new_owner
+        new_a.save!
+        new_sequence.activities << new_a
+        positions << sa.position
+      end
+      new_sequence.save!
+      # This is not necessary, as 'lightweight_activities_sequences' is ordered by
+      # position, so we already copied and add activities in a right order. However
+      # copying exact position values seems to be safer and more resistant
+      # to possible errors in the future.
+      new_sequence.lightweight_activities_sequences.each_with_index do |sa, i|
+        sa.position = positions[i]
+        sa.save!
+      end
+      new_sequence.save!
+    end
+    return new_sequence
+  end
+
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {

@@ -55,6 +55,15 @@ class Run < ActiveRecord::Base
     UUIDTools::UUID.random_create.to_s
   end
 
+  def self.for_user_activity_and_sequence(user,activity,seq_id)
+    conditions = {
+      activity_id:     activity.id,
+      user_id:         user.id,
+      sequence_id:     seq_id
+    }
+    found = self.find(:first, :conditions => conditions)
+    return found || self.create(conditions)
+  end
 
   def self.for_user_and_portal(user,activity,portal)
     conditions = {
@@ -81,9 +90,10 @@ class Run < ActiveRecord::Base
     self.by_key(key).first || self.create(activity: activity)
   end
 
-  def self.lookup(key, activity, user, portal)
+  def self.lookup(key, activity, user, portal,seq_id)
     return self.for_user_and_portal(user, activity, portal) if user && portal && portal.valid?
     return self.for_key(key, activity) if (key && activity)
+    return self.for_user_activity_and_sequence(user,activity,seq_id) if (user && activity && seq_id)
     return self.for_user_and_activity(user,activity) if (user && activity)
     return self.create(activity: activity)
   end
