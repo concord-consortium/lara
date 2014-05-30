@@ -42,9 +42,9 @@ class InteractivePage < ActiveRecord::Base
     self.page_items.collect{|qi| qi.embeddable}
   end
 
-  def add_interactive(interactive, position = nil)
+  def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true;
-    self.save!
+    self.save!(validate: validate)
     InteractiveItem.create!(:interactive_page => self, :interactive => interactive, :position => (position || self.interactive_items.size))
   end
 
@@ -96,7 +96,7 @@ class InteractivePage < ActiveRecord::Base
     InteractivePage.transaction do
       new_page.save!(validate: false)
       self.interactives.each do |inter|
-        new_page.add_interactive(inter.duplicate)
+        new_page.add_interactive(inter.duplicate, nil, false)
       end
       self.embeddables.each do |embed|
         copy = embed.duplicate
