@@ -258,8 +258,8 @@ class ImageQuestion
       @$text_response.val(@$saved_response.data('raw'))
 
   replace_snapshot:() ->
+    @shutterbug.getDomSnapshot()
     @show()
-    svg = @get_svg_canvas()
     @clear_drawing_layer()
 
   snapshot_updater: (e) =>
