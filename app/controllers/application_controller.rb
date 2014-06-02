@@ -23,6 +23,16 @@ class ApplicationController < ActionController::Base
   end
   public
 
+  def test_mail
+    recipient = "authoring-help@concord.org"
+    MailTest.test(recipient, request).deliver
+    flash[:notice]= "A test message has been sent to #{recipient}"
+    redirect_to "/"
+  end
+
+  def test_error
+    MailTest.test_error(request)
+  end
 
   ### Log some data for 404s
   # This should be temporary, as debugging for an issue where links to an activity return 404 errors for
