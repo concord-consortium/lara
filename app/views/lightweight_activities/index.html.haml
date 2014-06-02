@@ -10,10 +10,12 @@
       %li / All Activities
 
 %ul#new-menu
-  - if can? :create, LightweightActivity
-    %li#add= link_to 'create new activity', new_activity_path
   %li#desc-toggle= toggle_all 'activity descriptions'
   %li#collection_filter= collection_filter_tag @filter
+.buttons-menu
+  - if can? :create, LightweightActivity
+    %a{ :href => new_activity_path }
+      %button=t("NEW_ACTIVITY_BUTTON")
 
 - if @official_activities.size > 0
   #official_listing_heading

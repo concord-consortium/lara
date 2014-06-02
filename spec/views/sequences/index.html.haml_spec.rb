@@ -22,4 +22,9 @@ describe "sequences/index" do
     assert_select "div.action_menu_header_left>a", :text => "Title".to_s, :count => 2
     assert_select "div.tiny", :count => 2
   end
+
+  it "renders copy link" do
+    render
+    assert_select ".copy", :count => 2
+  end
 end

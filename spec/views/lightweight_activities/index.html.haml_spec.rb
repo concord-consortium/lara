@@ -109,7 +109,7 @@ describe "lightweight_activities/index" do
 
   it 'provides a link to create a new Lightweight Activity on the index page' do
     render
-    rendered.should match /<a[^>]+href="\/activities\/new"[^>]*>/
+    rendered.should match /<a[^>]+href=["']\/activities\/new["'][^>]*>/
   end
 
   describe 'with all activities' do

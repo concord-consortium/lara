@@ -9,7 +9,7 @@ describe InteractivePage do
     end
     p
   end
-  
+
   it 'has valid attributes' do
     page.valid?
   end
@@ -164,6 +164,10 @@ describe InteractivePage do
 
     describe "with invalid markup" do
       before(:each) do
+        # Add at least one interactive as it triggers additional .save call
+        # during duplication, which should be handled correctly.
+        page.add_interactive(FactoryGirl.create(:mw_interactive))
+        page.reload
         page.text = "foo</p>"
         page.save(:validate => false)
       end

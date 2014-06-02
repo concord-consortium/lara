@@ -22,7 +22,7 @@ gem 'default_value_for'
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
 gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
-
+gem "aws-ses", "~> 0.5.0", :require => 'aws/ses'
 gem 'uuidtools'
 gem "httparty"
 gem 'exception_notification'

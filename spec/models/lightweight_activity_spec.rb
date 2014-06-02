@@ -144,9 +144,12 @@ describe LightweightActivity do
   end
 
   describe '#duplicate' do
+    let(:owner) { FactoryGirl.create(:user) }
+
     it 'creates a new LightweightActivity with attributes from the original' do
-      dup = activity.duplicate
+      dup = activity.duplicate(owner)
       dup.should be_a(LightweightActivity)
+      dup.user.should == owner
       dup.related.should == activity.related
       dup.description.should == activity.description
       dup.time_to_complete.should == activity.time_to_complete
@@ -156,14 +159,14 @@ describe LightweightActivity do
       5.times do
         activity.pages << FactoryGirl.create(:page)
       end
-      duplicate = activity.duplicate
+      duplicate = activity.duplicate(owner)
       duplicate.pages.each_with_index do |p, i|
         activity.pages[i].name.should == p.name
         activity.pages[i].position.should be(p.position)
         activity.pages[i].last?.should be(p.last?)
       end
     end
-    
+
     describe "when a page in the activity fails validation" do
       let(:bad_content)   {"</p> no closing div tag"}
 
@@ -173,7 +176,10 @@ describe LightweightActivity do
         first_page.sidebar = bad_content
         activity.pages << first_page
         activity.fix_page_positions
-        duplicate = activity.duplicate
+        activity.description = bad_content
+        activity.save!(validate: false)
+        activity.should_not be_valid
+        duplicate = activity.duplicate(owner)
         duplicate.pages.length.should == 1
         duplicate.pages.each_with_index do |p, i|
           activity.pages[i].name.should == p.name
@@ -187,8 +193,8 @@ describe LightweightActivity do
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
-      { "type"          =>"Activity", 
-        "name"          => activity.name, 
+      { "type"          =>"Activity",
+        "name"          => activity.name,
         "description"   => activity.description,
         "url"           => url,
         "create_url"    => url,

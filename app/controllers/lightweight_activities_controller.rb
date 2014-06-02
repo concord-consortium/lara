@@ -100,11 +100,8 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def duplicate
-    authorize! :duplicate, LightweightActivity
-    @new_activity = @activity.duplicate
-    # Set ownership - doing this in the instance methods isn't practical
-
-    @new_activity.set_user!(current_user)
+    authorize! :duplicate, @activity
+    @new_activity = @activity.duplicate(current_user)
 
     unless @new_activity.valid?
       flash[:warning] = "<p>The duplicated activity had validation issues:</p> #{@new_activity.errors} <p>Work carefully with the new activity.</p>"

@@ -34,7 +34,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   has_many :page_items, :order => :position, :dependent => :destroy, :include => [:embeddable]
-  # Like InteractiveItems, PageItems are join models, so they should not 
+  # Like InteractiveItems, PageItems are join models, so they should not
   # survive the deletion of associated instances of InteractivePage.
 
   # This is a sort of polymorphic has_many :through.
@@ -42,15 +42,15 @@ class InteractivePage < ActiveRecord::Base
     self.page_items.collect{|qi| qi.embeddable}
   end
 
-  def add_interactive(interactive, position = nil)
+  def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true;
-    self.save
+    self.save!(validate: validate)
     InteractiveItem.create!(:interactive_page => self, :interactive => interactive, :position => (position || self.interactive_items.size))
   end
 
   def remove_interactives
     self[:show_interactive] = false;
-    self.save
+    self.save!
     self.interactives.each do |i|
       i.destroy
     end
@@ -88,19 +88,21 @@ class InteractivePage < ActiveRecord::Base
   def set_list_position(index)
     # Overloads the acts_as_list version
     self.position = index
-    self.save(:validate => false) # This is the part we need to override
+    self.save!(:validate => false) # This is the part we need to override
   end
 
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
-     new_page.save(validate: false)
-    self.interactives.each do |inter|
-      new_page.add_interactive(inter.duplicate)
-    end
-    self.embeddables.each do |embed|
-      copy = embed.duplicate
-      copy.save(validate: false)
-      new_page.add_embeddable(copy)
+    InteractivePage.transaction do
+      new_page.save!(validate: false)
+      self.interactives.each do |inter|
+        new_page.add_interactive(inter.duplicate, nil, false)
+      end
+      self.embeddables.each do |embed|
+        copy = embed.duplicate
+        copy.save!(validate: false)
+        new_page.add_embeddable(copy)
+      end
     end
     return new_page
   end

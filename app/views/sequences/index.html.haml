@@ -11,13 +11,15 @@
 
 
 %ul#new-menu
-  - if can? :create, Sequence
-    %li#add= link_to 'create new sequence', new_sequence_path
   %li#desc-toggle= toggle_all 'sequence descriptions'
   %li#collection_filter= collection_filter_tag @filter
+.buttons-menu
+  - if can? :create, Sequence
+    %a{ :href => new_sequence_path }
+      %button=t("NEW_SEQUENCE_BUTTON")
 
 #official_listing_heading
-  %h1 Activity Sequences
+  %h1 Activity Sequences:
 %ul.quiet_list.official_listing
   - @sequences.each do |sequence|
     = render :partial => "index_item", :locals => {:sequence => sequence}
