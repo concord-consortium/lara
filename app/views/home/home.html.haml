@@ -7,14 +7,17 @@
 %ul#new-menu
   %li#desc-toggle= toggle_all 'descriptions'
   %li#collection_filter= collection_filter_tag @filter
+.buttons-menu
+  - if can? :create, LightweightActivity
+    %a{ :href => new_activity_path }
+      %button=t("NEW_ACTIVITY_BUTTON")
+  - if can? :create, Sequence
+    %a{ :href => new_sequence_path }
+      %button=t("NEW_SEQUENCE_BUTTON")
 
 -if @activities
   #activity_listing_head
     %h1 Activities:
-    - if can? :create, LightweightActivity
-      %a{ :href => new_activity_path }
-        %button= t("NEW_ACTIVITY_BUTTON")
-
   %ul.quiet_list.activities
     - @activities.each do |activity|
       =render :partial => "lightweight_activities/index_item", :locals => {:activity => activity}
@@ -24,9 +27,6 @@
 -if @sequences
   #sequence_listing_head
     %h1 Sequences:
-    - if can? :create, Sequence
-      %a{ :href => new_sequence_path }
-        %button= t("NEW_SEQUENCE_BUTTON")
   %ul.quiet_list.sequences
     - @sequences.each do |sequence|
       =render :partial => "sequences/index_item", :locals => {:sequence => sequence}

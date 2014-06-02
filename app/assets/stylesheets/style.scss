@@ -903,10 +903,16 @@ ul#new-menu {
     }
 }
 
-#activity_listing_head, #sequence_listing_head {
-  h1 {
-    display: inline;
-    vertical-align: bottom;
-    margin-right: 20px;
+#activity_listing_head, #sequence_listing_head, #official_listing_heading, #community_listing_heading {
+  float: left;
+}
+
+.buttons-menu {
+  float: right;
+  a {
+    text-decoration: none;
+  }
+  button {
+    margin: 5px 0 5px 15px;
   }
 }
