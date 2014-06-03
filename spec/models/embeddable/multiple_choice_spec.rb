@@ -15,11 +15,11 @@ describe Embeddable::MultipleChoice do
     p
   end
 
-  describe "a newly created MutipleChoiceQuestion" do    
+  describe "a newly created MutipleChoiceQuestion" do
     it "belongs to a page" do
       page.embeddables.should include(multichoice)
     end
-    
+
     it "has three initial default answers" do
       multichoice.choices.should have(3).answers
     end
@@ -31,11 +31,11 @@ describe Embeddable::MultipleChoice do
 
   describe "adding a new choice" do
     let (:choice) { multichoice.add_choice("my choice") }
-    
+
     it "should have the new choice" do
       multichoice.choices.should include(choice)
     end
-  
+
     it "should update its choices when saved" do
       choice.choice = "fooo"
       choice.save
