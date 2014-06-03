@@ -70,6 +70,11 @@ The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via
 
 If you wish to run tests continuously, Guard is configured; a simple `guard` should start it. Guard will skip some tests tagged "slow" in order to keep cycles short.
 
+If you want to run tests using guard, tests will fail unless you
+specify a sqlite adaptor (as per config/database.sample.yml) -- TODO:
+Clean up tests so they work fine with mysql without the db:test:prepare
+step above.
+
 ### Adding Embeddable support
 _This may be obsolete as of April 2013_
 
