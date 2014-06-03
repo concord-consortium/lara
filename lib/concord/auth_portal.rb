@@ -32,6 +32,10 @@ module Concord
       lookup(name,"CLIENT_ID")
     end
 
+    def self.display_name_for(name)
+      lookup(name,"DISPLAY_NAME") || name.titlecase
+    end
+
     def self.url_for_portal(name)
       lookup(name,"URL")
     end
@@ -91,6 +95,7 @@ module Concord
       class_name = "cc_portal_#{name.downcase}".classify
       strategy_name = class_name.underscore
       auth_strategy =Class.new(OmniAuth::Strategies::OAuth2)
+      display_name = self.display_name_for(name)
       Object.const_set(class_name,auth_strategy)
       auth_strategy.class_eval do |clz|
         @client_id = client_id
@@ -100,6 +105,7 @@ module Concord
         @url = url
         @secret  = secret
         @access_token_url = access_token_url
+        @display_name = display_name
         option :name, @strategy_name
         option :client_options, {
           :site             => @site,
@@ -134,9 +140,11 @@ module Concord
         def self.url
           @url
         end
-        def self.human_name
-          strategy_name.gsub("cc_portal","").split('_').join(" ").strip
+
+        def self.link_name
+          @display_name
         end
+
         def self.publishing_url
           self.url + PublishingPath
         end
@@ -144,7 +152,7 @@ module Concord
         def self.republishing_url
           self.url + RePublishingPath
         end
-        
+
         # This method generates the string for the strategies omniauth controller method
         # see app/controllers/user/omniauth_callbacks_controller
         def self.controller_action
