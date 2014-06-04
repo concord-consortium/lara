@@ -337,7 +337,7 @@ describe Run do
     describe "when the runcount is more than zero" do
       it "should return true, indicating it has been run" do
         run.run_count=1
-        run.has_been_run.should be_false
+        run.has_been_run.should be_true
       end
     end
   end
