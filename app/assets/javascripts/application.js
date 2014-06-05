@@ -28,3 +28,4 @@
 //= require ./common.js
 //= require edit_sequence
 //= require login_menu
+//= require chosen-jquery

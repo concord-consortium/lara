@@ -75,4 +75,7 @@ $(document).ready(function () {
             }
         });
     }
+
+    // Setup Chosen jQuery plugin (convenient select boxes).
+    $('.chosen-select').chosen();
 });

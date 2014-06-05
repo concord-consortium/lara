@@ -5,7 +5,7 @@
       - @sequence.lightweight_activities_sequences.each do |las|
         - activity = las.lightweight_activity
         %li{ :id => dom_id_for(las, :item), :class => 'item' }
-          = truncate(activity.name, :length => 20, :omission => "…")
+          = truncate(activity.name_with_id, :length => 20, :omission => "…")
           %ul.menu
             %li.edit= link_to "Edit", edit_activity_path(activity) if can? :update, activity
             %li.run= link_to "Run", activity_path(activity)
@@ -17,5 +17,5 @@
               &nbsp;
     - if @activities
       = form_tag add_activity_sequence_path(@sequence) do
-        = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name)
+        = select_tag :activity_id, options_from_collection_for_select(@activities, :id, :name_with_id), class: "chosen-select"
         = submit_tag "Add"

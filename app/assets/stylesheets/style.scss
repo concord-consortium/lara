@@ -515,22 +515,20 @@ form.edit_lightweight_activity {
  		font-weight: bold;
  		margin-bottom: 10px;
 	}
-  ul {
+  #sort-activities {
  		clear: both;
  		float: none;
  		list-style-type: none;
  		margin: 0;
  		padding: 0;
-    li {
+    .item {
  			border-bottom: dashed 1px #6fc5d8;
  			clear: both;
  			margin: 0 0 .5em;
  			padding: 5px 3px;
-    }
-    li.item {
       min-height: 15px;
     }
-    ul {
+    .menu {
 			float: right;
       li {
         display: inline;

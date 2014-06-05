@@ -44,6 +44,8 @@ gem "daemons"
 
 # put font-awesome in asset pipeline. Alternately we could use a CDN.
 gem "font-awesome-rails"
+# Chosen jQuery plugin.
+gem 'chosen-rails'
 
 # this is to fix a pulled version of safe_yaml (0.9.4)
 gem "safe_yaml", "~> 0.9.5"

@@ -57,6 +57,10 @@ class LightweightActivity < ActiveRecord::Base
     update_attribute(:publication_status, 'public')
   end
 
+  def name_with_id
+    "#{self.id}. #{self.name}"
+  end
+
   def to_hash
     # We're intentionally not copying:
     # - Publication status (the copy should start as draft like everything else)
