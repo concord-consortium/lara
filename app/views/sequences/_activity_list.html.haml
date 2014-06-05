@@ -1,7 +1,7 @@
 #menu
   #activities
     %h2 Activities in sequence
-    %ul#sort-activities.ui-sortable
+    %ul.sortable-list.ui-sortable#sort-activities
       - @sequence.lightweight_activities_sequences.each do |las|
         - activity = las.lightweight_activity
         %li{ :id => dom_id_for(las, :item), :class => 'item' }

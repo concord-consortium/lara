@@ -73,7 +73,7 @@
   #menu
     #pages
       %h2 Activity Pages
-      %ul#sort-pages
+      %ul.sortable-list#sort-pages
         - @activity.pages.each do |p|
           %li{ :id => dom_id_for(p, :item), :class => 'item' }
             = truncate(p.name, :length => 18, :omission => "…")
