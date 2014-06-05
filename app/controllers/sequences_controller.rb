@@ -23,7 +23,15 @@ class SequencesController < ApplicationController
     current_theme
     current_project
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        if @sequence_run && @sequence_run.has_been_run
+          unless params[:show_index]
+            redirect_to sequence_activity_path(@sequence, @sequence_run.most_recent_activity)
+            return
+          end
+        end
+        # show.html.erb  ⬅ default template is shown otherwise
+      end
       format.json { render json: @sequence }
     end
   end

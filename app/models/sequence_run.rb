@@ -28,6 +28,10 @@ class SequenceRun < ActiveRecord::Base
     runs.order('updated_at desc').first
   end
 
+  def most_recent_activity
+    most_recent_run.activity
+  end
+
   def has_been_run
     a_position =  runs.detect { |r| r.has_been_run }
     return a_position.nil? ? false : true

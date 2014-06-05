@@ -23,6 +23,12 @@ class LightweightActivitiesController < ApplicationController
     end
     @run.increment_run_count!
     setup_show
+    unless params[:show_index]
+      if @run && @run.last_page && @activity
+        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run)
+        return
+      end
+    end
   end
 
   def preview

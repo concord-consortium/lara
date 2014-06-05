@@ -25,9 +25,9 @@ module LogoHelper
     end
 
     if @sequence_run
-      url = sequence_path(:id => sequence.id, :sequence_run => @sequence_run.id)
+      url = sequence_path(:id => sequence.id, :show_index => true, :sequence_run => @sequence_run.id)
     else
-      url = url_for(sequence)
+      url = sequence_path(:id => sequence.id, :show_index => true)
     end
     buffer = logo_tag(logo, sequence.display_title, url)
     title  = @sequence.display_title.blank? ? @sequence.title : @sequence.display_title
