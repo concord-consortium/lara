@@ -19,20 +19,17 @@ class Ability
       can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
-      # and duplicate unlocked activities
+      # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => 'public'
       can :duplicate, Sequence, :publication_status => 'public'
-      # Also, everyone can read public activities
-      can :read, LightweightActivity, :publication_status => 'public'
-      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
-    else
-      can :read, Sequence
-      # Everyone can read public activities
-      can :read, LightweightActivity, :publication_status => 'public'
-      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
-      # Private activities can be read, too, but they're not in the lists
-      can :read, LightweightActivity, :publication_status => 'private'
-      can :read, InteractivePage, :lightweight_activity => { :publication_status => 'private' }
     end
+    # Everyone (author and regular user) can read public sequences activities
+    can :read, Sequence, :publication_status => 'public'
+    can :read, LightweightActivity, :publication_status => 'public'
+    can :read, InteractivePage, :lightweight_activity => { :publication_status => 'public' }
+    # Private sequences and activities can be read, too, but they're not in the lists
+    can :read, Sequence, :publication_status => 'private'
+    can :read, LightweightActivity, :publication_status => 'private'
+    can :read, InteractivePage, :lightweight_activity => { :publication_status => 'private' }
   end
 end

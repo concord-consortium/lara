@@ -8,7 +8,8 @@
         %li.copy= link_to "Copy", duplicate_sequence_path(sequence) if can? :duplicate, sequence
         %li.edit= link_to "Edit", edit_sequence_path(sequence) if can? :update, sequence
         %li.delete= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence
-        %li.publish= link_to('Publish', publication_show_status_path(sequence.class,sequence.id), :remote => true) unless cannot? :publish, sequence
+        %li.publish= link_to('Publish', publication_show_status_path(sequence.class,sequence.id), :remote => true) if can? :publish, sequence
+        %li.run= link_to "Run", sequence_path(sequence) if can? :read, sequence
 
   %div{:id => dom_id_for(sequence, :details), :class => 'tiny'}
     = pluralize(sequence.activities.length, 'activity')
