@@ -56,11 +56,16 @@ describe Sequence do
 
   describe '#serialize_for_portal' do
     let(:act1) { FactoryGirl.build(:activity_with_page) }
+    let(:act2) { FactoryGirl.build(:activity_with_page) }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
       seq.thumbnail_url = thumbnail_url
       seq.activities << act1
+      seq.activities << act2
       seq.save!
+      # Reorder activities - move first one to the bottom.
+      seq.lightweight_activities_sequences.find(act1.id).move_to_bottom
+      seq.reload
       seq
     end
 
@@ -80,7 +85,11 @@ describe Sequence do
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => thumbnail_url,
-        "activities"=>[act1.serialize_for_portal("http://test.host")]
+        "activities"=> [
+          # Note that we reordered activities!
+          act2.serialize_for_portal("http://test.host"),
+          act1.serialize_for_portal("http://test.host")
+        ]
       }
     end
 
