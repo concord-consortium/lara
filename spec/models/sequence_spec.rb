@@ -81,17 +81,16 @@ describe Sequence do
 
     let(:complex_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
-      # Note that we reordered activities!
-      act1_hash = act1.serialize_for_portal("http://test.host")
-      act1_hash['position'] = 1
-      act2_hash = act2.serialize_for_portal("http://test.host")
-      act2_hash['position'] = 0
       {
         "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => thumbnail_url,
-        "activities"=> [act2_hash, act1_hash]
+        "activities"=> [
+          # Note that we reordered activities!
+          act2.serialize_for_portal("http://test.host"),
+          act1.serialize_for_portal("http://test.host")
+        ]
       }
     end
 
