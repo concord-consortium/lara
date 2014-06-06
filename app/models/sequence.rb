@@ -88,7 +88,13 @@ class Sequence < ActiveRecord::Base
       "create_url" => local_url,
       "thumbnail_url" => thumbnail_url
     }
-    data['activities'] = self.activities.map { |a| a.serialize_for_portal(host) }
+    data['activities'] = self.activities.map.with_index do |a, i|
+      hash = a.serialize_for_portal(host)
+      # Note that we do not read the real value of 'position' stored in association table.
+      # It's not worth the effort, 'activities' list is already ordered and it's enough keep this order.
+      hash['position'] = i
+      hash
+    end
     data
   end
 
