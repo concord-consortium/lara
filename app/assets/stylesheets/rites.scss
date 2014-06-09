@@ -1,0 +1,8 @@
+@import "cc-runtime-base";
+
+$src: '/assets/has-bg/water_background.jpg';
+$c_a: #2f70b0;
+$c_b: #84c6cf;
+$c_c: #edaa3d;
+
+@include theme($src, $c_a, $c_b, $c_c);

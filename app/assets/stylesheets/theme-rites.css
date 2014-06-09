@@ -12,7 +12,6 @@
  *
  *= require_self
  *= require save-on-change
- *= require cc-runtime-base
  *= require modal
  *= require modal-dialog
  *= require jcarousel
@@ -21,4 +20,5 @@
  *= require font-awesome
  *= require image_question
  *= require activity-sequences
+ *= require rites
  */
