@@ -34,6 +34,7 @@ module Embeddable
         "type" => "image_question",
         "question_id" => image_question_id.to_s,
         "answer" => answer_text,
+        "is_final" => is_final,
         "image_url" => annotated_image_url || image_url,
         "annotation" => annotation
       }

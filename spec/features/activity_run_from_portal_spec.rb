@@ -18,7 +18,7 @@ feature "Activity is run from the portal", :js => true, :slow => true do
     click_button "Begin activity"
 
     stub = stub_request(:post, "http://portal.org/return/1234").
-	  with(:body => "[{\"type\":\"open_response\",\"question_id\":\"1\",\"answer\":\"something\"}]",
+	  with(:body => "[{\"type\":\"open_response\",\"question_id\":\"1\",\"answer\":\"something\",\"is_final\":false}]",
 	       :headers => {'Authorization'=>'Bearer token', 'Content-Type'=>'application/json'}).
 	  to_return(:status => 200, :body => "", :headers => {})
 

@@ -22,12 +22,13 @@ describe Embeddable::OpenResponseAnswer do
   end
 
   describe '#portal_hash' do
-    let(:expected) { 
-                     {  
+    let(:expected) {
+                     {
                         "type"        => "open_response",
                         "question_id" => question.id.to_s,
-                        "answer"      => answer.answer_text 
-                      } 
+                        "answer"      => answer.answer_text,
+                        "is_final"    => answer.is_final
+                      }
                     }
 
     it "matches the expected hash" do

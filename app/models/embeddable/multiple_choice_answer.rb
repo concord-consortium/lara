@@ -38,7 +38,8 @@ module Embeddable
         "type"          => "multiple_choice",
         "question_id"   => multiple_choice_id.to_s,
         "answer_ids"    => answers.map { |a| a.id.to_s },
-        "answer_texts"  => answer_texts
+        "answer_texts"  => answer_texts,
+        "is_final"      => is_final
       }
     end
 
