@@ -125,14 +125,16 @@ class LightweightActivity < ActiveRecord::Base
           elements.push({
                           "type" => "open_response",
                           "id" => embeddable.id,
-                          "prompt" => embeddable.prompt
+                          "prompt" => embeddable.prompt,
+                          "is_required" => embeddable.is_prediction
                         })
         when Embeddable::ImageQuestion
           elements.push({
                           "type" => "image_question",
                           "id" => embeddable.id,
                           "prompt" => embeddable.prompt,
-                          "drawing_prompt" => embeddable.drawing_prompt
+                          "drawing_prompt" => embeddable.drawing_prompt,
+                          "is_required" => embeddable.is_prediction
                         })
         when Embeddable::MultipleChoice
           choices = []
@@ -147,7 +149,8 @@ class LightweightActivity < ActiveRecord::Base
             "type" => "multiple_choice",
             "id" => embeddable.id,
             "prompt" => embeddable.prompt,
-            "choices" => choices
+            "choices" => choices,
+            "is_required" => embeddable.is_prediction
           }
           elements.push(mc_data)
         else
