@@ -1,12 +1,9 @@
 module Publishable
-  PUB_STATUSES = %w(draft private public archive)
+  PUB_STATUSES = %w(public hidden private archive)
   PUB_STATUSES_OPTIONS = {
     'Public on the Web' => 'public',
-    # TODO: here you can see real meaning of "private" and "draft" here.
-    # We should provide better names for these (e.g. switch 'draft'
-    # to 'private' and 'private' to 'link_only' or something like this).
-    'Anyone with the link can run' => 'private',
-    'Private' => 'draft',
+    'Anyone with the link can run' => 'hidden',
+    'Private' => 'private',
     'Archive' => 'archive'
   }
 
@@ -14,7 +11,7 @@ module Publishable
     ## add before_save hooks
     clazz.class_eval do
       validates :publication_status, :inclusion => { :in => PUB_STATUSES }
-      default_value_for :publication_status, 'draft'
+      default_value_for :publication_status, 'private'
       attr_accessible :publication_status, :is_official
 
       # * Find all public activities

@@ -20,7 +20,7 @@ def fake_activity(official=false, is_public=true)
   return mock_model(LightweightActivity,
     name: "name",
     description: "description",
-    publication_status: is_public ? 'published' : 'draft',
+    publication_status: is_public ? 'published' : 'private',
     user: user,
     updated_at: Date.new,
     created_at: Date.new,

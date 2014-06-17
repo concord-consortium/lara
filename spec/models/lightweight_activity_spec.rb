@@ -8,7 +8,7 @@ describe LightweightActivity do
 
   it 'should have valid attributes' do
     activity.name.should_not be_blank
-    activity.publication_status.should == "private"
+    activity.publication_status.should == "hidden"
     activity.is_locked.should be_false
   end
 
@@ -40,8 +40,8 @@ describe LightweightActivity do
   end
 
   it 'allows only defined publication statuses' do
-    activity.valid? # factory generates 'private'
-    activity.publication_status = 'draft'
+    activity.valid? # factory generates 'hidden'
+    activity.publication_status = 'private'
     activity.valid?
     activity.publication_status = 'public'
     activity.valid?
@@ -123,7 +123,7 @@ describe LightweightActivity do
 
   describe "#publish!" do
     it "should change the publication status to public" do
-      activity.publication_status = 'draft'
+      activity.publication_status = 'private'
       activity.publish!
       activity.publication_status.should == 'public'
     end

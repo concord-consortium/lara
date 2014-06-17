@@ -76,7 +76,7 @@ describe User do
     context 'when is anonymous' do
       let(:user) { FactoryGirl.build(:user) }
       let(:other_user) { FactoryGirl.build(:author) }
-      let(:private_activity) do
+      let(:hidden_activity) do
         act = FactoryGirl.create(:activity)
         act.user = other_user
         act.save
@@ -95,7 +95,7 @@ describe User do
       it { should_not be_able_to(:create, LightweightActivity) }
       it { should be_able_to(:read, Sequence) }
       it { should be_able_to(:read, public_activity) }
-      it { should be_able_to(:read, private_activity) } # But it won't be in lists
+      it { should be_able_to(:read, hidden_activity) } # But it won't be in lists
     end
   end
 

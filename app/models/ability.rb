@@ -23,10 +23,8 @@ class Ability
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => 'public'
       can :duplicate, Sequence, :publication_status => 'public'
     end
-    # Everyone (author and regular user) can read public, private and archived sequences or activities.
-    # Note that 'private' name is misleading - it means that it isn't listed anywhere, but anyone with
-    # the link to sequence or activity can read it.
-    ['public', 'private', 'archive'].each do |allowed_status|
+    # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
+    ['public', 'hidden', 'archive'].each do |allowed_status|
       can :read, Sequence, :publication_status => allowed_status
       can :read, LightweightActivity, :publication_status => allowed_status
       can :read, InteractivePage, :lightweight_activity => { :publication_status => allowed_status }

@@ -37,7 +37,7 @@
       = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @sequence.project_id), { :include_blank => true }
     .field
       = f.label :publication_status, "Publication status"
-      = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @sequence.publication_status)
+      = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @sequence.publication_status)
     .field
       = f.label :is_official, "Offical CC Sequence"
       = f.check_box :is_official
