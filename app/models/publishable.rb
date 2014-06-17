@@ -1,5 +1,14 @@
 module Publishable
-  PUB_STATUSES   = %w(draft private public archive)
+  PUB_STATUSES = %w(draft private public archive)
+  PUB_STATUSES_OPTIONS = {
+    'Public on the Web' => 'public',
+    # TODO: here you can see real meaning of "private" and "draft" here.
+    # We should provide better names for these (e.g. switch 'draft'
+    # to 'private' and 'private' to 'link_only' or something like this).
+    'Anyone with the link can run' => 'private',
+    'Private' => 'draft',
+    'Archive' => 'archive'
+  }
 
   def self.included(clazz)
     ## add before_save hooks

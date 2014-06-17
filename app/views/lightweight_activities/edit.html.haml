@@ -42,7 +42,7 @@
           .hint ("Locked" activities may only be copied or edited by admin users, not regular authors.)
       .field
         = f.label :publication_status, 'Publication status'
-        = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES, @activity.publication_status)
+        = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
       .field
         = f.label :description, 'Activity Description'
         = editable_field @activity, :description, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } }, :rmUnwantedBr => true } }
