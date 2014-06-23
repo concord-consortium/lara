@@ -23,9 +23,8 @@
           =portal.name
           %span.tiny=portal.date
   .buttons
-    %button.button
-      = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true}
-    %button.button.close
+    = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true, :class => 'btn btn-primary'}
+    %a.btn.btn-primary.close
       cancel
   .message
     =@message

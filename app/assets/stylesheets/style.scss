@@ -50,7 +50,7 @@ body {
   color: #3f3f3f;
   font: 80% 'Lato', arial, helvetica, sans-serif;
 }
-button, span.edit_trigger, #modal .embeddable-save {
+button, .btn-primary, span.edit_trigger, #modal .embeddable-save {
   background: #6fc5d8;
   border: none;
   color: #fff;
@@ -60,8 +60,10 @@ button, span.edit_trigger, #modal .embeddable-save {
   padding: 5px 10px;
   text-align: center;
   border-radius: 20px;
+  text-decoration: none;
+  display: inline-block;
 }
-button.disabled span.edit_trigger.disabled {
+button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #ccc !important;
 }
 #container {
