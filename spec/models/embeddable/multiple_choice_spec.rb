@@ -15,11 +15,13 @@ describe Embeddable::MultipleChoice do
     p
   end
 
-  describe "a newly created MutipleChoiceQuestion" do    
+  let(:first_mc_choice_id) { multichoice.choices.first.id }
+
+  describe "a newly created MutipleChoiceQuestion" do
     it "belongs to a page" do
       page.embeddables.should include(multichoice)
     end
-    
+
     it "has three initial default answers" do
       multichoice.choices.should have(3).answers
     end
@@ -31,11 +33,11 @@ describe Embeddable::MultipleChoice do
 
   describe "adding a new choice" do
     let (:choice) { multichoice.add_choice("my choice") }
-    
+
     it "should have the new choice" do
       multichoice.choices.should include(choice)
     end
-  
+
     it "should update its choices when saved" do
       choice.choice = "fooo"
       choice.save
@@ -65,7 +67,7 @@ describe Embeddable::MultipleChoice do
   describe '#check' do
     describe 'when the MultipleChoice is not multi-answer' do
       it 'should return a MultipleChoiceChoice instance' do
-        multichoice.check('1').should be_a_kind_of Embeddable::MultipleChoiceChoice
+        multichoice.check("#{first_mc_choice_id}").should be_a_kind_of Embeddable::MultipleChoiceChoice
       end
     end
 
@@ -82,8 +84,8 @@ describe Embeddable::MultipleChoice do
       end
 
       it 'should return a hash with at least one key' do
-        multichoice.check('1').should be_a_kind_of Hash
-        multichoice.check('1').length.should be(1)
+        multichoice.check("#{first_mc_choice_id}").should be_a_kind_of Hash
+        multichoice.check("#{first_mc_choice_id}").length.should be(1)
       end
 
       it 'should return a prompt for a nil answer' do

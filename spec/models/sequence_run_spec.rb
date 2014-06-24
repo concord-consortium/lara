@@ -89,71 +89,104 @@ describe SequenceRun do
     end
   end
 
-  describe "make_or_update_runs" do
+
+  describe "an activity run for a sequence of 4 acitivites" do
     subject          { existing_seq_run }
 
     let(:activities) { Array(1..4).map { |a| FactoryGirl.create(:activity)} }
     let(:sequence)   { FactoryGirl.create(:sequence, :lightweight_activities => activities) }
 
-
-    describe "when none of the activities have been previously run" do
+    describe "most_recent_run" do
       before(:each) do
-        activities.each { |act| act.runs.should be_empty } # precondition
         subject.make_or_update_runs
-        activities.each { |act| act.reload }
+        runs = subject.runs
+        runs.each { |r| r.update_attribute(:updated_at, 10.days.ago) }
+        runs[2].update_attribute(:updated_at, 1.day.ago)
+        @most_recent = runs[2]
+        subject.reload
       end
 
-      it "should create runs for all the activities with the same attributes" do
-        activities.each do |act|
-          act.runs.each do |run|
-            run.sequence_run.should    == subject
-            run.remote_endpoint.should == subject.remote_endpoint
-            run.remote_id.should       == subject.remote_id
-            run.user.should            == subject.user
-            run.sequence.should        == subject.sequence
+      it "should return the most recently run activity" do
+        subject.most_recent_run.should == @most_recent
+      end
+    end
+
+
+    describe "has_been_run" do
+      let(:mock_runs){ Array(1..4).map {|a| mock(:has_been_run => false) }}
+      describe "when none of the activities have been run" do
+        it "should report false" do
+          subject.stub!(:runs => mock_runs)
+          subject.has_been_run.should be_false
+        end
+      end
+      describe "when at least one of the activities has been run" do
+        it "should report true" do
+          mock_runs[2].stub!(:has_been_run => true)
+          subject.stub!(:runs => mock_runs)
+          subject.has_been_run.should be_true
+        end
+      end
+    end
+
+    describe "make_or_update_runs" do
+      describe "when none of the activities have been previously run" do
+        before(:each) do
+          activities.each { |act| act.runs.should be_empty } # precondition
+          subject.make_or_update_runs
+          activities.each { |act| act.reload }
+        end
+
+        it "should create runs for all the activities with the same attributes" do
+          activities.each do |act|
+            act.runs.each do |run|
+              run.sequence_run.should    == subject
+              run.remote_endpoint.should == subject.remote_endpoint
+              run.remote_id.should       == subject.remote_id
+              run.user.should            == subject.user
+              run.sequence.should        == subject.sequence
+            end
           end
         end
       end
-    end
 
-    describe "when all of the activities have prior runs for this sequence" do
-      subject { existing_seq_run }
+      describe "when all of the activities have prior runs for this sequence" do
+        subject { existing_seq_run }
 
-      before(:each) do
-        activities.each { |act| act.runs<<FactoryGirl.create(:run, :sequence_run => subject)}
-        subject.make_or_update_runs
-        activities.each { |act| act.reload }
-      end
+        before(:each) do
+          activities.each { |act| act.runs<<FactoryGirl.create(:run, :sequence_run => subject)}
+          subject.make_or_update_runs
+          activities.each { |act| act.reload }
+        end
 
-      it "should reuse the existing runs, without creating new ones" do
-        activities.each do |act|
-          act.runs.should have(1).run
-          act.runs.each do |run|
-            run.sequence_run.should == subject
+        it "should reuse the existing runs, without creating new ones" do
+          activities.each do |act|
+            act.runs.should have(1).run
+            act.runs.each do |run|
+              run.sequence_run.should == subject
+            end
           end
         end
       end
-    end
 
-    describe "when the activities have runs outside of the sequence" do
-      subject { existing_seq_run }
+      describe "when the activities have runs outside of the sequence" do
+        subject { existing_seq_run }
 
-      before(:each) do
-        activities.each { |act| act.runs<<FactoryGirl.create(:run)}
-        activities.each { |act| act.reload }
-      end
+        before(:each) do
+          activities.each { |act| act.runs<<FactoryGirl.create(:run)}
+          activities.each { |act| act.reload }
+        end
 
-      it "should leave the existing runs alone, and create new ones for the sequence run" do
-        activities.each { |act| act.runs.size.should == 1 }
-        subject.make_or_update_runs
-        activities.each do |act|
-          act.reload
-          act.runs.size.should == 2
-          act.runs.select{ |r| r.sequence_run == subject }.should have(1).match
+        it "should leave the existing runs alone, and create new ones for the sequence run" do
+          activities.each { |act| act.runs.size.should == 1 }
+          subject.make_or_update_runs
+          activities.each do |act|
+            act.reload
+            act.runs.size.should == 2
+            act.runs.select{ |r| r.sequence_run == subject }.should have(1).match
+          end
         end
       end
-    end
-
-  end
-
+    end # make_or_update_runs
+  end # a run for a sequence of 4 activities
 end

@@ -20,7 +20,8 @@ module Embeddable
       {
         "type" => "open_response",
         "question_id" => open_response_id.to_s,
-        "answer" => answer_text
+        "answer" => answer_text,
+        "is_final" => is_final
       }
     end
   end

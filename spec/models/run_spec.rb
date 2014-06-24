@@ -73,7 +73,7 @@ describe Run do
       end
     end
   end
-  
+
   describe '#session_guid' do
     it 'generates different hashes for each activity run' do
       first_guid  = run.session_guid
@@ -321,25 +321,49 @@ describe Run do
     end
   end
 
+  describe "#has_been_run" do
+    describe "when the runcount is 0" do
+      it "should return false, indicating it hasn't been run" do
+        run.run_count=0
+        run.has_been_run.should be_false
+      end
+    end
+    describe "when the runcount is nil" do
+      it "should return false, indicating it hasn't been run" do
+        run.run_count=nil
+        run.has_been_run.should be_false
+      end
+    end
+    describe "when the runcount is more than zero" do
+      it "should return true, indicating it has been run" do
+        run.run_count=1
+        run.has_been_run.should be_true
+      end
+    end
+  end
+
   describe 'posting to portal' do
-    let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '" }]' }
+    let(:one_expected) { '[{ "type": "open_response", "question_id": "' + or_question.id.to_s + '", "answer": "' + or_answer.answer_text + '", "is_final": ' + or_answer.is_final.to_s + ' }]' }
     let(:all_expected) do
       [
         {
           "type" => "open_response",
           "question_id" => or_question.id.to_s,
-          "answer" => or_answer.answer_text
+          "answer" => or_answer.answer_text,
+          "is_final" => or_answer.is_final
         },
         {
           "type" => "multiple_choice",
           "question_id" => mc_question.id.to_s,
           "answer_ids" => [ a1.id.to_s],
-          "answer_texts" => [ a1.choice]
+          "answer_texts" => [ a1.choice],
+          "is_final" => mc_answer.is_final
         },
         {
           "type" => "image_question",
           "question_id" => iq_answer.id.to_s,
           "answer" => iq_answer.answer_text,
+          "is_final" => iq_answer.is_final,
           "image_url" => iq_answer.image_url,
           "annotation" => nil
         },

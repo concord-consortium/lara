@@ -121,9 +121,16 @@ module ApplicationHelper
     return @project.footer
   end
   def time_to_complete(min)
-    results = ""
-    results << t("TIME_TO_COMPLETE") << " #{min} "
-    results << t("MINUTES")
-    results
+    results = <<-EOF
+      <span class='time_to_complete'>
+        #{t("TIME_TO_COMPLETE")}
+        <span class='time_estimate'>
+          <span class='minutes_to_complete'>#{min}</span>
+          <span class='minutes_text'>#{t("MINUTES")}</span>
+        </span>
+      </span>
+    EOF
+    results.html_safe
   end
+
 end

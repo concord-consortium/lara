@@ -26,5 +26,5 @@
           - Concord::AuthPortal.all.each_pair do |key,portal|
             %li.session_link
               .text-link
-                = link_to "Sign in via #{portal.human_name}", omniauth_authorize_path("user", portal.strategy_name)
+                = link_to "Sign in via #{portal.link_name}", omniauth_authorize_path("user", portal.strategy_name)
   -#= link_to "Log In", user_omniauth_authorize_path(:concord_portal)

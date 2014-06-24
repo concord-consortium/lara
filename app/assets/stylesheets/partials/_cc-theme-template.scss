@@ -93,5 +93,10 @@
       border: 1px solid $theme-color-b;
       color: darken($theme-color-b, 20%);
       text-shadow: none;
-}
+    }
+  .time_to_complete {
+    .time_estimate {
+      color: $theme-color-a;
+    }
   }
+}

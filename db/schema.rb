@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140508153141) do
+ActiveRecord::Schema.define(:version => 20140617202626) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -195,9 +195,9 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.string   "publication_status", :default => "draft"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.string   "publication_status", :default => "private"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
@@ -321,13 +321,13 @@ ActiveRecord::Schema.define(:version => 20140508153141) do
   create_table "sequences", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
     t.text     "logo"
-    t.string   "publication_status", :default => "draft"
+    t.string   "publication_status", :default => "private"
     t.boolean  "is_official",        :default => false
     t.string   "display_title"
     t.string   "thumbnail_url"

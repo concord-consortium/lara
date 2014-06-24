@@ -121,6 +121,10 @@ class Run < ActiveRecord::Base
     return self.page || self.activity.pages.first
   end
 
+  def has_been_run
+    return run_count && run_count > 0
+  end
+
   def increment_run_count!
     self.run_count ||= 0
     increment!(:run_count)

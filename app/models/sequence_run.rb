@@ -24,6 +24,15 @@ class SequenceRun < ActiveRecord::Base
     runs.find {|run| run.activity_id == activity.id}
   end
 
+  def most_recent_run
+    runs.order('updated_at desc').first
+  end
+
+  def has_been_run
+    a_position =  runs.detect { |r| r.has_been_run }
+    return a_position.nil? ? false : true
+  end
+
   def make_or_update_runs
     sequence.activities.each do |activity|
       unless run_for_activity(activity)

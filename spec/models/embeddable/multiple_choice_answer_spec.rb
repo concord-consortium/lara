@@ -32,12 +32,13 @@ describe Embeddable::MultipleChoiceAnswer do
   end
 
   describe '#portal_hash' do
-    let(:expected) { 
-                    { 
+    let(:expected) {
+                    {
                       "type"         => "multiple_choice",
                       "question_id"  => question.id.to_s,
                       "answer_ids"   => [a1.id.to_s],
-                      "answer_texts" => [a1.choice]
+                      "answer_texts" => [a1.choice],
+                      "is_final"     => answer.is_final
                     }
                    }
 

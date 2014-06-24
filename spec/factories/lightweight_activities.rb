@@ -7,7 +7,7 @@ FactoryGirl.define do
 
   factory :activity, :class => LightweightActivity do
     name { generate(:name) }
-    publication_status 'private'
+    publication_status 'hidden'
     related { generate(:related) }
     description { generate(:description) }
   end

@@ -16,7 +16,6 @@
 //= require waypoints
 //= require waypoints-sticky
 //= require common
-//= require script
 //= require modals
 //= require modal-dialog
 //= require check-answer
@@ -33,3 +32,4 @@
 //= require iframe-saver
 //= require prediction
 //= require activity-box-click
+//= require runtime-init
