@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 gem 'rails', '3.2.17'
 gem "jquery-rails"
@@ -18,6 +19,9 @@ gem 'omniauth'
 # Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
+
+# Rails assets:
+gem 'rails-assets-drawing-tool'
 
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31

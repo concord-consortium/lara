@@ -40,6 +40,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: https://rails-assets.org/
   specs:
     actionmailer (3.2.17)
       actionpack (= 3.2.17)
@@ -318,6 +319,14 @@ GEM
       activesupport (= 3.2.17)
       bundler (~> 1.0)
       railties (= 3.2.17)
+    rails-assets-bootstrap (3.1.1)
+      rails-assets-jquery (>= 1.9.0)
+    rails-assets-drawing-tool (0.2.3)
+      rails-assets-bootstrap (= 3.1.1)
+      rails-assets-fabric (= 1.4.7)
+      rails-assets-jquery (= 2.1.1)
+    rails-assets-fabric (1.4.7)
+    rails-assets-jquery (2.1.1)
     railties (3.2.17)
       actionpack (= 3.2.17)
       activesupport (= 3.2.17)
@@ -469,6 +478,7 @@ DEPENDENCIES
   pry-stack_explorer
   rack-environmental
   rails (= 3.2.17)
+  rails-assets-drawing-tool
   rb-fsevent
   request-log-analyzer
   rspec (~> 2.10.0)

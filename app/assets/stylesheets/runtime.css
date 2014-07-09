@@ -10,6 +10,8 @@
  *
  * This is a theme stylesheet manifest for the RUNTIME section of the site
  *
+ *= require bootstrap
+ *= require drawing-tool
  *= require save-on-change
  *= require mw-runtime-base
  *= require modal
