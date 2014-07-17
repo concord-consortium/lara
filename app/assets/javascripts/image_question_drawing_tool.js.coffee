@@ -136,7 +136,9 @@ class ImageQuestionDrawingTool
     @$snapshot_button.hide()
 
   set_drawing_tool_background: ->
-    @drawing_tool.setBackgroundImage(@$image_url_field.val(), 'resizeCanvasToBackground')
+    bg_src = @$image_url_field.val()
+    # Sometimes background image can be undefined, e.g. for plain image questions.
+    @drawing_tool.setBackgroundImage(bg_src, 'resizeCanvasToBackground') if bg_src
 
   show_saved: ->
     @saveTimer = setTimeout ->
