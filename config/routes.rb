@@ -114,4 +114,7 @@ LightweightStandalone::Application.routes.draw do
   match "test_mail" => 'application#test_mail', :as => 'test_mail'
   match "test_exception" => 'application#test_error', :as => 'test_exception'
   match "test_error" => 'application#test_error', :as => 'test_error'
+
+  # Simple image proxy used by Drawing Tool.
+  match "/image-proxy" => 'image_proxy#get'
 end
