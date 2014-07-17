@@ -60,5 +60,5 @@
 - content_for :extra_javascript do
   :javascript
     $(document).ready(function() {
-      window.iq = new ImageQuestionDrawingTool(#{embeddable.id});
+      new ImageQuestionDrawingTool(#{embeddable.id});
     });

@@ -136,9 +136,18 @@ class ImageQuestionDrawingTool
     @$snapshot_button.hide()
 
   set_drawing_tool_background: ->
-    bg_src = @$image_url_field.val()
+    bg_src = @proxy_image_if_needed(@$image_url_field.val())
     # Sometimes background image can be undefined, e.g. for plain image questions.
     @drawing_tool.setBackgroundImage(bg_src, 'resizeCanvasToBackground') if bg_src
+
+  proxy_image_if_needed: (url) ->
+    # "Free" URI parser in JS.
+    parser = document.createElement('a')
+    parser.href = url
+    # Note that <a> element will set .hostname to correct value if we provide
+    # relative path like '/resources/image.jgp'.
+    return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
+    return url
 
   show_saved: ->
     @saveTimer = setTimeout ->
