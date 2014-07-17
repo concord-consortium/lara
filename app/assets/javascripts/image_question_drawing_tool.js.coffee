@@ -45,8 +45,6 @@ class ImageQuestionDrawingTool
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
     @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 450})
-    @drawing_tool.load(@$annotation_field.val())
-    @drawing_tool.resizeCanvasToBackground()
 
     @create_snapshot_shutterbug()
     @create_drawing_tool_shutterbug()
@@ -72,10 +70,12 @@ class ImageQuestionDrawingTool
       @show_dialog()
 
     @$edit_button.click =>
+      return if !@is_annotation_data_correct()
+      @load_annotation()
       @show_dialog()
 
     @$cancel_button.click =>
-      @reset_image()
+      @load_annotation()
       @clear_dialog_answer()
       @hide_dialog()
 
@@ -187,8 +187,33 @@ class ImageQuestionDrawingTool
     @$image_url_field.val(src)
     @set_drawing_tool_background()
 
-  reset_image: ()->
+  load_annotation: () ->
     @drawing_tool.load(@$annotation_field.val())
+
+  is_annotation_data_correct: () ->
+    reset_annotation_data = =>
+      if confirm "Incompatible data detected - your annotated image will be reset"
+        @$annotation_field.val("")
+        # We have to manually set background again. Note that we don't have to take
+        # snapshot again, as it should be already available as image_url field in form.
+        @set_drawing_tool_background()
+        return true
+      return false
+
+    serialized_data = @$annotation_field.val()
+    # TODO: it would be better to implement this validation in Drawing Tool itself.
+    # Empty string is correct.
+    return true if serialized_data.length == 0
+    # Drawing Tool expects JSON object.
+    try
+      data = JSON.parse(serialized_data)
+    catch error
+      # Probably it's base64-encoded SVG Edit image. We can't load it into Drawing Tool.
+      return reset_annotation_data()
+    # Simple check if JSON contains two main properties specific for Drawing Tool data - 'canvas' and 'dt'.
+    return true if data.dt? && data.canvas?
+    # Unknown format.
+    return reset_annotation_data()
 
   clear_dialog_answer: ()->
     if @$dialog_answer.val() != @$displayed_answer.data('raw')
