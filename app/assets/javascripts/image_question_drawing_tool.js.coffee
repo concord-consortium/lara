@@ -201,7 +201,7 @@ class ImageQuestionDrawingTool
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
-      if confirm "Incompatible data detected - your annotated image will be reset"
+      if confirm "Old drawing format detected - all annotations or drawings will be cleared if you continue."
         @$annotation_field.val("")
         # We have to manually set background again. Note that we don't have to take
         # snapshot again, as it should be already available as image_url field in form.
