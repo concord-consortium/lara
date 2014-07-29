@@ -1,3 +1,7 @@
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
 .image_gallery {
   font: 400 100% lato, arial, helvetica, sans-serif;
   font-family:  lato, arial, helvetica, sans-serif;
@@ -27,18 +31,8 @@
   button {
     margin-right: 1em;
   }
-  img {
-    min-height: 100px;
-    min-width: 200px;
-    border: none;
-    background-color: white;
-  }
 }
-#image_question_answer_form {
-  img.thumbnail {
-    height: 25px;
-  }
-}
+
 .tmp_svg {
   border: 0px;
   margin: 0px;
@@ -46,6 +40,7 @@
   z-index: 1000;
   background-repeat: no-repeat;
 }
+
 .under_image {
   .text_response {
     .prompt {

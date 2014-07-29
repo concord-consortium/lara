@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 gem 'rails', '3.2.17'
 gem "jquery-rails"
@@ -19,6 +20,9 @@ gem 'omniauth'
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
+# Rails assets:
+gem 'rails-assets-drawing-tool', '0.8.4'
+
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
 gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
@@ -31,7 +35,7 @@ gem 'shutterbug', '~>0.1.2'
 # gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
 # gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 gem 'rack-environmental'
-# gem 'sketchily', :path => "/Users/npaessel/lab/ruby/sketchily"
+# gem 'sketchily', :path => "/Users/npaessellab/ruby/sketchily"
 # use bundle update sketchily to force newest SHA from github, or uncomment above
 # to work locally.
 gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :branch => "concord"

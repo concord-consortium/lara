@@ -10,6 +10,9 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require fabric
+//= require hammerjs
+//= require drawing-tool
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
@@ -27,6 +30,7 @@
 //= require interactive-sizing
 //= require embeddable-carousel
 //= require image_question
+//= require image_question_drawing_tool
 //= require nav_menu
 //= require iframe-phone
 //= require iframe-saver

@@ -78,12 +78,12 @@ class @SaveOnChange
     @scheduled_job      = null
     @previous_value     = null
     @setupEvents()
+    @setupManualSubmitSupport()
     # don't send events until the doc
     # is ready
     $(document).ready () =>
       @checker = new CompleteChecker(@$form)
       @check_for_answer()
-
 
   setupEvents: ->
     @$form.find('input,textarea,select').on 'change blur', (e) =>
@@ -91,7 +91,23 @@ class @SaveOnChange
     @$form.find('input,textarea').on 'keyup',  (e) =>
       @schedule(@keyUpinterval)
 
-  saveElement:(async = true) ->
+  setupManualSubmitSupport: ->
+    # We can manually call form.submit() and everything should be handled as expected:
+    # - saving notification is displayed
+    # - answer is announced ('answer_for' and 'no_answer_for' events)
+    previous_data = null
+    @$form
+      .on('submit', =>
+        # This happens prior to the actual submission
+        previous_data = @$form.serialize()
+        @page.saving()
+      ).on('ajax:success', (e, data, status, xhr) =>
+        @save_success(previous_data)
+      ).on('ajax:error', (e, xhr, status, error) =>
+        @save_error()
+      )
+
+  saveElement: (async = true) ->
     data = @$form.serialize()
     @page.saving()
     $.ajax({
@@ -100,13 +116,19 @@ class @SaveOnChange
       url: @$form.attr( 'action' ),
       data: @$form.serialize(),
       success: (response) =>
-        @previous_value = data
-        @page.saved(@)
-        @dirty = false
-        @check_for_answer()
+        @save_success(data)
       error: (jqxhr, status, error) =>
-        @page.failed(@)
+        @save_error()
     })
+
+  save_success: (previous_data) ->
+    @previous_value = previous_data
+    @page.saved(@)
+    @dirty = false
+    @check_for_answer()
+
+  save_error: ->
+    @page.failed(@)
 
   check_for_answer: ->
     if @checker.is_answered()
