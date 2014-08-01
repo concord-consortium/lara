@@ -18,11 +18,11 @@ class ImageQuestionDrawingTool
       title: "Snapshot",
       modal: true,
       open: =>
-        @drawing_tool.canvas.calcOffset()
+        @drawing_tool.calcOffset()
       dragStop: =>
-        @drawing_tool.canvas.calcOffset()
+        @drawing_tool.calcOffset()
       resize: =>
-        @drawing_tool.canvas.calcOffset()
+        @drawing_tool.calcOffset()
     })
 
     @$snapshot_button           = $("#{@form_sel} .take_snapshot")
