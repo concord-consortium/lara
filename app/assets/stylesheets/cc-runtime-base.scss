@@ -93,7 +93,7 @@ div.activity-mod>div.site-width {
 }
 
 // Intro block
-.intro-mod {
+.intro-mod.index-mod{
   clear: left;
   font-size: 16px;
   line-height: 1.45em;
@@ -106,9 +106,45 @@ div.activity-mod>div.site-width {
     margin-bottom: 13px;
     color: $med-blue;
   }
-
+  p.index-heading {
+    font-weight: bold;
+  }
   .intro-txt {
-    /* max-width: 75%; */
+    width: 59%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    padding-right: 50px;
+  }
+  .page-index {
+    max-width: 40%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 20px;
+    border: 1px solid $black-10;
+    @include border-radius(10px);
+    opacity: 1.0;
+    ol {
+      li {
+        font-size: 16px;
+        margin-bottom: 0.5em;
+        &:before {
+          color: inherit;
+          font-size: inherit;
+          background: none;
+          border: none;
+          margin-right: 5px;
+          padding: inherit;
+          top: 0px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+  .estimated-time {
+    border: 1px solid $black-10;
+    background-color: white;
+    @include border-radius(10px);
   }
 }
 
