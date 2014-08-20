@@ -11,6 +11,7 @@
 
 .intro-mod.index-mod
   .intro-txt
+    %h2= @activity.name
     = @activity.description.html_safe
     - if @activity.time_to_complete
       .estimated-time

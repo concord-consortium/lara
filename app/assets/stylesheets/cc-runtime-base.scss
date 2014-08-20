@@ -110,14 +110,22 @@ div.activity-mod>div.site-width {
     font-weight: bold;
   }
   .intro-txt {
-    width: 59%;
+    width: 64%;
     display: inline-block;
     vertical-align: top;
     padding: 10px;
     padding-right: 50px;
+    h2 {
+      font-size: 45px;
+      color: inherit;
+      line-height: 1em;
+      margin: 0px;
+      padding: 0px;
+      margin-bottom: 0.7em;
+    }
   }
   .page-index {
-    max-width: 40%;
+    max-width: 35%;
     display: inline-block;
     vertical-align: top;
     padding: 20px;
@@ -125,19 +133,35 @@ div.activity-mod>div.site-width {
     @include border-radius(10px);
     opacity: 1.0;
     ol {
+      margin: 0px;
+      padding: 0px;
+      display: table;
       li {
-        font-size: 16px;
-        margin-bottom: 0.5em;
+        font-size: 14px;
+        list-style: none outside none; 
+        display: table-row;
+        line-height: 1.5em;
         &:before {
+          display: table-cell; /* aha! */
+          text-align: right;
           color: inherit;
           font-size: inherit;
           background: none;
           border: none;
-          margin-right: 5px;
-          padding: inherit;
+          padding-right: 0.7em;
           top: 0px;
           font-weight: normal;
         }
+      }
+    }
+    .nav-buttons {
+      padding: 0px;
+      padding-top: 1em;
+      margin: 0px;
+      input.button {
+        width: 100%;
+        padding: 0.5em;
+        margin: 0px;
       }
     }
   }
