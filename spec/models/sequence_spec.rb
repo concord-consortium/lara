@@ -55,7 +55,7 @@ describe Sequence do
   end
 
   describe '#serialize_for_portal' do
-    let(:act1) { FactoryGirl.build(:activity_with_page) }
+    let (:act1) { FactoryGirl.build(:activity_with_page) }
     let(:act2) { FactoryGirl.build(:activity_with_page) }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
@@ -72,6 +72,7 @@ describe Sequence do
     let(:simple_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
       {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
+        "abstract" => sequence.abstract,
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => nil, # our simple sequence doesn't have one
@@ -83,6 +84,7 @@ describe Sequence do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
       {
         "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
+        "abstract" => sequence.abstract,
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => thumbnail_url,
@@ -106,7 +108,7 @@ describe Sequence do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for sequence duplication' do
-      expected = { title: sequence.title, description: sequence.description, theme_id: sequence.theme_id, project_id: sequence.project_id,
+      expected = { title: sequence.title, description: sequence.description, abstract: sequence.abstract, theme_id: sequence.theme_id, project_id: sequence.project_id,
                    logo: sequence.logo, display_title: sequence.display_title, thumbnail_url: sequence.thumbnail_url }
       sequence.to_hash.should == expected
     end
