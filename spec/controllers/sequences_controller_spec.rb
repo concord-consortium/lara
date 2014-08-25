@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe SequencesController do
-  let (:sequence) { FactoryGirl.create(:sequence) }
-  let (:activity) { FactoryGirl.create(:public_activity) }
+  let(:sequence) { FactoryGirl.create(:sequence) }
+  let(:activity) { FactoryGirl.create(:public_activity) }
 
   # This should return the minimal set of attributes required to create a valid
   # Sequence. As you add validations to Sequence, be sure to
