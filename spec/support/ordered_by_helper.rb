@@ -3,24 +3,33 @@ RSpec::Matchers.define :be_ordered_by do |attribute|
     result = true
     reverse_indicator = "_desc"
     attribute = attribute.to_s
+    @failers = []
+    
+    symbol     = attribute.to_sym
+    comparison = Proc.new { |a,b| a.send(symbol) >= b.send(symbol) }
+
     if attribute =~ /#{reverse_indicator}/
-      symbol = attribute.gsub(/#{reverse_indicator}/,'').to_sym
-      sorted = actual.sort{ |a,b| b.send(symbol) <=> a.send(symbol)}
-    else
-      sorted = actual.sort{ |a,b| a.updated_at <=> b.updated_at}
+      symbol     = attribute.gsub(/#{reverse_indicator}/,'').to_sym
+      comparison = Proc.new { |a,b| a.send(symbol) <= b.send(symbol) }
     end
-    sorted.each_with_index do |a,i|
-      result = false unless actual[i] == a
+
+    actual.each_with_index do |item,i|
+      next unless i > 0
+      previous = actual[i-1]
+      unless comparison.call(item,previous)
+        @failers << "#{i} #{actual[i]} is not in order"
+        result = false
+      end
     end
-    result # return true or false for this matcher.
+     result
   end
 
   failure_message_for_should do |actual|
-    "expected that #{actual} would be sorted by #{attribute}"
+    "expected that #{actual} would be sorted by #{attribute} " + @failers.join(": ")
   end
 
   failure_message_for_should_not do |actual|
-    "expected that #{actual} would not be sorted by #{attribute}"
+    "expected that #{actual} would not be sorted by #{attribute} " + @failers.join(": ")
   end
 
   description do

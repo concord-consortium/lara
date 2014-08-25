@@ -64,7 +64,7 @@ describe Sequence do
       seq.activities << act2
       seq.save!
       # Reorder activities - move first one to the bottom.
-      seq.lightweight_activities_sequences.find(act1.id).move_to_bottom
+      seq.lightweight_activities_sequences.find { |as| as.lightweight_activity ==act1 }.move_to_bottom
       seq.reload
       seq
     end
