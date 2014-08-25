@@ -4,5 +4,6 @@ FactoryGirl.define do
   factory :sequence do
     title "MyString"
     description "MyText"
+    abstract "short abstract"
   end
 end
