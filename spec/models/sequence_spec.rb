@@ -55,7 +55,7 @@ describe Sequence do
   end
 
   describe '#serialize_for_portal' do
-    let (:act1) { FactoryGirl.build(:activity_with_page) }
+    let(:act1) { FactoryGirl.build(:activity_with_page) }
     let(:act2) { FactoryGirl.build(:activity_with_page) }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
