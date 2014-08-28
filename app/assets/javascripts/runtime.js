@@ -12,6 +12,7 @@
 //
 //= require fabric
 //= require hammerjs
+//= require eventemitter2
 //= require drawing-tool
 //= require jquery_ujs
 //= require jquery.placeholder
