@@ -14,7 +14,7 @@ class ImageQuestionDrawingTool
     @$content.dialog({
       dialogClass: "no-close",
       autoOpen: false,
-      width: 800,
+      width: 950,
       title: "Snapshot",
       modal: true,
       open: =>
@@ -44,7 +44,7 @@ class ImageQuestionDrawingTool
     @$annotation_field          = $("#{@form_sel} [name=\"#{@form_prefix}[annotation]\"]")
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
-    @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 450})
+    @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 600})
 
     @create_snapshot_shutterbug()
     @create_drawing_tool_shutterbug()
@@ -138,7 +138,7 @@ class ImageQuestionDrawingTool
   set_drawing_tool_background: ->
     bg_src = @proxy_image_if_needed(@$image_url_field.val())
     # Sometimes background image can be undefined, e.g. for plain image questions.
-    @drawing_tool.setBackgroundImage(bg_src, 'resizeCanvasToBackground') if bg_src
+    @drawing_tool.setBackgroundImage(bg_src, 'shrinkBackgroundToCanvas') if bg_src
 
   proxy_image_if_needed: (url) ->
     # "Free" URI parser in JS.

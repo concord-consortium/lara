@@ -38,24 +38,23 @@
           = f.hidden_field 'answer_text'
         = prediction_button(embeddable, f)
 
-.question{:id => "image_question_dialog_#{embeddable.id}", :style => "display: none"}
-  .image_gallery
-    .instructions
-      != embeddable.drawing_prompt
-    .answer
-      %div{:id => "drawing-tool-container_for_#{embeddable.id}"}
-      .under_image
-        - unless embeddable.prompt.blank?
-          .text_response
-            .prompt.image_prompt!= embeddable.prompt
-            %textarea{:cols => "30", :rows => "2", :class => 'answer', :placeholder => 'Type answer here'}
-              = embeddable.answer_text
-        %button.button.image_done_button{ :type => 'button' }
-          %i.fa.fa-check.btn
-            =t("DONE")
-        %button.button.image_cancel_button{ :type => 'button' }
-          %i.fa.fa-cancel.btn
-            =t("CANCEL")
+.image-question-dialog{:id => "image_question_dialog_#{embeddable.id}", :style => "display: none"}
+  .drawing-area
+    %div{:id => "drawing-tool-container_for_#{embeddable.id}"}
+  .question-area
+    .drawing-prompt!= embeddable.drawing_prompt
+    - unless embeddable.prompt.blank?
+      %hr
+      .question-prompt!= embeddable.prompt
+      %textarea{:class => 'answer', :placeholder => 'Type answer here'}
+        = embeddable.answer_text
+    .buttons-row
+      %button.button.image_cancel_button{ :type => 'button' }
+        %i.fa.fa-cancel.btn
+          =t("CANCEL")
+      %button.button.image_done_button{ :type => 'button' }
+        %i.fa.fa-check.btn
+          =t("DONE")
 
 - content_for :extra_javascript do
   :javascript
