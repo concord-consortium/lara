@@ -746,8 +746,10 @@ div.intra-page-nav {
   input {
     margin-right: 8px;
   }
+  .page-index {
+      border: 0px;
+  }
 }
-
 // screen shot answer
 .image-answer {
   border: 3px dashed $lt-blue;

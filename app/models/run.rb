@@ -289,4 +289,20 @@ class Run < ActiveRecord::Base
     self.activity.increment!(:portal_run_count)
   end
 
+  def num_questions
+    return self.activity.questions.size
+  end
+
+  def num_answers
+    return self.answers.size
+  end
+
+  def completed?
+    return self.num_answers == num_questions
+  end
+
+  def percent_complete
+    return (num_answers / Float(num_questions) ) * 100.0
+  end
+
 end

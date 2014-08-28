@@ -1,5 +1,6 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, :user_id, :logo, :display_title, :thumbnail_url
+  attr_accessible :description, :title, :theme_id, :project_id, 
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract
   include Publishable # models/publishable.rb defines pub & official
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
@@ -8,7 +9,7 @@ class Sequence < ActiveRecord::Base
   belongs_to :project
 
 
-  scope :newest, order("updated_at DESC")
+  # scope :newest, order("updated_at DESC")
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
 
   def name
@@ -43,6 +44,7 @@ class Sequence < ActiveRecord::Base
     {
       title: title,
       description: description,
+      abstract: abstract,
       theme_id: theme_id,
       project_id: project_id,
       logo: logo,
@@ -84,6 +86,7 @@ class Sequence < ActiveRecord::Base
       'type' => "Sequence",
       'name' => self.title,
       'description' => self.description,
+      'abstract' => self.abstract,
       "url" => local_url,
       "create_url" => local_url,
       "thumbnail_url" => thumbnail_url

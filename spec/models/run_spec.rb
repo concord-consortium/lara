@@ -361,7 +361,7 @@ describe Run do
         },
         {
           "type" => "image_question",
-          "question_id" => iq_answer.id.to_s,
+          "question_id" => iq_answer.question.id.to_s,
           "answer" => iq_answer.answer_text,
           "is_final" => iq_answer.is_final,
           "image_url" => iq_answer.image_url,
@@ -571,6 +571,36 @@ describe Run do
 
 
       end
+    end
+  end
+
+  describe "Functions relating to 'completeness'" do
+    subject         { run }
+    let(:questions) { [1,2,3]  }
+    let(:answers)   { [1,2,3]  }
+    before(:each) do
+      activity.stub!(:questions).and_return(questions)
+      run.stub!(:answers).and_return(answers)
+    end
+
+    describe "#num_questions" do
+      its(:num_questions) { should eq 3}
+    end
+    
+    describe "With three answers" do
+      let(:answers) { [1,2,3]  }
+
+      its(:num_answers)      { should eq 3         }
+      it                     { should be_completed }
+      its(:percent_complete) { should eq 100       }
+    end
+
+    describe "With two answers" do
+      let(:answers) { [1,2]  }
+
+      its(:num_answers)      { should eq 2                    }
+      it                     { should_not be_completed        }
+      its(:percent_complete) { should be_within(0.1).of(66.6) }
     end
   end
 end

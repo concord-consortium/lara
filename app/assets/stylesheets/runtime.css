@@ -19,6 +19,7 @@
  *= require colorbox
  *= require video-js
  *= require font-awesome
- *= require image_question
+ *= require image-question-svg-edit
+ *= require image-question-drawing-tool
  *= require activity-sequences
  */

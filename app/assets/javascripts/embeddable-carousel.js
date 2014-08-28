@@ -13,8 +13,7 @@ var EmbeddableCarousel = function (element) {
         'list': '.embeddables',
         'items': '.question'
     });
-    // Update the control state when we're done changing
-    this.container.on('animateend.jcarousel', function (event, carousel) {
+    $('.jcarousel').on('jcarousel:scrollend', function(event, carousel) {
         self.updateControls(carousel);
         return event;
     });
