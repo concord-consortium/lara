@@ -203,7 +203,9 @@ class ImageQuestionDrawingTool
     @set_drawing_tool_background()
 
   load_annotation: () ->
-    @drawing_tool.load(@$annotation_field.val())
+    @drawing_tool.load(@$annotation_field.val(), =>
+      @drawing_tool.resetHistory()
+    )
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
