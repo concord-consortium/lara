@@ -45,6 +45,8 @@ class ImageQuestionDrawingTool
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
     @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 600})
+    # See: https://www.pivotaltracker.com/story/show/77973722
+    @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
 
     @create_snapshot_shutterbug()
     @create_drawing_tool_shutterbug()
@@ -206,6 +208,9 @@ class ImageQuestionDrawingTool
     @drawing_tool.load(@$annotation_field.val(), =>
       @drawing_tool.resetHistory()
     )
+
+  is_snapshot_question: () ->
+   @$snapshot_button.length > 0
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
