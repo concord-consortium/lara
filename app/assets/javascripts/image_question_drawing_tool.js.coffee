@@ -138,7 +138,11 @@ class ImageQuestionDrawingTool
   set_drawing_tool_background: ->
     bg_src = @proxy_image_if_needed(@$image_url_field.val())
     # Sometimes background image can be undefined, e.g. for plain image questions.
-    @drawing_tool.setBackgroundImage(bg_src, 'shrinkBackgroundToCanvas') if bg_src
+    return unless bg_src
+    @drawing_tool.setBackgroundImage(bg_src, 'shrinkBackgroundToCanvas', =>
+      # Don't let users undo background setting.
+      @drawing_tool.resetHistory()
+    )
 
   proxy_image_if_needed: (url) ->
     # "Free" URI parser in JS.
@@ -180,6 +184,8 @@ class ImageQuestionDrawingTool
 
   show_dialog: ->
     @$content.dialog("open")
+    # Always reset history (undo / redo) when user opens a dialog, as it may be confusing otherwise.
+    @drawing_tool.resetHistory()
 
   hide_dialog: () ->
     @$content.dialog("close");
@@ -197,7 +203,9 @@ class ImageQuestionDrawingTool
     @set_drawing_tool_background()
 
   load_annotation: () ->
-    @drawing_tool.load(@$annotation_field.val())
+    @drawing_tool.load(@$annotation_field.val(), =>
+      @drawing_tool.resetHistory()
+    )
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
