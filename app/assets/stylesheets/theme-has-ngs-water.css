@@ -22,5 +22,6 @@
  *= require image-question-svg-edit
  *= require image-question-drawing-tool
  *= require activity-sequences
+ *= require wait-message
  *= require has-water
  */

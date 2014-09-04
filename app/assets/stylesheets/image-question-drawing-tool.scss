@@ -43,4 +43,20 @@
   button.button {
     margin-right: 5px;
   }
+
+  .wait-message {
+    position: absolute;
+    top: 270px;
+    left: 52px;
+    width: 600px;
+    text-align: center;
+    div {
+      display: inline;
+      font-size: 20px;
+      color: #666;
+      background: #fefefe;
+      border-radius: 20px;
+      padding: 10px;
+    }
+  }
 }

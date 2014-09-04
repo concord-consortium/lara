@@ -150,13 +150,16 @@ class SequencesController < ApplicationController
     end
 
     portal = RemotePortal.new(params)
-    if session.delete(:did_reauthenticate)
-      # FIXME: what if current_user is nil?
-      # We see this happening from has.portal sometimes, eg
-      # in this stack trace: http://bit.ly/1qUAmu4
-      # PT: https://www.pivotaltracker.com/story/show/67843350
+    
+    # we verify that the user exists after did_reauthenticate.
+    # there have been instances where the session kept :did_reauthenticate without
+    # having a valid user.  In that case, we shoudl re-auth agian.
+    if (session.delete(:did_reauthenticate) && current_user)
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
     else
+      # Force re-authentication with a portal if there is portal info in params
+      # If there is no portal info, then we just assume there is no sequence run.
+      # NOTE: :did_reauthenticate has been removed above.
       update_portal_session
     end
     # This creates a new sequence_run if it doesn't exist.

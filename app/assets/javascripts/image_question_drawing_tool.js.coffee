@@ -45,6 +45,8 @@ class ImageQuestionDrawingTool
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
     @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 600})
+    # See: https://www.pivotaltracker.com/story/show/77973722
+    @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
 
     @create_snapshot_shutterbug()
     @create_drawing_tool_shutterbug()
@@ -57,6 +59,7 @@ class ImageQuestionDrawingTool
   create_hooks: ->
     @$snapshot_button.click =>
       @shutterbug.getDomSnapshot()
+      startWaiting 'Please wait while the snapshot is being taken...'
       @show_dialog()
 
     @$drawing_button.click =>
@@ -66,6 +69,7 @@ class ImageQuestionDrawingTool
 
     @$replace_button.click =>
       @drawing_tool.clear(true)
+      startWaiting 'Please wait while the snapshot is being taken...'
       @shutterbug.getDomSnapshot()
       @show_dialog()
 
@@ -90,14 +94,17 @@ class ImageQuestionDrawingTool
         @hide_dialog()
         @show_saved()
         @set_dialog_buttons_enabled(true)
+        stopWaiting()
       ).on('ajax:error', (e, xhr, status, error) =>
         @save_failed()
         @set_dialog_buttons_enabled(true)
+        stopWaiting()
       )
 
   create_snapshot_shutterbug: ->
     @shutterbug = new Shutterbug(@interactive_selector, null, (image_tag) =>
       @set_image_source($(image_tag).attr("src"))
+      stopWaiting()
     , @image_question_id)
 
   create_drawing_tool_shutterbug: ->
@@ -170,6 +177,7 @@ class ImageQuestionDrawingTool
   start_saving: ->
     @show_saving()
     @set_dialog_buttons_enabled(false)
+    startWaiting 'Please wait while your drawing is being saved...'
     # Clear selection so it's not visible on the screenshot.
     @drawing_tool.clearSelection()
     # First part of saving is to get Shutterbug snapshot.
@@ -206,6 +214,9 @@ class ImageQuestionDrawingTool
     @drawing_tool.load(@$annotation_field.val(), =>
       @drawing_tool.resetHistory()
     )
+
+  is_snapshot_question: () ->
+   @$snapshot_button.length > 0
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
