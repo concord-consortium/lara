@@ -76,7 +76,8 @@ describe VideoInteractivesController do
           get :edit, :id => int.id, :page_id => page.id, :format => 'js'
 
           response.headers['Content-Type'].should match /text\/json/
-          response.body.should match /<form[^>]+action=\\"\/pages\/#{page.id}\/video_interactives\/#{int.id}\\"[^<]+method=\\"post\\"[^<]*>/
+          value_hash = JSON.parse(response.body)
+          value_hash['html'].should match %r[<form[^>]+action=\"/pages\/#{page.id}\/video_interactives\/#{int.id}\"[^<]+method=\"post]
         end
       end
 
