@@ -1,7 +1,7 @@
 :javascript
   // definte (t) translation for i18n that uses the rails config/locales 
   // taken from stack exchange http://bit.ly/SjkfJs 
-  var translations = #{I18n.backend.send(:translations)[I18n.locale].with_indifferent_access.to_json.html_safe}
+  var translations = #{current_translations}
   window.t = function(key) {
     if(!key){
       return "N/A";
