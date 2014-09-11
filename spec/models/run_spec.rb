@@ -102,12 +102,6 @@ describe Run do
   end
 
   describe "#last_page" do
-    it "should default to the first page" do
-      activity.stub!(:pages => [:a,:b,:c])
-      run.page.should be_nil
-      run.last_page.should == :a
-    end
-
     it "should remember the last page set by the controller" do
       run.page.should be_nil
       page = FactoryGirl.create(:page)
@@ -586,7 +580,7 @@ describe Run do
     describe "#num_questions" do
       its(:num_questions) { should eq 3}
     end
-    
+
     describe "With three answers" do
       let(:answers) { [1,2,3]  }
 

@@ -118,7 +118,7 @@ class Run < ActiveRecord::Base
   end
 
   def last_page
-    return self.page || self.activity.pages.first
+    return self.page
   end
 
   def has_been_run
