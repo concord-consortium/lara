@@ -209,13 +209,14 @@ div.nav-menu-top {
   text-align: left;
   width: 100%;
   height: $nav-bar-height;
+  white-space: nowrap;
 }
 
 .pagination-item {
   @include border-radius(10px);
   text-align: center;
   display: inline-block;
-  
+
   margin-top: 2px;
   &:first-child {
     margin-left: 0;
