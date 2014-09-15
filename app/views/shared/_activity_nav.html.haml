@@ -35,7 +35,7 @@
           .pagination
             .pagination-item
               - classes = @page.blank? ? 'pagination-link selected' : 'pagination-link'
-              %a{:href=> runnable_activity_path(@activity),:class => classes}
+              %a{:href=> runnable_activity_path(@activity, :show_index => true),:class => classes}
                 %i.fa.fa-home
             - page_counter = 1
             - @activity.pages.each do |p|
