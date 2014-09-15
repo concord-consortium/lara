@@ -18,9 +18,6 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
-    if params[:response_key]
-      redirect_to activity_path(@activity) and return
-    end
     @run.increment_run_count!
     setup_show
     unless params[:show_index]
