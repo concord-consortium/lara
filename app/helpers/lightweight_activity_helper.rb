@@ -9,16 +9,11 @@ module LightweightActivityHelper
     return (!related.blank?)
   end
 
-  def runnable_activity_path(activity,opts ={})
-    if @sequence_run
-      run = @sequence_run.run_for_activity(activity)
-      activity_with_response_path(activity.id, run.key, opts)
-    elsif @run
-      activity_with_response_path(activity.id, @run.key, opts)
-    elsif @sequence
-      sequence_activity_path(@sequence, activity,opts)
+  def runnable_activity_path(activity, opts ={})
+    if @sequence
+      sequence_activity_path(@sequence, activity, opts)
     else
-      activity_path(activity,opts)
+      activity_path(activity, opts)
     end
   end
 
