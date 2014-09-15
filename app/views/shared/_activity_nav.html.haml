@@ -20,7 +20,7 @@
                   = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
           - else
             %li.activity.active
-              = link_to "#{@activity.name}", runnable_activity_path(@activity, show_index => true)
+              = link_to "#{@activity.name}", runnable_activity_path(@activity, :show_index => true)
               %ol.pages.in-activity
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
