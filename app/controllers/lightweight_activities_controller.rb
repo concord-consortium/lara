@@ -18,6 +18,10 @@ class LightweightActivitiesController < ApplicationController
 
   def show
     authorize! :read, @activity
+    if params[:response_key]
+      redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
+      redirect_to activity_path(@activity, request.query_parameters) and return
+    end
     @run.increment_run_count!
     setup_show
     unless params[:show_index]
