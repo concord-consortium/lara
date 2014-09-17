@@ -16,6 +16,8 @@ class IFrameSaver
   constructor: (iframe=IFrameSaver.default_iframe(), $data_div=IFrameSaver.default_data()) ->
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
+    @auth_provider = $data_div.data('authprovider')  # through which provider did the current user log in
+    @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @learner_url = null
     @$delete_button = $('#delete_interactive_data')
     @$delete_button.click () =>
@@ -44,6 +46,8 @@ class IFrameSaver
             @save_to_server(interactive_json, @learner_url)
           ,
           500
+      @iframePhone.addListener 'getAuthInfo', =>
+        @iframePhone.post('authInfo', { provider: @auth_provider, loggedIn: @logged_in })
 
       if @put_url
         #Save interactive every 42 seconds just to be safe:
