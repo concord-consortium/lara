@@ -1,4 +1,32 @@
 class ImageQuestionDrawingTool
+  DRAWING_TOOL_STAMPS = {
+    'Molecules': [
+      'http://resources.interactions.concord.org/stamps/simple-atom-ng.svg'
+      'http://resources.interactions.concord.org/stamps/diatomic-ng.svg'
+      'http://resources.interactions.concord.org/stamps/triatomic-ng.svg'
+      'http://resources.interactions.concord.org/stamps/positive-charge-symbol.svg'
+      'http://resources.interactions.concord.org/stamps/negative-charge-symbol.svg'
+      'http://resources.interactions.concord.org/stamps/positive-atom-ng.svg'
+      'http://resources.interactions.concord.org/stamps/negative-atom-ng.svg'
+      'http://resources.interactions.concord.org/stamps/slow-particle-ng.svg'
+      'http://resources.interactions.concord.org/stamps/medium-particle-ng.svg'
+      'http://resources.interactions.concord.org/stamps/fast-particle-ng.svg'
+      'http://resources.interactions.concord.org/stamps/low-density-particles.svg'
+    ]
+  }
+
+  # LARA provides simple proxy (/image-proxy?url=). It's useful even if we use
+  # only CORS enabled images, as not all browsers support CORS images (and our
+  # own proxy ensures that the domain is the same).
+  DRAWING_TOOL_PROXY = (url) ->
+    # "Free" URI parser in JS.
+    parser = document.createElement('a')
+    parser.href = url
+    # Note that <a> element will set .hostname to correct value if we provide
+    # relative path like '/resources/image.jgp'.
+    return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
+    return url
+
   constructor: (@image_question_id="blank")->
     # Initial default values
     @image_url            = ""
@@ -44,7 +72,13 @@ class ImageQuestionDrawingTool
     @$annotation_field          = $("#{@form_sel} [name=\"#{@form_prefix}[annotation]\"]")
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
-    @drawing_tool = new DrawingTool(@drawing_tool_selector, {width: 600, height: 600})
+    @drawing_tool = new DrawingTool(@drawing_tool_selector, {
+      width: 600,
+      height: 600,
+      stamps: DRAWING_TOOL_STAMPS,
+      proxy: DRAWING_TOOL_PROXY
+    })
+
     # See: https://www.pivotaltracker.com/story/show/77973722
     @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
 
@@ -143,22 +177,13 @@ class ImageQuestionDrawingTool
     @$snapshot_button.hide()
 
   set_drawing_tool_background: ->
-    bg_src = @proxy_image_if_needed(@$image_url_field.val())
+    bg_src = @$image_url_field.val()
     # Sometimes background image can be undefined, e.g. for plain image questions.
     return unless bg_src
     @drawing_tool.setBackgroundImage(bg_src, 'shrinkBackgroundToCanvas', =>
       # Don't let users undo background setting.
       @drawing_tool.resetHistory()
     )
-
-  proxy_image_if_needed: (url) ->
-    # "Free" URI parser in JS.
-    parser = document.createElement('a')
-    parser.href = url
-    # Note that <a> element will set .hostname to correct value if we provide
-    # relative path like '/resources/image.jgp'.
-    return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
-    return url
 
   show_saved: ->
     @saveTimer = setTimeout ->
