@@ -23,6 +23,8 @@ class IFrameSaver
     @$delete_button.click () =>
       @delete_data()
     @$delete_button.hide()
+    @should_show_delete = null
+    @has_saved_state = false
 
     @save_indicator = SaveIndicator.instance()
 
@@ -48,10 +50,19 @@ class IFrameSaver
           500
       @iframePhone.addListener 'getAuthInfo', =>
         @iframePhone.post('authInfo', { provider: @auth_provider, loggedIn: @logged_in })
+      @iframePhone.addListener 'extendedSupport', (opts)=>
+        if opts.reset?
+          @should_show_delete = opts.reset
+          if @has_saved_state
+            if @should_show_delete
+              @$delete_button.show()
+            else
+              @$delete_button.hide()
 
       if @put_url
         #Save interactive every 42 seconds just to be safe:
         window.setInterval (()=> @save()), 42 * 1000
+      @iframePhone.post('getExtendedSupport')
       @iframePhone.post('getLearnerUrl')
       # TODO: There used to be a callback for model_did_load
       # hopefully this will work
@@ -115,8 +126,9 @@ class IFrameSaver
         if response['raw_data']
           interactive = JSON.parse(response['raw_data'])
           if interactive
+            @has_saved_state = true
             @iframePhone.post({ type:'loadInteractive', content:interactive  })
-            @$delete_button.show()
+            @$delete_button.show() if @should_show_delete == null or @should_show_delete
 
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
