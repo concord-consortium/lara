@@ -13,30 +13,33 @@
               - activity = las.lightweight_activity
               %li.activity{ :class => @activity == activity ? %w(active on) : '' }
                 .activity-list-head.open-close
-                  = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity)
+                  = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity, :show_index => true)
                   %span
                     %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
                 %ol.pages.in-sequence
                   = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
           - else
             %li.activity.active
-              = link_to "#{@activity.name}", runnable_activity_path(@activity)
+              = link_to "#{@activity.name}", runnable_activity_path(@activity, :show_index => true)
               %ol.pages.in-activity
                 = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
-      %td.activity-nav-title
+      -# max-width is only temporal, see javascript block below. We have to make sure that pagination block isn't too narrow.
+      -# 500px ensures that pages list won't have any line breaks unless it really should (more than 9 pages). JS block will
+      -# set it to more precise / optimal value.
+      %td.activity-nav-title{:style => 'max-width: 500px;'}
         = activity_name_for_menu
       %td.activity-nav.ui-block-2
 
         .pages
-          %ul.pagination
-            %li.pagination-item
+          .pagination
+            .pagination-item
               - classes = @page.blank? ? 'pagination-link selected' : 'pagination-link'
-              %a{:href=> runnable_activity_path(@activity),:class => classes}
+              %a{:href=> runnable_activity_path(@activity, :show_index => true),:class => classes}
                 %i.fa.fa-home
             - page_counter = 1
             - @activity.pages.each do |p|
-              %li.pagination-item
+              .pagination-item
                 - classes = 'pagination-link'
                 - if @page
                   - classes << ' selected' if p == @page
@@ -56,4 +59,11 @@
                 %i.fa.fa-arrow-left
               %a{ :class => next_classes, :href => next_href }
                 %i.fa.fa-arrow-right
-            
+
+:javascript
+  jQuery(function() {
+    var rowWidth = jQuery('.l-nav').outerWidth();
+    var menuWidth = jQuery('.nav-menu').outerWidth(true);
+    var paginationWidth = jQuery('.pagination').outerWidth(true);
+    jQuery('.activity-nav-title').css('max-width', rowWidth - menuWidth - paginationWidth - 20);
+  });

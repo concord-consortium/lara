@@ -34,6 +34,8 @@ module InteractiveRunHelper
     if (run)
       data['puturl'] = put_url(interactive,run)
       data['geturl'] = get_url(interactive,run)
+      data['loggedin'] = (!!run.user).to_s
+      data['authprovider'] = (Concord::AuthPortal.url_for_strategy_name(run.user.most_recent_authentication.provider) rescue nil) if data['loggedin']
     end
 
     opts = {

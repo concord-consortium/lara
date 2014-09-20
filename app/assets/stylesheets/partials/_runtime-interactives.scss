@@ -96,8 +96,6 @@
   @extend .mod-border-rounded;
 }
 
-
-
 // radio buttons
 .intro-mod,
 .content-mod {
@@ -107,6 +105,14 @@
   input {
     margin-right: 8px;
   }
+  // title
+  h4 {
+    margin-bottom: 20px;
+  }
+}
+
+.intro-txt {
+  margin-bottom: 15px;
 }
 
 // screen shot answer

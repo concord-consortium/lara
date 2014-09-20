@@ -61,6 +61,10 @@ module Concord
       return ExistingPortals[name] || self.make_for_name(name)
     end
 
+    def self.url_for_strategy_name(name)
+      self.all.values.detect{|v| v.strategy_name == name}.url rescue nil
+    end
+
     def self.default
       return self.for_portal_name(configured_portal_names.first)
     end

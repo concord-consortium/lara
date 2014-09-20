@@ -19,10 +19,17 @@ class LightweightActivitiesController < ApplicationController
   def show
     authorize! :read, @activity
     if params[:response_key]
-      redirect_to activity_path(@activity) and return
+      redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
+      redirect_to activity_path(@activity, request.query_parameters) and return
     end
     @run.increment_run_count!
     setup_show
+    unless params[:show_index]
+      if @run && @run.last_page && @activity
+        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run)
+        return
+      end
+    end
   end
 
   def preview
