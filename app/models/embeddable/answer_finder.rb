@@ -25,6 +25,8 @@ module Embeddable
         return Embeddable::ImageQuestionAnswer
       when Embeddable::MultipleChoice
         return Embeddable::MultipleChoiceAnswer
+      when MwInteractive
+        return InteractiveRunState
       end
       return nil
     end

@@ -35,6 +35,9 @@ class LightweightActivity < ActiveRecord::Base
           q << e
         end
       end
+      p.interactives.each do |i|
+        q << i if i.respond_to?('save_state') && i.save_state
+      end
     end
     return q
   end

@@ -50,4 +50,12 @@ class MwInteractive < ActiveRecord::Base
     return new_interactive
     # N.B. the duplicate hasn't been saved yet
   end
+
+  def storage_key
+    if name.present?
+      "#{interactive_page.lightweight_activity.id}_#{interactive_page.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}_#{name.downcase.gsub(/ /, '_')}"
+    else
+      "#{interactive_page.lightweight_activity.id}_#{interactive_page.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
+    end
+  end
 end
