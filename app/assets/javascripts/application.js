@@ -12,6 +12,7 @@
 //
 // N.B. will need to load specific jquery-ui modules for production
 //= require jquery
+//= require jquery-ajax-csrf
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery_nested_form
