@@ -41,8 +41,9 @@ module Concord
     end
 
     def self.portal_for_url(url)
+      trimmed_url = url.end_with?('/') ? url.chop : nil
       self.all.each_pair do |name,portal|
-        return portal if url == portal.url
+        return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
       end
       return nil # we couldn't find one.
     end
