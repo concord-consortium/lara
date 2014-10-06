@@ -36,6 +36,16 @@ describe Embeddable::OpenResponseAnswer do
     end
   end
 
+  describe '#copy_answer!' do
+    let(:another_answer) { FactoryGirl.create(:or_answer, :answer_text => "the answer", :is_final => true) }
+
+    it "should copy basic attributes that can be modified by student" do
+      answer.copy_answer!(another_answer)
+      answer.answer_text.should == another_answer.answer_text
+      answer.is_final.should == another_answer.is_final
+    end
+  end
+
   describe "delegated methods" do
     describe "prompt" do
       it "should delegate to question" do

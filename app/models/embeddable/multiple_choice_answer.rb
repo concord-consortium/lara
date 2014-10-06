@@ -33,6 +33,13 @@ module Embeddable
       self.answers.map { |a| a.choice }
     end
 
+    def copy_answer!(another_answer)
+      self.transaction do
+        self.answers = another_answer.answers
+        self.update_attributes!(is_final: another_answer.is_final)
+      end
+    end
+
     def portal_hash
       {
         "type"          => "multiple_choice",

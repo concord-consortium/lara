@@ -48,6 +48,20 @@ describe Embeddable::MultipleChoiceAnswer do
     end
   end
 
+  describe "#copy_answer!" do
+    let(:another_answer) do
+      FactoryGirl.create(:multiple_choice_answer,
+        :answers  => [a1],
+        :question => question
+      )
+    end
+
+    it "should copy basic attributes that can be modified by student" do
+      answer.copy_answer!(another_answer)
+      answer.answer_texts.should == another_answer.answer_texts
+    end
+  end
+
   describe '#update_from_form_params' do
     before(:each) do
       answer.answers = []

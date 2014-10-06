@@ -16,6 +16,13 @@ module Embeddable
       where(:open_response_id => q.id)
     end
 
+    def copy_answer!(another_answer)
+      self.update_attributes!(
+        answer_text: another_answer.answer_text,
+        is_final: another_answer.is_final
+      )
+    end
+
     def portal_hash
       {
         "type" => "open_response",

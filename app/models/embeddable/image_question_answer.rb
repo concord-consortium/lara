@@ -29,6 +29,17 @@ module Embeddable
       return true unless is_drawing?
       return !question.bg_url.blank?
     end
+
+    def copy_answer!(another_answer)
+      self.update_attributes!(
+        answer_text: another_answer.answer_text,
+        image_url: another_answer.image_url,
+        annotated_image_url: another_answer.annotated_image_url,
+        annotation: another_answer.annotation,
+        is_final: another_answer.is_final
+      )
+    end
+
     def portal_hash
       {
         "type" => "image_question",

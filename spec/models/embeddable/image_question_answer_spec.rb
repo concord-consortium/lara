@@ -68,6 +68,28 @@ describe Embeddable::ImageQuestionAnswer do
     end
   end
 
+  describe '#copy_answer!' do
+    let(:another_answer) do
+      FactoryGirl.create(:image_question_answer,
+        :answer_text => "a",
+        :image_url => "b",
+        :annotated_image_url => "c",
+        :annotation => "d",
+        :is_final => true
+      )
+    end
+
+    it "should copy basic attributes that can be modified by student" do
+      answer.copy_answer!(another_answer)
+      answer.answer_text.should == another_answer.answer_text
+      answer.image_url.should == another_answer.image_url
+      answer.annotated_image_url.should == another_answer.annotated_image_url
+      answer.annotation.should == another_answer.annotation
+      answer.is_final.should == another_answer.is_final
+    end
+  end
+
+
   describe "delegated methods" do
     before(:each) do
       @question = mock_model(Embeddable::ImageQuestion)
