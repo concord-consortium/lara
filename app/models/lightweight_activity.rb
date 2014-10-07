@@ -35,6 +35,9 @@ class LightweightActivity < ActiveRecord::Base
           q << e
         end
       end
+      p.interactives.each do |i|
+        q << i if i.respond_to?('save_state') && i.save_state
+      end
     end
     return q
   end
@@ -117,7 +120,7 @@ class LightweightActivity < ActiveRecord::Base
     pages = []
     self.pages.each do |page|
       elements = []
-      page.embeddables.each do |embeddable|
+      (page.embeddables + page.interactives).each do |embeddable|
         case embeddable
           # Why aren't we using the to_hash methods for each embeddable here?
           # Probably because they don't include the "type" attribute
@@ -153,6 +156,13 @@ class LightweightActivity < ActiveRecord::Base
             "is_required" => embeddable.is_prediction
           }
           elements.push(mc_data)
+        when MwInteractive
+          if embeddable.save_state
+            iframe_data = embeddable.to_hash
+            iframe_data["type"] = 'iframe_interactive'
+            iframe_data["id"] = embeddable.id
+            elements.push(iframe_data)
+          end
         else
           # We don't support this embeddable type right now
         end
