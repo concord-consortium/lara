@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   # See https://www.pivotaltracker.com/story/show/52313089
   # Turned off 21Oct2013 - pjm
   # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-  #   
+  #
   # def not_found(exception)
   #   ExceptionNotifier.notify_exception(exception,
   #     :env => request.env, :data => {:message => "raised a Not Found exception"})
@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
         @run.sequence = @sequence
         @run.save
       end
-    # Second, if there's no sequence ID in the request params, there's an existing 
+    # Second, if there's no sequence ID in the request params, there's an existing
     # run, and a sequence is set for that run, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
@@ -158,9 +158,21 @@ class ApplicationController < ActionController::Base
       update_portal_session
     end
 
-    # FIXME this will create a run even if update_portal_session causes a redirect
-    # This creates a new key if one didn't exist before
-    @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+    if params[:collaboration_endpoint_url]
+      endpoint_url = params[:collaboration_endpoint_url]
+      unless CollaborationRun.already_created?(endpoint_url)
+        cc = CreateCollaboration.new(endpoint_url, current_user, @activity)
+        collab_run = cc.call
+      else
+        collab_run = CollaborationRun.lookup(endpoint_url)
+      end
+      @run = collab_run.owners_run(@activity)
+    else
+      # FIXME this will create a run even if update_portal_session causes a redirect
+      # This creates a new key if one didn't exist before
+      @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+    end
+
     @sequence_run = @run.sequence_run if @run.sequence_run
     set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
   end
