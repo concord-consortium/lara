@@ -1,9 +1,11 @@
 module Embeddable::Answer
   def self.included base
     base.instance_eval do
+      delegate :user,                     :to => :run, :allow_nil => true
+      delegate :collaboration_run,        :to => :run, :allow_nil => true
       delegate :name,                     :to => :question
       delegate :prompt,                   :to => :question
-      delegate :is_prediction,            :to  => :question
+      delegate :is_prediction,            :to => :question
       delegate :give_prediction_feedback, :to => :question
       delegate :prediction_feedback,      :to => :question
       def self.by_run(r)
@@ -51,6 +53,19 @@ module Embeddable::Answer
       mark_dirty
       run.queue_for_portal(self, auth_key)
     end
+  end
+
+  def propagate_to_collaborators
+    # Propagate answer only when an owner of the collaboration updates his answer.
+    # Otherwise we would end up with an infinite cycle.
+    if collaboration_run && collaboration_run.is_owner?(user)
+      collaboration_run.propagate_answer(self)
+    end
+  end
+
+  # Overwrite this method in class that includes this module.
+  def copy_answer!(another_answer)
+    raise "#copy_answer! unimplemented for a given type of answer"
   end
 
   def to_json

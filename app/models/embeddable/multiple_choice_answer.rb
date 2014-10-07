@@ -21,8 +21,8 @@ module Embeddable
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
 
-
     after_update :send_to_portal
+    after_update :propagate_to_collaborators
 
     def self.by_question(q)
       where(:multiple_choice_id => q.id)

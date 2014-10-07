@@ -16,6 +16,7 @@ module Embeddable
     delegate :is_drawing?,    :to => :question
 
     after_update :send_to_portal
+    after_update :propagate_to_collaborators
 
     def self.by_question(q)
       where(:image_question_id => q.id)
