@@ -21,6 +21,7 @@
 #official_listing_heading.pagination_heading
   %h1 Activity Sequences:
   = page_entries_info @sequences, :model => "Sequences"
+  = t(:COLLECTION_SORT_ORDER)
   .pagination_info
     = will_paginate @sequences
   %ul.quiet_list.official_listing
