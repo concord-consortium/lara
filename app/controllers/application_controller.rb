@@ -1,4 +1,9 @@
+# Used to compare old browsers using useragent gem. 
+# see reject_old_browsers method
+BrowserSpecificiation = Struct.new(:browser, :version)
+
 class ApplicationController < ActionController::Base
+
   # Run authorization on all actions
   # check_authorization
   protect_from_forgery
@@ -7,6 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name), :alert => exception.message
   end
+  before_filter :reject_old_browsers
   before_filter :set_locale
 
   # Try to set local from the request headers
@@ -196,6 +202,16 @@ class ApplicationController < ActionController::Base
         format.html { render action: "edit" }
         format.json { render json: subject.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def reject_old_browsers
+    user_agent = UserAgent.parse(request.user_agent)
+    min_browser = BrowserSpecificiation.new("Internet Explorer", "9.0")
+    if user_agent < min_browser
+      @wide_content_layout = true
+      @user_agent = user_agent
+      render 'home/bad_browser'
     end
   end
 end

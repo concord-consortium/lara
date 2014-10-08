@@ -57,6 +57,9 @@ gem "safe_yaml", "~> 0.9.5"
 # Paginate activities on activities page.
 gem 'will_paginate', '~> 3.0'
 
+# detect browser types
+gem 'useragent'
+
 group :production do
   gem 'therubyracer'
 end
