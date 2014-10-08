@@ -22,9 +22,9 @@
   %h1 Activity Sequences:
   = page_entries_info @sequences, :model => "Sequences"
   .pagination_info
-    = will_paginate @official_activities
+    = will_paginate @sequences
   %ul.quiet_list.official_listing
     - @sequences.each do |sequence|
       = render :partial => "index_item", :locals => {:sequence => sequence}
   .pagination_info
-    = will_paginate @official_activities
+    = will_paginate @sequences
