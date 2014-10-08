@@ -169,6 +169,9 @@ class SequencesController < ApplicationController
       else
         portal = RemotePortal.new(params)
         @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+        # Disable collaboration as sequence is ran individually.
+        # FIXME this should be cleaner and easier.
+        @sequence_run.runs.select { |r| r.collaboration_run }.each { |r| r.collaboration_run.disable }
       end
     else
       # Force re-authentication with a portal if there is portal info in params

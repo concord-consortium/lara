@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
     end
 
     # FIXME this will create a run even if update_portal_session causes a redirect
-    # FIXME^2 this will create two collaboration runs, what's even wrose as time consuming
+    # FIXME this will create two collaboration runs, what's even worse as time consuming
 
     # Special case when collaboration_endpoint_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
@@ -170,6 +170,9 @@ class ApplicationController < ActionController::Base
       portal = RemotePortal.new(params)
       # This creates a new key if one didn't exist before
       @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+      # This time an activity is ran individually, remove reference to collaboration run.
+      # TODO clean it, the logic here is totally unclear because this filter is ran X times.
+      @run.collaboration_run.disable if portal.valid? && @run.collaboration_run
     end
     @sequence_run = @run.sequence_run if @run.sequence_run
     # This is redundant but necessary if the first pass through set_response_key returned nil
