@@ -157,13 +157,19 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    portal = RemotePortal.new(params)
-    
-    # we verify that the user exists after did_reauthenticate.
+    # We verify that the user exists after did_reauthenticate.
     # there have been instances where the session kept :did_reauthenticate without
-    # having a valid user.  In that case, we shoudl re-auth agian.
-    if (session.delete(:did_reauthenticate) && current_user)
-      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+    # having a valid user. In that case, we shoudl re-auth agian.
+    if session.delete(:did_reauthenticate) && current_user
+      # Special case when collaboration_endpoint_url is provided (usually as a GET param).
+      # New collaboration will be created and setup and call finally returns collaboration owner
+      if params[:collaboration_endpoint_url]
+        cc = CreateCollaboration.new(params[:collaboration_endpoint_url], current_user, @activity)
+        @sequence_run = cc.call
+      else
+        portal = RemotePortal.new(params)
+        @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+      end
     else
       # Force re-authentication with a portal if there is portal info in params
       # If there is no portal info, then we just assume there is no sequence run.

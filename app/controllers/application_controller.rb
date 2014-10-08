@@ -153,28 +153,27 @@ class ApplicationController < ActionController::Base
 
   def set_run_key
     update_response_key
-    portal = RemotePortal.new(params)
+
     unless session.delete(:did_reauthenticate)
       update_portal_session
     end
 
+    # FIXME this will create a run even if update_portal_session causes a redirect
+    # FIXME^2 this will create two collaboration runs, what's even wrose as time consuming
+
+    # Special case when collaboration_endpoint_url is provided (usually as a GET param).
+    # New collaboration will be created and setup and call finally returns collaboration owner
     if params[:collaboration_endpoint_url]
-      endpoint_url = params[:collaboration_endpoint_url]
-      unless CollaborationRun.already_created?(endpoint_url)
-        cc = CreateCollaboration.new(endpoint_url, current_user, @activity)
-        collab_run = cc.call
-      else
-        collab_run = CollaborationRun.lookup(endpoint_url)
-      end
-      @run = collab_run.owners_run(@activity)
+      cc = CreateCollaboration.new(params[:collaboration_endpoint_url], current_user, @activity)
+      @run = cc.call
     else
-      # FIXME this will create a run even if update_portal_session causes a redirect
+      portal = RemotePortal.new(params)
       # This creates a new key if one didn't exist before
       @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
     end
-
     @sequence_run = @run.sequence_run if @run.sequence_run
-    set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
+    # This is redundant but necessary if the first pass through set_response_key returned nil
+    set_response_key(@run.key)
   end
 
   # override devise's built in method so we can go back to the path

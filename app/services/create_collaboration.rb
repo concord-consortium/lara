@@ -1,28 +1,36 @@
 class CreateCollaboration
+  # Output, these variables are initialized after successful call.
+  attr_reader :collaboration_run, :owners_run, :owners_sequence_run
 
   def initialize(collaboration_endpoint_url, user, material)
     @collaboration_endpoint_url = collaboration_endpoint_url
-    @user = user
+    @owner = user
     @activity = material.is_a?(LightweightActivity) ? material : nil
     @sequence = material.is_a?(Sequence) ? material : nil
+    # Output.
+    @collaboration_run = nil
+    @owners_run = nil
+    @owners_sequence_run = nil
   end
 
+  # Setups collaboration and returns run or sequence run (depending on provided material type).
   def call
     ActiveRecord::Base.transaction do
       @collaboration_run = CollaborationRun.create!(
-        user: @user,
+        user: @owner,
         collaboration_endpoint_url: @collaboration_endpoint_url
       )
       collaborators = get_collaborators_data
       process_collaborators_data(collaborators)
     end
-    @collaboration_run
+    # Return run or sequence run that belongs to the collaboration owner.
+    @owners_sequence_run || @owners_run
   end
 
   private
 
   def bearer_token
-    'Bearer %s' % @user.authentication_token
+    'Bearer %s' % @owner.authentication_token
   end
 
   def get_collaborators_data
@@ -78,11 +86,15 @@ class CreateCollaboration
     # for_user_and_portal is in fact lookup_or_create
     run = Run.for_user_and_portal(user, @activity, portal_endpoint)
     @collaboration_run.runs.push(run)
+    # Save run that belongs to the collaboration owner.
+    @owners_run = run if user == @owner
   end
 
   def add_sequence_runs(user, portal_endpoint)
     sequence_run = SequenceRun.lookup_or_create(@sequence, user, portal_endpoint)
     @collaboration_run.runs.push(*sequence_run.runs)
+    # Save sequence run that belongs to the collaboration owner.
+    @owners_sequence_run = sequence_run if user == @owner
   end
 
 end
