@@ -18,15 +18,25 @@
       %button=t("NEW_ACTIVITY_BUTTON")
 
 - if @official_activities.size > 0
-  #official_listing_heading
-    %h1 Activities:
-  %ul.quiet_list.official_listing
-    - @official_activities.each do |activity|
-      =render :partial => "index_item", :locals => {:activity => activity}
+  #official_listing_heading.pagination_heading
+    %h1 Official Activities:
+    = page_entries_info @official_activities, :model => "Activities"
+    .pagination_info
+      = will_paginate @official_activities, :param_name => 'official_page_number'
+    %ul.quiet_list.official_listing
+      - @official_activities.each do |activity|
+        =render :partial => "index_item", :locals => {:activity => activity}
+    .pagination_info
+      = will_paginate @official_activities, :param_name => 'official_page_number'
 
 - if @community_activities.size > 0
-  #community_listing_heading
+  #community_listing_heading.pagination_heading
     %h1 Community activities:
-  %ul.quiet_list.community_listing
-    - @community_activities.each do |activity|
-      =render :partial => "index_item", :locals => {:activity => activity}
+    = page_entries_info @community_activities, :model => "Activities"
+    .pagination_info
+      = will_paginate @community_activities, :param_name => 'community_page_number'
+    %ul.quiet_list.community_listing
+      - @community_activities.each do |activity|
+        =render :partial => "index_item", :locals => {:activity => activity}
+    .pagination_info
+      = will_paginate @official_activities, :param_name => 'official_page_number'
