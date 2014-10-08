@@ -16,6 +16,8 @@ class Run < ActiveRecord::Base
 
   belongs_to :sequence_run # optional
 
+  belongs_to :collaboration_run # optional
+
   has_many :multiple_choice_answers,
     :class_name  => 'Embeddable::MultipleChoiceAnswer',
     :foreign_key => 'run_id',

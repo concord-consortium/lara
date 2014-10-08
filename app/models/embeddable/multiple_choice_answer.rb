@@ -21,8 +21,8 @@ module Embeddable
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
 
-
     after_update :send_to_portal
+    after_update :propagate_to_collaborators
 
     def self.by_question(q)
       where(:multiple_choice_id => q.id)
@@ -31,6 +31,13 @@ module Embeddable
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
+    end
+
+    def copy_answer!(another_answer)
+      self.transaction do
+        self.answers = another_answer.answers
+        self.update_attributes!(is_final: another_answer.is_final)
+      end
     end
 
     def portal_hash

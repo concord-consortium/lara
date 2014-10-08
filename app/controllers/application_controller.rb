@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   # See https://www.pivotaltracker.com/story/show/52313089
   # Turned off 21Oct2013 - pjm
   # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-  #   
+  #
   # def not_found(exception)
   #   ExceptionNotifier.notify_exception(exception,
   #     :env => request.env, :data => {:message => "raised a Not Found exception"})
@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
         @run.sequence = @sequence
         @run.save
       end
-    # Second, if there's no sequence ID in the request params, there's an existing 
+    # Second, if there's no sequence ID in the request params, there's an existing
     # run, and a sequence is set for that run, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
@@ -159,16 +159,30 @@ class ApplicationController < ActionController::Base
 
   def set_run_key
     update_response_key
-    portal = RemotePortal.new(params)
+
     unless session.delete(:did_reauthenticate)
       update_portal_session
     end
 
     # FIXME this will create a run even if update_portal_session causes a redirect
-    # This creates a new key if one didn't exist before
-    @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+    # FIXME this will create two collaboration runs, what's even worse as time consuming
+
+    # Special case when collaboration_endpoint_url is provided (usually as a GET param).
+    # New collaboration will be created and setup and call finally returns collaboration owner
+    if params[:collaboration_endpoint_url]
+      cc = CreateCollaboration.new(params[:collaboration_endpoint_url], current_user, @activity)
+      @run = cc.call
+    else
+      portal = RemotePortal.new(params)
+      # This creates a new key if one didn't exist before
+      @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+      # This time an activity is ran individually, remove reference to collaboration run.
+      # TODO clean it, the logic here is totally unclear because this filter is ran X times.
+      @run.collaboration_run.disable if portal.valid? && @run.collaboration_run
+    end
     @sequence_run = @run.sequence_run if @run.sequence_run
-    set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
+    # This is redundant but necessary if the first pass through set_response_key returned nil
+    set_response_key(@run.key)
   end
 
   # override devise's built in method so we can go back to the path
