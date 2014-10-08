@@ -1,19 +1,21 @@
 require 'spec_helper'
+require 'will_paginate/array'
 
 describe "sequences/index" do
+
   before(:each) do
-    assign(:sequences, [
-      stub_model(Sequence,
+    a = stub_model(Sequence,
         :title => "Title",
         :description => "MyText",
         :updated_at => "2013-06-19 19:32:33"
-      ),
-      stub_model(Sequence,
+      )
+    b = stub_model(Sequence,
         :title => "Title",
         :description => "MyText",
         :updated_at => "2013-06-19 19:32:34"
       )
-    ])
+    sequences = [a,b].paginate()
+    assign(:sequences,sequences)
   end
 
   it "renders a list of sequences" do

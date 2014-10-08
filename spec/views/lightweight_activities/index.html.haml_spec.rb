@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'will_paginate/array'
 
 def have_community_listing_section
   have_css "#community_listing_heading"
@@ -52,9 +53,9 @@ describe "lightweight_activities/index" do
     view.stub!(:current_user).and_return(user)
     view.stub!(:can?).and_return(true)     # stub-out can-can features
     view.stub!(:cannot?).and_return(false) # stub-out can-can features
-    assign(:activities, activities)
-    assign(:official_activities, official)
-    assign(:community_activities, community)
+    assign(:activities, activities.paginate())
+    assign(:official_activities, official.paginate())
+    assign(:community_activities, community.paginate)
   end
 
   describe "with official activities" do
