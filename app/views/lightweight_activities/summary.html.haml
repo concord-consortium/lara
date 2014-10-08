@@ -7,13 +7,13 @@
   %h2.h2= @activity.name
   - if @sequence
     %h3= "in #{@sequence.title}"
-  - @answers.each do |answer|
+  - @answers.each_with_index do |answer,index|
+    .prompt
+      %span.number= "#{index +1}: "
+      %span.text
+        = Nokogiri::HTML(answer.prompt).text
     = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
-      :locals => {:answer => answer}
-
-  -# .actions.bottom
-    -# .print{ :onclick => 'window.print();'} Print
-    -# .close{ :onclick => 'window.close();'} Close
+      :locals => {:answer => answer, :index => index}
 
 .summary-actions
   .print{ :onclick => 'window.print();'} Print
