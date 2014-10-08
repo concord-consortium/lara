@@ -23,7 +23,7 @@ class LightweightActivity < ActiveRecord::Base
 
   # Just a way of getting self.pages with the embeddables eager-loaded
   def pages_with_embeddables
-    return InteractivePage.includes(:page_items => :embeddable).where(:lightweight_activity_id => self.id)
+    return InteractivePage.includes(:interactive_items, :page_items => :embeddable).where(:lightweight_activity_id => self.id)
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
