@@ -38,6 +38,16 @@ describe Embeddable::MultipleChoiceAnswersController do
           assert_requested :post, endpoint
         end
       end
+
+      describe "missing params" do
+        it "shouldn't throw an error" do
+          post "update", :id => answer.id
+        end
+        it "should create an admin event" do
+          AdminEvent.should_receive(:create).and_return(true)
+          post "update", :id => answer.id
+        end
+      end
     end
 
     describe "with a run without a remote endpoint (not run from portal)" do

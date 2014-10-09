@@ -57,7 +57,7 @@ module Embeddable
       elsif params && !params[:answers].blank?
         params[:answers] = [Embeddable::MultipleChoiceChoice.find(params[:answers])]
       else
-        params[:answers] = []
+        params[:answers] = [] if params # Silence errors about this, we catch them in the controller now
       end
       return self.update_attributes(params)
     end
