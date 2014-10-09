@@ -162,22 +162,20 @@ class SequencesController < ApplicationController
     # having a valid user. In that case, we shoudl re-auth agian.
     if session.delete(:did_reauthenticate) && current_user
       # Special case when collaboration_endpoint_url is provided (usually as a GET param).
-      # New collaboration will be created and setup and call finally returns collaboration owner
-      if params[:collaboration_endpoint_url]
-        cc = CreateCollaboration.new(params[:collaboration_endpoint_url], current_user, @activity)
+      if params[:collaboration_endpoint_url] && params[:domain]
+        cc = CreateCollaboration.new(params[:collaboration_endpoint_url], params[:domain], current_user, @sequence)
         @sequence_run = cc.call
       else
         portal = RemotePortal.new(params)
         @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
-        # Disable collaboration as sequence is ran individually.
-        # FIXME this should be cleaner and easier.
-        @sequence_run.runs.select { |r| r.collaboration_run }.each { |r| r.collaboration_run.disable }
+        # If sequence is ran with "portal" params, it means that user wants to run it individually.
+        # Note that "portal" refers to individual student data endpoint, this name should be updated.
+        @sequence_run.disable_collaboration if portal.valid?
       end
-    else
+    elsif params[:domain]
       # Force re-authentication with a portal if there is portal info in params
       # If there is no portal info, then we just assume there is no sequence run.
-      # NOTE: :did_reauthenticate has been removed above.
-      update_portal_session
+      update_portal_session(params[:domain])
     end
     # This creates a new sequence_run if it doesn't exist.
   end

@@ -1,4 +1,4 @@
-# Used to compare old browsers using useragent gem. 
+# Used to compare old browsers using useragent gem.
 # see reject_old_browsers method
 BrowserSpecificiation = Struct.new(:browser, :version)
 
@@ -116,20 +116,18 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def update_portal_session
-    if params[:domain] && params[:externalId] && !session[:did_reauthenticate]
-      sign_out(current_user)
+  def update_portal_session(domain)
+    sign_out(current_user)
 
-      # the sign out creates a new session, so we need to set this after
-      # signout. This way when we are called back this session info will be available
-      session[:did_reauthenticate] = true
+    # the sign out creates a new session, so we need to set this after
+    # signout. This way when we are called back this session info will be available
+    session[:did_reauthenticate] = true
 
-      # we set the origin here which will become request.env['omniauth.origin']
-      # in the callback phase, by default omniauth will use use
-      # the referer and that is not changed during redirects. More info:
-      # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-      redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(params[:domain]), :origin => request.url)
-    end
+    # we set the origin here which will become request.env['omniauth.origin']
+    # in the callback phase, by default omniauth will use use
+    # the referer and that is not changed during redirects. More info:
+    # https://github.com/intridea/omniauth/wiki/Saving-User-Location
+    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(domain), :origin => request.url)
   end
 
   def clear_session_response_key
@@ -160,26 +158,24 @@ class ApplicationController < ActionController::Base
   def set_run_key
     update_response_key
 
-    unless session.delete(:did_reauthenticate)
-      update_portal_session
+    if params[:domain] && !session.delete(:did_reauthenticate)
+      update_portal_session(params[:domain]) and return
     end
-
-    # FIXME this will create a run even if update_portal_session causes a redirect
-    # FIXME this will create two collaboration runs, what's even worse as time consuming
 
     # Special case when collaboration_endpoint_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
-    if params[:collaboration_endpoint_url]
-      cc = CreateCollaboration.new(params[:collaboration_endpoint_url], current_user, @activity)
+    if params[:collaboration_endpoint_url] && params[:domain]
+      cc = CreateCollaboration.new(params[:collaboration_endpoint_url], params[:domain], current_user, @activity)
       @run = cc.call
     else
       portal = RemotePortal.new(params)
       # This creates a new key if one didn't exist before
       @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
-      # This time an activity is ran individually, remove reference to collaboration run.
-      # TODO clean it, the logic here is totally unclear because this filter is ran X times.
-      @run.collaboration_run.disable if portal.valid? && @run.collaboration_run
+      # If activity is ran with "portal" params, it means that user wants to run it individually.
+      # Note that "portal" refers to individual student data endpoint, this name should be updated.
+      @run.disable_collaboration if portal.valid?
     end
+
     @sequence_run = @run.sequence_run if @run.sequence_run
     # This is redundant but necessary if the first pass through set_response_key returned nil
     set_response_key(@run.key)

@@ -159,6 +159,10 @@ class Run < ActiveRecord::Base
     answers_hash.to_json
   end
 
+  def disable_collaboration
+    collaboration_run.disable if collaboration_run
+  end
+
   def oauth_token
     return user.authentication_token if user
     # TODO: throw "no oauth_token for runs without users"
