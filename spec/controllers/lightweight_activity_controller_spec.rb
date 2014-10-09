@@ -49,6 +49,38 @@ describe LightweightActivitiesController do
       assigns(:theme).should_not be_nil
     end
 
+
+    describe "when the run has a page" do
+      let(:seq)     { nil }
+      let(:seq_run) { nil }
+      let(:run) do
+        mock_model(Run, {
+          :last_page => page,
+          :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
+          :sequence => seq,
+          :sequence_run => seq_run,
+          :increment_run_count! => nil
+        })
+      end
+      before(:each) do
+        Run.stub!(:lookup).and_return(run)
+      end
+      subject { get :show, :id => act.id}
+      it "should redirect to the run page" do
+        # page_with_response_path(@activity.id, @run.last_page.id, @run)
+        subject.should redirect_to(page_with_response_path(act.id, page.id, run.key))
+      end
+      
+      describe "when the run page is for a different activity" do
+        let(:other_act) { FactoryGirl.create(:public_activity) }
+        let(:page)      { other_act.pages.create!(:name => "Page 2", :text => "This page isn't in Act 1.") }
+        subject { get :show, :id => act.id}
+        it "should redirect to Act 2 run page." do
+          subject.should redirect_to(page_with_response_path(other_act.id, page.id, run.key))
+        end
+      end
+    end
+
     describe 'when it is part of a sequence' do
       before(:each) do
         # Add the activity to the sequence
