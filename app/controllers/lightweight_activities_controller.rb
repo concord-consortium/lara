@@ -28,7 +28,14 @@ class LightweightActivitiesController < ApplicationController
     setup_show
     unless params[:show_index]
       if @run && @run.last_page && @activity
-        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run)
+        # TODO: If the Page isn't in this activity... Then we need to log that as an error, 
+        # and do the best we can to get back to the right page...
+        if @activity != @run.last_page.lightweight_activity
+          Rails.logger.error("Page has wrong activity or vice versa")
+          Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
+          @activity = @run.last_page.lightweight_activity
+        end
+        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key)
         return
       end
     end
