@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141007022617) do
+ActiveRecord::Schema.define(:version => 20141009150037) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -28,12 +28,12 @@ ActiveRecord::Schema.define(:version => 20141007022617) do
 
   create_table "collaboration_runs", :force => true do |t|
     t.integer  "user_id"
-    t.string   "collaboration_endpoint_url"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.string   "collaborators_data_url"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
-  add_index "collaboration_runs", ["collaboration_endpoint_url"], :name => "collaboration_runs_endpoint_idx"
+  add_index "collaboration_runs", ["collaborators_data_url"], :name => "collaboration_runs_endpoint_idx"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false

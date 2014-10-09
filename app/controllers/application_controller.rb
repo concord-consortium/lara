@@ -162,10 +162,10 @@ class ApplicationController < ActionController::Base
       update_portal_session(params[:domain]) and return
     end
 
-    # Special case when collaboration_endpoint_url is provided (usually as a GET param).
+    # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
-    if params[:collaboration_endpoint_url] && params[:domain]
-      cc = CreateCollaboration.new(params[:collaboration_endpoint_url], params[:domain], current_user, @activity)
+    if params[:collaborators_data_url] && params[:domain]
+      cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @activity)
       @run = cc.call
     else
       portal = RemotePortal.new(params)

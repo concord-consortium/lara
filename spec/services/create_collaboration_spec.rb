@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CreateCollaboration do
   let(:user) { FactoryGirl.create(:user) }
-  let(:collaboration_endpoint_url) { "http://portal.org/collaborations/123" }
+  let(:collaborators_data_url) { "http://portal.org/collaborations/123" }
   let(:domain) { 'http://portal.org/' }
   let(:collaboration_params) do
     [
@@ -24,7 +24,7 @@ describe CreateCollaboration do
   end
 
   before(:each) do
-    stub_request(:get, collaboration_endpoint_url).to_return(
+    stub_request(:get, collaborators_data_url).to_return(
       :status => 200,
       :body => collaboration_params.to_json, :headers => {}
     )
@@ -36,7 +36,7 @@ describe CreateCollaboration do
     let(:material) { FactoryGirl.create(:activity) }
 
     before(:each) do
-      create_collaboration = CreateCollaboration.new(collaboration_endpoint_url, domain, user, material)
+      create_collaboration = CreateCollaboration.new(collaborators_data_url, domain, user, material)
       create_collaboration.call
     end
 

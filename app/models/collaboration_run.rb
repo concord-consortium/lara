@@ -1,18 +1,18 @@
 class CollaborationRun < ActiveRecord::Base
-  attr_accessible :user, :collaboration_endpoint_url, :runs
+  attr_accessible :user, :collaborators_data_url, :runs
 
   belongs_to :user
   has_many :runs
 
-  def self.already_created?(collaboration_endpoint_url)
-    # Collaboration endpoint URL is unambiguously defining collaboration run,
+  def self.already_created?(collaborators_data_url)
+    # Collaborators data endpoint URL is unambiguously defining collaboration run,
     # we don't need any other ID. It includes portal domain, collaboration
     # external ID and so on.
-    self.exists?(collaboration_endpoint_url: collaboration_endpoint_url)
+    self.exists?(collaborators_data_url: collaborators_data_url)
   end
 
-  def self.lookup(collaboration_endpoint_url)
-    self.where(collaboration_endpoint_url: collaboration_endpoint_url).first
+  def self.lookup(collaborators_data_url)
+    self.where(collaborators_data_url: collaborators_data_url).first
   end
 
   def is_owner?(_user)

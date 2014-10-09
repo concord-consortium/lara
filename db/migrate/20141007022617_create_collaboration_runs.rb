@@ -2,12 +2,12 @@ class CreateCollaborationRuns < ActiveRecord::Migration
   def up
     create_table :collaboration_runs do |t|
       t.integer :user_id
-      t.string :collaboration_endpoint_url
+      t.string :collaborators_data_url
       t.timestamps
     end
     add_column :runs, :collaboration_run_id, :integer
 
-    add_index :collaboration_runs, [:collaboration_endpoint_url], :name => 'collaboration_runs_endpoint_idx'
+    add_index :collaboration_runs, [:collaborators_data_url], :name => 'collaboration_runs_endpoint_idx'
     add_index :runs, [:collaboration_run_id], :name => 'runs_collaboration_idx'
     # Rename index, as its previous name is too long and causes errors during this migration rollback.
     remove_index :runs, [:user_id, :remote_id, :remote_endpoint]

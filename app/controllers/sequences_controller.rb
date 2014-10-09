@@ -161,9 +161,9 @@ class SequencesController < ApplicationController
     # there have been instances where the session kept :did_reauthenticate without
     # having a valid user. In that case, we shoudl re-auth agian.
     if session.delete(:did_reauthenticate) && current_user
-      # Special case when collaboration_endpoint_url is provided (usually as a GET param).
-      if params[:collaboration_endpoint_url] && params[:domain]
-        cc = CreateCollaboration.new(params[:collaboration_endpoint_url], params[:domain], current_user, @sequence)
+      # Special case when collaborators_data_url is provided (usually as a GET param).
+      if params[:collaborators_data_url] && params[:domain]
+        cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @sequence)
         @sequence_run = cc.call
       else
         portal = RemotePortal.new(params)

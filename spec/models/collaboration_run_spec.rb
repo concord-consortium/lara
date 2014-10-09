@@ -44,12 +44,12 @@ describe CollaborationRun do
   describe "class methods" do
     describe "#already_created?" do
       it "should return true if run already exists" do
-        CollaborationRun.already_created?(collaboration_run.collaboration_endpoint_url).should == true
+        CollaborationRun.already_created?(collaboration_run.collaborators_data_url).should == true
       end
     end
     describe "#lookup" do
       it "should return run using endpoint URL" do
-        CollaborationRun.lookup(collaboration_run.collaboration_endpoint_url).should == collaboration_run
+        CollaborationRun.lookup(collaboration_run.collaborators_data_url).should == collaboration_run
       end
     end
   end
