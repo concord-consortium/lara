@@ -2,9 +2,9 @@ class CreateCollaboration
   # Output, these variables are initialized after successful call.
   attr_reader :collaboration_run, :owners_run, :owners_sequence_run
 
-  def initialize(collaboration_endpoint_url, user, material)
+  def initialize(collaboration_endpoint_url, portal_domain, user, material)
     @collaboration_endpoint_url = collaboration_endpoint_url
-    @portal_domain = get_domain(collaboration_endpoint_url)
+    @portal_domain = portal_domain
     # Keep auth tokens for collaborations run separate (just in case).
     @auth_provider_name = Concord::AuthPortal.strategy_name_for_url(@portal_domain) + '_collaboration_run'
     @owner = user
@@ -31,13 +31,6 @@ class CreateCollaboration
   end
 
   private
-
-  def get_domain(url)
-    # This should match one of the domains specified in config/app_environment_variables.rb
-    u = URI.parse(url)
-    port = u.port != 80 && u.port != 443 ? ":#{u.port}" : ''
-    u.scheme + "://" + u.host + port + '/'
-  end
 
   def bearer_token
     'Bearer %s' % @owner.authentication_token

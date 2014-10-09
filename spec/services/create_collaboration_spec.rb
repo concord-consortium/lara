@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe CreateCollaboration do
-  let(:user)     { FactoryGirl.create(:user) }
-  let(:collaboration_endpoint_url) { "http://portal.concord.org/collaborations/123" }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:collaboration_endpoint_url) { "http://portal.org/collaborations/123" }
+  let(:domain) { 'http://portal.org/' }
   let(:collaboration_params) do
     [
       {
@@ -35,7 +36,7 @@ describe CreateCollaboration do
     let(:material) { FactoryGirl.create(:activity) }
 
     before(:each) do
-      create_collaboration = CreateCollaboration.new(collaboration_endpoint_url, user, material)
+      create_collaboration = CreateCollaboration.new(collaboration_endpoint_url, domain, user, material)
       create_collaboration.call
     end
 
