@@ -135,7 +135,10 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
+gem 'capistrano-autoscaling', '0.0.8', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+# gem 'capistrano-autoscaling', '0.0.8', :path => "/Users/npaessel/lab/cc/capistrano-autoscaling"
 
+# add some tools for 
 # Tools
 # Security scan
 gem 'brakeman', :require => false

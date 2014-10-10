@@ -118,5 +118,15 @@ To enque a job simply add `handle_asynchronously :method_name` to your models. e
 There are other methods for enqueing jobs, but this is probably the easiest.
 
 
+## Deploying with load balancing.
+
+If you are going to deploy to a server with load balancing enabled, see deploy/production.rb
+
+  1. uncomment the auto-scale callback
+  2. Read the documentation here: https://github.com/concord-consortium/capistrano-autoscaling/tree/concord
+  3. export your credentials using something: 
+  `export AWS_ACCESS_KEY_ID='xxxx'` and
+  `export AWS_SECRET_ACCESS_KEY='xxxx'`
+  
 ## History
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
