@@ -6,8 +6,8 @@ role :db, domain, :primary => true
 
 set(:autoscaling_instance_type, "c1.medium")
 set(:autoscaling_security_groups, %w(lara))
-set(:autoscaling_min_size, 1)
+set(:autoscaling_min_size, 2)
 set(:autoscaling_max_size, 10)
 set(:autoscaling_application, 'LaraProdLB')
 
-# after "deploy:restart", "autoscaling:update"
+after "deploy:restart", "autoscaling:update"
