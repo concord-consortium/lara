@@ -15,3 +15,14 @@ $c_c: #edaa3d;
     padding-top: 2px;
   }
 }
+
+.ui-dialog {
+  .ui-dialog-titlebar, .ui-dialog-title {
+    color: $c_b;
+    background-color: $c_b;
+    min-height: 2em;
+  }
+  .ui-dialog-title {
+    display: none;
+  }
+}
