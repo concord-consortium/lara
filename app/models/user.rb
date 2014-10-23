@@ -41,9 +41,13 @@ class User < ActiveRecord::Base
     auth = nil
     if provider
       auth = authentications.find_by_provider provider
-    end 
+    end
     auth ||= most_recent_authentication
     auth ? auth.token : nil
+  end
+
+  def self.get_random_password
+    Devise.friendly_token[0,20]
   end
 
   def self.find_for_concord_portal_oauth(auth, signed_in_resource=nil)
@@ -74,7 +78,7 @@ class User < ActiveRecord::Base
       # no user with this email, so make a new user with a random password
       user = User.create(
         email:    email,
-        password: Devise.friendly_token[0,20]
+        password: User.get_random_password
       )
     end
     # create new authentication for this user that we found or created

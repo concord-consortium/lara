@@ -2,6 +2,11 @@ require "bundler/capistrano"
 require "capistrano/ext/multistage"
 require "haml"
 require "delayed/recipes"
+
+# experimental: create autoscaling instances from EC2 instance
+require "capistrano-autoscaling"
+require 'capistrano/cowboy'
+
 load "config/deploy_extras/copy_activities.rb"
 
 set :application, "lightweight-standalone"
@@ -100,4 +105,14 @@ namespace :deploy do
                        :mode => 0644
     end
   end
+
+## Autoscale EC2 / AMI / ELB Config:
+set(:autoscaling_region, "us-east-1e")
+# set(:autoscaling_access_key_id, "PUTYOURAWSACCESSKEYIDHERE")
+# set(:autoscaling_secret_access_key, "PUTYOURAWSSECRETACCESSKEYHERE")
+set(:autoscaling_instance_type, "c1.medium")
+set(:autoscaling_security_groups, %w(lara))
+set(:autoscaling_min_size, 2)
+set(:autoscaling_max_size, 3)
+set(:autoscaling_application, 'LaraDevLB')
 end

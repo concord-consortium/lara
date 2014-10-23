@@ -8,7 +8,7 @@ class SequencesController < ApplicationController
   # GET /sequences.json
   def index
     @filter  = CollectionFilter.new(current_user, Sequence, params[:filter] || {})
-    @sequences = @filter.collection.includes(:user,:lightweight_activities)
+    @sequences = @filter.collection.includes(:user,:lightweight_activities).paginate(:page => params['page'], :per_page => 20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -157,18 +157,25 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    portal = RemotePortal.new(params)
-    
-    # we verify that the user exists after did_reauthenticate.
+    # We verify that the user exists after did_reauthenticate.
     # there have been instances where the session kept :did_reauthenticate without
-    # having a valid user.  In that case, we shoudl re-auth agian.
-    if (session.delete(:did_reauthenticate) && current_user)
-      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
-    else
+    # having a valid user. In that case, we shoudl re-auth agian.
+    if session.delete(:did_reauthenticate) && current_user
+      # Special case when collaborators_data_url is provided (usually as a GET param).
+      if params[:collaborators_data_url] && params[:domain]
+        cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @sequence)
+        @sequence_run = cc.call
+      else
+        portal = RemotePortal.new(params)
+        @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+        # If sequence is ran with "portal" params, it means that user wants to run it individually.
+        # Note that "portal" refers to individual student data endpoint, this name should be updated.
+        @sequence_run.disable_collaboration if portal.valid?
+      end
+    elsif params[:domain]
       # Force re-authentication with a portal if there is portal info in params
       # If there is no portal info, then we just assume there is no sequence run.
-      # NOTE: :did_reauthenticate has been removed above.
-      update_portal_session
+      update_portal_session(params[:domain])
     end
     # This creates a new sequence_run if it doesn't exist.
   end

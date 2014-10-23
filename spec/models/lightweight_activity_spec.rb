@@ -89,17 +89,21 @@ describe LightweightActivity do
   end
 
   context 'it has embeddables' do
+    let(:or1)       { FactoryGirl.create(:or_embeddable) }
+    let(:or2)       { FactoryGirl.create(:or_embeddable) }
+    let(:mc1)       { FactoryGirl.create(:mc_embeddable) }
+    let(:mc2)       { FactoryGirl.create(:mc_embeddable) }
+    let(:text_emb)  { FactoryGirl.create(:xhtml)         }
+    let(:questions) { [ or1, or2, mc1, mc2]              }
+
     before :each do
       [3,1,2].each do |i|
         page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
         activity.pages << page
       end
       activity.reload
-      or1 = FactoryGirl.create(:or_embeddable)
-      or2 = FactoryGirl.create(:or_embeddable)
-      mc1 = FactoryGirl.create(:mc_embeddable)
-      mc2 = FactoryGirl.create(:mc_embeddable)
       activity.pages.first.add_embeddable(mc1)
+      activity.pages.first.add_embeddable(text_emb)
       activity.pages.first.add_embeddable(or1)
       activity.pages[1].add_embeddable(mc2)
       activity.pages.last.add_embeddable(or2)
@@ -109,7 +113,8 @@ describe LightweightActivity do
     describe '#questions' do
       it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
         activity.questions.length.should be(4)
-        activity.questions.first.should be_kind_of Embeddable::MultipleChoice
+        activity.questions.each { |q| activity.questions.should include(q) }
+        activity.questions.should_not include(text_emb)
       end
     end
 

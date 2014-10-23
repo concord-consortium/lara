@@ -41,8 +41,9 @@ module Concord
     end
 
     def self.portal_for_url(url)
+      trimmed_url = url.end_with?('/') ? url.chop : nil
       self.all.each_pair do |name,portal|
-        return portal if url == portal.url
+        return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
       end
       return nil # we couldn't find one.
     end
@@ -57,6 +58,14 @@ module Concord
       end
       raise "Can't find a portal for #{url}"
     end
+
+    def self.secret_for_url(url)
+      if portal = self.portal_for_url(url)
+        return portal.secret
+      end
+      raise "Can't find a portal for #{url}"
+    end
+
     def self.for_portal_name(name)
       return ExistingPortals[name] || self.make_for_name(name)
     end

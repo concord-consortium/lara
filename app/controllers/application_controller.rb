@@ -1,4 +1,9 @@
+# Used to compare old browsers using useragent gem.
+# see reject_old_browsers method
+BrowserSpecificiation = Struct.new(:browser, :version)
+
 class ApplicationController < ActionController::Base
+
   # Run authorization on all actions
   # check_authorization
   protect_from_forgery
@@ -7,6 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name), :alert => exception.message
   end
+  before_filter :reject_old_browsers
   before_filter :set_locale
 
   # Try to set local from the request headers
@@ -40,7 +46,7 @@ class ApplicationController < ActionController::Base
   # See https://www.pivotaltracker.com/story/show/52313089
   # Turned off 21Oct2013 - pjm
   # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-  #   
+  #
   # def not_found(exception)
   #   ExceptionNotifier.notify_exception(exception,
   #     :env => request.env, :data => {:message => "raised a Not Found exception"})
@@ -100,7 +106,7 @@ class ApplicationController < ActionController::Base
         @run.sequence = @sequence
         @run.save
       end
-    # Second, if there's no sequence ID in the request params, there's an existing 
+    # Second, if there's no sequence ID in the request params, there's an existing
     # run, and a sequence is set for that run, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
@@ -110,20 +116,18 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def update_portal_session
-    if params[:domain] && params[:externalId] && !session[:did_reauthenticate]
-      sign_out(current_user)
+  def update_portal_session(domain)
+    sign_out(current_user)
 
-      # the sign out creates a new session, so we need to set this after
-      # signout. This way when we are called back this session info will be available
-      session[:did_reauthenticate] = true
+    # the sign out creates a new session, so we need to set this after
+    # signout. This way when we are called back this session info will be available
+    session[:did_reauthenticate] = true
 
-      # we set the origin here which will become request.env['omniauth.origin']
-      # in the callback phase, by default omniauth will use use
-      # the referer and that is not changed during redirects. More info:
-      # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-      redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(params[:domain]), :origin => request.url)
-    end
+    # we set the origin here which will become request.env['omniauth.origin']
+    # in the callback phase, by default omniauth will use use
+    # the referer and that is not changed during redirects. More info:
+    # https://github.com/intridea/omniauth/wiki/Saving-User-Location
+    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(domain), :origin => request.url)
   end
 
   def clear_session_response_key
@@ -153,16 +157,28 @@ class ApplicationController < ActionController::Base
 
   def set_run_key
     update_response_key
-    portal = RemotePortal.new(params)
-    unless session.delete(:did_reauthenticate)
-      update_portal_session
+
+    if params[:domain] && !session.delete(:did_reauthenticate)
+      update_portal_session(params[:domain]) and return
     end
 
-    # FIXME this will create a run even if update_portal_session causes a redirect
-    # This creates a new key if one didn't exist before
-    @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+    # Special case when collaborators_data_url is provided (usually as a GET param).
+    # New collaboration will be created and setup and call finally returns collaboration owner
+    if params[:collaborators_data_url] && params[:domain]
+      cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @activity)
+      @run = cc.call
+    else
+      portal = RemotePortal.new(params)
+      # This creates a new key if one didn't exist before
+      @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+      # If activity is ran with "portal" params, it means that user wants to run it individually.
+      # Note that "portal" refers to individual student data endpoint, this name should be updated.
+      @run.disable_collaboration if portal.valid?
+    end
+
     @sequence_run = @run.sequence_run if @run.sequence_run
-    set_response_key(@run.key) # This is redundant but necessary if the first pass through set_response_key returned nil
+    # This is redundant but necessary if the first pass through set_response_key returned nil
+    set_response_key(@run.key)
   end
 
   # override devise's built in method so we can go back to the path
@@ -196,6 +212,16 @@ class ApplicationController < ActionController::Base
         format.html { render action: "edit" }
         format.json { render json: subject.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def reject_old_browsers
+    user_agent = UserAgent.parse(request.user_agent)
+    min_browser = BrowserSpecificiation.new("Internet Explorer", "9.0")
+    if user_agent < min_browser
+      @wide_content_layout = true
+      @user_agent = user_agent
+      render 'home/bad_browser'
     end
   end
 end

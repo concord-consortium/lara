@@ -37,8 +37,10 @@ describe Embeddable::AnswerFinder do
         answer = finder.find_answer(open_response)
         answer.answer_text = "xyzzy"
         answer.save
+        run.reload
+        finder = Embeddable::AnswerFinder.new(run)
         answer2 = finder.find_answer(open_response)
-        answer.should == answer2
+        answer.id.should == answer2.id
         answer2.answer_text.should == "xyzzy"
       end
     end

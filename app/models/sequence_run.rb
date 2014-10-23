@@ -37,6 +37,14 @@ class SequenceRun < ActiveRecord::Base
     return a_position.nil? ? false : true
   end
 
+  def disable_collaboration
+    # In theory we could keep reference to collaboration run in sequence.
+    # However this approach seems to be more bulletproof, as it will definitely clear any possible
+    # collaboration (it's not likely, but it may happen that there are a few different collaborations
+    # related to different runs, not just single one).
+    runs.select { |r| r.collaboration_run }.each { |r| r.collaboration_run.disable }
+  end
+
   def make_or_update_runs
     sequence.activities.each do |activity|
       unless run_for_activity(activity)

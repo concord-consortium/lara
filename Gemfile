@@ -54,6 +54,12 @@ gem 'chosen-rails'
 # this is to fix a pulled version of safe_yaml (0.9.4)
 gem "safe_yaml", "~> 0.9.5"
 
+# Paginate activities on activities page.
+gem 'will_paginate', '~> 3.0'
+
+# detect browser types
+gem 'useragent'
+
 group :production do
   gem 'therubyracer'
 end
@@ -115,6 +121,7 @@ group :development do
   gem 'better_errors'
   gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
+  gem "rack-mini-profiler"
 end
 
 # To use ActiveModel has_secure_password
@@ -128,7 +135,10 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
+gem 'capistrano-autoscaling', '0.0.8', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+gem 'capistrano-cowboy'
 
+# add some tools for 
 # Tools
 # Security scan
 gem 'brakeman', :require => false

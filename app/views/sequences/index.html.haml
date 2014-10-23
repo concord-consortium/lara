@@ -18,8 +18,14 @@
     %a{ :href => new_sequence_path }
       %button=t("NEW_SEQUENCE_BUTTON")
 
-#official_listing_heading
+#official_listing_heading.pagination_heading
   %h1 Activity Sequences:
-%ul.quiet_list.official_listing
-  - @sequences.each do |sequence|
-    = render :partial => "index_item", :locals => {:sequence => sequence}
+  = page_entries_info @sequences, :model => "Sequences"
+  = t(:COLLECTION_SORT_ORDER)
+  .pagination_info
+    = will_paginate @sequences
+  %ul.quiet_list.official_listing
+    - @sequences.each do |sequence|
+      = render :partial => "index_item", :locals => {:sequence => sequence}
+  .pagination_info
+    = will_paginate @sequences

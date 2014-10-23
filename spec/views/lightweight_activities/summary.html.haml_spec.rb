@@ -39,11 +39,11 @@ describe 'lightweight_activities/summary' do
 
   it 'lists the questions with numbers and prompts' do
     render
-    rendered.should have_css "div.prompt", :count => 6
-    rendered.should have_css "div.number", :count => 6
+    rendered.should have_css ".prompt .text", :count => 6
+    rendered.should have_css ".prompt .number", :count => 6
     words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six']
     (1..5).each do |i|
-      rendered.should match /#{i}\./
+      rendered.should match /#{i}:/
       rendered.should match /prompt #{words[i]}/
     end
   end

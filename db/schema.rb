@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
   add_index "authentications", ["uid", "provider"], :name => "index_authentications_on_uid_and_provider", :unique => true
   add_index "authentications", ["user_id", "provider"], :name => "index_authentications_on_user_id_and_provider", :unique => true
 
+  create_table "collaboration_runs", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "collaborators_data_url"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
+
+  add_index "collaboration_runs", ["collaborators_data_url"], :name => "collaboration_runs_endpoint_idx"
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
     t.integer  "attempts",   :default => 0, :null => false
@@ -194,9 +203,10 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
     t.string   "interactive_type"
     t.integer  "run_id"
     t.text     "raw_data"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.text     "learner_url"
+    t.boolean  "is_dirty",         :default => false
   end
 
   create_table "lightweight_activities", :force => true do |t|
@@ -292,8 +302,8 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
   create_table "runs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "run_count"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.string   "key"
     t.integer  "activity_id"
     t.string   "remote_id"
@@ -301,16 +311,18 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
     t.string   "remote_endpoint"
     t.integer  "sequence_id"
     t.integer  "sequence_run_id"
-    t.boolean  "is_dirty",        :default => false
+    t.boolean  "is_dirty",             :default => false
+    t.integer  "collaboration_run_id"
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
+  add_index "runs", ["collaboration_run_id"], :name => "runs_collaboration_idx"
   add_index "runs", ["key"], :name => "index_runs_on_key"
   add_index "runs", ["remote_endpoint"], :name => "index_runs_on_remote_endpoint"
   add_index "runs", ["sequence_id"], :name => "index_runs_on_sequence_id"
   add_index "runs", ["sequence_run_id"], :name => "index_runs_on_sequence_run_id"
   add_index "runs", ["user_id", "activity_id"], :name => "index_runs_on_user_id_and_activity_id"
-  add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "index_runs_on_user_id_and_remote_id_and_remote_endpoint"
+  add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "runs_user_remote_endpt_idx"
   add_index "runs", ["user_id"], :name => "index_runs_on_user_id"
 
   create_table "sequence_runs", :force => true do |t|

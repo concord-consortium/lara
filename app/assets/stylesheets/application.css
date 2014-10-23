@@ -20,4 +20,6 @@
  *= require sequence-editing
  *= require session
  *= require chosen
+ *= require pagination
+ *= require bad_browser
  */

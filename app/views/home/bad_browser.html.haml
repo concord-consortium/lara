@@ -1,0 +1,19 @@
+= content_for :title do
+  Lightweight Activities: Unsupported Browser
+
+.browser_fail_content
+  %h1= "Unsupported Browser"
+  %p
+    Sorry, Lightweight activities require a modern browser to run.
+    %br
+    Please update your browser using one of the links below, and then come back and try again.
+  %p
+    %span.browser_link
+      %a{href: "http://www.mozilla.com/firefox/", target: "_blank"}
+        Firefox
+    %span.browser_link
+      %a{href: "http://www.google.com/chrome?hl=en" , target: "_blank"}
+        Chrome
+    %span.browser_link
+      %a{href: "http://windows.microsoft.com/en-us/internet-explorer/ie-11-worldwide-languages", target: "_blank"}
+        Internet Explorer

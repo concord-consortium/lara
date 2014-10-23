@@ -12,6 +12,8 @@ class LightweightActivitiesController < ApplicationController
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
     @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications).community
     @official_activities  = @filter.collection.includes(:user,:changed_by,:portal_publications).official
+    @community_activities = @community_activities.paginate(:page => params['community_page_number'], :per_page => 10)
+    @official_activities  = @official_activities.paginate(:page => params['official_page_number'], :per_page => 10)
   end
 
   # These are the runtime (student-facing) actions, show and summary

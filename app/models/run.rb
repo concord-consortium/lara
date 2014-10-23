@@ -16,6 +16,8 @@ class Run < ActiveRecord::Base
 
   belongs_to :sequence_run # optional
 
+  belongs_to :collaboration_run # optional
+
   has_many :multiple_choice_answers,
     :class_name  => 'Embeddable::MultipleChoiceAnswer',
     :foreign_key => 'run_id',
@@ -140,7 +142,7 @@ class Run < ActiveRecord::Base
   end
 
   def answers
-    open_response_answers + multiple_choice_answers + image_question_answers
+    open_response_answers + multiple_choice_answers + image_question_answers + interactive_run_states
   end
 
   def answers_hash
@@ -155,6 +157,10 @@ class Run < ActiveRecord::Base
 
   def all_responses_for_portal
     answers_hash.to_json
+  end
+
+  def disable_collaboration
+    collaboration_run.disable if collaboration_run
   end
 
   def oauth_token
@@ -172,7 +178,8 @@ class Run < ActiveRecord::Base
     {
       'multiple_choice_answers' => self.multiple_choice_answers,
       'open_response_answers' => self.open_response_answers,
-      'image_question_answers' => self.image_question_answers
+      'image_question_answers' => self.image_question_answers,
+      'external_links' => self.interactive_run_states
     }
   end
 

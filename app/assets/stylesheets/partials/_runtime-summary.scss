@@ -20,20 +20,20 @@
   margin-right: 150px;
   padding: 15px;
   .prompt {
-    // font-family is too agressively being set to helv.medium
-    // which includes a weight in the font.  Grr.
+    color: rgb(160, 160, 160);
+    .number {
+      font-size: 1.2em;
+    }
+    .text {
+      font-size: 1.1em;
+    }
     font-family: sans-serif;
-    font-weight: bold;
-    margin: 5px 5px 5px 0;
-  }
-  .number {
-    float: left;
-    font-weight: bold;
-    margin: 5px 5px 5px 0;
+    margin: 5px;
+    margin-top: 30px;
   }
   .answer, .image_answer {
     clear: left;
-    margin-left: 16px;
+    margin-left: 30px;
   }
 }
 
