@@ -32,8 +32,12 @@ class CreateCollaboration
 
   private
 
+  def secret_token
+    Concord::AuthPortal.secret_for_url(@portal_domain)
+  end
+
   def bearer_token
-    'Bearer %s' % @owner.authentication_token
+    'Bearer %s' % secret_token
   end
 
   def get_collaborators_data

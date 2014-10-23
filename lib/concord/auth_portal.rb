@@ -58,6 +58,14 @@ module Concord
       end
       raise "Can't find a portal for #{url}"
     end
+
+    def self.secret_for_url(url)
+      if portal = self.portal_for_url(url)
+        return portal.secret
+      end
+      raise "Can't find a portal for #{url}"
+    end
+
     def self.for_portal_name(name)
       return ExistingPortals[name] || self.make_for_name(name)
     end
