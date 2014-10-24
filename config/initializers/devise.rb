@@ -216,11 +216,13 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  # disabling certificates is suggested by the Devise site on OS X
 
-  # First line suppresses a warning in development
-  OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
-  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
+  # disabling certificates is suggested by the Devise site on OS X
+  if Rails.env.development?
+    # suppresses a warning in development
+    OpenSSL::SSL.instance_eval { remove_const :VERIFY_PEER } if defined?(OpenSSL::SSL::VERIFY_PEER)
+    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+  end
 
   Concord::AuthPortal.all.each_pair do |key,portal|
     config.omniauth portal.name, portal.id, portal.secret
