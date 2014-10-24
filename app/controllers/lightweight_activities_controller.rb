@@ -56,7 +56,7 @@ class LightweightActivitiesController < ApplicationController
     if !params[:response_key]
       redirect_to summary_with_response_path(@activity, @session_key) and return
     end
-    @answers = @activity.answers(@run)
+    @answers = @activity.answers(@run).select { |a| a.show_in_report }
   end
 
   # The remaining actions are all authoring actions.
