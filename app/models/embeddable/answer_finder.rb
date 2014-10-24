@@ -37,13 +37,12 @@ module Embeddable
         if type == Embeddable::ImageQuestionAnswer and !question.is_shutterbug? and !question.bg_url.blank?
           conditions[:image_url] = question.bg_url
         end
-        answer = type.create(conditions)
+        answer = type.default_answer(conditions) 
         self.add_answer(answer)
       end
       return answer
-      # type.by_run(run).by_question(question).first || type.create(conditions)
-
     end
+
 
     def answer_type(question)
       case question

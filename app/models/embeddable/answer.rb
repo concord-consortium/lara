@@ -11,6 +11,9 @@ module Embeddable::Answer
       def self.by_run(r)
         where(:run_id => r.id)
       end
+      def self.default_answer(conditions)
+        self.create(conditions)
+      end
     end
   end
 
@@ -85,4 +88,10 @@ module Embeddable::Answer
     # wont invoke callbacks
     update_column(:is_dirty, false)
   end
+
+  def show_in_report
+    true
+  end
+
+
 end

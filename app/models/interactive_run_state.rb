@@ -62,4 +62,21 @@ class InteractiveRunState < ActiveRecord::Base
   def to_json(arg=nil)
     arg ? original_json(arg) : answer_json
   end
+
+  def show_in_report
+    false
+  end
+
+  class AnswerStandin
+    def question
+      @question ||= QuestionStandin.new
+    end
+    def show_in_report
+      false
+    end
+  end
+
+  def self.default_answer(conditions)
+    return AnswerStandin.new
+  end
 end
