@@ -117,4 +117,5 @@ LightweightStandalone::Application.routes.draw do
 
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
+  match "/home/bad_browser" => "home#bad_browser"
 end
