@@ -300,8 +300,13 @@ class Run < ActiveRecord::Base
     return self.activity.questions.size
   end
 
+  # HACK for interactive run state saving...
+  def question_answers
+    self.answers.reject {|a| a.question.kind_of? InteractiveRunState::QuestionStandin}
+  end
+
   def num_answers
-    return self.answers.size
+    return self.question_answers.size
   end
 
   def completed?
