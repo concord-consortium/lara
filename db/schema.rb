@@ -71,9 +71,9 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
     t.boolean  "is_final",                                  :default => false
   end
 
-  add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_embeddable_image_question_answers_on_image_question_id"
-  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_multiple_choice_answers_on_run_and_question"
-  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
+  add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_on_image_question_id"
+  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_on_run_and_question"
+  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_on_run_id"
 
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
