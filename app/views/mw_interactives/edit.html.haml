@@ -17,9 +17,30 @@
   %br
   = field_set_tag 'Save Interactive state' do
     = f.label :save_state, 'Save State'
-    = f.check_box :save_state
+    = f.check_box :save_state, :id => "save_state_#{@interactive.id}"
     .clear
     %em Warning: 
     Please do not select this unless your interactive contains a serializable data set.
+    .clear
+    .indent{:id => "save_state_indent_#{@interactive.id}"}
+      = f.label :has_report_url, 'This interactive has a report URL'
+      = f.check_box :has_report_url, :id => "has_report_url_#{@interactive.id}"
+      .clear
+      %em Warning: 
+      Please do not select this unless your interactive includes a report url in its saved state.
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
+
+:javascript
+  $('#save_state_#{@interactive.id}').click(function() {
+    $('#has_report_url_#{@interactive.id}').prop('checked', false);
+    if ($(this).prop('checked')) {
+      // ungrey
+      $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
+      $('#save_state_indent_#{@interactive.id}').css("opacity", 1);
+    } else {
+      // grey
+      $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+      $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
+    }
+  });

@@ -10,6 +10,10 @@ module Embeddable
         return "iq_#{question.id}"
       when Embeddable::MultipleChoice
         return "mc_#{question.id}"
+      when MwInteractive
+        return "if_#{question.id}"
+      when InteractiveRunState::QuestionStandin
+        return question.interactive ? "if_#{question.interactive.id}" : nil
       end
       return nil
     end
@@ -24,6 +28,7 @@ module Embeddable
       mc_answers = self.run.multiple_choice_answers.includes(:question, :answers).each { |a| add_answer(a) }
       or_answers = self.run.open_response_answers.includes(:question).each   { |a| add_answer(a) }
       iq_answers = self.run.image_question_answers.includes(:question).each  { |a| add_answer(a) }
+      if_answers = self.run.interactive_run_states.includes(:interactive).each { |a| add_answer(a) }
     end
 
 
