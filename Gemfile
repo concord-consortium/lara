@@ -60,6 +60,7 @@ gem 'will_paginate', '~> 3.0'
 # detect browser types
 gem 'useragent'
 
+gem 'ribbons-rails', :git => 'git@github.com:concord-consortium/ribbons-rails.git'
 group :production do
   gem 'therubyracer'
 end

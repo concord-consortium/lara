@@ -23,5 +23,6 @@
  *= require image-question-svg-edit
  *= require image-question-drawing-tool
  *= require activity-sequences
+ *= require runtime-ribbons
  *= require wait-message
  */

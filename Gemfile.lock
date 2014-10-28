@@ -40,6 +40,13 @@ GIT
       rails (~> 3.2.0)
 
 GIT
+  remote: git@github.com:concord-consortium/ribbons-rails.git
+  revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
+  specs:
+    ribbons-rails (0.0.1)
+      railties
+
+GIT
   remote: https://github.com/intridea/omniauth-oauth2.git
   revision: a88f9c86dff747f77813f09848e65b61aa1af3e3
   specs:
@@ -505,6 +512,7 @@ DEPENDENCIES
   rails-assets-drawing-tool (= 1.2.3)
   rb-fsevent
   request-log-analyzer
+  ribbons-rails!
   rspec (~> 2.10.0)
   rspec-rails (~> 2.10.1)
   safe_yaml (~> 0.9.5)
