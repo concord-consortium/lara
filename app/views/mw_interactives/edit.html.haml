@@ -32,15 +32,24 @@
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
-  $('#save_state_#{@interactive.id}').click(function() {
-    $('#has_report_url_#{@interactive.id}').prop('checked', false);
-    if ($(this).prop('checked')) {
-      // ungrey
-      $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
-      $('#save_state_indent_#{@interactive.id}').css("opacity", 1);
-    } else {
-      // grey
-      $('#has_report_url_#{@interactive.id}').attr("disabled", true);
-      $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
+  $(document).ready(function() {
+    $('#save_state_#{@interactive.id}').click(function() {
+      $('#has_report_url_#{@interactive.id}').prop('checked', false);
+      if ($(this).prop('checked')) {
+        // ungrey
+        $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
+        $('#save_state_indent_#{@interactive.id}').css("opacity", 1);
+      } else {
+        // grey
+        $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+        $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
+      }
+    });
+
+    if (! #{@interactive.save_state}) {
+          // uncheck and grey out the 'has report url' section
+          $('#has_report_url_#{@interactive.id}').prop('checked', false);
+          $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+          $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
     }
   });
