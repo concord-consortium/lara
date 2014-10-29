@@ -15,6 +15,13 @@ GIT
       capistrano (< 3)
 
 GIT
+  remote: git://github.com/concord-consortium/ribbons-rails.git
+  revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
+  specs:
+    ribbons-rails (0.0.1)
+      railties
+
+GIT
   remote: git://github.com/concord-consortium/sketchily.git
   revision: 29f0a66659692d606d8698038a4159217d635380
   branch: concord
@@ -38,13 +45,6 @@ GIT
       jeditable_wysiwyg_rails
       jquery-rails
       rails (~> 3.2.0)
-
-GIT
-  remote: git@github.com:concord-consortium/ribbons-rails.git
-  revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
-  specs:
-    ribbons-rails (0.0.1)
-      railties
 
 GIT
   remote: https://github.com/intridea/omniauth-oauth2.git
