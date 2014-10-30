@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(:version => 20141028170310) do
     t.integer  "image_question_id"
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.text     "annotation",          :limit => 4294967294
+    t.text     "annotation",          :limit => 2147483647
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                                  :default => false
     t.boolean  "is_final",                                  :default => false
@@ -258,8 +258,8 @@ ActiveRecord::Schema.define(:version => 20141028170310) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "native_width"
     t.integer  "native_height"
     t.boolean  "save_state",     :default => false
