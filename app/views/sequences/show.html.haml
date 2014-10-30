@@ -17,6 +17,8 @@
     - @sequence.lightweight_activities_sequences.each do |las|
       - activity = las.lightweight_activity
       .activity-bg
+        .ribbon_wrap
+          = complete_badge_for(activity)
         .activity
           %span.position
             = las.position.to_s

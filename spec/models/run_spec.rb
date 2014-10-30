@@ -571,7 +571,7 @@ describe Run do
   describe "Functions relating to 'completeness'" do
     subject         { run }
     let(:questions) { [1,2,3]  }
-    let(:answers)   { [1,2,3]  }
+    let(:answers) { [or_answer, mc_answer, iq_answer]  }
     before(:each) do
       activity.stub!(:questions).and_return(questions)
       run.stub!(:answers).and_return(answers)
@@ -582,7 +582,7 @@ describe Run do
     end
 
     describe "With three answers" do
-      let(:answers) { [1,2,3]  }
+      let(:answers) { [or_answer, mc_answer, iq_answer]  }
 
       its(:num_answers)      { should eq 3         }
       it                     { should be_completed }
@@ -590,7 +590,7 @@ describe Run do
     end
 
     describe "With two answers" do
-      let(:answers) { [1,2]  }
+      let(:answers) { [or_answer, mc_answer]  }
 
       its(:num_answers)      { should eq 2                    }
       it                     { should_not be_completed        }

@@ -300,8 +300,21 @@ class Run < ActiveRecord::Base
     return self.activity.questions.size
   end
 
+  # HACK for interactive run state saving...
+  def question_answers
+    self.answers.reject {|a| a.question.kind_of? InteractiveRunState::QuestionStandin}
+  end
+
   def num_answers
-    return self.answers.size
+    q_answers = activity_q_answers = self.question_answers
+    begin # this really shouldn't happen, but there are some bad runs in the DB
+      activity_q_answers = q_answers.reject { |a| a.question.activity.id != self.activity_id }
+      unless q_answers.size == activity_q_answers.size
+        Rails.logger.error("run #{self.id} has answers from another activity")
+      end
+    rescue
+    end
+    return activity_q_answers.size
   end
 
   def completed?
@@ -310,6 +323,23 @@ class Run < ActiveRecord::Base
 
   def percent_complete
     return (num_answers / Float(num_questions) ) * 100.0
+  end
+
+  # See PT https://www.pivotaltracker.com/story/show/59365552
+  # And stories about run links (can't find it.)
+  def remove_answers_to_wrong_activity
+    [:multiple_choice_answers, :open_response_answers, :image_question_answers].each do |answer_type|
+      answers = self.send answer_type
+      answers.each do |answer|
+        if answer.question && answer.question.activity
+          activity_id = answer.question.activity.id
+          unless activity_id == self.activity_id
+            answer.delete
+            puts "deleted an answer to question: #{answer.question.id}"
+          end
+        end
+      end
+    end
   end
 
 end

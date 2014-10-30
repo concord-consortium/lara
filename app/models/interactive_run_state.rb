@@ -28,6 +28,7 @@ class InteractiveRunState < ActiveRecord::Base
 
   # Make Embeddable::Answer assumptions work
   class QuestionStandin
+    attr_accessor :interactive
     def name; "Interactive"; end
     def prompt; "Interactive"; end
     def is_prediction; false; end
@@ -36,7 +37,10 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def question
-    @question ||= QuestionStandin.new
+    return @question if @question
+    @question = QuestionStandin.new
+    @question.interactive = interactive
+    @question
   end
 
   def portal_hash
@@ -64,12 +68,21 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def show_in_report
-    false
+    interactive.respond_to?('save_state') && interactive.save_state && interactive.respond_to?('has_report_url') && interactive.has_report_url
   end
 
   class AnswerStandin
+    attr_accessor :run
+    def initialize(opts={})
+      q = question
+      q.interactive = opts[:question] if opts[:question]
+      q.run = opts[:run] if opts[:run]
+    end
     def question
       @question ||= QuestionStandin.new
+    end
+    def prompt
+      question.prompt
     end
     def show_in_report
       false

@@ -110,9 +110,15 @@ namespace :deploy do
 set(:autoscaling_region, "us-east-1e")
 # set(:autoscaling_access_key_id, "PUTYOURAWSACCESSKEYIDHERE")
 # set(:autoscaling_secret_access_key, "PUTYOURAWSSECRETACCESSKEYHERE")
+# Make the default behavior be to NOT autoscale
+set(:autoscaling_create_image, false)
+set(:autoscaling_create_group, false)
+set(:autoscaling_create_policy, false)
+set(:autoscaling_create_launch_configuration, false)
 set(:autoscaling_instance_type, "c1.medium")
 set(:autoscaling_security_groups, %w(lara))
-set(:autoscaling_min_size, 2)
-set(:autoscaling_max_size, 3)
+set(:autoscaling_min_size, 1)
+set(:autoscaling_max_size, 2)
 set(:autoscaling_application, 'LaraDevLB')
+set(:autoscaling_group_extra_options, {propagate_at_launch: true})
 end

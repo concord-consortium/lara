@@ -97,6 +97,15 @@ class IFrameSaver
 
   save_to_server: (interactive_json, learner_url) ->
     return unless @put_url
+    runSuccess = =>
+      if @success_callback
+        @success_callback()
+      else
+        @default_success
+    if interactive_json is "nochange"
+      runSuccess()
+      return
+
     @save_indicator.showSaving()
     data =
       raw_data: JSON.stringify(interactive_json)
@@ -108,10 +117,7 @@ class IFrameSaver
       url: @put_url
       data: data
       success: (response) =>
-        if @success_callback
-          @success_callback()
-        else
-          @default_success
+        runSuccess()
         @save_indicator.showSaved("Saved Interactive")
 
 

@@ -23,5 +23,6 @@
  *= require image-question-drawing-tool
  *= require activity-sequences
  *= require wait-message
+ *= require runtime-ribbons
  *= require rites
  */

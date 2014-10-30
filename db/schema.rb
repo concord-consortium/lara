@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141021152306) do
+ActiveRecord::Schema.define(:version => 20141028170310) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -71,9 +71,9 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
     t.boolean  "is_final",                                  :default => false
   end
 
-  add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_embeddable_image_question_answers_on_image_question_id"
-  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_multiple_choice_answers_on_run_and_question"
-  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_embeddable_image_question_answers_on_run_id"
+  add_index "embeddable_image_question_answers", ["image_question_id"], :name => "index_on_image_question_id"
+  add_index "embeddable_image_question_answers", ["run_id", "image_question_id"], :name => "index_on_run_and_question"
+  add_index "embeddable_image_question_answers", ["run_id"], :name => "index_on_run_id"
 
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
@@ -258,11 +258,12 @@ ActiveRecord::Schema.define(:version => 20141021152306) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "save_state",    :default => false
+    t.boolean  "save_state",     :default => false
+    t.boolean  "has_report_url", :default => false
   end
 
   create_table "page_items", :force => true do |t|

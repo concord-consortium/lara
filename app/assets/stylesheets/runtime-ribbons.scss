@@ -1,0 +1,14 @@
+@import 'ribbons-rails';
+
+.ribbon_wrap {
+  position: relative;
+  z-index: 1;
+  padding: 0px;
+  margin: 10px;
+}
+.my-ribbon {
+  @include ribbon(orange);
+  .text {
+    font-size: 1.1em;
+  }
+}

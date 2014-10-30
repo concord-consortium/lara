@@ -60,6 +60,7 @@ gem 'will_paginate', '~> 3.0'
 # detect browser types
 gem 'useragent'
 
+gem 'ribbons-rails', :git => 'git://github.com/concord-consortium/ribbons-rails.git'
 group :production do
   gem 'therubyracer'
 end
@@ -135,7 +136,7 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem 'capistrano-autoscaling', '0.0.8', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+gem 'capistrano-autoscaling', '0.0.8.2', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
 # add some tools for 

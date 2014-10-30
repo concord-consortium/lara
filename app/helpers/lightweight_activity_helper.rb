@@ -24,4 +24,12 @@ module LightweightActivityHelper
     end
     return "#{results}: #{@activity.name}"
   end
+
+  def complete_badge_for(activity)
+    return unless @sequence_run
+    run = @sequence_run.run_for_activity(activity)
+    if run.completed?
+      return ribbon(t("COMPLETED"),"my-ribbon")
+    end
+  end
 end
