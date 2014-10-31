@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: git://github.com/concord-consortium/capistrano-autoscaling.git
-  revision: c82f72663ddc38bc4709a0be243de08f0f3f3947
+  revision: d41cf291ce530976e357f9f5ba0611e6f4a2fb10
   branch: concord
   specs:
-    capistrano-autoscaling (0.0.8.2)
+    capistrano-autoscaling (0.0.8.4)
       aws-sdk (>= 1.5.4)
       capistrano (< 3)
 
@@ -466,7 +466,7 @@ DEPENDENCIES
   bullet
   cancan
   capistrano
-  capistrano-autoscaling (= 0.0.8.2)!
+  capistrano-autoscaling (= 0.0.8.4)!
   capistrano-cowboy
   capybara
   chosen-rails

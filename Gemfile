@@ -136,7 +136,7 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem 'capistrano-autoscaling', '0.0.8.2', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+gem 'capistrano-autoscaling', '0.0.8.4', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
 # add some tools for 
