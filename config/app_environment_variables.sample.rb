@@ -9,7 +9,7 @@ ENV['CONCORD_HAS_STAGING_CLIENT_SECRET'] ||= 'XXXXXX'
 ENV['CONCORD_HAS_STAGING_DISPLAY_NAME']  ||= 'Has Staging Portal'  # Optional param
 
 # Decides whether SVG Edit ('svg-edit' or undefined) or CC Drawing Tool ('drawing-tool') should be used.
-ENV['CONCORD_DRAWING_TOOL']              ||= 'svg-edit'
+ENV['CONCORD_DRAWING_TOOL']              ||= 'drawing-tool'
 
 ENV['SECRET_TOKEN']                      ||= 'use `rake secret` to generate'
 ENV['S3_KEY']                            ||= 'xxxxxxxxxxxxx'
