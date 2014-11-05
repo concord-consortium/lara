@@ -41,4 +41,4 @@
       - @community_activities.each do |activity|
         =render :partial => "index_item", :locals => {:activity => activity}
     .pagination_info
-      = will_paginate @official_activities, :param_name => 'official_page_number'
+      = will_paginate @community_activities, :param_name => 'community_page_number'
