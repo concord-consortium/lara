@@ -23,12 +23,12 @@
     = page_entries_info @official_activities, :model => "Activities"
     = t(:COLLECTION_SORT_ORDER)
     .pagination_info
-      = will_paginate @official_activities, :param_name => 'official_page_number'
+      = will_paginate @official_activities, :param_name => 'official_page_number', :params => {:anchor => 'official_listing_heading'}
     %ul.quiet_list.official_listing
       - @official_activities.each do |activity|
         =render :partial => "index_item", :locals => {:activity => activity}
     .pagination_info
-      = will_paginate @official_activities, :param_name => 'official_page_number'
+      = will_paginate @official_activities, :param_name => 'official_page_number', :params => {:anchor => 'official_listing_heading'}
 
 - if @community_activities.size > 0
   #community_listing_heading.pagination_heading
@@ -36,9 +36,9 @@
     = page_entries_info @community_activities, :model => "Activities"
     = t(:COLLECTION_SORT_ORDER)
     .pagination_info
-      = will_paginate @community_activities, :param_name => 'community_page_number'
+      = will_paginate @community_activities, :param_name => 'community_page_number', :params => {:anchor => 'community_listing_heading'}
     %ul.quiet_list.community_listing
       - @community_activities.each do |activity|
         =render :partial => "index_item", :locals => {:activity => activity}
     .pagination_info
-      = will_paginate @community_activities, :param_name => 'community_page_number'
+      = will_paginate @community_activities, :param_name => 'community_page_number', :params => {:anchor => 'community_listing_heading'}
