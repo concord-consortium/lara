@@ -135,16 +135,33 @@ class ImageQuestionDrawingTool
         stopWaiting()
       )
 
+  shutterbug_fail_hander: (message) ->
+    $('#modal-dialog').html "<div class='server-error'><h1>#{message}</h1></div>"
+    $('#modal-dialog').dialog(title: "Oops", modal: true)
+    stopWaiting()
+    @save_failed()
+    @set_dialog_buttons_enabled(true)
+
   create_snapshot_shutterbug: ->
     @shutterbug = new Shutterbug(@interactive_selector, null, (image_tag) =>
       @set_image_source($(image_tag).attr("src"))
       stopWaiting()
     , @image_question_id)
+    @shutterbug.setFailureCallback (jqXHR, textStatus, errorThrown) => 
+      @shutterbug_fail_hander("Could not complete your snapshot after 30 seconds. Please try again later.")
+      stopWaiting()
+      @set_dialog_buttons_enabled(true)
+      @hide_dialog()
 
   create_drawing_tool_shutterbug: ->
     @shutterbug_drawing_tool = new Shutterbug("#{@drawing_tool_selector} .dt-canvas-container", null, (image_tag) =>
       @copy_to_form_and_save(image_tag)
     , "drawing_tool_" + @image_question_id)
+    @shutterbug_drawing_tool.setFailureCallback (jqXHR, textStatus, errorThrown) => 
+      @shutterbug_fail_hander("Could not save your drawing after 30 seconds. Please try again later.")
+      stopWaiting()
+      @set_dialog_buttons_enabled(true)
+      # @hide_dialog()
 
   has_image_content: ->
     # This is a shutterbug question, so it's answered if there's a thumbnail
