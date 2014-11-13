@@ -210,7 +210,21 @@ class Run < ActiveRecord::Base
       }
     )
     # TODO: better error detection?
-    response.success?
+    is_success = response.success?
+    if(is_success)
+      is_success
+    else
+      raise "response_code:#{response.code}\
+             response_message:#{response.message}\
+             paylaod:#{payload}\
+             auth_token:#{auth_token}\
+             remote_endpoint:#{remote_endpoint}\
+             run_id: #{id}\
+             run_key: #{key}\
+             dirty: #{dirty?}\
+             activity: #{activity.name} [#{activity_id}]\
+             sequence: #{sequence_id}"
+    end
   end
 
   def queue_for_portal(answer, auth_key=nil)
