@@ -2,6 +2,15 @@
   display: none;
 }
 
+#modal-dialog {
+  .server-error {
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(197, 17, 17);
+    line-height: 1.3em;
+  }
+}
 .snapshot_thumbnail {
   border: 1px solid #eee;
   border-radius: 4px;
