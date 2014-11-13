@@ -210,7 +210,21 @@ class Run < ActiveRecord::Base
       }
     )
     # TODO: better error detection?
-    response.success?
+    is_success = response.success?
+    if(is_success)
+      is_success
+    else
+      raise "response_code:#{response.code}\
+             response_message:#{response.message}\
+             paylaod:#{payload}\
+             auth_token:#{auth_token}\
+             remote_endpoint:#{remote_endpoint}\
+             run_id: #{id}\
+             run_key: #{key}\
+             dirty: #{dirty?}\
+             activity: #{activity.name} [#{activity_id}]\
+             sequence: #{sequence_id}"
+    end
   end
 
   def queue_for_portal(answer, auth_key=nil)
@@ -340,6 +354,31 @@ class Run < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def info
+    # begin
+      q_activities = question_answers.map { |a| a.question.activity.id}.uniq.join(", ")
+      q_activities = "[#{q_activities}]"
+      info=<<-EOF
+                 run_id: #{id}
+                run_key: #{key}
+                  dirty: #{dirty?}
+        remote_endpoint: #{remote_endpoint}
+       percent_complete: #{percent_complete}
+      number of answers: #{num_answers}  (#{answers.size})
+    number of questions: #{num_questions}
+               activity: #{activity.name} [#{activity_id}]
+               sequence: #{sequence_id}
+          collaboration: #{collaboration_run_id}   
+           sequence_run: #{sequence_run_id}
+             other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
+   other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
+     acitvity questions: #{q_activities}
+      EOF
+      info.gsub(/^\s+/,'')
+    # rescue NameError => e
+    # end
   end
 
 end

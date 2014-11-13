@@ -10,19 +10,33 @@
       %li / Dirty Runs
 
 #official_listing_heading
+  #messages
+    something
   %h1 Dirty runs
-%p This listing shows runs queued for submission to the portal more than five minutes ago. Especially old ones, particularly those more than 15 or 20 minutes old, may have retried three or four times already and could have problems with their submission.
-- if @runs.count > 0
-  %ul.quiet_list.official_listing
-    - @runs.each do |run|
-      %li.item
-        %div.action_menu
-          %div.action_menu_header_left
-            = link_to "#{time_ago_in_words(run.updated_at)} ago", summary_with_response_path(run.activity_id, run.key)
-          %div.action_menu_header_right.themes
-            %ul.menu
-              %li.edit= link_to "Resubmit", resubmit_answers_for_run_path(run.activity_id, run.key)
-              %li.delete= link_to 'Summary', summary_with_response_path(run.activity_id, run)
-        %div.tiny
-- else
-  %p No dirty runs older than 5 minutes found.
+  %p This listing shows runs queued for submission to the portal more than five minutes ago. Especially old ones, particularly those more than 15 or 20 minutes old, may have retried three or four times already and could have problems with their submission.
+  - if @runs.count > 0
+    %ul.quiet_list.official_listing
+      - @runs.each do |run|
+        %li.item.run
+          %div.runs_menu
+            %div.left
+              = link_to "#{time_ago_in_words(run.updated_at)} ago", summary_with_response_path(run.activity_id, run.key)
+            %div.right
+              %ul.menu
+                %li.button= link_to "Resubmit", fix_broken_portal_runs_path(run.id), remote: true, 'class' => "fixit"
+                %li.button= link_to "Submit with Admin Token", fix_broken_portal_runs_path(run.id,{:use_admin_token => 'true'}), remote: true, 'class' => "fixit"
+                %li.button= link_to "info", run_info_path(run.id), remote: true, 'class' => "info"
+          .run_info
+            (info will show up here)
+  - else
+    %p No dirty runs older than 5 minutes found.
+
+:coffee 
+  $(".fixit").bind "ajax:success", (event, data, status, xhr) ->
+    console.log "DATA: "  + data
+    message_area=$("#messages")
+    message_area.html(data.message)
+    window.scrollTo(message_area.x,message_area.y)
+  $(".info").bind "ajax:success", (event, data, status, xhr) ->
+    message_area=$(this).parentsUntil("li.run").next(".run_info")
+    message_area.html(data.message)

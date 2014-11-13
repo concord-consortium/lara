@@ -31,18 +31,32 @@ class RunsController < ApplicationController
   end
 
   def fix_broken_portal_runs
+    message  = "must be admin."
     if current_user.is_admin
-      activity_id = params[:activity_id]
-      activity = LightweightActivity.find(activity_id)
-      if activity
-        results = activity.fix_broken_portal_runs('Bearer %s' % current_user.authentication_token)
-        render :json => results
-      else
-        render :text => "must specify an activity_id"
+      run = Run.find(params[:run_id])
+      token = false
+      if params[:use_admin_token]
+        results = run.submit_answers_now(current_user.authentication_token)
+      else 
+        results = run.submit_answers_now
       end
-    else
-      render :text => "must be admin"
+      if results
+        message = "Run answers resent to server (OK)"
+      else
+        message = "Run answers failted to send to server (BAD)"
+      end
     end
+    render json: { message: message}.to_json
+  end
+
+
+  def run_info
+    message  = "must be admin."
+    if current_user.is_admin
+      run = Run.find(params[:run_id])
+      message = run.info
+    end
+    render json: { message: message}.to_json
   end
 
   private

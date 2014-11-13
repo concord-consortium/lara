@@ -31,8 +31,8 @@ gem 'uuidtools'
 gem "httparty"
 gem 'exception_notification'
 gem 'newrelic_rpm'
-gem 'shutterbug', '~>0.1.2'
-# gem 'shutterbug', :path => "/Users/npaessel/lab/ruby/shutterbug"
+gem 'shutterbug', '~>0.2.5'
+# gem 'shutterbug', '~>0.2.5', :path => "/Users/npaessel/lab/cc/shutterbug"
 # gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 gem 'rack-environmental'
 # gem 'sketchily', :path => "/Users/npaessellab/ruby/sketchily"
@@ -136,7 +136,7 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem 'capistrano-autoscaling', '0.0.8.2', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+gem 'capistrano-autoscaling', '0.0.8.4', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
 # add some tools for 
