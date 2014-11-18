@@ -108,6 +108,7 @@ namespace :deploy do
 
 ## Autoscale EC2 / AMI / ELB Config:
 set(:autoscaling_region, "us-east-1e")
+set(:autoscaling_require_keys, false)
 # set(:autoscaling_access_key_id, "PUTYOURAWSACCESSKEYIDHERE")
 # set(:autoscaling_secret_access_key, "PUTYOURAWSSECRETACCESSKEYHERE")
 # Make the default behavior be to NOT autoscale

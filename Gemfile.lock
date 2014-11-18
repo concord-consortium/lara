@@ -6,15 +6,6 @@ GIT
       coffee-rails
 
 GIT
-  remote: git://github.com/concord-consortium/capistrano-autoscaling.git
-  revision: d41cf291ce530976e357f9f5ba0611e6f4a2fb10
-  branch: concord
-  specs:
-    capistrano-autoscaling (0.0.8.4)
-      aws-sdk (>= 1.5.4)
-      capistrano (< 3)
-
-GIT
   remote: git://github.com/concord-consortium/ribbons-rails.git
   revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
   specs:
@@ -53,6 +44,13 @@ GIT
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.9.0)
       omniauth (~> 1.0)
+
+PATH
+  remote: /Users/npaessel/lab/cc/capistrano-autoscaling
+  specs:
+    capistrano-autoscaling (0.0.8.5)
+      aws-sdk (>= 1.5.4)
+      capistrano (< 3)
 
 GEM
   remote: https://rubygems.org/
@@ -502,7 +500,7 @@ DEPENDENCIES
   bullet
   cancan
   capistrano
-  capistrano-autoscaling (= 0.0.8.4)!
+  capistrano-autoscaling (= 0.0.8.5)!
   capistrano-cowboy
   capybara
   chosen-rails
