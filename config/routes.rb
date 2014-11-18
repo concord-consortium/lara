@@ -119,4 +119,10 @@ LightweightStandalone::Application.routes.draw do
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
   match "/home/bad_browser" => "home#bad_browser"
+
+  # Web interface to show the delayed jobs for admins
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post], :constraints => lambda { |request|
+    warden = request.env['warden']
+    warden.user && warden.user.admin?
+  }
 end

@@ -13,3 +13,4 @@ use Shutterbug::Rackapp do |config|
 end
 
 run LightweightStandalone::Application
+DelayedJobWeb.enable :sessions

@@ -44,6 +44,7 @@ gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :b
 gem "sqlite3"
 gem 'mysql2'
 gem "delayed_job_active_record"
+gem "delayed_job_web", "1.2.5"
 gem "daemons"
 
 # put font-awesome in asset pipeline. Alternately we could use a CDN.
