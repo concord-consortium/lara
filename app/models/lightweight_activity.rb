@@ -98,6 +98,23 @@ class LightweightActivity < ActiveRecord::Base
     end
     return new_activity
   end
+  
+  def export 
+    #new_activity = LightweightActivity.new(self.to_hash)
+    activity_json = self.as_json(only: [:name,
+                                        :related, 
+                                        :description, 
+                                        :time_to_complete, 
+                                        :project_id, 
+                                        :theme_id, 
+                                        :thumbnail_url, 
+                                        :notes])
+    activity_json[:pages] = []
+    self.pages.each do |p|
+      activity_json[:pages] << p.export
+    end
+    return activity_json
+  end
 
   # TODO: Include acts_as_list? @pjmorse would hate that.
   def position(seq)

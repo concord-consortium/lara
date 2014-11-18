@@ -46,6 +46,7 @@ LightweightStandalone::Application.routes.draw do
       get 'publish'
       get 'duplicate'
       get 'preview'
+      get 'export'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do

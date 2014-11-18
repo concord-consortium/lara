@@ -106,4 +106,43 @@ class InteractivePage < ActiveRecord::Base
     end
     return new_page
   end
+  
+  def export
+    
+    #new_page = InteractivePage.new(self.to_hash)
+    
+    page_json = self.as_json(only: [:name, 
+                                    :position, 
+                                    :text, 
+                                    :layout, 
+                                    :sidebar, 
+                                    :sidebar_title, 
+                                    :show_introduction, 
+                                    :show_sidebar, 
+                                    :show_interactive,
+                                    :show_info_assessment])
+                                        
+    page_json[:interactive] = []
+    page_json[:embeddable] = []
+        
+    self.interactives.each do |inter|
+      page_json[:interactive] << inter.as_json(only:[:caption, 
+                                                     :credit, 
+                                                     :height, 
+                                                     :width, 
+                                                     :poster_url])
+    end
+    self.embeddables.each do |embed|
+      page_json[:embeddable] << embed.as_json(only:[:show_as_menu,
+                                                    :prompt,
+                                                    :prediction_feedback,
+                                                    :name,:custom,
+                                                    :enable_check_answer,
+                                                    :give_prediction_feedback,
+                                                    :is_prediction,
+                                                    :multi_answer])
+    end
+  
+    return page_json
+  end
 end
