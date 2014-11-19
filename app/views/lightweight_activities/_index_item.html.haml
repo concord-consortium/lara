@@ -7,6 +7,7 @@
       = link_to activity.name, activity_path(activity), :class => 'container_link', :title => 'Preview Activity'
     %div.action_menu_header_right
       %ul.menu
+        %li.export= link_to('Export', show_status_activity_path(activity), :remote => true) if can? :export, activity
         %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :duplicate, activity
         %li.edit= link_to "Edit", edit_activity_path(activity) if can? :edit, activity
         %li.delete= link_to 'Delete', activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, activity

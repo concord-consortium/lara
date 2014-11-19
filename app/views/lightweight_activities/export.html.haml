@@ -1,0 +1,14 @@
+.export
+  .header
+    %span.title Export Activity :
+    %span.close.close_link
+      close (✖)
+  .info
+    %span Export #{@activity.name}
+    
+  .buttons
+    = link_to "Export",export_activity_path,{ :class => 'btn btn-primary', :id =>'export'} 
+    %a.btn.btn-primary.close
+      cancel
+  .message
+    =@message
