@@ -54,4 +54,12 @@ class VideoInteractive < ActiveRecord::Base
     vi.sources = self.sources.map { |vs| vs.duplicate }
     return vi
   end
+  
+  def export
+    return self.as_json(only:[:poster_url, 
+                              :caption, 
+                              :credit,
+                              :height,
+                              :width])
+  end
 end

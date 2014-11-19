@@ -28,4 +28,11 @@ class ImageInteractive < ActiveRecord::Base
     return html_credit if self.credit_url.blank?
     return "<a href='#{self.credit_url}' target='_blank'>#{self.credit}</a>".html_safe
   end
+  
+  def export
+    return self.as_json(only:[:caption, 
+                              :url, 
+                              :credit, 
+                              :credit_url])
+  end
 end

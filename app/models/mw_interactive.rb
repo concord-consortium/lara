@@ -58,4 +58,11 @@ class MwInteractive < ActiveRecord::Base
       "#{interactive_page.lightweight_activity.id}_#{interactive_page.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
     end
   end
+  
+  def export
+    return self.as_json(only:[:name, 
+                              :url, 
+                              :native_width, 
+                              :native_height])
+  end
 end

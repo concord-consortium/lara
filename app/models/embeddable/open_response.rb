@@ -38,5 +38,9 @@ module Embeddable
     def self.human_description
       "Multiple choice question"
     end
+    def export
+      return self.as_json(only:[:name,
+                                :prompt])
+    end
   end
 end
