@@ -100,7 +100,6 @@ class LightweightActivity < ActiveRecord::Base
   end
   
   def export 
-    #new_activity = LightweightActivity.new(self.to_hash)
     activity_json = self.as_json(only: [:name,
                                         :related, 
                                         :description, 
@@ -113,7 +112,39 @@ class LightweightActivity < ActiveRecord::Base
     self.pages.each do |p|
       activity_json[:pages] << p.export
     end
-    return activity_json
+    return activity_json.to_json
+  end
+  
+  def self.extact_from_hash(activity_json_object)
+    {
+      description: activity_json_object['description'],
+      name: activity_json_object['name'],
+      notes: activity_json_object['notes'],
+      project_id: activity_json_object['project_id'],
+      related: activity_json_object['related'],
+      theme_id: activity_json_object['theme_id'],
+      thumbnail_url: activity_json_object['thumbnail_url'],
+      time_to_complete: activity_json_object['time_to_complete']
+    }
+    
+  end
+  
+  def self.import(activity_json_object,new_owner)
+    import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
+    LightweightActivity.transaction do
+      import_activity.save!(validate: false)
+      # Clarify name
+      import_activity.name = "Import of #{import_activity.name}"
+      import_activity.user = new_owner
+      activity_json_object['pages'].each do |p|
+        import_page = InteractivePage.import(p)
+        import_page.lightweight_activity = import_activity
+        import_page.set_list_position(p['position'])
+        import_page.save!(validate: false)
+      end
+      import_activity.fix_page_positions
+    end
+    import_activity
   end
 
   # TODO: Include acts_as_list? @pjmorse would hate that.

@@ -100,6 +100,8 @@ LightweightStandalone::Application.routes.draw do
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
   match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
+  match "/import" => 'import#import_status', :as => 'import_status', :via => 'get'
+  match "/import" => 'import#import', :as => 'import', :via => 'post'
 
   # These routes didn't work as nested resources
   delete "/embeddable/multiple_choice/:id/remove_choice/:choice_id" => 'embeddable/multiple_choices#remove_choice', :as => 'remove_choice_embeddable_multiple_choice', :constraints => { :id => /\d+/, :choice_id => /\d+/ }

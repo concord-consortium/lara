@@ -122,27 +122,68 @@ class InteractivePage < ActiveRecord::Base
                                     :show_interactive,
                                     :show_info_assessment])
                                         
-    page_json[:interactive] = []
-    page_json[:embeddable] = []
+    page_json[:interactives] = []
+    page_json[:embeddables] = []
         
     self.interactives.each do |inter|
-      page_json[:interactive] << inter.as_json(only:[:caption, 
-                                                     :credit, 
-                                                     :height, 
-                                                     :width, 
-                                                     :poster_url])
+      interactive_hash = inter.as_json(only:[:caption, 
+                                             :credit, 
+                                             :height, 
+                                             :width, 
+                                             :poster_url])
+      interactive_hash['type'] = inter.class.name
+                                                   
+      page_json[:interactives] << interactive_hash
     end
     self.embeddables.each do |embed|
-      page_json[:embeddable] << embed.as_json(only:[:show_as_menu,
-                                                    :prompt,
-                                                    :prediction_feedback,
-                                                    :name,:custom,
-                                                    :enable_check_answer,
-                                                    :give_prediction_feedback,
-                                                    :is_prediction,
-                                                    :multi_answer])
+      embeddable_hash = embed.as_json(only:[:show_as_menu,
+                                            :prompt,
+                                            :prediction_feedback,
+                                            :name,:custom,
+                                            :enable_check_answer,
+                                            :give_prediction_feedback,
+                                            :is_prediction,
+                                            :multi_answer])
+      embeddable_hash['type'] = embed.class.name                                             
+      
+      page_json[:embeddables] << embeddable_hash
     end
   
     return page_json
+  end
+  
+  def self.extact_from_hash(page_json_object)
+    
+    #pages = activity_json_object[:pages]
+    
+    {
+      name: page_json_object['name'],
+      position: page_json_object['position'],
+      text: page_json_object['text'],
+      layout: page_json_object['layout'],
+      sidebar: page_json_object['sidebar'],
+      sidebar_title: page_json_object['sidebar_title'],
+      show_introduction: page_json_object['show_introduction'],
+      show_sidebar: page_json_object['show_sidebar'],
+      show_interactive: page_json_object['show_interactive'],
+      show_info_assessment: page_json_object['show_info_assessment']
+    }
+  end
+  
+  def self.import(page_json_object)
+    import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+    InteractivePage.transaction do
+      import_page.save!(validate: false)
+      page_json_object['interactives'].each do |inter|
+        import_interactive = inter['type'].constantize.new(inter.except('type'))
+        import_page.add_interactive(import_interactive, nil, false)
+      end
+      page_json_object['embeddables'].each do |embed|
+        import_embeddable = embed['type'].constantize.new(embed.except('type'))
+        import_embeddable.save!(validate: false)
+        import_page.add_embeddable(import_embeddable)
+      end
+    end
+    return import_page
   end
 end
