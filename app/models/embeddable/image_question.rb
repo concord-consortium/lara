@@ -30,6 +30,14 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     return Embeddable::ImageQuestion.new(self.to_hash)
   end
 
+  def export
+    return self.as_json(only:[:name,
+                              :prompt,
+                              :drawing_prompt,
+                              :bg_source,
+                              :bg_url])
+  end
+  
   def is_shutterbug?
     bg_source == 'Shutterbug'
   end

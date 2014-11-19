@@ -88,6 +88,24 @@ module Embeddable
       end
       return mc
     end
+    
+    def export
+      mc_export = as_json(only:[:name,
+                                :prompt,
+                                :custom,
+                                :enable_check_answer,
+                                :multi_answer,
+                                :show_as_menu])
+      
+      mc_export[:choices] = []
+      
+      self.choices.each do |choice|
+        mc_export[:choices] << choice.export
+      end
+      
+      return mc_export                          
+                  
+    end
 
     def self.name_as_param
       :embeddable_multiple_choice

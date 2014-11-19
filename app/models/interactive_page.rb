@@ -108,9 +108,7 @@ class InteractivePage < ActiveRecord::Base
   end
   
   def export
-    
-    #new_page = InteractivePage.new(self.to_hash)
-    
+
     page_json = self.as_json(only: [:name, 
                                     :position, 
                                     :text, 
@@ -124,26 +122,15 @@ class InteractivePage < ActiveRecord::Base
                                         
     page_json[:interactives] = []
     page_json[:embeddables] = []
-        
+    
     self.interactives.each do |inter|
-      interactive_hash = inter.as_json(only:[:caption, 
-                                             :credit, 
-                                             :height, 
-                                             :width, 
-                                             :poster_url])
+      interactive_hash = inter.export
       interactive_hash['type'] = inter.class.name
                                                    
       page_json[:interactives] << interactive_hash
     end
     self.embeddables.each do |embed|
-      embeddable_hash = embed.as_json(only:[:show_as_menu,
-                                            :prompt,
-                                            :prediction_feedback,
-                                            :name,:custom,
-                                            :enable_check_answer,
-                                            :give_prediction_feedback,
-                                            :is_prediction,
-                                            :multi_answer])
+      embeddable_hash = embed.export
       embeddable_hash['type'] = embed.class.name                                             
       
       page_json[:embeddables] << embeddable_hash
