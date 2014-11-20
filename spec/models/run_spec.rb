@@ -452,7 +452,8 @@ describe Run do
             stub_http_request(:post, remote_endpoint).to_return(
               :body   => "boo", # TODO: What returns?
               :status => 503)
-            run.send_to_portal([or_answer,mc_answer]).should be_false
+            # We now expect the error message to include payload information
+            expect {run.send_to_portal([or_answer,mc_answer])}.to raise_error Run::PortalUpdateIncomplete, /payload/
           end
         end
       end

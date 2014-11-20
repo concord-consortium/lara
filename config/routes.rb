@@ -121,8 +121,9 @@ LightweightStandalone::Application.routes.draw do
   match "/home/bad_browser" => "home#bad_browser"
 
   # Web interface to show the delayed jobs for admins
-  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post], :constraints => lambda { |request|
-    warden = request.env['warden']
-    warden.user && warden.user.admin?
-  }
+  # unfortunately this route has caused other route constraints to stop working
+  # match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post], :constraints => lambda { |request|
+  #   warden = request.env['warden']
+  #   warden.user && warden.user.admin?
+  # }
 end
