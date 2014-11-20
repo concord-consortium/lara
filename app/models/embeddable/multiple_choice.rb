@@ -106,6 +106,16 @@ module Embeddable
       return mc_export                          
                   
     end
+    
+    def self.import (import_hash)
+      choices = import_hash['choices']
+      import_mc = self.new(import_hash.except('choices'))
+      choices.each do |c|
+        choice = Embeddable::MultipleChoiceChoice.new( choice: c['choice'], prompt: c['prompt'], is_correct: c['is_correct'] )
+        import_mc.choices << choice
+      end
+      import_mc
+    end
 
     def self.name_as_param
       :embeddable_multiple_choice

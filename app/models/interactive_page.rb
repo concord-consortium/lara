@@ -162,11 +162,11 @@ class InteractivePage < ActiveRecord::Base
     InteractivePage.transaction do
       import_page.save!(validate: false)
       page_json_object['interactives'].each do |inter|
-        import_interactive = inter['type'].constantize.new(inter.except('type'))
+        import_interactive = inter['type'].constantize.import(inter.except('type'))
         import_page.add_interactive(import_interactive, nil, false)
       end
       page_json_object['embeddables'].each do |embed|
-        import_embeddable = embed['type'].constantize.new(embed.except('type'))
+        import_embeddable = embed['type'].constantize.import(embed.except('type'))
         import_embeddable.save!(validate: false)
         import_page.add_embeddable(import_embeddable)
       end

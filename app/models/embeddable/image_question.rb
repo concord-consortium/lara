@@ -38,6 +38,10 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :bg_url])
   end
   
+  def self.import(import_hash)
+    return self.new(import_hash)
+  end
+  
   def is_shutterbug?
     bg_source == 'Shutterbug'
   end

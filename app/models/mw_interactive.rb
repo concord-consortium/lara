@@ -65,4 +65,8 @@ class MwInteractive < ActiveRecord::Base
                               :native_width, 
                               :native_height])
   end
+  
+  def self.import(import_hash)
+    return self.new(import_hash)
+  end
 end

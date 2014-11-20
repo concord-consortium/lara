@@ -35,4 +35,8 @@ class ImageInteractive < ActiveRecord::Base
                               :credit, 
                               :credit_url])
   end
+  
+  def self.import(import_hash)
+    return self.new(import_hash)
+  end
 end
