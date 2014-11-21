@@ -19,10 +19,16 @@ $c_c: #edaa3d;
 .ui-dialog {
   .ui-dialog-titlebar, .ui-dialog-title {
     color: $c_b;
-    background-color: $c_b;
     min-height: 2em;
   }
   .ui-dialog-title {
     display: none;
+  }
+}
+
+.ui-dialog.network-error {
+  .ui-dialog-title {
+    color: #2f70b0;
+    display: inline;
   }
 }
