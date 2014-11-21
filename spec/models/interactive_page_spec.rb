@@ -143,6 +143,14 @@ describe InteractivePage do
     end
   end
 
+  describe '#export' do
+    it 'returns json of an interactive page' do
+      page_json = page.export.as_json
+      page_json['interactives'].length.should == page.interactives.count
+      page_json['embeddables'].length.should == page.embeddables.count
+    end
+  end
+
   describe '#duplicate' do
     it 'returns a new page with values from the source instance' do
       dupe = page.duplicate

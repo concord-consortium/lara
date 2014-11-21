@@ -114,6 +114,13 @@ describe Embeddable::MultipleChoice do
     end
   end
 
+  describe '#export' do
+    it 'returns json of a video interactive' do
+      multichoice_json = multichoice.export.as_json
+      multichoice_json['choices'].length.should == multichoice.choices.count
+    end 
+  end
+
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
       multichoice.duplicate.should be_a_new(Embeddable::MultipleChoice).with( name: multichoice.name, prompt: multichoice.prompt )

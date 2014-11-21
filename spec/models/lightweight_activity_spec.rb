@@ -148,6 +148,13 @@ describe LightweightActivity do
     end
   end
 
+  describe '#export' do
+      it 'returns json of an activity' do
+        activity_json = JSON.parse(activity.export)
+        activity_json['pages'].length.should == activity.pages.count
+    end 
+  end
+
   describe '#duplicate' do
     let(:owner) { FactoryGirl.create(:user) }
 

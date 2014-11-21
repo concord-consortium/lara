@@ -435,6 +435,13 @@ describe LightweightActivitiesController do
     end
   end
 
+  describe '#export' do
+    it "should call 'export' on the activity" do
+      get :export, { :id => act.id }
+      response.should be_success
+    end 
+  end
+
   describe '#resubmit_answers' do
     context 'without a response key' do
       it 'redirects to summary' do
