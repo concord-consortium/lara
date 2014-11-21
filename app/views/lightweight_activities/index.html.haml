@@ -16,6 +16,9 @@
   - if can? :create, LightweightActivity
     %a{ :href => new_activity_path }
       %button=t("NEW_ACTIVITY_BUTTON")
+  - if can? :import, [LightweightActivity, Sequence]
+    %a{ :href => import_status_path, 'data-remote'=>"true" }
+      %button=t("IMPORT")
 
 - if @official_activities.size > 0
   #official_listing_heading.pagination_heading
