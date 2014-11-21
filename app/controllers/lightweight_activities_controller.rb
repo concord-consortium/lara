@@ -140,7 +140,7 @@ class LightweightActivitiesController < ApplicationController
   end
   
   def export
-    authorize! :read, @activity
+    authorize! :export, @activity
     lightweight_activity_json = @activity.export
     send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
   end
