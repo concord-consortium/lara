@@ -6,9 +6,8 @@
     - if params[:edit_mw_int].to_i == interactive.id
       :javascript
         $("a[id^=edit-int-#{interactive.id}]").click()
-  - url = interactive.url
-  - url.gsub!(/https?:/,'') if url
-  %iframe{:src => url, :data => {:aspect_ratio => interactive.aspect_ratio}}
+  
+  %iframe{:src => interactive.url, :data => {:aspect_ratio => interactive.aspect_ratio}}
     Your browser does not support inline frames, or is currently not configured to display inline frames.
     Content can be viewed at the actual source page:
     = link_to interactive.url, interactive.url

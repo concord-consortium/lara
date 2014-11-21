@@ -55,7 +55,7 @@ module InteractiveRunHelper
       url = interactive_run.learner_url
     end
     url = interactive.url if url.blank?
-    url.gsub!(/https?:/,'') if url
+    
     data = {
       :aspect_ratio => interactive.aspect_ratio
     }
