@@ -193,4 +193,18 @@ describe InteractivePage do
       end
     end
   end
+
+  describe '#import' do
+    it 'imports page from json' do
+      activity_json = JSON.parse(File.read('spec/import_examples/valid_lightwweight_activity_import.json'))
+      activity_json['pages'].each_with_index do |p, i|
+        page = InteractivePage.import(p)
+        page.should be_a(InteractivePage)
+        p['name'].should == page.name
+        p['text'].should == page.text
+        p['sidebar_title'].should == page.sidebar_title
+        p['position'].should be(page.position)
+      end
+    end
+  end
 end

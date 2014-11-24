@@ -202,6 +202,18 @@ describe LightweightActivity do
     end
   end
 
+  describe '#import' do
+    let(:new_owner) { FactoryGirl.create(:user) }
+
+    it 'should return an activity' do
+      json = JSON.parse(File.read('spec/import_examples/valid_lightweight_activity_import.json'))
+      act = LightweightActivity.import(json,new_owner)
+      act.user.should be new_owner
+      act.related.should == json['related']
+      act.pages.count.should == json['pages'].length
+    end
+  end
+
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
