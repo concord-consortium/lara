@@ -30,18 +30,10 @@ describe InteractivePagesController do
   end
 
   describe 'show' do
-    it 'does not route when id is not valid' do
-      begin
-        get :show, :id => 'foo'
-        throw "Should not have been able to route with id='foo'"
-      rescue ActionController::RoutingError
-      end
-    end
 
     it 'renders 404 when the activity does not exist' do
       begin
         get :show, :id => 34
-      rescue ActionController::RoutingError
       rescue ActiveRecord::RecordNotFound
       end
     end
@@ -236,13 +228,6 @@ describe InteractivePagesController do
         act.changed_by.should == @user
       end
 
-      it 'does not route if no LightweightActivity is specified' do
-        begin
-          post :create
-          throw "Should not have been able to route without an ID"
-        rescue ActionController::RoutingError
-        end
-      end
     end
 
     describe 'edit' do
@@ -325,7 +310,7 @@ describe InteractivePagesController do
         begin
           post :destroy, { :_method => 'delete' }
           throw "Should not have been able to route with no id"
-        rescue ActionController::RoutingError
+        rescue ActiveRecord::RecordNotFound
         end
       end
     end

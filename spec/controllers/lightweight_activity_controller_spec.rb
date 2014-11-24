@@ -21,14 +21,6 @@ describe LightweightActivitiesController do
   end
 
   describe '#show' do
-    it 'does not route when id is not valid' do
-      begin
-        get :show, :id => 'foo'
-        throw "Should not have been able to route with id='foo'"
-      rescue ActionController::RoutingError
-      end
-    end
-
     it 'renders 404 when the activity does not exist' do
       begin
         get :show, :id => 9876548376394
@@ -149,13 +141,6 @@ describe LightweightActivitiesController do
   end
 
   describe '#summary' do
-    it 'does not route when id is not valid' do
-      begin
-        get :summary, :id => 'foo'
-        throw "Should not have been able to route with id='foo'"
-      rescue ActionController::RoutingError
-      end
-    end
 
     it 'renders 404 when the activity does not exist' do
       begin
@@ -283,13 +268,6 @@ describe LightweightActivitiesController do
     end
 
     describe 'delete' do
-      it 'does not route without an ID' do
-        begin
-          post :destroy, { :_method => 'delete' }
-          throw "Should not have been able to route with no id"
-        rescue ActionController::RoutingError
-        end
-      end
 
       it 'removes the specified activity from the database with a message' do
         act
@@ -317,14 +295,7 @@ describe LightweightActivitiesController do
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
 
-      it 'does not route without an id and page_id' do
-        begin
-          get :move_up, {:id => act.id}
-          throw "Should not have been able to route with no page_id"
-        rescue ActionController::RoutingError
-        end
-      end
-
+      
       it 'decrements the position value of the page' do
         page = act.pages[2]
         old_position = page.position
@@ -362,14 +333,6 @@ describe LightweightActivitiesController do
           act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
         end
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
-      end
-
-      it 'does not route without an id and page_id' do
-        begin
-          get :move_down, {:id => act.id}
-          throw "Should not have been able to route with no page_id"
-        rescue ActionController::RoutingError
-        end
       end
 
       it 'increments the position value of the page' do

@@ -22,13 +22,6 @@ describe RunsController do
       end
     end
 
-    it 'requires 16 character IDs' do
-      begin
-        get :show, :id => 'short', :activity_id => activity.id
-        throw 'Should not be able to route with id "short"'
-      rescue ActionController::RoutingError
-      end
-    end
   end
 
   describe '#index' do
