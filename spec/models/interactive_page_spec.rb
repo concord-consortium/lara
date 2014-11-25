@@ -196,7 +196,7 @@ describe InteractivePage do
 
   describe '#import' do
     it 'imports page from json' do
-      activity_json = JSON.parse(File.read('spec/import_examples/valid_lightwweight_activity_import.json'))
+      activity_json = JSON.parse(File.read('spec/import_examples/valid_lightweight_activity_import.json'))
       activity_json['pages'].each_with_index do |p, i|
         page = InteractivePage.import(p)
         page.should be_a(InteractivePage)
