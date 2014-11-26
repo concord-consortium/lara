@@ -14,7 +14,10 @@
   - if can? :create, Sequence
     %a{ :href => new_sequence_path }
       %button=t("NEW_SEQUENCE_BUTTON")
-
+  - if can? :import, [LightweightActivity, Sequence]
+    %a{ :href => import_status_path, 'data-remote'=>"true" }
+      %button=t("IMPORT")
+      
 -if @activities
   #activity_listing_head
     %h1 Activities:

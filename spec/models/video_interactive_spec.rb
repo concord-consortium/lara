@@ -49,6 +49,13 @@ describe VideoInteractive do
     end
   end
 
+  describe '#export' do
+    it 'returns json of a video interactive' do
+      video_interactive_json = video_interactive.export.as_json
+      video_interactive_json['sources'].length.should == video_interactive.sources.count
+    end 
+  end
+
   describe '#duplicate' do
     it 'is a new instance of VideoInteractive with values' do
       video_interactive.duplicate.should be_a_new(VideoInteractive).with( poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit, width: video_interactive.width, height: video_interactive.height )

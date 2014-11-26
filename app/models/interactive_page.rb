@@ -106,4 +106,71 @@ class InteractivePage < ActiveRecord::Base
     end
     return new_page
   end
+  
+  def export
+
+    page_json = self.as_json(only: [:name, 
+                                    :position, 
+                                    :text, 
+                                    :layout, 
+                                    :sidebar, 
+                                    :sidebar_title, 
+                                    :show_introduction, 
+                                    :show_sidebar, 
+                                    :show_interactive,
+                                    :show_info_assessment])
+                                        
+    page_json[:interactives] = []
+    page_json[:embeddables] = []
+    
+    self.interactives.each do |inter|
+      interactive_hash = inter.export
+      interactive_hash['type'] = inter.class.name
+                                                   
+      page_json[:interactives] << interactive_hash
+    end
+    self.embeddables.each do |embed|
+      embeddable_hash = embed.export
+      embeddable_hash['type'] = embed.class.name                                             
+      
+      page_json[:embeddables] << embeddable_hash
+    end
+  
+    return page_json
+  end
+  
+  def self.extact_from_hash(page_json_object)
+    
+    #pages = activity_json_object[:pages]
+    
+    {
+      name: page_json_object['name'],
+      position: page_json_object['position'],
+      text: page_json_object['text'],
+      layout: page_json_object['layout'],
+      sidebar: page_json_object['sidebar'],
+      sidebar_title: page_json_object['sidebar_title'],
+      show_introduction: page_json_object['show_introduction'],
+      show_sidebar: page_json_object['show_sidebar'],
+      show_interactive: page_json_object['show_interactive'],
+      show_info_assessment: page_json_object['show_info_assessment']
+    }
+  end
+  
+  def self.import(page_json_object)
+    import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+    InteractivePage.transaction do
+      import_page.save!(validate: false)
+      page_json_object['interactives'].each do |inter|
+        import_interactive = inter['type'].constantize.import(inter.except('type'))
+        import_page.add_interactive(import_interactive, nil, false)
+      end
+      page_json_object['embeddables'].each do |embed|
+        import_embeddable = embed['type'].constantize.import(embed.except('type'))
+        import_embeddable.save!(validate: false)
+        import_page.add_embeddable(import_embeddable)
+      end
+    end
+    return import_page
+  end
 end

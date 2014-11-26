@@ -148,6 +148,13 @@ describe LightweightActivity do
     end
   end
 
+  describe '#export' do
+      it 'returns json of an activity' do
+        activity_json = JSON.parse(activity.export)
+        activity_json['pages'].length.should == activity.pages.count
+    end 
+  end
+
   describe '#duplicate' do
     let(:owner) { FactoryGirl.create(:user) }
 
@@ -192,6 +199,18 @@ describe LightweightActivity do
           activity.pages[i].last?.should be(p.last?)
         end
       end
+    end
+  end
+
+  describe '#import' do
+    let(:new_owner) { FactoryGirl.create(:user) }
+
+    it 'should return an activity' do
+      json = JSON.parse(File.read('spec/import_examples/valid_lightweight_activity_import.json'))
+      act = LightweightActivity.import(json,new_owner)
+      act.user.should be new_owner
+      act.related.should == json['related']
+      act.pages.count.should == json['pages'].length
     end
   end
 

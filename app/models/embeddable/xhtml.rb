@@ -22,6 +22,14 @@ module Embeddable
     def duplicate
       return Embeddable::Xhtml.new(self.to_hash)
     end
+    
+    def export
+      self.as_json(only:[:name, :content])
+    end
+    
+    def self.import(import_hash)
+      return self.new(import_hash)
+    end
 
     def self.name_as_param
       :embeddable_xhtml

@@ -130,7 +130,21 @@ class LightweightActivitiesController < ApplicationController
       redirect_to activities_path
     end
   end
-
+  
+  def show_status
+    @message = params[:message] || ''
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('export')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+  
+  def export
+    authorize! :export, @activity
+    lightweight_activity_json = @activity.export
+    send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
+  end
+  
   def move_up
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
