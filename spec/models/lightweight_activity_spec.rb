@@ -150,8 +150,7 @@ describe LightweightActivity do
 
   describe '#export' do
       it 'returns json of an activity' do
-        activity_json = JSON.parse(activity.export)
-        activity_json['pages'].length.should == activity.pages.count
+        activity.export[:pages].length.should == activity.pages.count
     end 
   end
 

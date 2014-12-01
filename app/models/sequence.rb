@@ -7,7 +7,8 @@ class Sequence < ActiveRecord::Base
   belongs_to :user
   belongs_to :theme
   belongs_to :project
-
+  
+  has_many :imports, as: :import_item
 
   # scope :newest, order("updated_at DESC")
   # TODO: Sequences and possibly activities will eventually belong to projects e.g. HAS, SFF
@@ -52,6 +53,18 @@ class Sequence < ActiveRecord::Base
       thumbnail_url: thumbnail_url
     }
   end
+  
+  def fix_activity_position(positions)
+    # This is not necessary, as 'lightweight_activities_sequences' is ordered by
+    # position, so we already copied and add activities in a right order. However
+    # copying exact position values seems to be safer and more resistant
+    # to possible errors in the future.
+    self.lightweight_activities_sequences.each_with_index do |sa, i|
+      sa.position = positions[i]
+      sa.save!
+    end
+    self.save!
+  end
 
   def duplicate(new_owner)
     new_sequence = Sequence.new(self.to_hash)
@@ -67,17 +80,29 @@ class Sequence < ActiveRecord::Base
         positions << sa.position
       end
       new_sequence.save!
-      # This is not necessary, as 'lightweight_activities_sequences' is ordered by
-      # position, so we already copied and add activities in a right order. However
-      # copying exact position values seems to be safer and more resistant
-      # to possible errors in the future.
-      new_sequence.lightweight_activities_sequences.each_with_index do |sa, i|
-        sa.position = positions[i]
-        sa.save!
-      end
-      new_sequence.save!
+      new_sequence.fix_activity_position(positions)
     end
     return new_sequence
+  end
+
+  def export
+    sequence_json = self.as_json(only: [:title,
+                                        :description,
+                                        :abstract,
+                                        :theme_id,
+                                        :project_id,
+                                        :logo,
+                                        :display_title,
+                                        :thumbnail_url])
+    sequence_json[:activities] = []
+    self.lightweight_activities.each_with_index do |a,i|
+      activity_hash = a.export
+      activity_hash['position'] = i+1
+      sequence_json[:activities] << activity_hash
+    end
+    sequence_json[:type] = "Sequence"
+    sequence_json[:export_site] = "Lightweight Activities Runtime and Authoring"
+    return sequence_json.to_json
   end
 
   def serialize_for_portal(host)
@@ -93,6 +118,39 @@ class Sequence < ActiveRecord::Base
     }
     data['activities'] = self.activities.map { |a| a.serialize_for_portal(host) }
     data
+  end
+  
+  def self.extact_from_hash(sequence_json_object)
+    { 
+      abstract: sequence_json_object['abstract'],
+      description: sequence_json_object['description'],
+      display_title: sequence_json_object['display_title'],
+      logo: sequence_json_object['logo'],
+      project_id: sequence_json_object['project_id'],
+      theme_id: sequence_json_object['theme_id'],
+      thumbnail_url: sequence_json_object['thumbnail_url'],
+      title: sequence_json_object['title']
+    }
+    
+  end
+  
+  def self.import(sequence_json_object, new_owner)
+    import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
+    Sequence.transaction do
+      import_sequence.title = "Import of #{import_sequence.title}"
+      import_sequence.user = new_owner
+      positions = []
+      sequence_json_object['activities'].each do |sa|
+        import_a = LightweightActivity.import(sa, new_owner)
+        import_a.name = import_a.name.sub('Import of ', '')
+        import_a.save!
+        import_sequence.activities << import_a
+        positions << sa['position']
+      end
+      import_sequence.save!
+      import_sequence.fix_activity_position(positions)
+    end
+    return import_sequence
   end
 
   private

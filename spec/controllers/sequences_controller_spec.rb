@@ -111,6 +111,13 @@ describe SequencesController do
     end
   end
 
+  describe '#export' do
+    it "should call 'export' on the sequence" do
+      get :export, { :id => sequence.id }
+      response.should be_success
+    end 
+  end
+
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested sequence" do
