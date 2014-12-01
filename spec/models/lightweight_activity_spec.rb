@@ -150,8 +150,7 @@ describe LightweightActivity do
 
   describe '#export' do
       it 'returns json of an activity' do
-        activity_json = JSON.parse(activity.export)
-        activity_json['pages'].length.should == activity.pages.count
+        activity.export[:pages].length.should == activity.pages.count
     end 
   end
 
@@ -206,7 +205,7 @@ describe LightweightActivity do
     let(:new_owner) { FactoryGirl.create(:user) }
 
     it 'should return an activity' do
-      json = JSON.parse(File.read('spec/import_examples/valid_lightweight_activity_import.json'))
+      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
       act = LightweightActivity.import(json,new_owner)
       act.user.should be new_owner
       act.related.should == json['related']

@@ -146,6 +146,20 @@ class SequencesController < ApplicationController
     redirect_to edit_sequence_path(@new_sequence)
   end
 
+  def show_status
+    @message = params[:message] || ''
+    respond_to do |format|
+      format.js { render :json => { :html => render_to_string('export')}, :content_type => 'text/json' }
+      format.html
+    end
+  end
+  
+  def export
+    authorize! :export, @sequence
+    sequence_json = @sequence.export
+    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
+  end
+
   private
   def set_sequence
     @sequence = Sequence.find(params[:id])

@@ -23,6 +23,8 @@ LightweightStandalone::Application.routes.draw do
       get :reorder_activities
       get :publish
       get :duplicate
+      get :export
+      get :show_status
     end
     resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end

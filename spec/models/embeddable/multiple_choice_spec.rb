@@ -115,7 +115,7 @@ describe Embeddable::MultipleChoice do
   end
 
   describe '#export' do
-    it 'returns json of a video interactive' do
+    it 'returns json of a multiple choice question' do
       multichoice_json = multichoice.export.as_json
       multichoice_json['choices'].length.should == multichoice.choices.count
     end 

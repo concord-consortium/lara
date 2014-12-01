@@ -114,6 +114,13 @@ describe Sequence do
     end
   end
 
+  describe '#export' do
+    it 'returns json of a sequence' do
+      sequence_json = JSON.parse(sequence.export)
+      sequence_json['activities'].length.should == sequence.activities.count
+    end 
+  end
+
   describe '#duplicate' do
     let(:owner) { FactoryGirl.create(:user) }
     let(:sequence_with_activities) do

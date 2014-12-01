@@ -16,6 +16,8 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :theme
   belongs_to :project
 
+  has_many :imports, as: :import_item
+
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
   # validates_length_of :name, :maximum => 50
@@ -112,7 +114,9 @@ class LightweightActivity < ActiveRecord::Base
     self.pages.each do |p|
       activity_json[:pages] << p.export
     end
-    return activity_json.to_json
+    activity_json[:type] = "LightweightActivity"
+    activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
+    return activity_json
   end
   
   def self.extact_from_hash(activity_json_object)
