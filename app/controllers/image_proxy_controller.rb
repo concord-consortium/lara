@@ -2,7 +2,7 @@
 class ImageProxyController < ActionController::Base
   def get
     raw_url = params[:url]
-    raw_url = "http://#{raw_url}" if !(raw_url =~ /http/)
+    raw_url = "http://#{raw_url}" if !((raw_url =~ /http/) ||  (raw_url =~ %r[^//]))
     url = URI.parse(raw_url)
     http = Net::HTTP.new url.host, url.port
     http.use_ssl = true if url.scheme == 'https'
