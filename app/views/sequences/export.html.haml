@@ -1,0 +1,14 @@
+.export
+  .header
+    %span.title Export Sequence :
+    %span.close.close_link
+      close (✖)
+  .info
+    %span Export <b>#{@sequence.name}</b>
+    
+  .buttons
+    = link_to "export",export_sequence_path,{ :class => 'btn btn-primary', :id =>'export'} 
+    %a.btn.btn-primary.close
+      cancel
+  .message
+    =@message

@@ -19,4 +19,8 @@ class VideoSource < ActiveRecord::Base
   def duplicate
     return VideoSource.new(self.to_hash)
   end
+  
+  def export
+    return self.as_json(only:[:url,:format])
+  end
 end

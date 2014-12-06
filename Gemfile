@@ -44,6 +44,7 @@ gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :b
 gem "sqlite3"
 gem 'mysql2'
 gem "delayed_job_active_record"
+gem "delayed_job_web", "1.2.5"
 gem "daemons"
 
 # put font-awesome in asset pipeline. Alternately we could use a CDN.
@@ -136,7 +137,7 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem 'capistrano-autoscaling', '0.0.8.4', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
+gem 'capistrano-autoscaling', '0.0.8.5', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
 # add some tools for 

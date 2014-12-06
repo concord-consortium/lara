@@ -23,6 +23,8 @@ LightweightStandalone::Application.routes.draw do
       get :reorder_activities
       get :publish
       get :duplicate
+      get :export
+      get :show_status
     end
     resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end
@@ -46,6 +48,8 @@ LightweightStandalone::Application.routes.draw do
       get 'publish'
       get 'duplicate'
       get 'preview'
+      get 'export'
+      get 'show_status'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
@@ -99,6 +103,8 @@ LightweightStandalone::Application.routes.draw do
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
   match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
+  match "/import" => 'import#import_status', :as => 'import_status', :via => 'get'
+  match "/import" => 'import#import', :as => 'import', :via => 'post'
 
   # These routes didn't work as nested resources
   delete "/embeddable/multiple_choice/:id/remove_choice/:choice_id" => 'embeddable/multiple_choices#remove_choice', :as => 'remove_choice_embeddable_multiple_choice', :constraints => { :id => /\d+/, :choice_id => /\d+/ }
@@ -119,4 +125,11 @@ LightweightStandalone::Application.routes.draw do
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
   match "/home/bad_browser" => "home#bad_browser"
+
+  # Web interface to show the delayed jobs for admins
+  # unfortunately this route has caused other route constraints to stop working?
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post], :constraints => lambda { |request|
+    warden = request.env['warden']
+    warden.user && warden.user.admin?
+  }
 end

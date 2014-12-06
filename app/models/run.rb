@@ -211,20 +211,8 @@ class Run < ActiveRecord::Base
     )
     # TODO: better error detection?
     is_success = response.success?
-    if(is_success)
-      is_success
-    else
-      raise "response_code:#{response.code}\
-             response_message:#{response.message}\
-             paylaod:#{payload}\
-             auth_token:#{auth_token}\
-             remote_endpoint:#{remote_endpoint}\
-             run_id: #{id}\
-             run_key: #{key}\
-             dirty: #{dirty?}\
-             activity: #{activity.name} [#{activity_id}]\
-             sequence: #{sequence_id}"
-    end
+    abort_job_and_requeue(error_string_for(response, payload, auth_token)) unless is_success
+    is_success
   end
 
   def queue_for_portal(answer, auth_key=nil)
@@ -243,10 +231,10 @@ class Run < ActiveRecord::Base
     return answers.select{ |a| a.dirty? }
   end
 
-  def abort_job_and_requeue
+  def abort_job_and_requeue(message="")
     # If a method throws an exception it will be rerun later.
     # The method will be retried up to 25 times with exp. falloff.
-    raise PortalUpdateIncomplete.new
+    raise PortalUpdateIncomplete.new(message)
   end
 
   def submit_answers_now(auth_key=nil)
@@ -379,6 +367,21 @@ class Run < ActiveRecord::Base
       info.gsub(/^\s+/,'')
     # rescue NameError => e
     # end
+  end
+  
+  def error_string_for(response, payload, auth_token)
+    error_string = "response_code:#{response.code}\
+                    response_message:#{response.message}\
+                    payload:#{payload}\
+                    auth_token:#{auth_token}\
+                    remote_endpoint:#{remote_endpoint}\
+                    run_id: #{id}\
+                    run_key: #{key}\
+                    dirty: #{dirty?}\
+                    activity: #{activity.name} [#{activity_id}]\
+                    sequence: #{sequence_id}"
+   
+    error_string    
   end
 
 end

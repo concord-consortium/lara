@@ -5,6 +5,7 @@
       = link_to sequence.title, sequence, :class => 'container_link', :title => 'Preview Sequence'
     %div.action_menu_header_right
       %ul.menu
+        %li.export= link_to('Export', show_status_sequence_path(sequence), :remote => true) if can? :export, sequence
         %li.copy= link_to "Copy", duplicate_sequence_path(sequence) if can? :duplicate, sequence
         %li.edit= link_to "Edit", edit_sequence_path(sequence) if can? :update, sequence
         %li.delete= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence

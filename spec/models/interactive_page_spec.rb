@@ -143,6 +143,14 @@ describe InteractivePage do
     end
   end
 
+  describe '#export' do
+    it 'returns json of an interactive page' do
+      page_json = page.export.as_json
+      page_json['interactives'].length.should == page.interactives.count
+      page_json['embeddables'].length.should == page.embeddables.count
+    end
+  end
+
   describe '#duplicate' do
     it 'returns a new page with values from the source instance' do
       dupe = page.duplicate
@@ -182,6 +190,20 @@ describe InteractivePage do
       it 'has copies of the original embeddables' do
         # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
         page.duplicate.embeddables.length.should be(page.embeddables.length)
+      end
+    end
+  end
+
+  describe '#import' do
+    it 'imports page from json' do
+      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
+      activity_json['pages'].each_with_index do |p, i|
+        page = InteractivePage.import(p)
+        page.should be_a(InteractivePage)
+        p['name'].should == page.name
+        p['text'].should == page.text
+        p['sidebar_title'].should == page.sidebar_title
+        p['position'].should be(page.position)
       end
     end
   end

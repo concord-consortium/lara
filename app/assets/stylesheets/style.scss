@@ -469,10 +469,10 @@ ul.quiet_list {
       float: left;
       font-size: 1.2em;
       font-weight: bold;
-      width: 82%;
+      width: 61%;
     }
     .action_menu_header_right {
-      width: 33%;
+      width: 40%;
     }
     .action_menu_header_right.themes {
       width: 20%;
@@ -590,6 +590,14 @@ ul#new {
     padding-left: 18px;
     text-decoration: none;
   }
+}
+li.export a {
+    /* We need an URL icon */
+    background-size: 14px;
+    color: #333;
+    height: 14px;
+    padding-left: 18px;
+    text-decoration: none;
 }
 li.copy a {
     /* We need an URL icon */
@@ -918,4 +926,44 @@ ul#new-menu {
   button {
     margin: 5px 0 5px 15px;
   }
+}
+
+.import_activity_sequence, .export {
+    padding: 0px;
+    .title{
+      font-weight: bold;
+    }
+    .header {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      margin: 0px;
+      padding: 0px;
+      min-height: 1.1em;
+      height: auto;
+      border-bottom: 2px solid;
+      margin-bottom: 10px;
+    }
+    .info {
+      margin-top: 10px;
+    }
+    .close_link{
+      text-align: right;
+      float: right;
+      color: #444;
+      padding-bottom: 5px;
+      &:hover, &:active {
+        text-decoration: underline;
+        color: #888;
+      }
+    }
+    .buttons {
+      float: right;
+    }
+    .message {
+      clear: both;
+      text-align: center;
+      color: red;
+    }
 }

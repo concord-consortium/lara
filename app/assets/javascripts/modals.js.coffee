@@ -23,3 +23,19 @@ $ ->
     $modal_container.hide()
     $modal.hide()
     false
+
+  $(document).on 'submit', 'form#import', ->
+    filedata = new FormData(this)
+    $.ajax
+      type: "POST"
+      url: $(this).attr("action")
+      data: filedata
+      cache: false
+      processData: false
+      contentType: false
+      error: (data) ->
+        message = $.parseJSON(data.responseText)
+        $(".message").html message.error
+        return
+  
+    false

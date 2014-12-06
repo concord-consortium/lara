@@ -137,7 +137,7 @@ class ImageQuestionDrawingTool
 
   shutterbug_fail_hander: (message) ->
     $('#modal-dialog').html "<div class='server-error'>#{message}</div>"
-    $('#modal-dialog').dialog(title: "Oops", modal: true)
+    $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error")
     stopWaiting()
     @save_failed()
     @set_dialog_buttons_enabled(true)
@@ -148,7 +148,7 @@ class ImageQuestionDrawingTool
       stopWaiting()
     , @image_question_id)
     @shutterbug.setFailureCallback (jqXHR, textStatus, errorThrown) => 
-      @shutterbug_fail_hander("Could not save your snapshot after 30 seconds. Please try again later.")
+      @shutterbug_fail_hander("Could not take your snapshot. Please try again later.")
       stopWaiting()
       @set_dialog_buttons_enabled(true)
       @hide_dialog()

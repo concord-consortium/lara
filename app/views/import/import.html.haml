@@ -1,0 +1,20 @@
+.import_activity_sequence
+  .header
+    %span.title Import Activity/Sequence :
+    %span.close.close_link
+      close (✖)
+  
+  = form_tag import_path, :method => :post, :remote => true, :multipart => true, :id => "import" do
+    .info
+      %table
+        %tr
+          %td
+            -#%input{:type => "file", "name" => "file", "class" => "native-file-input"}
+            =file_field 'import', 'import', accept: 'application/json', class: 'import_file'
+    .buttons
+      -#= link_to "Import", import_activities_path, {:remote => true, :class => 'btn btn-primary'}
+      =submit_tag "import", class: "import btn btn-primary"
+      %a.btn.btn-primary.close
+        cancel
+    .message
+      =@message

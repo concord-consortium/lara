@@ -65,8 +65,10 @@ module LightweightStandalone
 
     # Configuration for rack-environmental middleware, see https://github.com/techiferous/rack-environmental
     config.middleware.use Rack::Environmental,
+                            :delayed_job => { :url => /delayed_job/,
+                                              :style => :none},
                             :svg_edit    => { :url => /svg-editor/,
-                                               :style => :none},
+                                              :style => :none},
                             :staging     => { :url => /staging\..+$/,
                                               :color => "blueviolet" },
                             :test        => { :url => /jasmine/,
