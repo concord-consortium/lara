@@ -82,8 +82,6 @@ class ImageQuestionDrawingTool
     # See: https://www.pivotaltracker.com/story/show/77973722
     @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
 
-    @create_snapshot_shutterbug()
-    @create_drawing_tool_shutterbug()
     @create_hooks()
     @update_display()
 
@@ -92,7 +90,7 @@ class ImageQuestionDrawingTool
 
   create_hooks: ->
     @$snapshot_button.click =>
-      @shutterbug.getDomSnapshot()
+      @take_interactive_snapshot()
       startWaiting 'Please wait while the snapshot is being taken...'
       @show_dialog()
 
@@ -104,7 +102,7 @@ class ImageQuestionDrawingTool
     @$replace_button.click =>
       @drawing_tool.clear(true)
       startWaiting 'Please wait while the snapshot is being taken...'
-      @shutterbug.getDomSnapshot()
+      @take_interactive_snapshot()
       @show_dialog()
 
     @$edit_button.click =>
@@ -142,26 +140,34 @@ class ImageQuestionDrawingTool
     @save_failed()
     @set_dialog_buttons_enabled(true)
 
-  create_snapshot_shutterbug: ->
-    @shutterbug = new Shutterbug(@interactive_selector, null, (image_tag) =>
-      @set_image_source($(image_tag).attr("src"))
-      stopWaiting()
-    , @image_question_id)
-    @shutterbug.setFailureCallback (jqXHR, textStatus, errorThrown) => 
-      @shutterbug_fail_hander("Could not take your snapshot. Please try again later.")
-      stopWaiting()
-      @set_dialog_buttons_enabled(true)
-      @hide_dialog()
+  take_interactive_snapshot: ->
+    Shutterbug.snapshot
+      selector: @interactive_selector
+      server: SHUTTERBUG_URI # defined in api-urls.js.erb
+      done: (image_src) =>
+        @set_image_source(image_src)
+        stopWaiting()
+      fail: (jqXHR, textStatus, errorThrown) =>
+        @shutterbug_fail_hander("Could not take your snapshot. Please try again later.")
+        stopWaiting()
+        @set_dialog_buttons_enabled(true)
+        @hide_dialog()
+      format: 'jpeg'
+      quality: 0.85
 
-  create_drawing_tool_shutterbug: ->
-    @shutterbug_drawing_tool = new Shutterbug("#{@drawing_tool_selector} .dt-canvas-container", null, (image_tag) =>
-      @copy_to_form_and_save(image_tag)
-    , "drawing_tool_" + @image_question_id)
-    @shutterbug_drawing_tool.setFailureCallback (jqXHR, textStatus, errorThrown) => 
-      @shutterbug_fail_hander("Could not save your drawing after 30 seconds. Please try again later.")
-      stopWaiting()
-      @set_dialog_buttons_enabled(true)
-      # @hide_dialog()
+  take_drawing_tool_snapshot: ->
+    Shutterbug.snapshot
+      selector: "#{@drawing_tool_selector} canvas.lower-canvas"
+      server: SHUTTERBUG_URI # defined in api-urls.js.erb
+      done: (image_src) =>
+        @copy_to_form_and_save(image_src)
+        stopWaiting()
+      fail: (jqXHR, textStatus, errorThrown) =>
+        @shutterbug_fail_hander("Could not save your drawing after 30 seconds. Please try again later.")
+        stopWaiting()
+        @set_dialog_buttons_enabled(true)
+      format: 'jpeg'
+      quality: 0.85
 
   has_image_content: ->
     # This is a shutterbug question, so it's answered if there's a thumbnail
@@ -223,11 +229,11 @@ class ImageQuestionDrawingTool
     # Clear selection so it's not visible on the screenshot.
     @drawing_tool.clearSelection()
     # First part of saving is to get Shutterbug snapshot.
-    @shutterbug_drawing_tool.getDomSnapshot()
+    @take_drawing_tool_snapshot()
 
-  copy_to_form_and_save: (snapshot_image_tag) ->
+  copy_to_form_and_save: (snapshot_src) ->
     # Second part of the save is to copy all the data from dialog to main form and submit it.
-    @$annotated_image_url_field.val($(snapshot_image_tag).attr("src"))
+    @$annotated_image_url_field.val(snapshot_src)
     @$annotation_field.val(@drawing_tool.save())
     @$answer_text_field.val(@$dialog_answer.val())
     @$main_form.submit()

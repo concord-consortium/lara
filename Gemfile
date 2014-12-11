@@ -22,6 +22,7 @@ gem 'default_value_for'
 
 # Rails assets:
 gem 'rails-assets-drawing-tool', '1.2.3'
+gem 'rails-assets-shutterbug', '0.5.2'
 
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
@@ -31,8 +32,6 @@ gem 'uuidtools'
 gem "httparty"
 gem 'exception_notification'
 gem 'newrelic_rpm'
-gem 'shutterbug', '~>0.2.5'
-# gem 'shutterbug', '~>0.2.5', :path => "/Users/npaessel/lab/cc/shutterbug"
 # gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
 gem 'rack-environmental'
 # gem 'sketchily', :path => "/Users/npaessellab/ruby/sketchily"
@@ -140,7 +139,7 @@ gem 'capistrano'
 gem 'capistrano-autoscaling', '0.0.8.5', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
-# add some tools for 
+# add some tools for
 # Tools
 # Security scan
 gem 'brakeman', :require => false

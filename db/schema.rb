@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141028170310) do
+ActiveRecord::Schema.define(:version => 20141126144838) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(:version => 20141028170310) do
     t.integer  "image_question_id"
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.text     "annotation",          :limit => 2147483647
+    t.text     "annotation",          :limit => 4294967294
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                                  :default => false
     t.boolean  "is_final",                                  :default => false
@@ -164,6 +164,15 @@ ActiveRecord::Schema.define(:version => 20141028170310) do
     t.datetime "updated_at",                      :null => false
     t.boolean  "show_lightbox", :default => true
     t.string   "credit_url"
+  end
+
+  create_table "imports", :force => true do |t|
+    t.string   "export_site"
+    t.integer  "user_id"
+    t.integer  "import_item_id"
+    t.string   "import_item_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "interactive_items", :force => true do |t|

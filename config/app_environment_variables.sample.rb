@@ -15,4 +15,4 @@ ENV['SECRET_TOKEN']                      ||= 'use `rake secret` to generate'
 ENV['S3_KEY']                            ||= 'xxxxxxxxxxxxx'
 ENV['S3_SECRET']                         ||= 'xxxxxxxxxxxxx'
 ENV['S3_BIN']                            ||= 'ccshutterbug'
-ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org"
+ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org/shutterbug"

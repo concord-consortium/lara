@@ -15,6 +15,8 @@
 //= require hammerjs
 //= require eventemitter2
 //= require drawing-tool
+//= require shutterbug
+//= require api-urls
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
