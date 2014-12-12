@@ -189,8 +189,8 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   a.next {
     background: transparent url(/assets/page-nav-next.png) no-repeat;
     height: 30px;
-    margin-left: -1px;
-    padding: 7px 0 0 0;
+    margin-left: 0px;
+    padding: 0px;
     width: 30px;
   }
   a.previous.disabled {
@@ -683,25 +683,30 @@ div.block-empty {
   background-position: 2px 2px;
 }
 /* These are unique to the edit view */
-div.edit-meta {
-  border: 1px solid #cccccc;
-  position: fixed;
-  padding: .6em;
-  left: 10px;
-  top: 80px;
-  max-width: 180px;
-  z-index: 2;
-  background-color: white;
-  box-shadow: 2px 2px 5px gray;
-
-  .page-section-controls li {
-    list-style: none;
+#page-section-controls,.page-section-controls{
+  float : right;
+  margin-right: 15px;
+  background-color:#dcf1f5;
+  padding: 1px 2px 2px 2px;
+  
+  input{
+    position: relative;
+    top: 1px;
+    margin: 1px;
+    padding: 0px;
   }
-  ul.tasks {
-    margin-top: 2em;
-    li {
-      list-style-position: inside;
-    }
+  
+  label {
+    margin-right: 30px;
+  }
+  
+  label#page_sidebar{
+    margin-right: 0px;
+  }
+}
+#page-section-controls{
+  input{
+    vertical-align: top;
   }
 }
 /* Activity editing */
@@ -722,6 +727,9 @@ fieldset {
   /* Title */
   .editable[data-name="interactive_page[name]"] form {
     display: inline;
+  }
+  div.edit_interactive_page{
+    padding-bottom: 20px;
   }
   /* Page intro */
   div.instructions, div.sidebar {
@@ -818,13 +826,16 @@ fieldset {
     margin-bottom: 1em;
     font-weight: bold;
     font-size: 1.5em;
-    .edit_trigger, button {
+    .edit_trigger, .preview a, button {
       font-weight: normal;
       font-size: 0.66em;
       color: #6fc5d8;
       background: none;
       text-decoration: underline;
       margin-top: inherit;
+    }
+    .preview {
+      margin-left: 30px;
     }
   }
 }

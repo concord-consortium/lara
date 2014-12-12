@@ -57,7 +57,8 @@ describe "interactive_pages/edit" do
     rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/#{page.id}\/preview"[^>]*>[\s]*Preview[\s]*<\/a>/
     # Used to check for a link back to the activity, but that's in the breadcrumbs now and not part of this view
     # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/edit"[^>]*>[\s]*#{activity.name}[\s]*<\/a>/
-    rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>[\s]*Add another page to #{activity.name}[\s]*<\/a>/
+    # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>[\s]*Add another page to #{activity.name}[\s]*<\/a>/
+    rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>/
     # Same here - this link has gone to breadcrumbs
     # rendered.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
   end
