@@ -188,6 +188,20 @@ class ApplicationController < ActionController::Base
     clear_session_response_key
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
+  
+  
+  def after_sign_out_path_for(resource)
+    if params[:re_login] && params[:user_provider]
+      provider = params[:user_provider]
+      redirect_url = "#{request.protocol}#{request.host_with_port}"
+      params_hash = {
+        :re_login => true,
+        :redirect_uri => redirect_url,
+        :provider => provider
+      }  
+    end
+    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider.split('_')[2].upcase)}/users/sign_out?#{params_hash.to_query}" : root_path 
+  end
 
   def respond_with_edit_form
     respond_to do |format|

@@ -40,6 +40,15 @@ describe HomeController do
         subject.should be_ordered_by "updated_at_desc"
       end
     end
-
   end
+
+  describe "relogin" do
+    let(:domain)    { 'http://portal.org/' }
+    let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
+    it "re-logins to portal" do
+     get :home, {:re_login => true, :provider => auth_path}
+     response.should redirect_to user_omniauth_authorize_path(auth_path)
+    end
+  end
+  
 end
