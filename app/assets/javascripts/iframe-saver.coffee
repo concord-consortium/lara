@@ -17,6 +17,7 @@ class IFrameSaver
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
     @auth_provider = $data_div.data('authprovider')  # through which provider did the current user log in
+    @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @learner_url = null
     @$delete_button = $('#delete_interactive_data')
@@ -49,7 +50,10 @@ class IFrameSaver
           ,
           500
       @iframePhone.addListener 'getAuthInfo', =>
-        @iframePhone.post('authInfo', { provider: @auth_provider, loggedIn: @logged_in })
+        authInfo = { provider: @auth_provider, loggedIn: @logged_in}
+        if @user_email?
+          authInfo.email = @user_email
+        @iframePhone.post('authInfo', authInfo)
       @iframePhone.addListener 'extendedSupport', (opts)=>
         if opts.reset?
           @should_show_delete = opts.reset
