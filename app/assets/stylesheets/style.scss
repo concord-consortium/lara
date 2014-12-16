@@ -98,6 +98,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   clear: both;
   height: 0;
 }
+.alert,.notice{
+  height: 16px;
+}
 .content {
   height: auto;
   margin: 0 auto;
@@ -152,7 +155,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .page-nav {
   position: absolute;
   right: 0;
-  top: 50px;
+  top: 18px;
   .secondary {
     background: #fff;
     bottom: 0 !important;
