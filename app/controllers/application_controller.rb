@@ -193,6 +193,9 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for(resource)
     if params[:re_login] && params[:user_provider]
       provider = params[:user_provider]
+      provider_id = provider.clone
+      provider_id.slice! "cc_portal_"
+      provider_id = provider_id.upcase
       redirect_url = "#{request.protocol}#{request.host_with_port}"
       params_hash = {
         :re_login => true,
@@ -200,7 +203,7 @@ class ApplicationController < ActionController::Base
         :provider => provider
       }  
     end
-    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider.split('_')[2].upcase)}/users/sign_out?#{params_hash.to_query}" : root_path 
+    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path 
   end
 
   def respond_with_edit_form
