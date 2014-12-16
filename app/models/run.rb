@@ -363,6 +363,7 @@ class Run < ActiveRecord::Base
              other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
    other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
      acitvity questions: #{q_activities}
+      portal auth token: #{user.authentication_token if user} 
       EOF
       info.gsub(/^\s+/,'')
     # rescue NameError => e

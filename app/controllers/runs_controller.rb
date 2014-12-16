@@ -55,12 +55,31 @@ class RunsController < ApplicationController
     if current_user.is_admin
       run = Run.find(params[:run_id])
       message = run.info
+      message << "---------------\n"
+      message << remote_info(run)
     end
     render json: { message: message}.to_json
   end
 
+
+
   private
   def set_run
     @run = Run.find_or_create_by_key_and_activity_id(params[:id], params[:activity_id])
+  end
+
+  def remote_info(run)
+    return "no remote details available" if run.remote_endpoint.blank?
+    begin
+      src = "/dataservice/external_activity_data/"
+      dst = "/admin/learner_detail/"
+      info_url = run.remote_endpoint.gsub(src,dst) << ".txt"
+      token = 'Bearer %s' % current_user.authentication_token
+      response = HTTParty.get(info_url,
+        :headers => {"Authorization" => token, "Content-Type" => 'text/plain'})
+    rescue
+      return ""
+    end
+    return response
   end
 end
