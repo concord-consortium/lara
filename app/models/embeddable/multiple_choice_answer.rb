@@ -61,6 +61,10 @@ module Embeddable
       end
       return self.update_attributes(params)
     end
+
+    def blank?
+      self.answers.size == 0
+    end
   end
 
 end
