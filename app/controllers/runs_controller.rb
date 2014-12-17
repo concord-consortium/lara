@@ -104,7 +104,7 @@ class RunsController < ApplicationController
       info_url = run.remote_endpoint.gsub(src,dst) << ".txt"
       token = 'Bearer %s' % current_user.authentication_token
       response = HTTParty.get(info_url,
-        :headers => {"Authorization" => token, "Content-Type" => 'text/plain'})
+        :headers => {"Authorization" => token, "Content-Type" => 'text/plain'}, :timeout => 5)
     rescue
       return ""
     end
