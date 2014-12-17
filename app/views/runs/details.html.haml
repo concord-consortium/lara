@@ -2,40 +2,45 @@
 .run_detail_report
   %h1 
     Run report for 
-    =link_to @report_info
-  %table
-    %tr
-      %th Index
-      %th Run ID
-      %th Student
-      %th Last Login Time
-      %th Last Login IP
-      %th Sequence Run
-      %th Sequence
-      %th Clean?
-      %th Runs
-      %th Page
-      %th Questions:
-      %th Answers:
-      %th Percent complete:
-      %th Collaboration
-      %th Activity
-      %th Report
-    - @runs.each_with_index do |run,index|
-      %tr
-        %td=index
-        %td=run.id
-        %td=@students[index] ? @students[index] : run.user_id
-        %td=run.user ? time_ago_in_words(run.user.last_sign_in_at) : "unknown"
-        %td=run.user ? run.user.current_sign_in_ip : "unknown"
-        %td=run.sequence_run_id || "none"
-        %td=run.sequence ? run.sequence.name : "none"
-        %td=run.dirty? ? " ✖ " : " ✔ "
-        %td=run.run_count || 0
-        %td=run.page ? run.page.position : 0
-        %td=run.num_questions
-        %td=run.num_answers
-        %td=sprintf("%04.1f%", run.percent_complete)
-        %td=run.collaboration_run_id || "none"
-        %td=run.activity.name
-        %td=link_to "report", summary_with_response_path(run.activity,run.key), {:target => "_blank"}
+    =link_to @report_info, @report_info
+  - @runs.each_pair do |sequence, runlist|
+    %h3 Sequence: (#{sequence.id if sequence}) #{sequence.name if sequence}
+    %table
+      %thead
+        %tr
+          %th Run ID
+          %th Student
+          %th Last Login
+          %th Login IP
+          %th Seq. Run
+          %th Clean?
+          %th Runs
+          %th Page
+          %th Answers
+          %th % Done
+          %th Collab
+          %th Activity
+          %th Report
+      %tbody
+        - runlist.each_with_index do |run,index|
+          %tr
+            %td=run.id
+            %td=@students[index] ? @students[index] : run.user_id
+            %td=run.user ? time_ago_in_words(run.user.last_sign_in_at) : "unknown"
+            %td=run.user ? run.user.current_sign_in_ip : "unknown"
+            %td=run.sequence_run_id || "none"
+            / %td=run.sequence ? run.sequence.name : "none"
+            %td=run.dirty? ? " ✖ " : " ✔ "
+            %td=run.run_count || 0
+            %td=run.page ? run.page.position : 0
+            %td #{run.num_answers} / #{run.num_questions}
+            
+            %td=sprintf("%04.1f%", run.percent_complete)
+            %td=run.collaboration_run_id || "none"
+            %td #{run.activity.position(run.sequence) if run.sequence} #{run.activity.name}
+            %td=link_to "report", summary_with_response_path(run.activity,run.key), {:target => "_blank"}
+
+:javascript
+  $( document ).ready(function() {
+    $("table").tablesorter();
+  });

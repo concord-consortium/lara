@@ -3,18 +3,44 @@
   h1 {
     margin: 1em;
   }
+  h3 {
+    font-size: 14;
+    font-weight: bold;
+    color: gray;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+  }
   table {
+    width: 100%;
+    font-family: monospace;
+    font-size: 12px;
     th {
+      cursor: pointer;
       background: black;
       font-weight: bold;
       color: white;
-      border: 1px solid white;  
+      border: 1px solid white;
+      text-decoration: underline;
+      font-size: 13px;
     }
     td,th {
       padding: 10px;
+      white-space: nowrap;
     }
     td {
-      border: 1px solid black;  
+      border: 1px solid black;
+    }
+    .tablesorter-headerDesc {
+      background: gray;
+      *:after {
+        content: " ▼";
+      }
+    }
+    .tablesorter-headerAsc {
+      background: gray;
+      div::after {
+        content: " ▲";
+      }
     }
   }
 }

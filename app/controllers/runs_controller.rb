@@ -85,6 +85,8 @@ class RunsController < ApplicationController
       endpoints      = learners.map { |l| "#{endpoint_base}/#{l}" }
       @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
       @students = @runs.map { |r| @student_learner_map[r.remote_id] }
+      @runs = @runs.group_by { |r| r.sequence }
+      
     end
   end
 
