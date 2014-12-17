@@ -308,7 +308,7 @@ class Run < ActiveRecord::Base
   end
 
   def num_answers
-    q_answers = activity_q_answers = self.question_answers
+    q_answers = activity_q_answers = self.question_answers.reject { |a| a.blank? }
     begin # this really shouldn't happen, but there are some bad runs in the DB
       activity_q_answers = q_answers.reject { |a| a.question.activity.id != self.activity_id }
       unless q_answers.size == activity_q_answers.size
