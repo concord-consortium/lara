@@ -23,4 +23,5 @@
  *= require pagination
  *= require bad_browser
  *= require dirty_runs
+ *= require run_detail_report
  */

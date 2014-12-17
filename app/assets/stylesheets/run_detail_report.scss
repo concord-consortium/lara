@@ -1,0 +1,20 @@
+
+.run_detail_report {
+  h1 {
+    margin: 1em;
+  }
+  table {
+    th {
+      background: black;
+      font-weight: bold;
+      color: white;
+      border: 1px solid white;  
+    }
+    td,th {
+      padding: 10px;
+    }
+    td {
+      border: 1px solid black;  
+    }
+  }
+}
