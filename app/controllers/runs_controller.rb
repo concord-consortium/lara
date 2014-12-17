@@ -71,7 +71,7 @@ class RunsController < ApplicationController
       learner_id,login = li.split(":")
       @student_learner_map[learner_id] = login
     end
-    origin = params['origin'] || request.referrer
+    origin = params['origin']
     @report_info = origin
     if origin
       uri      = URI.parse(origin)
@@ -86,7 +86,9 @@ class RunsController < ApplicationController
       @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
       @students = @runs.map { |r| @student_learner_map[r.remote_id] }
       @runs = @runs.group_by { |r| r.sequence }
-      
+      render :layout => 'wide'
+    else
+      redirect_to url_for(params.merge(origin: request.referrer))
     end
   end
 

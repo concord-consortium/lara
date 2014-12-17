@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= yield :title %></title>
+  <link href='//fonts.googleapis.com/css?family=Lato:400,500,700' rel='stylesheet' type='text/css'>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<%- if @session_key -%>
+  <body class="right <%= request.original_fullpath.split('/').join(' ') %>" data-session-key="<%= @session_key %>">
+<%- else -%>
+  <body class="right <%= request.original_fullpath.split('/').join(' ') %>">
+<%- end -%>
+<div id="container">
+  <div id="header">
+    <div>
+      <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>
+      <a href="http://concord.org/" title="The Concord Consortium"><%= image_tag "cc-logo.png", :alt => "The Concord Consortium", :id => "cc-logo" %></a>
+      <!-- <nav>Home / Activities / Physics</nav> -->
+    </div>
+  </div>
+  <div id="wide_content" class="wide_content">
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= yield %>
+  </div><!-- end #content -->
+</div>
+<div id="footer">
+  <div>
+    <p>Copyright © 2013 <a href="http://concord.org/" title="The Concord Consortium">The Concord Consortium</a>. All rights reserved. This activity is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons Attribution 3.0 Unported">Creative Commons Attribution 3.0 Unported License</a>. The software is licensed under <a href="http://opensource.org/licenses/BSD-2-Clause" title="Simplified BSD License">Simplified BSD</a>, <a href="http://opensource.org/licenses/MIT" title="MIT License">MIT</a> or <a href="http://opensource.org/licenses/Apache-2.0" title="Apache 2.0 License">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL <a href="http://concord.org" title="The Concord Consortium">http://concord.org</a>.
+    </p>
+    <p style="margin-top:10px" id="license">This Next-Generation Molecular Workbench activity was developed with a grant from <a href="http://www.google.org/" title="Google.org">Google.org</a>. The original <a href="http://mw.concord.org/" title="Classic Molecular Workbench">Classic Molecular Workbench</a> was supported by a series of grants from the <a href="http://nsf.gov/" title="National Science Foundation">National Science Foundation</a>.
+    </p>
+    <% unless params[:response_key] %>
+      <p style="margin-top:10px">
+        Need help?
+        <a href="mailto:authoring-help@concord.org?subject=Authoring%20question">Send us an email</a>
+      </p>
+    <% end %>
+  </div>
+</div>
+<div id="overlay"></div>
+<%= render :partial => 'shared/modal' %>
+<%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
+<%= yield :extra_javascript %>
+</body>
+</html>

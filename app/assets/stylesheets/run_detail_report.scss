@@ -1,10 +1,14 @@
 
 .run_detail_report {
+  margin: 1em;
   h1 {
-    margin: 1em;
+    font-size: 18px;
+    color: gray;
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
   h3 {
-    font-size: 14;
+    font-size: 14px;
     font-weight: bold;
     color: gray;
     margin-top: 1em;
@@ -23,8 +27,11 @@
       text-decoration: underline;
       font-size: 13px;
     }
+    tr:nth-child(even) {
+      background-color: #F7E8CD;    
+    }
     td,th {
-      padding: 10px;
+      padding: 5px;
       white-space: nowrap;
     }
     td {
