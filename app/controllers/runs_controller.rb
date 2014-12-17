@@ -1,5 +1,5 @@
 class RunsController < ApplicationController
-  layout false, :except => [:dirty]
+  layout false, :except => [:dirty, :details]
   before_filter :set_run, :except => [:index, :fix_broken_portal_runs]
 
   def index
@@ -61,7 +61,28 @@ class RunsController < ApplicationController
     render json: { message: message}.to_json
   end
 
-
+  def details
+    authorize! :inspect, Run
+    @runs     = []
+    @students = []
+    student_list = params['students'] ? params['students'].split(",") : []
+    @student_learner_map = {}
+    student_list.each do |li|
+      learner_id,login = li.split(":")
+      @student_learner_map[learner_id] = login
+    end
+    origin = params['origin'] || request.referrer
+    @report_info = origin
+    if origin
+      uri      = URI.parse(origin)
+      path_rgx = "dataservice/external_activity_data"
+      endpoint_base  = "#{uri.scheme}://#{uri.host}:#{uri.port}/#{path_rgx}"
+      learners       =  params['learners'].split(",")
+      endpoints      = learners.map { |l| "#{endpoint_base}/#{l}" }
+      @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
+      @students = @runs.map { |r| @student_learner_map[r.remote_id] }
+    end
+  end
 
   private
   def set_run
@@ -69,6 +90,7 @@ class RunsController < ApplicationController
   end
 
   def remote_info(run)
+    authorize! :inspect, Run
     return "no remote details available" if run.remote_endpoint.blank?
     begin
       src = "/dataservice/external_activity_data/"

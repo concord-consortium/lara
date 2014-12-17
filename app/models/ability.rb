@@ -11,6 +11,7 @@ class Ability
     if user.admin?
       # Admins can do everything
       can :manage, :all
+      can :inspect, Run
     elsif user.author?
       # Authors can create new items and manage those they created
       can :create, Sequence
