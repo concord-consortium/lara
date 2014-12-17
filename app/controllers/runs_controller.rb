@@ -76,7 +76,11 @@ class RunsController < ApplicationController
     if origin
       uri      = URI.parse(origin)
       path_rgx = "dataservice/external_activity_data"
-      endpoint_base  = "#{uri.scheme}://#{uri.host}:#{uri.port}/#{path_rgx}"
+      endpoint_base = "#{uri.scheme}://#{uri.host}"
+      unless [443,80].include?(uri.port)
+        endpoint_base << ":#{uri.port}"
+      end
+      endpoint_base  = "#{endpoint_base}/#{path_rgx}"
       learners       =  params['learners'].split(",")
       endpoints      = learners.map { |l| "#{endpoint_base}/#{l}" }
       @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
