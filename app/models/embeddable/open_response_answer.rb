@@ -32,5 +32,9 @@ module Embeddable
         "is_final" => is_final
       }
     end
+
+    def blank?
+      self.answer_text.blank?
+    end
   end
 end

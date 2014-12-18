@@ -59,7 +59,29 @@
                 %i.fa.fa-arrow-left
               %a{ :class => next_classes, :href => next_href }
                 %i.fa.fa-arrow-right
-
+                
+.site-width.profile-nav
+  - portal_user = session[:portal_username]
+  .profile-dropdown
+    %div.profile-u-name
+      Hi, 
+      %a.popup-trigger{:href => "javascript:void(0);"} 
+        - if portal_user.nil? 
+          Anonymous
+        - else  
+          #{portal_user}
+  .popup-prompt{:class => portal_user.nil? ? 'anonymous-user' : 'known-user'}
+    .nav-popup-border.arrow
+    .nav-popup.arrow
+    
+    - if portal_user.nil?
+      %span  
+        If you are taking a class, check in with your teacher about logging in to save data.
+    - else  
+      %span
+        - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
+        Not You?
+        = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :get
 :javascript
   jQuery(function() {
     var rowWidth = jQuery('.l-nav').outerWidth();

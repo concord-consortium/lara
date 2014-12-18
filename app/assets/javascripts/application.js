@@ -31,3 +31,4 @@
 //= require login_menu
 //= require chosen-jquery
 //= require application-init
+//= require tablesorter

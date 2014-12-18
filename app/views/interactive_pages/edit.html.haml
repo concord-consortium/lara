@@ -17,33 +17,6 @@
         \/
         = @page.name
 
-.edit-meta
-  .page-section-controls
-    %ul
-      %li
-        = form_for @page, :remote => true do |f|
-          %label
-            = f.check_box :show_introduction, :onchange => 'this.form.submit();'
-            Page introduction
-      %li
-        = form_for @page, :remote => true do |f|
-          %label
-            = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
-            Info/Assessment block
-      %li
-        = form_for @page, :remote => true do |f|
-          %label
-            = f.check_box :show_interactive, :onchange => 'this.form.submit();'
-            Interactive box
-      %li
-        = form_for @page, :remote => true do |f|
-          %label
-            = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
-            Page sidebar text
-  %ul.tasks
-    %li= link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
-    %li= link_to "Add another page to #{@activity.name}", new_activity_page_path(@activity)
-
 %div{:class => ["content", "editing", @page.layout.match(/^r-/) ? "stacked-right" : nil]}
   .page-nav
     - if @page.higher_item
@@ -56,20 +29,38 @@
     - @activity.pages.each do |p|
       = link_to page_counter, edit_activity_page_path(@activity, p), :class => (p === @page) ? 'active' : ''
       - page_counter = page_counter + 1
+    = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}"}
     - if @page.lower_item
       %a{:class => 'next', :href => edit_activity_page_path(@activity, @page.lower_item)}
         ! &nbsp;
     - else
-      = link_to '+', new_activity_page_path(@activity), {:title => "Add another page to #{@activity.name}", :class => 'next'}
+      %a{:class => 'next disabled'}
+        ! &nbsp;
 
   %h1.title
     = @activity.name
 
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
-  = form_for @page, :remote => true do |f|
-    = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
-    = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
+    %span.preview
+      = link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
+  %div.edit_interactive_page
+    = form_for @page, :remote => true do |f|
+      = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
+      = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
+      %span.page-section-controls#page-section-controls     
+        %label{:id => 'page_intro',:for => "interactive_page_show_introduction"}    
+          = f.check_box :show_introduction, :onchange => 'this.form.submit();' 
+          Page introduction
+        %label{:id => 'info_block',:for => "interactive_page_show_info_assessment"}
+          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
+          Info/Assessment block
+        %label{:id => 'interactive_box',:for => "interactive_page_show_interactive"}
+          = f.check_box :show_interactive, :onchange => 'this.form.submit();'
+          Interactive box
+        %label{:id => 'page_sidebar',:for => "interactive_page_show_sidebar"}
+          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
+          Page sidebar text  
   - if @page.show_introduction
     .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
       %h2 Introduction
@@ -97,3 +88,11 @@
       %h2
         = editable_field @page, :sidebar_title, {:type => 'text' }
       = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
+
+:javascript
+  $(function() {
+    if ((navigator.userAgent.indexOf("MSIE"))!=-1){
+      debugger;
+      $('#page-section-controls').removeAttr("id");
+    }
+  });

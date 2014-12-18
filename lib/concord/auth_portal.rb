@@ -41,9 +41,18 @@ module Concord
     end
 
     def self.portal_for_url(url)
-      trimmed_url = url.end_with?('/') ? url.chop : nil
+      uri = URI.parse(url)
+      host = uri.host
+      return nil unless host
       self.all.each_pair do |name,portal|
-        return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
+        portal_host =''
+        begin
+          portal_host = URI.parse(portal.url).host.downcase.strip
+        rescue URI::InvalidURIError
+          puts "portal.url is not valud URL : #{portal.url}"
+        end
+        return portal if portal_host == host.downcase.strip
+        # return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
       end
       return nil # we couldn't find one.
     end
@@ -130,7 +139,9 @@ module Concord
         extra do
           {
             :first_name => raw_info['extra']['first_name'],
-            :last_name  => raw_info['extra']['last_name']
+            :last_name  => raw_info['extra']['last_name'],
+            :full_name  => raw_info['extra']['full_name'],
+            :username   => raw_info['extra']['username']
           }
         end
 
@@ -172,7 +183,9 @@ module Concord
           return <<-CONTROLLER_ACTION
             def #{@strategy_name}
               omniauth = request.env["omniauth.auth"]
+              portal_username = omniauth.extra.nil? ? nil : omniauth.extra.username
               @user = User.find_for_concord_portal_oauth(omniauth, current_user)
+              session[:portal_username] = portal_username
               sign_in_and_redirect @user, :event => :authentication
             end
           CONTROLLER_ACTION

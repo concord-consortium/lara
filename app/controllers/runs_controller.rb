@@ -1,5 +1,5 @@
 class RunsController < ApplicationController
-  layout false, :except => [:dirty]
+  layout false, :except => [:dirty, :details]
   before_filter :set_run, :except => [:index, :fix_broken_portal_runs]
 
   def index
@@ -36,7 +36,7 @@ class RunsController < ApplicationController
       run = Run.find(params[:run_id])
       token = false
       if params[:use_admin_token]
-        results = run.submit_answers_now(current_user.authentication_token)
+        results = run.submit_answers_now(run.lara_to_portal_secret_auth)
       else 
         results = run.submit_answers_now
       end
@@ -46,7 +46,7 @@ class RunsController < ApplicationController
         message = "Run answers failted to send to server (BAD)"
       end
     end
-    render json: { message: message}.to_json
+    redirect_to  params.merge(message: message, action: 'dirty')
   end
 
 
@@ -55,12 +55,60 @@ class RunsController < ApplicationController
     if current_user.is_admin
       run = Run.find(params[:run_id])
       message = run.info
+      message << "---------------\n"
+      message << remote_info(run)
     end
     render json: { message: message}.to_json
+  end
+
+  def details
+    authorize! :inspect, Run
+    @runs     = []
+    @students = []
+    student_list = params['students'] ? params['students'].split(",") : []
+    @student_learner_map = {}
+    student_list.each do |li|
+      learner_id,login = li.split(":")
+      @student_learner_map[learner_id] = login
+    end
+    origin = params['origin']
+    @report_info = origin
+    if origin
+      uri      = URI.parse(origin)
+      path_rgx = "dataservice/external_activity_data"
+      endpoint_base = "#{uri.scheme}://#{uri.host}"
+      unless [443,80].include?(uri.port)
+        endpoint_base << ":#{uri.port}"
+      end
+      endpoint_base  = "#{endpoint_base}/#{path_rgx}"
+      learners       =  params['learners'].split(",")
+      endpoints      = learners.map { |l| "#{endpoint_base}/#{l}" }
+      @runs = Run.where(:remote_endpoint => endpoints).includes(:activity,:user)
+      @students = @runs.map { |r| @student_learner_map[r.remote_id] }
+      @runs = @runs.group_by { |r| r.sequence }
+      render :layout => 'wide'
+    else
+      redirect_to url_for(params.merge(origin: request.referrer))
+    end
   end
 
   private
   def set_run
     @run = Run.find_or_create_by_key_and_activity_id(params[:id], params[:activity_id])
+  end
+
+  def remote_info(run)
+    authorize! :inspect, Run
+    return "no remote details available" if run.remote_endpoint.blank?
+    begin
+      src = "/dataservice/external_activity_data/"
+      dst = "/admin/learner_detail/"
+      info_url = run.remote_endpoint.gsub(src,dst) << ".txt"
+      response = HTTParty.get(info_url,
+        :headers => {"Authorization" => run.lara_to_portal_secret_auth, "Content-Type" => 'text/plain'}, :timeout => 5)
+    rescue
+      return ""
+    end
+    return response
   end
 end

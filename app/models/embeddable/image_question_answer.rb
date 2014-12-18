@@ -51,5 +51,9 @@ module Embeddable
         "annotation" => annotation
       }
     end
+
+    def blank?
+      self.image_url.blank? && self.annotated_image_url.blank? && self.answer_text.blank?
+    end
   end
 end

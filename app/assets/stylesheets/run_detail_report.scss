@@ -1,0 +1,53 @@
+
+.run_detail_report {
+  margin: 1em;
+  h1 {
+    font-size: 18px;
+    color: gray;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: gray;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+  }
+  table {
+    width: 100%;
+    font-family: monospace;
+    font-size: 12px;
+    th {
+      cursor: pointer;
+      background: black;
+      font-weight: bold;
+      color: white;
+      border: 1px solid white;
+      text-decoration: underline;
+      font-size: 13px;
+    }
+    tr:nth-child(even) {
+      background-color: #F7E8CD;    
+    }
+    td,th {
+      padding: 5px;
+      white-space: nowrap;
+    }
+    td {
+      border: 1px solid black;
+    }
+    .tablesorter-headerDesc {
+      background: gray;
+      *:after {
+        content: " ▼";
+      }
+    }
+    .tablesorter-headerAsc {
+      background: gray;
+      div::after {
+        content: " ▲";
+      }
+    }
+  }
+}

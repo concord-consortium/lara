@@ -36,6 +36,7 @@
 //= require image_question
 //= require image_question_drawing_tool
 //= require nav_menu
+//= require profile
 //= require iframe-phone
 //= require iframe-saver
 //= require prediction

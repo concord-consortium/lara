@@ -308,7 +308,7 @@ class Run < ActiveRecord::Base
   end
 
   def num_answers
-    q_answers = activity_q_answers = self.question_answers
+    q_answers = activity_q_answers = self.question_answers.reject { |a| a.blank? }
     begin # this really shouldn't happen, but there are some bad runs in the DB
       activity_q_answers = q_answers.reject { |a| a.question.activity.id != self.activity_id }
       unless q_answers.size == activity_q_answers.size
@@ -363,6 +363,7 @@ class Run < ActiveRecord::Base
              other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
    other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
      acitvity questions: #{q_activities}
+      portal auth token: #{user.authentication_token if user} 
       EOF
       info.gsub(/^\s+/,'')
     # rescue NameError => e
@@ -384,4 +385,7 @@ class Run < ActiveRecord::Base
     error_string    
   end
 
+  def lara_to_portal_secret_auth
+    return 'Bearer %s' % Concord::AuthPortal.secret_for_url(self.remote_endpoint)
+  end
 end

@@ -1185,4 +1185,68 @@ footer {
   }
 }
 
+.profile-nav {
+  position: relative;
+  .profile-dropdown{
+    height: 20px;
+	background-color: #414546;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	line-height: 22px;
+	padding: 0 10px;
+	margin-top: 1px;
+    .profile-u-name{
+      .popup-trigger{
+        cursor:pointer
+      }
+    }
+  }
+  .popup-prompt{
+    display:none;
+    background-color: white;
+    border: 1px solid #cccccc;
+    width: 141px;
+    position: absolute;
+    top: 20px;
+    left: 825px;
+    color: #525252;
+    padding: 8px 10px;
+    z-index: 100;
+    margin-top: 10px;
+    &.anonymous-user{
+      width: 220px;
+      left: 740px;
+      .arrow{
+        left:180px;
+      }
+    }
+    .arrow{
+      border-style: solid;
+      border-width: 10px;
+      position: absolute;
+    }
+    .nav-popup-border{
+      border-color: transparent transparent #cccccc transparent;
+      top: -20px;
+      left: 110px;
+    }
+    .nav-popup{
+      border-color: transparent transparent white transparent;
+      top: -18px;
+      left: 110px;
+    }
+    span{
+      .re-login{
+        cursor:pointer
+      }
+    }
+  }
+  a{
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+   } 
+  }
+}
 @import "partials/prediction";
