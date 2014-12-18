@@ -98,8 +98,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   clear: both;
   height: 0;
 }
-.alert,.notice{
+.notice{
   height: 16px;
+  padding:10px 0;
 }
 .content {
   height: auto;
