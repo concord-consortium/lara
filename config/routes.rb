@@ -98,6 +98,7 @@ LightweightStandalone::Application.routes.draw do
     resources :open_responses
   end
 
+  match 'users/sign_out' => "devise/sessions#destroy"
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
   match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
