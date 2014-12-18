@@ -36,7 +36,7 @@ class RunsController < ApplicationController
       run = Run.find(params[:run_id])
       token = false
       if params[:use_admin_token]
-        results = run.submit_answers_now(current_user.authentication_token)
+        results = run.submit_answers_now(run.lara_to_portal_secret_auth)
       else 
         results = run.submit_answers_now
       end
@@ -46,7 +46,7 @@ class RunsController < ApplicationController
         message = "Run answers failted to send to server (BAD)"
       end
     end
-    render json: { message: message}.to_json
+    redirect_to  params.merge(message: message, action: 'dirty')
   end
 
 
@@ -104,9 +104,8 @@ class RunsController < ApplicationController
       src = "/dataservice/external_activity_data/"
       dst = "/admin/learner_detail/"
       info_url = run.remote_endpoint.gsub(src,dst) << ".txt"
-      token = 'Bearer %s' % current_user.authentication_token
       response = HTTParty.get(info_url,
-        :headers => {"Authorization" => token, "Content-Type" => 'text/plain'}, :timeout => 5)
+        :headers => {"Authorization" => run.lara_to_portal_secret_auth, "Content-Type" => 'text/plain'}, :timeout => 5)
     rescue
       return ""
     end

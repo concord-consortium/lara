@@ -41,9 +41,18 @@ module Concord
     end
 
     def self.portal_for_url(url)
-      trimmed_url = url.end_with?('/') ? url.chop : nil
+      uri = URI.parse(url)
+      host = uri.host
+      return nil unless host
       self.all.each_pair do |name,portal|
-        return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
+        portal_host =''
+        begin
+          portal_host = URI.parse(portal.url).host.downcase.strip
+        rescue URI::InvalidURIError
+          puts "portal.url is not valud URL : #{portal.url}"
+        end
+        return portal if portal_host == host.downcase.strip
+        # return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
       end
       return nil # we couldn't find one.
     end
