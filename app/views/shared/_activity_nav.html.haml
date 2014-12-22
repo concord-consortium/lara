@@ -81,7 +81,7 @@
       %span
         - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
         Not You?
-        = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :delete, :data_trigger_save => false
+        = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :delete, :'data-trigger-save' => false
 :javascript
   jQuery(function() {
     var rowWidth = jQuery('.l-nav').outerWidth();

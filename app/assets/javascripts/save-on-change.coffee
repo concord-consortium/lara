@@ -218,7 +218,7 @@ class @SaveOnChangePage
     @dirty_forms = {}
 
   intercept_navigation: ->
-    $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data_trigger_save=false]").on 'click', (e) =>
+    $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data-trigger-save=false]").on 'click', (e) =>
       e.preventDefault()
       @click_element   = e.currentTarget
       @force_save_dirty()
