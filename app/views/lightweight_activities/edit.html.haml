@@ -17,15 +17,12 @@
 - if @activity.active_runs > 0
   %p.active-runs
     = "This activity has been used by #{pluralize(@activity.active_runs, "learner")}. Editing may cause problems with results data. If you make changes, please publish this activity and any associated sequences as soon as possible."
-
-- size = @activity.publication_details.size
 #leftcol
   .sequence_form
     = form_for @activity, {:url => "/activities/#{@activity.id}", :method => 'put'} do |f|
       = f.error_messages
       .submit
         = f.submit "Save", :id => 'save-top'
-        = link_to('Publish', publication_show_status_path(@activity.class,@activity.id), :remote => true, :class => "publish-button btn btn-primary") if (can? :publish, @activity) && size == 0
       .field
         = f.label :name, 'Activity Name'
         = f.text_field :name, :size => 80
@@ -72,7 +69,6 @@
         = f.text_area :notes
       .submit
         = f.submit "Save", :id => 'save-top'
-        = link_to('Publish', publication_show_status_path(@activity.class,@activity.id), :remote => true, :class => "publish-button btn btn-primary") if (can? :publish, @activity) && size == 0
 #rightcol
   #menu
     #pages
