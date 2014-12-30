@@ -23,6 +23,9 @@ class Ability
       # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => 'public'
       can :duplicate, Sequence, :publication_status => 'public'
+      # other users cannot export an activity or sequence
+      cannot :export, LightweightActivity
+      cannot :export, Sequence
     end
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
