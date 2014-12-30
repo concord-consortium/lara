@@ -181,6 +181,13 @@ class ApplicationController < ActionController::Base
     # This is redundant but necessary if the first pass through set_response_key returned nil
     set_response_key(@run.key)
   end
+  
+  # login to the portal provided in the parameters
+  def portal_login
+    if params[:domain] && !session.delete(:did_reauthenticate)
+      update_portal_session(params[:domain]) and return
+    end
+  end 
 
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated

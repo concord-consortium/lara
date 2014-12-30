@@ -3,6 +3,7 @@ class SequencesController < ApplicationController
   layout 'sequence_run', :only => [:show]
   before_filter :set_sequence, :except => [:index, :new, :create]
   before_filter :find_or_create_sequence_run, :only => [:show]
+  before_filter :portal_login, :only   => [:edit]
 
   # GET /sequences
   # GET /sequences.json
