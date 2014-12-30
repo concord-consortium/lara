@@ -1,17 +1,20 @@
 - #provide a publishable to this view partial
 - size = publication.publication_details.size
-- if size > 0
-  .publication_details
-    .summary
+
+.publication_details
+  .summary
+    - if size > 0
       This item has been published to #{size} portals.
       Editing will require re-publication
-    %ul.details
-      - publication.publication_details.each do |deet|
-        %li.detail
-          %span.detail.url
-            #{deet.url} :
-          %span.detail.count
-            ( #{deet.count} times) –
-          %span.datail.date=deet.date
+    - else
+      This item is not published to any of the portals. Click on the publish button to publish this item.
+  %ul.details
+    - publication.publication_details.each do |deet|
+      %li.detail
+        %span.detail.url
+          #{deet.url} :
+        %span.detail.count
+          ( #{deet.count} times) –
+        %span.datail.date=deet.date
 
-    = link_to "publish", publication_publish_path(publication.class, publication.id), {:remote => true, :class => 'btn btn-primary'}
+  = link_to "publish", publication_publish_path(publication.class, publication.id), {:remote => true, :class => 'btn btn-primary'}
