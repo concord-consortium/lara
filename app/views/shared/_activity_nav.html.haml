@@ -76,7 +76,7 @@
     
     - if portal_user.nil?
       %span  
-        If you are taking a class, check in with your teacher about logging in to save data.
+        If you are taking a class, check in with your teacher about logging in to save your work.
     - else  
       %span
         - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
