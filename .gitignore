@@ -36,6 +36,7 @@ config/app_environment_variables.rb
 # ignore project files
 *.sublime-project
 *.sublime-workspace
+.idea
 
 # ignore vim backup files
 *~
