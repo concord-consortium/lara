@@ -32,19 +32,11 @@ class CreateCollaboration
 
   private
 
-  def secret_token
-    Concord::AuthPortal.secret_for_url(@portal_domain)
-  end
-
-  def bearer_token
-    'Bearer %s' % secret_token
-  end
-
   def get_collaborators_data
     response = HTTParty.get(
       @collaborators_data_url, {
         :headers => {
-          "Authorization" => bearer_token,
+          "Authorization" => Concord::AuthPortal.auth_token_for_url(@portal_domain),
           "Content-Type" => 'application/json'
         }
       }

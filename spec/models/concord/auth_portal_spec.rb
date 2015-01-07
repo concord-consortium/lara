@@ -58,11 +58,6 @@ describe Concord::AuthPortal do
           end
         end
       end
-      describe "finding the secret by the url" do
-        it "should find the right secret" do
-          Concord::AuthPortal.secret_for_url(url).should == secret
-        end
-      end
       describe "finding the auth token by the url" do
         it "should find the right auth token" do
           Concord::AuthPortal.auth_token_for_url(url).should == auth_token

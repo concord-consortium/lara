@@ -23,15 +23,15 @@ describe CreateCollaboration do
     ]
   end
   let(:stubbed_content_type) { 'application/json' }
-  let(:stubbed_secret)       { 'foo'              }
+  let(:stubbed_token)        { 'foo'              }
   let(:headers) do
     {
-      "Authorization" => "Bearer #{stubbed_secret}",
-      "Content-Type"   => stubbed_content_type
+      "Authorization" => stubbed_token,
+      "Content-Type"  => stubbed_content_type
     }
   end
   before(:each) do
-    Concord::AuthPortal.stub(:secret_for_url).and_return(stubbed_secret)
+    Concord::AuthPortal.stub(:auth_token_for_url).and_return(stubbed_token)
     stub_request(:get, collaborators_data_url).with(:headers => headers).to_return(
       :status => 200,
       :body => collaboration_params.to_json, :headers => {}

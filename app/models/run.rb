@@ -363,6 +363,6 @@ class Run < ActiveRecord::Base
   end
 
   def lara_to_portal_secret_auth
-    return 'Bearer %s' % Concord::AuthPortal.secret_for_url(self.remote_endpoint)
+    return 'Bearer %s' % Concord::AuthPortal.auth_token_for_url(self.remote_endpoint)
   end
 end
