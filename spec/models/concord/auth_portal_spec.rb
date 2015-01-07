@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe Concord::AuthPortal do
   describe "AuthPortal#add" do
-    let(:name)      { "name"}
-    let(:url)       { "http://foo.bar/"}
-    let(:client_id) { "foo" }
-    let(:secret)    { "secret" }
-    let(:auth)      { Concord::AuthPortal.add(name,url,client_id,secret) }
+    let(:name)       { "name"}
+    let(:url)        { "http://foo.bar/"}
+    let(:client_id)  { "foo" }
+    let(:secret)     { "secret" }
+    let(:auth_token) { 'Bearer %s' % secret }
+    let(:auth)       { Concord::AuthPortal.add(name,url,client_id,secret) }
 
     it "it should return an authentication strategy" do
       auth.should be_a_kind_of OmniAuth::Strategies::OAuth2.class
@@ -60,6 +61,11 @@ describe Concord::AuthPortal do
       describe "finding the secret by the url" do
         it "should find the right secret" do
           Concord::AuthPortal.secret_for_url(url).should == secret
+        end
+      end
+      describe "finding the auth token by the url" do
+        it "should find the right auth token" do
+          Concord::AuthPortal.auth_token_for_url(url).should == auth_token
         end
       end
     end

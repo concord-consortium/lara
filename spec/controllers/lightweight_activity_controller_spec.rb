@@ -440,7 +440,7 @@ describe LightweightActivitiesController do
       it 'calls send_to_portal for the last answer' do
         [answer1, answer2]
         ar.answers.length.should_not be(0)
-        answer2.should_receive(:send_to_portal).with('Bearer ')
+        answer2.should_receive(:send_to_portal)
         get :resubmit_answers, { :id => act.id, :response_key => ar.key }
       end
 

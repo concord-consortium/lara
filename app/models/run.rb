@@ -163,16 +163,6 @@ class Run < ActiveRecord::Base
     collaboration_run.disable if collaboration_run
   end
 
-  def oauth_token
-    return user.authentication_token if user
-    # TODO: throw "no oauth_token for runs without users"
-    # TODO: we actually need to check & maintain expiration of this token as well
-  end
-
-  def bearer_token
-    'Bearer %s' % oauth_token
-  end
-
   # TODO: Alias to all_responses_for_portal
   def responses
     {
@@ -185,44 +175,33 @@ class Run < ActiveRecord::Base
 
   # return true if we want to take this run out of the queue: either for success, or any
   # other case where retrying is pointless (e.g. nowhere to send the data, no data to send).
-  def send_to_portal(answers, auth_token=nil)
+  def send_to_portal(answers)
     return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     payload = response_for_portal(answers)
     return true if payload.nil? || payload.blank? # Pretend we sent it, nobody will notice
-    # Use a supplied token if there is one, otherwise check the run's own token
-    auth_token ||= bearer_token
-    # TODO: This needs more careful treatment.
-    # If there is no auth token here, we actually need to stop trying to push to the portal and
-    # avoid the Delayed Job falloff cycle. If we get into the falloff cycle, a user might
-    # log in and provide a valid token, but then have that new token expire before DelayedJob
-    # retries the job.
-    # Something like this, but this is incomplete.
-    # if auth_token.blank? # TODO: Or expired, when we know how to check that.
-    #   raise InvalidJobState, "No authentication token - try re-authenticating"
-    # end
     response = HTTParty.post(
       remote_endpoint, {
         :body => payload,
         :headers => {
-          "Authorization" => auth_token,
+          "Authorization" => Concord::AuthPortal.auth_token_for_url(remote_endpoint),
           "Content-Type" => 'application/json'
         }
       }
     )
     # TODO: better error detection?
     is_success = response.success?
-    abort_job_and_requeue(error_string_for(response, payload, auth_token)) unless is_success
+    abort_job_and_requeue(error_string_for(response, payload)) unless is_success
     is_success
   end
 
-  def queue_for_portal(answer, auth_key=nil)
+  def queue_for_portal(answer)
     return false if remote_endpoint.nil? || remote_endpoint.blank?
     return false if answers.nil?
     if dirty?
       # no-op: only queue one time
     else
       mark_dirty
-      submit_dirty_answers(auth_key) #will happen asyncronously sometime in the future...
+      submit_dirty_answers #will happen asyncronously sometime in the future...
     end
   end
 
@@ -237,8 +216,8 @@ class Run < ActiveRecord::Base
     raise PortalUpdateIncomplete.new(message)
   end
 
-  def submit_answers_now(auth_key=nil)
-    if send_to_portal(self.answers, auth_key)
+  def submit_answers_now
+    if send_to_portal(self.answers)
       set_answers_clean(self.answers)
       self.reload
       if dirty_answers.empty?
@@ -249,12 +228,12 @@ class Run < ActiveRecord::Base
     return false
   end
 
-  def submit_dirty_answers(auth_key=nil)
+  def submit_dirty_answers
     # Find array of dirty answers and send them to the portal
     da = dirty_answers
     return if da.empty?
-    if send_to_portal da, auth_key
-      set_answers_clean da # We're only cleaning the same set we sent to the portal
+    if send_to_portal(da)
+      set_answers_clean(da) # We're only cleaning the same set we sent to the portal
       self.reload
       if dirty_answers.empty?
         self.mark_clean
@@ -358,31 +337,29 @@ class Run < ActiveRecord::Base
     number of questions: #{num_questions}
                activity: #{activity.name} [#{activity_id}]
                sequence: #{sequence_id}
-          collaboration: #{collaboration_run_id}   
+          collaboration: #{collaboration_run_id}
            sequence_run: #{sequence_run_id}
              other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
    other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
      acitvity questions: #{q_activities}
-      portal auth token: #{user.authentication_token if user} 
       EOF
       info.gsub(/^\s+/,'')
     # rescue NameError => e
     # end
   end
-  
-  def error_string_for(response, payload, auth_token)
+
+  def error_string_for(response, payload)
     error_string = "response_code:#{response.code}\
                     response_message:#{response.message}\
                     payload:#{payload}\
-                    auth_token:#{auth_token}\
                     remote_endpoint:#{remote_endpoint}\
                     run_id: #{id}\
                     run_key: #{key}\
                     dirty: #{dirty?}\
                     activity: #{activity.name} [#{activity_id}]\
                     sequence: #{sequence_id}"
-   
-    error_string    
+
+    error_string
   end
 
   def lara_to_portal_secret_auth

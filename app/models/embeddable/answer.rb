@@ -51,10 +51,10 @@ module Embeddable::Answer
     return @cleaned_prompt
   end
 
-  def send_to_portal(auth_key=nil)
+  def send_to_portal
     if run
       mark_dirty
-      run.queue_for_portal(self, auth_key)
+      run.queue_for_portal(self)
     end
   end
 

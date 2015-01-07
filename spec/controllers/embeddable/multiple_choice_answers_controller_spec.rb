@@ -13,6 +13,10 @@ describe Embeddable::MultipleChoiceAnswersController do
   let(:run)      { FactoryGirl.create(:run)     }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer, :question => question, :run => run)}
 
+  before(:each) do
+    Concord::AuthPortal.add("foo.bar.fake", endpoint, "foo", "secret_key")
+  end
+
   describe "#update" do
     describe "with a run initiated from remote portlal" do
       let(:run)  {

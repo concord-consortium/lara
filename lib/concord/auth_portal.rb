@@ -75,6 +75,14 @@ module Concord
       raise "Can't find a portal for #{url}"
     end
 
+    # Should be provided as `Authorization` header value while talking to portal.
+    def self.auth_token_for_url(url)
+      if portal = self.portal_for_url(url)
+        return portal.auth_token
+      end
+      raise "Can't find a portal for #{url}"
+    end
+
     def self.for_portal_name(name)
       return ExistingPortals[name] || self.make_for_name(name)
     end
@@ -159,6 +167,10 @@ module Concord
 
         def self.secret
           @secret
+        end
+
+        def self.auth_token
+          'Bearer %s' % self.secret
         end
 
         def self.url

@@ -30,10 +30,16 @@ describe Run do
   let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
   let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
   let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
-                    :answers  => [a1],
-                    :question => mc_question)
-                  }
+  let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, :answers  => [a1], :question => mc_question) }
+
+  let(:portal_url)            { "http://portal.concord.org" }
+  let(:valid_remote_endpoint) { portal_url + "/post/blah" }
+  let(:portal_auth)           { Concord::AuthPortal.add("run_spec_test_portal", portal_url, "foo", "secret_key") }
+
+  before(:each) do
+    # It triggers Concord::AuthPortal.add(...), so portal is always available.
+    portal_auth
+  end
 
   describe 'validation' do
     it 'ensures session keys are 36 characters' do
@@ -407,12 +413,10 @@ describe Run do
       end
 
       describe "with an endpoint and answers" do
-        let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
-        let(:auth_token)      { "xyzzy" }
+        let(:remote_endpoint) { valid_remote_endpoint }
         describe "with a positive response from the server" do
           it "should be successful" do
             payload = run.response_for_portal([or_answer,mc_answer])
-            user.stub(:authentication_token => auth_token)
             stub_http_request(:post, remote_endpoint).to_return(
               :body   => "OK", # TODO: What returns?
               :status => 200)
@@ -421,26 +425,7 @@ describe Run do
               with({
                 :body => payload,
                 :headers => {
-                  "Authorization" => run.bearer_token,
-                  "Content-Type" => 'application/json'
-                }
-              })
-          end
-        end
-
-        describe 'with an optional token override' do
-          it 'should send the supplied token for authorization' do
-            new_token = "fakeTokenString"
-            payload = run.response_for_portal([or_answer,mc_answer])
-            stub_http_request(:post, remote_endpoint).to_return(
-              :body   => "OK", # TODO: What returns?
-              :status => 200)
-            run.send_to_portal([or_answer,mc_answer], new_token).should be_true
-            WebMock.should have_requested(:post, remote_endpoint).
-              with({
-                :body => payload,
-                :headers => {
-                  "Authorization" => new_token,
+                  "Authorization" => portal_auth.auth_token,
                   "Content-Type" => 'application/json'
                 }
               })
@@ -462,8 +447,7 @@ describe Run do
 
     describe '#submit_dirty_answers' do
       let(:answers) {[]}
-      let(:remote_endpoint) { "http://portal.concord.org/post/blah" }
-      let(:auth_token)      { "xyzzy" }
+      let(:remote_endpoint) { valid_remote_endpoint }
       let(:result_status)   { 200 }
       before(:each) do
         stub_http_request(:post, remote_endpoint).to_return(
@@ -495,14 +479,8 @@ describe Run do
 
           it "calls send_to_portal with the dirty answers as argument" do
             run.stub(:send_to_portal => true)
-            run.should_receive(:send_to_portal).with(answers, nil)
+            run.should_receive(:send_to_portal).with(answers)
             run.submit_dirty_answers.should be_true
-          end
-
-          it 'calls send_to_portal with a supplied authorization token' do
-            run.stub(:send_to_portal => true)
-            run.should_receive(:send_to_portal).with(answers, auth_token)
-            run.submit_dirty_answers(auth_token)
           end
 
           it "cleans all the answers afer a successful update" do

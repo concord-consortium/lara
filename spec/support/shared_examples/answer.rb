@@ -73,24 +73,15 @@ shared_examples "an answer" do
     describe "with a run" do
       it "should call run.send_to_portal(self, nil)" do
         answer.stub(:run => run)
-        run.should_receive(:queue_for_portal).with(answer, nil)
+        run.should_receive(:queue_for_portal).with(answer)
         answer.send_to_portal
-        answer.should be_dirty
-      end
-    end
-
-    describe 'with a token' do
-      it "should call run.send_to_portal(self, nil)" do
-        answer.stub(:run => run)
-        run.should_receive(:queue_for_portal).with(answer, 'mock_token')
-        answer.send_to_portal('mock_token')
         answer.should be_dirty
       end
     end
 
     describe "with out a run" do
       it "wont call run.send_to_portal(self)" do
-        run.should_not_receive(:queue_for_portal).with(answer, nil)
+        run.should_not_receive(:queue_for_portal).with(answer)
         answer.send_to_portal
       end
     end
