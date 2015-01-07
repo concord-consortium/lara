@@ -166,7 +166,9 @@ class LightweightActivity < ActiveRecord::Base
       "description" => self.description,
       "url" => local_url,
       "create_url" => local_url,
-      "thumbnail_url" => thumbnail_url
+      "thumbnail_url" => thumbnail_url,
+      "author_email" => self.user.email,
+      "is_locked" => self.is_locked
     }
 
     pages = []

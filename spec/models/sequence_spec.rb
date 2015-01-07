@@ -1,9 +1,25 @@
 require 'spec_helper'
 
 describe Sequence do
-  let (:sequence) { FactoryGirl.create(:sequence) }
-  let (:activity1) { FactoryGirl.create(:activity, :time_to_complete => 45) }
-  let (:activity2) { FactoryGirl.create(:activity, :time_to_complete => 40) }
+  let (:user) { FactoryGirl.create(:user) }
+  let (:sequence) { 
+      sequence = FactoryGirl.create(:sequence)
+      sequence.user = user
+      sequence.save
+      sequence
+    }
+  let (:activity1) { 
+     activity = FactoryGirl.create(:activity, :time_to_complete => 45)
+     activity.user = user
+     activity.save
+     activity
+    }
+  let (:activity2) { 
+     activity = FactoryGirl.create(:activity, :time_to_complete => 40)
+     activity.user = user
+     activity.save
+     activity
+    }
   let(:thumbnail_url) { "http://i.huffpost.com/gen/1469621/thumbs/o-MARK-TWAIN-facebook.jpg" }
 
   it 'has valid attributes' do
@@ -55,13 +71,25 @@ describe Sequence do
   end
 
   describe '#serialize_for_portal' do
-    let(:act1) { FactoryGirl.build(:activity_with_page) }
-    let(:act2) { FactoryGirl.build(:activity_with_page) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:act1) { 
+      activity = FactoryGirl.build(:activity_with_page)
+      activity.user = user
+      activity.save
+      activity
+    }
+    let(:act2) { 
+      activity = FactoryGirl.build(:activity_with_page)
+      activity.user = user
+      activity.save
+      activity 
+    }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
       seq.thumbnail_url = thumbnail_url
       seq.activities << act1
       seq.activities << act2
+      seq.user = user
       seq.save!
       # Reorder activities - move first one to the bottom.
       seq.lightweight_activities_sequences.find { |as| as.lightweight_activity ==act1 }.move_to_bottom
@@ -76,6 +104,7 @@ describe Sequence do
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => nil, # our simple sequence doesn't have one
+        "author_email" => sequence.user.email,
         "activities"=>[]
       }
     end
@@ -83,11 +112,12 @@ describe Sequence do
     let(:complex_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
       {
-        "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
-        "abstract" => sequence.abstract,
+        "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
+        "abstract" => sequence_with_activities.abstract,
         "url"=> url,
         "create_url"=> url,
         "thumbnail_url" => thumbnail_url,
+        "author_email" => sequence_with_activities.user.email,
         "activities"=> [
           # Note that we reordered activities!
           act2.serialize_for_portal("http://test.host"),
@@ -123,12 +153,31 @@ describe Sequence do
 
   describe '#duplicate' do
     let(:owner) { FactoryGirl.create(:user) }
+    let(:act1) { 
+      activity = FactoryGirl.build(:activity_with_page)
+      activity.user = owner
+      activity.save
+      activity 
+    }
+    let(:act2) { 
+      activity = FactoryGirl.build(:activity_with_page)
+      activity.user = owner
+      activity.save
+      activity 
+    }
+    let(:act3) { 
+      activity = FactoryGirl.build(:activity_with_page)
+      activity.user = owner
+      activity.save
+      activity 
+    }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)
       seq.thumbnail_url = thumbnail_url
-      seq.activities << FactoryGirl.build(:activity_with_page)
-      seq.activities << FactoryGirl.build(:activity_with_page)
-      seq.activities << FactoryGirl.build(:activity_with_page)
+      seq.activities << act1
+      seq.activities << act2
+      seq.activities << act3
+      seq.user = owner
       seq.save!
       seq
     end

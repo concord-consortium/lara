@@ -3,16 +3,22 @@ require 'spec_helper'
 # There's a slow test in here somewhere.
 describe LightweightActivitiesController do
   render_views
-  let (:act) { FactoryGirl.create(:public_activity) }
-  let (:private_act) { FactoryGirl.create(:activity)}
-  let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
-  let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
-  let (:sequence) { FactoryGirl.create(:sequence) }
-
+  
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
   end
+
+  let (:act) { 
+    activity = FactoryGirl.create(:public_activity)
+    activity.user = @user
+    activity.save
+    activity
+  }
+  let (:private_act) { FactoryGirl.create(:activity)}
+  let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
+  let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  let (:sequence) { FactoryGirl.create(:sequence) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
