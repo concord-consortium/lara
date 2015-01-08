@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name), :alert => exception.message
+    render :partial => "shared/unauthorized", :locals => {:action => exception.action,:resource=> exception.subject},:status => 403
   end
   before_filter :reject_old_browsers, :except => [:bad_browser]
 
