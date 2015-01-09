@@ -8,14 +8,12 @@ describe CreateCollaboration do
       {
         name: "Foo Bar",
         email: user.email,
-        access_token: "auth_token_1",
         learner_id: 101,
         endpoint_url: "http://portal.concord.org/dataservice/101"
       },
       {
         name: "Bar Foo",
         email: "barfoo@bar.foo",
-        access_token: "auth_token_2",
         learner_id: 202,
         endpoint_url: "http://portal.concord.org/dataservice/202"
       }
@@ -76,11 +74,5 @@ describe CreateCollaboration do
     it "should create new users if they didn't exist before" do
       User.exists?(email: collaboration_params[1][:email]).should == true
     end
-
-    it "should overwrite auth_tokens of all listed collaborators" do
-      user.authentication_token.should == collaboration_params[0][:access_token]
-      new_user.authentication_token.should == collaboration_params[1][:access_token]
-    end
   end
-
 end
