@@ -172,7 +172,7 @@ class ApplicationController < ActionController::Base
       # Remove domain from original url to avoid infinite loop.
       uri = URI(request.original_url)
       query_params = request.query_parameters
-      query_params.delete('domain')
+      query_params.delete(:domain)
       uri.query = URI.encode_www_form(query_params)
       # we set the origin here which will become request.env['omniauth.origin']
       # in the callback phase, by default omniauth will use use
