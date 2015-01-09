@@ -484,6 +484,7 @@ DEPENDENCIES
   guard-jasmine
   guard-rspec
   haml
+  highline
   httparty
   jasmine
   jasmine-ajax
