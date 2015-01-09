@@ -3,7 +3,6 @@ require 'spec_helper'
 describe CreateCollaboration do
   let(:user) { FactoryGirl.create(:user) }
   let(:collaborators_data_url) { "http://portal.org/collaborations/123" }
-  let(:domain) { 'http://portal.org/' }
   let(:collaboration_params) do
     [
       {
@@ -44,7 +43,7 @@ describe CreateCollaboration do
     let(:material) { FactoryGirl.create(:activity) }
 
     before(:each) do
-      create_collaboration = CreateCollaboration.new(collaborators_data_url, domain, user, material)
+      create_collaboration = CreateCollaboration.new(collaborators_data_url, user, material)
       create_collaboration.call
     end
 

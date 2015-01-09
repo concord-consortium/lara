@@ -41,10 +41,10 @@ module Concord
     end
 
     def self.portal_for_url(url)
-      uri = URI.parse(url)
-      host = uri.host
+      # URI.parse(url).host returns nil when scheme is not provided.
+      host = URI(url).host || URI("http://#{url}").host
       return nil unless host
-      self.all.each_pair do |name,portal|
+      self.all.each_pair do |name, portal|
         portal_host =''
         begin
           portal_host = URI.parse(portal.url).host.downcase.strip

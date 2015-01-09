@@ -2,9 +2,10 @@ class CreateCollaboration
   # Output, these variables are initialized after successful call.
   attr_reader :collaboration_run, :owners_run, :owners_sequence_run
 
-  def initialize(collaborators_data_url, portal_domain, user, material)
+  def initialize(collaborators_data_url, user, material)
     @collaborators_data_url = collaborators_data_url
-    @portal_domain = portal_domain
+    # URI.parse(url).host returns nil when scheme is not provided.
+    @portal_domain = URI(collaborators_data_url).host || URI("http://#{collaborators_data_url}")
     # Keep auth tokens for collaborations run separate (just in case).
     @auth_provider_name = Concord::AuthPortal.strategy_name_for_url(@portal_domain) + '_collaboration_run'
     @owner = user

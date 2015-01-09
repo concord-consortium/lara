@@ -12,8 +12,9 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     render :partial => "shared/unauthorized", :locals => {:action => exception.action,:resource=> exception.subject},:status => 403
   end
-  before_filter :reject_old_browsers, :except => [:bad_browser]
 
+  before_filter :portal_login
+  before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
 
   # Try to set local from the request headers
@@ -117,20 +118,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def update_portal_session(domain)
-    sign_out(current_user)
-
-    # the sign out creates a new session, so we need to set this after
-    # signout. This way when we are called back this session info will be available
-    session[:did_reauthenticate] = true
-
-    # we set the origin here which will become request.env['omniauth.origin']
-    # in the callback phase, by default omniauth will use use
-    # the referer and that is not changed during redirects. More info:
-    # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(domain), :origin => request.url)
-  end
-
   def clear_session_response_key
     session.delete(:response_key)
   end
@@ -159,14 +146,10 @@ class ApplicationController < ActionController::Base
   def set_run_key
     update_response_key
 
-    if params[:domain] && !session.delete(:did_reauthenticate)
-      update_portal_session(params[:domain]) and return
-    end
-
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
-    if params[:collaborators_data_url] && params[:domain]
-      cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @activity)
+    if params[:collaborators_data_url]
+      cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @activity)
       @run = cc.call
     else
       portal = RemotePortal.new(params)
@@ -184,8 +167,19 @@ class ApplicationController < ActionController::Base
   
   # login to the portal provided in the parameters
   def portal_login
-    if params[:domain] && !session.delete(:did_reauthenticate)
-      update_portal_session(params[:domain]) and return
+    if params[:domain]
+      sign_out(current_user)
+      # Remove domain from original url to avoid infinite loop.
+      uri = URI(request.original_url)
+      query_params = request.query_parameters
+      query_params.delete('domain')
+      uri.query = URI.encode_www_form(query_params)
+      # we set the origin here which will become request.env['omniauth.origin']
+      # in the callback phase, by default omniauth will use use
+      # the referer and that is not changed during redirects. More info:
+      # https://github.com/intridea/omniauth/wiki/Saving-User-Location
+      strategy_name = Concord::AuthPortal.strategy_name_for_url(params[:domain])
+      redirect_to user_omniauth_authorize_path(strategy_name, :origin => uri.to_s)
     end
   end 
 
