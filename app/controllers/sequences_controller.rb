@@ -171,6 +171,7 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
+    return nil unless current_user
     # Special case when collaborators_data_url is provided (usually as a GET param).
     if params[:collaborators_data_url]
       cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
