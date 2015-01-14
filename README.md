@@ -132,3 +132,8 @@ If you are going to deploy to a server with load balancing enabled (production),
 ## History
 
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
+
+
+## License
+
+LARA is released under the [MIT License](LICENSE).
