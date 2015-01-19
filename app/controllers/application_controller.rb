@@ -164,7 +164,45 @@ class ApplicationController < ActionController::Base
     # This is redundant but necessary if the first pass through set_response_key returned nil
     set_response_key(@run.key)
   end
-  
+
+  # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
+  # for every action which should have logging enabled.
+  def enable_js_logger
+    data = {
+        application: ENV['LOGGER_APPLICATION_NAME'],
+        session:     session[:session_id],
+        username:    session[:portal_username] || 'anonymous',
+        url:         request.original_url
+    }
+    if @run
+      data[:run_key] = @run.key
+    end
+    if @sequence
+      # Activity field is a bit confusing name, but let's assume that it indicates which activity *or* sequence has
+      # been started by user.
+      data[:activity]      = "sequence: #{@sequence.id}"
+      data[:sequence_id]   = @sequence.id
+      data[:sequence_name] = @sequence.name
+    end
+    if @activity
+      # Set activity name only if it hasn't been already set. Note that when both @activity and @sequence are available,
+      # "sequence: <ID>" will be used (as user has started sequence and activity is only part of it).
+      data[:activity]    ||= "activity: #{@activity.id}"
+      data[:activity_id]   = @activity.id
+      data[:activity_name] = @activity.name
+    end
+    if @page
+      data[:page_id] = @page.id
+    end
+
+    # Export to gon namespace, available in JavaScript under window.gon (see: https://github.com/gazay/gon).
+    gon.loggerConfig = {
+      server: ENV['LOGGER_URI'],
+      action: "#{controller_name}##{action_name}",
+      data:   data
+    }
+  end
+
   # login to the portal provided in the parameters
   def portal_login
     if params[:domain]

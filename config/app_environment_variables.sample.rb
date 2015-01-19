@@ -16,3 +16,6 @@ ENV['S3_KEY']                            ||= 'xxxxxxxxxxxxx'
 ENV['S3_SECRET']                         ||= 'xxxxxxxxxxxxx'
 ENV['S3_BIN']                            ||= 'ccshutterbug'
 ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org/shutterbug"
+
+ENV['LOGGER_URI']                        ||= '//cc-log-manager.herokuapp.com/api/logs'
+ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'

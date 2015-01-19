@@ -5,6 +5,8 @@ class InteractivePagesController < ApplicationController
   before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
+  before_filter :enable_js_logger, :only => [:show, :preview]
+
   layout 'runtime', :only => [:show, :preview]
 
   def show
@@ -13,6 +15,8 @@ class InteractivePagesController < ApplicationController
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
     setup_show
+    puts "DUPA"
+    puts @activity
     respond_to do |format|
       format.html
       format.xml

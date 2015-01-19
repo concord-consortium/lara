@@ -6,6 +6,9 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
   before_filter :set_sequence, :only   => [:summary, :show]
+
+  before_filter :enable_js_logger, :only => [:summary, :show, :preview]
+
   layout :set_layout
 
   def index
