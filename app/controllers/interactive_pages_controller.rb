@@ -15,8 +15,6 @@ class InteractivePagesController < ApplicationController
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
     setup_show
-    puts "DUPA"
-    puts @activity
     respond_to do |format|
       format.html
       format.xml
