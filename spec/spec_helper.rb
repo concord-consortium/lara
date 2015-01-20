@@ -41,8 +41,7 @@ def add_fake_authorization(strat_name)
   )
 end
 
-
-add_fake_authorization('concord_portal')
+add_fake_authorization('concord.portal')
 add_fake_authorization('portal')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
