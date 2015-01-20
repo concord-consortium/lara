@@ -1,18 +1,11 @@
+sudo: false # see: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 language: ruby
 rvm:
   - "1.9.3"
 
-env:
-  -DEFAULT_AUTH_PROVIDER=concord_portal
-  -CONCORD_CONFIGURED_PORTALS="PORTAL"
-  -CONCORD_PORTAL_URL='http://portal.org/'
-  -CONCORD_PORTAL_CLIENT_ID=localhost
-  -CONCORD_PORTAL_CLIENT_SECRET=secret
-  -SECRET_TOKEN=111111111111111111111111111111111111111111111111111111111111
-
-
 before_script:
   - cp config/database.travis.yml config/database.yml
+  - cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
   - mysql -e 'create database lara_test;'
   - bundle exec rake db:migrate
     
