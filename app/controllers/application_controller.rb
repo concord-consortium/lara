@@ -171,7 +171,7 @@ class ApplicationController < ActionController::Base
     data = {
         application: ENV['LOGGER_APPLICATION_NAME'],
         session:     session[:session_id],
-        username:    session[:portal_username] || 'anonymous',
+        username:    current_user ? "#{session[:portal_user_id]}@#{session[:portal_domain]}" : 'anonymous',
         url:         request.original_url
     }
     if @run
