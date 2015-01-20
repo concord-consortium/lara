@@ -149,7 +149,9 @@ module Concord
             :first_name => raw_info['extra']['first_name'],
             :last_name  => raw_info['extra']['last_name'],
             :full_name  => raw_info['extra']['full_name'],
-            :username   => raw_info['extra']['username']
+            :username   => raw_info['extra']['username'],
+            :user_id    => raw_info['extra']['user_id'],
+            :domain     => raw_info['extra']['domain']
           }
         end
 
@@ -195,9 +197,12 @@ module Concord
           return <<-CONTROLLER_ACTION
             def #{@strategy_name}
               omniauth = request.env["omniauth.auth"]
-              portal_username = omniauth.extra.nil? ? nil : omniauth.extra.username
+              if extra = omniauth.extra
+                session[:portal_username] = extra.username
+                session[:portal_user_id]  = extra.user_id
+                session[:portal_domain]   = extra.domain
+              end
               @user = User.find_for_concord_portal_oauth(omniauth, current_user)
-              session[:portal_username] = portal_username
               sign_in_and_redirect @user, :event => :authentication
             end
           CONTROLLER_ACTION
