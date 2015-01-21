@@ -172,6 +172,11 @@ class ApplicationController < ActionController::Base
   # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
   # for every action which should have logging enabled.
   def enable_js_logger
+    unless session[:logging]
+      gon.loggerConfig = nil
+      return
+    end
+
     data = {
         application: ENV['LOGGER_APPLICATION_NAME'],
         session:     session[:session_id],
