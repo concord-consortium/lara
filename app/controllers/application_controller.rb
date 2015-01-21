@@ -165,6 +165,10 @@ class ApplicationController < ActionController::Base
     set_response_key(@run.key)
   end
 
+  def set_class_logging
+    session[:logging] = params[:logging] == "true"
+  end
+
   # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
   # for every action which should have logging enabled.
   def enable_js_logger

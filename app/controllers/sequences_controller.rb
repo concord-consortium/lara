@@ -4,6 +4,8 @@ class SequencesController < ApplicationController
   before_filter :set_sequence, :except => [:index, :new, :create]
   before_filter :find_or_create_sequence_run, :only => [:show]
 
+  before_filter :set_class_logging, :only => [:show]
+
   before_filter :enable_js_logger, :only => [:show]
 
   # GET /sequences
