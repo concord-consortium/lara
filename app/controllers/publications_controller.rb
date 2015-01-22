@@ -18,7 +18,8 @@ class PublicationsController < ApplicationController
       last_publication = @publishable.last_publication(@portal)
       if last_publication
         return "publish_ok" if last_publication.success
-        return "publish_fail"
+        return "publish_fail" if @publishable.portal_publications.where("portal_url = ? AND success = ?", @portal.publishing_url, true).size > 0
+        return "add_to_fail"
       end
       return "publishable" if publishable?(user)
     end
