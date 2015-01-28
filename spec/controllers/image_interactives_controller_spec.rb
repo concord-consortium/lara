@@ -26,15 +26,15 @@ describe ImageInteractivesController do
           join_count = InteractiveItem.count()
           get :new, :page_id => page.id
 
-          ImageInteractive.count().should equal starting_count + 1
-          InteractiveItem.count().should equal join_count + 1
+          expect(ImageInteractive.count()).to equal starting_count + 1
+          expect(InteractiveItem.count()).to equal join_count + 1
         end
 
         it 'redirects the submitter back to the page edit page' do
           activity
           get :new, :page_id => page.id
           new_id = ImageInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(activity, page, :edit_img_int => new_id))
+          expect(response).to redirect_to(edit_activity_page_path(activity, page, :edit_img_int => new_id))
         end
       end
 
@@ -45,15 +45,15 @@ describe ImageInteractivesController do
           join_count = InteractiveItem.count()
           post :create, :page_id => page.id
 
-          ImageInteractive.count().should equal starting_count + 1
-          InteractiveItem.count().should equal join_count + 1
+          expect(ImageInteractive.count()).to equal starting_count + 1
+          expect(InteractiveItem.count()).to equal join_count + 1
         end
 
         it 'redirects the submitter to the page edit page' do
           activity
           post :create, :page_id => page.id
           new_id = ImageInteractive.last().id
-          response.should redirect_to(edit_activity_page_path(activity, page, :edit_img_int => new_id))
+          expect(response).to redirect_to(edit_activity_page_path(activity, page, :edit_img_int => new_id))
         end
       end
     end
@@ -63,22 +63,22 @@ describe ImageInteractivesController do
         it 'shows a form with values of the Image Interactive filled in' do
           get :edit, :id => int.id
 
-          response.body.should match /<form[^>]+action="\/image_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
-          response.body.should match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
+          expect(response.body).to match /<form[^>]+action="\/image_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
+          expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
 
-          response.body.should match /<input[^<]+id="image_interactive_url"[^<]+name="image_interactive\[url\]"[^<]+type="text"[^>]+value="#{int.url}"[^<]*\/>/
+          expect(response.body).to match /<input[^<]+id="image_interactive_url"[^<]+name="image_interactive\[url\]"[^<]+type="text"[^>]+value="#{int.url}"[^<]*\/>/
           # TODO: These may be textareas
-          response.body.should match /<textarea[^<]+id="image_interactive_caption"[^<]+name="image_interactive\[caption\]"[^<]*>#{int.caption}/
-          response.body.should match /<textarea[^<]+id="image_interactive_credit"[^<]+name="image_interactive\[credit\]"[^<]*>#{int.credit}/
+          expect(response.body).to match /<textarea[^<]+id="image_interactive_caption"[^<]+name="image_interactive\[caption\]"[^<]*>#{int.caption}/
+          expect(response.body).to match /<textarea[^<]+id="image_interactive_credit"[^<]+name="image_interactive\[credit\]"[^<]*>#{int.credit}/
         end
 
         it 'responds to js-format requests with JSON' do
           page
           get :edit, :id => int.id, :page_id => page.id, :format => 'js'
 
-          response.headers['Content-Type'].should match /text\/json/
+          expect(response.headers['Content-Type']).to match /text\/json/
           value_hash = JSON.parse(response.body)
-          value_hash['html'].should match %r[<form[^>]+action=\"/pages\/#{page.id}\/image_interactives\/#{int.id}\"[^<]+method=\"post]
+          expect(value_hash['html']).to match %r[<form[^>]+action=\"/pages\/#{page.id}\/image_interactives\/#{int.id}\"[^<]+method=\"post]
         end
       end
 
@@ -88,15 +88,15 @@ describe ImageInteractivesController do
           post :update, :id => int.id, :page_id => page.id, :image_interactive => new_values_hash
 
           int.reload
-          int.caption.should == new_values_hash[:caption]
-          int.url.should == new_values_hash[:url]
+          expect(int.caption).to eq(new_values_hash[:caption])
+          expect(int.url).to eq(new_values_hash[:url])
         end
 
         it 'returns to the edit page with a message indicating success' do
           new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
           post :update, :id => int.id, :page_id => page.id, :image_interactive => new_values_hash
-          response.should redirect_to(edit_activity_page_path(activity, page))
-          flash[:notice].should == 'Your image interactive was updated.'
+          expect(response).to redirect_to(edit_activity_page_path(activity, page))
+          expect(flash[:notice]).to eq('Your image interactive was updated.')
         end
 
         # it 'returns to the edit page with an error on failure' do
@@ -119,11 +119,11 @@ describe ImageInteractivesController do
 
           post :destroy, :id => int.id, :page_id => page.id
 
-          response.should redirect_to(edit_activity_page_path(activity, page))
-          ImageInteractive.count().should == interactive_count - 1
+          expect(response).to redirect_to(edit_activity_page_path(activity, page))
+          expect(ImageInteractive.count()).to eq(interactive_count - 1)
           page.reload
-          page.interactives.length.should == page_count - 1
-          flash[:notice].should == 'Your Image interactive was deleted.'
+          expect(page.interactives.length).to eq(page_count - 1)
+          expect(flash[:notice]).to eq('Your Image interactive was deleted.')
         end
       end
     end

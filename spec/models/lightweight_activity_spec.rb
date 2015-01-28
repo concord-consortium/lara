@@ -17,9 +17,9 @@ describe LightweightActivity do
   }
   
   it 'should have valid attributes' do
-    activity.name.should_not be_blank
-    activity.publication_status.should == "hidden"
-    activity.is_locked.should be_false
+    expect(activity.name).not_to be_blank
+    expect(activity.publication_status).to eq("hidden")
+    expect(activity.is_locked).to be_falsey
   end
 
   it 'should not allow long names' do
@@ -35,7 +35,7 @@ describe LightweightActivity do
     end
     activity.reload
 
-    activity.pages.size.should == 3
+    expect(activity.pages.size).to eq(3)
   end
 
   it 'should have InteractivePages in the correct order' do
@@ -45,8 +45,8 @@ describe LightweightActivity do
     end
     activity.reload
 
-    activity.pages.first.text.should == "some text 1"
-    activity.pages.last.name.should == "page 3"
+    expect(activity.pages.first.text).to eq("some text 1")
+    expect(activity.pages.last.name).to eq("page 3")
   end
 
   it 'allows only defined publication statuses' do
@@ -64,14 +64,14 @@ describe LightweightActivity do
   describe 'validation of HTML blocks' do
     it 'rejects invalid HTML for related text' do
       activity.related = '<p>This HTML is invalid.<p>Tag soup.</p>'
-      activity.valid?.should be_true # Ugh: HTML not XML parsing
+      expect(activity.valid?).to be_truthy # Ugh: HTML not XML parsing
       activity.related = 'This HTML is valid.'
       activity.valid?
     end
 
     it 'rejects invalid HTML for the activity description' do
       activity.description = '<p class="invalid-attribute>This has an invalid attribute.</p>'
-      activity.valid?.should be_false
+      expect(activity.valid?).to be_falsey
       activity.description = '<p class="valid-attribute">Much better.</p>'
       activity.valid?
     end
@@ -82,19 +82,19 @@ describe LightweightActivity do
       activity.user = author
       activity.save
 
-      LightweightActivity.my(author).should == [activity]
+      expect(LightweightActivity.my(author)).to eq([activity])
     end
   end
 
   describe '#questions' do
     it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
-      activity.questions.should == []
+      expect(activity.questions).to eq([])
     end
   end
 
   describe '#question_keys' do
     it 'returns an array of storage_keys from questions' do
-      activity.question_keys.should == []
+      expect(activity.question_keys).to eq([])
     end
   end
 
@@ -122,16 +122,16 @@ describe LightweightActivity do
 
     describe '#questions' do
       it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
-        activity.questions.length.should be(4)
-        activity.questions.each { |q| activity.questions.should include(q) }
-        activity.questions.should_not include(text_emb)
+        expect(activity.questions.length).to be(4)
+        activity.questions.each { |q| expect(activity.questions).to include(q) }
+        expect(activity.questions).not_to include(text_emb)
       end
     end
 
     describe '#question_keys' do
       it 'returns an array of storage_keys from questions' do
-        activity.question_keys.length.should be(4)
-        activity.question_keys.first.should be_kind_of String
+        expect(activity.question_keys.length).to be(4)
+        expect(activity.question_keys.first).to be_kind_of String
       end
     end
   end
@@ -140,27 +140,27 @@ describe LightweightActivity do
     it "should change the publication status to public" do
       activity.publication_status = 'private'
       activity.publish!
-      activity.publication_status.should == 'public'
+      expect(activity.publication_status).to eq('public')
     end
   end
 
   describe '#set_user!' do
     it 'should set the user to the user object provided as an argument' do
       activity.set_user!(author)
-      activity.reload.user.should == author
+      expect(activity.reload.user).to eq(author)
     end
   end
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
       expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes }
-      activity.to_hash.should == expected
+      expect(activity.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
       it 'returns json of an activity' do
-        activity.export[:pages].length.should == activity.pages.count
+        expect(activity.export[:pages].length).to eq(activity.pages.count)
     end 
   end
 
@@ -169,11 +169,11 @@ describe LightweightActivity do
 
     it 'creates a new LightweightActivity with attributes from the original' do
       dup = activity.duplicate(owner)
-      dup.should be_a(LightweightActivity)
-      dup.user.should == owner
-      dup.related.should == activity.related
-      dup.description.should == activity.description
-      dup.time_to_complete.should == activity.time_to_complete
+      expect(dup).to be_a(LightweightActivity)
+      expect(dup.user).to eq(owner)
+      expect(dup.related).to eq(activity.related)
+      expect(dup.description).to eq(activity.description)
+      expect(dup.time_to_complete).to eq(activity.time_to_complete)
     end
 
     it 'has pages in the same order as the source activity' do
@@ -182,9 +182,9 @@ describe LightweightActivity do
       end
       duplicate = activity.duplicate(owner)
       duplicate.pages.each_with_index do |p, i|
-        activity.pages[i].name.should == p.name
-        activity.pages[i].position.should be(p.position)
-        activity.pages[i].last?.should be(p.last?)
+        expect(activity.pages[i].name).to eq(p.name)
+        expect(activity.pages[i].position).to be(p.position)
+        expect(activity.pages[i].last?).to be(p.last?)
       end
     end
 
@@ -199,13 +199,13 @@ describe LightweightActivity do
         activity.fix_page_positions
         activity.description = bad_content
         activity.save!(validate: false)
-        activity.should_not be_valid
+        expect(activity).not_to be_valid
         duplicate = activity.duplicate(owner)
-        duplicate.pages.length.should == 1
+        expect(duplicate.pages.length).to eq(1)
         duplicate.pages.each_with_index do |p, i|
-          activity.pages[i].name.should == p.name
-          activity.pages[i].position.should be(p.position)
-          activity.pages[i].last?.should be(p.last?)
+          expect(activity.pages[i].name).to eq(p.name)
+          expect(activity.pages[i].position).to be(p.position)
+          expect(activity.pages[i].last?).to be(p.last?)
         end
       end
     end
@@ -217,9 +217,9 @@ describe LightweightActivity do
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
       act = LightweightActivity.import(json,new_owner)
-      act.user.should be new_owner
-      act.related.should == json['related']
-      act.pages.count.should == json['pages'].length
+      expect(act.user).to be new_owner
+      expect(act.related).to eq(json['related'])
+      expect(act.pages.count).to eq(json['pages'].length)
     end
   end
 
@@ -240,7 +240,7 @@ describe LightweightActivity do
     end
 
     it 'returns a simple hash that can be consumed by the Portal' do
-      activity.serialize_for_portal('http://test.host').should == simple_portal_hash
+      expect(activity.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
     end
   end
 
@@ -257,21 +257,21 @@ describe LightweightActivity do
 
     describe "the newest scope" do
       it "should return all items, the most recent items first" do
-        subject.newest.should have_at_least(15).items
-        subject.newest.should be_ordered_by "updated_at_desc"
+        expect(subject.newest.size).to be >= 15
+        expect(subject.newest).to be_ordered_by "updated_at_desc"
       end
     end
     describe "the public scope" do
       it "should return 5 public activities" do
-        subject.public.should have(5).items
-        subject.public.each { |a| a.publication_status.should == 'public'}
+        expect(subject.public.size).to eq(5)
+        subject.public.each { |a| expect(a.publication_status).to eq('public')}
       end
     end
     describe "my_or_public  scope" do
       it "should return 10 activities that are either mine or public" do
-        subject.my_or_public(author).should have(10).items
-        subject.my_or_public(author).select{|a| a.user_id == author.id}.should have(5).items
-        subject.my_or_public(author).select{|a| a.publication_status == 'public'}.should have(5).items
+        expect(subject.my_or_public(author).size).to eq(10)
+        expect(subject.my_or_public(author).select{|a| a.user_id == author.id}.size).to eq(5)
+        expect(subject.my_or_public(author).select{|a| a.publication_status == 'public'}.size).to eq(5)
       end
     end
   end

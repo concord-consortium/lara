@@ -13,11 +13,11 @@ describe Embeddable::AnswerFinder do
       it "should make a new answer of the right type" do
         finder = Embeddable::AnswerFinder.new(run)
         answer = finder.find_answer(open_response)
-        answer.should be_an_instance_of Embeddable::OpenResponseAnswer
+        expect(answer).to be_an_instance_of Embeddable::OpenResponseAnswer
         answer = finder.find_answer(multiple_choice)
-        answer.should be_an_instance_of Embeddable::MultipleChoiceAnswer
+        expect(answer).to be_an_instance_of Embeddable::MultipleChoiceAnswer
         answer = finder.find_answer(image)
-        answer.should be_an_instance_of Embeddable::ImageQuestionAnswer
+        expect(answer).to be_an_instance_of Embeddable::ImageQuestionAnswer
       end
 
       context 'when the question is an ImageQuestion with an author-defined background' do
@@ -26,7 +26,7 @@ describe Embeddable::AnswerFinder do
           image.bg_url = 'http://concord.org/sites/default/files/images/news/2013/bright-ideas-06262013t.jpg'
           finder = Embeddable::AnswerFinder.new(run)
           answer = finder.find_answer(image)
-          answer.image_url.should == image.bg_url
+          expect(answer.image_url).to eq(image.bg_url)
         end
       end
     end
@@ -40,8 +40,8 @@ describe Embeddable::AnswerFinder do
         run.reload
         finder = Embeddable::AnswerFinder.new(run)
         answer2 = finder.find_answer(open_response)
-        answer.id.should == answer2.id
-        answer2.answer_text.should == "xyzzy"
+        expect(answer.id).to eq(answer2.id)
+        expect(answer2.answer_text).to eq("xyzzy")
       end
     end
 
@@ -49,7 +49,7 @@ describe Embeddable::AnswerFinder do
       it "should return the Embeddable itself" do
         finder = Embeddable::AnswerFinder.new(run)
         answer = finder.find_answer(html)
-        answer.should == html # embeddable was returned as-is
+        expect(answer).to eq(html) # embeddable was returned as-is
       end
     end
   end

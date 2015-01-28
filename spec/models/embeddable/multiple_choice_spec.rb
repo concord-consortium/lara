@@ -19,11 +19,11 @@ describe Embeddable::MultipleChoice do
 
   describe "a newly created MutipleChoiceQuestion" do
     it "belongs to a page" do
-      page.embeddables.should include(multichoice)
+      expect(page.embeddables).to include(multichoice)
     end
 
     it "has three initial default answers" do
-      multichoice.choices.should have(3).answers
+      expect(multichoice.choices.size).to eq(3)
     end
 
     # it "has a self-generated storage key" do
@@ -35,39 +35,39 @@ describe Embeddable::MultipleChoice do
     let (:choice) { multichoice.add_choice("my choice") }
 
     it "should have the new choice" do
-      multichoice.choices.should include(choice)
+      expect(multichoice.choices).to include(choice)
     end
 
     it "should update its choices when saved" do
       choice.choice = "fooo"
       choice.save
       multichoice.reload
-      multichoice.choices[3].choice.should == "fooo"
+      expect(multichoice.choices[3].choice).to eq("fooo")
     end
   end
 
   describe '#parse_choices' do
     it 'should return an empty array for a blank input' do
-      multichoice.parse_choices('').should == []
+      expect(multichoice.parse_choices('')).to eq([])
     end
 
     it 'should return an array with one MultipleChoiceChoice when passed an integer' do
       choice_key = multichoice.choices.first.id.to_s
-      multichoice.parse_choices(choice_key).should == [multichoice.choices.first]
-      multichoice.parse_choices(choice_key).first.should be_a_kind_of Embeddable::MultipleChoiceChoice
+      expect(multichoice.parse_choices(choice_key)).to eq([multichoice.choices.first])
+      expect(multichoice.parse_choices(choice_key).first).to be_a_kind_of Embeddable::MultipleChoiceChoice
     end
 
     it 'should return an array of several MultipleChoiceChoices when passed a list of comma-separated integers' do
       choice_key = multichoice.choices.map{ |c| c.id }.join(',')
-      multichoice.parse_choices(choice_key).length.should == multichoice.choices.length
-      multichoice.parse_choices(choice_key).first.should be_a_kind_of Embeddable::MultipleChoiceChoice
+      expect(multichoice.parse_choices(choice_key).length).to eq(multichoice.choices.length)
+      expect(multichoice.parse_choices(choice_key).first).to be_a_kind_of Embeddable::MultipleChoiceChoice
     end
   end
 
   describe '#check' do
     describe 'when the MultipleChoice is not multi-answer' do
       it 'should return a MultipleChoiceChoice instance' do
-        multichoice.check("#{first_mc_choice_id}").should be_a_kind_of Embeddable::MultipleChoiceChoice
+        expect(multichoice.check("#{first_mc_choice_id}")).to be_a_kind_of Embeddable::MultipleChoiceChoice
       end
     end
 
@@ -84,25 +84,25 @@ describe Embeddable::MultipleChoice do
       end
 
       it 'should return a hash with at least one key' do
-        multichoice.check("#{first_mc_choice_id}").should be_a_kind_of Hash
-        multichoice.check("#{first_mc_choice_id}").length.should be(1)
+        expect(multichoice.check("#{first_mc_choice_id}")).to be_a_kind_of Hash
+        expect(multichoice.check("#{first_mc_choice_id}").length).to be(1)
       end
 
       it 'should return a prompt for a nil answer' do
-        multichoice.check('').should == { prompt: 'Please select an answer before checking.' }
+        expect(multichoice.check('')).to eq({ prompt: 'Please select an answer before checking.' })
       end
 
       it 'should return true for all right answers' do
-        multichoice.check("#{multichoice.choices[0].id.to_s},#{multichoice.choices[1].id.to_s}").should == { choice: true }
+        expect(multichoice.check("#{multichoice.choices[0].id.to_s},#{multichoice.choices[1].id.to_s}")).to eq({ choice: true })
       end
 
       it 'should return a prompt for some right answers, but not all' do
-        multichoice.check(multichoice.choices[1].id.to_s).should == { prompt: "You're on the right track, but you didn't select all the right answers yet." }
+        expect(multichoice.check(multichoice.choices[1].id.to_s)).to eq({ prompt: "You're on the right track, but you didn't select all the right answers yet." })
       end
 
       it 'should return a list of wrong answers' do
         w_choice = multichoice.choices.last
-        multichoice.check(w_choice.id.to_s).should == { prompt: "'#{w_choice.choice}' is incorrect" }
+        expect(multichoice.check(w_choice.id.to_s)).to eq({ prompt: "'#{w_choice.choice}' is incorrect" })
       end
     end
   end
@@ -110,29 +110,29 @@ describe Embeddable::MultipleChoice do
   describe '#to_hash' do
     it 'returns a hash with copied attributes' do
       expected = { name: multichoice.name, prompt: multichoice.prompt, custom: multichoice.custom, enable_check_answer: multichoice.enable_check_answer, multi_answer: multichoice.multi_answer, show_as_menu: multichoice.show_as_menu }
-      multichoice.to_hash.should == expected
+      expect(multichoice.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
     it 'returns json of a multiple choice question' do
       multichoice_json = multichoice.export.as_json
-      multichoice_json['choices'].length.should == multichoice.choices.count
+      expect(multichoice_json['choices'].length).to eq(multichoice.choices.count)
     end 
   end
 
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
-      multichoice.duplicate.should be_a_new(Embeddable::MultipleChoice).with( name: multichoice.name, prompt: multichoice.prompt )
+      expect(multichoice.duplicate).to be_a_new(Embeddable::MultipleChoice).with( name: multichoice.name, prompt: multichoice.prompt )
     end
 
     it 'copies choices' do
       c = multichoice.choices.first
-      c.duplicate.should be_a_new(Embeddable::MultipleChoiceChoice).with( choice: c.choice, prompt: c.prompt, is_correct: c.is_correct )
+      expect(c.duplicate).to be_a_new(Embeddable::MultipleChoiceChoice).with( choice: c.choice, prompt: c.prompt, is_correct: c.is_correct )
     end
 
     it 'has copied choices' do
-      multichoice.duplicate.choices.length.should be(multichoice.choices.length)
+      expect(multichoice.duplicate.choices.length).to be(multichoice.choices.length)
     end
   end
 

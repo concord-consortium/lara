@@ -15,18 +15,18 @@ describe Embeddable::MultipleChoiceAnswer do
 
   describe "model associations" do
     it "should belong to a multiple choice" do
-      answer.question.should == question
-      question.answers.should include answer
+      expect(answer.question).to eq(question)
+      expect(question.answers).to include answer
     end
 
     it "should belong to a run" do
-      answer.run.should == run
-      run.multiple_choice_answers.should include answer
+      expect(answer.run).to eq(run)
+      expect(run.multiple_choice_answers).to include answer
     end
 
     it "should have answers" do
       [a1,a2].each do |a|
-        answer.answers.should include a
+        expect(answer.answers).to include a
       end
     end
   end
@@ -44,7 +44,7 @@ describe Embeddable::MultipleChoiceAnswer do
 
     it "serializes to expected JSON" do
       answer.answers = [a1]
-      answer.portal_hash.should == expected
+      expect(answer.portal_hash).to eq(expected)
     end
   end
 
@@ -58,7 +58,7 @@ describe Embeddable::MultipleChoiceAnswer do
 
     it "should copy basic attributes that can be modified by student" do
       answer.copy_answer!(another_answer)
-      answer.answer_texts.should == another_answer.answer_texts
+      expect(answer.answer_texts).to eq(another_answer.answer_texts)
     end
   end
 
@@ -69,20 +69,20 @@ describe Embeddable::MultipleChoiceAnswer do
 
     it 'turns an array of choice IDs into an array of choices' do
       answer.update_from_form_params( { :answers => [a1.id, a2.id] } )
-      answer.answers.should include a1
-      answer.answers.should include a2
+      expect(answer.answers).to include a1
+      expect(answer.answers).to include a2
     end
 
     it 'turns a single choice ID into an array with one choice' do
       answer.update_from_form_params( { :answers => a1.id } )
-      answer.answers.should include a1
-      answer.answers.should_not include a2
+      expect(answer.answers).to include a1
+      expect(answer.answers).not_to include a2
     end
 
     it 'turns an empty ID into an empty array' do
       answer.update_from_form_params( { :answers => nil } )
-      answer.answers.should_not include a1
-      answer.answers.should_not include a2
+      expect(answer.answers).not_to include a1
+      expect(answer.answers).not_to include a2
     end
   end
 
@@ -95,43 +95,43 @@ describe Embeddable::MultipleChoiceAnswer do
 
     describe "choices" do
       it "should delegate to question" do
-        question.should_receive(:choices).and_return(:some_choices)
-        answer.choices.should == :some_choices
+        expect(question).to receive(:choices).and_return(:some_choices)
+        expect(answer.choices).to eq(:some_choices)
       end
     end
 
     describe "prompt" do
       it "should delegate to question" do
-        question.should_receive(:prompt).and_return(:some_prompt)
-        answer.prompt.should == :some_prompt
+        expect(question).to receive(:prompt).and_return(:some_prompt)
+        expect(answer.prompt).to eq(:some_prompt)
       end
     end
 
     describe 'name' do
       it 'should delegate to question' do
-        question.should_receive(:name).and_return(:string)
-        answer.name.should == :string
+        expect(question).to receive(:name).and_return(:string)
+        expect(answer.name).to eq(:string)
       end
     end
 
     describe 'enable_check_answer' do
       it 'should delegate to question' do
-        question.should_receive(:enable_check_answer).and_return(true)
-        answer.enable_check_answer.should be_true
+        expect(question).to receive(:enable_check_answer).and_return(true)
+        expect(answer.enable_check_answer).to be_truthy
       end
     end
 
     describe 'multi_answer' do
       it 'should delegate to question' do
-        question.should_receive(:multi_answer).and_return(true)
-        answer.multi_answer.should be_true
+        expect(question).to receive(:multi_answer).and_return(true)
+        expect(answer.multi_answer).to be_truthy
       end
     end
 
     describe 'show_as_menu' do
       it 'should delegate to question' do
-        question.should_receive(:show_as_menu).and_return(true)
-        answer.show_as_menu.should be_true
+        expect(question).to receive(:show_as_menu).and_return(true)
+        expect(answer.show_as_menu).to be_truthy
       end
     end
   end

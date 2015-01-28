@@ -22,7 +22,7 @@ describe LightweightActivitiesController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => "activities/3"}.should route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
+      expect({:get => "activities/3"}).to route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
     end
   end
 
@@ -37,14 +37,14 @@ describe LightweightActivitiesController do
     it 'assigns a run key' do
       page
       get :show, :id => act.id
-      assigns(:run).should_not be_nil
+      expect(assigns(:run)).not_to be_nil
     end
 
     it 'assigns a project and theme' do
       page
       get :show, :id => act.id
-      assigns(:project).should_not be_nil
-      assigns(:theme).should_not be_nil
+      expect(assigns(:project)).not_to be_nil
+      expect(assigns(:theme)).not_to be_nil
     end
 
 
@@ -61,12 +61,12 @@ describe LightweightActivitiesController do
         })
       end
       before(:each) do
-        Run.stub!(:lookup).and_return(run)
+        allow(Run).to receive(:lookup).and_return(run)
       end
       subject { get :show, :id => act.id}
       it "should redirect to the run page" do
         # page_with_response_path(@activity.id, @run.last_page.id, @run)
-        subject.should redirect_to(page_with_response_path(act.id, page.id, run.key))
+        expect(subject).to redirect_to(page_with_response_path(act.id, page.id, run.key))
       end
       
       describe "when the run page is for a different activity" do
@@ -74,7 +74,7 @@ describe LightweightActivitiesController do
         let(:page)      { other_act.pages.create!(:name => "Page 2", :text => "This page isn't in Act 1.") }
         subject { get :show, :id => act.id}
         it "should redirect to Act 2 run page." do
-          subject.should redirect_to(page_with_response_path(other_act.id, page.id, run.key))
+          expect(subject).to redirect_to(page_with_response_path(other_act.id, page.id, run.key))
         end
       end
     end
@@ -89,7 +89,7 @@ describe LightweightActivitiesController do
       it 'assigns a sequence if one is in the URL' do
         page
         get :show, :id => act.id, :sequence_id => sequence.id
-        assigns(:sequence).should_not be_nil
+        expect(assigns(:sequence)).not_to be_nil
       end
 
       it 'assigns a sequence if one is in the run' do
@@ -97,7 +97,7 @@ describe LightweightActivitiesController do
         ar.sequence = sequence
         ar.save
         get :show, :id => act.id, :response_key => ar.key
-        assigns(:sequence).should == sequence
+        expect(assigns(:sequence)).to eq(sequence)
       end
 
       it 'assigns the sequence from the URL to the run' do
@@ -106,15 +106,15 @@ describe LightweightActivitiesController do
         ar.save
         ar.reload
         get :show, :id => act.id, :response_key => ar.key, :sequence_id => sequence.id
-        ar.reload.sequence_id.should be(sequence.id)
+        expect(ar.reload.sequence_id).to be(sequence.id)
       end
     end
 
     it 'renders the activity if it exists and is public' do
       page
       get :show, :id => act.id
-      assigns[:session_key].should_not be_nil
-      response.should be_success
+      expect(assigns[:session_key]).not_to be_nil
+      expect(response).to be_success
     end
 
     describe "when called from the portal" do
@@ -122,11 +122,11 @@ describe LightweightActivitiesController do
       let(:domain)    { 'http://portal.org/' }
       let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
       it "should force a new user session" do
-        controller.should_receive(:sign_out).and_return(:true)
+        expect(controller).to receive(:sign_out).and_return(:true)
         page
 
         get :show, :id => act.id, :domain => domain, :externalId => "bar"
-        response.should redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
+        expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
       end
     end
   end
@@ -134,15 +134,15 @@ describe LightweightActivitiesController do
   describe '#preview' do
     it 'calls clear_answers on the run' do
       page
-      ar.should_receive(:clear_answers).and_return(:true)
-      Run.should_receive(:find).and_return(ar)
+      expect(ar).to receive(:clear_answers).and_return(:true)
+      expect(Run).to receive(:find).and_return(ar)
       get :preview, :id => act.id
     end
 
     it 'renders show' do
       page
       get :preview, :id => act.id
-      response.should render_template('lightweight_activities/show')
+      expect(response).to render_template('lightweight_activities/show')
     end
   end
 
@@ -157,8 +157,8 @@ describe LightweightActivitiesController do
 
     it 'assigns a project and theme' do
       get :summary, :id => act.id, :response_key => ar.key
-      assigns(:project).should_not be_nil
-      assigns(:theme).should_not be_nil
+      expect(assigns(:project)).not_to be_nil
+      expect(assigns(:theme)).not_to be_nil
     end
 
     it 'renders the summary page if the activity exists and is public' do
@@ -167,8 +167,8 @@ describe LightweightActivitiesController do
 
       get :summary, :id => act.id, :response_key => ar.key
 
-      assigns(:answers).should_not be_nil
-      response.body.should match /Response Summary for/
+      expect(assigns(:answers)).not_to be_nil
+      expect(response.body).to match /Response Summary for/
     end
   end
 
@@ -183,18 +183,18 @@ describe LightweightActivitiesController do
       it 'has a list of public and owned activities' do
         # User is an admin, so all public activities will be shown
         get :index
-        assigns(:community_activities).should have_at_least(3).items
-        assigns(:official_activities).should have(4).items
-        assigns(:community_activities).should be_ordered_by 'updated_at_desc'
-        assigns(:official_activities).should be_ordered_by 'updated_at_desc'
+        expect(assigns(:community_activities).size).to be >= 3
+        expect(assigns(:official_activities).size).to eq(4)
+        expect(assigns(:community_activities)).to be_ordered_by 'updated_at_desc'
+        expect(assigns(:official_activities)).to be_ordered_by 'updated_at_desc'
       end
     end
 
     describe '#new' do
       it 'should return success' do
         get :new
-        assigns(:activity).should_not be_nil
-        response.should be_success
+        expect(assigns(:activity)).not_to be_nil
+        expect(response).to be_success
       end
     end
 
@@ -204,29 +204,29 @@ describe LightweightActivitiesController do
 
         post :create, {:lightweight_activity => {:name => 'Test Activity', :description => "Test Activity's description"}}
 
-        flash[:notice].should == "Lightweight Activity Test Activity was created."
-        response.should redirect_to(edit_activity_path(assigns(:activity)))
-        LightweightActivity.count.should equal existing_activities + 1
+        expect(flash[:notice]).to eq("Lightweight Activity Test Activity was created.")
+        expect(response).to redirect_to(edit_activity_path(assigns(:activity)))
+        expect(LightweightActivity.count).to equal existing_activities + 1
       end
 
       it 'creates LightweightActivities owned by the current_user' do
         existing_activities = LightweightActivity.count(:conditions => {:user_id => @user.id})
         post :create, {:lightweight_activity => {:name => 'Owned Activity', :description => "Test Activity's description", :user_id => 10}}
 
-        LightweightActivity.count(:conditions => {:user_id => @user.id}).should equal existing_activities + 1
+        expect(LightweightActivity.count(:conditions => {:user_id => @user.id})).to equal existing_activities + 1
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
-        LightweightActivity.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(LightweightActivity).to receive(:save).and_return(false)
         existing_activities = LightweightActivity.count
 
         post :create, {:lightweight_activity => { :name => 'This update will fail.'} }
 
-        flash[:warning].should == 'There was a problem creating the new Lightweight Activity.'
-        response.body.should match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
-        response.body.should match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
-        response.body.should match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
-        LightweightActivity.count.should equal existing_activities
+        expect(flash[:warning]).to eq('There was a problem creating the new Lightweight Activity.')
+        expect(response.body).to match /<form[^<]+action="\/activities"[^<]+method="post"[^<]*>/
+        expect(response.body).to match /<input[^<]+id="lightweight_activity_name"[^<]+name="lightweight_activity\[name\]"[^<]+type="text"[^<]*\/>/
+        expect(response.body).to match /<textarea[^<]+id="lightweight_activity_description"[^<]+name="lightweight_activity\[description\]"[^<]*>[^<]*<\/textarea>/
+        expect(LightweightActivity.count).to equal existing_activities
       end
     end
 
@@ -235,9 +235,9 @@ describe LightweightActivitiesController do
         act
         get :edit, {:id => act.id}
 
-        assigns(:activity).should_not be_nil
-        assigns(:activity).should == act
-        response.should be_success
+        expect(assigns(:activity)).not_to be_nil
+        expect(assigns(:activity)).to eq(act)
+        expect(response).to be_success
       end
     end
 
@@ -248,28 +248,28 @@ describe LightweightActivitiesController do
 
         post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This name has been edited', :description => 'Activity which was edited' }}
 
-        LightweightActivity.count.should == existing_activities
+        expect(LightweightActivity.count).to eq(existing_activities)
 
         updated = LightweightActivity.find(act.id)
-        updated.name.should == 'This name has been edited'
-        updated.description.should == 'Activity which was edited'
-        flash[:notice].should == "Activity #{updated.name} was updated."
+        expect(updated.name).to eq('This name has been edited')
+        expect(updated.description).to eq('Activity which was edited')
+        expect(flash[:notice]).to eq("Activity #{updated.name} was updated.")
       end
 
       it "should redirect to the activity's edit page on error" do
-        LightweightActivity.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(LightweightActivity).to receive(:save).and_return(false)
         act
         post :update, {:_method => 'put', :id => act.id, :lightweight_activity => { :name => 'This update will fail' } }
 
-        flash[:warning].should == "There was a problem updating your activity."
-        response.should redirect_to(edit_activity_path(act))
+        expect(flash[:warning]).to eq("There was a problem updating your activity.")
+        expect(response).to redirect_to(edit_activity_path(act))
       end
 
       it 'should change single attributes in response to XHR-submitted data' do
         act
         xhr :post, :update, {:id => act.id, "lightweight_activity" => { "name" => "I'm editing this name with an Ajax request" } }
 
-        response.body.should match /I'm editing this name with an Ajax request/
+        expect(response.body).to match /I'm editing this name with an Ajax request/
       end
     end
 
@@ -281,9 +281,9 @@ describe LightweightActivitiesController do
 
         post :destroy, {:_method => 'delete', :id => act.id}
 
-        LightweightActivity.count.should == existing_activities - 1
-        response.should redirect_to(activities_path)
-        flash[:notice].should == "Activity #{act.name} was deleted."
+        expect(LightweightActivity.count).to eq(existing_activities - 1)
+        expect(response).to redirect_to(activities_path)
+        expect(flash[:notice]).to eq("Activity #{act.name} was deleted.")
         begin
           LightweightActivity.find(act.id)
           throw "Should not have found #{act.name}."
@@ -308,8 +308,8 @@ describe LightweightActivitiesController do
         get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page.position.should == old_position - 1
-        page.should === act.pages[1]
+        expect(page.position).to eq(old_position - 1)
+        expect(page).to be === act.pages[1]
       end
 
       it 'does not change the position of the first item' do
@@ -318,8 +318,8 @@ describe LightweightActivitiesController do
         get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page.position.should == old_position
-        page.should === act.pages.first
+        expect(page.position).to eq(old_position)
+        expect(page).to be === act.pages.first
       end
 
       it 'adjusts the positions of surrounding items correctly' do
@@ -328,7 +328,7 @@ describe LightweightActivitiesController do
         get :move_up, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page_before.should === act.pages[2]
+        expect(page_before).to be === act.pages[2]
       end
     end
 
@@ -347,8 +347,8 @@ describe LightweightActivitiesController do
         get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page.position.should == old_position + 1
-        page.should === act.pages[1]
+        expect(page.position).to eq(old_position + 1)
+        expect(page).to be === act.pages[1]
       end
 
       it 'does not change the position of the last item' do
@@ -357,8 +357,8 @@ describe LightweightActivitiesController do
         get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page.position.should == old_position
-        page.should === act.pages.last
+        expect(page.position).to eq(old_position)
+        expect(page).to be === act.pages.last
       end
 
       it 'adjusts the positions of surrounding items correctly' do
@@ -367,7 +367,7 @@ describe LightweightActivitiesController do
         get :move_down, {:activity_id => act.id, :id => page.id}
         page.reload
         act.reload
-        page_after.should === act.pages.first
+        expect(page_after).to be === act.pages.first
       end
     end
 
@@ -384,8 +384,8 @@ describe LightweightActivitiesController do
         # Should provide a list of IDs in reverse order
         get :reorder_pages, {:id => act.id, :item_interactive_page => act.pages.map { |p| p.id }.reverse }
         act.reload
-        act.pages.first.name.should == "Page 3"
-        act.pages.last.name.should == "Page 1"
+        expect(act.pages.first.name).to eq("Page 3")
+        expect(act.pages.last.name).to eq("Page 1")
       end
     end
   end
@@ -393,21 +393,21 @@ describe LightweightActivitiesController do
   describe '#duplicate' do
     it "should call 'duplicate' on the activity" do
       get :duplicate, { :id => act.id }
-      assigns(:new_activity).should be_a(LightweightActivity)
-      assigns(:new_activity).name.should match /^Copy of #{assigns(:activity).name[0..30]}/
-      assigns(:new_activity).user.should == @user
+      expect(assigns(:new_activity)).to be_a(LightweightActivity)
+      expect(assigns(:new_activity).name).to match /^Copy of #{assigns(:activity).name[0..30]}/
+      expect(assigns(:new_activity).user).to eq(@user)
     end
 
     it 'should redirect to edit the new activity' do
       get :duplicate, { :id => act.id }
-      response.should redirect_to(edit_activity_url(assigns(:new_activity)))
+      expect(response).to redirect_to(edit_activity_url(assigns(:new_activity)))
     end
   end
 
   describe '#export' do
     it "should call 'export' on the activity" do
       get :export, { :id => act.id }
-      response.should be_success
+      expect(response).to be_success
     end 
   end
 
@@ -415,7 +415,7 @@ describe LightweightActivitiesController do
     context 'without a response key' do
       it 'redirects to summary' do
         get :resubmit_answers, { :id => act.id }
-        response.should redirect_to summary_with_response_path(act.id, assigns(:session_key))
+        expect(response).to redirect_to summary_with_response_path(act.id, assigns(:session_key))
       end
     end
 
@@ -424,29 +424,29 @@ describe LightweightActivitiesController do
       let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
 
       before(:each) do
-        act.stub(:answers => [answer1, answer2])
-        LightweightActivity.stub(:find => act)
+        allow(act).to receive_messages(:answers => [answer1, answer2])
+        allow(LightweightActivity).to receive_messages(:find => act)
         request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
       end
 
       it 'marks answers as dirty' do
         [answer1, answer2]
-        ar.answers.length.should_not be(0)
-        answer1.should_receive(:mark_dirty)
-        answer1.should_not_receive(:send_to_portal)
+        expect(ar.answers.length).not_to be(0)
+        expect(answer1).to receive(:mark_dirty)
+        expect(answer1).not_to receive(:send_to_portal)
         get :resubmit_answers, { :id => act.id, :response_key => ar.key }
       end
 
       it 'calls send_to_portal for the last answer' do
         [answer1, answer2]
-        ar.answers.length.should_not be(0)
-        answer2.should_receive(:send_to_portal)
+        expect(ar.answers.length).not_to be(0)
+        expect(answer2).to receive(:send_to_portal)
         get :resubmit_answers, { :id => act.id, :response_key => ar.key }
       end
 
       it 'sets a flash notice for success' do
         get :resubmit_answers, { :id => act.id, :response_key => ar.key }
-        flash[:notice].should match /requeued for submission/
+        expect(flash[:notice]).to match /requeued for submission/
       end
     end
   end

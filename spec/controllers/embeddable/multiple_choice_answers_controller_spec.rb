@@ -32,7 +32,7 @@ describe Embeddable::MultipleChoiceAnswersController do
             :answers => [a_answer.id]
           }
           answer.reload
-          answer.answers.should == [a_answer]
+          expect(answer.answers).to eq([a_answer])
         end
 
         it "should fire off a web request to update the portal" do
@@ -48,7 +48,7 @@ describe Embeddable::MultipleChoiceAnswersController do
           post "update", :id => answer.id
         end
         it "should create an admin event" do
-          AdminEvent.should_receive(:create).and_return(true)
+          expect(AdminEvent).to receive(:create).and_return(true)
           post "update", :id => answer.id
         end
       end
@@ -68,7 +68,7 @@ describe Embeddable::MultipleChoiceAnswersController do
             :answers => [a_answer.id]
           }
           answer.reload
-          answer.answers.should == [a_answer]
+          expect(answer.answers).to eq([a_answer])
         end
 
         it 'should accept multiple answers if provided' do
@@ -76,7 +76,7 @@ describe Embeddable::MultipleChoiceAnswersController do
             :answers => [b_answer.id, c_answer.id]
           }
           answer.reload
-          answer.answers.should == [b_answer, c_answer]
+          expect(answer.answers).to eq([b_answer, c_answer])
         end
 
         it "should fire off a web request to update the portal" do

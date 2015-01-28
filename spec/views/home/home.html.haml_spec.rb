@@ -8,7 +8,7 @@ describe "home/home" do
     assign(:activities, [activity])
     assign(:sequences, [sequence])
     render
-    rendered.should match /activity_listing_head/
-    rendered.should match /sequence_listing_head/
+    expect(rendered).to match /activity_listing_head/
+    expect(rendered).to match /sequence_listing_head/
   end
 end

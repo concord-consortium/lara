@@ -17,11 +17,11 @@ describe InteractiveRunState do
     describe "InteractiveRunState#by_run_and_interactive" do
       describe "when no existing interactiveRunState exists" do
         it "should create an interactiveRunState for the interactive" do
-          InteractiveRunState.count.should eql 0
+          expect(InteractiveRunState.count).to eql 0
           created = InteractiveRunState.by_run_and_interactive(run,interactive)
-          InteractiveRunState.count.should eql 1
-          created.run.should eq run
-          created.interactive.should eq interactive
+          expect(InteractiveRunState.count).to eql 1
+          expect(created.run).to eq run
+          expect(created.interactive).to eq interactive
         end
       end
       describe "when a interactiveRunState does exists" do
@@ -29,10 +29,10 @@ describe InteractiveRunState do
         it "should return the previously created interactiveRunState" do
           make previously_created
           found = InteractiveRunState.by_run_and_interactive(run,interactive)
-          found.should eq previously_created
+          expect(found).to eq previously_created
           another = InteractiveRunState.by_run_and_interactive(run,interactive)
-          another.should eq previously_created
-          InteractiveRunState.count.should eq 1
+          expect(another).to eq previously_created
+          expect(InteractiveRunState.count).to eq 1
         end
       end
     end

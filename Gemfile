@@ -15,7 +15,7 @@ gem 'multi_json'
 # authentication
 gem 'devise'
 # authorization
-gem 'cancan'
+gem 'cancancan'
 gem 'omniauth'
 # Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
@@ -81,8 +81,8 @@ group :assets do
 end
 
 group :test, :development do
-  gem "rspec",       "~> 2.10.0"
-  gem "rspec-rails", "~> 2.10.1"
+  gem "rspec-rails", "~> 3.1.0"
+  gem "rspec-activemodel-mocks"
   gem "ci_reporter", "~> 1.7.0"
   gem "factory_girl_rails"
   gem "faker"
@@ -125,6 +125,7 @@ group :development do
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
   gem "rack-mini-profiler"
   gem "highline"
+  gem "spring-commands-rspec"
 end
 
 # To use ActiveModel has_secure_password
