@@ -24,8 +24,8 @@ describe "interactive_pages/edit" do
 
   it 'displays page fields with edit-in-place capacity' do
     render
-    rendered.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{page.name}<\/span>/
-    rendered.should match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page.text}<\/span>/
+    expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{page.name}<\/span>/
+    expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page.text}<\/span>/
   end
 
   # it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
@@ -54,25 +54,25 @@ describe "interactive_pages/edit" do
 
   it 'has links to show the page or add another page' do
     render
-    rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/#{page.id}\/preview"[^>]*>[\s]*Preview[\s]*<\/a>/
+    expect(rendered).to match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/#{page.id}\/preview"[^>]*>[\s]*Preview[\s]*<\/a>/
     # Used to check for a link back to the activity, but that's in the breadcrumbs now and not part of this view
     # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/edit"[^>]*>[\s]*#{activity.name}[\s]*<\/a>/
     # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>[\s]*Add another page to #{activity.name}[\s]*<\/a>/
-    rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>/
+    expect(rendered).to match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>/
     # Same here - this link has gone to breadcrumbs
     # rendered.should match /<a[^>]+href="\/activities"[^<]*>[\s]*All Activities[\s]*<\/a>/
   end
 
   it 'has links for adding Embeddables to the page' do
     render
-    rendered.should match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_embeddable"[^<]*>/
-    rendered.should match /<select[^>]+name="embeddable_type"[^>]*>/
+    expect(rendered).to match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_embeddable"[^<]*>/
+    expect(rendered).to match /<select[^>]+name="embeddable_type"[^>]*>/
   end
 
   it 'has links for adding Interactives to the page' do
     render
-    rendered.should match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_interactive"[^<]*>/
-    rendered.should match /<select[^>]+name="interactive_type"[^>]*>/
+    expect(rendered).to match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_interactive"[^<]*>/
+    expect(rendered).to match /<select[^>]+name="interactive_type"[^>]*>/
   end
 
   it 'shows navigation links' do
@@ -82,6 +82,6 @@ describe "interactive_pages/edit" do
     assign(:all_pages, [page1, page2])
     render
 
-    rendered.should match /<a[^>]+class='next'[^>]+href='\/activities\/#{activity.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
+    expect(rendered).to match /<a[^>]+class='next'[^>]+href='\/activities\/#{activity.id}\/pages\/#{page2.id}\/edit'[^>]*>[\s]*&nbsp;[\s]*<\/a>/
   end
 end

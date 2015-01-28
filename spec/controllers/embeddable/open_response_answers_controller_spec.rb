@@ -25,7 +25,7 @@ describe Embeddable::OpenResponseAnswersController do
             :answer_text => new_answer
           }
           answer.reload
-          answer.answer_text.should == new_answer
+          expect(answer.answer_text).to eq(new_answer)
         end
         it "should fire off a web request to update the portal" do
           post "update", :id => answer.id, :embeddable_open_response_answer => {
@@ -45,7 +45,7 @@ describe Embeddable::OpenResponseAnswersController do
             :answer_text => new_answer
           }
           answer.reload
-          answer.answer_text.should == new_answer
+          expect(answer.answer_text).to eq(new_answer)
         end
         it "shouldn't fire a web request to update the portal" do
           post "update", :id => answer.id, :embeddable_open_response_answer => {

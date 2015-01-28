@@ -25,7 +25,7 @@ describe InteractivePagesController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => "activities/1/pages/3"}.should route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
+      expect({:get => "activities/1/pages/3"}).to route_to(:controller => 'interactive_pages', :action => 'show', :id => "3", :activity_id => "1")
     end
   end
 
@@ -40,21 +40,20 @@ describe InteractivePagesController do
 
     it 'assigns a run key' do
       get :show, :id => page1.id, :response_key => ar.key
-      assigns(:run).should_not be_nil
+      expect(assigns(:run)).not_to be_nil
     end
 
     it 'assigns a project and theme' do
       get :show, :id => page1.id, :response_key => ar.key
-      assigns(:project).should_not be_nil
-      assigns(:theme).should_not be_nil
+      expect(assigns(:project)).not_to be_nil
+      expect(assigns(:theme)).not_to be_nil
     end
 
     it 'assigns a sequence if one is in the run' do
-      page
       ar.sequence = sequence
       ar.save
       get :show, :id => page1.id, :response_key => ar.key
-      assigns(:sequence).should == sequence
+      expect(assigns(:sequence)).to eq(sequence)
     end
 
     it 'renders the page if it exists' do
@@ -87,12 +86,12 @@ describe InteractivePagesController do
       get :show, :id => page1.id, :response_key => ar.key
 
       # verify the page is as expected
-      response.body.should match /<iframe/m
-      response.body.should match /What color is chlorophyll\?/m
-      response.body.should match /Why do you think this model is cool\?/m
-      response.body.should match /What would you add to it\?/m
-      response.body.should match /How many protons does Helium have\?/m
-      response.body.should match /This is some <strong>xhtml<\/strong> content!/m
+      expect(response.body).to match /<iframe/m
+      expect(response.body).to match /What color is chlorophyll\?/m
+      expect(response.body).to match /Why do you think this model is cool\?/m
+      expect(response.body).to match /What would you add to it\?/m
+      expect(response.body).to match /How many protons does Helium have\?/m
+      expect(response.body).to match /This is some <strong>xhtml<\/strong> content!/m
 
     end
 
@@ -104,9 +103,9 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
-      response.body.should match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}"[^>]*>[^<]*3[^<]*<\/a>/
+      expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
+      expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
+      expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}"[^>]*>[^<]*3[^<]*<\/a>/
     end
 
     it 'only renders the forward navigation link on the first page' do
@@ -114,8 +113,8 @@ describe InteractivePagesController do
       page2
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a class='pagination-link prev disabled'>/
-      response.body.should match /<a class='pagination-link'/
+      expect(response.body).to match /<a class='pagination-link prev disabled'>/
+      expect(response.body).to match /<a class='pagination-link'/
     end
 
     it 'renders both the forward and back navigation links if it is a middle page' do
@@ -124,8 +123,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages[1].id, :response_key => ar.key
 
-      response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
-      response.body.should match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
+      expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
+      expect(response.body).to match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
     end
 
     it 'only renders the back navigation links on the last page' do
@@ -134,8 +133,8 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.last.id, :response_key => ar.key
 
-      response.body.should match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
-      response.body.should match /<a class='pagination-link next forward_nav disabled'>/
+      expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
+      expect(response.body).to match /<a class='pagination-link next forward_nav disabled'>/
     end
 
     it 'indicates the active page with a DOM class attribute' do
@@ -144,30 +143,30 @@ describe InteractivePagesController do
       page3
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
+      expect(response.body).to match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
       page1
       get :show, :id => page1.id, :response_key => ar.key
 
-      response.body.should_not match /<a class='prev'>/
-      response.body.should_not match /<a class='next'>/
+      expect(response.body).not_to match /<a class='prev'>/
+      expect(response.body).not_to match /<a class='next'>/
     end
 
     it 'shows sidebar content on pages which have it' do
       page1
       get :show, :id => page1.id, :response_key => ar.key
 
-      response.body.should match /<div class='sidebar-mod'>/
+      expect(response.body).to match /<div class='sidebar-mod'>/
     end
 
     it 'shows related content on the last page' do
       page1
       get :show, :id => page1.id, :response_key => ar.key
 
-      response.body.should match /<div class='related-mod'>/
-      response.body.should match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
+      expect(response.body).to match /<div class='related-mod'>/
+      expect(response.body).to match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
     end
 
     it 'does not show related content on pages other than the last page' do
@@ -175,16 +174,16 @@ describe InteractivePagesController do
       page2
       get :show, :id => act.pages.first.id, :response_key => ar.key
 
-      response.body.should_not match /<div class='related-mod'>/
+      expect(response.body).not_to match /<div class='related-mod'>/
     end
 
     it 'does not show page areas which are not selected to be shown' do
       get :show, :id => page1.id, :response_key => ar.key
-      response.body.should match /<div class='sidebar-mod'>/
+      expect(response.body).to match /<div class='sidebar-mod'>/
       page2.show_sidebar = false
       page2.save
       get :show, :id => page2.id, :response_key => ar.key
-      response.body.should_not match /<div class='sidebar-mod'>/
+      expect(response.body).not_to match /<div class='sidebar-mod'>/
     end
     # --- Ends section which should go to view spec ---
   end
@@ -198,14 +197,14 @@ describe InteractivePagesController do
     describe 'preview' do
       it 'clears answers from the run' do
         page1
-        ar.should_receive(:clear_answers)
-        Run.should_receive(:find).and_return(ar)
+        expect(ar).to receive(:clear_answers)
+        expect(Run).to receive(:find).and_return(ar)
         get :preview, :id => page1.id
       end
 
       it 'renders show' do
         get :preview, :id => page1.id
-        response.should render_template('interactive_pages/show')
+        expect(response).to render_template('interactive_pages/show')
       end
     end
 
@@ -213,7 +212,7 @@ describe InteractivePagesController do
       it 'creates a new page and redirects to its edit page' do
         get :new, :activity_id => act.id
 
-        response.should redirect_to(edit_activity_page_path(act.id, assigns(:page)))
+        expect(response).to redirect_to(edit_activity_page_path(act.id, assigns(:page)))
       end
     end
 
@@ -224,8 +223,8 @@ describe InteractivePagesController do
         post :create, :activity_id => act.id
 
         act.reload
-        act.pages.length.should == activity_page_count + 1
-        act.changed_by.should == @user
+        expect(act.pages.length).to eq(activity_page_count + 1)
+        expect(act.changed_by).to eq(@user)
       end
 
     end
@@ -234,9 +233,9 @@ describe InteractivePagesController do
       context 'when editing an existing page' do
         it 'assigns variables' do
           get :edit, :activity_id => act.id, :id => page1.id
-          assigns(:page).should == page1
-          assigns(:activity).should == act
-          assigns(:all_pages).should_not be_nil
+          expect(assigns(:page)).to eq(page1)
+          expect(assigns(:activity)).to eq(act)
+          expect(assigns(:all_pages)).not_to be_nil
         end
       end
     end
@@ -246,39 +245,39 @@ describe InteractivePagesController do
         post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
 
         page1.reload
-        page1.sidebar.should == 'This page now has sidebar text.'
+        expect(page1.sidebar).to eq('This page now has sidebar text.')
         act.reload
-        act.changed_by.should == @user
+        expect(act.changed_by).to eq(@user)
       end
 
       it 'redirects to the edit page with a message confirming success' do
         post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
 
-        flash[:notice].should == "Page #{page1.name} was updated."
-        response.should redirect_to(edit_activity_page_path(act, page1))
+        expect(flash[:notice]).to eq("Page #{page1.name} was updated.")
+        expect(response).to redirect_to(edit_activity_page_path(act, page1))
       end
 
       it 'redirects to the edit page with a message if there is an error' do
-        InteractivePage.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(InteractivePage).to receive(:save).and_return(false)
         post :update, {:_method => 'put', :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
 
-        flash[:warning].should == "There was a problem updating Page #{page1.name}."
-        response.should redirect_to(edit_activity_page_path(act, page1))
+        expect(flash[:warning]).to eq("There was a problem updating Page #{page1.name}.")
+        expect(response).to redirect_to(edit_activity_page_path(act, page1))
       end
 
       context 'when the request is XHR' do
         it 'returns the new text of the first value' do
           xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :sidebar => 'This page now has sidebar text.' }}
 
-          response.body.should match /This page now has sidebar text./
+          expect(response.body).to match /This page now has sidebar text./
         end
 
         it 'returns the old text if the update fails' do
-          InteractivePage.any_instance.stub(:update_attributes).and_return(false)
+          allow_any_instance_of(InteractivePage).to receive(:update_attributes).and_return(false)
           old_name = page1.name
           xhr :put, :update, { :activity_id => act.id, :id => page1.id, :interactive_page => { :name => 'This new name will fail.' }}
 
-          response.body.should match /#{old_name}/
+          expect(response.body).to match /#{old_name}/
         end
       end
     end
@@ -293,9 +292,9 @@ describe InteractivePagesController do
 
         act.reload
 
-        act.pages.length.should == page_count - 1
-        flash[:notice].should == "Page #{page1.name} was deleted."
-        act.changed_by.should == @user
+        expect(act.pages.length).to eq(page_count - 1)
+        expect(flash[:notice]).to eq("Page #{page1.name} was deleted.")
+        expect(act.changed_by).to eq(@user)
         begin
           InteractivePage.find(page1.id)
           throw "Should not have been able to find this page"
@@ -303,7 +302,7 @@ describe InteractivePagesController do
         end
 
         page2.reload
-        page2.position.should == 1
+        expect(page2.position).to eq(1)
       end
 
       it 'does not route with no ID' do
@@ -341,11 +340,11 @@ describe InteractivePagesController do
         xhr :get, :reorder_embeddables, :id => page1.id, :activity_id => act.id, :embeddable => [ "#{mc2.id}.#{mc2.class.to_s}", "#{or2.id}.#{or2.class.to_s}", "#{xhtml1.id}.#{xhtml1.class.to_s}", "#{or1.id}.#{or1.class.to_s}", "#{mc1.id}.#{mc1.class.to_s}" ]
 
         page1.reload
-        page1.embeddables.first.should == mc2
-        page1.embeddables.last.should == mc1
-        page1.embeddables[2].should == xhtml1
+        expect(page1.embeddables.first).to eq(mc2)
+        expect(page1.embeddables.last).to eq(mc1)
+        expect(page1.embeddables[2]).to eq(xhtml1)
         act.reload
-        act.changed_by.should == @user
+        expect(act.changed_by).to eq(@user)
       end
     end
 
@@ -355,16 +354,16 @@ describe InteractivePagesController do
         interactives_count = page1.interactives.length
         post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
         page1.reload
-        page1.interactives.count.should == interactives_count + 1
-        ImageInteractive.count().should == interactives_count + 1
+        expect(page1.interactives.count).to eq(interactives_count + 1)
+        expect(ImageInteractive.count()).to eq(interactives_count + 1)
       end
 
       it 'redirects to the edit page' do
         post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
         interactive_id = page1.interactives.last.id
         act.reload
-        act.changed_by.should == @user
-        response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
+        expect(act.changed_by).to eq(@user)
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
 
       it 'raises an error on invalid interactive_type' do
@@ -384,8 +383,8 @@ describe InteractivePagesController do
 
         page1.reload
 
-        page1.embeddables.count.should == embeddable_count + 1
-        Embeddable::Xhtml.count().should == xhtml_count + 1
+        expect(page1.embeddables.count).to eq(embeddable_count + 1)
+        expect(Embeddable::Xhtml.count()).to eq(xhtml_count + 1)
       end
 
       it 'redirects to the edit page' do
@@ -393,9 +392,9 @@ describe InteractivePagesController do
 
         embeddable_id = page1.embeddables.last.id
         act.reload
-        act.changed_by.should == @user
+        expect(act.changed_by).to eq(@user)
 
-        response.should redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
       end
 
       it 'raises an error on invalid embeddable_type' do
@@ -416,7 +415,7 @@ describe InteractivePagesController do
         post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
 
         page1.reload
-        page1.embeddables.length.should == embed_count - 1
+        expect(page1.embeddables.length).to eq(embed_count - 1)
         !page1.embeddables.include?(embeddable)
       end
 
@@ -426,8 +425,8 @@ describe InteractivePagesController do
         post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
 
         act.reload
-        act.changed_by.should == @user
-        response.should redirect_to(edit_activity_page_path(act.id, page1.id))
+        expect(act.changed_by).to eq(@user)
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id))
       end
     end
   end

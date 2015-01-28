@@ -14,23 +14,23 @@ describe 'lightweight_activities/show' do
 
   it 'shows the activity title' do
     render
-    rendered.should match /#{activity.name}/
+    expect(rendered).to match /#{activity.name}/
   end
 
   it 'shows the activity description' do
     render
-    rendered.should match /#{activity.description}/
+    expect(rendered).to match /#{activity.description}/
   end
 
   it 'has numbered list of pages with titles' do
     render
-    rendered.should have_css '.intro-mod ol li', :count => activity.pages.length
-    rendered.should match /#{page1.name}/
-    rendered.should match /#{page2.name}/
+    expect(rendered).to have_css '.intro-mod ol li', :count => activity.pages.length
+    expect(rendered).to match /#{page1.name}/
+    expect(rendered).to match /#{page2.name}/
   end
 
   it 'has a begin-activity button' do
     render
-    rendered.should have_css 'a div.submit input.button[type=submit]'
+    expect(rendered).to have_css 'a div.submit input.button[type=submit]'
   end
 end

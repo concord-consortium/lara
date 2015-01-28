@@ -26,9 +26,9 @@ feature "Activity is run from the portal", :js => true do
 	  to_return(:status => 200, :body => "", :headers => {})
 
     fill_in 'embeddable_open_response_answer[answer_text]', :with => 'something'
-    page.should have_content "Saving"
-    page.should have_content "Saved"
+    expect(page).to have_content "Saving"
+    expect(page).to have_content "Saved"
 
-	stub.should have_been_requested
+	expect(stub).to have_been_requested
   end
 end

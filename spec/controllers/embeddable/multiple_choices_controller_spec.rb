@@ -15,7 +15,7 @@ describe Embeddable::MultipleChoicesController do
         page = FactoryGirl.create(:page)
         page.add_embeddable(multiple)
         get :check, :id => answer.id, :format => 'html', :choices => correct.id.to_s
-        response.should redirect_to(interactive_page_path(page))
+        expect(response).to redirect_to(interactive_page_path(page))
       end
     end
     
@@ -33,19 +33,19 @@ describe Embeddable::MultipleChoicesController do
       it 'returns true for a correct answer' do
         correct
         get :check, :id => answer.id, :format => 'json', :choices => correct.id.to_s
-        response.body.should match /"choice":[\w]*true/
+        expect(response.body).to match /"choice":[\w]*true/
       end
 
       it 'returns false for an incorrect answer' do
         incorrect
         get :check, :id => answer.id, :format => 'json', :choices => incorrect.id.to_s
-        response.body.should match /"choice":[\w]*false/
+        expect(response.body).to match /"choice":[\w]*false/
       end
 
       it 'returns a custom response if one is configured' do
         with_prompt
         get :check, :id => answer.id, :format => 'json', :choices => with_prompt.id.to_s
-        response.body.should match /"prompt":[\w]*"Consider what would happen if this was true."/
+        expect(response.body).to match /"prompt":[\w]*"Consider what would happen if this was true."/
       end
     end
 
@@ -60,30 +60,30 @@ describe Embeddable::MultipleChoicesController do
       it 'returns no-answer response if no answers are submitted' do
         # This shouldn't happen on the client end, but we should be ready anyway
         get :check, :id => answer.id, :format => 'json', :choices => nil
-        response.body.should match /Please select an answer before checking./
+        expect(response.body).to match /Please select an answer before checking./
       end
 
       it 'returns concatenated incorrect text if any submitted answers are incorrect' do
         get :check, :id => answer.id, :format => 'json', :choices => incorrect.id.to_s
-        response.body.should match /'#{incorrect.choice}' is incorrect/
+        expect(response.body).to match /'#{incorrect.choice}' is incorrect/
       end
 
       it 'returns concatenated custom responses if incorrect answers have custom responses configured' do
         get :check, :id => answer.id, :format => 'json', :choices => "#{incorrect.id},#{with_prompt.id}"
-        response.body.should match /'#{incorrect.choice}' is incorrect/
-        response.body.should match /Consider what would happen if this was true./
+        expect(response.body).to match /'#{incorrect.choice}' is incorrect/
+        expect(response.body).to match /Consider what would happen if this was true./
       end
 
       it 'returns incomplete response text if submitted answers are correct but incomplete' do
         also_correct
         get :check, :id => answer.id, :format => 'json', :choices => correct.id.to_s
-        response.body.should match /You're on the right track, but you didn't select all the right answers yet./
+        expect(response.body).to match /You're on the right track, but you didn't select all the right answers yet./
       end
 
       it 'returns true if submitted answers are all correct and complete' do
         also_correct
         get :check, :id => answer.id, :format => 'json', :choices => "#{correct.id},#{also_correct.id}"
-        response.body.should match /"choice":[\w]*true/
+        expect(response.body).to match /"choice":[\w]*true/
       end
     end
   end

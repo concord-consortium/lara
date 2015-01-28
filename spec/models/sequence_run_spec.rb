@@ -10,7 +10,7 @@ describe SequenceRun do
   let(:remote_id)       { "23" }
 
   let(:portal) do
-    mock("portal",
+    double("portal",
       :remote_endpoint => remote_endpoint,
       :remote_id       => remote_id)
   end
@@ -33,28 +33,28 @@ describe SequenceRun do
 
       describe "when the user has already run the sequence from the same portal" do
         it "should return the existing run" do
-          subject.lookup_or_create(sequence, user, portal).should == existing_seq_run
+          expect(subject.lookup_or_create(sequence, user, portal)).to eq(existing_seq_run)
         end
       end
 
       describe "when the sequence isn't the same as the existing" do
         let(:other_sequence) { FactoryGirl.create(:sequence)  }
         it "should make a new run" do
-          subject.lookup_or_create(other_sequence, user, portal).should_not == existing_seq_run
+          expect(subject.lookup_or_create(other_sequence, user, portal)).not_to eq(existing_seq_run)
         end
       end
 
       describe "when the user isn't the same as the existing" do
         let(:other_user) { FactoryGirl.create(:user) }
         it "should make a new run" do
-          subject.lookup_or_create(sequence, other_user, portal).should_not == existing_seq_run
+          expect(subject.lookup_or_create(sequence, other_user, portal)).not_to eq(existing_seq_run)
         end
       end
 
       describe "when the portal isn't the same as the existing" do
-        let(:other_portal) { mock("portal", :remote_id => "something_else", :remote_endpoint => remote_endpoint) }
+        let(:other_portal) { double("portal", :remote_id => "something_else", :remote_endpoint => remote_endpoint) }
         it "should make a new run" do
-          subject.lookup_or_create(sequence, user, other_portal).should_not == existing_seq_run
+          expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
         end
       end
 
@@ -76,7 +76,7 @@ describe SequenceRun do
 
     describe "when there is no existing run for an activity for that sequence_run" do
       it "should return nil" do
-        subject.run_for_activity(activity).should be_nil
+        expect(subject.run_for_activity(activity)).to be_nil
       end
     end
 
@@ -84,7 +84,7 @@ describe SequenceRun do
 
       it "should return the existing run" do
         make activity_run
-        subject.run_for_activity(activity).should == activity_run
+        expect(subject.run_for_activity(activity)).to eq(activity_run)
       end
     end
   end
@@ -107,24 +107,24 @@ describe SequenceRun do
       end
 
       it "should return the most recently run activity" do
-        subject.most_recent_run.should == @most_recent
+        expect(subject.most_recent_run).to eq(@most_recent)
       end
     end
 
 
     describe "has_been_run" do
-      let(:mock_runs){ Array(1..4).map {|a| mock(:has_been_run => false) }}
+      let(:mock_runs){ Array(1..4).map {|a| double(:has_been_run => false) }}
       describe "when none of the activities have been run" do
         it "should report false" do
-          subject.stub!(:runs => mock_runs)
-          subject.has_been_run.should be_false
+          subject.stub(:runs => mock_runs)
+          expect(subject.has_been_run).to be_falsey
         end
       end
       describe "when at least one of the activities has been run" do
         it "should report true" do
-          mock_runs[2].stub!(:has_been_run => true)
-          subject.stub!(:runs => mock_runs)
-          subject.has_been_run.should be_true
+          mock_runs[2].stub(:has_been_run => true)
+          subject.stub(:runs => mock_runs)
+          expect(subject.has_been_run).to be_truthy
         end
       end
     end
@@ -132,7 +132,7 @@ describe SequenceRun do
     describe "make_or_update_runs" do
       describe "when none of the activities have been previously run" do
         before(:each) do
-          activities.each { |act| act.runs.should be_empty } # precondition
+          activities.each { |act| expect(act.runs).to be_empty } # precondition
           subject.make_or_update_runs
           activities.each { |act| act.reload }
         end
@@ -140,11 +140,11 @@ describe SequenceRun do
         it "should create runs for all the activities with the same attributes" do
           activities.each do |act|
             act.runs.each do |run|
-              run.sequence_run.should    == subject
-              run.remote_endpoint.should == subject.remote_endpoint
-              run.remote_id.should       == subject.remote_id
-              run.user.should            == subject.user
-              run.sequence.should        == subject.sequence
+              expect(run.sequence_run).to    eq(subject)
+              expect(run.remote_endpoint).to eq(subject.remote_endpoint)
+              expect(run.remote_id).to       eq(subject.remote_id)
+              expect(run.user).to            eq(subject.user)
+              expect(run.sequence).to        eq(subject.sequence)
             end
           end
         end
@@ -161,9 +161,9 @@ describe SequenceRun do
 
         it "should reuse the existing runs, without creating new ones" do
           activities.each do |act|
-            act.runs.should have(1).run
+            expect(act.runs.size).to eq(1)
             act.runs.each do |run|
-              run.sequence_run.should == subject
+              expect(run.sequence_run).to eq(subject)
             end
           end
         end
@@ -178,12 +178,12 @@ describe SequenceRun do
         end
 
         it "should leave the existing runs alone, and create new ones for the sequence run" do
-          activities.each { |act| act.runs.size.should == 1 }
+          activities.each { |act| expect(act.runs.size).to eq(1) }
           subject.make_or_update_runs
           activities.each do |act|
             act.reload
-            act.runs.size.should == 2
-            act.runs.select{ |r| r.sequence_run == subject }.should have(1).match
+            expect(act.runs.size).to eq(2)
+            expect(act.runs.select{ |r| r.sequence_run == subject }.size).to eq(1)
           end
         end
       end

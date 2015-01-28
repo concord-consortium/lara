@@ -11,16 +11,16 @@ describe Project do
 
     describe "When the default Project doesn't exist" do
       it "should create a new default Project" do
-        Project.should_receive(:find_by_title).and_return(nil)
+        expect(Project).to receive(:find_by_title).and_return(nil)
         default = Project.default
-        default.title.should == Project::DefaultName
-        default.should_not == @existant
+        expect(default.title).to eq(Project::DefaultName)
+        expect(default).not_to eq(@existant)
       end
     end
 
     describe "When the default Project already exists" do
       it "should use the one the existing default project" do
-        Project.default.should == @existant
+        expect(Project.default).to eq(@existant)
       end
     end
   end

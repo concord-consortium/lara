@@ -44,12 +44,12 @@ describe CollaborationRun do
   describe "class methods" do
     describe "#already_created?" do
       it "should return true if run already exists" do
-        CollaborationRun.already_created?(collaboration_run.collaborators_data_url).should == true
+        expect(CollaborationRun.already_created?(collaboration_run.collaborators_data_url)).to eq(true)
       end
     end
     describe "#lookup" do
       it "should return run using endpoint URL" do
-        CollaborationRun.lookup(collaboration_run.collaborators_data_url).should == collaboration_run
+        expect(CollaborationRun.lookup(collaboration_run.collaborators_data_url)).to eq(collaboration_run)
       end
     end
   end
@@ -63,12 +63,12 @@ describe CollaborationRun do
       # should be created.
       collaboration_run.propagate_answer(or_answer1)
 
-      run1.open_response_answers.count.should == 1
-      run2.open_response_answers.count.should == 1
-      run3.open_response_answers.count.should == 1
-      finder1.find_answer(or_question).answer_text.should == or_answer1.answer_text
-      finder2.find_answer(or_question).answer_text.should == or_answer1.answer_text
-      finder3.find_answer(or_question).answer_text.should == or_answer1.answer_text
+      expect(run1.open_response_answers.count).to eq(1)
+      expect(run2.open_response_answers.count).to eq(1)
+      expect(run3.open_response_answers.count).to eq(1)
+      expect(finder1.find_answer(or_question).answer_text).to eq(or_answer1.answer_text)
+      expect(finder2.find_answer(or_question).answer_text).to eq(or_answer1.answer_text)
+      expect(finder3.find_answer(or_question).answer_text).to eq(or_answer1.answer_text)
     end
 
     describe "when runs are related to different activities (e.g. during sequence collaboration)" do
@@ -85,18 +85,18 @@ describe CollaborationRun do
         # should NOT be created, as this run is related to some different activity.
         collaboration_run.propagate_answer(or_answer1)
 
-        run1.open_response_answers.count.should == 1
-        run2.open_response_answers.count.should == 1
-        run3.open_response_answers.count.should == 0 # different activity!
-        finder1.find_answer(or_question).answer_text.should == or_answer1.answer_text
-        finder2.find_answer(or_question).answer_text.should == or_answer1.answer_text
+        expect(run1.open_response_answers.count).to eq(1)
+        expect(run2.open_response_answers.count).to eq(1)
+        expect(run3.open_response_answers.count).to eq(0) # different activity!
+        expect(finder1.find_answer(or_question).answer_text).to eq(or_answer1.answer_text)
+        expect(finder2.find_answer(or_question).answer_text).to eq(or_answer1.answer_text)
       end
     end
   end
 
   describe "#owners_run" do
     it "should return run owned by the collaboration owner" do
-      collaboration_run.owners_run(activity).should == run1
+      expect(collaboration_run.owners_run(activity)).to eq(run1)
     end
   end
 end

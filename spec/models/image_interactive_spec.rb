@@ -14,19 +14,19 @@ describe ImageInteractive do
     image_interactive.reload
     page.reload
 
-    image_interactive.interactive_page.should == page
+    expect(image_interactive.interactive_page).to eq(page)
   end
 
   describe '#to_hash' do
     it 'has useful values' do
       expected = { url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit, credit_url: image_interactive.credit_url}
-      image_interactive.to_hash.should == expected
+      expect(image_interactive.to_hash).to eq(expected)
     end
   end
 
   describe '#duplicate' do
     it 'is a new instance of ImageInteractive with values' do
-      image_interactive.duplicate.should be_a_new(ImageInteractive).with( url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit )
+      expect(image_interactive.duplicate).to be_a_new(ImageInteractive).with( url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit )
     end
   end
 
@@ -37,13 +37,13 @@ describe ImageInteractive do
     let(:link)       { ImageInteractive.new(parms).credit_with_link  } 
     describe "With nil values" do
       it "should return an empty string" do
-        link.should be_blank
+        expect(link).to be_blank
       end
     end
     describe "with credit but no credit_url" do
       let(:credit) {"some text"}
       it "should return 'some text'" do
-        link.should ==  "some text"
+        expect(link).to eq("some text")
       end
     end
     describe "with a credit url and text" do
@@ -51,7 +51,7 @@ describe ImageInteractive do
       let(:credit_url)    { "http://amazon.com" }
       let(:expected_link) { "<a href='http://amazon.com' target='_blank'>some text</a>" }
       it "should return an link to amazon.com" do
-        link.should == expected_link
+        expect(link).to eq(expected_link)
       end
     end
   end

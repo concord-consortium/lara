@@ -17,56 +17,60 @@ describe InteractivePage do
   describe 'validation of HTML inputs' do
     it 'rejects invalid HTML for text' do
       page.text = '<p>This HTML is invalid.<p>Tag soup.</p>'
-      page.valid?.should be_true # Ugh, but HTML not XML
+      expect(page.valid?).to be_truthy # Ugh, but HTML not XML
       page.text = 'This HTML is valid.'
       page.valid?
     end
 
     it 'rejects invalid HTML for the sidebar' do
       page.sidebar = '<p class="invalid-attribute>This has an invalid attribute.</p>'
-      page.valid?.should be_false
+      expect(page.valid?).to be_falsey
       page.sidebar = '<p class="valid-attribute">Much better.</p>'
       page.valid?
     end
 
     it 'rejects empty sidebar titles' do
       page.sidebar_title = ""
-      page.should_not be_valid
+      expect(page).not_to be_valid
       page.sidebar_title = "   "
-      page.should_not be_valid
+      expect(page).not_to be_valid
       page.sidebar_title = nil
-      page.should_not be_valid
+      expect(page).not_to be_valid
     end
     it 'accepts non blank sidebar titles' do
       page.sidebar_title = "sidebar"
-      page.should be_valid
+      expect(page).to be_valid
     end
   end
 
   describe 'default values' do
     subject { InteractivePage.new }
-    its(:sidebar_title) { should == "Did you know?" }
+
+    describe '#sidebar_title' do
+      subject { super().sidebar_title }
+      it { is_expected.to eq("Did you know?") }
+    end
   end
 
   describe 'layouts' do
     it 'has an array of hashes describing valid layouts' do
-      InteractivePage::LAYOUT_OPTIONS.length.should be > 0
+      expect(InteractivePage::LAYOUT_OPTIONS.length).to be > 0
     end
 
     it 'does not validate with layouts not in the hash' do
       page.layout = 'invalid-layout-string'
-      page.valid?.should be_false
+      expect(page.valid?).to be_falsey
     end
   end
 
   describe 'embeddable display modes' do
     it 'has an array of strings which are valid as embeddable display modes' do
-      InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS.length.should be > 0
+      expect(InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS.length).to be > 0
     end
 
     it 'does not validate with modes not in the array' do
       page.embeddable_display_mode = 'invalid-display-mode'
-      page.valid?.should be_false
+      expect(page.valid?).to be_falsey
     end
   end
 
@@ -78,9 +82,9 @@ describe InteractivePage do
 
     page.reload
 
-    page.lightweight_activity.should == activity
-    activity.pages.size.should == 1
-    activity.pages.first.should == page
+    expect(page.lightweight_activity).to eq(activity)
+    expect(activity.pages.size).to eq(1)
+    expect(activity.pages.first).to eq(page)
   end
 
   it 'has interactives' do
@@ -90,7 +94,7 @@ describe InteractivePage do
     end
     page.reload
 
-    page.interactives.size.should == 3
+    expect(page.interactives.size).to eq(3)
   end
 
   it 'has interactives in the correct order' do
@@ -101,17 +105,17 @@ describe InteractivePage do
     end
     page.reload
 
-    page.interactives[1].url.should == "http://www.concord.org/2"
-    page.interactives.last.name.should == "inter 3"
+    expect(page.interactives[1].url).to eq("http://www.concord.org/2")
+    expect(page.interactives.last.name).to eq("inter 3")
   end
 
   it 'has embeddables' do
-    page.embeddables.size.should == 3
+    expect(page.embeddables.size).to eq(3)
   end
 
   it 'has embeddables in the correct order' do
-    page.embeddables.first.content.should == "This is the 1st embeddable"
-    page.embeddables.last.name.should == "embeddable 3"
+    expect(page.embeddables.first.content).to eq("This is the 1st embeddable")
+    expect(page.embeddables.last.name).to eq("embeddable 3")
   end
 
   it 'inserts embeddables at the end if position is not provided' do
@@ -120,9 +124,9 @@ describe InteractivePage do
     page.add_embeddable(embed4)
     page.reload
 
-    page.embeddables.length.should == embed_count + 1
-    page.embeddables.first.content.should == "This is the 1st embeddable"
-    page.embeddables.last.name.should == "Embeddable 4"
+    expect(page.embeddables.length).to eq(embed_count + 1)
+    expect(page.embeddables.first.content).to eq("This is the 1st embeddable")
+    expect(page.embeddables.last.name).to eq("Embeddable 4")
   end
 
   describe '#to_hash' do
@@ -139,35 +143,35 @@ describe InteractivePage do
         show_interactive: page.show_interactive,
         show_info_assessment: page.show_info_assessment
       }
-      page.to_hash.should == expected
+      expect(page.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
     it 'returns json of an interactive page' do
       page_json = page.export.as_json
-      page_json['interactives'].length.should == page.interactives.count
-      page_json['embeddables'].length.should == page.embeddables.count
+      expect(page_json['interactives'].length).to eq(page.interactives.count)
+      expect(page_json['embeddables'].length).to eq(page.embeddables.count)
     end
   end
 
   describe '#duplicate' do
     it 'returns a new page with values from the source instance' do
       dupe = page.duplicate
-      dupe.should be_a(InteractivePage)
-      dupe.name.should == page.name
-      dupe.text.should == page.text
-      dupe.sidebar_title.should == page.sidebar_title
+      expect(dupe).to be_a(InteractivePage)
+      expect(dupe.name).to eq(page.name)
+      expect(dupe.text).to eq(page.text)
+      expect(dupe.sidebar_title).to eq(page.sidebar_title)
     end
 
     it 'has copies of the original interactives' do
       dupe = page.duplicate
-      dupe.reload.interactives.length.should be(page.interactives.length)
+      expect(dupe.reload.interactives.length).to be(page.interactives.length)
     end
 
     it 'has copies of the original embeddables' do
       # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
-      page.duplicate.embeddables.length.should be(page.embeddables.length)
+      expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
     end
 
     describe "with invalid markup" do
@@ -180,7 +184,7 @@ describe InteractivePage do
         page.save(:validate => false)
       end
       it "the page itself should not be valid" do
-        page.should_not be_valid
+        expect(page).not_to be_valid
       end
       it 'has copies of the original interactives' do
         dupe = page.duplicate
@@ -189,7 +193,7 @@ describe InteractivePage do
 
       it 'has copies of the original embeddables' do
         # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
-        page.duplicate.embeddables.length.should be(page.embeddables.length)
+        expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
       end
     end
   end
@@ -199,11 +203,11 @@ describe InteractivePage do
       activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
       activity_json['pages'].each_with_index do |p, i|
         page = InteractivePage.import(p)
-        page.should be_a(InteractivePage)
-        p['name'].should == page.name
-        p['text'].should == page.text
-        p['sidebar_title'].should == page.sidebar_title
-        p['position'].should be(page.position)
+        expect(page).to be_a(InteractivePage)
+        expect(p['name']).to eq(page.name)
+        expect(p['text']).to eq(page.text)
+        expect(p['sidebar_title']).to eq(page.sidebar_title)
+        expect(p['position']).to be(page.position)
       end
     end
   end

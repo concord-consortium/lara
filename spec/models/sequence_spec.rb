@@ -23,50 +23,50 @@ describe Sequence do
   let(:thumbnail_url) { "http://i.huffpost.com/gen/1469621/thumbs/o-MARK-TWAIN-facebook.jpg" }
 
   it 'has valid attributes' do
-    sequence.should be_valid
+    expect(sequence).to be_valid
   end
 
   it 'calculates a cumulative time-to-complete' do
-    sequence.time_to_complete.should be(0)
+    expect(sequence.time_to_complete).to be(0)
     sequence.lightweight_activities = [activity1, activity2]
-    sequence.time_to_complete.should be(activity1.time_to_complete + activity2.time_to_complete)
+    expect(sequence.time_to_complete).to be(activity1.time_to_complete + activity2.time_to_complete)
   end
 
   it 'returns the same items for #activities as #lightweight_activities' do
-    sequence.activities.should == sequence.lightweight_activities
+    expect(sequence.activities).to eq(sequence.lightweight_activities)
     sequence.lightweight_activities = [activity1, activity2]
-    sequence.activities.should == sequence.lightweight_activities
+    expect(sequence.activities).to eq(sequence.lightweight_activities)
   end
 
   describe '#next_activity' do
 
-    before(:all) do
+    before do
       sequence.lightweight_activities = []
       sequence.lightweight_activities = [activity1, activity2]
     end
 
     it 'returns the activity with the next-highest position value in the sequence' do
-      sequence.next_activity(sequence.activities.first).should == sequence.activities.last
+      expect(sequence.next_activity(sequence.activities.first)).to eq(sequence.activities.last)
     end
 
     it 'returns nil if there is no next activity' do
-      sequence.next_activity(sequence.activities.last).should be_nil
+      expect(sequence.next_activity(sequence.activities.last)).to be_nil
     end
   end
 
   describe '#previous_activity' do
 
-    before(:all) do
+    before do
       sequence.lightweight_activities = []
       sequence.lightweight_activities = [activity1, activity2]
     end
 
     it 'returns the activity with the next-lowest position value in the sequence' do
-      sequence.previous_activity(sequence.activities.last).should == sequence.activities.first
+      expect(sequence.previous_activity(sequence.activities.last)).to eq(sequence.activities.first)
     end
 
     it 'returns nil if there is no previous activity' do
-      sequence.previous_activity(sequence.activities.first).should be_nil
+      expect(sequence.previous_activity(sequence.activities.first)).to be_nil
     end
   end
 
@@ -127,11 +127,11 @@ describe Sequence do
     end
 
     it 'returns a hash for a simple sequence that can be consumed by the Portal' do
-      sequence.serialize_for_portal('http://test.host').should == simple_portal_hash
+      expect(sequence.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
     end
 
     it 'returns a hash for a sequence with activities that can be consumed by the Portal' do
-      sequence_with_activities.serialize_for_portal("http://test.host").should == complex_portal_hash
+      expect(sequence_with_activities.serialize_for_portal("http://test.host")).to eq(complex_portal_hash)
     end
 
   end
@@ -140,14 +140,14 @@ describe Sequence do
     it 'returns a hash with relevant values for sequence duplication' do
       expected = { title: sequence.title, description: sequence.description, abstract: sequence.abstract, theme_id: sequence.theme_id, project_id: sequence.project_id,
                    logo: sequence.logo, display_title: sequence.display_title, thumbnail_url: sequence.thumbnail_url }
-      sequence.to_hash.should == expected
+      expect(sequence.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
     it 'returns json of a sequence' do
       sequence_json = JSON.parse(sequence.export)
-      sequence_json['activities'].length.should == sequence.activities.count
+      expect(sequence_json['activities'].length).to eq(sequence.activities.count)
     end 
   end
 
@@ -185,29 +185,29 @@ describe Sequence do
     it 'creates a new Sequence with attributes from the original' do
       dup = sequence.duplicate(owner)
       dup.reload # make sure that all changes are saved to db.
-      dup.should be_a(Sequence)
-      dup.user.should == owner
-      dup.title.should == "Copy of #{sequence.title}"
-      dup.description.should == sequence.description
-      dup.theme_id.should == sequence.theme_id
-      dup.project_id.should == sequence.project_id
-      dup.logo.should == sequence.logo
-      dup.display_title.should == sequence.display_title
-      dup.thumbnail_url.should == sequence.thumbnail_url
-      dup.activities.length.should == sequence.activities.length
+      expect(dup).to be_a(Sequence)
+      expect(dup.user).to eq(owner)
+      expect(dup.title).to eq("Copy of #{sequence.title}")
+      expect(dup.description).to eq(sequence.description)
+      expect(dup.theme_id).to eq(sequence.theme_id)
+      expect(dup.project_id).to eq(sequence.project_id)
+      expect(dup.logo).to eq(sequence.logo)
+      expect(dup.display_title).to eq(sequence.display_title)
+      expect(dup.thumbnail_url).to eq(sequence.thumbnail_url)
+      expect(dup.activities.length).to eq(sequence.activities.length)
     end
 
     it 'performs deep copy of all activities included in a given sequence' do
       dup = sequence_with_activities.duplicate(owner)
       dup.reload # make sure that all changes are saved to db.
-      dup.activities.length.should == sequence_with_activities.activities.length
+      expect(dup.activities.length).to eq(sequence_with_activities.activities.length)
       dup.activities.zip(sequence_with_activities.activities).each do |a, b|
-        a.should_not == b # deep copy!
-        a.user.should == owner
-        a.name.should == b.name # we don't want "Copy of" prefix here
-        a.related.should == b.related
-        a.description.should == b.description
-        a.time_to_complete.should == b.time_to_complete
+        expect(a).not_to eq(b) # deep copy!
+        expect(a.user).to eq(owner)
+        expect(a.name).to eq(b.name) # we don't want "Copy of" prefix here
+        expect(a.related).to eq(b.related)
+        expect(a.description).to eq(b.description)
+        expect(a.time_to_complete).to eq(b.time_to_complete)
       end
     end
 
@@ -215,8 +215,8 @@ describe Sequence do
       dup = sequence_with_activities.duplicate(owner)
       dup.reload # make sure that all changes are saved to db.
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
-        a.position.should == b.position
-        a.lightweight_activity.name.should == b.lightweight_activity.name
+        expect(a.position).to eq(b.position)
+        expect(a.lightweight_activity.name).to eq(b.lightweight_activity.name)
       end
     end
 
@@ -228,8 +228,8 @@ describe Sequence do
       dup.reload # make sure that all changes are saved to db.
       sequence_with_activities.reload # make sure that order is updated so test below makes sense.
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
-        a.position.should == b.position
-        a.lightweight_activity.name.should == b.lightweight_activity.name
+        expect(a.position).to eq(b.position)
+        expect(a.lightweight_activity.name).to eq(b.lightweight_activity.name)
       end
     end
   end

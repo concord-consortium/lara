@@ -11,13 +11,13 @@ describe Embeddable::OpenResponseAnswer do
     it "should belong to an open response" do
       answer.question = question
       answer.save
-      answer.reload.question.should == question
-      question.reload.answers.should include answer
+      expect(answer.reload.question).to eq(question)
+      expect(question.reload.answers).to include answer
     end
 
     it "should belong to a run" do
-      answer.reload.run.should == run
-      run.reload.open_response_answers.should include answer
+      expect(answer.reload.run).to eq(run)
+      expect(run.reload.open_response_answers).to include answer
     end
   end
 
@@ -32,7 +32,7 @@ describe Embeddable::OpenResponseAnswer do
                     }
 
     it "matches the expected hash" do
-      answer.portal_hash.should == expected
+      expect(answer.portal_hash).to eq(expected)
     end
   end
 
@@ -41,8 +41,8 @@ describe Embeddable::OpenResponseAnswer do
 
     it "should copy basic attributes that can be modified by student" do
       answer.copy_answer!(another_answer)
-      answer.answer_text.should == another_answer.answer_text
-      answer.is_final.should == another_answer.is_final
+      expect(answer.answer_text).to eq(another_answer.answer_text)
+      expect(answer.is_final).to eq(another_answer.is_final)
     end
   end
 
@@ -50,9 +50,9 @@ describe Embeddable::OpenResponseAnswer do
     describe "prompt" do
       it "should delegate to question" do
         question = mock_model(Embeddable::OpenResponse)
-        question.should_receive(:prompt).and_return(:some_prompt)
+        expect(question).to receive(:prompt).and_return(:some_prompt)
         answer.question = question
-        answer.prompt.should == :some_prompt
+        expect(answer.prompt).to eq(:some_prompt)
       end
     end
   end

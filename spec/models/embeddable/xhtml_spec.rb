@@ -6,9 +6,9 @@ describe Embeddable::Xhtml do
   describe 'HTML validation' do
     it 'rejects invalid HTML' do
       xhtml.content = '<p>This is invalid but parseable HTML.<p>Tag soup, ugh!</p>'
-      xhtml.valid?.should be_true # Ugh, but this is HTML not XML
+      expect(xhtml.valid?).to be_truthy # Ugh, but this is HTML not XML
       xhtml.content = '<p class="bad_attribute>This is also invalid.</p>'
-      xhtml.valid?.should be_false
+      expect(xhtml.valid?).to be_falsey
       xhtml.content = 'This is valid.'
       xhtml.valid?
     end
@@ -17,13 +17,13 @@ describe Embeddable::Xhtml do
   describe '#to_hash' do
     it 'returns useful attributes' do
       expected = { name: xhtml.name, content: xhtml.content }
-      xhtml.to_hash.should == expected
+      expect(xhtml.to_hash).to eq(expected)
     end
   end
 
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
-      xhtml.duplicate.should be_a_new(Embeddable::Xhtml).with( name: xhtml.name, content: xhtml.content )
+      expect(xhtml.duplicate).to be_a_new(Embeddable::Xhtml).with( name: xhtml.name, content: xhtml.content )
     end
   end
 end

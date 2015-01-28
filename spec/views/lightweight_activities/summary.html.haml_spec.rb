@@ -18,13 +18,13 @@ describe 'lightweight_activities/summary' do
 
   it 'shows close and print buttons at top' do
     render
-    rendered.should have_css ".print", :count => 1
-    rendered.should have_css ".close", :count => 1
+    expect(rendered).to have_css ".print", :count => 1
+    expect(rendered).to have_css ".close", :count => 1
   end
 
   it 'shows the activity title' do
     render
-    rendered.should match /#{activity.name}/
+    expect(rendered).to match /#{activity.name}/
   end
 
   context 'when a prompt includes HTML tags' do
@@ -32,47 +32,47 @@ describe 'lightweight_activities/summary' do
 
     it 'strips HTML from the prompts' do
       render
-      rendered.should match /This is the prompt\./
+      expect(rendered).to match /This is the prompt\./
     end
   end
 
 
   it 'lists the questions with numbers and prompts' do
     render
-    rendered.should have_css ".prompt .text", :count => 6
-    rendered.should have_css ".prompt .number", :count => 6
+    expect(rendered).to have_css ".prompt .text", :count => 6
+    expect(rendered).to have_css ".prompt .number", :count => 6
     words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six']
     (1..5).each do |i|
-      rendered.should match /#{i}:/
-      rendered.should match /prompt #{words[i]}/
+      expect(rendered).to match /#{i}:/
+      expect(rendered).to match /prompt #{words[i]}/
     end
   end
 
   it 'shows response text with the questions' do
     render
-    rendered.should have_css 'div.answer', :count => 6
+    expect(rendered).to have_css 'div.answer', :count => 6
     # OR answer
-    rendered.should match /I wrote a bunch of stuff/
+    expect(rendered).to match /I wrote a bunch of stuff/
     # MC answer, single
-    rendered.should match /Answer text/
+    expect(rendered).to match /Answer text/
     # MC answer, multi
-    rendered.should match /first answer/
-    rendered.should match /second answer/
+    expect(rendered).to match /first answer/
+    expect(rendered).to match /second answer/
   end
 
   it 'has answer-items for each multiple choice answer' do
     render
     # One for mc1, two for mc2, and one for mc3 even though it has two answer_texts
-    rendered.should have_css 'div.answer_item', :count => 4
-    rendered.should match /This should show/
-    rendered.should_not match /This should not show/
+    expect(rendered).to have_css 'div.answer_item', :count => 4
+    expect(rendered).to match /This should show/
+    expect(rendered).not_to match /This should not show/
   end
 
   it 'shows image question anwer text, and image url' do
     render
-    rendered.should have_css 'div.answer', :count => 6
-    rendered.should have_css 'div.image_answer', :count => 1
-    rendered.should match /<img[^>]*="#{image_answer_url}"/
+    expect(rendered).to have_css 'div.answer', :count => 6
+    expect(rendered).to have_css 'div.image_answer', :count => 1
+    expect(rendered).to match /<img[^>]*="#{image_answer_url}"/
   end
 
 end

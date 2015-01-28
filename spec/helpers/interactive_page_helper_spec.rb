@@ -30,7 +30,7 @@ describe InteractivePageHelper do
   describe "#runnable_activity_page_path(activity, page)" do
     describe "without a run" do
       it "should do match a run-free path" do
-        subject.should == "/activities/#{activity.id}/pages/#{page.id}"
+        expect(subject).to eq("/activities/#{activity.id}/pages/#{page.id}")
       end
     end
 
@@ -40,13 +40,13 @@ describe InteractivePageHelper do
       end
       describe "when the run isn't part of a sequence" do
         it "the link should include a run's key" do
-          subject.should == "/activities/#{activity.id}/pages/#{page.id}/#{run.key}"
+          expect(subject).to eq("/activities/#{activity.id}/pages/#{page.id}/#{run.key}")
         end
 
         describe "when the run is for a different activity" do
           subject {helper.runnable_activity_page_path(activity_2,page)}
           it " the link should not include the run key" do
-            subject.should == "/activities/#{activity_2.id}/pages/#{page.id}" 
+            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}") 
           end
         end
       end
@@ -54,20 +54,20 @@ describe InteractivePageHelper do
       describe "when the run belongs to a sequence run" do
         let(:sequence_run) { mock_model(SequenceRun, sequence_run_stubs)}
         it "the link should include the run's key" do
-          subject.should == "/activities/#{activity.id}/pages/#{page.id}/#{run.key}"
+          expect(subject).to eq("/activities/#{activity.id}/pages/#{page.id}/#{run.key}")
         end
 
         describe "when the activity doesn't belong to the run" do
           let(:sequence_run_stubs) {{run_for_activity: nil}}
           subject {helper.runnable_activity_page_path(activity_2,page)}
           it " the link should not include the run key" do
-            subject.should == "/activities/#{activity_2.id}/pages/#{page.id}" 
+            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}") 
           end
           
           describe "but if it is part of the same sequence" do
             let(:sequence_run_stubs) {{run_for_activity: other_run}}
             it " the link should include the other run's key" do
-              subject.should == "/activities/#{activity_2.id}/pages/#{page.id}/#{other_run.key}"  
+              expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}/#{other_run.key}")  
             end
           end
         end

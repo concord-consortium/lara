@@ -28,14 +28,14 @@ describe "interactive_pages/show" do
 
   it "renders the page title" do
     render
-    rendered.should match page.name
+    expect(rendered).to match page.name
   end
 
   describe "when the activity has a completed related content section" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "related content")}
     it "should render the related section" do
       render
-      rendered.should match related_section_rgx
+      expect(rendered).to match related_section_rgx
     end
   end
 
@@ -43,7 +43,7 @@ describe "interactive_pages/show" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "")}
     it "shouldn't render the related section" do
       render
-      rendered.should_not match related_section_rgx
+      expect(rendered).not_to match related_section_rgx
     end
   end
 
@@ -51,7 +51,7 @@ describe "interactive_pages/show" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => " \n")}
     it "shouldn't render the related section" do
       render
-      rendered.should_not match related_section_rgx
+      expect(rendered).not_to match related_section_rgx
     end
   end
 
@@ -59,7 +59,7 @@ describe "interactive_pages/show" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => "<br/><p>\n")}
     it "shouldn't render the related section" do
       render
-      rendered.should_not match related_section_rgx
+      expect(rendered).not_to match related_section_rgx
     end
   end
 
@@ -67,20 +67,20 @@ describe "interactive_pages/show" do
     let(:activity) { stub_model(LightweightActivity, :id => 1, :related => nil)}
     it "shouldn't render the related section" do
       render
-      rendered.should_not match related_section_rgx
+      expect(rendered).not_to match related_section_rgx
     end
   end
 
   describe 'when the embeddable display mode is carousel and there are embeddables' do
     it 'should have a div with class jcarousel' do
       render
-      rendered.should have_css('div.jcarousel')
+      expect(rendered).to have_css('div.jcarousel')
     end
 
     it 'should have next and previous links' do
       render
-      rendered.should have_css('a.jcarousel-prev')
-      rendered.should have_css('a.jcarousel-next')
+      expect(rendered).to have_css('a.jcarousel-prev')
+      expect(rendered).to have_css('a.jcarousel-next')
     end
   end
 end

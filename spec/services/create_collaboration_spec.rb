@@ -28,7 +28,7 @@ describe CreateCollaboration do
     }
   end
   before(:each) do
-    Concord::AuthPortal.stub(:auth_token_for_url).and_return(stubbed_token)
+    allow(Concord::AuthPortal).to receive(:auth_token_for_url).and_return(stubbed_token)
     stub_request(:get, collaborators_data_url).with(:headers => headers).to_return(
       :status => 200,
       :body => collaboration_params.to_json, :headers => {}
@@ -46,13 +46,13 @@ describe CreateCollaboration do
     end
 
     it "should create new collaboration run" do
-      CollaborationRun.count.should == 1
+      expect(CollaborationRun.count).to eq(1)
     end
 
     describe "when an activity is provided as a material" do
       it "should create new run for each user" do
         cr = CollaborationRun.first
-        cr.runs.count.should == 2
+        expect(cr.runs.count).to eq(2)
       end
     end
 
@@ -67,12 +67,12 @@ describe CreateCollaboration do
       it "should create new runs for each user and each activity" do
         cr = CollaborationRun.first
         # 2 users x 3 activities
-        cr.runs.count.should == 6
+        expect(cr.runs.count).to eq(6)
       end
     end
 
     it "should create new users if they didn't exist before" do
-      User.exists?(email: collaboration_params[1][:email]).should == true
+      expect(User.exists?(email: collaboration_params[1][:email])).to eq(true)
     end
   end
 end

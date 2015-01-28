@@ -12,12 +12,12 @@ describe LightweightActivityHelper do
     describe "with a sequence" do
       it "should just use the activity path" do
         assign(:sequence, sequence)
-        subject.should eql(sequence_path)
+        expect(subject).to eql(sequence_path)
       end
     end
     describe "without anything" do
       it "should just use the activity path" do
-        subject.should eql(path_no_run)
+        expect(subject).to eql(path_no_run)
       end
     end
   end
