@@ -102,8 +102,8 @@ describe User do
 
     let(:auth) do
       auth_obj = double(:provider => auth_provider, :uid => auth_uid)
-      auth_obj.stub_chain(:info, :email).and_return(auth_email)
-      auth_obj.stub_chain(:credentials, :token).and_return(auth_token)
+      allow(auth_obj).to receive_message_chain(:info, :email).and_return(auth_email)
+      allow(auth_obj).to receive_message_chain(:credentials, :token).and_return(auth_token)
       auth_obj
     end
 

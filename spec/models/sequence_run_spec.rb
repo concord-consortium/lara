@@ -116,14 +116,14 @@ describe SequenceRun do
       let(:mock_runs){ Array(1..4).map {|a| double(:has_been_run => false) }}
       describe "when none of the activities have been run" do
         it "should report false" do
-          subject.stub(:runs => mock_runs)
+          allow(subject).to receive_messages(:runs => mock_runs)
           expect(subject.has_been_run).to be_falsey
         end
       end
       describe "when at least one of the activities has been run" do
         it "should report true" do
-          mock_runs[2].stub(:has_been_run => true)
-          subject.stub(:runs => mock_runs)
+          allow(mock_runs[2]).to receive_messages(:has_been_run => true)
+          allow(subject).to receive_messages(:runs => mock_runs)
           expect(subject.has_been_run).to be_truthy
         end
       end

@@ -231,7 +231,7 @@ describe Run do
   describe "self.lookup(key,activity,user=nil,portal,seq_id)" do
     describe "with a key" do
       it "should simply use the key" do
-        Run.stub(:by_key => [run])
+        allow(Run).to receive_messages(:by_key => [run])
         expect(Run.lookup("sdfsdfsdf",activity, user, nil,nil)).to eq(run)
       end
     end
@@ -453,12 +453,12 @@ describe Run do
         stub_http_request(:post, remote_endpoint).to_return(
           :body   => "OK", # TODO: What returns?
           :status => result_status)
-        run.stub(:answers => answers)
+        allow(run).to receive_messages(:answers => answers)
         run.mark_dirty
       end
       describe 'when there are no dirty answers' do
         it 'does nothing and returns true' do
-          run.stub(:answers => answers)
+          allow(run).to receive_messages(:answers => answers)
           expect(run.submit_dirty_answers).to be_truthy
         end
       end
@@ -478,7 +478,7 @@ describe Run do
           let(:result_status) { 200 }
 
           it "calls send_to_portal with the dirty answers as argument" do
-            run.stub(:send_to_portal => true)
+            allow(run).to receive_messages(:send_to_portal => true)
             expect(run).to receive(:send_to_portal).with(answers)
             expect(run.submit_dirty_answers).to be_truthy
           end
@@ -522,7 +522,7 @@ describe Run do
             answers.each do |a|
               expect(a).to receive(:mark_clean).and_return false
             end
-            run.stub(:dirty_answers => answers)
+            allow(run).to receive_messages(:dirty_answers => answers)
           end
 
           it "Raises PortalUpdateIncomplete to keep the job in the queue" do

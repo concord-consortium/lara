@@ -29,6 +29,6 @@ feature "Activity is run from the portal", :js => true do
     expect(page).to have_content "Saving"
     expect(page).to have_content "Saved"
 
-	expect(stub).to have_been_requested
+	  expect(stub).to have_been_requested
   end
 end

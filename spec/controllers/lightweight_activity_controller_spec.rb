@@ -424,8 +424,8 @@ describe LightweightActivitiesController do
       let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
 
       before(:each) do
-        act.stub(:answers => [answer1, answer2])
-        LightweightActivity.stub(:find => act)
+        allow(act).to receive_messages(:answers => [answer1, answer2])
+        allow(LightweightActivity).to receive_messages(:find => act)
         request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
       end
 

@@ -24,11 +24,11 @@ RSpec::Matchers.define :be_ordered_by do |attribute|
      result
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "expected that #{actual} would be sorted by #{attribute} " + @failers.join(": ")
   end
 
-  failure_message_for_should_not do |actual|
+  failure_message_when_negated do |actual|
     "expected that #{actual} would not be sorted by #{attribute} " + @failers.join(": ")
   end
 
