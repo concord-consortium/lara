@@ -125,6 +125,7 @@ group :development do
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
   gem "rack-mini-profiler"
   gem "highline"
+  gem "spring-commands-rspec"
 end
 
 # To use ActiveModel has_secure_password
