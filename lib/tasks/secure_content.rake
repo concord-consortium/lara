@@ -28,7 +28,7 @@ def log_insecure_content(item,item_columns,log_string)
   
   unless insecure_content_log == "" 
     log_string << "#{insecure_content_log}"
-    rake_logger.info("following insecure content is font in this item:#{log_string}")  
+    rake_logger.info("following insecure content is found in this item:#{log_string}")  
   end
 end
 
@@ -228,6 +228,64 @@ def initialize_scan
   prepare_columns
 end
 
+def scan_learner_data(to_update)
+  insecure_content_count = 0
+  log_string = "\n\nInsecure learner_data\n"
+  to_fix = {original_url: "http://",replace_url: "https://"}
+  Run.all.each do |runs|
+    if runs[:remote_endpoint] && (runs[:remote_endpoint].include? "http://")
+      insecure_content_count += 1
+      if to_update
+        runs[:remote_endpoint] = fix_insecure(runs[:remote_endpoint],to_fix)
+        runs.save!
+      end
+      log_string << "\nRuns #{runs[:id]} => remote_endpoint : #{runs[:remote_endpoint]}"
+    end
+  end
+    
+  InteractiveRunState.all.each do |interactive_run_state|
+    if interactive_run_state[:learner_url] && (interactive_run_state[:learner_url].include? "http://")
+      insecure_content_count += 1
+      if to_update
+        interactive_run_state[:learner_url] = fix_insecure(interactive_run_state[:learner_url],to_fix)
+        interactive_run_state.save!
+      end
+      log_string << "\nInteractiveRunState #{interactive_run_state[:id]} => learner_url : #{interactive_run_state[:learner_url]}"  
+    end
+
+    if interactive_run_state[:raw_data]
+      raw_data = JSON.parse(interactive_run_state[:raw_data])
+      raw_data['models'].each do |model|
+        if model['url'] && (model['url'].include? "http://")
+          insecure_content_count += 1
+          if to_update
+            model['url'] = fix_insecure(model['url'],to_fix)
+            interactive_run_state[:raw_data] = raw_data.to_json
+            interactive_run_state.save!
+          end
+          log_string << "\nInteractiveRunState #{interactive_run_state[:id]} => raw_data : #{model['url']}"
+        end
+      end
+    end
+  end
+  if to_update
+    if insecure_content_count > 0
+      log_string << "\n\n#{insecure_content_count} records updated."
+    else
+      log_string << "\n\nNo records updated."
+    end
+  else
+    if insecure_content_count > 0
+      log_string << "\nInsecure content in #{insecure_content_count} records."
+    else
+      log_string << "\nNo insecure records found."
+      p "No insecure records found."
+    end
+  end
+  rake_logger.info("#{log_string}")
+  p "Rake run successfully.Please view secure_content.log file for details."
+end
+
 namespace :secure_content do
   require "uri"
   require 'highline/import'
@@ -286,6 +344,16 @@ namespace :secure_content do
       p "Total number of insecure content: #{@insecure_content_count}. View log/secure_content.log file for more Details."
     end
     
+  end
+  
+  desc "Scan learner data for insecure content"
+  task :get_insecure_learner_data => :environment do
+    scan_learner_data(false)
+  end
+  
+  desc "Fix learner data for insecure content"
+  task :fix_insecure_learner_data => :environment do
+    scan_learner_data(true)
   end
   
   desc "Fix insecure content of activity"
@@ -359,7 +427,7 @@ namespace :secure_content do
       rake_logger.info("Total number of fixes: #{@insecure_content_count}")
       p "Total number of fixes: #{@insecure_content_count}. View log/secure_content.log file for more Details."
     end
-         
+             
   end
 
 end
