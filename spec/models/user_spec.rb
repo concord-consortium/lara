@@ -36,12 +36,7 @@ describe User do
     context 'when is an author' do
       let(:user) { FactoryGirl.build(:author) }
       let(:other_user) { FactoryGirl.build(:author) }
-      let(:self_activity) do
-        act = FactoryGirl.create(:activity)
-        act.user = user
-        act.save
-        act
-      end
+      let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
       let (:other_activity) do
         oa = FactoryGirl.create(:public_activity)
         oa.user = other_user
