@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CRater do
+describe CRater::APIWrapper do
   let(:client_id)     { 'concord' }
   let(:username)      { 'cc' }
   let(:password)      { 'password' }
@@ -49,7 +49,7 @@ describe CRater do
     process_xml(xml)
   end
 
-  let(:crater) { CRater.new(client_id, username, password, "#{protocol}#{url}") }
+  let(:crater) { CRater::APIWrapper.new(client_id, username, password, "#{protocol}#{url}") }
 
   def process_xml(xml_string)
     # Remove new lines and unnecessary whitespaces
@@ -78,9 +78,9 @@ describe CRater do
       it "returns score and additional information" do
         expect(subject[:success]).to be true
         expect(subject[:score]).to eql(score)
-        expect(subject[:code]).to eql(200)
-        expect(subject[:body]).to eql(xml_resp_spec)
-        expect(subject[:headers]).not_to be_nil
+        expect(subject[:response_info][:code]).to eql(200)
+        expect(subject[:response_info][:body]).to eql(xml_resp_spec)
+        expect(subject[:response_info][:headers]).not_to be_nil
       end
     end
 
@@ -95,9 +95,9 @@ describe CRater do
       it "returns only debug information" do
         expect(subject[:success]).to be false
         expect(subject[:score]).to be_nil
-        expect(subject[:code]).to eql(404)
-        expect(subject[:body]).to eql('Page not found')
-        expect(subject[:headers]).not_to be_nil
+        expect(subject[:response_info][:code]).to eql(404)
+        expect(subject[:response_info][:body]).to eql('Page not found')
+        expect(subject[:response_info][:headers]).not_to be_nil
       end
     end
   end

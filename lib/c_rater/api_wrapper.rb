@@ -1,6 +1,6 @@
 require 'builder'
 
-class CRater
+class CRater::APIWrapper
   # Pilot environment has been recommended by ETS.
   C_RATER_URI = 'https://nlp-pilot.ets.org/crater/scoring/internal/CraterScoringServlet'
   # C-Rater supports only ISO-8859-1 encoding.
@@ -46,9 +46,11 @@ class CRater
              end
     # Always include debug information in response (code, unparsed body and headers).
     result.merge({
-      code: resp.code,
-      headers: resp.headers,
-      body: resp.body
+      response_info: {
+        code: resp.code,
+        headers: resp.headers,
+        body: resp.body
+      }
     })
   end
 
