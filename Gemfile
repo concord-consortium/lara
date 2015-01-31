@@ -10,11 +10,12 @@ gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiw
 # gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
 gem 'acts_as_list'
 gem 'nested_form'
+gem 'gon'
 gem 'multi_json'
 # authentication
 gem 'devise'
 # authorization
-gem 'cancan'
+gem 'cancancan'
 gem 'omniauth'
 # Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
@@ -22,7 +23,7 @@ gem 'default_value_for'
 
 # Rails assets:
 gem 'rails-assets-drawing-tool', '1.2.3'
-gem 'rails-assets-shutterbug', '0.5.2'
+gem 'rails-assets-shutterbug', '0.5.4'
 
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
@@ -80,8 +81,8 @@ group :assets do
 end
 
 group :test, :development do
-  gem "rspec",       "~> 2.10.0"
-  gem "rspec-rails", "~> 2.10.1"
+  gem "rspec-rails", "~> 3.1.0"
+  gem "rspec-activemodel-mocks"
   gem "ci_reporter", "~> 1.7.0"
   gem "factory_girl_rails"
   gem "faker"
@@ -123,6 +124,8 @@ group :development do
   gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
   gem "rack-mini-profiler"
+  gem "highline"
+  gem "spring-commands-rspec"
 end
 
 # To use ActiveModel has_secure_password

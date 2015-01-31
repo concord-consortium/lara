@@ -41,10 +41,10 @@ module Concord
     end
 
     def self.portal_for_url(url)
-      uri = URI.parse(url)
-      host = uri.host
+      # URI.parse(url).host returns nil when scheme is not provided.
+      host = URI(url).host || URI("http://#{url}").host
       return nil unless host
-      self.all.each_pair do |name,portal|
+      self.all.each_pair do |name, portal|
         portal_host =''
         begin
           portal_host = URI.parse(portal.url).host.downcase.strip
@@ -71,6 +71,14 @@ module Concord
     def self.secret_for_url(url)
       if portal = self.portal_for_url(url)
         return portal.secret
+      end
+      raise "Can't find a portal for #{url}"
+    end
+
+    # Should be provided as `Authorization` header value while talking to portal.
+    def self.auth_token_for_url(url)
+      if portal = self.portal_for_url(url)
+        return portal.auth_token
       end
       raise "Can't find a portal for #{url}"
     end
@@ -141,7 +149,9 @@ module Concord
             :first_name => raw_info['extra']['first_name'],
             :last_name  => raw_info['extra']['last_name'],
             :full_name  => raw_info['extra']['full_name'],
-            :username   => raw_info['extra']['username']
+            :username   => raw_info['extra']['username'],
+            :user_id    => raw_info['extra']['user_id'],
+            :domain     => raw_info['extra']['domain']
           }
         end
 
@@ -159,6 +169,10 @@ module Concord
 
         def self.secret
           @secret
+        end
+
+        def self.auth_token
+          'Bearer %s' % self.secret
         end
 
         def self.url
@@ -183,9 +197,12 @@ module Concord
           return <<-CONTROLLER_ACTION
             def #{@strategy_name}
               omniauth = request.env["omniauth.auth"]
-              portal_username = omniauth.extra.nil? ? nil : omniauth.extra.username
+              if extra = omniauth.extra
+                session[:portal_username] = extra.username
+                session[:portal_user_id]  = extra.user_id
+                session[:portal_domain]   = extra.domain
+              end
               @user = User.find_for_concord_portal_oauth(omniauth, current_user)
-              session[:portal_username] = portal_username
               sign_in_and_redirect @user, :event => :authentication
             end
           CONTROLLER_ACTION

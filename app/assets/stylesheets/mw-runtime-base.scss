@@ -1249,4 +1249,14 @@ footer {
    } 
   }
 }
+
+.sequence-page{
+  .profile-u-name{
+    color: inherit;
+  }
+  .profile-dropdown{
+    background-color:transparent
+  }
+}
+
 @import "partials/prediction";

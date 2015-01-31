@@ -14,21 +14,21 @@ describe ThemesController do
     it 'includes theme in an assigns' do
       theme
       get :index
-      assigns(:themes).include?(theme).should be_true
+      expect(assigns(:themes).include?(theme)).to be_truthy
     end
   end
 
   describe '#new' do
     it 'assigns a new @theme' do
       get :new
-      assigns(:theme).should be_a_new(Theme)
+      expect(assigns(:theme)).to be_a_new(Theme)
     end
   end
 
   describe '#edit' do
     it 'assigns the relevant theme to @theme' do
       get :edit, :id => theme.id
-      assigns(:theme).should == theme
+      expect(assigns(:theme)).to eq(theme)
     end
   end
 
@@ -36,17 +36,17 @@ describe ThemesController do
     it 'creates a new theme with supplied attributes' do
       oldcount = Theme.count
       put :create, :theme => { :name => 'ThemeName', :css_file => 'themename' }
-      response.should redirect_to(edit_theme_path(assigns(:theme)))
-      assigns(:theme).name.should == 'ThemeName'
-      Theme.count.should be(oldcount + 1)
+      expect(response).to redirect_to(edit_theme_path(assigns(:theme)))
+      expect(assigns(:theme).name).to eq('ThemeName')
+      expect(Theme.count).to be(oldcount + 1)
     end
   end
 
   describe '#update' do
     it 'updates the specified theme with supplied attributes' do
       post :update, :id => theme.id, :theme => { :css_file => 'newcssmanifest' }
-      theme.reload.css_file.should == 'newcssmanifest'
-      response.should redirect_to(edit_theme_path(theme))
+      expect(theme.reload.css_file).to eq('newcssmanifest')
+      expect(response).to redirect_to(edit_theme_path(theme))
     end
   end
 
@@ -60,7 +60,7 @@ describe ThemesController do
 
     it "redirects to the themes list" do
       delete :destroy, {:id => theme.id}
-      response.should redirect_to(themes_url)
+      expect(response).to redirect_to(themes_url)
     end
   end
 end

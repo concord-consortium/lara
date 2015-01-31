@@ -9,8 +9,8 @@ describe ImportController do
   describe 'routing' do
     
     it 'recognizes and generates #import_status' do
-      {:get => "/import"}.
-        should route_to({
+      expect({:get => "/import"}).
+        to route_to({
           :controller       => 'import', 
           :action           => 'import_status'
       })
@@ -43,15 +43,15 @@ describe ImportController do
       
       it "can import a lightweight activity from a valid lightweight activity json and redirect to edit page" do
         xhr :post, "import", params1
-        assigns(:import_item).should be_a(LightweightActivity)
-        response.content_type.should == "text/javascript"
-        response.body.should == "window.location.href = 'activities/#{assigns(:import_item).id}/edit'\;"
+        expect(assigns(:import_item)).to be_a(LightweightActivity)
+        expect(response.content_type).to eq("text/javascript")
+        expect(response.body).to eq("window.location.href = 'activities/#{assigns(:import_item).id}/edit'\;")
       end
       
       it "response status 500 error if import fails" do
         xhr :post, "import", params2
         response.status == 500
-        response.body.should == "{\"error\":\"Import failed because of invalid JSON file.\"}"
+        expect(response.body).to eq("{\"error\":\"Import failed because of invalid JSON file.\"}")
       end
       
     end
@@ -79,15 +79,15 @@ describe ImportController do
       
       it "can import a sequence from a valid sequence json and redirect to edit page" do
         xhr :post, "import", params1
-        assigns(:import_item).should be_a(Sequence)
-        response.content_type.should == "text/javascript"
-        response.body.should == "window.location.href = 'sequences/#{assigns(:import_item).id}/edit'\;"
+        expect(assigns(:import_item)).to be_a(Sequence)
+        expect(response.content_type).to eq("text/javascript")
+        expect(response.body).to eq("window.location.href = 'sequences/#{assigns(:import_item).id}/edit'\;")
       end
       
       it "response status 500 error if import fails" do
         xhr :post, "import", params2
         response.status == 500
-        response.body.should == "{\"error\":\"Import failed because of invalid JSON file.\"}"
+        expect(response.body).to eq("{\"error\":\"Import failed because of invalid JSON file.\"}")
       end
     end
     

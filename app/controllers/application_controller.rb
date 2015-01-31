@@ -10,10 +10,11 @@ class ApplicationController < ActionController::Base
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name), :alert => exception.message
+    render :partial => "shared/unauthorized", :locals => {:action => exception.action,:resource=> exception.subject},:status => 403
   end
-  before_filter :reject_old_browsers, :except => [:bad_browser]
 
+  before_filter :portal_login
+  before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
 
   # Try to set local from the request headers
@@ -117,20 +118,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def update_portal_session(domain)
-    sign_out(current_user)
-
-    # the sign out creates a new session, so we need to set this after
-    # signout. This way when we are called back this session info will be available
-    session[:did_reauthenticate] = true
-
-    # we set the origin here which will become request.env['omniauth.origin']
-    # in the callback phase, by default omniauth will use use
-    # the referer and that is not changed during redirects. More info:
-    # https://github.com/intridea/omniauth/wiki/Saving-User-Location
-    redirect_to user_omniauth_authorize_path(Concord::AuthPortal.strategy_name_for_url(domain), :origin => request.url)
-  end
-
   def clear_session_response_key
     session.delete(:response_key)
   end
@@ -159,14 +146,10 @@ class ApplicationController < ActionController::Base
   def set_run_key
     update_response_key
 
-    if params[:domain] && !session.delete(:did_reauthenticate)
-      update_portal_session(params[:domain]) and return
-    end
-
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
-    if params[:collaborators_data_url] && params[:domain]
-      cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @activity)
+    if params[:collaborators_data_url]
+      cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @activity)
       @run = cc.call
     else
       portal = RemotePortal.new(params)
@@ -181,6 +164,72 @@ class ApplicationController < ActionController::Base
     # This is redundant but necessary if the first pass through set_response_key returned nil
     set_response_key(@run.key)
   end
+
+  # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
+  # for every action which should have logging enabled.
+  def enable_js_logger
+    unless params[:logging].nil?
+      # Update session when logging param is provided (usually as GET param).
+      session[:logging] = params[:logging] == "true"
+    end
+
+    unless session[:logging]
+      gon.loggerConfig = nil
+      return
+    end
+
+    data = {
+        application: ENV['LOGGER_APPLICATION_NAME'],
+        session:     session[:session_id],
+        username:    current_user ? "#{session[:portal_user_id]}@#{session[:portal_domain]}" : 'anonymous',
+        url:         request.original_url
+    }
+    if @run
+      data[:run_key] = @run.key
+    end
+    if @sequence
+      # Activity field is a bit confusing name, but let's assume that it indicates which activity *or* sequence has
+      # been started by user.
+      data[:activity]      = "sequence: #{@sequence.id}"
+      data[:sequence_id]   = @sequence.id
+      data[:sequence_name] = @sequence.name
+    end
+    if @activity
+      # Set activity name only if it hasn't been already set. Note that when both @activity and @sequence are available,
+      # "sequence: <ID>" will be used (as user has started sequence and activity is only part of it).
+      data[:activity]    ||= "activity: #{@activity.id}"
+      data[:activity_id]   = @activity.id
+      data[:activity_name] = @activity.name
+    end
+    if @page
+      data[:page_id] = @page.id
+    end
+
+    # Export to gon namespace, available in JavaScript under window.gon (see: https://github.com/gazay/gon).
+    gon.loggerConfig = {
+      server: ENV['LOGGER_URI'],
+      action: "#{controller_name}##{action_name}",
+      data:   data
+    }
+  end
+
+  # login to the portal provided in the parameters
+  def portal_login
+    if params[:domain]
+      sign_out(current_user)
+      # Remove domain from original url to avoid infinite loop.
+      uri = URI(request.original_url)
+      query_params = request.query_parameters
+      query_params.delete(:domain)
+      uri.query = URI.encode_www_form(query_params)
+      # we set the origin here which will become request.env['omniauth.origin']
+      # in the callback phase, by default omniauth will use use
+      # the referer and that is not changed during redirects. More info:
+      # https://github.com/intridea/omniauth/wiki/Saving-User-Location
+      strategy_name = Concord::AuthPortal.strategy_name_for_url(params[:domain])
+      redirect_to user_omniauth_authorize_path(strategy_name, :origin => uri.to_s)
+    end
+  end 
 
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated

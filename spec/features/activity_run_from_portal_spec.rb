@@ -22,13 +22,13 @@ feature "Activity is run from the portal", :js => true do
 
     stub = stub_request(:post, "http://portal.org/return/1234").
 	  with(:body => "[{\"type\":\"open_response\",\"question_id\":\"#{question_id}\",\"answer\":\"something\",\"is_final\":false}]",
-	       :headers => {'Authorization'=>'Bearer token', 'Content-Type'=>'application/json'}).
+	       :headers => {'Authorization'=>'Bearer secret', 'Content-Type'=>'application/json'}).
 	  to_return(:status => 200, :body => "", :headers => {})
 
     fill_in 'embeddable_open_response_answer[answer_text]', :with => 'something'
-    page.should have_content "Saving"
-    page.should have_content "Saved"
+    expect(page).to have_content "Saving"
+    expect(page).to have_content "Saved"
 
-	stub.should have_been_requested
+	  expect(stub).to have_been_requested
   end
 end

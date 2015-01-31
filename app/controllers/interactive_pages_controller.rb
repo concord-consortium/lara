@@ -5,6 +5,8 @@ class InteractivePagesController < ApplicationController
   before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
 
+  before_filter :enable_js_logger, :only => [:show, :preview]
+
   layout 'runtime', :only => [:show, :preview]
 
   def show

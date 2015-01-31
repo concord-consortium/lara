@@ -25,28 +25,28 @@ describe SequencesController do
     end
 
     it "assigns all sequences as @sequences" do
-      assigns(:sequences).should be_ordered_by(:updated_at_desc)
+      expect(assigns(:sequences)).to be_ordered_by(:updated_at_desc)
     end
   end
 
   describe "GET show" do
     it "assigns the requested sequence as @sequence" do
       get :show, {:id => sequence.to_param}
-      assigns(:sequence).should eq(sequence)
+      expect(assigns(:sequence)).to eq(sequence)
     end
 
     it 'assigns a project and a theme' do
       get :show, {:id => sequence.to_param}
-      assigns(:project).should_not be_nil
-      assigns(:theme).should_not be_nil
+      expect(assigns(:project)).not_to be_nil
+      expect(assigns(:theme)).not_to be_nil
     end
   end
 
   describe "GET new" do
     it "redirects to edit" do
       get :new, {}
-      assigns(:sequence).should be_a(Sequence)
-      response.should redirect_to(edit_sequence_url(assigns(:sequence)))
+      expect(assigns(:sequence)).to be_a(Sequence)
+      expect(response).to redirect_to(edit_sequence_url(assigns(:sequence)))
     end
   end
 
@@ -54,9 +54,9 @@ describe SequencesController do
     it "assigns the requested sequence as @sequence" do
       activity
       get :edit, {:id => sequence.to_param}
-      assigns(:sequence).should eq(sequence)
+      expect(assigns(:sequence)).to eq(sequence)
       # User is an admin, so we should see all activities
-      assigns(:activities).should eq(LightweightActivity.all)
+      expect(assigns(:activities)).to eq(LightweightActivity.all)
     end
   end
 
@@ -70,29 +70,29 @@ describe SequencesController do
 
       it "assigns a newly created sequence as @sequence" do
         post :create, {:sequence => valid_attributes}
-        assigns(:sequence).should be_a(Sequence)
-        assigns(:sequence).should be_persisted
+        expect(assigns(:sequence)).to be_a(Sequence)
+        expect(assigns(:sequence)).to be_persisted
       end
 
       it "redirects to the created sequence" do
         post :create, {:sequence => valid_attributes}
-        response.should redirect_to(edit_sequence_url(Sequence.last))
+        expect(response).to redirect_to(edit_sequence_url(Sequence.last))
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved sequence as @sequence" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Sequence.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Sequence).to receive(:save).and_return(false)
         post :create, {:sequence => {}}
-        assigns(:sequence).should be_a_new(Sequence)
+        expect(assigns(:sequence)).to be_a_new(Sequence)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Sequence.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Sequence).to receive(:save).and_return(false)
         post :create, {:sequence => {}}
-        response.should render_template("new")
+        expect(response).to render_template("new")
       end
     end
   end
@@ -100,21 +100,21 @@ describe SequencesController do
   describe 'GET duplicate' do
     it "should call 'duplicate' on the sequence" do
       get :duplicate, { :id => sequence.id }
-      assigns(:new_sequence).should be_a(Sequence)
-      assigns(:new_sequence).title.should match(/^Copy of #{assigns(:sequence).title}/)
-      assigns(:new_sequence).user.should == @user
+      expect(assigns(:new_sequence)).to be_a(Sequence)
+      expect(assigns(:new_sequence).title).to match(/^Copy of #{assigns(:sequence).title}/)
+      expect(assigns(:new_sequence).user).to eq(@user)
     end
 
     it 'should redirect to edit the new sequence' do
       get :duplicate, { :id => sequence.id }
-      response.should redirect_to(edit_sequence_url(assigns(:new_sequence)))
+      expect(response).to redirect_to(edit_sequence_url(assigns(:new_sequence)))
     end
   end
 
   describe '#export' do
     it "should call 'export' on the sequence" do
       get :export, { :id => sequence.id }
-      response.should be_success
+      expect(response).to be_success
     end 
   end
 
@@ -126,49 +126,49 @@ describe SequencesController do
         # specifies that the Sequence created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Sequence.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+        expect_any_instance_of(Sequence).to receive(:update_attributes).with({'these' => 'params'})
         put :update, {:id => sequence.to_param, :sequence => {'these' => 'params'}}
       end
 
       it "assigns the requested sequence as @sequence" do
         put :update, {:id => sequence.to_param, :sequence => valid_attributes}
-        assigns(:sequence).should eq(sequence)
+        expect(assigns(:sequence)).to eq(sequence)
       end
 
       it "redirects to the sequence" do
         put :update, {:id => sequence.to_param, :sequence => valid_attributes}
-        response.should redirect_to(sequence)
+        expect(response).to redirect_to(sequence)
       end
     end
 
     describe "with invalid params" do
       it "assigns the sequence as @sequence" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Sequence.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Sequence).to receive(:save).and_return(false)
         put :update, {:id => sequence.to_param, :sequence => {}}
-        assigns(:sequence).should eq(sequence)
+        expect(assigns(:sequence)).to eq(sequence)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Sequence.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Sequence).to receive(:save).and_return(false)
         put :update, {:id => sequence.to_param, :sequence => {}}
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
   end
 
   describe 'POST add_activity' do
     it 'adds a designated activity to the sequence' do
-      sequence.activities.length.should be(0)
+      expect(sequence.activities.length).to be(0)
       post :add_activity, { :id => sequence.to_param, :activity_id => activity.id }
-      sequence.reload.activities.length.should be(1)
-      sequence.activities.first.should == activity
+      expect(sequence.reload.activities.length).to be(1)
+      expect(sequence.activities.first).to eq(activity)
     end
 
     it "redirects to that sequence's edit page" do
       post :add_activity, { :id => sequence.to_param, :activity_id => activity.id }
-      response.should redirect_to edit_sequence_path(sequence)
+      expect(response).to redirect_to edit_sequence_path(sequence)
     end
   end
 
@@ -178,17 +178,17 @@ describe SequencesController do
       5.times do |i|
         sequence.lightweight_activities << FactoryGirl.create(:public_activity)
       end
-      sequence.activities.length.should be(6)
+      expect(sequence.activities.length).to be(6)
       post :remove_activity, { :id => sequence.to_param, :activity_id => activity.id }
-      sequence.reload.activities.length.should be(5)
+      expect(sequence.reload.activities.length).to be(5)
       sequence.lightweight_activities_sequences.each_with_index do |act, index|
-        act.position.should == index + 1
+        expect(act.position).to eq(index + 1)
       end
     end
 
     it "redirects to that sequence's edit page" do
       post :remove_activity, { :id => sequence.to_param, :activity_id => activity.id }
-      response.should redirect_to edit_sequence_path(sequence)
+      expect(response).to redirect_to edit_sequence_path(sequence)
     end
   end
 
@@ -206,18 +206,18 @@ describe SequencesController do
       # Format: item_lightweight_activity[]=1&item_lightweight_activity[]=3&item_lightweight_activity[]=11&item_lightweight_activity[]=12&item_lightweight_activity[]=13&item_lightweight_activity[]=21&item_lightweight_activity[]=20&item_lightweight_activity[]=2
       first_join = sequence.lightweight_activities_sequences.first
       get :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
-      first_join.reload.position.should be(2)
+      expect(first_join.reload.position).to be(2)
     end
 
     it 'redirects to the sequence edit page if request is html' do
       get :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
-      response.should redirect_to edit_sequence_path(sequence)
+      expect(response).to redirect_to edit_sequence_path(sequence)
     end
 
     it 'returns nothing to xhr requests', :slow => true do
-      pending "This takes forever and isn't terribly important"
+      skip "This takes forever and isn't terribly important"
       xhr :get, :reorder_activities, { :id => sequence.to_param, :item_lightweight_activities_sequence => sequence.lightweight_activities_sequences.map { |a| a.id }.reverse }
-      response.should == ''
+      expect(response).to eq('')
     end
   end
 
@@ -231,7 +231,7 @@ describe SequencesController do
 
     it "redirects to the sequences list" do
       delete :destroy, {:id => sequence.to_param}
-      response.should redirect_to(sequences_url)
+      expect(response).to redirect_to(sequences_url)
     end
   end
 

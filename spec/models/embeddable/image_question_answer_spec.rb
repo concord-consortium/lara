@@ -16,13 +16,13 @@ describe Embeddable::ImageQuestionAnswer do
     it "should belong to an image question" do
       answer.question = question
       answer.save
-      answer.reload.question.should == question
-      question.reload.answers.should include answer
+      expect(answer.reload.question).to eq(question)
+      expect(question.reload.answers).to include answer
     end
 
     it "should belong to a run" do
-      answer.reload.run.should == run
-      run.reload.image_question_answers.should include answer
+      expect(answer.reload.run).to eq(run)
+      expect(run.reload.image_question_answers).to include answer
     end
   end
 
@@ -40,7 +40,7 @@ describe Embeddable::ImageQuestionAnswer do
       end
 
       it "matches the expected hash" do
-        answer.portal_hash.should == expected
+        expect(answer.portal_hash).to eq(expected)
       end
     end
 
@@ -63,7 +63,7 @@ describe Embeddable::ImageQuestionAnswer do
       end
 
       it "matches the expected hash" do
-        answer.portal_hash.should == expected
+        expect(answer.portal_hash).to eq(expected)
       end
     end
   end
@@ -81,11 +81,11 @@ describe Embeddable::ImageQuestionAnswer do
 
     it "should copy basic attributes that can be modified by student" do
       answer.copy_answer!(another_answer)
-      answer.answer_text.should == another_answer.answer_text
-      answer.image_url.should == another_answer.image_url
-      answer.annotated_image_url.should == another_answer.annotated_image_url
-      answer.annotation.should == another_answer.annotation
-      answer.is_final.should == another_answer.is_final
+      expect(answer.answer_text).to eq(another_answer.answer_text)
+      expect(answer.image_url).to eq(another_answer.image_url)
+      expect(answer.annotated_image_url).to eq(another_answer.annotated_image_url)
+      expect(answer.annotation).to eq(another_answer.annotation)
+      expect(answer.is_final).to eq(another_answer.is_final)
     end
   end
 
@@ -98,15 +98,15 @@ describe Embeddable::ImageQuestionAnswer do
 
     describe "prompt" do # And name
       it "should delegate to question" do
-        @question.should_receive(:prompt).and_return(:some_prompt)
-        answer.prompt.should == :some_prompt
+        expect(@question).to receive(:prompt).and_return(:some_prompt)
+        expect(answer.prompt).to eq(:some_prompt)
       end
     end
 
     describe 'is_shutterbug?' do # And similar methods for the bg_source attribute
       it "should delegate to question" do
-        @question.should_receive(:is_shutterbug?).and_return(true)
-        answer.is_shutterbug?.should be_true
+        expect(@question).to receive(:is_shutterbug?).and_return(true)
+        expect(answer.is_shutterbug?).to be_truthy
       end
     end
   end
@@ -119,24 +119,24 @@ describe Embeddable::ImageQuestionAnswer do
 
     describe "a snapshot" do
       it "sould always be true" do
-        @question.should_receive(:is_drawing?).and_return(false)
-        answer.require_image_url.should == true
+        expect(@question).to receive(:is_drawing?).and_return(false)
+        expect(answer.require_image_url).to eq(true)
       end
     end
     describe "a drawing" do
 
       describe "if there is a background image" do
         it "sould return true" do
-          @question.should_receive(:is_drawing?).and_return(true)
-          @question.should_receive(:bg_url).and_return("something")
-          answer.require_image_url.should == true
+          expect(@question).to receive(:is_drawing?).and_return(true)
+          expect(@question).to receive(:bg_url).and_return("something")
+          expect(answer.require_image_url).to eq(true)
         end
       end
       describe "if there is no background image" do
         it "sould return false" do
-          @question.should_receive(:is_drawing?).and_return(true)
-          @question.should_receive(:bg_url).and_return("")
-          answer.require_image_url.should == false
+          expect(@question).to receive(:is_drawing?).and_return(true)
+          expect(@question).to receive(:bg_url).and_return("")
+          expect(answer.require_image_url).to eq(false)
         end
       end
 

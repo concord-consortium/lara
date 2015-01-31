@@ -50,9 +50,9 @@ describe "lightweight_activities/index" do
   let(:community)  { [] }
 
   before(:each) do
-    view.stub!(:current_user).and_return(user)
-    view.stub!(:can?).and_return(true)     # stub-out can-can features
-    view.stub!(:cannot?).and_return(false) # stub-out can-can features
+    allow(view).to receive(:current_user).and_return(user)
+    allow(view).to receive(:can?).and_return(true)     # stub-out can-can features
+    allow(view).to receive(:cannot?).and_return(false) # stub-out can-can features
     assign(:activities, activities.paginate())
     assign(:official_activities, official.paginate())
     assign(:community_activities, community.paginate)
@@ -63,14 +63,14 @@ describe "lightweight_activities/index" do
 
     it "should not have a community section" do
       render
-      rendered.should_not have_community_listing_section
-      rendered.should have_community_item_count(0)
+      expect(rendered).not_to have_community_listing_section
+      expect(rendered).to have_community_item_count(0)
     end
 
     it "should have an official section" do
       render
-      rendered.should have_official_listing_section
-      rendered.should have_official_listing_count(5)
+      expect(rendered).to have_official_listing_section
+      expect(rendered).to have_official_listing_count(5)
     end
   end
 
@@ -79,14 +79,14 @@ describe "lightweight_activities/index" do
 
     it "should have community section" do
       render
-      rendered.should have_community_listing_section
-      rendered.should have_community_item_count(5)
+      expect(rendered).to have_community_listing_section
+      expect(rendered).to have_community_item_count(5)
     end
 
     it "should not have an official section" do
       render
-      rendered.should_not have_official_listing_section
-      rendered.should have_official_listing_count(0)
+      expect(rendered).not_to have_official_listing_section
+      expect(rendered).to have_official_listing_count(0)
     end
   end
 
@@ -97,20 +97,20 @@ describe "lightweight_activities/index" do
 
     it "should have a community section" do
       render
-      rendered.should have_community_listing_section
-      rendered.should have_community_item_count(3)
+      expect(rendered).to have_community_listing_section
+      expect(rendered).to have_community_item_count(3)
     end
 
     it "should have an official section" do
       render
-      rendered.should have_official_listing_section
-      rendered.should have_official_listing_count(5)
+      expect(rendered).to have_official_listing_section
+      expect(rendered).to have_official_listing_count(5)
     end
   end
 
   it 'provides a link to create a new Lightweight Activity on the index page' do
     render
-    rendered.should match /<a[^>]+href=["']\/activities\/new["'][^>]*>/
+    expect(rendered).to match /<a[^>]+href=["']\/activities\/new["'][^>]*>/
   end
 
   describe 'with all activities' do
@@ -118,8 +118,8 @@ describe "lightweight_activities/index" do
 
     it 'provides a list of authored Lightweight Activities with edit and run links on the index page' do
       render
-      rendered.should match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
-      rendered.should match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
+      expect(rendered).to match /<a[^>]+href="\/activities\/[\d]+\/edit"[^>]*>[\s]*Edit[\s]*<\/a>/
+      expect(rendered).to match /<a[^>]+href="\/activities\/[\d]+"[^>]*>[\s]*Run[\s]*<\/a>/
     end
   end
 end

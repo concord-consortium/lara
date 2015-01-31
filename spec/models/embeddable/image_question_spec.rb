@@ -5,7 +5,7 @@ describe Embeddable::ImageQuestion do
   let (:image_question) { FactoryGirl.create(:image_question) }
 
   it "should create a new instance with default values" do
-    image_question.should be_valid
+    expect(image_question).to be_valid
   end
 
   describe '#to_hash' do
@@ -17,35 +17,35 @@ describe Embeddable::ImageQuestion do
         bg_source: image_question.bg_source,
         bg_url: image_question.bg_url
       }
-      image_question.to_hash.should == expected
+      expect(image_question.to_hash).to eq(expected)
     end
   end
 
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
-      image_question.duplicate.should be_a_new(Embeddable::ImageQuestion).with( name: image_question.name, prompt: image_question.prompt, drawing_prompt: image_question.drawing_prompt, bg_source: image_question.bg_source, bg_url: image_question.bg_url )
+      expect(image_question.duplicate).to be_a_new(Embeddable::ImageQuestion).with( name: image_question.name, prompt: image_question.prompt, drawing_prompt: image_question.drawing_prompt, bg_source: image_question.bg_source, bg_url: image_question.bg_url )
     end
   end
 
   describe '#is_shutterbug?' do
     it 'returns true if bg_source is Shutterbug' do
-      image_question.is_shutterbug?.should be_true
+      expect(image_question.is_shutterbug?).to be_truthy
     end
 
     it 'returns false otherwise' do
       image_question.bg_source = 'Drawing'
-      image_question.is_shutterbug?.should be_false
+      expect(image_question.is_shutterbug?).to be_falsey
     end
   end
 
   describe '#is_drawing?' do
     it 'returns true if bg_source is Drawing' do
       image_question.bg_source = 'Drawing'
-      image_question.is_drawing?.should be_true
+      expect(image_question.is_drawing?).to be_truthy
     end
 
     it 'returns false otherwise' do
-      image_question.is_drawing?.should be_false
+      expect(image_question.is_drawing?).to be_falsey
     end
   end
 end

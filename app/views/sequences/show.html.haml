@@ -4,8 +4,32 @@
 %p#notice= notice
 
 .sequence-page
-  - unless @sequence.description.blank?
-    .sequence_info
+  .profile-nav
+    - portal_user = session[:portal_username]
+    .profile-dropdown
+      %div.profile-u-name
+        Hi, 
+        %a.popup-trigger{:href => "javascript:void(0);"} 
+          - if portal_user.nil? 
+            Anonymous
+          - else  
+            #{portal_user}
+    .popup-prompt{:class => portal_user.nil? ? 'anonymous-user' : 'known-user'}
+      .nav-popup-border.arrow
+      .nav-popup.arrow
+      
+      - if portal_user.nil?
+        %span  
+          If you are taking a class, check in with your teacher about logging in to save your work.
+      - else  
+        %span
+          - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
+          Not You?
+          = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :delete, :data_trigger_save => false
+
+  
+  .sequence_info
+    - unless @sequence.description.blank?
       .description
         = @sequence.description.html_safe
 
@@ -28,3 +52,7 @@
             = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
 
     = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
+       
+
+
+  

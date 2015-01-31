@@ -4,6 +4,8 @@ class SequencesController < ApplicationController
   before_filter :set_sequence, :except => [:index, :new, :create]
   before_filter :find_or_create_sequence_run, :only => [:show]
 
+  before_filter :enable_js_logger, :only => [:show]
+
   # GET /sequences
   # GET /sequences.json
   def index
@@ -171,27 +173,18 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    # We verify that the user exists after did_reauthenticate.
-    # there have been instances where the session kept :did_reauthenticate without
-    # having a valid user. In that case, we shoudl re-auth agian.
-    if session.delete(:did_reauthenticate) && current_user
-      # Special case when collaborators_data_url is provided (usually as a GET param).
-      if params[:collaborators_data_url] && params[:domain]
-        cc = CreateCollaboration.new(params[:collaborators_data_url], params[:domain], current_user, @sequence)
-        @sequence_run = cc.call
-      else
-        portal = RemotePortal.new(params)
-        @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
-        # If sequence is ran with "portal" params, it means that user wants to run it individually.
-        # Note that "portal" refers to individual student data endpoint, this name should be updated.
-        @sequence_run.disable_collaboration if portal.valid?
-      end
-    elsif params[:domain]
-      # Force re-authentication with a portal if there is portal info in params
-      # If there is no portal info, then we just assume there is no sequence run.
-      update_portal_session(params[:domain])
+    return nil unless current_user
+    # Special case when collaborators_data_url is provided (usually as a GET param).
+    if params[:collaborators_data_url]
+      cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
+      @sequence_run = cc.call
+    else
+      portal = RemotePortal.new(params)
+      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+      # If sequence is ran with "portal" params, it means that user wants to run it individually.
+      # Note that "portal" refers to individual student data endpoint, this name should be updated.
+      @sequence_run.disable_collaboration if portal.valid?
     end
-    # This creates a new sequence_run if it doesn't exist.
   end
 
 end

@@ -34,13 +34,7 @@ class RunsController < ApplicationController
     message  = "must be admin."
     if current_user.is_admin
       run = Run.find(params[:run_id])
-      token = false
-      if params[:use_admin_token]
-        results = run.submit_answers_now(run.lara_to_portal_secret_auth)
-      else 
-        results = run.submit_answers_now
-      end
-      if results
+      if run.submit_answers_now
         message = "Run answers resent to server (OK)"
       else
         message = "Run answers failted to send to server (BAD)"

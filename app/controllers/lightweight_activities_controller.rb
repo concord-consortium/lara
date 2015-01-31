@@ -6,6 +6,9 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
   before_filter :set_sequence, :only   => [:summary, :show]
+  
+  before_filter :enable_js_logger, :only => [:summary, :show, :preview]
+
   layout :set_layout
 
   def index
@@ -187,7 +190,7 @@ class LightweightActivitiesController < ApplicationController
     answers = @activity.answers(@run)
     answers.each { |a| a.mark_dirty }
     # Kick off a resubmit
-    answers.last.send_to_portal('Bearer %s' % current_user.authentication_token)
+    answers.last.send_to_portal
     flash[:notice] = "#{answers.length} #{'answer'.pluralize(answers.length)} requeued for submission."
     redirect_to :back
   end

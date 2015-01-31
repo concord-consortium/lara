@@ -17,10 +17,7 @@ class ProfilePopup
       top: o.top + @trigger.height() + margin_top
       left: o.left + @trigger.width() + margin_left
     })
-    
-  re_login_handler :() ->
-    #alert('re login')
-    
+
    
   register_handlers: () ->
     @trigger.click (e) =>

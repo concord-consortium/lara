@@ -26,22 +26,17 @@ describe User do
     context 'when is an administrator' do
       let(:user) { FactoryGirl.build(:admin) }
 
-      it { should be_able_to(:manage, User) }
-      it { should be_able_to(:manage, Sequence) }
-      it { should be_able_to(:manage, LightweightActivity) }
-      it { should be_able_to(:manage, InteractivePage) }
-      it { should be_able_to(:manage, locked_activity) }
+      it { is_expected.to be_able_to(:manage, User) }
+      it { is_expected.to be_able_to(:manage, Sequence) }
+      it { is_expected.to be_able_to(:manage, LightweightActivity) }
+      it { is_expected.to be_able_to(:manage, InteractivePage) }
+      it { is_expected.to be_able_to(:manage, locked_activity) }
     end
 
     context 'when is an author' do
       let(:user) { FactoryGirl.build(:author) }
       let(:other_user) { FactoryGirl.build(:author) }
-      let(:self_activity) do
-        act = FactoryGirl.create(:activity)
-        act.user = user
-        act.save
-        act
-      end
+      let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
       let (:other_activity) do
         oa = FactoryGirl.create(:public_activity)
         oa.user = other_user
@@ -52,21 +47,21 @@ describe User do
       let (:self_sequence) { stub_model(Sequence, :user_id => user.id) }
       let (:other_sequence) { stub_model(Sequence, :user_id => 15) }
 
-      it { should be_able_to(:create, Sequence) }
-      it { should be_able_to(:create, LightweightActivity) }
-      it { should be_able_to(:create, InteractivePage) }
+      it { is_expected.to be_able_to(:create, Sequence) }
+      it { is_expected.to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:create, InteractivePage) }
       # Can edit activities, etc. which they own
-      it { should be_able_to(:update, self_sequence) }
-      it { should_not be_able_to(:update, other_sequence) }
-      it { should be_able_to(:update, self_activity) }
-      it { should_not be_able_to(:update, other_activity) }
-      it { should be_able_to(:read, other_activity) }
-      it { should be_able_to(:read, other_activity.pages.first) }
-      it { should be_able_to(:duplicate, other_activity) }
+      it { is_expected.to be_able_to(:update, self_sequence) }
+      it { is_expected.not_to be_able_to(:update, other_sequence) }
+      it { is_expected.to be_able_to(:update, self_activity) }
+      it { is_expected.not_to be_able_to(:update, other_activity) }
+      it { is_expected.to be_able_to(:read, other_activity) }
+      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
+      it { is_expected.to be_able_to(:duplicate, other_activity) }
       # Can't edit locked activities
-      it { should_not be_able_to(:update, locked_activity) }
-      it { should be_able_to(:read, other_activity.pages.first) }
-      it { should_not be_able_to(:duplicate, locked_activity) }
+      it { is_expected.not_to be_able_to(:update, locked_activity) }
+      it { is_expected.to be_able_to(:read, other_activity.pages.first) }
+      it { is_expected.not_to be_able_to(:duplicate, locked_activity) }
     end
 
     context 'when is a user' do
@@ -90,12 +85,12 @@ describe User do
         oa
       end
 
-      it { should_not be_able_to(:manage, User) }
-      it { should_not be_able_to(:update, LightweightActivity) }
-      it { should_not be_able_to(:create, LightweightActivity) }
-      it { should be_able_to(:read, Sequence) }
-      it { should be_able_to(:read, public_activity) }
-      it { should be_able_to(:read, hidden_activity) } # But it won't be in lists
+      it { is_expected.not_to be_able_to(:manage, User) }
+      it { is_expected.not_to be_able_to(:update, LightweightActivity) }
+      it { is_expected.not_to be_able_to(:create, LightweightActivity) }
+      it { is_expected.to be_able_to(:read, Sequence) }
+      it { is_expected.to be_able_to(:read, public_activity) }
+      it { is_expected.to be_able_to(:read, hidden_activity) } # But it won't be in lists
     end
   end
 
@@ -106,9 +101,9 @@ describe User do
     let(:auth_token)    { "xyzzy"                }
 
     let(:auth) do
-      auth_obj = mock(:provider => auth_provider, :uid => auth_uid)
-      auth_obj.stub_chain(:info, :email).and_return(auth_email)
-      auth_obj.stub_chain(:credentials, :token).and_return(auth_token)
+      auth_obj = double(:provider => auth_provider, :uid => auth_uid)
+      allow(auth_obj).to receive_message_chain(:info, :email).and_return(auth_email)
+      allow(auth_obj).to receive_message_chain(:credentials, :token).and_return(auth_token)
       auth_obj
     end
 
@@ -119,7 +114,7 @@ describe User do
         authentication = FactoryGirl.create(:authentication,
           {:user => expected, :provider => auth_provider, :uid => auth_uid})
 
-        User.find_for_concord_portal_oauth(auth).should == expected
+        expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
       end
     end
 
@@ -127,16 +122,16 @@ describe User do
       it "should return the found user" do
         expected = FactoryGirl.create(:user,
           { :email => auth_email } )
-        User.find_for_concord_portal_oauth(auth).should == expected
+        expect(User.find_for_concord_portal_oauth(auth)).to eq(expected)
       end
       it "should update the provider and user to match found" do
         expected = FactoryGirl.create(:user,
           { :email => auth_email } )
         found = User.find_for_concord_portal_oauth(auth)
-        found.email.should    == expected.email
+        expect(found.email).to    eq(expected.email)
         authentication = found.authentications.first
-        authentication.provider.should == auth.provider
-        authentication.uid.should      == auth.uid
+        expect(authentication.provider).to eq(auth.provider)
+        expect(authentication.uid).to      eq(auth.uid)
       end
     end
 
@@ -148,12 +143,12 @@ describe User do
         authentication = FactoryGirl.create(:authentication,
           {:user => expected, :provider => 'some other provider', :uid => auth_uid})
         found = User.find_for_concord_portal_oauth(auth)
-        found.email.should                == expected.email
-        found.authentications.size.should == 2
+        expect(found.email).to                eq(expected.email)
+        expect(found.authentications.size).to eq(2)
 
         authentication = found.authentications.find_by_provider auth.provider
-        authentication.should_not == nil
-        authentication.uid.should == auth.uid
+        expect(authentication).not_to eq(nil)
+        expect(authentication.uid).to eq(auth.uid)
       end
     end
 
@@ -173,17 +168,17 @@ describe User do
       let(:auth) { FactoryGirl.create(:authentication, :provider => 'concord_portal') }
 
       it 'should return an array of symbols' do
-        user.auth_providers.should == []
+        expect(user.auth_providers).to eq([])
       end
 
       it 'should get providers from previous authentications' do
         user.authentications << auth
-        user.auth_providers.should include('CONCORD_PORTAL')
+        expect(user.auth_providers).to include('CONCORD_PORTAL')
       end
 
       it 'should get providers from previous runs' do
         user.runs << run
-        user.auth_providers.should include('LOCAL')
+        expect(user.auth_providers).to include('LOCAL')
       end
     end
   end

@@ -32,21 +32,21 @@ describe ProjectsController do
   describe "GET index" do
     it "assigns all projects as @projects" do
       get :index
-      assigns(:projects).should include(project)
+      expect(assigns(:projects)).to include(project)
     end
   end
 
   describe "GET new" do
     it "assigns a new project as @project" do
       get :new
-      assigns(:project).should be_a_new(Project)
+      expect(assigns(:project)).to be_a_new(Project)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested project as @project" do
       get :edit, {:id => project.id}
-      assigns(:project).should eq(project)
+      expect(assigns(:project)).to eq(project)
     end
   end
 
@@ -60,29 +60,29 @@ describe ProjectsController do
 
       it "assigns a newly created project as @project" do
         post :create, {:project => {}}
-        assigns(:project).should be_a(Project)
-        assigns(:project).should be_persisted
+        expect(assigns(:project)).to be_a(Project)
+        expect(assigns(:project)).to be_persisted
       end
 
       it "redirects to the created project" do
         post :create, {:project => {}}
-        response.should redirect_to(edit_project_url(Project.last))
+        expect(response).to redirect_to(edit_project_url(Project.last))
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved project as @project" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Project).to receive(:save).and_return(false)
         post :create, {:project => {}}
-        assigns(:project).should be_a_new(Project)
+        expect(assigns(:project)).to be_a_new(Project)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Project).to receive(:save).and_return(false)
         post :create, {:project => {}}
-        response.should render_template("new")
+        expect(response).to render_template("new")
       end
     end
   end
@@ -94,34 +94,34 @@ describe ProjectsController do
         # specifies that the Project created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Project.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+        expect_any_instance_of(Project).to receive(:update_attributes).with({'these' => 'params'})
         put :update, {:id => project.id, :project => {'these' => 'params'}}
       end
 
       it "assigns the requested project as @project" do
         put :update, {:id => project.id, :project => {}}
-        assigns(:project).should eq(project)
+        expect(assigns(:project)).to eq(project)
       end
 
       it "redirects to the project" do
         put :update, {:id => project.id, :project => {}}
-        response.should redirect_to(edit_project_url(project))
+        expect(response).to redirect_to(edit_project_url(project))
       end
     end
 
     describe "with invalid params" do
       it "assigns the project as @project" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Project).to receive(:save).and_return(false)
         put :update, {:id => project.id, :project => {}}
-        assigns(:project).should eq(project)
+        expect(assigns(:project)).to eq(project)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Project.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Project).to receive(:save).and_return(false)
         put :update, {:id => project.id, :project => {}}
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
   end
@@ -137,7 +137,7 @@ describe ProjectsController do
     it "redirects to the projects list" do
       project = Project.create! {}
       delete :destroy, {:id => project.id}
-      response.should redirect_to(projects_url)
+      expect(response).to redirect_to(projects_url)
     end
   end
 

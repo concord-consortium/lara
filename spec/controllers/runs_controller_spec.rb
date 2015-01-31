@@ -12,7 +12,7 @@ describe RunsController do
 
   describe 'routing' do
     it 'recognizes and generates #show' do
-      {:get => 'activities/3/runs/88e0aff5-db3f-4087-8fda-49ec579980ee'}.should route_to(:controller => 'runs', :action => 'show', :activity_id => "3", :id => '88e0aff5-db3f-4087-8fda-49ec579980ee')
+      expect({:get => 'activities/3/runs/88e0aff5-db3f-4087-8fda-49ec579980ee'}).to route_to(:controller => 'runs', :action => 'show', :activity_id => "3", :id => '88e0aff5-db3f-4087-8fda-49ec579980ee')
     end
 
     it 'does not route without activity ID' do
@@ -28,9 +28,9 @@ describe RunsController do
     it 'creates a new object and redirects to #show' do
       existing_responses = Run.count
       get :index, :activity_id => activity.id
-      assigns(:run).should_not be_nil
-      assigns(:run).activity.should === activity
-      response.should redirect_to :action => 'show', :activity_id => activity.id, :id => assigns(:run).key
+      expect(assigns(:run)).not_to be_nil
+      expect(assigns(:run).activity).to be === activity
+      expect(response).to redirect_to :action => 'show', :activity_id => activity.id, :id => assigns(:run).key
     end
   end
 
@@ -43,16 +43,16 @@ describe RunsController do
       @user ||= FactoryGirl.create(:admin)
       sign_in @user
       get :dirty
-      assigns(:runs).should == [dirty_run]
-      response.should render_template('dirty')
+      expect(assigns(:runs)).to eq([dirty_run])
+      expect(response).to render_template('dirty')
     end
 
     it 'returns simple JSON when requested' do
       # JSON request can be anonymous
       dirty_run
       get :dirty, :format => 'json'
-      assigns(:runs).should == [dirty_run]
-      response.body.should match /\"dirty_runs\":\w*1/
+      expect(assigns(:runs)).to eq([dirty_run])
+      expect(response.body).to match /\"dirty_runs\":\w*1/
     end
   end
 
@@ -60,10 +60,10 @@ describe RunsController do
     context 'with valid ID' do
       it 'returns a JSON object with that ID' do
         get :show, :id => run.key, :activity_id => activity.id
-        response.code.should == '200'
+        expect(response.code).to eq('200')
         # TODO: what should the body include?
-        response.body.should match "multiple_choice_answers"
-        response.body.should match "open_response_answers"
+        expect(response.body).to match "multiple_choice_answers"
+        expect(response.body).to match "open_response_answers"
       end
     end
 
@@ -71,9 +71,9 @@ describe RunsController do
       it 'creates a new object with that key and returns that object' do
         existing_responses = Run.count
         get :show, :id => '88e0aff5-db3f-4087-8fda-49ec579980ef', :activity_id => activity.id
-        response.code.should == '200'
+        expect(response.code).to eq('200')
         # TODO: Check that the response body includes the new key
-        Run.count.should == existing_responses+1
+        expect(Run.count).to eq(existing_responses+1)
       end
     end
   end

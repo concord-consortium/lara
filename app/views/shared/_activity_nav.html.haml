@@ -76,12 +76,12 @@
     
     - if portal_user.nil?
       %span  
-        If you are taking a class, check in with your teacher about logging in to save data.
+        If you are taking a class, check in with your teacher about logging in to save your work.
     - else  
       %span
         - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
         Not You?
-        = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :get
+        = link_to " Click here", destroy_user_session_path(:re_login => true, :user_provider => user_provider), :method => :delete, :'data-trigger-save' => false
 :javascript
   jQuery(function() {
     var rowWidth = jQuery('.l-nav').outerWidth();

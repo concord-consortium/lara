@@ -18,6 +18,15 @@
     @include helv-stack(bold);
     font-size: 24pt;
   }
+  
+  .sequence-page{
+    .profile-u-name{
+      color: $theme-color-a;
+    }
+    .profile-dropdown{
+      background-color:transparent
+    }
+  }
 
   .pagination-item .pagination-link.selected {
     background-color: $theme-color-b;
