@@ -56,6 +56,7 @@ describe CRater::FeedbackFunctionality do
       let(:password) { 'password' }
       let(:protocol) { 'https://' }
       let(:url) { 'fake.c-rater.api/api/v1' }
+      let(:mock_url) { "#{protocol}#{username}:#{password}@#{url}" }
       let(:score) { 2 }
       let(:response) do
         <<-EOS
@@ -93,13 +94,30 @@ describe CRater::FeedbackFunctionality do
       end
 
       describe '#get_c_rater_feedback' do
-        it 'creates feedback entry in DB' do
+        it 'creates feedback entry in DB (success)' do
           expect(answer.c_rater_feedback_items.count).to eql(0)
           answer.get_c_rater_feedback
           expect(answer.c_rater_feedback_items.count).to eql(1)
           feedback = answer.c_rater_feedback_items.last
           expect(feedback.status).to eql('success')
           expect(feedback.score).to eql(score)
+          expect(feedback.response_info[:body]).to eql(response)
+        end
+
+        context 'C-Rater service unavailable' do
+          let(:err_resp) { 'Service unavailable' }
+          before(:each) do
+            stub_request(:post, mock_url).to_return(status: 500, body: err_resp)
+          end
+
+          it 'creates feedback entry in DB (error)' do
+            expect(answer.c_rater_feedback_items.count).to eql(0)
+            answer.get_c_rater_feedback
+            expect(answer.c_rater_feedback_items.count).to eql(1)
+            feedback = answer.c_rater_feedback_items.last
+            expect(feedback.status).to eql('error')
+            expect(feedback.response_info[:body]).to eql(err_resp)
+          end
         end
       end
     end

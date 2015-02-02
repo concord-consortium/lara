@@ -33,6 +33,9 @@ class CRater::APIWrapper
   def get_feedback(item_id, response_id, response_text)
     xml = request_xml(item_id, response_id, response_text)
     resp = HTTParty.post(@url, request_options(xml))
+    # C-Rater API seems to always return HTTP 200 and error message provided in XML body.
+    # This code assumes that there is only one XML structure that is correct for us (that includes score)
+    # and everything else will be treated as error.
     score = get_score_from_resp(resp.parsed_response)
     result = if resp.code == 200 && score
                {
@@ -48,7 +51,7 @@ class CRater::APIWrapper
     result.merge({
       response_info: {
         code: resp.code,
-        headers: resp.headers,
+        headers: resp.headers.to_hash,
         body: resp.body
       }
     })

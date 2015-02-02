@@ -1,5 +1,4 @@
 # Mixin. Expects that target class implements:
-#  - id
 #  - answer_text (returns string)
 #  - c_rater_settings (should point to CRaterSettings instance if feedback should be obtained, nil otherwise)
 
@@ -27,28 +26,17 @@ module CRater::FeedbackFunctionality
 
   def get_c_rater_feedback
     return unless c_rater_enabled?
-    feedback = CRater::FeedbackItem.new(
+    feedback_item = CRater::FeedbackItem.new(
       status: 'requested',
       # Save both answer text and item id to prevent context loss - these values can be changed later by user.
       answer_text: answer_text,
       item_id: c_rater_settings.item_id
     )
-    feedback.answer = self
-    feedback.save!
-    response = request_feedback
-    if response[:success]
-      feedback.status = 'success'
-      feedback.score = response[:score]
-      # TODO: score -> text mapping
-      # feedback.feedback_text = ...
-    else
-      feedback.status = 'error'
-    end
-    feedback.response_info = response[:response_info]
-    feedback.save!
+    feedback_item.answer = self
+    feedback_item.save!
+    continue_feedback_processing(feedback_item)
   end
-  handle_asynchronously :get_c_rater_feedback
-
+  
   private
 
   def c_rater_configured?
@@ -56,11 +44,27 @@ module CRater::FeedbackFunctionality
     !!config[:client_id] && !!config[:username] && !!config[:password]
   end
 
-  def request_feedback
+  def issue_c_rater_request(feedback_item)
     config = c_rater_config
     crater = CRater::APIWrapper.new(config[:client_id], config[:username], config[:password], config[:url])
-    item_id = c_rater_settings.item_id
     # Use answer.id (as answer class includes this module) as response_id provided to C-Rater.
-    crater.get_feedback(item_id, id, answer_text)
+    crater.get_feedback(feedback_item.item_id, id, feedback_item.answer_text)
   end
+
+  def continue_feedback_processing(feedback_item)
+    feedback_item.status = 'started'
+    feedback_item.save!
+    response = issue_c_rater_request(feedback_item)
+    if response[:success]
+      feedback_item.status = 'success'
+      feedback_item.score = response[:score]
+      # TODO: score -> text mapping
+      # feedback.feedback_text = ...
+    else
+      feedback_item.status = 'error'
+    end
+    feedback_item.response_info = response[:response_info]
+    feedback_item.save!
+  end 
+  handle_asynchronously :continue_feedback_processing
 end
