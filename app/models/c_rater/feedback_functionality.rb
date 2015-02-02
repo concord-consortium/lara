@@ -62,6 +62,7 @@ module CRater::FeedbackFunctionality
       # feedback.feedback_text = ...
     else
       feedback_item.status = 'error'
+      feedback_item.feedback_text = response[:error]
     end
     feedback_item.response_info = response[:response_info]
     feedback_item.save!

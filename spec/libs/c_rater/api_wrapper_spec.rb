@@ -66,38 +66,74 @@ describe CRater::APIWrapper do
   describe '#get_feedback' do
     subject { crater.get_feedback(item_id, response_id, response_text) }
 
-    describe 'when C-Rater service works as expected' do
+    context 'C-Rater service works as expected' do
       before do
         stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
-          with(:body => xml_req_spec,
-               :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'}).
-          to_return(:status => 200, :body => xml_resp_spec,
-                    :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'})
+          with(:body    => xml_req_spec,
+               :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'}).
+          to_return(:status  => 200, :body => xml_resp_spec,
+                    :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'})
       end
 
       it "returns score and additional information" do
         expect(subject[:success]).to be true
         expect(subject[:score]).to eql(score)
+        expect(subject[:error]).to be_nil
         expect(subject[:response_info][:code]).to eql(200)
         expect(subject[:response_info][:body]).to eql(xml_resp_spec)
         expect(subject[:response_info][:headers]).not_to be_nil
       end
     end
 
-    describe 'when C-Rater service is unavailable' do
+    context 'C-Rater service returns error' do
       before do
         stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
-          with(:body => xml_req_spec,
-               :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'}).
-          to_return(:status => 404, :body => 'Page not found')
+          with(:body    => xml_req_spec,
+               :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'}).
+          to_return(:status => status_code, :body => err_body, :headers => headers)
       end
 
-      it "returns only debug information" do
-        expect(subject[:success]).to be false
-        expect(subject[:score]).to be_nil
-        expect(subject[:response_info][:code]).to eql(404)
-        expect(subject[:response_info][:body]).to eql('Page not found')
-        expect(subject[:response_info][:headers]).not_to be_nil
+      context 'unknown error' do
+        let(:status_code) { 404 }
+        let(:err_body) { 'Page not found' }
+        let(:headers) { {'Content-Type' => 'text/plain; charset=ISO-8859-1'} }
+
+        it 'returns only debug information' do
+          expect(subject[:success]).to be false
+          expect(subject[:score]).to be_nil
+          expect(subject[:error]).to eql(err_body)
+          expect(subject[:response_info][:code]).to eql(status_code)
+          expect(subject[:response_info][:body]).to eql(err_body)
+          expect(subject[:response_info][:headers]).not_to be_nil
+        end
+      end
+
+      context 'meaningful error' do
+        let(:status_code) { 200 }
+        let(:err_code) { 102 }
+        let(:err_msg) { 'No model found for the item. [Mon Feb 02 07:49:21 EST 2015]' }
+        let(:headers) { {'Content-Type' => 'text/xml; charset=ISO-8859-1'} }
+        let(:err_body) do
+          xml = <<-EOS
+            <crater-results>
+              <tracking id="-1"/>
+              <error code="#{err_code}">
+                <![CDATA[#{err_msg}]]>
+              </error>
+              <client id="#{client_id}"/>
+            </crater-results>
+          EOS
+          process_xml(xml)
+        end
+
+        it 'returns parsed error message' do
+          expect(subject[:success]).to be false
+          expect(subject[:score]).to be_nil
+          expect(subject[:error]).to eql("Error #{err_code}: #{err_msg}")
+          expect(subject[:response_info][:code]).to eql(status_code)
+          expect(subject[:response_info][:body]).to eql(err_body)
+          expect(subject[:response_info][:headers]).not_to be_nil
+        end
       end
     end
   end

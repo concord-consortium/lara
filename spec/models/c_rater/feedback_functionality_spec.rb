@@ -116,6 +116,7 @@ describe CRater::FeedbackFunctionality do
             expect(answer.c_rater_feedback_items.count).to eql(1)
             feedback = answer.c_rater_feedback_items.last
             expect(feedback.status).to eql('error')
+            expect(feedback.feedback_text).to eql(err_resp)
             expect(feedback.response_info[:body]).to eql(err_resp)
           end
         end

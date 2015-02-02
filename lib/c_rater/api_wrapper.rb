@@ -4,7 +4,7 @@ class CRater::APIWrapper
   # Pilot environment has been recommended by ETS.
   C_RATER_URI = 'https://nlp-pilot.ets.org/crater/scoring/internal/CraterScoringServlet'
   # C-Rater supports only ISO-8859-1 encoding.
-  ENCODING = 'iso-8859-1'
+  ENCODING = 'ISO-8859-1'
 
   def initialize(client_id, username, password, url = nil)
     @client_id = client_id
@@ -36,7 +36,7 @@ class CRater::APIWrapper
     # C-Rater API seems to always return HTTP 200 and error message provided in XML body.
     # This code assumes that there is only one XML structure that is correct for us (that includes score)
     # and everything else will be treated as error.
-    score = get_score_from_resp(resp.parsed_response)
+    score = get_score(resp.parsed_response)
     result = if resp.code == 200 && score
                {
                  success: true,
@@ -44,7 +44,8 @@ class CRater::APIWrapper
                }
              else
                {
-                 success: false
+                 success: false,
+                 error: get_error(resp.parsed_response)
                }
              end
     # Always include debug information in response (code, unparsed body and headers).
@@ -62,7 +63,7 @@ class CRater::APIWrapper
   def request_options(body)
     {
       headers: {
-        'Content-Type' => "application/xml; charset=#{ENCODING}"
+        'Content-Type' => "text/xml; charset=#{ENCODING}"
       },
       basic_auth: {
         username: @username,
@@ -72,7 +73,7 @@ class CRater::APIWrapper
     }
   end
 
-  def get_score_from_resp(parsed_response)
+  def get_score(parsed_response)
     return nil unless parsed_response.respond_to?(:fetch) # hash expected
     score = parsed_response.fetch('crater_results', {})
                            .fetch('items', {})
@@ -81,5 +82,17 @@ class CRater::APIWrapper
                            .fetch('response', {})
                            .fetch('score', nil)
     score.nil? ? nil : score.to_i
+  end
+
+  def get_error(parsed_response)
+    return parsed_response if parsed_response.is_a?(String)
+    return nil unless parsed_response.respond_to?(:fetch)
+    error = parsed_response.fetch('crater_results', {})
+                           .fetch('error', nil)
+    if error
+      "Error #{error.fetch('code', -999)}: #{error.fetch('__content__', '')}"
+    else
+      'Unknown error'
+    end
   end
 end
