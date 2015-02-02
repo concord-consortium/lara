@@ -12,7 +12,6 @@ module Embeddable
 
     after_update :send_to_portal
     after_update :propagate_to_collaborators
-    after_update :get_c_rater_feedback
 
     def self.by_question(q)
       where(:open_response_id => q.id)
