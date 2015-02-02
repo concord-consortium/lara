@@ -228,42 +228,78 @@ def initialize_scan
   prepare_columns
 end
 
-def scan_learner_data(to_update)
+def is_provider_https?(run)
+  unless run.remote_endpoint.blank?
+    a_uri = URI.parse(run.remote_endpoint)
+    auth_url = (uri.port == 80) ? "#{uri.host}" : "#{uri.host}:#{uri.port}"
+    ENV['CONFIGURED_PORTALS'].split.each do |cp|
+      c_uri = URI.parse(ENV["CONCORD_#{cp}_URL"])
+      configured_uri = (c_uri.port == 80) ? "#{c_uri.host}" : "#{c_uri.host}:#{c_uri.port}"
+      if configured_uri == auth_url
+        if c_uri.scheme == "https"
+          return true
+        end
+      end
+    end
+  end
+  return false
+end
+
+def scan_learner_data(to_update, log_string)
   insecure_content_count = 0
-  log_string = "\n\nInsecure learner_data\n"
   to_fix = {original_url: "http://",replace_url: "https://"}
   Run.all.each do |runs|
-    if runs[:remote_endpoint] && (runs[:remote_endpoint].include? "http://")
-      insecure_content_count += 1
-      if to_update
-        runs[:remote_endpoint] = fix_insecure(runs[:remote_endpoint],to_fix)
-        runs.save!
+    if is_provider_https?(runs) 
+      if runs[:remote_endpoint] && (runs[:remote_endpoint].include? "http://")
+        insecure_content_count += 1
+        if to_update
+          runs[:remote_endpoint] = fix_insecure(runs[:remote_endpoint],to_fix)
+          if runs.save(:validate => false)
+            log_string << "\nRuns #{runs[:id]} :: remote_endpoint : #{runs[:remote_endpoint]}"
+          else
+            log_string << "\nFailed to update Runs #{runs[:id]}"
+          end          
+        else
+          log_string << "\nRuns #{runs[:id]} :: remote_endpoint : #{runs[:remote_endpoint]}"
+        end  
       end
-      log_string << "\nRuns #{runs[:id]} => remote_endpoint : #{runs[:remote_endpoint]}"
     end
   end
     
   InteractiveRunState.all.each do |interactive_run_state|
-    if interactive_run_state[:learner_url] && (interactive_run_state[:learner_url].include? "http://")
-      insecure_content_count += 1
-      if to_update
-        interactive_run_state[:learner_url] = fix_insecure(interactive_run_state[:learner_url],to_fix)
-        interactive_run_state.save!
-      end
-      log_string << "\nInteractiveRunState #{interactive_run_state[:id]} => learner_url : #{interactive_run_state[:learner_url]}"  
-    end
-
-    if interactive_run_state[:raw_data]
-      raw_data = JSON.parse(interactive_run_state[:raw_data])
-      raw_data['models'].each do |model|
-        if model['url'] && (model['url'].include? "http://")
-          insecure_content_count += 1
-          if to_update
-            model['url'] = fix_insecure(model['url'],to_fix)
-            interactive_run_state[:raw_data] = raw_data.to_json
-            interactive_run_state.save!
+    if is_provider_https?(interactive_run_state.run)
+      if interactive_run_state[:learner_url] && (interactive_run_state[:learner_url].include? "http://")
+        insecure_content_count += 1
+        if to_update
+          interactive_run_state[:learner_url] = fix_insecure(interactive_run_state[:learner_url],to_fix)
+          if interactive_run_state.save(:validate=> false)
+            log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: learner_url : #{interactive_run_state[:learner_url]}"
+          else
+            log_string << "\n Failed to update InteractiveRunState #{interactive_run_state[:id]}"
           end
-          log_string << "\nInteractiveRunState #{interactive_run_state[:id]} => raw_data : #{model['url']}"
+        else
+          log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: learner_url : #{interactive_run_state[:learner_url]}"
+        end
+      end
+  
+      if interactive_run_state[:raw_data]
+        raw_data = JSON.parse(interactive_run_state[:raw_data])
+        lara_options = raw_data["lara_options"]
+        unless lara_options.nil?
+          if lara_options["reporting_url"] && (lara_options["reporting_url"].include? "http://")
+            insecure_content_count += 1
+            if to_update
+              lara_options["reporting_url"] = fix_insecure(lara_options["reporting_url"],to_fix)
+              interactive_run_state[:raw_data] = raw_data
+              if interactive_run_state.save(:validate=> false)
+                log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: reporting_url : #{lara_options["reporting_url"]}"
+              else
+                log_string << "\n Failed to update InteractiveRunState #{interactive_run_state[:id]}"
+              end
+            else
+              log_string << "\nInteractiveRunState #{interactive_run_state[:id]} :: reporting_url : #{lara_options["reporting_url"]}"
+            end
+          end
         end
       end
     end
@@ -348,12 +384,12 @@ namespace :secure_content do
   
   desc "Scan learner data for insecure content"
   task :get_insecure_learner_data => :environment do
-    scan_learner_data(false)
+    scan_learner_data(false, "\n\nInsecure learner_data is found in the following items.\n")
   end
   
   desc "Fix learner data for insecure content"
   task :fix_insecure_learner_data => :environment do
-    scan_learner_data(true)
+    scan_learner_data(true,  "\n\nFixed Insecure learner_data for following items.\n")
   end
   
   desc "Fix insecure content of activity"
