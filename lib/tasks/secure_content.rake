@@ -231,7 +231,7 @@ end
 def is_provider_https?(run)
   unless run.remote_endpoint.blank?
     a_uri = URI.parse(run.remote_endpoint)
-    auth_url = (uri.port == 80) ? "#{uri.host}" : "#{uri.host}:#{uri.port}"
+    auth_url = (a_uri.port == 80) ? "#{a_uri.host}" : "#{a_uri.host}:#{a_uri.port}"
     ENV['CONFIGURED_PORTALS'].split.each do |cp|
       c_uri = URI.parse(ENV["CONCORD_#{cp}_URL"])
       configured_uri = (c_uri.port == 80) ? "#{c_uri.host}" : "#{c_uri.host}:#{c_uri.port}"
