@@ -1,15 +1,13 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
-    attr_accessible :name, :prompt, :is_prediction,
-      :give_prediction_feedback, :prediction_feedback
-
     include Embeddable
+    include CRater::SettingsProviderFunctionality
 
+    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback
+
+    # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
-    # PageItem instances are join models, so if the embeddable is gone
-    # the join should go too.
     has_many :interactive_pages, :through => :page_items
-
     has_many :answers,
       :class_name  => 'Embeddable::OpenResponseAnswer',
       :foreign_key => 'open_response_id'

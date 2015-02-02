@@ -57,4 +57,15 @@ describe Embeddable::OpenResponseAnswer do
     end
   end
 
+  describe "C-Rater functionality" do
+    it "should implement required interface" do
+      expect(answer).to respond_to(:answer_text)
+      expect(answer).to respond_to(:c_rater_settings)
+    end
+    it "should get C-Rater feedback after answer is updated" do
+      expect(answer).to receive(:get_c_rater_feedback)
+      answer.answer_text = 'foobar'
+      answer.save
+    end
+  end
 end
