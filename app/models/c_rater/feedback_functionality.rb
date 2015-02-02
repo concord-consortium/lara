@@ -24,7 +24,7 @@ module CRater::FeedbackFunctionality
     !!c_rater_configured? && !!c_rater_settings && !!c_rater_settings.item_id
   end
 
-  def get_c_rater_feedback
+  def get_c_rater_feedback(options = {})
     return unless c_rater_enabled?
     feedback_item = CRater::FeedbackItem.new(
       status: 'requested',
@@ -33,8 +33,13 @@ module CRater::FeedbackFunctionality
       item_id: c_rater_settings.item_id
     )
     feedback_item.answer = self
-    feedback_item.save!
-    continue_feedback_processing(feedback_item)
+    if options[:async]
+      feedback_item.save!
+      delay.continue_feedback_processing(feedback_item)
+    else
+      continue_feedback_processing(feedback_item)
+    end
+    feedback_item
   end
   
   private
@@ -52,8 +57,6 @@ module CRater::FeedbackFunctionality
   end
 
   def continue_feedback_processing(feedback_item)
-    feedback_item.status = 'started'
-    feedback_item.save!
     response = issue_c_rater_request(feedback_item)
     if response[:success]
       feedback_item.status = 'success'
@@ -67,5 +70,4 @@ module CRater::FeedbackFunctionality
     feedback_item.response_info = response[:response_info]
     feedback_item.save!
   end 
-  handle_asynchronously :continue_feedback_processing
 end
