@@ -267,7 +267,8 @@ def scan_learner_data(to_update, log_string)
   end
     
   InteractiveRunState.all.each do |interactive_run_state|
-    if is_provider_https?(interactive_run_state.run)
+    run = interactive_run_state.run
+    if run && is_provider_https?(run)
       if interactive_run_state[:learner_url] && (interactive_run_state[:learner_url].include? "http://")
         insecure_content_count += 1
         if to_update
