@@ -58,7 +58,8 @@ module InteractiveRunHelper
     url = interactive.url if url.blank?
     
     data = {
-      :aspect_ratio => interactive.aspect_ratio
+      :aspect_ratio => interactive.aspect_ratio,
+      :id => interactive.id 
     }
 
     opts = {

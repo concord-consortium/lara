@@ -116,6 +116,7 @@ class @SaveOnChange
       url: @$form.attr( 'action' ),
       data: @$form.serialize(),
       success: (response) =>
+        Logger_Utils.log_submitted_question(@$form.attr( 'id' ))
         @save_success(data)
       error: (jqxhr, status, error) =>
         @save_error()
