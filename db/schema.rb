@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150202182852) do
+ActiveRecord::Schema.define(:version => 20150204154523) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(:version => 20150202182852) do
     t.string   "layout",                  :default => "l-6040"
     t.string   "embeddable_display_mode", :default => "stacked"
     t.string   "sidebar_title",           :default => "Did you know?"
+    t.text     "additional_sections"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
@@ -315,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20150202182852) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.string   "section"
   end
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"

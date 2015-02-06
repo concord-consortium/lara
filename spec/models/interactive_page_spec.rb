@@ -211,4 +211,17 @@ describe InteractivePage do
       end
     end
   end
+
+  describe 'InteractivePage#register_additional_section' do
+    before(:all) do
+      InteractivePage.register_additional_section({name:  'test_section',
+                                                   dir:   'dir',
+                                                   label: 'label'})
+    end
+    it 'should add new methods (show_<secion_name_)' do
+      expect(page).not_to respond_to(:show_unexisting_section)
+      expect(page).to respond_to(:show_test_section)
+      expect(page).to respond_to(:show_test_section=)
+    end
+  end
 end
