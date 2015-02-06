@@ -32,6 +32,12 @@ LightweightStandalone::Application.routes.draw do
     resources :multiple_choice_answers
   end
 
+  namespace :c_rater do
+    resources :settings, :only => [:edit, :update]
+    post "/argumentation_blocks/:page_id/create_embeddables" => 'argumentation_blocks#create_embeddables', :as => 'arg_block_create_embeddables'
+    post "/argumentation_blocks/:page_id/remove_embeddables" => 'argumentation_blocks#remove_embeddables', :as => 'arg_block_remove_embeddables'
+  end
+
   namespace :admin do
     resources :users
   end
