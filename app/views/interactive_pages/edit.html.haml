@@ -45,22 +45,27 @@
     %span.preview
       = link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
   %div.edit_interactive_page
-    = form_for @page, :remote => true do |f|
+    = form_for @page do |f|
       = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
       = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
-      %span.page-section-controls#page-section-controls     
-        %label{:id => 'page_intro',:for => "interactive_page_show_introduction"}    
+      %p.page-section-controls#page-section-controls
+        %label
           = f.check_box :show_introduction, :onchange => 'this.form.submit();' 
           Page introduction
-        %label{:id => 'info_block',:for => "interactive_page_show_info_assessment"}
+        %label
           = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
           Info/Assessment block
-        %label{:id => 'interactive_box',:for => "interactive_page_show_interactive"}
+        %label
           = f.check_box :show_interactive, :onchange => 'this.form.submit();'
           Interactive box
-        %label{:id => 'page_sidebar',:for => "interactive_page_show_sidebar"}
+        %label
           = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
-          Page sidebar text  
+          Page sidebar text
+        - InteractivePage.registered_additional_sections.each do |s|
+          %label
+            = f.check_box "show_#{s[:name]}", :onchange => 'this.form.submit();'
+            = s[:label]
+
   - if @page.show_introduction
     .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
       %h2 Introduction
@@ -72,10 +77,13 @@
         = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
           = embeddable_selector
           = submit_tag 'Add Embeddable'
-        #sort_embeddables
-          - @page.embeddables.each do |e|
+        #sort_embeddables.embeddables_list
+          - @page.section_embeddables(nil).each do |e|
             - e_type = e.class.name.underscore
             = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
+    -# Additional sections are dynamically loaded, based on .visible_sections value:
+    - @page.visible_sections.each do |s|
+      = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label] }
   - if @page.show_interactive
     %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
       = form_tag add_interactive_activity_page_path(@activity, @page), :class => 'interactives-form' do

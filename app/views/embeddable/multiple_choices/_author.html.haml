@@ -1,4 +1,4 @@
-.authorable_multiple_choice{:id => "embeddable_#{embeddable.id}.#{embeddable.class.to_s}"}
+.authorable{:id => "embeddable_#{embeddable.id}.#{embeddable.class.to_s}"}
   .embeddable_tools
     .drag_handle
     = link_to "edit", edit_embeddable_multiple_choice_path(embeddable), :remote => true, :id => "edit-embed-mc-#{embeddable.id}"

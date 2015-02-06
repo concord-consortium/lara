@@ -237,7 +237,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   color: #75a643 !important;
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
-.questions .embeddable, .authorable_open_response, .authorable_multiple_choice, .authorable_image_question {
+.questions .embeddable, .authorable {
   background: #eee;
   margin-bottom: 1em;
   padding: 3%;
@@ -685,27 +685,32 @@ div.block-empty {
   height: 20px;
   width: 20px;
   background-position: 2px 2px;
+  visibility: hidden;
+
+  #sort_embeddables & {
+    visibility: visible;
+  }
 }
 /* These are unique to the edit view */
-#page-section-controls,.page-section-controls{
-  float : right;
-  margin-right: 15px;
+#page-section-controls, .page-section-controls {
+  display: inline-block;
+  margin-top: 15px;
   background-color:#dcf1f5;
   padding: 1px 2px 2px 2px;
   
-  input{
+  input {
     position: relative;
     top: 1px;
     margin: 1px;
-    padding: 0px;
+    padding: 0;
   }
   
   label {
     margin-right: 30px;
   }
   
-  label#page_sidebar{
-    margin-right: 0px;
+  label:last-child {
+    margin-right: 0;
   }
 }
 #page-section-controls{
@@ -775,6 +780,7 @@ fieldset {
   /* Info/assessment block */
   div.questions {
     border: 1px solid #6fc5d8;
+    margin-bottom: 15px;
     padding: 5px;
     position: relative;
     h2 {
@@ -786,11 +792,14 @@ fieldset {
       padding: 5px; /* Gives the head itself some padding */
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
     }
-    form.embeddables-form {
+    .embeddables-form {
       position: absolute;
       top: 3px;
       right: 5px;
       text-align: right;
+      form {
+        display: inline-block;
+      }
     }
     .embeddable_tools {
       text-align: right;
@@ -803,7 +812,7 @@ fieldset {
         float: left;
       }
     }
-    #sort_embeddables>div {
+    .embeddables_list > div {
       .embeddable_tools {
         background-color: #b5e3ef;
         padding: 5px;
