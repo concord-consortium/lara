@@ -61,4 +61,9 @@
   :javascript
     $(document).ready(function() {
       new ImageQuestionDrawingTool(#{embeddable.id});
+      new EmbeddableQuestionsLogging({
+        type  :"image_question",
+        id    :"#{embeddable.id}",
+        dom_id:"image_question_main_form_#{embeddable.id}"
+      });
     });

@@ -1,88 +1,93 @@
-var Logger_Utils = {
-  logger: null,
-  loggerConfig:null,
-  get_question_type: function get_question_type(action) {
-    if (action.indexOf("multiple_choice_answer") != -1) {
-      return "multiple_choice_answer";
-    } else if (action.indexOf("open_response_answer") != -1) {
-      return "open_response_answer";
-    } else if (action.indexOf("image_question_answer") != -1) {
-      return "image_question_answer";
-    } else return "embeddable_question";
-  },
+function LoggerUtils(logger) {
+  this._logger = logger;
+};
 
-  log_submitted_question: function log_submitted_question(data) {
-    if (Logger_Utils.logger) {
-      var data_object = {
-          event: 'submit question'
-        },
-        question_type = Logger_Utils.get_question_type(data);
-      data_object[question_type] = data.split('_').slice(-1)[0];
-      Logger_Utils.logger.log(data_object);
-    }
-  },
+LoggerUtils.instance = function(loggerConfig) {
+  return new LoggerUtils(new Logger({
+    server     : loggerConfig.server,
+    defaultData: loggerConfig.data
+  }));
+};
 
-  /* work around for binding click event on cross site iframe */
-  log_interactive_simulation: function log_interactive_simulation() {
-    if (Logger_Utils.logger) {
-      var myConfObj = {
-        iframeMouseOver: false
-      };
-      $(window).on('blur', function() {
-        if (myConfObj.iframeMouseOver) {
-          Logger_Utils.logger.log({
-            event: "clicked in the simulation window",
-            interactive_id: $('#interactive').data().id
-          });
-        }
-      });
-      $('#interactive').on('mouseover', function() {
-        myConfObj.iframeMouseOver = true;
-      });
-      $('#interactive').on('mouseout', function() {
-        myConfObj.iframeMouseOver = false;
-      });
-    }
-  },
+LoggerUtils.submittedQuestionLogging = function(data) {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  };
 
-  log_embeddable_questions: function log_embeddable_questions() {
-    if (Logger_Utils.logger) {
-      var last_focus_in,
-        generate_question_data = function generate_question_data(type, id) {
-          data = {};
-          data['event'] = type;
-          data[Logger_Utils.get_question_type(id)] = id.split('_').slice(-1)[0];
-          return data;
-        };
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._submittedQuestionLogging(data);
+};
 
-      $('.live_submit').off('mousedown.logging').on('mousedown.logging', function(event) {
-        $(this).off('focusout.logging');
-      });
-      $('.live_submit').off('focusin.logging').on('focusin.logging', function(event) {
-        var focusin_id = event.currentTarget.id;
-        if (last_focus_in != focusin_id) {
-          Logger_Utils.logger.log(generate_question_data('focus in', focusin_id));
-          last_focus_in = focusin_id;
-        }
-        $(this).off('focusout.logging').on('focusout.logging', function(event) {
-          var focusout_id = event.currentTarget.id;
-          Logger_Utils.logger.log(generate_question_data('focus out', focusout_id));
-          last_focus_in = null;
-        });
-      });
-    }
+LoggerUtils.prototype.sequenceIndexLogging = function() {
+  this._logger.log('open sequence index');
+};
 
+LoggerUtils.prototype.activityIndexLogging = function() {
+  this._logger.log('open activity index');
+};
 
-  },
-  log_page_exit: function log_page_exit() {
-    if (Logger_Utils.logger) {
-      window.onbeforeunload = function() {
-        if (Logger_Utils.loggerConfig.data.page_id) {
-          Logger_Utils.logger.log('page exit');
-        }
-      };
-    }
+LoggerUtils.prototype.interactivePageLogging = function(action) {
+  this._logger.log('open activity page');
+  this._pageExitLogging();
+  this._interactiveSimulationLogging();
+};
+
+LoggerUtils.prototype.activitySummaryLogging = function() {
+  this._logger.log('open activity report');
+  this._pageExitLogging(true); // do not log 'page exit' for summary page.
+};
+
+LoggerUtils.prototype._pageExitLogging = function(stopLogging) {
+  if (stopLogging) {
+    $(window).off('beforeunload.logging');
+    return;
   }
+  
+  var self = this;
+  
+  $(window).off('beforeunload.logging').on('beforeunload.logging', function() {
+    self._logger.log('exit page');
+  });
+};
+
+LoggerUtils.prototype._getQuestionType = function(action) {
+  if (action.indexOf("multiple_choice_answer") != -1) {
+    return "multiple_choice_answer";
+  } else if (action.indexOf("open_response_answer") != -1) {
+    return "open_response_answer";
+  } else if (action.indexOf("image_question_answer") != -1) {
+    return "image_question_answer";
+  } else return "embeddable_question";
+};
+
+LoggerUtils.prototype._submittedQuestionLogging = function(data) {
+  var data_object            = {event: 'submit question'};
+  question_type              = this._getQuestionType(data),
+  question_id                = data.split('_').slice(-1)[0],
+  data_object[question_type] = question_id;
+  
+  this._logger.log(data_object);
+};
+
+LoggerUtils.prototype._interactiveSimulationLogging = function() {
+  // work around for bindig click event on cross site iframe
+  var self  = this,
+  myConfObj = {iframeMouseOver: false};
+  $(window).on('blur', function() {
+    if (myConfObj.iframeMouseOver) {
+      self._logger.log({
+        event         : "clicked in the simulation window",
+        interactive_id: $('#interactive').data().id
+      });
+    }
+  });
+  $('#interactive').on('mouseover', function() {
+    myConfObj.iframeMouseOver = true;
+  });
+  $('#interactive').on('mouseout', function() {
+    myConfObj.iframeMouseOver = false;
+  });
 };
 
 
@@ -93,9 +98,7 @@ function Logger(options) {
 
 Logger.prototype.log = function(data) {
   if (typeof(data) === 'string') {
-    data = {
-      event: data
-    };
+    data = {event: data};
   }
   data.time = Math.round(Date.now() / 1000); // millisecons to seconds, server expects epoch.
   this._post(data);
@@ -104,17 +107,62 @@ Logger.prototype.log = function(data) {
 Logger.prototype._post = function(data) {
   var processedData = this._processData(data);
   $.ajax({
-    url: this._server,
-    type: "POST",
-    crossDomain: true,
-    data: JSON.stringify(processedData),
-    contentType: 'application/json'
-  });
+      url        : this._server,
+      type       : "POST",
+      crossDomain: true,
+      data       : JSON.stringify(processedData),
+      contentType: 'application/json'
+    });
 };
 
 Logger.prototype._processData = function(data) {
   return $.extend(true, {}, this._defaultData, data);
 };
+
+var EmbeddableQuestionsLogging = function(question) {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  }
+
+  this.question_type   = question.type;
+  this.question_id     = question.id;
+  this.question_dom_id = question.dom_id;
+  
+  this._logger = new Logger({
+    server     : loggerConfig.server,
+    defaultData: loggerConfig.data
+  });
+  
+  this.bind_logger();
+};
+
+EmbeddableQuestionsLogging.prototype._generateQuestionData = function(event_type) {
+  data                     = {};
+  data['event']            = event_type;
+  data[this.question_type] = this.question_id;
+  return data;
+};
+
+EmbeddableQuestionsLogging.prototype.bind_logger = function() {
+  var self     = this,
+      focus_in = false;
+  $("#" + this.question_dom_id).off('mousedown.logging').on('mousedown.logging',function(event){
+    $(this).off('focusout.logging');
+  });
+  $("#" + this.question_dom_id).off('focusin.logging').on('focusin.logging', function(event) {
+    if(!focus_in){
+      self._logger.log(self._generateQuestionData('focus in'));
+    }
+    $(this).off('focusout.logging').on('focusout.logging', function(event) {
+      self._logger.log(self._generateQuestionData('focus out'));
+      $(this).off('focusout.logging');
+      focus_in = false;
+    });
+    focus_in = true;
+  });
+};
+
 
 $(document).ready(function() {
   // Logger configuration and metadata is provided in Rails controller through Gon gem.
@@ -125,35 +173,26 @@ $(document).ready(function() {
     return;
   }
 
-  var logger = new Logger({
-    server: loggerConfig.server,
-    defaultData: loggerConfig.data
-  });
+  var logger_utils = LoggerUtils.instance(loggerConfig);
 
   switch (loggerConfig.action) {
     case 'sequences#show':
-      logger.log('open sequence index');
+      logger_utils.sequenceIndexLogging();
       break;
 
     case 'lightweight_activities#show':
     case 'lightweight_activities#preview':
-      logger.log('open activity index');
+      logger_utils.activityIndexLogging();
       break;
 
     case 'lightweight_activities#summary':
-      logger.log('open activity report');
+      logger_utils.activitySummaryLogging();
       break;
 
     case 'interactive_pages#show':
     case 'interactive_pages#preview':
-      logger.log('open activity page');
+      logger_utils.interactivePageLogging();
       break;
   }
-  
-  Logger_Utils.logger = logger;
-  Logger_Utils.loggerConfig = loggerConfig;
-  Logger_Utils.log_interactive_simulation();
-  Logger_Utils.log_embeddable_questions();
-  Logger_Utils.log_page_exit();
 
 }());

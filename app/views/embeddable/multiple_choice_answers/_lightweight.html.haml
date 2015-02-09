@@ -27,3 +27,12 @@
               :disabled => (embeddable.answers.length == 0),
               :data => { :check => embeddable_string } }
     = prediction_button(embeddable,f)
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      new EmbeddableQuestionsLogging({
+        type  :"#{embeddable.class.to_s.demodulize.underscore}",
+        id    :"#{embeddable.id}",
+        dom_id:"#{embeddable_string}"
+      });
+    });

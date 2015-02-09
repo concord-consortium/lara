@@ -102,6 +102,7 @@ class @SaveOnChange
         previous_data = @$form.serialize()
         @page.saving()
       ).on('ajax:success', (e, data, status, xhr) =>
+        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(previous_data)
       ).on('ajax:error', (e, xhr, status, error) =>
         @save_error()
@@ -116,7 +117,7 @@ class @SaveOnChange
       url: @$form.attr( 'action' ),
       data: @$form.serialize(),
       success: (response) =>
-        Logger_Utils.log_submitted_question(@$form.attr( 'id' ))
+        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(data)
       error: (jqxhr, status, error) =>
         @save_error()
