@@ -1,0 +1,12 @@
+- embeddables = arg_block_embeddables(@page, @run)
+- if embeddables.any?
+  .embeddables.arg-block
+    - embeddables.each do |m|
+      .question
+        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+
+:scss
+  .arg-block {
+    border: 5px solid #56A6B7;
+    box-shadow: 2px 2px 2px #aaa;
+  }

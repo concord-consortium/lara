@@ -30,6 +30,10 @@
         %a.jcarousel-next{ :href => '#' }
           %input{ :class => 'button', :type => 'submit', :value => t("NEXT"), :disabled => true }
 
+    -# Additional sections are dynamically loaded, based on .visible_sections value:
+    - @page.visible_sections.each do |s|
+      = render :partial => "#{s[:dir]}/runtime", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label] }
+
 #end-scroll-track
 .bottom-buttons
   - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
