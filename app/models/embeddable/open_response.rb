@@ -41,7 +41,10 @@ module Embeddable
     
     def export
       return self.as_json(only:[:name,
-                                :prompt])
+                                :prompt,
+                                :is_prediction,
+                                :give_prediction_feedback,
+                                :prediction_feedback])
     end
     
     def self.import (import_hash)

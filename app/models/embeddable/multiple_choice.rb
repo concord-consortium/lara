@@ -95,7 +95,10 @@ module Embeddable
                                 :custom,
                                 :enable_check_answer,
                                 :multi_answer,
-                                :show_as_menu])
+                                :show_as_menu,
+                                :is_prediction,
+                                :give_prediction_feedback,
+                                :prediction_feedback])
       
       mc_export[:choices] = []
       

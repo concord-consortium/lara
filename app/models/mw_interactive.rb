@@ -63,7 +63,9 @@ class MwInteractive < ActiveRecord::Base
     return self.as_json(only:[:name, 
                               :url, 
                               :native_width, 
-                              :native_height])
+                              :native_height,
+                              :save_state,
+                              :has_report_url])
   end
   
   def self.import(import_hash)
