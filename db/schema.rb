@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150210122901) do
+ActiveRecord::Schema.define(:version => 20150210201323) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -48,13 +48,7 @@ ActiveRecord::Schema.define(:version => 20150210122901) do
 
   add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
 
-  create_table "c_rater_score_mappings", :force => true do |t|
-    t.text     "mapping"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "c_rater_settings", :force => true do |t|
+  create_table "c_rater_item_settings", :force => true do |t|
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
@@ -63,8 +57,14 @@ ActiveRecord::Schema.define(:version => 20150210122901) do
     t.string   "item_id"
   end
 
-  add_index "c_rater_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
-  add_index "c_rater_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
+  add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
+  add_index "c_rater_item_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
+
+  create_table "c_rater_score_mappings", :force => true do |t|
+    t.text     "mapping"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "collaboration_runs", :force => true do |t|
     t.integer  "user_id"

@@ -12,13 +12,13 @@ describe CRater::FeedbackFunctionality do
     ans = CRaterFeedbackFunctionalityTestClass.create
     # Stub interface required by feedback functionality:
     allow(ans).to receive(:answer_text).and_return(ans_text)
-    allow(ans).to receive(:c_rater_settings).and_return(settings)
+    allow(ans).to receive(:c_rater_item_settings).and_return(item_settings)
     ans
   end
 
   let(:ans_text) { 'foobar' }
   let(:item_id) { 123 }
-  let(:settings) { CRater::Settings.new(item_id: item_id) }
+  let(:item_settings) { CRater::ItemSettings.new(item_id: item_id) }
 
   describe 'instance of class that includes feedback functionality' do
     subject { answer }
@@ -28,7 +28,7 @@ describe CRater::FeedbackFunctionality do
     it { is_expected.to respond_to(:save_feedback) }
 
     it 'should have access to C-Rater settings' do
-      expect(answer.c_rater_settings).to be_a(CRater::Settings)
+      expect(answer.c_rater_item_settings).to be_a(CRater::ItemSettings)
     end
 
     context 'C-Rater not configured' do

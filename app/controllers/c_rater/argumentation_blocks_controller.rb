@@ -44,7 +44,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     or1 = Embeddable::OpenResponse.create(prompt: 'Explain your answer.')
     page.add_embeddable(or1, 1, CRater::ARG_SECTION_NAME)
 
-    or1_c_rater_settings = CRater::Settings.new(item_id: 'HENRY001')
+    or1_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or1_c_rater_settings.provider = or1
     or1_c_rater_settings.save!
 
@@ -61,7 +61,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     or2 = Embeddable::OpenResponse.create(prompt: 'Explain what influenced your certainty rating.')
     page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
 
-    or2_c_rater_settings = CRater::Settings.new(item_id: 'HENRY001')
+    or2_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
     or2_c_rater_settings.provider = or2
     or2_c_rater_settings.save!
   end

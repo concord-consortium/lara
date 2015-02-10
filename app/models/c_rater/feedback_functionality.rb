@@ -28,7 +28,7 @@ module CRater::FeedbackFunctionality
   end
 
   def c_rater_enabled?
-    !!c_rater_configured? && !!c_rater_settings && !!c_rater_settings.item_id
+    !!c_rater_configured? && !!c_rater_item_settings && !!c_rater_item_settings.item_id
   end
 
   private
@@ -44,7 +44,7 @@ module CRater::FeedbackFunctionality
       status: CRater::FeedbackItem::STATUS_REQUESTED,
       # Save both answer text and item id to prevent context loss - these values can be changed later by user.
       answer_text: answer_text,
-      item_id: c_rater_settings.item_id
+      item_id: c_rater_item_settings.item_id
     )
     feedback_item.answer = self
     if options[:async]

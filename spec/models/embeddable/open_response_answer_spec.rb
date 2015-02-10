@@ -63,7 +63,7 @@ describe Embeddable::OpenResponseAnswer do
     it { is_expected.to respond_to(:get_saved_feedback) }
     describe "required interface" do
       it { is_expected.to respond_to(:answer_text) }
-      it { is_expected.to respond_to(:c_rater_settings) }
+      it { is_expected.to respond_to(:c_rater_item_settings) }
     end
   end
 end
