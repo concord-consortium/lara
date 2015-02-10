@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CRater::FeedbackFunctionality do
-  class FeedbackFunctionalityTestClass < ActiveRecord::Base
+  class CRaterFeedbackFunctionalityTestClass < ActiveRecord::Base
     # Well, it's not pretty, but I don't have idea how to solve that better. The goal is to test FeedbackFunctionality
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers
@@ -9,7 +9,7 @@ describe CRater::FeedbackFunctionality do
   end
 
   let(:answer) do
-    ans = FeedbackFunctionalityTestClass.create
+    ans = CRaterFeedbackFunctionalityTestClass.create
     # Stub interface required by feedback functionality:
     allow(ans).to receive(:answer_text).and_return(ans_text)
     allow(ans).to receive(:c_rater_settings).and_return(settings)
@@ -25,7 +25,7 @@ describe CRater::FeedbackFunctionality do
 
     it { is_expected.to respond_to(:c_rater_enabled?) }
     it { is_expected.to respond_to(:c_rater_config) }
-    it { is_expected.to respond_to(:get_c_rater_feedback) }
+    it { is_expected.to respond_to(:save_feedback) }
 
     it 'should have access to C-Rater settings' do
       expect(answer.c_rater_settings).to be_a(CRater::Settings)
@@ -41,11 +41,11 @@ describe CRater::FeedbackFunctionality do
         subject { answer.c_rater_enabled? }
         it { is_expected.to be false }
       end
-      describe '#get_c_rater_feedback' do
+      describe '#save_feedback' do
         it 'should do nothing' do
           # WebMock raises an error if any web request is issued.
           answer.save
-          answer.get_c_rater_feedback
+          answer.save_feedback
         end
       end
     end
@@ -93,28 +93,48 @@ describe CRater::FeedbackFunctionality do
         it { is_expected.to be true }
       end
 
-      describe '#get_c_rater_feedback' do
+      describe '#save_feedback' do
         it 'creates feedback entry in DB (success)' do
-          expect(answer.c_rater_feedback_items.count).to eql(0)
-          answer.get_c_rater_feedback
-          expect(answer.c_rater_feedback_items.count).to eql(1)
-          feedback = answer.c_rater_feedback_items.last
+          expect(answer.feedback_items.count).to eql(0)
+          feedback = answer.save_feedback
           expect(feedback.status).to eql('success')
           expect(feedback.score).to eql(score)
           expect(feedback.response_info[:body]).to eql(response)
+          expect(answer.feedback_items.count).to eql(1)
         end
 
-        context 'C-Rater service unavailable' do
-          let(:err_resp) { 'Service unavailable' }
-          before(:each) do
-            stub_request(:post, mock_url).to_return(status: 500, body: err_resp)
-          end
+        it 'creates multiple feedback entries in DB when called multiple times' do
+          answer.save_feedback
+          answer.save_feedback
+          answer.save_feedback
+          expect(answer.feedback_items.count).to eql(3)
+        end
+      end
 
+      describe '#get_saved_feedback' do
+        it 'returns nil when there are no feedback items available' do
+          feedback = answer.get_saved_feedback
+          expect(feedback).to be_nil
+        end
+
+        it 'returns the last feedback item' do
+          feedback = answer.save_feedback
+          expect(answer.get_saved_feedback).to eql(feedback)
+        end
+      end
+
+      context 'C-Rater service unavailable' do
+        let(:err_resp) { 'Service unavailable' }
+        before(:each) do
+          stub_request(:post, mock_url).to_return(status: 500, body: err_resp)
+        end
+
+        describe '#save_feedback' do
           it 'creates feedback entry in DB (error)' do
-            expect(answer.c_rater_feedback_items.count).to eql(0)
-            answer.get_c_rater_feedback
-            expect(answer.c_rater_feedback_items.count).to eql(1)
-            feedback = answer.c_rater_feedback_items.last
+            expect(answer.feedback_items.count).to eql(0)
+            answer.save_feedback
+            expect(answer.feedback_items.count).to eql(1)
+            feedback = answer.feedback_items.last
             expect(feedback.status).to eql('error')
             expect(feedback.feedback_text).to eql(err_resp)
             expect(feedback.response_info[:body]).to eql(err_resp)

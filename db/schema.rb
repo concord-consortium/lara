@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150204154523) do
+ActiveRecord::Schema.define(:version => 20150210122901) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(:version => 20150204154523) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "embeddable_feedback_items", :force => true do |t|
+    t.integer  "answer_id"
+    t.string   "answer_type"
+    t.integer  "score"
+    t.text     "feedback_text"
+    t.text     "answer_text"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "embeddable_feedback_items", ["answer_id", "answer_type"], :name => "index_embeddable_feedback_items_on_answer_id_and_answer_type"
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
