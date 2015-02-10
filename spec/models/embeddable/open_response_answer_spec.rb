@@ -57,4 +57,12 @@ describe Embeddable::OpenResponseAnswer do
     end
   end
 
+  describe "C-Rater functionality" do
+    subject { answer }
+    it { is_expected.to respond_to(:get_c_rater_feedback) }
+    describe "required interface" do
+      it { is_expected.to respond_to(:answer_text) }
+      it { is_expected.to respond_to(:c_rater_settings) }
+    end
+  end
 end

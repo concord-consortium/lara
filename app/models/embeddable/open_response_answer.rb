@@ -1,13 +1,13 @@
 module Embeddable
   class OpenResponseAnswer < ActiveRecord::Base
-    include Answer # Common methods for Answer models
+    include Answer
+    include CRater::FeedbackFunctionality
 
     attr_accessible :answer_text, :run, :question, :is_dirty, :is_final
 
     belongs_to :question,
       :class_name => 'Embeddable::OpenResponse',
       :foreign_key => "open_response_id"
-
     belongs_to :run
 
     after_update :send_to_portal
@@ -35,6 +35,10 @@ module Embeddable
 
     def blank?
       self.answer_text.blank?
+    end
+
+    def c_rater_settings
+      question && question.c_rater_settings
     end
   end
 end

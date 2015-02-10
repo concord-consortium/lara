@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141126144838) do
+ActiveRecord::Schema.define(:version => 20150204154523) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -32,6 +32,39 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
 
   add_index "authentications", ["uid", "provider"], :name => "index_authentications_on_uid_and_provider", :unique => true
   add_index "authentications", ["user_id", "provider"], :name => "index_authentications_on_user_id_and_provider", :unique => true
+
+  create_table "c_rater_feedback_items", :force => true do |t|
+    t.text     "answer_text"
+    t.integer  "answer_id"
+    t.string   "answer_type"
+    t.string   "item_id"
+    t.string   "status"
+    t.integer  "score"
+    t.text     "feedback_text"
+    t.text     "response_info"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
+
+  create_table "c_rater_score_mappings", :force => true do |t|
+    t.text     "mapping"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "c_rater_settings", :force => true do |t|
+    t.integer  "score_mapping_id"
+    t.integer  "provider_id"
+    t.string   "provider_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "item_id"
+  end
+
+  add_index "c_rater_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
+  add_index "c_rater_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
 
   create_table "collaboration_runs", :force => true do |t|
     t.integer  "user_id"
@@ -203,6 +236,7 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.string   "layout",                  :default => "l-6040"
     t.string   "embeddable_display_mode", :default => "stacked"
     t.string   "sidebar_title",           :default => "Did you know?"
+    t.text     "additional_sections"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
@@ -282,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.string   "section"
   end
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"

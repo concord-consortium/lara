@@ -19,4 +19,9 @@ describe Embeddable::OpenResponse do
       expect(open_response.duplicate).to be_a_new(Embeddable::OpenResponse).with( name: open_response.name, prompt: open_response.prompt )
     end
   end
+
+  describe 'C-Rater functionality' do
+    subject { open_response }
+    it { is_expected.to respond_to(:c_rater_settings) }
+  end
 end

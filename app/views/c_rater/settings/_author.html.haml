@@ -1,0 +1,11 @@
+.authorable
+  .embeddable_tools
+    .drag_handle
+    = link_to "edit", edit_c_rater_setting_path(embeddable), :remote => true, :id => "edit-embed-iq-#{embeddable.id}"
+
+  %p
+    C-Rater Item ID:
+    = embeddable.item_id
+  %p
+    C-Rater score mapping:
+    = embeddable.score_mapping_id

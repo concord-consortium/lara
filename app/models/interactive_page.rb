@@ -1,5 +1,9 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar, :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title
+  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
+                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title,
+                  :additional_sections
+
+  serialize :additional_sections
 
   belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
 
@@ -16,6 +20,7 @@ class InteractivePage < ActiveRecord::Base
   INTERACTIVE_TYPES = [{ :name => 'Image',  :class_name => 'ImageInteractive' },
                        { :name => 'Iframe', :class_name => 'MwInteractive' },
                        { :name => 'Video',  :class_name => 'VideoInteractive' }]
+
   validates :sidebar_title, presence: true
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
   validates :embeddable_display_mode, :inclusion => { :in => EMBEDDABLE_DISPLAY_OPTIONS }
@@ -23,23 +28,74 @@ class InteractivePage < ActiveRecord::Base
   # Reject invalid HTML inputs
   # See https://www.pivotaltracker.com/story/show/60459320
   validates :text, :sidebar, :html => true
-  # validates :sidebar, :html => true
 
-  has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
   # InteractiveItem is a join model; if this is deleted, it should go too
+  has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
+
+  # Like InteractiveItems, PageItems are join models, so they should not
+  # survive the deletion of associated instances of InteractivePage.
+  has_many :page_items, :order => :position, :dependent => :destroy, :include => [:embeddable]
+
+  # Interactive page can register additional page sections:
+  #
+  #  InteractivePage.register_page_section({name: 'FooBar', dir: 'foo_bar', label: 'Foo Bar'})
+  #
+  # Each section is required to provide two partials:
+  # - #{dir}/_author.html.haml
+  # - #{dir}/_runtime.html.haml
+  #
+  # Note that content of the section is totally flexible.
+  # If you want to display some embeddables in section, you can provide 'section' argument to
+  # .add_embeddable method and then obtain section embeddables using .section_embeddables method.
+  @registered_additional_sections = []
+  def self.registered_additional_sections
+    @registered_additional_sections
+  end
+
+  def self.register_additional_section(s)
+    @registered_additional_sections.push(s)
+    # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
+    attr_accessible "show_#{s[:name]}"
+    # show_<section_name> getter:
+    define_method("show_#{s[:name]}") do
+      additional_sections && additional_sections[s[:name]]
+    end
+    # show_<section_name> setter:
+    define_method("show_#{s[:name]}=") do |v|
+      self.additional_sections ||= {}
+      # Handle parameter values from Rails forms.
+      if v == "1" || v == 1 || v == true
+        additional_sections[s[:name]] = true
+      else
+        additional_sections.delete(s[:name])
+      end
+    end
+  end
+
+  # Register additional sections of interactive page.
+  # This code could (or should) to some config file or initializer, but as we
+  # have only one additional section at the moment, let's keep it here.
+  InteractivePage.register_additional_section({name:  CRater::ARG_SECTION_NAME,
+                                               dir:   CRater::ARG_SECTION_DIR,
+                                               label: CRater::ARG_SECTION_LABEL})
 
   # This is a sort of polymorphic has_many :through.
   def interactives
     self.interactive_items.collect{|ii| ii.interactive}
   end
 
-  has_many :page_items, :order => :position, :dependent => :destroy, :include => [:embeddable]
-  # Like InteractiveItems, PageItems are join models, so they should not
-  # survive the deletion of associated instances of InteractivePage.
-
   # This is a sort of polymorphic has_many :through.
   def embeddables
-    self.page_items.collect{|qi| qi.embeddable}
+    self.page_items.collect{ |qi| qi.embeddable }
+  end
+
+  def section_embeddables(section)
+    self.page_items.where(section: section).collect{ |qi| qi.embeddable }
+  end
+
+  def main_embeddables
+    # Embeddables that do not have section specified (nil section).
+    section_embeddables(nil)
   end
 
   def add_interactive(interactive, position = nil, validate = true)
@@ -59,11 +115,17 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
-  def add_embeddable(embeddable, position = nil)
-    join = PageItem.create!(:interactive_page => self, :embeddable => embeddable, :position => position)
+  def add_embeddable(embeddable, position = nil, section = nil)
+    join = PageItem.create!(:interactive_page => self, :embeddable => embeddable,
+                            :position => position, :section => section)
     unless position
       join.move_to_bottom
     end
+  end
+
+  def visible_sections
+    return [] unless additional_sections
+    self.class.registered_additional_sections.select { |s| additional_sections[s[:name]] }
   end
 
   def to_hash
