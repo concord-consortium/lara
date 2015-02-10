@@ -1,5 +1,5 @@
 class CRater::ArgumentationBlocksController < ApplicationController
-  before_filter :set_page_and_authorize
+  before_filter :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
 
   def create_embeddables
     create_arg_block_embeddables(@page)
@@ -9,6 +9,21 @@ class CRater::ArgumentationBlocksController < ApplicationController
   def remove_embeddables
     @page.page_items.where(section: CRater::ARG_SECTION_NAME).destroy_all
     redirect_to(:back)
+  end
+
+  def save_feedback
+    # set_run_key expects @page and @activity to be set...
+    @page = InteractivePage.find(params[:page_id])
+    @activity = @page.lightweight_activity
+    set_run_key
+
+    finder = Embeddable::AnswerFinder.new(@run)
+    arg_block_answers = @page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
+    arg_block_answers.each do |a|
+      a.save_feedback
+    end
+    redirect_to(:back)
+    #render nothing: true, status: 200
   end
 
   private
@@ -21,7 +36,8 @@ class CRater::ArgumentationBlocksController < ApplicationController
   end
 
   def create_arg_block_embeddables(page)
-    mc1 = Embeddable::MultipleChoice.create(custom: true)
+    mc1 = Embeddable::MultipleChoice.create(custom: true,
+                                            enable_check_answer: false)
     mc1.create_default_choices
     page.add_embeddable(mc1, 0, CRater::ARG_SECTION_NAME)
 
@@ -33,6 +49,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     or1_c_rater_settings.save!
 
     mc2 = Embeddable::MultipleChoice.create(prompt: 'How certain are you about your claim based on your explanation?',
+                                            enable_check_answer: false,
                                             show_as_menu: true)
     mc2.add_choice('(1) Not at all certain')
     mc2.add_choice('(2)')
@@ -44,7 +61,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     or2 = Embeddable::OpenResponse.create(prompt: 'Explain what influenced your certainty rating.')
     page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
 
-    or2_c_rater_settings = CRater::Settings.create(item_id: 'HENRY001')
+    or2_c_rater_settings = CRater::Settings.new(item_id: 'HENRY001')
     or2_c_rater_settings.provider = or2
     or2_c_rater_settings.save!
   end

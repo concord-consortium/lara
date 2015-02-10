@@ -21,7 +21,7 @@ class CRater::APIWrapper
         b.item(id: item_id) do
           b.responses do
             b.response(id: response_id) do
-              b.cdata!(response_text)
+              b.cdata!(response_text || '')
             end
           end
         end

@@ -1,12 +1,59 @@
 - embeddables = arg_block_embeddables(@page, @run)
+- any_feedback = embeddables.any? { |e| e.get_saved_feedback }
 - if embeddables.any?
   .embeddables.arg-block
+    - if any_feedback
+      .ab-feedback-header
+        %h3 Feedback available!
     - embeddables.each do |m|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+        - fb = m.get_saved_feedback
+        - if fb
+          .ab-feedback
+            - if fb.outdated?
+              %h6.ab-outdated Feedback outdated, please resubmit.
+            - else
+              %h6 Feedback:
+            = fb.feedback_text
+
+    %a{:href => c_rater_arg_block_save_feedback_path(@page), 'data-method' => :post}
+      %input{:class => 'ab-submit button', :type => 'submit', :value => 'Submit'}
 
 :scss
   .arg-block {
     border: 5px solid #56A6B7;
     box-shadow: 2px 2px 2px #aaa;
+
+    .question-bd {
+      margin-bottom: 15px;
+    }
+
+    &:after {
+      // Keeps submit button within argumentation block.
+      display: table;
+      content: "";
+      clear: both;
+    }
+  }
+
+  .ab-submit {
+    float: right;
+    margin: 0 12px 12px 0 !important;
+  }
+
+  .ab-feedback-header {
+    border: 1px solid #eee;
+    padding: 22px;
+  }
+
+  .ab-feedback {
+    clear: both;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 5px 5px 0 22px;
+  }
+
+  .ab-outdated {
+    color: #BD6161;
   }
