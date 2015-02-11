@@ -47,7 +47,7 @@ LoggerUtils.prototype._pageExitLogging = function(stopLogging) {
   var self = this;
   
   $(window).off('beforeunload.logging').on('beforeunload.logging', function() {
-    self._logger.log('exit page');
+    self._logger.log('exit page', false);
   });
 };
 
@@ -96,22 +96,24 @@ function Logger(options) {
   this._defaultData = options.defaultData;
 }
 
-Logger.prototype.log = function(data) {
+Logger.prototype.log = function(data, async) {
   if (typeof(data) === 'string') {
     data = {event: data};
   }
   data.time = Math.round(Date.now() / 1000); // millisecons to seconds, server expects epoch.
-  this._post(data);
+  this._post(data, async);
 };
 
-Logger.prototype._post = function(data) {
+Logger.prototype._post = function(data, async) {
+  async = typeof async !== 'undefined' ? async : true;
   var processedData = this._processData(data);
   $.ajax({
-      url        : this._server,
-      type       : "POST",
-      crossDomain: true,
-      data       : JSON.stringify(processedData),
-      contentType: 'application/json'
+    url        : this._server,
+    type       : "POST",
+    async      : async,
+    crossDomain: true,
+    data       : JSON.stringify(processedData),
+    contentType: 'application/json'
     });
 };
 
