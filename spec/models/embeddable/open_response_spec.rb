@@ -9,7 +9,7 @@ describe Embeddable::OpenResponse do
 
   describe '#to_hash' do
     it 'has interesting attributes' do
-      expected = { name: open_response.name, prompt: open_response.prompt }
+      expected = { name: open_response.name, prompt: open_response.prompt, is_prediction: open_response.is_prediction, give_prediction_feedback: open_response.give_prediction_feedback, prediction_feedback: open_response.prediction_feedback }
       expect(open_response.to_hash).to eq(expected)
     end
   end

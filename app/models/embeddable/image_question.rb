@@ -22,7 +22,10 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       prompt: prompt,
       drawing_prompt: drawing_prompt,
       bg_source: bg_source,
-      bg_url: bg_url
+      bg_url: bg_url,
+      is_prediction: is_prediction,
+      give_prediction_feedback: give_prediction_feedback,
+      prediction_feedback: prediction_feedback
     }
   end
 

@@ -143,7 +143,8 @@ class InteractivePage < ActiveRecord::Base
       show_introduction: show_introduction,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
-      show_info_assessment: show_info_assessment
+      show_info_assessment: show_info_assessment,
+      embeddable_display_mode: embeddable_display_mode
     }
   end
 

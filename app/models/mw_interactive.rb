@@ -38,7 +38,9 @@ class MwInteractive < ActiveRecord::Base
       name: name,
       url: url,
       native_width: native_width,
-      native_height: native_height
+      native_height: native_height,
+      save_state: save_state,
+      has_report_url: has_report_url
     }
   end
 

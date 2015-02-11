@@ -77,7 +77,10 @@ module Embeddable
         custom: custom,
         enable_check_answer: enable_check_answer,
         multi_answer: multi_answer,
-        show_as_menu: show_as_menu
+        show_as_menu: show_as_menu,
+        is_prediction: is_prediction,
+        give_prediction_feedback: give_prediction_feedback,
+        prediction_feedback: prediction_feedback
       }
     end
 

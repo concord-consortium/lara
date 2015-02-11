@@ -17,7 +17,10 @@ module Embeddable
     def to_hash
       {
         name: name,
-        prompt: prompt
+        prompt: prompt,
+        is_prediction: is_prediction,
+        give_prediction_feedback: give_prediction_feedback,
+        prediction_feedback: prediction_feedback
       }
     end
 
