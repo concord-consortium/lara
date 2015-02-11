@@ -13,6 +13,7 @@ class @CompleteChecker
     "embeddable_image_question_answer[answer_text]"
   ]
   constructor: (@$form) ->
+    @required = @$form.find("input.hidden_is_final").length > 0
     @data = []
 
   filtered_data: (array) ->
@@ -47,14 +48,12 @@ class @CompleteChecker
 
   is_answered: () ->
     @mark_form_clean()
-    hidden_final = @$form.find("input.hidden_is_final")
-    return true unless hidden_final.length > 0
     data = @$form.serializeArray()
     @data = data.filter (obj) ->
       obj.name in CompleteChecker.FieldNames
 
     if @data.length == 0 # multiple choices
-      @mark_form_missing_required()
+      @mark_form_missing_required() if @required
       return false
 
     @mark_form_element_clean(obj) for obj in @data
@@ -62,8 +61,9 @@ class @CompleteChecker
       !obj.value
 
     if @unasnwered.length > 0
-      @mark_form_element_missing_required(obj) for obj in @unasnwered
-      @mark_form_missing_required()
+      if @required
+        @mark_form_element_missing_required(obj) for obj in @unasnwered
+        @mark_form_missing_required()
       return false
 
     @require_is_final()
@@ -211,7 +211,6 @@ class @SaveOnChangePage
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
-    @prevent_forward_navigation_count = 0
     if $('.live_submit').length
       $('.live_submit').each (i,e) =>
         @forms.push(new SaveOnChange($(e),@))
