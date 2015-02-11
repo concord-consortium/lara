@@ -12,7 +12,7 @@ module Embeddable::FeedbackFunctionality
   end
 
   def save_feedback
-    return nil if answer_text.blank? || feedback_text.blank?
+    return nil if answer_text.blank?
     feedback_item = Embeddable::FeedbackItem.new(
       answer_text: answer_text,
       feedback_text: feedback_text
