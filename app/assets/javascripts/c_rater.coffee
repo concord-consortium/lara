@@ -3,6 +3,8 @@ class ArgumentationBlockController
   QUESTION_FROMS_SEL = '.arg-block ' + QUESTION_SEL + ' form'
   SUBMIT_BTN_SEL = '#ab-submit'
   FEEDBACK_SEL = '.ab-feedback'
+  FEEDBACK_ID_SEL = '#feedback_on_answer_'
+  FEEDBACK_TEXT_SEL = '.ab-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
 
   constructor: ->
@@ -39,10 +41,34 @@ class ArgumentationBlockController
     q.answered = answered
     q.dirty = q.data != $(q.element).serialize()
 
-  updateView: ->
+  submitButtonClicked: (e) ->
+    unless @allQuestionAnswered()
+      return modalDialog(false, 'Please answer all questions in the argumentation block.')
+    unless @anyQuestionDirty()
+      return modalDialog(false, 'Answers have not been changed.')
+
+    @$submitBtn.prop('disabled', true)
+    $.ajax(
+      type: "POST",
+      url: @$submitBtn.data('href'),
+      accepts: 'application/json',
+      success: (feedbackData) =>
+        for id, q of @question
+          q.dirty = false # just updated
+          q.data = $(q).serialize()
+        @updateView(feedbackData)
+      complete: =>
+        @$submitBtn.prop('disabled', false)
+    )
+    e.preventDefault()
+    e.stopPropagation()
+
+  updateView: (feedbackData) ->
     @updateSubmitBtn()
     @updateDirtyQuestionMsgs()
     @updateForwardNavigationBlocking()
+    if feedbackData
+      @updateFeedback(feedbackData)
 
   updateSubmitBtn: ->
     if @allQuestionAnswered() && @anyQuestionDirty()
@@ -63,16 +89,13 @@ class ArgumentationBlockController
     else
       $(document).trigger('prevent_forward_navigation', {source: 'arg-block'})
 
-  submitButtonClicked: (e) ->
-    cancelSubmit = (msg) ->
-      modalDialog(false, msg)
-      e.preventDefault()
-      e.stopPropagation()
-
-    unless @allQuestionAnswered()
-      return cancelSubmit('Please answer all questions in the argumentation block.')
-    unless @anyQuestionDirty()
-      return cancelSubmit('Answers have not been changed.')
+  updateFeedback: (data) ->
+    for id, feedbackText of data
+      $(FEEDBACK_ID_SEL + id).find(FEEDBACK_TEXT_SEL).text(feedbackText)
+      if !!feedbackText
+        $(FEEDBACK_ID_SEL + id).slideDown()
+      else
+        $(FEEDBACK_ID_SEL + id).slideUp()
 
   allQuestionAnswered: ->
     for id, q of @question

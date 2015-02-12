@@ -1,5 +1,5 @@
 - embeddables = arg_block_embeddables(@page, @run)
-- any_feedback = embeddables.any? { |e| e.get_saved_feedback }
+- any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
 - if embeddables.any?
   .embeddables.arg-block
     - if any_feedback
@@ -9,15 +9,16 @@
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
         - fb = m.get_saved_feedback
-        - if fb && !fb.feedback_text.blank?
-          .ab-feedback{'data-dirty' => fb.outdated? ? 'true' : 'false'}
-            .ab-dirty{:style => fb.outdated? ? '' : 'display:none'}
-              Answer has been changed, please resubmit to get new feedback!
-            %h6 Feedback:
-            = fb.feedback_text
+        .ab-feedback{:id => "feedback_on_answer_#{m.id}",
+                     :style => !fb || fb.feedback_text.blank? ? 'display: none' : '',
+                     'data-dirty' => fb && fb.outdated? ? 'true' : 'false'}
+          .ab-dirty{:style => fb && fb.outdated? ? '' : 'display: none'}
+            Answer has been changed, please resubmit to get new feedback!
+          %h6 Feedback:
+          .ab-feedback-text
+            = fb && fb.feedback_text
 
-    %a{:href => c_rater_arg_block_save_feedback_path(@page), 'data-method' => :post}
-      %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', :value => 'Submit'}
+    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
 :scss
   .arg-block {

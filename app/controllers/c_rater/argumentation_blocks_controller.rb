@@ -19,11 +19,17 @@ class CRater::ArgumentationBlocksController < ApplicationController
 
     finder = Embeddable::AnswerFinder.new(@run)
     arg_block_answers = @page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
+    feedback_items = {}
     arg_block_answers.each do |a|
-      a.save_feedback
+      f = a.save_feedback
+      feedback_items[a.id] = f && f.feedback_text
     end
-    redirect_to(:back)
-    #render nothing: true, status: 200
+
+    if request.xhr?
+      render json: feedback_items
+    else
+      redirect_to(:back)
+    end
   end
 
   private
