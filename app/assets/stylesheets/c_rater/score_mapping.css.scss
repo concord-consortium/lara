@@ -1,0 +1,81 @@
+// Place all the styles related to the CRater/ScoreMapping controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+
+.feedback-set{
+  width: 900px;
+  margin-left: -475px;
+  padding: 0;
+}
+.edit-score-mapping, .new-score-mapping{
+  .table-wrap{
+    height: 500px;
+    overflow: auto;
+    td{
+      border: 1px solid #cccccc;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 1.2em;
+      font-weight: bold;
+      line-height: 30px;
+      text-align: center;
+    }
+    .left{
+      width:50px;
+    }    
+    .feedback-title{
+      height:50px;
+      .right{
+        input{
+          width:815px;
+          height: 30px;
+        }
+      }
+    }
+    .sub-header{
+      height: 30px;
+    }
+    .score{
+      .right{
+        padding:5px;
+      }
+    }
+  }
+  .heading{
+    height: 30px;
+    background: #cccccc;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 6px;
+    box-sizing: border-box;
+  }
+  
+}
+
+.feedbackset_list{
+  table{
+    tr{
+      height:50px;
+      td{
+        border:1px solid #222222;
+        text-align: center;
+        vertical-align:middle;
+      }
+    }
+    tr.feedbackset_list_header{
+      background:#cccccc;
+      font-size:1.2em;
+      font-weight:bold;
+      
+    }
+    tr.feedbackset_list_row{
+      
+    }  
+  } 
+}
+
+
+

@@ -1,0 +1,43 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+%ul#new-menu
+  %li#desc-toggle= toggle_all 'descriptions'
+  -#%li#collection_filter= collection_filter_tag @filter
+.buttons-menu
+  - if can? :create, LightweightActivity
+    %a{ :href => new_c_rater_feedbackset_path, 'data-remote' => "true"}
+      %button=t("NEW_FEEDBACKSET")
+
+
+#activity_listing_head
+  %h1 FeedbackSets:
+%div.feedbackset_list
+  %div
+    %table{:width=>"100%"}
+      %tr.feedbackset_list_header
+        %td{:width=>"30px"}
+          %div
+            Sr.#
+        %td
+          Description
+        %td
+          Authored by
+        %td
+          Last modified
+        %td
+          Actions
+      - CRater::ScoreMapping.all.each_with_index do |feedbackset,index|
+        - feedbackset_data = feedbackset.mapping.to_json
+        %tr.feedbackset_list_row
+          %td
+            #{index+1}
+          %td
+            #{feedbackset.description}
+          %td
+            #{feedbackset.created_at.to_formatted_s(:long)}
+          %td
+            #{feedbackset.updated_at.to_formatted_s(:long)}
+          %td
+            %span.edit= link_to "Edit", edit_c_rater_feedbackset_path(feedbackset),:remote => true if can? :edit, feedbackset
+            %span.delete= link_to 'Delete', c_rater_feedbackset_path(feedbackset), method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, feedbackset

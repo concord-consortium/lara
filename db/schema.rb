@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150210201323) do
+ActiveRecord::Schema.define(:version => 20150212094132) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -49,12 +49,12 @@ ActiveRecord::Schema.define(:version => 20150210201323) do
   add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
+    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -62,8 +62,11 @@ ActiveRecord::Schema.define(:version => 20150210201323) do
 
   create_table "c_rater_score_mappings", :force => true do |t|
     t.text     "mapping"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "description"
+    t.integer  "user_id"
+    t.integer  "changed_by_id"
   end
 
   create_table "collaboration_runs", :force => true do |t|
@@ -110,7 +113,7 @@ ActiveRecord::Schema.define(:version => 20150210201323) do
     t.integer  "image_question_id"
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.text     "annotation",          :limit => 4294967294
+    t.text     "annotation",          :limit => 2147483647
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                                  :default => false
     t.boolean  "is_final",                                  :default => false
