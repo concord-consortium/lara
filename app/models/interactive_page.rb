@@ -143,7 +143,8 @@ class InteractivePage < ActiveRecord::Base
       show_introduction: show_introduction,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
-      show_info_assessment: show_info_assessment
+      show_info_assessment: show_info_assessment,
+      embeddable_display_mode: embeddable_display_mode
     }
   end
 
@@ -180,7 +181,8 @@ class InteractivePage < ActiveRecord::Base
                                     :show_introduction, 
                                     :show_sidebar, 
                                     :show_interactive,
-                                    :show_info_assessment])
+                                    :show_info_assessment,
+                                    :embeddable_display_mode])
                                         
     page_json[:interactives] = []
     page_json[:embeddables] = []
@@ -215,7 +217,8 @@ class InteractivePage < ActiveRecord::Base
       show_introduction: page_json_object['show_introduction'],
       show_sidebar: page_json_object['show_sidebar'],
       show_interactive: page_json_object['show_interactive'],
-      show_info_assessment: page_json_object['show_info_assessment']
+      show_info_assessment: page_json_object['show_info_assessment'],
+      embeddable_display_mode: page_json_object['embeddable_display_mode']
     }
   end
   
