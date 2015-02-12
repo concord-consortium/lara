@@ -216,12 +216,12 @@ class ApplicationController < ActionController::Base
   # login to the portal provided in the parameters
   def portal_login
     if params[:domain]
-      sign_out(current_user) unless params[:portal_uid].to_i == session[:portal_user_id]
+      sign_out(current_user) unless has_matching_domain_uid(params[:domain],params[:domain_uid])
       # Remove domain from original url to avoid infinite loop.
       uri = URI(request.original_url)
       query_params = request.query_parameters
       query_params.delete(:domain)
-      query_params.delete(:portal_uid)
+      query_params.delete(:domain_uid)
       uri.query = URI.encode_www_form(query_params)
       # we set the origin here which will become request.env['omniauth.origin']
       # in the callback phase, by default omniauth will use use
@@ -230,7 +230,12 @@ class ApplicationController < ActionController::Base
       strategy_name = Concord::AuthPortal.strategy_name_for_url(params[:domain])
       redirect_to user_omniauth_authorize_path(strategy_name, :origin => uri.to_s)
     end
-  end 
+  end
+  
+  # check if any of them have a matching domain and uid
+  def has_matching_domain_uid(domain,domain_uid)
+    return current_user && current_user.authentications.where(provider:Concord::AuthPortal.strategy_name_for_url(params[:domain]),uid:domain_uid).length > 0
+  end
 
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
