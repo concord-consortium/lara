@@ -22,7 +22,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     feedback_items = {}
     arg_block_answers.each do |a|
       f = a.save_feedback
-      feedback_items[a.id] = f && f.feedback_text
+      feedback_items[a.id] = {score: f.score, text: f.feedback_text} if f
     end
 
     if request.xhr?

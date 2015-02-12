@@ -6,6 +6,7 @@ class ArgumentationBlockController
   FEEDBACK_ID_SEL = '#feedback_on_answer_'
   FEEDBACK_TEXT_SEL = '.ab-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
+  FEEDBACK_HEADER_SEL = '.ab-feedback-header'
 
   constructor: ->
     @$submitBtn = $(SUBMIT_BTN_SEL)
@@ -13,12 +14,12 @@ class ArgumentationBlockController
     for q in $(QUESTION_FROMS_SEL)
       isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
       @question[q.id] = {
-        element: q,
         # It will be updated by answer_for or no_answer_for event handler.
         answered: false,
         dirty: isFeedbackDirty,
         # 'dirty-data' ensures that question will be always considered as dirty unless it's submitted.
         data: if isFeedbackDirty then 'dirty-data' else $(q).serialize(),
+        formElement: q,
         dirtyMsgElement: $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).find(DIRTY_MSG_SEL)[0]
       }
     @registerListeners()
@@ -39,7 +40,7 @@ class ArgumentationBlockController
     # Undefined means that this question isn't part of the argumentation block.
     return unless q
     q.answered = answered
-    q.dirty = q.data != $(q.element).serialize()
+    q.dirty = q.data != $(q.formElement).serialize()
 
   submitButtonClicked: (e) ->
     unless @allQuestionAnswered()
@@ -57,6 +58,10 @@ class ArgumentationBlockController
           q.dirty = false # just updated
           q.data = $(q).serialize()
         @updateView(feedbackData)
+      error: =>
+        alert('We are sorry, but something went wrong. Please try again or proceeds to the next page.')
+        # Make sure that user can proceed anyway!
+        @enableForwardNavigation()
       complete: =>
         @$submitBtn.prop('disabled', false)
     )
@@ -85,17 +90,31 @@ class ArgumentationBlockController
 
   updateForwardNavigationBlocking: ->
     if @allQuestionAnswered() && @noDirtyQuestions()
-      $(document).trigger('enable_forward_navigation', {source: 'arg-block'})
+      @enableForwardNavigation()
     else
-      $(document).trigger('prevent_forward_navigation', {source: 'arg-block'})
+      @disableForwardNavigation()
+
+  enableForwardNavigation: ->
+    $(document).trigger('enable_forward_navigation', {source: 'arg-block'})
+
+  disableForwardNavigation: ->
+    $(document).trigger('prevent_forward_navigation', {source: 'arg-block'})
 
   updateFeedback: (data) ->
-    for id, feedbackText of data
-      $(FEEDBACK_ID_SEL + id).find(FEEDBACK_TEXT_SEL).text(feedbackText)
-      if !!feedbackText
-        $(FEEDBACK_ID_SEL + id).slideDown()
+    anyFeedbackVisible = false
+    for id, feedbackItem of data
+      $feedback = $(FEEDBACK_ID_SEL + id)
+      $feedback.find(FEEDBACK_TEXT_SEL).text(feedbackItem.text)
+      if feedbackItem.text
+        $feedback.slideDown() # show
+        anyFeedbackVisible = true
       else
-        $(FEEDBACK_ID_SEL + id).slideUp()
+        $feedback.slideUp() # hide
+
+    if anyFeedbackVisible
+      $(FEEDBACK_HEADER_SEL).slideDown()
+    else
+      $(FEEDBACK_HEADER_SEL).slideUp()
 
   allQuestionAnswered: ->
     for id, q of @question
@@ -111,4 +130,5 @@ class ArgumentationBlockController
     !@anyQuestionDirty()
 
 $(document).ready ->
-  new ArgumentationBlockController()
+  if $('.arg-block').length > 0
+    new ArgumentationBlockController()

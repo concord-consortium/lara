@@ -1,5 +1,5 @@
 class Embeddable::FeedbackItem < ActiveRecord::Base
-  attr_accessible :answer_id, :answer_type, :answer_text, :feedback_text
+  attr_accessible :answer_id, :answer_type, :answer_text, :feedback_text, :score
 
   belongs_to :answer, polymorphic: true
 

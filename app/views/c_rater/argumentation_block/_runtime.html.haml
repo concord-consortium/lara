@@ -1,19 +1,20 @@
 - embeddables = arg_block_embeddables(@page, @run)
-- any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
 - if embeddables.any?
   .embeddables.arg-block
-    - if any_feedback
-      .ab-feedback-header
-        %h3 Feedback available!
+    - any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
+    .ab-feedback-header{:style => any_feedback ? '' : 'display: none'}
+      %h3 Feedback available!
     - embeddables.each do |m|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
         - fb = m.get_saved_feedback
+        - fb_visible = fb && !fb.feedback_text.blank?
+        - fb_dirty = fb && fb.outdated?
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
-                     :style => !fb || fb.feedback_text.blank? ? 'display: none' : '',
-                     'data-dirty' => fb && fb.outdated? ? 'true' : 'false'}
-          .ab-dirty{:style => fb && fb.outdated? ? '' : 'display: none'}
-            Answer has been changed, please resubmit to get new feedback!
+                     :style => fb_visible ? '' : 'display: none',
+                     'data-dirty' => fb_dirty ? 'true' : 'false'}
+          .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
+            Answer has been changed, please resubmit to update feedback!
           %h6 Feedback:
           .ab-feedback-text
             = fb && fb.feedback_text
