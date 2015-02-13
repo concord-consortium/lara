@@ -18,7 +18,14 @@ describe CRater::FeedbackFunctionality do
 
   let(:ans_text) { 'foobar' }
   let(:item_id) { 123 }
-  let(:item_settings) { CRater::ItemSettings.new(item_id: item_id) }
+  let(:mapping_value) { 'barfoo mapping val' }
+  let(:score_mapping) { CRater::ScoreMapping.new(mapping: {'score2' => mapping_value}) }
+  let(:item_settings) do
+    s = CRater::ItemSettings.new(item_id: item_id)
+    s.score_mapping = score_mapping
+    s.save
+    s
+  end
 
   describe 'instance of class that includes feedback functionality' do
     subject { answer }
@@ -99,6 +106,7 @@ describe CRater::FeedbackFunctionality do
           feedback = answer.save_feedback
           expect(feedback.status).to eql('success')
           expect(feedback.score).to eql(score)
+          expect(feedback.feedback_text).to eql(mapping_value)
           expect(feedback.response_info[:body]).to eql(response)
           expect(answer.feedback_items.count).to eql(1)
         end
