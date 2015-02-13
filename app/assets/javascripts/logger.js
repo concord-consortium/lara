@@ -29,26 +29,23 @@ LoggerUtils.prototype.activityIndexLogging = function() {
 
 LoggerUtils.prototype.interactivePageLogging = function(action) {
   this._logger.log('open activity page');
-  this._pageExitLogging();
   this._interactiveSimulationLogging();
 };
 
 LoggerUtils.prototype.activitySummaryLogging = function() {
   this._logger.log('open activity report');
-  this._pageExitLogging(true); // do not log 'page exit' for summary page.
 };
-
-LoggerUtils.prototype._pageExitLogging = function(stopLogging) {
-  if (stopLogging) {
-    $(window).off('beforeunload.logging');
+LoggerUtils.pageExitLogging = function() {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
     return;
   }
-  
-  var self = this;
-  
-  $(window).off('beforeunload.logging').on('beforeunload.logging', function() {
-    self._logger.log('exit page', false);
-  });
+
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._pageExitLogging();
+};
+LoggerUtils.prototype._pageExitLogging = function() {
+  this._logger.log('exit page');
 };
 
 LoggerUtils.prototype._getQuestionType = function(action) {
@@ -96,21 +93,19 @@ function Logger(options) {
   this._defaultData = options.defaultData;
 }
 
-Logger.prototype.log = function(data, async) {
+Logger.prototype.log = function(data) {
   if (typeof(data) === 'string') {
     data = {event: data};
   }
   data.time = Math.round(Date.now() / 1000); // millisecons to seconds, server expects epoch.
-  this._post(data, async);
+  this._post(data);
 };
 
-Logger.prototype._post = function(data, async) {
-  async = typeof async !== 'undefined' ? async : true;
+Logger.prototype._post = function(data) {
   var processedData = this._processData(data);
   $.ajax({
     url        : this._server,
     type       : "POST",
-    async      : async,
     crossDomain: true,
     data       : JSON.stringify(processedData),
     contentType: 'application/json'
