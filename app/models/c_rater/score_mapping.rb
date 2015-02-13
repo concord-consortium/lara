@@ -1,8 +1,18 @@
 class CRater::ScoreMapping < ActiveRecord::Base
   serialize :mapping
-  attr_accessible :mapping,:description
+  attr_accessible :mapping, :description
   belongs_to :user
   belongs_to :changed_by, :class_name => 'User'
+
+  scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }
+  scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
+
+  def get_feedback_text(score)
+    return 'C-Rater Item ID references test model' if score == -1
+    text = mapping['score' + score.to_s]
+    return "No feedback text defined for score: #{score}" unless text
+    text
+  end
 
   def score0
     if !self.mapping.nil?

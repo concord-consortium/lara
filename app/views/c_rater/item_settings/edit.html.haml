@@ -8,7 +8,7 @@
   %p
     = f.label 'C-Rater score mapping ID'
   %p
-    = f.text_field :score_mapping_id
+    = f.collection_select :score_mapping_id, CRater::ScoreMapping.all, :id, :description
 
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

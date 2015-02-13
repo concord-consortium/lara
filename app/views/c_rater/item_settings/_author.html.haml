@@ -5,7 +5,15 @@
 
   %p
     C-Rater Item ID:
-    = embeddable.item_id
+    %span.value
+      = embeddable.item_id
   %p
     C-Rater score mapping:
-    = embeddable.score_mapping_id
+    %span.value
+      - mapping = embeddable.score_mapping
+      = mapping && mapping.description || "<no mapping selected>"
+
+:scss
+  .value {
+    font-weight: bold;
+  }

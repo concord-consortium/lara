@@ -51,6 +51,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     page.add_embeddable(or1, 1, CRater::ARG_SECTION_NAME)
 
     or1_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
+    or1_c_rater_settings.score_mapping = CRater::ScoreMapping.explanation.last
     or1_c_rater_settings.provider = or1
     or1_c_rater_settings.save!
 
@@ -68,6 +69,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
 
     or2_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
+    or2_c_rater_settings.score_mapping = CRater::ScoreMapping.rationale.last
     or2_c_rater_settings.provider = or2
     or2_c_rater_settings.save!
   end

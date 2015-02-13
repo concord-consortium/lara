@@ -61,9 +61,13 @@ module CRater::FeedbackFunctionality
     if response[:success]
       feedback_item.status = CRater::FeedbackItem::STATUS_SUCCESS
       feedback_item.score = response[:score]
-      # TODO: score -> text mapping
-      # Use dummy "Score: <value>" text for now.
-      feedback_item.feedback_text = "Score: #{response[:score]}"
+      # score -> text mapping
+      score_mapping = c_rater_item_settings.score_mapping
+      if score_mapping
+        feedback_item.feedback_text = score_mapping.get_feedback_text(response[:score])
+      else
+        feedback_item.feedback_text = "Score: #{response[:score]} (score mapping undefined)"
+      end
     else
       feedback_item.status = CRater::FeedbackItem::STATUS_ERROR
       feedback_item.feedback_text = response[:error]
