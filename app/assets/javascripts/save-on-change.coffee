@@ -222,6 +222,7 @@ class @SaveOnChangePage
     $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data-trigger-save=false]").on 'click', (e) =>
       e.preventDefault()
       @click_element   = e.currentTarget
+      LoggerUtils.pageExitLogging();
       @force_save_dirty()
 
   saving: (form) ->
