@@ -1,9 +1,3 @@
-// Place all the styles related to the CRater/ScoreMapping controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-
-
 .feedback-set{
   width: 900px;
   margin-left: -475px;
@@ -55,7 +49,7 @@
   
 }
 
-.feedbackset_list{
+.score_mappings_list{
   table{
     tr{
       height:50px;
@@ -77,5 +71,8 @@
   } 
 }
 
+.no_score_mappings{
+  margin-top:60px;
+}
 
 

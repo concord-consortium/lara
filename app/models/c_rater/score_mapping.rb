@@ -3,6 +3,9 @@ class CRater::ScoreMapping < ActiveRecord::Base
   attr_accessible :mapping, :description
   belongs_to :user
   belongs_to :changed_by, :class_name => 'User'
+  
+  scope :public, self.all
+  scope :newest, order("updated_at DESC")
 
   scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }
   scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
@@ -56,31 +59,12 @@ class CRater::ScoreMapping < ActiveRecord::Base
     end
   end
   
-  def score0=(val)
-    @score0 = val
+  def self.my(user)
+    where(:user_id => user.id)
   end
   
-  def score1=(val)
-    @score1 = val
+  def self.visible(user)
+    self.scoped
   end
   
-  def score2=(val)
-    @score2 = val
-  end
-  
-  def score3=(val)
-    @score3 = val
-  end
-  
-  def score4=(val)
-    @score4 = val
-  end
-  
-  def score5=(val)
-    @score5 = val
-  end
-  
-  def score6=(val)
-    @score6 = val
-  end
 end

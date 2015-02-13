@@ -1,7 +1,8 @@
-class CRater::ScoreMappingController < ApplicationController
+class CRater::ScoreMappingsController < ApplicationController
   
   def index
-
+    @filter = CollectionFilter.new(current_user, CRater::ScoreMapping, params[:filter] || {})
+    @score_mappings = @filter.collection.includes(:user)
   end
   
   def new
@@ -13,13 +14,13 @@ class CRater::ScoreMappingController < ApplicationController
   end
   
   def create
-    score_mapping = { mapping: params[:c_rater_score_mapping]}
+    score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
     @score_mapping = CRater::ScoreMapping.create(score_mapping)
     @score_mapping.description = params[:c_rater_score_mapping][:description]
     @score_mapping.user = current_user
     @score_mapping.changed_by = current_user
     @score_mapping.save
-    redirect_to c_rater_feedbacksets_path
+    redirect_to(:back)
   end
   
   def edit
@@ -33,6 +34,7 @@ class CRater::ScoreMappingController < ApplicationController
   def update
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
+    @score_mapping.description = params[:c_rater_score_mapping][:description]
     @score_mapping.update_attributes(score_mapping)
     @score_mapping.changed_by = current_user
     @score_mapping.save!

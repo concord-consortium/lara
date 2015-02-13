@@ -1,2 +1,0 @@
-module CRater::ScoreMappingHelper
-end
