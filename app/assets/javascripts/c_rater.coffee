@@ -50,7 +50,7 @@ class ArgumentationBlockController
 
     @$submitBtn.prop('disabled', true)
     $.ajax(
-      type: "POST",
+      type: 'POST',
       url: @$submitBtn.data('href'),
       accepts: 'application/json',
       success: (feedbackData) =>
@@ -59,7 +59,7 @@ class ArgumentationBlockController
           q.data = $(q).serialize()
         @updateView(feedbackData)
       error: =>
-        alert('We are sorry, but something went wrong. Please try again or proceeds to the next page.')
+        alert('We are sorry, but something went wrong. Please try again or proceed to the next page.')
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
       complete: =>
@@ -104,7 +104,14 @@ class ArgumentationBlockController
     anyFeedbackVisible = false
     for id, feedbackItem of data
       $feedback = $(FEEDBACK_ID_SEL + id)
+      # Set feedback text.
       $feedback.find(FEEDBACK_TEXT_SEL).text(feedbackItem.text)
+      # Set score.
+      $feedback.removeClass (idx, oldClasses) ->
+        (oldClasses.match(/(^|\s)ab-score\S+/g) || []).join(' ') # matches all score-<val> classes
+      if feedbackItem.score != undefined
+        $feedback.addClass("ab-score#{feedbackItem.score}")
+      # Hide feedback if there is no text.
       if feedbackItem.text
         $feedback.slideDown() # show
         anyFeedbackVisible = true

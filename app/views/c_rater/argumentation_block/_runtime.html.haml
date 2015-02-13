@@ -10,14 +10,17 @@
         - fb = m.get_saved_feedback
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
+        - fb_text = fb && fb.feedback_text
+        - fb_score = fb && fb.score
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
                      :style => fb_visible ? '' : 'display: none',
+                     :class => "ab-score#{fb_score}",
                      'data-dirty' => fb_dirty ? 'true' : 'false'}
           .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
             Answer has been changed, please resubmit to update feedback!
           %h6 Feedback:
           .ab-feedback-text
-            = fb && fb.feedback_text
+            = fb_text
 
     %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
@@ -66,3 +69,19 @@
       background: #FFDCDC;
     }
   }
+
+  .ab-score0 {
+  }
+  .ab-score1 {
+  }
+  .ab-score2 {
+  }
+  .ab-score3 {
+  }
+  .ab-score4 {
+  }
+  .ab-score5 {
+  }
+  .ab-score6 {
+  }
+
