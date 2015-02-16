@@ -26,9 +26,24 @@
 
     %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
+    .question#ab-feedback-on-feedback{:style => 'display: none;'}
+      %div
+        = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
+        - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
+          %label
+            = radio_button_tag(:feedback_on_feedback, value)
+            = label
+
+
+:javascript
+  // Set argumentation block border color using JS, so it always matches current theme.
+  // It's not pretty, but integration with existing themes system would be too painful (if possible at all).
+  var questionHeaderColor = $('.question-hdr').css('background-color');
+  $('.arg-block').css('border-color', questionHeaderColor);
+
 :scss
   .arg-block {
-    border: 5px solid #56A6B7;
+    border: 5px solid gray; // color is going to be overwritten by JS
     box-shadow: 2px 2px 2px #aaa;
 
     .question-bd {
@@ -69,6 +84,23 @@
 
     .did_try_to_navigate & {
       background: #FFDCDC;
+    }
+  }
+
+  #ab-feedback-on-feedback {
+    margin: 0;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+
+    div {
+      text-align: left;
+      display: inline-block;
+    }
+
+    &.did_try_to_navigate {
+      background: rgba(255, 0, 0, 0.2);
     }
   }
 

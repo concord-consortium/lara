@@ -7,10 +7,12 @@ class ArgumentationBlockController
   FEEDBACK_TEXT_SEL = '.ab-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
+  FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
 
   constructor: ->
     @$submitBtn = $(SUBMIT_BTN_SEL)
     @question = {}
+    @submissionId = null
     for q in $(QUESTION_FROMS_SEL)
       isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
       @question[q.id] = {
@@ -22,14 +24,19 @@ class ArgumentationBlockController
         formElement: q,
         dirtyMsgElement: $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).find(DIRTY_MSG_SEL)[0]
       }
+    @fbOnFeedback = new FeedbackOnFeedbackController()
     @registerListeners()
 
   registerListeners: ->
+    # 'answer_for' and 'no_answer_for' events are defined in save-on-change.
+    # 'feedback_on_feedback_sent' is defined in FeedbackOnFeedbackController.
     $(document).on 'answer_for', (e, opt) =>
       @updateQuestion(opt.source, true)
       @updateView()
     $(document).on 'no_answer_for', (e, opt) =>
       @updateQuestion(opt.source, false)
+      @updateView()
+    $(document).on 'feedback_on_feedback_sent', (e, opt) =>
       @updateView()
 
     @$submitBtn.on 'click', (e) =>
@@ -43,6 +50,8 @@ class ArgumentationBlockController
     q.dirty = q.data != $(q.formElement).serialize()
 
   submitButtonClicked: (e) ->
+    unless @feedbackOnFeedbackIsReady()
+      return modalDialog(false, t('ARG_BLOCK.PLEASE_FEEDBACK_ON_FEEDBACK'))
     unless @allQuestionAnswered()
       return modalDialog(false, t('ARG_BLOCK.PLEASE_ANSWER'))
     unless @anyQuestionDirty()
@@ -53,11 +62,12 @@ class ArgumentationBlockController
       type: 'POST',
       url: @$submitBtn.data('href'),
       accepts: 'application/json',
-      success: (feedbackData) =>
+      success: (data) =>
         for id, q of @question
           q.dirty = false # just updated
           q.data = $(q).serialize()
-        @updateView(feedbackData)
+        @fbOnFeedback.activate(data.submission_id)
+        @updateView(data.feedback_items)
       error: =>
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
@@ -69,14 +79,14 @@ class ArgumentationBlockController
     e.stopPropagation()
 
   updateView: (feedbackData) ->
+    if feedbackData
+      @updateFeedback(feedbackData)
     @updateSubmitBtn()
     @updateDirtyQuestionMsgs()
     @updateForwardNavigationBlocking()
-    if feedbackData
-      @updateFeedback(feedbackData)
 
   updateSubmitBtn: ->
-    if @allQuestionAnswered() && @anyQuestionDirty()
+    if @allQuestionAnswered() && @anyQuestionDirty() && @feedbackOnFeedbackIsReady()
       @$submitBtn.removeClass('disabled')
     else
       @$submitBtn.addClass('disabled')
@@ -89,7 +99,7 @@ class ArgumentationBlockController
         $(q.dirtyMsgElement).slideUp()
 
   updateForwardNavigationBlocking: ->
-    if @allQuestionAnswered() && @noDirtyQuestions()
+    if @allQuestionAnswered() && @noDirtyQuestions() && @feedbackOnFeedbackIsReady()
       @enableForwardNavigation()
     else
       @disableForwardNavigation()
@@ -100,9 +110,9 @@ class ArgumentationBlockController
   disableForwardNavigation: ->
     $(document).trigger('prevent_forward_navigation', {source: 'arg-block'})
 
-  updateFeedback: (data) ->
+  updateFeedback: (feedbackData) ->
     anyFeedbackVisible = false
-    for id, feedbackItem of data
+    for id, feedbackItem of feedbackData
       $feedback = $(FEEDBACK_ID_SEL + id)
       # Set feedback text.
       $feedback.find(FEEDBACK_TEXT_SEL).text(feedbackItem.text)
@@ -135,6 +145,46 @@ class ArgumentationBlockController
 
   noDirtyQuestions: ->
     !@anyQuestionDirty()
+
+  feedbackOnFeedbackIsReady: ->
+    @fbOnFeedback.isReady()
+
+
+class FeedbackOnFeedbackController
+  FEEDBACK_ON_FEEDBACK_SEL = '#ab-feedback-on-feedback'
+
+  constructor: ->
+    @$element = $(FEEDBACK_ON_FEEDBACK_SEL)
+    @submissionId = null
+    @registerListeners()
+
+  registerListeners: ->
+    @$element.find('input').on 'change', =>
+      @sendAndDeactivate()
+
+  activate: (submissionId) ->
+    @submissionId = submissionId
+    @$element.find('input').prop('checked', false)
+    @$element.removeClass('did_try_to_navigate')
+    @$element.fadeIn()
+
+  deactivate: ->
+    # Note that we accept the fact that feedback on feedback failed. We don't want to block page completely.
+    @submissionId = null
+    @$element.fadeOut()
+    $(document).trigger('feedback_on_feedback_sent')
+
+  sendAndDeactivate: ->
+    $.ajax(
+      type: 'POST',
+      url: 'test.com',
+      accepts: 'application/json',
+      complete: =>
+        @deactivate()
+    )
+
+  isReady: ->
+    @submissionId == null
 
 $(document).ready ->
   if $('.arg-block').length > 0
