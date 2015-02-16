@@ -3,7 +3,8 @@
   .embeddables.arg-block
     - any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
     .ab-feedback-header{:style => any_feedback ? '' : 'display: none'}
-      %h3 Feedback available!
+      %h3
+        = t 'ARG_BLOCK.FEEDBACK_HEADER'
     - embeddables.each do |m|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
@@ -17,8 +18,9 @@
                      :class => "ab-score#{fb_score}",
                      'data-dirty' => fb_dirty ? 'true' : 'false'}
           .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
-            Answer has been changed, please resubmit to update feedback!
-          %h6 Feedback:
+            = t 'ARG_BLOCK.RESUBMIT_ANSWER'
+          %h6
+            = t 'ARG_BLOCK.FEEDBACK'
           .ab-feedback-text
             = fb_text
 

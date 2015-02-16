@@ -11,9 +11,9 @@ class CRater::ScoreMapping < ActiveRecord::Base
   scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
 
   def get_feedback_text(score)
-    return 'C-Rater Item ID references test model' if score == -1
+    return I18n.t('ARG_BLOCK.TEST_MODEL') if score == -1
     text = mapping['score' + score.to_s]
-    return "No feedback text defined for score: #{score}" unless text
+    return I18n.t('ARG_BLOCK.NO_FEEDBACK_TEXT', score: score) unless text
     text
   end
 

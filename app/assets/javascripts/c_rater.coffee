@@ -44,9 +44,9 @@ class ArgumentationBlockController
 
   submitButtonClicked: (e) ->
     unless @allQuestionAnswered()
-      return modalDialog(false, 'Please answer all questions in the argumentation block.')
+      return modalDialog(false, t('ARG_BLOCK.PLEASE_ANSWER'))
     unless @anyQuestionDirty()
-      return modalDialog(false, 'Answers have not been changed.')
+      return modalDialog(false, t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
 
     @$submitBtn.prop('disabled', true)
     $.ajax(
@@ -59,7 +59,7 @@ class ArgumentationBlockController
           q.data = $(q).serialize()
         @updateView(feedbackData)
       error: =>
-        alert('We are sorry, but something went wrong. Please try again or proceed to the next page.')
+        alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
       complete: =>

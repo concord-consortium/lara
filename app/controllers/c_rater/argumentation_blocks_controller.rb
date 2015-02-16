@@ -47,7 +47,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     mc1.create_default_choices
     page.add_embeddable(mc1, 0, CRater::ARG_SECTION_NAME)
 
-    or1 = Embeddable::OpenResponse.create(prompt: 'Explain your answer.')
+    or1 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.EXPLANATION_PROMPT'))
     page.add_embeddable(or1, 1, CRater::ARG_SECTION_NAME)
 
     or1_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
@@ -55,17 +55,17 @@ class CRater::ArgumentationBlocksController < ApplicationController
     or1_c_rater_settings.provider = or1
     or1_c_rater_settings.save!
 
-    mc2 = Embeddable::MultipleChoice.create(prompt: 'How certain are you about your claim based on your explanation?',
+    mc2 = Embeddable::MultipleChoice.create(prompt: I18n.t('ARG_BLOCK.CERTAINTY_PROMPT'),
                                             enable_check_answer: false,
                                             show_as_menu: true)
-    mc2.add_choice('(1) Not at all certain')
+    mc2.add_choice("(1) #{I18n.t('ARG_BLOCK.NOT_CERTAIN')}")
     mc2.add_choice('(2)')
     mc2.add_choice('(3)')
     mc2.add_choice('(4)')
-    mc2.add_choice('(5) Very certain')
+    mc2.add_choice("(5) #{I18n.t('ARG_BLOCK.VERY_CERTAIN')}")
     page.add_embeddable(mc2, 2, CRater::ARG_SECTION_NAME)
 
-    or2 = Embeddable::OpenResponse.create(prompt: 'Explain what influenced your certainty rating.')
+    or2 = Embeddable::OpenResponse.create(prompt: I18n.t('ARG_BLOCK.RATIONALE_PROMPT'))
     page.add_embeddable(or2, 3, CRater::ARG_SECTION_NAME)
 
     or2_c_rater_settings = CRater::ItemSettings.new(item_id: 'HENRY001')
