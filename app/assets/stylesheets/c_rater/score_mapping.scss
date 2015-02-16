@@ -35,16 +35,19 @@
       .right{
         padding:5px;
       }
+      .left{
+        vertical-align: top;
+      }
     }
   }
   .heading{
     height: 30px;
     background: #cccccc;
-    border-radius: 5px;
     font-size: 1.2em;
     font-weight: bold;
     padding: 6px;
     box-sizing: border-box;
+    margin-bottom: 5px;
   }
   
 }
@@ -52,27 +55,46 @@
 .score_mappings_list{
   table{
     tr{
-      height:50px;
+      height:40px;
       td{
-        border:1px solid #222222;
-        text-align: center;
+        border:1px solid #B6B6B6;
         vertical-align:middle;
       }
     }
     tr.feedbackset_list_header{
-      background:#cccccc;
+      background:#C3C1C1;
       font-size:1.2em;
       font-weight:bold;
-      
+      height:30px;
+      td{
+        text-align:center;
+      }
     }
-    tr.feedbackset_list_row{
-      
+    tr.feedbackset_list_row td{
+      padding-left:10px;
+      text-align: left;
     }  
-  } 
+  }
+  clear:both; 
 }
 
 .no_score_mappings{
   margin-top:60px;
 }
 
+span.edit a,span.delete a{
+  color: #333;
+  height: 14px;
+  padding-left: 18px;
+  text-decoration: none;
+}
 
+span.edit a{
+  background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
+  background-size: 14px;
+  padding-right:5px;
+}
+span.delete a{
+  background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+  background-size: 14px;
+}

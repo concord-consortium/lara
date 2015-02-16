@@ -4,12 +4,12 @@
       %td.left
         = f.label "Title"
       %td.right
-        = f.text_field :description
+        = f.text_field :description,:placeholder => 'Enter Title text',:required => true
     %tr.sub-header
       %td.left
         Score
       %td.right  
-        Feedback text
+        Score mapping text
     %tr.score
       %td.left
         = f.label "0"

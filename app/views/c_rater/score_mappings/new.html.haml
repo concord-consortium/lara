@@ -1,6 +1,6 @@
 .new-score-mapping
   .heading
-    Create feedback set
+    Create Score Mapping
   = form_for @score_mapping, :url => '/c_rater/score_mappings',
     :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|      
     = render :partial => 'form', :locals => { :f => f }

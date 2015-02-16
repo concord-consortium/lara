@@ -1,8 +1,13 @@
 class CRater::ScoreMappingsController < ApplicationController
   
   def index
-    @filter = CollectionFilter.new(current_user, CRater::ScoreMapping, params[:filter] || {})
-    @score_mappings = @filter.collection.includes(:user)
+    if current_user && current_user.admin?
+      @filter = CollectionFilter.new(current_user, CRater::ScoreMapping, params[:filter] || {})
+      @score_mappings = @filter.collection.includes(:user)
+    else
+      render :partial => "shared/unauthorized", :locals => {:action => "no_action",:resource=> "no_resource"},:status => 403
+      return
+    end
   end
   
   def new
