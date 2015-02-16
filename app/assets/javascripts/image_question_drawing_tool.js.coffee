@@ -67,6 +67,7 @@ class ImageQuestionDrawingTool
     @$dialog_answer             = $("#{@dialog_sel} textarea.answer")
 
     @form_prefix                = "embeddable_image_question_answer"
+    @form_id                    = "#{@form_prefix}_#{@image_question_id}"
     @$main_form                 = $("#{@form_sel}")
     @$image_url_field           = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
     @$annotated_image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[annotated_image_url]\"]")
@@ -126,7 +127,7 @@ class ImageQuestionDrawingTool
         @update_display()
         @hide_dialog()
         @show_saved()
-        LoggerUtils.submittedQuestionLogging(@image_question_id)
+        LoggerUtils.submittedQuestionLogging(@form_id)
         @set_dialog_buttons_enabled(true)
         stopWaiting()
       ).on('ajax:error', (e, xhr, status, error) =>

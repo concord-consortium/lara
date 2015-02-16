@@ -157,7 +157,7 @@ input[type="checkbox"] { vertical-align: bottom; }
 label, input[type=button], input[type=submit], button { cursor: pointer; }
  
 // webkit browsers add a 2px margin outside the chrome of form elements */  
-button, input, select, textarea { margin: 0; }
+button, input, select, textarea { margin: 0; outline:none; }
 
 // colors for form validity
 input:valid, textarea:valid   {  }

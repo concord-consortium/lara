@@ -147,6 +147,9 @@ EmbeddableQuestionsLogging.prototype.bind_logger = function() {
   $("#" + this.question_dom_id).off('mousedown.logging').on('mousedown.logging',function(event){
     $(this).off('focusout.logging');
   });
+  $("#" + this.question_dom_id).off('mouseup.logging').on('mouseup.logging',function(event){
+    $(event.target).focus();
+  });
   $("#" + this.question_dom_id).off('focusin.logging').on('focusin.logging', function(event) {
     if(!focus_in){
       self._logger.log(self._generateQuestionData('focus in'));
