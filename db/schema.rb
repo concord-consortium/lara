@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150212094132) do
+ActiveRecord::Schema.define(:version => 20150216155915) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -42,19 +42,28 @@ ActiveRecord::Schema.define(:version => 20150212094132) do
     t.integer  "score"
     t.text     "feedback_text"
     t.text     "response_info"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
   end
 
   add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
+  add_index "c_rater_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "c_rater_feed_item_submission_idx"
+
+  create_table "c_rater_feedback_submissions", :force => true do |t|
+    t.integer  "usefulness_score"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "c_rater_item_settings", :force => true do |t|
-    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -100,11 +109,14 @@ ActiveRecord::Schema.define(:version => 20150212094132) do
     t.integer  "score"
     t.text     "feedback_text"
     t.text     "answer_text"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
   end
 
   add_index "embeddable_feedback_items", ["answer_id", "answer_type"], :name => "index_embeddable_feedback_items_on_answer_id_and_answer_type"
+  add_index "embeddable_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "e_feed_item_submission_idx"
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -113,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20150212094132) do
     t.integer  "image_question_id"
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.text     "annotation",          :limit => 2147483647
+    t.text     "annotation",          :limit => 4294967294
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                                  :default => false
     t.boolean  "is_final",                                  :default => false

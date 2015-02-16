@@ -15,18 +15,23 @@ class CRater::ArgumentationBlocksController < ApplicationController
     # set_run_key expects @page and @activity to be set...
     @page = InteractivePage.find(params[:page_id])
     @activity = @page.lightweight_activity
-    set_run_key
+    set_run_key # sets @run
 
     finder = Embeddable::AnswerFinder.new(@run)
     arg_block_answers = @page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
     feedback_items = {}
+    submission = CRater::FeedbackSubmission.create!
     arg_block_answers.each do |a|
       f = a.save_feedback
+      f.feedback_submission = submission
       feedback_items[a.id] = {score: f.score, text: f.feedback_text} if f
     end
 
     if request.xhr?
-      render json: feedback_items
+      render json: {
+               submission_id: submission.id,
+               feedback_items: feedback_items
+             }
     else
       redirect_to(:back)
     end

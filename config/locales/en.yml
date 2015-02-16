@@ -47,3 +47,8 @@ en:
     RATIONALE_PROMPT: "Explain what influenced your certainty rating."
     NOT_CERTAIN: "Not at all certain"
     VERY_CERTAIN: "Very certain"
+    FEEDBACK_ON_FEEDBACK: "How useful was my feedback to you?"
+    PLEASE_FEEDBACK_ON_FEEDBACK: "Please provide feedback on feedback first."
+    USEFUL_0: "Not at all"
+    USEFUL_1: "Somewhat"
+    USEFUL_2: "Very"
