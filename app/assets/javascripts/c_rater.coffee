@@ -1,6 +1,7 @@
 class ArgumentationBlockController
+  ARG_BLOCK_SEL = '.arg-block'
   QUESTION_SEL = '.question'
-  QUESTION_FROMS_SEL = '.arg-block ' + QUESTION_SEL + ' form'
+  QUESTION_FROMS_SEL = ARG_BLOCK_SEL + ' ' + QUESTION_SEL + ' form'
   SUBMIT_BTN_SEL = '#ab-submit'
   FEEDBACK_SEL = '.ab-feedback'
   FEEDBACK_ID_SEL = '#feedback_on_answer_'
@@ -10,6 +11,7 @@ class ArgumentationBlockController
   FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
 
   constructor: ->
+    @$element = $(ARG_BLOCK_SEL)
     @$submitBtn = $(SUBMIT_BTN_SEL)
     @question = {}
     @submissionId = null
@@ -75,6 +77,7 @@ class ArgumentationBlockController
       complete: =>
         @$submitBtn.prop('disabled', false)
     )
+    @$element.find('.did_try_to_navigate').removeClass('did_try_to_navigate')
     e.preventDefault()
     e.stopPropagation()
 
@@ -156,7 +159,7 @@ class FeedbackOnFeedbackController
   constructor: ->
     @$element = $(FEEDBACK_ON_FEEDBACK_SEL)
     @endpointUrl = @$element.data('href')
-    @submissionId = null
+    @submissionId = @$element.data('submission-id')
     @registerListeners()
 
   registerListeners: ->
@@ -190,7 +193,7 @@ class FeedbackOnFeedbackController
     )
 
   isReady: ->
-    @submissionId == null
+    @submissionId == null || @submissionId == undefined
 
 $(document).ready ->
   if $('.arg-block').length > 0

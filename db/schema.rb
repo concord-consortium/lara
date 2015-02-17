@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150216155915) do
+ActiveRecord::Schema.define(:version => 20150217163726) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -53,9 +53,13 @@ ActiveRecord::Schema.define(:version => 20150216155915) do
 
   create_table "c_rater_feedback_submissions", :force => true do |t|
     t.integer  "usefulness_score"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "interactive_page_id"
+    t.integer  "run_id"
   end
+
+  add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
     t.integer  "score_mapping_id"

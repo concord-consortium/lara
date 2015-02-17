@@ -14,4 +14,8 @@ module CRater::ArgumentationBlockHelper
     finder = Embeddable::AnswerFinder.new(run)
     page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
   end
+
+  def last_submission(page, run)
+    CRater::FeedbackSubmission.where(interactive_page_id: page, run_id: run).order('created_at DESC').first
+  end
 end

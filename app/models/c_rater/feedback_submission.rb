@@ -1,8 +1,10 @@
 class CRater::FeedbackSubmission < ActiveRecord::Base
   # Provided by student.
-  attr_accessible :usefulness_score
+  attr_accessible :usefulness_score, :interactive_page, :run
 
   has_many :feedback_items, as: :feedback_submission
+  belongs_to :interactive_page
+  belongs_to :run
 
   def self.usefulness_score_names
     {

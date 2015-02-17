@@ -20,7 +20,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
     finder = Embeddable::AnswerFinder.new(@run)
     arg_block_answers = @page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
     feedback_items = {}
-    submission = CRater::FeedbackSubmission.create!
+    submission = CRater::FeedbackSubmission.create!(interactive_page: @page, run: @run)
     arg_block_answers.each do |a|
       f = a.save_feedback
       f.feedback_submission = submission

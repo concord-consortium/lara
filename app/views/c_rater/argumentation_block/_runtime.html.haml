@@ -24,7 +24,11 @@
           .ab-feedback-text
             = fb_text
 
-    .question#ab-feedback-on-feedback{:style => 'display: none;', 'data-href' => c_rater_arg_block_feedback_on_feedback_path}
+    - submission = last_submission(@page, @run)
+    - show_f_on_f = submission && submission.usefulness_score.nil?
+    .question#ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
+                                      'data-submission-id' => show_f_on_f ? submission.id : nil,
+                                      'data-href' => c_rater_arg_block_feedback_on_feedback_path}
       %div
         = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
         - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
@@ -35,10 +39,12 @@
     %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
 :javascript
-  // Set argumentation block border color using JS, so it always matches current theme.
-  // It's not pretty, but integration with existing themes system would be too painful (if possible at all).
-  var questionHeaderColor = $('.question-hdr').css('background-color');
-  $('.arg-block').css('border-color', questionHeaderColor);
+  $(function() {
+    // Set argumentation block border color using JS, so it always matches current theme.
+    // It's not pretty, but integration with existing themes system would be too painful (if possible at all).
+    var questionHeaderColor = $('.question-hdr').css('background-color');
+    $('.arg-block').css('border-color', questionHeaderColor);
+  });
 
 :scss
   .arg-block {
