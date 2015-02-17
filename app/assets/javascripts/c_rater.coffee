@@ -155,6 +155,7 @@ class FeedbackOnFeedbackController
 
   constructor: ->
     @$element = $(FEEDBACK_ON_FEEDBACK_SEL)
+    @endpointUrl = @$element.data('href')
     @submissionId = null
     @registerListeners()
 
@@ -175,10 +176,15 @@ class FeedbackOnFeedbackController
     $(document).trigger('feedback_on_feedback_sent')
 
   sendAndDeactivate: ->
+    score = @$element.find('input:checked').val()
     $.ajax(
       type: 'POST',
-      url: 'test.com',
-      accepts: 'application/json',
+      url: @endpointUrl,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        submission_id: @submissionId,
+        score: score
+      }),
       complete: =>
         @deactivate()
     )

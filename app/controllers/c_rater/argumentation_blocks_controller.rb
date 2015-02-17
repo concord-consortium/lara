@@ -37,6 +37,16 @@ class CRater::ArgumentationBlocksController < ApplicationController
     end
   end
 
+  def feedback_on_feedback
+    submission = CRater::FeedbackSubmission.find(params[:submission_id])
+    submission.update_attributes!(usefulness_score: params[:score])
+    if request.xhr?
+      head(200)
+    else
+      redirect_to(:back)
+    end
+  end
+
   private
 
   def set_page_and_authorize

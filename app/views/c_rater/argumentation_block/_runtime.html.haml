@@ -24,7 +24,7 @@
           .ab-feedback-text
             = fb_text
 
-    .question#ab-feedback-on-feedback{:style => 'display: none;'}
+    .question#ab-feedback-on-feedback{:style => 'display: none;', 'data-href' => c_rater_arg_block_feedback_on_feedback_path}
       %div
         = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
         - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|

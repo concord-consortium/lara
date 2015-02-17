@@ -37,6 +37,7 @@ LightweightStandalone::Application.routes.draw do
     post "/argumentation_blocks/:page_id/create_embeddables" => 'argumentation_blocks#create_embeddables', :as => 'arg_block_create_embeddables'
     post "/argumentation_blocks/:page_id/remove_embeddables" => 'argumentation_blocks#remove_embeddables', :as => 'arg_block_remove_embeddables'
     post "/argumentation_blocks/:page_id/save_feedback" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback'
+    post "/argumentation_blocks/feedback_on_feedback" => 'argumentation_blocks#feedback_on_feedback', :as => 'arg_block_feedback_on_feedback'
     resources :score_mappings
   end
 
