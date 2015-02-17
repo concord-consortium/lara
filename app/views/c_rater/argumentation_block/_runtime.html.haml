@@ -3,8 +3,16 @@
   .embeddables.arg-block
     - any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
     .ab-feedback-header{:style => any_feedback ? '' : 'display: none'}
-      %h3
-        = t 'ARG_BLOCK.FEEDBACK_HEADER'
+      %div.ab-theme-color
+        = t 'ARG_BLOCK.SUBMISSION'
+        - submission_count = submission_count(@page, @run)
+        %span.ab-submission-count{'data-submission-count' => submission_count}
+          = submission_count
+      %div= t 'ARG_BLOCK.HASBOT_SAYS'
+      %div= t 'ARG_BLOCK.ANALYZED'
+      %p
+      %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
+
     - embeddables.each do |m|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
@@ -44,12 +52,16 @@
     // It's not pretty, but integration with existing themes system would be too painful (if possible at all).
     var questionHeaderColor = $('.question-hdr').css('background-color');
     $('.arg-block').css('border-color', questionHeaderColor);
+    $('.ab-theme-color').css('color', questionHeaderColor);
   });
 
 :scss
   .arg-block {
     border: 5px solid gray; // color is going to be overwritten by JS
     box-shadow: 2px 2px 2px #aaa;
+
+    h3 {
+    }
 
     .question-bd {
       margin-bottom: 15px;
@@ -70,7 +82,7 @@
 
   .ab-feedback-header {
     border: 1px solid #eee;
-    padding: 22px;
+    padding: 12px 22px;
   }
 
   .ab-feedback {

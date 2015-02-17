@@ -8,13 +8,14 @@ class ArgumentationBlockController
   FEEDBACK_TEXT_SEL = '.ab-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
-  FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
+  SUBMISSION_COUNT_SEL = '.ab-submission-count'
 
   constructor: ->
     @$element = $(ARG_BLOCK_SEL)
     @$submitBtn = $(SUBMIT_BTN_SEL)
+    @$submissionCount = $(SUBMISSION_COUNT_SEL)
     @question = {}
-    @submissionId = null
+    @submissionCount = @$submissionCount.data('submission-count') || 0
     for q in $(QUESTION_FROMS_SEL)
       isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
       @question[q.id] = {
@@ -69,7 +70,9 @@ class ArgumentationBlockController
           q.dirty = false # just updated
           q.data = $(q).serialize()
         @fbOnFeedback.activate(data.submission_id)
+        @submissionCount += 1
         @updateView(data.feedback_items)
+        @scrollToHeader()
       error: =>
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
@@ -81,12 +84,16 @@ class ArgumentationBlockController
     e.preventDefault()
     e.stopPropagation()
 
-  updateView: (feedbackData) ->
+  updateView: (feedbackData, submissionCount) ->
     if feedbackData
       @updateFeedback(feedbackData)
+    @updateSubmissionCount()
     @updateSubmitBtn()
     @updateDirtyQuestionMsgs()
     @updateForwardNavigationBlocking()
+
+  updateSubmissionCount: ->
+    @$submissionCount.text(@submissionCount)
 
   updateSubmitBtn: ->
     if @allQuestionAnswered() && @anyQuestionDirty() && @feedbackOnFeedbackIsReady()
@@ -106,6 +113,11 @@ class ArgumentationBlockController
       @enableForwardNavigation()
     else
       @disableForwardNavigation()
+
+  scrollToHeader: ->
+    $('html, body').animate({
+      scrollTop: @$element.offset().top - 10
+    }, 400)
 
   enableForwardNavigation: ->
     $(document).trigger('enable_forward_navigation', {source: 'arg-block'})
