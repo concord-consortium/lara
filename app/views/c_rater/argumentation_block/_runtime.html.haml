@@ -24,8 +24,6 @@
           .ab-feedback-text
             = fb_text
 
-    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
-
     .question#ab-feedback-on-feedback{:style => 'display: none;'}
       %div
         = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
@@ -34,6 +32,7 @@
             = radio_button_tag(:feedback_on_feedback, value)
             = label
 
+    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
 :javascript
   // Set argumentation block border color using JS, so it always matches current theme.
@@ -60,7 +59,7 @@
 
   .ab-submit {
     float: right;
-    margin: 0 12px 12px 0 !important;
+    margin: 12px 12px 12px 0 !important;
   }
 
   .ab-feedback-header {
