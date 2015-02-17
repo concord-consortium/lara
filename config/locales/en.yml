@@ -36,6 +36,7 @@ en:
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."
+    SUBMIT: "Submit"
     SUBMIT_ERROR: "We are sorry, but something went wrong. Please try again or proceed to the next page."
     SUBMISSION: "Submission #"
     HASBOT_SAYS: "HASBOT says:"

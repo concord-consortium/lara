@@ -1,11 +1,10 @@
 - embeddables = arg_block_embeddables(@page, @run)
 - if embeddables.any?
+  - submission_count = submission_count(@page, @run)
   .embeddables.arg-block
-    - any_feedback = embeddables.any? { |e| f = e.get_saved_feedback; f && f.feedback_text  }
-    .ab-feedback-header{:style => any_feedback ? '' : 'display: none'}
+    .ab-feedback-header{:style => submission_count > 0 ? '' : 'display: none'}
       %div.ab-theme-color
         = t 'ARG_BLOCK.SUBMISSION'
-        - submission_count = submission_count(@page, @run)
         %span.ab-submission-count{'data-submission-count' => submission_count}
           = submission_count
       %div= t 'ARG_BLOCK.HASBOT_SAYS'
@@ -44,7 +43,9 @@
             = radio_button_tag(:feedback_on_feedback, value)
             = label
 
-    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'data-href' => c_rater_arg_block_save_feedback_path(@page)}
+    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit',
+           :value => t('ARG_BLOCK.SUBMIT'),
+           'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
 :javascript
   $(function() {
