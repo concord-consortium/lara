@@ -1,6 +1,7 @@
 #= require save-indicator
 #= require save-on-change
 #= require mock-ajax
+#= require logger.js
 
 
 # TODO: make these available via SpecHelper.js

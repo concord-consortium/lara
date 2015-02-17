@@ -71,7 +71,8 @@
       }
     }
     tr.feedbackset_list_row td{
-      padding-left:10px;
+      padding-left:5px;
+      padding-right:5px;
       text-align: left;
     }  
   }
@@ -97,4 +98,8 @@ span.edit a{
 span.delete a{
   background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
   background-size: 14px;
+}
+label.required:after{
+  content: "*";
+  color: red;
 }

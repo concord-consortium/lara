@@ -2,5 +2,5 @@
   .heading
     Create Score Mapping
   = form_for @score_mapping, :url => '/c_rater/score_mappings',
-    :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|      
+    :html => {:'data-type' => 'json', :class=> 'score_mapping_form'} do |f|      
     = render :partial => 'form', :locals => { :f => f }
