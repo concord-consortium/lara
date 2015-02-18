@@ -1,5 +1,4 @@
 $ ->
-  debugger
   $(document).on 'submit', '.score_mapping_form', (event) ->
     form_data = $(this).serializeArray()
     i = 0
