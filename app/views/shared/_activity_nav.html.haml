@@ -65,7 +65,7 @@
   .profile-dropdown
     %div.profile-u-name
       Hi, 
-      %a.popup-trigger{:href => "javascript:void(0);"} 
+      %a.popup-trigger{:href => "javascript:void(0);", "data-trigger-save" => "false"}
         - if portal_user.nil? 
           Anonymous
         - else  
