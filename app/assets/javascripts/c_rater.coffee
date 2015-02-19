@@ -5,7 +5,7 @@ class ArgumentationBlockController
   SUBMIT_BTN_SEL = '#ab-submit'
   FEEDBACK_SEL = '.ab-feedback'
   FEEDBACK_ID_SEL = '#feedback_on_answer_'
-  FEEDBACK_TEXT_SEL = '.ab-feedback-text'
+  FEEDBACK_TEXT_SEL = '.ab-robot-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'

@@ -7,10 +7,23 @@
         = t 'ARG_BLOCK.SUBMISSION'
         %span.ab-submission-count{'data-submission-count' => submission_count}
           = submission_count
-      %div= t 'ARG_BLOCK.HASBOT_SAYS'
-      %div= t 'ARG_BLOCK.ANALYZED'
-      %p
-      %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
+      - if @page.layout == "l-7030" || @page.layout == "r-3070"
+        .robot-wrap
+          %div= t 'ARG_BLOCK.HASBOT_SAYS'
+          %div= t 'ARG_BLOCK.ANALYZED'
+          .robot-figure
+          %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
+      -else
+        %table.robot-wrap
+          %tr
+            %td
+              .robot-figure
+            %td
+              .robot-analysis
+                %div= t 'ARG_BLOCK.HASBOT_SAYS'
+                %div= t 'ARG_BLOCK.ANALYZED'
+                %p
+                %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
 
     - embeddables.each do |m|
       .question
@@ -29,21 +42,42 @@
           %h6
             = t 'ARG_BLOCK.FEEDBACK'
           .ab-feedback-text
-            = fb_text
+            %table
+              %tr
+                %td
+                  %div.robot-head
+                %td  
+                  %div.ab-robot-feedback-text
+                    #{fb_text}
 
     - submission = last_submission(@page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil?
     .question#ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
                                       'data-submission-id' => show_f_on_f ? submission.id : nil,
                                       'data-href' => c_rater_arg_block_feedback_on_feedback_path}
-      %div
-        = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
-        - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
-          %label
-            = radio_button_tag(:feedback_on_feedback, value)
-            = label
+      - if @page.layout == "l-7030" || @page.layout == "r-3070"
+        .robot-wrap
+          .robot-figure
+          %div
+            = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
+            - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
+              %label
+                = radio_button_tag(:feedback_on_feedback, value)
+                = label
+      - else
+        %table.robot-wrap
+          %tr
+            %td
+              .robot-figure
+            %td         
+              %div
+                = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
+                - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
+                  %label
+                    = radio_button_tag(:feedback_on_feedback, value)
+                    = label
 
-    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit',
+    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'sample-log' => @page.layout,
            :value => t('ARG_BLOCK.SUBMIT'),
            'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
@@ -85,12 +119,52 @@
     border: 1px solid #eee;
     padding: 12px 22px;
   }
+  
+  .robot-wrap {
+    margin:0 auto;
+    td {
+      padding: 0 10px;
+      vertical-align:middle;
+    }
+    
+    .robot-figure {
+      width: 169px;
+      height: 209px;
+      background-image: url('/assets/hasbot.png');
+      background-repeat: no-repeat;
+      background-position:-684px -20px;
+      margin:0 auto;
+    }
+  }
 
   .ab-feedback {
     clear: both;
     border: 1px solid #eee;
     border-radius: 10px;
-    padding: 5px 5px 0 22px;
+    padding: 5px 5px 5px 10px;
+    
+    h6{
+      padding: 0 0 0 10px;
+    }
+    
+    .ab-feedback-text{
+      
+      margin:10px 0 0 0;
+      
+      table{
+        td {
+          padding: 0 10px;
+          vertical-align: middle;
+        }
+      }
+      
+      .robot-head{
+        width: 81px;
+        height: 72px;
+        background-image: url('/assets/hasbot-head.png');
+        background-repeat: no-repeat;
+      } 
+    }
   }
 
   .ab-dirty {
@@ -98,7 +172,7 @@
     padding: 3px 0 0 4px;
     font-size: 12px;
     border-radius: 6px;
-    margin: 0 0 2px -17px;
+    margin: 0 0 2px -7px;
 
     .did_try_to_navigate & {
       background: #FFDCDC;
@@ -114,26 +188,36 @@
 
     div {
       text-align: left;
-      display: inline-block;
     }
 
     &.did_try_to_navigate {
       background: rgba(255, 0, 0, 0.2);
     }
   }
-
-  .ab-score0 {
+  
+  .ab-score-1{
+    .robot-head{
+      background-position:-21px -16px;
+    }
   }
-  .ab-score1 {
+  .ab-score0,.ab-score1 {
+    .robot-head {
+      background-position:-21px -16px;
+    }
   }
   .ab-score2 {
+    .robot-head {
+      background-position:-146px -16px;
+    }
   }
   .ab-score3 {
+    .robot-head {
+      background-position:-20px -110px;
+    }
   }
-  .ab-score4 {
-  }
-  .ab-score5 {
-  }
-  .ab-score6 {
+  .ab-score4,.ab-score5,.ab-score6 {
+    .robot-head {
+      background-position:-145px -110px;
+    }
   }
 
