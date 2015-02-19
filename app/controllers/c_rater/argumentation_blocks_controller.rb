@@ -23,8 +23,10 @@ class CRater::ArgumentationBlocksController < ApplicationController
     submission = CRater::FeedbackSubmission.create!(interactive_page: @page, run: @run)
     arg_block_answers.each do |a|
       f = a.save_feedback
-      f.feedback_submission = submission
-      feedback_items[a.id] = {score: f.score, text: f.feedback_text} if f
+      unless f.nil?
+        f.feedback_submission = submission
+        feedback_items[a.id] = {score: f.score, text: f.feedback_text}
+      end
     end
 
     if request.xhr?

@@ -49,10 +49,12 @@ describe CRater::FeedbackFunctionality do
         it { is_expected.to be false }
       end
       describe '#save_feedback' do
-        it 'should do nothing' do
+        it 'should create feedback item with error message' do
           # WebMock raises an error if any web request is issued.
           answer.save
           answer.save_feedback
+          # FeedbackItem with error message should be created.
+          expect(answer.feedback_items.last.status).to eql(CRater::FeedbackItem::STATUS_ERROR)
         end
       end
     end
@@ -146,6 +148,44 @@ describe CRater::FeedbackFunctionality do
             expect(feedback.status).to eql('error')
             expect(feedback.feedback_text).to eql(err_resp)
             expect(feedback.response_info[:body]).to eql(err_resp)
+          end
+        end
+      end
+
+      context 'C-Rater item settings missing' do
+        before(:each) do
+          allow(answer).to receive(:c_rater_item_settings).and_return(nil)
+        end
+
+        describe '#c_rater_enabled?' do
+          subject { answer.c_rater_enabled? }
+          it { is_expected.to be false }
+        end
+
+        describe '#save_feedack' do
+          it 'should create feedback item with error message' do
+            answer.save_feedback
+            # FeedbackItem with error message should be created.
+            expect(answer.feedback_items.last.status).to eql(CRater::FeedbackItem::STATUS_ERROR)
+          end
+        end
+      end
+
+      context 'C-Rater item settings incomplete' do
+        before(:each) do
+          item_settings.item_id = ''
+        end
+
+        describe '#c_rater_enabled?' do
+          subject { answer.c_rater_enabled? }
+          it { is_expected.to be false }
+        end
+
+        describe '#save_feedack' do
+          it 'should create feedback item with error message' do
+            answer.save_feedback
+            # FeedbackItem with error message should be created.
+            expect(answer.feedback_items.last.status).to eql(CRater::FeedbackItem::STATUS_ERROR)
           end
         end
       end

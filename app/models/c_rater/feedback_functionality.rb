@@ -28,7 +28,7 @@ module CRater::FeedbackFunctionality
   end
 
   def c_rater_enabled?
-    !!c_rater_configured? && !!c_rater_item_settings && !!c_rater_item_settings.item_id
+    c_rater_configured? && c_rater_item_settings_provided?
   end
 
   private
@@ -38,15 +38,19 @@ module CRater::FeedbackFunctionality
     !!config[:client_id] && !!config[:username] && !!config[:password]
   end
 
+  def c_rater_item_settings_provided?
+    !!c_rater_item_settings && !c_rater_item_settings.item_id.blank?
+  end
+
   def request_c_rater_feedback(options = {})
-    return unless c_rater_enabled?
+    return not_configured unless c_rater_enabled?
     feedback_item = CRater::FeedbackItem.new(
       status: CRater::FeedbackItem::STATUS_REQUESTED,
       # Save both answer text and item id to prevent context loss - these values can be changed later by user.
       answer_text: answer_text,
-      item_id: c_rater_item_settings.item_id
+      item_id: c_rater_item_settings.item_id,
+      answer: self
     )
-    feedback_item.answer = self
     if options[:async]
       feedback_item.save!
       delay.continue_feedback_processing(feedback_item)
@@ -66,7 +70,7 @@ module CRater::FeedbackFunctionality
       if score_mapping
         feedback_item.feedback_text = score_mapping.get_feedback_text(response[:score])
       else
-        feedback_item.feedback_text = "Score: #{response[:score]} (score mapping undefined)"
+        feedback_item.feedback_text = I18n.t('ARG_BLOCK.NO_SCORE_MAPPING', score: response[:score])
       end
     else
       feedback_item.status = CRater::FeedbackItem::STATUS_ERROR
@@ -81,5 +85,20 @@ module CRater::FeedbackFunctionality
     crater = CRater::APIWrapper.new(config[:client_id], config[:username], config[:password], config[:url])
     # Use answer.id (as answer class includes this module) as response_id provided to C-Rater.
     crater.get_feedback(feedback_item.item_id, id, feedback_item.answer_text)
+  end
+
+  def not_configured
+    if !c_rater_configured?
+      error_msg = I18n.t('ARG_BLOCK.NO_GLOBAL_CONFIG')
+    elsif !c_rater_item_settings_provided?
+      error_msg = I18n.t('ARG_BLOCK.NO_ITEM_CONFIG')
+    end
+    CRater::FeedbackItem.create!(
+      status: CRater::FeedbackItem::STATUS_ERROR,
+      answer_text: answer_text,
+      item_id: c_rater_item_settings && c_rater_item_settings.item_id,
+      feedback_text: error_msg,
+      answer: self
+    )
   end
 end
