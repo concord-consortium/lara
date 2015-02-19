@@ -142,7 +142,8 @@ describe InteractivePage do
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,
         show_info_assessment: page.show_info_assessment,
-        embeddable_display_mode: page.embeddable_display_mode
+        embeddable_display_mode: page.embeddable_display_mode,
+        additional_sections: page.additional_sections
       }
       expect(page.to_hash).to eq(expected)
     end
