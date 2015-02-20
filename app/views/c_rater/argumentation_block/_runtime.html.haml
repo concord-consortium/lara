@@ -8,18 +8,18 @@
         %span.ab-submission-count{'data-submission-count' => submission_count}
           = submission_count
       - if @page.layout == "l-7030" || @page.layout == "r-3070"
-        .robot-wrap
+        .ab-robot-wrap
           %div= t 'ARG_BLOCK.HASBOT_SAYS'
           %div= t 'ARG_BLOCK.ANALYZED'
-          .robot-figure
+          .ab-robot-figure
           %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
       -else
-        %table.robot-wrap
+        %table.ab-robot-wrap
           %tr
             %td
-              .robot-figure
+              .ab-robot-figure
             %td
-              .robot-analysis
+              .ab-robot-analysis
                 %div= t 'ARG_BLOCK.HASBOT_SAYS'
                 %div= t 'ARG_BLOCK.ANALYZED'
                 %p
@@ -45,7 +45,7 @@
             %table
               %tr
                 %td
-                  %div.robot-head
+                  %div.ab-robot-head
                 %td  
                   %div.ab-robot-feedback-text
                     #{fb_text}
@@ -56,8 +56,8 @@
                                       'data-submission-id' => show_f_on_f ? submission.id : nil,
                                       'data-href' => c_rater_arg_block_feedback_on_feedback_path}
       - if @page.layout == "l-7030" || @page.layout == "r-3070"
-        .robot-wrap
-          .robot-figure
+        .ab-robot-wrap
+          .ab-robot-figure
           %div
             = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
             - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
@@ -65,10 +65,10 @@
                 = radio_button_tag(:feedback_on_feedback, value)
                 = label
       - else
-        %table.robot-wrap
+        %table.ab-robot-wrap
           %tr
             %td
-              .robot-figure
+              .ab-robot-figure
             %td         
               %div
                 = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
@@ -120,17 +120,17 @@
     padding: 12px 22px;
   }
   
-  .robot-wrap {
+  .ab-robot-wrap {
     margin:0 auto;
     td {
       padding: 0 10px;
       vertical-align:middle;
     }
     
-    .robot-figure {
+    .ab-robot-figure {
       width: 169px;
       height: 209px;
-      background-image: url('/assets/hasbot.png');
+      background-image: url('/assets/c-rater/hasbot.png');
       background-repeat: no-repeat;
       background-position:-684px -20px;
       margin:0 auto;
@@ -158,10 +158,10 @@
         }
       }
       
-      .robot-head{
+      .ab-robot-head{
         width: 81px;
         height: 72px;
-        background-image: url('/assets/hasbot-head.png');
+        background-image: url('/assets/c-rater/hasbot-head.png');
         background-repeat: no-repeat;
       } 
     }
@@ -195,28 +195,28 @@
     }
   }
   
-  .ab-score-1{
-    .robot-head{
+  .ab-score-error {
+    .ab-robot-head{
       background-position:-21px -16px;
     }
   }
   .ab-score0,.ab-score1 {
-    .robot-head {
+    .ab-robot-head {
       background-position:-21px -16px;
     }
   }
   .ab-score2 {
-    .robot-head {
+    .ab-robot-head {
       background-position:-146px -16px;
     }
   }
   .ab-score3 {
-    .robot-head {
+    .ab-robot-head {
       background-position:-20px -110px;
     }
   }
   .ab-score4,.ab-score5,.ab-score6 {
-    .robot-head {
+    .ab-robot-head {
       background-position:-145px -110px;
     }
   }

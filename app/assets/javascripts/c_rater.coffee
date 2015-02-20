@@ -134,8 +134,10 @@ class ArgumentationBlockController
       # Set score.
       $feedback.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)ab-score\S+/g) || []).join(' ') # matches all score-<val> classes
-      if feedbackItem.score != undefined
+      if feedbackItem.score && (feedbackItem.score >= 0 && feedbackItem.score <= 6)
         $feedback.addClass("ab-score#{feedbackItem.score}")
+      else
+        $feedback.addClass("ab-score-error")
       # Hide feedback if there is no text.
       if feedbackItem.text
         $feedback.slideDown() # show
