@@ -71,6 +71,7 @@ class ArgumentationBlockController
           q.data = $(q).serialize()
         @fbOnFeedback.activate(data.submission_id)
         @submissionCount += 1
+        @updateSubmitBtnText()
         @updateView(data.feedback_items)
         @scrollToHeader()
       error: =>
@@ -100,6 +101,9 @@ class ArgumentationBlockController
       @$submitBtn.removeClass('disabled')
     else
       @$submitBtn.addClass('disabled')
+      
+  updateSubmitBtnText: ->
+    @$submitBtn[0].value = 'Resubmit'
 
   updateDirtyQuestionMsgs: ->
     for id, q of @question

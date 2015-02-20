@@ -78,7 +78,7 @@
                     = label
 
     %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'sample-log' => @page.layout,
-           :value => t('ARG_BLOCK.SUBMIT'),
+           :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
            'data-href' => c_rater_arg_block_save_feedback_path(@page)}
 
 :javascript
