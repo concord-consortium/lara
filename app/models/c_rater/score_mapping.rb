@@ -19,43 +19,43 @@ class CRater::ScoreMapping < ActiveRecord::Base
 
   def score0
     if !self.mapping.nil?
-      @score0 = self.mapping['score0']
+      self.mapping['score0']
     end
   end
   
   def score1
     if !self.mapping.nil?
-      @score1 = self.mapping['score1']
+      self.mapping['score1']
     end
   end
   
   def score2
     if !self.mapping.nil?
-      @score2 = self.mapping['score2']
+      self.mapping['score2']
     end
   end
   
   def score3
     if !self.mapping.nil?
-      @score3 = self.mapping['score3']
+      self.mapping['score3']
     end
   end
   
   def score4
     if !self.mapping.nil?
-      @score4 = self.mapping['score4']
+      self.mapping['score4']
     end
   end
   
   def score5
     if !self.mapping.nil?
-      @score5 = self.mapping['score5']
+      self.mapping['score5']
     end
   end
   
   def score6
     if !self.mapping.nil?
-      @score6 = self.mapping['score6']
+      self.mapping['score6']
     end
   end
   
