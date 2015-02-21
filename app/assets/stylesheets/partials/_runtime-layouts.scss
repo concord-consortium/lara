@@ -81,3 +81,17 @@
   }
 }
 
+// Single page layout
+.l-single-page {
+  @extend .l-full-width;
+
+  .pages {
+    display: none;
+  }
+
+  .question {
+    margin: 20px 0;
+    width: 100%;
+  }
+}
+

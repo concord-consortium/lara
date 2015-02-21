@@ -1,0 +1,8 @@
+= content_for :title do 
+  = "#{@activity.name}"
+
+= content_for :body_class do
+  = 'l-single-page'
+
+- @activity.pages.each do |p|
+  = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-single-page'}

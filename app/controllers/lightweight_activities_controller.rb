@@ -4,10 +4,10 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
-  before_filter :set_sequence, :only   => [:summary, :show]
+  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
+  before_filter :set_sequence, :only   => [:summary, :show, :single_page]
   
-  before_filter :enable_js_logger, :only => [:summary, :show, :preview]
+  before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
 
   layout :set_layout
 
@@ -21,7 +21,7 @@ class LightweightActivitiesController < ApplicationController
 
   # These are the runtime (student-facing) actions, show and summary
 
-  def show
+  def show # show index
     authorize! :read, @activity
     if params[:response_key]
       redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
@@ -50,6 +50,11 @@ class LightweightActivitiesController < ApplicationController
     @run.clear_answers
     setup_show
     render :show
+  end
+
+  def single_page
+    authorize! :read, @activity
+    setup_show
   end
 
   def summary
@@ -210,6 +215,8 @@ class LightweightActivitiesController < ApplicationController
     when 'show'
       return 'runtime'
     when 'preview'
+      return 'runtime'
+    when 'single_page'
       return 'runtime'
     when 'summary'
       return 'summary'

@@ -167,8 +167,5 @@ class InteractivePagesController < ApplicationController
     current_project
     @all_pages = @activity.pages
     @run.update_attribute(:page, @page)
-    finder = Embeddable::AnswerFinder.new(@run)
-    # Limit embeddables to ones that do not belong to any section.
-    @main_section_answers = @page.main_embeddables.map { |e| finder.find_answer(e) }
   end
 end
