@@ -25,9 +25,9 @@
 
     .buttons
       - if @page.embeddable_display_mode == 'carousel' && @page.embeddables.length > 1
-        %a.jcarousel-prev{ :href => '#' }
+        %a.jcarousel-prev{ :href => '#', "data-trigger-save" => "false"}
           %input{ :class => 'button', :type => 'submit', :value => t("BACK"), :disabled => true }
-        %a.jcarousel-next{ :href => '#' }
+        %a.jcarousel-next{ :href => '#', "data-trigger-save" => "false"}
           %input{ :class => 'button', :type => 'submit', :value => t("NEXT"), :disabled => true }
 
     -# Additional sections are dynamically loaded, based on .visible_sections value:
