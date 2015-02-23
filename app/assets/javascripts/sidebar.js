@@ -7,11 +7,14 @@ $(function () {
       $(this).css('top', sidebarTop + idx * sidebarHdrHeight);
     });
   }
-  positionMultipleSidebars();
 
-  $('.sidebar-hdr').add('.sidebar-bd-close').click(function () {
-    $(this).closest('.sidebar-mod').toggleClass('expanded');
-  });
+  if ($('.sidebar-mod').length > 0) {
+    positionMultipleSidebars();
 
-  $('.sidebar-mod').addClass('visible');
+    $('.sidebar-hdr').add('.sidebar-bd-close').click(function () {
+      $(this).closest('.sidebar-mod').toggleClass('expanded');
+    });
+    // It triggers CSS transition.
+    $('.sidebar-mod').addClass('visible');
+  }
 });
