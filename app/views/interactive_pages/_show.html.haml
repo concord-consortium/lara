@@ -24,7 +24,7 @@
 
     -# Additional sections are dynamically loaded, based on .visible_sections value:
     - page.visible_sections.each do |s|
-      = render :partial => "#{s[:dir]}/runtime", :locals => { :page => page, :section_name => s[:name], :section_label => s[:label] }
+      = render partial: "#{s[:dir]}/runtime", locals: { page: page, section_name: s[:name], section_label: s[:label] }
 
 .end-scroll-track
 
