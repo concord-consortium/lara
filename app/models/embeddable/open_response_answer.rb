@@ -37,8 +37,8 @@ module Embeddable
       self.answer_text.blank?
     end
 
-    def c_rater_settings
-      question && question.c_rater_settings
+    def c_rater_item_settings
+      question && question.c_rater_item_settings
     end
   end
 end

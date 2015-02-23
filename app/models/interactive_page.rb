@@ -34,7 +34,7 @@ class InteractivePage < ActiveRecord::Base
 
   # Like InteractiveItems, PageItems are join models, so they should not
   # survive the deletion of associated instances of InteractivePage.
-  has_many :page_items, :order => :position, :dependent => :destroy, :include => [:embeddable]
+  has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
 
   # Interactive page can register additional page sections:
   #

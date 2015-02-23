@@ -44,4 +44,5 @@
 //= require wait-message
 //= require logger
 //= require sidebar
+//= require c_rater
 //= require runtime-init
