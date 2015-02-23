@@ -97,7 +97,7 @@ Logger.prototype.log = function(data) {
   if (typeof(data) === 'string') {
     data = {event: data};
   }
-  data.time = Math.round(Date.now() / 1000); // millisecons to seconds, server expects epoch.
+  data.time = Date.now(); // millisecons
   this._post(data);
 };
 
