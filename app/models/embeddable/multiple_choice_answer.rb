@@ -1,6 +1,7 @@
 module Embeddable
   class MultipleChoiceAnswer < ActiveRecord::Base
     include Answer # Common methods for Answer models
+    include FeedbackFunctionality
 
     attr_accessible :answers, :run, :question, :is_dirty, :is_final
 
@@ -31,6 +32,31 @@ module Embeddable
     # render the text of the answers
     def answer_texts
       self.answers.map { |a| a.choice }
+    end
+
+    # Required by Embeddable::FeedbackFunctionality
+    def answer_text
+      answer_texts.join(';')
+    end
+
+    # Required by Embeddable::FeedbackFunctionality
+    def score
+      actual_correct     = choices.count { |c| c.is_correct }
+      selected_correct   = answers.count { |a| a.is_correct }
+      selected_incorrect = answers.count { |a| !a.is_correct }
+      if selected_correct == actual_correct && selected_incorrect == 0
+        10 # fully correct answer
+      elsif selected_correct > 0
+        5 # some correct answers selected
+      else
+        0 # no correct answers selected
+      end
+    end
+
+    # Required by Embeddable::FeedbackFunctionality
+    def feedback_text
+      return nil if answers.length == 0
+      answers.map { |a| a.prompt }.join(';')
     end
 
     def copy_answer!(another_answer)

@@ -32,3 +32,4 @@
 //= require chosen-jquery
 //= require application-init
 //= require tablesorter
+//= require c_rater/score_mapping

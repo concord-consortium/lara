@@ -22,6 +22,6 @@ describe Embeddable::OpenResponse do
 
   describe 'C-Rater functionality' do
     subject { open_response }
-    it { is_expected.to respond_to(:c_rater_settings) }
+    it { is_expected.to respond_to(:c_rater_item_settings) }
   end
 end

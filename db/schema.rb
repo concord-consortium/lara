@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150204154523) do
+ActiveRecord::Schema.define(:version => 20150217163726) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -42,19 +42,26 @@ ActiveRecord::Schema.define(:version => 20150204154523) do
     t.integer  "score"
     t.text     "feedback_text"
     t.text     "response_info"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
   end
 
   add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
+  add_index "c_rater_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "c_rater_feed_item_submission_idx"
 
-  create_table "c_rater_score_mappings", :force => true do |t|
-    t.text     "mapping"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "c_rater_feedback_submissions", :force => true do |t|
+    t.integer  "usefulness_score"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "interactive_page_id"
+    t.integer  "run_id"
   end
 
-  create_table "c_rater_settings", :force => true do |t|
+  add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
+
+  create_table "c_rater_item_settings", :force => true do |t|
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
@@ -63,8 +70,17 @@ ActiveRecord::Schema.define(:version => 20150204154523) do
     t.string   "item_id"
   end
 
-  add_index "c_rater_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
-  add_index "c_rater_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
+  add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
+  add_index "c_rater_item_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
+
+  create_table "c_rater_score_mappings", :force => true do |t|
+    t.text     "mapping"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "description"
+    t.integer  "user_id"
+    t.integer  "changed_by_id"
+  end
 
   create_table "collaboration_runs", :force => true do |t|
     t.integer  "user_id"
@@ -90,6 +106,21 @@ ActiveRecord::Schema.define(:version => 20150204154523) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "embeddable_feedback_items", :force => true do |t|
+    t.integer  "answer_id"
+    t.string   "answer_type"
+    t.integer  "score"
+    t.text     "feedback_text"
+    t.text     "answer_text"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
+  end
+
+  add_index "embeddable_feedback_items", ["answer_id", "answer_type"], :name => "index_embeddable_feedback_items_on_answer_id_and_answer_type"
+  add_index "embeddable_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "e_feed_item_submission_idx"
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"

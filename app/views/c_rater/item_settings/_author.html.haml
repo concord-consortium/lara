@@ -1,0 +1,19 @@
+.authorable
+  .embeddable_tools
+    .drag_handle
+    = link_to "edit", edit_c_rater_item_setting_path(embeddable), :remote => true, :id => "edit-embed-iq-#{embeddable.id}"
+
+  %p
+    C-Rater Item ID:
+    %span.value
+      = embeddable.item_id
+  %p
+    C-Rater score mapping:
+    %span.value
+      - mapping = embeddable.score_mapping
+      = mapping && mapping.description || "<no mapping selected>"
+
+:scss
+  .value {
+    font-weight: bold;
+  }

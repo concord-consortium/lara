@@ -43,4 +43,5 @@
 //= require activity-box-click
 //= require wait-message
 //= require logger
+//= require c_rater
 //= require runtime-init

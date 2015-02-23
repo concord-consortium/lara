@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Embeddable::MultipleChoiceAnswer do
+  let(:feedback) { "feedback text" }
   let(:a1)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
-  let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
+  let(:a2)       { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two", :prompt => feedback) }
   let(:question) { FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
   let(:run)      { FactoryGirl.create(:run, :activity => FactoryGirl.create(:activity) ) }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer,
@@ -84,6 +85,26 @@ describe Embeddable::MultipleChoiceAnswer do
       expect(answer.answers).not_to include a1
       expect(answer.answers).not_to include a2
     end
+  end
+
+  describe '#feedback_text' do
+    it 'should return choice prompt text when answer is provided' do
+      answer.answers = [a2]
+      expect(answer.feedback_text).to eql(feedback)
+    end
+    it 'should return nil when answer is not provided' do
+      answer.answers = []
+      expect(answer.feedback_text).to be_nil
+    end
+  end
+
+  describe 'feedback functionality' do
+    subject { answer }
+    it { is_expected.to respond_to :save_feedback }
+    it { is_expected.to respond_to :get_saved_feedback }
+    # required interface:
+    it { is_expected.to respond_to :answer_text }
+    it { is_expected.to respond_to :feedback_text }
   end
 
   describe "delegated methods" do

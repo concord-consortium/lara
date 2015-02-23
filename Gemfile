@@ -84,7 +84,7 @@ group :test, :development do
   gem "rspec-rails", "~> 3.1.0"
   gem "rspec-activemodel-mocks"
   gem "ci_reporter", "~> 1.7.0"
-  gem "factory_girl_rails"
+  gem "factory_girl_rails", :require => false
   gem "faker"
   gem "capybara"
   gem "timecop"
