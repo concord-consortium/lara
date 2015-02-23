@@ -5,4 +5,5 @@
   = 'l-single-page'
 
 - @activity.pages.each do |p|
-  = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-single-page'}
+  -# Enforce full-width layout for each page rendering.
+  = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}

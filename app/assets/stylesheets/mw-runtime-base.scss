@@ -427,9 +427,9 @@ div.intra-page-nav {
  }
 } // .l-full-width
 
-// Single page layout
+// Single page class is added to the body element. It's intended to work with the full width layout.
+// It only provides slight modifications.
 .l-single-page {
-  @extend .l-full-width;
 
   .pages {
     display: none;
