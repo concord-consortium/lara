@@ -36,7 +36,6 @@ class ImageQuestionDrawingTool
     @form_sel              = "#image_question_main_form_#{@image_question_id} form"
     @dialog_sel            = "#image_question_dialog_#{@image_question_id}"
     @drawing_tool_selector = "#drawing-tool-container_for_#{@image_question_id}"
-    @interactive_selector  = ".interactive-mod > *:first-child"
 
     # DOM entities:
     @$content = $(@dialog_sel)
@@ -73,6 +72,10 @@ class ImageQuestionDrawingTool
     @$annotated_image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[annotated_image_url]\"]")
     @$annotation_field          = $("#{@form_sel} [name=\"#{@form_prefix}[annotation]\"]")
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
+
+    # Find the first interactive which is on the same page (aka content-module, div.content-mod) as the question.
+    # It's necessary when we are in single page rendering mode and there are multiple interactives rendered.
+    @interactive_element = @$main_form.closest('.content-mod').find('.interactive-mod > *:first-child')[0]
 
     @drawing_tool = new DrawingTool(@drawing_tool_selector, {
       width: 600,
@@ -145,7 +148,7 @@ class ImageQuestionDrawingTool
 
   take_interactive_snapshot: ->
     Shutterbug.snapshot
-      selector: @interactive_selector
+      selector: @interactive_element
       server: SHUTTERBUG_URI # defined in api-urls.js.erb
       done: (image_src) =>
         @set_image_source(image_src)
