@@ -5,22 +5,18 @@ instances = []
 class IFrameSaver
 
   @instances:      []  # save-on-change.coffee looks these up.
-  @default_data:   () ->
-    $('#interactive_data_div')
-  @default_iframe: () ->
-    $("#interactive")[0]
 
-  # @param iframe    : an iframe to save data from.
-  # @param $data_div : a qjuery element that includes data-* attributes
-  # which describe where we post back to.
-  constructor: (iframe=IFrameSaver.default_iframe(), $data_div=IFrameSaver.default_data()) ->
+  # @param iframe         : an iframe to save data from
+  # @param $data_div      : a qjuery element that includes data-* attributes which describe where we post back to
+  # @param $delete_button : a qjuery element that is used to trigger data deletion on click
+  constructor: (iframe, $data_div, $delete_button) ->
     @put_url  = $data_div.data('puturl')  # put our data here.
     @get_url  = $data_div.data('geturl')  # read our data from here.
     @auth_provider = $data_div.data('authprovider')  # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @learner_url = null
-    @$delete_button = $('#delete_interactive_data')
+    @$delete_button = $delete_button
     @$delete_button.click () =>
       @delete_data()
     @$delete_button.hide()
@@ -143,5 +139,12 @@ class IFrameSaver
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
 
+window.IFrameSaver = IFrameSaver
+
 $(document).ready ->
-  window.IFrameSaver = IFrameSaver
+  $('.interactive-container.savable').each ->
+    $this = $(this)
+    iframe = $this.find('iframe')[0]
+    $data = $this.find('.interactive_data_div')
+    $delete_button = $this.find('.delete_interactive_data')
+    new IFrameSaver(iframe, $data, $delete_button)

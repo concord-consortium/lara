@@ -1,17 +1,11 @@
-= interactive_iframe_tag(interactive,@run) do
+.interactive-container{class: interactive.save_state ? 'savable' : ''}
+  = interactive_iframe_tag(interactive, @run) do
 
-  Your browser does not support inline frames, or is currently not configured to display inline frames.
-  Content can be viewed at the actual source page:
-  = link_to interactive.url, interactive.url
-.below_interactive
+    Your browser does not support inline frames, or is currently not configured to display inline frames.
+    Content can be viewed at the actual source page:
+    = link_to interactive.url, interactive.url
 
   - if interactive.save_state
-    = interactive_data_div(interactive,@run)
-    = button_tag 'Undo all my work', {:id => 'delete_interactive_data'}
-
-    %a.destroy_learner_data
-    - content_for :extra_javascript do
-      :javascript
-        $(document).ready(function() {
-          var saver = new IFrameSaver();
-        });
+    .below_interactive
+      = interactive_data_div(interactive, @run)
+      = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
