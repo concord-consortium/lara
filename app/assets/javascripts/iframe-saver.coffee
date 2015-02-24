@@ -3,17 +3,19 @@
 class IFrameSaver
   @instances: []  # save-on-change.coffee looks these up.
 
-  # @param iframe         : an iframe to save data from
-  # @param $data_div      : a qjuery element that includes data-* attributes which describe where we post back to
-  # @param $delete_button : a qjuery element that is used to trigger data deletion on click
-  constructor: (iframe, $data_div, $delete_button) ->
+  # @param iframe         : an iframe to save data from (jQuery)
+  # @param $data_div      : an element that includes data-* attributes which describe where we post back to (jQuery)
+  # @param $delete_button : an element that is used to trigger data deletion on click (jQuery)
+  constructor: ($iframe, $data_div, $delete_button) ->
+    @$iframe = $iframe
+    @$delete_button = $delete_button
     @put_url = $data_div.data('puturl') # put our data here.
     @get_url = $data_div.data('geturl') # read our data from here.
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @learner_url = null
-    @$delete_button = $delete_button
+
     @$delete_button.click () =>
       @delete_data()
     @$delete_button.hide()
@@ -55,15 +57,18 @@ class IFrameSaver
               @$delete_button.hide()
 
       if @put_url
-        #Save interactive every 5 seconds just to be safe:
-        window.setInterval (()=> @save()), 5 * 1000
+        #Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
+        window.setInterval (=> @save()), 5 * 1000
+        $(window).on 'focus', => @save()
+        $iframe.on 'mouseout', => @save()
+
       @iframePhone.post('getExtendedSupport')
       @iframePhone.post('getLearnerUrl')
       # TODO: There used to be a callback for model_did_load
       # hopefully this will work
       model_did_load()
 
-    @iframePhone = new iframePhone.ParentEndpoint(iframe, phone_answered)
+    @iframePhone = new iframePhone.ParentEndpoint($iframe[0], phone_answered)
 
 
   @default_success: ->
@@ -141,7 +146,7 @@ window.IFrameSaver = IFrameSaver
 $(document).ready ->
   $('.interactive-container.savable').each ->
     $this = $(this)
-    iframe = $this.find('iframe')[0]
+    $iframe = $this.find('iframe')
     $data = $this.find('.interactive_data_div')
     $delete_button = $this.find('.delete_interactive_data')
-    new IFrameSaver(iframe, $data, $delete_button)
+    new IFrameSaver($iframe, $data, $delete_button)
