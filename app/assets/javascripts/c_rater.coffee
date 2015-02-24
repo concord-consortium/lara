@@ -61,6 +61,8 @@ class ArgumentationBlockController
       return modalDialog(false, t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
 
     @$submitBtn.prop('disabled', true)
+    @showWaiting()
+    
     $.ajax(
       type: 'POST',
       url: @$submitBtn.data('href'),
@@ -71,14 +73,17 @@ class ArgumentationBlockController
           q.data = $(q).serialize()
         @fbOnFeedback.activate(data.submission_id)
         @submissionCount += 1
+        @hideWaiting()
         @updateSubmitBtnText()
         @updateView(data.feedback_items)
         @scrollToHeader()
       error: =>
+        @hideWaiting()
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
       complete: =>
+        @hideWaiting()
         @$submitBtn.prop('disabled', false)
     )
     @$element.find('.did_try_to_navigate').removeClass('did_try_to_navigate')
@@ -104,6 +109,15 @@ class ArgumentationBlockController
       
   updateSubmitBtnText: ->
     @$submitBtn[0].value = 'Resubmit'
+    
+  showWaiting: ->
+    startWaiting 'Please wait while we analyze your responses...','#loading-container'
+    $('#modal-container').show()
+    $('#loading-container').css('top', $(window).scrollTop() + 200).show()
+  
+  hideWaiting: ->
+    stopWaiting('#loading-container')
+    $('#modal-container').hide()
 
   updateDirtyQuestionMsgs: ->
     for id, q of @question
