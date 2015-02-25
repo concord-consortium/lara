@@ -32,7 +32,7 @@
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
         - fb_text = fb && fb.feedback_text
-        - fb_score = fb && fb.score
+        - fb_score = (fb && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
                      :style => fb_visible ? '' : 'display: none',
                      :class => "ab-score#{fb_score}",
