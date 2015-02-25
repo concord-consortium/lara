@@ -54,6 +54,9 @@ class LightweightActivitiesController < ApplicationController
 
   def single_page
     authorize! :read, @activity
+    if !params[:response_key]
+      redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
+    end
     setup_show
   end
 
