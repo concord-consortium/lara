@@ -21,6 +21,7 @@ class IFrameSaver
     @$delete_button.hide()
     @should_show_delete = null
     @saved_state = null
+    @autosave_interval_id = null
 
     @save_indicator = SaveIndicator.instance()
 
@@ -57,10 +58,7 @@ class IFrameSaver
               @$delete_button.hide()
 
       if @put_url
-        #Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
-        window.setInterval (=> @save()), 5 * 1000
-        $(window).on 'focus', => @save()
-        $iframe.on 'mouseout', => @save()
+        @set_autosave_enabled(true)
 
       @iframePhone.post('getExtendedSupport')
       @iframePhone.post('getLearnerUrl')
@@ -88,6 +86,10 @@ class IFrameSaver
       callback()
 
   delete_data: () ->
+    # Disable autosave, as it's possible that autosave will be triggered *after* we send to server "null" state
+    # (delete it). Actually it used to happen quite ofted.
+    @set_autosave_enabled(false)
+
     @success_callback = () =>
       window.location.reload()
     @confirm_delete () =>
@@ -115,7 +117,7 @@ class IFrameSaver
       raw_data: JSON.stringify(interactive_json)
       learner_url: learner_url
     $.ajax
-      type: "PUT"
+      type: 'PUT'
       async: false #TODO: For now we can only save this synchronously....
       dataType: 'json'
       url: @put_url
@@ -126,7 +128,7 @@ class IFrameSaver
       error: (jqxhr, status, error) =>
         @error("couldn't save interactive")
 
-  load_interactive: () ->
+  load_interactive: ->
     return unless @get_url
     $.ajax
       url: @get_url
@@ -139,6 +141,20 @@ class IFrameSaver
             @$delete_button.show() if @should_show_delete == null or @should_show_delete
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
+
+  set_autosave_enabled: (v) ->
+    # Focus event is attached to the window, so it has to have unique namespace.
+    focus_namespace = "focus.iframe_saver_#{@$iframe.data('id')}"
+    #Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
+    if v
+      @autosave_interval_id = setInterval (=> @save()), 5 * 1000
+      $(window).on focus_namespace, => @save()
+      @$iframe.on 'mouseout', => @save()
+    else
+      clearInterval(@autosave_interval_id) if @autosave_interval_id
+      $(window).off focus_namespace
+      @$iframe.off 'mouseout'
+
 
 # Export constructor.
 window.IFrameSaver = IFrameSaver
