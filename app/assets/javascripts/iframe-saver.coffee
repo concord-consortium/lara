@@ -143,17 +143,20 @@ class IFrameSaver
         @error("couldn't load interactive")
 
   set_autosave_enabled: (v) ->
-    # Focus event is attached to the window, so it has to have unique namespace.
-    focus_namespace = "focus.iframe_saver_#{@$iframe.data('id')}"
-    #Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
+    # Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
+    # Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
+    # itself, but other code can use that event too (e.g. logging).
+    namespace = "focus.iframe_saver_#{@$iframe.data('id')}"
+    focus_namespace = "focus.#{namespace}"
+    mouseout_namespace = "mouseout.#{namespace}"
     if v
       @autosave_interval_id = setInterval (=> @save()), 5 * 1000
       $(window).on focus_namespace, => @save()
-      @$iframe.on 'mouseout', => @save()
+      @$iframe.on mouseout_namespace, => @save()
     else
       clearInterval(@autosave_interval_id) if @autosave_interval_id
       $(window).off focus_namespace
-      @$iframe.off 'mouseout'
+      @$iframe.off mouseout_namespace
 
 
 # Export constructor.
