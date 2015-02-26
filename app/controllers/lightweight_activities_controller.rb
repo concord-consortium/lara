@@ -27,8 +27,12 @@ class LightweightActivitiesController < ApplicationController
       redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
       redirect_to activity_path(@activity, request.query_parameters) and return
     end
+
     @run.increment_run_count!
-    setup_show
+
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      redirect_to activity_single_page_with_response_path(@activity, @run.key) and return
+    end
     unless params[:show_index]
       if @run && @run.last_page && @activity
         # TODO: If the Page isn't in this activity... Then we need to log that as an error, 
@@ -38,10 +42,11 @@ class LightweightActivitiesController < ApplicationController
           Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
           @activity = @run.last_page.lightweight_activity
         end
-        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key)
-        return
+        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key) and return
       end
     end
+
+    setup_show
   end
 
   def preview
