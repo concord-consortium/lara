@@ -1,10 +1,13 @@
 $(function () {
+  // Distance between sidebars (in pixels).
+  var SIDEBAR_SPACER = 35;
+
   // Dynamically setup position of sidebar handles.
   function positionMultipleSidebars() {
     var sidebarTop = $('.sidebar-mod').offset().top;
-    var sidebarHdrHeight = $('.sidebar-hdr').height() + 35;
+    var sidebarHdrHeight = $('.sidebar-hdr').height();
     $('.sidebar-mod').each(function (idx) {
-      $(this).css('top', sidebarTop + idx * sidebarHdrHeight);
+      $(this).css('top', sidebarTop + idx * (sidebarHdrHeight + SIDEBAR_SPACER));
     });
   }
 
