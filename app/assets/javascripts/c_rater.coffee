@@ -73,12 +73,10 @@ class ArgumentationBlockController
           q.data = $(q).serialize()
         @fbOnFeedback.activate(data.submission_id)
         @submissionCount += 1
-        @hideWaiting()
         @updateSubmitBtnText()
         @updateView(data.feedback_items)
         @scrollToHeader()
       error: =>
-        @hideWaiting()
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
