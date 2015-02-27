@@ -1,0 +1,20 @@
+@import "cc-runtime-base";
+
+$bg_src: ''; // background color is set instead.
+$c_a: #ee864e;
+$c_b: #ef864e;
+$c_c: green; // this color is unused anyway...
+
+@include theme($bg_src, $c_a, $c_b, $c_c);
+
+html {
+  background: #fee9aa;
+}
+
+div.activity-mod > div.site-width {
+  background-color: rgb(251, 244, 219);
+}
+
+#container {
+  background: none; // disable gradient
+}
