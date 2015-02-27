@@ -32,7 +32,7 @@
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
         - fb_text = fb && fb.feedback_text
-        - fb_score = (fb && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
+        - fb_score = (fb && fb.score && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
                      :style => fb_visible ? '' : 'display: none',
                      :class => "ab-score#{fb_score}",
@@ -128,11 +128,11 @@
     }
     
     .ab-robot-figure {
-      width: 169px;
-      height: 209px;
+      width: 85px;
+      height: 109px;
       background-image: url('/assets/c-rater/hasbot.png');
       background-repeat: no-repeat;
-      background-position:-684px -20px;
+      background-position:-341px -7px;
       margin:0 auto;
     }
   }
@@ -159,8 +159,8 @@
       }
       
       .ab-robot-head{
-        width: 81px;
-        height: 72px;
+        width: 44px;
+        height: 40px;
         background-image: url('/assets/c-rater/hasbot-head.png');
         background-repeat: no-repeat;
       } 
@@ -197,26 +197,26 @@
   
   .ab-score-error {
     .ab-robot-head{
-      background-position:-21px -16px; /*red*/
+      background-position:-9px -4px; /*red*/
     }
   }
   .ab-score0,.ab-score1 {
     .ab-robot-head {
-      background-position:-21px -16px; /*red*/
+      background-position:-9px -4px; /*red*/
     }
   }
   .ab-score2,.ab-score3 {
     .ab-robot-head {
-      background-position:-146px -16px; /*orange*/
+      background-position:-76px -4px; /*orange*/
     }
   }
   .ab-score4,.ab-score5 {
     .ab-robot-head {
-      background-position:-145px -110px; /*green*/
+      background-position:-76px -55px; /*green*/
     }
   }
   .ab-score6{
     .ab-robot-head {
-      background-position:-20px -110px; /*blue*/
+      background-position:-9px -55px; /*blue*/
     }
   }
