@@ -59,7 +59,8 @@ module InteractiveRunHelper
     
     data = {
       :aspect_ratio => interactive.aspect_ratio,
-      :id => interactive.id 
+      :id => interactive.id,
+      :iframe_mouseover => "false"
     }
 
     opts = {

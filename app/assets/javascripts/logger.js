@@ -71,21 +71,22 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   // work around for bindig click event on cross site iframe
   // FIXME: this code no longer works, as #interactive has been removed (now .interactive class is available instead
   //        and we should assume that there can be multiple interactives on a single page).
-  var self  = this,
-  myConfObj = {iframeMouseOver: false};
+  var self  = this;
   $(window).on('blur', function() {
-    if (myConfObj.iframeMouseOver) {
-      self._logger.log({
-        event         : "clicked in the simulation window",
-        interactive_id: $('#interactive').data().id
-      });
-    }
+    $.each($('.interactive'),function(index,value){
+      if ($(value).data().iframe_mouseover){
+      	self._logger.log({
+          event         : "clicked in the simulation window",
+          interactive_id: $(value).data().id
+        });
+      }
+    });
   });
-  $('#interactive').on('mouseover', function() {
-    myConfObj.iframeMouseOver = true;
+  $('.interactive').on('mouseover', function() {
+    $(this).data().iframe_mouseover = true;
   });
-  $('#interactive').on('mouseout', function() {
-    myConfObj.iframeMouseOver = false;
+  $('.interactive').on('mouseout', function() {
+    $(this).data().iframe_mouseover = false;
   });
 };
 
@@ -193,6 +194,7 @@ $(document).ready(function() {
 
     case 'interactive_pages#show':
     case 'interactive_pages#preview':
+    case 'lightweight_activities#single_page':
       logger_utils.interactivePageLogging();
       break;
   }
