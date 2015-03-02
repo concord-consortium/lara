@@ -33,6 +33,7 @@ en:
   NEW_SEQUENCE_BUTTON: "Create new sequence"
   IMPORT: "Import"
   COLLECTION_SORT_ORDER: " – most recently modified first."
+  MISSING_INTERACTIVE: "We are sorry, but we can't take snapshot - this page does not contain any interactive."
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."

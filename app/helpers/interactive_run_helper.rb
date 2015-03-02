@@ -72,7 +72,8 @@ module InteractiveRunHelper
       :mozallowfullscreen => "true",
       :src => url,
       :data => data,
-      :class => 'interactive'
+      :class => 'interactive',
+      :id => "interactive_#{interactive.id}"
     }
     capture_haml do
       haml_tag 'iframe', opts
