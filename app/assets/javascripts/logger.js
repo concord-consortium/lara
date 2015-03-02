@@ -69,8 +69,6 @@ LoggerUtils.prototype._submittedQuestionLogging = function(data) {
 
 LoggerUtils.prototype._interactiveSimulationLogging = function() {
   // work around for bindig click event on cross site iframe
-  // FIXME: this code no longer works, as #interactive has been removed (now .interactive class is available instead
-  //        and we should assume that there can be multiple interactives on a single page).
   var self  = this;
   $(window).on('blur', function() {
     $.each($('.interactive'),function(index,value){
