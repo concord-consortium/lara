@@ -8,13 +8,15 @@ class ArgumentationBlockController
   DIRTY_MSG_SEL = '.ab-dirty'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
+  SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
 
   constructor: (argBlockElement) ->
     @$element = $(argBlockElement)
     @$submitBtn = @$element.find(SUBMIT_BTN_SEL)
+    @$submitPrompt = @$element.find(SUBMIT_BTN_PROMPT)
     @$submissionCount = @$element.find(SUBMISSION_COUNT_SEL)
-    @question = {}
     @submissionCount = @$submissionCount.data('submission-count') || 0
+    @question = {}
     for q in @$element.find(QUESTION_FROMS_SEL)
       isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
       @question[q.id] = {
@@ -101,12 +103,28 @@ class ArgumentationBlockController
   updateSubmitBtn: ->
     if @allQuestionAnswered() && @anyQuestionDirty() && @feedbackOnFeedbackIsReady()
       @$submitBtn.removeClass('disabled')
+      @hideSubmitPrompt()
     else
       @$submitBtn.addClass('disabled')
+      @showSubmitPrompt()
       
   updateSubmitBtnText: ->
     @$submitBtn[0].value = 'Resubmit'
+  
+  showSubmitPrompt: ->
+    @$submitPrompt.show()
+    unless @feedbackOnFeedbackIsReady()
+      @$submitPrompt.html( t('ARG_BLOCK.PLEASE_FEEDBACK_ON_FEEDBACK') )
+      return
+    unless @allQuestionAnswered()
+      @$submitPrompt.html( t('ARG_BLOCK.PLEASE_ANSWER') )
+      return
+    unless @anyQuestionDirty()
+      @$submitPrompt.html( t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
     
+  hideSubmitPrompt: ->
+    @$submitPrompt.css('display', 'none')
+  
   showWaiting: ->
     startWaiting 'Please wait while we analyze your responses...','#loading-container'
     $('#modal-container').show()

@@ -5,7 +5,7 @@ modalDialog = (correct, feedback) ->
     dialogClass  = "correct"
     feedback   ||= "Yes! You are correct."
   else
-    title        = "Incorrect"
+    title        = "Alert"
     dialogClass  = "incorrect"
     feedback   ||= "Sorry, that is incorrect."
 
