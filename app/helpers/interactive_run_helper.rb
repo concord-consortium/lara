@@ -42,7 +42,7 @@ module InteractiveRunHelper
     opts = {
       :src => interactive.url,
       :data => data,
-      :id => 'interactive_data_div'
+      :class => 'interactive_data_div'
     }
     capture_haml do
       haml_tag 'span', opts
@@ -59,7 +59,8 @@ module InteractiveRunHelper
     
     data = {
       :aspect_ratio => interactive.aspect_ratio,
-      :id => interactive.id 
+      :id => interactive.id,
+      :iframe_mouseover => "false"
     }
 
     opts = {
@@ -71,7 +72,8 @@ module InteractiveRunHelper
       :mozallowfullscreen => "true",
       :src => url,
       :data => data,
-      :id => 'interactive'
+      :class => 'interactive',
+      :id => "interactive_#{interactive.id}"
     }
     capture_haml do
       haml_tag 'iframe', opts

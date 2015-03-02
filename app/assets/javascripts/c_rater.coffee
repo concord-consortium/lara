@@ -1,24 +1,23 @@
 class ArgumentationBlockController
-  ARG_BLOCK_SEL = '.arg-block'
   QUESTION_SEL = '.question'
-  QUESTION_FROMS_SEL = ARG_BLOCK_SEL + ' ' + QUESTION_SEL + ' form'
-  SUBMIT_BTN_SEL = '#ab-submit'
+  QUESTION_FROMS_SEL = QUESTION_SEL + ' form'
+  SUBMIT_BTN_SEL = '.ab-submit'
   FEEDBACK_SEL = '.ab-feedback'
   FEEDBACK_ID_SEL = '#feedback_on_answer_'
   FEEDBACK_TEXT_SEL = '.ab-robot-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
-  SUBMIT_BTN_PROMPT = '#ab-submit-prompt'
+  SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
 
-  constructor: ->
-    @$element = $(ARG_BLOCK_SEL)
-    @$submitBtn = $(SUBMIT_BTN_SEL)
-    @$submissionCount = $(SUBMISSION_COUNT_SEL)
-    @question = {}
+  constructor: (argBlockElement) ->
+    @$element = $(argBlockElement)
+    @$submitBtn = @$element.find(SUBMIT_BTN_SEL)
+    @$submitPrompt = @$element.find(SUBMIT_BTN_PROMPT)
+    @$submissionCount = @$element.find(SUBMISSION_COUNT_SEL)
     @submissionCount = @$submissionCount.data('submission-count') || 0
-    @$submitPrompt = $(SUBMIT_BTN_PROMPT)
-    for q in $(QUESTION_FROMS_SEL)
+    @question = {}
+    for q in @$element.find(QUESTION_FROMS_SEL)
       isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
       @question[q.id] = {
         # It will be updated by answer_for or no_answer_for event handler.
@@ -29,7 +28,7 @@ class ArgumentationBlockController
         formElement: q,
         dirtyMsgElement: $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).find(DIRTY_MSG_SEL)[0]
       }
-    @fbOnFeedback = new FeedbackOnFeedbackController()
+    @fbOnFeedback = new FeedbackOnFeedbackController(argBlockElement)
     @registerListeners()
 
   registerListeners: ->
@@ -162,7 +161,7 @@ class ArgumentationBlockController
   updateFeedback: (feedbackData) ->
     anyFeedbackVisible = false
     for id, feedbackItem of feedbackData
-      $feedback = $(FEEDBACK_ID_SEL + id)
+      $feedback = @$element.find(FEEDBACK_ID_SEL + id)
       # Set feedback text.
       $feedback.find(FEEDBACK_TEXT_SEL).text(feedbackItem.text)
       # Set score.
@@ -180,9 +179,9 @@ class ArgumentationBlockController
         $feedback.slideUp() # hide
 
     if anyFeedbackVisible
-      $(FEEDBACK_HEADER_SEL).slideDown()
+      @$element.find(FEEDBACK_HEADER_SEL).slideDown()
     else
-      $(FEEDBACK_HEADER_SEL).slideUp()
+      @$element.find(FEEDBACK_HEADER_SEL).slideUp()
 
   allQuestionAnswered: ->
     for id, q of @question
@@ -202,10 +201,10 @@ class ArgumentationBlockController
 
 
 class FeedbackOnFeedbackController
-  FEEDBACK_ON_FEEDBACK_SEL = '#ab-feedback-on-feedback'
+  FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
 
-  constructor: ->
-    @$element = $(FEEDBACK_ON_FEEDBACK_SEL)
+  constructor: (argBlockElement) ->
+    @$element = $(argBlockElement).find(FEEDBACK_ON_FEEDBACK_SEL)
     @endpointUrl = @$element.data('href')
     @submissionId = @$element.data('submission-id')
     @registerListeners()
@@ -244,5 +243,5 @@ class FeedbackOnFeedbackController
     @submissionId == null || @submissionId == undefined
 
 $(document).ready ->
-  if $('.arg-block').length > 0
-    new ArgumentationBlockController()
+  $('.arg-block').each ->
+    new ArgumentationBlockController(this)

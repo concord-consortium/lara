@@ -1,13 +1,13 @@
-- embeddables = arg_block_embeddables(@page, @run)
+- embeddables = arg_block_embeddables(page, @run)
 - if embeddables.any?
-  - submission_count = submission_count(@page, @run)
+  - submission_count = submission_count(page, @run)
   .embeddables.arg-block
     .ab-feedback-header{:style => submission_count > 0 ? '' : 'display: none'}
       %div.ab-theme-color
         = t 'ARG_BLOCK.SUBMISSION'
         %span.ab-submission-count{'data-submission-count' => submission_count}
           = submission_count
-      - if @page.layout == "l-7030" || @page.layout == "r-3070"
+      - if page.layout == "l-7030" || page.layout == "r-3070"
         .ab-robot-wrap
           %div= t 'ARG_BLOCK.HASBOT_SAYS'
           %div= t 'ARG_BLOCK.ANALYZED'
@@ -50,12 +50,12 @@
                   %div.ab-robot-feedback-text
                     #{fb_text}
 
-    - submission = last_submission(@page, @run)
+    - submission = last_submission(page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil?
-    .question#ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
+    .question.ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
                                       'data-submission-id' => show_f_on_f ? submission.id : nil,
                                       'data-href' => c_rater_arg_block_feedback_on_feedback_path}
-      - if @page.layout == "l-7030" || @page.layout == "r-3070"
+      - if page.layout == "l-7030" || page.layout == "r-3070"
         .ab-robot-wrap
           .ab-robot-figure
           %div
@@ -77,10 +77,10 @@
                     = radio_button_tag(:feedback_on_feedback, value)
                     = label
 
-    %div{:id => 'ab-submit-prompt'}
-    %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'sample-log' => @page.layout,
+    %div.ab-submit-prompt
+    %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
-           'data-href' => c_rater_arg_block_save_feedback_path(@page)}
+           'data-href' => c_rater_arg_block_save_feedback_path(page)}
 
 :javascript
   $(function() {
@@ -93,11 +93,9 @@
 
 :scss
   .arg-block {
+    margin-bottom: 10px;
     border: 5px solid gray; // color is going to be overwritten by JS
     box-shadow: 2px 2px 2px #aaa;
-
-    h3 {
-    }
 
     .question-bd {
       margin-bottom: 15px;
@@ -125,7 +123,7 @@
     margin:0 auto;
     td {
       padding: 0 10px;
-      vertical-align:middle;
+      vertical-align: middle;
     }
     
     .ab-robot-figure {
@@ -134,7 +132,7 @@
       background-image: url('/assets/c-rater/hasbot.png');
       background-repeat: no-repeat;
       background-position:-341px -7px;
-      margin:0 auto;
+      margin: 0 auto;
     }
   }
 
@@ -144,22 +142,22 @@
     border-radius: 10px;
     padding: 5px 5px 5px 10px;
     
-    h6{
+    h6 {
       padding: 0 0 0 10px;
     }
     
-    .ab-feedback-text{
+    .ab-feedback-text {
       
       margin:10px 0 0 0;
       
-      table{
+      table {
         td {
           padding: 0 10px;
           vertical-align: middle;
         }
       }
       
-      .ab-robot-head{
+      .ab-robot-head {
         width: 44px;
         height: 40px;
         background-image: url('/assets/c-rater/hasbot-head.png');
@@ -180,10 +178,11 @@
     }
   }
 
-  #ab-feedback-on-feedback {
-    margin: 0;
-    width: 100%;
-    padding: 15px;
+  .ab-feedback-on-feedback {
+    // !important to overwrite .question properties.
+    margin: 0 !important;
+    width: 100% !important;
+    padding: 15px !important;
     text-align: center;
     background: rgba(0, 0, 0, 0.05);
 
@@ -197,46 +196,46 @@
   }
   
   .ab-score-error {
-    .ab-robot-head{
-      background-position:-9px -4px; /*red*/
+    .ab-robot-head {
+      background-position: -9px -4px; /*red*/
     }
-    .ab-robot-feedback-text{
+    .ab-robot-feedback-text {
       color: #DE6B3F;
     }
   }
-  .ab-score0,.ab-score1 {
+  .ab-score0, .ab-score1 {
     .ab-robot-head {
       background-position:-9px -4px; /*red*/
     }
-    .ab-robot-feedback-text{
+    .ab-robot-feedback-text {
       color: #DE6B3F;
     }
   }
-  .ab-score2,.ab-score3 {
+  .ab-score2, .ab-score3 {
     .ab-robot-head {
       background-position:-76px -4px; /*orange*/
     }
-    .ab-robot-feedback-text{
+    .ab-robot-feedback-text {
       color: #EA8723;
     }
   }
-  .ab-score4,.ab-score5 {
+  .ab-score4, .ab-score5 {
     .ab-robot-head {
       background-position:-76px -55px; /*green*/
     }
-    .ab-robot-feedback-text{
+    .ab-robot-feedback-text {
       color: #73A543;
     }
   }
-  .ab-score6{
+  .ab-score6 {
     .ab-robot-head {
-      background-position:-9px -55px; /*blue*/
+      background-position: -9px -55px; /*blue*/
     }
-    .ab-robot-feedback-text{
+    .ab-robot-feedback-text {
       color: #38888B;
     }
   }
-  #ab-submit-prompt{
+  .ab-submit-prompt {
     float: left;
     margin: 10px 5px;
     padding: 5px;

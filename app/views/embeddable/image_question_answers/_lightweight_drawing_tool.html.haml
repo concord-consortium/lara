@@ -57,10 +57,11 @@
         %i.fa.fa-check.btn
           =t("DONE")
 
+- interactive_id = embeddable.interactive ? embeddable.interactive.id : 'null'
 - content_for :extra_javascript do
   :javascript
     $(document).ready(function() {
-      new ImageQuestionDrawingTool(#{embeddable.id});
+      new ImageQuestionDrawingTool(#{embeddable.id}, #{interactive_id});
       new EmbeddableQuestionsLogging({
         type  :"image_question",
         id    :"#{embeddable.id}",

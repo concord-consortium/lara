@@ -14,6 +14,14 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   default_value_for :prompt, "why does ..."
 
+  def interactive
+    # Return first interactive available on the page (note that in practice it's impossible that this model has more
+    # than one page, even though it's many-to-many association).
+    # In the future we can let authors explicitly select which interactive an image question is connected to.
+    page = interactive_pages.first
+    page && page.interactives.first
+  end
+
   # NOTE: publishing to portal doesn't use this hash. See app/models/lightweight_activity.rb
   # for the hash used in portal publishing.
   def to_hash

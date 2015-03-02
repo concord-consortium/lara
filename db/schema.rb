@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150217163726) do
+ActiveRecord::Schema.define(:version => 20150226120712) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -301,6 +301,7 @@ ActiveRecord::Schema.define(:version => 20150217163726) do
     t.integer  "theme_id"
     t.integer  "project_id"
     t.integer  "portal_run_count",   :default => 0
+    t.integer  "layout",             :default => 0
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"

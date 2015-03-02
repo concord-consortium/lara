@@ -2,9 +2,16 @@ class LightweightActivity < ActiveRecord::Base
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
   include Publishable # models/publishable.rb defines pub & official
 
+  LAYOUT_MULTI_PAGE = 0
+  LAYOUT_SINGLE_PAGE = 1
+  LAYOUT_OPTIONS = [
+    ['Multi-page', LAYOUT_MULTI_PAGE],
+    ['Single-page', LAYOUT_SINGLE_PAGE]
+  ]
+
   attr_accessible :name, :user_id, :pages, :related, :description,
-  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-  :portal_run_count
+                  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
+                  :portal_run_count, :layout
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'

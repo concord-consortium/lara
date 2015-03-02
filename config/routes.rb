@@ -50,6 +50,7 @@ LightweightStandalone::Application.routes.draw do
   resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/ } do
     member do
       get 'reorder_pages'
+      get 'single_page'
       get 'summary'
       get 'resubmit_answers'
       get 'publish'
@@ -122,6 +123,7 @@ LightweightStandalone::Application.routes.draw do
   get "/activities/:activity_id/summary/:response_key" => 'lightweight_activities#summary', :as => 'summary_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/resubmit_answers/:response_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/activities/:activity_id/:response_key" => 'lightweight_activities#show', :as => 'activity_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/single_page/:response_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
   get "/runs/details" => 'runs#details', :as => 'run_details'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
