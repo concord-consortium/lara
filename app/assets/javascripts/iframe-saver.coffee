@@ -28,10 +28,6 @@ class IFrameSaver
     if (@put_url or @get_url)
       IFrameSaver.instances.push @
 
-    model_did_load = () =>
-      if @get_url
-        @load_interactive()
-
     phone_answered = () =>
       @iframePhone.addListener 'setLearnerUrl', (learner_url) =>
         @learner_url = learner_url
@@ -57,14 +53,13 @@ class IFrameSaver
             else
               @$delete_button.hide()
 
-      if @put_url
-        @set_autosave_enabled(true)
-
       @iframePhone.post('getExtendedSupport')
       @iframePhone.post('getLearnerUrl')
-      # TODO: There used to be a callback for model_did_load
-      # hopefully this will work
-      model_did_load()
+
+      # Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
+      # so its state would be lost.
+      @load_interactive =>
+        @set_autosave_enabled(true)
 
     @iframePhone = new iframePhone.ParentEndpoint($iframe[0], phone_answered)
 
@@ -128,8 +123,11 @@ class IFrameSaver
       error: (jqxhr, status, error) =>
         @error("couldn't save interactive")
 
-  load_interactive: ->
-    return unless @get_url
+  load_interactive: (callback) ->
+    unless @get_url
+      callback()
+      return
+
     $.ajax
       url: @get_url
       success: (response) =>
@@ -141,8 +139,11 @@ class IFrameSaver
             @$delete_button.show() if @should_show_delete == null or @should_show_delete
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
+      complete: =>
+        callback()
 
   set_autosave_enabled: (v) ->
+    return unless @put_url
     # Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
     # Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
     # itself, but other code can use that event too (e.g. logging).
