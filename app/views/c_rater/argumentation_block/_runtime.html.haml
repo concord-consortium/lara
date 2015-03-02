@@ -77,6 +77,7 @@
                     = radio_button_tag(:feedback_on_feedback, value)
                     = label
 
+    %div{:id => 'ab-submit-prompt'}
     %input{:id => 'ab-submit', :class => 'ab-submit button', :type => 'submit', 'sample-log' => @page.layout,
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
            'data-href' => c_rater_arg_block_save_feedback_path(@page)}
@@ -199,24 +200,47 @@
     .ab-robot-head{
       background-position:-9px -4px; /*red*/
     }
+    .ab-robot-feedback-text{
+      color: #DE6B3F;
+    }
   }
   .ab-score0,.ab-score1 {
     .ab-robot-head {
       background-position:-9px -4px; /*red*/
+    }
+    .ab-robot-feedback-text{
+      color: #DE6B3F;
     }
   }
   .ab-score2,.ab-score3 {
     .ab-robot-head {
       background-position:-76px -4px; /*orange*/
     }
+    .ab-robot-feedback-text{
+      color: #EA8723;
+    }
   }
   .ab-score4,.ab-score5 {
     .ab-robot-head {
       background-position:-76px -55px; /*green*/
+    }
+    .ab-robot-feedback-text{
+      color: #73A543;
     }
   }
   .ab-score6{
     .ab-robot-head {
       background-position:-9px -55px; /*blue*/
     }
+    .ab-robot-feedback-text{
+      color: #38888B;
+    }
+  }
+  #ab-submit-prompt{
+    float: left;
+    margin: 10px 5px;
+    padding: 5px;
+    font-size: 12px;
+    color: #BD6161;
+    max-width: 200px;
   }
