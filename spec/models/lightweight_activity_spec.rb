@@ -215,11 +215,11 @@ describe LightweightActivity do
     let(:new_owner) { FactoryGirl.create(:user) }
 
     it 'should return an activity' do
-      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
+      json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
       act = LightweightActivity.import(json,new_owner)
       expect(act.user).to be new_owner
-      expect(act.related).to eq(json['related'])
-      expect(act.pages.count).to eq(json['pages'].length)
+      expect(act.related).to eq(json[:related])
+      expect(act.pages.count).to eq(json[:pages].length)
     end
   end
 

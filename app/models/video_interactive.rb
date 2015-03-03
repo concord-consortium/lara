@@ -62,18 +62,18 @@ class VideoInteractive < ActiveRecord::Base
                                                   :height,
                                                   :width])
     
-    video_interactive_export['sources'] =  []
+    video_interactive_export[:sources] =  []
     
     self.sources.each do |source|
-       video_interactive_export['sources'] << source.export
+       video_interactive_export[:sources] << source.export
     end                
     
     video_interactive_export
   end
   
   def self.import(import_hash)
-    import_video_interactive = self.new(import_hash.except('sources'))
-    import_hash['sources'].each do |source|
+    import_video_interactive = self.new(import_hash.except(:sources))
+    import_hash[:sources].each do |source|
       import_source = VideoSource.new(source)
       import_video_interactive.sources << import_source
     end

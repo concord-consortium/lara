@@ -1,7 +1,7 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
     include Embeddable
-    include CRater::SettingsProviderFunctionality
+    
 
     attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback
 
@@ -51,5 +51,6 @@ module Embeddable
     def self.import (import_hash)
       return self.new(import_hash)
     end
+    include CRater::SettingsProviderFunctionality
   end
 end

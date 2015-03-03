@@ -171,12 +171,7 @@ class InteractivePage < ActiveRecord::Base
         self.section_embeddables(s[:name]).each do |embed|
           copy = embed.duplicate
           copy.save!(validate: false)
-          new_page.add_embeddable(copy,nil,s[:name])
-          if embed.respond_to?(:c_rater_item_settings) && embed.c_rater_item_settings
-            item_settings = embed.c_rater_item_settings.duplicate
-            item_settings.provider = copy
-            item_settings.save!(validate: false)
-          end
+          new_page.add_embeddable(copy,nil,s[:name])          
         end
       end
     end
@@ -204,13 +199,13 @@ class InteractivePage < ActiveRecord::Base
     
     self.interactives.each do |inter|
       interactive_hash = inter.export
-      interactive_hash['type'] = inter.class.name
+      interactive_hash[:type] = inter.class.name
                                                    
       page_json[:interactives] << interactive_hash
     end
     self.main_embeddables.each do |embed|
       embeddable_hash = embed.export
-      embeddable_hash['type'] = embed.class.name                                             
+      embeddable_hash[:type] = embed.class.name                                             
       
       page_json[:embeddables] << embeddable_hash
     end    
@@ -218,10 +213,7 @@ class InteractivePage < ActiveRecord::Base
       additional_section = {name:s[:name],section_embeddables:[]}
       self.section_embeddables(s[:name]).each do |embed|
         section_embeddable_hash = embed.export
-        section_embeddable_hash['type'] = embed.class.name
-        if embed.respond_to?(:c_rater_item_settings) && embed.c_rater_item_settings
-          section_embeddable_hash['item_settings'] = embed.c_rater_item_settings.export
-        end
+        section_embeddable_hash[:type] = embed.class.name       
         additional_section[:section_embeddables] << section_embeddable_hash
       end
       page_json[:sections] << additional_section
@@ -233,20 +225,19 @@ class InteractivePage < ActiveRecord::Base
   def self.extact_from_hash(page_json_object)
     
     #pages = activity_json_object[:pages]
-    
     {
-      name: page_json_object['name'],
-      position: page_json_object['position'],
-      text: page_json_object['text'],
-      layout: page_json_object['layout'],
-      sidebar: page_json_object['sidebar'],
-      sidebar_title: page_json_object['sidebar_title'],
-      show_introduction: page_json_object['show_introduction'],
-      show_sidebar: page_json_object['show_sidebar'],
-      show_interactive: page_json_object['show_interactive'],
-      show_info_assessment: page_json_object['show_info_assessment'],
-      embeddable_display_mode: page_json_object['embeddable_display_mode'],
-      additional_sections: page_json_object['additional_sections']
+      name: page_json_object[:name],
+      position: page_json_object[:position],
+      text: page_json_object[:text],
+      layout: page_json_object[:layout],
+      sidebar: page_json_object[:sidebar],
+      sidebar_title: page_json_object[:sidebar_title],
+      show_introduction: page_json_object[:show_introduction],
+      show_sidebar: page_json_object[:show_sidebar],
+      show_interactive: page_json_object[:show_interactive],
+      show_info_assessment: page_json_object[:show_info_assessment],
+      embeddable_display_mode: page_json_object[:embeddable_display_mode],
+      additional_sections: page_json_object[:additional_sections].as_json
     }
   end
   
@@ -254,26 +245,21 @@ class InteractivePage < ActiveRecord::Base
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
       import_page.save!(validate: false)
-      page_json_object['interactives'].each do |inter|
-        import_interactive = inter['type'].constantize.import(inter.except('type'))
+      page_json_object[:interactives].each do |inter|
+        import_interactive = inter[:type].constantize.import(inter.except(:type))
         import_page.add_interactive(import_interactive, nil, false)
       end
-      page_json_object['embeddables'].each do |embed|
-        import_embeddable = embed['type'].constantize.import(embed.except('type'))
+      page_json_object[:embeddables].each do |embed|
+        import_embeddable = embed[:type].constantize.import(embed.except(:type))        
         import_embeddable.save!(validate: false)
         import_page.add_embeddable(import_embeddable)
       end
-      if page_json_object['sections']
-        page_json_object['sections'].each do |sec|
-          sec['section_embeddables'].each do |embed|
-            import_embeddable = embed['type'].constantize.import(embed.except('type','item_settings'))
+      if page_json_object[:sections]
+        page_json_object[:sections].each do |sec|
+          sec[:section_embeddables].each do |embed|
+            import_embeddable = embed[:type].constantize.import(embed.except(:type))
             import_embeddable.save!(validate: false)
-            import_page.add_embeddable(import_embeddable,nil,sec['name'])
-            if embed['item_settings']
-              item_settings = CRater::ItemSettings.import(embed['item_settings'])
-              item_settings.provider = import_embeddable
-              item_settings.save!(validate: false)
-            end
+            import_page.add_embeddable(import_embeddable,nil,sec[:name])            
           end
         end
       end

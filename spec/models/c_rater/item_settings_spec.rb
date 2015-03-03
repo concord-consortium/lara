@@ -37,17 +37,17 @@ describe CRater::ItemSettings do
   
   describe '#import' do
     it 'imports item_settings from json' do
-      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
-      activity_json['pages'].each do |p|
-        if p['sections']
-          p['sections'].each do |sec|
-            if sections['section_embeddables']
-              sections['section_embeddables'].each do |embed|
-                if embed['item_settings']
-                  import_settings = CRater::ItemSettings.import(embed['item_settings'])
+      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
+      activity_json[:pages].each do |p|
+        if p[:sections]
+          p[:sections].each do |sec|
+            if sections[:section_embeddables]
+              sections[:section_embeddables].each do |embed|
+                if embed[:item_settings]
+                  import_settings = CRater::ItemSettings.import(embed[:item_settings])
                   expect(import_settings).to be_a(CRater::ItemSettings)
-                  expect(embed['item_settings']['item_id']).to eq(import_settings.item_id)
-                  expect(embed['item_settings']['score_mapping_id']).to eq(import_settings.score_mapping_id)
+                  expect(embed[:item_settings][:item_id]).to eq(import_settings.item_id)
+                  expect(embed[:item_settings][:score_mapping_id]).to eq(import_settings.score_mapping_id)
                 end
               end
             end
