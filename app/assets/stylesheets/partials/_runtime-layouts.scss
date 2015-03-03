@@ -82,25 +82,7 @@
 }
 
 // Single page class is added to the body element. It's intended to work with the full width layout.
-// It only provides slight modifications.
-.l-single-page {
-
-  .pages {
-    display: none;
-  }
-
-  .question {
-    margin: 20px 0;
-    width: 100%;
-  }
-
-  .question-hdr {
-    display: none;
-  }
-
-  .question-bd {
-    border: none;
-    padding: 0;
-  }
+.l-single-page .pages {
+  display: none;
 }
 

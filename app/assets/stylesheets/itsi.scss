@@ -12,9 +12,52 @@ html {
 }
 
 div.activity-mod > div.site-width {
-  background-color: rgb(251, 244, 219);
+  background-color: #fbf4db;
 }
 
+// Disable background gradient.
 #container {
-  background: none; // disable gradient
+  background: none;
+}
+
+// Display full size ITSI banner (ITSI project needs to be used!).
+.site-logo-mod img {
+  max-height: none;
+}
+
+// Hide Concord logo in top-right corner.
+.site-logo.logo-r {
+  display: none;
+}
+
+.content-mod {
+  margin-bottom: 20px;
+}
+
+.intro-mod h4 {
+  margin-bottom: 10px;
+}
+
+.interactive-mod {
+  margin-bottom: 15px;
+}
+
+// Full-width question.
+.question {
+  margin: 10px 0 !important;
+  width: 100% !important;
+}
+
+.snapshot_thumbnail {
+  max-width: 50%;
+}
+
+// Hide question border and header.
+.question-hdr {
+  display: none;
+}
+
+.question-bd {
+  border: none;
+  padding: 0;
 }
