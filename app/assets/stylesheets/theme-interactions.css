@@ -11,18 +11,5 @@
  * This is a theme stylesheet manifest for the RUNTIME section of the site
  *
  *= require_self
- *= require drawing-tool
- *= require save-on-change
- *= require modal
- *= require modal-dialog
- *= require jcarousel
- *= require colorbox
- *= require video-js
- *= require font-awesome
- *= require image-question-svg-edit
- *= require image-question-drawing-tool
- *= require activity-sequences
- *= require wait-message
- *= require runtime-ribbons
  *= require interactions
  */
