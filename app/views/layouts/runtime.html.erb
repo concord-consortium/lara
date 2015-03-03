@@ -30,7 +30,7 @@
   <%- if @theme && @theme.css_file %>
       <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
   <%- else -%>
-      <%= stylesheet_link_tag 'runtime', :media => 'all' %>
+      <%= stylesheet_link_tag 'runtime-base', :media => 'all' %>
   <%- end -%>
 
   <!-- Scripts -->
