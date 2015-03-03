@@ -33,7 +33,7 @@ describe Theme do
       it "should create a new default Theme" do
         expect(Theme).to receive(:find_by_name).and_return(nil)
         default = Theme.default
-        expect(default.name).to eq(Theme::DefaultName)
+        expect(default.name).to eq(Theme::DEFAULT_NAME)
         expect(default).not_to eq(@existant)
       end
     end

@@ -1,15 +1,16 @@
 class Theme < ActiveRecord::Base
-  DefaultName = "Default"
+  DEFAULT_NAME = 'Default'
+  DEFAULT_CSS_FILE = 'runtime'
   attr_accessible :name, :css_file
 
   protected
   def self.create_default
-    self.create(:name => 'Default', :css_file => 'runtime')
+    self.create(:name => DEFAULT_NAME, :css_file => DEFAULT_CSS_FILE)
   end
 
   public
   def self.default
-    self.find_by_name(DefaultName) || self.create_default
+    self.find_by_name(DEFAULT_NAME) || self.create_default
   end
 
   # TODO: Footer might need to delegate to a future Project object instead of being part of Theme
