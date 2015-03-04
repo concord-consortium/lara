@@ -28,7 +28,13 @@ class IFrameSaver
     if (@put_url or @get_url)
       IFrameSaver.instances.push @
 
-    phone_answered = () =>
+    @already_setup = false
+    phone_answered = =>
+      # Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
+      # https://www.pivotaltracker.com/story/show/89602814
+      return if @already_setup
+      @already_setup = true
+
       @iframePhone.addListener 'setLearnerUrl', (learner_url) =>
         @learner_url = learner_url
       @iframePhone.addListener 'interactiveState', (interactive_json) =>
