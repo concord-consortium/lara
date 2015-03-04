@@ -3,9 +3,9 @@ module CRater::SettingsProviderFunctionality
   included do |base|
     has_one :c_rater_item_settings, as: :provider, class_name: 'CRater::ItemSettings'
     
-    base.alias_method_chain :duplicate, :c_rater
+    alias_method_chain :duplicate, :c_rater
     
-    base.alias_method_chain :export, :c_rater
+    alias_method_chain :export, :c_rater
     
     class << base
       def import_with_c_rater(import_hash)
