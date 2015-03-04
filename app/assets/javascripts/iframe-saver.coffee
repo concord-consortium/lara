@@ -119,7 +119,6 @@ class IFrameSaver
       learner_url: learner_url
     $.ajax
       type: 'PUT'
-      async: false #TODO: For now we can only save this synchronously....
       dataType: 'json'
       url: @put_url
       data: data
