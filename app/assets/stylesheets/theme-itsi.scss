@@ -1,22 +1,14 @@
 @import "cc-runtime-base";
 
 $bg_src: ''; // background color is set instead.
-$c_a: #ee864e;
-$c_b: #ef864e;
+$main_color: #ee864e;
+$itsi_bg: #fee9aa;
+$content_bg: #fbf4db;
 
-@include theme($bg_src, $c_a, $c_b);
+@include theme($bg_src, $main_color, $main_color);
 
 html {
-  background: #fee9aa;
-}
-
-div.activity-mod > div.site-width {
-  background-color: #fbf4db;
-}
-
-// Disable background gradient.
-#container {
-  background: none;
+  background: $itsi_bg;
 }
 
 // Display full size ITSI banner (ITSI project needs to be used!).
@@ -27,6 +19,31 @@ div.activity-mod > div.site-width {
 // Hide Concord logo in top-right corner.
 .site-logo.logo-r {
   display: none;
+}
+
+// Modify activity title style.
+.activity-nav-title {
+  color: $main_color;
+  background: $itsi_bg;
+  font-size: 28px;
+}
+
+.nav-menu {
+  border-color: transparent;
+}
+
+// Hide black rectangle next to the activity title.
+.activity-nav {
+  display: none;
+}
+
+div.activity-mod > div.site-width {
+  background-color: $content_bg;
+}
+
+// Disable background gradient.
+#container {
+  background: none;
 }
 
 .content-mod {
@@ -47,6 +64,7 @@ div.activity-mod > div.site-width {
   width: 100% !important;
 }
 
+// Limit size of saved snapshot.
 .snapshot_thumbnail {
   max-width: 50%;
 }
