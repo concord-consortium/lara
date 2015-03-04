@@ -1,4 +1,4 @@
-@mixin theme($srcImage, $theme-color-a, $theme-color-b, $theme-color-c) {
+@mixin theme($srcImage, $theme-color-a, $theme-color-b) {
   html {
     background: url($srcImage) no-repeat center center fixed;
     -webkit-background-size: cover;

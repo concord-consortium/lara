@@ -3,7 +3,6 @@
 $src: '/assets/has-bg/airPollution_background2.jpg';
 $c_a: #763e4b;
 $c_b: #C98980;
-$c_c: #edaa3d;
 
-@include theme($src, $c_a, $c_b, $c_c);
+@include theme($src, $c_a, $c_b);
 
