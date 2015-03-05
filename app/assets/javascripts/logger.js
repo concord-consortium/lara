@@ -85,6 +85,7 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   });
   $('.interactive').on('mouseout', function() {
     $(this).data().iframe_mouseover = false;
+    $(window).focus();
   });
 };
 
