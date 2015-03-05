@@ -64,7 +64,7 @@
   - portal_user = session[:portal_username]
   .profile-dropdown
     %div.profile-u-name
-      Hi, 
+      Welcome, 
       %a.popup-trigger{:href => "javascript:void(0);", "data-trigger-save" => "false"}
         - if portal_user.nil? 
           Anonymous

@@ -163,7 +163,7 @@ class ArgumentationBlockController
     for id, feedbackItem of feedbackData
       $feedback = @$element.find(FEEDBACK_ID_SEL + id)
       # Set feedback text.
-      $feedback.find(FEEDBACK_TEXT_SEL).text(feedbackItem.text)
+      $feedback.find(FEEDBACK_TEXT_SEL).html(feedbackItem.text)
       # Set score.
       $feedback.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)ab-score\S+/g) || []).join(' ') # matches all score-<val> classes
