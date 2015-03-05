@@ -120,7 +120,7 @@ class ArgumentationBlockController
       @$submitPrompt.html( t('ARG_BLOCK.PLEASE_ANSWER') )
       return
     unless @anyQuestionDirty()
-      @$submitPrompt.html( t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
+      @$submitPrompt.html( t('ARG_BLOCK.RESUBMIT_OR_MOVE'))
     
   hideSubmitPrompt: ->
     @$submitPrompt.css('display', 'none')
