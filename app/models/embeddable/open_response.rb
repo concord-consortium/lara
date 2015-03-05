@@ -1,7 +1,7 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
     include Embeddable
-    include CRater::SettingsProviderFunctionality
+    
 
     attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback
 
@@ -51,5 +51,8 @@ module Embeddable
     def self.import (import_hash)
       return self.new(import_hash)
     end
+
+    # SettingsProviderFunctionality extends the functionality of duplicate, export and import using alias_method_chain. So these methods needs to be visible to the SettingsProviderFunctionality.
+    include CRater::SettingsProviderFunctionality
   end
 end

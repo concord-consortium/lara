@@ -97,7 +97,7 @@ class Sequence < ActiveRecord::Base
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
       activity_hash = a.export
-      activity_hash['position'] = i+1
+      activity_hash[:position] = i+1
       sequence_json[:activities] << activity_hash
     end
     sequence_json[:type] = "Sequence"
@@ -123,14 +123,14 @@ class Sequence < ActiveRecord::Base
   
   def self.extact_from_hash(sequence_json_object)
     { 
-      abstract: sequence_json_object['abstract'],
-      description: sequence_json_object['description'],
-      display_title: sequence_json_object['display_title'],
-      logo: sequence_json_object['logo'],
-      project_id: sequence_json_object['project_id'],
-      theme_id: sequence_json_object['theme_id'],
-      thumbnail_url: sequence_json_object['thumbnail_url'],
-      title: sequence_json_object['title']
+      abstract: sequence_json_object[:abstract],
+      description: sequence_json_object[:description],
+      display_title: sequence_json_object[:display_title],
+      logo: sequence_json_object[:logo],
+      project_id: sequence_json_object[:project_id],
+      theme_id: sequence_json_object[:theme_id],
+      thumbnail_url: sequence_json_object[:thumbnail_url],
+      title: sequence_json_object[:title]
     }
     
   end
@@ -141,12 +141,12 @@ class Sequence < ActiveRecord::Base
       import_sequence.title = "Import of #{import_sequence.title}"
       import_sequence.user = new_owner
       positions = []
-      sequence_json_object['activities'].each do |sa|
+      sequence_json_object[:activities].each do |sa|
         import_a = LightweightActivity.import(sa, new_owner)
         import_a.name = import_a.name.sub('Import of ', '')
         import_a.save!
         import_sequence.activities << import_a
-        positions << sa['position']
+        positions << sa[:position]
       end
       import_sequence.save!
       import_sequence.fix_activity_position(positions)
