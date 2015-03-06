@@ -99,8 +99,6 @@ class IFrameSaver
 
   save_to_server: (interactive_json, learner_url) ->
     return unless @put_url
-    # Do not send the same state to server over and over again.
-    return if JSON.stringify(interactive_json) == JSON.stringify(@saved_state)
 
     runSuccess = =>
       @saved_state = interactive_json
@@ -109,7 +107,9 @@ class IFrameSaver
       else
         @default_success
 
-    if interactive_json is "nochange"
+    # Do not send the same state to server over and over again.
+    # "nochange" is a special type of response from CODAP.
+    if JSON.stringify(interactive_json) == JSON.stringify(@saved_state) || interactive_json is "nochange"
       runSuccess()
       return
 
