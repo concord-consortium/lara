@@ -77,10 +77,10 @@
                     = radio_button_tag(:feedback_on_feedback, value)
                     = label
 
-    %div.ab-submit-prompt
     %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
            'data-href' => c_rater_arg_block_save_feedback_path(page)}
+    %div.ab-submit-prompt       
 
 :javascript
   $(function() {
@@ -236,10 +236,8 @@
     }
   }
   .ab-submit-prompt {
-    float: left;
-    margin: 10px 5px;
+    float: right;
+    margin: 15px 5px;
     padding: 5px;
-    font-size: 12px;
     color: #BD6161;
-    max-width: 200px;
   }
