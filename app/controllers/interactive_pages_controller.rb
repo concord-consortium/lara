@@ -24,6 +24,9 @@ class InteractivePagesController < ApplicationController
   def preview
     # This is "show" but it clears answers first
     authorize! :update, @page # Authors only
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      redirect_to preview_activity_path(@activity) and return
+    end
     @run.clear_answers
     setup_show
     render :show
