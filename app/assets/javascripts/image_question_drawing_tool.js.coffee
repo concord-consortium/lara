@@ -90,7 +90,7 @@ class ImageQuestionDrawingTool
   create_hooks: ->
     @$snapshot_button.click =>
       if @take_interactive_snapshot()
-        startWaiting 'Please wait while the snapshot is being taken...'
+        startWaiting t('PLEASE_WAIT_TAKING_SNAPSHOT')
         @show_dialog()
 
     @$drawing_button.click =>
@@ -101,7 +101,7 @@ class ImageQuestionDrawingTool
     @$replace_button.click =>
       @drawing_tool.clear(true)
       if @take_interactive_snapshot()
-        startWaiting 'Please wait while the snapshot is being taken...'
+        startWaiting t('PLEASE_WAIT_TAKING_SNAPSHOT')
         @show_dialog()
 
     @$edit_button.click =>
@@ -152,7 +152,7 @@ class ImageQuestionDrawingTool
         @set_image_source(image_src)
         stopWaiting()
       fail: (jqXHR, textStatus, errorThrown) =>
-        @shutterbug_fail_hander("Could not take your snapshot. Please try again later.")
+        @shutterbug_fail_hander(t('SNAPSHOT_FAILED'))
         stopWaiting()
         @set_dialog_buttons_enabled(true)
         @hide_dialog()
@@ -168,7 +168,7 @@ class ImageQuestionDrawingTool
         @copy_to_form_and_save(image_src)
         stopWaiting()
       fail: (jqXHR, textStatus, errorThrown) =>
-        @shutterbug_fail_hander("Could not save your drawing after 30 seconds. Please try again later.")
+        @shutterbug_fail_hander(t('DRAWING_SAVE_ERROR'))
         stopWaiting()
         @set_dialog_buttons_enabled(true)
       format: 'jpeg'
@@ -230,7 +230,7 @@ class ImageQuestionDrawingTool
   start_saving: ->
     @show_saving()
     @set_dialog_buttons_enabled(false)
-    startWaiting 'Please wait while your drawing is being saved...'
+    startWaiting t('PLEASE_WAIT_SAVING_DRAWING')
     # Clear selection so it's not visible on the screenshot.
     @drawing_tool.clearSelection()
     # First part of saving is to get Shutterbug snapshot.
@@ -273,7 +273,7 @@ class ImageQuestionDrawingTool
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
-      if confirm "Old drawing format detected - all annotations or drawings will be cleared if you continue."
+      if confirm t('OLD_DRAWING_FORMAT')
         @$annotation_field.val("")
         # We have to manually set background again. Note that we don't have to take
         # snapshot again, as it should be already available as image_url field in form.
