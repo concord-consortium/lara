@@ -12,7 +12,10 @@
         = link_to 'All Activities', activities_path
       %li= "/ #{@activity.name}".html_safe
 
-%h1.title Edit activity
+%h1.title 
+  Edit activity
+  %span.preview
+    = link_to "Preview", preview_activity_path(@activity), :target => 'new'
 = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
 - if @activity.active_runs > 0
   %p.active-runs

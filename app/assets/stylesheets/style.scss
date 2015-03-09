@@ -112,6 +112,12 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     clear: both;
     color: #eb8723;
     font: 700 2em 'Lato', georgia, 'times new roman', serif;
+    .preview a {
+      font-weight: normal;
+      font-size: 0.5em;
+      color: #6fc5d8;
+      padding-left:15px;
+    }
   }
   p.question {
     color: #3a878b;
