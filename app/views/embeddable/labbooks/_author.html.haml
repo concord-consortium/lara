@@ -1,0 +1,7 @@
+.authorable
+  .embeddable_tools
+    .drag_handle
+    - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
+    = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
+  %p
+    Labbook album

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150226120712) do
+ActiveRecord::Schema.define(:version => 20150309110458) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -150,6 +150,22 @@ ActiveRecord::Schema.define(:version => 20150226120712) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
+  end
+
+  create_table "embeddable_labbook_answers", :force => true do |t|
+    t.integer  "run_id"
+    t.integer  "labbook_id"
+    t.boolean  "is_dirty",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "embeddable_labbook_answers", ["labbook_id"], :name => "index_embeddable_labbook_answers_on_labbook_id"
+  add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
+
+  create_table "embeddable_labbooks", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|

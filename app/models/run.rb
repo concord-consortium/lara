@@ -33,6 +33,11 @@ class Run < ActiveRecord::Base
     :foreign_key => 'run_id',
     :dependent => :destroy
 
+  has_many :labbook_answers,
+    :class_name  => 'Embeddable::LabbookAnswer',
+    :foreign_key => 'run_id',
+    :dependent => :destroy
+
   has_many :interactive_run_states
 
   before_validation :check_key

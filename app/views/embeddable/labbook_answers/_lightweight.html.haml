@@ -1,0 +1,23 @@
+- embeddable_dom_id = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
+.question-hdr
+  %h5.h5= "#{t('LABBOOK_ALBUM')} ##{embeddable.question_index}"
+.question-bd.labbook{id: embeddable_dom_id,
+                    'data-labbook-url' => embeddable.class.labbook_provider,
+                    'data-labbook-album-id' => embeddable.album_id,
+                    'data-interactive-id' => embeddable.interactive ? embeddable.interactive.id : 'null'}
+  %input.button.take-lb-snapshot{type: 'submit', value: t('TAKE_SNAPSHOT')}
+  %input.button.open-lb-album{type: 'submit', value: t('OPEN_ALBUM')}
+
+  .lb-dialog-content{style: 'display: none;'}
+    .lb-wait-msg
+    %iframe.labbook-content
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready(function() {
+      new EmbeddableQuestionsLogging({
+        type  :"#{embeddable.class.to_s.demodulize.underscore}",
+        id    :"#{embeddable.id}",
+        dom_id:"#{embeddable_dom_id}"
+      });
+    });
