@@ -38,6 +38,22 @@ module Embeddable
     def prompt
       I18n.t('LABBOOK_ALBUM') # This string is visible in report.
     end
+
+    def to_hash
+      {}
+    end
+
+    def duplicate
+      self.class.new(self.to_hash)
+    end
+
+    def export
+      return self.as_json(only: [])
+    end
+
+    def self.import(import_hash)
+      self.new(import_hash)
+    end
     # End of question interface.
 
     def interactive

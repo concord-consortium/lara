@@ -87,16 +87,6 @@ shared_examples "an answer" do
     end
   end
 
-  describe "to_json" do
-    let(:question) { double("question", :id => 3)}
-
-    it "should be the portal_hash to_json" do
-      # this isn't actually testing anythign useful at all
-      allow(answer).to receive_messages(:question => question)
-      expect(answer.to_json).to eq(answer.portal_hash.to_json)
-    end
-  end
-
   describe "reset_to_clean" do
     let(:answer) { described_class.create(:is_dirty => true) }
     it "should remove the is_dirty flag without invoking callbacks" do
