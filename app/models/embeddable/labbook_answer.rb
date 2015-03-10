@@ -12,9 +12,8 @@ module Embeddable
                :class_name => 'Embeddable::Labbook',
                :foreign_key => 'labbook_id'
 
-    # TODO: portal reporting support
     # It's enough to send Labbook to Portal just once - Labbook URL never changes.
-    # after_create :send_to_portal
+    after_create :send_to_portal
 
     # TODO: run with collaborators support
     # after_update :propagate_to_collaborators
@@ -49,7 +48,13 @@ module Embeddable
     end
 
     def portal_hash
-      # TODO: portal reporting support
+      {
+        type: 'external_link',
+        question_type: question.class.portal_type,
+        question_id: question.portal_id,
+        answer: view_url,
+        is_final: false
+      }
     end
     # End of Answer interface.
   end

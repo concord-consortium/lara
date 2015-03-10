@@ -11,6 +11,35 @@ module Embeddable
     has_many :answers,
              :class_name  => 'Embeddable::LabbookAnswer'
 
+    def self.portal_type
+      # Note that the same type is also used by MwInteractive.
+      'iframe interactive'
+    end
+
+    def portal_id
+      # We have to add prefix to ID to make sure that there are no conflicts
+      # between various LARA classes using the same portal type (e.g. MwInteractive).
+      "#{self.class.name}_#{id}"
+    end
+
+    # Question interface.
+    def portal_hash
+      {
+        # This is ridiculous, but portal sometimes uses 'iframe interactive' and sometimes 'iframe_interactive'...
+        type: self.class.portal_type.gsub(' ', '_'),
+        id: portal_id,
+        name: 'Labbook album',
+        # This info can be used by Portal to generate an iframe.
+        native_width: 600,
+        native_height: 500
+      }
+    end
+
+    def prompt
+      I18n.t('LABBOOK_ALBUM') # This string is visible in report.
+    end
+    # End of question interface.
+
     def interactive
       # Return first interactive available on the page (note that in practice it's impossible that this model has more
       # than one page, even though it's many-to-many association).
@@ -18,11 +47,5 @@ module Embeddable
       page = interactive_pages.first
       page && page.interactives.first
     end
-
-    # Question interface.
-    def prompt
-      I18n.t('LABBOOK_ALBUM') # This string is visible in report.
-    end
-    # End of question interface.
   end
 end

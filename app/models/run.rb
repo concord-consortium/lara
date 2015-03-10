@@ -147,7 +147,7 @@ class Run < ActiveRecord::Base
   end
 
   def answers
-    open_response_answers + multiple_choice_answers + image_question_answers + interactive_run_states
+    open_response_answers + multiple_choice_answers + image_question_answers + labbook_answers + interactive_run_states
   end
 
   def answers_hash
