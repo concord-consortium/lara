@@ -29,7 +29,11 @@ module Embeddable
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
         name: 'Labbook album',
-        # This info can be used by Portal to generate an iframe.
+        # This info can be used by Portal to generate an iframe with album in teacher report.
+        display_in_iframe: true,
+        # These dimensions are pretty random at the moment. Labbook album doesn't look good
+        # in small iframe anyway and Portal has additional limits on max width and height.
+        # It would make sense to create a separate, compact view of an Labbook album for reports.
         native_width: 600,
         native_height: 500
       }
