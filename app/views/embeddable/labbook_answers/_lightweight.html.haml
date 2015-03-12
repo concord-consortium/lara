@@ -5,8 +5,13 @@
                     'data-labbook-url' => embeddable.class.labbook_provider,
                     'data-labbook-album-id' => embeddable.album_id,
                     'data-interactive-id' => embeddable.interactive ? embeddable.interactive.id : 'null'}
-  %input.button.take-lb-snapshot{type: 'submit', value: t('TAKE_SNAPSHOT')}
-  %input.button.open-lb-album{type: 'submit', value: t('OPEN_ALBUM')}
+  %button.lb-take-snapshot{type: 'button'}
+    %span.lb-snapshot-btn-label
+      %i.fa.fa-camera
+      = t('TAKE_SNAPSHOT')
+  %button.lb-open-album{type: 'button'}
+    %span.lb-album-btn-label
+      = t('OPEN_ALBUM')
 
   .lb-dialog-content{style: 'display: none;'}
     .lb-wait-msg

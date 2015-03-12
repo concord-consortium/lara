@@ -78,3 +78,21 @@ div.activity-mod > div.site-width {
   border: none;
   padding: 0;
 }
+
+// Labbook theme.
+
+button[type="button"].lb-open-album {
+  background: url('/assets/labbook-album.png') no-repeat;
+  border: none;
+  box-shadow: none;
+  width: 50px;
+  height: 43px;
+  margin-left: 5px;
+  .lb-album-btn-label {
+    display: none;
+  }
+}
+.lb-open-album, .lb-take-snapshot {
+  vertical-align: middle;
+}
+

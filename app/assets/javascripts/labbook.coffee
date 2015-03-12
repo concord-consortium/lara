@@ -1,6 +1,6 @@
 class LabbookController
-  TAKE_SNAPSHOT_SEL = '.take-lb-snapshot'
-  OPEN_ALBUM_SEL = '.open-lb-album'
+  TAKE_SNAPSHOT_SEL = '.lb-take-snapshot'
+  OPEN_ALBUM_SEL = '.lb-open-album'
   DIALOG_SEL = '.lb-dialog-content'
   INTERACTIVE_SEL = '#interactive_' # incomplete, we need to provide ID
   WAIT_MSG_SEL = '.lb-wait-msg'
