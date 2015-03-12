@@ -109,3 +109,10 @@
     }
   }
 }
+
+@mixin hasbot($srcImage) {
+  .ab-robot-wrap #ab-robot-image {
+      background-image: url($srcImage);
+      background-position: 0 0;
+  }
+}

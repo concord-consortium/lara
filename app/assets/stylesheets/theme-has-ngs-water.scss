@@ -5,3 +5,4 @@ $c_a: #2f70b0;
 $c_b: #84c6cf;
 
 @include theme($src, $c_a, $c_b);
+@include hasbot('/assets/c-rater/blue-hasbot.png');

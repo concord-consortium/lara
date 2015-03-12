@@ -52,6 +52,9 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity # Authors only
     @run.clear_answers
     setup_show
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      render :single_page and return
+    end
     render :show
   end
 
