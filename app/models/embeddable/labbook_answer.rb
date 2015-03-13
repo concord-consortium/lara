@@ -9,8 +9,8 @@ module Embeddable
 
     belongs_to :run
     belongs_to :question,
-               :class_name => 'Embeddable::Labbook',
-               :foreign_key => 'labbook_id'
+               class_name: 'Embeddable::Labbook',
+               foreign_key: 'labbook_id'
 
     # It's enough to send Labbook to Portal just once - Labbook URL never changes.
     after_create :send_to_portal
@@ -22,7 +22,10 @@ module Embeddable
       ENV['LABBOOK_PROVIDER_URL']
     end
 
-    delegate :interactive, :to => :question
+    delegate :is_upload?, to: :question
+    delegate :is_snapshot?, to: :question
+    delegate :action_label, to: :question
+    delegate :interactive, to: :question
 
     def album_id
       # Construct unique album ID. Use own ID and run key. Run key is actually unnecessary, but it provides salting,

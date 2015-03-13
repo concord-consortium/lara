@@ -1,5 +1,5 @@
 class LabbookController
-  TAKE_SNAPSHOT_SEL = '.lb-take-snapshot'
+  ACTION_BTN_SEL = '.lb-action-btn'
   OPEN_ALBUM_SEL = '.lb-open-album'
   DIALOG_SEL = '.lb-dialog-content'
   INTERACTIVE_SEL = '#interactive_' # incomplete, we need to provide ID
@@ -8,19 +8,18 @@ class LabbookController
   constructor: (labbookElement) ->
     @$element = $(labbookElement)
     @$openAlbumBtn = @$element.find(OPEN_ALBUM_SEL)
-    @$takeSnapshotBtn = @$element.find(TAKE_SNAPSHOT_SEL)
+    @$actionBtn = @$element.find(ACTION_BTN_SEL)
     @$dialog = @$element.find(DIALOG_SEL)
     @$iframe = @$dialog.find('iframe')
 
     @baseUrl = @$element.data('labbook-url')
     @albumId = @$element.data('labbook-album-id')
 
-    interactiveId = @$element.data('interactive-id')
-    if interactiveId
-      @snapshotEnabled = true
-      @interactiveSel = INTERACTIVE_SEL + interactiveId
-    else
-      @snapshotEnabled = false
+    @isUpload = @$element.data('is-upload')
+
+    unless @isUpload
+      interactiveId = @$element.data('interactive-id')
+      @interactiveSel = INTERACTIVE_SEL + interactiveId if interactiveId
 
     @$dialog.dialog({
       autoOpen: false,
@@ -32,27 +31,26 @@ class LabbookController
     })
 
     @registerListeners()
-    @updateView()
 
   registerListeners: ->
     @$openAlbumBtn.on 'click', =>
       @openAlbum()
 
-    @$takeSnapshotBtn.on 'click', =>
-      @takeSnapshot()
-
-  updateView: ->
-    if @snapshotEnabled
-      @$takeSnapshotBtn.show()
-    else
-      @$takeSnapshotBtn.hide()
+    @$actionBtn.on 'click', =>
+      if @isUpload
+        @uploadImage()
+      else
+        @takeSnapshot()
 
   openAlbum: ->
     @setIframeUrl("#{@baseUrl}/albums?#{@albumId}")
     @showDialog()
 
+  uploadImage: ->
+    @setIframeUrl("#{@baseUrl}/albums?#{@albumId}&todo=new")
+    @showDialog()
+
   takeSnapshot: ->
-    return unless @snapshotEnabled
     @startWaiting(t('PLEASE_WAIT_TAKING_SNAPSHOT'))
     @$iframe.hide()
     @showDialog()

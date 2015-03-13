@@ -81,6 +81,14 @@ module Embeddable
     end
     # End of question interface.
 
+    def is_upload?
+      action_type == UPLOAD_ACTION
+    end
+
+    def is_snapshot?
+      action_type == SNAPSHOT_ACTION
+    end
+
     def interactive
       # Return first interactive available on the page (note that in practice it's impossible that this model has more
       # than one page, even though it's many-to-many association).
