@@ -81,7 +81,7 @@ div.activity-mod > div.site-width {
 
 // Labbook theme.
 
-button[type="button"].lb-open-album {
+button[type="button"].lb-album-btn {
   background: url('/assets/labbook-album.png') no-repeat;
   border: none;
   box-shadow: none;
@@ -92,7 +92,7 @@ button[type="button"].lb-open-album {
     display: none;
   }
 }
-.lb-open-album, .lb-take-snapshot {
+.lb-album-btn, .lb-action-btn {
   vertical-align: middle;
 }
 

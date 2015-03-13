@@ -1,6 +1,6 @@
 class LabbookController
   ACTION_BTN_SEL = '.lb-action-btn'
-  OPEN_ALBUM_SEL = '.lb-open-album'
+  OPEN_ALBUM_SEL = '.lb-album-btn'
   DIALOG_SEL = '.lb-dialog-content'
   INTERACTIVE_SEL = '#interactive_' # incomplete, we need to provide ID
   WAIT_MSG_SEL = '.lb-wait-msg'
