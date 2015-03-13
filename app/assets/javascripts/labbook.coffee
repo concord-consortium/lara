@@ -18,8 +18,8 @@ class LabbookController
     @isUpload = @$element.data('is-upload')
 
     unless @isUpload
-      interactiveId = @$element.data('interactive-id')
-      @interactiveSel = INTERACTIVE_SEL + interactiveId if interactiveId
+      intId = @$element.data('interactive-id')
+      @interactiveSel = if intId then "#{INTERACTIVE_SEL}#{intId}" else null
 
     @$dialog.dialog({
       autoOpen: false,
@@ -51,6 +51,10 @@ class LabbookController
     @showDialog()
 
   takeSnapshot: ->
+    unless @interactiveSel
+      @showError(t('MISSING_INTERACTIVE'))
+      return
+
     @startWaiting(t('PLEASE_WAIT_TAKING_SNAPSHOT'))
     @$iframe.hide()
     @showDialog()
@@ -86,8 +90,8 @@ class LabbookController
 
   showError: (message) ->
     @$dialog.dialog('close')
-    $('#modal-dialog').html('<div class="server-error">#{message}</div>')
-    $('#modal-dialog').dialog(title: 'Network error', modal: true, dialogClass: 'network-error')
+    $('#modal-dialog').html("<div class='dialog-error'>#{message}</div>")
+    $('#modal-dialog').dialog(title: t('ERROR'), modal: true)
 
 $(document).ready ->
   $('.labbook').each ->

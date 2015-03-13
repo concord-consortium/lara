@@ -3,6 +3,7 @@
 
 en:
   COMPLETED: "Completed"
+  ERROR: "Error"
   MENU: "Menu"
   ACTIVITY: "Activity"
   BEGIN_ACTIVITY: "Begin activity"
@@ -19,6 +20,7 @@ en:
   LOADING_LABBOOK: "Loading Labbook album..."
   SNAPSHOT_FAILED: "Could not take your snapshot. Please try again later."
   DRAWING_SAVE_ERROR: "Could not save your drawing after 30 seconds. Please try again later."
+  MISSING_INTERACTIVE: "Could not take your snapshot, there is no interactive."
   TYPE_ANSWER_HERE: "Type answer here"
   NEXT: "Next >"
   BACK: "< Back"
@@ -42,7 +44,6 @@ en:
   NEW_SEQUENCE_BUTTON: "Create new sequence"
   IMPORT: "Import"
   COLLECTION_SORT_ORDER: " – most recently modified first."
-  MISSING_INTERACTIVE: "We are sorry, but we can't take snapshot - this page does not contain any interactive."
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."

@@ -134,7 +134,7 @@ class ImageQuestionDrawingTool
       )
 
   shutterbug_fail_hander: (message) ->
-    $('#modal-dialog').html "<div class='server-error'>#{message}</div>"
+    $('#modal-dialog').html "<div class='dialog-error'>#{message}</div>"
     $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error")
     stopWaiting()
     @save_failed()
