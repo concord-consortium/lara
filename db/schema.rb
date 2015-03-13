@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150309110458) do
+ActiveRecord::Schema.define(:version => 20150312183116) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -164,8 +164,12 @@ ActiveRecord::Schema.define(:version => 20150309110458) do
   add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
 
   create_table "embeddable_labbooks", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "action_type",         :default => 0, :null => false
+    t.string   "name"
+    t.text     "prompt"
+    t.string   "custom_action_label"
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|

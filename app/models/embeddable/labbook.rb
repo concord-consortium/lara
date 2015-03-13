@@ -3,6 +3,16 @@ module Embeddable
   class Labbook < ActiveRecord::Base
     include Embeddable
 
+    UPLOAD_ACTION = 0
+    SNAPSHOT_ACTION = 1
+
+    ACTION_OPTIONS = [
+      ['Upload', UPLOAD_ACTION],
+      ['Snapshot', SNAPSHOT_ACTION]
+    ]
+
+    attr_accessible :action_type, :name, :prompt, :custom_action_label
+
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
 
@@ -10,6 +20,16 @@ module Embeddable
     # LabbookAnswer is an instance related to particular activity run and user.
     has_many :answers,
              :class_name  => 'Embeddable::LabbookAnswer'
+
+    default_value_for :name, 'Labbook album' # it's used in Portal reports
+
+    def self.name_as_param
+      :embeddable_labbook
+    end
+
+    def self.human_description
+      "Labbook album"
+    end
 
     def self.portal_type
       # Note that the same type is also used by MwInteractive.
@@ -28,7 +48,7 @@ module Embeddable
         # This is ridiculous, but portal sometimes uses 'iframe interactive' and sometimes 'iframe_interactive'...
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
-        name: 'Labbook album',
+        name: name,
         # This info can be used by Portal to generate an iframe with album in teacher report.
         display_in_iframe: true,
         # These dimensions are pretty random at the moment. Labbook album doesn't look good
@@ -39,12 +59,13 @@ module Embeddable
       }
     end
 
-    def prompt
-      I18n.t('LABBOOK_ALBUM') # This string is visible in report.
-    end
-
     def to_hash
-      {}
+      {
+        action_type: action_type,
+        name: name,
+        prompt: prompt,
+        custom_action_label: custom_action_label
+      }
     end
 
     def duplicate
@@ -52,7 +73,7 @@ module Embeddable
     end
 
     def export
-      return self.as_json(only: [])
+      return self.as_json(only: [:action_type, :name, :prompt, :custom_action_label])
     end
 
     def self.import(import_hash)
@@ -66,6 +87,16 @@ module Embeddable
       # In the future we can let authors explicitly select which interactive Labbook album is connected to.
       page = interactive_pages.first
       page && page.interactives.first
+    end
+
+    def action_label
+      return custom_action_label unless custom_action_label.blank?
+      case action_type
+        when UPLOAD_ACTION
+          I18n.t('UPLOAD_IMAGE')
+        when SNAPSHOT_ACTION
+          I18n.t('TAKE_SNAPSHOT')
+      end
     end
   end
 end
