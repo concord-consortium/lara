@@ -38,10 +38,10 @@ module Embeddable
       "source=#{SOURCE_ID}&user_id=#{album_id}"
     end
 
-    def view_url
+    def report_url
       service_url = self.class.labbook_provider
       return nil if service_url.blank?
-      "#{service_url}/albums?#{album_id}"
+      "#{service_url}/albums?todo=report&#{album_id}"
     end
 
     # Answer interface:
@@ -55,7 +55,7 @@ module Embeddable
         type: 'external_link',
         question_type: question.class.portal_type,
         question_id: question.portal_id,
-        answer: view_url,
+        answer: report_url,
         is_final: false
       }
     end

@@ -13,7 +13,7 @@ describe Embeddable::LabbookAnswer do
         type:          'external_link',
         question_type: 'iframe interactive',
         question_id:   labbook.portal_id,
-        answer:        labbok_answer.view_url,
+        answer:        labbok_answer.report_url,
         is_final:      false
       }
     end
