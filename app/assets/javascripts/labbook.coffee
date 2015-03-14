@@ -72,15 +72,12 @@ class LabbookController
     @$dialog.dialog('open')
 
   setIframeUrl: (newUrl) ->
-    oldUrl = @$iframe.attr('src')
-    # Check old URL, so iframe won't be reloaded if it's not necessary.
-    if newUrl != oldUrl
-      @startWaiting(t('LOADING_LABBOOK'))
-      @$iframe.hide()
-      @$iframe.attr('src', newUrl)
-      @$iframe.one 'load', =>
-        @stopWaiting()
-        @$iframe.fadeIn()
+    @startWaiting(t('LOADING_LABBOOK'))
+    @$iframe.hide()
+    @$iframe.attr('src', newUrl)
+    @$iframe.one 'load', =>
+      @stopWaiting()
+      @$iframe.fadeIn()
 
   startWaiting: (message) ->
     startWaiting(message, WAIT_MSG_SEL) # defined in wait-message.js
