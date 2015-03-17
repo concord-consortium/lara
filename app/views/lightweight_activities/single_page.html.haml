@@ -16,6 +16,7 @@
       startWaiting('Saving data and closing activity...','#loading-container');
       $('#modal-container').show()
       $('#loading-container').css('top', $(window).scrollTop() + 200).show()
+      window.SaveOnChangePage.instance.force_save_dirty();
       var closeTab = setTimeout(function(){ close(); }, 3000);
     });
   });
