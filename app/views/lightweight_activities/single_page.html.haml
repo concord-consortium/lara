@@ -8,15 +8,5 @@
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
 .submit
-  %input.sp-submit{ :type => "submit", :value => 'Submit'}
-
-:javascript
-  $(function() {
-    $('.sp-submit').on('click', function() {
-      startWaiting('Saving data and closing activity...','#loading-container');
-      $('#modal-container').show()
-      $('#loading-container').css('top', $(window).scrollTop() + 200).show()
-      window.SaveOnChangePage.instance.force_save_dirty();
-      var closeTab = setTimeout(function(){ close(); }, 3000);
-    });
-  });
+  %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav' }
+    %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}

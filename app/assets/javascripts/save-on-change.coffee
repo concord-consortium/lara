@@ -193,7 +193,16 @@ class @ForwardBlocker
       $('.question').addClass('did_try_to_navigate')
       modalDialog(false, t('PLEASE_SUBMIT'))
     else
-      window.location = location
+      if ($(click_element).hasClass('sp-submit'))
+        startWaiting 'Saving data and closing activity...', '#loading-container'
+        $('#modal-container').show()
+        $('#loading-container').css('top', $(window).scrollTop() + 200).show()
+        closeTab = setTimeout((->
+          close()
+          return
+        ), 3000)
+      else
+        window.location = location
 
   update_display: () ->
     num_blockers = @blockers.length
@@ -241,7 +250,9 @@ class @SaveOnChangePage
   navigate_away: ->
     if @click_element
       args = {click_element: @click_element}
-      $(document).trigger('navigate_away', args)
+    else if $('.sp-submit')
+      args = {click_element: $('.sp-submit')}
+    $(document).trigger('navigate_away', args)
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
