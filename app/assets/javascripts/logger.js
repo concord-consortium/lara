@@ -1,5 +1,6 @@
 function LoggerUtils(logger) {
   this._logger = logger;
+  this.iframePhoneRpcEndpoints = [];
 };
 
 LoggerUtils.instance = function(loggerConfig) {
@@ -63,7 +64,7 @@ LoggerUtils.prototype._submittedQuestionLogging = function(data) {
   question_type              = this._getQuestionType(data),
   question_id                = data.split('_').slice(-1)[0],
   data_object[question_type] = question_id;
-  
+
   this._logger.log(data_object);
 };
 
@@ -86,6 +87,69 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   $('.interactive').on('mouseout', function() {
     $(this).data().iframe_mouseover = false;
   });
+
+  $('.interactive').each(function() {
+    // this == an iframe.interactive
+    self._logInteractiveEvents(this);
+  });
+};
+
+LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
+
+  var handler = function(cmd) {
+    var str;
+    var index;
+    var eventName;
+    var eventValue;
+    var parameters;
+
+    if (cmd && cmd.action === 'logAction' && cmd.args) {
+      str = cmd.args.formatStr;
+      console.log("LOGGED: ", str);
+
+      index = str.indexOf(':');
+
+      if ( index >= 0) {
+        eventName = str.slice(0, index);
+        eventValue = str.slice(index + 1);
+        try {
+          parameters = JSON.parse(eventValue);
+        } catch (e) {
+          // noop
+        }
+
+        this._logger.log({
+          event: eventName,
+          event_value: eventValue,
+          parameters: parameters,
+          interactive_id: $(iframe).data().id,
+          interactive_url: iframe.src
+        });
+      }
+    }
+  }.bind(this);
+
+  var iframePhoneRpc;
+  for (i = 0; i < IFrameSaver.instances.length; i++) {
+    instance = IFrameSaver.instances[i];
+    if (instance.iframePhone.getTargetWindow() === iframe.contentWindow) {
+      iframePhoneRpc = instance.iframePhoneRpc;
+      // TODO: patch into call chain?
+      iframePhoneRpc.handler = handler;
+      break;
+    }
+  }
+
+  // NOTE: in this initial form, we can reuse IframePhone instance created by
+  // IFrameSaver (let's agree on caps btw?) but other code can't reuse our instances
+  // (Creating >1 IframePhone instance pointed at the same iframe breaks message queuing)
+
+  if ( ! iframePhoneRpc ) {
+    iframePhoneRpc = new iframePhone.IframePhoneRpcEndpoint(handler, 'codap-game', iframe);
+    iframePhoneRpc.call({ message: 'codap-present' });
+  }
+
+  this.iframePhoneRpcEndpoints.push(iframePhoneRpc);
 };
 
 
@@ -126,12 +190,12 @@ var EmbeddableQuestionsLogging = function(question) {
   this.question_type   = question.type;
   this.question_id     = question.id;
   this.question_dom_id = question.dom_id;
-  
+
   this._logger = new Logger({
     server     : loggerConfig.server,
     defaultData: loggerConfig.data
   });
-  
+
   this.bind_logger();
 };
 
@@ -197,4 +261,4 @@ $(document).ready(function() {
       break;
   }
 
-}());
+});
