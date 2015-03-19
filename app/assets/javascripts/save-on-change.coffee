@@ -174,7 +174,7 @@ class @ForwardBlocker
     @binding.bind 'enable_forward_navigation', (e,opts) =>
       @enable_forward_navigation_for(opts.source)
     @binding.bind 'navigate_away', (e,opts) =>
-      @navigate_away(opts.click_element)
+      @navigate_away(opts.click_element, opts.action_to_perform)
 
   prevent_forward_navigation_for: (blocker) ->
     if blocker not in @blockers
@@ -187,22 +187,12 @@ class @ForwardBlocker
       @blockers.splice(index,1)
       @update_display()
 
-  navigate_away: (click_element) ->
-    location = click_element.href
+  navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
       modalDialog(false, t('PLEASE_SUBMIT'))
     else
-      if ($(click_element).hasClass('sp-submit'))
-        startWaiting 'Saving data and closing activity...', '#loading-container'
-        $('#modal-container').show()
-        $('#loading-container').css('top', $(window).scrollTop() + 200).show()
-        closeTab = setTimeout((->
-          close()
-          return
-        ), 3000)
-      else
-        window.location = location
+      action_to_perform and action_to_perform();
 
   update_display: () ->
     num_blockers = @blockers.length
@@ -230,9 +220,18 @@ class @SaveOnChangePage
   intercept_navigation: ->
     $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data-trigger-save=false]").on 'click', (e) =>
       e.preventDefault()
-      @click_element   = e.currentTarget
+      @click_element = e.currentTarget
+      click_element = @click_element
       LoggerUtils.pageExitLogging();
-      @force_save_dirty()
+      @force_save_dirty ->
+        if click_element 
+          args = 
+            click_element: click_element
+            action_to_perform: () ->
+              window.location = click_element.href
+              return
+          $(document).trigger('navigate_away', args)
+
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -247,12 +246,8 @@ class @SaveOnChangePage
   mark_dirty: (form) ->
     @dirty_forms[form] = form
 
-  navigate_away: ->
-    if @click_element
-      args = {click_element: @click_element}
-    else if $('.sp-submit')
-      args = {click_element: $('.sp-submit')}
-    $(document).trigger('navigate_away', args)
+  navigate_away: (callback) ->
+    callback and callback()
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
@@ -263,11 +258,11 @@ class @SaveOnChangePage
         if f.$form[0] ==$form_jq[0]
           f.saveElement(false)
 
-  force_save_dirty: ()->
+  force_save_dirty: (callback)->
     for item, value of @dirty_forms
       value.saveNow()
     if (typeof IFrameSaver == "undefined")
-      @navigate_away()
+      @navigate_away(callback)
       return
 
     waiting_on = IFrameSaver.instances.length
@@ -277,9 +272,9 @@ class @SaveOnChangePage
         saver.save =>
           found = found + 1
           if (found + 1 ) >= waiting_on
-            @navigate_away()
+            @navigate_away(callback)
     else
-      @navigate_away()
+      @navigate_away(callback)
 
 
 $(document).ready ->

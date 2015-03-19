@@ -8,5 +8,32 @@
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
 .submit
-  %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav' }
+  %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
     %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
+
+:scss
+  .submit{
+    width:80px;
+    margin:0 auto;
+  }
+
+:javascript
+  $("a.sp-submit").on('click',function(e){
+    click_element = e.currentTarget;
+    e.preventDefault();
+    window.SaveOnChangePage.instance.force_save_dirty(function(){
+      if (click_element){
+        args = {
+          click_element: click_element,
+          action_to_perform: function(){
+            LoggerUtils.pageExitLogging();
+            startWaiting('Saving data and closing activity...','#loading-container');
+            $('#modal-container').show();
+            $('#loading-container').css('top', $(window).scrollTop() + 200).show();
+            setTimeout(function(){ close(); }, 3000);
+          }
+        }
+        $(document).trigger('navigate_away', args);
+      }
+    });
+  }); 
