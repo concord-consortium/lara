@@ -1,5 +1,5 @@
 class LightweightActivity < ActiveRecord::Base
-  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
+  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice, Embeddable::Labbook]
   include Publishable # models/publishable.rb defines pub & official
 
   LAYOUT_MULTI_PAGE = 0
@@ -225,7 +225,11 @@ class LightweightActivity < ActiveRecord::Base
             elements.push(iframe_data)
           end
         else
-          # We don't support this embeddable type right now
+          # Why do we explicitly list all the embeddable types above?
+          if embeddable.respond_to?(:portal_hash)
+            elements.push(embeddable.portal_hash)
+          end
+          # Otherwise we don't support this embeddable type right now.
         end
       end
       pages.push({

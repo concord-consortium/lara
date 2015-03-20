@@ -3,13 +3,24 @@
 
 en:
   COMPLETED: "Completed"
+  ERROR: "Error"
   MENU: "Menu"
   ACTIVITY: "Activity"
   BEGIN_ACTIVITY: "Begin activity"
   BEGIN_NEXT_ACTIVITY: "Next activity"
-  TAKE_SNAPSHOT: "Take snapshot"
+  TAKE_SNAPSHOT: "Take a snapshot"
+  UPLOAD_IMAGE: "Upload image"
   REPLACE_SNAPSHOT:  "Replace snapshot"
+  PLEASE_WAIT_TAKING_SNAPSHOT: "Please wait while the snapshot is being taken..."
+  PLEASE_WAIT_SAVING_DRAWING: 'Please wait while your drawing is being saved...'
+  OLD_DRAWING_FORMAT: "Old drawing format detected - all annotations or drawings will be cleared if you continue."
+  OPEN_ALBUM: "Open album"
   QUESTION: "Question"
+  LABBOOK_ALBUM: "Labbook album"
+  LOADING_LABBOOK: "Loading Labbook album..."
+  SNAPSHOT_FAILED: "Could not take your snapshot. Please try again later."
+  DRAWING_SAVE_ERROR: "Could not save your drawing after 30 seconds. Please try again later."
+  MISSING_INTERACTIVE: "Could not take your snapshot, there is no interactive."
   TYPE_ANSWER_HERE: "Type answer here"
   NEXT: "Next >"
   BACK: "< Back"
@@ -33,7 +44,6 @@ en:
   NEW_SEQUENCE_BUTTON: "Create new sequence"
   IMPORT: "Import"
   COLLECTION_SORT_ORDER: " – most recently modified first."
-  MISSING_INTERACTIVE: "We are sorry, but we can't take snapshot - this page does not contain any interactive."
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."

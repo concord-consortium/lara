@@ -106,6 +106,8 @@ LightweightStandalone::Application.routes.draw do
     end
     resources :xhtmls
     resources :open_responses
+    resources :labbooks
+    resources :labbook_answers, :only => [:update]
   end
 
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'

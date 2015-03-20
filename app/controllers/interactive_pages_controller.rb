@@ -120,6 +120,8 @@ class InteractivePagesController < ApplicationController
       param = { :edit_embed_or => e.id }
     when Embeddable::ImageQuestion
       param = { :edit_embed_iq => e.id }
+    when Embeddable::Labbook
+      param = { :edit_embed_lb => e.id }
     when Embeddable::Xhtml
       param = { :edit_embed_xhtml => e.id }
     end
