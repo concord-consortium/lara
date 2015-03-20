@@ -19,13 +19,13 @@ describe Embeddable::Labbook do
     context 'labbook action type is set to upload' do
       let(:labbook) { Embeddable::Labbook.new(action_type: Embeddable::Labbook::UPLOAD_ACTION) }
       it 'returns "Upload image"' do
-        expect(labbook.action_label).to eql('Upload image')
+        expect(labbook.action_label).to eql(I18n.t('UPLOAD_IMAGE'))
       end
     end
     context 'labbook action type is set to snapshot' do
       let(:labbook) { Embeddable::Labbook.new(action_type: Embeddable::Labbook::SNAPSHOT_ACTION) }
       it 'returns "Take snapshot"' do
-        expect(labbook.action_label).to eql('Take snapshot')
+        expect(labbook.action_label).to eql(I18n.t('TAKE_SNAPSHOT'))
       end
     end
     context 'labbook has a custom action label defined' do
