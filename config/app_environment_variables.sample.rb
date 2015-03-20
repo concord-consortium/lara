@@ -19,4 +19,4 @@ ENV['C_RATER_CLIENT_ID']                 ||= 'XXXXXXX'
 ENV['C_RATER_USERNAME']                  ||= 'XXXXXXX'
 ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
 
-ENV['LABBOOK_PROVIDER_URL']              ||= '//labbook.concord.org'
+ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
