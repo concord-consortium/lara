@@ -22,4 +22,23 @@ describe Embeddable::LabbookAnswer do
       expect(labbok_answer.portal_hash).to eq(expected_hash)
     end
   end
+
+  describe '#copy_answer!' do
+    let(:another_answer) { Embeddable::LabbookAnswer.new(run: run) }
+    let(:labbook_replace_url) { "#{Embeddable::LabbookAnswer.labbook_provider}/albums/replace_all_snapshots"}
+
+    before(:each) do
+      stub_request(:post, labbook_replace_url).
+         with(body: {dst_source: Embeddable::LabbookAnswer::SOURCE_ID,
+                     dst_user_id: labbok_answer.labbook_user_id,
+                     src_source: Embeddable::LabbookAnswer::SOURCE_ID,
+                     src_user_id: another_answer.labbook_user_id}).
+         to_return(:status => 200, :body => "", :headers => {})
+    end
+
+    it 'should fire off a web request to replace album snapshots' do
+      labbok_answer.copy_answer!(another_answer)
+      expect(a_request(:post, labbook_replace_url)).to have_been_made.once
+    end
+  end
 end

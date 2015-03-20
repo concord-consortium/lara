@@ -6,6 +6,7 @@ ENV['CONCORD_PORTAL_CLIENT_ID']     = "localhost"
 ENV['CONCORD_PORTAL_CLIENT_SECRET'] = "secret"
 ENV['SECRET_TOKEN']                 = "111111111111111111111111111111111111111111111111111111111111"
 ENV['LOGGER_URI']                   = "//log.com/api/logs"
+ENV['LABBOOK_PROVIDER_URL']         = "https://labbook.test.com"
 
 LightweightStandalone::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb

@@ -3,6 +3,7 @@
   %h5.h5= "#{t('LABBOOK_ALBUM')} ##{embeddable.question_index}"
 .question-bd.labbook{id: embeddable_dom_id,
                     'data-labbook-url' => embeddable.class.labbook_provider,
+                    'data-lara-update-url' => embeddable_labbook_answer_path(embeddable),
                     'data-labbook-album-id' => embeddable.album_id,
                     'data-is-upload' => embeddable.is_upload? ? 'true' : nil,
                     'data-interactive-id' => embeddable.interactive ? embeddable.interactive.id : 'null'}

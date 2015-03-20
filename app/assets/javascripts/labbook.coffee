@@ -13,6 +13,7 @@ class LabbookController
     @$iframe = @$dialog.find('iframe')
 
     @baseUrl = @$element.data('labbook-url')
+    @laraUpdateUrl = @$element.data('lara-update-url')
     @albumId = @$element.data('labbook-album-id')
 
     @isUpload = @$element.data('is-upload')
@@ -27,7 +28,9 @@ class LabbookController
       height: 750,
       title: 'Labbook',
       dialogClass: 'lb-dialog',
-      modal: true
+      modal: true,
+      close: =>
+        @onDialogClose()
     })
 
     @registerListeners()
@@ -70,6 +73,20 @@ class LabbookController
 
   showDialog: ->
     @$dialog.dialog('open')
+
+  onDialogClose: ->
+    # Notify LARA that dialog has been closed, so album has been (probably!) updated.
+    # That information is needed to support Portal reports and run with collaborators.
+    saveIndicator = SaveIndicator.instance()
+    saveIndicator.showSaving()
+    $.ajax({
+      type: 'PUT',
+      url: @laraUpdateUrl,
+      success: ->
+        saveIndicator.showSaved()
+      error: ->
+        saveIndicator.showSaveFailed()
+    })
 
   setIframeUrl: (newUrl) ->
     @startWaiting(t('LOADING_LABBOOK'))
