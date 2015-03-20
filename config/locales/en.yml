@@ -8,7 +8,7 @@ en:
   ACTIVITY: "Activity"
   BEGIN_ACTIVITY: "Begin activity"
   BEGIN_NEXT_ACTIVITY: "Next activity"
-  TAKE_SNAPSHOT: "Take snapshot"
+  TAKE_SNAPSHOT: "Take a snapshot"
   UPLOAD_IMAGE: "Upload image"
   REPLACE_SNAPSHOT:  "Replace snapshot"
   PLEASE_WAIT_TAKING_SNAPSHOT: "Please wait while the snapshot is being taken..."
