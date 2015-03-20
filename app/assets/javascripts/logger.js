@@ -145,8 +145,8 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
   // (Creating >1 IframePhone instance pointed at the same iframe breaks message queuing)
 
   if ( ! iframePhoneRpc ) {
-    iframePhoneRpc = new iframePhone.IframePhoneRpcEndpoint(handler, 'codap-game', iframe);
-    iframePhoneRpc.call({ message: 'codap-present' });
+    iframePhoneRpc = new iframePhone.IframePhoneRpcEndpoint(handler, 'lara-logging', iframe);
+    iframePhoneRpc.call({ message: 'lara-logging-present' });
   }
 
   this.iframePhoneRpcEndpoints.push(iframePhoneRpc);

@@ -70,7 +70,7 @@ class IFrameSaver
     @iframePhone = new iframePhone.ParentEndpoint($iframe[0], phone_answered)
     @iframePhoneRpc = new iframePhone.IframePhoneRpcEndpoint
       phone: @iframePhone
-      namespace: 'codap-game'
+      namespace: 'lara-logging'
 
   @default_success: ->
     console.log "saved"
@@ -143,7 +143,7 @@ class IFrameSaver
           if interactive
             @saved_state = interactive
             @iframePhone.post({type: 'loadInteractive', content: interactive})
-            @iframePhoneRpc.call message: 'codap-present'
+            @iframePhoneRpc.call message: 'lara-logging-present'
             @$delete_button.show() if @should_show_delete == null or @should_show_delete
       error: (jqxhr, status, error) =>
         @error("couldn't load interactive")
