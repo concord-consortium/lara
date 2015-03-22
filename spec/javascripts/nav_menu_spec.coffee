@@ -10,11 +10,11 @@ describe 'NavMenu', () ->
 
     it 'has a jQuery object attribute "trigger"', () ->
       expect(menu.trigger).toBeDefined()
-      expect(menu.trigger).toBe('a#menu-trigger')
+      expect(menu.trigger).toEqual('a#menu-trigger')
 
     it 'has a jQuery object attribute "menu"', () ->
       expect(menu.menu).toBeDefined()
-      expect(menu.menu).toBe('div.nav-menu-top')
+      expect(menu.menu).toEqual('div.nav-menu-top')
 
     it 'has a jQuery object attribute "active"', () ->
       expect(menu.active).toBeDefined()
@@ -47,8 +47,8 @@ describe 'NavMenu', () ->
       expect(menu).toBeDefined()
 
     it 'has an element in the "active" attribute', () ->
-      expect(menu.active).toBe('li.activity.active')
-      expect(menu.openActivity).toBe('li.activity.on')
+      expect(menu.active).toEqual('li.activity.active')
+      expect(menu.openActivity).toEqual('li.activity.on')
 
     it 'calls change_active when activities are clicked', () ->
       spyOn(menu, 'change_active')
