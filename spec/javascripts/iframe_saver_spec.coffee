@@ -1,7 +1,6 @@
 #= require save-indicator
 #= require iframe-phone
 #= require iframe-saver
-#= require mock-ajax
 
 success_response =
   status: 200,
