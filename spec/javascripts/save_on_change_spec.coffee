@@ -18,7 +18,7 @@ select_element = (elem,val) ->
   e2.target = elem
   elem.trigger(e2)
 
-ajax_matching = (done, url, params, delay=2100, method="POST") ->
+ajax_matching = (done, url, params, delay=200, method="POST") ->
   setTimeout ( ->
     request = jasmine.Ajax.requests.mostRecent()
     expect(request.url).toBe(url)
@@ -33,7 +33,7 @@ describe 'SaveOnChange', () ->
   beforeEach () ->
     loadFixtures "save-on-change.html"
     jasmine.Ajax.install();
-    SaveOnChange.keyUpinterval = 300 # speed things up for test
+    SaveOnChange.prototype.keyUpinterval = 100 # speed things up for test
     page = new SaveOnChangePage()
     save_on_change = new SaveOnChange($("#openresponse"), page)
 
