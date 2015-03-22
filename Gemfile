@@ -99,9 +99,8 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
-  gem 'jasmine-ajax'
   gem 'guard-jasmine'
-  gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
+  # gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
   gem 'jasmine-jquery-rails'
 end
 

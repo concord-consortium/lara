@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/bradphelan/jasminerice.git
-  revision: 091349c27343bfa728b8e5745675f9ddbb7d9699
-  specs:
-    jasminerice (0.1.0)
-      coffee-rails
-
-GIT
   remote: git://github.com/concord-consortium/capistrano-autoscaling.git
   revision: 49d6bff5002d188495bec53996b9bdbaa5b4a01f
   branch: concord
@@ -247,7 +240,6 @@ GEM
       phantomjs
       rack (>= 1.2.1)
       rake
-    jasmine-ajax (0.0.2)
     jasmine-core (2.2.0)
     jasmine-jquery-rails (2.0.3)
     journey (1.0.4)
@@ -502,9 +494,7 @@ DEPENDENCIES
   highline
   httparty
   jasmine
-  jasmine-ajax
   jasmine-jquery-rails
-  jasminerice!
   jeditable_wysiwyg_rails!
   jquery-rails
   jquery-ui-rails
