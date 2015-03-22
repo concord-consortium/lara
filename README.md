@@ -75,7 +75,16 @@ specify a sqlite adaptor (as per config/database.sample.yml) -- TODO:
 Clean up tests so they work fine with mysql without the db:test:prepare
 step above.
 
-### Adding Embeddable support
+## Running Jasmine tests
+To run the jasmine tests in a browser, run the command below and open your browser to the URL printed on the console
+
+    rake jasmine
+
+To run the jasmine tests with PhantomJS, run
+
+    rake jasmine:ci
+
+## Adding Embeddable support
 _This may be obsolete as of April 2013_
 
 To support new Embeddables:
