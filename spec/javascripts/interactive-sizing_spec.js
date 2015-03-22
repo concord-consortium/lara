@@ -14,7 +14,7 @@ describe('InteractiveObject', function () {
 
         // Attributes
         it('has defined attributes', function () {
-            expect(interactive.element).toBe('video');
+            expect(interactive.element).toEqual('video');
             expect(interactive.aspectRatio).toBeDefined();
             expect(interactive.currWidth).toBeDefined();
             expect(interactive.targetHeight).toBeDefined();
