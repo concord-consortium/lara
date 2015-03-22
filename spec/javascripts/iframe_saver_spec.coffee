@@ -1,18 +1,9 @@
-#= require save-indicator
-#= require iframe-phone
-#= require iframe-saver
-
 success_response =
   status: 200,
   responseText: '{}'
 
-click_element = (elem) ->
-  e2 = jQuery.Event("click")
-  e2.target = elem
-  elem.trigger(e2)
-
 # this spec is very out of date with the current code
-xdescribe 'IFrameSaver', () ->
+describe 'IFrameSaver', () ->
   fake_phone          = null
   saver               = null
   request             = null
@@ -28,7 +19,7 @@ xdescribe 'IFrameSaver', () ->
   describe "with an interactive in in iframe", ->
     beforeEach () ->
       # jasmine.Ajax.install();
-      saver = new IFrameSaver()
+      saver = new IFrameSaver($('#interactive'),$('#interactive_data_div'),$('.delete_interactive_data'))
       saver.save_indicator = fake_save_indicator
 
     afterEach () ->
@@ -58,9 +49,14 @@ xdescribe 'IFrameSaver', () ->
 
     describe "save_to_server", () ->
       beforeEach () ->
+        jasmine.Ajax.install()
         saver.save_to_server({foo:'bar'})
         request = jasmine.Ajax.requests.mostRecent()
-        request.response(success_response)
+        request.respondWith(success_response)
+
+      afterEach () ->
+        jasmine.Ajax.uninstall()
+
       describe "a successful save", () ->
         it "should display the show saved indicator", () ->
           # TODO: Ran out of time writing this test...
