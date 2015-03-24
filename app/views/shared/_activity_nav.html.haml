@@ -1,3 +1,6 @@
+- if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+  = render :partial => 'shared/itsi_menu'
+
 %table.l-nav.site-width
   %tr
     - if @sequence || @activity.layout != LightweightActivity::LAYOUT_SINGLE_PAGE

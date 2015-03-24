@@ -96,3 +96,37 @@ button[type="button"].lb-album-btn {
   vertical-align: middle;
 }
 
+//ITSI orange menu bar
+#nav-itsi-menu {
+  background: #f8ac1a;
+  height: 26px;
+  ul {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #416942;
+    position: relative;
+    top: 5px;
+    li {
+      float: left;
+      height:16px;
+      border-left: solid 1px #416942;
+      padding: 0 10px;
+      line-height: 18px;
+      a {
+        text-decoration: none;
+      }
+    }
+    li.no-left-border {
+      border-left: none;
+    }
+  }
+}
+
+#modal {
+  padding: 10px;
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+}

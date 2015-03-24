@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150312183116) do
+ActiveRecord::Schema.define(:version => 20150319100600) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -392,6 +392,8 @@ ActiveRecord::Schema.define(:version => 20150312183116) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "theme_id"
+    t.text     "about"
+    t.text     "help"
   end
 
   add_index "projects", ["theme_id"], :name => "index_projects_on_theme_id"
