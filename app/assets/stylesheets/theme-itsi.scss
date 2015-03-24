@@ -54,6 +54,15 @@ div.activity-mod > div.site-width {
   margin-bottom: 10px;
 }
 
+.intro-mod,
+.content-mod{
+  em {
+    font-size: inherit;
+    color: inherit;
+    display: inline-block;
+  }
+}
+
 .interactive-mod {
   margin-bottom: 15px;
 }
