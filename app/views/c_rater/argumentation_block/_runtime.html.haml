@@ -39,7 +39,7 @@
                      'data-dirty' => fb_dirty ? 'true' : 'false'}
           .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
             = t 'ARG_BLOCK.RESUBMIT_ANSWER'
-          %h6
+          %h6.ab-feedback-heading
             = t 'ARG_BLOCK.FEEDBACK'
           .ab-feedback-text
             %table
@@ -158,8 +158,8 @@
       }
       
       .ab-robot-head {
-        width: 44px;
-        height: 40px;
+        width: 46px;
+        height: 42px;
         background-image: url('/assets/c-rater/hasbot-head.png');
         background-repeat: no-repeat;
       } 
@@ -197,42 +197,58 @@
   
   .ab-score-error {
     .ab-robot-head {
-      background-position: -9px -4px; /*red*/
+      background-position: -2px -2px; /*red*/
     }
-    .ab-robot-feedback-text {
-      color: #DE6B3F;
+    .ab-feedback-heading {
+      color: #BD2227;
     }
   }
   .ab-score0, .ab-score1 {
     .ab-robot-head {
-      background-position:-9px -4px; /*red*/
+      background-position: -2px -2px; /*red*/
     }
-    .ab-robot-feedback-text {
-      color: #DE6B3F;
-    }
-  }
-  .ab-score2, .ab-score3 {
-    .ab-robot-head {
-      background-position:-76px -4px; /*orange*/
-    }
-    .ab-robot-feedback-text {
-      color: #EA8723;
+    .ab-feedback-heading {
+      color: #BD2227;
     }
   }
-  .ab-score4, .ab-score5 {
+  .ab-score2 {
     .ab-robot-head {
-      background-position:-76px -55px; /*green*/
+      background-position:-67px -2px /*orange*/
     }
-    .ab-robot-feedback-text {
-      color: #73A543;
+    .ab-feedback-heading {
+      color: #F15822;
+    }
+  }
+  .ab-score3 {
+    .ab-robot-head {
+      background-position:-132px -2px /*yellow*/
+    }
+    .ab-feedback-heading {
+      color: #F9B018;
+    }
+  }
+  .ab-score4 {
+    .ab-robot-head {
+      background-position:-2px -51px; /*brown-yellow*/
+    }
+    .ab-feedback-heading {
+      color: #C0B730;
+    }
+  }
+  .ab-score5 {
+    .ab-robot-head {
+      background-position:-66px -53px; /*light-green*/
+    }
+    .ab-feedback-heading {
+      color: #80C342;
     }
   }
   .ab-score6 {
     .ab-robot-head {
-      background-position: -9px -55px; /*blue*/
+      background-position: -134px -53px; /*dark-green*/
     }
-    .ab-robot-feedback-text {
-      color: #38888B;
+    .ab-feedback-heading {
+      color: #1B9A48;
     }
   }
   .ab-submit-prompt {
