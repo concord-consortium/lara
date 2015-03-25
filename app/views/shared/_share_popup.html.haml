@@ -1,0 +1,29 @@
+#share-popup.share-popup
+  %div
+  %h2
+    Paste this
+    %a#opens-in-new-window{:target => "_blank"} link
+    in email or IM.
+  %textarea#share-link-to-copy
+
+:scss
+  #share-popup {
+    display: none;
+  }
+
+:javascript
+  $(function() {
+    var url = document.URL;
+    $('#share-popup').dialog({
+      autoOpen: false,
+      width: 500,
+      height: 130,
+      title: 'Share Summary Report',
+      modal: true
+    });
+    $('a#opens-in-new-window').attr('href', url);
+    $('textarea#share-link-to-copy').val(url);
+    $('.share').on('click', function(event) {
+      $('#share-popup').dialog('open');
+    });
+  });

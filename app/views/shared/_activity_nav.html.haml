@@ -1,5 +1,7 @@
 - if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
   = render :partial => 'shared/itsi_menu'
+- elsif @activity
+  = render :partial => 'shared/activity_menu'
 
 %table.l-nav.site-width
   %tr

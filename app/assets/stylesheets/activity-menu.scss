@@ -1,0 +1,10 @@
+.modal {
+  padding: 10px;
+  .contact-us,.help,.about {
+    .close {
+      position: absolute;
+      top: 15px;
+      right:15px;
+    }
+  }
+}
