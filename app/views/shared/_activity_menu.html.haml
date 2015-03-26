@@ -1,43 +1,24 @@
 #nav-activity-menu
-  %a{:href => summary_with_response_path(@activity, @session_key),:title => "Print",:target => "new"}
-    .print
-  %a{:href => help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false"}
-    .help
-  %a{:href => "#",:title => "Share",:"data-trigger-save" => "false"}
-    .share
-  %a{:href => "#"}  
-    .close{:title => "Close", :onclick => 'if(confirm("Are you sure?")){window.close();}'}
+  %ul
+    - if session[:portal_username]
+      %li.home
+        = link_to 'Home',"//#{session[:portal_domain]}"
+    %li.about
+      = link_to "About", about_project_path(@project), :remote => true, "data-trigger-save" => false
+    %li.am-report
+      %a{:href => summary_with_response_path(@activity, @session_key),:title => "Print",:target => "new"}
+        %span
+          Report
+        .print
+    %li.am-help
+      %a{:href => help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false"}
+        %span
+          Help
+        .help
+    %li.am-share
+      %a{:href => "#",:title => "Share",:"data-trigger-save" => "false"}
+        .share
+    %li.am-close
+      %a{:href => "#"}  
+        .close{:title => "Close", :onclick => 'if(confirm("Are you sure?")){window.close();}'}
 = render :partial => "shared/share_popup"
-
-:scss
-  #nav-activity-menu {
-    position: fixed;
-    right: 0px;
-    top: 20px;
-    border: solid 1px #80ACB3;
-    border-bottom-left-radius: 10px;
-    border-top-left-radius: 10px;
-    background-color: #fff;
-    .print,.help,.share,.close {
-      width: 30px;
-      height: 32px;
-      background-image: url('/assets/activity_menu.png');
-      background-repeat: no-repeat;
-    }
-    .print,.help,.share {
-      border-bottom: solid 1px #80ACB3;
-    }
-    .print {
-      background-position: 2px 0px;
-    }
-    .help {
-      background-position: 2px -32px;
-    }
-    .share {
-      background-position: 2px -63px;
-    }
-    .close {
-      background-position: 1px -96px;
-    }
-  }
-

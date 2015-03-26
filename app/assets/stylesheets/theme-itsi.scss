@@ -97,9 +97,15 @@ button[type="button"].lb-album-btn {
 }
 
 //ITSI orange menu bar
-#nav-itsi-menu {
+#nav-activity-menu {
   background: #f8ac1a;
   height: 26px;
+  position:relative;
+  top: 0px;
+  border:none;
+  border-radius:0px;
+  width: 960px;
+  margin: 0 auto;
   ul {
     text-transform: uppercase;
     font-weight: bold;
@@ -115,9 +121,18 @@ button[type="button"].lb-album-btn {
       a {
         text-decoration: none;
       }
+      .print,.help {
+        display: none;
+      }
     }
-    li.no-left-border {
+    li:first-child {
       border-left: none;
+    }
+    .am-share,.am-close {
+      display:none;
+    }
+    li.am-report span,li.am-help span,.home,.about {
+      display: block;
     }
   }
 }
