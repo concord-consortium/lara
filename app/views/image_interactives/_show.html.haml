@@ -1,14 +1,14 @@
-%div{:id => "interactive_#{interactive.id}"}
-  %img{ :src => interactive.url, 
-    :alt => interactive.caption, 
-    :style => "width: 100%;" }
-  .under-image
-    - if interactive.show_lightbox
-      .fullscreen
-        = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => "#{interactive.caption} #{interactive.credit_with_link}", :class => 'colorbox'}
-    - unless interactive.caption.blank?
-      .caption
-        = interactive.caption
-    - unless interactive.credit.blank?
-      .credit
-        = interactive.credit_with_link
+%img{ :src => interactive.url, 
+  :alt => interactive.caption, 
+  :style => "width: 100%;",
+  :id => "interactive_#{interactive.id}"}
+.under-image
+  - if interactive.show_lightbox
+    .fullscreen
+      = link_to image_tag('icons/fullscreen.svg', :alt => 'Show at full size'), interactive.url, {:title => "#{interactive.caption} #{interactive.credit_with_link}", :class => 'colorbox'}
+  - unless interactive.caption.blank?
+    .caption
+      = interactive.caption
+  - unless interactive.credit.blank?
+    .credit
+      = interactive.credit_with_link
