@@ -122,7 +122,6 @@ group :development do
   gem 'better_errors'
   gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
-  gem "rack-mini-profiler"
   gem "highline"
   gem "spring-commands-rspec"
 end
