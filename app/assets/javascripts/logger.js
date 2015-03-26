@@ -105,7 +105,6 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
 
     if (cmd && cmd.action === 'logAction' && cmd.args) {
       str = cmd.args.formatStr;
-      console.log("LOGGED: ", str);
 
       index = str.indexOf(':');
 
