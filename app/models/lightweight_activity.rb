@@ -1,10 +1,17 @@
 class LightweightActivity < ActiveRecord::Base
-  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice]
+  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice, Embeddable::Labbook]
   include Publishable # models/publishable.rb defines pub & official
 
+  LAYOUT_MULTI_PAGE = 0
+  LAYOUT_SINGLE_PAGE = 1
+  LAYOUT_OPTIONS = [
+    ['Multi-page', LAYOUT_MULTI_PAGE],
+    ['Single-page', LAYOUT_SINGLE_PAGE]
+  ]
+
   attr_accessible :name, :user_id, :pages, :related, :description,
-  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-  :portal_run_count
+                  :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
+                  :portal_run_count, :layout
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -121,14 +128,14 @@ class LightweightActivity < ActiveRecord::Base
   
   def self.extact_from_hash(activity_json_object)
     {
-      description: activity_json_object['description'],
-      name: activity_json_object['name'],
-      notes: activity_json_object['notes'],
-      project_id: activity_json_object['project_id'],
-      related: activity_json_object['related'],
-      theme_id: activity_json_object['theme_id'],
-      thumbnail_url: activity_json_object['thumbnail_url'],
-      time_to_complete: activity_json_object['time_to_complete']
+      description: activity_json_object[:description],
+      name: activity_json_object[:name],
+      notes: activity_json_object[:notes],
+      project_id: activity_json_object[:project_id],
+      related: activity_json_object[:related],
+      theme_id: activity_json_object[:theme_id],
+      thumbnail_url: activity_json_object[:thumbnail_url],
+      time_to_complete: activity_json_object[:time_to_complete]
     }
     
   end
@@ -140,10 +147,10 @@ class LightweightActivity < ActiveRecord::Base
       # Clarify name
       import_activity.name = "Import of #{import_activity.name}"
       import_activity.user = new_owner
-      activity_json_object['pages'].each do |p|
+      activity_json_object[:pages].each do |p|
         import_page = InteractivePage.import(p)
         import_page.lightweight_activity = import_activity
-        import_page.set_list_position(p['position'])
+        import_page.set_list_position(p[:position])
         import_page.save!(validate: false)
       end
       import_activity.fix_page_positions
@@ -218,7 +225,11 @@ class LightweightActivity < ActiveRecord::Base
             elements.push(iframe_data)
           end
         else
-          # We don't support this embeddable type right now
+          # Why do we explicitly list all the embeddable types above?
+          if embeddable.respond_to?(:portal_hash)
+            elements.push(embeddable.portal_hash)
+          end
+          # Otherwise we don't support this embeddable type right now.
         end
       end
       pages.push({

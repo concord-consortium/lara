@@ -1,0 +1,28 @@
+= form_for @embeddable do |f|
+  = f.error_messages
+  = f.label 'Name (visible in reports)'
+  = f.text_field :name
+  = field_set_tag 'Prompt' do
+    = f.text_area :prompt, :rows => 5, class: 'wysiwyg'
+  = field_set_tag 'Options' do
+    %ul
+      %li
+        = f.label 'Action type'
+        = f.select :action_type, Embeddable::Labbook::ACTION_OPTIONS
+      %li
+        = f.label 'Custom button label'
+        = f.text_field :custom_action_label
+  = f.submit 'Cancel', class: 'close'
+  = f.submit 'Save', class: 'embeddable-save'
+
+:javascript
+  $(function() {
+    $('.wysiwyg').wysiwyg({
+      'controls': {
+        'html': {'visible': true},
+        'h1': {'visible': false},
+        'h2': {'visible': false},
+        'h3': {'visible': false}
+       }
+    });
+  });

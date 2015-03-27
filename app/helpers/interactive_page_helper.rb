@@ -18,8 +18,14 @@ module InteractivePageHelper
     return link_to name, runnable_activity_page_path(activity,page), opts
   end
 
+  def main_section_embeddables(page, run)
+    finder = Embeddable::AnswerFinder.new(run)
+    # Limit embeddables to ones that do not belong to any section.
+    page.main_embeddables.map { |e| finder.find_answer(e) }
+  end
+
   protected
-  def run_for_activity(activity,run)
+  def run_for_activity(activity, run)
     return nil unless run
     return run if (run.activity == activity)
     sequence_run = run.sequence_run

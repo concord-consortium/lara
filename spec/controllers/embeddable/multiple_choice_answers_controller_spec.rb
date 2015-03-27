@@ -2,20 +2,16 @@ require 'spec_helper'
 
 describe Embeddable::MultipleChoiceAnswersController do
   before(:each) do
-    stub_request(:any, "http://foo.bar.fake/baz")
+    stub_request(:any, endpoint)
   end
   let(:a_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
   let(:b_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
   let(:c_answer) { FactoryGirl.create(:multiple_choice_choice, :choice => "a" )}
   let(:choices)  { [a_answer,b_answer,c_answer] }
   let(:question) { FactoryGirl.create(:multiple_choice, :prompt => "prompt", :choices => choices)}
-  let(:endpoint) { "http://foo.bar.fake/baz"    }
+  let(:endpoint) { 'http://concord.portal.org' }
   let(:run)      { FactoryGirl.create(:run)     }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer, :question => question, :run => run)}
-
-  before(:each) do
-    Concord::AuthPortal.add("foo.bar.fake", endpoint, "foo", "secret_key")
-  end
 
   describe "#update" do
     describe "with a run initiated from remote portlal" do

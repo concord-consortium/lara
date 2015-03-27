@@ -1,0 +1,98 @@
+@import "cc-runtime-base";
+
+$bg_src: ''; // background color is set instead.
+$main_color: #ee864e;
+$itsi_bg: #fee9aa;
+$content_bg: #fbf4db;
+
+@include theme($bg_src, $main_color, $main_color);
+
+html {
+  background: $itsi_bg;
+}
+
+// Display full size ITSI banner (ITSI project needs to be used!).
+.site-logo-mod img {
+  max-height: none;
+}
+
+// Hide Concord logo in top-right corner.
+.site-logo.logo-r {
+  display: none;
+}
+
+// Modify activity title style.
+.activity-nav-title {
+  color: $main_color;
+  background: $itsi_bg;
+  font-size: 28px;
+}
+
+.nav-menu {
+  border-color: transparent;
+}
+
+// Hide black rectangle next to the activity title.
+.activity-nav {
+  display: none;
+}
+
+div.activity-mod > div.site-width {
+  background-color: $content_bg;
+}
+
+// Disable background gradient.
+#container {
+  background: none;
+}
+
+.content-mod {
+  margin-bottom: 20px;
+}
+
+.intro-mod h4 {
+  margin-bottom: 10px;
+}
+
+.interactive-mod {
+  margin-bottom: 15px;
+}
+
+// Full-width question.
+.question {
+  margin: 10px 0 !important;
+  width: 100% !important;
+}
+
+// Limit size of saved snapshot.
+.snapshot_thumbnail {
+  max-width: 50%;
+}
+
+// Hide question border and header.
+.question-hdr {
+  display: none;
+}
+
+.question-bd {
+  border: none;
+  padding: 0;
+}
+
+// Labbook theme.
+
+button[type="button"].lb-album-btn {
+  background: url('/assets/labbook-album.png') no-repeat;
+  border: none;
+  box-shadow: none;
+  width: 50px;
+  height: 43px;
+  margin-left: 5px;
+  .lb-album-btn-label {
+    display: none;
+  }
+}
+.lb-album-btn, .lb-action-btn {
+  vertical-align: middle;
+}
+

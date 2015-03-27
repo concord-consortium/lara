@@ -1,24 +1,8 @@
-#= require save-indicator
-#= require iframe-phone
-#= require iframe-saver
-
 success_response =
   status: 200,
   responseText: '{}'
 
-click_element = (elem) ->
-  e2 = jQuery.Event("click")
-  e2.target = elem
-  elem.trigger(e2)
-
-ajax_matching = (url, params, delay=2100, method="POST") ->
-  waits delay
-  runs ->
-    request = mostRecentAjaxRequest();
-    expect(request.url).toBe(url)
-    expect(request.method).toBe(method)
-    expect(request.params).toEqual(params)
-
+# this spec is very out of date with the current code
 describe 'IFrameSaver', () ->
   fake_phone          = null
   saver               = null
@@ -34,10 +18,12 @@ describe 'IFrameSaver', () ->
 
   describe "with an interactive in in iframe", ->
     beforeEach () ->
-      jasmine.Ajax.useMock()
-      saver = new IFrameSaver()
+      # jasmine.Ajax.install();
+      saver = new IFrameSaver($('#interactive'),$('#interactive_data_div'),$('.delete_interactive_data'))
       saver.save_indicator = fake_save_indicator
 
+    afterEach () ->
+      # jasmine.Ajax.uninstall();
 
     describe "a sane testing environment", () ->
       it 'has an instance of IFrameSaver defined', () ->
@@ -63,9 +49,14 @@ describe 'IFrameSaver', () ->
 
     describe "save_to_server", () ->
       beforeEach () ->
+        jasmine.Ajax.install()
         saver.save_to_server({foo:'bar'})
-        request = mostRecentAjaxRequest()
-        request.response(success_response)
+        request = jasmine.Ajax.requests.mostRecent()
+        request.respondWith(success_response)
+
+      afterEach () ->
+        jasmine.Ajax.uninstall()
+
       describe "a successful save", () ->
         it "should display the show saved indicator", () ->
           # TODO: Ran out of time writing this test...

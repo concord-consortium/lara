@@ -1,0 +1,243 @@
+- embeddables = arg_block_embeddables(page, @run)
+- if embeddables.any?
+  - submission_count = submission_count(page, @run)
+  .embeddables.arg-block
+    .ab-feedback-header{:style => submission_count > 0 ? '' : 'display: none'}
+      %div.ab-theme-color
+        = t 'ARG_BLOCK.SUBMISSION'
+        %span.ab-submission-count{'data-submission-count' => submission_count}
+          = submission_count
+      - if page.layout == "l-7030" || page.layout == "r-3070"
+        .ab-robot-wrap
+          %div= t 'ARG_BLOCK.HASBOT_SAYS'
+          %div= t 'ARG_BLOCK.ANALYZED'
+          .ab-robot-figure
+          %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
+      -else
+        %table.ab-robot-wrap
+          %tr
+            %td
+              .ab-robot-figure{:id => 'ab-robot-image'}
+            %td
+              .ab-robot-analysis
+                %div= t 'ARG_BLOCK.HASBOT_SAYS'
+                %div= t 'ARG_BLOCK.ANALYZED'
+                %p
+                %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
+
+    - embeddables.each do |m|
+      .question
+        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+        - fb = m.get_saved_feedback
+        - fb_visible = fb && !fb.feedback_text.blank?
+        - fb_dirty = fb && fb.outdated?
+        - fb_text = fb && fb.feedback_text
+        - fb_score = (fb && fb.score && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
+        .ab-feedback{:id => "feedback_on_answer_#{m.id}",
+                     :style => fb_visible ? '' : 'display: none',
+                     :class => "ab-score#{fb_score}",
+                     'data-dirty' => fb_dirty ? 'true' : 'false'}
+          .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
+            = t 'ARG_BLOCK.RESUBMIT_ANSWER'
+          %h6
+            = t 'ARG_BLOCK.FEEDBACK'
+          .ab-feedback-text
+            %table
+              %tr
+                %td
+                  %div.ab-robot-head
+                %td  
+                  %div.ab-robot-feedback-text
+                    #{fb_text}
+
+    - submission = last_submission(page, @run)
+    - show_f_on_f = submission && submission.usefulness_score.nil?
+    .question.ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
+                                      'data-submission-id' => show_f_on_f ? submission.id : nil,
+                                      'data-href' => c_rater_arg_block_feedback_on_feedback_path}
+      - if page.layout == "l-7030" || page.layout == "r-3070"
+        .ab-robot-wrap
+          .ab-robot-figure
+          %div
+            = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
+            - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
+              %label
+                = radio_button_tag(:feedback_on_feedback, value)
+                = label
+      - else
+        %table.ab-robot-wrap
+          %tr
+            %td
+              .ab-robot-figure{:id => 'ab-robot-image'}
+            %td         
+              %div
+                = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
+                - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
+                  %label
+                    = radio_button_tag(:feedback_on_feedback, value)
+                    = label
+
+    %input{:class => 'ab-submit button', :type => 'submit',
+           :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
+           'data-href' => c_rater_arg_block_save_feedback_path(page)}
+    %div.ab-submit-prompt       
+
+:javascript
+  $(function() {
+    // Set argumentation block border color using JS, so it always matches current theme.
+    // It's not pretty, but integration with existing themes system would be too painful (if possible at all).
+    var questionHeaderColor = $('.question-hdr').css('background-color');
+    $('.arg-block').css('border-color', questionHeaderColor);
+    $('.ab-theme-color').css('color', questionHeaderColor);
+  });
+
+:scss
+  .arg-block {
+    margin-bottom: 10px;
+    border: 5px solid gray; // color is going to be overwritten by JS
+    box-shadow: 2px 2px 2px #aaa;
+
+    .question-bd {
+      margin-bottom: 15px;
+    }
+
+    &:after {
+      // Keeps submit button within argumentation block.
+      display: table;
+      content: "";
+      clear: both;
+    }
+  }
+
+  .ab-submit {
+    float: right;
+    margin: 12px 12px 12px 0 !important;
+  }
+
+  .ab-feedback-header {
+    border: 1px solid #eee;
+    padding: 12px 22px;
+  }
+  
+  .ab-robot-wrap {
+    margin:0 auto;
+    td {
+      padding: 0 10px;
+      vertical-align: middle;
+    }
+    
+    .ab-robot-figure {
+      width: 85px;
+      height: 109px;
+      background-image: url('/assets/c-rater/hasbot.png');
+      background-repeat: no-repeat;
+      background-position:-341px -7px;
+      margin: 0 auto;
+    }
+  }
+
+  .ab-feedback {
+    clear: both;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 5px 5px 5px 10px;
+    
+    h6 {
+      padding: 0 0 0 10px;
+    }
+    
+    .ab-feedback-text {
+      
+      margin:10px 0 0 0;
+      
+      table {
+        td {
+          padding: 0 10px;
+          vertical-align: middle;
+        }
+      }
+      
+      .ab-robot-head {
+        width: 44px;
+        height: 40px;
+        background-image: url('/assets/c-rater/hasbot-head.png');
+        background-repeat: no-repeat;
+      } 
+    }
+  }
+
+  .ab-dirty {
+    color: #BD6161;
+    padding: 3px 0 0 4px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin: 0 0 2px -7px;
+
+    .did_try_to_navigate & {
+      background: #FFDCDC;
+    }
+  }
+
+  .ab-feedback-on-feedback {
+    // !important to overwrite .question properties.
+    margin: 0 !important;
+    width: 100% !important;
+    padding: 15px !important;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.05);
+
+    div {
+      text-align: left;
+    }
+
+    &.did_try_to_navigate {
+      background: rgba(255, 0, 0, 0.2);
+    }
+  }
+  
+  .ab-score-error {
+    .ab-robot-head {
+      background-position: -9px -4px; /*red*/
+    }
+    .ab-robot-feedback-text {
+      color: #DE6B3F;
+    }
+  }
+  .ab-score0, .ab-score1 {
+    .ab-robot-head {
+      background-position:-9px -4px; /*red*/
+    }
+    .ab-robot-feedback-text {
+      color: #DE6B3F;
+    }
+  }
+  .ab-score2, .ab-score3 {
+    .ab-robot-head {
+      background-position:-76px -4px; /*orange*/
+    }
+    .ab-robot-feedback-text {
+      color: #EA8723;
+    }
+  }
+  .ab-score4, .ab-score5 {
+    .ab-robot-head {
+      background-position:-76px -55px; /*green*/
+    }
+    .ab-robot-feedback-text {
+      color: #73A543;
+    }
+  }
+  .ab-score6 {
+    .ab-robot-head {
+      background-position: -9px -55px; /*blue*/
+    }
+    .ab-robot-feedback-text {
+      color: #38888B;
+    }
+  }
+  .ab-submit-prompt {
+    float: right;
+    margin: 15px 5px;
+    padding: 5px;
+    color: #BD6161;
+  }

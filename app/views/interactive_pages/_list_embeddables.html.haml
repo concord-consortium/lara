@@ -1,5 +1,5 @@
 .embeddables
-  - unless @modules.blank?
-    - @modules.each do |m|
-      .question{ :class => m.kind_of?(Embeddable::Xhtml) ? 'challenge' : '' }
-        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+  - unless embeddables.blank?
+    - embeddables.each do |e|
+      .question{ :class => e.kind_of?(Embeddable::Xhtml) ? 'challenge' : '' }
+        = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}

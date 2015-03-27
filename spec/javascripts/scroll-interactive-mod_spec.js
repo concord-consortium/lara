@@ -16,8 +16,8 @@ describe('ScrollTrack', function () {
     it('has attributes', function () {
         expect(scrollTrack.contentModule).toBeDefined();
         expect(scrollTrack.trackEnd).toBeDefined();
-        expect(scrollTrack.contentModule).toBe('div.content-mod');
-        expect(scrollTrack.trackEnd).toBe('div#end-scroll-track');
+        expect(scrollTrack.contentModule).toEqual('div.content-mod');
+        expect(scrollTrack.trackEnd).toEqual('div#end-scroll-track');
     });
 
     describe('getTop', function () {
@@ -73,13 +73,13 @@ describe('InteractiveModule', function () {
         expect(interactive.bMargin).toBeDefined();
         expect(interactive.topBuffer).toBeDefined();
         expect(interactive.fudgeFactor).toBeDefined();
-        expect(interactive.module).toBe('div.pinned');
+        expect(interactive.module).toEqual('div.pinned');
     });
 
     describe('fixTop()', function () {
         describe('when the interactive is taller than its column', function () {
             beforeEach(function () {
-                spyOn(ScrollTrack.prototype, 'isScrollable').andReturn(false);
+                spyOn(ScrollTrack.prototype, 'isScrollable').and.returnValue(false);
                 // Have to re-create the test objects to incorporate the spy
                 scrollTrack = new ScrollTrack($('.content-mod'), $('#end-scroll-track'));
                 interactive = new InteractiveModule($('.pinned'), scrollTrack);

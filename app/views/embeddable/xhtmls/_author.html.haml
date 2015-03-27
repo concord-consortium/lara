@@ -1,4 +1,4 @@
-.xhtml.authorable_xhtml{:id => "embeddable_#{embeddable.id}.#{embeddable.class.to_s}"}
+.xhtml.authorable{:id => "embeddable_#{embeddable.id}.#{embeddable.class.to_s}"}
   .embeddable_tools
     .drag_handle
     = link_to "edit", edit_embeddable_xhtml_path(embeddable), :remote => true, :id => "edit-embed-xhtml-#{embeddable.id}"

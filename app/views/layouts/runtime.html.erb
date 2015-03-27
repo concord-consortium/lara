@@ -1,37 +1,41 @@
-  <!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js ie6 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie7 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie8 lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title><%= yield :title %></title>
-	<%= csrf_meta_tags %>
-	<!-- TODO: Populate meta tags -->
+  <title><%= yield :title %></title>
+  <%= csrf_meta_tags %>
+  <!-- TODO: Populate meta tags -->
   <meta name="description" content="">
-	<meta name="author" content="">
-  <%- if false # @project and @project.og_logo -%>
-    <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path @project.og_logo %>" />
+  <meta name="author" content="">
+  <%- if false # @project and @project.og_logo         -%>
+      <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path @project.og_logo %>"/>
   <%- else -%>
-    <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path 'mw-logo-og.jpg' %>" />
+      <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}" %><%= image_path 'mw-logo-og.jpg' %>"/>
   <%- end -%>
 
-	<!-- Icons -->
+  <!-- Icons -->
   <%= favicon_link_tag %>
 
-	<!-- Stylesheets -->
+  <!-- Stylesheets -->
   <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css' %>
   <%- if @theme && @theme.css_file %>
-    <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
+      <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
   <%- else -%>
-    <%= stylesheet_link_tag 'runtime', :media => 'all' %>
+      <%= stylesheet_link_tag Theme::DEFAULT_CSS_FILE, :media => 'all' %>
   <%- end -%>
 
-	<!-- Scripts -->
+  <!-- Scripts -->
   <%= include_gon %>
-	<!--[if IE 8 ]>
+  <!--[if IE 8 ]>
   <%= javascript_include_tag 'respond' %>
 	<![endif]-->
   <%= javascript_include_tag 'modernizr.min' %>
@@ -40,94 +44,94 @@
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>
 </head>
 
-
-
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- Page Begins				-->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<body>
+<body class=<%= yield :body_class %>>
 
-	<div id="container">
+<div id="container">
 
-		<header>
-			<div class="site-logo-mod site-width">
-				<div class="site-logo logo-l">
-          <%= left_logo_tag %>
-				</div> <!-- end site-logo logo-l -->
+  <header>
+    <div class="site-logo-mod site-width">
+      <div class="site-logo logo-l">
+        <%= left_logo_tag %>
+      </div>
+      <!-- end site-logo logo-l -->
 
-				<div class="site-logo logo-r">
-          <%= right_logo_tag %>
-				</div> <!-- end site-logo logo-r -->
+      <div class="site-logo logo-r">
+        <%= right_logo_tag %>
+      </div>
+      <!-- end site-logo logo-r -->
+    </div>
+    <!-- end site-logo-mod site-width -->
+  </header>
 
-			</div> <!-- end site-logo-mod site-width -->
+  <div id="save" class="error" style="opacity: 1.0">
+    <%= t("DATA_WILL_NOT_BE_SAVED") %>
+  </div>
 
-		</header>
+  <div id="main" role="main">
 
-		<div id="save" class="error" style="opacity: 1.0">
-			<%= t("DATA_WILL_NOT_BE_SAVED") %>
-		</div>
-
-		<div id="main" role="main">
-
-			<div class="activity-mod">
-
-        <!-- Add class of fixed to activity-nav-mod for fixed nav -->
-        <!-- TODO: How to control that? -->
-				<div class="activity-nav-mod">
+    <div class="activity-mod">
+      <!-- Add class of fixed to activity-nav-mod for fixed nav -->
+      <!-- TODO: How to control that? -->
+      <div class="activity-nav-mod">
 
         <%= render :partial => 'shared/activity_nav' %>
 
-				</div> <!-- end activity-nav-mod -->
+      </div>
+      <!-- end activity-nav-mod -->
 
+      <div class="site-width">
 
+        <%= yield %>
 
-				<div class="site-width">
+      </div>
+      <!-- end site-width -->
 
-          <%= yield %>
+    </div>
+    <!-- end activity-mod -->
 
-				</div> <!-- end site-width -->
+    <div class="activity-footer-mod site-width">
+    </div>
+    <!-- end activity-footer-mod -->
 
-			</div> <!-- end activity-mod -->
+  </div>
+  <!-- end #main -->
 
+  <footer>
+    <div class="site-width">
+      <%= raw project_footer %>
+    </div>
+    <!-- end site-width -->
+  </footer>
 
+</div>
+<!-- eo #container -->
+<%= render :partial => "shared/i18njs" %>
+<%= render :partial => 'shared/modal' %>
+<%= render :partial => 'shared/loading' %>
+<%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
 
-			<div class="activity-footer-mod site-width">
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Scripts					-->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<script>// window.jQuery || document.write('<script src="/assets/jquery-2.0.1.min.js"><\/script>')</script>
 
-			</div> <!-- end activity-footer-mod -->
+<!-- Project-Specific stuff, start with up-base and go into script.js for your code -->
+<%= javascript_include_tag 'runtime' %>
+<!-- end scripts-->
 
+<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+   chromium.org/developers/how-tos/chrome-frame-getting-started -->
+<!--[if lt IE 7 ]>
+  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js' %>
+  <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+<![endif]-->
 
+<%= yield :extra_javascript %>
 
-		</div> <!-- end #main -->
-
-      <footer>
-        <div class="site-width">
-            <%= raw project_footer %>
-        </div> <!-- end site-width -->
-      </footer>
-
-	</div> <!-- eo #container -->
-  <%= render :partial => "shared/i18njs" %>
-  <%= render :partial => 'shared/modal' %>
-  <%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
-
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- Scripts					-->
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-	<script>// window.jQuery || document.write('<script src="/assets/jquery-2.0.1.min.js"><\/script>')</script>
-
-	<!-- Project-Specific stuff, start with up-base and go into script.js for your code -->
-  <%= javascript_include_tag 'runtime' %>
-	<!-- end scripts-->
-
-	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
-       chromium.org/developers/how-tos/chrome-frame-getting-started -->
-	<!--[if lt IE 7 ]>
-    <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js' %>
-		<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
-	<![endif]-->
-  <%= yield :extra_javascript %>
 </body>
 </html>

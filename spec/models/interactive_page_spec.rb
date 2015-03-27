@@ -141,7 +141,9 @@ describe InteractivePage do
         show_introduction: page.show_introduction,
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,
-        show_info_assessment: page.show_info_assessment
+        show_info_assessment: page.show_info_assessment,
+        embeddable_display_mode: page.embeddable_display_mode,
+        additional_sections: page.additional_sections
       }
       expect(page.to_hash).to eq(expected)
     end
@@ -200,15 +202,28 @@ describe InteractivePage do
 
   describe '#import' do
     it 'imports page from json' do
-      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'))
-      activity_json['pages'].each_with_index do |p, i|
+      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
+      activity_json[:pages].each_with_index do |p, i|
         page = InteractivePage.import(p)
         expect(page).to be_a(InteractivePage)
-        expect(p['name']).to eq(page.name)
-        expect(p['text']).to eq(page.text)
-        expect(p['sidebar_title']).to eq(page.sidebar_title)
-        expect(p['position']).to be(page.position)
+        expect(p[:name]).to eq(page.name)
+        expect(p[:text]).to eq(page.text)
+        expect(p[:sidebar_title]).to eq(page.sidebar_title)
+        expect(p[:position]).to be(page.position)
       end
+    end
+  end
+
+  describe 'InteractivePage#register_additional_section' do
+    before(:all) do
+      InteractivePage.register_additional_section({name:  'test_section',
+                                                   dir:   'dir',
+                                                   label: 'label'})
+    end
+    it 'should add new methods (show_<secion_name_)' do
+      expect(page).not_to respond_to(:show_unexisting_section)
+      expect(page).to respond_to(:show_test_section)
+      expect(page).to respond_to(:show_test_section=)
     end
   end
 end

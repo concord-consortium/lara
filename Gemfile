@@ -84,7 +84,7 @@ group :test, :development do
   gem "rspec-rails", "~> 3.1.0"
   gem "rspec-activemodel-mocks"
   gem "ci_reporter", "~> 1.7.0"
-  gem "factory_girl_rails"
+  gem "factory_girl_rails", :require => false
   gem "faker"
   gem "capybara"
   gem "timecop"
@@ -99,9 +99,8 @@ group :test, :development do
   gem 'poltergeist'
   # JS unit tests
   gem 'jasmine'
-  gem 'jasmine-ajax'
   gem 'guard-jasmine'
-  gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
+  # gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
   gem 'jasmine-jquery-rails'
 end
 
@@ -123,7 +122,6 @@ group :development do
   gem 'better_errors'
   gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
-  gem "rack-mini-profiler"
   gem "highline"
   gem "spring-commands-rspec"
 end

@@ -13,6 +13,7 @@ class @CompleteChecker
     "embeddable_image_question_answer[answer_text]"
   ]
   constructor: (@$form) ->
+    @required = @$form.find("input.hidden_is_final").length > 0
     @data = []
 
   filtered_data: (array) ->
@@ -47,14 +48,12 @@ class @CompleteChecker
 
   is_answered: () ->
     @mark_form_clean()
-    hidden_final = @$form.find("input.hidden_is_final")
-    return true unless hidden_final.length > 0
     data = @$form.serializeArray()
     @data = data.filter (obj) ->
       obj.name in CompleteChecker.FieldNames
 
     if @data.length == 0 # multiple choices
-      @mark_form_missing_required()
+      @mark_form_missing_required() if @required
       return false
 
     @mark_form_element_clean(obj) for obj in @data
@@ -62,8 +61,9 @@ class @CompleteChecker
       !obj.value
 
     if @unasnwered.length > 0
-      @mark_form_element_missing_required(obj) for obj in @unasnwered
-      @mark_form_missing_required()
+      if @required
+        @mark_form_element_missing_required(obj) for obj in @unasnwered
+        @mark_form_missing_required()
       return false
 
     @require_is_final()
@@ -102,6 +102,7 @@ class @SaveOnChange
         previous_data = @$form.serialize()
         @page.saving()
       ).on('ajax:success', (e, data, status, xhr) =>
+        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(previous_data)
       ).on('ajax:error', (e, xhr, status, error) =>
         @save_error()
@@ -116,6 +117,7 @@ class @SaveOnChange
       url: @$form.attr( 'action' ),
       data: @$form.serialize(),
       success: (response) =>
+        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(data)
       error: (jqxhr, status, error) =>
         @save_error()
@@ -172,7 +174,7 @@ class @ForwardBlocker
     @binding.bind 'enable_forward_navigation', (e,opts) =>
       @enable_forward_navigation_for(opts.source)
     @binding.bind 'navigate_away', (e,opts) =>
-      @navigate_away(opts.click_element)
+      @navigate_away(opts.click_element, opts.action_to_perform)
 
   prevent_forward_navigation_for: (blocker) ->
     if blocker not in @blockers
@@ -185,13 +187,12 @@ class @ForwardBlocker
       @blockers.splice(index,1)
       @update_display()
 
-  navigate_away: (click_element) ->
-    location = click_element.href
+  navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
       modalDialog(false, t('PLEASE_SUBMIT'))
     else
-      window.location = location
+      action_to_perform and action_to_perform();
 
   update_display: () ->
     num_blockers = @blockers.length
@@ -211,7 +212,6 @@ class @SaveOnChangePage
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
-    @prevent_forward_navigation_count = 0
     if $('.live_submit').length
       $('.live_submit').each (i,e) =>
         @forms.push(new SaveOnChange($(e),@))
@@ -220,8 +220,18 @@ class @SaveOnChangePage
   intercept_navigation: ->
     $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data-trigger-save=false]").on 'click', (e) =>
       e.preventDefault()
-      @click_element   = e.currentTarget
-      @force_save_dirty()
+      @click_element = e.currentTarget
+      click_element = @click_element
+      LoggerUtils.pageExitLogging();
+      @force_save_dirty ->
+        if click_element 
+          args = 
+            click_element: click_element
+            action_to_perform: () ->
+              window.location = click_element.href
+              return
+          $(document).trigger('navigate_away', args)
+
 
   saving: (form) ->
     @save_indicator.showSaving()
@@ -236,10 +246,8 @@ class @SaveOnChangePage
   mark_dirty: (form) ->
     @dirty_forms[form] = form
 
-  navigate_away: ->
-    if @click_element
-      args = {click_element: @click_element}
-      $(document).trigger('navigate_away', args)
+  navigate_away: (callback) ->
+    callback and callback()
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
@@ -250,11 +258,11 @@ class @SaveOnChangePage
         if f.$form[0] ==$form_jq[0]
           f.saveElement(false)
 
-  force_save_dirty: ()->
+  force_save_dirty: (callback)->
     for item, value of @dirty_forms
       value.saveNow()
     if (typeof IFrameSaver == "undefined")
-      @navigate_away()
+      @navigate_away(callback)
       return
 
     waiting_on = IFrameSaver.instances.length
@@ -264,9 +272,9 @@ class @SaveOnChangePage
         saver.save =>
           found = found + 1
           if (found + 1 ) >= waiting_on
-            @navigate_away()
+            @navigate_away(callback)
     else
-      @navigate_away()
+      @navigate_away(callback)
 
 
 $(document).ready ->

@@ -28,15 +28,12 @@ class ImageQuestionDrawingTool
     return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
     return url
 
-  constructor: (@image_question_id="blank")->
-    # Initial default values
-    @image_url            = ""
-
-    # Constant selectors:
-    @form_sel              = "#image_question_main_form_#{@image_question_id} form"
-    @dialog_sel            = "#image_question_dialog_#{@image_question_id}"
-    @drawing_tool_selector = "#drawing-tool-container_for_#{@image_question_id}"
-    @interactive_selector  = ".interactive-mod > *:first-child"
+  constructor: (@image_question_id, @interactive_id = null)->
+    # Selectors:
+    @form_sel         = "#image_question_main_form_#{@image_question_id} form"
+    @dialog_sel       = "#image_question_dialog_#{@image_question_id}"
+    @drawing_tool_sel = "#drawing-tool-container_for_#{@image_question_id}"
+    @interactive_sel  = "#interactive_#{@interactive_id}"
 
     # DOM entities:
     @$content = $(@dialog_sel)
@@ -67,13 +64,14 @@ class ImageQuestionDrawingTool
     @$dialog_answer             = $("#{@dialog_sel} textarea.answer")
 
     @form_prefix                = "embeddable_image_question_answer"
+    @form_id                    = "#{@form_prefix}_#{@image_question_id}"
     @$main_form                 = $("#{@form_sel}")
     @$image_url_field           = $("#{@form_sel} [name=\"#{@form_prefix}[image_url]\"]")
     @$annotated_image_url_field = $("#{@form_sel} [name=\"#{@form_prefix}[annotated_image_url]\"]")
     @$annotation_field          = $("#{@form_sel} [name=\"#{@form_prefix}[annotation]\"]")
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
-    @drawing_tool = new DrawingTool(@drawing_tool_selector, {
+    @drawing_tool = new DrawingTool(@drawing_tool_sel, {
       width: 600,
       height: 600,
       stamps: DRAWING_TOOL_STAMPS,
@@ -91,9 +89,9 @@ class ImageQuestionDrawingTool
 
   create_hooks: ->
     @$snapshot_button.click =>
-      @take_interactive_snapshot()
-      startWaiting 'Please wait while the snapshot is being taken...'
-      @show_dialog()
+      if @take_interactive_snapshot()
+        startWaiting t('PLEASE_WAIT_TAKING_SNAPSHOT')
+        @show_dialog()
 
     @$drawing_button.click =>
       # Same as snapshot, but without taking the snapshot.
@@ -102,9 +100,9 @@ class ImageQuestionDrawingTool
 
     @$replace_button.click =>
       @drawing_tool.clear(true)
-      startWaiting 'Please wait while the snapshot is being taken...'
-      @take_interactive_snapshot()
-      @show_dialog()
+      if @take_interactive_snapshot()
+        startWaiting t('PLEASE_WAIT_TAKING_SNAPSHOT')
+        @show_dialog()
 
     @$edit_button.click =>
       return if !@is_annotation_data_correct()
@@ -126,6 +124,7 @@ class ImageQuestionDrawingTool
         @update_display()
         @hide_dialog()
         @show_saved()
+        LoggerUtils.submittedQuestionLogging(@form_id)
         @set_dialog_buttons_enabled(true)
         stopWaiting()
       ).on('ajax:error', (e, xhr, status, error) =>
@@ -135,36 +134,41 @@ class ImageQuestionDrawingTool
       )
 
   shutterbug_fail_hander: (message) ->
-    $('#modal-dialog').html "<div class='server-error'>#{message}</div>"
+    $('#modal-dialog').html "<div class='dialog-error'>#{message}</div>"
     $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error")
     stopWaiting()
     @save_failed()
     @set_dialog_buttons_enabled(true)
 
   take_interactive_snapshot: ->
+    unless @interactive_id
+      alert t('MISSING_INTERACTIVE')
+      return false # snapshot request failed
+
     Shutterbug.snapshot
-      selector: @interactive_selector
+      selector: @interactive_sel
       server: SHUTTERBUG_URI # defined in api-urls.js.erb
       done: (image_src) =>
         @set_image_source(image_src)
         stopWaiting()
       fail: (jqXHR, textStatus, errorThrown) =>
-        @shutterbug_fail_hander("Could not take your snapshot. Please try again later.")
+        @shutterbug_fail_hander(t('SNAPSHOT_FAILED'))
         stopWaiting()
         @set_dialog_buttons_enabled(true)
         @hide_dialog()
       format: 'jpeg'
       quality: 0.85
+    true # snapshot request succeeded
 
   take_drawing_tool_snapshot: ->
     Shutterbug.snapshot
-      selector: "#{@drawing_tool_selector} canvas.lower-canvas"
+      selector: "#{@drawing_tool_sel} canvas.lower-canvas"
       server: SHUTTERBUG_URI # defined in api-urls.js.erb
       done: (image_src) =>
         @copy_to_form_and_save(image_src)
         stopWaiting()
       fail: (jqXHR, textStatus, errorThrown) =>
-        @shutterbug_fail_hander("Could not save your drawing after 30 seconds. Please try again later.")
+        @shutterbug_fail_hander(t('DRAWING_SAVE_ERROR'))
         stopWaiting()
         @set_dialog_buttons_enabled(true)
       format: 'jpeg'
@@ -226,7 +230,7 @@ class ImageQuestionDrawingTool
   start_saving: ->
     @show_saving()
     @set_dialog_buttons_enabled(false)
-    startWaiting 'Please wait while your drawing is being saved...'
+    startWaiting t('PLEASE_WAIT_SAVING_DRAWING')
     # Clear selection so it's not visible on the screenshot.
     @drawing_tool.clearSelection()
     # First part of saving is to get Shutterbug snapshot.
@@ -269,7 +273,7 @@ class ImageQuestionDrawingTool
 
   is_annotation_data_correct: () ->
     reset_annotation_data = =>
-      if confirm "Old drawing format detected - all annotations or drawings will be cleared if you continue."
+      if confirm t('OLD_DRAWING_FORMAT')
         @$annotation_field.val("")
         # We have to manually set background again. Note that we don't have to take
         # snapshot again, as it should be already available as image_url field in form.

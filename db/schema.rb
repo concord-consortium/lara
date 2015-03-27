@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141126144838) do
+ActiveRecord::Schema.define(:version => 20150312183116) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -32,6 +32,55 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
 
   add_index "authentications", ["uid", "provider"], :name => "index_authentications_on_uid_and_provider", :unique => true
   add_index "authentications", ["user_id", "provider"], :name => "index_authentications_on_user_id_and_provider", :unique => true
+
+  create_table "c_rater_feedback_items", :force => true do |t|
+    t.text     "answer_text"
+    t.integer  "answer_id"
+    t.string   "answer_type"
+    t.string   "item_id"
+    t.string   "status"
+    t.integer  "score"
+    t.text     "feedback_text"
+    t.text     "response_info"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
+  end
+
+  add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
+  add_index "c_rater_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "c_rater_feed_item_submission_idx"
+
+  create_table "c_rater_feedback_submissions", :force => true do |t|
+    t.integer  "usefulness_score"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "interactive_page_id"
+    t.integer  "run_id"
+  end
+
+  add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
+
+  create_table "c_rater_item_settings", :force => true do |t|
+    t.integer  "score_mapping_id"
+    t.integer  "provider_id"
+    t.string   "provider_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "item_id"
+  end
+
+  add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
+  add_index "c_rater_item_settings", ["score_mapping_id"], :name => "index_c_rater_settings_on_score_mapping_id"
+
+  create_table "c_rater_score_mappings", :force => true do |t|
+    t.text     "mapping"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "description"
+    t.integer  "user_id"
+    t.integer  "changed_by_id"
+  end
 
   create_table "collaboration_runs", :force => true do |t|
     t.integer  "user_id"
@@ -57,6 +106,21 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "embeddable_feedback_items", :force => true do |t|
+    t.integer  "answer_id"
+    t.string   "answer_type"
+    t.integer  "score"
+    t.text     "feedback_text"
+    t.text     "answer_text"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "feedback_submission_id"
+    t.string   "feedback_submission_type"
+  end
+
+  add_index "embeddable_feedback_items", ["answer_id", "answer_type"], :name => "index_embeddable_feedback_items_on_answer_id_and_answer_type"
+  add_index "embeddable_feedback_items", ["feedback_submission_id", "feedback_submission_type"], :name => "e_feed_item_submission_idx"
 
   create_table "embeddable_image_question_answers", :force => true do |t|
     t.integer  "run_id"
@@ -86,6 +150,26 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
+  end
+
+  create_table "embeddable_labbook_answers", :force => true do |t|
+    t.integer  "run_id"
+    t.integer  "labbook_id"
+    t.boolean  "is_dirty",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "embeddable_labbook_answers", ["labbook_id"], :name => "index_embeddable_labbook_answers_on_labbook_id"
+  add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
+
+  create_table "embeddable_labbooks", :force => true do |t|
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "action_type",         :default => 0, :null => false
+    t.string   "name"
+    t.text     "prompt"
+    t.string   "custom_action_label"
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
@@ -203,6 +287,7 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.string   "layout",                  :default => "l-6040"
     t.string   "embeddable_display_mode", :default => "stacked"
     t.string   "sidebar_title",           :default => "Did you know?"
+    t.text     "additional_sections"
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"
@@ -236,6 +321,7 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.integer  "theme_id"
     t.integer  "project_id"
     t.integer  "portal_run_count",   :default => 0
+    t.integer  "layout",             :default => 0
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -282,6 +368,7 @@ ActiveRecord::Schema.define(:version => 20141126144838) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.string   "section"
   end
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"

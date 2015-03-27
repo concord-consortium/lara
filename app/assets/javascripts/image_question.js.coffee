@@ -7,6 +7,7 @@ class ImageQuestion
 
     # Constant selectors:
     @form_prefix          = "embeddable_image_question_answer"
+    @form_id              = "#{@form_prefix}_#{@image_question_id}"
     @dialog_sel           = "#image_question_answer_form_#{@image_question_id}"
     @svg_canvas_id        = "image_question_annotation_for_#{@image_question_id}"
     @form_sel             = "#image_question_#{@image_question_id}"
@@ -129,6 +130,7 @@ class ImageQuestion
       @hide()
       # TODO: validate response and calling showSaved() or saveFailed().
       @show_saved()
+      LoggerUtils.submittedQuestionLogging(@form_id)
     ,"svg_" + @image_question_id)
 
   has_image_content: ->

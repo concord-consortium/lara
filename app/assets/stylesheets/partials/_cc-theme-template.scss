@@ -1,4 +1,4 @@
-@mixin theme($srcImage, $theme-color-a, $theme-color-b, $theme-color-c) {
+@mixin theme($srcImage, $theme-color-a, $theme-color-b) {
   html {
     background: url($srcImage) no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -107,5 +107,12 @@
     .time_estimate {
       color: $theme-color-a;
     }
+  }
+}
+
+@mixin hasbot($srcImage) {
+  .ab-robot-wrap #ab-robot-image {
+      background-image: url($srcImage);
+      background-position: 0 0;
   }
 }

@@ -3,10 +3,10 @@
 -else
   - user = "Anonymous"  
 
-- if resource.class == Class
-  - message = "#{user}, you don't have permission to access this page."
-- else
+- if resource.class.name == "LightweightActivity" || resource.class.name == "Sequence"
   - message = "#{user}, you don't have permission to #{action} the #{resource.class.name} with id : #{resource.id}"
+- else
+  - message = "#{user}, you don't have permission to access this page."
   
 %body{:style => 'background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif;' }
   .unauthorized_message{:style=>'width: 20em;padding: 0 4em;margin: 4em auto 0 auto;border: 1px solid #ccc;border-right-color: #999;border-bottom-color: #999;'}

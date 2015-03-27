@@ -1,7 +1,0 @@
-@import "cc-runtime-base";
-$src: '/assets/has-bg/hydrofracking_background.png';
-$c_a: #602f1c;
-$c_b: #6b96ba;
-$c_c: #edaa3d;
-
-@include theme($src, $c_a, $c_b, $c_c);

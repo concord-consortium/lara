@@ -4,10 +4,10 @@ class LightweightActivitiesController < ApplicationController
 
   # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers]
-  before_filter :set_sequence, :only   => [:summary, :show]
+  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
+  before_filter :set_sequence, :only   => [:summary, :show, :single_page]
   
-  before_filter :enable_js_logger, :only => [:summary, :show, :preview]
+  before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
 
   layout :set_layout
 
@@ -21,27 +21,30 @@ class LightweightActivitiesController < ApplicationController
 
   # These are the runtime (student-facing) actions, show and summary
 
-  def show
+  def show # show index
     authorize! :read, @activity
     if params[:response_key]
       redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
       redirect_to activity_path(@activity, request.query_parameters) and return
     end
+
     @run.increment_run_count!
-    setup_show
-    unless params[:show_index]
-      if @run && @run.last_page && @activity
-        # TODO: If the Page isn't in this activity... Then we need to log that as an error, 
-        # and do the best we can to get back to the right page...
-        if @activity != @run.last_page.lightweight_activity
-          Rails.logger.error("Page has wrong activity or vice versa")
-          Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
-          @activity = @run.last_page.lightweight_activity
-        end
-        redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key)
-        return
-      end
+
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      redirect_to activity_single_page_with_response_path(@activity, @run.key) and return
     end
+    if @run.last_page && !params[:show_index]
+      # TODO: If the Page isn't in this activity... Then we need to log that as an error,
+      # and do the best we can to get back to the right page...
+      if @activity != @run.last_page.lightweight_activity
+        Rails.logger.error("Page has wrong activity or vice versa")
+        Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
+        @activity = @run.last_page.lightweight_activity
+      end
+      redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key) and return
+    end
+
+    setup_show
   end
 
   def preview
@@ -49,7 +52,18 @@ class LightweightActivitiesController < ApplicationController
     authorize! :update, @activity # Authors only
     @run.clear_answers
     setup_show
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      render :single_page and return
+    end
     render :show
+  end
+
+  def single_page
+    authorize! :read, @activity
+    if !params[:response_key]
+      redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
+    end
+    setup_show
   end
 
   def summary
@@ -210,6 +224,8 @@ class LightweightActivitiesController < ApplicationController
     when 'show'
       return 'runtime'
     when 'preview'
+      return 'runtime'
+    when 'single_page'
       return 'runtime'
     when 'summary'
       return 'summary'

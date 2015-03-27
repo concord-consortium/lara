@@ -14,6 +14,10 @@ src_files:
   - assets/jquery-2.0.1.js
   - assets/runtime.js
   - assets/jasmine-jquery.js
+  - assets/jquery.ui.all.js
+  # scytacki: I'm not sure why but jquery and jquery.ui are not loaded even though other assets
+  #   from the pipeline are. Perhaps updating jquery-rails will fix this. The latest version of
+  #   jquery-rails includes jquery-ui
 
 
 # stylesheets
@@ -54,7 +58,7 @@ helpers:
 #   - **/*[sS]pec.js
 #
 spec_files:
-  - '**/*[sS]pec.js'
+  - '**/*[sS]pec.{js,coffee}'
 
 # src_dir
 #

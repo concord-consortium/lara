@@ -38,7 +38,9 @@ class MwInteractive < ActiveRecord::Base
       name: name,
       url: url,
       native_width: native_width,
-      native_height: native_height
+      native_height: native_height,
+      save_state: save_state,
+      has_report_url: has_report_url
     }
   end
 
@@ -63,7 +65,9 @@ class MwInteractive < ActiveRecord::Base
     return self.as_json(only:[:name, 
                               :url, 
                               :native_width, 
-                              :native_height])
+                              :native_height,
+                              :save_state,
+                              :has_report_url])
   end
   
   def self.import(import_hash)

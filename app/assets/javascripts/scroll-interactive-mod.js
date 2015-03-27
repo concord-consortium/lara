@@ -158,7 +158,7 @@ InteractiveModule.prototype.getHeightWithMargin = function () {
 };
 
 $(document).ready(function () {
-    var $trackEnd   = $('#end-scroll-track'),
+    var $trackEnd   = $('.end-scroll-track'),
         $contentMod = $('.content-mod'),
         $intMod     = $('.pinned');
 

@@ -3,7 +3,8 @@ module Embeddable
       Embeddable::ImageQuestion  => "Image question",
       Embeddable::MultipleChoice => "Multiple choice",
       Embeddable::OpenResponse   => "Open response",
-      Embeddable::Xhtml          => "Text box"
+      Embeddable::Xhtml          => "Text box",
+      Embeddable::Labbook        => "Labbook"
     }
 
   def self.table_name_prefix

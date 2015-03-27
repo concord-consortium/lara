@@ -32,7 +32,7 @@ describe MwInteractive do
 
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { name: interactive.name, url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height }
+      expected = { name: interactive.name, url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height, save_state: interactive.save_state, has_report_url: interactive.has_report_url }
       expect(interactive.to_hash).to eq(expected)
     end
   end

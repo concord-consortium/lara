@@ -14,7 +14,7 @@ describe('CustomFeedback', function () {
 
     it('has a jQuery object attribute "el"', function () {
         expect(custom.el).toBeDefined();
-        expect(custom.el).toBe('li.custom-hidden');
+        expect(custom.el).toEqual('li.custom-hidden');
     });
 
     describe('show()', function () {

@@ -16,7 +16,7 @@ set :rails_env,   "production" #added for delayed job
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-set :stages, %w(staging production dev benchmark)
+set :stages, %w(staging production dev benchmark demo)
 
 set :default_stage, "staging"
 

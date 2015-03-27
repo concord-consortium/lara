@@ -1,3 +1,5 @@
+@import "runtime-base";
+
 /* ## Bring in all Compass Helpers */
 @import "partials/base";
 @import "project/fonts";
@@ -426,8 +428,6 @@ div.intra-page-nav {
     vertical-align: top;
  }
 } // .l-full-width
-
-
 
 // *********************************************
 //  6. Headline + Intro
@@ -1106,17 +1106,29 @@ footer {
   position: fixed;
   top: 230px;
   margin-left: 820px;
-  .print {
-    @include btn(#459ace, #2b6fba);
-    width: 120px;
-  }
-  .close {
+  .print, .close, .share {
     @include btn(#459ace, #2b6fba);
     width: 120px;
   }
   &.bottom {
     margin-top: -50px;
   }
+}
+
+.share-popup{
+  h2{
+    margin: 5px 0;
+    font-size:14px;
+  }
+  textarea{
+    width:470px;
+    height:50px;
+  }
+  a{
+    outline:none;
+  }
+  a:link { color: #0000EE; }
+  a:visited { color: #551A8B; }
 }
 
 .summary-mod {

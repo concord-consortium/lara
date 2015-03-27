@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Embeddable::OpenResponseAnswersController do
   before(:each) do
-    stub_request(:any, "http://foo.bar.fake/baz")
+    stub_request(:any, endpoint)
   end
 
   let(:question) { FactoryGirl.create(:open_response, :prompt => "prompt") }
   let(:run)      { FactoryGirl.create(:run) }
   let(:answer)   { FactoryGirl.create(:or_answer, :question => question, :run => run) }
-  let(:endpoint) { "http://foo.bar.fake/baz" }
+  let(:endpoint) { 'http://concord.portal.org' }
 
   describe "#update" do
     describe "with a run initiated from remote portlal" do

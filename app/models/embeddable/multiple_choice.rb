@@ -77,7 +77,10 @@ module Embeddable
         custom: custom,
         enable_check_answer: enable_check_answer,
         multi_answer: multi_answer,
-        show_as_menu: show_as_menu
+        show_as_menu: show_as_menu,
+        is_prediction: is_prediction,
+        give_prediction_feedback: give_prediction_feedback,
+        prediction_feedback: prediction_feedback
       }
     end
 
@@ -95,7 +98,10 @@ module Embeddable
                                 :custom,
                                 :enable_check_answer,
                                 :multi_answer,
-                                :show_as_menu])
+                                :show_as_menu,
+                                :is_prediction,
+                                :give_prediction_feedback,
+                                :prediction_feedback])
       
       mc_export[:choices] = []
       
@@ -108,10 +114,10 @@ module Embeddable
     end
     
     def self.import (import_hash)
-      choices = import_hash['choices']
-      import_mc = self.new(import_hash.except('choices'))
+      choices = import_hash[:choices]
+      import_mc = self.new(import_hash.except(:choices))
       choices.each do |c|
-        choice = Embeddable::MultipleChoiceChoice.new( choice: c['choice'], prompt: c['prompt'], is_correct: c['is_correct'] )
+        choice = Embeddable::MultipleChoiceChoice.new( choice: c[:choice], prompt: c[:prompt], is_correct: c[:is_correct] )
         import_mc.choices << choice
       end
       import_mc

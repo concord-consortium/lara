@@ -24,6 +24,9 @@ class InteractivePagesController < ApplicationController
   def preview
     # This is "show" but it clears answers first
     authorize! :update, @page # Authors only
+    if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      redirect_to preview_activity_path(@activity) and return
+    end
     @run.clear_answers
     setup_show
     render :show
@@ -117,6 +120,8 @@ class InteractivePagesController < ApplicationController
       param = { :edit_embed_or => e.id }
     when Embeddable::ImageQuestion
       param = { :edit_embed_iq => e.id }
+    when Embeddable::Labbook
+      param = { :edit_embed_lb => e.id }
     when Embeddable::Xhtml
       param = { :edit_embed_xhtml => e.id }
     end
@@ -167,7 +172,5 @@ class InteractivePagesController < ApplicationController
     current_project
     @all_pages = @activity.pages
     @run.update_attribute(:page, @page)
-    finder = Embeddable::AnswerFinder.new(@run)
-    @modules = @page.embeddables.map { |e| finder.find_answer(e) }
   end
 end

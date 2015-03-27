@@ -47,7 +47,6 @@ describe LightweightActivitiesController do
       expect(assigns(:theme)).not_to be_nil
     end
 
-
     describe "when the run has a page" do
       let(:seq)     { nil }
       let(:seq_run) { nil }
@@ -75,6 +74,17 @@ describe LightweightActivitiesController do
         subject { get :show, :id => act.id}
         it "should redirect to Act 2 run page." do
           expect(subject).to redirect_to(page_with_response_path(other_act.id, page.id, run.key))
+        end
+      end
+
+      describe 'when activity has a single page layout' do
+        before do
+          act.layout = LightweightActivity::LAYOUT_SINGLE_PAGE
+          act.save
+        end
+        it 'should redirect to the single page view instead' do
+          get :show, :id => act.id
+          expect(subject).to redirect_to(activity_single_page_with_response_path(act.id, run.key))
         end
       end
     end

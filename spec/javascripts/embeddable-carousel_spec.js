@@ -45,10 +45,10 @@ describe('EmbeddableCarousel', function () {
     describe('event handlers', function () {
         var e;
         beforeEach(function () {
-            e = $.Event('animateend.jcarousel');
+            e = $.Event('jcarousel:scrollend');
         });
 
-        it('updates controls on animateend.jcarousel', function () {
+        it('updates controls on jcarousel:scrollend', function () {
             spyOn(carousel, 'updateControls');
             carousel.container.trigger(e);
             expect(carousel.updateControls).toHaveBeenCalled();

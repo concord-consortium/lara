@@ -5,32 +5,8 @@
   %h2.h2
     = @page.lightweight_activity.name
 
-.intro-mod
-  - unless @page.name.blank?
-    %h4.h4
-      = @page.name
-  - if @page.show_introduction && !@page.text.blank?
-    .intro-txt!= @page.text
+= render :partial => 'show', :locals => {:page => @page, :layout => @page.layout}
 
--# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030
--# Now also - r-6040, r-7030
-.content-mod{ :class => @page.layout }
-  .ui-block-1
-    - if @page.interactives.length > 0 && @page.show_interactive
-      = render :partial => 'interactive'
-
-  .questions-mod.ui-block-2{ :class => @page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
-    - if @page.show_info_assessment
-      = render :partial => 'list_embeddables'
-
-    .buttons
-      - if @page.embeddable_display_mode == 'carousel' && @page.embeddables.length > 1
-        %a.jcarousel-prev{ :href => '#' }
-          %input{ :class => 'button', :type => 'submit', :value => t("BACK"), :disabled => true }
-        %a.jcarousel-next{ :href => '#' }
-          %input{ :class => 'button', :type => 'submit', :value => t("NEXT"), :disabled => true }
-
-#end-scroll-track
 .bottom-buttons
   - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
   - unless @page.first?
@@ -53,27 +29,3 @@
       .next-page
         %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.lower_item), :class => 'next forward_nav' }
           %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("NEXT")}
-
--# -- Add expanded class to sidebar-mod for expanded view.
-- if @page.show_sidebar && !@page.sidebar.blank?
-  .sidebar-mod
-    .sidebar-hdr
-      %i.fa.fa-arrow-circle-left
-      %h5.h5
-        = @page.sidebar_title
-    .sidebar-bd
-      .sidebar-bd-close
-        X
-      %h4.h4
-        -# TODO: Content for this head
-        -# Why does chewing gum prevent your ears from popping?
-      .sidebar-txt
-        != @page.sidebar
-
-- if @page.last? && has_good_content(@page.lightweight_activity.related)
-  .related-mod
-    .related-hdr
-      %h5.h5
-        Related activities
-    .related-bd
-      != @page.lightweight_activity.related

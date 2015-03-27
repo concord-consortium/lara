@@ -1,0 +1,8 @@
+@import "cc-runtime-base";
+
+$src: '/assets/has-bg/landManagement_background2.jpg';
+$c_a: #497c25;
+$c_b: darken(#ba9772,10%);
+
+@include theme($src, $c_a, $c_b);
+

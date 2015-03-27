@@ -1,71 +1,72 @@
 %table.l-nav.site-width
   %tr
-    %td.nav-menu
-      %a{name: 'menu-trigger', id: 'menu-trigger'}
-        = t ("MENU")
-        %i.fa.fa-bars
-      .nav-menu-top
-        .nav-menu-arrow-border
-        .nav-menu-arrow
-        %ul
-          - if @sequence
-            - @sequence.lightweight_activities_sequences.each do |las|
-              - activity = las.lightweight_activity
-              %li.activity{ :class => @activity == activity ? %w(active on) : '' }
-                .activity-list-head.open-close
-                  = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity, :show_index => true)
-                  %span
-                    %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
-                %ol.pages.in-sequence
-                  = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
-          - else
-            %li.activity.active
-              = link_to "#{@activity.name}", runnable_activity_path(@activity, :show_index => true)
-              %ol.pages.in-activity
-                = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
+    - if @sequence || @activity.layout != LightweightActivity::LAYOUT_SINGLE_PAGE
+      %td.nav-menu
+        %a{name: 'menu-trigger', id: 'menu-trigger'}
+          = t ("MENU")
+          %i.fa.fa-bars
+        .nav-menu-top
+          .nav-menu-arrow-border
+          .nav-menu-arrow
+          %ul
+            - if @sequence
+              - @sequence.lightweight_activities_sequences.each do |las|
+                - activity = las.lightweight_activity
+                %li.activity{ :class => @activity == activity ? %w(active on) : '' }
+                  .activity-list-head.open-close
+                    = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity, :show_index => true)
+                    %span
+                      %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
+                  %ol.pages.in-sequence
+                    = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
+            - else
+              %li.activity.active
+                = link_to "#{@activity.name}", runnable_activity_path(@activity, :show_index => true)
+                %ol.pages.in-activity
+                  = render :partial => 'shared/nav_page_list', :locals => { :pages => @activity.pages, :activity => @activity }
 
       -# max-width is only temporal, see javascript block below. We have to make sure that pagination block isn't too narrow.
       -# 500px ensures that pages list won't have any line breaks unless it really should (more than 9 pages). JS block will
       -# set it to more precise / optimal value.
-      %td.activity-nav-title{:style => 'max-width: 500px;'}
-        = activity_name_for_menu
-      %td.activity-nav.ui-block-2
+    %td.activity-nav-title{:style => 'max-width: 500px;'}
+      = activity_name_for_menu
+    %td.activity-nav.ui-block-2
 
-        .pages
-          .pagination
+      .pages
+        .pagination
+          .pagination-item
+            - classes = @page.blank? ? 'pagination-link selected' : 'pagination-link'
+            %a{:href=> runnable_activity_path(@activity, :show_index => true),:class => classes}
+              %i.fa.fa-home
+          - page_counter = 1
+          - @activity.pages.each do |p|
             .pagination-item
-              - classes = @page.blank? ? 'pagination-link selected' : 'pagination-link'
-              %a{:href=> runnable_activity_path(@activity, :show_index => true),:class => classes}
-                %i.fa.fa-home
-            - page_counter = 1
-            - @activity.pages.each do |p|
-              .pagination-item
-                - classes = 'pagination-link'
-                - if @page
-                  - classes << ' selected' if p == @page
-                  - classes << ' forward_nav' if p.position > @page.position
-                = link_to page_counter, runnable_activity_page_path(@activity, p), :class => classes
-                - page_counter = page_counter + 1
-        -if @page
-          %td.activity-nav
-            .prev_and_next
-              - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
-              - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
-              - prev_classes  = 'pagination-link prev'
-              - next_classes  = 'pagination-link next forward_nav'
-              - prev_classes << ' disabled' if @page.higher_item.nil?
-              - next_classes << ' disabled' if @page.lower_item.nil?
-              %a{ :class => prev_classes, :href => previous_href }
-                %i.fa.fa-arrow-left
-              %a{ :class => next_classes, :href => next_href }
-                %i.fa.fa-arrow-right
+              - classes = 'pagination-link'
+              - if @page
+                - classes << ' selected' if p == @page
+                - classes << ' forward_nav' if p.position > @page.position
+              = link_to page_counter, runnable_activity_page_path(@activity, p), :class => classes
+              - page_counter = page_counter + 1
+      -if @page
+        %td.activity-nav
+          .prev_and_next
+            - next_href = @page.lower_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.lower_item)
+            - previous_href = @page.higher_item.nil? ? nil : runnable_activity_page_path(@page.lightweight_activity, @page.higher_item)
+            - prev_classes  = 'pagination-link prev'
+            - next_classes  = 'pagination-link next forward_nav'
+            - prev_classes << ' disabled' if @page.higher_item.nil?
+            - next_classes << ' disabled' if @page.lower_item.nil?
+            %a{ :class => prev_classes, :href => previous_href }
+              %i.fa.fa-arrow-left
+            %a{ :class => next_classes, :href => next_href }
+              %i.fa.fa-arrow-right
                 
 .site-width.profile-nav
   - portal_user = session[:portal_username]
   .profile-dropdown
     %div.profile-u-name
-      Hi, 
-      %a.popup-trigger{:href => "javascript:void(0);"} 
+      Welcome, 
+      %a.popup-trigger{:href => "javascript:void(0);", "data-trigger-save" => "false"}
         - if portal_user.nil? 
           Anonymous
         - else  

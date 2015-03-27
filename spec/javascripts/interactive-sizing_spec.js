@@ -14,7 +14,7 @@ describe('InteractiveObject', function () {
 
         // Attributes
         it('has defined attributes', function () {
-            expect(interactive.element).toBe('video');
+            expect(interactive.element).toEqual('video');
             expect(interactive.aspectRatio).toBeDefined();
             expect(interactive.currWidth).toBeDefined();
             expect(interactive.targetHeight).toBeDefined();
@@ -26,11 +26,11 @@ describe('InteractiveObject', function () {
             });
 
             it('has height matching targetHeight', function () {
-                expect(interactive.element).toHaveAttr('height', interactive.targetHeight);
+                expect(interactive.element.attr('height')).toBe('' + interactive.targetHeight);
             });
 
             it('has width matching currWidth', function () {
-                expect(interactive.element).toHaveAttr('width', interactive.currWidth);
+                expect(interactive.element.attr('width')).toBe('' + interactive.currWidth);
             });
         });
     });
@@ -45,7 +45,7 @@ describe('InteractiveObject', function () {
 
         // Attributes
         it('has defined attributes', function () {
-            expect(interactive.element).toBe('iframe');
+            expect(interactive.element).toEqual('iframe');
             expect(interactive.aspectRatio).toBeDefined();
             expect(interactive.currWidth).toBeDefined();
             expect(interactive.targetHeight).toBeDefined();
@@ -57,11 +57,11 @@ describe('InteractiveObject', function () {
             });
 
             it('has height matching targetHeight', function () {
-                expect(interactive.element).toHaveAttr('height', interactive.targetHeight);
+                expect(interactive.element.attr('height')).toBe('' + interactive.targetHeight);
             });
 
             it('has width matching currWidth', function () {
-                expect(interactive.element).toHaveAttr('width', interactive.currWidth);
+                expect(interactive.element.attr('width')).toBe('' + interactive.currWidth);
             });
         });
     });

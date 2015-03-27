@@ -15,7 +15,10 @@ describe Embeddable::ImageQuestion do
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
         bg_source: image_question.bg_source,
-        bg_url: image_question.bg_url
+        bg_url: image_question.bg_url,
+        is_prediction: image_question.is_prediction,
+        give_prediction_feedback: image_question.give_prediction_feedback,
+        prediction_feedback: image_question.prediction_feedback
       }
       expect(image_question.to_hash).to eq(expected)
     end

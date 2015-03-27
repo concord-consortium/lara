@@ -1,0 +1,33 @@
+@import "cc-runtime-base";
+
+$src: '/assets/has-bg/water_background.jpg';
+$c_a: #2f70b0;
+$c_b: #84c6cf;
+
+@include theme($src, $c_a, $c_b);
+
+.activities .activity {
+  .title {
+    font-size: 12pt;
+  }
+  .position {
+    padding-top: 2px;
+  }
+}
+
+.ui-dialog {
+  .ui-dialog-titlebar, .ui-dialog-title {
+    color: $c_b;
+    min-height: 2em;
+  }
+  .ui-dialog-title {
+    display: none;
+  }
+}
+
+.ui-dialog.network-error {
+  .ui-dialog-title {
+    color: #2f70b0;
+    display: inline;
+  }
+}

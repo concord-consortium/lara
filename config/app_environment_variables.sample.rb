@@ -15,4 +15,8 @@ ENV['CONCORD_DRAWING_TOOL']              ||= 'drawing-tool'
 ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org/shutterbug"
 ENV['LOGGER_URI']                        ||= '//cc-log-manager.herokuapp.com/api/logs'
 ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
+ENV['C_RATER_CLIENT_ID']                 ||= 'XXXXXXX'
+ENV['C_RATER_USERNAME']                  ||= 'XXXXXXX'
+ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
 
+ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'

@@ -71,6 +71,12 @@
 			}],
 			"type": "Embeddable::MultipleChoice"
 		}, {
+           "action_type":1,
+           "custom_action_label": "",
+           "name": "Labbook album",
+           "prompt": "This is Labbook!",
+           "type":"Embeddable::Labbook"
+        }, {
 			"name": "open responce",
 			"prompt": "why does ...",
 			"type": "Embeddable::OpenResponse"
