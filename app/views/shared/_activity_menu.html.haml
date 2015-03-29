@@ -1,24 +1,44 @@
-#nav-activity-menu
-  %ul
-    - if session[:portal_username]
-      %li.home
-        = link_to 'Home',"//#{session[:portal_domain]}"
-    %li.about
-      = link_to "About", about_project_path(@project), :remote => true, "data-trigger-save" => false
-    %li.am-report
-      %a{:href => summary_with_response_path(@activity, @session_key),:title => "Print",:target => "new"}
-        %span
-          Report
-        .print
-    %li.am-help
-      %a{:href => help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false"}
-        %span
-          Help
-        .help
-    %li.am-share
-      %a{:href => "#",:title => "Share",:"data-trigger-save" => "false"}
-        .share
-    %li.am-close
-      %a{:href => "#"}  
-        .close{:title => "Close", :onclick => 'if(confirm("Are you sure?")){window.close();}'}
+-# the container is necessary so the menu can be centered when it is
+-# fixed positioned
+#nav-activity-menu-container
+  #nav-activity-menu
+    %ul
+      - if session[:portal_username]
+        %li.am-home
+          = link_to "//#{session[:portal_domain]}" do
+            %i.fa.fa-home
+            %span.text
+              Home
+      - if(@project.about.present?)
+        %li.am-about
+          = link_to about_project_path(@project), :remote => true, "data-trigger-save" => false do
+            %i.fa.fa-info-circle
+            %span.text
+              About
+      %li.am-report
+        = link_to summary_with_response_path(@activity, @session_key),:title => "Report",:target => "_blank" do
+          %i.fa.fa-print
+          %span.text
+            Report
+      - if(@project.help.present?)
+        %li.am-help
+          = link_to help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false" do
+            %i.fa.fa-question-circle
+            %span.text
+              Help
+      %li.am-close
+        = link_to "#", :title => "Close", :onclick => 'window.close();' do
+          %i.fa.fa-times
+          %span.text
+            Close
+
+:javascript
+  if(!window.opener) {
+    $('li.am-close').remove();
+  }
+
+  $(function(){
+    $('#nav-activity-menu-container').waypoint('sticky');
+  })
+
 = render :partial => "shared/share_popup"

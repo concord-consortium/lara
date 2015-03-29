@@ -96,16 +96,41 @@ button[type="button"].lb-album-btn {
   vertical-align: middle;
 }
 
+.activity-nav-mod {
+  .sticky-wrapper {
+    position: relative;
+  }
+}
 //ITSI orange menu bar
+header {
+  margin-bottom: 0px;
+}
+
+.site-logo-mod {
+  margin-bottom: 0px;
+  padding-top: 0px;
+}
+
+#nav-activity-menu-container {
+  position: relative;
+  width: 100%;
+}
+
+#nav-activity-menu-container.stuck {
+  position: fixed;
+  top: 0px;
+}
+
 #nav-activity-menu {
+  position: relative;
+  margin: 0 auto;
   background: #f8ac1a;
   height: 26px;
-  position:relative;
-  top: 0px;
   border:none;
   border-radius:0px;
+  right: auto;
   width: 960px;
-  margin: 0 auto;
+  font-size: inherit;
   ul {
     text-transform: uppercase;
     font-weight: bold;
@@ -116,23 +141,18 @@ button[type="button"].lb-album-btn {
       float: left;
       height:16px;
       border-left: solid 1px #416942;
+      border-bottom-style: none;
       padding: 0 10px;
       line-height: 18px;
+      .text { display: inline; }
+      i { display: none; }
       a {
         text-decoration: none;
-      }
-      .print,.help {
-        display: none;
       }
     }
     li:first-child {
       border-left: none;
     }
-    .am-share,.am-close {
-      display:none;
-    }
-    li.am-report span,li.am-help span,.home,.about {
-      display: block;
-    }
   }
 }
+
