@@ -186,6 +186,8 @@ class ApplicationController < ActionController::Base
     }
     if @run
       data[:run_key] = @run.key
+      data[:run_remote_id] = @run.remote_id
+      data[:run_remote_endpoint] = @run.remote_endpoint
     end
     if @sequence
       # Activity field is a bit confusing name, but let's assume that it indicates which activity *or* sequence has
