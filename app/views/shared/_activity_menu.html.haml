@@ -4,9 +4,11 @@
   #nav-activity-menu
     %ul
       - if session[:portal_username]
+        -# currently the Home link is only used by the ITSI theme
+        -# it can cause user confusion
         %li.am-home
           = link_to "//#{session[:portal_domain]}" do
-            %i.fa.fa-home
+            %i.fa.fa-university
             %span.text
               Home
       - if(@project.about.present?)

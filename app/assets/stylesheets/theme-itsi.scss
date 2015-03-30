@@ -153,6 +153,9 @@ header {
     li:first-child {
       border-left: none;
     }
+    li.am-home {
+      display: list-item;
+    }
   }
 }
 
