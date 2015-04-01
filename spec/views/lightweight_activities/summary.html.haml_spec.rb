@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'lightweight_activities/summary' do
   # Stub what we need to render the page
+  let(:project) { stub_model(Project,:title => "Title",:logo => "Logo",:url => "Url",:footer => "MyText") }
   let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity Name') }
   let(:mc1) { stub_model(Embeddable::MultipleChoiceAnswer, :prompt => 'prompt one', :question_index => '1', :answer_texts => ['Answer text'], :multi_answer => false) }
   let(:mc2) { stub_model(Embeddable::MultipleChoiceAnswer, :prompt => 'prompt two', :question_index => '2', :answer_texts => ['first answer', 'second answer'], :multi_answer => true) }
@@ -14,6 +15,8 @@ describe 'lightweight_activities/summary' do
   before(:each) do
     assign(:activity, activity)
     assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
+    assign(:project, project)
+    assign(:session_key, UUIDTools::UUID.random_create.to_s)
   end
 
   it 'shows close and print buttons at top' do

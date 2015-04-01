@@ -6,10 +6,10 @@
   - username = session[:portal_username].nil? ? 'Anonymous' : session[:portal_username]
   .container
     .name
-      Dear "#{username}",
+      Dear #{username},
     %br
     .message
-      Please Describe the problem you are facing in the box below
+      Please describe the problem you are facing in the box below
     %br
     .contact-form
     = form_tag(contact_us_project_path(@project)) do

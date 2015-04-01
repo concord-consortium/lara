@@ -33,5 +33,10 @@ class Ability
       can :read, LightweightActivity, :publication_status => allowed_status
       can :read, InteractivePage, :lightweight_activity => { :publication_status => allowed_status }
     end
+
+    can :about, Project
+    can :help, Project
+    can :contact_us, Project
+
   end
 end

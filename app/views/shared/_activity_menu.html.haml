@@ -13,7 +13,7 @@
               Home
       - if(@project.about.present?)
         %li.am-about
-          = link_to about_project_path(@project), :remote => true, "data-trigger-save" => false do
+          = link_to about_project_path(@project), :remote => true,:title => "About", "data-trigger-save" => false do
             %i.fa.fa-info-circle
             %span.text
               About

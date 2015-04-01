@@ -1,3 +1,6 @@
+.activity-menu-container
+  = render :partial => 'shared/activity_menu'
+
 .summary-mod
   = content_for :title do
     = "Response Summary for #{@activity.name}"
@@ -24,3 +27,15 @@
   .share Share
 
 = render :partial => 'shared/share_popup'
+
+:javascript
+  $(function(){
+    $('#nav-activity-menu li:visible:first').css('border-left','none')
+  })
+
+:scss
+  .activity-menu-container {
+    .am-close,.am-report {
+      display: none;
+    }
+  }
