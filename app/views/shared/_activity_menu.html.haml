@@ -17,11 +17,12 @@
             %i.fa.fa-info-circle
             %span.text
               About
-      %li.am-report
-        = link_to summary_with_response_path(@activity, @session_key),:title => "Report",:target => "_blank" do
-          %i.fa.fa-print
-          %span.text
-            Report
+      - if @activity
+        %li.am-report
+          = link_to summary_with_response_path(@activity, @session_key),:title => "Report",:target => "_blank" do
+            %i.fa.fa-print
+            %span.text
+              Report
       - if(@project.help.present?)
         %li.am-help
           = link_to help_project_path(@project),:title => "Help",:"data-remote" => "true",:"data-trigger-save" => "false" do

@@ -1,6 +1,3 @@
-.activity-menu-container
-  = render :partial => 'shared/activity_menu'
-
 .summary-mod
   = content_for :title do
     = "Response Summary for #{@activity.name}"
@@ -31,11 +28,12 @@
 :javascript
   $(function(){
     $('#nav-activity-menu li:visible:first').css('border-left','none')
+    $('#nav-activity-menu li:visible:last').css('border-bottom','none')
   })
 
 :scss
-  .activity-menu-container {
-    .am-close,.am-report {
+  #nav-activity-menu {
+    .am-close,.am-report,.am-about {
       display: none;
     }
   }

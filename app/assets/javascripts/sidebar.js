@@ -6,6 +6,12 @@ $(function () {
   function positionMultipleSidebars() {
     var sidebarTop = $('.sidebar-mod').offset().top;
     var sidebarHdrHeight = $('.sidebar-hdr').height();
+
+    if ($('#nav-activity-menu')) {
+       //Distance between floating menu and sidebar.
+       sidebarTop = $('#nav-activity-menu').offset().top + $('#nav-activity-menu').height() + 50;
+    }
+
     $('.sidebar-mod').each(function (idx) {
       $(this).css('top', sidebarTop + idx * (sidebarHdrHeight + SIDEBAR_SPACER));
     });

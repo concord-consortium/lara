@@ -1,6 +1,8 @@
 = content_for :title do
   = @sequence.title
 
+= render :partial => "shared/activity_menu"
+
 %p#notice= notice
 
 .sequence-page
@@ -53,6 +55,10 @@
 
     = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
        
-
-
+:scss
+  #nav-activity-menu {
+    .am-home,.am-report {
+      display: none;
+    }
+  }
   

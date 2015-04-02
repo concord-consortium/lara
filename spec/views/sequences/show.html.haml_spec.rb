@@ -6,6 +6,12 @@ describe "sequences/show" do
       :title => "Title",
       :description => "MyText"
     ))
+    @project = assign(:project, stub_model(Project,
+      :title => "Title",
+      :logo => "Logo",
+      :url => "Url",
+      :footer => "MyText"
+    ))
   end
 
   it "renders attributes" do
