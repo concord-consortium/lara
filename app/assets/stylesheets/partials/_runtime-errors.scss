@@ -5,3 +5,28 @@
   color: rgb(197, 17, 17);
   line-height: 1.3em;
 }
+
+.login_portal {
+  width: 200px;
+  padding: 10px;
+  margin: 0em;
+}
+
+h2.error {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.error.pre {
+  font-family: monospace;
+  margin: 0em;
+  padding: 1em;
+  background-color: hsl(0,50,20);
+  color: hsl(1,50,100);
+  border-radius: 10px;
+  li {
+    margin: 0.5em;
+    padding: 0px;
+    line-height: 1.5em;
+  }
+}
