@@ -6,7 +6,12 @@ class ApplicationController < ActionController::Base
 
   # Run authorization on all actions
   # check_authorization
-  protect_from_forgery
+  # np: Rails 4 API would let us do this: http://bit.ly/1HokQ0f 
+  protect_from_forgery with: :exception
+  # ⬆ doesn't seem to have any effect in rails 3.  We still return 200.
+  # rails 3 assumption is that the controller would check the user
+  # We could do eg in controllers/embeddable/open_responses_controller.rb : 
+  # http://bit.ly/1I8FxAw (github)
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
