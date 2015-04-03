@@ -13,9 +13,11 @@ class ApplicationController < ActionController::Base
     render :partial => "shared/unauthorized", :locals => {:action => exception.action,:resource=> exception.subject},:status => 403
   end
 
+  before_filter :log_session_before
   before_filter :portal_login
   before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
+  after_filter :log_session_after
 
   # Try to set local from the request headers
   def set_locale
@@ -298,5 +300,18 @@ class ApplicationController < ActionController::Base
       @user_agent = user_agent
       redirect_to '/home/bad_browser'
     end
+  end
+
+  def log_session_before
+    logger.info("session before:" + session.inspect)
+  end
+
+  def log_session_after
+    logger.info("session after:" + session.inspect)
+  end
+
+  def handle_unverified_request
+    logger.info("unverified_request session:" + session.inspect)
+    reset_session
   end
 end
