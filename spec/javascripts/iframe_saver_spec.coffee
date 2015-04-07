@@ -12,7 +12,7 @@ describe 'IFrameSaver', () ->
   fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
 
   beforeEach () ->
-    window.iframePhone.ParentEndpoint = () ->
+    window.IframePhoneManager.getPhone = () ->
       return fake_phone
     loadFixtures "iframe-saver.html"
 
