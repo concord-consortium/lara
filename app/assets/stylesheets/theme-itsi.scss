@@ -121,10 +121,15 @@ header {
   top: 0px;
 }
 
+#nav-activity-menu-container {
+  #nav-activity-menu {
+    background: #f8ac1a;
+    margin: 0 auto;
+  }
+}
+
 #nav-activity-menu {
   position: relative;
-  margin: 0 auto;
-  background: #f8ac1a;
   height: 26px;
   border:none;
   border-radius:0px;
@@ -156,5 +161,90 @@ header {
     li.am-home {
       display: list-item;
     }
+    li.am-close{
+      display:none;
+    }
+    .summary-actions {
+      li {
+        .print, .share, .close, {
+          font-size: inherit;
+          font-weight: inherit;
+          padding: 0;
+          background: none;
+          background-image: none;
+          box-shadow: none;
+          border-radius: 0;
+          text-shadow: none;
+          margin: 0;
+          text-transform: uppercase;
+          width: initial;
+          color: inherit;
+          border:none;
+        }
+      }
+    }
   }
+}
+
+//ITSI report page
+.summary-mod {
+  .h2 {
+    color: #ee864e;
+  }
+}
+
+.ui-dialog.share-popup-dialog {
+  .ui-dialog-titlebar {
+    background: #f8ac1a;
+    color: #416942;
+  }
+  #share-popup {
+    background: #fff8e3;
+    h2 {
+      color: #ee864e;
+    }
+  }
+}
+
+.about-popup {
+  .about-header {
+    background: #f8ac1a;
+    color: #416942;
+  }
+  h3 {
+    color: #416942;
+    height: 25px;
+  }
+}
+
+.help-popup {
+  .close {
+    color: #416942;
+  }  
+  h3.title {
+    color: #416942;
+    background: #f8ac1a;
+  }
+  .buttons {
+    #contact-us{
+      background: #f8ac1a;
+    }
+  }
+}
+
+.contact-us-popup {
+  .close {
+    color: #416942;
+  }
+  h3.title {
+    color: #416942;
+    background: #f8ac1a;
+  }
+  input[type="submit"].submit {
+    background: #f8ac1a;
+  }
+}
+
+.modal {
+  background: #fff8e3;
 }

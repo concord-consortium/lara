@@ -1,8 +1,5 @@
 
 .summary-actions {
-  position: fixed;
-  top: 230px;
-  margin-left: 820px;
   .print, .close, .share {
     @include btn(#459ace, #2b6fba);
     width: 120px;

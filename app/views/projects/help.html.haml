@@ -1,12 +1,12 @@
-.help
+.help-popup
   %span.close
-    close (✖)
+    ✖
   %h3.title
     Help
   .help-content
     = raw @project.help
-  .buttons
-    = link_to "Contact us",contact_us_project_path(@project),:remote => true , :id =>'contact-us'
+  -#.buttons
+    -#= link_to "Contact us",contact_us_project_path(@project),:remote => true , :id =>'contact-us'
 
 :scss
   h3.title {
@@ -20,7 +20,7 @@
     height:25px;
   }
   .help-content {
-    padding: 5px;
+    padding: 5px 5px 10px 5px;
   }
   .buttons {
     float: right;

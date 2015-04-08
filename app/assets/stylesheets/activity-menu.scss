@@ -2,13 +2,15 @@
   z-index: 2;
 }
 .modal {
+  border: none;
   padding: 10px;
   z-index: 3;
-  .contact-us,.help,.about {
+  .contact-us-popup,.help-popup,.about-popup {
     .close {
       position: absolute;
       top: 15px;
       right:15px;
+      cursor: pointer;
     }
   }
 }

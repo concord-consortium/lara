@@ -13,16 +13,12 @@ describe 'lightweight_activities/summary' do
   let(:image_answer)  { stub_model(Embeddable::ImageQuestionAnswer, :prompt => 'prompt six', :question_index => '6', :answer_text => 'this is my image answer', :image_url => image_answer_url)}
 
   before(:each) do
+    assign(:project, project)
+    assign(:session_key, UUIDTools::UUID.random_create.to_s)
     assign(:activity, activity)
     assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
     assign(:project, project)
     assign(:session_key, UUIDTools::UUID.random_create.to_s)
-  end
-
-  it 'shows close and print buttons at top' do
-    render
-    expect(rendered).to have_css ".print", :count => 1
-    expect(rendered).to have_css ".close", :count => 1
   end
 
   it 'shows the activity title' do

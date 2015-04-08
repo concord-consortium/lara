@@ -1,7 +1,7 @@
-.about
+.about-popup
   .about-header
     %span.close
-      close (✖)
+      ✖
     %h3
       About
   %p.title
@@ -10,6 +10,9 @@
     = raw @project.about
 
 :scss
+  .about-popup {
+    padding-bottom: 10px;
+  }
   p.title,.about-content {
     padding: 0 5px;
   }
