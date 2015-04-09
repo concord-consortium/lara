@@ -25,7 +25,7 @@
                 %p
                 %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
 
-    - embeddables.each do |m|
+    - embeddables.each_with_index do |m,index|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
         - fb = m.get_saved_feedback
@@ -39,16 +39,12 @@
                      'data-dirty' => fb_dirty ? 'true' : 'false'}
           .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
             = t 'ARG_BLOCK.RESUBMIT_ANSWER'
-          %h6.ab-feedback-heading
+          %h6
             = t 'ARG_BLOCK.FEEDBACK'
-          .ab-feedback-text
-            %table
-              %tr
-                %td
-                  %div.ab-robot-head
-                %td  
-                  %div.ab-robot-feedback-text
-                    #{fb_text}
+          .ab-feedback-text{:class => "ab-#{m.class.to_s.demodulize.downcase}-#{index}"}
+            %div.ab-robot-scale
+            %div.ab-robot-feedback-text
+              #{fb_text}
 
     - submission = last_submission(page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil?
@@ -129,9 +125,8 @@
     .ab-robot-figure {
       width: 85px;
       height: 109px;
-      background-image: url('/assets/c-rater/hasbot.png');
+      background-image: url('/assets/c-rater/hasbot-final-single.png');
       background-repeat: no-repeat;
-      background-position:-341px -7px;
       margin: 0 auto;
     }
   }
@@ -140,11 +135,7 @@
     clear: both;
     border: 1px solid #eee;
     border-radius: 10px;
-    padding: 5px 5px 5px 10px;
-    
-    h6 {
-      padding: 0 0 0 10px;
-    }
+    padding: 5px 5px 5px 5px;
     
     .ab-feedback-text {
       
@@ -156,13 +147,6 @@
           vertical-align: middle;
         }
       }
-      
-      .ab-robot-head {
-        width: 46px;
-        height: 42px;
-        background-image: url('/assets/c-rater/hasbot-head.png');
-        background-repeat: no-repeat;
-      } 
     }
   }
 
@@ -195,60 +179,86 @@
     }
   }
   
-  .ab-score-error {
-    .ab-robot-head {
-      background-position: -2px -2px; /*red*/
+  .ab-openresponseanswer-1, .ab-openresponseanswer-3{
+    .ab-robot-scale{
+      background-repeat: no-repeat;
+      height: 50px;
+      background-size: contain;
     }
-    .ab-feedback-heading {
-      color: #BD2227;
+  }
+  .ab-openresponseanswer-3{
+    .ab-robot-scale{
+      width: 330px;
+    }
+  }
+ 
+  .ab-score-error {
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/5pt-scale.png');
+      }
+    }
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4pt-scale.png');
+      }
     }
   }
   .ab-score0, .ab-score1 {
-    .ab-robot-head {
-      background-position: -2px -2px; /*red*/
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/1-5pt-scale.png');
+      }
     }
-    .ab-feedback-heading {
-      color: #BD2227;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/1-4pt-scale.png');
+      }
     }
   }
   .ab-score2 {
-    .ab-robot-head {
-      background-position:-67px -2px /*orange*/
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/2-5pt-scale.png');
+      }
     }
-    .ab-feedback-heading {
-      color: #F15822;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/2-4pt-scale.png');
+      }
     }
   }
   .ab-score3 {
-    .ab-robot-head {
-      background-position:-132px -2px /*yellow*/
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/3-5pt-scale.png');
+      }
     }
-    .ab-feedback-heading {
-      color: #F9B018;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/3-4pt-scale.png');
+      }
+    }
+  }
+  .ab-score4, .ab-score5 {
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4-5pt-scale.png');
+      }
     }
   }
   .ab-score4 {
-    .ab-robot-head {
-      background-position:-2px -51px; /*brown-yellow*/
-    }
-    .ab-feedback-heading {
-      color: #C0B730;
-    }
-  }
-  .ab-score5 {
-    .ab-robot-head {
-      background-position:-66px -53px; /*light-green*/
-    }
-    .ab-feedback-heading {
-      color: #80C342;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4-4pt-scale.png');
+      }
     }
   }
   .ab-score6 {
-    .ab-robot-head {
-      background-position: -134px -53px; /*dark-green*/
-    }
-    .ab-feedback-heading {
-      color: #1B9A48;
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/5-5pt-scale.png');
+      }
     }
   }
   .ab-submit-prompt {
