@@ -105,3 +105,137 @@ button[type="button"].lb-album-btn {
   vertical-align: middle;
 }
 
+.activity-nav-mod {
+  .sticky-wrapper {
+    position: relative;
+  }
+}
+//ITSI orange menu bar
+header {
+  margin-bottom: 0px;
+}
+
+.site-logo-mod {
+  margin-bottom: 0px;
+  padding-top: 0px;
+}
+
+#nav-activity-menu-container {
+  position: relative;
+  width: 100%;
+}
+
+#nav-activity-menu-container.stuck {
+  position: fixed;
+  top: 0px;
+}
+
+#nav-activity-menu {
+  background: #f8ac1a;
+  margin: 0 auto;
+  position: relative;
+  height: 26px;
+  border:none;
+  border-radius:0px;
+  right: auto;
+  width: 960px;
+  font-size: inherit;
+  ul {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #416942;
+    position: relative;
+    top: 5px;
+    li {
+      float: left;
+      height:16px;
+      border-left: solid 1px #416942;
+      border-bottom-style: none;
+      padding: 0 10px;
+      line-height: 18px;
+      .text { display: inline; }
+      i { display: none; }
+      a {
+        text-decoration: none;
+      }
+    }
+    li:first-child {
+      border-left: none;
+    }
+    li.am-home {
+      display: list-item;
+    }
+    // Hide the close link normally
+    li.am-close {
+      display:none;
+    }
+  }
+}
+
+// Show the close link in the summary report
+.summary-report  #nav-activity-menu  li.am-close {
+  display: list-item;
+}
+
+//ITSI report page
+.summary-mod {
+  .h2 {
+    color: #ee864e;
+  }
+}
+
+.ui-dialog.share-popup-dialog {
+  .ui-dialog-titlebar {
+    background: #f8ac1a;
+    color: #416942;
+  }
+  #share-popup {
+    background: #fff8e3;
+    h2 {
+      color: #ee864e;
+    }
+  }
+}
+
+.about-popup {
+  .about-header {
+    background: #f8ac1a;
+    color: #416942;
+  }
+  h3 {
+    color: #416942;
+    height: 25px;
+  }
+}
+
+.help-popup {
+  .close {
+    color: #416942;
+  }  
+  h3.title {
+    color: #416942;
+    background: #f8ac1a;
+  }
+  .buttons {
+    #contact-us{
+      background: #f8ac1a;
+    }
+  }
+}
+
+.contact-us-popup {
+  .close {
+    color: #416942;
+  }
+  h3.title {
+    color: #416942;
+    background: #f8ac1a;
+  }
+  input[type="submit"].submit {
+    background: #f8ac1a;
+  }
+}
+
+.modal {
+  background: #fff8e3;
+}

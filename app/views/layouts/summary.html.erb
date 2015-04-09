@@ -68,13 +68,38 @@
 
 		</header>
 
-		<div id="main" role="main">
+		<div id="main" class="summary-report" role="main">
 
 			<div class="activity-mod">
 
         <!-- Add class of fixed to activity-nav-mod for fixed nav -->
         <!-- TODO: How to control that? -->
-				<div class="activity-nav-mod"></div>
+				<div class="activity-nav-mod">
+					<div class="activity-menu-container">
+						<div id="nav-activity-menu-container">
+                            <div id="nav-activity-menu">
+                            	<ul>
+                            		<li>
+                                        <a href="javascript:void(0);" onclick="window.print();">Print</a>
+                                    </li>
+                                    <li>
+                                    	<a href="javascript:void(0);" class="share">Share</a>
+                                    </li>
+                                    <li class="am-close">
+                                    	<a href="javascript:void(0);" onclick="window.close();">
+                                    		Close
+                                    	</a>
+                                    </li>
+                                    <script>
+										  if(!window.opener) {
+										    $('li.am-close').remove();
+										  }
+                                    </script>
+                            	</ul>
+                            </div>
+						</div>
+					</div>
+				</div>
 
 				<div class="site-width">
 
