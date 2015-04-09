@@ -1102,53 +1102,8 @@ footer {
 //  17. Activity Summary Page
 // ******************************************
 
-.summary-actions {
-  position: fixed;
-  top: 230px;
-  margin-left: 820px;
-  .print, .close, .share {
-    @include btn(#459ace, #2b6fba);
-    width: 120px;
-  }
-  &.bottom {
-    margin-top: -50px;
-  }
-}
-
-.share-popup{
-  h2{
-    margin: 5px 0;
-    font-size:14px;
-  }
-  textarea{
-    width:470px;
-    height:50px;
-  }
-  a{
-    outline:none;
-  }
-  a:link { color: #0000EE; }
-  a:visited { color: #551A8B; }
-}
-
-.summary-mod {
-  margin-right: 150px;
-  padding: 15px;
-  .prompt {
-    font-family: sans-serif;
-    font-weight: bold;
-    margin: 5px 5px 5px 0;
-  }
-  .number {
-    float: left;
-    font-weight: bold;
-    margin: 5px 5px 5px 0;
-  }
-  .answer, .image_answer {
-    clear: left;
-    margin-left: 16px;
-  }
-}
+@import "partials/runtime-summary";
+@import "activity-menu-report-buttons";
 
 /* Miscellaneous junk */
 
