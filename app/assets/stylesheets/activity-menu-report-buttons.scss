@@ -1,0 +1,22 @@
+.summary-report div#nav-activity-menu-container {
+  position: fixed;
+  width: 100%;
+}
+
+.summary-report div#nav-activity-menu{
+  border: none;
+  background-color: inherit;
+  font-size: 20px;
+  color: inherit;
+  margin: 20px auto;
+  width: 960px;
+  position: relative;
+  padding-right: 10px;
+  ul {
+    float: right;
+  }
+  li {
+    @include btn(#459ace, #2b6fba);
+    width: 120px;
+  }
+}

@@ -130,14 +130,9 @@ header {
   top: 0px;
 }
 
-#nav-activity-menu-container {
-  #nav-activity-menu {
-    background: #f8ac1a;
-    margin: 0 auto;
-  }
-}
-
 #nav-activity-menu {
+  background: #f8ac1a;
+  margin: 0 auto;
   position: relative;
   height: 26px;
   border:none;
@@ -170,29 +165,16 @@ header {
     li.am-home {
       display: list-item;
     }
-    li.am-close{
+    // Hide the close link normally
+    li.am-close {
       display:none;
     }
-    .summary-actions {
-      li {
-        .print, .share, .close, {
-          font-size: inherit;
-          font-weight: inherit;
-          padding: 0;
-          background: none;
-          background-image: none;
-          box-shadow: none;
-          border-radius: 0;
-          text-shadow: none;
-          margin: 0;
-          text-transform: uppercase;
-          width: initial;
-          color: inherit;
-          border:none;
-        }
-      }
-    }
   }
+}
+
+// Show the close link in the summary report
+.summary-report  #nav-activity-menu  li.am-close {
+  display: list-item;
 }
 
 //ITSI report page

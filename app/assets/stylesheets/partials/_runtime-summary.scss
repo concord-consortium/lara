@@ -1,14 +1,3 @@
-
-.summary-actions {
-  .print, .close, .share {
-    @include btn(#459ace, #2b6fba);
-    width: 120px;
-  }
-  &.bottom {
-    margin-top: -50px;
-  }
-}
-
 .summary-mod {
   margin-right: 150px;
   padding: 15px;
