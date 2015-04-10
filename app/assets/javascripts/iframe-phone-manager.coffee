@@ -21,12 +21,11 @@ class IframePhoneManager
   # PRIVATE
   # Instance methods are not intented to be used externally, not even constructor, they are all private.
   constructor: ->
-    @_iframeData = {}
-    @_processAllIframes()
+    @_iframeCount = 0
+    @_phoneData = {}
 
   _getPhone: (iframeEl, afterConnectedCallback) ->
-    data = @_iframeData[iframeEl]
-    return null unless data
+    data = @_iframePhoneData iframeEl
 
     if afterConnectedCallback
       if data.phoneAnswered
@@ -38,24 +37,32 @@ class IframePhoneManager
     data.phone
 
   _getRpcEndpoint: (iframeEl, namespace) ->
-    data = @_iframeData[iframeEl]
-    return null unless data
+    data = @_iframePhoneData iframeEl
 
     unless data.rpcEndpoints[namespace]
       data.rpcEndpoints[namespace] = new iframePhone.IframePhoneRpcEndpoint phone: data.phone, namespace: namespace
 
     data.rpcEndpoints[namespace]
 
-  _processAllIframes: ->
-    $(IFRAMES_SEL).each (idx, iframeEl) =>
-      @_iframeData[iframeEl] =
-        phoneAnswered: false
-        phoneAnsweredCallbacks: []
-        phone: new iframePhone.ParentEndpoint iframeEl, => @_phoneAnswered(iframeEl)
-        rpcEndpoints: {}
+  _iframePhoneData: (iframeEl) ->
+    phoneId = $(iframeEl).data 'iframe-phone-id'
+    phoneId = @_setupPhoneForIframe(iframeEl) if phoneId == undefined
+
+    @_phoneData[phoneId]
+
+  _setupPhoneForIframe: (iframeEl) ->
+    phoneId = @_iframeCount++
+    $(iframeEl).data 'iframe-phone-id', phoneId
+    @_phoneData[phoneId] =
+      phoneAnswered: false
+      phoneAnsweredCallbacks: []
+      phone: new iframePhone.ParentEndpoint iframeEl, => @_phoneAnswered(iframeEl)
+      rpcEndpoints: {}
+
+    phoneId
 
   _phoneAnswered: (iframeEl) ->
-    data = @_iframeData[iframeEl]
+    data = @_iframePhoneData iframeEl
     data.phoneAnswered = true
     callback() for callback in data.phoneAnsweredCallbacks
 
