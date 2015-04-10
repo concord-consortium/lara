@@ -160,7 +160,9 @@ class Run < ActiveRecord::Base
     # It can be beneficial, particularly for authors, to come to a page/activity
     # with previous answers erased, so let's make it easy to clear them.
     answers.each { |a| a.destroy }
-    global_interactive_state.destroy
+    if global_interactive_state
+      global_interactive_state.destroy
+    end
   end
 
   def all_responses_for_portal

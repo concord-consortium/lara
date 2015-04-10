@@ -50,5 +50,5 @@ class GlobalIframeSaver
       error: (jqxhr, status, error) =>
         console.error 'Global interactive save failed!'
 
-if gon.globalInteractiveState != null
+if gon.globalInteractiveState?
   window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState
