@@ -161,13 +161,14 @@ class ArgumentationBlockController
   updateFeedback: (feedbackData) ->
     anyFeedbackVisible = false
     for id, feedbackItem of feedbackData
+      feedbackItem ||= {score: -1, text: ""}
       $feedback = @$element.find(FEEDBACK_ID_SEL + id)
       # Set feedback text.
       $feedback.find(FEEDBACK_TEXT_SEL).html(feedbackItem.text)
       # Set score.
       $feedback.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)ab-score\S+/g) || []).join(' ') # matches all score-<val> classes
-      if feedbackItem.score && (feedbackItem.score >= 0 && feedbackItem.score <= 6)
+      if feedbackItem.score >= 0 && feedbackItem.score <= 6
         $feedback.addClass("ab-score#{feedbackItem.score}")
       else
         $feedback.addClass("ab-score-error")
