@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150312183116) do
+ActiveRecord::Schema.define(:version => 20150410112159) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -239,6 +239,15 @@ ActiveRecord::Schema.define(:version => 20150312183116) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "global_interactive_states", :force => true do |t|
+    t.integer  "run_id"
+    t.text     "raw_data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "global_interactive_states", ["run_id"], :name => "index_global_interactive_states_on_run_id"
 
   create_table "image_interactives", :force => true do |t|
     t.string   "url"

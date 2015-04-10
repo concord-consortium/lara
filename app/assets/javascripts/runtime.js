@@ -47,4 +47,5 @@
 //= require sidebar
 //= require labbook
 //= require c_rater
+//= require global-iframe-saver
 //= require runtime-init
