@@ -9,11 +9,38 @@ class InteractivePagesController < ApplicationController
 
   layout 'runtime', :only => [:show, :preview]
 
+  def user_id_mismatch
+    @user = current_user ? current_user.email : 'anonymous'
+    @response_key = params[:response_key] || 'no response key'
+    @session = session.clone
+    session.delete("response_key")
+
+    NewRelic::Agent.add_custom_parameters({
+      user: @user,
+      response_key: @response_key
+    }.merge(@session))
+
+    NewRelic::Agent.agent.error_collector.notice_error(RuntimeError.new("_run_user_id_mismatch"))
+  end
+
   def show
     authorize! :read, @page
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
+
+    if current_user && @run
+      if @run && (@run.user_id != current_user.id)
+        user_id_mismatch()
+        render :unauthorized_run and return
+      end
+    else
+      if @run.user_id != nil
+        user_id_mismatch()
+        render :unauthorized_run and return
+      end
+    end
+
     setup_show
     respond_to do |format|
       format.html
