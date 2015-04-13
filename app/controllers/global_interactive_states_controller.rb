@@ -8,7 +8,7 @@ class GlobalInteractiveStatesController < ApplicationController
     return json_error('unauthorized') unless auth
 
     if @run.global_interactive_state
-      @run.global_interactive_state.raw_data = params['raw_data']
+      @run.global_interactive_state.update_attributes!(raw_data: params[:raw_data])
       render nothing: true, status: 200
     else
       GlobalInteractiveState.create!(run_id: @run.id, raw_data: params[:raw_data])
@@ -23,6 +23,6 @@ class GlobalInteractiveStatesController < ApplicationController
   end
 
   def auth
-    @run.user === current_user
+    @run.user == current_user
   end
 end
