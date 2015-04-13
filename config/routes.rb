@@ -1,6 +1,13 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :projects
+  resources :projects do
+    member do
+      get :about
+      get :help
+      get :contact_us
+    end
+  end
+  
 
   resources :themes
 

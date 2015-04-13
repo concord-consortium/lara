@@ -401,6 +401,8 @@ ActiveRecord::Schema.define(:version => 20150410112159) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "theme_id"
+    t.text     "about"
+    t.text     "help"
   end
 
   add_index "projects", ["theme_id"], :name => "index_projects_on_theme_id"

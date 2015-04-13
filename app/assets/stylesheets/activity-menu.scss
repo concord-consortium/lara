@@ -1,0 +1,47 @@
+#modal-container {
+  z-index: 2;
+}
+.modal {
+  border: none;
+  padding: 10px;
+  z-index: 3;
+  .contact-us-popup,.help-popup,.about-popup {
+    .close {
+      position: absolute;
+      top: 15px;
+      right:15px;
+      cursor: pointer;
+    }
+  }
+}
+
+.activity-nav-mod {
+  .sticky-wrapper {
+    margin-bottom: 0px;
+    position: fixed;
+    z-index: 1;
+  }
+}
+
+#nav-activity-menu {
+  position: fixed;
+  right: 0px;
+  margin-top: 70px;
+  border: solid 1px #80ACB3;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #fff;
+  font-size: 20px;
+  color: #6D8C91;
+  li {
+    border-bottom: solid 1px #80ACB3;
+    padding: 3px 2px 1px 4px ;
+    .text { display: none; }
+  }
+  li:last-of-type {
+    border-bottom-style: none;
+  }
+  li.am-home {
+    display: none;
+  }
+}

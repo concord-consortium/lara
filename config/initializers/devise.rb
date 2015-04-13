@@ -1,5 +1,12 @@
 require 'concord/auth_portal'
 
+Warden::Manager.before_logout do |user,auth,opts|
+  unless user.nil?
+    # see models/user.rb
+    user.clear_session_data(auth.env['rack.session'] )
+  end
+end
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|

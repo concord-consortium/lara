@@ -25,6 +25,14 @@
     %br
     = f.text_area :footer, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }
   .field
+    = f.label :about
+    %br
+    = f.text_area :about, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }
+  .field
+    = f.label :help
+    %br
+    = f.text_area :help, { :class => 'wysiwyg-text', :cols => 80, :rows => 10 }
+  .field
     = f.label :theme, "Default theme"
     %br
     = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @project.theme_id), { :include_blank => "None (use site default)" }

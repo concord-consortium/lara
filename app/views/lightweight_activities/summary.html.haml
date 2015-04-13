@@ -15,35 +15,4 @@
     = render :partial => "#{answer.class.name.underscore.pluralize}/summary",
       :locals => {:answer => answer, :index => index}
 
-.summary-actions  
-  .print{ :onclick => 'window.print();'} Print
-  .close{ :onclick => 'window.close();'} Close
-  - if can? :manage, User
-    .close
-      = link_to 'Resubmit answers', resubmit_answers_for_run_path(@activity, @run), { :title => "Not to be done lightly. Might break."}
-  .share Share
-
-#share-popup.share-popup
-  %div
-  %h2
-    Paste this
-    %a#opens-in-new-window{:target => "_blank"} link
-    in email or IM.
-  %textarea#share-link-to-copy
-
-:javascript
-  $(function() {
-    var url = document.URL;
-    $('#share-popup').dialog({
-      autoOpen: false,
-      width: 500,
-      height: 130,
-      title: 'Share Summary Report',
-      modal: true
-    });
-    $('a#opens-in-new-window').attr('href', url);
-    $('textarea#share-link-to-copy').val(url);
-    $('.share').on('click', function(event) {
-      $('#share-popup').dialog('open');
-    });
-  });
+= render :partial => 'shared/share_popup'
