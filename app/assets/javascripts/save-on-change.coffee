@@ -105,7 +105,7 @@ class @SaveOnChange
         LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(previous_data)
       ).on('ajax:error', (e, xhr, status, error) =>
-        @save_error()
+        @save_error(xhr.status)
       )
 
   saveElement: (async = true) ->
@@ -120,7 +120,7 @@ class @SaveOnChange
         LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
         @save_success(data)
       error: (jqxhr, status, error) =>
-        @save_error()
+        @save_error(jqxhr.status)
     })
 
   save_success: (previous_data) ->
@@ -129,8 +129,11 @@ class @SaveOnChange
     @dirty = false
     @check_for_answer()
 
-  save_error: ->
-    @page.failed(@)
+  save_error: (status)->
+    if status is 401
+      @page.unauthorized(@)
+    else
+      @page.failed(@)
 
   check_for_answer: ->
     if @checker.is_answered()
@@ -242,6 +245,10 @@ class @SaveOnChangePage
 
   failed: (form) ->
     @save_indicator.showSaveFailed()
+
+  unauthorized: (form) ->
+    @save_indicator.showUnauthorized()
+    $(document).trigger 'unauthorized'
 
   mark_dirty: (form) ->
     @dirty_forms[form] = form
