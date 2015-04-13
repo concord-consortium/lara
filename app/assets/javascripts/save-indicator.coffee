@@ -20,6 +20,11 @@ class SaveIndicator
     @$elem.addClass("error")
     @$elem.html(message)
 
+  showUnauthorized: (message="Unauthorized!") ->
+    @$elem.removeClass("pending")
+    @$elem.addClass("error")
+    @$elem.html(message)
+
   showSaved: (message="Saved.") ->
     # Wait a ½ second before actually displaying:
     @saveTimer = setTimeout =>

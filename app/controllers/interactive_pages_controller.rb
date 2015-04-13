@@ -7,7 +7,7 @@ class InteractivePagesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:show, :preview]
 
-  layout 'runtime', :only => [:show, :preview]
+  layout 'runtime', :only => [:show, :preview, :unauthorized_run]
 
   def user_id_mismatch
     @user = current_user ? current_user.email : 'anonymous'
@@ -29,17 +29,7 @@ class InteractivePagesController < ApplicationController
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
 
-    if current_user && @run
-      if @run && (@run.user_id != current_user.id)
-        user_id_mismatch()
-        render :unauthorized_run and return
-      end
-    else
-      if @run.user_id != nil
-        user_id_mismatch()
-        render :unauthorized_run and return
-      end
-    end
+    authorize! :access, @run rescue user_id_mismatch() and render :unauthorized_run and return
 
     setup_show
     respond_to do |format|
@@ -179,6 +169,11 @@ class InteractivePagesController < ApplicationController
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end
+  end
+
+  def unauthorized_run
+    @user = current_user ? current_user.email : 'anonymous'
+    @session = session.clone
   end
 
   private
