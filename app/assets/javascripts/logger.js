@@ -1,6 +1,5 @@
 function LoggerUtils(logger) {
   this._logger = logger;
-  this.iframePhoneRpcEndpoints = [];
 };
 
 LoggerUtils.instance = function(loggerConfig) {
@@ -18,6 +17,11 @@ LoggerUtils.submittedQuestionLogging = function(data) {
 
   var logger_utils = LoggerUtils.instance(loggerConfig);
   logger_utils._submittedQuestionLogging(data);
+};
+
+LoggerUtils.enableLabLogging = function(iframeEl) {
+  var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
+  labRpc.call({message: 'lara-logging-present'});
 };
 
 LoggerUtils.prototype.sequenceIndexLogging = function() {
@@ -128,27 +132,10 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
     }
   }.bind(this);
 
-  var iframePhoneRpc;
-  for (i = 0; i < IFrameSaver.instances.length; i++) {
-    instance = IFrameSaver.instances[i];
-    if (instance.iframePhone.getTargetWindow() === iframe.contentWindow) {
-      iframePhoneRpc = instance.iframePhoneRpc;
-      // TODO: patch into call chain?
-      iframePhoneRpc.handler = handler;
-      break;
-    }
-  }
-
-  // NOTE: in this initial form, we can reuse IframePhone instance created by
-  // IFrameSaver (let's agree on caps btw?) but other code can't reuse our instances
-  // (Creating >1 IframePhone instance pointed at the same iframe breaks message queuing)
-
-  if ( ! iframePhoneRpc ) {
-    iframePhoneRpc = new iframePhone.IframePhoneRpcEndpoint(handler, 'lara-logging', iframe);
-    iframePhoneRpc.call({ message: 'lara-logging-present' });
-  }
-
-  this.iframePhoneRpcEndpoints.push(iframePhoneRpc);
+  // Setup handler for incoming logs.
+  IframePhoneManager.getRpcEndpoint(iframe, 'lara-logging').handler = handler;
+  // Notify Lab that logging is supported.
+  LoggerUtils.enableLabLogging(iframe);
 };
 
 
