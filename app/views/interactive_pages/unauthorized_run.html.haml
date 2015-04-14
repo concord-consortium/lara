@@ -1,33 +1,4 @@
-= content_for :title do 
-  = "Authentication Error"
+= content_for :title do
+  = "Session Timed Out"
 
-.content-hdr
-  %h2.h2.error Authentication Timeout.
-
-.intro-mod
-  .intro-txt
-    %h4.h4 Please find your teacher, something went wrong. 
-    %p
-      Let your teacher know that you are seeing this message.
-      Please follow these instructions to run this activity:
-
-      %ul
-        %li 
-          Take note of the error details listed below
-        %li 
-          If you are running as part of a class:
-          %ul
-            %li Close this window
-            %li Log into your classroom portal, and launch the activity again.
-        %li 
-          If you are OK with running anonymously and 
-          %strong NOT SAVING DATA:
-          %ul
-            %li=link_to("try starting over",activity_path(@activity))
-
-    .error.pre
-      %li User:      #{@user}
-      %li Page:      #{@page}
-      %li Activity:  #{@activity}
-      != @session.map { |k,v| "<li> #{k} : #{v}</li>" }.join("\n")
-
+= render partial: 'unauthorized'

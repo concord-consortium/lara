@@ -1,6 +1,8 @@
 = content_for :title do 
   = "#{@page.name}"
 
+= render partial: 'unauthorized_dialog'
+
 .content-hdr
   %h2.h2
     = @page.lightweight_activity.name

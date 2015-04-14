@@ -1,0 +1,30 @@
+#unauthorized-dialog{style: 'display: none;'}
+  .message
+    = render partial: 'unauthorized'
+
+:javascript
+  $(document).on('unauthorized', function() {
+    $('#unauthorized-dialog').show();
+
+    // dialog is from jquery UI
+    $('#unauthorized-dialog').dialog({
+      title: 'Session Timed Out',
+      modal: true,
+      dialogClass: 'incorrect unauthorized',
+      width: 320,
+      resizable: false,
+      draggable: false,
+      closeOnEscape: false
+    }).parent().find(".ui-dialog-titlebar-close").hide();
+
+    // Tweak the content provided by the partial to better suit the dialog.
+    $('.ui-dialog.unauthorized .content-hdr').hide();
+    $('.ui-dialog.unauthorized .intro-txt').removeClass('intro-txt');
+
+    // Darken the modal backdrop, and get it to appear on top of the top bar.
+    $('.ui-dialog.unauthorized').css('z-index', 99999);
+    $('.ui-widget-overlay.ui-front').removeClass('ui-widget-overlay').css({ zIndex: 99999, backgroundColor: 'rgba(0,0,0,0.5)', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' });
+
+    // Disable scrolling of the main page
+    $("body").css({ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' });
+  });

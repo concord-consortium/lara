@@ -3,7 +3,3 @@
     - embeddables.each do |e|
       .question{ :class => e.kind_of?(Embeddable::Xhtml) ? 'challenge' : '' }
         = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}
-    :javascript
-      $(document).on('unauthorized', function() {
-        window.location = "#{unauthorized_run_activity_page_path(@activity.id, @page.id)}";
-      });
