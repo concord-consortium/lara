@@ -46,6 +46,7 @@ LightweightStandalone::Application.routes.draw do
     post "/argumentation_blocks/:page_id/save_feedback" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback'
     post "/argumentation_blocks/feedback_on_feedback" => 'argumentation_blocks#feedback_on_feedback', :as => 'arg_block_feedback_on_feedback'
     resources :score_mappings
+    get "/argumentation_blocks/report" => 'argumentation_blocks#report'
   end
 
   namespace :admin do
