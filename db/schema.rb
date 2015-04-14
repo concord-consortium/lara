@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150319100600) do
+ActiveRecord::Schema.define(:version => 20150410112847) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -62,12 +62,12 @@ ActiveRecord::Schema.define(:version => 20150319100600) do
   add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
+    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -359,6 +359,8 @@ ActiveRecord::Schema.define(:version => 20150319100600) do
     t.integer  "native_height"
     t.boolean  "save_state",     :default => false
     t.boolean  "has_report_url", :default => false
+    t.boolean  "click_to_play"
+    t.string   "image_url"
   end
 
   create_table "page_items", :force => true do |t|
@@ -376,12 +378,12 @@ ActiveRecord::Schema.define(:version => 20150319100600) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.text     "response"
+    t.text     "response",         :limit => 255
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "projects", :force => true do |t|
