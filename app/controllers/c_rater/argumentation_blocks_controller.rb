@@ -126,9 +126,9 @@ SQL
     results = ActiveRecord::Base.connection.execute(sql)
 
     # Mysql2::Results doesn't support #map
-    out = "Results:"
+    out = ""
     results.each { |r| out += r.to_yaml }
-    render :text => out
+    render :text => out, :content_type => "text/plain"
   end
 
   private
