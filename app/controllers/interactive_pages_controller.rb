@@ -176,6 +176,19 @@ class InteractivePagesController < ApplicationController
     @session = session.clone
   end
 
+  def unauthorized_feedback
+    data = {
+      username: params[:username],
+      teacher: params[:teacher],
+      description: params[:description],
+      original_url: params[:original_url],
+      session: session.clone,
+      request: request
+    }
+    UnauthorizedFeedbackMailer.feedback(data).deliver
+    render nothing: true, status: :created
+  end
+
   private
   def set_page
     if params[:activity_id]

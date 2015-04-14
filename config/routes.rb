@@ -74,7 +74,8 @@ LightweightStandalone::Application.routes.draw do
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
         get 'preview'
-        get 'unauthorized_run', :as => 'unauthorized_run'
+        get 'unauthorized_run'
+        post 'unauthorized_feedback'
       end
     end
     resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/, :activity_id => /\d+/ }
