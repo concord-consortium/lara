@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150410112159) do
+ActiveRecord::Schema.define(:version => 20150410112847) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -368,6 +368,8 @@ ActiveRecord::Schema.define(:version => 20150410112159) do
     t.integer  "native_height"
     t.boolean  "save_state",     :default => false
     t.boolean  "has_report_url", :default => false
+    t.boolean  "click_to_play"
+    t.string   "image_url"
   end
 
   create_table "page_items", :force => true do |t|
