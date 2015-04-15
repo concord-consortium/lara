@@ -49,7 +49,7 @@ module InteractiveRunHelper
     end
   end
 
-  def interactive_iframe_tag(interactive,run=nil,iframe_src=true)
+  def interactive_iframe_tag(interactive,run=nil)
     url = nil
     if run
       interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
@@ -70,7 +70,7 @@ module InteractiveRunHelper
       :allowfullscreen => "true",
       :webkitallowfullscreen => "true",
       :mozallowfullscreen => "true",
-      :src => iframe_src ? url : '',
+      :src => url,
       :data => data,
       :class => 'interactive',
       :id => "interactive_#{interactive.id}"

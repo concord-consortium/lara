@@ -15,12 +15,6 @@
     .clear
     This width and height will be used to maintain a fixed aspect ratio for the interactive.
   %br
-  = f.label :click_to_play, 'Click to play'
-  = f.check_box :click_to_play, :id => "click_to_play_#{@interactive.id}"
-  .image_url
-    = f.label :image_url, 'Image_url'
-    = f.text_field :image_url, :required => 'true'
-  %br
   = field_set_tag 'Save Interactive state' do
     = f.label :save_state, 'Save State'
     = f.check_box :save_state, :id => "save_state_#{@interactive.id}"
@@ -38,20 +32,7 @@
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
-  function click_to_play(){
-    if ($("#click_to_play_#{@interactive.id}").prop('checked')) {
-        // ungrey
-        $(".image_url").css("opacity", 1);
-        $("#mw_interactive_image_url").removeAttr("disabled");
-      } else {
-        // grey
-        $(".image_url").css("opacity", 0.3);
-        $("#mw_interactive_image_url").attr("disabled", true);
-      }
-  }
-
   $(document).ready(function() {
-    click_to_play();
     $('#save_state_#{@interactive.id}').click(function() {
       $('#has_report_url_#{@interactive.id}').prop('checked', false);
       if ($(this).prop('checked')) {
@@ -71,6 +52,4 @@
           $('#has_report_url_#{@interactive.id}').attr("disabled", true);
           $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
     }
-
-    $("#click_to_play_#{@interactive.id}").click(click_to_play);
   });

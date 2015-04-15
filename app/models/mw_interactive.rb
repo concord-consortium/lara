@@ -1,5 +1,5 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url
+  attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -40,9 +40,7 @@ class MwInteractive < ActiveRecord::Base
       native_width: native_width,
       native_height: native_height,
       save_state: save_state,
-      has_report_url: has_report_url,
-      click_to_play: click_to_play,
-      image_url: image_url
+      has_report_url: has_report_url
     }
   end
 
@@ -69,9 +67,7 @@ class MwInteractive < ActiveRecord::Base
                               :native_width, 
                               :native_height,
                               :save_state,
-                              :has_report_url,
-                              :click_to_play,
-                              :image_url])
+                              :has_report_url])
   end
   
   def self.import(import_hash)
