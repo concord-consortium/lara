@@ -1,5 +1,6 @@
 class CRater::ArgumentationBlocksController < ApplicationController
 
+  require 'nokogiri'
   require 'spreadsheet'
   Spreadsheet.client_encoding = 'UTF-8'
 
@@ -85,10 +86,11 @@ class CRater::ArgumentationBlocksController < ApplicationController
         SELECT DISTINCT
         runs.remote_endpoint AS remote_endpoint,
         lightweight_activities.id AS activity_id,
+        lightweight_activities.name as activity_name,
         interactive_pages.id AS page_id,
-        interactive_pages.position AS page_index,
-        page_items.position AS question_index,
+        interactive_pages.position + 1 AS page_index,
         #{s[:embeddable_table]}.id AS question_id,
+        page_items.position + 1 AS question_index,
         #{s[:embeddable_table]}.prompt AS prompt,
         #{s[:feedback_table]}.answer_text AS answer,
         #{s[:feedback_table]}.score AS score,
@@ -104,9 +106,9 @@ class CRater::ArgumentationBlocksController < ApplicationController
           ON page_items.interactive_page_id = interactive_pages.id
         INNER JOIN #{s[:embeddable_table]}
           ON #{s[:embeddable_table]}.id = page_items.embeddable_id
-        LEFT OUTER JOIN #{s[:answer_table]}
+        INNER JOIN #{s[:answer_table]}
           ON #{s[:answer_table]}.run_id = runs.id AND #{s[:answer_table]}.#{s[:question_foreign_key]} = #{s[:embeddable_table]}.id
-        LEFT OUTER JOIN #{s[:feedback_table]}
+        INNER JOIN #{s[:feedback_table]}
           ON #{s[:feedback_table]}.answer_id = #{s[:answer_table]}.id
         #{s[:usefulness_score_join]}
       WHERE
@@ -120,52 +122,48 @@ SQL
 
     order_by = <<SQL
       ORDER BY
-        activity_id,
+        activity_name,
         remote_endpoint,
         submit_time
 SQL
 
     sql = selects.join("\n UNION\n") + order_by + ";"
+    result = ActiveRecord::Base.connection.exec_query(sql)
 
-    results = ActiveRecord::Base.connection.execute(sql)
-
-    # generate a spreadsheet
+    header_name_for_sql_column = {
+      "remote_endpoint"  => "remote_endpoint",
+      "activity_id"      => "Activity ID",
+      "activity_name"    => "Activity name",
+      "page_id"          => "Page ID",
+      "page_index"       => "Page index",
+      "question_id"      => "Question ID",
+      "question_index"   => "Question index",
+      "prompt"           => "Prompt",
+      "answer"           => "Answer",
+      "score"            => "Score",
+      "submit_time"      => "Submission time",
+      "feedback"         => "Feedback",
+      "usefulness_score" => "Usefulness score"
+    }
 
     book = Spreadsheet::Workbook.new
     sheet = book.create_worksheet :name => 'Long Format'
-
     row = sheet.row(0)
 
-    [
-      "remote_endpoint",
-      "Activity id",
-      "Page id",
-      "Page index",
-      "Question index",
-      "Question id",
-      "Prompt",
-      "Answer",
-      "Score",
-      "Submission time",
-      "Feedback",
-      "Usefulness score"
-    ].each do |text|
-      row.push text
+    result.columns.each do |col|
+      row.push header_name_for_sql_column[col]
     end
 
-    # leave a blank row under header
-    i = 2
-    results.each do |result|
-      row = sheet.row(i)
-      i += 1
-      result.each do |cell|
-        row.push cell
+    result.each_with_index do |row_as_hash, row_idx|
+      row_values = row_as_hash.values.map do |cell|
+        cell.class == String ? clean_text(cell) : cell
       end
+      sheet.row(row_idx + 1).replace row_values  # + 1 to leave a blank line under header
     end
 
     sio = StringIO.new
     book.write sio
-    send_data(sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls" )
+    send_data sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls"
   end
 
   private
@@ -209,4 +207,9 @@ SQL
     or2_c_rater_settings.provider = or2
     or2_c_rater_settings.save!
   end
+
+  def clean_text(html)
+    return Nokogiri::HTML(html).inner_text
+  end
+
 end
