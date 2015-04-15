@@ -19,6 +19,16 @@ LoggerUtils.submittedQuestionLogging = function(data,autoSave) {
   logger_utils._submittedQuestionLogging(data,autoSave);
 };
 
+LoggerUtils.submitArgblockLogging = function(data) {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  };
+
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._submitArgblockLogging(data);
+};
+
 LoggerUtils.enableLabLogging = function(iframeEl) {
   var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
   labRpc.call({message: 'lara-logging-present'});
@@ -70,6 +80,13 @@ LoggerUtils.prototype._submittedQuestionLogging = function(data,autoSave) {
       
   data_object[question_type] = question_id;
   this._logger.log(data_object);
+};
+
+LoggerUtils.prototype._submitArgblockLogging = function(data) {
+  this._logger.log({
+    event  : "arg-block submit",
+    page_id: data
+  });
 };
 
 LoggerUtils.prototype._interactiveSimulationLogging = function() {

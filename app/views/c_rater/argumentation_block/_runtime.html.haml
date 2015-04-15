@@ -31,7 +31,7 @@
         - fb = m.get_saved_feedback
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
-        - fb_text = fb && fb.feedback_text
+        - fb_text = (fb && fb.feedback_text) || ""
         - fb_score = (fb && fb.score && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
                      :style => fb_visible ? '' : 'display: none',
@@ -44,7 +44,7 @@
           .ab-feedback-text{:class => "ab-#{m.class.to_s.demodulize.downcase}-#{index}"}
             %div.ab-robot-scale
             %div.ab-robot-feedback-text
-              #{fb_text}
+              #{fb_text.html_safe}
 
     - submission = last_submission(page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil?
@@ -75,7 +75,8 @@
 
     %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
-           'data-href' => c_rater_arg_block_save_feedback_path(page)}
+           'data-href' => c_rater_arg_block_save_feedback_path(page),
+           'data-page_id' => page.id}
     %div.ab-submit-prompt       
 
 :javascript

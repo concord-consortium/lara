@@ -72,6 +72,7 @@ class ArgumentationBlockController
         for id, q of @question
           q.dirty = false # just updated
           q.data = $(q).serialize()
+        LoggerUtils.submitArgblockLogging(@$submitBtn.data('page_id'))
         @fbOnFeedback.activate(data.submission_id)
         @submissionCount += 1
         @updateSubmitBtnText()
