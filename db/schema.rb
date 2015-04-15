@@ -240,6 +240,15 @@ ActiveRecord::Schema.define(:version => 20150319100600) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "global_interactive_states", :force => true do |t|
+    t.integer  "run_id"
+    t.text     "raw_data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "global_interactive_states", ["run_id"], :name => "index_global_interactive_states_on_run_id"
+
   create_table "image_interactives", :force => true do |t|
     t.string   "url"
     t.text     "caption"

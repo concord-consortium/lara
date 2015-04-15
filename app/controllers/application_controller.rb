@@ -19,6 +19,14 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   after_filter :log_session_after
 
+  def json_error(message, status = 400)
+    render json: {
+               response_type: "ERROR",
+               message: message
+           },
+           status: status
+  end
+
   # Try to set local from the request headers
   def set_locale
     logger.debug "* Accept-Language: #{request.env['HTTP_ACCEPT_LANGUAGE']}"
@@ -299,6 +307,15 @@ class ApplicationController < ActionController::Base
       @wide_content_layout = true
       @user_agent = user_agent
       redirect_to '/home/bad_browser'
+    end
+  end
+
+  def setup_global_interactive_state_data
+    gon.globalInteractiveState = {
+      save_url: run_global_interactive_state_path(@run)
+    }
+    if @run.global_interactive_state
+      gon.globalInteractiveState[:raw_data] = @run.global_interactive_state.raw_data
     end
   end
 

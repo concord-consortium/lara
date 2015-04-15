@@ -205,6 +205,7 @@ class InteractivePagesController < ApplicationController
   def setup_show
     current_theme
     current_project
+    setup_global_interactive_state_data
     @all_pages = @activity.pages
     @run.update_attribute(:page, @page)
   end

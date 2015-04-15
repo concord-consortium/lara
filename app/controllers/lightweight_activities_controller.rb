@@ -51,11 +51,13 @@ class LightweightActivitiesController < ApplicationController
     # This is "show" but it clears answers first
     authorize! :update, @activity # Authors only
     @run.clear_answers
-    setup_show
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-      render :single_page and return
+      setup_single_page_show
+      render :single_page
+    else
+      setup_show
+      render :show
     end
-    render :show
   end
 
   def single_page
@@ -63,7 +65,7 @@ class LightweightActivitiesController < ApplicationController
     if !params[:response_key]
       redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
     end
-    setup_show
+    setup_single_page_show
   end
 
   def summary
@@ -238,5 +240,10 @@ class LightweightActivitiesController < ApplicationController
     current_theme
     current_project
     @pages = @activity.pages
+  end
+
+  def setup_single_page_show
+    setup_show
+    setup_global_interactive_state_data
   end
 end
