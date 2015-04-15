@@ -117,8 +117,8 @@ SQL
     order_by = <<SQL
       ORDER BY
         activity_id,
-        page_index,
-        question_index
+        remote_endpoint,
+        submit_time
 SQL
 
     sql = selects.join("\n UNION\n") + order_by + ";"
