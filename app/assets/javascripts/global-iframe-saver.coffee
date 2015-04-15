@@ -13,6 +13,7 @@ class GlobalIframeSaver
   constructor: (config) ->
     @_saveUrl = config.save_url
     @_globalState = if config.raw_data then JSON.parse(config.raw_data) else null
+    @_save_indicator = SaveIndicator.instance()
 
     @_iframePhones = []
     $(INTERACTIVES_SEL).each (idx, iframeEl) =>
@@ -40,6 +41,7 @@ class GlobalIframeSaver
       @_loadGlobalState phone if phone != sender
 
   _saveGlobalState: ->
+    @save_indicator.showSaving()
     $.ajax
       type: 'POST'
       url: @_saveUrl
@@ -47,8 +49,15 @@ class GlobalIframeSaver
         raw_data: JSON.stringify(@_globalState)
       success: (response) =>
         console.log 'Global interactive save success.'
+        @_save_indicator.showSaved()
       error: (jqxhr, status, error) =>
         console.error 'Global interactive save failed!'
+        if jqxhr.status is 401
+          @_save_indicator.showUnauthorized()
+          $(document).trigger 'unauthorized'
+        else
+          @_save_indicator.showSaveFailed()
 
-if gon.globalInteractiveState?
-  window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState
+$(document).ready ->
+  if gon.globalInteractiveState?
+    window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState
