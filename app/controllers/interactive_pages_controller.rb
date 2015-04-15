@@ -7,13 +7,30 @@ class InteractivePagesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:show, :preview]
 
-  layout 'runtime', :only => [:show, :preview]
+  layout 'runtime', :only => [:show, :preview, :unauthorized_run]
+
+  def user_id_mismatch
+    @user = current_user ? current_user.email : 'anonymous'
+    @response_key = params[:response_key] || 'no response key'
+    @session = session.clone
+    session.delete("response_key")
+
+    NewRelic::Agent.add_custom_parameters({
+      user: @user,
+      response_key: @response_key
+    }.merge(@session))
+
+    NewRelic::Agent.agent.error_collector.notice_error(RuntimeError.new("_run_user_id_mismatch"))
+  end
 
   def show
     authorize! :read, @page
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
+
+    authorize! :access, @run rescue user_id_mismatch() and render :unauthorized_run and return
+
     setup_show
     respond_to do |format|
       format.html
@@ -152,6 +169,24 @@ class InteractivePagesController < ApplicationController
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end
+  end
+
+  def unauthorized_run
+    @user = current_user ? current_user.email : 'anonymous'
+    @session = session.clone
+  end
+
+  def unauthorized_feedback
+    data = {
+      username: params[:username],
+      teacher: params[:teacher],
+      description: params[:description],
+      original_url: params[:original_url],
+      session: session.clone,
+      request: request
+    }
+    UnauthorizedFeedbackMailer.feedback(data).deliver
+    render nothing: true, status: :created
   end
 
   private

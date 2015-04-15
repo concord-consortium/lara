@@ -84,8 +84,12 @@ class LabbookController
       url: @laraUpdateUrl,
       success: ->
         saveIndicator.showSaved()
-      error: ->
-        saveIndicator.showSaveFailed()
+      error: (jqxhr)->
+        if jqxhr.status is 401
+          saveIndicator.showUnauthorized()
+          $(document).trigger 'unauthorized'
+        else
+          saveIndicator.showSaveFailed()
     })
 
   setIframeUrl: (newUrl) ->
