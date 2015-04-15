@@ -108,7 +108,7 @@ class @SaveOnChange
         @save_error()
       )
 
-  saveElement: (async = true) ->
+  saveElement: (async = true,autoSave = false) ->
     data = @$form.serialize()
     @page.saving()
     $.ajax({
@@ -117,7 +117,7 @@ class @SaveOnChange
       url: @$form.attr( 'action' ),
       data: @$form.serialize(),
       success: (response) =>
-        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ))
+        LoggerUtils.submittedQuestionLogging(@$form.attr( 'id' ),autoSave)
         @save_success(data)
       error: (jqxhr, status, error) =>
         @save_error()
@@ -146,7 +146,7 @@ class @SaveOnChange
 
   saveNow: ->
     @unschedule()
-    @saveElement(false)
+    @saveElement(false,true)
 
   # remove events scheduled for elem
   unschedule: () ->
@@ -159,7 +159,7 @@ class @SaveOnChange
     if dirty
       @page.mark_dirty(this)
       action = () =>
-        @saveElement()
+        @saveElement(true,true)
       @scheduled_job = setTimeout(action, interval)
 
 class @ForwardBlocker

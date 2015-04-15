@@ -9,14 +9,14 @@ LoggerUtils.instance = function(loggerConfig) {
   }));
 };
 
-LoggerUtils.submittedQuestionLogging = function(data) {
+LoggerUtils.submittedQuestionLogging = function(data,autoSave) {
   var loggerConfig = window.gon && window.gon.loggerConfig;
   if (!loggerConfig) {
     return;
   };
 
   var logger_utils = LoggerUtils.instance(loggerConfig);
-  logger_utils._submittedQuestionLogging(data);
+  logger_utils._submittedQuestionLogging(data,autoSave);
 };
 
 LoggerUtils.enableLabLogging = function(iframeEl) {
@@ -63,12 +63,12 @@ LoggerUtils.prototype._getQuestionType = function(action) {
   } else return "embeddable_question";
 };
 
-LoggerUtils.prototype._submittedQuestionLogging = function(data) {
-  var data_object            = {event: 'submit question'};
-  question_type              = this._getQuestionType(data),
-  question_id                = data.split('_').slice(-1)[0],
+LoggerUtils.prototype._submittedQuestionLogging = function(data,autoSave) {
+  var data_object                = autoSave ? {event: 'answer saved'} : {event : 'submit answer'},
+      question_type              = this._getQuestionType(data),
+      question_id                = data.split('_').slice(-1)[0];
+      
   data_object[question_type] = question_id;
-
   this._logger.log(data_object);
 };
 
