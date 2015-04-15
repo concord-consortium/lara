@@ -1,4 +1,8 @@
 class CRater::ArgumentationBlocksController < ApplicationController
+
+  require 'spreadsheet'
+  Spreadsheet.client_encoding = 'UTF-8'
+
   before_filter :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
 
   def create_embeddables
@@ -125,10 +129,43 @@ SQL
 
     results = ActiveRecord::Base.connection.execute(sql)
 
-    # Mysql2::Results doesn't support #map
-    out = ""
-    results.each { |r| out += r.to_yaml }
-    render :text => out, :content_type => "text/plain"
+    # generate a spreadsheet
+
+    book = Spreadsheet::Workbook.new
+    sheet = book.create_worksheet :name => 'Long Format'
+
+    row = sheet.row(0)
+
+    [
+      "remote_endpoint",
+      "Activity id",
+      "Page id",
+      "Page index",
+      "Question index",
+      "Question id",
+      "Prompt",
+      "Answer",
+      "Score",
+      "Submission time",
+      "Feedback",
+      "Usefulness score"
+    ].each do |text|
+      row.push text
+    end
+
+    # leave a blank row under header
+    i = 2
+    results.each do |result|
+      row = sheet.row(i)
+      i += 1
+      result.each do |cell|
+        row.push cell
+      end
+    end
+
+    sio = StringIO.new
+    book.write sio
+    send_data(sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls" )
   end
 
   private
