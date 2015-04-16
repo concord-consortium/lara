@@ -15,8 +15,6 @@ class Embeddable::EmbeddableAnswersController < ApplicationController
       authorize!(:access, @answer.run)
     rescue
       render(nothing: true, status: :unauthorized)
-      return false
     end
-    return true
   end
 end

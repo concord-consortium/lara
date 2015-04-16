@@ -19,14 +19,6 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   after_filter :log_session_after
 
-  def json_error(message, status = 400)
-    render json: {
-               response_type: "ERROR",
-               message: message
-           },
-           status: status
-  end
-
   # Try to set local from the request headers
   def set_locale
     logger.debug "* Accept-Language: #{request.env['HTTP_ACCEPT_LANGUAGE']}"
