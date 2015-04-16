@@ -14,7 +14,19 @@ class Embeddable::EmbeddableAnswersController < ApplicationController
     begin
       authorize!(:access, @answer.run)
     rescue
+      user_id_mismatch()
       render(nothing: true, status: :unauthorized)
     end
+  end
+
+  def user_id_mismatch
+    @user = current_user ? current_user.email : 'anonymous'
+    @session = session.clone
+
+    NewRelic::Agent.add_custom_parameters({
+      user: @user
+    }.merge(@session))
+
+    NewRelic::Agent.agent.error_collector.notice_error(RuntimeError.new("_run_user_id_mismatch"))
   end
 end
