@@ -1,6 +1,13 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :projects
+  resources :projects do
+    member do
+      get :about
+      get :help
+      get :contact_us
+    end
+  end
+  
 
   resources :themes
 
@@ -39,6 +46,7 @@ LightweightStandalone::Application.routes.draw do
     post "/argumentation_blocks/:page_id/save_feedback" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback'
     post "/argumentation_blocks/feedback_on_feedback" => 'argumentation_blocks#feedback_on_feedback', :as => 'arg_block_feedback_on_feedback'
     resources :score_mappings
+    get "/argumentation_blocks/report" => 'argumentation_blocks#report'
   end
 
   namespace :admin do
@@ -67,12 +75,16 @@ LightweightStandalone::Application.routes.draw do
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
         get 'preview'
+        get 'unauthorized_run'
+        post 'unauthorized_feedback'
       end
     end
     resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/, :activity_id => /\d+/ }
   end
 
-  resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/ }
+  resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/ } do
+    resource :global_interactive_state, :only => [:create]
+  end
   resources :interactive_run_states
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.

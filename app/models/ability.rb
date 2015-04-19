@@ -33,5 +33,20 @@ class Ability
       can :read, LightweightActivity, :publication_status => allowed_status
       can :read, InteractivePage, :lightweight_activity => { :publication_status => allowed_status }
     end
+
+    can :about, Project
+    can :help, Project
+    can :contact_us, Project
+
+    can :access, Run do |run|
+      if user.admin?
+        true
+      elsif user.new_record?
+        # We're currently anonymous
+        run.user_id.nil?
+      else
+        run.user_id == user.id
+      end
+    end
   end
 end

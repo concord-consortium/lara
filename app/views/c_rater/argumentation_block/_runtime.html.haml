@@ -25,13 +25,13 @@
                 %p
                 %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
 
-    - embeddables.each do |m|
+    - embeddables.each_with_index do |m,index|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
         - fb = m.get_saved_feedback
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
-        - fb_text = fb && fb.feedback_text
+        - fb_text = (fb && fb.feedback_text) || ""
         - fb_score = (fb && fb.score && (fb.score >= 0 && fb.score <= 6)) ? fb.score : '-error'
         .ab-feedback{:id => "feedback_on_answer_#{m.id}",
                      :style => fb_visible ? '' : 'display: none',
@@ -41,14 +41,10 @@
             = t 'ARG_BLOCK.RESUBMIT_ANSWER'
           %h6
             = t 'ARG_BLOCK.FEEDBACK'
-          .ab-feedback-text
-            %table
-              %tr
-                %td
-                  %div.ab-robot-head
-                %td  
-                  %div.ab-robot-feedback-text
-                    #{fb_text}
+          .ab-feedback-text{:class => "ab-#{m.class.to_s.demodulize.downcase}-#{index}"}
+            %div.ab-robot-scale
+            %div.ab-robot-feedback-text
+              #{fb_text.html_safe}
 
     - submission = last_submission(page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil?
@@ -79,7 +75,8 @@
 
     %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
-           'data-href' => c_rater_arg_block_save_feedback_path(page)}
+           'data-href' => c_rater_arg_block_save_feedback_path(page),
+           'data-page_id' => page.id}
     %div.ab-submit-prompt       
 
 :javascript
@@ -129,9 +126,8 @@
     .ab-robot-figure {
       width: 85px;
       height: 109px;
-      background-image: url('/assets/c-rater/hasbot.png');
+      background-image: url('/assets/c-rater/hasbot-final-single.png');
       background-repeat: no-repeat;
-      background-position:-341px -7px;
       margin: 0 auto;
     }
   }
@@ -140,11 +136,7 @@
     clear: both;
     border: 1px solid #eee;
     border-radius: 10px;
-    padding: 5px 5px 5px 10px;
-    
-    h6 {
-      padding: 0 0 0 10px;
-    }
+    padding: 5px 5px 5px 5px;
     
     .ab-feedback-text {
       
@@ -156,13 +148,6 @@
           vertical-align: middle;
         }
       }
-      
-      .ab-robot-head {
-        width: 44px;
-        height: 40px;
-        background-image: url('/assets/c-rater/hasbot-head.png');
-        background-repeat: no-repeat;
-      } 
     }
   }
 
@@ -195,44 +180,86 @@
     }
   }
   
-  .ab-score-error {
-    .ab-robot-head {
-      background-position: -9px -4px; /*red*/
+  .ab-openresponseanswer-1, .ab-openresponseanswer-3{
+    .ab-robot-scale{
+      background-repeat: no-repeat;
+      height: 50px;
+      background-size: contain;
     }
-    .ab-robot-feedback-text {
-      color: #DE6B3F;
+  }
+  .ab-openresponseanswer-3{
+    .ab-robot-scale{
+      width: 330px;
+    }
+  }
+ 
+  .ab-score-error {
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/5pt-scale.png');
+      }
+    }
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4pt-scale.png');
+      }
     }
   }
   .ab-score0, .ab-score1 {
-    .ab-robot-head {
-      background-position:-9px -4px; /*red*/
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/1-5pt-scale.png');
+      }
     }
-    .ab-robot-feedback-text {
-      color: #DE6B3F;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/1-4pt-scale.png');
+      }
     }
   }
-  .ab-score2, .ab-score3 {
-    .ab-robot-head {
-      background-position:-76px -4px; /*orange*/
+  .ab-score2 {
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/2-5pt-scale.png');
+      }
     }
-    .ab-robot-feedback-text {
-      color: #EA8723;
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/2-4pt-scale.png');
+      }
+    }
+  }
+  .ab-score3 {
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/3-5pt-scale.png');
+      }
+    }
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/3-4pt-scale.png');
+      }
     }
   }
   .ab-score4, .ab-score5 {
-    .ab-robot-head {
-      background-position:-76px -55px; /*green*/
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4-5pt-scale.png');
+      }
     }
-    .ab-robot-feedback-text {
-      color: #73A543;
+  }
+  .ab-score4 {
+    .ab-openresponseanswer-3 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/4-4pt-scale.png');
+      }
     }
   }
   .ab-score6 {
-    .ab-robot-head {
-      background-position: -9px -55px; /*blue*/
-    }
-    .ab-robot-feedback-text {
-      color: #38888B;
+    .ab-openresponseanswer-1 {
+      .ab-robot-scale {
+        background-image: url('/assets/c-rater/5-5pt-scale.png');
+      }
     }
   }
   .ab-submit-prompt {

@@ -1,0 +1,9 @@
+= content_for :title do
+  = "Session Timed Out"
+
+= render partial: 'unauthorized_dialog'
+
+:javascript
+  $(document).ready(function() {
+    $('#unauthorized-dialog').show();
+  });

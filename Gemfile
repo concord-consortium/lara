@@ -148,3 +148,6 @@ gem 'brakeman', :require => false
 gem 'request-log-analyzer', :require => false
 # Database analysis
 gem 'lol_dba', :require => false
+
+# Excel spreadsheet generation (for reporting)
+gem 'spreadsheet'

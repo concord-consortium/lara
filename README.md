@@ -143,6 +143,10 @@ If you are going to deploy to a server with load balancing enabled (production),
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
 
 
+## LARA Interactive API
+
+The LARA Interactive API defines how the runtime javascript of LARA interacts with embedded iframe content. The [documentation can be found here](http://concord-consortium.github.io/lara-interactive-api/docs/)
+
 ## License
 
 LARA is released under the [MIT License](LICENSE).

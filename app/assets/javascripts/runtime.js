@@ -14,6 +14,7 @@
 //= require fabric
 //= require hammerjs
 //= require eventemitter2
+//= require iframe-phone-manager
 //= require drawing-tool
 //= require shutterbug
 //= require api-urls
@@ -46,4 +47,5 @@
 //= require sidebar
 //= require labbook
 //= require c_rater
+//= require global-iframe-saver
 //= require runtime-init

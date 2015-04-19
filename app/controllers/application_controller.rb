@@ -188,6 +188,8 @@ class ApplicationController < ActionController::Base
     }
     if @run
       data[:run_key] = @run.key
+      data[:run_remote_id] = @run.remote_id
+      data[:run_remote_endpoint] = @run.remote_endpoint
     end
     if @sequence
       # Activity field is a bit confusing name, but let's assume that it indicates which activity *or* sequence has
@@ -297,6 +299,15 @@ class ApplicationController < ActionController::Base
       @wide_content_layout = true
       @user_agent = user_agent
       redirect_to '/home/bad_browser'
+    end
+  end
+
+  def setup_global_interactive_state_data
+    gon.globalInteractiveState = {
+      save_url: run_global_interactive_state_path(@run)
+    }
+    if @run.global_interactive_state
+      gon.globalInteractiveState[:raw_data] = @run.global_interactive_state.raw_data
     end
   end
 

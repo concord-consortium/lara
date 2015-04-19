@@ -12,74 +12,172 @@ describe Embeddable::MultipleChoiceAnswersController do
   let(:endpoint) { 'http://concord.portal.org' }
   let(:run)      { FactoryGirl.create(:run)     }
   let(:answer)   { FactoryGirl.create(:multiple_choice_answer, :question => question, :run => run)}
+  let(:user)     { FactoryGirl.create(:user) }
 
   describe "#update" do
-    describe "with a run initiated from remote portlal" do
-      let(:run)  {
-        FactoryGirl.create(
-          :run,
-          :remote_endpoint => endpoint
-        )
-      }
+    describe "with a run initiated from remote portal" do
+      describe "and logged in" do
+        let(:run)  {
+          FactoryGirl.create(
+            :run,
+            :remote_endpoint => endpoint,
+            :user_id => user.id
+          )
+        }
 
-      describe "with valid params" do
-        it "should update the answer" do
-          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
-            :answers => [a_answer.id]
-          }
-          answer.reload
-          expect(answer.answers).to eq([a_answer])
+        describe "with valid params" do
+          it "should update the answer" do
+            sign_in user
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([a_answer])
+          end
+
+          it "should fire off a web request to update the portal" do
+            sign_in user
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            assert_requested :post, endpoint
+          end
         end
 
-        it "should fire off a web request to update the portal" do
-          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
-            :answers => [a_answer.id]
-          }
-          assert_requested :post, endpoint
+        describe "missing params" do
+          it "shouldn't throw an error" do
+            sign_in user
+            post "update", :id => answer.id
+            expect(response.status).not_to eq 401
+          end
+          it "should create an admin event" do
+            expect(AdminEvent).to receive(:create).and_return(true)
+            sign_in user
+            post "update", :id => answer.id
+            expect(response.status).not_to eq 401
+          end
         end
       end
+      describe "and anonymous" do
+        let(:run)  {
+          FactoryGirl.create(
+            :run,
+            :remote_endpoint => endpoint,
+            :user_id => nil
+          )
+        }
 
-      describe "missing params" do
-        it "shouldn't throw an error" do
-          post "update", :id => answer.id
+        describe "with valid params" do
+          it "should update the answer" do
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([a_answer])
+          end
+
+          it "should fire off a web request to update the portal" do
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            assert_requested :post, endpoint
+          end
         end
-        it "should create an admin event" do
-          expect(AdminEvent).to receive(:create).and_return(true)
-          post "update", :id => answer.id
+
+        describe "missing params" do
+          it "shouldn't throw an error" do
+            post "update", :id => answer.id
+            expect(response.status).not_to eq 401
+          end
+          it "should create an admin event" do
+            expect(AdminEvent).to receive(:create).and_return(true)
+            post "update", :id => answer.id
+            expect(response.status).not_to eq 401
+          end
         end
       end
     end
 
     describe "with a run without a remote endpoint (not run from portal)" do
-      let(:run)  {
-        FactoryGirl.create(
-          :run,
-          :remote_endpoint => nil
-        )
-      }
+      describe "and logged in" do
+        let(:run)  {
+          FactoryGirl.create(
+            :run,
+            :remote_endpoint => nil,
+            :user_id => user.id
+          )
+        }
 
-      describe "with valid params" do
-        it "should update the answer" do
-          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
-            :answers => [a_answer.id]
-          }
-          answer.reload
-          expect(answer.answers).to eq([a_answer])
+        describe "with valid params" do
+          it "should update the answer" do
+            sign_in user
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([a_answer])
+          end
+
+          it 'should accept multiple answers if provided' do
+            sign_in user
+            post 'update', :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [b_answer.id, c_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([b_answer, c_answer])
+          end
+
+          it "should fire off a web request to update the portal" do
+            sign_in user
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            assert_not_requested :post, endpoint
+          end
         end
+      end
+      describe "and anonymous" do
+        let(:run)  {
+          FactoryGirl.create(
+            :run,
+            :remote_endpoint => nil,
+            :user_id => nil
+          )
+        }
 
-        it 'should accept multiple answers if provided' do
-          post 'update', :id => answer.id, :embeddable_multiple_choice_answer => {
-            :answers => [b_answer.id, c_answer.id]
-          }
-          answer.reload
-          expect(answer.answers).to eq([b_answer, c_answer])
-        end
+        describe "with valid params" do
+          it "should update the answer" do
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([a_answer])
+          end
 
-        it "should fire off a web request to update the portal" do
-          post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
-            :answers => [a_answer.id]
-          }
-          assert_not_requested :post, endpoint
+          it 'should accept multiple answers if provided' do
+            post 'update', :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [b_answer.id, c_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            answer.reload
+            expect(answer.answers).to eq([b_answer, c_answer])
+          end
+
+          it "should fire off a web request to update the portal" do
+            post "update", :id => answer.id, :embeddable_multiple_choice_answer => {
+              :answers => [a_answer.id]
+            }
+            expect(response.status).not_to eq 401
+            assert_not_requested :post, endpoint
+          end
         end
       end
     end

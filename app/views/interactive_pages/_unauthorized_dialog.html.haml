@@ -1,0 +1,69 @@
+#unauthorized-dialog{style: 'display: none;'}
+  .form-success.intro-mod{style: 'display: none;'}
+    Thank you for your feedback.
+  .form-failure.intro-mod{style: 'display: none; color: #990000;'}
+    We were unable to send your feedback. We must really be having problems right now!
+  .message
+    = render partial: 'unauthorized'
+  .form{style: 'display: none;'}
+    = form_tag({controller: 'interactive_pages', action: 'unauthorized_feedback'}, {method: 'post', remote: true}) do
+      .item
+        .prompt= label_tag :username, "Your username:"
+        .field= text_field_tag :username
+      .item{style: 'margin-top: 10px;'}
+        .prompt= label_tag :username, "Your teacher's name:"
+        .field= text_field_tag :teacher
+      .item{style: 'margin-top: 10px;'}
+        .prompt= label_tag :description, "Describe what you were doing when the error occurred:"
+        .field= text_area_tag :description, nil, style: 'width: 100%; height: 7em;'
+      = hidden_field_tag :authenticity_token, form_authenticity_token
+      = hidden_field_tag :original_url, request.original_url
+      = submit_tag "Submit"
+
+
+:javascript
+  $(document).on('unauthorized', function() {
+    $('#unauthorized-dialog').show();
+
+    // dialog is from jquery UI
+    $('#unauthorized-dialog').dialog({
+      title: 'Session Timed Out',
+      modal: true,
+      dialogClass: 'incorrect unauthorized',
+      width: 320,
+      resizable: false,
+      draggable: false,
+      closeOnEscape: false
+    }).parent().find(".ui-dialog-titlebar-close").hide();
+
+    // Tweak the content provided by the partial to better suit the dialog.
+    $('.ui-dialog.unauthorized .content-hdr').hide();
+    $('.ui-dialog.unauthorized .intro-txt').removeClass('intro-txt');
+
+    // Darken the modal backdrop, and get it to appear on top of the top bar.
+    $('.ui-dialog.unauthorized').css('z-index', 99999);
+    $('.ui-widget-overlay.ui-front').removeClass('ui-widget-overlay').css({ zIndex: 99999, backgroundColor: 'rgba(0,0,0,0.5)', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' });
+
+    // Disable scrolling of the main page
+    $("body").css({ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' });
+  });
+
+  // Form handlers
+  $('#unauthorized-dialog a').click(function() {
+    $('#unauthorized-dialog > div').hide();
+    $('#unauthorized-dialog .form').show();
+  });
+
+  $("#unauthorized-dialog form").on('ajax:success', function() {
+    $('#unauthorized-dialog > div').hide();
+    $('#unauthorized-dialog .form-success').show();
+    $('#unauthorized-dialog .message').show();
+    $('#unauthorized-dialog .message .stuck').hide();
+  });
+
+  $("#unauthorized-dialog form").on('ajax:error', function() {
+    $('#unauthorized-dialog > div').hide();
+    $('#unauthorized-dialog .form-failure').show();
+    $('#unauthorized-dialog .message').show();
+    $('#unauthorized-dialog .message .stuck').show();
+  });

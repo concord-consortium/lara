@@ -9,14 +9,29 @@ LoggerUtils.instance = function(loggerConfig) {
   }));
 };
 
-LoggerUtils.submittedQuestionLogging = function(data) {
+LoggerUtils.submittedQuestionLogging = function(data,autoSave) {
   var loggerConfig = window.gon && window.gon.loggerConfig;
   if (!loggerConfig) {
     return;
   };
 
   var logger_utils = LoggerUtils.instance(loggerConfig);
-  logger_utils._submittedQuestionLogging(data);
+  logger_utils._submittedQuestionLogging(data,autoSave);
+};
+
+LoggerUtils.submitArgblockLogging = function(data) {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  };
+
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._submitArgblockLogging(data);
+};
+
+LoggerUtils.enableLabLogging = function(iframeEl) {
+  var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
+  labRpc.call({message: 'lara-logging-present'});
 };
 
 LoggerUtils.prototype.sequenceIndexLogging = function() {
@@ -58,13 +73,20 @@ LoggerUtils.prototype._getQuestionType = function(action) {
   } else return "embeddable_question";
 };
 
-LoggerUtils.prototype._submittedQuestionLogging = function(data) {
-  var data_object            = {event: 'submit question'};
-  question_type              = this._getQuestionType(data),
-  question_id                = data.split('_').slice(-1)[0],
+LoggerUtils.prototype._submittedQuestionLogging = function(data,autoSave) {
+  var data_object                = autoSave ? {event: 'answer saved'} : {event : 'submit answer'},
+      question_type              = this._getQuestionType(data),
+      question_id                = data.split('_').slice(-1)[0];
+      
   data_object[question_type] = question_id;
-  
   this._logger.log(data_object);
+};
+
+LoggerUtils.prototype._submitArgblockLogging = function(data) {
+  this._logger.log({
+    event  : "arg-block submit",
+    page_id: data
+  });
 };
 
 LoggerUtils.prototype._interactiveSimulationLogging = function() {
@@ -86,6 +108,51 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   $('.interactive').on('mouseout', function() {
     $(this).data().iframe_mouseover = false;
   });
+
+  $('.interactive').each(function() {
+    // this == an iframe.interactive
+    self._logInteractiveEvents(this);
+  });
+};
+
+LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
+
+  var handler = function(cmd) {
+    var str;
+    var index;
+    var eventName;
+    var eventValue;
+    var parameters;
+
+    if (cmd && cmd.action === 'logAction' && cmd.args) {
+      str = cmd.args.formatStr;
+
+      index = str.indexOf(':');
+
+      if ( index >= 0) {
+        eventName = str.slice(0, index);
+        eventValue = str.slice(index + 1);
+        try {
+          parameters = JSON.parse(eventValue);
+        } catch (e) {
+          // noop
+        }
+
+        this._logger.log({
+          event: eventName,
+          event_value: eventValue,
+          parameters: parameters,
+          interactive_id: $(iframe).data().id,
+          interactive_url: iframe.src
+        });
+      }
+    }
+  }.bind(this);
+
+  // Setup handler for incoming logs.
+  IframePhoneManager.getRpcEndpoint(iframe, 'lara-logging').handler = handler;
+  // Notify Lab that logging is supported.
+  LoggerUtils.enableLabLogging(iframe);
 };
 
 
@@ -126,12 +193,12 @@ var EmbeddableQuestionsLogging = function(question) {
   this.question_type   = question.type;
   this.question_id     = question.id;
   this.question_dom_id = question.dom_id;
-  
+
   this._logger = new Logger({
     server     : loggerConfig.server,
     defaultData: loggerConfig.data
   });
-  
+
   this.bind_logger();
 };
 
@@ -197,4 +264,4 @@ $(document).ready(function() {
       break;
   }
 
-}());
+});

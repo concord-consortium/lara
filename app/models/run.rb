@@ -40,6 +40,8 @@ class Run < ActiveRecord::Base
 
   has_many :interactive_run_states
 
+  has_one :global_interactive_state
+
   before_validation :check_key
   after_create :update_activity_portal_run_count
 
@@ -158,6 +160,9 @@ class Run < ActiveRecord::Base
     # It can be beneficial, particularly for authors, to come to a page/activity
     # with previous answers erased, so let's make it easy to clear them.
     answers.each { |a| a.destroy }
+    if global_interactive_state
+      global_interactive_state.destroy
+    end
   end
 
   def all_responses_for_portal

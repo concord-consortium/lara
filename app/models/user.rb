@@ -96,4 +96,15 @@ class User < ActiveRecord::Base
   def auth_providers
     ( authentications.map { |auth| auth.provider.upcase } + runs.map { |run| run.get_auth_provider } ).uniq
   end
+
+  # Delete session data before we logout.
+  # Removes run_key, and user info from the browsers session.
+  # So that logged-in indicator will match actual logged in status.
+  def clear_session_data(rack_session)
+   rack_session.delete "portal_username"
+   rack_session.delete "portal_user_id"
+   rack_session.delete "portal_domain"
+   rack_session.delete "user_return_to" 
+   rack_session.delete "response_key"
+  end
 end
