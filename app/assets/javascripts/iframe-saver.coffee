@@ -168,11 +168,3 @@ class IFrameSaver
 
 # Export constructor.
 window.IFrameSaver = IFrameSaver
-
-$(document).ready ->
-  $('.interactive-container.savable').each ->
-    $this = $(this)
-    $iframe = $this.find('iframe')
-    $data = $this.find('.interactive_data_div')
-    $delete_button = $this.find('.delete_interactive_data')
-    new IFrameSaver($iframe, $data, $delete_button)

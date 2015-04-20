@@ -10,15 +10,15 @@
 class GlobalIframeSaver
   INTERACTIVES_SEL = 'iframe.interactive'
 
-  constructor: (config) ->
+  constructor: (config, iframeEl) ->
     @_saveUrl = config.save_url
     @_globalState = if config.raw_data then JSON.parse(config.raw_data) else null
     @_save_indicator = SaveIndicator.instance()
 
     @_iframePhones = []
-    $(INTERACTIVES_SEL).each (idx, iframeEl) =>
-      phone = IframePhoneManager.getPhone iframeEl
-      @addNewPhone phone
+
+    phone = IframePhoneManager.getPhone iframeEl
+    @addNewPhone phone
 
   addNewPhone: (phone) ->
     @_iframePhones.push phone
@@ -58,6 +58,5 @@ class GlobalIframeSaver
         else
           @_save_indicator.showSaveFailed()
 
-$(document).ready ->
-  if gon.globalInteractiveState?
-    window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState
+
+window.GlobalIframeSaver = GlobalIframeSaver
