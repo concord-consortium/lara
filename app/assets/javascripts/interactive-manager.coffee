@@ -15,17 +15,19 @@ class InteractiveManager
     @_instance
 
   _register: ($interactive) ->
-    $iframe = $interactive.find('iframe')
+    $iframe = $interactive.find('iframe[src]')
     $data = $interactive.find('.interactive_data_div')
     $delete_button = $interactive.find('.delete_interactive_data')
     $click_to_play = $interactive.find('.click_to_play.shown')
 
-    if $click_to_play.length == 0
-      if $interactive.hasClass('savable') > 0
+    if $iframe.length != 0
+      if $interactive.hasClass('savable')
         new IFrameSaver($iframe, $data, $delete_button)
 
-      if gon.globalInteractiveState?
-        window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState, $iframe
+      if globalIframeSaver
+        globalIframeSaver.addNewInteractive $iframe
+
+      LoggerUtils.logInteractiveEvents($iframe)
 
 window.InteractiveManager = InteractiveManager
 

@@ -29,6 +29,17 @@ LoggerUtils.submitArgblockLogging = function(data) {
   logger_utils._submitArgblockLogging(data);
 };
 
+
+LoggerUtils.logInteractiveEvents = function(iframe){
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  };
+
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._logInteractiveEvents($(iframe)[0]);
+};
+
 LoggerUtils.enableLabLogging = function(iframeEl) {
   var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
   labRpc.call({message: 'lara-logging-present'});
@@ -44,7 +55,7 @@ LoggerUtils.prototype.activityIndexLogging = function() {
 
 LoggerUtils.prototype.interactivePageLogging = function(action) {
   this._logger.log('open activity page');
-  this._interactiveSimulationLogging();
+  this._logInteractiveEvents();
 };
 
 LoggerUtils.prototype.activitySummaryLogging = function() {
@@ -107,11 +118,6 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   });
   $('.interactive').on('mouseout', function() {
     $(this).data().iframe_mouseover = false;
-  });
-
-  $('.interactive').each(function() {
-    // this == an iframe.interactive
-    self._logInteractiveEvents(this);
   });
 };
 

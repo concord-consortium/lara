@@ -8,19 +8,16 @@
 #        (except from sender of save message).
 
 class GlobalIframeSaver
-  INTERACTIVES_SEL = 'iframe.interactive'
 
-  constructor: (config, iframeEl) ->
+  constructor: (config) ->
     @_saveUrl = config.save_url
     @_globalState = if config.raw_data then JSON.parse(config.raw_data) else null
     @_save_indicator = SaveIndicator.instance()
 
     @_iframePhones = []
 
+  addNewInteractive: (iframeEl) ->
     phone = IframePhoneManager.getPhone iframeEl
-    @addNewPhone phone
-
-  addNewPhone: (phone) ->
     @_iframePhones.push phone
     @_setupPhoneListeners phone
     if @_globalState
@@ -58,5 +55,6 @@ class GlobalIframeSaver
         else
           @_save_indicator.showSaveFailed()
 
-
-window.GlobalIframeSaver = GlobalIframeSaver
+$(document).ready ->
+  if gon.globalInteractiveState?
+    window.globalIframeSaver = new GlobalIframeSaver gon.globalInteractiveState

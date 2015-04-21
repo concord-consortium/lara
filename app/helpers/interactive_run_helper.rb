@@ -70,7 +70,7 @@ module InteractiveRunHelper
       :allowfullscreen => "true",
       :webkitallowfullscreen => "true",
       :mozallowfullscreen => "true",
-      :src => iframe_src ? url : '',
+      :src => iframe_src ? url : nil,
       :data => data,
       :class => 'interactive',
       :id => "interactive_#{interactive.id}"
