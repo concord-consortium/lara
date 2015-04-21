@@ -23,10 +23,11 @@ class Embeddable::EmbeddableAnswersController < ApplicationController
     @user = current_user ? current_user.email : 'anonymous'
     @session = session.clone
 
-    NewRelic::Agent.add_custom_parameters({
-      user: @user
-    }.merge(@session))
-
-    NewRelic::Agent.agent.error_collector.notice_error(RuntimeError.new("_run_user_id_mismatch"))
+    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
+      uri: request.original_url,
+      referer: request.referer,
+      request_params: params,
+      custom_params: { user: @user }.merge(@session)
+    })
   end
 end
