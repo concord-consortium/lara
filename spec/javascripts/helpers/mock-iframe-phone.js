@@ -8,10 +8,6 @@
   function MockIframePhoneManager() {
     this._realIframePhoneModule = global.iframePhone;
 
-    this._iframeEndpointInstance = null;
-    this._phones = {};
-    this._phonesCount = 0;
-
     // Messages object allows to inspect all recorded fake post messages.
     this.messages = {
       _messages: [],
@@ -31,6 +27,8 @@
         this._messages.push(msg);
       }
     };
+
+    this._resetState();
   }
 
   // Call it before your test (e.g. beforeEach).
@@ -45,14 +43,19 @@
         return this._iframeEndpointInstance;
       }
     };
+    this._resetState();
   };
 
   // Call it after your test (e.g. afterEach).
   MockIframePhoneManager.prototype.uninstall = function() {
     // Restore iframePhone module.
     global.iframePhone = this._realIframePhoneModule;
+    this._resetState();
+  };
 
+  MockIframePhoneManager.prototype._resetState = function() {
     this.messages.reset();
+    this.autoConnect = true;
     this._phones = {};
     this._phonesCount = 0;
     this._iframeEndpointInstance = null;
@@ -84,13 +87,14 @@
     // Save ID.
     $(element).data('mock-iframe-phone-id', id);
     this._phones[id] = phone;
+
+    if (this.autoConnect) {
+      phone.fakeConnection();
+    }
   };
 
   // Mock iframe phone, implements interface of both ParentEndpoint and IframeEndpoint.
   function MockPhone(targetElement, targetOrigin, afterConnectedCallback) {
-    mockIframePhoneManager._registerPhone(targetElement, this);
-    this._listeners = {};
-
     // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
     // argument is empty or is actually a callback (meaning it is supposed to be the
     // afterConnectionCallback)
@@ -101,10 +105,20 @@
 
     this._targetElement = targetElement;
     this._targetOrigin = targetOrigin;
-    if (afterConnectedCallback) {
-      afterConnectedCallback();
-    }
+    this._afterConnectedCallback = afterConnectedCallback;
+    this._listeners = {};
+
+    mockIframePhoneManager._registerPhone(targetElement, this);
   }
+
+  // Mock-specific function, initializes fake connection.
+  // It's important only if you care about afterConnectedCallback.
+  MockPhone.prototype.fakeConnection = function() {
+    if (this._afterConnectedCallback) {
+      this._afterConnectedCallback();
+      this._afterConnectedCallback = null;
+    }
+  };
 
   MockPhone.prototype.post = function(type, content) {
     var message;

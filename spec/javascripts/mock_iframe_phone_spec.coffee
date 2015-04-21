@@ -106,17 +106,36 @@ describe 'MockIframePhone', ->
         expect(jasmine.mockIframePhone.messages.count()).toEqual 0
 
     describe 'MockPhone afterConnectedCallback support', ->
-      it '(fake) connection is automatically initialized right after the parent endpoint is created (sync!)', ->
-        afterConnectedCallback = jasmine.createSpy 'afterConnectedCallback'
-        parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, afterConnectedCallback
-        expect(afterConnectedCallback).toHaveBeenCalled
-        expect(afterConnectedCallback.calls.count()).toEqual 1
+      describe 'when jasmine.mockIframePhone.autoConnect is set to true (default)', ->
+        it '(fake) connection is automatically initialized', ->
+          afterConnectedCallback = jasmine.createSpy 'afterConnectedCallback'
+          parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, afterConnectedCallback
+          expect(afterConnectedCallback).toHaveBeenCalled()
+          expect(afterConnectedCallback.calls.count()).toEqual 1
+          # Test different constructor too.
+          afterConnectedCallback.calls.reset()
+          parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, 'origin', afterConnectedCallback
+          expect(afterConnectedCallback).toHaveBeenCalled
+          expect(afterConnectedCallback.calls.count()).toEqual 1
 
-        # Test different constructor too.
-        afterConnectedCallback.calls.reset()
-        parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, 'origin', afterConnectedCallback
-        expect(afterConnectedCallback).toHaveBeenCalled
-        expect(afterConnectedCallback.calls.count()).toEqual 1
+      describe 'when jasmine.mockIframePhone.autoConnect is set to false', ->
+        beforeEach ->
+          jasmine.mockIframePhone.autoConnect = false
+
+        it '(fake) connection needs to be manually initialized', ->
+          afterConnectedCallback = jasmine.createSpy 'afterConnectedCallback'
+          parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, afterConnectedCallback
+          expect(afterConnectedCallback).not.toHaveBeenCalled()
+          parentEndpoint.fakeConnection()
+          expect(afterConnectedCallback).toHaveBeenCalled()
+          expect(afterConnectedCallback.calls.count()).toEqual 1
+          # Test different constructor too.
+          afterConnectedCallback.calls.reset()
+          parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, 'origin', afterConnectedCallback
+          expect(afterConnectedCallback).not.toHaveBeenCalled()
+          parentEndpoint.fakeConnection()
+          expect(afterConnectedCallback).toHaveBeenCalled()
+          expect(afterConnectedCallback.calls.count()).toEqual 1
 
     describe 'MockPhone#targetOrigin', ->
       describe 'of parent endpoint', ->
