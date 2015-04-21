@@ -90,6 +90,15 @@
   function MockPhone(targetElement, targetOrigin, afterConnectedCallback) {
     mockIframePhoneManager._registerPhone(targetElement, this);
     this._listeners = {};
+
+    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
+    // argument is empty or is actually a callback (meaning it is supposed to be the
+    // afterConnectionCallback)
+    if (!targetOrigin || targetOrigin.constructor === Function) {
+      afterConnectedCallback = targetOrigin;
+      targetOrigin = this._getOrigin(targetElement);
+    }
+
     this._targetElement = targetElement;
     this._targetOrigin = targetOrigin;
     if (afterConnectedCallback) {
@@ -136,18 +145,29 @@
     return this._targetOrigin;
   };
 
-  MockPhone.prototype._handleMessage = function(message) {
-    if (this._listeners[message.type]) {
-      this._listeners[message.type](message.content);
-    }
-  };
-
   MockPhone.prototype.initialize = function() {
     // noop
   };
 
   MockPhone.prototype.disconnect = function() {
     // noop
+  };
+
+  MockPhone.prototype._handleMessage = function(message) {
+    if (this._listeners[message.type]) {
+      this._listeners[message.type](message.content);
+    }
+  };
+
+  MockPhone.prototype._getOrigin = function(element) {
+    if (element.location && element.location.origin) {
+      // window
+      return element.location.origin;
+    } else {
+      // iframe
+      var originMatch = element.src.match(/(.*?\/\/.*?)\//);
+      return originMatch ? originMatch[1] : '';
+    }
   };
 
   // Initialize MockIframePhoneManager and make it available in Jasmine tests.

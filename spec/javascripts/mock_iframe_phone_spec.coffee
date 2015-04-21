@@ -5,7 +5,7 @@ describe 'MockIframePhone', ->
       $('<iframe>').appendTo 'body'
       @iframeEl = $('iframe')[0]
       # Test both types of endpoints.
-      @parentEndpoint = new iframePhone.ParentEndpoint  @iframeEl
+      @parentEndpoint = new iframePhone.ParentEndpoint @iframeEl
       @iframeEndpoint = new iframePhone.getIFrameEndpoint()
       @phones = [@parentEndpoint, @iframeEndpoint]
 
@@ -17,10 +17,10 @@ describe 'MockIframePhone', ->
       @phones.forEach (phone) ->
         expect(phone).toEqual jasmine.anything()
 
-    it 'should provide #postMessageFrom function', ->
+    it 'should provide jasmine.mockIframePhone.postMessageFrom function', ->
       expect(typeof jasmine.mockIframePhone.postMessageFrom).toEqual 'function'
 
-    it 'should provide #messages object', ->
+    it 'should provide jasmine.mockIframePhone.messages object', ->
       expect(typeof jasmine.mockIframePhone.messages).toEqual 'object'
 
     describe 'when fake message is posted *to* iframe phone', ->
@@ -74,7 +74,7 @@ describe 'MockIframePhone', ->
             type: 'testMsgFromIframeEndpoint'
             content: {param: 'test'}
 
-    describe '#messages object', ->
+    describe 'jasmine.mockIframePhone.messages object', ->
       beforeEach ->
         jasmine.mockIframePhone.postMessageFrom window.parent, {type: 'testMsg1', content: 'barfoo'}
         jasmine.mockIframePhone.postMessageFrom @iframeEl, {type: 'testMsg2', content: 'foobar'}
@@ -104,3 +104,35 @@ describe 'MockIframePhone', ->
       it 'should allow to reset recorded messages', ->
         jasmine.mockIframePhone.messages.reset()
         expect(jasmine.mockIframePhone.messages.count()).toEqual 0
+
+    describe 'MockPhone afterConnectedCallback support', ->
+      it '(fake) connection is automatically initialized right after the parent endpoint is created (sync!)', ->
+        afterConnectedCallback = jasmine.createSpy 'afterConnectedCallback'
+        parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, afterConnectedCallback
+        expect(afterConnectedCallback).toHaveBeenCalled
+        expect(afterConnectedCallback.calls.count()).toEqual 1
+
+        # Test different constructor too.
+        afterConnectedCallback.calls.reset()
+        parentEndpoint = new iframePhone.ParentEndpoint @iframeEl, 'origin', afterConnectedCallback
+        expect(afterConnectedCallback).toHaveBeenCalled
+        expect(afterConnectedCallback.calls.count()).toEqual 1
+
+    describe 'MockPhone#targetOrigin', ->
+      describe 'of parent endpoint', ->
+        it 'should return origin of an iframe', ->
+          expect(@parentEndpoint.targetOrigin()).toEqual '' # no src defined for the default iframe
+
+          iframeEl = $('<iframe src="http://test.com/path/foo">').appendTo 'body'
+          parentEndpoint = new iframePhone.ParentEndpoint  iframeEl[0]
+          expect(parentEndpoint.targetOrigin()).toEqual 'http://test.com'
+
+      describe 'of iframe endpoint', ->
+        it 'should return origin of the parent window', ->
+          expect(@iframeEndpoint.targetOrigin()).toEqual window.parent.location.origin
+
+      describe 'when origin is specified explicitly', ->
+        it 'should be returned', ->
+          iframeEl = $('<iframe>').appendTo 'body'
+          parentEndpoint = new iframePhone.ParentEndpoint  iframeEl[0], 'some.origin.com'
+          expect(parentEndpoint.targetOrigin()).toEqual 'some.origin.com'
