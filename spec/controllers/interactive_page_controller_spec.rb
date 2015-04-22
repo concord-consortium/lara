@@ -18,7 +18,8 @@ describe InteractivePagesController do
     page3 = FactoryGirl.create(:page, :name => "Page 3", :text => "This is the last activity text.", :lightweight_activity => act)
   end
 
-  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id) }
+  let (:user) { FactoryGirl.create(:user) }
+  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => user.id) }
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
   let (:sequence) { FactoryGirl.create(:sequence) }
@@ -30,6 +31,10 @@ describe InteractivePagesController do
   end
 
   describe 'show' do
+
+    before(:each) do
+      sign_in user
+    end
 
     it 'renders 404 when the activity does not exist' do
       begin
