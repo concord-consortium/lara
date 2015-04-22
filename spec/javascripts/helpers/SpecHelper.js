@@ -11,3 +11,6 @@
 // });
 
 jasmine.getFixtures().fixturesPath = '__spec__/fixtures'
+
+// Setup empty Gon data to avoid JS errors.
+window.gon = {};
