@@ -21,6 +21,9 @@ class InteractivePagesController < ApplicationController
       request_params: params,
       custom_params: { user: @user, response_key: @response_key }.merge(@session)
     })
+
+    # need to return something so this can be used in the 'and' chain below
+    true
   end
 
   def show
