@@ -55,7 +55,7 @@ LoggerUtils.prototype.activityIndexLogging = function() {
 
 LoggerUtils.prototype.interactivePageLogging = function(action) {
   this._logger.log('open activity page');
-  this._logInteractiveEvents();
+  this._interactiveSimulationLogging();
 };
 
 LoggerUtils.prototype.activitySummaryLogging = function() {
