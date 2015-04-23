@@ -56,8 +56,11 @@ class IframePhoneManager
     @_phoneData[phoneId] =
       phoneAnswered: false
       phoneAnsweredCallbacks: []
-      phone: new iframePhone.ParentEndpoint iframeEl, => @_phoneAnswered(iframeEl)
       rpcEndpoints: {}
+
+    # Make sure that phone data is created before we create phone itself. It lets us support case when
+    # afterConnectedCallback is executed synchronously right away in constructor (useful for tests).
+    @_phoneData[phoneId].phone = new iframePhone.ParentEndpoint iframeEl, => @_phoneAnswered(iframeEl)
 
     phoneId
 
@@ -65,5 +68,6 @@ class IframePhoneManager
     data = @_iframePhoneData iframeEl
     data.phoneAnswered = true
     callback() for callback in data.phoneAnsweredCallbacks
+    undefined
 
 window.IframePhoneManager = IframePhoneManager

@@ -15,12 +15,15 @@ class InteractivePagesController < ApplicationController
     @session = session.clone
     session.delete("response_key")
 
-    NewRelic::Agent.add_custom_parameters({
-      user: @user,
-      response_key: @response_key
-    }.merge(@session))
+    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
+      uri: request.original_url,
+      referer: request.referer,
+      request_params: params,
+      custom_params: { user: @user, response_key: @response_key }.merge(@session)
+    })
 
-    NewRelic::Agent.agent.error_collector.notice_error(RuntimeError.new("_run_user_id_mismatch"))
+    # need to return something so this can be used in the 'and' chain below
+    true
   end
 
   def show
