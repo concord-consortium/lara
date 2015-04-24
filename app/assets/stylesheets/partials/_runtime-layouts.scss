@@ -79,4 +79,10 @@
   .question-bd {
     width: 100%;
   }
+  .question.likert{
+    width: 95%;
+    input{
+      margin-right:5px;
+    }
+  }
 }

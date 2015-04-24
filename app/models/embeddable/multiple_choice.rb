@@ -3,6 +3,12 @@ module Embeddable
 
     include Embeddable
 
+
+    LAYOUT_VERTICAL = "vertical"
+    LAYOUT_HORIZONTAL = "horizontal"
+    LAYOUT_LIKERT = "likert"
+    
+
     has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     # PageItem instances are join models, so if the embeddable is gone
@@ -15,7 +21,7 @@ module Embeddable
 
     attr_accessible :name, :prompt, :custom, :choices_attributes, 
       :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,
-      :give_prediction_feedback, :prediction_feedback
+      :give_prediction_feedback, :prediction_feedback, :layout
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     default_value_for :name, "Multiple Choice Question element"
@@ -80,7 +86,8 @@ module Embeddable
         show_as_menu: show_as_menu,
         is_prediction: is_prediction,
         give_prediction_feedback: give_prediction_feedback,
-        prediction_feedback: prediction_feedback
+        prediction_feedback: prediction_feedback,
+        layout: layout
       }
     end
 
@@ -101,7 +108,8 @@ module Embeddable
                                 :show_as_menu,
                                 :is_prediction,
                                 :give_prediction_feedback,
-                                :prediction_feedback])
+                                :prediction_feedback,
+                                :layout])
       
       mc_export[:choices] = []
       
@@ -113,6 +121,11 @@ module Embeddable
                   
     end
     
+    def is_likert
+      layout == "likert"
+    end
+
+
     def self.import (import_hash)
       choices = import_hash[:choices]
       import_mc = self.new(import_hash.except(:choices))

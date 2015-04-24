@@ -1,5 +1,6 @@
 .embeddables
   - unless embeddables.blank?
     - embeddables.each do |e|
-      .question{ :class => e.kind_of?(Embeddable::Xhtml) ? 'challenge' : '' }
+      - is_likert = e.kind_of?(Embeddable::MultipleChoiceAnswer) && e.is_likert
+      .question{ :class => e.kind_of?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : "" }
         = render :partial => "#{e.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => e}

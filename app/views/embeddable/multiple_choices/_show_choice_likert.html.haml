@@ -1,0 +1,7 @@
+%div.likert{:style => "display: table-cell; text-align: center; width:150px; vertical-align: bottom;"}
+  = "#{choice.choice}"
+  %br
+  - if embeddable.multi_answer
+    = check_box_tag 'embeddable_multiple_choice_answer[answers][]', choice.id, embeddable.answers.include?(choice), :id => "embeddable_multiple_choice_answer_answers_#{choice.id}", :data => {:button_id => check_button_string}
+  - else
+    = form.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :checked => (embeddable.answers.include?(choice))
