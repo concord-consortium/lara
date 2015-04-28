@@ -7,7 +7,7 @@
 - @activity.pages.each do |p|
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
-.submit
+.submit{ :style => print ? 'display:none' : ''}
   %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
     %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
 
@@ -17,8 +17,18 @@
     margin:0 auto;
   }
 
+  @media print {
+    #nav-activity-menu,.sidebar-mod {
+      display: none;
+    }
+  }
+
 :javascript
   $(function(){
+    if (window.location.search.indexOf("print=true") > -1) {
+      window.print();
+    }
+
     function close_or_send_back(){
       if(window.opener) {
         window.close();

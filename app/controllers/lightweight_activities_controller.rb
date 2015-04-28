@@ -53,7 +53,7 @@ class LightweightActivitiesController < ApplicationController
     @run.clear_answers
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       setup_single_page_show
-      render :single_page
+      render :single_page, :locals => {:print => params[:print]}
     else
       setup_show
       render :show
