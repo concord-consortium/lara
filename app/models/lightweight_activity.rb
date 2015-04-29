@@ -86,7 +86,8 @@ class LightweightActivity < ActiveRecord::Base
       project_id: project_id,
       theme_id: theme_id,
       thumbnail_url: thumbnail_url,
-      notes: notes
+      notes: notes,
+      layout:layout
     }
   end
 
@@ -116,7 +117,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :project_id, 
                                         :theme_id, 
                                         :thumbnail_url, 
-                                        :notes])
+                                        :notes,
+                                        :layout])
     activity_json[:pages] = []
     self.pages.each do |p|
       activity_json[:pages] << p.export
@@ -135,7 +137,8 @@ class LightweightActivity < ActiveRecord::Base
       related: activity_json_object[:related],
       theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
-      time_to_complete: activity_json_object[:time_to_complete]
+      time_to_complete: activity_json_object[:time_to_complete],
+      layout: activity_json_object[:layout]
     }
     
   end
