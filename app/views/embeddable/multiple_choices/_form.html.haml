@@ -55,21 +55,19 @@
           $('.wysiwyg').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
 
           var $radios = $('#embeddable_layout_options input'),
-              show_as_menu = $('##{show_as_menu_id}');
+              $showAsMenu = $('##{show_as_menu_id}');
 
-          function toggle_$radios(element) {
-            if($(element).is(':checked')){
+          function updateRadios() {
+            if($showAsMenu.is(':checked')){
               $radios.attr('disabled',true);
             }else{
               $radios.removeAttr('disabled');
             }
           }
 
-          show_as_menu.click(function() {
-            toggle_$radios(this);
-          });
+          $showAsMenu.click(updateRadios);
 
-          toggle_$radios(show_as_menu);
+          updateRadios();
       });
 
   = f.submit "Cancel", :class => 'close'
