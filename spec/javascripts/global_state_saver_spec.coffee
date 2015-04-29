@@ -12,6 +12,10 @@ describe 'GlobalIframeSaver', ->
 
   it 'should broadcast global state if it is provided in config', ->
     @globalSaver = new GlobalIframeSaver save_url: @saveUrl, raw_data: JSON.stringify(@globalState)
+
+    $('iframe').each (idx, iframeEl) =>
+      @globalSaver.addNewInteractive(iframeEl)
+
     expect(jasmine.mockIframePhone.messages.count()).toEqual 3
     $('iframe').each (idx, iframeEl) =>
       expect(jasmine.mockIframePhone.messages.at(idx)).toEqual
@@ -24,6 +28,10 @@ describe 'GlobalIframeSaver', ->
   describe 'when "interactiveStateGlobal" message is received from iframe', ->
     beforeEach ->
       @globalSaver = new GlobalIframeSaver save_url: @saveUrl
+
+      $('iframe').each (idx, iframeEl) =>
+        @globalSaver.addNewInteractive(iframeEl)
+
       jasmine.mockIframePhone.postMessageFrom $('iframe')[0], {type: 'interactiveStateGlobal', content: @globalState}
 
     it 'should broadcast "loadInteractiveGlobal" to other iframes', ->

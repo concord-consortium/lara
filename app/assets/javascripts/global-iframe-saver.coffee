@@ -8,7 +8,6 @@
 #        (except from sender of save message).
 
 class GlobalIframeSaver
-  INTERACTIVES_SEL = 'iframe.interactive'
 
   constructor: (config) ->
     @_saveUrl = config.save_url
@@ -16,11 +15,9 @@ class GlobalIframeSaver
     @_saveIndicator = SaveIndicator.instance()
 
     @_iframePhones = []
-    $(INTERACTIVES_SEL).each (idx, iframeEl) =>
-      phone = IframePhoneManager.getPhone iframeEl
-      @addNewPhone phone
 
-  addNewPhone: (phone) ->
+  addNewInteractive: (iframeEl) ->
+    phone = IframePhoneManager.getPhone $(iframeEl)[0]
     @_iframePhones.push phone
     @_setupPhoneListeners phone
     if @_globalState
