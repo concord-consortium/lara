@@ -12,12 +12,9 @@
       - if embeddable.show_as_menu
         = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => t("PICK_ONE")}, { :data => {:button_id => check_button_string} }
       - else
-        .choice-container{:style => embeddable.is_likert ? "display:table; width:100%;" : ""}
+        .choice-container{:class => embeddable.layout}
           - embeddable.choices.each do |choice|
-            - if embeddable.is_likert
-              = render :partial => "embeddable/multiple_choices/show_choice_likert", :locals => {:embeddable => embeddable, :choice => choice, :check_button_string => check_button_string, :form => f}
-            - else
-              = render :partial => "embeddable/multiple_choices/show_choice", :locals => {:embeddable => embeddable, :choice => choice, :check_button_string => check_button_string, :form => f}
+            = render :partial => "embeddable/multiple_choices/show_choice", :locals => {:embeddable => embeddable, :choice => choice, :check_button_string => check_button_string, :form => f}
     - if embeddable.enable_check_answer
       %input{ :class => 'button check_answer_button',
               :type => 'button',
