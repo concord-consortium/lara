@@ -17,7 +17,7 @@ class GlobalIframeSaver
     @_iframePhones = []
 
   addNewInteractive: (iframeEl) ->
-    phone = IframePhoneManager.getPhone iframeEl
+    phone = IframePhoneManager.getPhone $(iframeEl)[0]
     @_iframePhones.push phone
     @_setupPhoneListeners phone
     if @_globalState
