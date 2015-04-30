@@ -693,7 +693,8 @@ div.block-empty {
   background-position: 2px 2px;
   visibility: hidden;
 
-  #sort_embeddables & {
+  /* The ui-sortable class is added by jquery-ui */
+  .ui-sortable & {
     visibility: visible;
   }
 }

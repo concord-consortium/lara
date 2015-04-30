@@ -62,12 +62,12 @@ ActiveRecord::Schema.define(:version => 20150421132314) do
   add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
+    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -388,12 +388,12 @@ ActiveRecord::Schema.define(:version => 20150421132314) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.text     "response"
+    t.text     "response",         :limit => 255
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "projects", :force => true do |t|

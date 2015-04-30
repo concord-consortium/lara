@@ -1,11 +1,35 @@
 .interactive-container{class: interactive.save_state ? 'savable' : ''}
-  = interactive_iframe_tag(interactive, @run) do
+  - if interactive.click_to_play
+    .img-container{:id => dom_id_for(interactive, :interactive_image),:style => "background-image:url(#{interactive.image_url})"}
+    .click_to_play.shown{:id => dom_id_for(interactive, :click_to_play)}
+      .background
+      .text= "Click here to start the interactive."
 
-    Your browser does not support inline frames, or is currently not configured to display inline frames.
-    Content can be viewed at the actual source page:
-    = link_to interactive.url, interactive.url
+    = interactive_iframe_tag(interactive, @run,false) do
+
+      Your browser does not support inline frames, or is currently not configured to display inline frames.
+      Content can be viewed at the actual source page:
+      = link_to interactive.url, interactive.url
+
+  - if !interactive.click_to_play
+    = interactive_iframe_tag(interactive, @run) do
+
+      Your browser does not support inline frames, or is currently not configured to display inline frames.
+      Content can be viewed at the actual source page:
+      = link_to interactive.url, interactive.url
 
   - if interactive.save_state
     .below_interactive
       = interactive_data_div(interactive, @run)
       = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
+
+:javascript
+  $(document).ready(function() {
+    $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
+      $(this).css('display','none');
+      $(this).removeClass('shown')
+      $('##{dom_id_for(interactive, :interactive_image)}').css('display','none');
+      $('#interactive_#{interactive.id}').attr('src','#{interactive.url}');
+      InteractiveManager.register($(this).parent('.interactive-container'))
+    })
+  })

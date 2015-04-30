@@ -48,4 +48,5 @@
 //= require labbook
 //= require c_rater
 //= require global-iframe-saver
+//= require interactive-manager
 //= require runtime-init
