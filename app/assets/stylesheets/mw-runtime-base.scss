@@ -427,6 +427,13 @@ div.intra-page-nav {
     width: 45%;
     vertical-align: top;
  }
+
+ .question.likert{
+    width: 95%;
+    input{
+      margin-right:5px;
+    }
+ }
 } // .l-full-width
 
 // *********************************************
@@ -748,6 +755,9 @@ div.intra-page-nav {
   }
   input {
     margin-right: 8px;
+    &[type="checkbox"]{
+	    margin-bottom: 3px;
+    }
   }
   .page-index {
       border: 0px;

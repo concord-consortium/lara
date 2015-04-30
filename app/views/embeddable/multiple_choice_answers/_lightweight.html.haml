@@ -12,13 +12,9 @@
       - if embeddable.show_as_menu
         = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => t("PICK_ONE")}, { :data => {:button_id => check_button_string} }
       - else
-        - embeddable.choices.each do |choice|
-          %label{ :for => "embeddable_multiple_choice_answer_answers_#{choice.id}" }
-            - if embeddable.multi_answer
-              = check_box_tag 'embeddable_multiple_choice_answer[answers][]', choice.id, embeddable.answers.include?(choice), :id => "embeddable_multiple_choice_answer_answers_#{choice.id}", :data => {:button_id => check_button_string}
-            - else
-              = f.radio_button :answers, choice.id, :data => {:button_id => check_button_string}, :checked => (embeddable.answers.include?(choice))
-            = choice.choice
+        .choice-container{:class => embeddable.layout}
+          - embeddable.choices.each do |choice|
+            = render :partial => "embeddable/multiple_choices/show_choice", :locals => {:embeddable => embeddable, :choice => choice, :check_button_string => check_button_string, :form => f}
     - if embeddable.enable_check_answer
       %input{ :class => 'button check_answer_button',
               :type => 'button',

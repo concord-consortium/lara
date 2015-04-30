@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150410112847) do
+ActiveRecord::Schema.define(:version => 20150421132314) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(:version => 20150410112847) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
     t.boolean  "custom",                   :default => false
     t.boolean  "enable_check_answer",      :default => true
     t.boolean  "multi_answer",             :default => false
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(:version => 20150410112847) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
+    t.string   "layout",                   :default => "vertical"
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
