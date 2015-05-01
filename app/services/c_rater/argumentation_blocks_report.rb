@@ -21,57 +21,57 @@ module CRater::ArgumentationBlocksReport
 
     select_params = [
       {
-        :embeddable_type => "Embeddable::OpenResponse",
-        :embeddable_table => "embeddable_open_responses",
-        :answer_table => "embeddable_open_response_answers",
+        :question_type => Embeddable::OpenResponse,
+        :answer_type => Embeddable::OpenResponseAnswer,
         :question_foreign_key => "open_response_id",
-        :feedback_table => "c_rater_feedback_items"
+        :feedback_type => CRater::FeedbackItem
       },
       {
-        :embeddable_type => "Embeddable::MultipleChoice",
-        :embeddable_table => "embeddable_multiple_choices",
-        :answer_table => "embeddable_multiple_choice_answers",
+        :question_type => Embeddable::MultipleChoice,
+        :answer_type => Embeddable::MultipleChoiceAnswer,
         :question_foreign_key => "multiple_choice_id",
-        :feedback_table => "embeddable_feedback_items"
+        :feedback_type => Embeddable::FeedbackItem
       }
     ]
 
     selects = select_params.map do |s|
       select = <<SQL
         SELECT DISTINCT
-        runs.remote_endpoint                          AS remote_endpoint,
-        c_rater_feedback_submissions.created_at       AS submission_time,
-        c_rater_feedback_submissions.id               AS submission_id,
-        lightweight_activities.name                   AS activity_name,
-        lightweight_activities.id                     AS activity_id,
-        interactive_pages.name                        AS page_name,
-        interactive_pages.id                          AS page_id,
-        page_items.position                           AS question_index,
-        #{s[:embeddable_table]}.id                    AS question_id,
-        #{s[:embeddable_table]}.prompt                AS prompt,
-        #{s[:feedback_table]}.answer_text             AS answer,
-        #{s[:feedback_table]}.score                   AS score,
-        #{s[:feedback_table]}.feedback_text           AS feedback,
-        c_rater_feedback_submissions.usefulness_score AS usefulness_score
-      FROM runs
-        INNER JOIN lightweight_activities
-          ON lightweight_activities.id = runs.activity_id
-        INNER JOIN interactive_pages
-          ON interactive_pages.lightweight_activity_id = lightweight_activities.id
-        INNER JOIN page_items
-          ON page_items.interactive_page_id = interactive_pages.id
-        INNER JOIN #{s[:embeddable_table]}
-          ON #{s[:embeddable_table]}.id = page_items.embeddable_id
-        INNER JOIN #{s[:answer_table]}
-          ON #{s[:answer_table]}.run_id = runs.id AND #{s[:answer_table]}.#{s[:question_foreign_key]} = #{s[:embeddable_table]}.id
-        INNER JOIN #{s[:feedback_table]}
-          ON #{s[:feedback_table]}.answer_id = #{s[:answer_table]}.id
-        INNER JOIN c_rater_feedback_submissions
-          ON c_rater_feedback_submissions.id = #{s[:feedback_table]}.feedback_submission_id
+        #{Run.table_name}.remote_endpoint                         AS remote_endpoint,
+        #{CRater::FeedbackSubmission.table_name}.created_at       AS submission_time,
+        #{CRater::FeedbackSubmission.table_name}.id               AS submission_id,
+        #{LightweightActivity.table_name}.name                    AS activity_name,
+        #{LightweightActivity.table_name}.id                      AS activity_id,
+        #{InteractivePage.table_name}.name                        AS page_name,
+        #{InteractivePage.table_name}.id                          AS page_id,
+        #{PageItem.table_name}.position                           AS question_index,
+        #{s[:question_type].table_name}.id                        AS question_id,
+        #{s[:question_type].table_name}.prompt                    AS prompt,
+        #{s[:feedback_type].table_name}.answer_text               AS answer,
+        #{s[:feedback_type].table_name}.score                     AS score,
+        #{s[:feedback_type].table_name}.feedback_text             AS feedback,
+        #{CRater::FeedbackSubmission.table_name}.usefulness_score AS usefulness_score
+      FROM #{Run.table_name}
+        INNER JOIN #{LightweightActivity.table_name}
+          ON #{LightweightActivity.table_name}.id = #{Run.table_name}.activity_id
+        INNER JOIN #{InteractivePage.table_name}
+          ON #{InteractivePage.table_name}.lightweight_activity_id = #{LightweightActivity.table_name}.id
+        INNER JOIN #{PageItem.table_name}
+          ON #{CRater::FeedbackSubmission.table_name}.interactive_page_id = #{InteractivePage.table_name}.id
+        INNER JOIN #{s[:question_type].table_name}
+          ON #{s[:question_type].table_name}.id = #{PageItem.table_name}.embeddable_id
+        INNER JOIN #{s[:answer_type].table_name}
+          ON #{s[:answer_type].table_name}.run_id = #{Run.table_name}.id
+             AND
+             #{s[:answer_type].table_name}.#{s[:question_foreign_key]} = #{s[:question_type].table_name}.id
+        INNER JOIN #{s[:feedback_type].table_name}
+          ON #{s[:feedback_type].table_name}.answer_id = #{s[:answer_type].table_name}.id
+        INNER JOIN #{CRater::FeedbackSubmission.table_name}
+          ON #{CRater::FeedbackSubmission.table_name}.id = #{s[:feedback_type].table_name}.feedback_submission_id
       WHERE
-        page_items.section = "arg_block"
+        #{PageItem.table_name}.section = "arg_block"
         AND
-        embeddable_type = "#{s[:embeddable_type]}"
+        embeddable_type = "#{s[:question_type].name}"
         AND
         remote_endpoint in ("#{all_remote_endpoints.join('","')}")
 SQL
