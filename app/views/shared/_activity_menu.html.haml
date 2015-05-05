@@ -34,9 +34,9 @@
           %i.fa.fa-times
           %span.text
             Close
-      - if current_user && @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE && (current_user.is_admin || @activity.user.email == current_user.email)
+      - if @activity && @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
         %li.am-print
-          %a{:href => preview_activity_path(@activity,:print => true), :target => "_blank", :title => "Print a blank copy"}
+          %a{:href => "javascript:void(0);", :title => "Print activity", :onclick => "window.print();"}
             %i.fa
               P
             %span.text
