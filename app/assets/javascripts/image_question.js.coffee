@@ -130,7 +130,6 @@ class ImageQuestion
       @hide()
       # TODO: validate response and calling showSaved() or saveFailed().
       @show_saved()
-      LoggerUtils.submittedQuestionLogging(@form_id)
     ,"svg_" + @image_question_id)
 
   has_image_content: ->

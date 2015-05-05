@@ -124,7 +124,6 @@ class ImageQuestionDrawingTool
         @update_display()
         @hide_dialog()
         @show_saved()
-        LoggerUtils.submittedQuestionLogging(@form_id)
         @set_dialog_buttons_enabled(true)
         stopWaiting()
       ).on('ajax:error', (e, xhr, status, error) =>
