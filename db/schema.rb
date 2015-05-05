@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150421132314) do
+ActiveRecord::Schema.define(:version => 20150505145748) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -362,13 +362,13 @@ ActiveRecord::Schema.define(:version => 20150421132314) do
 
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
-    t.string   "url"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.text     "url",            :limit => 2048
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "save_state",     :default => false
-    t.boolean  "has_report_url", :default => false
+    t.boolean  "save_state",                     :default => false
+    t.boolean  "has_report_url",                 :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
   end

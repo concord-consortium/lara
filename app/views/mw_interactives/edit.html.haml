@@ -5,7 +5,7 @@
   = field_set_tag 'Name' do
     = f.text_field :name
   = field_set_tag 'URL' do
-    = f.text_field :url
+    = f.text_area :url, size: "45x4"
   = field_set_tag 'Dimensions' do
     = f.label :native_width, 'Width'
     = f.text_field :native_width
