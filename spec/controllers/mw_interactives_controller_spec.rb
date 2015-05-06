@@ -73,7 +73,7 @@ describe MwInteractivesController do
           expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
 
           expect(response.body).to match /<input[^<]+id="mw_interactive_name"[^<]+name="mw_interactive\[name\]"[^<]+type="text"[^>]+value="#{int.name}"[^<]*\/>/
-          expect(response.body).to match /<input[^<]+id="mw_interactive_url"[^<]+name="mw_interactive\[url\]"[^<]+type="text"[^>]+value="#{int.url}"[^<]*\/>/
+          expect(response.body).to match /<textarea[^<]+id="mw_interactive_url"[^<]+name="mw_interactive\[url\]"[^<]*>[^<]*#{int.url}[^<]*<\/textarea>/
           expect(response.body).to match /<input[^<]+id="mw_interactive_native_width"[^<]+name="mw_interactive\[native_width\]"[^<]+type="text"[^<]+value="#{int.native_width}"[^<]*\/>/
           expect(response.body).to match /<input[^<]+id="mw_interactive_native_height"[^<]+name="mw_interactive\[native_height\]"[^<]+type="text"[^<]+value="#{int.native_height}"[^<]*\/>/
         end
