@@ -18,8 +18,22 @@
   }
 
   @media print {
+    .embeddables.arg-block,.interactive-mod {
+      page-break-inside: avoid;
+    }
     #nav-activity-menu,.sidebar-mod,a.sp-submit,#save.error {
       display: none;
+    }
+    .interactive-container {
+      .click_to_play {
+        display: none;
+      }
+      iframe {
+        visibility: hidden;
+      }
+      .img-container,.interactive-print-text {
+        display: block !important;
+      }
     }
   }
 

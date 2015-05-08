@@ -1,6 +1,6 @@
 .interactive-container{class: interactive.save_state ? 'savable' : ''}
   - if interactive.click_to_play
-    .img-container{:id => dom_id_for(interactive, :interactive_image),:style => "background-image:url(#{interactive.image_url})"}
+    .img-container{:id => dom_id_for(interactive, :interactive_image),:style => "height;background-image:url(#{interactive.image_url})"}
     .click_to_play.shown{:id => dom_id_for(interactive, :click_to_play)}
       .background
       .text= "Click here to start the interactive."
@@ -12,6 +12,12 @@
       = link_to interactive.url, interactive.url
 
   - if !interactive.click_to_play
+    .interactive-print-text
+      %div
+        Interactive Model
+      %p
+        See :-
+        =link_to "#{interactive.url}","#{interactive.url}"
     = interactive_iframe_tag(interactive, @run) do
 
       Your browser does not support inline frames, or is currently not configured to display inline frames.
