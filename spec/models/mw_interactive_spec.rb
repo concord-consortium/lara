@@ -32,14 +32,14 @@ describe MwInteractive do
 
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { name: interactive.name, url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height, save_state: interactive.save_state, has_report_url: interactive.has_report_url }
+      expected = { name: interactive.name, url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height, save_state: interactive.save_state, has_report_url: interactive.has_report_url, click_to_play: interactive.click_to_play, image_url: interactive.image_url }
       expect(interactive.to_hash).to eq(expected)
     end
   end
 
   describe '#duplicate' do
     it 'is a new instance of MwInteractive with values' do
-      expect(interactive.duplicate).to be_a_new(MwInteractive).with( name: "Copy of #{interactive.name}", url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height )
+      expect(interactive.duplicate).to be_a_new(MwInteractive).with( name: "Copy of #{interactive.name}", url: interactive.url, native_width: interactive.native_width, native_height: interactive.native_height, click_to_play: interactive.click_to_play, image_url: interactive.image_url )
     end
   end
 end

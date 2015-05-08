@@ -21,6 +21,8 @@ module Embeddable
     delegate :enable_check_answer, :to  => :question
     delegate :multi_answer,        :to  => :question
     delegate :show_as_menu,        :to  => :question
+    delegate :is_likert,           :to  => :question
+    delegate :layout,              :to  => :question
 
     after_update :send_to_portal
     after_update :propagate_to_collaborators

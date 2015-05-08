@@ -427,6 +427,13 @@ div.intra-page-nav {
     width: 45%;
     vertical-align: top;
  }
+
+ .question.likert{
+    width: 95%;
+    input{
+      margin-right:5px;
+    }
+ }
 } // .l-full-width
 
 // *********************************************
@@ -489,6 +496,9 @@ div.intra-page-nav {
     position: absolute;
     bottom: 0;
   }
+
+@import 'partials/click_to_play';
+
 }
 
 
@@ -729,7 +739,7 @@ div.intra-page-nav {
     @include border-radius(8px);
   }
 
-  em {
+  em.credit {
     display: block;
     font-size: 0.75em;
     text-align: right;
@@ -745,6 +755,9 @@ div.intra-page-nav {
   }
   input {
     margin-right: 8px;
+    &[type="checkbox"]{
+	    margin-bottom: 3px;
+    }
   }
   .page-index {
       border: 0px;

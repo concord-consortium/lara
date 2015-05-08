@@ -46,6 +46,7 @@
       text-decoration: underline;
     }
   }
+  @import 'partials/click_to_play';
 }
 
 .questions-mod {
@@ -104,6 +105,9 @@
   }
   input {
     margin-right: 8px;
+    &[type="checkbox"]{
+      margin-bottom: 3px;
+    }
   }
   // title
   h4 {
