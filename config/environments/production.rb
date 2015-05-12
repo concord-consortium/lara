@@ -49,7 +49,7 @@ LightweightStandalone::Application.configure do
   # config.assets.precompile += %w( search.js )
   config.assets.precompile += %w(runtime.js respond.js modernizr.min.js)
   # Themes:
-  config.assets.precompile += %w(runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css theme-has-ngs-climate.css theme-has-ngs-hydrofracking.css theme-has-ngs-landmanagement.css theme-has-ngs-water.css theme-rites.css print-summary.css theme-interactions-electrostatics.css theme-interactions.css theme-itsi.css)
+  config.assets.precompile += %w(runtime.css theme-mw.css theme-has-ngs.css theme-has-ngs-atmosphere.css theme-has-ngs-climate.css theme-has-ngs-hydrofracking.css theme-has-ngs-landmanagement.css theme-has-ngs-water.css theme-rites.css print-summary.css theme-interactions-electrostatics.css theme-interactions.css theme-itsi.css theme-itsi-survey.css)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   # config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }
