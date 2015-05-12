@@ -63,10 +63,5 @@ private
       lab.prompt = lab.prompt.gsub(current_tag,replacement_tag) unless lab.prompt.blank?
       lab.save
     end
-
-    CRater::ScoreMapping.find_each do |scoremap|
-      scoremap.mapping = scoremap.mapping.gsub(current_tag,replacement_tag) unless scoremap.mapping.blank?
-      scoremap.save
-    end
   end
 end
