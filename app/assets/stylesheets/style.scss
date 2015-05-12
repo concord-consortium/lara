@@ -373,7 +373,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   }
   p {
     font-size: 1em;
-    line-height: 150%;
+    line-height: 1.5;
     margin-bottom: 1em;
   }
   small {
@@ -739,7 +739,7 @@ fieldset {
 }
 /* Page editing */
 .editing {
-  fieldset .edit_trigger { line-height: 2em;; }
+  fieldset .edit_trigger { line-height: 2;; }
   /* Title */
   .editable[data-name="interactive_page[name]"] form {
     display: inline;

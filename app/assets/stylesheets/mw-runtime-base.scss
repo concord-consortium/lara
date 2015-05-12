@@ -460,7 +460,7 @@ div.intra-page-nav {
 // Intro block
 .intro-mod {
   font-size: 16px;
-  line-height: 1.45em;
+  line-height: 1.45;
   font-family: $lato-reg;
   margin-bottom: 39px;
 
@@ -628,7 +628,7 @@ div.intra-page-nav {
 .intro-mod,
 .content-mod {
   font-size: 16px;
-  line-height: 1.35em;
+  line-height: 1.35;
   ol,
   ul,
   dl,
@@ -878,7 +878,7 @@ input:disabled {
 
   .related-item-txt {
     font-size: 14px;
-    line-height: 1.35em;
+    line-height: 1.35;
 
     a {
       // @include btn;
@@ -1039,7 +1039,7 @@ footer {
 
     .intro-txt {
       font-size: 20px;
-      line-height: 1.35em;
+      line-height: 1.35;
       max-width: 100%;
     }
 
