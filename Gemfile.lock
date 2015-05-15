@@ -334,15 +334,15 @@ GEM
       activesupport (= 3.2.19)
       bundler (~> 1.0)
       railties (= 3.2.19)
-    rails-assets-drawing-tool (1.2.3)
-      rails-assets-eventemitter2 (= 0.4.14)
-      rails-assets-fabric (= 1.4.11)
-      rails-assets-hammerjs (= 2.0.0)
-      rails-assets-jquery (= 2.1.1)
+    rails-assets-drawing-tool (1.3.0)
+      rails-assets-eventemitter2 (~> 0.4.14)
+      rails-assets-fabric (= 1.5.0)
+      rails-assets-hammerjs (~> 2.0.4)
+      rails-assets-jquery (~> 2.1.3)
     rails-assets-eventemitter2 (0.4.14)
-    rails-assets-fabric (1.4.11)
-    rails-assets-hammerjs (2.0.0)
-    rails-assets-jquery (2.1.1)
+    rails-assets-fabric (1.5.0)
+    rails-assets-hammerjs (2.0.4)
+    rails-assets-jquery (2.1.4)
     rails-assets-shutterbug (0.5.4)
       rails-assets-jquery (>= 1.10.1)
     railties (3.2.19)
@@ -513,7 +513,7 @@ DEPENDENCIES
   pry-stack_explorer
   rack-environmental
   rails (~> 3.2.19)
-  rails-assets-drawing-tool (= 1.2.3)
+  rails-assets-drawing-tool (= 1.3.0)
   rails-assets-shutterbug (= 0.5.4)
   rb-fsevent
   request-log-analyzer

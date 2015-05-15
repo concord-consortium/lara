@@ -22,7 +22,7 @@ gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
 # Rails assets:
-gem 'rails-assets-drawing-tool', '1.2.3'
+gem 'rails-assets-drawing-tool', '1.3.0'
 gem 'rails-assets-shutterbug', '0.5.4'
 
 # Easy (or at least easier) database dumps and reloads
