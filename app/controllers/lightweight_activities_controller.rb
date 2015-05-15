@@ -23,6 +23,10 @@ class LightweightActivitiesController < ApplicationController
 
   def show # show index
     authorize! :read, @activity
+    if params[:print]
+      redirect_to activity_single_page_with_response_path(@activity, @run.key, request.query_parameters) and return
+    end
+
     if params[:response_key]
       redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
       redirect_to activity_path(@activity, request.query_parameters) and return
@@ -53,7 +57,7 @@ class LightweightActivitiesController < ApplicationController
     @run.clear_answers
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       setup_single_page_show
-      render :single_page
+      render :single_page, :locals => {:print => params[:print]}
     else
       setup_show
       render :show

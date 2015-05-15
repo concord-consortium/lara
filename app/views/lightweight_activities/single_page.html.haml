@@ -17,8 +17,32 @@
     margin:0 auto;
   }
 
+  @media print {
+    .embeddables.arg-block,.interactive-mod {
+      page-break-inside: avoid;
+    }
+    #nav-activity-menu,.sidebar-mod,a.sp-submit,#save.error {
+      display: none;
+    }
+    .interactive-container {
+      .click_to_play {
+        display: none;
+      }
+      iframe {
+        visibility: hidden;
+      }
+      .img-container,.interactive-print-text {
+        display: block !important;
+      }
+    }
+  }
+
 :javascript
   $(function(){
+    if (window.location.search.indexOf("print=true") > -1) {
+      window.print();
+    }
+
     function close_or_send_back(){
       if(window.opener) {
         window.close();
