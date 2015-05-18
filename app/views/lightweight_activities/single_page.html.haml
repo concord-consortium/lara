@@ -18,10 +18,15 @@
   }
 
   @media print {
-    .embeddables.arg-block,.interactive-mod {
+    .arg-block, .related-mod, footer {
       page-break-inside: avoid;
     }
-    #nav-activity-menu,.sidebar-mod,a.sp-submit,#save.error {
+    .question,.interactive-mod {
+      img, video, .img-container {
+        page-break-inside: avoid;
+      }
+    }
+    #nav-activity-menu,.sidebar-mod,a.sp-submit,#save.error,#save {
       display: none;
     }
     .interactive-container {
@@ -34,6 +39,18 @@
       .img-container,.interactive-print-text {
         display: block !important;
       }
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color: transparent;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: transparent;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: transparent;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+      color: transparent;
     }
   }
 
