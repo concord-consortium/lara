@@ -8,9 +8,9 @@
       left: 0;
     }
     .img-container {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
+      img {
+        width : 100%;
+      }
     }
     .click_to_play {
       cursor: pointer;
