@@ -57,7 +57,7 @@ module CRater::ArgumentationBlocksReport
         INNER JOIN #{InteractivePage.table_name}
           ON #{InteractivePage.table_name}.lightweight_activity_id = #{LightweightActivity.table_name}.id
         INNER JOIN #{PageItem.table_name}
-          ON #{CRater::FeedbackSubmission.table_name}.interactive_page_id = #{InteractivePage.table_name}.id
+          ON #{PageItem.table_name}.interactive_page_id = #{InteractivePage.table_name}.id
         INNER JOIN #{s[:question_type].table_name}
           ON #{s[:question_type].table_name}.id = #{PageItem.table_name}.embeddable_id
         INNER JOIN #{s[:answer_type].table_name}
@@ -86,7 +86,8 @@ SQL
     order_by = <<SQL
       ORDER BY
         submission_time,
-        submission_id
+        submission_id,
+        question_index
 SQL
 
     sql = selects.join("\n UNION\n") + order_by + ";"
@@ -139,6 +140,7 @@ SQL
       :permission_forms => "Permission Form(s)",
       :teachers_name    => "Teacher Name",
       :school_name      => "School Name",
+      :class_name       => "Class Name",
       :class_id         => "Class ID",
       :student_id       => "Student ID",
       :submission_time  => "Submission Date & Time",
