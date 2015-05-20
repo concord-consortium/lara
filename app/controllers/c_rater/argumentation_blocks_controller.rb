@@ -1,9 +1,7 @@
 class CRater::ArgumentationBlocksController < ApplicationController
 
-  require 'spreadsheet'
-  Spreadsheet.client_encoding = 'UTF-8'
-
   before_filter :set_page_and_authorize, only: [:create_embeddables, :remove_embeddables]
+  skip_before_filter :verify_authenticity_token, only: [:report]
 
   def create_embeddables
     create_arg_block_embeddables(@page)
@@ -56,116 +54,17 @@ class CRater::ArgumentationBlocksController < ApplicationController
 
   def report
     authorize! :manage, :all # admins
-    # Start with a list of endpoints; here we just use all of them
-    endpoints = Run.where("remote_endpoint IS NOT NULL").map &:remote_endpoint
 
-    select_params = [
-      {
-        :embeddable_type => "Embeddable::OpenResponse",
-        :embeddable_table => "embeddable_open_responses",
-        :answer_table => "embeddable_open_response_answers",
-        :question_foreign_key => "open_response_id",
-        :feedback_table => "c_rater_feedback_items",
-        :usefulness_score_column => "c_rater_feedback_submissions.usefulness_score",
-        :usefulness_score_join => "LEFT OUTER JOIN c_rater_feedback_submissions ON c_rater_feedback_submissions.id = c_rater_feedback_items.feedback_submission_id"
-      },
-      {
-        :embeddable_type => "Embeddable::MultipleChoice",
-        :embeddable_table => "embeddable_multiple_choices",
-        :answer_table => "embeddable_multiple_choice_answers",
-        :question_foreign_key => "multiple_choice_id",
-        :feedback_table => "embeddable_feedback_items",
-        :usefulness_score_column => "NULL",
-        :usefulness_score_join => ""
-      }
-    ]
+    # each row in report_data is a "bucket" for one student, and we want to fill each bucket with
+    # time-sorted arg block submission data. Buckets should appear in the order they were sent to
+    # us.
 
-    selects = select_params.map do |s|
-      select = <<SQL
-        SELECT DISTINCT
-        runs.remote_endpoint AS remote_endpoint,
-        lightweight_activities.id AS activity_id,
-        interactive_pages.id AS page_id,
-        interactive_pages.position AS page_index,
-        page_items.position AS question_index,
-        #{s[:embeddable_table]}.id AS question_id,
-        #{s[:embeddable_table]}.prompt AS prompt,
-        #{s[:feedback_table]}.answer_text AS answer,
-        #{s[:feedback_table]}.score AS score,
-        #{s[:feedback_table]}.created_at AS submit_time,
-        #{s[:feedback_table]}.feedback_text AS feedback,
-        #{s[:usefulness_score_column]} AS usefulness_score
-      FROM runs
-        INNER JOIN lightweight_activities
-          ON lightweight_activities.id = runs.activity_id
-        INNER JOIN interactive_pages
-          ON interactive_pages.lightweight_activity_id = lightweight_activities.id
-        INNER JOIN page_items
-          ON page_items.interactive_page_id = interactive_pages.id
-        INNER JOIN #{s[:embeddable_table]}
-          ON #{s[:embeddable_table]}.id = page_items.embeddable_id
-        LEFT OUTER JOIN #{s[:answer_table]}
-          ON #{s[:answer_table]}.run_id = runs.id AND #{s[:answer_table]}.#{s[:question_foreign_key]} = #{s[:embeddable_table]}.id
-        LEFT OUTER JOIN #{s[:feedback_table]}
-          ON #{s[:feedback_table]}.answer_id = #{s[:answer_table]}.id
-        #{s[:usefulness_score_join]}
-      WHERE
-        page_items.section = "arg_block"
-        AND
-        embeddable_type = "#{s[:embeddable_type]}"
-        AND
-        remote_endpoint in ("#{endpoints.join('","')}")
-SQL
-    end
+    arg_block_buckets = JSON.parse(params[:arg_block_buckets]).symbolize_keys!
 
-    order_by = <<SQL
-      ORDER BY
-        activity_id,
-        remote_endpoint,
-        submit_time
-SQL
-
-    sql = selects.join("\n UNION\n") + order_by + ";"
-
-    results = ActiveRecord::Base.connection.execute(sql)
-
-    # generate a spreadsheet
-
-    book = Spreadsheet::Workbook.new
-    sheet = book.create_worksheet :name => 'Long Format'
-
-    row = sheet.row(0)
-
-    [
-      "remote_endpoint",
-      "Activity id",
-      "Page id",
-      "Page index",
-      "Question index",
-      "Question id",
-      "Prompt",
-      "Answer",
-      "Score",
-      "Submission time",
-      "Feedback",
-      "Usefulness score"
-    ].each do |text|
-      row.push text
-    end
-
-    # leave a blank row under header
-    i = 2
-    results.each do |result|
-      row = sheet.row(i)
-      i += 1
-      result.each do |cell|
-        row.push cell
-      end
-    end
-
+    book = CRater::ArgumentationBlocksReport.generate(arg_block_buckets)
     sio = StringIO.new
     book.write sio
-    send_data(sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls" )
+    send_data sio.string, :type => "application/vnd.ms.excel", :filename => "arg-block-report.xls"
   end
 
   private
@@ -209,4 +108,5 @@ SQL
     or2_c_rater_settings.provider = or2
     or2_c_rater_settings.save!
   end
+
 end

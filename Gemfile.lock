@@ -505,6 +505,7 @@ DEPENDENCIES
   mysql2
   nested_form
   newrelic_rpm
+  nokogiri (~> 1.6)
   omniauth
   omniauth-oauth2!
   poltergeist

@@ -151,3 +151,6 @@ gem 'lol_dba', :require => false
 
 # Excel spreadsheet generation (for reporting)
 gem 'spreadsheet'
+
+# Nokogiri for text cleaning (for reporting). Versions 1.6+ include compiled-in libxml2/libxslt support
+gem 'nokogiri', '~> 1.6'
