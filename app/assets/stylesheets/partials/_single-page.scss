@@ -2,3 +2,13 @@
 .l-single-page .pages {
   display: none;
 }
+
+@import "compass/css3/user-interface";
+
+@media print {
+  textarea {
+    @include input-placeholder {
+      color:#fff;
+    } 
+  }
+}

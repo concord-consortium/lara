@@ -418,7 +418,7 @@ $spacer-bottom: inherit !default;
 /* !============================================= */
 
 .imageblock {
-	@extend clearfix;
+	@extend .clearfix;
 }
 
 .imageblock-image {
