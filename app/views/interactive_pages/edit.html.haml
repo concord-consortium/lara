@@ -79,8 +79,8 @@
           = submit_tag 'Add Embeddable'
         #sort_embeddables.embeddables_list
           - @page.section_embeddables(nil).each do |e|
-            - e_type = e.class.name.underscore
-            = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => @page }
+            .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}"}
+              = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page }
     -# Additional sections are dynamically loaded, based on .visible_sections value:
     - @page.visible_sections.each do |s|
       = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label] }

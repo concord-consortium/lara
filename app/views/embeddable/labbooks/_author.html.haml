@@ -1,16 +1,15 @@
-.authorable
-  .embeddable_tools
-    .drag_handle
-    = link_to "edit", edit_embeddable_labbook_path(embeddable), remote: true,  id: "edit-embed-lb-#{embeddable.id}"
-    |
-    - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
-    = link_to "remove", page_remove_embeddable_path(page, embeddable), method: :post, data: {confirm: (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
-  %p
-    = embeddable.name
-  .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
-  %button.button{type: 'submit'}
-    %i.fa.fa-camera
-    = embeddable.action_label
+.embeddable_tools
+  .drag_handle
+  = link_to "edit", edit_embeddable_labbook_path(embeddable), remote: true,  id: "edit-embed-lb-#{embeddable.id}"
+  |
+  - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
+  = link_to "remove", page_remove_embeddable_path(page, embeddable), method: :post, data: {confirm: (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
+%p
+  = embeddable.name
+.prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
+%button.button{type: 'submit'}
+  %i.fa.fa-camera
+  = embeddable.action_label
 
 - if params[:edit_embed_lb].to_i == embeddable.id
   :javascript
