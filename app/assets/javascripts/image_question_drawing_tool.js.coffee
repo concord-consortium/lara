@@ -78,6 +78,8 @@ class ImageQuestionDrawingTool
       proxy: DRAWING_TOOL_PROXY
     })
 
+    @save_indicator = SaveIndicator.instance()
+
     # See: https://www.pivotaltracker.com/story/show/77973722
     @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
 
@@ -123,11 +125,11 @@ class ImageQuestionDrawingTool
         @$displayed_answer.html(data.answer_html)
         @update_display()
         @hide_dialog()
-        @show_saved()
+        @save_indicator.showSaved()
         @set_dialog_buttons_enabled(true)
         stopWaiting()
       ).on('ajax:error', (e, xhr, status, error) =>
-        @save_failed()
+        @save_indicator.showSaveFailed()
         @set_dialog_buttons_enabled(true)
         stopWaiting()
       )
@@ -136,7 +138,7 @@ class ImageQuestionDrawingTool
     $('#modal-dialog').html "<div class='dialog-error'>#{message}</div>"
     $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error")
     stopWaiting()
-    @save_failed()
+    @save_indicator.showSaveFailed()
     @set_dialog_buttons_enabled(true)
 
   take_interactive_snapshot: ->
@@ -212,22 +214,8 @@ class ImageQuestionDrawingTool
       @drawing_tool.resetHistory()
     )
 
-  show_saved: ->
-    @saveTimer = setTimeout ->
-      $("#save").html("Saved.")
-      # Fade out.
-      $("#save").animate({"opacity": "0"}, "slow")
-    , 1000
-
-  save_failed: ->
-    $("#save").html("Save failed!")
-
-  show_saving: ->
-    $("#save").html("Saving...")
-    $("#save").animate({"opacity": "1.0"}, "fast")
-
   start_saving: ->
-    @show_saving()
+    @save_indicator.showSaving()
     @set_dialog_buttons_enabled(false)
     startWaiting t('PLEASE_WAIT_SAVING_DRAWING')
     # Clear selection so it's not visible on the screenshot.
