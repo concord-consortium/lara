@@ -345,7 +345,7 @@ GEM
       activesupport (= 3.2.19)
       bundler (~> 1.0)
       railties (= 3.2.19)
-    rails-assets-drawing-tool (1.3.0)
+    rails-assets-drawing-tool (1.3.1)
       rails-assets-eventemitter2 (~> 0.4.14)
       rails-assets-fabric (= 1.5.0)
       rails-assets-hammerjs (~> 2.0.4)
@@ -526,7 +526,7 @@ DEPENDENCIES
   pry-stack_explorer
   rack-environmental
   rails (~> 3.2.19)
-  rails-assets-drawing-tool (= 1.3.0)
+  rails-assets-drawing-tool (= 1.3.1)
   rails-assets-shutterbug (= 0.5.4)
   rb-fsevent
   request-log-analyzer
