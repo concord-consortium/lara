@@ -1,14 +1,9 @@
 .embeddable_tools
   .drag_handle
-  = link_to "edit", edit_embeddable_xhtml_path(embeddable), :remote => true, :id => "edit-embed-xhtml-#{embeddable.id}"
-  |
-  - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
-  = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
-  - if params[:edit_embed_xhtml].to_i == embeddable.id
-    :javascript
-      $("a[id^=edit-embed-xhtml-#{embeddable.id}]").click()
-- if embeddable.content.blank?
-  .xhtml
-    Embeddable text will go here.
-- else
-  .xhtml= embeddable.content.html_safe
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'xhtml', :allow_hide => allow_hide }
+.embeddable_options  
+  - if embeddable.content.blank?
+    .xhtml
+      Embeddable text will go here.
+  - else
+    .xhtml= embeddable.content.html_safe

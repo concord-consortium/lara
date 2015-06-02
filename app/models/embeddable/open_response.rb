@@ -3,7 +3,7 @@ module Embeddable
     include Embeddable
     
 
-    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback
+    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy

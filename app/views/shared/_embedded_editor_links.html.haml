@@ -1,0 +1,54 @@
+:ruby
+  dash_id = "#{type}-#{embeddable.id}"
+  under_id = "#{type}_#{embeddable.id}"
+  edit_path = case type
+    when "or"
+      edit_embeddable_open_response_path(embeddable)
+    when "iq"
+      edit_embeddable_image_question_path(embeddable)
+    when "mc"
+      edit_embeddable_multiple_choice_path(embeddable)
+    when "lb"
+      edit_embeddable_labbook_path(embeddable)
+    when "xhtml"
+      edit_embeddable_xhtml_path(embeddable)
+  end
+
+- if allow_hide
+  = link_to "show", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "show-#{dash_id}", :onclick => "toggle_hide_#{under_id}()"
+  - confirm_hide_message = "Are you sure you want to hide this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
+  = link_to "hide", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "hide-#{dash_id}", :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide_message}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
+
+= link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
+- confirm_delete_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
+= link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_delete_message : 'Are you sure?'}
+- if params["edit_embed_#{type}".to_sym].to_i == dash_id
+  :javascript
+    $("a[id^=edit-embed-#{dash_id}]").click()
+
+- if allow_hide
+  :javascript
+    var hidden_#{under_id} = #{embeddable.is_hidden ? 'true' : 'false'};
+    function toggle_hide_#{under_id}() {
+      hidden_#{under_id} = !hidden_#{under_id};
+      update_view_#{under_id}();
+    }
+    function update_view_#{under_id}() {
+      var $showLink = $("a[id^=show-#{dash_id}]"),
+          $hideLink = $("a[id^=hide-#{dash_id}]"),
+          $options = $showLink.closest(".embeddable_tools").next(".embeddable_options");
+
+      if (hidden_#{under_id}) {
+        $showLink.show();
+        $hideLink.hide();
+        $options.hide();
+      }
+      else {
+        $showLink.hide();
+        $hideLink.show();
+        $options.show();
+      }
+    }
+
+    // call after so that options are visible
+    setTimeout(update_view_#{under_id});

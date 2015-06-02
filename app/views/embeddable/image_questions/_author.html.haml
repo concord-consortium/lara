@@ -1,23 +1,16 @@
 .embeddable_tools
   .drag_handle
-  = link_to "edit", edit_embeddable_image_question_path(embeddable), :remote => true, :id => "edit-embed-iq-#{embeddable.id}"
-  |
-  - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
-  = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
-
-  - if params[:edit_embed_iq].to_i == embeddable.id
-    :javascript
-      $("a[id^=edit-embed-iq-#{embeddable.id}]").click()
-
-.prompt
-  = embeddable.drawing_prompt.html_safe unless embeddable.drawing_prompt.blank?
-  = image_tag embeddable.bg_url, { :style => "width: 100%;" } unless embeddable.bg_url.blank?
-  = embeddable.prompt.html_safe unless embeddable.prompt.blank?
-- if embeddable.is_shutterbug?
-  %button.image_question.button{:type => 'submit', :id => 'image_snapshot_button'}
-    %i.fa.fa-camera
-    Take snapshot
-- elsif embeddable.is_drawing?
-  %button.image_question.button{:type => 'submit', :id => 'image_drawing_button'}
-    %i.fa.fa-pencil
-    Make drawing
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'iq', :allow_hide => allow_hide }
+.embeddable_options  
+  .prompt
+    = embeddable.drawing_prompt.html_safe unless embeddable.drawing_prompt.blank?
+    = image_tag embeddable.bg_url, { :style => "width: 100%;" } unless embeddable.bg_url.blank?
+    = embeddable.prompt.html_safe unless embeddable.prompt.blank?
+  - if embeddable.is_shutterbug?
+    %button.image_question.button{:type => 'submit', :id => 'image_snapshot_button'}
+      %i.fa.fa-camera
+      Take snapshot
+  - elsif embeddable.is_drawing?
+    %button.image_question.button{:type => 'submit', :id => 'image_drawing_button'}
+      %i.fa.fa-pencil
+      Make drawing

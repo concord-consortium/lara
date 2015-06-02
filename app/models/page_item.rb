@@ -4,4 +4,11 @@ class PageItem < ActiveRecord::Base
 
   belongs_to :interactive_page
   belongs_to :embeddable, :polymorphic => true
+
+
+  def toggle_hideshow_embeddable
+    embeddable.is_hidden = !embeddable.is_hidden
+    embeddable.save
+  end
+
 end

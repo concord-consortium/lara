@@ -1,11 +1,6 @@
 .embeddable_tools
   .drag_handle
-  = link_to "edit", edit_embeddable_open_response_path(embeddable), :remote => true, :id => "edit-embed-or-#{embeddable.id}"
-  |
-  - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
-  = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'}
-  - if params[:edit_embed_or].to_i == embeddable.id
-    :javascript
-      $("a[id^=edit-embed-or-#{embeddable.id}]").click()
-.prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
-%textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'or', :allow_hide => allow_hide }
+.embeddable_options  
+  .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
+  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}

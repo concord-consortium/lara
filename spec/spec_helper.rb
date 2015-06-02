@@ -97,6 +97,11 @@ RSpec.configure do |config|
   #       # Equivalent to being in spec/controllers
   #     end
   config.infer_spec_type_from_file_location!
+
+  config.include Warden::Test::Helpers
+  config.before :suite do
+    Warden.test_mode!
+  end
 end
 
 class ActiveRecord::Base
@@ -111,3 +116,13 @@ end
 # Forces all threads to share the same connection. This works on
 # Capybara because it starts the web server in a thread.
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+
+def wait_for_ajax
+  counter = 0
+  while page.evaluate_script("$.active").to_i > 0
+    counter += 1
+    sleep(0.1)
+    raise "AJAX request took longer than 5 seconds." if counter >= 50
+  end
+end
+
