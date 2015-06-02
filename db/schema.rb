@@ -394,12 +394,12 @@ ActiveRecord::Schema.define(:version => 20150602204447) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.text     "response",         :limit => 255
+    t.text     "response"
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "projects", :force => true do |t|

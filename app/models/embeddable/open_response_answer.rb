@@ -10,6 +10,8 @@ module Embeddable
       :foreign_key => "open_response_id"
     belongs_to :run
 
+    before_save :clear_default_text
+
     after_update :send_to_portal
     after_update :propagate_to_collaborators
 
@@ -39,6 +41,13 @@ module Embeddable
 
     def c_rater_item_settings
       question && question.c_rater_item_settings
+    end
+
+    def clear_default_text
+      # default_text is delegated to question.default_text so we need to check for an assigned question first
+      if question and default_text and (default_text == answer_text)
+        self.answer_text = ""
+      end
     end
   end
 end
