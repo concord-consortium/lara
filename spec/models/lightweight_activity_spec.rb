@@ -3,19 +3,19 @@ require 'spec_helper'
 describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
-  let(:activity)      { 
+  let(:activity)      {
     activity = FactoryGirl.create(:activity, :thumbnail_url => thumbnail_url)
     activity.user = author
     activity.save
     activity
   }
-  let(:valid)         { 
-    activity = FactoryGirl.build(:activity) 
+  let(:valid)         {
+    activity = FactoryGirl.build(:activity)
     activity.user = author
     activity.save
     activity
   }
-  
+
   it 'should have valid attributes' do
     expect(activity.name).not_to be_blank
     expect(activity.publication_status).to eq("hidden")
@@ -153,7 +153,7 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout }
+      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout, editor_mode: activity.editor_mode }
       expect(activity.to_hash).to eq(expected)
     end
   end
@@ -161,7 +161,7 @@ describe LightweightActivity do
   describe '#export' do
       it 'returns json of an activity' do
         expect(activity.export[:pages].length).to eq(activity.pages.count)
-    end 
+    end
   end
 
   describe '#duplicate' do
@@ -226,7 +226,7 @@ describe LightweightActivity do
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
-      { 
+      {
         "type"          =>"Activity",
         "name"          => activity.name,
         "description"   => activity.description,

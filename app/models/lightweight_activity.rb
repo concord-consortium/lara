@@ -8,10 +8,18 @@ class LightweightActivity < ActiveRecord::Base
     ['Multi-page', LAYOUT_MULTI_PAGE],
     ['Single-page', LAYOUT_SINGLE_PAGE]
   ]
+  STANDARD_EDITOR_MODE = 0
+  ITSI_EDITOR_MODE = 1
+  ITSI_WIP_EDITOR_MODE = 2 # this is just for development of the React edit template - it will be removed once that work is done
+  EDITOR_MODE_OPTIONS = [
+    ['Standard', STANDARD_EDITOR_MODE],
+    ['ITSI', ITSI_EDITOR_MODE],
+    ['ITSI (Development)', ITSI_WIP_EDITOR_MODE]
+  ]
 
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-                  :portal_run_count, :layout
+                  :portal_run_count, :layout, :editor_mode
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -87,7 +95,8 @@ class LightweightActivity < ActiveRecord::Base
       theme_id: theme_id,
       thumbnail_url: thumbnail_url,
       notes: notes,
-      layout:layout
+      layout: layout,
+      editor_mode: editor_mode
     }
   end
 
@@ -118,7 +127,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :theme_id,
                                         :thumbnail_url,
                                         :notes,
-                                        :layout])
+                                        :layout,
+                                        :editor_mode])
     activity_json[:pages] = []
     self.pages.each do |p|
       activity_json[:pages] << p.export
@@ -138,7 +148,8 @@ class LightweightActivity < ActiveRecord::Base
       theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
       time_to_complete: activity_json_object[:time_to_complete],
-      layout: activity_json_object[:layout]
+      layout: activity_json_object[:layout],
+      editor_mode: activity_json_object[:editor_mode]
     }
 
   end
