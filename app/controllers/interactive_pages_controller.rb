@@ -217,6 +217,7 @@ class InteractivePagesController < ApplicationController
   end
 
   def setup_show
+    raise ActiveRecord::RecordNotFound if @page.is_hidden
     current_theme
     current_project
     setup_global_interactive_state_data

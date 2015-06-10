@@ -123,6 +123,22 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
+  def next_visible_page
+    lightweight_activity.visible_pages.where('position > ?', position).first
+  end
+
+  def prev_visible_page
+    lightweight_activity.visible_pages.where('position < ?', position).last
+  end
+
+  def first_visible?
+    prev_visible_page == nil
+  end
+
+  def last_visible?
+    next_visible_page == nil
+  end
+
   def visible_sections
     return [] unless additional_sections
     self.class.registered_additional_sections.select { |s| additional_sections[s[:name]] }

@@ -17,6 +17,9 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :changed_by, :class_name => 'User'
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+  has_many :visible_pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position,
+             :conditions => {interactive_pages: {is_hidden: false}}
+
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
