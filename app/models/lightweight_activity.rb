@@ -108,15 +108,15 @@ class LightweightActivity < ActiveRecord::Base
     end
     return new_activity
   end
-  
-  def export 
+
+  def export
     activity_json = self.as_json(only: [:name,
-                                        :related, 
-                                        :description, 
-                                        :time_to_complete, 
-                                        :project_id, 
-                                        :theme_id, 
-                                        :thumbnail_url, 
+                                        :related,
+                                        :description,
+                                        :time_to_complete,
+                                        :project_id,
+                                        :theme_id,
+                                        :thumbnail_url,
                                         :notes,
                                         :layout])
     activity_json[:pages] = []
@@ -127,7 +127,7 @@ class LightweightActivity < ActiveRecord::Base
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
     return activity_json
   end
-  
+
   def self.extact_from_hash(activity_json_object)
     {
       description: activity_json_object[:description],
@@ -140,9 +140,9 @@ class LightweightActivity < ActiveRecord::Base
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout]
     }
-    
+
   end
-  
+
   def self.import(activity_json_object,new_owner)
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     LightweightActivity.transaction do
@@ -185,6 +185,9 @@ class LightweightActivity < ActiveRecord::Base
     self.pages.each do |page|
       elements = []
       (page.embeddables + page.interactives).each do |embeddable|
+        # skip item if hidden
+        next if embeddable.respond_to?(:is_hidden) && embeddable.is_hidden
+
         case embeddable
           # Why aren't we using the to_hash methods for each embeddable here?
           # Probably because they don't include the "type" attribute

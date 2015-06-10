@@ -156,6 +156,17 @@ class InteractivePagesController < ApplicationController
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
+  def toggle_hideshow_embeddable
+    authorize! :update, @page
+    update_activity_changed_by
+    PageItem.find_by_interactive_page_id_and_embeddable_id(params[:id], params[:embeddable_id]).toggle_hideshow_embeddable
+    if request.xhr?
+      respond_with_nothing
+    else
+      redirect_to edit_activity_page_path(@activity, @page)
+    end
+  end
+
   def reorder_embeddables
     authorize! :update, @page
     update_activity_changed_by

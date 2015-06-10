@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150505145748) do
+ActiveRecord::Schema.define(:version => 20150602204447) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -129,7 +129,7 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
     t.integer  "image_question_id"
     t.datetime "created_at",                                                   :null => false
     t.datetime "updated_at",                                                   :null => false
-    t.text     "annotation",          :limit => 4294967294
+    t.text     "annotation",          :limit => 2147483647
     t.string   "annotated_image_url"
     t.boolean  "is_dirty",                                  :default => false
     t.boolean  "is_final",                                  :default => false
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
+    t.boolean  "is_hidden",                :default => false
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -164,12 +165,13 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
   add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
 
   create_table "embeddable_labbooks", :force => true do |t|
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-    t.integer  "action_type",         :default => 0, :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.integer  "action_type",         :default => 0,     :null => false
     t.string   "name"
     t.text     "prompt"
     t.string   "custom_action_label"
+    t.boolean  "is_hidden",           :default => false
   end
 
   create_table "embeddable_multiple_choice_answers", :force => true do |t|
@@ -208,6 +210,7 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
     t.string   "layout",                   :default => "vertical"
+    t.boolean  "is_hidden",                :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -232,13 +235,16 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
+    t.string   "default_text"
+    t.boolean  "is_hidden",                :default => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
     t.string   "name"
     t.text     "content"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "is_hidden",  :default => false
   end
 
   create_table "global_interactive_states", :force => true do |t|
@@ -362,13 +368,13 @@ ActiveRecord::Schema.define(:version => 20150505145748) do
 
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
-    t.text     "url",            :limit => 2048
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.text     "url"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "save_state",                     :default => false
-    t.boolean  "has_report_url",                 :default => false
+    t.boolean  "save_state",     :default => false
+    t.boolean  "has_report_url", :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
   end

@@ -1,6 +1,6 @@
 module Embeddable
   class Xhtml < ActiveRecord::Base
-    attr_accessible :name, :content
+    attr_accessible :name, :content, :is_hidden
 
     include Embeddable
 
