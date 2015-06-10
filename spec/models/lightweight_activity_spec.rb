@@ -242,6 +242,22 @@ describe LightweightActivity do
     it 'returns a simple hash that can be consumed by the Portal' do
       expect(activity.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
     end
+
+    describe 'pages section' do
+      before(:each) do
+        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
+        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
+        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+        activity.reload
+      end
+
+      it 'returns only visible pages' do
+        pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
+        expect(pages.length).to eql(2)
+        expect(pages[0]['name']).to eql('page 1')
+        expect(pages[1]['name']).to eql('page 2')
+      end
+    end
   end
 
   describe "named scopes" do

@@ -183,6 +183,8 @@ class LightweightActivity < ActiveRecord::Base
 
     pages = []
     self.pages.each do |page|
+      # Don't publish hidden pages.
+      next if page.is_hidden
       elements = []
       (page.embeddables + page.interactives).each do |embeddable|
         # skip item if hidden

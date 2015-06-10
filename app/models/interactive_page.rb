@@ -1,6 +1,6 @@
 class InteractivePage < ActiveRecord::Base
   attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
-                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title,
+                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title, :is_hidden,
                   :additional_sections
 
   serialize :additional_sections
