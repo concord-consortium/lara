@@ -64,8 +64,8 @@ describe InteractivePagesController do
     it 'renders the page if it exists' do
 
       # Add embeddables
-      or1 = Embeddable::OpenResponse.create!(:name => "Open Response 1", :prompt => "Why do you think this model is cool?")
-      or2 = Embeddable::OpenResponse.create!(:name => "Open Response 2", :prompt => "What would you add to it?")
+      or1 = Embeddable::OpenResponse.create!(:name => "Open Response 1", :prompt => "Why do you think this model is cool?", :default_text => "This is the Open Response 1 default text")
+      or2 = Embeddable::OpenResponse.create!(:name => "Open Response 2", :prompt => "What would you add to it?", :default_text => "This is the Open Response 2 default text")
 
       mc1 = Embeddable::MultipleChoice.create!(:name => "Multiple choice 1", :prompt => "What color is chlorophyll?")
       Embeddable::MultipleChoiceChoice.create(:choice => 'Red', :multiple_choice => mc1)
@@ -94,7 +94,9 @@ describe InteractivePagesController do
       expect(response.body).to match /<iframe/m
       expect(response.body).to match /What color is chlorophyll\?/m
       expect(response.body).to match /Why do you think this model is cool\?/m
+      expect(response.body).to match /This is the Open Response 1 default text/m
       expect(response.body).to match /What would you add to it\?/m
+      expect(response.body).to match /This is the Open Response 2 default text/m
       expect(response.body).to match /How many protons does Helium have\?/m
       expect(response.body).to match /This is some <strong>xhtml<\/strong> content!/m
 

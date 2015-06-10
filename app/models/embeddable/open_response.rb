@@ -1,9 +1,9 @@
 module Embeddable
   class OpenResponse < ActiveRecord::Base
     include Embeddable
-    
 
-    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback, :is_hidden
+
+    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback, :default_text, :is_hidden
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -20,7 +20,8 @@ module Embeddable
         prompt: prompt,
         is_prediction: is_prediction,
         give_prediction_feedback: give_prediction_feedback,
-        prediction_feedback: prediction_feedback
+        prediction_feedback: prediction_feedback,
+        default_text: default_text
       }
     end
 
@@ -39,15 +40,16 @@ module Embeddable
     def self.human_description
       "Multiple choice question"
     end
-    
+
     def export
       return self.as_json(only:[:name,
                                 :prompt,
                                 :is_prediction,
                                 :give_prediction_feedback,
-                                :prediction_feedback])
+                                :prediction_feedback,
+                                :default_text])
     end
-    
+
     def self.import (import_hash)
       return self.new(import_hash)
     end

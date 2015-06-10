@@ -1,6 +1,6 @@
 .embeddable_tools
   .drag_handle
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'or', :allow_hide => allow_hide }
-.embeddable_options  
+.embeddable_options
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
-  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
+  %textarea{:name => "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}=(embeddable.default_text or "").html_safe
