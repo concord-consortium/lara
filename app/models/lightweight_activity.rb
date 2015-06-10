@@ -33,15 +33,15 @@ class LightweightActivity < ActiveRecord::Base
   # validates_length_of :name, :maximum => 50
   validates :description, :related, :html => true
 
-  # Just a way of getting self.pages with the embeddables eager-loaded
-  def pages_with_embeddables
-    return InteractivePage.includes(:interactive_items, :page_items => :embeddable).where(:lightweight_activity_id => self.id)
+  # Just a way of getting self.visible_pages with the embeddables eager-loaded
+  def visible_pages_with_embeddables
+    InteractivePage.includes(:interactive_items, :page_items => :embeddable).where(:lightweight_activity_id => self.id, :is_hidden => false)
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []
-    pages_with_embeddables.each do |p|
+    visible_pages_with_embeddables.each do |p|
       p.embeddables.each do |e|
         if QUESTION_TYPES.include? e.class
           q << e
