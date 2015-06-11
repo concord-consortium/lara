@@ -28,7 +28,9 @@ FactoryGirl.define do
     publication_status 'public'
     related { generate(:related) }
     description { generate(:description) }
-    pages { pages_count.times.map { FactoryGirl.create(:page) } }
+    after(:create) do |act, evaluator|
+      FactoryGirl.create_list(:page, evaluator.pages_count, lightweight_activity: act)
+    end
   end
 
   factory :activity_with_page_and_or, :class => LightweightActivity do

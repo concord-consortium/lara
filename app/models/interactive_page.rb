@@ -132,11 +132,11 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def first_visible?
-    prev_visible_page == nil
+    !is_hidden && prev_visible_page == nil
   end
 
   def last_visible?
-    next_visible_page == nil
+    !is_hidden && next_visible_page == nil
   end
 
   def visible_sections

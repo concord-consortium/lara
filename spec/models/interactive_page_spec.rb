@@ -129,6 +129,40 @@ describe InteractivePage do
     expect(page.embeddables.last.name).to eq("Embeddable 4")
   end
 
+  describe 'helpers related to order of pages should respect is_hidden value' do
+    let (:activity) { FactoryGirl.create(:activity_with_pages, pages_count: 4) }
+
+    context 'when no pages are hidden' do
+      it 'order is based on pages position' do
+        expect(activity.pages[0].first_visible?).to be_truthy
+        expect(activity.pages[0].prev_visible_page).to be_nil
+        expect(activity.pages[1].first_visible?).to be_falsey
+        expect(activity.pages[1].prev_visible_page).to eql(activity.pages[0])
+        expect(activity.pages[2].last_visible?).to be_falsey
+        expect(activity.pages[2].next_visible_page).to eql(activity.pages[3])
+        expect(activity.pages[3].next_visible_page).to be_nil
+        expect(activity.pages[3].last_visible?).to be_truthy
+      end
+    end
+
+    context 'when some pages are hidden' do
+      before(:each) do
+        activity.pages.first.update_attributes!(is_hidden: true)
+        activity.pages.last.update_attributes!(is_hidden: true)
+      end
+      it 'order is based on pages position and is_hidden values' do
+        expect(activity.pages[0].first_visible?).to be_falsey
+        expect(activity.pages[0].prev_visible_page).to be_nil
+        expect(activity.pages[1].first_visible?).to be_truthy
+        expect(activity.pages[1].prev_visible_page).to be_nil
+        expect(activity.pages[2].last_visible?).to be_truthy
+        expect(activity.pages[2].next_visible_page).to be_nil
+        expect(activity.pages[3].next_visible_page).to be_nil
+        expect(activity.pages[3].last_visible?).to be_falsey
+      end
+    end
+  end
+
   describe '#to_hash' do
     it 'has values from the source instance' do
       expected = {

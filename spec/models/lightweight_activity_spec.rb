@@ -87,8 +87,25 @@ describe LightweightActivity do
   end
 
   describe '#questions' do
-    it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
-      expect(activity.questions).to eq([])
+    let (:page1) { FactoryGirl.create(:interactive_page_with_or) }
+    let (:page2) { FactoryGirl.create(:interactive_page_with_or) }
+    before(:each) do
+      activity.pages << page1
+      activity.pages << page2
+    end
+
+    it 'returns an array of embeddables' do
+      expect(activity.questions.length).to eql(2)
+      expect(activity.questions).to eql([page1.embeddables[0], page2.embeddables[0]])
+    end
+
+    context 'when some pages are hidden' do
+      let (:page2) { FactoryGirl.create(:interactive_page_with_or, is_hidden: true) }
+
+      it 'returns an array of visible embeddables' do
+        expect(activity.questions.length).to eql(1)
+        expect(activity.questions).to eql(page1.embeddables)
+      end
     end
   end
 
@@ -291,5 +308,4 @@ describe LightweightActivity do
       end
     end
   end
-
 end
