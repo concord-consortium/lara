@@ -54,6 +54,7 @@ describe LightweightActivitiesController do
         mock_model(Run, {
           :last_page => page,
           :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
+          :activity => act,
           :sequence => seq,
           :sequence_run => seq_run,
           :increment_run_count! => nil
@@ -66,6 +67,15 @@ describe LightweightActivitiesController do
       it "should redirect to the run page" do
         # page_with_response_path(@activity.id, @run.last_page.id, @run)
         expect(subject).to redirect_to(page_with_response_path(act.id, page.id, run.key))
+      end
+
+      describe "when the run page is hidden" do
+        let(:page) { act.pages.create!(:name => "Page 1", :text => "This page is hidden.", :is_hidden => true) }
+        subject { get :show, :id => act.id}
+        it "should not redirect to the run page" do
+          expect(subject).not_to redirect_to(page_with_response_path(act.id, page.id, run.key))
+          expect(response).to render_template('lightweight_activities/show')
+        end
       end
       
       describe "when the run page is for a different activity" do
