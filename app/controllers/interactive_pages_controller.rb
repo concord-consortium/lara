@@ -4,6 +4,7 @@ class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
   before_filter :set_run_key, :only => [:show, :preview]
   before_filter :set_sequence, :only => [:show]
+  before_filter :check_if_hidden, :only => [:show, :preview]
 
   before_filter :enable_js_logger, :only => [:show, :preview]
 
@@ -204,6 +205,11 @@ class InteractivePagesController < ApplicationController
   end
 
   private
+
+  def check_if_hidden
+    raise ActiveRecord::RecordNotFound if @page.is_hidden
+  end
+
   def set_page
     if params[:activity_id]
       @activity = LightweightActivity.find(params[:activity_id], :include => :pages)
@@ -217,7 +223,6 @@ class InteractivePagesController < ApplicationController
   end
 
   def setup_show
-    raise ActiveRecord::RecordNotFound if @page.is_hidden
     current_theme
     current_project
     setup_global_interactive_state_data

@@ -20,6 +20,17 @@ FactoryGirl.define do
     pages { [FactoryGirl.create(:page)] }
   end
 
+  factory :activity_with_pages, :class => LightweightActivity do
+    ignore do
+      pages_count 3
+    end
+    name { generate(:name) }
+    publication_status 'public'
+    related { generate(:related) }
+    description { generate(:description) }
+    pages { pages_count.times.map { FactoryGirl.create(:page) } }
+  end
+
   factory :activity_with_page_and_or, :class => LightweightActivity do
     name { generate(:name) }
     publication_status 'public'
