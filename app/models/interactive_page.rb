@@ -154,6 +154,7 @@ class InteractivePage < ActiveRecord::Base
       position: position,
       text: text,
       layout: layout,
+      is_hidden: is_hidden,
       sidebar: sidebar,
       sidebar_title: sidebar_title,
       show_introduction: show_introduction,
@@ -195,11 +196,11 @@ class InteractivePage < ActiveRecord::Base
   end
   
   def export
-
     page_json = self.as_json(only: [:name, 
                                     :position, 
                                     :text, 
-                                    :layout, 
+                                    :layout,
+                                    :is_hidden,
                                     :sidebar, 
                                     :sidebar_title, 
                                     :show_introduction, 
@@ -246,6 +247,7 @@ class InteractivePage < ActiveRecord::Base
       position: page_json_object[:position],
       text: page_json_object[:text],
       layout: page_json_object[:layout],
+      is_hidden: page_json_object[:is_hidden],
       sidebar: page_json_object[:sidebar],
       sidebar_title: page_json_object[:sidebar_title],
       show_introduction: page_json_object[:show_introduction],

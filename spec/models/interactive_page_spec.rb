@@ -136,6 +136,7 @@ describe InteractivePage do
         position: page.position,
         text: page.text,
         layout: page.layout,
+        is_hidden: page.is_hidden,
         sidebar: page.sidebar,
         sidebar_title: page.sidebar_title,
         show_introduction: page.show_introduction,
@@ -154,6 +155,7 @@ describe InteractivePage do
       page_json = page.export.as_json
       expect(page_json['interactives'].length).to eq(page.interactives.count)
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
+      expect(page_json['is_hidden']).to eq(page.is_hidden)
     end
   end
 
@@ -163,6 +165,7 @@ describe InteractivePage do
       expect(dupe).to be_a(InteractivePage)
       expect(dupe.name).to eq(page.name)
       expect(dupe.text).to eq(page.text)
+      expect(dupe.is_hidden).to eq(page.is_hidden)
       expect(dupe.sidebar_title).to eq(page.sidebar_title)
     end
 
