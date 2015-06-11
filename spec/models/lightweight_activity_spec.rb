@@ -87,8 +87,8 @@ describe LightweightActivity do
   end
 
   describe '#questions' do
-    let (:page1) { FactoryGirl.create(:interactive_page_with_or) }
-    let (:page2) { FactoryGirl.create(:interactive_page_with_or) }
+    let (:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
+    let (:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
     before(:each) do
       activity.pages << page1
       activity.pages << page2
