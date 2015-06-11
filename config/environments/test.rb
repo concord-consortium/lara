@@ -44,4 +44,7 @@ LightweightStandalone::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # allow for test add-ons
+  config.react.addons = true
 end

@@ -47,9 +47,12 @@ LightweightStandalone::Application.configure do
     Bullet.airbrake = false
     # Bullet.add_footer = true
   end
+
+  # set to development mode for better error messages
+  config.react.variant = :development
 end
 
 # Open file links in BetterErrors in sublime text.
-# On a mac, you will need to use this tool, or something similar: 
+# On a mac, you will need to use this tool, or something similar:
 # https://github.com/dhoulb/subl
 BetterErrors.editor = :subl
