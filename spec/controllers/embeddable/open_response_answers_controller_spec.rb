@@ -29,7 +29,7 @@ describe Embeddable::OpenResponseAnswersController do
             }
             expect(response.status).not_to eq 401
             answer.reload
-            expect(answer.answer_text).to eq("")
+            expect(answer.answer_text).to eq(nil)
           end
         end
         describe "with valid params" do
@@ -69,7 +69,7 @@ describe Embeddable::OpenResponseAnswersController do
             }
             expect(response.status).not_to eq 401
             answer.reload
-            expect(answer.answer_text).to eq("")
+            expect(answer.answer_text).to eq(nil)
           end
         end
         describe "with valid params" do
@@ -149,7 +149,7 @@ describe Embeddable::OpenResponseAnswersController do
           }
           expect(response.status).not_to eq 401
           answer.reload
-          expect(answer.answer_text).to eq("")
+          expect(answer.answer_text).to eq(nil)
         end
         it "shouldn't fire a web request to update the portal" do
           sign_in user
@@ -169,7 +169,7 @@ describe Embeddable::OpenResponseAnswersController do
           }
           expect(response.status).not_to eq 401
           answer.reload
-          expect(answer.answer_text).to eq("")
+          expect(answer.answer_text).to eq(nil)
         end
         it "shouldn't fire a web request to update the portal" do
           post "update", :id => answer.id, :embeddable_open_response_answer => {
