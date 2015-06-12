@@ -116,6 +116,8 @@ class LightweightActivitiesController < ApplicationController
     end
 
     if @editor_mode == LightweightActivity::ITSI_WIP_EDITOR_MODE
+      # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
+      gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
       render :itsi_edit
     else
       render :edit
