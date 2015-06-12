@@ -24,5 +24,6 @@
  *= require bad_browser
  *= require dirty_runs
  *= require run_detail_report
- *= require c_rater/score_mapping 
+ *= require c_rater/score_mapping
+ *= require components/itsi_authoring
  */
