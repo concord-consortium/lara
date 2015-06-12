@@ -40,6 +40,10 @@
   %h1.title
     = @activity.name
 
+  - if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
+    %div{ :style => "font-weight: bold; margin: 10px 0; background-color: #cff204; padding: 10px;" }
+      This page will use the ITSI editor mode once it is completed.
+
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
     %span.preview
@@ -50,7 +54,7 @@
       = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
       %p.page-section-controls#page-section-controls
         %label
-          = f.check_box :show_introduction, :onchange => 'this.form.submit();' 
+          = f.check_box :show_introduction, :onchange => 'this.form.submit();'
           Page introduction
         %label
           = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
