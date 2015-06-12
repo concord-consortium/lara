@@ -8,6 +8,14 @@ GIT
       capistrano (< 3)
 
 GIT
+  remote: git://github.com/concord-consortium/jeditable-wysiwyg-rails.git
+  revision: 801fd737847f98b481dadfc2780f9c61cda27a01
+  specs:
+    jeditable_wysiwyg_rails (0.3.12)
+      jquery-rails
+      rails (~> 3.2.0)
+
+GIT
   remote: git://github.com/concord-consortium/ribbons-rails.git
   revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
   specs:
@@ -29,15 +37,6 @@ GIT
   revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
   specs:
     yaml_db (0.2.2)
-
-GIT
-  remote: git://github.com/pjmorse/jeditable-wysiwyg-rails.git
-  revision: 0972124be34918b04509ab4c8c37f913c105faa9
-  specs:
-    jeditable_wysiwyg_rails (0.3.12)
-      jeditable_wysiwyg_rails
-      jquery-rails
-      rails (~> 3.2.0)
 
 GIT
   remote: https://github.com/intridea/omniauth-oauth2.git

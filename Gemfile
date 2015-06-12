@@ -6,8 +6,8 @@ gem "jquery-rails"
 gem 'jquery-ui-rails'
 gem "haml"
 gem "dynamic_form"
-gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiwyg-rails.git"
-# gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
+gem 'jeditable_wysiwyg_rails', :git => "git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"
+# gem 'jeditable_wysiwyg_rails', :path => "/Users/scytacki/Development/jeditable-wysiwyg-rails"
 gem 'acts_as_list'
 gem 'nested_form'
 gem 'gon'
