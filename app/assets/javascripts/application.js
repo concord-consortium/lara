@@ -11,6 +11,10 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 // N.B. will need to load specific jquery-ui modules for production
+//= require modulejs
+//= require react
+//= require react_ujs
+//= require components
 //= require jquery
 //= require jquery-ajax-csrf
 //= require jquery_ujs
