@@ -105,6 +105,21 @@ class LightweightActivitiesController < ApplicationController
 
   def edit
     authorize! :update, @activity
+
+    @editor_mode = @activity.editor_mode
+    if params[:mode] && current_user.admin?
+      @editor_mode = case params[:mode]
+                       when "itsi" then LightweightActivity::ITSI_EDITOR_MODE
+                       when "itsi-dev" then LightweightActivity::ITSI_WIP_EDITOR_MODE
+                       else LightweightActivity::STANDARD_EDITOR_MODE
+                     end
+    end
+
+    if @editor_mode == LightweightActivity::ITSI_WIP_EDITOR_MODE
+      render :itsi_edit
+    else
+      render :edit
+    end
   end
 
   def update
