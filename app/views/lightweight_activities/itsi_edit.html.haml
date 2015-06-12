@@ -1,0 +1,24 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = "Edit #{@activity.name}"
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li
+        \/
+        = link_to 'All Activities', activities_path
+      %li= "/ #{@activity.name}".html_safe
+
+%h1.title
+  Edit activity
+  %span.preview
+    = link_to "Preview", preview_activity_path(@activity), :target => 'new'
+= render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
+- if @activity.active_runs > 0
+  %p.active-runs
+    = "This activity has been used by #{pluralize(@activity.active_runs, "learner")}. Editing may cause problems with results data. If you make changes, please publish this activity and any associated sequences as soon as possible."
+
+The ITSI editor will be rendered here... Stay tuned!
