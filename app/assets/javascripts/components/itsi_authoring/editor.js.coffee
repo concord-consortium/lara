@@ -92,7 +92,7 @@ modulejs.define 'components/itsi_authoring/editor',
             SectionEditorClass.OpenResponseQuestion
             SectionEditorClass.OpenResponseQuestion
             SectionEditorClass.DrawingResponse
-          ], selectedByDefault: true})
+          ]})
           (@renderSection {name: 'Standards', elements: []})
           (@renderCareerSTEMQuestion {name: 'Career STEM Question'})
           (@renderSection {name: 'Materials', elements: []})
@@ -119,7 +119,7 @@ modulejs.define 'components/itsi_authoring/editor',
             SectionEditorClass.OpenResponseQuestion
             SectionEditorClass.DrawingResponse
           ]})
-          (@renderCareerSTEMQuestion {name: 'Second Career STEM Question', title: 'Concluding Career STEM Question', selectedByDefault: true})
+          (@renderCareerSTEMQuestion {name: 'Second Career STEM Question', title: 'Concluding Career STEM Question'})
           (@renderPrediction {name: 'Prediction IV'})
           (@renderCollectData {name: 'Further Investigation'})
         )
