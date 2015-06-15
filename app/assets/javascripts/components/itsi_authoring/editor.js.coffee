@@ -57,7 +57,7 @@ modulejs.define 'components/itsi_authoring/editor',
 
     renderSection: (options) ->
       title = if options.hasOwnProperty('title') then options.title else options.name
-      (SectionEditor {name: options.name, title: title, section: @state.sectionsByName[options.name], elements: options.elements, updateUrl: @props.paths.activity})
+      (SectionEditor {name: options.name, title: title, section: @state.sectionsByName[options.name], elements: options.elements, updateUrl: @props.update_url})
 
     renderCareerSTEMQuestion: (options) ->
       options.elements = [
@@ -86,7 +86,7 @@ modulejs.define 'components/itsi_authoring/editor',
 
     render: ->
       (div {className: 'ia-editor'},
-        (MetadataEditor {metadata: @props.metadata, updateUrl: @props.paths.activity})
+        (MetadataEditor {metadata: @props.metadata, updateUrl: @props.update_url})
         (div {className: 'ia-editor-sections'},
           (@renderSection {name: 'Introduction', elements: [
             SectionEditorClass.OpenResponseQuestion
