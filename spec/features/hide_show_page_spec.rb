@@ -22,6 +22,7 @@ feature 'Activity page can be hidden', :js => true do
       check 'hide-page-checkbox'
 
       visit activity_page_url
+      # this requires action_dispatch.show_exceptions = true otheriwse a 500 is returned
       expect(page.status_code).to eq(404)
     end
 
