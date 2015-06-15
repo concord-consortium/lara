@@ -23,3 +23,25 @@
     margin-bottom: 10px;
   }
 }
+
+.ia-editor-sections {
+
+  margin-top: 20px;
+
+  .ia-section-editor {
+    margin: 10px 0;
+
+    .ia-section-editor-title {
+      font-weight: bold;
+    }
+
+    .ia-section-editor-elements {
+      margin: 10px 0 10px 30px;
+
+      .ia-section-editor-element {
+        margin: 10px 0;
+      }
+    }
+  }
+}
+

@@ -1,4 +1,4 @@
-{div} = React.DOM
+{div, input, textarea} = React.DOM
 
 # Component that includes this mixin needs to define updateUrl() method.
 modulejs.define 'components/itsi_authoring/form_mixin', ->
@@ -25,5 +25,13 @@ modulejs.define 'components/itsi_authoring/form_mixin', ->
       error: ->
         console.log 'component update failed'
 
-  renderSaveButton: ->
+  input: (props) ->
+    props.onChange = @handleFormChange
+    input props
+
+  textarea: (props) ->
+    props.onChange = @handleFormChange
+    textarea props
+
+  saveButton: ->
     (div {className: 'ia-save-btn', onClick: @submitForm}, 'Save')
