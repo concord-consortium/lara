@@ -1,3 +1,6 @@
+// Any copyright is dedicated to the Public Domain. http://creativecommons.org/publicdomain/zero/1.0/
+// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill
+// license info: https://developer.mozilla.org/en-US/docs/MDN/About#Copyrights_and_licenses
 if (!Function.prototype.bind) {
   Function.prototype.bind = function(oThis) {
     if (typeof this !== 'function') {
