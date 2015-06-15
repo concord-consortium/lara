@@ -1,8 +1,16 @@
 {div, form, textarea, a} = React.DOM
 
 modulejs.define 'components/itsi_authoring/text_editor',
-['components/itsi_authoring/section_editor_mixin'],
-(SectionEditorMixin) ->
+[
+  'components/itsi_authoring/section_editor_mixin'
+  'components/itsi_authoring/section_editor_form'
+],
+(
+  SectionEditorMixin,
+  SectionEditorFormClass,
+) ->
+
+  SectionEditorForm = React.createFactory SectionEditorFormClass
 
   React.createClass
 
@@ -37,11 +45,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
     render: ->
       (div {className: 'ia-section-editor-element'},
         if @state.edit
-          (form {className: 'ia-section-text-editor', onSubmit: @saveForm},
-            (div {className: 'ia-section-editor-buttons'},
-              (div {className: 'ia-save-btn', onClick: @saveForm}, 'Save')
-              (a {href: '#', onClick: @cancel}, 'Cancel')
-            )
+          (SectionEditorForm {onSave: @saveForm, onCancel: @cancel},
             (div {style: {fontWeight: 'bold'}}, 'TODO: convert textarea to rich text editor AND implement saveForm()')
             (textarea {ref: 'textarea', value: @state.text, onChange: @textChanged})
           )
