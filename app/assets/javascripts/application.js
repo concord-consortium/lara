@@ -11,10 +11,10 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 // N.B. will need to load specific jquery-ui modules for production
+//= require bind-polyfill
 //= require modulejs
 //= require react
 //= require react_ujs
-//= require components
 //= require jquery
 //= require jquery-ajax-csrf
 //= require jquery_ujs
@@ -34,6 +34,7 @@
 //= require edit_sequence
 //= require login_menu
 //= require chosen-jquery
-//= require application-init
 //= require tablesorter
 //= require c_rater/score_mapping
+//= require components
+//= require application-init
