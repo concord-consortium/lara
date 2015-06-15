@@ -5,6 +5,7 @@ module Embeddable::Answer
       delegate :collaboration_run,        :to => :run, :allow_nil => true
       delegate :name,                     :to => :question
       delegate :prompt,                   :to => :question
+      delegate :default_text,             :to => :question
       delegate :is_prediction,            :to => :question
       delegate :give_prediction_feedback, :to => :question
       delegate :prediction_feedback,      :to => :question

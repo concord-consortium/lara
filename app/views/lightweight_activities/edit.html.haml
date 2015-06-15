@@ -12,7 +12,7 @@
         = link_to 'All Activities', activities_path
       %li= "/ #{@activity.name}".html_safe
 
-%h1.title 
+%h1.title
   Edit activity
   %span.preview
     = link_to "Preview", preview_activity_path(@activity), :target => 'new'
@@ -68,6 +68,9 @@
       .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
+      .field
+        = f.label :editor_mode, "Authoring Mode"
+        = f.select :editor_mode, options_for_select(LightweightActivity::EDITOR_MODE_OPTIONS, @activity.editor_mode)
       .field
         = f.label :notes,  'Notes'
         .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.

@@ -1,13 +1,12 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 gem 'rails', '~> 3.2.19'
 gem "jquery-rails"
 gem 'jquery-ui-rails'
 gem "haml"
 gem "dynamic_form"
-gem 'jeditable_wysiwyg_rails', :git => "git://github.com/pjmorse/jeditable-wysiwyg-rails.git"
-# gem 'jeditable_wysiwyg_rails', :path => "/Users/pmorse/Projects/jeditable_wysiwyg_rails"
+gem 'jeditable_wysiwyg_rails', :git => "git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"
+# gem 'jeditable_wysiwyg_rails', :path => "/Users/scytacki/Development/jeditable-wysiwyg-rails"
 gem 'acts_as_list'
 gem 'nested_form'
 gem 'gon'
@@ -22,8 +21,11 @@ gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
 
 # Rails assets:
-gem 'rails-assets-drawing-tool', '1.3.2'
-gem 'rails-assets-shutterbug', '0.5.4'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-drawing-tool', '1.3.2'
+  gem 'rails-assets-shutterbug', '0.5.4'
+  gem 'rails-assets-modulejs', '1.6.0'
+end
 
 # Easy (or at least easier) database dumps and reloads
 # Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
@@ -60,6 +62,8 @@ gem 'will_paginate', '~> 3.0'
 
 # detect browser types
 gem 'useragent'
+
+gem 'react-rails', '~> 1.0'
 
 gem 'ribbons-rails', :git => 'git://github.com/concord-consortium/ribbons-rails.git'
 group :production do

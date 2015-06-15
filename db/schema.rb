@@ -236,6 +236,7 @@ ActiveRecord::Schema.define(:version => 20150610120725) do
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                :default => false
+    t.string   "default_text"
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -338,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20150610120725) do
     t.integer  "project_id"
     t.integer  "portal_run_count",   :default => 0
     t.integer  "layout",             :default => 0
+    t.integer  "editor_mode",        :default => 0
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
