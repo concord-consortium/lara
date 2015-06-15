@@ -45,8 +45,11 @@ module Embeddable
 
     def clear_default_text
       # default_text is delegated to question.default_text so we need to check for an assigned question first
-      if question and default_text and (default_text == answer_text)
-        self.answer_text = ""
+      if question and default_text
+        # first time answering?
+        if (answer_text_was == nil) && (default_text == answer_text)
+          self.answer_text = nil
+        end
       end
     end
   end
