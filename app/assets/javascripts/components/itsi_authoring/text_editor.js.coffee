@@ -27,9 +27,8 @@ modulejs.define 'components/itsi_authoring/text_editor',
         text: text
         originalText: text
         edit: text.length is 0
-    textChanged: (e) ->
-      # NB: This will be moved into SectionEditorMixin once the JSON is defined
-      @setState text: e.target.value
+    textChanged: (newText) ->
+      @setState text: newText
     edit: (e) ->
       e?.preventDefault()
       @setState edit: true
@@ -49,7 +48,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
       (div {className: 'ia-section-editor-element'},
         if @state.edit
           (SectionEditorForm {onSave: @saveForm, onCancel: @cancel},
-            (div {style: {fontWeight: 'bold'}}, 'TODO: convert textarea to rich text editor AND implement saveForm()')
+            (div {style: {fontWeight: 'bold'}}, 'TODO: implement saveForm()')
             (RichTextEditor {text: @state.text, onChange: @textChanged})
           )
         else
