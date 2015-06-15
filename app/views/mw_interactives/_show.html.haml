@@ -35,11 +35,28 @@
 
 :javascript
   $(document).ready(function() {
-    $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
-      $(this).css('display','none');
-      $(this).removeClass('shown')
+    var loadIframe = function(component) {
+      $(component).css('display','none');
+      $(component).removeClass('shown')
       $('##{dom_id_for(interactive, :interactive_image)}').css('display','none');
       $('#interactive_#{interactive.id}').attr('src','#{interactive.url}');
-      InteractiveManager.register($(this).parent('.interactive-container'))
+      InteractiveManager.register($(component).parent('.interactive-container'));
+    };
+    $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
+      var component = this,
+          preflight_url = $('#interactive_#{interactive.id}').data('preflight_url');
+      if (preflight_url) {
+        // pop up a pre-flight window. When it closes itself, load the iframe.
+        var win = window.open(preflight_url, 'preflight_window', 'height=120,width=120,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0');
+        win.blur(); // pop under the main window
+        var poller = setInterval(function() {
+          if (win.closed !== false) {
+            clearInterval(poller);
+            loadIframe(component);
+          }
+        }, 200);
+      } else {
+        loadIframe(component);
+      }
     })
   })

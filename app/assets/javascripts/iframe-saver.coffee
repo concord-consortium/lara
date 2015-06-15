@@ -59,6 +59,15 @@ class IFrameSaver
             else
               @$delete_button.hide()
 
+        # A preflight url is a url which should be loaded in a popup window. This allows sites that require cookies
+        # to be able to initialize in browsers that require you to visit a page in a full browser window before they
+        # will allow the site to access cookies when embedded in an iframe.
+        if opts.preflight_url?
+          @$iframe.data('preflight_url', opts.preflight_url)
+          ctp = @$iframe.siblings('.click_to_play')
+          ctp.addClass('shown')
+          ctp.show()
+
       @iframePhone.post('getExtendedSupport')
       @iframePhone.post('getLearnerUrl')
 
