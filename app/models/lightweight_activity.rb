@@ -25,6 +25,9 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :changed_by, :class_name => 'User'
 
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+  has_many :visible_pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position,
+             :conditions => {interactive_pages: {is_hidden: false}}
+
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
   has_many :runs, :foreign_key => 'activity_id'
@@ -38,15 +41,18 @@ class LightweightActivity < ActiveRecord::Base
   # validates_length_of :name, :maximum => 50
   validates :description, :related, :html => true
 
-  # Just a way of getting self.pages with the embeddables eager-loaded
-  def pages_with_embeddables
-    return InteractivePage.includes(:interactive_items, :page_items => :embeddable).where(:lightweight_activity_id => self.id)
+  # Just a way of getting self.visible_pages with the embeddables eager-loaded
+  def visible_pages_with_embeddables
+    InteractivePage
+      .includes(:interactive_items, :page_items => :embeddable)
+      .where(:lightweight_activity_id => self.id, :is_hidden => false)
+      .order(:position)
   end
 
   # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
   def questions
     q = []
-    pages_with_embeddables.each do |p|
+    visible_pages_with_embeddables.each do |p|
       p.embeddables.each do |e|
         if QUESTION_TYPES.include? e.class
           q << e
@@ -194,6 +200,8 @@ class LightweightActivity < ActiveRecord::Base
 
     pages = []
     self.pages.each do |page|
+      # Don't publish hidden pages.
+      next if page.is_hidden
       elements = []
       (page.embeddables + page.interactives).each do |embeddable|
         # skip item if hidden

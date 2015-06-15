@@ -20,6 +20,19 @@ FactoryGirl.define do
     pages { [FactoryGirl.create(:page)] }
   end
 
+  factory :activity_with_pages, :class => LightweightActivity do
+    ignore do
+      pages_count 3
+    end
+    name { generate(:name) }
+    publication_status 'public'
+    related { generate(:related) }
+    description { generate(:description) }
+    after(:create) do |act, evaluator|
+      FactoryGirl.create_list(:page, evaluator.pages_count, lightweight_activity: act)
+    end
+  end
+
   factory :activity_with_page_and_or, :class => LightweightActivity do
     name { generate(:name) }
     publication_status 'public'

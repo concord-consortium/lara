@@ -1,6 +1,6 @@
 class InteractivePage < ActiveRecord::Base
   attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
-                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title,
+                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title, :is_hidden,
                   :additional_sections
 
   serialize :additional_sections
@@ -123,6 +123,22 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
+  def next_visible_page
+    lightweight_activity.visible_pages.where('position > ?', position).first
+  end
+
+  def prev_visible_page
+    lightweight_activity.visible_pages.where('position < ?', position).last
+  end
+
+  def first_visible?
+    !is_hidden && prev_visible_page == nil
+  end
+
+  def last_visible?
+    !is_hidden && next_visible_page == nil
+  end
+
   def visible_sections
     return [] unless additional_sections
     self.class.registered_additional_sections.select { |s| additional_sections[s[:name]] }
@@ -138,6 +154,7 @@ class InteractivePage < ActiveRecord::Base
       position: position,
       text: text,
       layout: layout,
+      is_hidden: is_hidden,
       sidebar: sidebar,
       sidebar_title: sidebar_title,
       show_introduction: show_introduction,
@@ -179,11 +196,11 @@ class InteractivePage < ActiveRecord::Base
   end
   
   def export
-
     page_json = self.as_json(only: [:name, 
                                     :position, 
                                     :text, 
-                                    :layout, 
+                                    :layout,
+                                    :is_hidden,
                                     :sidebar, 
                                     :sidebar_title, 
                                     :show_introduction, 
@@ -230,6 +247,7 @@ class InteractivePage < ActiveRecord::Base
       position: page_json_object[:position],
       text: page_json_object[:text],
       layout: page_json_object[:layout],
+      is_hidden: page_json_object[:is_hidden],
       sidebar: page_json_object[:sidebar],
       sidebar_title: page_json_object[:sidebar_title],
       show_introduction: page_json_object[:show_introduction],

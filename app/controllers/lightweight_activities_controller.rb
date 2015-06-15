@@ -37,7 +37,7 @@ class LightweightActivitiesController < ApplicationController
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       redirect_to activity_single_page_with_response_path(@activity, @run.key) and return
     end
-    if @run.last_page && !params[:show_index]
+    if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
       # TODO: If the Page isn't in this activity... Then we need to log that as an error,
       # and do the best we can to get back to the right page...
       if @activity != @run.last_page.lightweight_activity

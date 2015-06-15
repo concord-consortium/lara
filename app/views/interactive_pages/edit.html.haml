@@ -52,6 +52,11 @@
     = form_for @page do |f|
       = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
       = f.select :embeddable_display_mode, InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS, {}, { :onchange => 'this.form.submit();', :title => 'Display of embeddables: stacked for scrolling, or carousel for sequential display' }
+      %label
+        -# There is no typical :onchange => 'this.form.submit();' handler, as we also need confirmation dialog.
+        -# It's handled separately in the JavaScript block at the end of this partial.
+        = f.check_box :is_hidden, :id => 'hide-page-checkbox'
+        Hidden
       %p.page-section-controls#page-section-controls
         %label
           = f.check_box :show_introduction, :onchange => 'this.form.submit();'
@@ -106,4 +111,18 @@
     if ((navigator.userAgent.indexOf("MSIE"))!=-1){
       $('#page-section-controls').removeAttr("id");
     }
+    // Hide page checkbox handling.
+    var confirmHideMessage = "Are you sure you want to hide this page? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have run this activity.";
+    var activeRuns = #{@activity.active_runs};
+    $('#hide-page-checkbox').on('change', function(e) {
+      if (this.checked && activeRuns > 0) {
+        if (confirm(confirmHideMessage)) {
+          this.form.submit();
+        } else {
+          this.checked = false;
+        }
+      } else {
+        this.form.submit();
+      }
+    });
   });
