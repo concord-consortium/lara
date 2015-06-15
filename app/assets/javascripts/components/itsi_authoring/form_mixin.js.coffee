@@ -1,6 +1,6 @@
 {div} = React.DOM
 
-# Component that includes this mixin needs to define @updateUrl property.
+# Component that includes this mixin needs to define updateUrl() method.
 modulejs.define 'components/itsi_authoring/form_mixin', ->
   getInitialState: ->
     changedData: {}
@@ -17,7 +17,7 @@ modulejs.define 'components/itsi_authoring/form_mixin', ->
     # Rails-specific approach to PUT requests.
     formData._method = 'PUT'
     $.ajax
-      url: @props.updateUrl
+      url: @updateUrl()
       data: formData
       type: 'POST',
       success: ->

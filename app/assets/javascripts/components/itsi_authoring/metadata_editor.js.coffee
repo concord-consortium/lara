@@ -7,6 +7,9 @@ modulejs.define 'components/itsi_authoring/metadata_editor',
   React.createClass
     mixins: [FormMixin]
 
+    updateUrl: ->
+      @props.initialData.update_url
+
     render: ->
       data = @props.initialData
       (div {className: 'ia-metadata-editor'},

@@ -8,5 +8,5 @@ modulejs.define 'components/itsi_authoring/editor',
   React.createClass
     render: ->
       (div {className: 'ia-editor'},
-        (MetadataEditor initialData: @props.metadata, updateUrl: @props.paths.activity)
+        (MetadataEditor initialData: @props.metadata)
       )
