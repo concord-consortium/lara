@@ -80,4 +80,26 @@ module InteractiveRunHelper
     end
   end
 
+  def click_to_play_barrier(interactive)
+    opts = {
+      :id => dom_id_for(interactive, :click_to_play),
+      :class => 'click_to_play'
+    }
+
+    if interactive.click_to_play
+      opts[:class] += ' shown'
+    else
+      opts[:style] = 'display: none;'
+    end
+
+    capture_haml do
+      haml_tag 'div', opts do
+        haml_tag '.background'
+        haml_tag '.text' do
+          haml_concat "Click here to start the interactive."
+        end
+      end
+    end
+  end
+
 end

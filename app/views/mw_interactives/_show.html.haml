@@ -10,23 +10,12 @@
         See :-
         =link_to "#{interactive.url}","#{interactive.url}"
 
-  - if interactive.click_to_play
-    .click_to_play.shown{:id => dom_id_for(interactive, :click_to_play)}
-      .background
-      .text= "Click here to start the interactive."
+  = click_to_play_barrier(interactive)
+  = interactive_iframe_tag(interactive, @run, !interactive.click_to_play) do
 
-    = interactive_iframe_tag(interactive, @run,false) do
-
-      Your browser does not support inline frames, or is currently not configured to display inline frames.
-      Content can be viewed at the actual source page:
-      = link_to interactive.url, interactive.url
-
-  - else
-    = interactive_iframe_tag(interactive, @run) do
-
-      Your browser does not support inline frames, or is currently not configured to display inline frames.
-      Content can be viewed at the actual source page:
-      = link_to interactive.url, interactive.url
+    Your browser does not support inline frames, or is currently not configured to display inline frames.
+    Content can be viewed at the actual source page:
+    = link_to interactive.url, interactive.url
 
   - if interactive.save_state
     .below_interactive
