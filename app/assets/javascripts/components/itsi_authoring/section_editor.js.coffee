@@ -34,6 +34,13 @@ modulejs.define 'components/itsi_authoring/section_editor',
 
   React.createClass
 
+    componentWillMount: ->
+      @editorMap =
+        openResponse: OpenResponseQuestionEditor
+        sensor: SensorEditor
+        drawingResponse: DrawingResponseEditor
+        model: ModelEditor
+
     getInitialState: ->
       selected: not @props.section.is_hidden
 
@@ -45,16 +52,6 @@ modulejs.define 'components/itsi_authoring/section_editor',
         type: 'POST'
       @setState selected: selected
 
-    getEditorForInteractiveElement: (element) ->
-      sensorPrefix = '//models-resources.concord.org/dataset-sync-wrapper/'
-      if element.url?.substr(0, sensorPrefix.length) is sensorPrefix then SensorEditor else ModelEditor
-
-    getEditorForEmbeddedElement: (element) ->
-      switch element.type
-        when 'image_question' then DrawingResponseEditor
-        when 'open_response' then OpenResponseQuestionEditor
-        else null
-
     render: ->
       (div {className: 'ia-section-editor'},
         (label {},
@@ -64,14 +61,14 @@ modulejs.define 'components/itsi_authoring/section_editor',
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
           (TextEditor {data: @props.section})
           for interactive, i in @props.section.interactives
-            editor = @getEditorForInteractiveElement interactive
-            if editor
-              (editor {key: "interactive#{i}", data: interactive})
+            # todo map the url to a type
+            type = 'model'
+            (@editorMap[type] {key: "interactive#{i}", data: interactive})
 
           for embeddable, i in @props.section.embeddables
-            editor = @getEditorForEmbeddedElement embeddable
-            if editor
-              (editor {key: "embeddable#{i}", data: embeddable})
+            # todo map the url to a type
+            type = 'openResponse'
+            (@editorMap[type] {key: "embeddable#{i}", data: embeddable})
         )
       )
 
