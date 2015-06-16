@@ -26,7 +26,7 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
       'embeddable_open_response[default_response]': 'default_text'
 
     render: ->
-      (SectionEditorElement {title: 'Open Response Question', selected: false, onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Open Response Question', selected: false, onEdit: @edit},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Question prompt')
