@@ -98,9 +98,21 @@ LightweightStandalone::Application.routes.draw do
 
   # This is so we can build the InteractiveItem at the same time as the Interactive
   resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
-    resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
-    resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show
-    resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show
+    resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show do
+      member do
+        post 'toggle_visibility'
+      end
+    end
+    resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show do
+      member do
+        post 'toggle_visibility'
+      end
+    end
+    resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show do
+      member do
+        post 'toggle_visibility'
+      end
+    end
     member do
       get 'preview'
     end

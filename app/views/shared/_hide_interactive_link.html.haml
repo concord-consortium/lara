@@ -1,0 +1,18 @@
+- id = "toggle-vis-int-#{interactive.id}_#{interactive.class.name}"
+- show_label = 'Show'
+- hide_label = 'Hide'
+= link_to interactive.is_hidden ? show_label : hide_label, toggle_vis_path, :remote => true, :method => :post, :id => id
+
+:javascript
+  $(function() {
+    $('##{id}').on('ajax:success', function(e, data) {
+      var $intContent = $(this).closest('.model-edit').find('.interactive-content');
+      if (data.is_hidden) {
+        $intContent.hide();
+        $(this).text('#{show_label}');
+      } else {
+        $intContent.show();
+        $(this).text('#{hide_label}');
+      }
+    });
+  });

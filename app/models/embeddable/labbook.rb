@@ -94,7 +94,7 @@ module Embeddable
       # than one page, even though it's many-to-many association).
       # In the future we can let authors explicitly select which interactive Labbook album is connected to.
       page = interactive_pages.first
-      page && page.interactives.first
+      page && page.visible_interactives.first
     end
 
     def action_label

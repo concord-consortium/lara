@@ -84,6 +84,10 @@ class InteractivePage < ActiveRecord::Base
     self.interactive_items.collect{|ii| ii.interactive}
   end
 
+  def visible_interactives
+    interactives.select { |i| !i.is_hidden }
+  end
+
   # This is a sort of polymorphic has_many :through.
   def embeddables
     self.page_items.collect{ |qi| qi.embeddable }
