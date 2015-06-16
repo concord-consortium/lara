@@ -19,7 +19,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     # than one page, even though it's many-to-many association).
     # In the future we can let authors explicitly select which interactive an image question is connected to.
     page = interactive_pages.first
-    page && page.interactives.first
+    page && page.visible_interactives.first
   end
 
   # NOTE: publishing to portal doesn't use this hash. See app/models/lightweight_activity.rb
