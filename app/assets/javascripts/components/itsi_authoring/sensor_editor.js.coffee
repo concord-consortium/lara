@@ -31,13 +31,14 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             'TODO: *** SENSOR EDITOR GOES HERE ***'
+            # TODO: hard code the list of sensors for now
           )
         else
           (div {className: 'ia-section-text'},
             if @props.data.name
               (div {},
                 (div {}, @props.data.name)
-                (iframe {src: @props.data.url, width: '90%', height: 400})
+                (iframe {src: @props.data.image_url, width: '90%', height: 400})
               )
             else
               'No sensor selected'

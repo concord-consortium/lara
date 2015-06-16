@@ -22,16 +22,6 @@ modulejs.define 'components/itsi_authoring/section_editor',
   ModelEditor = React.createFactory ModelEditorClass
   TextEditor = React.createFactory TextEditorClass
 
-  EditorForm = React.createFactory React.createClass
-    render: ->
-      (form {className: 'ia-section-editor-form', onSubmit: @props.onSave},
-        (div {className: 'ia-section-editor-buttons'},
-          (div {className: 'ia-save-btn', onClick: @props.onSave}, 'Save')
-          (a {href: '#', onClick: @props.onCancel}, 'Cancel')
-        )
-        @props.children
-      )
-
   React.createClass
 
     getInitialState: ->
@@ -39,7 +29,8 @@ modulejs.define 'components/itsi_authoring/section_editor',
 
     selected: ->
       selected = (React.findDOMNode @refs.checkbox).checked
-        url: @props.section.update_url
+      $.ajax
+        url: "#{@props.section.update_url}.json"
         type: 'POST'
         data:
           _method: 'PUT'
@@ -48,6 +39,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
+      # TODO: change to check for this: interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json
       sensorPrefix = '//models-resources.concord.org/dataset-sync-wrapper/'
       if element.url?.substr(0, sensorPrefix.length) is sensorPrefix then SensorEditor else ModelEditor
 

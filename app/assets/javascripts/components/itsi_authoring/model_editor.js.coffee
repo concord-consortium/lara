@@ -28,7 +28,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       not @props.data.image_url?
 
     render: ->
-      modelOptions = [] # TODO: get options for model
+      modelOptions = [] # TODO: get options for model - https://learn.staging.concord.org/interactives/export_model_library
 
       (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @edit},
         if @state.edit

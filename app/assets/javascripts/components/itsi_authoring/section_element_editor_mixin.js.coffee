@@ -61,7 +61,7 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
     # Rails-specific approach to PUT requests.
     @state.changedValues._method = 'PUT'
     $.ajax
-      url: @props.data.update_url
+      url: "#{@props.data.update_url}.json"
       data: @state.changedValues
       type: 'POST',
       success: ->

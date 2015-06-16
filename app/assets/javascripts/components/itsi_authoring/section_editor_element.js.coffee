@@ -15,7 +15,7 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
         _method: 'PUT'
       postData[@props.toHide] = if selected then 0 else 1
       $.ajax
-        url: @props.data.update_url
+        url: "#{@props.data.update_url}.json"
         type: 'POST'
         data: postData
       @setState selected: selected
