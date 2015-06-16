@@ -1,4 +1,4 @@
-{textarea, input} = React.DOM
+{textarea, input, select, option} = React.DOM
 
 # Component that includes this mixin needs to define @updateUrl property.
 modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
@@ -86,3 +86,10 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       @_handleChange options.name, e.target.value
     input {type: 'text', name: options.name, value: @state.values[options.name], onChange: changed}
 
+  select: (options) ->
+    changed = (e) =>
+      @_handleChange options.name, e.target.value
+    (select {'text', name: options.name, value: @state.values[options.name], onChange: changed},
+      for name, value in options.options
+        (option {name: name, value: value, key: name})
+    )
