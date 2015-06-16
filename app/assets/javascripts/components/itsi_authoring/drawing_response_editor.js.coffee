@@ -22,7 +22,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
 
     # maps form names to @props.data keys
     dataMap:
-      'embeddable_drawing_tool[background_image_url]': 'background_image_url'  # TODO: get correct key
+      'embeddable_image_question[bg_url]': 'background_image_url'  # TODO: add background_image_url to JSON export
 
     initialEditState: ->
       false
@@ -32,7 +32,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Background Image')
-            (@text {name: 'embeddable_drawing_tool[background_image_url]'})
+            (@text {name: 'embeddable_image_question[bg_url]'})
           )
         else
           (div {className: 'ia-section-text'},

@@ -11,8 +11,6 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
 
   RichTextEditor = React.createFactory RichTextEditorClass
 
-  # TODO: common helper methods for section editors
-
   getInitialState: ->
     values = {}
     defaultValues = {}
@@ -51,12 +49,6 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
 
     # Don't issue request if nothing has been updated.
     return if $.isEmptyObject @state.changedValues
-
-    # TODO: remove this once the full data export/import is working
-    if not @props.data.update_url
-      alert 'Missing update_url for item! Look at console for url plus data that will be saved.'
-      console.log @state.changedValues
-      return
 
     # Rails-specific approach to PUT requests.
     @state.changedValues._method = 'PUT'

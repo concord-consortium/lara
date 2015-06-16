@@ -23,7 +23,7 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
     # maps form names to @props.data keys
     dataMap:
       'embeddable_open_response[prompt]': 'prompt'
-      'embeddable_open_response[default_response]': 'default_text'
+      'embeddable_open_response[default_text]': 'default_text'
 
     initialEditState: ->
       (@props.data.prompt?.length or 0) is 0
@@ -36,11 +36,11 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
             (@richText {name: 'embeddable_open_response[prompt]'})
 
             (label {}, 'Default text in answer area')
-            (@text {name: 'embeddable_open_response[default_response]'})
+            (@text {name: 'embeddable_open_response[default_text]'})
           )
         else
           (div {className: 'ia-section-text'},
             (div {className: 'ia-section-text-value', dangerouslySetInnerHTML: {__html: @state.values['embeddable_open_response[prompt]']}})
-            (textarea {value: @state.values['embeddable_open_response[default_response]'], disabled: 'disabled'})
+            (textarea {value: @state.values['embeddable_open_response[default_text]'], disabled: 'disabled'})
           )
       )

@@ -39,7 +39,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
-      # TODO: change to check for this: interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json
+      # TODO: change to check for this: interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json?
       sensorPrefix = '//models-resources.concord.org/dataset-sync-wrapper/'
       if element.url?.substr(0, sensorPrefix.length) is sensorPrefix then SensorEditor else ModelEditor
 

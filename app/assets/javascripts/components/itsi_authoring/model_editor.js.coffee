@@ -22,7 +22,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
     # maps form names to @props.data keys
     dataMap:
-      'embeddable_diy_emdedded_model[diy_model_id]': 'model' # TODO: get correct mapping
+      'mw_interactive[name]': 'name'
+      'mw_interactive[url]': 'url'
+      'mw_interactive[image_url]': 'image_url'
 
     initialEditState: ->
       not @props.data.image_url?
@@ -34,7 +36,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')
-            (@select {name: 'embeddable_diy_emdedded_model[diy_model_id]', options: modelOptions})
+            (@select {name: 'mw_interactive[name]', options: modelOptions}) # TODO: update url and image_url when changed
           )
         else
           (div {className: 'ia-section-text'},
