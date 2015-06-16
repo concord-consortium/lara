@@ -30,7 +30,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
     render: ->
       modelOptions = [] # TODO: get options for model
 
-      (SectionEditorElement {data: @props.data, title: 'Model', selected: false, onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @edit},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')

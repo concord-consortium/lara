@@ -28,7 +28,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
       false
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Drawing Response', selected: false, onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Drawing Response', toHide: 'embeddable_image_question[is_hidden]', onEdit: @edit},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Background Image')

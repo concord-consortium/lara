@@ -27,7 +27,7 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
       not @props.data.image_url?
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Sensor', selected: false, onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Sensor', toHide: 'mw_interactive[is_hidden]', onEdit: @edit},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             'TODO: *** SENSOR EDITOR GOES HERE ***'
