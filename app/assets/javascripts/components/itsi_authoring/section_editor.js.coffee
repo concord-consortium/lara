@@ -56,14 +56,15 @@ modulejs.define 'components/itsi_authoring/section_editor',
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
-          (TextEditor {section: @props.section, updateUrl: @props.updateUrl})
+          (TextEditor {data: @props.section.data})
           for element, i in @props.elements
-            renderedElement = (element {section: @props.section, key: i, embeddableIndex: embeddableIndex, interactiveIndex: interactiveIndex, updateUrl: @props.updateUrl})
             if element is OpenResponseQuestionEditor
+              elementData = @props.section.embeddables?[embeddableIndex] or {}
               embeddableIndex++
             else
+              elementData = @props.section.interactives?[interactiveIndex] or {}
               interactiveIndex++
-            renderedElement
+            (element {key: i, data: elementData})
         )
       )
 

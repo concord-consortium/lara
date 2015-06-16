@@ -16,5 +16,5 @@ modulejs.define 'components/itsi_authoring/rich_text_editor',
       @node.wysiwyg({controls: {html: {visible: true}}, events: {save: @onChange}})
 
     render: ->
-      (textarea {ref: 'textarea', cols: 100, rows: 5, value: @props.text, onChange: @props.onChange})
+      (textarea {ref: 'textarea', name: @props.name, cols: 100, rows: 5, value: @props.text, onChange: @props.onChange})
 
