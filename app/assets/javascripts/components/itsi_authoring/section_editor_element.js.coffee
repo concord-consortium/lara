@@ -12,9 +12,11 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
     selected: ->
       selected = (React.findDOMNode @refs.checkbox).checked
       $.ajax
-        # TODO: figure out url for enable/disable
-        url: "#{@props.data.update_url}/#{if selected then 'enable' else 'disable'}"
+        url: @props.data.update_url
         type: 'POST'
+        data:
+          _method: 'PUT'
+          is_hidden: if selected then 0 else 1
       @setState selected: selected
 
     edit: (e) ->
