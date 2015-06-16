@@ -1,13 +1,13 @@
 {div} = React.DOM
 
 modulejs.define 'components/itsi_authoring/drawing_response_editor',
-['components/itsi_authoring/section_editor_mixin'],
-(SectionEditorMixin) ->
+['components/itsi_authoring/section_element_editor_mixin'],
+(SectionElementEditorMixin) ->
 
   React.createClass
 
     mixins:
-      [SectionEditorMixin]
+      [SectionElementEditorMixin]
 
     render: ->
       (div {className: 'ia-section-editor-element'}, 'TODO: DrawingResponseEditor')
