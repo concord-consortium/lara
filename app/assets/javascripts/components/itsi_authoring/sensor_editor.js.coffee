@@ -1,4 +1,4 @@
-{div, label, input, textarea, a, span} = React.DOM
+{div, iframe} = React.DOM
 
 modulejs.define 'components/itsi_authoring/sensor_editor',
 [
@@ -24,8 +24,7 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
     dataMap: {} # TODO: mapping
 
     initialEditState: ->
-      # TODO: get correct data value
-      true
+      not @props.data.image_url?
 
     render: ->
       (SectionEditorElement {data: @props.data, title: 'Sensor', selected: false, onEdit: @edit},
@@ -35,6 +34,12 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
           )
         else
           (div {className: 'ia-section-text'},
-            'TODO: *** SENSOR GOES HERE ***'
+            if @props.data.name
+              (div {},
+                (div {}, @props.data.name)
+                (iframe {src: @props.data.url, width: '90%', height: 400})
+              )
+            else
+              'No sensor selected'
           )
       )
