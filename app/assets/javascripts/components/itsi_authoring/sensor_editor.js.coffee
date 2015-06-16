@@ -23,6 +23,10 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
     # maps form names to @props.data keys
     dataMap: {} # TODO: mapping
 
+    initialEditState: ->
+      # TODO: get correct data value
+      true
+
     render: ->
       (SectionEditorElement {data: @props.data, title: 'Sensor', selected: false, onEdit: @edit},
         if @state.edit
