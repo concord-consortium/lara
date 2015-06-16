@@ -22,7 +22,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
 
     # maps form names to @props.data keys
     dataMap:
-      'embeddable_diy_section[content]': 'text'
+      'interactive_page[name]': 'text'
 
     initialEditState: ->
       textLength = @props.data.text?.length or 0
@@ -32,11 +32,11 @@ modulejs.define 'components/itsi_authoring/text_editor',
       (div {className: 'ia-section-editor-element'},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
-            (@richText {name: 'embeddable_diy_section[content]'})
+            (@richText {name: 'interactive_page[name]'})
           )
         else
           (div {className: 'ia-section-text'},
             (a {href: '#', className: 'ia-section-editor-edit', onClick: @edit}, 'edit')
-            (div {className: 'ia-section-text-value', dangerouslySetInnerHTML: {__html: @state.values['embeddable_diy_section[content]']}})
+            (div {className: 'ia-section-text-value', dangerouslySetInnerHTML: {__html: @state.values['interactive_page[name]']}})
           )
       )
