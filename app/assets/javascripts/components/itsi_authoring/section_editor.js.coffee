@@ -52,7 +52,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 
       (div {className: 'ia-section-editor'},
         (label {},
-          (input {type: 'checkbox', ref: 'checkbox', checked: @state.selected, onClick: @selected})
+          (input {type: 'checkbox', ref: 'checkbox', checked: @state.selected, onChange: @selected})
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
