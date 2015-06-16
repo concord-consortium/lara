@@ -1,4 +1,4 @@
-{div, label, input, textarea, a, span} = React.DOM
+{div, img} = React.DOM
 
 modulejs.define 'components/itsi_authoring/model_editor',
 [
@@ -25,8 +25,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'embeddable_diy_emdedded_model[diy_model_id]': 'model' # TODO: get correct mapping
 
     initialEditState: ->
-      # TODO: get correct data value
-      not @props.data.model?
+      not @props.data.image_url?
 
     render: ->
       modelOptions = [] # TODO: get options for model
@@ -39,6 +38,12 @@ modulejs.define 'components/itsi_authoring/model_editor',
           )
         else
           (div {className: 'ia-section-text'},
-            'TODO: *** MODEL GOES HERE ***'
+            if @props.data.name
+              (div {},
+                (div {}, @props.data.name)
+                (img {src: @props.data.image_url})
+              )
+            else
+              'No model selected'
           )
       )
