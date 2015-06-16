@@ -1,5 +1,7 @@
 .model-edit
   .toolbar
+    = render partial: 'shared/hide_interactive_link', locals: {interactive: interactive, toggle_vis_path: toggle_visibility_page_video_interactive_path(@page, interactive)}
+    |
     = link_to "Edit", edit_page_video_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
     |
     = link_to "Delete", page_video_interactive_path(@page, interactive), :method => :delete
@@ -7,4 +9,5 @@
       :javascript
         $("a[id^=edit-int-#{interactive.id}]").click()
 
-  = render :partial => 'video_interactives/show', :locals => { :interactive => interactive }
+  .interactive-content{:style => interactive.is_hidden ? 'display: none;' : ''}
+    = render :partial => 'video_interactives/show', :locals => { :interactive => interactive }

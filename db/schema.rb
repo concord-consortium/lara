@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150610120725) do
+ActiveRecord::Schema.define(:version => 20150616122429) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -260,10 +260,11 @@ ActiveRecord::Schema.define(:version => 20150610120725) do
     t.string   "url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.boolean  "show_lightbox", :default => true
     t.string   "credit_url"
+    t.boolean  "is_hidden",     :default => false
   end
 
   create_table "imports", :force => true do |t|
@@ -379,6 +380,7 @@ ActiveRecord::Schema.define(:version => 20150610120725) do
     t.boolean  "has_report_url",                 :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
+    t.boolean  "is_hidden",                      :default => false
   end
 
   create_table "page_items", :force => true do |t|
@@ -512,10 +514,11 @@ ActiveRecord::Schema.define(:version => 20150610120725) do
     t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
-    t.integer  "width",      :default => 556, :null => false
-    t.integer  "height",     :default => 240, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "width",      :default => 556,   :null => false
+    t.integer  "height",     :default => 240,   :null => false
+    t.boolean  "is_hidden",  :default => false
   end
 
   create_table "video_sources", :force => true do |t|

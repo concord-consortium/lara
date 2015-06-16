@@ -40,6 +40,17 @@ class InteractiveController < ApplicationController
     end
   end
 
+
+  def toggle_visibility
+    new_val = !@interactive.is_hidden
+    @interactive.update_attributes!(is_hidden: new_val)
+    if request.xhr?
+      render json: {is_hidden: new_val}
+    else
+      redirect_to :back
+    end
+  end
+
   def destroy
     @interactive.interactive_item.delete
     typestring = @interactive.class.to_s.match(/(.+)Interactive/)[1]
