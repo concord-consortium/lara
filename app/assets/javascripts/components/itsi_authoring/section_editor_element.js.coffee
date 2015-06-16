@@ -7,7 +7,7 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
   React.createClass
 
     getInitialState: ->
-      selected: @props.selected
+      selected: not @props.data.is_hidden
 
     selected: ->
       selected = (React.findDOMNode @refs.checkbox).checked

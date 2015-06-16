@@ -1,6 +1,6 @@
 {div, label, input, span, a, form} = React.DOM
 
-modulejs.define 'components/itsi_authoring/section_editor',
+modulejs.define 'components/itsi_authoring/fixed_layout_section_editor',
 [
   'components/itsi_authoring/open_response_question_editor'
   'components/itsi_authoring/sensor_editor'
@@ -34,41 +34,42 @@ modulejs.define 'components/itsi_authoring/section_editor',
 
   React.createClass
 
-    componentWillMount: ->
-      @editorMap =
-        openResponse: OpenResponseQuestionEditor
-        sensor: SensorEditor
-        drawingResponse: DrawingResponseEditor
-        model: ModelEditor
+    statics:
+      OpenResponseQuestion: OpenResponseQuestionEditor
+      Sensor: SensorEditor
+      DrawingResponse: DrawingResponseEditor
+      Model: ModelEditor
 
     getInitialState: ->
-      selected: not @props.section.is_hidden
+      selected: @props.section.selected
 
     selected: ->
       selected = (React.findDOMNode @refs.checkbox).checked
       $.ajax
         # TODO: figure out url for enable/disable
-        url: "#{@props.section.update_url}/#{if selected then 'enable' else 'disable'}"
+        url: "#{@props.section.data.update_url}/#{if selected then 'enable' else 'disable'}"
         type: 'POST'
       @setState selected: selected
 
     render: ->
+      embeddableIndex = 0
+      interactiveIndex = 0
+
       (div {className: 'ia-section-editor'},
         (label {},
           (input {type: 'checkbox', ref: 'checkbox', checked: @state.selected, onChange: @selected})
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
-          (TextEditor {data: @props.section})
-          for interactive, i in @props.section.interactives
-            # todo map the url to a type
-            type = 'model'
-            (@editorMap[type] {key: "interactive#{i}", data: interactive})
-
-          for embeddable, i in @props.section.embeddables
-            # todo map the url to a type
-            type = 'openResponse'
-            (@editorMap[type] {key: "embeddable#{i}", data: embeddable})
+          (TextEditor {data: @props.section.data})
+          for element, i in @props.elements
+            if element is OpenResponseQuestionEditor
+              elementData = @props.section.embeddables?[embeddableIndex] or {}
+              embeddableIndex++
+            else
+              elementData = @props.section.interactives?[interactiveIndex] or {}
+              interactiveIndex++
+            (element {key: i, data: elementData})
         )
       )
 
