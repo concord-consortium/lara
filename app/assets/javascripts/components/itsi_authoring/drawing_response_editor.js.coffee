@@ -25,8 +25,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
       'embeddable_drawing_tool[background_image_url]': 'background_image_url'  # TODO: get correct key
 
     initialEditState: ->
-      # TODO: get correct data value
-      (@props.data.background_image_url?.length or 0) is 0
+      false
 
     render: ->
       (SectionEditorElement {data: @props.data, title: 'Drawing Response', selected: false, onEdit: @edit},
@@ -38,8 +37,8 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
         else
           (div {className: 'ia-section-text'},
             if @props.data.background_image_url
-              (img {src: @props.data.background_image_url}) # TODO: what should be the fallback image?
+              (img {src: @props.data.background_image_url})
             else
-              'No background image available. TODO: setup fallback image in asset pipeline.'
+              (div {className: 'ia-section-default-drawing-tool'})
           )
       )
