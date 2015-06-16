@@ -130,8 +130,10 @@ modulejs.define 'components/itsi_authoring/editor',
         (MetadataEditor {metadata: @props.metadata})
         (div {className: 'ia-editor-sections'},
           for section, i in @props.sections
-            title = if name is 'Second Career STEM Question' then 'Concluding Career STEM Question' else section.name
-            (SectionEditor {section: section, title: title, key: i})
+            # ignore the 'Test page'
+            if section.name isnt 'Test page'
+              title = if name is 'Second Career STEM Question' then 'Concluding Career STEM Question' else section.name
+              (SectionEditor {section: section, title: title, key: i})
         )
       )
 
