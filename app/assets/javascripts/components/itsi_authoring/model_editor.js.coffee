@@ -24,6 +24,10 @@ modulejs.define 'components/itsi_authoring/model_editor',
     dataMap:
       'embeddable_diy_emdedded_model[diy_model_id]': 'model' # TODO: get correct mapping
 
+    initialEditState: ->
+      # TODO: get correct data value
+      not @props.data.model?
+
     render: ->
       modelOptions = [] # TODO: get options for model
 

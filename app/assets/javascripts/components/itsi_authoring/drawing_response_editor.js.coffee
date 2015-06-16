@@ -24,6 +24,10 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
     dataMap:
       'embeddable_drawing_tool[background_image_url]': 'background_image_url'  # TODO: get correct key
 
+    initialEditState: ->
+      # TODO: get correct data value
+      (@props.data.background_image_url?.length or 0) is 0
+
     render: ->
       (SectionEditorElement {data: @props.data, title: 'Drawing Response', selected: false, onEdit: @edit},
         if @state.edit
