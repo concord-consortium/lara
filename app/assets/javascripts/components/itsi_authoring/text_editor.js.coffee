@@ -27,7 +27,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
         text: text
         originalText: text
         edit: text.length is 0
-    textChanged: (newText) ->
+    richTextChanged: (newText) ->
       @setState text: newText
     edit: (e) ->
       e?.preventDefault()
@@ -49,7 +49,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
         if @state.edit
           (SectionEditorForm {onSave: @saveForm, onCancel: @cancel},
             (div {style: {fontWeight: 'bold'}}, 'TODO: implement saveForm()')
-            (RichTextEditor {text: @state.text, onChange: @textChanged})
+            (RichTextEditor {text: @state.text, onChange: @richTextChanged})
           )
         else
           (div {className: 'ia-section-text'},
