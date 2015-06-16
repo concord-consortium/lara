@@ -3,7 +3,7 @@
 modulejs.define 'components/itsi_authoring/editor',
 [
   'components/itsi_authoring/metadata_editor',
-  'components/itsi_authoring/section_editor'
+  'components/itsi_authoring/section_editor'  # if using FixedLayout use fixed_layout_section_editor
 ],
 (
   MetadataEditorClass,
@@ -16,7 +16,8 @@ modulejs.define 'components/itsi_authoring/editor',
   class Section
     constructor: (@name, @data, @selected) -> undefined
 
-  React.createClass
+  # saved for comparison texting - this is the fixed layout, the JSONDrivenLayout is below and is returned for the module
+  FixedLayout = React.createClass
     getInitialState: ->
       sectionsByName = {}
 
@@ -52,9 +53,6 @@ modulejs.define 'components/itsi_authoring/editor',
       initialState =
         sectionsByName: sectionsByName
 
-    addSection: (name, data) ->
-      sectionsByName[name] = data
-
     renderSection: (options) ->
       title = if options.hasOwnProperty('title') then options.title else options.name
       (SectionEditor {name: options.name, title: title, section: @state.sectionsByName[options.name], elements: options.elements, updateUrl: @props.update_url})
@@ -86,7 +84,7 @@ modulejs.define 'components/itsi_authoring/editor',
 
     render: ->
       (div {className: 'ia-editor'},
-        (MetadataEditor {metadata: @props.metadata, updateUrl: @props.update_url})
+        (MetadataEditor {metadata: @props.metadata})
         (div {className: 'ia-editor-sections'},
           (@renderSection {name: 'Introduction', elements: [
             SectionEditorClass.OpenResponseQuestion
@@ -125,3 +123,16 @@ modulejs.define 'components/itsi_authoring/editor',
         )
       )
 
+  JSONDrivenLayout = React.createClass
+
+    render: ->
+      (div {className: 'ia-editor'},
+        (MetadataEditor {metadata: @props.metadata})
+        (div {className: 'ia-editor-sections'},
+          for section, i in @props.sections
+            title = if name is 'Second Career STEM Question' then 'Concluding Career STEM Question' else section.name
+            (SectionEditor {section: section, title: title, key: i})
+        )
+      )
+
+  JSONDrivenLayout
