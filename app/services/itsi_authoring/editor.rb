@@ -82,6 +82,7 @@ class ITSIAuthoring::Editor
     {
       type: 'iframe_interactive',
       name: i.name,
+      is_hidden: i.is_hidden,
       url: i.url,
       image_url: i.image_url,
       update_url: page_mw_interactive_path(page, i)
