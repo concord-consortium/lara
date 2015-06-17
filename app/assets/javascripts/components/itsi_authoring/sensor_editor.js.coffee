@@ -1,4 +1,4 @@
-{div, iframe, label} = React.DOM
+{div, img, label} = React.DOM
 
 modulejs.define 'components/itsi_authoring/sensor_editor',
 [
@@ -17,7 +17,7 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
         (div {className: 'ia-section-text'},
           (div {},
             (div {}, 'Data Collector')
-            (iframe {src: @props.data.image_url, width: '90%', height: 400})
+            (img {src: @props.data.image_url})
           )
         )
       )
