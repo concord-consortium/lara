@@ -26,5 +26,11 @@ class ImportController < ApplicationController
       end
     end
   end
+  
+  def import_users
+    user_json = JSON.parse(request.body.read, :symbolize_names => true)
+    Delayed::Job.enqueue PortalUser.new(user_json)
+    render :nothing => true, :status => 200, :content_type => 'text/html'
+  end
 end
   
