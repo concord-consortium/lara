@@ -37,6 +37,7 @@ class InteractiveController < ApplicationController
       else
         format.html { redirect_to :back }
       end
+      format.json { render :json => @interactive.to_json }
     end
   end
 

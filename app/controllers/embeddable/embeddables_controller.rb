@@ -24,7 +24,7 @@ class Embeddable::EmbeddablesController < ApplicationController
         format.html { render :edit }
         format.xml { render :xml => @embeddable.errors, :status => :unprocessable_entity }
       end
-      format.json
+      format.json { render :json => @embeddable.to_json }
     end
   end
 end
