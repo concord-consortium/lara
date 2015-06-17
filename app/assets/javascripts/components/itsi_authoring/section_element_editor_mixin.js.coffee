@@ -61,27 +61,29 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       error: ->
         console.log 'component update failed'
 
-  _handleChange: (key, value) ->
+  valueChanged: (key, value) ->
     @state.values[key] = value
     @state.changedValues[key] = value
-    @setState
-      values: @state.values
-      changedValues: @state.changedValues
+
+  _handleChange: (key, value, onChange) ->
+    @valueChanged key, value
+    onChange? key, value
+    @setState @state
 
   richText: (options) ->
     changed = (newText) =>
-      @_handleChange options.name, newText
+      @_handleChange options.name, newText, options.onChange
     RichTextEditor {name: options.name, text: @state.values[options.name], onChange: changed}
 
   text: (options) ->
     changed = (e) =>
-      @_handleChange options.name, e.target.value
+      @_handleChange options.name, e.target.value, options.onChange
     input {type: 'text', name: options.name, value: @state.values[options.name], onChange: changed}
 
   select: (options) ->
     changed = (e) =>
-      @_handleChange options.name, e.target.value
+      @_handleChange options.name, e.target.value, options.onChange
     (select {'text', name: options.name, value: @state.values[options.name], onChange: changed},
-      for name, value in options.options
-        (option {name: name, value: value, key: name})
+      for item in options.options
+        (option {value: item.value, key: item.name}, item.name)
     )
