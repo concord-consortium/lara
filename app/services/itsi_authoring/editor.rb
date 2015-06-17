@@ -51,6 +51,7 @@ class ITSIAuthoring::Editor
       name: e.name,
       prompt: e.prompt,
       is_hidden: e.is_hidden,
+      default_text: e.default_text,
       update_url: embeddable_open_response_path(e)
     }
   end
