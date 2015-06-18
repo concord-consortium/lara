@@ -22,13 +22,13 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
 
     # maps form names to @props.data keys
     dataMap:
-      'embeddable_image_question[bg_url]': 'bg_url'  # TODO: add bg_url to JSON export
+      'embeddable_image_question[bg_url]': 'bg_url'
 
     initialEditState: ->
       false
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Drawing Response', toHide: 'embeddable_image_question[is_hidden]', onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Drawing Response', toHide: 'embeddable_image_question[is_hidden]', onEdit: @edit, alert: @props.alert},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Background Image')

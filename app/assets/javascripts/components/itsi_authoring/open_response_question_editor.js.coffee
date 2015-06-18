@@ -29,7 +29,7 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
       (@props.data.prompt?.length or 0) is 0
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Open Response Question', toHide: 'embeddable_open_response[is_hidden]', onEdit: @edit},
+      (SectionEditorElement {data: @props.data, title: 'Open Response Question', toHide: 'embeddable_open_response[is_hidden]', onEdit: @edit, alert: @props.alert},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Question prompt')

@@ -48,7 +48,9 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       defaultValues: defaultValues
 
     # Don't issue request if nothing has been updated.
-    return if $.isEmptyObject @state.changedValues
+    if $.isEmptyObject @state.changedValues
+      @props.alert 'warn', 'No changes to save'
+      return
 
     # Rails-specific approach to PUT requests.
     @state.changedValues._method = 'PUT'
@@ -56,10 +58,11 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       url: "#{@props.data.update_url}.json"
       data: @state.changedValues
       type: 'POST',
-      success: ->
-        console.log 'component updated'
-      error: ->
-        console.log 'component update failed'
+      success: =>
+        @props.alert 'info', 'Saved'
+        @setState changedValues: {}
+      error: =>
+        @props.alert 'error', 'Save Failed!'
 
   valueChanged: (key, value) ->
     @state.values[key] = value

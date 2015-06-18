@@ -13,7 +13,7 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
   React.createClass
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Sensor', toHide: 'mw_interactive[is_hidden]'},
+      (SectionEditorElement {data: @props.data, title: 'Sensor', toHide: 'mw_interactive[is_hidden]', alert: @props.alert},
         (div {className: 'ia-section-text'},
           (div {},
             (div {}, 'Data Collector')
