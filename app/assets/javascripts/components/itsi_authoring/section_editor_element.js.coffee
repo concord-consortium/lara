@@ -22,11 +22,11 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
 
     edit: (e) ->
       e.preventDefault()
-      @props.onEdit?()
+      @props.onEdit()
 
     render: ->
       (div {className: 'ia-section-editor-element'},
-        if @state.selected
+        if @state.selected && @props.onEdit?
           (div {style: {float: 'right'}},
             (a {href: '#', className: 'ia-section-editor-edit', onClick: @edit}, 'edit')
           )

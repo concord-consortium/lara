@@ -4,6 +4,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 [
   'components/itsi_authoring/open_response_question_editor'
   'components/itsi_authoring/sensor_editor'
+  'components/itsi_authoring/prediction_editor'
   'components/itsi_authoring/drawing_response_editor'
   'components/itsi_authoring/model_editor'
   'components/itsi_authoring/text_editor'
@@ -11,6 +12,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 (
   OpenResponseQuestionEditorClass,
   SensorEditorClass,
+  PredictionEditorClass,
   DrawingResponseEditorClass,
   ModelEditorClass,
   TextEditorClass,
@@ -18,6 +20,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 
   OpenResponseQuestionEditor = React.createFactory OpenResponseQuestionEditorClass
   SensorEditor = React.createFactory SensorEditorClass
+  PredictionEditor = React.createFactory PredictionEditorClass
   DrawingResponseEditor = React.createFactory DrawingResponseEditorClass
   ModelEditor = React.createFactory ModelEditorClass
   TextEditor = React.createFactory TextEditorClass
@@ -39,9 +42,14 @@ modulejs.define 'components/itsi_authoring/section_editor',
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
-      # TODO: change to check for this: interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json?
-      sensorPrefix = '//models-resources.concord.org/dataset-sync-wrapper/'
-      if element.url?.substr(0, sensorPrefix.length) is sensorPrefix then SensorEditor else ModelEditor
+      return ModelEditor unless element.url
+      url = decodeURIComponent element.url
+      if /globalStateKey/.test url
+        if /sensor-connector\.json/.test url
+          return SensorEditor
+        else
+          return PredictionEditor
+      ModelEditor
 
     getEditorForEmbeddedElement: (element) ->
       switch element.type
