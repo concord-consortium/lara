@@ -5,14 +5,12 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
   'components/itsi_authoring/section_element_editor_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
-  'components/itsi_authoring/prediction_list',
   'components/itsi_authoring/cached_ajax'
 ],
 (
   SectionElementEditorMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
-  predictionList,
   cachedAjax
 ) ->
 
