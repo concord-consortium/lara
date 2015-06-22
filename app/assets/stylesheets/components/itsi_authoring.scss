@@ -1,93 +1,161 @@
-.ia-editor {
-  margin: 20px;
-}
 
-.ia-save-btn {
-  font-size: 12px;
-  display: inline-block;
-  height: 16px;
-  color: white;
-  cursor: pointer;
-  padding: 2px 10px;
-  border-radius: 12px;
-  background: #f3951d;
-}
-
-.ia-metadata-editor {
-  .ia-label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 3px;
+#container.itsi-edit {
+  background-color: #fee9aa;
+  font-family: Arial, Helvetica, sans-serif;
+  #content {
+    background: #f3f2ed
   }
-  input, textarea {
-    margin-bottom: 10px;
-    width: 100%;
+
+  h1 {
+    margin-left: 0.5em;
   }
-  textarea {
-    height: 100px;
-  }
-}
-
-.ia-editor-sections {
-
-  margin-top: 20px;
-
-  .ia-section-editor {
-    margin: 10px 0;
-
-    .ia-section-editor-title {
-      font-weight: bold;
+  a {
+    color: #479492;
+    text-decoration: none;
+    &:visited {
+      color: #479492;
+      text-decoration: none;
     }
+    &:hover {
+      color: darkorange;
+    }
+  }
 
-    .ia-section-editor-elements {
-      margin: 10px 0 10px 30px;
+  p { margin-bottom: 1em; }
 
-      .ia-section-editor-element {
-        margin: 10px 0;
-        background-color: #eee;
-        padding: 5px 10px;
+  input, textarea {
+    border: 1px solid #a1d2d1;
+    padding: 0.3em 5px;
+    font-size: 13px;
+  }
 
-        .ia-section-editor-edit {
-          float: right;
-        }
 
-        .ia-section-editor-buttons {
-          margin: 5px 0;
 
-          a {
-            margin-left: 10px;
+  .ia-editor {
+    margin: 20px;
+    background: #f3f2ed
+  }
+
+  .ia-save-btn {
+    font-size: 12px;
+    display: inline-block;
+    height: 16px;
+    color: white;
+    cursor: pointer;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: #f3951d;
+  }
+
+  .ia-metadata-editor {
+    .ia-label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+    input, textarea {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    textarea {
+      height: 100px;
+    }
+  }
+
+  .ia-editor-sections {
+
+    margin-top: 20px;
+
+    .ia-section-editor {
+      margin: 10px 0;
+      font-size: 14px;
+      padding-left: 30px;
+      .ia-section-editor-title {
+        font-weight: bold;
+      }
+
+      .ia-section-editor-elements {
+        margin: 10px 0 10px 30px;
+
+        .ia-section-editor-element {
+          margin: 5px;
+          padding: 5px;
+          padding-left: 30px;
+          background-color: #eee;
+          &:hover {
+            background-color: white;
           }
-        }
+          .ia-section-editor-edit {
+            float: right;
+          }
 
-        .ia-section-editor-form {
+          .ia-section-editor-buttons {
+            margin: 5px 0;
 
-        }
+            a {
+              margin-left: 10px;
+            }
+          }
 
-        .ia-section-text {
-          margin: 10px 0;
-        }
-        .ia-section-text-value {
-          min-height: 10px;
-          margin: 5px 0;
-        }
+          .ia-section-editor-form {
 
-        .ia-section-default-drawing-tool {
-          background: url('/assets/drawing_tool.png') no-repeat;
-          width: 767px;
-          height: 606px;
-        }
+          }
 
-        textarea, input[type=text] {
-          width: 90%;
-        }
+          .ia-section-text {
+            margin: 10px 0;
+          }
+          .ia-section-text-value {
+            min-height: 10px;
+            margin: 5px 0;
+            margin-right: 30px;
+          }
 
-        label {
-          display: block;
-          font-weight: bold;
-          margin: 10px 0 5px 0;
+          .ia-section-default-drawing-tool {
+            background: url('/assets/drawing_tool.png') no-repeat;
+            width: 767px;
+            height: 606px;
+          }
+
+          textarea, input[type=text] {
+            width: 90%;
+          }
+
+          label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+          }
         }
       }
     }
   }
-}
 
+  .ia-alert-pill {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 5px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .ia-alert-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    color: #fff;
+    text-align: center;
+  }
+  .ia-alert-info {
+    background-color: #228B22;
+  }
+  .ia-alert-warn {
+    background-color: darkorange;
+  }
+  .ia-alert-error {
+    background-color: #f00;
+  }
+}
