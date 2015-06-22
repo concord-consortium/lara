@@ -63,7 +63,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @edit()
 
     render: ->
-      (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @switchToEditMode},
+      (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @switchToEditMode, alert: @props.alert},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')

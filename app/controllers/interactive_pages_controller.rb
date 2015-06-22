@@ -75,24 +75,26 @@ class InteractivePagesController < ApplicationController
   def update
     authorize! :update, @page
     update_activity_changed_by
-    if request.xhr?
-      if @page.update_attributes(params[:interactive_page])
-        # *** respond with the new value ***
-        render :text => params[:interactive_page].values.first and return
-      else
-        # *** respond with the old value ***
-        render :text => @page[params[:interactive_page].keys.first] and return
-      end
-    end
     respond_to do |format|
-      format.html do
+      if request.xhr?
         if @page.update_attributes(params[:interactive_page])
-          @page.reload # In case it's the name we updated
-          flash[:notice] = "Page #{@page.name} was updated."
+          # *** respond with the new value ***
+          format.html { render :text => params[:interactive_page].values.first }
         else
-          flash[:warning] = "There was a problem updating Page #{@page.name}."
+          # *** respond with the old value ***
+          format.html { render :text => @page[params[:interactive_page].keys.first] }
         end
-        redirect_to edit_activity_page_path(@activity, @page) and return
+        format.json { render :json => @page.to_json }
+      else
+        format.html do
+          if @page.update_attributes(params[:interactive_page])
+            @page.reload # In case it's the name we updated
+            flash[:notice] = "Page #{@page.name} was updated."
+          else
+            flash[:warning] = "There was a problem updating Page #{@page.name}."
+          end
+          redirect_to edit_activity_page_path(@activity, @page) and return
+        end
       end
     end
   end

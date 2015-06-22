@@ -13,17 +13,20 @@ modulejs.define 'components/itsi_authoring/form_mixin', ->
   submitForm: ->
     formData = @state.changedData
     # Don't issue request if nothing has been updated.
-    return if $.isEmptyObject formData
+    if $.isEmptyObject formData
+      @props.alert 'warn', 'No changes to save'
+      return
     # Rails-specific approach to PUT requests.
     formData._method = 'PUT'
     $.ajax
       url: @updateUrl()
       data: formData
       type: 'POST',
-      success: ->
-        console.log 'component updated'
-      error: ->
-        console.log 'component update failed'
+      success: =>
+        @props.alert 'info', 'Saved'
+        @setState changedData: {}
+      error: =>
+        @props.alert 'error', 'Save Failed!'
 
   input: (props) ->
     props.onChange = @handleFormChange

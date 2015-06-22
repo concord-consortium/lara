@@ -39,6 +39,10 @@ modulejs.define 'components/itsi_authoring/section_editor',
           _method: 'PUT'
           interactive_page:
             is_hidden: if selected then 0 else 1
+        success: =>
+          @props.alert 'info', 'Saved'
+        error: =>
+          @props.alert 'error', 'Save Failed!'
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
@@ -64,16 +68,16 @@ modulejs.define 'components/itsi_authoring/section_editor',
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
-          (TextEditor {data: @props.section})
+          (TextEditor {data: @props.section, alert: @props.alert})
           for interactive, i in @props.section.interactives
             editor = @getEditorForInteractiveElement interactive
             if editor
-              (editor {key: "interactive#{i}", data: interactive})
+              (editor {key: "interactive#{i}", data: interactive, alert: @props.alert})
 
           for embeddable, i in @props.section.embeddables
             editor = @getEditorForEmbeddedElement embeddable
             if editor
-              (editor {key: "embeddable#{i}", data: embeddable})
+              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert})
         )
       )
 

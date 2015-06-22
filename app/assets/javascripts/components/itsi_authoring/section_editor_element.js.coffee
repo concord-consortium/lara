@@ -18,6 +18,10 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
         url: "#{@props.data.update_url}.json"
         type: 'POST'
         data: postData
+        success: =>
+          @props.alert 'info', 'Saved'
+        error: =>
+          @props.alert 'error', 'Save Failed!'
       @setState selected: selected
 
     edit: (e) ->
