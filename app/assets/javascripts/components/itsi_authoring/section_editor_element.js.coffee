@@ -9,8 +9,8 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
     getInitialState: ->
       selected: not @props.data.is_hidden
 
-    selected: ->
-      selected = (React.findDOMNode @refs.checkbox).checked
+    selected: (e) ->
+      selected = e.target.checked
       postData =
         _method: 'PUT'
       postData[@props.toHide] = if selected then 0 else 1

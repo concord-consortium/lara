@@ -50,6 +50,9 @@ LightweightStandalone::Application.configure do
 
   # set to development mode for better error messages
   config.react.variant = :development
+
+  # allow for test add-ons
+  config.react.addons = true
 end
 
 # Open file links in BetterErrors in sublime text.

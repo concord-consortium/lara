@@ -11,7 +11,6 @@ modulejs.define 'components/itsi_authoring/metadata_editor',
       @props.metadata.update_url
 
     render: ->
-      data = @props.initialData
       (div {className: 'ia-metadata-editor'},
         (div {className: 'ia-label'}, 'Activity name')
         (@input {type: 'text', name: 'lightweight_activity[name]', defaultValue: @props.metadata.name})
