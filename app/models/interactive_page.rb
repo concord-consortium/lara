@@ -102,6 +102,19 @@ class InteractivePage < ActiveRecord::Base
     section_embeddables(nil)
   end
 
+  def visible_embeddables
+    self.page_items.collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+  end
+
+  def section_visible_embeddables(section)
+    self.page_items.where(section: section).collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+  end
+
+  def main_visible_embeddables
+    # Visible embeddables that do not have section specified (nil section).
+    section_visible_embeddables(nil)
+  end
+
   def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true;
     self.save!(validate: validate)
@@ -192,59 +205,59 @@ class InteractivePage < ActiveRecord::Base
         self.section_embeddables(s[:name]).each do |embed|
           copy = embed.duplicate
           copy.save!(validate: false)
-          new_page.add_embeddable(copy,nil,s[:name])          
+          new_page.add_embeddable(copy,nil,s[:name])
         end
       end
     end
     return new_page
   end
-  
+
   def export
-    page_json = self.as_json(only: [:name, 
-                                    :position, 
-                                    :text, 
+    page_json = self.as_json(only: [:name,
+                                    :position,
+                                    :text,
                                     :layout,
                                     :is_hidden,
-                                    :sidebar, 
-                                    :sidebar_title, 
-                                    :show_introduction, 
-                                    :show_sidebar, 
+                                    :sidebar,
+                                    :sidebar_title,
+                                    :show_introduction,
+                                    :show_sidebar,
                                     :show_interactive,
                                     :show_info_assessment,
                                     :embeddable_display_mode,
                                     :additional_sections])
-                                        
+
     page_json[:interactives] = []
     page_json[:embeddables] = []
     page_json[:sections] = []
-    
+
     self.interactives.each do |inter|
       interactive_hash = inter.export
       interactive_hash[:type] = inter.class.name
-                                                   
+
       page_json[:interactives] << interactive_hash
     end
     self.main_embeddables.each do |embed|
       embeddable_hash = embed.export
-      embeddable_hash[:type] = embed.class.name                                             
-      
+      embeddable_hash[:type] = embed.class.name
+
       page_json[:embeddables] << embeddable_hash
-    end    
+    end
     self.class.registered_additional_sections.each do |s|
       additional_section = {name:s[:name],section_embeddables:[]}
       self.section_embeddables(s[:name]).each do |embed|
         section_embeddable_hash = embed.export
-        section_embeddable_hash[:type] = embed.class.name       
+        section_embeddable_hash[:type] = embed.class.name
         additional_section[:section_embeddables] << section_embeddable_hash
       end
       page_json[:sections] << additional_section
     end
-  
+
     return page_json
   end
-  
+
   def self.extact_from_hash(page_json_object)
-    
+
     #pages = activity_json_object[:pages]
     {
       name: page_json_object[:name],
@@ -262,7 +275,7 @@ class InteractivePage < ActiveRecord::Base
       additional_sections: page_json_object[:additional_sections].as_json
     }
   end
-  
+
   def self.import(page_json_object)
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
@@ -272,7 +285,7 @@ class InteractivePage < ActiveRecord::Base
         import_page.add_interactive(import_interactive, nil, false)
       end
       page_json_object[:embeddables].each do |embed|
-        import_embeddable = embed[:type].constantize.import(embed.except(:type))        
+        import_embeddable = embed[:type].constantize.import(embed.except(:type))
         import_embeddable.save!(validate: false)
         import_page.add_embeddable(import_embeddable)
       end
@@ -281,7 +294,7 @@ class InteractivePage < ActiveRecord::Base
           sec[:section_embeddables].each do |embed|
             import_embeddable = embed[:type].constantize.import(embed.except(:type))
             import_embeddable.save!(validate: false)
-            import_page.add_embeddable(import_embeddable,nil,sec[:name])            
+            import_page.add_embeddable(import_embeddable,nil,sec[:name])
           end
         end
       end

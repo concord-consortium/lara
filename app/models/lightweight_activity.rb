@@ -53,7 +53,7 @@ class LightweightActivity < ActiveRecord::Base
   def questions
     q = []
     visible_pages_with_embeddables.each do |p|
-      p.embeddables.each do |e|
+      p.visible_embeddables.each do |e|
         if QUESTION_TYPES.include? e.class
           q << e
         end
