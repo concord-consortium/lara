@@ -24,6 +24,12 @@ module InteractivePageHelper
     page.main_embeddables.map { |e| finder.find_answer(e) }
   end
 
+  def main_section_visible_embeddables(page, run)
+    finder = Embeddable::AnswerFinder.new(run)
+    # Limit visible embeddables to ones that do not belong to any section.
+    page.main_visible_embeddables.map { |e| finder.find_answer(e) }
+  end
+
   protected
   def run_for_activity(activity, run)
     return nil unless run
