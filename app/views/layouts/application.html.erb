@@ -13,7 +13,7 @@
 <%- else -%>
   <body class="right <%= request.original_fullpath.split('/').join(' ') %>">
 <%- end -%>
-<div id="container">
+<div id="container" class="<%= content_for :container_css_classes %>">
   <div id="header">
     <div>
       <%= link_to image_tag("mw-logo.png", :alt => "Molecular Workbench", :id => 'mw-logo'), 'http://mw.concord.org/nextgen', :title => 'Molecular Workbench' %>

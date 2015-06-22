@@ -3,6 +3,7 @@
     = render :partial => 'shared/session'
 = content_for :title do
   = "Edit #{@activity.name}"
+= content_for :container_css_classes, 'itsi-edit'
 = content_for :nav do
   .breadcrumbs
     %ul
