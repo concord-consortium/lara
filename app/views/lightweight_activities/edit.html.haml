@@ -62,9 +62,10 @@
       .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
-      .field
-        = f.label :editor_mode, "Authoring Mode"
-        = f.select :editor_mode, options_for_select(LightweightActivity::EDITOR_MODE_OPTIONS, @activity.editor_mode)
+      - if current_user.is_admin
+        .field
+          = f.label :editor_mode, "Authoring Mode"
+          = f.select :editor_mode, options_for_select(LightweightActivity::EDITOR_MODE_OPTIONS, @activity.editor_mode)
       .field
         = f.label :notes,  'Notes'
         .hint The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
