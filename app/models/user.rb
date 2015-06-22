@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     :provider, :uid, :authentication_token
   # attr_accessible :title, :body
 
-  has_many :authentications
+  has_many :authentications, :dependent => :delete_all
 
   # access cancan outside of current_user
   # see https://github.com/ryanb/cancan/wiki/ability-for-other-users
