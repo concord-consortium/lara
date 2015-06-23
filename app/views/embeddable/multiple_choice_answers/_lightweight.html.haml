@@ -1,7 +1,7 @@
 - embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 - check_button_string = "check_button_#{embeddable_string}"
 .question-hdr
-  %h5.h5= "#{t("QUESTION")} ##{embeddable.question_index}"
+  %h5.h5= "#{t("QUESTION")} ##{question_index}"
 .question-bd{ :id => embeddable_string }
   .question-txt
     != embeddable.prompt
