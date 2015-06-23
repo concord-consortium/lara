@@ -27,7 +27,7 @@
 
     - embeddables.each_with_index do |m,index|
       .question
-        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m, :question_index => index + 1}
         - fb = m.get_saved_feedback
         - fb_visible = fb && !fb.feedback_text.blank?
         - fb_dirty = fb && fb.outdated?
@@ -65,7 +65,7 @@
           %tr
             %td
               .ab-robot-figure{:id => 'ab-robot-image'}
-            %td         
+            %td
               %div
                 = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
                 - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
@@ -77,7 +77,7 @@
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
            'data-href' => c_rater_arg_block_save_feedback_path(page),
            'data-page_id' => page.id}
-    %div.ab-submit-prompt       
+    %div.ab-submit-prompt
 
 :javascript
   $(function() {
@@ -115,14 +115,14 @@
     border: 1px solid #eee;
     padding: 12px 22px;
   }
-  
+
   .ab-robot-wrap {
     margin:0 auto;
     td {
       padding: 0 10px;
       vertical-align: middle;
     }
-    
+
     .ab-robot-figure {
       width: 85px;
       height: 109px;
@@ -137,11 +137,11 @@
     border: 1px solid #eee;
     border-radius: 10px;
     padding: 5px 5px 5px 5px;
-    
+
     .ab-feedback-text {
-      
+
       margin:10px 0 0 0;
-      
+
       table {
         td {
           padding: 0 10px;
@@ -179,7 +179,7 @@
       background: rgba(255, 0, 0, 0.2);
     }
   }
-  
+
   .ab-openresponseanswer-1, .ab-openresponseanswer-3{
     .ab-robot-scale{
       background-repeat: no-repeat;
@@ -192,7 +192,7 @@
       width: 330px;
     }
   }
- 
+
   .ab-score-error {
     .ab-openresponseanswer-1 {
       .ab-robot-scale {

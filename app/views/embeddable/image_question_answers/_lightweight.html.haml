@@ -1,2 +1,2 @@
 - partial_name = ENV["CONCORD_DRAWING_TOOL"] == 'drawing-tool'  ? "lightweight_drawing_tool" : "lightweight_svg_edit"
-= render :partial => "embeddable/image_question_answers/#{partial_name}", :locals => { :embeddable => embeddable }
+= render :partial => "embeddable/image_question_answers/#{partial_name}", :locals => { :embeddable => embeddable, :question_index => question_index }
