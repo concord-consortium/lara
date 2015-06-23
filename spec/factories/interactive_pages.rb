@@ -13,6 +13,7 @@ FactoryGirl.define do
     show_sidebar 1
     show_interactive 1
     show_info_assessment 1
+    is_hidden 0
 
     factory :interactive_page_with_or do
       name "page with open response"

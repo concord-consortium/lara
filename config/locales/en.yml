@@ -7,6 +7,7 @@ en:
   MENU: "Menu"
   ACTIVITY: "Activity"
   BEGIN_ACTIVITY: "Begin activity"
+  NO_PAGES_IN_ACTIVITY: "No pages in activity"
   BEGIN_NEXT_ACTIVITY: "Next activity"
   TAKE_SNAPSHOT: "Take a snapshot"
   UPLOAD_IMAGE: "Upload image"

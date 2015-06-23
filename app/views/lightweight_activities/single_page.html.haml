@@ -1,10 +1,10 @@
-= content_for :title do 
+= content_for :title do
   = "#{@activity.name}"
 
 = content_for :body_class do
   = 'l-single-page'
 
-- @activity.pages.each do |p|
+- @activity.visible_pages.each do |p|
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
 .submit
@@ -76,4 +76,3 @@
       });
     });
   });
-  
