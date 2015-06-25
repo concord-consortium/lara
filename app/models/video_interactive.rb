@@ -6,6 +6,8 @@ class VideoInteractive < ActiveRecord::Base
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
 
+  has_one :labbook, :as => :interactive
+
   attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes, :is_hidden
 
   accepts_nested_attributes_for :sources, :allow_destroy => true

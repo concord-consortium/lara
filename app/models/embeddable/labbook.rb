@@ -11,10 +11,12 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden
+    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden, :interactive_type, :interactive_id, :interactive
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
+
+    belongs_to :interactive, :polymorphic => true
 
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
@@ -89,7 +91,7 @@ module Embeddable
       action_type == SNAPSHOT_ACTION
     end
 
-    def interactive
+    def find_interactive
       # Return first interactive available on the page (note that in practice it's impossible that this model has more
       # than one page, even though it's many-to-many association).
       # In the future we can let authors explicitly select which interactive Labbook album is connected to.
@@ -106,5 +108,14 @@ module Embeddable
           I18n.t('TAKE_SNAPSHOT')
       end
     end
+
+    def is_connected?
+      !interactive.nil?
+    end
+
+    def show_in_runtime?
+      is_connected?
+    end
+
   end
 end

@@ -14,6 +14,8 @@ class MwInteractive < ActiveRecord::Base
   has_one :interactive_page, :through => :interactive_item
   has_many :interactive_run_states, :as => :interactive
 
+  has_one :labbook, :as => :interactive
+
   def self.string_name
     "iframe interactive"
   end

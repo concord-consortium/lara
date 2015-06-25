@@ -9,6 +9,8 @@ module Embeddable::Answer
       delegate :is_prediction,            :to => :question
       delegate :give_prediction_feedback, :to => :question
       delegate :prediction_feedback,      :to => :question
+      delegate :show_in_runtime?,         :to => :question
+
       def self.by_run(r)
         where(:run_id => r.id)
       end
@@ -93,10 +95,5 @@ module Embeddable::Answer
   def show_in_report?
     true
   end
-
-  def show_in_runtime?
-    true
-  end
-
 
 end
