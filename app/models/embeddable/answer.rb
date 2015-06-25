@@ -90,7 +90,11 @@ module Embeddable::Answer
     update_column(:is_dirty, false)
   end
 
-  def show_in_report
+  def show_in_report?
+    true
+  end
+
+  def show_in_runtime?
     true
   end
 
