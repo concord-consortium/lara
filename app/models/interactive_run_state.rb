@@ -67,7 +67,7 @@ class InteractiveRunState < ActiveRecord::Base
     arg ? original_json(arg) : answer_json
   end
 
-  def show_in_report
+  def show_in_report?
     interactive.respond_to?('save_state') && interactive.save_state && interactive.respond_to?('has_report_url') && interactive.has_report_url
   end
 
@@ -84,7 +84,7 @@ class InteractiveRunState < ActiveRecord::Base
     def prompt
       question.prompt
     end
-    def show_in_report
+    def show_in_report?
       false
     end
   end
