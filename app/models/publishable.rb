@@ -94,8 +94,7 @@ module Publishable
       publishable: self
     })
 
-    return true if response.code == 201
-    return false
+    return response
   end
 
   def add_portal_publication(concord_auth_portal)
