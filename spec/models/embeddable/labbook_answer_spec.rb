@@ -41,4 +41,19 @@ describe Embeddable::LabbookAnswer do
       expect(a_request(:post, labbook_replace_url)).to have_been_made.once
     end
   end
+
+  describe '#show_in_runtime?' do
+    describe 'with a disabled labbok' do
+      let(:labbook) { stub_model(Embeddable::Labbook, show_in_runtime?: false) }
+      it "should return false" do
+        expect(labbok_answer.show_in_runtime?).to eql(false)
+      end
+    end
+    describe 'with an enabled labbok' do
+      let(:labbook) { stub_model(Embeddable::Labbook, show_in_runtime?: true) }
+      it "should return false" do
+        expect(labbok_answer.show_in_runtime?).to eql(true)
+      end
+    end
+  end
 end

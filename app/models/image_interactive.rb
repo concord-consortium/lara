@@ -5,6 +5,7 @@ class ImageInteractive < ActiveRecord::Base
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
   has_one :interactive_page, :through => :interactive_item
+  has_one :labbook, :as => :interactive
 
   def self.string_name
     "image interactive"

@@ -41,5 +41,8 @@ module Embeddable
       "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
     end
   end
-
+  
+  def show_in_runtime?
+    true
+  end
 end
