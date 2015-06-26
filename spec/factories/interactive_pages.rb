@@ -22,5 +22,13 @@ FactoryGirl.define do
         FactoryGirl.create_list(:page_item, 1, :interactive_page => page)
       end
     end
+
+    factory :interactive_page_with_hidden_or do
+      name "page with hidden open response"
+      after(:create) do |page, evaluator|
+        # page.page_items  { [ FactoryGirl.create(:page_item, :interactive_page => page) ] }
+        FactoryGirl.create_list(:hidden_page_item, 1, :interactive_page => page)
+      end
+    end
   end
 end

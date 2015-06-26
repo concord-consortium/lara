@@ -107,6 +107,15 @@ describe LightweightActivity do
         expect(activity.questions).to eql(page1.embeddables)
       end
     end
+
+    context 'when some questions are hidden' do
+      let (:page2) { FactoryGirl.create(:interactive_page_with_hidden_or) }
+
+      it 'returns an array of visible embeddables' do
+        expect(activity.questions.length).to eql(1)
+        expect(activity.questions).to eql(page1.embeddables)
+      end
+    end
   end
 
   describe '#question_keys' do
@@ -273,6 +282,23 @@ describe LightweightActivity do
         expect(pages.length).to eql(2)
         expect(pages[0]['name']).to eql('page 1')
         expect(pages[1]['name']).to eql('page 2')
+      end
+    end
+
+    describe 'pages section with hidden embeddables' do
+      before(:each) do
+        activity.pages << FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0)
+        activity.pages << FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1)
+        activity.reload
+      end
+
+      it 'returns only visible embeddables' do
+        pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
+        expect(pages.length).to eql(2)
+        expect(pages[0]['name']).to eql('page 1')
+        expect(pages[0]['elements'].length).to eql(1)
+        expect(pages[1]['name']).to eql('page 2')
+        expect(pages[1]['elements'].length).to eql(0)
       end
     end
   end
