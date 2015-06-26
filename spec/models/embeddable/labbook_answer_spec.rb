@@ -5,7 +5,7 @@ describe Embeddable::LabbookAnswer do
 
   let(:labbook) { Embeddable::Labbook.create }
   let(:run) { Run.new }
-  let(:labbok_answer) { Embeddable::LabbookAnswer.create(question: labbook, run: run) }
+  let(:labbook_answer) { Embeddable::LabbookAnswer.create(question: labbook, run: run) }
 
   describe '#portal_hash' do
     let(:expected_hash) do
@@ -13,13 +13,13 @@ describe Embeddable::LabbookAnswer do
         type:          'external_link',
         question_type: 'iframe interactive',
         question_id:   labbook.portal_id,
-        answer:        labbok_answer.report_url,
+        answer:        labbook_answer.report_url,
         is_final:      false
       }
     end
 
     it 'matches the expected hash' do
-      expect(labbok_answer.portal_hash).to eq(expected_hash)
+      expect(labbook_answer.portal_hash).to eq(expected_hash)
     end
   end
 
@@ -30,29 +30,29 @@ describe Embeddable::LabbookAnswer do
     before(:each) do
       stub_request(:post, labbook_replace_url).
          with(body: {dst_source: Embeddable::LabbookAnswer::SOURCE_ID,
-                     dst_user_id: labbok_answer.labbook_user_id,
+                     dst_user_id: labbook_answer.labbook_user_id,
                      src_source: Embeddable::LabbookAnswer::SOURCE_ID,
                      src_user_id: another_answer.labbook_user_id}).
          to_return(:status => 200, :body => "", :headers => {})
     end
 
     it 'should fire off a web request to replace album snapshots' do
-      labbok_answer.copy_answer!(another_answer)
+      labbook_answer.copy_answer!(another_answer)
       expect(a_request(:post, labbook_replace_url)).to have_been_made.once
     end
   end
 
   describe '#show_in_runtime?' do
-    describe 'with a disabled labbok' do
+    describe 'with a disabled labbook' do
       let(:labbook) { stub_model(Embeddable::Labbook, show_in_runtime?: false) }
       it "should return false" do
-        expect(labbok_answer.show_in_runtime?).to eql(false)
+        expect(labbook_answer.show_in_runtime?).to eql(false)
       end
     end
-    describe 'with an enabled labbok' do
+    describe 'with an enabled labbook' do
       let(:labbook) { stub_model(Embeddable::Labbook, show_in_runtime?: true) }
       it "should return false" do
-        expect(labbok_answer.show_in_runtime?).to eql(true)
+        expect(labbook_answer.show_in_runtime?).to eql(true)
       end
     end
   end
