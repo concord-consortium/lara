@@ -16,9 +16,11 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
-  MODEL_LIST_URL = 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
 
-  React.createClass
+  ModelEditor = React.createClass
+
+    statics:
+      MODEL_LIST_URL: 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
 
     mixins:
       [SectionElementEditorMixin]
@@ -44,7 +46,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
     fetchModelList: ->
       cachedAjax
-        url: MODEL_LIST_URL
+        url: ModelEditor.MODEL_LIST_URL
         success: (data) =>
           if @isMounted()
             modelOptions = []
