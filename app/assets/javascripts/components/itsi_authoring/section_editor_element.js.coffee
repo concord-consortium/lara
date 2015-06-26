@@ -11,6 +11,9 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
 
     selected: (e) ->
       selected = e.target.checked
+      if not selected and not @props.confirmHide()
+        e.preventDefault()
+        return
       postData =
         _method: 'PUT'
       postData[@props.toHide] = if selected then 0 else 1
@@ -35,7 +38,7 @@ modulejs.define 'components/itsi_authoring/section_editor_element',
             (a {href: '#', className: 'ia-section-editor-edit', onClick: @edit}, 'edit')
           )
         (label {},
-          (input {type: 'checkbox', ref: 'checkbox', checked: @state.selected, onChange: @selected})
+          (input {type: 'checkbox', checked: @state.selected, onChange: @selected})
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},

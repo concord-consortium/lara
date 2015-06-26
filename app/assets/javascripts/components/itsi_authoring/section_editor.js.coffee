@@ -30,8 +30,11 @@ modulejs.define 'components/itsi_authoring/section_editor',
     getInitialState: ->
       selected: not @props.section.is_hidden
 
-    selected: ->
-      selected = (React.findDOMNode @refs.checkbox).checked
+    selected: (e) ->
+      selected = e.target.checked
+      if not selected and not @props.confirmHide()
+        e.preventDefault()
+        return
       $.ajax
         url: "#{@props.section.update_url}.json"
         type: 'POST'
@@ -64,7 +67,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
     render: ->
       (div {className: 'ia-section-editor'},
         (label {},
-          (input {type: 'checkbox', ref: 'checkbox', checked: @state.selected, onChange: @selected})
+          (input {type: 'checkbox', checked: @state.selected, onChange: @selected})
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
@@ -72,12 +75,12 @@ modulejs.define 'components/itsi_authoring/section_editor',
           for interactive, i in @props.section.interactives
             editor = @getEditorForInteractiveElement interactive
             if editor
-              (editor {key: "interactive#{i}", data: interactive, alert: @props.alert})
+              (editor {key: "interactive#{i}", data: interactive, alert: @props.alert, confirmHide: @props.confirmHide})
 
           for embeddable, i in @props.section.embeddables
             editor = @getEditorForEmbeddedElement embeddable
             if editor
-              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert})
+              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
         )
       )
 
