@@ -49,13 +49,22 @@ modulejs.define 'components/itsi_authoring/model_editor',
         url: ModelEditor.MODEL_LIST_URL
         success: (data) =>
           if @isMounted()
+            models = data?.models
             modelOptions = []
             modelsByName = {}
-            for model in data
-              modelsByName[model.name] = model
-              modelOptions.push
-                name: model.name
-                value: model.name
+
+            if models
+              models.sort (a, b) ->
+                [lowerA, lowerB] = [a.name?.toLowerCase(), b.name?.toLowerCase()]
+                return -1 if lowerA < lowerB
+                return 1 if lowerA > lowerB
+                return 0
+              for model, i in models
+                modelsByName[model.name] = model
+                modelOptions.push
+                  name: if model.id then "#{model.id}: #{model.name}" else model.name
+                  value: model.name
+
             @setState
               modelOptions: modelOptions
               modelsByName: modelsByName
@@ -69,7 +78,10 @@ modulejs.define 'components/itsi_authoring/model_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')
-            (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
+            if @state.modelOptions.length > 0
+              (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
+            else
+              'Loading models...'
           )
         else
           (div {className: 'ia-section-text'},
