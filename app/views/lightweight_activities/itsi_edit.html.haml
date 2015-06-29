@@ -4,14 +4,6 @@
 = content_for :title do
   = "Edit #{@activity.name}"
 = content_for :container_css_classes, 'itsi-edit'
-= content_for :nav do
-  .breadcrumbs
-    %ul
-      %li= link_to "Home", root_path
-      %li
-        \/
-        = link_to 'All Activities', activities_path
-      %li= "/ #{@activity.name}".html_safe
 
 = render :partial => "edit_header"
 
