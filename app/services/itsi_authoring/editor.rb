@@ -8,7 +8,8 @@ class ITSIAuthoring::Editor
   def to_json
     {
       metadata: metadata_json,
-      sections: @activity.pages.map { |p| section_json(p) }
+      sections: @activity.pages.map { |p| section_json(p) },
+      active_runs: @activity.active_runs
     }
   end
 

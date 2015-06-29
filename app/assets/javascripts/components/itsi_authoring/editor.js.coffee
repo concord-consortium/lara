@@ -38,6 +38,13 @@ modulejs.define 'components/itsi_authoring/editor',
         layout: layout
       @_processAlertQueue() if @alerts.length is 1
 
+    confirmHide: ->
+      if @props.active_runs > 0
+        learner = "learner#{if @props.active_runs is 1 then '' else 's'}"
+        confirm "Are you sure you want to hide this? You will lose data from #{@props.active_runs} #{learner}."
+      else
+        true
+
     render: ->
       (div {className: 'ia-editor'},
         (Alert {alert: @state.alert}) if @state.alert
@@ -47,6 +54,6 @@ modulejs.define 'components/itsi_authoring/editor',
             # ignore the 'Test page'
             if section.name isnt 'Test page'
               title = if name is 'Second Career STEM Question' then 'Concluding Career STEM Question' else section.name
-              (SectionEditor {section: section, title: title, key: i, alert: @alert})
+              (SectionEditor {section: section, title: title, key: i, alert: @alert, confirmHide: @confirmHide})
         )
       )

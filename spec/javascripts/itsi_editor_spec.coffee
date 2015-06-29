@@ -121,6 +121,7 @@ describe "ITSI Editor", () ->
       props =
         title: "test title"
         toHide: "hidden"
+        confirmHide: -> true
         data:
           is_hidden: false
           update_url: "fake_update_url"
@@ -141,6 +142,27 @@ describe "ITSI Editor", () ->
       request = jasmine.react.captureRequest ->
         jasmine.react.change checkbox, {"target": {"checked": true}}
       expect(request.params).toBe("_method=PUT&hidden=0")
+
+      expect(children.style.display).toBe("block")
+
+    it "toggles does not children visibility when not confirmed", ->
+      props =
+        title: "test title"
+        toHide: "hidden"
+        confirmHide: -> false
+        data:
+          is_hidden: false
+          update_url: "fake_update_url"
+      sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props
+
+      checkbox = jasmine.react.findTag sectionEditorElement, "input"
+      children = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements").getDOMNode()
+
+      expect(children.style.display).toBe("block")
+
+      request = jasmine.react.captureRequest ->
+        jasmine.react.change checkbox, {"target": {"checked": false}}
+      expect(request).toBe(undefined)
 
       expect(children.style.display).toBe("block")
 
