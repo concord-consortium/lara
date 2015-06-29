@@ -69,4 +69,51 @@ describe Embeddable::Labbook do
       end
     end
   end
+
+  describe "interactive methods" do
+    let(:hidden_mw_interactive) { FactoryGirl.create(:hidden_mw_interactive) }
+    let(:mw_interactive)        { FactoryGirl.create(:mw_interactive) }
+    let(:interactives) { [] }
+    let(:page)         { FactoryGirl.create(:page_with_or, interactives: interactives) }
+    let(:args)         { {} }
+    let(:labbook)      do
+      lb = Embeddable::Labbook.create(args)
+      page.add_embeddable(lb)
+      lb
+    end
+    describe "#possible_interactives" do
+      describe "when there aren't any interactives" do
+        it "should return an empty list" do
+          expect(labbook.possible_interactives).to be_empty
+        end
+      end
+
+      describe "when there are only invisible interactives" do
+        let(:interactives) { [hidden_mw_interactive] }
+        it "should still return an empty list" do
+          expect(labbook.possible_interactives).to be_empty
+        end
+      end
+
+      describe "when there are visibile interactives" do
+        let(:interactives) { [hidden_mw_interactive, mw_interactive] }
+        it "should return one visible interactive" do
+            expect(labbook.possible_interactives).to include mw_interactive
+            expect(labbook.possible_interactives).not_to include hidden_mw_interactive
+        end
+      end
+    end
+
+    describe "#interactives_for_select" do
+      let(:interactive_a)         { FactoryGirl.create(:mw_interactive) }
+      let(:interactive_b)         { FactoryGirl.create(:mw_interactive) }
+      let(:expected_identifier_a) { ["Mw interactive (1)", "#{interactive_a.id}-MwInteractive"]}
+      let(:expected_identifier_b) { ["Mw interactive (2)", "#{interactive_b.id}-MwInteractive"]}
+      let(:interactives) { [interactive_a, interactive_b] }
+      it "should have good options" do
+        expect(labbook.interactives_for_select).to include expected_identifier_a
+        expect(labbook.interactives_for_select).to include expected_identifier_b
+      end
+    end
+  end
 end

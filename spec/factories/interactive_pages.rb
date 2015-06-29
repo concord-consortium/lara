@@ -3,9 +3,9 @@
 FactoryGirl.define do
   # Name is defined in the LightweightActivity factory
   sequence(:page_sidebar) { |n| Faker::Lorem.sentences(4).join(" ") }
-  sequence(:page_text) { |n| Faker::Lorem.sentences(6).join(" ") }
+  sequence(:page_text)    { |n| Faker::Lorem.sentences(6).join(" ") }
 
-  factory :page, :class => InteractivePage do
+  factory :page, class: InteractivePage, aliases: [:interactive_page]  do
     name { generate(:name) }
     text { generate(:page_text) }
     sidebar { generate(:page_sidebar) }
@@ -15,7 +15,18 @@ FactoryGirl.define do
     show_info_assessment 1
     is_hidden 0
 
-    factory :interactive_page_with_or do
+    ignore do
+      interactives []
+    end
+
+    after(:create) do |page,evaluator|
+      interactives =  evaluator.interactives || []
+      interactives.each do |interactive|
+        page.add_interactive interactive
+      end
+    end
+
+    factory :interactive_page_with_or, aliases: [:page_with_or] do
       name "page with open response"
       after(:create) do |page, evaluator|
         # page.page_items  { [ FactoryGirl.create(:page_item, :interactive_page => page) ] }
@@ -30,5 +41,6 @@ FactoryGirl.define do
         FactoryGirl.create_list(:hidden_page_item, 1, :interactive_page => page)
       end
     end
+
   end
 end
