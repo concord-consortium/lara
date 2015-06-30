@@ -75,4 +75,74 @@ describe InteractivePageHelper do
     end
   end
 
+  describe "#show_labbook_under_interactive?" do
+    let(:run)            { double("run") }
+    let(:interactive)    { double("interactive") }
+    let(:labbook)        { double("labbook") }
+    let(:labbook_answer) { double("labbook_answer") }
+    let(:fake_finder)    { double("finder", find_answer: finder_return) }
+    let(:finder_return)  { false }
+
+    before :each do
+      Embeddable::AnswerFinder.stub(:new).and_return(fake_finder)
+    end
+    describe "When not configured to show the labbook under an interactive" do
+      it "should always return false" do
+        expect(helper.show_labbook_under_interactive?(run,interactive)).to be false
+      end
+    end
+
+    describe "When configured to show the labbook under the interactive" do
+      before :each do
+        assign(:labbook_is_under_interactive, true)
+      end
+
+      describe "When the interactive doesn't have a lab book" do
+        let(:interactive) { double("interactive", {labbook: nil}) }
+        it "should be false" do
+          expect(helper.show_labbook_under_interactive?(run,interactive)).to be false
+        end
+      end
+
+      describe "When the interactive does have an associated lab book" do
+        let(:interactive)   { double("interactive", {labbook: labbook}) }
+        let(:finder_return) { labbook_answer }
+        it "should return the labbook" do
+          expect(helper.show_labbook_under_interactive?(run,interactive)).to be labbook_answer
+        end
+      end
+    end
+  end
+
+  describe "#hide_labbook_from_question_section?" do
+    let(:question)  { nil }
+    let(:answer)    { double("answer", :question => question) }
+    subject         { helper.hide_labbook_from_question_section?(answer) }
+
+    describe "when the embeddable isn't a labbook" do
+      let(:question)  { double "not a labbook" }
+      it "should always return false" do
+        expect(subject).to be false
+      end
+    end
+
+    describe "when the embeddable is a labook answer" do
+      let(:question)  { Embeddable::Labbook.new }
+      describe "when the page isn't cofigured to show the labook under the interactive" do
+        it "should should show the labbook in the questions section" do
+          expect(subject).to be false
+        end
+      end
+
+      describe "when the page is configured to show the labbook under the interactive" do
+        before :each do
+          assign(:labbook_is_under_interactive, true)
+        end
+        it "should hide the labbook from the questions section" do
+          expect(subject).to be true
+        end
+      end
+    end
+  end
+
 end

@@ -33,6 +33,12 @@
       = interactive_data_div(interactive, @run)
       = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
 
+- labbook = show_labbook_under_interactive?(@run, interactive)
+- if labbook
+  .question
+    = render partial: 'embeddable/labbook_answers/lightweight',
+      locals: { embeddable: labbook }
+
 :javascript
   $(document).ready(function() {
     $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
