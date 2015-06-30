@@ -4,11 +4,9 @@
     = link_to "Preview", preview_activity_path(@activity), :target => 'new'
   - if current_user.is_admin
     %span.preview
-      = link_to "Mode: Standard", "#{edit_activity_path(@activity)}?mode=standard"
+      = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
     %span.preview
-      = link_to "Mode: ITSI", "#{edit_activity_path(@activity)}?mode=itsi"
-    %span.preview
-      = link_to "Mode: ITSI (Development)", "#{edit_activity_path(@activity)}?mode=itsi-dev"
+      = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
 
 = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
 - if @activity.active_runs > 0

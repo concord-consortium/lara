@@ -10,11 +10,9 @@ class LightweightActivity < ActiveRecord::Base
   ]
   STANDARD_EDITOR_MODE = 0
   ITSI_EDITOR_MODE = 1
-  ITSI_WIP_EDITOR_MODE = 2 # this is just for development of the React edit template - it will be removed once that work is done
   EDITOR_MODE_OPTIONS = [
     ['Standard', STANDARD_EDITOR_MODE],
-    ['ITSI', ITSI_EDITOR_MODE],
-    ['ITSI (Development)', ITSI_WIP_EDITOR_MODE]
+    ['ITSI', ITSI_EDITOR_MODE]
   ]
 
   attr_accessible :name, :user_id, :pages, :related, :description,
