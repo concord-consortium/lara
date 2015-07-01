@@ -18,6 +18,8 @@ en:
   OPEN_ALBUM: "Open album"
   QUESTION: "Question"
   LABBOOK_ALBUM: "Labbook album"
+  LABBOOK_NO_INTERACTIVE: "No Interactive"
+  LABBOOK_WONT_DISPLAY: "Labbook will not be shown. No visible interactive is set. 'snapshot' is selected."
   LOADING_LABBOOK: "Loading Labbook album..."
   SNAPSHOT_FAILED: "Could not take your snapshot. Please try again later."
   DRAWING_SAVE_ERROR: "Could not save your drawing after 30 seconds. Please try again later."

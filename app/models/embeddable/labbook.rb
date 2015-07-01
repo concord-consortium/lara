@@ -11,6 +11,10 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
+    WONT_DISPLAY_MSG     = I18n.t('LABBOOK_WONT_DISPLAY')
+    NO_INTERACTIVE_LABLE =   I18n.t('LABBOOK_NO_INTERACTIVE')
+    NO_INTERACTIVE_VALUE = "no-interactive"
+    NO_INTERACTIVE_SELECT = [NO_INTERACTIVE_LABLE, NO_INTERACTIVE_VALUE];
     attr_accessible :action_type, :name, :prompt,
       :custom_action_label, :is_hidden,
       :interactive_type, :interactive_id, :interactive,
@@ -107,16 +111,19 @@ module Embeddable
 
     def possible_interactives
       # Only the visible_interactives should be used when selecting an interactive
-      return page.visible_interactives if page
+      return page.interactives if page
       return []
     end
 
     def interactives_for_select
       # Because interactive is ploymorphic association, normal AR optinons
       # for select don't work.
-      possible_interactives.each_with_index.map do |pi,i|
-        ["#{pi.class.model_name.human} (#{i+1})", make_interactive_select_value(pi)]
+      options = [NO_INTERACTIVE_SELECT]
+      possible_interactives.each_with_index do |pi,i|
+        hidden_text =  pi.is_hidden? ? "(hidden)" : ""
+        options << ["#{pi.class.model_name.human} #{hidden_text}(#{i+1})", make_interactive_select_value(pi)]
       end
+      options
     end
 
     def interactive_select_value
@@ -126,10 +133,6 @@ module Embeddable
 
     def make_interactive_select_value(interactive)
       "#{interactive.id}-#{interactive.class.name}"
-    end
-
-    def default_interactive
-      possible_interactives.first
     end
 
     def action_label
@@ -142,19 +145,29 @@ module Embeddable
       end
     end
 
-    def is_connected?
+    def has_interactive?
       !interactive.nil?
     end
 
+    def interactive_is_visible?
+      has_interactive? && !interactive.is_hidden?
+    end
+
     def show_in_runtime?
-      is_connected?
+      action_type == UPLOAD_ACTION || interactive_is_visible?
     end
 
     private
     def parse_interactive_select_value
+      # Parse the interactive form select input value
+      # Turn it into a type of interactive, or nil.
       if interactive_select_value
-        id, model = self.interactive_select_value.split('-')
-        self.interactive = Kernel.const_get(model).send(:find, id) rescue nil
+        _interactive = nil
+        if interactive_select_value != NO_INTERACTIVE_VALUE
+          id, model = self.interactive_select_value.split('-')
+          _interactive = Kernel.const_get(model).send(:find, id) rescue nil
+        end
+        self.interactive = _interactive
       end
     end
 

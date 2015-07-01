@@ -5,6 +5,8 @@
   %p
     = embeddable.name
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
+  - unless embeddable.show_in_runtime?
+    .warning= Embeddable::Labbook::WONT_DISPLAY_MSG
   %button.button{type: 'submit'}
     %i.fa.fa-camera
     = embeddable.action_label
