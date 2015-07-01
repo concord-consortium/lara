@@ -46,7 +46,7 @@ describe InteractivePageHelper do
         describe "when the run is for a different activity" do
           subject {helper.runnable_activity_page_path(activity_2,page)}
           it " the link should not include the run key" do
-            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}") 
+            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}")
           end
         end
       end
@@ -61,13 +61,13 @@ describe InteractivePageHelper do
           let(:sequence_run_stubs) {{run_for_activity: nil}}
           subject {helper.runnable_activity_page_path(activity_2,page)}
           it " the link should not include the run key" do
-            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}") 
+            expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}")
           end
-          
+
           describe "but if it is part of the same sequence" do
             let(:sequence_run_stubs) {{run_for_activity: other_run}}
             it " the link should include the other run's key" do
-              expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}/#{other_run.key}")  
+              expect(subject).to eq("/activities/#{activity_2.id}/pages/#{page.id}/#{other_run.key}")
             end
           end
         end
@@ -114,10 +114,11 @@ describe InteractivePageHelper do
     end
   end
 
-  describe "#hide_labbook_from_question_section?" do
-    let(:question)  { nil }
-    let(:answer)    { double("answer", :question => question) }
-    subject         { helper.hide_labbook_from_question_section?(answer) }
+  describe "#show_labbook_in_assessment_block?" do
+    let(:question)    { nil }
+    let(:interactive) { nil }
+    let(:answer)      { double("answer", :question => question) }
+    subject           { helper.show_labbook_in_assessment_block?(answer) }
 
     describe "when the embeddable isn't a labbook" do
       let(:question)  { double "not a labbook" }
@@ -127,7 +128,7 @@ describe InteractivePageHelper do
     end
 
     describe "when the embeddable is a labook answer" do
-      let(:question)  { Embeddable::Labbook.new }
+      let(:question)  { Embeddable::Labbook.new(interactive: interactive)}
       describe "when the page isn't cofigured to show the labook under the interactive" do
         it "should should show the labbook in the questions section" do
           expect(subject).to be false
@@ -138,9 +139,18 @@ describe InteractivePageHelper do
         before :each do
           assign(:labbook_is_under_interactive, true)
         end
-        it "should hide the labbook from the questions section" do
-          expect(subject).to be true
+        describe "When the Labbook doesn't have an interactive" do
+          it "should show the labbook in the assessment section" do
+            expect(subject).to be false
+          end
         end
+        describe "When the labbook does belong to an interactive" do
+          let(:interactive) { mock_model(MwInteractive, {}) }
+          it "should hide the labbook from the assessment section" do
+            expect(subject).to be true
+          end
+        end
+
       end
     end
   end

@@ -47,9 +47,10 @@ module InteractivePageHelper
     return finder.find_answer(interactive.labbook)
   end
 
-  def hide_labbook_from_question_section?(embeddable_answer)
+  def show_labbook_in_assessment_block?(embeddable_answer)
     question = embeddable_answer.respond_to?(:question) && embeddable_answer.question
     if question && question.is_a?(Embeddable::Labbook)
+      return false unless question.interactive
       return labbook_is_under_interactive?
     end
     return false
