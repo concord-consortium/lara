@@ -42,16 +42,19 @@ class ImportController < ApplicationController
     authentication = Authentication.find_by_provider_and_uid(portal.strategy_name,request_json[:domain_uid])
     user = User.find(authentication.user_id)
 
-
-
     import_activity = LightweightActivity.import(request_json[:activity],user)
 
-    req_url = "#{request.protocol}#{request.host_with_port}"    
-    response_add_to_poratl = import_activity.portal_publish(user,portal,req_url)
-    response_publish = import_activity.republish_for_portal(portal,req_url)
+    req_url = "#{request.protocol}#{request.host_with_port}"
+    response_add_to_portal = import_activity.portal_publish(user,portal,req_url)
+    response_code = response_add_to_portal.code
+    if response_code == 201
+      response_publish = import_activity.republish_for_portal(portal,req_url)
+      response_code = response_publish.code
+    end
 
     response_body = JSON.parse "#{response_publish.body}", :symbolize_names => true
-    response.headers["data"] = {:external_activity_id => response_body[:activity_id]}.to_json
+    response.headers["data"] = {:external_activity_id => response_body[:activity_id],
+                                :response_code => response_code}.to_json
     render :nothing => true
   end
 end
