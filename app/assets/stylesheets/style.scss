@@ -271,6 +271,13 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     width: 98%;
   }
 }
+.embeddable_options {
+  .warning {
+    color: #ba431e;
+    font-weight: bold;
+    margin-top: 1em;
+  }
+}
 .questions.full-width {
   .embeddable {
     float: left;

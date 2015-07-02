@@ -6,5 +6,9 @@ FactoryGirl.define do
   factory :mw_interactive do
     name { generate(:name) }
     url  { generate(:url) }
+
+    factory :hidden_mw_interactive do
+      is_hidden true
+    end
   end
 end
