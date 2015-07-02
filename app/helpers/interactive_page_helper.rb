@@ -30,6 +30,32 @@ module InteractivePageHelper
     page.main_visible_embeddables.map { |e| finder.find_answer(e) }
   end
 
+  def labbook_is_under_interactive?
+    # Is the labbook is interleaved with interactions?
+    if defined?(@labbook_is_under_interactive) && @labbook_is_under_interactive
+      true
+    else
+      false
+    end
+  end
+
+  def show_labbook_under_interactive?(run, interactive)
+    # In single-page runtime, the labbook is interleaved with interactions
+    return false unless labbook_is_under_interactive?
+    return false if interactive.labbook.nil?
+    finder = Embeddable::AnswerFinder.new(run)
+    return finder.find_answer(interactive.labbook)
+  end
+
+  def show_labbook_in_assessment_block?(embeddable_answer)
+    question = embeddable_answer.respond_to?(:question) && embeddable_answer.question
+    if question && question.is_a?(Embeddable::Labbook)
+      return false unless question.interactive
+      return labbook_is_under_interactive?
+    end
+    return false
+  end
+
   protected
   def run_for_activity(activity, run)
     return nil unless run
