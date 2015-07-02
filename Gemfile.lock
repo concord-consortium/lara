@@ -127,10 +127,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    celluloid (0.15.2)
-      timers (~> 1.1.0)
-    childprocess (0.5.5)
-      ffi (~> 1.0, >= 1.0.11)
     chosen-rails (1.0.1)
       coffee-rails (>= 3.2)
       compass-rails (>= 1.0)
@@ -210,32 +206,29 @@ GEM
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     fastercsv (1.5.5)
-    ffi (1.9.6)
+    ffi (1.9.10)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
-    formatador (0.2.4)
-    fuubar (2.0.0)
-      rspec (~> 3.0)
-      ruby-progressbar (~> 1.4)
+    formatador (0.2.5)
     gon (5.2.3)
       actionpack (>= 2.3.0)
       json
       multi_json
       request_store (>= 1.0.5)
-    guard (2.2.4)
+    guard (2.12.8)
       formatador (>= 0.2.4)
-      listen (~> 2.1)
+      listen (>= 2.7, <= 4.0)
       lumberjack (~> 1.0)
+      nenv (~> 0.1)
+      notiffany (~> 0.0)
       pry (>= 0.9.12)
+      shellany (~> 0.0)
       thor (>= 0.18.1)
-    guard-jasmine (1.18.3)
-      childprocess
-      guard (>= 1.1.0)
-      multi_json
-      thor
-      tilt
-    guard-rspec (1.2.1)
-      guard (>= 1.1)
+    guard-compat (1.2.1)
+    guard-rspec (4.6.0)
+      guard (~> 2.1)
+      guard-compat (~> 1.1)
+      rspec (>= 2.99.0, < 4.0)
     haml (4.0.5)
       tilt
     hashie (2.0.5)
@@ -265,15 +258,14 @@ GEM
     launchy (2.4.0)
       addressable (~> 2.3)
     libv8 (3.16.14.7)
-    listen (2.2.0)
-      celluloid (>= 0.15.2)
+    listen (3.0.1)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     lol_dba (1.6.0)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
       railties (>= 3.0)
-    lumberjack (1.0.4)
+    lumberjack (1.0.9)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -284,6 +276,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     mysql2 (0.3.14)
+    nenv (0.2.0)
     nested_form (0.3.2)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -295,6 +288,9 @@ GEM
     newrelic_rpm (3.9.3.241)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    notiffany (0.0.6)
+      nenv (~> 0.1)
+      shellany (~> 0.0)
     oauth2 (0.9.2)
       faraday (~> 0.8)
       httpauth (~> 0.2)
@@ -313,7 +309,7 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     polyglot (0.3.5)
-    pry (0.9.12.3)
+    pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
@@ -323,7 +319,7 @@ GEM
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    rack (1.4.5)
+    rack (1.4.7)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-environmental (1.3.1)
@@ -365,8 +361,8 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (10.4.2)
-    rb-fsevent (0.9.3)
-    rb-inotify (0.9.2)
+    rb-fsevent (0.9.5)
+    rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -405,7 +401,6 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
     ruby-ole (1.2.11.8)
-    ruby-progressbar (1.7.1)
     ruby2ruby (2.0.7)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
@@ -420,6 +415,7 @@ GEM
     sexp_processor (4.4.1)
     sextant (0.2.4)
       rails (>= 3.2)
+    shellany (0.0.1)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -427,7 +423,7 @@ GEM
     slim (2.0.2)
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
-    slop (3.4.7)
+    slop (3.6.0)
     spreadsheet (1.0.3)
       ruby-ole (>= 1.0)
     spring (1.2.0)
@@ -447,7 +443,6 @@ GEM
     thor (0.19.1)
     tilt (1.4.1)
     timecop (0.6.3)
-    timers (1.1.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -507,14 +502,12 @@ DEPENDENCIES
   factory_girl_rails
   faker
   font-awesome-rails
-  fuubar
   gon
-  guard-jasmine
-  guard-rspec
+  guard-rspec (~> 4.6.0)
   haml
   highline
   httparty
-  jasmine
+  jasmine (~> 2.2.0)
   jasmine-jquery-rails
   jeditable_wysiwyg_rails!
   jquery-rails
@@ -548,6 +541,7 @@ DEPENDENCIES
   sextant
   sketchily!
   spreadsheet
+  spring
   spring-commands-rspec
   sqlite3
   therubyracer
@@ -560,3 +554,6 @@ DEPENDENCIES
   will_paginate (~> 3.0)
   xray-rails
   yaml_db!
+
+BUNDLED WITH
+   1.10.5
