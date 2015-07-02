@@ -54,6 +54,11 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
           if @isMounted()
             modelOptions = []
             modelsByName = {}
+            data.sort (a, b) ->
+              [lowerA, lowerB] = [a.name?.toLowerCase(), b.name?.toLowerCase()]
+              return -1 if lowerA < lowerB
+              return 1 if lowerA > lowerB
+              return 0
             for model in data
               modelsByName[model.name] = model
               modelOptions.push
@@ -72,7 +77,10 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Sensor')
-            (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
+            if @state.modelOptions.length > 0
+              (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
+            else
+              'Loading sensors...'
           )
         else
           (div {className: 'ia-section-text'},
