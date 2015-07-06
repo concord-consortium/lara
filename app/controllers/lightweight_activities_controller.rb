@@ -6,7 +6,7 @@ class LightweightActivitiesController < ApplicationController
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
   before_filter :set_sequence, :only   => [:summary, :show, :single_page]
-  
+
   before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
 
   layout :set_layout
@@ -112,12 +112,11 @@ class LightweightActivitiesController < ApplicationController
     if params[:mode] && current_user.admin?
       @editor_mode = case params[:mode]
                        when "itsi" then LightweightActivity::ITSI_EDITOR_MODE
-                       when "itsi-dev" then LightweightActivity::ITSI_WIP_EDITOR_MODE
                        else LightweightActivity::STANDARD_EDITOR_MODE
                      end
     end
 
-    if @editor_mode == LightweightActivity::ITSI_WIP_EDITOR_MODE
+    if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
       # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
       gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
       render :itsi_edit
@@ -172,7 +171,7 @@ class LightweightActivitiesController < ApplicationController
       redirect_to activities_path
     end
   end
-  
+
   def show_status
     @message = params[:message] || ''
     respond_to do |format|
@@ -180,13 +179,13 @@ class LightweightActivitiesController < ApplicationController
       format.html
     end
   end
-  
+
   def export
     authorize! :export, @activity
     lightweight_activity_json = @activity.export.to_json
     send_data lightweight_activity_json, type: :json, disposition: "attachment", filename: "#{@activity.name}_version_1.json"
   end
-  
+
   def move_up
     authorize! :update, @activity
     @page = @activity.pages.find(params[:id])
