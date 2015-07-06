@@ -1,6 +1,7 @@
 class LightweightActivity < ActiveRecord::Base
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice, Embeddable::Labbook]
-  include Publishable # models/publishable.rb defines pub & official
+  include Publishable # defines methods to publish to portals
+  include PublicationStatus # defines publication status scopes and helpers
 
   LAYOUT_MULTI_PAGE = 0
   LAYOUT_SINGLE_PAGE = 1
