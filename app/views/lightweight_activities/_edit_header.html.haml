@@ -8,7 +8,8 @@
     %span.preview
       = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
 
-= render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
+- if show_publication_details
+  = render :partial => "publications/publication_details", :locals =>{ :publication => @activity}
 - if @activity.active_runs > 0
   %p.active-runs
     = "This activity has been used by #{pluralize(@activity.active_runs, "learner")}. Editing may cause problems with results data. If you make changes, please publish this activity and any associated sequences as soon as possible."

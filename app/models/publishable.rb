@@ -1,4 +1,24 @@
+require 'digest/sha1'
+
 module Publishable
+
+  def latest_publication_portals
+    counts = portal_publications.group(:portal_url).count
+    rows = portal_publications.select("portal_url, success, created_at, publication_hash").where(["id IN (SELECT MAX(id) FROM portal_publications GROUP BY portal_url)"])
+    portals = []
+    rows.each do |row|
+      portals << {
+        :url => row.portal_url,
+        :domain => row.portal_url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 },
+        :success => row.success,
+        :count => counts[row.portal_url],
+        :publication_hash => row.publication_hash,
+        :date => row.created_at.strftime('%F %R')
+      }
+    end
+    portals
+  end
+
   def find_portal_publication(concord_auth_portal)
     self.portal_publications.where('portal_url' =>  concord_auth_portal.publishing_url).last
   end
@@ -34,8 +54,10 @@ module Publishable
     url = auth_portal.republishing_url if republish
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
     auth_token = 'Bearer %s' % token
+    json = self.serialize_for_portal(self_url).to_json
+    hash = Digest::SHA1.hexdigest(json)
     response = HTTParty.post(url,
-      :body => self.serialize_for_portal(self_url).to_json,
+      :body => json,
       :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
 
     Rails.logger.info "Response: #{response.inspect}"
@@ -43,8 +65,12 @@ module Publishable
       portal_url: auth_portal.publishing_url,
       response: response.inspect,
       success: ( response.code == 201 ) ? true : false,
-      publishable: self
+      publishable: self,
+      publication_hash: hash
     })
+
+    self.publication_hash = hash
+    self.save!
 
     return true if response.code == 201
     return false
@@ -72,10 +98,12 @@ module Publishable
   def self.included(clazz)
     clazz.class_eval do
       after_update :auto_publish_to_portal
+      has_many :portal_publications, :as => :publishable, :order => :updated_at
     end
   end
 
   def auto_publish_to_portal
+    hash =
     logger.debug "TODO: Autopublish #{self}"
   end
 end

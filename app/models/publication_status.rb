@@ -20,8 +20,6 @@ module PublicationStatus
       scope :official,  where(:is_official => true)
       scope :community, where(:is_official => false)
 
-      has_many :portal_publications, :as => :publishable, :order => :updated_at
-
       # * Find all activities for one user (regardless of publication status)
       def self.my(user)
         where(:user_id => user.id)

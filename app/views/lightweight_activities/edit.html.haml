@@ -12,7 +12,7 @@
         = link_to 'All Activities', activities_path
       %li= "/ #{@activity.name}".html_safe
 
-= render :partial => "edit_header"
+= render :partial => "edit_header", locals: {show_publication_details: true}
 
 #leftcol
   .sequence_form

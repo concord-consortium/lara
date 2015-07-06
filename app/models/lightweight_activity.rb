@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
 
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-                  :portal_run_count, :layout, :editor_mode
+                  :portal_run_count, :layout, :editor_mode, :publication_hash
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'

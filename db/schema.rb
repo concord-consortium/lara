@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150624175249) do
+ActiveRecord::Schema.define(:version => 20150706174054) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -329,23 +329,24 @@ ActiveRecord::Schema.define(:version => 20150624175249) do
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.string   "publication_status", :default => "private"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.string   "publication_status",               :default => "private"
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
     t.integer  "changed_by_id"
-    t.boolean  "is_official",        :default => false
+    t.boolean  "is_official",                      :default => false
     t.integer  "time_to_complete"
-    t.boolean  "is_locked",          :default => false
+    t.boolean  "is_locked",                        :default => false
     t.text     "notes"
     t.string   "thumbnail_url"
     t.integer  "theme_id"
     t.integer  "project_id"
-    t.integer  "portal_run_count",   :default => 0
-    t.integer  "layout",             :default => 0
-    t.integer  "editor_mode",        :default => 0
+    t.integer  "portal_run_count",                 :default => 0
+    t.integer  "layout",                           :default => 0
+    t.integer  "editor_mode",                      :default => 0
+    t.string   "publication_hash",   :limit => 40
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -409,6 +410,7 @@ ActiveRecord::Schema.define(:version => 20150624175249) do
     t.string   "publishable_type"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
+    t.string   "publication_hash", :limit => 40
   end
 
   create_table "projects", :force => true do |t|
@@ -466,17 +468,18 @@ ActiveRecord::Schema.define(:version => 20150624175249) do
   create_table "sequences", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.integer  "user_id"
     t.integer  "theme_id"
     t.integer  "project_id"
     t.text     "logo"
-    t.string   "publication_status", :default => "private"
-    t.boolean  "is_official",        :default => false
+    t.string   "publication_status",               :default => "private"
+    t.boolean  "is_official",                      :default => false
     t.string   "display_title"
     t.string   "thumbnail_url"
     t.text     "abstract"
+    t.string   "publication_hash",   :limit => 40
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
