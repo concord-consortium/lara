@@ -40,10 +40,6 @@
   %h1.title
     = @activity.name
 
-  - if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
-    %div{ :style => "font-weight: bold; margin: 10px 0; background-color: #cff204; padding: 10px;" }
-      This page will use the ITSI editor mode once it is completed.
-
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
     %span.preview
