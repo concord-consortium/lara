@@ -66,4 +66,16 @@ module Publishable
       self.republish_for_portal(portal,self_url)
     end
   end
+
+  ## auto publishing methods
+
+  def self.included(clazz)
+    clazz.class_eval do
+      after_update :auto_publish_to_portal
+    end
+  end
+
+  def auto_publish_to_portal
+    logger.debug "TODO: Autopublish #{self}"
+  end
 end
