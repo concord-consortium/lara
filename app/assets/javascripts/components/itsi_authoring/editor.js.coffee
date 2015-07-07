@@ -5,16 +5,19 @@ modulejs.define 'components/itsi_authoring/editor',
   'components/itsi_authoring/metadata_editor',
   'components/itsi_authoring/section_editor',
   'components/itsi_authoring/alert',
+  'components/itsi_authoring/publication_details',
 ],
 (
   MetadataEditorClass,
   SectionEditorClass,
-  AlertClass
+  AlertClass,
+  PublicationDetailsClass
 ) ->
 
   MetadataEditor = React.createFactory MetadataEditorClass
   SectionEditor = React.createFactory SectionEditorClass
   Alert = React.createFactory AlertClass
+  PublicationDetails = React.createFactory PublicationDetailsClass
 
   React.createClass
 
@@ -48,6 +51,7 @@ modulejs.define 'components/itsi_authoring/editor',
     render: ->
       (div {className: 'ia-editor'},
         (Alert {alert: @state.alert}) if @state.alert
+        (PublicationDetails {publicationDetails: @props.publication_details})
         (MetadataEditor {metadata: @props.metadata, alert: @alert})
         (div {className: 'ia-editor-sections'},
           for section, i in @props.sections

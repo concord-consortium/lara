@@ -1,6 +1,6 @@
 class Sequence < ActiveRecord::Base
   attr_accessible :description, :title, :theme_id, :project_id,
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy

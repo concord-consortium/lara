@@ -43,7 +43,22 @@
     font-size: 13px;
   }
 
-
+  .publication_details {
+    span.message {
+      color: #fff;
+      padding: 2px 5px;
+      margin-left: 10px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+    }
+    span.success-message {
+      background-color: #18a73b;
+    }
+    span.error-message {
+      background-color: #f00;
+    }
+  }
 
   .ia-editor {
     margin: 20px;
