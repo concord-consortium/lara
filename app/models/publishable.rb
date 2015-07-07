@@ -103,7 +103,6 @@ module Publishable
   end
 
   def auto_publish_to_portal
-    hash =
     logger.debug "TODO: Autopublish #{self}"
   end
 end
