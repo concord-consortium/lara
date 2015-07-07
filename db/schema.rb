@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150706174054) do
+ActiveRecord::Schema.define(:version => 20150707193908) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -402,6 +402,14 @@ ActiveRecord::Schema.define(:version => 20150706174054) do
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"
   add_index "page_items", ["interactive_page_id"], :name => "index_page_items_on_interactive_page_id"
 
+  create_table "pending_portal_publications", :force => true do |t|
+    t.integer  "portal_publication_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "pending_portal_publications", ["portal_publication_id"], :name => "unique_publications_per_portal", :unique => true
+
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
     t.text     "response",         :limit => 255
@@ -411,6 +419,7 @@ ActiveRecord::Schema.define(:version => 20150706174054) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.string   "publication_hash", :limit => 40
+    t.integer  "publication_time"
   end
 
   create_table "projects", :force => true do |t|
