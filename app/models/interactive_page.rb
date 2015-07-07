@@ -88,6 +88,15 @@ class InteractivePage < ActiveRecord::Base
     interactives.select { |i| !i.is_hidden }
   end
 
+  # can this page display multiple interactives?
+  # depending on the activity layout, possibly.
+  # For now, only with single-page louts.
+  def show_multiple_interactives?
+    lightweight_activity &&
+      lightweight_activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+  end
+
+
   # This is a sort of polymorphic has_many :through.
   def embeddables
     self.page_items.collect{ |qi| qi.embeddable }

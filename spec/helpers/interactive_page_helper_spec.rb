@@ -155,4 +155,17 @@ describe InteractivePageHelper do
     end
   end
 
+  # def render_interactive(interactive)
+  describe "render_interactive" do
+    let(:interactive)  { mock_model(MwInteractive) }
+    let(:partial_name) { "mw_interactives/show"}
+    let(:locals)       { { interactive: interactive} }
+    let(:expected_args){ hash_including({partial: partial_name,locals:locals}) }
+    
+    it "should render the correct parital" do
+      helper.should_receive(:render).with(expected_args)
+      helper.render_interactive(interactive)
+    end
+  end
+
 end

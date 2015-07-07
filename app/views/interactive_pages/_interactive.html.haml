@@ -1,3 +1,7 @@
 .interactive-mod{class: (layout == 'l-full-width') ? nil : 'pinned'}
-  - if page.visible_interactives.first
-    = render partial: "#{page.visible_interactives.first.class.name.underscore.pluralize}/show", locals: {interactive: page.visible_interactives.first}
+  - if page.show_multiple_interactives?
+    - page.visible_interactives.each do |interactive|
+      = render_interactive(interactive)
+
+  - elsif page.visible_interactives.first
+    = render_interactive(page.visible_interactives.first)
