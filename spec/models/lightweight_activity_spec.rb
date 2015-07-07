@@ -191,7 +191,14 @@ describe LightweightActivity do
   end
 
   describe '#duplicate' do
-    let(:owner) { FactoryGirl.create(:user) }
+    let(:owner)     { FactoryGirl.create(:user) }
+    let(:edit_mode) { LightweightActivity::STANDARD_EDITOR_MODE }
+    let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
+
+    before :each do
+      activity.layout = layout
+      activity.editor_mode = edit_mode
+    end
 
     it 'creates a new LightweightActivity with attributes from the original' do
       dup = activity.duplicate(owner)
@@ -200,6 +207,18 @@ describe LightweightActivity do
       expect(dup.related).to eq(activity.related)
       expect(dup.description).to eq(activity.description)
       expect(dup.time_to_complete).to eq(activity.time_to_complete)
+      expect(dup.layout).to eq(activity.layout)
+      expect(dup.editor_mode).to eq(activity.editor_mode)
+    end
+    describe "for itsi activities" do
+      let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }
+      let(:layout)    { LightweightActivity::LAYOUT_SINGLE_PAGE }
+
+      it "should use the itsi edit mode, and single page layout" do
+        dup = activity.duplicate(owner)
+        expect(dup.layout).to eq LightweightActivity::LAYOUT_SINGLE_PAGE
+        expect(dup.editor_mode).to eq LightweightActivity::ITSI_EDITOR_MODE
+      end
     end
 
     it 'has pages in the same order as the source activity' do
