@@ -1,5 +1,13 @@
 class ImportController < ApplicationController
 
+  include PeerAccess
+
+  skip_before_filter :verify_authenticity_token, if: :verified_json_request?
+
+  def verified_json_request?
+    verify_request_is_peer
+  end
+
   def import_status
     @message = params[:message] || ''
     respond_to do |format|
@@ -50,6 +58,9 @@ class ImportController < ApplicationController
     if response_code == 201
       response_publish = import_activity.republish_for_portal(portal,req_url)
       response_code = response_publish.code
+    else
+      response.headers["data"] = {:response_code => response_code}.to_json
+      render :nothing => true and return
     end
 
     response_body = JSON.parse "#{response_publish.body}", :symbolize_names => true
