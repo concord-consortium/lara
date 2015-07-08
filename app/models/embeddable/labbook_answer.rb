@@ -22,10 +22,11 @@ module Embeddable
       ENV['LABBOOK_PROVIDER_URL']
     end
 
-    delegate :is_upload?, to: :question
-    delegate :is_snapshot?, to: :question
-    delegate :action_label, to: :question
-    delegate :interactive, to: :question
+    delegate :is_upload?,      to: :question
+    delegate :is_snapshot?,    to: :question
+    delegate :action_label,    to: :question
+    delegate :interactive,     to: :question
+    delegate :show_in_report?, to: :question
 
     def labbook_user_id
       # Construct an unique ID - model ID + run key. Run key is actually unnecessary, but it provides salting,
