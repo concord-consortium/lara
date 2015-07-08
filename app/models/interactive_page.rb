@@ -200,7 +200,7 @@ class InteractivePage < ActiveRecord::Base
 
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
-    helper = PageSerializationHelper.new()
+    helper = LaraSerializationHelper.new()
 
     InteractivePage.transaction do
       new_page.save!(validate: false)
@@ -208,14 +208,14 @@ class InteractivePage < ActiveRecord::Base
       self.interactives.each do |inter|
         copy = inter.duplicate
         new_page.add_interactive(copy, nil, false)
-        helper.cache_interactive_copy(inter,copy)
+        helper.cache_item_copy(inter,copy)
       end
 
       self.main_embeddables.each do |embed|
         copy = embed.duplicate
         if embed.respond_to? :interactive=
           unless embed.interactive.nil?
-            copy.interactive = helper.lookup_new_interactive(embed.interactive)
+            copy.interactive = helper.lookup_new_item(embed.interactive)
           end
         end
         copy.save!(validate: false)
@@ -234,6 +234,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def export
+    helper = LaraSerializationHelper.new
     page_json = self.as_json(only: [:name,
                                     :position,
                                     :text,
@@ -253,22 +254,17 @@ class InteractivePage < ActiveRecord::Base
     page_json[:sections] = []
 
     self.interactives.each do |inter|
-      interactive_hash = inter.export
-      interactive_hash[:type] = inter.class.name
-
+      interactive_hash = helper.wrap_export(inter)
       page_json[:interactives] << interactive_hash
     end
     self.main_embeddables.each do |embed|
-      embeddable_hash = embed.export
-      embeddable_hash[:type] = embed.class.name
-
+      embeddable_hash = helper.wrap_export(embed)
       page_json[:embeddables] << embeddable_hash
     end
     self.class.registered_additional_sections.each do |s|
       additional_section = {name:s[:name],section_embeddables:[]}
       self.section_embeddables(s[:name]).each do |embed|
-        section_embeddable_hash = embed.export
-        section_embeddable_hash[:type] = embed.class.name
+        section_embeddable_hash = helper.wrap_export(embed)
         additional_section[:section_embeddables] << section_embeddable_hash
       end
       page_json[:sections] << additional_section
@@ -278,7 +274,6 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def self.extact_from_hash(page_json_object)
-
     #pages = activity_json_object[:pages]
     {
       name: page_json_object[:name],
@@ -298,23 +293,22 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def self.import(page_json_object)
+    helper = LaraSerializationHelper.new
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
       import_page.save!(validate: false)
       page_json_object[:interactives].each do |inter|
-        import_interactive = inter[:type].constantize.import(inter.except(:type))
+        import_interactive = helper.wrap_import(inter)
         import_page.add_interactive(import_interactive, nil, false)
       end
       page_json_object[:embeddables].each do |embed|
-        import_embeddable = embed[:type].constantize.import(embed.except(:type))
-        import_embeddable.save!(validate: false)
+        import_embeddable = helper.wrap_import(embed)
         import_page.add_embeddable(import_embeddable)
       end
       if page_json_object[:sections]
         page_json_object[:sections].each do |sec|
           sec[:section_embeddables].each do |embed|
-            import_embeddable = embed[:type].constantize.import(embed.except(:type))
-            import_embeddable.save!(validate: false)
+            import_embeddable = helper.wrap_import(embed)
             import_page.add_embeddable(import_embeddable,nil,sec[:name])
           end
         end

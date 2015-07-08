@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+def find_labbook(i_page)
+  i_page.embeddables.select {|e| e.is_a? Embeddable::Labbook} [0]
+end
+
 describe InteractivePage do
   let(:page) do
     p = FactoryGirl.create(:page, :sidebar_title => "sidebar")
@@ -191,6 +195,26 @@ describe InteractivePage do
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
     end
+
+    describe "with a labbook" do
+      let(:interactive)       { MwInteractive.create()           }
+      let(:args)              { {interactive: interactive}       }
+      let(:labbook)           { Embeddable::Labbook.create(args) }
+
+      before(:each) do
+        page.add_interactive interactive
+        page.add_embeddable labbook
+        page.reload
+      end
+
+      it "should include the references to the interactive in the labbok" do
+        expect(interactive).not_to be_nil
+        expect(labbook.interactive).not_to be_nil
+        export_data = page.export.as_json
+        interactive_id = export_data['interactives'].first['ref_id']
+        expect(export_data['embeddables'].last).to match a_hash_including('interactive_ref_id' => interactive_id)
+      end
+    end
   end
 
   describe '#duplicate' do
@@ -236,10 +260,6 @@ describe InteractivePage do
       end
 
       describe "copying a labbook with a reference to an interactive" do
-        def find_labbook(i_page)
-          i_page.embeddables.select {|e| e.is_a? Embeddable::Labbook} [0]
-        end
-
         before(:each) do
           page.add_embeddable labbook
         end
@@ -286,6 +306,10 @@ describe InteractivePage do
         expect(p[:sidebar_title]).to eq(page.sidebar_title)
         expect(p[:position]).to be(page.position)
       end
+      # Test last page for interactive and labbook combo
+      page = InteractivePage.import(activity_json[:pages].last).reload
+      expect(page.interactives.first).to be_a ImageInteractive
+      expect(page.embeddables.first.interactive).to eq page.interactives.first
     end
   end
 
