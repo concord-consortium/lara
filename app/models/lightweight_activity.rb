@@ -162,6 +162,7 @@ class LightweightActivity < ActiveRecord::Base
 
   def self.import(activity_json_object,new_owner)
     author_user = activity_json_object[:user_email] ? User.find_by_email(activity_json_object[:user_email]) : nil
+    
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
@@ -169,6 +170,8 @@ class LightweightActivity < ActiveRecord::Base
       import_activity.name = "Import of #{import_activity.name}"
       # assign user specified in the json if exist else the importer becomes the author
       import_activity.user = author_user || new_owner
+      import_activity.user.is_author = true
+      import_activity.user.save!
       activity_json_object[:pages].each do |p|
         import_page = InteractivePage.import(p)
         import_page.lightweight_activity = import_activity
