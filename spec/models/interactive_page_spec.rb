@@ -234,6 +234,44 @@ describe InteractivePage do
         # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
         expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
       end
+
+      describe "copying a labbook with a reference to an interactive" do
+        def find_labbook(i_page)
+          i_page.embeddables.select {|e| e.is_a? Embeddable::Labbook} [0]
+        end
+
+        before(:each) do
+          page.add_embeddable labbook
+        end
+
+        let(:args)              { {interactive: page_interactive}  }
+        let(:labbook)           { Embeddable::Labbook.new(args)    }
+
+        let(:dupe)              { page.duplicate       }
+        let(:page_interactive)  { page.interactives[0] }
+        let(:dupe_interactive)  { dupe.interactives[0] }
+
+        let(:page_labbook) { find_labbook(page) }
+        let(:dupe_labbook) { find_labbook(dupe) }
+
+        describe "the original page" do
+          it "should have a labbook" do
+            expect(page_labbook).not_to be_nil
+          end
+
+          it "the labbook should point at the interactive" do
+            expect(page_labbook.interactive).to eql (page_interactive)
+          end
+        end
+        describe "the duplcate after a copy" do
+          it "should have a labook" do
+            expect(dupe_labbook).not_to be_nil
+          end
+          it "the labook should point at the new interactive" do
+            expect(dupe_labbook.interactive).to eql (dupe_interactive)
+          end
+        end
+      end
     end
   end
 

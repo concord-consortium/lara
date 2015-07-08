@@ -200,16 +200,28 @@ class InteractivePage < ActiveRecord::Base
 
   def duplicate
     new_page = InteractivePage.new(self.to_hash)
+    helper = PageSerializationHelper.new()
+
     InteractivePage.transaction do
       new_page.save!(validate: false)
+
       self.interactives.each do |inter|
-        new_page.add_interactive(inter.duplicate, nil, false)
+        copy = inter.duplicate
+        new_page.add_interactive(copy, nil, false)
+        helper.chache_interactive_copy(inter,copy)
       end
+
       self.main_embeddables.each do |embed|
         copy = embed.duplicate
+        if embed.respond_to? :interactive=
+          unless embed.interactive.nil?
+            copy.interactive = helper.lookup_new_interactive(embed.interactive)
+          end
+        end
         copy.save!(validate: false)
         new_page.add_embeddable(copy)
       end
+
       self.class.registered_additional_sections.each do |s|
         self.section_embeddables(s[:name]).each do |embed|
           copy = embed.duplicate
@@ -218,7 +230,7 @@ class InteractivePage < ActiveRecord::Base
         end
       end
     end
-    return new_page
+    return new_page.reload
   end
 
   def export
