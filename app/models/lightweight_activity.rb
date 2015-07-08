@@ -205,6 +205,8 @@ class LightweightActivity < ActiveRecord::Base
       (page.embeddables + page.interactives).each do |embeddable|
         # skip item if hidden
         next if embeddable.respond_to?(:is_hidden) && embeddable.is_hidden
+        # skip item if it should not be reported on
+        next if embeddable.respond_to?(:hide_from_report?) && embeddable.hide_from_report?
 
         case embeddable
           # Why aren't we using the to_hash methods for each embeddable here?
