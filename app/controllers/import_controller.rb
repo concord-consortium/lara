@@ -59,6 +59,7 @@ class ImportController < ApplicationController
       response_publish = import_activity.republish_for_portal(portal,req_url)
       response_code = response_publish.code
     else
+      import_activity.destroy
       response.headers["data"] = {:response_code => response_code}.to_json
       render :nothing => true and return
     end
