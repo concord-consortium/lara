@@ -156,6 +156,14 @@ module Embeddable
     def show_in_runtime?
       action_type == UPLOAD_ACTION || interactive_is_visible?
     end
+    
+    def show_in_report?
+      show_in_runtime?
+    end
+
+    def hide_from_report?
+      !show_in_report?
+    end
 
     private
     def parse_interactive_select_value
