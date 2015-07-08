@@ -263,4 +263,26 @@ describe InteractivePage do
       expect(page).to respond_to(:show_test_section=)
     end
   end
+
+  describe "#show_multiple_interactives?" do
+    let(:single_page){ LightweightActivity::LAYOUT_SINGLE_PAGE }
+    let(:multi_page) { LightweightActivity::LAYOUT_MULTI_PAGE }
+    let(:layout)     { nil }
+    let(:activity)   { mock_model(LightweightActivity, { layout: layout })     }
+    let(:page)       { InteractivePage.new( { lightweight_activity: activity })}
+
+    describe "When the activity is using single page layout" do
+      let(:layout) { single_page }
+      it "should show multiple interactives on one page" do
+        expect(page.show_multiple_interactives?).to eq true
+      end
+    end
+
+    describe "When the activity is using multi-page layout" do
+      let(:layout) { multi_page }
+      it "should NOT show multiple interactives on one page" do
+        expect(page.show_multiple_interactives?).to eq false
+      end
+    end
+  end
 end

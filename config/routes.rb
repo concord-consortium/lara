@@ -7,7 +7,7 @@ LightweightStandalone::Application.routes.draw do
       get :contact_us
     end
   end
-  
+
 
   resources :themes
 
@@ -135,6 +135,7 @@ LightweightStandalone::Application.routes.draw do
   end
 
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
+  match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
   match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
   match "/import" => 'import#import_status', :as => 'import_status', :via => 'get'

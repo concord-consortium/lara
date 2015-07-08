@@ -1,13 +1,14 @@
 class Sequence < ActiveRecord::Base
-  attr_accessible :description, :title, :theme_id, :project_id, 
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract
-  include Publishable # models/publishable.rb defines pub & official
+  attr_accessible :description, :title, :theme_id, :project_id,
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash
+  include Publishable # defines methods to publish to portals
+  include PublicationStatus # defines publication status scopes and helpers
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
   has_many :lightweight_activities, :through => :lightweight_activities_sequences, :order => :position
   belongs_to :user
   belongs_to :theme
   belongs_to :project
-  
+
   has_many :imports, as: :import_item
 
   # scope :newest, order("updated_at DESC")
@@ -53,7 +54,7 @@ class Sequence < ActiveRecord::Base
       thumbnail_url: thumbnail_url
     }
   end
-  
+
   def fix_activity_position(positions)
     # This is not necessary, as 'lightweight_activities_sequences' is ordered by
     # position, so we already copied and add activities in a right order. However
@@ -120,9 +121,9 @@ class Sequence < ActiveRecord::Base
     data['activities'] = self.activities.map { |a| a.serialize_for_portal(host) }
     data
   end
-  
+
   def self.extact_from_hash(sequence_json_object)
-    { 
+    {
       abstract: sequence_json_object[:abstract],
       description: sequence_json_object[:description],
       display_title: sequence_json_object[:display_title],
@@ -132,9 +133,9 @@ class Sequence < ActiveRecord::Base
       thumbnail_url: sequence_json_object[:thumbnail_url],
       title: sequence_json_object[:title]
     }
-    
+
   end
-  
+
   def self.import(sequence_json_object, new_owner)
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
     Sequence.transaction do

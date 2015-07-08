@@ -56,6 +56,13 @@ module InteractivePageHelper
     return false
   end
 
+  def render_interactive(interactive)
+    if interactive
+      partial_name = "#{interactive.class.name.underscore.pluralize}/show"
+      render partial: partial_name, locals: {interactive: interactive}
+    end
+  end
+  
   protected
   def run_for_activity(activity, run)
     return nil unless run

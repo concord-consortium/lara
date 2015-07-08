@@ -1,50 +1,22 @@
+require 'digest/sha1'
+
 module Publishable
-  PUB_STATUSES = %w(public hidden private archive)
-  PUB_STATUSES_OPTIONS = {
-    'Public on the Web' => 'public',
-    'Anyone with the link can run' => 'hidden',
-    'Private' => 'private',
-    'Archive' => 'archive'
-  }
 
-  def self.included(clazz)
-    ## add before_save hooks
-    clazz.class_eval do
-      validates :publication_status, :inclusion => { :in => PUB_STATUSES }
-      default_value_for :publication_status, 'private'
-      attr_accessible :publication_status, :is_official
-
-      # * Find all public activities
-      scope :public,    where(:publication_status => 'public')
-      scope :newest,    order("updated_at DESC")
-      scope :official,  where(:is_official => true)
-      scope :community, where(:is_official => false)
-
-      has_many :portal_publications, :as => :publishable, :order => :updated_at
-
-      # * Find all activities for one user (regardless of publication status)
-      def self.my(user)
-        where(:user_id => user.id)
-      end
-
-      # * Find a users activities and the public activities
-      def self.my_or_public(user)
-        where("user_id =? or publication_status ='public'",user.id)
-      end
-
-      # * Find all activities visible (readable) to the given user
-      def self.can_see(user)
-        if user.can?(:manage, self)
-          self.scoped # (like all but it keeps a relation, instead of an array)
-        else
-          self.my_or_public(user)
-        end
-      end
-
-      def self.visible(user)
-        self.can_see(user)
-      end
+  def latest_publication_portals
+    counts = portal_publications.group(:portal_url).count
+    rows = portal_publications.select("portal_url, success, created_at, publication_hash").where(["id IN (SELECT MAX(id) FROM portal_publications GROUP BY portal_url)"])
+    portals = []
+    rows.each do |row|
+      portals << {
+        :url => row.portal_url,
+        :domain => row.portal_url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 },
+        :success => row.success,
+        :count => counts[row.portal_url],
+        :publication_hash => row.publication_hash,
+        :date => row.created_at.strftime('%F %R')
+      }
     end
+    portals
   end
 
   def find_portal_publication(concord_auth_portal)
@@ -82,8 +54,10 @@ module Publishable
     url = auth_portal.republishing_url if republish
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
     auth_token = 'Bearer %s' % token
+    json = self.serialize_for_portal(self_url).to_json
+    hash = Digest::SHA1.hexdigest(json)
     response = HTTParty.post(url,
-      :body => self.serialize_for_portal(self_url).to_json,
+      :body => json,
       :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
 
     Rails.logger.info "Response: #{response.inspect}"
@@ -91,8 +65,12 @@ module Publishable
       portal_url: auth_portal.publishing_url,
       response: response.inspect,
       success: ( response.code == 201 ) ? true : false,
-      publishable: self
+      publishable: self,
+      publication_hash: hash
     })
+
+    self.publication_hash = hash
+    self.save!
 
     return response
   end
@@ -112,5 +90,18 @@ module Publishable
     urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
       self.republish_for_portal(portal,self_url)
     end
+  end
+
+  ## auto publishing methods
+
+  def self.included(clazz)
+    clazz.class_eval do
+      after_update :auto_publish_to_portal
+      has_many :portal_publications, :as => :publishable, :order => :updated_at
+    end
+  end
+
+  def auto_publish_to_portal
+    logger.debug "TODO: Autopublish #{self}"
   end
 end

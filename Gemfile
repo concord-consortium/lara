@@ -93,18 +93,12 @@ group :test, :development do
   gem "faker"
   gem "capybara"
   gem "timecop"
-  # Guard runs tests automatically when the files they test (or the tests
-  # themselves) change
-  gem 'guard-rspec'
-  # rb-fsevent is a Guard dependency
-  gem 'rb-fsevent'
-  # Rspec formatter
-  gem 'fuubar'
+
   # Javascript tests with PhantomJS
   gem 'poltergeist'
   # JS unit tests
-  gem 'jasmine'
-  gem 'guard-jasmine'
+  gem 'jasmine', "~> 2.2.0"
+  # gem 'guard-jasmine'
   # gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
   gem 'jasmine-jquery-rails'
 end
@@ -129,6 +123,12 @@ group :development do
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
   gem "highline"
   gem "spring-commands-rspec"
+  gem "spring"
+  # Guard runs tests automatically on change
+  gem "guard-rspec", "~> 4.6.0", require: false
+
+  # rb-fsevent is a Guard dependency
+  gem 'rb-fsevent'
 end
 
 # To use ActiveModel has_secure_password

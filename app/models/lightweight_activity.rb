@@ -1,6 +1,7 @@
 class LightweightActivity < ActiveRecord::Base
   QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice, Embeddable::Labbook]
-  include Publishable # models/publishable.rb defines pub & official
+  include Publishable # defines methods to publish to portals
+  include PublicationStatus # defines publication status scopes and helpers
 
   LAYOUT_MULTI_PAGE = 0
   LAYOUT_SINGLE_PAGE = 1
@@ -10,16 +11,14 @@ class LightweightActivity < ActiveRecord::Base
   ]
   STANDARD_EDITOR_MODE = 0
   ITSI_EDITOR_MODE = 1
-  ITSI_WIP_EDITOR_MODE = 2 # this is just for development of the React edit template - it will be removed once that work is done
   EDITOR_MODE_OPTIONS = [
     ['Standard', STANDARD_EDITOR_MODE],
-    ['ITSI', ITSI_EDITOR_MODE],
-    ['ITSI (Development)', ITSI_WIP_EDITOR_MODE]
+    ['ITSI', ITSI_EDITOR_MODE]
   ]
 
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-                  :portal_run_count, :layout, :editor_mode
+                  :portal_run_count, :layout, :editor_mode, :publication_hash
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'

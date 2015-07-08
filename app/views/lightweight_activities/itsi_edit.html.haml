@@ -5,7 +5,7 @@
   = "Edit #{@activity.name}"
 = content_for :container_css_classes, 'itsi-edit'
 
-= render :partial => "edit_header"
+= render :partial => "edit_header", locals: {show_publication_details: false}
 
 #itsi-editor
 
