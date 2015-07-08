@@ -208,7 +208,7 @@ class InteractivePage < ActiveRecord::Base
       self.interactives.each do |inter|
         copy = inter.duplicate
         new_page.add_interactive(copy, nil, false)
-        helper.chache_interactive_copy(inter,copy)
+        helper.cache_interactive_copy(inter,copy)
       end
 
       self.main_embeddables.each do |embed|

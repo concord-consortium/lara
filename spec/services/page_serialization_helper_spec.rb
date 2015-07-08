@@ -10,17 +10,17 @@ describe PageSerializationHelper do
   let(:copy_of_interactive_a)  { mock_model(MwInteractive, copy_a_stubs )}
   let(:copy_of_interactive_b)  { mock_model(MwInteractive, copy_b_stubs )}
   let(:helper)                 { PageSerializationHelper.new }
-  describe "#chache_interactive_copy(original_interactive, copy_of_interactive)" do
+  describe "#cache_interactive_copy(original_interactive, copy_of_interactive)" do
     it "shouldn't throw an error" do
-      helper.chache_interactive_copy(original_interactive_a, copy_of_interactive_a)
+      helper.cache_interactive_copy(original_interactive_a, copy_of_interactive_a)
     end
   end
 
   describe "#lookup_new_interactive(original_interactive)" do
     describe "when two interactive copies are mapped" do
       it "shouldn't get mixed up" do
-        helper.chache_interactive_copy(original_interactive_a, copy_of_interactive_a)
-        helper.chache_interactive_copy(original_interactive_b, copy_of_interactive_b)
+        helper.cache_interactive_copy(original_interactive_a, copy_of_interactive_a)
+        helper.cache_interactive_copy(original_interactive_b, copy_of_interactive_b)
         expect(helper.lookup_new_interactive(original_interactive_a)).to eq copy_of_interactive_a
         expect(helper.lookup_new_interactive(original_interactive_b)).to eq copy_of_interactive_b
       end
