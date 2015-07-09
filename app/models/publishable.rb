@@ -72,8 +72,7 @@ module Publishable
     self.publication_hash = hash
     self.save!
 
-    return true if response.code == 201
-    return false
+    return response
   end
 
   def add_portal_publication(concord_auth_portal)
