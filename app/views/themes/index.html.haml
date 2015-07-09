@@ -31,4 +31,4 @@
             %li.delete= link_to 'Delete', theme_path(theme), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, theme
       %div.tiny
         uses
-        = link_to stylesheet_path(theme.css_file), stylesheet_path(theme.css_file)
+        = (link_to stylesheet_path(theme.css_file), stylesheet_path(theme.css_file)) rescue "#{theme.css_file} -- Missing theme asset!"
