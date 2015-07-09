@@ -20,8 +20,8 @@ class LaraSerializationHelper
     lookup_item(key(original_item))
   end
 
-  def key(interactive)
-    "#{interactive.id}-#{interactive.class.name}"
+  def key(item)
+    "#{item.id}-#{item.class.name}"
   end
 
   def wrap_export(item)
