@@ -140,7 +140,8 @@
       "credit": "page3",
       "credit_url": "",
       "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-      "type": "ImageInteractive"
+      "type": "ImageInteractive",
+      "ref_id":"1164-ImageInteractive"
     }, {
       "name": null,
       "native_height": 435,
@@ -165,7 +166,16 @@
       }],
       "type": "VideoInteractive"
     }],
-    "embeddables": []
+    "embeddables": [
+      {
+         "action_type":1,
+         "custom_action_label":"LB1",
+         "name":"Lab Book 1",
+         "prompt":"Take a picture of the model",
+         "type":"Embeddable::Labbook",
+         "interactive_ref_id":"1164-ImageInteractive"
+      }
+    ]
   }],
   "type":"LightweightActivity"
 }
