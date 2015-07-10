@@ -43,8 +43,8 @@ modulejs.define 'components/itsi_authoring/editor',
 
     confirmHide: ->
       if @props.active_runs > 0
-        learner = "learner#{if @props.active_runs is 1 then '' else 's'}"
-        confirm "Are you sure you want to hide this? You will lose data from #{@props.active_runs} #{learner}."
+        students = "STUDENT#{if @props.active_runs is 1 then '' else 'S'}"
+        confirm "If you remove this YOU WILL LOSE ANSWERS FROM #{@props.active_runs} #{students}. Are you sure you want to remove this?"
       else
         true
 

@@ -16,7 +16,7 @@
 
 - if allow_hide
   = link_to "show", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "show-#{dash_id}", :onclick => "toggle_hide_#{under_id}()"
-  - confirm_hide_message = "Are you sure you want to hide this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
+  - confirm_hide_message = "If you remove this YOU WILL LOSE ANSWERS FROM #{pluralize(@activity.active_runs, "student").upcase}. Are you sure you want to remove this?"
   = link_to "hide", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "hide-#{dash_id}", :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide_message}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
 
 = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
