@@ -41,6 +41,7 @@ class PublicationsController < ApplicationController
 
   def show_status
     @message = params[:message] || ''
+    @hide_buttons = params[:hide_buttons] || false
     respond_to do |format|
       format.js { render :json => { :html => render_to_string('show_status')}, :content_type => 'text/json' }
       format.html
@@ -74,6 +75,10 @@ class PublicationsController < ApplicationController
     req_url = "#{request.protocol}#{request.host_with_port}"
     @publishable.publish_to_portals(req_url)
     redirect_to :action => 'show_status'
+  end
+
+  def publish_to_other_portals
+    redirect_to :action => 'show_status', :hide_buttons => true
   end
 
   private

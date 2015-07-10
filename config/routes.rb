@@ -138,6 +138,7 @@ LightweightStandalone::Application.routes.draw do
   match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
   match "/publications/publish/:publishable_type/:publishable_id"=> 'publications#publish', :as => 'publication_publish'
+  match "/publications/publish_to_other_portals/:publishable_type/:publishable_id"=> 'publications#publish_to_other_portals', :as => 'publication_publish_to_other_portals'
   match "/import" => 'import#import_status', :as => 'import_status', :via => 'get'
   match "/import" => 'import#import', :as => 'import', :via => 'post'
   match "/import/import_portal_activity" => 'import#import_portal_activity', :as => 'import_portal_activity', :via => 'post', :defaults => { format: 'json' }

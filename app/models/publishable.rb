@@ -5,7 +5,8 @@ module Publishable
   class AutoPublishIncomplete < StandardError; end
 
   def latest_publication_portals
-    counts = portal_publications.group(:portal_url).count
+    total_counts = portal_publications.group(:portal_url).count
+    success_counts = portal_publications.where(:success => true).group(:portal_url).count
     group_select = "id IN (SELECT MAX(id) FROM portal_publications WHERE publishable_id = ? AND publishable_type = ? GROUP BY portal_url)"
     rows = portal_publications.select("portal_url, success, created_at, publication_hash").where([group_select, self.id, self.class.name])
     portals = []
@@ -14,7 +15,8 @@ module Publishable
         :url => row.portal_url,
         :domain => row.portal_url.gsub(/https?:\/\/([^\/]*).*/){ |x| $1 },
         :success => row.success,
-        :count => counts[row.portal_url],
+        :total_count => total_counts[row.portal_url] || 0,
+        :success_count => success_counts[row.portal_url] || 0,
         :publication_hash => row.publication_hash,
         :date => row.created_at.strftime('%F %R')
       }

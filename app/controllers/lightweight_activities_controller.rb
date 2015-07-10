@@ -116,9 +116,11 @@ class LightweightActivitiesController < ApplicationController
                      end
     end
 
+    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
+    # this is used in both the itsi editor and in the standard editor to show the published activity
+    gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
+
     if @editor_mode == LightweightActivity::ITSI_EDITOR_MODE
-      # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
-      gon.ITSIEditor = ITSIAuthoring::Editor.new(@activity).to_json
       render :itsi_edit
     else
       render :edit
