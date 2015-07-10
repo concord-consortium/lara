@@ -77,7 +77,8 @@ module Embeddable
         action_type: action_type,
         name: name,
         prompt: prompt,
-        custom_action_label: custom_action_label
+        custom_action_label: custom_action_label,
+        is_hidden: is_hidden
       }
     end
 
@@ -86,7 +87,13 @@ module Embeddable
     end
 
     def export
-      return self.as_json(only: [:action_type, :name, :prompt, :custom_action_label])
+      return self.as_json(only: [
+        :action_type,
+        :name,
+        :prompt,
+        :custom_action_label,
+        :is_hidden
+      ])
     end
 
     def self.import(import_hash)

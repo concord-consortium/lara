@@ -48,7 +48,8 @@ class VideoInteractive < ActiveRecord::Base
       caption: caption,
       credit: credit,
       height: height,
-      width: width
+      width: width,
+      is_hidden: is_hidden
     }
   end
 
@@ -59,12 +60,13 @@ class VideoInteractive < ActiveRecord::Base
   end
   
   def export
-    video_interactive_export = self.as_json(only:[:poster_url, 
-                                                  :caption, 
+    video_interactive_export = self.as_json(only:[:poster_url,
+                                                  :caption,
                                                   :credit,
                                                   :height,
-                                                  :width])
-    
+                                                  :width,
+                                                  :is_hidden])
+
     video_interactive_export[:sources] =  []
     
     self.sources.each do |source|

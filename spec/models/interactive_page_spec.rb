@@ -249,47 +249,89 @@ describe InteractivePage do
       it "the page itself should not be valid" do
         expect(page).not_to be_valid
       end
-      it 'has copies of the original interactives' do
-        dupe = page.duplicate
-        # dupe.reload.interactives.length.should be(page.interactives.length)
-      end
-
-      it 'has copies of the original embeddables' do
-        # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
+      it "should have the same number of embeddables" do
         expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
       end
+      it "should have the same number of interactives as the original" do
+        expect(page.duplicate.interactives.length).to be(page.interactives.length)
+      end
+    end
 
-      describe "copying a labbook with a reference to an interactive" do
-        before(:each) do
-          page.add_embeddable labbook
+    describe 'copies of the original interactives' do
+      let(:hidden_image)    { FactoryGirl.create(:image_interactive, is_hidden: true)}
+      let(:hidden_mw)       { FactoryGirl.create(:mw_interactive, is_hidden: true)}
+      let(:hidden_video)    { FactoryGirl.create(:video_interactive, is_hidden: true)}
+      let(:dupe)            { page.duplicate.reload}
+      before(:each) do
+        page.add_interactive hidden_image
+        page.add_interactive hidden_mw
+        page.add_interactive hidden_video
+        page.reload
+      end
+      it "should have the same number of interactives as the original" do
+        dupe.interactives.length.should be(page.interactives.length)
+      end
+
+      it "should have copies of interactives with the same visibility" do
+        page.interactives.each_with_index do |original,i|
+          interactive_copy = dupe.interactives[i]
+          expect(original.is_hidden?).to eq interactive_copy.is_hidden?
         end
+      end
+    end
 
-        let(:args)              { {interactive: page_interactive}  }
-        let(:labbook)           { Embeddable::Labbook.new(args)    }
+    describe 'has copies of the original embeddables' do
+      let(:hidden_text)    { FactoryGirl.create(:xhtml, is_hidden: true)}
+      let(:hidden_labbook) { FactoryGirl.create(:labbook, is_hidden: true)}
+      let(:dupe)           { page.duplicate.reload}
+      before(:each) do
+        page.add_embeddable hidden_labbook
+        page.add_embeddable hidden_text
+      end
 
-        let(:dupe)              { page.duplicate       }
-        let(:page_interactive)  { page.interactives[0] }
-        let(:dupe_interactive)  { dupe.interactives[0] }
+      it "should have the same number of embeddables" do
+        expect(dupe.embeddables.length).to be(page.embeddables.length)
+      end
 
-        let(:page_labbook) { find_labbook(page) }
-        let(:dupe_labbook) { find_labbook(dupe) }
-
-        describe "the original page" do
-          it "should have a labbook" do
-            expect(page_labbook).not_to be_nil
-          end
-
-          it "the labbook should point at the interactive" do
-            expect(page_labbook.interactive).to eql (page_interactive)
-          end
+      it "should have embeddables of the same visibility as the original" do
+        page.embeddables.each_with_index do |original,i|
+          copy_emb = dupe.embeddables[i]
+          expect(original.is_hidden?).to eq copy_emb.is_hidden?
         end
-        describe "the duplcate after a copy" do
-          it "should have a labook" do
-            expect(dupe_labbook).not_to be_nil
-          end
-          it "the labook should point at the new interactive" do
-            expect(dupe_labbook.interactive).to eql (dupe_interactive)
-          end
+      end
+    end
+
+
+    describe "copying a labbook with a reference to an interactive" do
+      before(:each) do
+        page.add_embeddable labbook
+      end
+
+      let(:args)              { {interactive: page_interactive}  }
+      let(:labbook)           { Embeddable::Labbook.new(args)    }
+
+      let(:dupe)              { page.duplicate       }
+      let(:page_interactive)  { page.interactives[0] }
+      let(:dupe_interactive)  { dupe.interactives[0] }
+
+      let(:page_labbook) { find_labbook(page) }
+      let(:dupe_labbook) { find_labbook(dupe) }
+
+      describe "the original page" do
+        it "should have a labbook" do
+          expect(page_labbook).not_to be_nil
+        end
+        it "the labbook should point at the interactive" do
+          expect(page_labbook.interactive).to eql (page_interactive)
+        end
+      end
+
+      describe "the duplcate after a copy" do
+        it "should have a labook" do
+          expect(dupe_labbook).not_to be_nil
+        end
+        it "the labook should point at the new interactive" do
+          expect(dupe_labbook.interactive).to eql (dupe_interactive)
         end
       end
     end
