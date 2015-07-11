@@ -45,7 +45,8 @@ class MwInteractive < ActiveRecord::Base
       save_state: save_state,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
-      image_url: image_url
+      image_url: image_url,
+      is_hidden: is_hidden
     }
   end
 
@@ -65,16 +66,17 @@ class MwInteractive < ActiveRecord::Base
       "#{interactive_page.lightweight_activity.id}_#{interactive_page.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
     end
   end
-  
+
   def export
-    return self.as_json(only:[:name, 
-                              :url, 
-                              :native_width, 
+    return self.as_json(only:[:name,
+                              :url,
+                              :native_width,
                               :native_height,
                               :save_state,
                               :has_report_url,
                               :click_to_play,
-                              :image_url])
+                              :image_url,
+                              :is_hidden])
   end
   
   def self.import(import_hash)

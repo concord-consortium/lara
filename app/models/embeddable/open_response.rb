@@ -21,7 +21,8 @@ module Embeddable
         is_prediction: is_prediction,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
-        default_text: default_text
+        default_text: default_text,
+        is_hidden: is_hidden
       }
     end
 
@@ -47,7 +48,8 @@ module Embeddable
                                 :is_prediction,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
-                                :default_text])
+                                :default_text,
+                                :is_hidden])
     end
 
     def self.import (import_hash)

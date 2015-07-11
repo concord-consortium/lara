@@ -14,9 +14,22 @@ describe Embeddable::Xhtml do
     end
   end
 
+  describe "export" do
+    let(:json){ emb.export.as_json }
+    let(:emb) { xhtml }
+    it 'preserves is_hidden' do
+      emb.is_hidden = true
+      expect(json['is_hidden']).to eq true
+    end
+  end
+
   describe '#to_hash' do
     it 'returns useful attributes' do
-      expected = { name: xhtml.name, content: xhtml.content }
+      expected = {
+        name: xhtml.name,
+        content: xhtml.content,
+        is_hidden: xhtml.is_hidden
+      }
       expect(xhtml.to_hash).to eq(expected)
     end
   end

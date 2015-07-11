@@ -15,18 +15,19 @@ module Embeddable
     def to_hash
       {
         name: name,
-        content: content
+        content: content,
+        is_hidden: is_hidden
       }
     end
 
     def duplicate
       return Embeddable::Xhtml.new(self.to_hash)
     end
-    
+
     def export
-      self.as_json(only:[:name, :content])
+      self.as_json(only:[:name, :content, :is_hidden])
     end
-    
+
     def self.import(import_hash)
       return self.new(import_hash)
     end

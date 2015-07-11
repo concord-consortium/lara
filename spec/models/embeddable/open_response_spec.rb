@@ -9,8 +9,25 @@ describe Embeddable::OpenResponse do
 
   describe '#to_hash' do
     it 'has interesting attributes' do
-      expected = { name: open_response.name, prompt: open_response.prompt, is_prediction: open_response.is_prediction, give_prediction_feedback: open_response.give_prediction_feedback, prediction_feedback: open_response.prediction_feedback, default_text: open_response.default_text }
+      expected = {
+        name: open_response.name,
+        prompt: open_response.prompt,
+        is_prediction: open_response.is_prediction,
+        give_prediction_feedback: open_response.give_prediction_feedback,
+        prediction_feedback: open_response.prediction_feedback,
+        default_text: open_response.default_text,
+        is_hidden: open_response.is_hidden
+      }
       expect(open_response.to_hash).to eq(expected)
+    end
+  end
+
+  describe "export" do
+    let(:json){ emb.export.as_json }
+    let(:emb) { open_response}
+    it 'preserves is_hidden' do
+      emb.is_hidden = true
+      expect(json['is_hidden']).to eq true
     end
   end
 

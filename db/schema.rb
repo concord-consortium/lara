@@ -240,8 +240,8 @@ ActiveRecord::Schema.define(:version => 20150706174054) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
-    t.boolean  "is_hidden",                :default => false
     t.string   "default_text"
+    t.boolean  "is_hidden",                :default => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -404,12 +404,12 @@ ActiveRecord::Schema.define(:version => 20150706174054) do
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
-    t.text     "response",         :limit => 255
+    t.text     "response"
     t.boolean  "success"
     t.integer  "publishable_id"
     t.string   "publishable_type"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.string   "publication_hash", :limit => 40
   end
 

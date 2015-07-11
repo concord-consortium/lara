@@ -44,7 +44,14 @@ describe VideoInteractive do
 
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit, width: video_interactive.width, height: video_interactive.height }
+      expected = {
+        poster_url: video_interactive.poster_url,
+        caption: video_interactive.caption,
+        credit: video_interactive.credit,
+        width: video_interactive.width,
+        height: video_interactive.height,
+        is_hidden: video_interactive.is_hidden
+      }
       expect(video_interactive.to_hash).to eq(expected)
     end
   end
@@ -53,12 +60,19 @@ describe VideoInteractive do
     it 'returns json of a video interactive' do
       video_interactive_json = video_interactive.export.as_json
       expect(video_interactive_json['sources'].length).to eq(video_interactive.sources.count)
-    end 
+    end
   end
 
   describe '#duplicate' do
     it 'is a new instance of VideoInteractive with values' do
-      expect(video_interactive.duplicate).to be_a_new(VideoInteractive).with( poster_url: video_interactive.poster_url, caption: video_interactive.caption, credit: video_interactive.credit, width: video_interactive.width, height: video_interactive.height )
+      video_interactive.is_hidden = true
+      expect(video_interactive.duplicate).to be_a_new(VideoInteractive).with({
+        poster_url: video_interactive.poster_url,
+        caption: video_interactive.caption,
+        credit: video_interactive.credit,
+        width: video_interactive.width,
+        height: video_interactive.height,
+        is_hidden: video_interactive.is_hidden})
     end
   end
 end

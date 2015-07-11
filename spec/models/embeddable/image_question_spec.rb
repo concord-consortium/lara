@@ -18,9 +18,19 @@ describe Embeddable::ImageQuestion do
         bg_url: image_question.bg_url,
         is_prediction: image_question.is_prediction,
         give_prediction_feedback: image_question.give_prediction_feedback,
-        prediction_feedback: image_question.prediction_feedback
+        prediction_feedback: image_question.prediction_feedback,
+        is_hidden: image_question.is_hidden
       }
       expect(image_question.to_hash).to eq(expected)
+    end
+  end
+
+  describe "export" do
+    let(:json){ emb.export.as_json }
+    let(:emb) { image_question }
+    it 'preserves is_hidden' do
+      emb.is_hidden = true
+      expect(json['is_hidden']).to eq true
     end
   end
 

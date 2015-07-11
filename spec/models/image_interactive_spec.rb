@@ -19,14 +19,26 @@ describe ImageInteractive do
 
   describe '#to_hash' do
     it 'has useful values' do
-      expected = { url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit, credit_url: image_interactive.credit_url}
+      expected = {
+        url: image_interactive.url,
+        caption: image_interactive.caption,
+        credit: image_interactive.credit,
+        credit_url: image_interactive.credit_url,
+        is_hidden: image_interactive.is_hidden
+      }
       expect(image_interactive.to_hash).to eq(expected)
     end
   end
 
   describe '#duplicate' do
     it 'is a new instance of ImageInteractive with values' do
-      expect(image_interactive.duplicate).to be_a_new(ImageInteractive).with( url: image_interactive.url, caption: image_interactive.caption, credit: image_interactive.credit )
+      image_interactive.is_hidden = true
+      expect(image_interactive.duplicate).to be_a_new(ImageInteractive).with({
+        url: image_interactive.url,
+        caption: image_interactive.caption,
+        credit: image_interactive.credit,
+        is_hidden: image_interactive.is_hidden
+        })
     end
   end
 
@@ -34,7 +46,7 @@ describe ImageInteractive do
     let(:credit)     { nil }
     let(:credit_url) { nil }
     let(:parms)      { {:credit => credit, :credit_url => credit_url } }
-    let(:link)       { ImageInteractive.new(parms).credit_with_link  } 
+    let(:link)       { ImageInteractive.new(parms).credit_with_link  }
     describe "With nil values" do
       it "should return an empty string" do
         expect(link).to be_blank

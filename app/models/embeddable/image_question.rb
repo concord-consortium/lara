@@ -33,7 +33,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       bg_url: bg_url,
       is_prediction: is_prediction,
       give_prediction_feedback: give_prediction_feedback,
-      prediction_feedback: prediction_feedback
+      prediction_feedback: prediction_feedback,
+      is_hidden: is_hidden
     }
   end
 
@@ -49,7 +50,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :bg_url,
                               :is_prediction,
                               :give_prediction_feedback,
-                              :prediction_feedback])
+                              :prediction_feedback,
+                              :is_hidden])
   end
   
   def self.import(import_hash)

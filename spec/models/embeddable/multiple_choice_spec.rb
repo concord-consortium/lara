@@ -109,21 +109,40 @@ describe Embeddable::MultipleChoice do
 
   describe '#to_hash' do
     it 'returns a hash with copied attributes' do
-      expected = { name: multichoice.name, prompt: multichoice.prompt, custom: multichoice.custom, enable_check_answer: multichoice.enable_check_answer, multi_answer: multichoice.multi_answer, show_as_menu: multichoice.show_as_menu, is_prediction: multichoice.is_prediction, give_prediction_feedback: multichoice.give_prediction_feedback, prediction_feedback: multichoice.prediction_feedback, layout: multichoice.layout }
+      expected = {
+        name: multichoice.name,
+        prompt: multichoice.prompt,
+        custom: multichoice.custom,
+        enable_check_answer: multichoice.enable_check_answer,
+        multi_answer: multichoice.multi_answer,
+        show_as_menu: multichoice.show_as_menu,
+        is_prediction: multichoice.is_prediction,
+        give_prediction_feedback: multichoice.give_prediction_feedback,
+        prediction_feedback: multichoice.prediction_feedback,
+        layout: multichoice.layout,
+        is_hidden: multichoice.is_hidden
+      }
       expect(multichoice.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
+    let(:multichoice_json) { multichoice.export.as_json }
     it 'returns json of a multiple choice question' do
-      multichoice_json = multichoice.export.as_json
       expect(multichoice_json['choices'].length).to eq(multichoice.choices.count)
-    end 
+    end
+    it 'preserves is_hidden' do
+      multichoice.is_hidden = true
+      expect(multichoice_json['is_hidden']).to eq true
+    end
   end
 
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
-      expect(multichoice.duplicate).to be_a_new(Embeddable::MultipleChoice).with( name: multichoice.name, prompt: multichoice.prompt )
+      expect(multichoice.duplicate).to be_a_new(Embeddable::MultipleChoice).with({
+        name: multichoice.name,
+        prompt: multichoice.prompt
+      })
     end
 
     it 'copies choices' do

@@ -7,8 +7,25 @@ describe Embeddable::Labbook do
     it 'is implemented' do
       expect(labbook).to respond_to(:to_hash)
     end
+    it 'has interesting attributes' do
+      expected = {
+        action_type: labbook.action_type,
+        name: labbook.name,
+        prompt: labbook.prompt,
+        custom_action_label: labbook.custom_action_label,
+        is_hidden: labbook.is_hidden
+      }
+      expect(labbook.to_hash).to eq(expected)
+    end
   end
-
+  describe "export" do
+    let(:json){ emb.export.as_json }
+    let(:emb) { labbook}
+    it 'preserves is_hidden' do
+      emb.is_hidden = true
+      expect(json['is_hidden']).to eq true
+    end
+  end
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
       expect(labbook.duplicate).to be_a_new(Embeddable::Labbook)

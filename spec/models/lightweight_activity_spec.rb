@@ -233,6 +233,25 @@ describe LightweightActivity do
       end
     end
 
+    it 'has hidden pages that are hidden in the source' do
+      3.times do |n|
+        activity.pages << FactoryGirl.create(:page, is_hidden: true)
+        activity.pages << FactoryGirl.create(:page, is_hidden: false)
+      end
+      duplicate = activity.duplicate(owner)
+      hidden_count = 0
+      visibile_count = 0
+      duplicate.pages.each do |p|
+        if p.is_hidden?
+          hidden_count = hidden_count + 1
+        else
+          visibile_count = visibile_count + 1
+        end
+      end
+      expect(hidden_count).to eq 3
+      expect(visibile_count).to eq 3
+    end
+    
     describe "when a page in the activity fails validation" do
       let(:bad_content)   {"</p> no closing div tag"}
 
