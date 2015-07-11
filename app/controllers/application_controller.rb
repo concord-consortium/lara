@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   before_filter :portal_login
   before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
+  before_filter :store_auto_publish_url # to enable auto publishing to build an url from the request object
   after_filter :log_session_after
 
   # Try to set local from the request headers
@@ -235,7 +236,7 @@ class ApplicationController < ActionController::Base
       redirect_to user_omniauth_authorize_path(strategy_name, :origin => uri.to_s)
     end
   end
-  
+
   # check if any of them have a matching domain and uid
   def has_matching_domain_uid(domain,domain_uid)
     return current_user && current_user.authentications.where(provider:Concord::AuthPortal.strategy_name_for_url(params[:domain]),uid:domain_uid).length > 0
@@ -247,8 +248,8 @@ class ApplicationController < ActionController::Base
     clear_session_response_key
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
-  
-  
+
+
   def after_sign_out_path_for(resource)
     if params[:re_login] && params[:user_provider]
       provider = params[:user_provider]
@@ -260,9 +261,9 @@ class ApplicationController < ActionController::Base
         :re_login => true,
         :redirect_uri => redirect_url,
         :provider => provider
-      }  
+      }
     end
-    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path 
+    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path
   end
 
   def respond_with_edit_form
@@ -322,5 +323,9 @@ class ApplicationController < ActionController::Base
   def handle_unverified_request
     logger.info("unverified_request session:" + session.inspect)
     reset_session
+  end
+
+  def store_auto_publish_url
+    Thread.current[:auto_publish_url] = "#{request.protocol}#{request.host_with_port}"
   end
 end
