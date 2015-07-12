@@ -147,7 +147,9 @@ module Publishable
             Delayed::Job.enqueue(ProcessPendingPortalPublication.new(pending_portal_publication.id, auto_publish_url, backoff), 0, (auto_publish_delay * backoff).seconds.from_now)
 
           rescue ActiveRecord::StatementInvalid => e
-            raise e unless /Duplicate entry/.match(e.to_s)
+            # Perhaps there is a better way, at least on SQLite the exception type is: ActiveRecord::RecordNotUnique
+            # if it is on MySQL then we can simplify this a bit
+            raise e unless (e.is_a? ActiveRecord::RecordNotUnique) or /Duplicate entry/.match(e.to_s)
           end
         end
       end
