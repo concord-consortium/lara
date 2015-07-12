@@ -80,8 +80,10 @@ module Publishable
       publication_time: (end_time - start_time) * 1000
     })
 
-    self.publication_hash = hash
-    self.save!
+    # update_column is necessary so this change doesn't trigger update_after
+    # if update_after is triggered then a new Job will be queued and we don't need
+    # to do that. This also means that updated_at column won't be changed by this
+    self.update_column(:publication_hash, hash)
 
     return response
   end
