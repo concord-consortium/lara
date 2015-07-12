@@ -53,10 +53,13 @@ class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_i
     end
   end
 
-  def debug(text)
-    Delayed::Worker.logger.add(Logger::DEBUG, text) if Delayed::Worker.logger
-  end
+  # if you want to seperately monitor the log statments from Jobs
+  # first make sure you are running a seperate delayed_job process see:
+  #    config/initializers/delayed_job_config.rb
+  # then filter the messages in your log file
+  #    tail -f log/development.log | grep "\[Job"
+  # this is possible because of lib/delayed_job_tagged_logging.rb
   def info(text)
-    Delayed::Worker.logger.add(Logger::INFO, text) if Delayed::Worker.logger
+    Rails.logger.info text
   end
 end
