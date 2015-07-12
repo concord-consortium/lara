@@ -27,10 +27,6 @@ module Publishable
   end
   alias_method :last_publication, :find_portal_publication
 
-  def last_successful_publication(concord_auth_portal)
-    self.portal_publications.where('portal_url' => concord_auth_portal.publishing_url, 'success' => true).last
-  end
-
   def portal_publish(user,auth_portal,self_url)
     self.update_attribute('publication_status','public')
     self.portal_publish_with_token(user.authentication_token,auth_portal,self_url)
