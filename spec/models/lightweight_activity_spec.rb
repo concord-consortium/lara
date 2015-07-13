@@ -7,6 +7,7 @@ describe LightweightActivity do
     activity = FactoryGirl.create(:activity, :thumbnail_url => thumbnail_url)
     activity.user = author
     activity.save
+    activity.theme = FactoryGirl.create(:theme)
     activity
   }
   let(:valid)         {
