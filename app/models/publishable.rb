@@ -27,10 +27,6 @@ module Publishable
   end
   alias_method :last_publication, :find_portal_publication
 
-  def last_successful_publication(concord_auth_portal)
-    self.portal_publications.where('portal_url' => concord_auth_portal.publishing_url, 'success' => true).last
-  end
-
   def portal_publish(user,auth_portal,self_url)
     self.update_attribute('publication_status','public')
     self.portal_publish_with_token(user.authentication_token,auth_portal,self_url)
@@ -84,8 +80,10 @@ module Publishable
       publication_time: (end_time - start_time) * 1000
     })
 
-    self.publication_hash = hash
-    self.save!
+    # update_column is necessary so this change doesn't trigger update_after
+    # if update_after is triggered then a new Job will be queued and we don't need
+    # to do that. This also means that updated_at column won't be changed by this
+    self.update_column(:publication_hash, hash)
 
     return response
   end
@@ -147,7 +145,9 @@ module Publishable
             Delayed::Job.enqueue(ProcessPendingPortalPublication.new(pending_portal_publication.id, auto_publish_url, backoff), 0, (auto_publish_delay * backoff).seconds.from_now)
 
           rescue ActiveRecord::StatementInvalid => e
-            raise e unless /Duplicate entry/.match(e.to_s)
+            # Perhaps there is a better way, at least on SQLite the exception type is: ActiveRecord::RecordNotUnique
+            # if it is on MySQL then we can simplify this a bit
+            raise e unless (e.is_a? ActiveRecord::RecordNotUnique) or /Duplicate entry/.match(e.to_s)
           end
         end
       end
