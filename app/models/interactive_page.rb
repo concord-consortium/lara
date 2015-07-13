@@ -275,21 +275,29 @@ class InteractivePage < ActiveRecord::Base
 
   def self.extact_from_hash(page_json_object)
     #pages = activity_json_object[:pages]
-    {
-      name: page_json_object[:name],
-      position: page_json_object[:position],
-      text: page_json_object[:text],
-      layout: page_json_object[:layout],
-      is_hidden: page_json_object[:is_hidden],
-      sidebar: page_json_object[:sidebar],
-      sidebar_title: page_json_object[:sidebar_title],
-      show_introduction: page_json_object[:show_introduction],
-      show_sidebar: page_json_object[:show_sidebar],
-      show_interactive: page_json_object[:show_interactive],
-      show_info_assessment: page_json_object[:show_info_assessment],
-      embeddable_display_mode: page_json_object[:embeddable_display_mode],
-      additional_sections: page_json_object[:additional_sections].as_json
-    }
+    import_simple_attributes = [
+      :name,
+      :position,
+      :text,
+      :layout,
+      :is_hidden,
+      :sidebar,
+      :sidebar_title,
+      :show_introduction,
+      :show_sidebar,
+      :show_interactive,
+      :show_info_assessment,
+      :embeddable_display_mode
+    ]
+
+    attributes = {}
+    import_simple_attributes.each do |key|
+      attributes[key] = page_json_object[key] if page_json_object.has_key?(key)
+    end
+
+    if page_json_object[:additional_sections]
+      attributes[:additional_sections] = page_json_object[:additional_sections].as_json
+    end
   end
 
   def self.import(page_json_object)
