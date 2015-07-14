@@ -53,6 +53,13 @@ class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_i
     end
   end
 
+  # only attempt this job once, this way the last error will be meaningful
+  # otherwise if an exception is thrown the PendingPortalPublication wont be recreated
+  # the job will be retried but will fail right off the bat
+  def max_attempts
+    1
+  end
+
   # if you want to seperately monitor the log statments from Jobs
   # first make sure you are running a seperate delayed_job process see:
   #    config/initializers/delayed_job_config.rb
