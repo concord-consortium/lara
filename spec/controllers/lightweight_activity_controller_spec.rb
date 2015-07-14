@@ -12,6 +12,7 @@ describe LightweightActivitiesController do
   let (:act) { 
     activity = FactoryGirl.create(:public_activity)
     activity.user = @user
+    activity.theme = FactoryGirl.create(:theme)
     activity.save
     activity
   }
