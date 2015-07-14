@@ -129,6 +129,12 @@ group :development do
 
   # rb-fsevent is a Guard dependency
   gem 'rb-fsevent'
+
+  # remove requests for assets from log
+  gem 'quiet_assets'
+
+  # try explicity setting webrick to remove some warnings
+  gem 'webrick', "1.3.1"
 end
 
 # To use ActiveModel has_secure_password
