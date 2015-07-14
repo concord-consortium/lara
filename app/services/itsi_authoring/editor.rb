@@ -13,7 +13,7 @@ class ITSIAuthoring::Editor
       publication_details: {
         :last_publication_hash => @activity.publication_hash,
         :latest_publication_portals => @activity.latest_publication_portals,
-        :publish_url => publication_publish_path(@activity.class, @activity.id),
+        :publish_url => publication_publish_to_other_portals_path(@activity.class, @activity.id),
         :poll_url => publication_autopublishing_status_path(@activity.class, @activity.id)
       }
     }

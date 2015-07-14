@@ -1,19 +1,6 @@
-- #provide a publishable to this view partial
-- size = publication.publication_details.size
+#publication-details
 
-.publication_details
-  .summary
-    - if size > 0
-      This item has been published to #{size} portals.
-    - else
-      This item is not published to any of the portals. Click on the publish button to publish this item.
-  %ul.details
-    - publication.publication_details.each do |deet|
-      %li.detail
-        %span.detail.url
-          #{deet.url} :
-        %span.detail.count
-          ( #{deet.count} times) –
-        %span.datail.date=deet.date
+:javascript
+  PublicationDetails = React.createElement(modulejs.require('components/itsi_authoring/publication_details'), {publicationDetails: gon.ITSIEditor.publication_details});
+  React.render(PublicationDetails, $('#publication-details')[0]);
 
-  = link_to "publish", publication_publish_path(publication.class, publication.id), {:remote => true, :class => 'btn btn-primary'}
