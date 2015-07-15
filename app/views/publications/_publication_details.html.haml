@@ -1,6 +1,6 @@
 #publication-details
 
 :javascript
-  PublicationDetails = React.createElement(modulejs.require('components/itsi_authoring/publication_details'), {publicationDetails: gon.ITSIEditor.publication_details});
+  var PublicationDetails = React.createElement(modulejs.require('components/itsi_authoring/publication_details'), {publicationDetails: gon.publication_details || gon.ITSIEditor.publication_details});
   React.render(PublicationDetails, $('#publication-details')[0]);
 
