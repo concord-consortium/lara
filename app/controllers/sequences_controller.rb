@@ -49,6 +49,7 @@ class SequencesController < ApplicationController
   def edit
     authorize! :update, @sequence
     @activities = LightweightActivity.can_see(current_user)
+    gon.publication_details = PublicationDetails.new(@sequence).to_json
   end
 
   # POST /sequences
@@ -155,7 +156,7 @@ class SequencesController < ApplicationController
       format.html
     end
   end
-  
+
   def export
     authorize! :export, @sequence
     sequence_json = @sequence.export
