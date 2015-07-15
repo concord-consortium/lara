@@ -152,6 +152,11 @@ module Publishable
             raise e unless (e.is_a? ActiveRecord::RecordNotUnique) or /Duplicate entry/.match(e.to_s)
           end
         end
+
+        # changes to activities should trigger auto publishing of their associated sequences
+        if self.respond_to?(:sequences)
+          self.sequences.each { |sequence| sequence.queue_auto_publish_to_portal() }
+        end
       end
     end
   end
