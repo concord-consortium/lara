@@ -15,6 +15,10 @@ class ITSIAuthoring::Editor
         :latest_publication_portals => @activity.latest_publication_portals,
         :publish_url => publication_publish_to_other_portals_path(@activity.class, @activity.id),
         :poll_url => publication_autopublishing_status_path(@activity.class, @activity.id)
+      },
+      json_list_urls: {
+        models: ENV['MODEL_JSON_LIST_URL'],
+        sensor_predictions: ENV['SENSOR_PREDICTION_JSON_LIST_URL']
       }
     }
   end

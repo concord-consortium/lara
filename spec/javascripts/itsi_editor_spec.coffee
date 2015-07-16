@@ -273,4 +273,5 @@ describe "ITSI Editor", () ->
         jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
       ModelEditorClass = jasmine.react.requireClass "itsi_authoring/model_editor"
-      expect(request.url).toBe(ModelEditorClass.MODEL_LIST_URL)
+      expect(request).toBeDefined()
+
