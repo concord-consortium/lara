@@ -210,6 +210,7 @@ describe LightweightActivity do
       expect(dup.time_to_complete).to eq(activity.time_to_complete)
       expect(dup.layout).to eq(activity.layout)
       expect(dup.editor_mode).to eq(activity.editor_mode)
+      expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
     end
     describe "for itsi activities" do
       let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }

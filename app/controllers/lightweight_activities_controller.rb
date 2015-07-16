@@ -158,6 +158,7 @@ class LightweightActivitiesController < ApplicationController
     end
   end
 
+  # FIXME this should really be something other than a GET since it has side effects
   def duplicate
     authorize! :duplicate, @activity
     @new_activity = @activity.duplicate(current_user)
@@ -167,6 +168,12 @@ class LightweightActivitiesController < ApplicationController
     end
 
     if @new_activity.save(:validations => false) # In case the old activity was invalid
+      # check if we should publish this new activity somewhere
+      if params['add_to_portal']
+        req_url = "#{request.protocol}#{request.host_with_port}"
+        # this might take a little time so it might be better do this in the background
+        @new_activity.portal_publish(current_user,params['add_to_portal'],req_url)
+      end
       redirect_to edit_activity_path(@new_activity)
     else
       flash[:warning] = "Copy failed"

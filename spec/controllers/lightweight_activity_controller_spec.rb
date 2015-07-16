@@ -412,16 +412,26 @@ describe LightweightActivitiesController do
   end
 
   describe '#duplicate' do
+    let (:duplicate_act) {  FactoryGirl.build(:activity) }
+
     it "should call 'duplicate' on the activity" do
+      allow(LightweightActivity).to receive(:find).and_return(act)
+      expect(act).to receive(:duplicate).and_return(duplicate_act)
       get :duplicate, { :id => act.id }
-      expect(assigns(:new_activity)).to be_a(LightweightActivity)
-      expect(assigns(:new_activity).name).to match /^Copy of #{assigns(:activity).name[0..30]}/
-      expect(assigns(:new_activity).user).to eq(@user)
     end
 
     it 'should redirect to edit the new activity' do
       get :duplicate, { :id => act.id }
       expect(response).to redirect_to(edit_activity_url(assigns(:new_activity)))
+    end
+
+    let (:portal_url) { "https://fake.portal.com" }
+
+    it "should publish the new activity if asked to do so" do
+      allow(LightweightActivity).to receive(:find).and_return(act)
+      allow(act).to receive(:duplicate).and_return(duplicate_act)
+      expect(duplicate_act).to receive(:portal_publish).with(@user, portal_url, "#{request.protocol}#{request.host_with_port}")
+      get :duplicate, { :id => act.id, :add_to_portal => portal_url }
     end
   end
 
