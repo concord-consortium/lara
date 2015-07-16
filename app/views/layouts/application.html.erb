@@ -8,11 +8,13 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
+<%- @body_class = request.original_fullpath.split('/').join(' ') -%>
 <%- if @session_key -%>
-  <body class="right <%= request.original_fullpath.split('/').join(' ') %>" data-session-key="<%= @session_key %>">
+  <body class="right <%= @body_class %>" data-session-key="<%= @session_key %>">
 <%- else -%>
-  <body class="right <%= request.original_fullpath.split('/').join(' ') %>">
+  <body class="right <%= @body_class %>">
 <%- end -%>
+<%= javascript_include_tag "iframed_site_manager" %>
 <div id="container" class="<%= content_for :container_css_classes %>">
   <div id="header">
     <div>
