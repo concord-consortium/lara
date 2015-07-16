@@ -35,7 +35,7 @@ module Publishable
     end
 
     self.update_attribute('publication_status','public')
-    self.portal_publish_with_token(user.authentication_token,auth_portal,self_url)
+    self.portal_publish_with_token(user.authentication_token(auth_portal.strategy_name),auth_portal,self_url)
   end
 
   def republish_for_portal(auth_portal,self_url,json=nil)
