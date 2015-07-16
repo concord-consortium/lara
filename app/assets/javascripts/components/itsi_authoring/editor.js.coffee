@@ -58,6 +58,6 @@ modulejs.define 'components/itsi_authoring/editor',
             # ignore the 'Test page'
             if section.name isnt 'Test page'
               title = if name is 'Second Career STEM Question' then 'Concluding Career STEM Question' else section.name
-              (SectionEditor {section: section, title: title, key: i, alert: @alert, confirmHide: @confirmHide})
+              (SectionEditor {section: section, title: title, key: i, alert: @alert, confirmHide: @confirmHide, jsonListUrls: @props.json_list_urls})
         )
       )

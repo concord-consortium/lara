@@ -19,9 +19,6 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
   ModelEditor = React.createClass
 
-    statics:
-      MODEL_LIST_URL: 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
-
     mixins:
       [SectionElementEditorMixin]
 
@@ -46,7 +43,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
     fetchModelList: ->
       cachedAjax
-        url: ModelEditor.MODEL_LIST_URL
+        url: @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
         success: (data) =>
           if @isMounted()
             models = data?.models

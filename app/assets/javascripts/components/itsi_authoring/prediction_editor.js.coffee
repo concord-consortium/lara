@@ -16,7 +16,6 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
-  SENSOR_PREDICTION_LIST_URL = 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/sensor_prediction_list.json'
 
   React.createClass
 
@@ -49,7 +48,7 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
 
     fetchModelList: ->
       cachedAjax
-        url: SENSOR_PREDICTION_LIST_URL
+        url: @props.jsonListUrls?.sensor_predictions or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/sensor_prediction_list.json'
         success: (data) =>
           if @isMounted()
             modelOptions = []

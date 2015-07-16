@@ -75,7 +75,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
           for interactive, i in @props.section.interactives
             editor = @getEditorForInteractiveElement interactive
             if editor
-              (editor {key: "interactive#{i}", data: interactive, alert: @props.alert, confirmHide: @props.confirmHide})
+              (editor {key: "interactive#{i}", data: interactive, alert: @props.alert, confirmHide: @props.confirmHide, jsonListUrls: @props.jsonListUrls})
 
           for embeddable, i in @props.section.embeddables
             editor = @getEditorForEmbeddedElement embeddable
