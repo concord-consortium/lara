@@ -24,10 +24,5 @@
 
           =portal.name
           %span.tiny=portal.date
-  - if not @hide_buttons
-    .buttons
-      = link_to "publish", publication_publish_path(@publishable.class, @publishable.id), {:remote => true, :class => 'btn btn-primary'}
-      %a.btn.btn-primary.close
-        cancel
   .message
     =@message
