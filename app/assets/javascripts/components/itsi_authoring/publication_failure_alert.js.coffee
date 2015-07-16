@@ -8,6 +8,20 @@ modulejs.define 'components/itsi_authoring/publication_failure_alert',
 
     mixins: [PublicationAjaxMixin]
 
+    getInitialState: ->
+      scrollTop: 0
+
+    getScrollPosition: ->
+      @setState scrollTop: @$window.scrollTop()
+
+    componentDidMount: ->
+      @$window = $ window
+      @getScrollPosition()
+      @$window.on 'scroll', @getScrollPosition
+
+    componentWillUnmount: ->
+      @$window.off 'scroll'
+
     render: ->
       failedPortals = []
       for portal in @state.latest_publication_portals
@@ -27,6 +41,22 @@ modulejs.define 'components/itsi_authoring/publication_failure_alert',
                 (span {className: 'detail', title: debugTitle}, portal.domain)
               )
           )
+          (div {style: {marginTop: 10}},
+            'We will try to publish this again. If it is still failing after a few minutes please email us at '
+            (a {href: 'mailto:authoring-help@concord.org'}, 'authoring-help@concord.org')
+            ". We recommend not editing further or using this activity through the failing portal#{plural}."
+          )
+          if @state.scrollTop isnt 0
+            topBarStyle =
+              position: 'fixed'
+              top: 0
+              left: 0
+              right: 0
+              padding: 5
+              color: '#fff'
+              textAlign: 'center'
+              backgroundColor: '#f00'
+            (div {style: topBarStyle}, 'Portal publication failure!  More information at the top of this page.')
         )
       else
         null

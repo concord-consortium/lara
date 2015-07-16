@@ -70,6 +70,7 @@ class InteractivePagesController < ApplicationController
   def edit
     authorize! :update, @page
     @all_pages = @activity.pages
+    gon.publication_details = PublicationDetails.new(@activity).to_json
   end
 
   def update

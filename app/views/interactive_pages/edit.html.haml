@@ -40,6 +40,8 @@
   %h1.title
     = @activity.name
 
+  = render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
+
   %h2.question
     = editable_field @page, :name, {:use_trigger => true, :edit_string => 'Edit', :submit => 'Save', :cancel => 'Cancel', :onblur => 'ignore', :placeholder => 'page title'}
     %span.preview
