@@ -27,7 +27,8 @@ modulejs.define 'components/itsi_authoring/publication_details',
               (span {className: 'detail'}, " : (#{portal.success_count} time#{if portal.success_count is 1 then '' else 's'}) - ")
               (span {className: 'detail'}, portal.date)
               if portal.success
-                (span {className: 'message success-message', title: debugTitle}, if @state.last_publication_hash is portal.publication_hash then 'published' else 'publishing')
+                message = if @state.last_publication_hash is null or @state.last_publication_hash is portal.publication_hash then 'published' else 'publishing'
+                (span {className: 'message success-message', title: debugTitle}, message)
               else
                 (span {className: 'message error-message', title: debugTitle}, 'not published!')
             )
