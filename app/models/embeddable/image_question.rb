@@ -56,7 +56,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   
   def self.import(import_hash)
     new_ques = self.new(import_hash)
-    new_ques.prompt = ""
+    new_ques.prompt = "" unless import_hash[:prompt] 
     new_ques.save!
     return new_ques
   end

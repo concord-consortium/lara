@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry-debugger'
 
 describe Embeddable::ImageQuestion do
 
@@ -59,6 +60,22 @@ describe Embeddable::ImageQuestion do
 
     it 'returns false otherwise' do
       expect(image_question.is_drawing?).to be_falsey
+    end
+  end
+
+  describe "import" do
+    let(:json_with_promt){ image_question.export.as_json.symbolize_keys }
+    let(:json_without_promt){ 
+      img_ques = image_question.export.as_json.symbolize_keys
+      img_ques.except(:prompt)
+    }
+    it "does not reset the default prompt if there is prompt in the json" do
+      new_image_question = Embeddable::ImageQuestion.import(json_with_promt)
+      expect(new_image_question.prompt).to eq(image_question.prompt)
+    end
+    it "resets the default prompt if there is no prompt in the json" do
+      new_image_question = Embeddable::ImageQuestion.import(json_without_promt)
+      expect(new_image_question.prompt).to eq("")
     end
   end
 end
