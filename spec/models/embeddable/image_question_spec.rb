@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry-debugger'
 
 describe Embeddable::ImageQuestion do
 
