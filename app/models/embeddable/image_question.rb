@@ -55,7 +55,10 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   end
   
   def self.import(import_hash)
-    return self.new(import_hash)
+    new_ques = self.new(import_hash)
+    new_ques.prompt = "" unless import_hash[:prompt] 
+    new_ques.save!
+    return new_ques
   end
   
   def is_shutterbug?
