@@ -298,6 +298,7 @@ class InteractivePage < ActiveRecord::Base
     if page_json_object[:additional_sections]
       attributes[:additional_sections] = page_json_object[:additional_sections].as_json
     end
+    attributes
   end
 
   def self.import(page_json_object)
