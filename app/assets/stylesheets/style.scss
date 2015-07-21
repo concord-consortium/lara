@@ -1006,3 +1006,22 @@ ul#new-menu {
       color: red;
     }
 }
+
+body.iframed {
+  #container {
+    margin-top: -13px;
+    #header {
+      display: none;
+      height: 0;
+    }
+    #content {
+      #session, h1, nav {
+        display: none;
+      }
+    }
+  }
+  #footer {
+    display: none;
+  }
+}
+
