@@ -139,12 +139,11 @@ class Sequence < ActiveRecord::Base
   def self.import(sequence_json_object, new_owner)
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
     Sequence.transaction do
-      import_sequence.title = "Import of #{import_sequence.title}"
+      import_sequence.title = import_sequence.title
       import_sequence.user = new_owner
       positions = []
       sequence_json_object[:activities].each do |sa|
         import_a = LightweightActivity.import(sa, new_owner)
-        import_a.name = import_a.name.sub('Import of ', '')
         import_a.save!
         import_sequence.activities << import_a
         positions << sa[:position]

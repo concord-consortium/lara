@@ -166,7 +166,7 @@ class LightweightActivity < ActiveRecord::Base
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
       # Clarify name
-      import_activity.name = "Import of #{import_activity.name}"
+      import_activity.name = import_activity.name
       # assign user specified in the json if exist else the importer becomes the author
       import_activity.user = author_user || new_owner
       import_activity.user.is_author = true
