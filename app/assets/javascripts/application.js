@@ -37,4 +37,5 @@
 //= require tablesorter
 //= require c_rater/score_mapping
 //= require components
+//= require iframed_site_manager
 //= require application-init

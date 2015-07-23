@@ -14,7 +14,12 @@
 <%- else -%>
   <body class="right <%= @body_class %>">
 <%- end -%>
-<%= javascript_include_tag "iframed_site_manager" %>
+<script type="text/javascript">
+  // NOTE: this must be called after the <body> tag is created and before it is closed
+  if (window.iframed_site_manager && window.iframed_site_manager.init) {
+    window.iframed_site_manager.init();
+  }
+</script>
 <div id="container" class="<%= content_for :container_css_classes %>">
   <div id="header">
     <div>
