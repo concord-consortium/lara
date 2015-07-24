@@ -169,12 +169,21 @@ class LightweightActivitiesController < ApplicationController
 
     if @new_activity.save(:validations => false) # In case the old activity was invalid
       # check if we should publish this new activity somewhere
+      json_response = nil
       if params['add_to_portal']
         req_url = "#{request.protocol}#{request.host_with_port}"
         # this might take a little time so it might be better do this in the background
-        @new_activity.portal_publish(current_user,params['add_to_portal'],req_url)
+        response = @new_activity.portal_publish(current_user,params['add_to_portal'],req_url)
+        begin
+          json_response = JSON.parse(response.body)
+        rescue
+        end
       end
-      redirect_to edit_activity_path(@new_activity)
+      if params['redirect_on_success'] && json_response && json_response.has_key?("activity_id")
+        redirect_to params['redirect_on_success'].sub!(':activity_id', json_response['activity_id'].to_s)
+      else
+        redirect_to edit_activity_path(@new_activity)
+      end
     else
       flash[:warning] = "Copy failed"
       redirect_to activities_path
