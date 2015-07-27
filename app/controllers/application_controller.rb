@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
 
   # What to do if authorization fails
   rescue_from CanCan::AccessDenied do |exception|
-    render :partial => "shared/unauthorized", :locals => {:action => exception.action,:resource=> exception.subject},:status => 403
+    response_data = unauthorized_response_data(exception.action, exception.subject)
+    respond_to do |format|
+      format.html { render :partial => "shared/unauthorized", :locals => {:message => response_data[:message]}, :status => 403 }
+      format.json { render json: response_data, status: 403}
+    end
   end
 
   before_filter :log_session_before
@@ -327,5 +331,27 @@ class ApplicationController < ActionController::Base
 
   def store_auto_publish_url
     Thread.current[:auto_publish_url] = "#{request.protocol}#{request.host_with_port}"
+  end
+
+  def unauthorized_response_data(action, resource)
+    if current_user
+      user = session[:portal_username] || current_user.email
+    else
+      user = "Anonymous"
+    end
+
+    className = resource.class.name
+    if className == "LightweightActivity" || className == "Sequence"
+      message = "#{user}, you don't have permission to #{action} the #{className} with id : #{resource.id}"
+    else
+      message = "#{user}, you don't have permission to access this page."
+    end
+
+    data = {
+      :user => user,
+      :className => className,
+      :id => resource.respond_to?(:id) ? resource.id : 'n/a',
+      :message => message
+    }
   end
 end
