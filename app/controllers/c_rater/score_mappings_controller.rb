@@ -1,15 +1,16 @@
 class CRater::ScoreMappingsController < ApplicationController
-  
+
   def index
     if current_user && current_user.admin?
       @filter = CollectionFilter.new(current_user, CRater::ScoreMapping, params[:filter] || {})
       @score_mappings = @filter.collection.includes(:user)
     else
-      render :partial => "shared/unauthorized", :locals => {:action => "no_action",:resource=> "no_resource"},:status => 403
+      response_data = unauthorized_response_data("no_action", "no_resource")
+      render :partial => "shared/unauthorized", :locals => {:message => response_data[:message]}, :status => 403
       return
     end
   end
-  
+
   def new
     @score_mapping = CRater::ScoreMapping.new()
     respond_to do |format|
@@ -17,7 +18,7 @@ class CRater::ScoreMappingsController < ApplicationController
       format.html
     end
   end
-  
+
   def create
     score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
     @score_mapping = CRater::ScoreMapping.create(score_mapping)
@@ -27,7 +28,7 @@ class CRater::ScoreMappingsController < ApplicationController
     @score_mapping.save
     redirect_to(:back)
   end
-  
+
   def edit
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     respond_to do |format|
@@ -35,7 +36,7 @@ class CRater::ScoreMappingsController < ApplicationController
       format.html
     end
   end
-  
+
   def update
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
@@ -45,7 +46,7 @@ class CRater::ScoreMappingsController < ApplicationController
     @score_mapping.save!
     redirect_to(:back)
   end
-  
+
   def destroy
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     @score_mapping.destroy
