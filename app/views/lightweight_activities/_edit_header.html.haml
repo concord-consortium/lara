@@ -1,11 +1,12 @@
 %h1.title
-  Edit activity
+  %span.title
+    Edit activity
   %span.preview
     = link_to "Preview", preview_activity_path(@activity), :target => 'new'
   - if current_user.is_admin
-    %span.preview
+    %span.edit-in
       = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
-    %span.preview
+    %span.edit-in
       = link_to "Edit in ITSI Mode", "#{edit_activity_path(@activity)}?mode=itsi"
 
 - if show_publication_details

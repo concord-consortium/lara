@@ -112,7 +112,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     clear: both;
     color: #eb8723;
     font: 700 2em 'Lato', georgia, 'times new roman', serif;
-    .preview a {
+    .preview a, .edit-in a {
       font-weight: normal;
       font-size: 0.5em;
       color: #6fc5d8;
@@ -1009,14 +1009,19 @@ ul#new-menu {
 
 body.iframed {
   #container {
-    margin-top: -13px;
     #header {
       display: none;
       height: 0;
     }
     #content {
-      #session, h1, nav {
+      #session, nav {
         display: none;
+      }
+      h1 .title {
+        display: none;
+      }
+      h1 span.preview a {
+        padding-left: 10px;
       }
     }
   }
