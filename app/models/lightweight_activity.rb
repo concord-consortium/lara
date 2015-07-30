@@ -159,10 +159,11 @@ class LightweightActivity < ActiveRecord::Base
 
   end
 
-  def self.import(activity_json_object,new_owner)
+  def self.import(activity_json_object,new_owner,imported_activity_url=nil)
     author_user = activity_json_object[:user_email] ? User.find_by_email(activity_json_object[:user_email]) : nil
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
+    import_activity.imported_activity_url = imported_activity_url
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
       # Clarify name

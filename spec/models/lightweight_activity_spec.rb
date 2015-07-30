@@ -253,7 +253,7 @@ describe LightweightActivity do
       expect(hidden_count).to eq 3
       expect(visibile_count).to eq 3
     end
-    
+
     describe "when a page in the activity fails validation" do
       let(:bad_content)   {"</p> no closing div tag"}
 
@@ -282,9 +282,11 @@ describe LightweightActivity do
 
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
-      act = LightweightActivity.import(json,new_owner)
+      imported_activity_url = "http://foo.com/"
+      act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
       expect(act.related).to eq(json[:related])
+      expect(act.imported_activity_url).to eq(imported_activity_url)
       expect(act.pages.count).to eq(json[:pages].length)
     end
   end

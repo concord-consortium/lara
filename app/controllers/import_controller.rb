@@ -15,10 +15,10 @@ class ImportController < ApplicationController
       format.html
     end
   end
-  
+
   def import
-    @import_item = Import.import(params[:import],current_user)
-    res_name = @import_item.nil? ? '' : @import_item.class.name == 'LightweightActivity' ? 'activities' : 'sequences'  
+    @import_item = Import.import(params[:import],current_user,params[:imported_activity_url])
+    res_name = @import_item.nil? ? '' : @import_item.class.name == 'LightweightActivity' ? 'activities' : 'sequences'
     respond_to do |format|
       unless(res_name == '')
         unless @import_item.valid?
@@ -46,12 +46,12 @@ class ImportController < ApplicationController
       )
     end
 
-    portal = Concord::AuthPortal.portal_for_url(request_json[:portal_url]) 
+    portal = Concord::AuthPortal.portal_for_url(request_json[:portal_url])
     authentication = Authentication.find_by_provider_and_uid(portal.strategy_name,request_json[:domain_uid])
     if authentication
       user = User.find(authentication.user_id)
 
-      import_activity = LightweightActivity.import(request_json[:activity],user)
+      import_activity = LightweightActivity.import(request_json[:activity],user,request_json[:imported_activity_url])
 
       req_url = "#{request.protocol}#{request.host_with_port}"
       response_add_to_portal = import_activity.portal_publish(user,portal,req_url)
