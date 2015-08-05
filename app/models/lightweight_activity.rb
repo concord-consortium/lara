@@ -164,6 +164,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
+    import_activity.is_official = activity_json_object[:is_official]
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
       # Clarify name
