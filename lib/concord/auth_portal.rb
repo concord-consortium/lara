@@ -151,6 +151,7 @@ module Concord
             :full_name  => raw_info['extra']['full_name'],
             :username   => raw_info['extra']['username'],
             :user_id    => raw_info['extra']['user_id'],
+            :roles      => raw_info['extra']['roles'] || [],
             :domain     => raw_info['extra']['domain']
           }
         end

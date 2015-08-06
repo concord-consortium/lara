@@ -83,6 +83,14 @@ class User < ActiveRecord::Base
         password: User.get_random_password
       )
     end
+
+    # assign the author role if user is author on portal but not locally
+    # the chain of tests are needed because under rspec the auth object is generated inside OmniAuth and it does not include the extra info
+    if !user.is_author && (auth.respond_to? :extra) && (auth.extra.roles.include? "author")
+      user.is_author = true
+      user.save
+    end
+
     # create new authentication for this user that we found or created
     user.authentications.create(
       provider: auth.provider,
@@ -105,7 +113,7 @@ class User < ActiveRecord::Base
    rack_session.delete "portal_username"
    rack_session.delete "portal_user_id"
    rack_session.delete "portal_domain"
-   rack_session.delete "user_return_to" 
+   rack_session.delete "user_return_to"
    rack_session.delete "response_key"
   end
 end
