@@ -99,10 +99,12 @@ describe User do
     let(:auth_provider) { "portal.concord.org"   }
     let(:auth_uid)      { "23"                   }
     let(:auth_token)    { "xyzzy"                }
+    let(:auth_roles)    { []                     }
 
     let(:auth) do
       auth_obj = double(:provider => auth_provider, :uid => auth_uid)
       allow(auth_obj).to receive_message_chain(:info, :email).and_return(auth_email)
+      allow(auth_obj).to receive_message_chain(:extra, :roles).and_return(auth_roles)
       allow(auth_obj).to receive_message_chain(:credentials, :token).and_return(auth_token)
       auth_obj
     end
