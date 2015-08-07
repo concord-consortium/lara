@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
 
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
-                  :portal_run_count, :layout, :editor_mode, :publication_hash
+                  :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -34,6 +34,8 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :project
 
   has_many :imports, as: :import_item
+
+  belongs_to :copied_from_activity, :class_name => "LightweightActivity", :foreign_key => "copied_from_id"
 
   # has_many :offerings, :dependent => :destroy, :as => :runnable, :class_name => "Portal::Offering"
 
@@ -112,6 +114,7 @@ class LightweightActivity < ActiveRecord::Base
       # Clarify name
       new_activity.name = "Copy of #{new_activity.name}"
       new_activity.user = new_owner
+      new_activity.copied_from_id = self.id
       self.pages.each do |p|
         new_page = p.duplicate
         new_page.lightweight_activity = new_activity
