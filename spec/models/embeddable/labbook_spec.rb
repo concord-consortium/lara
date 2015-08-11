@@ -71,14 +71,14 @@ describe Embeddable::Labbook do
         expect(labbook.has_interactive?).to eql(false)
       end
 
-      describe "When it is an upload only labook" do
+      describe "When it is an upload only labbook" do
         let(:action_type) { Embeddable::Labbook::UPLOAD_ACTION}
-        it 'it should not show up in the runtime' do
+        it 'it should show up in the runtime' do
           expect(labbook.show_in_runtime?).to eql(true)
         end
       end
 
-      describe "When it is a snapshot  labook" do
+      describe "When it is a snapshot labbook" do
         it 'it should not show up in the runtime' do
           expect(labbook.show_in_runtime?).to eql(false)
         end
@@ -107,6 +107,13 @@ describe Embeddable::Labbook do
         end
         it "should not show up in the runtime" do
           expect(labbook.show_in_runtime?).to eql(false)
+        end
+
+        describe "when it is an upload only labbook" do
+          let(:action_type) { Embeddable::Labbook::UPLOAD_ACTION}
+          it 'it should not show up in the runtime' do
+            expect(labbook.show_in_runtime?).to eql(false)
+          end
         end
       end
     end

@@ -160,10 +160,17 @@ module Embeddable
       has_interactive? && !interactive.is_hidden?
     end
 
+    #| Use case                      | 'action_type' | Interactive Set | Interactive Visibility | Lab Book Visibility |
+    #|-------------------------------|---------------|-----------------|------------------------|---------------------|
+    #| Regular model snapshot        | snapshot      | yes             | Shown                  | Shown               |
+    #| Regular model snapshot        | snapshot      | yes             | Hidden                 | Hidden              |
+    #| Dan File upload               | upload        | no              | NA                     | Shown               |
+    #| ITSI File upload (microscope) | upload        | yes             | Shown                  | Shown               |
+    #| Microscope                    | upload        | yes             | Hidden                 | Hidden              |
     def show_in_runtime?
-      action_type == UPLOAD_ACTION || interactive_is_visible?
+      ((action_type == UPLOAD_ACTION) && !has_interactive?) || interactive_is_visible?
     end
-    
+
     def show_in_report?
       show_in_runtime?
     end
