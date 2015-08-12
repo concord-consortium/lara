@@ -85,6 +85,12 @@ class MwInteractive < ActiveRecord::Base
     return self.new(import_hash)
   end
 
+  # This approach is temporary, it is specific for ITSI style authoring.
+  # It allows authors to select a special interactive, and then the labbook automatically becomes an
+  # uploading labbook
+  # If we keep the data modeling for this, then this code should be moved to the ITSI style authoring
+  # javascript code.
+  # Better yet would be to find another way to model and/or author this.
   def update_labbook_options
     if labbook
       upload_only_model_urls = (ENV['UPLOAD_ONLY_MODEL_URLS'] or '').split('|').map { |url| url.squish }

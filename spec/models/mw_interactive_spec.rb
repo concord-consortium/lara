@@ -62,6 +62,12 @@ describe MwInteractive do
     end
   end
 
+  # This approach is temporary, it is specific for ITSI style authoring.
+  # It allows authors to select a special interactive, and then the labbook automatically becomes an
+  # uploading labbook
+  # If we keep the data modeling for this, then this code should be moved to the ITSI style authoring
+  # javascript code.
+  # Better yet would be to find another way to model and/or author this.
   describe 'labbook options' do
     let (:labbook) { FactoryGirl.create(:labbook, action_type: Embeddable::Labbook::SNAPSHOT_ACTION, custom_action_label: "custom action label") }
     let (:interactive) { FactoryGirl.create(:mw_interactive, labbook: labbook) }
