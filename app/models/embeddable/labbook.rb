@@ -166,7 +166,10 @@ module Embeddable
     #| Regular model snapshot        | snapshot      | yes             | Hidden                 | Hidden              |
     #| Dan File upload               | upload        | no              | NA                     | Shown               |
     #| ITSI File upload (microscope) | upload        | yes             | Shown                  | Shown               |
-    #| Microscope                    | upload        | yes             | Hidden                 | Hidden              |
+    #| ITSI File upload (microscope) | upload        | yes             | Hidden                 | Hidden              |
+    # 
+    # The ITSI File upload use case uses the interactive to determine whether it is visible or not.
+    # this is so an ITSI author can hide and show these upload labbooks the same way they hide and show modes
     def show_in_runtime?
       ((action_type == UPLOAD_ACTION) && !has_interactive?) || interactive_is_visible?
     end
