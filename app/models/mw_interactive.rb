@@ -16,13 +16,15 @@ class MwInteractive < ActiveRecord::Base
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
+  after_update :update_labbook_options
+
   def self.string_name
     "iframe interactive"
   end
 
   # returns the aspect ratio of the interactive, determined by dividing the width by the height.
   # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
-  # will be 2. 
+  # will be 2.
   def aspect_ratio
     if self.native_width && self.native_height
       return self.native_width/self.native_height.to_f
@@ -78,8 +80,28 @@ class MwInteractive < ActiveRecord::Base
                               :image_url,
                               :is_hidden])
   end
-  
+
   def self.import(import_hash)
     return self.new(import_hash)
   end
+
+  def update_labbook_options
+    if labbook
+      upload_only_model_urls = (ENV['UPLOAD_ONLY_MODEL_URLS'] or '').split('|').map { |url| url.squish }
+      if upload_only_model_urls.include? url
+        labbook.action_type = Embeddable::Labbook::UPLOAD_ACTION
+        labbook.custom_action_label = "Take a Snapshot"
+        labbook.prompt = '<p>Add your pictures to your album by clicking on the "<em>Take a Snapshot</em>" button and add the pictures to your album by clicking on the Browse button and selecting the picture on your computer. Describe what you see below the picture in the Comments box. Click on the Save button to add the picture to your album.'
+        labbook.save!
+      else
+        if upload_only_model_urls.include? url_was
+          labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
+          labbook.custom_action_label = nil
+          labbook.prompt = '<p>Take a snapshot and upload it to your Snapshot Album by clicking the "<em>Take a Snapshot</em>" button. &nbsp;To browse your Snapshot Album, click the album icon.</p>'
+          labbook.save!
+        end
+      end
+    end
+  end
+
 end

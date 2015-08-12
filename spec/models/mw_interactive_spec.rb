@@ -9,7 +9,7 @@ describe MwInteractive do
   end
 
   it 'can to associate an interactive page' do
-    
+
     page.add_interactive(interactive)
 
     interactive.reload
@@ -59,6 +59,48 @@ describe MwInteractive do
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden
       })
+    end
+  end
+
+  describe 'labbook options' do
+    let (:labbook) { FactoryGirl.create(:labbook, action_type: Embeddable::Labbook::SNAPSHOT_ACTION, custom_action_label: "custom action label") }
+    let (:interactive) { FactoryGirl.create(:mw_interactive, labbook: labbook) }
+
+    it 'remain the same if url changes to a non-upload only url' do
+      stub_const('ENV', {'UPLOAD_ONLY_MODEL_URLS' => 'upload_url1|upload_url2'})
+      interactive.url = 'not_an_upload_url'
+      interactive.save
+      expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::SNAPSHOT_ACTION)
+      expect(interactive.labbook.custom_action_label).to eq("custom action label")
+    end
+
+    describe 'change to upload options if url changes' do
+      it 'to an upload only url' do
+        stub_const('ENV', {'UPLOAD_ONLY_MODEL_URLS' => 'upload_url1|upload_url2'})
+        interactive.url = 'upload_url2'
+        interactive.save
+        expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::UPLOAD_ACTION)
+        expect(interactive.labbook.custom_action_label).to eq("Take a Snapshot")
+      end
+      it 'to an upload only url with spaces in the environment variable' do
+        stub_const('ENV', {'UPLOAD_ONLY_MODEL_URLS' => '   upload_url1  |  upload_url2 '})
+        interactive.url = 'upload_url1'
+        interactive.save
+        expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::UPLOAD_ACTION)
+        expect(interactive.labbook.custom_action_label).to eq("Take a Snapshot")
+      end
+    end
+
+    it 'revert from upload options if url changes from an upload only url' do
+      stub_const('ENV', {'UPLOAD_ONLY_MODEL_URLS' => 'upload_url1|upload_url2'})
+      interactive.url = 'upload_url1'
+      interactive.save
+      expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::UPLOAD_ACTION)
+      expect(interactive.labbook.custom_action_label).to eq("Take a Snapshot")
+      interactive.url = 'not_an_upload_url'
+      interactive.save
+      expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::SNAPSHOT_ACTION)
+      expect(interactive.labbook.custom_action_label).to eq(nil)
     end
   end
 end
