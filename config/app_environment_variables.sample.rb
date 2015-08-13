@@ -20,3 +20,8 @@ ENV['C_RATER_USERNAME']                  ||= 'XXXXXXX'
 ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
 
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
+
+# this specifies a | separated list of urls for interactives
+# these special interactive URLs trigger LARA to conver their associated LabBook to
+# upload LabBook
+ENV['UPLOAD_ONLY_MODEL_URLS']            ||= ''
