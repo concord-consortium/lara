@@ -40,6 +40,16 @@ describe CollectionFilter do
         end
       end
 
+      describe "with a nil user" do
+        let(:user) { nil }
+        it "should return a sorted public collection" do
+          expect(fake_class).not_to receive(:my)
+          expect(fake_class).to receive(:public).and_return(items)
+          expect(items).to receive(:newest).and_return([1,2,3])
+          expect(subject.collection).to be_a_kind_of(Array)
+        end
+      end
+
       describe "with invalid parameters" do
         let(:params) { {:my => true, :user => 'xx', :blarg => 'dfd' }}
         it "should return a sorted public collection" do

@@ -16,7 +16,7 @@ class CollectionFilter
   end
 
   def collection
-    if @my
+    if @my && @user
       results = @klass.my(@user)
     elsif @user
       results = @klass.visible(@user)
