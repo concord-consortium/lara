@@ -326,6 +326,8 @@ ActiveRecord::Schema.define(:version => 20150807175612) do
     t.boolean  "is_dirty",         :default => false
   end
 
+  add_index "interactive_run_states", ["run_id"], :name => "interactive_run_states_run_id_idx"
+
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
