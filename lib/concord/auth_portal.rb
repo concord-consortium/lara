@@ -36,10 +36,6 @@ module Concord
       lookup(name,"DISPLAY_NAME") || name.titlecase
     end
 
-    def self.url_for_portal(name)
-      lookup(name,"URL")
-    end
-
     def self.portal_for_url(url)
       # URI.parse(url).host returns nil when scheme is not provided.
       host = URI(url).host || URI("http://#{url}").host
@@ -112,7 +108,7 @@ module Concord
     end
 
     def self.make_for_name(name)
-      url = self.url_for_portal(name)
+      url = lookup(name,"URL")
       secret = self.secret_for_portal(name)
       client_id = self.client_id_for_portal(name)
       return self.add(name,url,client_id,secret)

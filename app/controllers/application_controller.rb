@@ -267,7 +267,7 @@ class ApplicationController < ActionController::Base
         :provider => provider
       }
     end
-    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_portal(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path
+    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_strategy_name(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path
   end
 
   def respond_with_edit_form
