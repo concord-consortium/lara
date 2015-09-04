@@ -258,8 +258,6 @@ class ApplicationController < ActionController::Base
     if params[:re_login] && params[:user_provider]
       provider = params[:user_provider]
       provider_id = provider.clone
-      provider_id.slice! "cc_portal_"
-      provider_id = provider_id.upcase
       redirect_url = "#{request.protocol}#{request.host_with_port}"
       params_hash = {
         :re_login => true,
