@@ -27,6 +27,8 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[name]': 'name'
       'mw_interactive[url]': 'url'
       'mw_interactive[image_url]': 'image_url'
+      'mw_interactive[native_width]': 'native_width'
+      'mw_interactive[native_height]': 'native_height'
 
     getInitialState: ->
       modelsByName: {}
@@ -40,6 +42,8 @@ modulejs.define 'components/itsi_authoring/model_editor',
       model = @state.modelsByName[value]
       @valueChanged 'mw_interactive[url]', model.url
       @valueChanged 'mw_interactive[image_url]', model.image_url
+      @valueChanged 'mw_interactive[native_width]', model.width
+      @valueChanged 'mw_interactive[native_height]', model.height
 
     fetchModelList: ->
       cachedAjax

@@ -60,7 +60,7 @@ module InteractiveRunHelper
     data = {
       :aspect_ratio => interactive.aspect_ratio,
       :id => interactive.id,
-      :iframe_mouseover => "false",
+      :iframe_mouseover => "false"
     }
 
     width = interactive.native_width ? "#{interactive.native_width}px" : 'inherit'
