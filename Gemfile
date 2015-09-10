@@ -19,6 +19,7 @@ gem 'omniauth'
 # Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
 gem 'default_value_for'
+gem 'tinymce-rails'
 
 # Rails assets:
 source 'https://rails-assets.org' do

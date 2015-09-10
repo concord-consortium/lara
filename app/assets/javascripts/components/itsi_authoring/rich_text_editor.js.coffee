@@ -8,13 +8,20 @@ modulejs.define 'components/itsi_authoring/rich_text_editor',
     shouldComponentUpdate: ->
       false
 
-    onChange: (e) ->
-      @props.onChange $.wysiwyg.getContent(@node)
+    onChange: (editor) ->
+      @props.onChange editor.getContent()
 
     componentDidMount: ->
       @node = $(React.findDOMNode(@refs.textarea))
-      @node.wysiwyg({controls: {html: {visible: true}}, events: {save: @onChange}})
+      @node.tinymce
+        plugins: 'code paste textcolor'
+        setup: (editor) =>
+          # both events are needed as the 'change' event is only sent when the input loses focus (which handles menu choices like formatting)
+          editor.on 'keyup', (e) =>
+            @onChange editor
+          editor.on 'change', (e) =>
+            @onChange editor
 
     render: ->
-      (textarea {ref: 'textarea', name: @props.name, cols: 100, rows: 5, value: @props.text, onChange: @props.onChange})
+      (textarea {ref: 'textarea', name: @props.name, cols: 100, rows: 5, defaultValue: @props.text})
 
