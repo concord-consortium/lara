@@ -63,10 +63,8 @@ module InteractiveRunHelper
       :iframe_mouseover => "false"
     }
 
-    width = interactive.native_width ? "#{interactive.native_width}px" : 'inherit'
-    height = interactive.native_height ? "#{interactive.native_height}px" : 'inherit'
-
     opts = {
+      :width => "100%",
       :frameborder => "no",
       :scrolling => "no",
       :allowfullscreen => "true",
@@ -75,8 +73,7 @@ module InteractiveRunHelper
       :src => iframe_src ? url : nil,
       :data => data,
       :class => 'interactive',
-      :id => "interactive_#{interactive.id}",
-      :style => "width: #{width}; height: #{height}"
+      :id => "interactive_#{interactive.id}"
     }
     capture_haml do
       haml_tag 'iframe', opts

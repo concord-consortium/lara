@@ -19,6 +19,8 @@ ResizableInteractive.prototype.fixSize = function () {
 
 // Setup
 $(document).ready(function () {
-    resizingInteractive = new ResizableInteractive($('[data-aspect-ratio]'));
-    resizingInteractive.fixSize();
+    $('[data-aspect-ratio]').each(function (index, element){
+      resizingInteractive = new ResizableInteractive($(element));
+      resizingInteractive.fixSize();
+    });
 });
