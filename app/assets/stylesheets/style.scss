@@ -469,6 +469,9 @@ div.summary {
 .action_menu_header_right {
   float: right;
   width: 7%;
+  ul {
+    margin-left: 0px;
+  }
   ul li {
     list-style: none;
     float: left;
@@ -555,6 +558,7 @@ form.new_lightweight_activity {
       min-height: 15px;
     }
     .menu {
+      margin-left: 0px;
       float: right;
       li {
         display: inline;
