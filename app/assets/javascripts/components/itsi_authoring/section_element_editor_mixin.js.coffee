@@ -83,6 +83,11 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       @_handleChange options.name, e.target.value, options.onChange
     input {type: 'text', name: options.name, value: @state.values[options.name], onChange: changed}
 
+  textarea: (options) ->
+    changed = (e) =>
+      @_handleChange options.name, e.target.value, options.onChange
+    textarea {name: options.name, value: @state.values[options.name], onChange: changed}
+
   select: (options) ->
     changed = (e) =>
       @_handleChange options.name, e.target.value, options.onChange
