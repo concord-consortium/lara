@@ -37,16 +37,17 @@ describe "ITSI Editor", () ->
 
     beforeAll ->
       @props =
-        metadata:
+        data:
           name: "activity name"
           description: "activity description"
           update_url: "fake_update_url"
 
     it "uses props for default values", ->
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
-      tags = jasmine.react.findTags metadataEditor, ["input", "textarea"]
-      expect(tags.input.getDOMNode().value).toBe(@props.metadata.name)
-      expect(tags.textarea.getDOMNode().value).toBe(@props.metadata.description)
+      heading = jasmine.react.findTag metadataEditor, "h1"
+      description = jasmine.react.findClass metadataEditor, "ia-section-text-value"
+      expect(heading.getDOMNode().innerHTML).toBe(@props.data.name)
+      expect(description.getDOMNode().innerHTML).toBe(@props.data.description)
 
 
     it "does not save when no changes are made", ->
@@ -54,6 +55,8 @@ describe "ITSI Editor", () ->
       @props.alert = (type, text) ->
         lastAlert = {type: type, text: text}
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
+
+      jasmine.react.click (jasmine.react.findClass metadataEditor, "ia-section-editor-edit")
 
       jasmine.react.itsi.captureSave metadataEditor
 
@@ -63,32 +66,35 @@ describe "ITSI Editor", () ->
 
     it "saves when name changes are made", ->
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
+      jasmine.react.click (jasmine.react.findClass metadataEditor, "ia-section-editor-edit")
 
       jasmine.react.itsi.changeTag metadataEditor, "input", "New activity name"
       request = jasmine.react.itsi.captureSave metadataEditor
 
-      expect(request.url).toBe("fake_update_url")
+      expect(request.url).toBe("fake_update_url.json")
       expect(request.params).toBe("lightweight_activity%5Bname%5D=New+activity+name&_method=PUT")
 
 
     it "saves when description changes are made", ->
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
+      jasmine.react.click (jasmine.react.findClass metadataEditor, "ia-section-editor-edit")
 
       jasmine.react.itsi.changeTag metadataEditor, "textarea", "New activity description"
       request = jasmine.react.itsi.captureSave metadataEditor
 
-      expect(request.url).toBe("fake_update_url")
+      expect(request.url).toBe("fake_update_url.json")
       expect(request.params).toBe("lightweight_activity%5Bdescription%5D=New+activity+description&_method=PUT")
 
 
     it "saves when name and description changes are made", ->
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
+      jasmine.react.click (jasmine.react.findClass metadataEditor, "ia-section-editor-edit")
 
       jasmine.react.itsi.changeTag metadataEditor, "input", "New activity name"
       jasmine.react.itsi.changeTag metadataEditor, "textarea", "New activity description"
       request = jasmine.react.itsi.captureSave metadataEditor
 
-      expect(request.url).toBe("fake_update_url")
+      expect(request.url).toBe("fake_update_url.json")
       expect(request.params).toBe("lightweight_activity%5Bname%5D=New+activity+name&lightweight_activity%5Bdescription%5D=New+activity+description&_method=PUT")
 
   describe "section editor element", ->
