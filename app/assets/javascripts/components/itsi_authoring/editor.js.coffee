@@ -52,7 +52,7 @@ modulejs.define 'components/itsi_authoring/editor',
       (div {className: 'ia-editor'},
         (Alert {alert: @state.alert}) if @state.alert
         (PublicationFailureAlert {publicationDetails: @props.publication_details})
-        (MetadataEditor {metadata: @props.metadata, alert: @alert})
+        (MetadataEditor {data: @props.metadata, alert: @alert})
         (div {className: 'ia-editor-sections'},
           for section, i in @props.sections
             # ignore the 'Test page'
