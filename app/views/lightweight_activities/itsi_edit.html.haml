@@ -7,6 +7,19 @@
 
 = render :partial => "edit_header", locals: {show_publication_details: false}
 
+:javascript
+  window.ITSIEditorTinyMCEConfig = {
+      menubar: false,
+      statusbar: false,
+      toolbar_items_size: 'small',
+      toolbar: "undo redo | bold italic strikethrough underline | " +
+        "aligncenter alignjustify alignleft alignright indent outdent | " +
+        "subscript superscript | numlistbullist | link unlink | hr image table",
+      plugins: 'paste link hr image table autoresize',
+      paste_as_text: true,
+      content_css: "#{asset_path('tinymce.css')}"
+    }
+
 #itsi-editor
 
 :javascript
