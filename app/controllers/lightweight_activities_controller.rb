@@ -130,20 +130,21 @@ class LightweightActivitiesController < ApplicationController
   def update
     authorize! :update, @activity
     update_activity_changed_by
-    if request.xhr?
+    respond_to do |format|
       if @activity.update_attributes(params[:lightweight_activity])
-        render :text => params[:lightweight_activity].values.first
+        format.json { render json: @activity }
+        format.html {
+          flash[:notice] = "Activity #{@activity.name} was updated."
+          redirect_to edit_activity_path(@activity)
+        }
       else
-        render :text => "There was a problem updating your activity. Please reload the page and try again."
+        format.json { render json: @activity.errors, :status => :unprocessable_entity }
+        format.html {
+          # I'd like to use the activity name here, but what if that's what's the invalid update?
+          flash[:warning] = "There was a problem updating your activity."
+          redirect_to edit_activity_path(@activity)
+        }
       end
-    else
-      if @activity.update_attributes(params[:lightweight_activity])
-        flash[:notice] = "Activity #{@activity.name} was updated."
-      else
-        # I'd like to use the activity name here, but what if that's what's the invalid update?
-        flash[:warning] = "There was a problem updating your activity."
-      end
-      redirect_to edit_activity_path(@activity)
     end
   end
 
