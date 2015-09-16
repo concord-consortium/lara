@@ -61,7 +61,7 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       success: =>
         @props.alert 'info', 'Saved'
         @setState changedValues: {}
-      error: =>
+      error: (xhr, textStatus, errorThrown) =>
         @props.alert 'error', 'Save Failed!'
 
   valueChanged: (key, value) ->
