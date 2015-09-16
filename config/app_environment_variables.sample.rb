@@ -25,3 +25,4 @@ ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
 # these special interactive URLs trigger LARA to conver their associated LabBook to
 # upload LabBook
 ENV['UPLOAD_ONLY_MODEL_URLS']            ||= ''
+ENV['MODEL_JSON_LIST_URL']               ||= 'https://itsi.portal.concord.org/interactives/export_model_library'

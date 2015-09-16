@@ -3,7 +3,7 @@ require 'open-uri'
 namespace :itsi do
   desc "Update width, height, and image_url of Interactives from the ITSI interactive library."
   task :update_interactives => :environment do
-    content = open("https://itsi.portal.concord.org/interactives/export_model_library").read
+    content = open(ENV['MODEL_JSON_LIST_URL']).read
     models = JSON.parse(content)["models"]
     total_count = 0
     total_wrong_name_count = 0
