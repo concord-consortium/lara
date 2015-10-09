@@ -110,4 +110,7 @@ class MwInteractive < ActiveRecord::Base
     end
   end
 
+  def is_reportable
+    return save_state && has_report_url
+  end
 end

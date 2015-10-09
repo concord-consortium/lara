@@ -59,8 +59,8 @@ class LightweightActivity < ActiveRecord::Base
           q << e
         end
       end
-      p.interactives.each do |i|
-        q << i if i.respond_to?('save_state') && i.save_state
+      p.visible_interactives.each do |i|
+        q << i if i.respond_to?(:is_reportable) && i.is_reportable
       end
     end
     return q

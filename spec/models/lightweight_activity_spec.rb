@@ -88,33 +88,59 @@ describe LightweightActivity do
   end
 
   describe '#questions' do
-    let (:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
-    let (:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
+    let(:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
+    let(:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
+    let(:non_reportable_interactive) {
+      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
+    }
+    let(:reportable_interactive) {
+      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+    }
     before(:each) do
+      page1.add_interactive non_reportable_interactive
+      page2.add_interactive reportable_interactive
       activity.pages << page1
       activity.pages << page2
+      activity.save
+      activity.reload
     end
 
-    it 'returns an array of embeddables' do
-      expect(activity.questions.length).to eql(2)
-      expect(activity.questions).to eql([page1.embeddables[0], page2.embeddables[0]])
+    it 'returns an array of embeddables and reportable interactives' do
+      expect(activity.questions.length).to eql(3)
+      expect(activity.questions).to eql(
+        [page1.embeddables[0], page2.embeddables[0], reportable_interactive])
     end
 
     context 'when some pages are hidden' do
       let (:page2) { FactoryGirl.create(:interactive_page_with_or, is_hidden: true) }
 
-      it 'returns an array of visible embeddables' do
+      it 'doesnt report on items on the hidden page' do
+        expect(activity.pages[1].is_hidden).to eq true
+        expect(activity.questions).not_to include reportable_interactive
         expect(activity.questions.length).to eql(1)
         expect(activity.questions).to eql(page1.embeddables)
       end
     end
 
-    context 'when some questions are hidden' do
-      let (:page2) { FactoryGirl.create(:interactive_page_with_hidden_or) }
+    context 'when the reportable interactive is hidden' do
+      let(:reportable_interactive) {
+        FactoryGirl.create(:mw_interactive,
+          save_state: true,
+          has_report_url: true,
+          is_hidden: true)
+      }
+      it 'the list of questions without the hidden reportable interactive' do
+        expect(reportable_interactive.is_hidden).to eq true
+        expect(activity.questions).not_to include reportable_interactive
+      end
+    end
 
-      it 'returns an array of visible embeddables' do
-        expect(activity.questions.length).to eql(1)
-        expect(activity.questions).to eql(page1.embeddables)
+    context 'when the embeddable open reponse is hidden' do
+      let (:page2) { FactoryGirl.create(:interactive_page_with_hidden_or) }
+      it 'returns an the questions without the open repose' do
+        expect(activity.questions.length).to eql(2)
+        expect(activity.questions).to include page1.embeddables[0]
+        expect(activity.questions).to include reportable_interactive
       end
     end
   end
