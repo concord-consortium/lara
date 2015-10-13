@@ -254,7 +254,7 @@ class LightweightActivity < ActiveRecord::Base
           }
           elements.push(mc_data)
         when MwInteractive
-          if embeddable.save_state && embeddable.has_report_url
+          if embeddable.is_reportable
             iframe_data = embeddable.to_hash
             iframe_data["type"] = 'iframe_interactive'
             iframe_data["id"] = embeddable.id

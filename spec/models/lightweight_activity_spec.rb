@@ -354,20 +354,39 @@ describe LightweightActivity do
       end
     end
 
-    describe 'pages section with hidden embeddables' do
+    describe 'pages section with hidden embeddables & reportable interactives' do
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+
+      let(:non_reportable_interactive) {
+        FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
+      }
+
+      let(:reportable_interactive) {
+        FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+      }
+
       before(:each) do
-        activity.pages << FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0)
-        activity.pages << FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1)
+        page3.add_interactive reportable_interactive
+        page4.add_interactive non_reportable_interactive
+        activity.pages << page1
+        activity.pages << page2
+        activity.pages << page3
+        activity.pages << page4
         activity.reload
       end
 
       it 'returns only visible embeddables' do
         pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
-        expect(pages.length).to eql(2)
+        expect(pages.length).to eql(4)
         expect(pages[0]['name']).to eql('page 1')
         expect(pages[0]['elements'].length).to eql(1)
         expect(pages[1]['name']).to eql('page 2')
         expect(pages[1]['elements'].length).to eql(0)
+        expect(pages[2]['elements'].length).to eql(2)
+        expect(pages[3]['elements'].length).to eql(1)
       end
     end
   end
