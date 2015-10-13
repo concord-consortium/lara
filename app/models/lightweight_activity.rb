@@ -59,8 +59,8 @@ class LightweightActivity < ActiveRecord::Base
           q << e
         end
       end
-      p.interactives.each do |i|
-        q << i if i.respond_to?('save_state') && i.save_state
+      p.visible_interactives.each do |i|
+        q << i if i.respond_to?(:is_reportable) && i.is_reportable
       end
     end
     return q
@@ -254,7 +254,7 @@ class LightweightActivity < ActiveRecord::Base
           }
           elements.push(mc_data)
         when MwInteractive
-          if embeddable.save_state && embeddable.has_report_url
+          if embeddable.is_reportable
             iframe_data = embeddable.to_hash
             iframe_data["type"] = 'iframe_interactive'
             iframe_data["id"] = embeddable.id
