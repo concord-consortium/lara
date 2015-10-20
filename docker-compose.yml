@@ -1,0 +1,76 @@
+# an image to verify sane DNS & NFS setup:
+web:
+  image: kitematic/hello-world-nginx
+  environment:
+    VIRTUAL_HOST: hello.dev
+  volumes:
+    - .website/:/website_files
+
+mysql:
+  image: mysql/mysql-server:latest
+  ports:
+    - "3306"
+  environment:
+    VIRTUAL_HOST: mysql.dev
+    MYSQL_DATABASE: myapp
+    MYSQL_USER: root
+    MYSQL_PASSWORD: admin123
+    MYSQL_ROOT_PASSWORD: admin123
+
+# The actual app
+app:
+  build: .
+  command: ./script/docker_app.sh
+  environment:
+    VIRTUAL_HOST: app.dev
+    DB_HOST: mysql.dev
+    DB_USER: root
+    DB_PASSWORD: admin123
+    DB_NAME: lara
+    BUNDLE_PATH: /bundle
+  ports:
+    - "3000"
+  volumes:
+    - .:/myapp
+  volumes_from:
+    - bundle
+  links:
+    - mysql:mysql.dev
+
+# The actual app
+test:
+  build: .
+  # command: ./script/docker_guard.sh
+  command: ./script/docker_test.sh
+  environment:
+    VIRTUAL_HOST: test.dev
+    DB_HOST: mysql.dev
+    DB_USER: root
+    DB_PASSWORD: admin123
+    DB_NAME: lara
+    BUNDLE_PATH: /bundle
+    RAILS_ENV: test
+  volumes:
+    - .:/myapp
+  volumes_from:
+    - bundle
+  links:
+    - mysql:mysql.dev
+
+#
+# This box only exists to host cached bundle gems.
+#
+bundle:
+  image: busybox
+  command: echo "I am a bundle container"
+  volumes:
+    - /bundle
+
+#
+# This box only exists to store the datbase.
+# TBD: We could use a datavolume to make our DB's portable.
+# datavolume:
+#   image: busybox
+#   command: echo "I am a bundle container"
+#   volumes:
+#     - /db

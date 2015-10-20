@@ -14,7 +14,7 @@ gem 'multi_json'
 # authentication
 gem 'devise'
 # authorization
-gem 'cancancan'
+gem 'cancancan', "~>1.10.1"
 gem 'omniauth'
 # Github
 gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
@@ -116,10 +116,10 @@ group :development do
   gem 'pry'
   gem 'pry-stack_explorer'
   #gem 'pry-exception_explorer'
-  gem 'pry-debugger'
+  # gem 'pry-debugger'
   # Evaluate database query efficiency
   gem 'bullet'
-  gem 'better_errors'
+  gem 'better_errors', "~> 1.1.0"
   gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
   gem "xray-rails" #cmd+shift+x in browser shows your view partials.
   gem "highline"
@@ -147,8 +147,10 @@ end
 # Use unicorn as the app server
 # gem 'unicorn'
 
+gem 'net-ssh', "~> 2.6.5"
+
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', "~> 2.15.5"
 gem 'capistrano-autoscaling', '0.0.8.5', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
 gem 'capistrano-cowboy'
 
@@ -159,7 +161,7 @@ gem 'brakeman', :require => false
 # Log analysis
 gem 'request-log-analyzer', :require => false
 # Database analysis
-gem 'lol_dba', :require => false
+gem 'lol_dba', "1.6.0", :require => false
 
 # Excel spreadsheet generation (for reporting)
 gem 'spreadsheet'
