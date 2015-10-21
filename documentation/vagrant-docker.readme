@@ -1,0 +1,27 @@
+
+## Run a development version of LARA in docker container using Vagrant
+
+1. install [vagrant](vagrantup.com)
+1. from this directory `vagrant up`
+1. `vagrant ssh`
+1. `cd /vagrant`
+1. `docker-compose run app bundle exec rake db:create`
+1. `docker-compose run app bundle exec rake db:migrate`
+1. `docker-compose run test bundle exec rake db:create`
+1. `docker-compose run test bundle exec rake db:migrate`
+1. `docker-compose run test`
+1. `docker-compose run web`
+
+
+If something goes wrong, and vagrant isnt syncing files in a way that
+guard sees the changes:
+
+1. vagrant rsync-auto
+
+##TODO
+- Simplify the above instructions. Docker-compose up should just work.
+- Run Javascript tests in the container.
+	- requires that we build a base-image with phantomjs.
+- Publish lara base image for faster installs
+- Add database containers (for saving / transferring data)
+- Run background jobs in in different container.

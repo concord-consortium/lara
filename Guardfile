@@ -2,8 +2,8 @@
 # More info at https://github.com/guard/guard#readme
 
 guard :rspec,
-  cmd: 'spring rspec --tag ~slow',
-  all_after_pass: true, 
+  cmd: 'bundle exec spring rspec --tag ~slow --tag ~js',
+  all_after_pass: true,
   all_on_start: true do
 
   watch(%r{^spec/.+_spec\.rb$})

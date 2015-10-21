@@ -1,170 +1,93 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rails', '~> 3.2.19'
-gem "jquery-rails"
-gem 'jquery-ui-rails'
-gem "haml"
-gem "dynamic_form"
-gem 'jeditable_wysiwyg_rails', :git => "git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"
-# gem 'jeditable_wysiwyg_rails', :path => "/Users/scytacki/Development/jeditable-wysiwyg-rails"
-gem 'acts_as_list'
-gem 'nested_form'
-gem 'gon'
-gem 'multi_json'
-# authentication
-gem 'devise'
-# authorization
-gem 'cancancan', "~>1.10.1"
-gem 'omniauth'
-# Github
-gem 'omniauth-oauth2', :git => 'https://github.com/intridea/omniauth-oauth2.git'
-gem 'default_value_for'
-gem 'tinymce-rails'
-
-# Rails assets:
-source 'https://rails-assets.org' do
-  gem 'rails-assets-drawing-tool', '1.3.2'
-  gem 'rails-assets-shutterbug', '0.5.4'
-  gem 'rails-assets-modulejs', '1.6.0'
-end
-
-# Easy (or at least easier) database dumps and reloads
-# Have to use a fork to cope with a bug: https://github.com/ludicast/yaml_db/issues/31
-gem "yaml_db", :git => 'git://github.com/lostapathy/yaml_db.git'
-gem "aws-ses", "~> 0.5.0", :require => 'aws/ses'
-gem 'uuidtools'
-gem "httparty"
-gem 'exception_notification'
-gem 'newrelic_rpm'
-# gem 'rack-environmental', :git => "git://github.com/pjmorse/rack-environmental.git", :branch => 'concord'
-gem 'rack-environmental'
-# gem 'sketchily', :path => "/Users/npaessellab/ruby/sketchily"
-# use bundle update sketchily to force newest SHA from github, or uncomment above
-# to work locally.
-gem 'sketchily', :git => "git://github.com/concord-consortium/sketchily.git", :branch => "concord"
-# We're not using sqlite in production, but moving this into the test/development groups
-# causes problems.
-gem "sqlite3"
-gem 'mysql2'
-gem "delayed_job_active_record"
-gem "delayed_job_web", "1.2.5"
-gem "daemons"
-
-# put font-awesome in asset pipeline. Alternately we could use a CDN.
-gem "font-awesome-rails"
-# Chosen jQuery plugin.
-gem 'chosen-rails'
-
-# this is to fix a pulled version of safe_yaml (0.9.4)
-gem "safe_yaml", "~> 0.9.5"
-
-# Paginate activities on activities page.
-gem 'will_paginate', '~> 3.0'
-
-# detect browser types
-gem 'useragent'
-
-gem 'react-rails', '~> 1.0'
-
-gem 'ribbons-rails', :git => 'git://github.com/concord-consortium/ribbons-rails.git'
 group :production do
-  gem 'therubyracer'
+  gem "therubyracer", "~> 0.12"
 end
 
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem "compass-rails",          "~> 2.0.4"
-  gem "compass-blueprint"
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
-  gem 'uglifier', '>= 1.0.3'
-  gem "turbo-sprockets-rails3"
-end
-
-group :test, :development do
-  gem "rspec-rails", "~> 3.1.0"
-  gem "rspec-activemodel-mocks"
-  gem "ci_reporter", "~> 1.7.0"
-  gem "factory_girl_rails", :require => false
-  gem "faker"
-  gem "capybara"
-  gem "timecop"
-
-  # Javascript tests with PhantomJS
-  gem 'poltergeist'
-  # JS unit tests
-  gem 'jasmine', "~> 2.2.0"
-  # gem 'guard-jasmine'
-  # gem 'jasminerice', :git => "git://github.com/bradphelan/jasminerice.git" # guard-jasmine uses this
-  gem 'jasmine-jquery-rails'
-end
-
-group :test do
-  # test webservices
-  gem 'webmock'
-  # needed for capybara's save_and_open_page
-  gem 'launchy'
+  gem "sass-rails", "~> 3.2"
+  gem "coffee-rails", "~> 3.2"
+  gem "compass-rails", "~> 2.0"
+  gem "compass-blueprint", "~> 1.0"
+  gem "uglifier", "~> 2.3"
+  gem "turbo-sprockets-rails3", "~> 0.3"
 end
 
 group :development do
-  gem "binding_of_caller"
-  gem 'pry'
-  gem 'pry-stack_explorer'
-  #gem 'pry-exception_explorer'
-  # gem 'pry-debugger'
-  # Evaluate database query efficiency
-  gem 'bullet'
-  gem 'better_errors', "~> 1.1.0"
-  gem "sextant"    # adds http://localhost:9000/rails/routes in dev mode
-  gem "xray-rails" #cmd+shift+x in browser shows your view partials.
-  gem "highline"
-  gem "spring-commands-rspec"
-  gem "spring"
-  # Guard runs tests automatically on change
-  gem "guard-rspec", "~> 4.6.0", require: false
-
-  # rb-fsevent is a Guard dependency
-  gem 'rb-fsevent'
-
-  # remove requests for assets from log
-  gem 'quiet_assets'
-
-  # try explicity setting webrick to remove some warnings
-  gem 'webrick', "1.3.1"
+  gem "binding_of_caller", "~> 0.7"
+  gem "pry", "~> 0.9"
+  gem "pry-stack_explorer", "~> 0.4"
+  gem "pry-debugger", "~> 0.2"
+  gem "bullet", "~> 4.7"
+  gem "better_errors", "~> 1.1"
+  gem "sextant", "~> 0.2"
+  gem "xray-rails", "~> 0.1"
+  gem "highline", "~> 1.6"
+  gem "guard-rspec", "~> 4.6", {:require=>false}
+  gem "quiet_assets", "~> 1.1"
+  gem "webrick", "~> 1.3"
+  gem "capistrano", "~> 2.15"
+  gem "aws", "~> 2.10"
+  gem "capistrano-autoscaling", "~> 0.0", {:git=>"git://github.com/concord-consortium/capistrano-autoscaling.git", :branch=>"concord"}
+  gem "capistrano-cowboy", "~> 0.1"
+  gem "lol_dba", "~> 1.6", {:require=>false}
+  gem "brakeman", "~> 2.4", {:require=>false}
+  gem "request-log-analyzer", "~> 1.12", {:require=>false}
 end
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+group :test, :development do
+  gem "rb-fsevent", "~> 0.9"
+  gem "spring-commands-rspec", "~> 1.0"
+  gem "spring", "~> 1.2"
+  gem "rspec-rails", "~> 3.1"
+  gem "rspec-activemodel-mocks", "~> 1.0"
+  gem "ci_reporter", "~> 1.7"
+  gem "factory_girl_rails", "~> 4.3", {:require=>false}
+  gem "faker", "~> 1.2"
+  gem "capybara", "~> 2.4"
+  gem "timecop", "~> 0.6"
+  gem "poltergeist", "~> 1.5"
+  gem "jasmine", "~> 2.2"
+  gem "jasmine-jquery-rails", "~> 2.0"
+  gem "webmock", "~> 1.20"
+  gem "launchy", "~> 2.4"
+end
 
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-gem 'net-ssh', "~> 2.6.5"
-
-# Deploy with Capistrano
-gem 'capistrano', "~> 2.15.5"
-gem 'capistrano-autoscaling', '0.0.8.5', :git => "git://github.com/concord-consortium/capistrano-autoscaling.git", :branch => "concord"
-gem 'capistrano-cowboy'
-
-# add some tools for
-# Tools
-# Security scan
-gem 'brakeman', :require => false
-# Log analysis
-gem 'request-log-analyzer', :require => false
-# Database analysis
-gem 'lol_dba', "1.6.0", :require => false
-
-# Excel spreadsheet generation (for reporting)
-gem 'spreadsheet'
-
-# Nokogiri for text cleaning (for reporting). Versions 1.6+ include compiled-in libxml2/libxslt support
-gem 'nokogiri', '~> 1.6'
+gem "rails", "~> 3.2"
+gem "jquery-rails", "~> 3.0"
+gem "jquery-ui-rails", "~> 4.1"
+gem "haml", "~> 4.0"
+gem "dynamic_form", "~> 1.1"
+gem "jeditable_wysiwyg_rails", "~> 0.3", {:git=>"git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"}
+gem "acts_as_list", "~> 0.3"
+gem "nested_form", "~> 0.3"
+gem "gon", "~> 5.2"
+gem "multi_json", "~> 1.11"
+gem "devise", "~> 3.0"
+gem "cancancan", "~> 1.10"
+gem "omniauth", "~> 1.1"
+gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
+gem "default_value_for", "~> 2.0"
+gem "tinymce-rails", "~> 4.2"
+gem "yaml_db", "~> 0.2", {:git=>"git://github.com/lostapathy/yaml_db.git"}
+gem "aws-ses", "~> 0.5", {:require=>"aws/ses"}
+gem "uuidtools", "~> 2.1"
+gem "httparty", "~> 0.12"
+gem "exception_notification", "~> 4.0"
+gem "newrelic_rpm", "~> 3.9"
+gem "rack-environmental", "~> 1.3"
+gem "sketchily", "~> 1.5", {:git=>"git://github.com/concord-consortium/sketchily.git", :branch=>"concord"}
+gem "sqlite3", "~> 1.3"
+gem "mysql2", "~> 0.3"
+gem "delayed_job_active_record", "~> 4.0"
+gem "delayed_job_web", "~> 1.2"
+gem "daemons", "~> 1.1"
+gem "font-awesome-rails", "~> 4.3"
+gem "chosen-rails", "~> 1.0"
+gem "safe_yaml", "~> 0.9"
+gem "will_paginate", "~> 3.0"
+gem "useragent", "~> 0.10"
+gem "react-rails", "~> 1.0"
+gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
+gem "spreadsheet", "~> 1.0"
+gem "nokogiri", "~> 1.6"

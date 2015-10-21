@@ -142,6 +142,7 @@ If you are going to deploy to a server with load balancing enabled (production),
 ## WIP: Getting started with Docker.
 
 See: [the docker documentation](documentation/dockerdev.md)
+See: [the vagrant] (documentation/vagrant-docker.md)
 
 ## History
 

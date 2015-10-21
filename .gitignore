@@ -44,3 +44,5 @@ public/snapshots
 
 # Ignore config/database.yml incase people want to use myslq or postgresql.
 config/database.yml
+.com.apple.timemachine.supported
+.vagrant

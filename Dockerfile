@@ -20,6 +20,11 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
 # for a JS runtime
 RUN apt-get install -y nodejs
 
+# clean up ruby / gems / bundler
+RUN gem update --system
+RUN gem update bundler
+RUN gem install debugger-ruby_core_source
+
 ENV APP_HOME /myapp
 RUN mkdir /myapp
 WORKDIR /myapp
@@ -27,7 +32,7 @@ WORKDIR /myapp
 ADD Gemfile* $APP_HOME/
 
 # --- Add this to your Dockerfile ---
-ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
-  BUNDLE_PATH=/bundle
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 
 ADD . $APP_HOME
+RUN bundle install
