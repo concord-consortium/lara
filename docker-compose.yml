@@ -4,7 +4,7 @@ web:
   environment:
     VIRTUAL_HOST: hello.dev
   volumes:
-    - .website/:/website_files
+    - ./hello_website/:/website_files
 
 mysql:
   image: mysql/mysql-server:latest
