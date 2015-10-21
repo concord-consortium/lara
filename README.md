@@ -141,14 +141,7 @@ If you are going to deploy to a server with load balancing enabled (production),
 
 ## WIP: Getting started with Docker.
 
-   1. install the dash utility from ifttt:
-    `bash <(curl -fsSL https://raw.githubusercontent.com/IFTTT/dash/master/bin/bootstrap)`
-   2. (TBD: You might have to clean some things up if you have ever installed docker before)
-   2. `dev up`
-   3. `open http://app.dev/`
-
- Missing in this WIP:  PhantomJS tests. :/  
-
+See: [the docker documentation](documentation/dockerdev.md)
 
 ## History
 
