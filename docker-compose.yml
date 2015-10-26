@@ -25,25 +25,8 @@ app:
     DB_USER: root
     DB_PASSWORD: admin123H
     DB_NAME: lara
-    RAILS_ENV: development
   ports:
     - "3000"
-  volumes:
-    - /vagrant:/myapp
-  links:
-    - mysql
-    - mysql:mysql.dev
-
-# Teseting container
-test:
-  build: .
-  command: ./script/docker-gaurd.sh
-  environment:
-    DB_HOST: mysql
-    DB_USER: root
-    DB_PASSWORD: admin123H
-    DB_NAME: lara
-    RAILS_ENV: test
   volumes:
     - /vagrant:/myapp
   links:

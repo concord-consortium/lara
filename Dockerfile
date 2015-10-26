@@ -26,13 +26,12 @@ RUN gem update bundler
 RUN gem install debugger-ruby_core_source
 
 ENV APP_HOME /myapp
-RUN mkdir /myapp
-WORKDIR /myapp
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
-
 # --- Add this to your Dockerfile ---
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
-
-ADD . $APP_HOME
 RUN bundle install
+ADD . $APP_HOME
+RUN cp $APP_HOME/config/database.sample.yml $APP_HOME/config/database.yml
