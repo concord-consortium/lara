@@ -2,14 +2,21 @@
 ## Run a development version of LARA in docker container using Vagrant
 
 1. install [vagrant](vagrantup.com)
-1. from this directory `vagrant up`
-1. `vagrant ssh`
-1. `cd /vagrant`
-1. `docker-compose up`
-1. `docker-compose run app script/docker-test.sh`
+1. vagrant plugin install vagrant-docker-compose
+1. Copy settings files:
+		1. `cp ./config/databse.sample.yml ./config/databse.yml`
+		2. `cp ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb`
+		3. At a miminimum you should edit the value for `SECRET_TOKEN` in  `app_environment_variables.rb`.
+		It might be best to ask another dev for a copy of this file. In the future we could containerize a dev portal for
+		testing LARA against.
+1.  From a shell in this directory enter these items on the command line:
+	1. `vagrant up`  - Starts the virtualbox VM, installs docker, and provisions containers. Might take a while to complete.
+	1. `vagrant ssh` – Open a shell on the virtualbox machine.
+	1. `cd /lara` – Move to the working directory of shared project folders.
+	1. `docker-compose up` - Starts the appcliation server & database server.
+	1. `docker-compose run app script/docker-test.sh` – runs guard
 
-
-If something goes wrong, and vagrant isnt syncing files in a way that
+If something goes wrong, and vagrant isn't syncing files in a way that
 guard sees the changes:
 
 1. vagrant rsync-auto

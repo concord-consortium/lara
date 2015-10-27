@@ -1,10 +1,10 @@
-# an image to verify sane DNS & NFS setup:
+# Simply to test port forwarding &etc.
 web:
   image: kitematic/hello-world-nginx
   environment:
     VIRTUAL_HOST: hello.dev
   ports:
-    - "80:80"
+    - "80:8888"
   volumes:
     - ./hello_website/:/website_files
 
@@ -28,7 +28,7 @@ app:
   ports:
     - "3000:3000"
   volumes:
-    - /vagrant:/myapp
+    - /lara:/lara
   links:
     - mysql
     - mysql:mysql.dev

@@ -46,3 +46,4 @@ public/snapshots
 config/database.yml
 .com.apple.timemachine.supported
 .vagrant
+.website

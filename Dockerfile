@@ -25,7 +25,7 @@ RUN gem update --system
 RUN gem update bundler
 RUN gem install debugger-ruby_core_source
 
-ENV APP_HOME /myapp
+ENV APP_HOME /lara
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
@@ -34,4 +34,3 @@ ADD Gemfile* $APP_HOME/
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 RUN bundle install
 ADD . $APP_HOME
-RUN cp $APP_HOME/config/database.sample.yml $APP_HOME/config/database.yml
