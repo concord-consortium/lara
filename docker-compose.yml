@@ -1,10 +1,8 @@
 # Simply to test port forwarding &etc.
 web:
   image: kitematic/hello-world-nginx
-  environment:
-    VIRTUAL_HOST: hello.dev
   ports:
-    - "80:8888"
+    - "8888:80"
   volumes:
     - ./hello_website/:/website_files
 

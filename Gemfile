@@ -29,7 +29,6 @@ group :development do
   gem "better_errors", "~> 1.1"
   gem "sextant", "~> 0.2"
   gem "xray-rails", "~> 0.1"
-  gem "highline", "~> 1.6"
   gem "guard-rspec", "~> 4.6", {:require=>false}
   gem "quiet_assets", "~> 1.1"
   gem "webrick", "~> 1.3"
@@ -43,6 +42,7 @@ group :development do
 end
 
 group :test, :development do
+  gem "highline", "~> 1.6"
   gem "rb-fsevent", "~> 0.9"
   gem "spring-commands-rspec", "~> 1.0"
   gem "spring", "~> 1.2"

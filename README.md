@@ -139,10 +139,10 @@ If you are going to deploy to a server with load balancing enabled (production),
   `export AWS_SECRET_ACCESS_KEY='xxxx'`
 
 
-## WIP: Getting started with Docker.
+## WIP: Development environment with docker:
 
-See: [the docker documentation](documentation/dockerdev.md) for vanilla docker
-See: [the vagrant-docker](documentation/vagrant-docker.md) for vagrant + docker
+* See: [the docker documentation](documentation/dockerdev.md) for vanilla docker
+* See: [the vagrant-docker](documentation/vagrant-docker.md) for vagrant + docker
 
 ## History
 

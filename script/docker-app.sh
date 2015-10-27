@@ -2,7 +2,7 @@
 
 APP_NAME='lara'
 
-DB_CONFIG=/$APP_NAME/config/database.sample.yml
+DB_CONFIG=/$APP_NAME/config/database.yml
 PIDFILE=/$APP_NAME/tmp/pids/server.pid
 
 if [ -f $PIDFILE ]; then
