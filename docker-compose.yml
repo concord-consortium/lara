@@ -13,6 +13,9 @@ mysql:
   environment:
     VIRTUAL_HOST: mysql.dev
     MYSQL_ROOT_PASSWORD: admin123H
+  volumes_from:
+    - data
+
 
 # The rails app
 app:
@@ -30,3 +33,8 @@ app:
   links:
     - mysql
     - mysql:mysql.dev
+
+data:
+  image: busybox
+  volumes:
+    - /var/lib/mysql
