@@ -13,11 +13,8 @@
 	1. `vagrant ssh` – Open a shell on the virtualbox machine.
 	1. `cd /lara` – Move to the working directory of shared project folders.
 	1. `docker-compose up` - Starts the application server & database server.
+	1. `vagrant rsync-auto` – Starts auto rsync  (mac only)
 	1. `docker-compose run app script/docker-test.sh` – runs guard
-
-If vagrant isn't syncing files in a way that works with guard try this:
-
-		vagrant rsync-auto
 
 ## Details
 
