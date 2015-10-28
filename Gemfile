@@ -41,6 +41,10 @@ group :development do
   gem "request-log-analyzer", "~> 1.12", {:require=>false}
 end
 
+group :test do
+  gem "webmock", "~> 1.20"
+end
+
 group :test, :development do
   gem "highline", "~> 1.6"
   gem "rb-fsevent", "~> 0.9"
@@ -56,7 +60,6 @@ group :test, :development do
   gem "poltergeist", "~> 1.5"
   gem "jasmine", "~> 2.2"
   gem "jasmine-jquery-rails", "~> 2.0"
-  gem "webmock", "~> 1.20"
   gem "launchy", "~> 2.4"
 end
 
