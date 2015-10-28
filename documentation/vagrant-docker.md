@@ -26,6 +26,18 @@ box is the default way to spin up, build, or remove containers identified as
 
 * Containers will be reused when possible.
 
+## Loading your old data:
+
+If you have some Authoring data you would like to import into your container,
+you can do so with this command, run from the vagrant virtual machine:
+
+`docker-compose run mysql -uroot -p$MYSQL_ROOT_PASSWORD lara_production < lara.sql`
+
+# running docker-machine locally:
+
+You can run `docker-machine` locally, and then issue `docker-compose`
+without using a vagrant VM.  But inn that case, file shares will be slow.
+
 ##TODO
 - Simplify the above instructions. `docker-compose up` should just work.
 - Add database containers (for saving / transferring data)
