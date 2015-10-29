@@ -1,8 +1,10 @@
 # Simply to test port forwarding &etc.
 web:
   image: kitematic/hello-world-nginx
-  ports:
-    - "8888:80"
+  environment:
+    VIRTUAL_HOST: hello.lara
+  expose:
+    - "80"
   volumes:
     - ./hello_website/:/website_files
 
@@ -11,28 +13,39 @@ mysql:
   ports:
     - "3306"
   environment:
-    VIRTUAL_HOST: mysql.dev
+    VIRTUAL_HOST: mysql.lara
     MYSQL_ROOT_PASSWORD: admin123H
   volumes_from:
     - data
-
 
 # The rails app
 app:
   build: .
   command: ./script/docker-app.sh
   environment:
-    DB_HOST: mysql.dev
+    VIRTUAL_HOST: app.lara
+    DB_HOST: mysql.lara
     DB_USER: root
     DB_PASSWORD: admin123H
     DB_NAME: lara
-  ports:
-    - "3000:3000"
+  expose:
+    - "3000"
   volumes:
     - /lara:/lara
   links:
     - mysql
-    - mysql:mysql.dev
+    - mysql:mysql.lara
+
+proxy:
+  image: jwilder/nginx-proxy:latest
+  ports:
+    - "80:80"
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+  restart: always
+  links:
+    - app:app.lara
+    - web:hello.lara
 
 data:
   image: busybox

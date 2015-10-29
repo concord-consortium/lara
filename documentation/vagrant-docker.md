@@ -2,7 +2,8 @@
 ## Run a development version of LARA in docker container using Vagrant
 
 1. install [vagrant](vagrantup.com)
-1. install docker-compose plugin `vagrant plugin install vagrant-docker-compose`
+1. install docker-compose plugin: `vagrant plugin install vagrant-docker-compose`
+1. install the hostmanager plugin: `vagrant plugin install vagrant-hostmanager`
 1. copy settings files:
 		1. `cp ./config/databse.sample.yml ./config/databse.yml`
 		2. `cp ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb`
@@ -10,9 +11,12 @@
 		It might be best to ask another dev for a copy of this file.
 1.  From a shell in this directory enter these items on the command line:
 	1. `vagrant up`  - Starts the virtualbox VM, installs docker, and provisions containers. Might take a while to complete.
+	1. `vagrant hostmanager` – will ask you for admin password on your machine.  Will add entries to /etc/hosts
 	1. `vagrant ssh` – Open a shell on the virtualbox machine.
 	1. `cd /lara` – Move to the working directory of shared project folders.
 	1. `docker-compose up` - Starts the application server & database server.
+	1. You should now be able to see your app server running at `http://app.lara`
+	1. You should also have a web server running at `http://hello.lara`
 	1. `vagrant rsync-auto` – Starts auto rsync  (mac only)
 	1. `docker-compose run app script/docker-test.sh` – runs guard
 
