@@ -5,7 +5,7 @@
 1. install docker-compose plugin: `vagrant plugin install vagrant-docker-compose`
 1. install the hostmanager plugin: `vagrant plugin install vagrant-hostmanager`
 1. copy settings files:
-		1. `cp ./config/databse.sample.yml ./config/databse.yml`
+		1. `cp ./config/database.sample.yml ./config/database.yml`
 		2. `cp ./config/app_environment_variables.sample.rb ./config/app_environment_variables.rb`
 		3. at a minimum you should edit the value for `SECRET_TOKEN` in  `app_environment_variables.rb`.
 		It might be best to ask another dev for a copy of this file.
