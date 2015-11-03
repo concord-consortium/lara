@@ -1,0 +1,23 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "containerDefinitions": [
+    {
+      "name": "lara",
+      "image": "knowuh/lara",
+      "environment": [
+        {
+          "name": "Container",
+          "value": "Rails"
+        }
+      ],
+      "essential": true,
+      "memory": 1024,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 3000
+        }
+      ]
+    }
+  ]
+}

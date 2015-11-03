@@ -34,3 +34,5 @@ ADD Gemfile* $APP_HOME/
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 RUN bundle install
 ADD . $APP_HOME
+EXPOSE 80
+CMD script/docker-app.sh
