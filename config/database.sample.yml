@@ -2,20 +2,22 @@
 development: &development
   encoding: utf8
   adapter: mysql2
-  username: <%= ENV['DB_USER'] || 'root' %>
-  database: <%= ENV['DB_NAME'] || 'lara' %>_production
-  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
-  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
+  username: <%= ENV['RDS_USERNAME'] || ENV['DB_USER']     || 'root' %>
+  database: <%= ENV['RDS_DB_NAME']  || ENV['DB_NAME']     || 'lara_production' %>
+  password: <%= ENV['RDS_PASSWORD'] || ENV['DB_PASSWORD'] || 'simple' %>
+  host:     <%= ENV['RDS_HOSTNAME'] || ENV['DB_HOST']     || '127.0.0.1' %>
+  port:     <%= ENV['RDS_PORT']     || ENV['DB_PORT']     || 3306 %>
   pool: 5
 
 
 test: &test
   encoding: utf8
   adapter: mysql2
-  username: <%= ENV['DB_USER'] || 'root' %>
-  database: <%= ENV['DB_NAME'] || 'lara' %>_test
-  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
-  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
+  username: <%= ENV['RDS_USERNAME'] || ENV['DB_USER']     || 'root' %>
+  database: <%= ENV['RDS_DB_NAME']  || ENV['DB_NAME']     || 'lara_test' %>
+  password: <%= ENV['RDS_PASSWORD'] || ENV['DB_PASSWORD'] || 'simple' %>
+  host:     <%= ENV['RDS_HOSTNAME'] || ENV['DB_HOST']     || '127.0.0.1' %>
+  port:     <%= ENV['RDS_PORT']     || ENV['DB_PORT']     || 3306 %>
   pool: 5
 
 production: *development
