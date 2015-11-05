@@ -141,8 +141,11 @@ If you are going to deploy to a server with load balancing enabled (production),
 
 ## WIP: Development environment with docker:
 
-* See: [the docker documentation](documentation/dockerdev.md) for vanilla docker
+* See: [the docker documentation](documentation/dockerdev.md) for docker-machine and Dash.
 * See: [the vagrant-docker](documentation/vagrant-docker.md) for vagrant + docker
+
+## WIP: AWS Deployment with docker:
+* See: [the aws-docker](documentation/aws-docker.md) for AWS container deployment.
 
 ## History
 
