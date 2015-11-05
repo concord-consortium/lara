@@ -2,7 +2,9 @@
 
 # If guard doesn't trigger, try running vagrant rsync-auto
 export RAILS_ENV=test
+export DB_NAME=lara_test
 bundle exec spring rake db:create
+bundle exec spring rake db:migrate
 bundle exec spring rake db:test:prepare
 # -p flag needed here because of a bug / misfeature in guard, for more info:
 # https://groups.google.com/forum/#!topic/guard-dev/-tx6yncq1wA
