@@ -1,27 +1,21 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+---
+development: &development
+  encoding: utf8
+  adapter: mysql2
+  username: <%= ENV['DB_USER'] || 'root' %>
+  database: <%= ENV['DB_NAME'] || 'lara' %>_production
+  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
+  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
   pool: 5
-  timeout: 5000
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
 
-# This is a placeholder database; the real production database is
-# set up at deploy time.
-production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+test: &test
+  encoding: utf8
+  adapter: mysql2
+  username: <%= ENV['DB_USER'] || 'root' %>
+  database: <%= ENV['DB_NAME'] || 'lara' %>_test
+  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
+  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
   pool: 5
-  timeout: 5000
+
+production: *development

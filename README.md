@@ -19,7 +19,7 @@ This is a Rails application intended to provide a platform for authoring and usi
 3. Initialize the database:
 
         rake db:setup
-        
+
 4. If you have seed data, create it now.
 
 5. Set environment variables, particularly the cookie encryption key, by copying the file `config/app_environment_variables.sample.rb` to `config/app_environment_variables.rb` and editing its values as appropriate. For development purposes, you should just need a cookie key (the 'SECRET_TOKEN' value).
@@ -39,7 +39,7 @@ This project does use [Sass](http://sass-lang.com/) for the stylesheets.
 
 The runtime environment supports the idea of themes. Themes mostly take
 the form of stylesheets. The themes come in two main families, the CC
-theme and the MW theme. You can look at `app/assets/stylesheets/cc-runtime-base.scss` or `app/assets/stylesheets/mw-runtime-base.scss` to see the two main families. Most themes inherit from cc-runtime-base, see for example has-atmosphere.scss which uses `partials/_cc-theme-template.scss` 
+theme and the MW theme. You can look at `app/assets/stylesheets/cc-runtime-base.scss` or `app/assets/stylesheets/mw-runtime-base.scss` to see the two main families. Most themes inherit from cc-runtime-base, see for example has-atmosphere.scss which uses `partials/_cc-theme-template.scss`
 
 
 ## Users and administration
@@ -134,10 +134,16 @@ If you are going to deploy to a server with load balancing enabled (production),
   1. Uncomment the auto-scale callback in config/deply/(server).rb or add one like this:
   `after "deploy:restart", "autoscaling:update"`
   2. Read the documentation here: https://github.com/concord-consortium/capistrano-autoscaling/tree/concord
-  3. export your credentials using something like this: 
+  3. export your credentials using something like this:
   `export AWS_ACCESS_KEY_ID='xxxx'` and
   `export AWS_SECRET_ACCESS_KEY='xxxx'`
-  
+
+
+## WIP: Development environment with docker:
+
+* See: [the docker documentation](documentation/dockerdev.md) for vanilla docker
+* See: [the vagrant-docker](documentation/vagrant-docker.md) for vagrant + docker
+
 ## History
 
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
