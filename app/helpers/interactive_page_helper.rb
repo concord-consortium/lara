@@ -47,6 +47,9 @@ module InteractivePageHelper
     return finder.find_answer(interactive.labbook)
   end
 
+  # FIXME: false means the embeddable should be shown in the normal order
+  #  in the assessment block. true means the embeddable is a labbook the activity
+  #  is in a mode where embeddables are shown below the interactive
   def show_labbook_in_assessment_block?(embeddable_answer)
     question = embeddable_answer.respond_to?(:question) && embeddable_answer.question
     if question && question.is_a?(Embeddable::Labbook)

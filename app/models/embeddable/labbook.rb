@@ -167,9 +167,13 @@ module Embeddable
     #| Dan File upload               | upload        | no              | NA                     | Shown               |
     #| ITSI File upload (microscope) | upload        | yes             | Shown                  | Shown               |
     #| ITSI File upload (microscope) | upload        | yes             | Hidden                 | Hidden              |
-    # 
+    #
     # The ITSI File upload use case uses the interactive to determine whether it is visible or not.
-    # this is so an ITSI author can hide and show these upload labbooks the same way they hide and show modes
+    # this is so an ITSI author can hide and show these upload labbooks the same way they hide and show models
+    #
+    # NOTE: when serialize_for_portal is called at the activity level, labbooks that have their 'is_hidden' attribute
+    # set are not included in the output which then overrides this truth table, however in the single page runtime
+    # the 'is_hidden' attribute is ignored by the code that places the labbook below their interactive
     def show_in_runtime?
       ((action_type == UPLOAD_ACTION) && !has_interactive?) || interactive_is_visible?
     end
