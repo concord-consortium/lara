@@ -135,7 +135,7 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
 
       index = str.indexOf(':');
 
-      if ( index >= 0) {
+      if (index >= 0) {
         eventName = str.slice(0, index);
         eventValue = str.slice(index + 1);
         try {
@@ -143,15 +143,17 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
         } catch (e) {
           // noop
         }
-
-        this._logger.log({
-          event: eventName,
-          event_value: eventValue,
-          parameters: parameters,
-          interactive_id: $(iframe).data().id,
-          interactive_url: iframe.src
-        });
+      } else {
+        eventName = str;
       }
+
+      this._logger.log({
+        event: eventName,
+        event_value: eventValue,
+        parameters: parameters,
+        interactive_id: $(iframe).data().id,
+        interactive_url: iframe.src
+      });
     }
   }.bind(this);
 
