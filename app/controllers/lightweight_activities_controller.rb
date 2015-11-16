@@ -92,7 +92,7 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def create
-    @activity = LightweightActivity.create(params[:lightweight_activity])
+    @activity = LightweightActivity.new(params[:lightweight_activity])
     authorize! :create, @activity
     @activity.user = current_user
     @activity.changed_by = current_user
