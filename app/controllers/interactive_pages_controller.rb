@@ -60,8 +60,9 @@ class InteractivePagesController < ApplicationController
 
   def create
     @activity = LightweightActivity.find(params[:activity_id])
-    @page = InteractivePage.create!(:lightweight_activity => @activity)
+    @page = InteractivePage.new(:lightweight_activity => @activity)
     authorize! :create, @page
+    @page.save!
     update_activity_changed_by
     flash[:notice] = "A new page was added to #{@activity.name}"
     redirect_to edit_activity_page_path(@activity, @page)
