@@ -66,6 +66,7 @@ LightweightStandalone::Application.routes.draw do
       get 'preview'
       get 'export'
       get 'show_status'
+      get 'dashboard_toc'
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
