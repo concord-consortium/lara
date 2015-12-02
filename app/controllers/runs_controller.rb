@@ -86,6 +86,19 @@ class RunsController < ApplicationController
     end
   end
 
+  def dashboard
+    respond_to do |format|
+      format.js do
+        callback = params[:callback]
+        students = params[:students] || [{name: "joe doe", learner_id: []}]
+        students = [{name: "joe doe", learner_id: []}]
+        base_url = params[:base_url] || "blarg"
+        dashboard_runs = DashboardRunlist.new(students, base_url)
+        render json: dashboard_runs.to_hash, callback: callback
+      end
+    end
+  end
+
   private
   def set_run
     @run = Run.find_or_create_by_key_and_activity_id(params[:id], params[:activity_id])
@@ -105,4 +118,6 @@ class RunsController < ApplicationController
     end
     return response
   end
+
+
 end

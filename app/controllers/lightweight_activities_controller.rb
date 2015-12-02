@@ -255,14 +255,13 @@ class LightweightActivitiesController < ApplicationController
   def dashboard_toc
     respond_to do |format|
       format.js do
-        toc = ActivityDashboardToc.new(@activity)
-        render :json => toc.to_hash, :callback => params[:callback]
+        callback = params[:callback]
+        toc = DashboardToc.new(@activity)
+        render json: toc.to_hash, callback: callback
       end
     end
   end
 
-  def dashboard_runs
-  end
   private
   def set_activity
     if params[:activity_id]

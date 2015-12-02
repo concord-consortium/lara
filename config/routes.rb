@@ -157,6 +157,7 @@ LightweightStandalone::Application.routes.draw do
   get "/activities/:activity_id/single_page/:response_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
   get "/runs/details" => 'runs#details', :as => 'run_details'
+  get "/runs/dashboard" => 'runs#dashboard', :as => 'run_dashboard'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
   match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info'
   match "test_mail" => 'application#test_mail', :as => 'test_mail'
