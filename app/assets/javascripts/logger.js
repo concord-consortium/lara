@@ -37,10 +37,13 @@ LoggerUtils.logInteractiveEvents = function(iframe){
   };
 
   var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._logInteractiveEventsRPCFormat($(iframe)[0]);
   logger_utils._logInteractiveEvents($(iframe)[0]);
 };
 
 LoggerUtils.enableLabLogging = function(iframeEl) {
+  // WARNING: old logging format, not necessary in Lab >= 1.9.0
+  // TODO: remove when Lab 1.9.0 is released
   var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
   labRpc.call({message: 'lara-logging-present'});
 };
@@ -121,7 +124,9 @@ LoggerUtils.prototype._interactiveSimulationLogging = function() {
   });
 };
 
-LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
+// WARNING: old logging format, not necessary in Lab >= 1.9.0
+// TODO: remove when Lab 1.9.0 is released
+LoggerUtils.prototype._logInteractiveEventsRPCFormat = function(iframe) {
 
   var handler = function(cmd) {
     var str;
@@ -135,7 +140,7 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
 
       index = str.indexOf(':');
 
-      if ( index >= 0) {
+      if (index >= 0) {
         eventName = str.slice(0, index);
         eventValue = str.slice(index + 1);
         try {
@@ -143,15 +148,17 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
         } catch (e) {
           // noop
         }
-
-        this._logger.log({
-          event: eventName,
-          event_value: eventValue,
-          parameters: parameters,
-          interactive_id: $(iframe).data().id,
-          interactive_url: iframe.src
-        });
+      } else {
+        eventName = str;
       }
+
+      this._logger.log({
+        event: eventName,
+        event_value: eventValue,
+        parameters: parameters,
+        interactive_id: $(iframe).data().id,
+        interactive_url: iframe.src
+      });
     }
   }.bind(this);
 
@@ -161,6 +168,18 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
   LoggerUtils.enableLabLogging(iframe);
 };
 
+LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
+  var phone = IframePhoneManager.getPhone(iframe);
+  phone.addListener('log', function (content) {
+    this._logger.log({
+      event: content.action,
+      event_value: JSON.stringify(content.data),
+      parameters: content.data,
+      interactive_id: $(iframe).data().id,
+      interactive_url: iframe.src
+    });
+  }.bind(this));
+};
 
 function Logger(options) {
   this._server = options.server;
