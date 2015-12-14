@@ -46,7 +46,6 @@ group :test do
 end
 
 group :test, :development do
-  gem "highline", "~> 1.6"
   gem "rb-fsevent", "~> 0.9"
   gem "spring-commands-rspec", "~> 1.0"
   gem "spring", "~> 1.2"
@@ -63,6 +62,7 @@ group :test, :development do
   gem "launchy", "~> 2.4"
 end
 
+gem "highline", "~> 1.6"
 gem "rails", "~> 3.2"
 gem "jquery-rails", "~> 3.0"
 gem "jquery-ui-rails", "~> 4.1"
