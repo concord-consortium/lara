@@ -21,8 +21,8 @@ class Ability
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
       # and duplicate unlocked activities and sequences
-      can :duplicate, LightweightActivity, :is_locked => false, :publication_status => 'public'
-      can :duplicate, Sequence, :publication_status => 'public'
+      can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
+      can :duplicate, Sequence, :publication_status => ['public', 'hidden']
       # other users cannot export an activity or sequence
       cannot :export, LightweightActivity
       cannot :export, Sequence
