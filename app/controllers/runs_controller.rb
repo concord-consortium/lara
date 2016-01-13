@@ -1,6 +1,6 @@
 class RunsController < ApplicationController
   layout false, :except => [:dirty, :details]
-  before_filter :set_run, :except => [:index, :fix_broken_portal_runs]
+  before_filter :set_run, :except => [:index, :fix_broken_portal_runs, :dashboard]
 
   def index
     # This is actually a special case of show - create an Run and show it
@@ -86,20 +86,16 @@ class RunsController < ApplicationController
     end
   end
 
+  # Used by Dashboard app.
   def dashboard
-    respond_to do |format|
-      format.js do
-        callback = params[:callback]
-        students = params[:students] || [{name: "joe doe", learner_id: []}]
-        students = [{name: "joe doe", learner_id: []}]
-        base_url = params[:base_url] || "blarg"
-        dashboard_runs = DashboardRunlist.new(students, base_url)
-        render json: dashboard_runs.to_hash, callback: callback
-      end
-    end
+    page_id  = params[:page_id]
+    runs     = params[:runs] || []
+    dashboard = DashboardRunlist.new(runs, page_id)
+    render json: dashboard.to_json, callback: params[:callback]
   end
 
   private
+
   def set_run
     @run = Run.find_or_create_by_key_and_activity_id(params[:id], params[:activity_id])
   end
