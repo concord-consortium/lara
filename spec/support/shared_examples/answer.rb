@@ -8,16 +8,6 @@ shared_examples "an answer" do
         expect(answer.question_index).to be_nil
       end
     end
-
-    describe "with a run" do
-      it "should return its index within the run" do
-        question = double("question")
-        allow(answer).to receive_messages(:run => run)
-        allow(answer).to receive_messages(:question => question)
-        allow(run).to receive_message_chain(:activity,:questions,:index).and_return 3
-        expect(answer.question_index).to eq(4)
-      end
-    end
   end
 
   describe "prompt_no_itals" do
@@ -36,36 +26,6 @@ shared_examples "an answer" do
       allow(answer_b).to receive_messages(:prompt => '<i>Prompt</i> B')
       expect(answer_a.prompt_no_itals).to eq('<i></i> A')
       expect(answer_b.prompt_no_itals).to eq('<i></i> B')
-    end
-  end
-
-  describe '#question_index' do
-    let (:question) { double("question") }
-    it 'returns nil if there is no activity' do
-      answer.run = nil
-      answer.save
-      expect(answer.reload.question_index).to be_nil
-    end
-
-    it 'returns an integer reflecting position among all questions for the activity' do
-      answer.run = run
-      allow(answer).to receive_messages(:question => question)
-
-      q1   = mock_model(Embeddable::OpenResponse)
-      q2   = mock_model(Embeddable::OpenResponse)
-      q3   = mock_model(Embeddable::MultipleChoice)
-      q4   = mock_model(Embeddable::MultipleChoice)
-      activity = mock_model(LightweightActivity, :questions => [q1, q2, q3, q4, question])
-      allow(run).to receive_messages(:activity => activity)
-
-      expect(answer.question_index).to be(5)
-
-      # Order changes should be respected
-      allow(activity).to receive_messages(:questions => [q1, q2, q3, question, q4])
-      answer.reload
-      answer.run = run
-      allow(answer).to receive_messages(:question => question)
-      expect(answer.question_index(true)).to be(4)
     end
   end
 

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Embeddable::ImageQuestion do
+  it_behaves_like "a question"
 
   let (:image_question) { FactoryGirl.create(:image_question) }
 
