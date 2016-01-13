@@ -1,6 +1,8 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::MultipleChoice do
+  it_behaves_like "a question"
+
   let (:multichoice) do
     mc = FactoryGirl.create(:multiple_choice)
     mc.create_default_choices

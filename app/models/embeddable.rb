@@ -45,4 +45,8 @@ module Embeddable
   def show_in_runtime?
     true
   end
+
+  def index_in_activity(activity)
+    activity.questions.index(self) + 1
+  end
 end

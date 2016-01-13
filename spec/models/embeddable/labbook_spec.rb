@@ -1,6 +1,8 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::Labbook do
+  it_behaves_like "a question"
+
   let(:labbook) { Embeddable::Labbook.new }
 
   describe '#to_hash' do
