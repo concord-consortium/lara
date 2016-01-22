@@ -173,7 +173,7 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
   phone.addListener('log', function (content) {
     this._logger.log({
       event: content.action,
-      event_value: JSON.stringify(content.data),
+      event_value: content.value,
       parameters: content.data,
       interactive_id: $(iframe).data().id,
       interactive_url: iframe.src
