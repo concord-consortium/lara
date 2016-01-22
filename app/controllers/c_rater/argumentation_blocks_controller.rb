@@ -18,25 +18,9 @@ class CRater::ArgumentationBlocksController < ApplicationController
     @page = InteractivePage.find(params[:page_id])
     @activity = @page.lightweight_activity
     set_run_key # sets @run
-
-    finder = Embeddable::AnswerFinder.new(@run)
-    arg_block_answers = @page.section_embeddables(CRater::ARG_SECTION_NAME).map { |e| finder.find_answer(e) }
-    feedback_items = {}
-    submission = CRater::FeedbackSubmission.create!(interactive_page: @page, run: @run)
-    arg_block_answers.each do |a|
-      f = a.save_feedback
-      unless f.nil?
-        f.feedback_submission = submission
-        f.save!
-        feedback_items[a.id] = {score: f.score, text: f.feedback_text}
-      end
-    end
-
+    feedback_info = CRater::FeedbackSubmission.generate_feedback(@page, @run)
     if request.xhr?
-      render json: {
-               submission_id: submission.id,
-               feedback_items: feedback_items
-             }
+      render json: feedback_info
     else
       redirect_to(:back)
     end
@@ -44,7 +28,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
 
   def feedback_on_feedback
     submission = CRater::FeedbackSubmission.find(params[:submission_id])
-    submission.update_attributes!(usefulness_score: params[:score])
+    submission.update_usefulness_score(params[:score])
     if request.xhr?
       head(200)
     else
