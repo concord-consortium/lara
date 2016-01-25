@@ -87,12 +87,6 @@ class RunsController < ApplicationController
   end
 
   # Used by Dashboard app.
-  # This API is open, there is no authorization, but it requires secure
-  # form of endpoint_urls that use long UUID keys instead of numeric IDs.
-  # E.g. this endpoint URL will be accepted:
-  # https://learn.concord.org/dataservice/external_activity_data/key:19679d16-e79e-4f36-8253-5deb1321e6d9
-  # but this will be filtered out:
-  # https://learn.concord.org/dataservice/external_activity_data/123
   def dashboard
     page_id = params[:page_id]
     endpoint_urls = params[:endpoint_urls] || []
