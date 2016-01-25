@@ -5,7 +5,7 @@ shared_context "activity with arg block submissions" do
 
   before(:each) do
     # Setup run.
-    @run = FactoryGirl.create(:run, activity: act, remote_endpoint: 'http://remote.endpoint')
+    @run = FactoryGirl.create(:run, activity: act, page: page, remote_endpoint: 'http://remote.endpoint')
     # Setup arg block embeddables.
     @q1 = FactoryGirl.create(:mc_embeddable, prompt: 'q1')
     @q2 = FactoryGirl.create(:open_response, prompt: 'q2')

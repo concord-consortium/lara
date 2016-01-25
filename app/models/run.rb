@@ -4,7 +4,7 @@ class Run < ActiveRecord::Base
   class PortalUpdateIncomplete < StandardError; end
   class InvalidJobState < StandardError; end
 
-  attr_accessible :run_count, :user_id, :key, :activity, :user, :remote_id, :remote_endpoint, :activity_id, :sequence_id
+  attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id, :remote_id, :remote_endpoint, :activity_id, :sequence_id
 
   belongs_to :activity, :class_name => LightweightActivity
 

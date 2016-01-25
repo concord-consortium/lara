@@ -88,9 +88,9 @@ class RunsController < ApplicationController
 
   # Used by Dashboard app.
   def dashboard
-    page_id  = params[:page_id]
-    runs     = params[:runs] || []
-    dashboard = DashboardRunlist.new(runs, page_id)
+    page_id = params[:page_id]
+    endpoint_urls = params[:endpoint_urls] || []
+    dashboard = DashboardRunlist.new(endpoint_urls, page_id)
     render json: dashboard.to_json, callback: params[:callback]
   end
 
