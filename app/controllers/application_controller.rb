@@ -17,6 +17,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # With +respond_to do |format|+, "406 Not Acceptable" is sent on invalid format.
+  # With a regular render (implicit or explicit), ActionView::MissingTemplate
+  # exception is raised instead. If we then raise a RoutingError Rails turns it
+  # into a 404 response.
+  rescue_from(ActionView::MissingTemplate) do |e|
+    request.format = :html
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   before_filter :log_session_before
   before_filter :portal_login
   before_filter :reject_old_browsers, :except => [:bad_browser]

@@ -24,7 +24,7 @@ describe Embeddable::MultipleChoicesController do
         correct
         begin
           get :check, :id => answer.id, :format => 'html', :choices => correct.id.to_s
-        rescue ActionView::MissingTemplate
+        rescue ActionController::RoutingError
         end
       end
     end
