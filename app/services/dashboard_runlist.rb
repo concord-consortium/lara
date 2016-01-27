@@ -25,6 +25,8 @@ class DashboardRunlist
       {
         id: submission.id,
         group_id: submission.collaboration_run_id,
+        # Return time in milliseconds, so it's JS-friendly.
+        created_at: submission.created_at.to_i * 1000,
         answers: answers(submission)
       }
     end
