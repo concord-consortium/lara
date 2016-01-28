@@ -231,6 +231,6 @@ class InteractivePagesController < ApplicationController
     current_project
     setup_global_interactive_state_data
     @all_pages = @activity.pages
-    @run.update_attribute(:page, @page)
+    @run.set_last_page(@page)
   end
 end

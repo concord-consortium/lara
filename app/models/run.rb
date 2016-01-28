@@ -130,6 +130,15 @@ class Run < ActiveRecord::Base
     return self.page
   end
 
+  def set_last_page(page)
+    update_attributes!(page_id: page.id)
+    if collaboration_run && collaboration_run.is_owner?(user)
+      collaboration_run.collaborators_runs(activity, user).each do |r|
+        r.set_last_page(page)
+      end
+    end
+  end
+
   def has_been_run
     return run_count && run_count > 0
   end
