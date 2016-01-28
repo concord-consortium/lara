@@ -118,6 +118,28 @@ describe Run do
     end
   end
 
+  describe "#set_last_page" do
+    let(:page) { FactoryGirl.create(:page) }
+
+    it "should set the last page" do
+      run.set_last_page(page)
+      expect(run.last_page).to eql(page)
+    end
+
+    describe "when user runs activity with collaborators" do
+      include_context "collaboration run"
+
+      it "should copy last page to all the related runs" do
+        run1.set_last_page(page)
+        run2.reload
+        run3.reload
+        expect(run1.last_page).to eql(page)
+        expect(run2.last_page).to eql(page)
+        expect(run3.last_page).to eql(page)
+      end
+    end
+  end
+
   describe '#clear_answers' do
     before(:each) do
       # Add answers
@@ -541,8 +563,6 @@ describe Run do
             end
           end
         end
-
-
       end
     end
   end
