@@ -38,6 +38,13 @@ class SequencesController < ApplicationController
     end
   end
 
+  def dashboard_toc
+    authorize! :read, @sequence
+    callback = params[:callback]
+    toc = DashboardToc.new(@sequence)
+    render json: toc.to_hash, callback: callback
+  end
+
   # GET /sequences/new
   # GET /sequences/new.json
   def new

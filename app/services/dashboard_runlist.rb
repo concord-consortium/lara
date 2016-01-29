@@ -1,11 +1,13 @@
 class DashboardRunlist
   def initialize(endpoint_urls, page_id)
     @runs = Run.where(remote_endpoint: endpoint_urls).map do |run|
+      result_hash =
       {
         endpoint_url: run.remote_endpoint,
         group_id: run.collaboration_run_id,
         last_page_id: run.page_id,
-        submissions: submissions(run, page_id)
+        submissions: submissions(run, page_id),
+        sequence_id: run.sequence_id
       }
     end
   end
