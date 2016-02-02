@@ -61,7 +61,7 @@ class DashboardToc
     {
         name: page.name,
         id: page.id,
-        url: activity_page_path(id: page.id, activity_id: @activity.id),
+        url: activity_page_path(id: page.id, activity_id: page.lightweight_activity.id),
         questions: questions(page)
     }
   end

@@ -5,7 +5,7 @@ describe DashboardToc do
     activity.reload #assocaiate the activity with the sequence
   end
 
-  let(:solo_activity)   { FactoryGirl.create(:activity, name: 'solo act') }
+  let(:solo_activity)   { FactoryGirl.create(:activity_with_pages, name: 'solo act') }
   let(:activity)        { FactoryGirl.create(:activity, name: 'sequence act') }
   let(:activities)      { [activity] }
   let(:seq)             { FactoryGirl.create(:sequence, title: 'sequence', :lightweight_activities => activities) }
