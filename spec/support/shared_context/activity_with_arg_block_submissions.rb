@@ -1,11 +1,14 @@
 shared_context "activity with arg block submissions" do
-  let(:user) { FactoryGirl.create(:author) }
-  let(:act)  { FactoryGirl.create(:activity_with_page, user: user) }
-  let(:page) { act.pages.first }
+  let(:user)        { FactoryGirl.create(:author) }
+  let(:act)         { FactoryGirl.create(:activity_with_page, user: user, sequences: [sequence]) }
+  let(:sequence_id) { sequence.id }
+  let(:sequence)    { FactoryGirl.create(:sequence, user: user)}
+  let(:page)        { act.pages.first }
+  let(:sequence_id) { sequence.id }
 
   before(:each) do
     # Setup run.
-    @run = FactoryGirl.create(:run, activity: act, page: page, remote_endpoint: 'http://remote.endpoint')
+    @run = FactoryGirl.create(:run, activity: act, sequence_id: sequence_id, page: page, remote_endpoint: 'http://remote.endpoint')
     # Setup arg block embeddables.
     @q1 = FactoryGirl.create(:mc_embeddable, prompt: 'q1')
     @q2 = FactoryGirl.create(:open_response, prompt: 'q2')

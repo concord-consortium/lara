@@ -1,11 +1,15 @@
 class DashboardRunlist
   def initialize(endpoint_urls, page_id)
-    @runs = Run.where(remote_endpoint: endpoint_urls).map do |run|
+    @runs = Run.includes(:activity).where(remote_endpoint: endpoint_urls).map do |run|
       {
         endpoint_url: run.remote_endpoint,
         group_id: run.collaboration_run_id,
         last_page_id: run.page_id,
-        submissions: submissions(run, page_id)
+        submissions: submissions(run, page_id),
+        sequence_id: run.sequence_id,
+        updated_at: run.updated_at.to_i,
+        activity_id: run.activity_id,
+        page_ids: run.activity.page_ids
       }
     end
   end
@@ -21,7 +25,7 @@ class DashboardRunlist
   private
 
   def submissions(run, page_id)
-    CRater::FeedbackSubmission.where(run_id: run.id, interactive_page_id: page_id).order(:id).map do |submission|
+    CRater::FeedbackSubmission.includes(:c_rater_feedback_items => :answer).where(run_id: run.id, interactive_page_id: page_id).order(:id).map do |submission|
       {
         id: submission.id,
         group_id: submission.collaboration_run_id,

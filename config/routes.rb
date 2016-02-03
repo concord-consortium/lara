@@ -30,6 +30,7 @@ LightweightStandalone::Application.routes.draw do
       get :duplicate
       get :export
       get :show_status
+      get :dashboard_toc
     end
     resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end
