@@ -39,15 +39,17 @@ module Concord
     def self.portal_for_url(url)
       # URI.parse(url).host returns nil when scheme is not provided.
       host = URI(url).host || URI("http://#{url}").host
+      port = URI(url).port || 80
       return nil unless host
       self.all.each_pair do |name, portal|
         portal_host =''
         begin
           portal_host = URI.parse(portal.url).host.downcase.strip
+          portal_port = URI.parse(portal.url).port || 80
         rescue URI::InvalidURIError
           puts "portal.url is not valud URL : #{portal.url}"
         end
-        return portal if portal_host == host.downcase.strip
+        return portal if portal_host == host.downcase.strip && portal_port == port
         # return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
       end
       return nil # we couldn't find one.

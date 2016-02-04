@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Concord::AuthPortal do
   describe "AuthPortal#add" do
     let(:name)       { "name"}
-    let(:url)        { "http://foo.bar/"}
+    let(:url)        { "http://foo.bar:3000/"}
     let(:client_id)  { "foo" }
     let(:secret)     { "secret" }
     let(:auth_token) { 'Bearer %s' % secret }
@@ -61,6 +61,20 @@ describe Concord::AuthPortal do
       describe "finding the auth token by the url" do
         it "should find the right auth token" do
           expect(Concord::AuthPortal.auth_token_for_url(url)).to eq(auth_token)
+        end
+      end
+
+      describe "When there many servers on the same host with different ports" do
+        it "should use the port number to find the correct auth client" do
+          port3333 = Concord::AuthPortal.add("port3333","http://foo.bar:3333/","port3333","3333token")
+          expect(Concord::AuthPortal.portal_for_url(url)).to eq(auth) # the original one on port 3000
+          expect(Concord::AuthPortal.portal_for_url("http://foo.bar:3333/")).to eq(port3333)
+        end
+        it "even https and http should be considered different portals" do
+          http  = Concord::AuthPortal.add("http","http://foo.bar/","http","httpToken")
+          https = Concord::AuthPortal.add("https","https://foo.bar/","https","httpToken")
+          expect(Concord::AuthPortal.portal_for_url("https://foo.bar/")).to eq(https)
+          expect(Concord::AuthPortal.portal_for_url("http://foo.bar/")).to eq(http)
         end
       end
     end
