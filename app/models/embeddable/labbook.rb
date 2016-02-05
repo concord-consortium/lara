@@ -11,8 +11,8 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    WONT_DISPLAY_MSG     = I18n.t('LABBOOK_WONT_DISPLAY')
-    NO_INTERACTIVE_LABLE =   I18n.t('LABBOOK_NO_INTERACTIVE')
+    WONT_DISPLAY_MSG     = I18n.t('LABBOOK.WONT_DISPLAY')
+    NO_INTERACTIVE_LABLE =   I18n.t('LABBOOK.NO_INTERACTIVE')
     NO_INTERACTIVE_VALUE = "no-interactive"
     NO_INTERACTIVE_SELECT = [NO_INTERACTIVE_LABLE, NO_INTERACTIVE_VALUE];
     attr_accessible :action_type, :name, :prompt,
@@ -184,6 +184,25 @@ module Embeddable
 
     def hide_from_report?
       !show_in_report?
+    end
+
+    def update_itsi_prompts
+      def close_enough(str1,str2)
+        str1.downcase.chomp.squish.starts_with? str2.downcase.chomp.squish[0..60]
+      end
+
+      old_snapshot_prompt = I18n.t("LABBOOK.OLD_ITSI.SNAPSHOT_PROMPT")
+      old_upload_prompt   = I18n.t("LABBOOK.OLD_ITSI.UPLOAD_PROMPT")
+      new_snapshot_prompt = I18n.t("LABBOOK.ITSI.SNAPSHOT_PROMPT")
+      new_upload_prompt   = I18n.t("LABBOOK.ITSI.UPLOAD_PROMPT")
+
+      if close_enough prompt, old_snapshot_prompt
+        update_attribute(:prompt, new_snapshot_prompt)
+      end
+
+      if close_enough prompt, old_upload_prompt
+        update_attribute(:prompt, new_upload_prompt)
+      end
     end
 
     private

@@ -47,4 +47,12 @@ namespace :itsi do
     }
     puts "Total Updated: #{total_count}, Total with Wrong Name: #{total_wrong_name_count}"
   end
+
+  desc "Reword the lab book prompts for itsi. See config/locales/en.yml  and Embeddable::Labbook#update_itsi_prompts"
+  task :update_labbook_prompts do
+    Embeddable::Labbook.find_in_batches do |labbooks|
+      labbooks.each(&:update_itsi_prompts)
+    end
+  end
+
 end

@@ -97,13 +97,13 @@ class MwInteractive < ActiveRecord::Base
       if upload_only_model_urls.include? url
         labbook.action_type = Embeddable::Labbook::UPLOAD_ACTION
         labbook.custom_action_label = "Take a Snapshot"
-        labbook.prompt = '<p>Add your pictures to your album by clicking on the "<em>Take a Snapshot</em>" button and add the pictures to your album by clicking on the Browse button and selecting the picture on your computer. Describe what you see below the picture in the Comments box. Click on the Save button to add the picture to your album.'
+        labbook.prompt = t('LABBOOK.ITSI.UPLOAD_PROMPT')
         labbook.save!
       else
         if upload_only_model_urls.include? url_was
           labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
           labbook.custom_action_label = nil
-          labbook.prompt = '<p>Take a snapshot and upload it to your Snapshot Album by clicking the "<em>Take a Snapshot</em>" button. &nbsp;To browse your Snapshot Album, click the album icon.</p>'
+          labbook.prompt = t('LABBOOK.ITSI.SNAPSHOT_PROMPT')
           labbook.save!
         end
       end
