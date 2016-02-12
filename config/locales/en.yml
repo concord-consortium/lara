@@ -92,9 +92,9 @@ en:
         button and add the pictures to your album by clicking on the Browse button and selecting the
         picture on your computer. Describe what you see below the picture in the Comments box.
         Click on the Save button to add the picture to your album.
-        A picture must be included for the activity to show as complete.</p>
+        A picture must be included for the activity to show as completed.</p>
       SNAPSHOT_PROMPT: |
         <p>Take a snapshot and upload it to your Snapshot Album by clicking the "<em>Take a Snapshot</em>" button.
         &nbsp;To browse your Snapshot Album, click the album icon.
-        A snapshot must be included for the activity to show as complete.</p>
+        A snapshot must be included for the activity to show as completed.</p>
       BUTTON: "Take a Snapshot"
