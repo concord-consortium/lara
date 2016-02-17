@@ -3,19 +3,20 @@ development: &development
   encoding: utf8
   adapter: mysql2
   username: <%= ENV['DB_USER'] || 'root' %>
-  database: <%= ENV['DB_NAME'] || 'lara' %>_production
-  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
+  database: <%= ENV['DB_NAME'] || 'lara' %>
+  password: <%= ENV['DB_PASSWORD'] || 'root' %>
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
+  port: <%= ENV['DB_PORT'] || '3306' %>
   pool: 5
-
 
 test: &test
   encoding: utf8
   adapter: mysql2
   username: <%= ENV['DB_USER'] || 'root' %>
-  database: <%= ENV['DB_NAME'] || 'lara' %>_test
-  password: <%= ENV['DB_PASSWORD'] || 'simple' %>
+  database: <%= ENV['DB_NAME'] || 'lara' %>
+  password: <%= ENV['DB_PASSWORD'] || 'root' %>
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
+  port: <%= ENV['DB_PORT'] || '3306' %>
   pool: 5
 
 production: *development

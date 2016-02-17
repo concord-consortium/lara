@@ -1,53 +1,31 @@
-# Simply to test port forwarding &etc.
-web:
-  image: kitematic/hello-world-nginx
-  environment:
-    VIRTUAL_HOST: hello.lara
-  expose:
-    - "80"
-  volumes:
-    - ./hello_website/:/website_files
-
-mysql:
-  image: mysql/mysql-server:5.6
-  ports:
-    - "3306"
-  environment:
-    VIRTUAL_HOST: mysql.lara
-    MYSQL_ROOT_PASSWORD: admin123H
-  volumes_from:
-    - data
-
 # The rails app
 app:
+  container_name: app
   build: .
   command: ./script/docker-app.sh
   environment:
+    # NOTE: empty environment variables inherit their values from the host
     VIRTUAL_HOST: app.lara
-    DB_HOST: mysql.lara
-    DB_USER: root
-    DB_PASSWORD: admin123H
-    DB_NAME: lara
-  expose:
-    - "3000"
-  volumes:
-    - /lara:/lara
-  links:
-    - mysql
-    - mysql:mysql.lara
-
-proxy:
-  image: jwilder/nginx-proxy:latest
+    DB_HOST:
+    DB_USER:
+    DB_PASSWORD:
+    DB_NAME:
+    DOCKER_PORTAL_NAME:
+    CONCORD_DOCKER_URL:
+    CONCORD_DOCKER_CLIENT_ID:
+    CONCORD_DOCKER_CLIENT_SECRET:
   ports:
-    - "80:80"
+    - "80:3000"
   volumes:
-    - /var/run/docker.sock:/tmp/docker.sock:ro
-  restart: always
-  links:
-    - app:app.lara
-    - web:hello.lara
+    - .:/lara
 
-data:
-  image: busybox
-  volumes:
-    - /var/lib/mysql
+worker:
+  container_name: worker
+  image: lara_app
+  command: ruby ./script/delayed_job_docker start
+  environment:
+    # NOTE: empty environment variables inherit their values from the host
+    DB_HOST:
+    DB_USER:
+    DB_PASSWORD:
+    DB_NAME:

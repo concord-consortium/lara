@@ -3,5 +3,7 @@ db/*.sqlite3
 db/*.sqlite3-journal
 log/*
 tmp/*
+config/database.yml
+config/app_environment_variables.rb
 Dockerfile
 README.rdoc
