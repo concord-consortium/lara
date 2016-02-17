@@ -97,13 +97,13 @@ class MwInteractive < ActiveRecord::Base
       if upload_only_model_urls.include? url
         labbook.action_type = Embeddable::Labbook::UPLOAD_ACTION
         labbook.custom_action_label = "Take a Snapshot"
-        labbook.prompt = t('LABBOOK.ITSI.UPLOAD_PROMPT')
+        labbook.prompt = I18n.t 'LABBOOK.ITSI.UPLOAD_PROMPT'
         labbook.save!
       else
         if upload_only_model_urls.include? url_was
           labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
           labbook.custom_action_label = nil
-          labbook.prompt = t('LABBOOK.ITSI.SNAPSHOT_PROMPT')
+          labbook.prompt = I18n.t 'LABBOOK.ITSI.SNAPSHOT_PROMPT'
           labbook.save!
         end
       end
