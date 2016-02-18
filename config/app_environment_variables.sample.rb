@@ -22,7 +22,7 @@ ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
 
 # this specifies a | separated list of urls for interactives
-# these special interactive URLs trigger LARA to conver their associated LabBook to
+# these special interactive URLs trigger LARA to convert their associated LabBook to
 # upload LabBook
-ENV['UPLOAD_ONLY_MODEL_URLS']            ||= ''
+ENV['UPLOAD_ONLY_MODEL_URLS']            ||= "https://models-resources.concord.org/itsi/upload_photo/index.html"
 ENV['MODEL_JSON_LIST_URL']               ||= 'https://itsi.portal.concord.org/interactives/export_model_library'

@@ -1,6 +1,6 @@
 - embeddable_dom_id = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 .question-hdr
-  %h5.h5= "#{t('LABBOOK_ALBUM')} ##{embeddable.question_index}"
+  %h5.h5= "#{t('LABBOOK.ALBUM')} ##{embeddable.question_index}"
 .question-bd.labbook{id: embeddable_dom_id,
                     'data-labbook-url' => embeddable.class.labbook_provider,
                     'data-lara-update-url' => embeddable_labbook_answer_path(embeddable),

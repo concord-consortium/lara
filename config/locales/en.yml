@@ -17,9 +17,7 @@ en:
   OLD_DRAWING_FORMAT: "Old drawing format detected - all annotations or drawings will be cleared if you continue."
   OPEN_ALBUM: "Open album"
   QUESTION: "Question"
-  LABBOOK_ALBUM: "Labbook album"
-  LABBOOK_NO_INTERACTIVE: "No Interactive"
-  LABBOOK_WONT_DISPLAY: "Labbook will not be shown. No visible interactive is set. 'snapshot' is selected."
+
   LOADING_LABBOOK: "Loading Labbook album..."
   SNAPSHOT_FAILED: "Could not take your snapshot. Please try again later."
   DRAWING_SAVE_ERROR: "Could not save your drawing after 30 seconds. Please try again later."
@@ -74,3 +72,29 @@ en:
     USEFUL_0: "Not at all"
     USEFUL_1: "Somewhat"
     USEFUL_2: "Very"
+  LABBOOK:
+    ALBUM: "Labbook album"
+    NO_INTERACTIVE: "No Interactive"
+    WONT_DISPLAY: "Labbook will not be shown. No visible interactive is set. 'snapshot' is selected."
+    OLD_ITSI:
+      UPLOAD_PROMPT: |
+        <p>Add your pictures to your album by clicking on the "<em>Take a Snapshot</em>"
+        button and add the pictures to your album by clicking on the Browse button and  selecting the
+        picture on your computer. Describe what you see below the picture in the Comments box.
+        Click on the Save button to add the picture to your album.
+      SNAPSHOT_PROMPT: |
+        <p>Take a snapshot and upload it to your Snapshot Album by clicking the "<em>Take a Snapshot</em>" button.
+        &nbsp;To browse your Snapshot Album, click the album icon.</p>'
+      BUTTON: "Take a Snapshot"
+    ITSI:
+      UPLOAD_PROMPT: |
+        <p>Add your pictures to your album by clicking on the "<em>Take a Snapshot</em>"
+        button and add the pictures to your album by clicking on the Browse button and selecting the
+        picture on your computer. Describe what you see below the picture in the Comments box.
+        Click on the Save button to add the picture to your album.
+        A picture must be included for the activity to show as completed.</p>
+      SNAPSHOT_PROMPT: |
+        <p>Take a snapshot and upload it to your Snapshot Album by clicking the "<em>Take a Snapshot</em>" button.
+        &nbsp;To browse your Snapshot Album, click the album icon.
+        A snapshot must be included for the activity to show as completed.</p>
+      BUTTON: "Take a Snapshot"
