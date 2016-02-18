@@ -395,22 +395,6 @@ describe Run do
       ].to_json
     end
 
-    describe '#response_for_portal' do
-      before(:each) do
-        run.open_response_answers << or_answer
-        run.multiple_choice_answers << mc_answer
-        run.image_question_answers << iq_answer
-      end
-
-      it 'matches the expected JSON for a single specified answer' do
-        expect(JSON.parse(run.response_for_portal(or_answer))).to eq(JSON.parse(one_expected))
-      end
-
-      it "matches the expected JSON for multiple specified answers" do
-        expect(JSON.parse(run.response_for_portal([or_answer, mc_answer,iq_answer]))).to eq(JSON.parse(all_expected))
-      end
-    end
-
     describe '#all_responses_for_portal' do
       it 'matches the expected JSON for all responses' do
         run.open_response_answers << or_answer
@@ -441,7 +425,8 @@ describe Run do
         let(:remote_endpoint) { valid_remote_endpoint }
         describe "with a positive response from the server" do
           it "should be successful" do
-            payload = run.response_for_portal([or_answer,mc_answer])
+            # get the payload from the very first protocol version
+            payload = PortalSender::Protocol.instance(remote_endpoint).response_for_portal([or_answer,mc_answer])
             stub_http_request(:post, remote_endpoint).to_return(
               :body   => "OK", # TODO: What returns?
               :status => 200)
@@ -463,7 +448,7 @@ describe Run do
               :body   => "boo", # TODO: What returns?
               :status => 503)
             # We now expect the error message to include payload information
-            expect {run.send_to_portal([or_answer,mc_answer])}.to raise_error Run::PortalUpdateIncomplete, /payload/
+            expect {run.send_to_portal([or_answer,mc_answer])}.to raise_error Run::PortalUpdateIncomplete
           end
         end
       end

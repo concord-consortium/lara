@@ -1,6 +1,7 @@
 module PortalSender
 
   class Protocol
+    VersionRoutePrefix = "protocol_version"
     Versions =[
         { name: "1", serialization_method_name: :response_for_portal_1_0 },
         { name: "0", serialization_method_name: :response_for_portal     }
@@ -37,7 +38,7 @@ module PortalSender
       if @version_index == oldest_version_index
         return endpoint
       end
-      "#{endpoint}/protocol_version/#{self.version[:name]}"
+      "#{endpoint}/#{PortalSender::Protocol::VersionRoutePrefix}/#{self.version[:name]}"
     end
 
     def post_answers(answers, remote_endpoint)
@@ -45,7 +46,7 @@ module PortalSender
       try_again = true
       while try_again
         @last_try = Time.now
-        serialized_data = self.send serialization_method_name, answers, version
+        serialized_data = self.send serialization_method_name, answers
         response = HTTParty.post(
             versioned_endpoint(remote_endpoint), {
             :body => serialized_data,
@@ -93,22 +94,22 @@ module PortalSender
     ################################################
     # Version 1.0 of the protocol
     ################################################
-    def response_for_portal_1_0(_answer, version)
+    def response_for_portal_1_0(_answer)
       answers  = arrayify_answers(_answer)
       lara_start = answers.map(&:updated_at).min
 
       return {
         answers: answers.map { |ans| ans.portal_hash },
-        version: version[:name],
-        lara_end: Time.now,
-        lara_start: lara_start
+        version: "1",
+        lara_end: Time.now.utc.to_s,
+        lara_start: lara_start.utc.to_s
       }.to_json
     end
 
     ################################################
     # Version 0.0 of the protocol
     ################################################
-    def response_for_portal(_answer, version)
+    def response_for_portal(_answer)
       answers = arrayify_answers(_answer)
       answers.map { |ans| ans.portal_hash }.to_json
     end
