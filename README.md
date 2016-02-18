@@ -6,29 +6,25 @@
 This is a Rails application intended to provide a platform for authoring and using "Lightweight" activities.
 
 ## Getting started
+This example assumes that [rvm](https://rvm.io/) is installed. This
+ could be a good idea because we use an older version of ruby.
 
-1. Check out the code:
+    git clone https://github.com/concord-consortium/lara.git
+    cd lara
+    bundle install
+    cp config/database.sample.yml config/database.yml (need to fix the mysql password and/or user)
+    cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
+    rake db:setup
+    
+Run `rake secret` and copy result to `ENV['SECRET_TOKEN']` in `config/app_environment_variables.rb`.
+   
+    rails s
 
-        git clone https://github.com/concord-consortium/lara.git
+Now open your browser to [http://localhost:3000](http://localhost:3000)
 
-2. Install the necessary gems:
+## Logging in through CC Portal (SSO)
 
-        cd lara
-        bundle install
-
-3. Initialize the database:
-
-        rake db:setup
-
-4. If you have seed data, create it now.
-
-5. Set environment variables, particularly the cookie encryption key, by copying the file `config/app_environment_variables.sample.rb` to `config/app_environment_variables.rb` and editing its values as appropriate. For development purposes, you should just need a cookie key (the 'SECRET_TOKEN' value).
-
-6. Launch the application
-
-        rails s
-
-7. Browse to the app in your browser: [http://localhost:3000/](http://localhost:3000/)
+If you work with [Portal](https://github.com/concord-consortium/rigse) take a look how to [integrate it with LARA](https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration).
 
 ## Editing CSS
 
