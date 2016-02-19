@@ -148,14 +148,6 @@ class Run < ActiveRecord::Base
     increment!(:run_count)
   end
 
-  # Takes an answer or array of answers and generates a portal response JSON string from them.
-  def response_for_portal(answer)
-    if answer.kind_of?(Array)
-      answer.map { |ans| ans.portal_hash }.to_json
-    else
-      "[#{answer.portal_hash.to_json}]"
-    end
-  end
 
   def answers
     open_response_answers + multiple_choice_answers + image_question_answers + labbook_answers + interactive_run_states
@@ -196,20 +188,10 @@ class Run < ActiveRecord::Base
   # other case where retrying is pointless (e.g. nowhere to send the data, no data to send).
   def send_to_portal(answers)
     return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
-    payload = response_for_portal(answers)
-    return true if payload.nil? || payload.blank? # Pretend we sent it, nobody will notice
-    response = HTTParty.post(
-      remote_endpoint, {
-        :body => payload,
-        :headers => {
-          "Authorization" => Concord::AuthPortal.auth_token_for_url(remote_endpoint),
-          "Content-Type" => 'application/json'
-        }
-      }
-    )
+    return true if answers.blank? # Pretend we sent it, nobody will notice
+    is_success = PortalSender::Protocol.instance(remote_endpoint).post_answers(answers,remote_endpoint)
     # TODO: better error detection?
-    is_success = response.success?
-    abort_job_and_requeue(error_string_for(response, payload)) unless is_success
+    abort_job_and_requeue(error_string() ) unless is_success
     is_success
   end
 
@@ -367,18 +349,15 @@ class Run < ActiveRecord::Base
     # end
   end
 
-  def error_string_for(response, payload)
-    error_string = "response_code:#{response.code}\
-                    response_message:#{response.message}\
-                    payload:#{payload}\
-                    remote_endpoint:#{remote_endpoint}\
-                    run_id: #{id}\
-                    run_key: #{key}\
-                    dirty: #{dirty?}\
-                    activity: #{activity.name} [#{activity_id}]\
-                    sequence: #{sequence_id}"
-
-    error_string
+  def error_string()
+    "
+    remote_endpoint:#{remote_endpoint}\
+    run_id: #{id}\
+    run_key: #{key}\
+    dirty: #{dirty?}\
+    activity: #{activity.name} [#{activity_id}]\
+    sequence: #{sequence_id}
+    "
   end
 
   def lara_to_portal_secret_auth

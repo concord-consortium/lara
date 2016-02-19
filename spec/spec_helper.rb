@@ -102,6 +102,9 @@ RSpec.configure do |config|
   config.before :suite do
     Warden.test_mode!
   end
+  config.before(:each) do
+    stub_temporary_protocol_routes
+  end
 end
 
 class ActiveRecord::Base
@@ -126,3 +129,9 @@ def wait_for_ajax
   end
 end
 
+def stub_temporary_protocol_routes
+  # These requests are made when attempting to post to a portal.
+  # This code will be removed when versioned learner data is widely deployed to portals.
+  stub_request(:any, /.*\/#{PortalSender::Protocol::VersionRoutePrefix}\/.*/)
+  .to_return(:status => [500, "Internal Server Error"])
+end
