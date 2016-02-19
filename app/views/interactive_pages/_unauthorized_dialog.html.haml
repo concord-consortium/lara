@@ -4,7 +4,7 @@
   .form-failure.intro-mod{style: 'display: none; color: #990000;'}
     We were unable to send your feedback. We must really be having problems right now!
   .message
-    = render partial: 'unauthorized'
+    = render partial: 'interactive_pages/unauthorized'
   .form{style: 'display: none;'}
     = form_tag({controller: 'interactive_pages', action: 'unauthorized_feedback'}, {method: 'post', remote: true}) do
       .item
@@ -23,6 +23,9 @@
 
 :javascript
   $(document).on('unauthorized', function() {
+    // Disable scrolling of the main page
+    $("body").css({ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' });
+
     $('#unauthorized-dialog').show();
 
     // dialog is from jquery UI
@@ -43,9 +46,6 @@
     // Darken the modal backdrop, and get it to appear on top of the top bar.
     $('.ui-dialog.unauthorized').css('z-index', 99999);
     $('.ui-widget-overlay.ui-front').removeClass('ui-widget-overlay').css({ zIndex: 99999, backgroundColor: 'rgba(0,0,0,0.5)', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' });
-
-    // Disable scrolling of the main page
-    $("body").css({ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' });
   });
 
   // Form handlers
