@@ -23,7 +23,7 @@ describe PortalSender::Protocol do
 
   describe "when the portal supports the latest version of the protocol" do
     let(:post_results) { happy_result }
-    it "should not be using the most rescent protocol version after sending" do
+    it "should use the most rescent protocol version after sending" do
       protocol.post_answers(answer_data, endpoint)
       expect(protocol.version).to eq PortalSender::Protocol::Versions.first
     end
