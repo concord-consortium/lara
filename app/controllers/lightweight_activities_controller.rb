@@ -70,6 +70,14 @@ class LightweightActivitiesController < ApplicationController
     if !params[:response_key]
       redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
     end
+    begin
+      authorize! :access, @run
+    rescue
+      user_id_mismatch()
+      render 'interactive_pages/unauthorized_run'
+      return
+    end
+
     setup_single_page_show
     @labbook_is_under_interactive = true
   end

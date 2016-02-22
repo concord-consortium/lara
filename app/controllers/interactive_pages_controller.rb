@@ -10,30 +10,19 @@ class InteractivePagesController < ApplicationController
 
   layout 'runtime', :only => [:show, :preview, :unauthorized_run]
 
-  def user_id_mismatch
-    @user = current_user ? current_user.email : 'anonymous'
-    @response_key = params[:response_key] || 'no response key'
-    @session = session.clone
-    session.delete("response_key")
-
-    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
-      uri: request.original_url,
-      referer: request.referer,
-      request_params: params,
-      custom_params: { user: @user, response_key: @response_key }.merge(@session)
-    })
-
-    # need to return something so this can be used in the 'and' chain below
-    true
-  end
-
   def show
     authorize! :read, @page
     if !params[:response_key]
       redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
     end
 
-    authorize! :access, @run rescue user_id_mismatch() and render :unauthorized_run and return
+    begin
+      authorize! :access, @run
+    rescue
+      user_id_mismatch()
+      render :unauthorized_run
+      return
+    end
 
     setup_show
     respond_to do |format|
