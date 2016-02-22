@@ -70,15 +70,18 @@ class LightweightActivitiesController < ApplicationController
     if !params[:response_key]
       redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
     end
+
+    setup_single_page_show
+
+    # the authorization needs to be after the setup method so that at least the @theme instance variable
+    # is set, so the theme of the unauthorized_run page remains the same.
     begin
       authorize! :access, @run
     rescue
       user_id_mismatch()
-      render 'interactive_pages/unauthorized_run'
+      render 'runs/unauthorized_run'
       return
     end
-
-    setup_single_page_show
     @labbook_is_under_interactive = true
   end
 

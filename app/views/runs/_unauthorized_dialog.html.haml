@@ -4,9 +4,9 @@
   .form-failure.intro-mod{style: 'display: none; color: #990000;'}
     We were unable to send your feedback. We must really be having problems right now!
   .message
-    = render partial: 'interactive_pages/unauthorized'
+    = render partial: 'runs/unauthorized'
   .form{style: 'display: none;'}
-    = form_tag({controller: 'interactive_pages', action: 'unauthorized_feedback'}, {method: 'post', remote: true}) do
+    = form_tag({controller: 'runs', action: 'unauthorized_feedback'}, {method: 'post', remote: true}) do
       .item
         .prompt= label_tag :username, "Your username:"
         .field= text_field_tag :username

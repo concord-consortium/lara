@@ -8,7 +8,7 @@ class InteractivePagesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:show, :preview]
 
-  layout 'runtime', :only => [:show, :preview, :unauthorized_run]
+  layout 'runtime', :only => [:show, :preview]
 
   def show
     authorize! :read, @page
@@ -20,7 +20,7 @@ class InteractivePagesController < ApplicationController
       authorize! :access, @run
     rescue
       user_id_mismatch()
-      render :unauthorized_run
+      render 'runs/unauthorized_run'
       return
     end
 
@@ -177,24 +177,6 @@ class InteractivePagesController < ApplicationController
     else
       redirect_to edit_activity_page_path(@activity, @page)
     end
-  end
-
-  def unauthorized_run
-    @user = current_user ? current_user.email : 'anonymous'
-    @session = session.clone
-  end
-
-  def unauthorized_feedback
-    data = {
-      username: params[:username],
-      teacher: params[:teacher],
-      description: params[:description],
-      original_url: params[:original_url],
-      session: session.clone,
-      request: request
-    }
-    UnauthorizedFeedbackMailer.feedback(data).deliver
-    render nothing: true, status: :created
   end
 
   private

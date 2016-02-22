@@ -94,6 +94,19 @@ class RunsController < ApplicationController
     render json: dashboard.to_json, callback: params[:callback]
   end
 
+  def unauthorized_feedback
+    data = {
+      username: params[:username],
+      teacher: params[:teacher],
+      description: params[:description],
+      original_url: params[:original_url],
+      session: session.clone,
+      request: request
+    }
+    UnauthorizedFeedbackMailer.feedback(data).deliver
+    render nothing: true, status: :created
+  end
+
   private
 
   def set_run
