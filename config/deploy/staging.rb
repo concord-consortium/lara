@@ -1,4 +1,3 @@
-set :branch, "staging"
 set :domain, "authoring.staging.concord.org"
 
 server domain, :app, :web
