@@ -17,6 +17,7 @@ en:
   OLD_DRAWING_FORMAT: "Old drawing format detected - all annotations or drawings will be cleared if you continue."
   OPEN_ALBUM: "Open album"
   QUESTION: "Question"
+  DATA_MAY_BE_LOST: "Your work hasn't been saved."
 
   LOADING_LABBOOK: "Loading Labbook album..."
   SNAPSHOT_FAILED: "Could not take your snapshot. Please try again later."
