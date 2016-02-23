@@ -25,6 +25,7 @@
 //= require jquery.jcarousel
 //= require waypoints
 //= require waypoints-sticky
+//= require page-unload-warning
 //= require common
 //= require modals
 //= require modal-dialog

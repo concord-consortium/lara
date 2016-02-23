@@ -79,6 +79,7 @@ class ImageQuestionDrawingTool
     })
 
     @save_indicator = SaveIndicator.instance()
+    @page_lock_id = null
 
     # See: https://www.pivotaltracker.com/story/show/77973722
     @drawing_tool.setStrokeColor('#e66665') if @is_snapshot_question()
@@ -234,9 +235,17 @@ class ImageQuestionDrawingTool
     @$content.dialog("open")
     # Always reset history (undo / redo) when user opens a dialog, as it may be confusing otherwise.
     @drawing_tool.resetHistory()
+    # Lock page as soon as the user opens drawing tool.
+    @page_lock_id = lockPageUnload() if @page_lock_id == null
 
   hide_dialog: () ->
     @$content.dialog("close");
+    # Unlock page when dialog is closed.
+    # Note that when user clicks "Save", we hide dialog only when question is successfuly saved.
+    if @page_lock_id != null
+      # See: page-unload-warning.coffee
+      unlockPageUnload(@page_lock_id)
+      @page_lock_id = null
 
   set_dialog_buttons_enabled: (val) ->
     [@$done_button, @$cancel_button].forEach ($btn) =>

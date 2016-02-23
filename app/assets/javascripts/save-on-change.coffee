@@ -219,6 +219,7 @@ class @SaveOnChangePage
       $('.live_submit').each (i,e) =>
         @forms.push(new SaveOnChange($(e),@))
     @dirty_forms = {}
+    @pageUnloadLockID = null
 
   intercept_navigation: ->
     $("a").not('.colorbox').not('[target]').not("#menu-trigger").not("[data-trigger-save=false]").on 'click', (e) =>
@@ -252,12 +253,18 @@ class @SaveOnChangePage
 
   mark_dirty: (form) ->
     @dirty_forms[form] = form
+    # See: page-unload-warning.coffee
+    @pageUnloadLockID = lockPageUnload() if @pageUnloadLockID == null
 
   navigate_away: (callback) ->
     callback and callback()
 
   mark_clean: (form) ->
     delete @dirty_forms[form]
+    # See: page-unload-warning.coffee
+    if @pageUnloadLockID != null && Object.keys(@dirty_forms).length == 0
+      unlockPageUnload(@pageUnloadLockID)
+      @pageUnloadLockID = null
 
   force_save_item: ($form_jq) ->
     for f in @forms
