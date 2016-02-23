@@ -172,5 +172,49 @@ describe Embeddable::Labbook do
         expect(labbook.interactives_for_select).to include expected_identifier_3
       end
     end
+
+    describe "#update_itsi_prompts" do
+      let(:labbook) { Embeddable::Labbook.create(prompt: prompt) }
+
+      before(:each) do
+        labbook.update_itsi_prompts
+      end
+
+      describe "when the prompt is nil" do
+        let(:prompt) { nil }
+        it "the prompt should not be changed" do
+          expect(labbook.prompt).to eql prompt
+        end
+      end
+
+      describe "when the prompt is empty" do
+        let(:prompt) { "" }
+        it "the prompt should not be changed" do
+          expect(labbook.prompt).to eql prompt
+        end
+      end
+
+      describe "when the promt is something random" do
+        let(:prompt) { "describe why these two things look so similar "}
+        it "the prompt should not be changed" do
+          expect(labbook.prompt).to eql prompt
+        end
+      end
+
+      describe "when the promt is the old snapshot prompt" do
+        let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.SNAPSHOT_PROMPT") }
+        it "the prompt should be updated to the new snapshot prompt" do
+          expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.SNAPSHOT_PROMPT")
+        end
+      end
+      describe "when the promt is the old itsi upload prompt" do
+        let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.UPLOAD_PROMPT") }
+        it "the prompt should be updated to the new upload prompt" do
+          expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.UPLOAD_PROMPT")
+        end
+      end
+
+
+    end
   end
 end

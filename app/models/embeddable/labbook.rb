@@ -187,6 +187,7 @@ module Embeddable
     end
 
     def update_itsi_prompts
+      return if prompt.blank?
       def close_enough(str1,str2)
         str1.downcase.chomp.squish.starts_with? str2.downcase.chomp.squish[0..60]
       end
