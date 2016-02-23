@@ -134,6 +134,23 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # this is used by controllers that look up a Run based on a response_key
+  # if the current_user is not authorized to access the run then this method
+  # is called
+  def user_id_mismatch
+    @user = current_user ? current_user.email : 'anonymous'
+    @response_key = params[:response_key] || 'no response key'
+    @session = session.clone
+    session.delete("response_key")
+
+    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
+      uri: request.original_url,
+      referer: request.referer,
+      request_params: params,
+      custom_params: { user: @user, response_key: @response_key }.merge(@session)
+    })
+  end
+
   def clear_session_response_key
     session.delete(:response_key)
   end

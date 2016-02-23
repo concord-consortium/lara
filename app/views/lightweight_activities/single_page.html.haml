@@ -1,6 +1,8 @@
 = content_for :title do
   = "#{@activity.name}"
 
+= render partial: "runs/unauthorized_dialog"
+
 = content_for :body_class do
   = 'l-single-page'
 

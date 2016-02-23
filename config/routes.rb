@@ -77,8 +77,6 @@ LightweightStandalone::Application.routes.draw do
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
         get 'preview'
-        get 'unauthorized_run'
-        post 'unauthorized_feedback'
       end
     end
     resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/, :activity_id => /\d+/ }
@@ -86,6 +84,9 @@ LightweightStandalone::Application.routes.draw do
 
   resources :runs, :only => [:index, :show ], :constraints => { :id => /[-\w]{36}/ } do
     resource :global_interactive_state, :only => [:create]
+    collection do
+      post 'unauthorized_feedback'
+    end
   end
   resources :interactive_run_states
   # These don't need index or show pages - though there might be something to be said for an
