@@ -1,4 +1,3 @@
-set :branch, "production"
 set :domain, "authoring.production.concord.org"
 
 server domain, :app, :web

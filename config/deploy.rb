@@ -60,13 +60,30 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/app_environment_variables.rb #{release_path}/config/app_environment_variables.rb"
     run "ln -nfs #{shared_path}/pids #{release_path}/tmp/pids"
   end
+
+  task :require_branch do
+    if fetch(:branch, nil).nil?
+      abort "==============================================================================\n" +
+            "   \e[31mFAILED: a branch is required\e[0m\n" + # control codes make the text red
+            "     set a branch with `-S branch=[something]` (it could be a tag)\n" +
+            "=============================================================================="
+    end
+  end
+
+  desc "save a version.yml file on the server based on deployed branch"
+  task :put_version do
+    run "echo 'version: #{fetch(:branch)}' > #{release_path}/config/version.yml"
+  end
+
 end
 
 # Production stage
 set :user, "deploy"
 set :deploy_to, "/web/portal"
-set :branch, "master"
 set :use_sudo, false
+
+before 'deploy:update_code', 'deploy:require_branch'
+after 'deploy:update_code', 'deploy:put_version'
 
 before "deploy:assets:precompile", "deploy:shared_symlinks"
 

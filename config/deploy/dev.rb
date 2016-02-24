@@ -1,4 +1,3 @@
-set :branch, "master"
 set :domain, "authoring.dev.concord.org"
 
 server domain, :app, :web
