@@ -53,8 +53,8 @@ module Embeddable
       }
     end
 
-    def blank?
-      self.image_url.blank? && self.annotated_image_url.blank? && self.answer_text.blank?
+    def answered?
+      image_url.present? || annotated_image_url.present? || answer_text.present?
     end
   end
 end

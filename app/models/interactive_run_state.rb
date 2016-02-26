@@ -71,6 +71,10 @@ class InteractiveRunState < ActiveRecord::Base
     interactive.respond_to?('save_state') && interactive.save_state && interactive.respond_to?('has_report_url') && interactive.has_report_url
   end
 
+  def answered?
+    reporting_url.present?
+  end
+
   class AnswerStandin
     attr_accessor :run
     def initialize(opts={})

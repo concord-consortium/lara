@@ -35,8 +35,8 @@ module Embeddable
       }
     end
 
-    def blank?
-      self.answer_text.blank?
+    def answered?
+      self.answer_text.present?
     end
 
     def c_rater_item_settings

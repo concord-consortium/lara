@@ -69,9 +69,13 @@ module Embeddable::Answer
     end
   end
 
-  # Overwrite this method in class that includes this module.
+  # Overwrite these methods in class that includes this module:
   def copy_answer!(another_answer)
     raise "#copy_answer! unimplemented for a given type of answer"
+  end
+
+  def answered?
+    raise "#answered? unimplemented for a given type of answer"
   end
 
   def to_json
@@ -95,5 +99,4 @@ module Embeddable::Answer
   def show_in_report?
     true
   end
-
 end
