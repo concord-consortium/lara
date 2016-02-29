@@ -34,8 +34,7 @@ describe Embeddable::ImageQuestionAnswer do
           "question_id" => question.id.to_s,
           "answer"      => answer.answer_text,
           "is_final"    => answer.is_final,
-          "image_url"   => answer.image_url,
-          "annotation"  => nil
+          "image_url"   => answer.image_url
         }
       end
 
@@ -57,8 +56,7 @@ describe Embeddable::ImageQuestionAnswer do
           "question_id" => question.id.to_s,
           "answer"      => answer.answer_text,
           "is_final"    => answer.is_final,
-          "image_url"   => answer.annotated_image_url,
-          "annotation"  => nil
+          "image_url"   => answer.annotated_image_url
         }
       end
 
