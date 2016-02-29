@@ -1,32 +1,39 @@
 class ImageQuestionDrawingTool
-  DRAWING_TOOL_STAMPS = {
-    'Molecules': [
-      'https://interactions-resources.concord.org/stamps/simple-atom.svg'
-      'https://interactions-resources.concord.org/stamps/diatomic.svg'
-      'https://interactions-resources.concord.org/stamps/diatomic-red.svg'
-      'https://interactions-resources.concord.org/stamps/triatomic.svg'
-      'https://interactions-resources.concord.org/stamps/positive-charge-symbol.svg'
-      'https://interactions-resources.concord.org/stamps/negative-charge-symbol.svg'
-      'https://interactions-resources.concord.org/stamps/positive-atom.svg'
-      'https://interactions-resources.concord.org/stamps/negative-atom.svg'
-      'https://interactions-resources.concord.org/stamps/slow-particle.svg'
-      'https://interactions-resources.concord.org/stamps/medium-particle.svg'
-      'https://interactions-resources.concord.org/stamps/fast-particle.svg'
-      'https://interactions-resources.concord.org/stamps/low-density-particles.svg'
-    ]
+  DRAWING_TOOL_OPTIONS = {
+    width: 600,
+    height: 600,
+    stamps: {
+      'Molecules': [
+        'https://interactions-resources.concord.org/stamps/simple-atom.svg'
+        'https://interactions-resources.concord.org/stamps/diatomic.svg'
+        'https://interactions-resources.concord.org/stamps/diatomic-red.svg'
+        'https://interactions-resources.concord.org/stamps/triatomic.svg'
+        'https://interactions-resources.concord.org/stamps/positive-charge-symbol.svg'
+        'https://interactions-resources.concord.org/stamps/negative-charge-symbol.svg'
+        'https://interactions-resources.concord.org/stamps/positive-atom.svg'
+        'https://interactions-resources.concord.org/stamps/negative-atom.svg'
+        'https://interactions-resources.concord.org/stamps/slow-particle.svg'
+        'https://interactions-resources.concord.org/stamps/medium-particle.svg'
+        'https://interactions-resources.concord.org/stamps/fast-particle.svg'
+        'https://interactions-resources.concord.org/stamps/low-density-particles.svg'
+      ]
+    },
+    # LARA provides simple proxy (/image-proxy?url=). It's useful even if we use
+    # only CORS enabled images, as not all browsers support CORS images (and our
+    # own proxy ensures that the domain is the same).
+    proxy: (url) ->
+      # "Free" URI parser in JS.
+      parser = document.createElement('a')
+      parser.href = url
+      # Note that <a> element will set .hostname to correct value if we provide
+      # relative path like '/resources/image.jgp'.
+      return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
+      return url
   }
 
-  # LARA provides simple proxy (/image-proxy?url=). It's useful even if we use
-  # only CORS enabled images, as not all browsers support CORS images (and our
-  # own proxy ensures that the domain is the same).
-  DRAWING_TOOL_PROXY = (url) ->
-    # "Free" URI parser in JS.
-    parser = document.createElement('a')
-    parser.href = url
-    # Note that <a> element will set .hostname to correct value if we provide
-    # relative path like '/resources/image.jgp'.
-    return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
-    return url
+  DRAWING_TOOL_INITIAL_STATE = {
+    strokeWidth: 4
+  }
 
   constructor: (@image_question_id, @interactive_id = null)->
     # Selectors:
@@ -71,12 +78,7 @@ class ImageQuestionDrawingTool
     @$annotation_field          = $("#{@form_sel} [name=\"#{@form_prefix}[annotation]\"]")
     @$answer_text_field         = $("#{@form_sel} [name=\"#{@form_prefix}[answer_text]\"]")
 
-    @drawing_tool = new DrawingTool(@drawing_tool_sel, {
-      width: 600,
-      height: 600,
-      stamps: DRAWING_TOOL_STAMPS,
-      proxy: DRAWING_TOOL_PROXY
-    })
+    @drawing_tool = new DrawingTool(@drawing_tool_sel, DRAWING_TOOL_OPTIONS, DRAWING_TOOL_INITIAL_STATE)
 
     @save_indicator = SaveIndicator.instance()
     @page_lock_id = null
