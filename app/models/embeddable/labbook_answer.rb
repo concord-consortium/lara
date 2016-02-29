@@ -79,6 +79,13 @@ module Embeddable
         is_final: false
       }
     end
+
+    def answered?
+      # Labbook is an external service, we don't really know its content. However, there is an assumption that once
+      # Labbook is opened, `update_at` timestamp is updated and the album link is sent to Portal. So, if `created_at`
+      # and `updated_at` are equal, it means that Labbook has never been opened and there can't be any content yet.
+      created_at != updated_at
+    end
     # End of Answer interface.
   end
 end

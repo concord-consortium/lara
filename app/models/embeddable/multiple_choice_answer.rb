@@ -90,8 +90,8 @@ module Embeddable
       return self.update_attributes(params)
     end
 
-    def blank?
-      self.answers.size == 0
+    def answered?
+      answers.size > 0
     end
   end
 
