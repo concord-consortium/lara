@@ -48,12 +48,12 @@ module Embeddable
         "question_id" => image_question_id.to_s,
         "answer" => answer_text,
         "is_final" => is_final,
-        "image_url" => annotated_image_url || image_url
+        "image_url" => annotated_image_url
       }
     end
 
     def answered?
-      image_url.present? || annotated_image_url.present? || answer_text.present?
+      annotated_image_url.present?
     end
   end
 end
