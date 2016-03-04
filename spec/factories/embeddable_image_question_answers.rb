@@ -5,5 +5,6 @@ FactoryGirl.define do
     run nil
     answer_text "This is my image answer"
     image_url "http://localhost/foo.png"
+    annotated_image_url "http://localhost/annotated-foo.png"
   end
 end

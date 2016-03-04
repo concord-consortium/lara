@@ -86,7 +86,7 @@ describe PortalSender::Protocol do
       let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
                                             { :answer_text => "the image question answer",
                                               :question => image_quest,
-                                              :image_url => "http://foo.com/bar.jpg" }) }
+                                              :annotated_image_url => "http://foo.com/bar.jpg" }) }
       let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
       let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
       let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
@@ -122,7 +122,7 @@ describe PortalSender::Protocol do
               "question_id" => iq_answer.question.id.to_s,
               "answer" => iq_answer.answer_text,
               "is_final" => iq_answer.is_final,
-              "image_url" => iq_answer.image_url
+              "image_url" => iq_answer.annotated_image_url
         }]
       end
 

@@ -389,7 +389,7 @@ describe Run do
           "question_id" => iq_answer.question.id.to_s,
           "answer" => iq_answer.answer_text,
           "is_final" => iq_answer.is_final,
-          "image_url" => iq_answer.image_url
+          "image_url" => iq_answer.annotated_image_url
         },
       ].to_json
     end
