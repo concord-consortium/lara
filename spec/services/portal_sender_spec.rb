@@ -6,7 +6,9 @@ describe PortalSender::Protocol do
   let(:protocol)            { PortalSender::Protocol.new       }
   let(:mock_auth_provider)  { double(auth_stubs)               }
   let(:post_results)        { {}                               }
-  let(:answer_data)         { double({portal_hash: {one: 1}, updated_at: Time.now }) }
+  let(:run)                 { double({id: 5678, remote_endpoint: endpoint})}
+  let(:answer_data)         { double({id: 1234,
+            portal_hash: {one: 1}, updated_at: Time.now }) }
   let(:sad_result)   { double({ success?: false, code: 500, message: 'failure'})}
   let(:happy_result) { double({ success?: true, code: 200, message: 'yipee'})}
 
@@ -24,7 +26,7 @@ describe PortalSender::Protocol do
   describe "when the portal supports the latest version of the protocol" do
     let(:post_results) { happy_result }
     it "should use the most rescent protocol version after sending" do
-      protocol.post_answers(answer_data, endpoint)
+      protocol.post_answers(answer_data, run)
       expect(protocol.version).to eq PortalSender::Protocol::Versions.first
     end
   end
@@ -32,7 +34,7 @@ describe PortalSender::Protocol do
   describe "when the portal is using an older version of the protocol" do
     let(:post_results) { sad_result }
     it "should not be using the most rescent protocol version after sending" do
-      protocol.post_answers(answer_data, endpoint)
+      protocol.post_answers(answer_data, run)
       expect(protocol.version).to eq PortalSender::Protocol::Versions.last
     end
   end
@@ -43,13 +45,13 @@ describe PortalSender::Protocol do
     it "should not be using the most rescent protocol version after sending" do
       # Using old version
       allow(HTTParty).to receive(:post).and_return sad_result
-      protocol.post_answers(answer_data, endpoint)
+      protocol.post_answers(answer_data, run)
       expect(protocol.version).to eq PortalSender::Protocol::Versions.last
 
       # Checkin again in the future:
       Timecop.travel(3.hours.from_now)
       allow(HTTParty).to receive(:post).and_return happy_result
-      protocol.post_answers(answer_data, endpoint)
+      protocol.post_answers(answer_data, run)
       expect(protocol.version).to eq PortalSender::Protocol::Versions.first
     end
   end
@@ -80,8 +82,11 @@ describe PortalSender::Protocol do
 
 
     describe '#response_for_portal' do
+      let(:run)        { FactoryGirl.create(:run)}
       let(:or_question){ FactoryGirl.create(:or_embeddable) }
-      let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+      let(:or_answer)  { FactoryGirl.create(:or_answer,
+                                            { :answer_text => "the answer",
+                                              :question => or_question }) }
       let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
       let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
                                             { :answer_text => "the image question answer",
@@ -90,7 +95,9 @@ describe PortalSender::Protocol do
       let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
       let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
       let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
-      let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, :answers  => [a1], :question => mc_question) }
+      let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer,
+                                            { :answers  => [a1],
+                                              :question => mc_question }) }
 
       let(:one_answer)  { or_answer }
       let(:all_answers) { [or_answer, mc_answer,iq_answer] }
@@ -129,12 +136,12 @@ describe PortalSender::Protocol do
       describe "version 0 of the sending protocol" do
         it 'matches the expected JSON for a single specified answer' do
           expected_serialized  = one_expected
-          expect(JSON.parse(protocol.response_for_portal(one_answer))).to eq(expected_serialized)
+          expect(JSON.parse(protocol.response_for_portal(run, one_answer))).to eq(expected_serialized)
         end
 
         it "matches the expected JSON for multiple specified answers" do
           expected_serialized = all_expected
-          expect(JSON.parse(protocol.response_for_portal(all_answers))).to eq(expected_serialized)
+          expect(JSON.parse(protocol.response_for_portal(run,all_answers))).to eq(expected_serialized)
         end
       end
 
@@ -149,9 +156,11 @@ describe PortalSender::Protocol do
             "answers"    => one_expected,
             "lara_end"   => frozen_time,
             "lara_start" => frozen_time,
-            "version"    => "1"
+            "version"    => "1",
+            "oldest_answer_id" => or_answer.id,
+            "run_id" => run.id
           }
-          expect(JSON.parse(protocol.response_for_portal_1_0(one_answer))).to eq(expected_serialized)
+          expect(JSON.parse(protocol.response_for_portal_1_0(run, one_answer))).to eq(expected_serialized)
         end
 
         it "matches the expected JSON for multiple specified answers" do
@@ -159,10 +168,12 @@ describe PortalSender::Protocol do
               "answers"    => all_expected,
               "lara_end"   => frozen_time,
               "lara_start" => frozen_time,
-              "version"    => "1"
+              "version"    => "1",
+              "oldest_answer_id" => or_answer.id,
+              "run_id" => run.id
           }
           puts "FROZEN TIME:  '#{frozen_time}'"
-          expect(JSON.parse(protocol.response_for_portal_1_0(all_answers))).to eq(expected_serialized)
+          expect(JSON.parse(protocol.response_for_portal_1_0(run, all_answers))).to eq(expected_serialized)
         end
       end
 

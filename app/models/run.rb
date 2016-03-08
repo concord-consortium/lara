@@ -189,7 +189,7 @@ class Run < ActiveRecord::Base
   def send_to_portal(answers)
     return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     return true if answers.blank? # Pretend we sent it, nobody will notice
-    is_success = PortalSender::Protocol.instance(remote_endpoint).post_answers(answers,remote_endpoint)
+    is_success = PortalSender::Protocol.instance(remote_endpoint).post_answers(answers,self)
     # TODO: better error detection?
     abort_job_and_requeue(error_string() ) unless is_success
     is_success
