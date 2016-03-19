@@ -24,6 +24,8 @@ RUN gem install foreman
 # clean up ruby / gems / bundler
 RUN gem update --system
 RUN gem update bundler
+# get rid of old bundler version
+RUN gem cleanup bundler
 RUN gem install debugger-ruby_core_source
 
 # if this is changed it also needs to be changed in nginx-sites.conf and unicorn.rb
@@ -42,7 +44,6 @@ ADD docker/prod/Procfile $APP_HOME/Procfile
 
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 RUN bundle install --without development test
-
 ADD . $APP_HOME
 
 # set production
