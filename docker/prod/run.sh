@@ -22,6 +22,6 @@ else
   if [ "$1" == "migrate" ]; then
     bundle exec rake db:migrate
   else
-    foreman start -f Procfile
+    foreman start -d /lara -f /$APP_NAME/docker/prod/Procfile
   fi
 fi

@@ -36,12 +36,6 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 
-# Add default unicorn config
-ADD docker/prod/unicorn.rb $APP_HOME/config/unicorn.rb
-
-# Add default foreman config
-ADD docker/prod/Procfile $APP_HOME/Procfile
-
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 RUN bundle install --without development test
 ADD . $APP_HOME
