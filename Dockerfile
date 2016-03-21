@@ -40,6 +40,10 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
 RUN bundle install --without development test
 ADD . $APP_HOME
 
+# get config files into the right place
+RUN cp config/database.sample.yml config/database.yml; \
+    cp docker/prod/app_environment_variables.rb config/
+
 # set production
 ENV RAILS_ENV=production
 
