@@ -1,0 +1,50 @@
+# This docker-compose file can be used to build and test locally a production image of LARA.
+# A convient way to use it is to set the COMPOSE_FILE in your shell then you won't need to
+# use `docker-compose -f docker/prod/lost-test-compose.yml` each time.
+
+# the production rails mailer currently can cause problems during local testing,
+# it will currenty try to connect to the AWS SES service and then fail
+
+# This does not run the migrations automatically so after building it
+# before running it you should do, `docker-compose run app rake db:migrate`
+
+# If you are starting with a new database then you will probably need to make a user and make it an
+# admin. This can be done by registering at /users/sign_up, then get into the server with
+# docker-compose run app rails c
+# followed by `user = User.last; user.is_admin=true; user.save`
+
+# note currently the worker configuration here is broken
+version: '2'
+services:
+  # The rails app
+  app:
+    container_name: app
+    build: ../..
+    command: bash docker/prod/run.sh
+    environment:
+      VIRTUAL_HOST: app.lara
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: 12345
+      DB_NAME: lara
+      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+  worker:
+    build: ../..
+    container_name: worker
+    command: script/delayed_job run
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: 12345
+      DB_NAME: lara
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: dgraziotin/mysql
+    environment:
+      MYSQL_ADMIN_PASS: 12345

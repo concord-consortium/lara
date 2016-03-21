@@ -5,5 +5,7 @@ log/*
 tmp/*
 config/database.yml
 config/app_environment_variables.rb
+docker/prod/local-test-compose.yml
+docker-compose.yml
 Dockerfile
 README.rdoc
