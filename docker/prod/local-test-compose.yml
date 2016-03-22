@@ -20,7 +20,7 @@ services:
   app:
     container_name: app
     build: ../..
-    command: bash docker/prod/run.sh
+    command: docker/prod/run.sh
     environment:
       VIRTUAL_HOST: app.lara
       DB_HOST: db
