@@ -28,6 +28,7 @@ services:
       DB_PASSWORD: 12345
       DB_NAME: lara
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+      RAILS_STDOUT_LOGGING: 'true'
     ports:
       - "80:80"
     depends_on:
@@ -41,6 +42,7 @@ services:
       DB_USER: admin
       DB_PASSWORD: 12345
       DB_NAME: lara
+      RAILS_STDOUT_LOGGING: 'true'
     depends_on:
       - db
   db:
