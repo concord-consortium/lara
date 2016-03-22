@@ -2,23 +2,16 @@
 
 APP_NAME='lara'
 
-if [ "$1" == "delayed_job" ]; then
+PIDFILE=/$APP_NAME/tmp/pids/server.pid
 
-  /$APP_NAME/docker/prod/delayed_job
+if [ -f $PIDFILE ]; then
+  rm $PIDFILE
+fi
 
+bundle exec rake db:create
+
+if [ "$1" == "migrate" ]; then
+  bundle exec rake db:migrate
 else
-
-  PIDFILE=/$APP_NAME/tmp/pids/server.pid
-
-  if [ -f $PIDFILE ]; then
-    rm $PIDFILE
-  fi
-
-  bundle exec rake db:create
-
-  if [ "$1" == "migrate" ]; then
-    bundle exec rake db:migrate
-  else
-    foreman start -d /lara -f /$APP_NAME/docker/prod/Procfile
-  fi
+  foreman start -d /lara -f /$APP_NAME/docker/prod/Procfile
 fi
