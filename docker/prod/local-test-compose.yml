@@ -2,6 +2,12 @@
 # A convient way to use it is to set the COMPOSE_FILE in your shell then you won't need to
 # use `docker-compose -f docker/prod/lost-test-compose.yml` each time.
 
+# You also might want to set set the COMPOSE_PROJECT_NAME variable. Without that set all of
+# the created containers will not have a prefix. Normally compose uses the parent directory
+# name, so for example the created contains would have a prefix of 'lara_'
+# When the compose file is passed as an arg or ENV varaible that prefix isn't used. So then
+# your containers will have generic names like app intead of lara_app.
+
 # the production rails mailer currently can cause problems during local testing,
 # it will currenty try to connect to the AWS SES service and then fail
 
