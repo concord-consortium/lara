@@ -1,17 +1,21 @@
 #!/bin/bash
 
-APP_NAME='lara'
+# This script is intended to be run inside of a development Docker container.
+# In the production environment a different script is used:
+#   docker/prod/run.sh
 
-DB_CONFIG=/$APP_NAME/config/database.yml
-PIDFILE=/$APP_NAME/tmp/pids/server.pid
+DB_CONFIG=$APP_HOME/config/database.yml
+PIDFILE=$APP_HOME/tmp/pids/server.pid
 
 if [ -f $PIDFILE ]; then
   rm $PIDFILE
 fi
 
 if [ ! -f $DB_CONFIG ]; then
-  cp /$APP_NAME/config/database.sample.yml $DB_CONFIG
+  cp $APP_HOME/config/database.sample.yml $DB_CONFIG
 fi
+
+bundle check || bundle install
 
 if [ "$RAILS_ENV" = "production" ]; then
   bundle exec rake assets:precompile

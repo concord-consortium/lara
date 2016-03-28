@@ -1,31 +1,30 @@
-# The rails app
-app:
-  container_name: app
-  build: .
-  command: ./script/docker-app.sh
-  environment:
-    # NOTE: empty environment variables inherit their values from the host
-    VIRTUAL_HOST: app.lara
-    DB_HOST:
-    DB_USER:
-    DB_PASSWORD:
-    DB_NAME:
-    DOCKER_PORTAL_NAME:
-    CONCORD_DOCKER_URL:
-    CONCORD_DOCKER_CLIENT_ID:
-    CONCORD_DOCKER_CLIENT_SECRET:
-  ports:
-    - "80:3000"
-  volumes:
-    - .:/lara
-
-worker:
-  container_name: worker
-  image: lara_app
-  command: ruby ./script/delayed_job_docker start
-  environment:
-    # NOTE: empty environment variables inherit their values from the host
-    DB_HOST:
-    DB_USER:
-    DB_PASSWORD:
-    DB_NAME:
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    command: script/docker-app.sh
+    environment:
+      # you will need more variables here to connect your lara to a portal
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: 12345
+      DB_NAME: lara
+      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/lara
+      - "bundle:/bundle"
+  db:
+    # this mysql image is used because it works out of the box on OS X
+    # the official docker mysql container has permissions issues when writing to the disk
+    # this boot2docker describes the problem: https://github.com/boot2docker/boot2docker/issues/581
+    image: dgraziotin/mysql
+    environment:
+      MYSQL_ADMIN_PASS: 12345
+volumes:
+  bundle:
