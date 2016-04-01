@@ -1,3 +1,13 @@
+## General Setup
+
+We are using Rancher to manage our docker hosts and containers on AWS.
+Rancher has a web UI to inspect and configure the setup.
+The docker hosts are running RancherOS, which can be configured using a cloud-init structure
+passed through the userdata when AWS EC2 starts up an instance.
+
+LARA is autoscaled using AWS EC2 autoscaling. When the autoscaller launches a new host, the new
+host contacts rancher and rancher then adds all of the configured docker containers to the host.
+
 ## Open a rails console from the command line:
 
 For simple stuff you can use the Rancher UI. It has an "Open Console" in the menu of containers.
@@ -50,28 +60,81 @@ This could be improved if we had a utility service that listed all of the ranche
 URLs to the log streams for each container. Or even better if the rancher UI let us add links to resources by
 using link templates that were populated with properties from the resource.
 
+## AWS Autoscaling setup
+
+Currently the autoscaller is using a 'pre-provisioned' ami.
+The ami was created by:
+- launching an instance with the rancheros-0.4.2 ami
+- using the same userdata as below
+- waiting for it to show up in the rancher UI and finish initializing
+- it was removed from the rancher UI
+- the rancher state was removed based on these instructions:
+    http://docs.rancher.com/rancher/faqs/agents/#using-a-cloned-vm
+- the existing containers were stopped and removed, otherwise they can conflict with the containers rancher
+  sets up.  This is done with `docker rm -v $(docker ps -a -q)` (you might need to kill the containers first)
+- the instance was shutdown, and imaged
+
+Without this preprovisioned ami, starting a host up can take over 12 minutes. Alternatively it might be just as fast
+if we ran our own docker caching repository.
+
+The rancheros 0.4.3 ami had a problem with configuring the hostname in rancher. The instance itself would report the correct host name, but rancher would report the host name as 'rancher'. 0.4.2 does not have this problem.
+
+Here is the current userdata with senstive info removed:
+
+```
+#cloud-config
+write_files:
+  - path: /root/.aws/credentials
+    permissions: "0600"
+    owner: root
+    content: |
+      [default]
+      aws_access_key_id = [iam account with cloudwatch access]
+      aws_secret_access_key = [iam account with cloudwatch access]
+rancher:
+  docker:
+    args: [daemon, --log-driver, awslogs, --log-opt, awslogs-region=us-east-1, --log-opt, awslogs-group=lara-docker-staging, -s, overlay, -G, docker, -H, 'unix:///var/run/docker.sock', --userland-proxy=false]
+  services:
+    rancher-agent1:
+      image: rancher/agent:v0.10.0
+      command: [rancher url specific for environment]
+      privileged: true
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      environment:
+        CATTLE_HOST_LABELS: application=lara-staging
+    update_filesystem_size:
+      image: slamper/disk_resizer
+      privileged: true
+```
+
+The rancher-agent parts of this cloud-config were based on the information provided here:
+http://docs.rancher.com/os/running-rancher-on-rancheros/
+
+Autoscaling Issues:
+- during an upgrade of a service, the health check will fail, and if it fails twice the autoscaller will
+shut down the instance. Ideally what we want is for the instance to be removed from the load balancer
+but not terminated by the autoscaller. It is possible to tell the autoscaller to not shutdown hosts that fail
+healtchecks. So that will need to be work around for now when doing upgrades.
+
+Originally we also had a rancher based loadbalancer on each host. These loadbalancers actually sent requests
+to each of the hosts not just its own host. This complicates things, because the rancher loadblancer can send requests to any host with the app container.
+
+### Notes about issues with hostname in rancher
+
+When RancherOS 0.4.3 is started with the above user, the 'name' for a host displayed in rancher is just
+'rancher'. This is not a problem in rancherOS 0.4.2. The rancher version at the time is 0.63.1.
+
+I tried adding a label to the rancher-agent config in the userdata to make sure it started after
+cloud-init set the host name but that didn't help. `io.rancher.os.after: cloud-init`
+
 ## Thing still to improve
-
-### Slow startup time of hosts
-
-We want to experiment with making an ami from a machine in EC2 that is already setup.
-And use that AMI to start things up. It should avoid the need for a few parts of the
-startup. However the 100GB disk size will make it slow to start (since AWS doesn't know)
-what is really needed on that disk.  So to make it start fast, we need to do something
-like this:
-http://cloudacademy.com/blog/amazon-ebs-shink-volume/
--or- we need to provision things on a smaller server manually (outside of the load balancer)
-Also before snapshoting the clone we need to do this:
-http://docs.rancher.com/rancher/faqs/troubleshooting/#using-a-cloned-vm
-It is possible that just detaching the clone will do the same thing.
-
-I suspect that something like docker swarm might also improve the startup time. Ideally
-the swarm would share a image cache.
 
 ### Reaping host definitions from rancher
 
 Currently when a host is shutdown in EC2 the host definition in rancher is not removed.
-It is stuck in a 'reconnecting' state.
+It is stuck in a 'reconnecting' state. It seems sometimes this can prevent new hosts from
+getting the services configured on them.
 
 One approach to fix this is to have a reaping service running that looks for these stuck
 hosts in rancher, and then checks if their machine exists in EC2. If not then it destroys
@@ -129,10 +192,12 @@ Providing access to those generally to the app doesn't seem like a good idea.
 
 ### Pull nginx out of lara container
 
-A separate nginx container can be used that proxies all requests to LARA.  And it would be setup to 
+A separate nginx container can be used that proxies all requests to LARA.  And it would be setup to
 agressively cache the assests from the LARA container. Benefits:
 - we can drop Foreman.
 - the logging would be more clear: standard out from nginx will go to one stream, and lara to another stream
+- starting or upgrading a new server might be faster because the lara container wouldn't need to contain nginx
+too.
 
 ## Other Annoying issues:
 
@@ -142,5 +207,4 @@ I'm sure not under what conditions it happens.
 
 - the delayed job worker logs info each time it wakes up and looks for new jobs, so this makes the default log full of
 mostly pointless messages.
-
 
