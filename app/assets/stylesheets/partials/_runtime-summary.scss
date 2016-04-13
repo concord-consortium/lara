@@ -12,6 +12,9 @@
     font-family: sans-serif;
     margin: 5px;
     margin-top: 30px;
+    &.drawing_prompt {
+      margin-bottom: 1em;
+    }
   }
   .answer, .image_answer {
     clear: left;
