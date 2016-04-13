@@ -63,7 +63,7 @@ group :test, :development do
 end
 
 gem "highline", "~> 1.6"
-gem "rails", "~> 3.2"
+gem "rails", "~> 3.2.22"
 gem "jquery-rails", "~> 3.0"
 gem "jquery-ui-rails", "~> 4.1"
 gem "haml", "~> 4.0"
