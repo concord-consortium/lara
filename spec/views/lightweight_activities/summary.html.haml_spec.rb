@@ -10,7 +10,12 @@ describe 'lightweight_activities/summary' do
   let(:mc3) { stub_model(Embeddable::MultipleChoiceAnswer, :prompt => 'prompt four', :question_index => '4', :answer_texts => ['This should not show', 'This should show'], :multi_answer => false) }
   let(:or2) { stub_model(Embeddable::OpenResponseAnswer, :prompt => 'prompt five', :question_index => '5', :answer_text => nil) }
   let(:image_answer_url) { 'http://foo.com/bar.png' }
-  let(:image_answer)  { stub_model(Embeddable::ImageQuestionAnswer, :prompt => 'prompt six', :question_index => '6', :answer_text => 'this is my image answer', :image_url => image_answer_url)}
+  let(:image_answer)  { stub_model(Embeddable::ImageQuestionAnswer,
+                                   :drawing_prompt => 'drawing prompt six',
+                                   :prompt => 'prompt six',
+                                   :question_index => '6',
+                                   :answer_text => 'this is my image answer',
+                                   :image_url => image_answer_url)}
 
   before(:each) do
     assign(:project, project)
@@ -38,7 +43,7 @@ describe 'lightweight_activities/summary' do
 
   it 'lists the questions with numbers and prompts' do
     render
-    expect(rendered).to have_css ".prompt .text", :count => 6
+    expect(rendered).to have_css ".prompt .text", :count => 7 # one additional for the draw_prompt
     expect(rendered).to have_css ".prompt .number", :count => 6
     words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six']
     (1..5).each do |i|
