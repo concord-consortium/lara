@@ -12,6 +12,10 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     :foreign_key => 'image_question_id',
     :dependent   => :destroy
 
+  has_one :tracked_question, :as => :question
+  has_one :question_tracker, :through => :tracked_question
+  has_one :master_for_tracker, :class_name => 'QuestionTracker', :as => :master_question
+
   default_value_for :prompt, "why does ..."
 
   def interactive
