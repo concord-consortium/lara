@@ -1,9 +1,9 @@
 #trackedQuestionSelector
   .trackedQuestionContent
+    .title
+      %h2=t("TRACKED_QUESTION.ADD_TEXT")
+      %button#closeTrackedQuestionSelector Cancel
     .searchResults
-      .title
-        %label=t("TRACKED_QUESTION.ADD_TEXT")
-        %button#closeTrackedQuestionSelector Cancel
       - QuestionTracker.list_tracked_questions(current_user).each do |qt|
         - url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id})
         %a{href: url}

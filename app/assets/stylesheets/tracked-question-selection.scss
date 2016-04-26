@@ -31,7 +31,17 @@
     align-items: stretch;
     justify-content: flex-start;
     z-index: 1001;
-    // Is there an easier way to remove styling from div links?
+    .title {
+      align-self: stretch;
+      h2 {
+        color: hsl(191, 34%, 47%);
+        font-size: 14pt;
+        font-weight: bold;
+      }
+      button {
+        background-color: hsl(18, 70%, 49%);
+      }
+    }
     a {
       text-decoration: none;
       color: inherit;
@@ -40,19 +50,16 @@
       &:active   { text-decoration: none; color: inherit;}
     }
     .searchResults {
-      .title {
-        align-self: stretch;
-      }
       flex-grow: 2;
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: flex-start;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
       justify-content: space-between;
       overflow: scroll;
       .result {
-        padding: 1em;
-        margin: 1em;
+        padding: 0.5em;
+        margin: 0.2em;
         background-color: #6fc5d8;
         color: white;
         border-radius: 4px;
