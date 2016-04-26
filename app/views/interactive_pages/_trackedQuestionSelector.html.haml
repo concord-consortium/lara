@@ -1,0 +1,45 @@
+#trackedQuestionSelector
+  .trackedQuestionContent
+    .searchResults
+      .title
+        %label=t("TRACKED_QUESTION.ADD_TEXT")
+        %button#closeTrackedQuestionSelector Cancel
+      - QuestionTracker.list_tracked_questions(current_user).each do |qt|
+        - url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id})
+        %a{href: url}
+          .result{'id' => "tracked-question-#{qt.id}"}
+            .type=qt.type
+            .name=qt.name
+            .useCount
+              Used in #{qt.use_count} activities.
+            .description=qt.description
+
+
+:javascript
+  function embededType() {
+    return $('#embeddable_type').val();
+  };
+
+  function openTrackedQuestionSelector() {
+    $('#trackedQuestionSelector').addClass('shown');
+  };
+  function closeTrackedQuestionSelector() {
+    $('#trackedQuestionSelector').removeClass('shown');
+  };
+
+  function handleAddEmbed(evt) {
+    switch (embededType()) {
+      // We special case this embeddbable, because it has to
+      // do additional work in the client.
+      case "QuestionTracker":
+        openTrackedQuestionSelector();
+        evt.preventDefault();
+        break;
+    }
+  };
+
+  $(document).ready(function() {
+    $('#add_embeddable_button').click(handleAddEmbed);
+    $('#trackedQuestionSelector').click(closeTrackedQuestionSelector);
+    $('#closeTrackedQuestionSelector').click(closeTrackedQuestionSelector);
+  });

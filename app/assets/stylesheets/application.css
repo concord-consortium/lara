@@ -26,4 +26,5 @@
  *= require run_detail_report
  *= require c_rater/score_mapping
  *= require components/itsi_authoring
+ *= require tracked-question-selection
  */

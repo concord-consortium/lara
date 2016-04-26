@@ -4,7 +4,8 @@ module Embeddable
       Embeddable::MultipleChoice => "Multiple choice",
       Embeddable::OpenResponse   => "Open response",
       Embeddable::Xhtml          => "Text box",
-      Embeddable::Labbook        => "Labbook"
+      Embeddable::Labbook        => "Labbook",
+      QuestionTracker            => "Tracked Question"
     }
 
   def self.table_name_prefix

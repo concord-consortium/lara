@@ -99,3 +99,5 @@ en:
         &nbsp;To browse your Snapshot Album, click the album icon.
         A snapshot must be included for the activity to show as completed.</p>
       BUTTON: "Take a Snapshot"
+  TRACKED_QUESTION:
+    ADD_TEXT: "Select a tracked question to add."
