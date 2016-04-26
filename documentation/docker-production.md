@@ -67,17 +67,20 @@ The ami was created by:
 - launching an instance with the rancheros-0.4.2 ami
 - using the same userdata as below
 - waiting for it to show up in the rancher UI and finish initializing
-- it was removed from the rancher UI
+- it was removed from the rancher UI (this seems to stop all of the rancher managed containers)
 - the rancher state was removed based on these instructions:
     http://docs.rancher.com/rancher/faqs/agents/#using-a-cloned-vm
 - the existing containers were stopped and removed, otherwise they can conflict with the containers rancher
   sets up.  This is done with `docker rm -v $(docker ps -a -q)` (you might need to kill the containers first)
-- the instance was shutdown, and imaged
+- the cloud-init system containers were removed which seems to be necessary to clear out any userdata from the previous launch:
+`sudo system-docker rm -v cloud-init-pre; sudo system-docker rm -v cloud-init`. The cloud-init container seemes to save the
+the configuration that is passed in through the EC2 userdata, so on restart this configuration is loaded. Which means the 
+instance will join the rancher environment used to create the AMI.
+- the instance was shutdown from using `shutdown -h now`, and then imaged in the AWS console
 
 Without this preprovisioned ami, starting a host up can take over 12 minutes. Alternatively it might be just as fast
-if we ran our own docker caching repository.
-
-The rancheros 0.4.3 ami had a problem with configuring the hostname in rancher. The instance itself would report the correct host name, but rancher would report the host name as 'rancher'. 0.4.2 does not have this problem.
+if we ran our own docker caching repository. Even with the preprovisioned ami I still sometimes see 11 minute start up times
+so it isn't clear if the pre-provisioned approach is actually worth it.
 
 Here is the current userdata with senstive info removed:
 
@@ -111,22 +114,43 @@ rancher:
 The rancher-agent parts of this cloud-config were based on the information provided here:
 http://docs.rancher.com/os/running-rancher-on-rancheros/
 
-Autoscaling Issues:
-- during an upgrade of a service, the health check will fail, and if it fails twice the autoscaller will
+#### Autoscaling Issues:
+
+During an upgrade of a service, the health check will fail, and if it fails twice the autoscaller will
 shut down the instance. Ideally what we want is for the instance to be removed from the load balancer
 but not terminated by the autoscaller. It is possible to tell the autoscaller to not shutdown hosts that fail
-healtchecks. So that will need to be work around for now when doing upgrades.
+healthchecks. So that will need to be work around for now when doing upgrades.
 
-Originally we also had a rancher based loadbalancer on each host. These loadbalancers actually sent requests
-to each of the hosts not just its own host. This complicates things, because the rancher loadblancer can send requests to any host with the app container.
+Originally we also had a rancher based loadbalancer on each host. That approach also should have prevented the problem above.
+However these loadbalancers actually sent requests to each of the hosts not just the host it was running on. That approach
+complicated things, because the now a health check by the ELB was not really reporting the health of the host but of a random
+host in the grouping.
 
 ### Notes about issues with hostname in rancher
 
-When RancherOS 0.4.3 is started with the above user, the 'name' for a host displayed in rancher is just
-'rancher'. This is not a problem in rancherOS 0.4.2. The rancher version at the time is 0.63.1.
+When RancherOS 0.4.3 is started, the 'name' for a host displayed in rancher is just
+'rancher'. Originally this was not a problem. It seemed that the 0.4.3 upgrade caused the problem, but going back to 0.4.2
+didn't solve it.
 
 I tried adding a label to the rancher-agent config in the userdata to make sure it started after
 cloud-init set the host name but that didn't help. `io.rancher.os.after: cloud-init`
+
+It seemed the rancheros 0.4.3 ami had a problem with configuring the hostname. However it seems 0.4.2 also has a problem with the hostname after it has been imaged, see below for more details. So we should be able to switch to RancherOS 0.4.3.
+
+When using the pre-built ami described above, the hostname is that of the of the cloned server.  However
+when I upgraded rancher, it restarted the agents and that updated the host name. cloud-init is supposed to connect to ec2 and get the correct hostname, but it doesn't seem to do this. Another clue is that when using `system-docker inspect` on any of the stopped or running containers they all also list this wrong hostname. So the problem might be that the containers get this hostname when they were are initialy launched. Now when the AMI is made their config is saved on disk and when the AMI is booted again this hostname is used instead of cloud-init fetching a new one.
+
+In the AMI creation steps above the cloud-init container is removed before making the AMI. The hope was this would fix the problem. It did not. The rancher os startup.yml file is what initially launches all of these services so perhaps there is someway to tweak
+it that will fix the problem.
+
+- when launching the AMI that was created with the process above it seems to join the rancher host even though all of the containers were removed. This implies that the process above of cleaning the instance isn't good enough. Like the userdata from the original image is still located somewhere on the disk.
+
+To solve both of these problems I tried removing the cloud-init containers with:
+sudo system-docker rm -v cloud-init-pre
+sudo system-docker rm -v cloud-init
+
+this approach above did not help with the hostname problem. But it did prevent the host from being added to rancher.
+This will have to do. If I explore this more I'd start with the basic rancher OS AMI launch it, image it and launch it again to see what happens with the hostname.  My suspicion is that cloud-init stores some cache info about the EC2 information on a shared volume. And it doesn't refetch the data.
 
 ## Thing still to improve
 
@@ -201,8 +225,10 @@ too.
 
 ## Other Annoying issues:
 
+- One thing that is difficult is that the file system of system-docker (/var/lib/system-docker) is not mounted in the console container. So it is not possibly to inspect the layers created by cloud-init and others. It looks like they might have changed this in the next release of RancherOS.
+
 - during local testing, the virtualbox machine setup by docker-machine seems to loose its
-internet connection sometimes. This is the same thing I've experience with Virtual Box. 
+internet connection sometimes. This is the same thing I've experience with Virtual Box.
 I'm sure not under what conditions it happens.
 
 - the delayed job worker logs info each time it wakes up and looks for new jobs, so this makes the default log full of
