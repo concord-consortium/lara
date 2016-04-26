@@ -1,0 +1,92 @@
+#trackedQuestionSelector {
+  display: none;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 100;
+  background-color: hsla(0, 0%, 50%, 0.9);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &.shown {
+    display: flex;
+  }
+  .trackedQuestionContent {
+    %div {
+      padding: 4px;
+      margin:  4px;
+    }
+    padding: 1em;
+    margin: auto;
+    max-height: 300px;
+    width: 400px;
+    background-color: hsla(0, 0%, 100%, 1.0);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    z-index: 1001;
+    // Is there an easier way to remove styling from div links?
+    a {
+      text-decoration: none;
+      color: inherit;
+      &:selected { text-decoration: none; color: inherit;}
+      &:visited  { text-decoration: none; color: inherit;}
+      &:active   { text-decoration: none; color: inherit;}
+    }
+    .searchResults {
+      .title {
+        align-self: stretch;
+      }
+      flex-grow: 2;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      overflow: scroll;
+      .result {
+        padding: 1em;
+        margin: 1em;
+        background-color: #6fc5d8;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background-color: #4C8390;
+        }
+        .type{
+          font-size: 8pt;
+          font-weight: bold;
+          font-style: all;
+          text-transform: uppercase;
+          line-height: 12pt;
+        }
+        .name{
+          font-size: 12pt;
+          font-weight: 100;
+          font-style: italic;
+          line-height: 12pt;
+        }
+        .useCount{
+          font-size: 6pt;
+          font-weight: 100;
+          font-variant-caps: small-caps;
+          text-transform: uppercase;
+          font-style: underline;
+          line-height: 12pt;
+        }
+        .description{
+          font-size: 6pt;
+          font-weight: 100;
+          line-height: 12pt;
+        }
+      }
+    }
+  };
+}

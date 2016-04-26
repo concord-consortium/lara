@@ -4,6 +4,11 @@ class QuestionTracker < ActiveRecord::Base
   belongs_to :master_question, polymorphic: true
   has_many :tracked_questions
 
+  def self.list_tracked_questions(user)
+    # TODO: Check on the user
+    self.all
+  end
+
   def correct_type(question)
     question.is_a? self.master_question.class
   end
@@ -26,12 +31,21 @@ class QuestionTracker < ActiveRecord::Base
     new_q = master_question.duplicate
     new_q.save
     add_question(new_q)
+    return new_q
   end
 
   def remove_question(question)
     tracked_questions.where(question_id: question, question_type: question.class.name).each { |q| q.delete }
     tracked_questions.reload
     question.reload
+  end
+
+  def type
+    Embeddable::Types[master_question.class]
+  end
+
+  def use_count
+    tracked_questions.length
   end
 
 end

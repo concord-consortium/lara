@@ -73,6 +73,7 @@ LightweightStandalone::Application.routes.draw do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
+        get  'add_tracked'
         post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
