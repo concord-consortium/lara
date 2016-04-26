@@ -1,0 +1,27 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = "Edit #{@question_tracker.name}"
+
+:javascript
+  window.ITSIEditorTinyMCEConfig = {
+      menubar: false,
+      statusbar: false,
+      toolbar_items_size: 'small',
+      toolbar: "undo redo | bold italic strikethrough underline | " +
+        "aligncenter alignjustify alignleft alignright indent outdent | " +
+        "subscript superscript | numlist bullist | link unlink | hr image",
+      plugins: 'paste link hr image autoresize',
+      paste_as_text: true,
+      content_css: "#{asset_path('tinymce.css')}"
+    }
+
+#question-tracker-editor
+
+:javascript
+  QuestionTrackerEditor = React.createElement(
+    modulejs.require('components/question_tracker/editor'),
+    {initialState: gon.QuestionTracker}
+  );
+  React.render(QuestionTrackerEditor, $('#question-tracker-editor')[0]);

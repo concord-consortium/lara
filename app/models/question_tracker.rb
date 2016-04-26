@@ -48,4 +48,8 @@ class QuestionTracker < ActiveRecord::Base
     tracked_questions.length
   end
 
+  def master_question_info
+    return I18n.translate("QUESTION_TRACKER.MASTER_QUESTION.NOT_DEFINED") unless master_question
+    return "#{master_question_type} : #{master_question_id} : #{master_question.name}"
+  end
 end

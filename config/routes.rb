@@ -10,8 +10,14 @@ LightweightStandalone::Application.routes.draw do
 
 
   resources :themes
-
   root :to => 'home#home'
+
+  resources :question_trackers do
+    member do
+      post 'add_embeddable'
+      post 'replace_master'
+    end
+  end
 
   namespace :embeddable do
     resources :image_question_answers
