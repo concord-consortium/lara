@@ -1,6 +1,7 @@
 :ruby
   dash_id = "#{type}-#{embeddable.id}"
   under_id = "#{type}_#{embeddable.id}"
+  tracked = embeddable.respond_to?(:tracked_question) && embeddable.tracked_question
   edit_path = case type
     when "or"
       edit_embeddable_open_response_path(embeddable)
@@ -19,7 +20,10 @@
   - confirm_hide_message = "If you remove this YOU WILL LOSE ANSWERS FROM #{pluralize(@activity.active_runs, "student").upcase}. Are you sure you want to remove this?"
   = link_to "hide", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "hide-#{dash_id}", :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide_message}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
 
-= link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
+- if tracked
+  = link_to "stop tracking", edit_path, :remote => true, :id => "edit-embed-#{dash_id}", :stop_tracking => true
+- else
+  = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
 - confirm_delete_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."
 = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => (@activity.active_runs > 0) ? confirm_delete_message : 'Are you sure?'}
 - if params["edit_embed_#{type}".to_sym].to_i == dash_id
