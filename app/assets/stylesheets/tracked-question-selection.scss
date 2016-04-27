@@ -45,7 +45,7 @@
     a {
       text-decoration: none;
       color: inherit;
-      &:selected { text-decoration: none; color: inherit;}
+      &:link     { text-decoration: none; color: inherit;}
       &:visited  { text-decoration: none; color: inherit;}
       &:active   { text-decoration: none; color: inherit;}
     }
@@ -70,7 +70,6 @@
         .type{
           font-size: 8pt;
           font-weight: bold;
-          font-style: all;
           text-transform: uppercase;
           line-height: 12pt;
         }
@@ -85,7 +84,7 @@
           font-weight: 100;
           font-variant-caps: small-caps;
           text-transform: uppercase;
-          font-style: underline;
+          font-decoration: underline;
           line-height: 12pt;
         }
         .description{

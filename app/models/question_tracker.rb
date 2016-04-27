@@ -20,7 +20,7 @@ class QuestionTracker < ActiveRecord::Base
   def add_question(question)
     if (correct_type(question))
       unless questions.include? question
-        self.tracked_questions.create(question: question, question_tracker: self)
+        self.tracked_questions.create(question: question, question_trackers: self)
         return true
       end
     end
@@ -48,4 +48,8 @@ class QuestionTracker < ActiveRecord::Base
     tracked_questions.length
   end
 
+  def master_question_info
+    return I18n.translate("QUESTION_TRACKER.MASTER_QUESTION.NOT_DEFINED") unless master_question
+    return "#{master_question_type} : #{master_question_id} : #{master_question.name}"
+  end
 end

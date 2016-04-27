@@ -5,7 +5,7 @@
       %button#closeTrackedQuestionSelector Cancel
     .searchResults
       - QuestionTracker.list_tracked_questions(current_user).each do |qt|
-        - url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id})
+        - url = add_tracked_activity_page_path(activity, page, {question_trackers: qt.id})
         %a{href: url}
           .result{'id' => "tracked-question-#{qt.id}"}
             .type=qt.type

@@ -1,0 +1,9 @@
+
+.question-trackers
+  - @question_trackers.each do |qt|
+    %a{href: edit_question_tracker_path(qt, qt_origin: question_trackers_path)}
+      .question-tracker
+        .name=qt.name
+        .description=qt.description
+        .use_count Used in #{qt.use_count} activities
+        .type=qt.type

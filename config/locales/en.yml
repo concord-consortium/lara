@@ -101,3 +101,6 @@ en:
       BUTTON: "Take a Snapshot"
   TRACKED_QUESTION:
     ADD_TEXT: "Select a tracked question to add."
+  QUESTION_TRACKER:
+    MASTER_QUESTION:
+      NOT_DEFINED: "No master question is defined."

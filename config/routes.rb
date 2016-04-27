@@ -10,6 +10,7 @@ LightweightStandalone::Application.routes.draw do
 
 
   resources :themes
+  resources :question_trackers
 
   root :to => 'home#home'
 
