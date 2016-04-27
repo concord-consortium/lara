@@ -16,3 +16,15 @@
   .master-question
     .type=@question_tracker.type
     .info=@question_tracker.master_question_info
+
+    = form_tag replace_master_question_tracker_path, :class => 'master-question-form' do
+      = embeddable_selector
+      = submit_tag 'Set Master Question', {id: 'add_embeddable_button'}
+    .edit-master-question
+      - if question = @question_tracker.master_question
+        - @embeddable = question
+        .authorable{:id => "question_#{question.id}.#{question.class.to_s}"}
+          - begin
+            = render :partial => "#{question.class.name.underscore.pluralize}/form", :locals => { :embeddable => question, :page => nil, :allow_hide => false }
+          - rescue
+            - binding.pry

@@ -20,7 +20,7 @@ class QuestionTracker < ActiveRecord::Base
   def add_question(question)
     if (correct_type(question))
       unless questions.include? question
-        self.tracked_questions.create(question: question, question_trackers: self)
+        self.tracked_questions.create(question: question, question_tracker: self)
         return true
       end
     end

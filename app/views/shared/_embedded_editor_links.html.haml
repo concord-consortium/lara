@@ -21,7 +21,7 @@
   = link_to "hide", page_hideshow_embeddable_path(page, embeddable), :remote => true, :method => :post, :id => "hide-#{dash_id}", :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide_message}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
 
 - if tracked
-  = link_to "stop tracking", edit_path, :remote => true, :id => "edit-embed-#{dash_id}", :stop_tracking => true
+  = link_to "stop tracking", edit_path, :remote => true, :id => "edit-embed-#{dash_id}", :stop
 - else
   = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
 - confirm_delete_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that have answered this question."

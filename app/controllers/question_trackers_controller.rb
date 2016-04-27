@@ -37,6 +37,35 @@ class QuestionTrackersController < ApplicationController
     end
   end
 
+  def replace_master
+    begin
+      @question_tracker.master_question = params[:embeddable_type].constantize.create
+      @question_tracker.save
+      flash[:info] = "added new question"
+    rescue
+      flash[:warning] = "unable to find your question" # Todo
+    end
+    binding.pry
+    render :edit
+  end
+
+  def edit_embeddable_redirect(embeddable)
+    @question_tracker.add_embeddable(embeddable)
+    case embeddable
+      when Embeddable::MultipleChoice
+        embeddable.create_default_choices
+        param = { :edit_embed_mc => embeddable.id }
+      when Embeddable::OpenResponse
+        param = { :edit_embed_or => embeddable.id }
+      when Embeddable::ImageQuestion
+        param = { :edit_embed_iq => embeddable.id }
+      when Embeddable::Labbook
+        param = { :edit_embed_lb => embeddable.id }
+    end
+    # Add parameter to open new embeddable modal
+    redirect_to edit_activity_page_path(@activity, @page, param)
+  end
+
   private
   def canceled?
     params[:commit] == "cancel"
