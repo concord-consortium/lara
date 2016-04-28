@@ -46,7 +46,7 @@ class QuestionTrackersController < ApplicationController
       flash[:warning] = "unable to find your question" # Todo
     end
     binding.pry
-    render :edit
+
   end
 
   def edit_embeddable_redirect(embeddable)
