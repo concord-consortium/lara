@@ -1,30 +1,27 @@
-.question-tracker
-  .form
-    = form_for(@question_tracker) do |f|
-      .row.name
-        =f.label :name
-        =f.text_field :name
-      .row.description
-        =f.label :description
-        =f.text_area :description
-      .row.save-and-cancel
-        %span.save
-          =f.submit :save
-        %span.cancel
-          =f.submit :cancel
-  .use_count=@question_tracker.use_count
-  .master-question
-    .type=@question_tracker.type
-    .info=@question_tracker.master_question_info
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  = "Edit #{@question_tracker.name}"
 
-    = form_tag replace_master_question_tracker_path, :class => 'master-question-form' do
-      = embeddable_selector
-      = submit_tag 'Set Master Question', {id: 'add_embeddable_button'}
-    .edit-master-question
-      - if question = @question_tracker.master_question
-        - @embeddable = question
-        .authorable{:id => "question_#{question.id}.#{question.class.to_s}"}
-          - begin
-            = render :partial => "#{question.class.name.underscore.pluralize}/form", :locals => { :embeddable => question, :page => nil, :allow_hide => false }
-          - rescue
-            - binding.pry
+:javascript
+  window.ITSIEditorTinyMCEConfig = {
+      menubar: false,
+      statusbar: false,
+      toolbar_items_size: 'small',
+      toolbar: "undo redo | bold italic strikethrough underline | " +
+        "aligncenter alignjustify alignleft alignright indent outdent | " +
+        "subscript superscript | numlist bullist | link unlink | hr image",
+      plugins: 'paste link hr image autoresize',
+      paste_as_text: true,
+      content_css: "#{asset_path('tinymce.css')}"
+    }
+
+#question-tracker-editor
+
+:javascript
+  QuestionTrackerEditor = React.createElement(
+    modulejs.require('components/question_tracker/editor'),
+    {initialState: gon.QuestionTracker}
+  );
+  React.render(QuestionTrackerEditor, $('#question-tracker-editor')[0]);

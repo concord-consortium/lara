@@ -8,10 +8,17 @@ class QuestionTrackersController < ApplicationController
 
   def new
     @question_tracker = QuestionTracker.new
+    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
+    # this is used in both the itsi editor and in the standard editor to show the published activity
+    gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
     render :edit
   end
 
   def show
+    respond_to do |format|
+      format.html { }
+      format.json { render json: QuestionTracker::Editor.new(@question_tracker).to_json  }
+    end
   end
 
   def edit
@@ -31,10 +38,19 @@ class QuestionTrackersController < ApplicationController
   def update
     if(canceled?)
       redirect_to redirect_location
-    elsif @question_tracker.update_attributes(params[:question_tracker])
-      @question_tracker.reload
-      updated_or_created
     end
+    respond_to do |format|
+      format.html do
+        if @question_tracker.update_attributes(params[:question_tracker])
+          @question_tracker.reload
+          updated_or_created
+        end
+      end
+      format.json do
+        render json: QuestionTracker::Editor.new(@question_tracker).update(params[:question_tracker]).to_json
+      end
+    end
+
   end
 
   def replace_master
@@ -78,6 +94,9 @@ class QuestionTrackersController < ApplicationController
 
   def set_question_tracker
     @question_tracker = QuestionTracker.find(params[:id])
+    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
+    # this is used in both the itsi editor and in the standard editor to show the published activity
+    gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
   end
 
   def redirect_location
