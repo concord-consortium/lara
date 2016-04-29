@@ -13,7 +13,7 @@ test: &test
   encoding: utf8
   adapter: mysql2
   username: <%= ENV['DB_USER'] || 'root' %>
-  database: <%= ENV['DB_NAME'] || 'lara' %>
+  database: <%= ENV['DB_NAME'] || 'lara_test' %>
   password: <%= ENV['DB_PASSWORD'] || 'root' %>
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
   port: <%= ENV['DB_PORT'] || '3306' %>
