@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 group :production do
   gem "therubyracer", "~> 0.12"
+  gem "unicorn"
 end
 
 group :assets do
@@ -25,6 +26,7 @@ group :development do
   gem "pry", "~> 0.9"
   gem "pry-stack_explorer", "~> 0.4"
   gem "pry-debugger", "~> 0.2"
+  gem "debugger-ruby_core_source", "~> 1.3.8"
   gem "bullet", "~> 4.7"
   gem "better_errors", "~> 1.1"
   gem "sextant", "~> 0.2"

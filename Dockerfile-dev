@@ -1,0 +1,30 @@
+FROM ruby:1.9.3
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
+
+# for a JS runtime
+RUN apt-get install -qq -y nodejs
+
+# install software-properties-common for add-apt-repository
+RUN apt-get install -qq -y software-properties-common
+
+# clean up ruby / gems / bundler
+RUN gem update --system
+RUN gem update bundler
+# get rid of old bundler version
+RUN gem cleanup bundler
+
+# I don't think this is really needed anymore
+# RUN gem install debugger-ruby_core_source
+
+ENV APP_HOME /lara
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+# use a mounted volume so the gems don't need to be rebundled each time
+ENV BUNDLE_PATH /bundle
+
+ADD . .
+
+EXPOSE 3000
+
+CMD rails s -b 0.0.0.0

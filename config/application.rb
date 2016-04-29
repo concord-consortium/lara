@@ -75,6 +75,9 @@ module LightweightStandalone
                                               :style => :none },
                             :development => { :url => /^localhost.+$/,
                                               :color => "red"        }
+
+    # do not initialize on precompile so that the Dockerfile can run the precompile
+    config.assets.initialize_on_precompile = false
   end
 end
 

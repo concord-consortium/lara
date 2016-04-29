@@ -1,36 +1,56 @@
 FROM ruby:1.9.3
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
 
-# for phantomjs
-# RUN apt-get install -y  build-essential g++ flex bison gperf ruby perl \
-#   libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev \
-#   libpng-dev libjpeg-dev python libx11-dev libxext-dev
-#
-#
-# RUN git clone git://github.com/ariya/phantomjs.git &&\
-#   cd phantomjs &&\
-#   yes | ./build.sh
-
-# for nokogiri
-# RUN apt-get install -y libxml2-dev libxslt1-dev
-
-# for capybara-webkit
-# RUN apt-get install -y libqt4-webkit libqt4-dev xvfb
-
 # for a JS runtime
-RUN apt-get install -y nodejs
+RUN apt-get install -qq -y nodejs
+
+# install software-properties-common for add-apt-repository
+RUN apt-get install -qq -y software-properties-common
+
+# install nginx
+RUN apt-get install -qq -y nginx
+RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN chown -R www-data:www-data /var/lib/nginx
+
+# Add default nginx config
+ADD docker/prod/nginx-sites.conf /etc/nginx/sites-enabled/default
+
+# forward nginx request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+
+# install foreman
+RUN gem install foreman
 
 # clean up ruby / gems / bundler
 RUN gem update --system
 RUN gem update bundler
+# get rid of old bundler version
+RUN gem cleanup bundler
 RUN gem install debugger-ruby_core_source
 
+# if this is changed it also needs to be changed in nginx-sites.conf and unicorn.rb
 ENV APP_HOME /lara
+
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
-# --- Add this to your Dockerfile ---
+
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
-RUN bundle install
+RUN bundle install --without development test
 ADD . $APP_HOME
+
+# get config files into the right place
+RUN cp config/database.sample.yml config/database.yml; \
+    cp docker/prod/app_environment_variables.rb config/
+
+# set production
+ENV RAILS_ENV=production
+
+# compile the assets - NOTE: config.assets.initialize_on_precompile MUST be set to false in application.rb for this to work
+# otherwise somewhere in the initializers it tries to connect to the database which will fail
+RUN bundle exec rake assets:precompile
+
+EXPOSE 80
+
+CMD ./docker/prod/run.sh

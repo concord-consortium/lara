@@ -1,53 +1,30 @@
-# Simply to test port forwarding &etc.
-web:
-  image: kitematic/hello-world-nginx
-  environment:
-    VIRTUAL_HOST: hello.lara
-  expose:
-    - "80"
-  volumes:
-    - ./hello_website/:/website_files
-
-mysql:
-  image: mysql/mysql-server:5.6
-  ports:
-    - "3306"
-  environment:
-    VIRTUAL_HOST: mysql.lara
-    MYSQL_ROOT_PASSWORD: admin123H
-  volumes_from:
-    - data
-
-# The rails app
-app:
-  build: .
-  command: ./script/docker-app.sh
-  environment:
-    VIRTUAL_HOST: app.lara
-    DB_HOST: mysql.lara
-    DB_USER: root
-    DB_PASSWORD: admin123H
-    DB_NAME: lara
-  expose:
-    - "3000"
-  volumes:
-    - /lara:/lara
-  links:
-    - mysql
-    - mysql:mysql.lara
-
-proxy:
-  image: jwilder/nginx-proxy:latest
-  ports:
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/tmp/docker.sock:ro
-  restart: always
-  links:
-    - app:app.lara
-    - web:hello.lara
-
-data:
-  image: busybox
-  volumes:
-    - /var/lib/mysql
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    command: script/docker-app.sh
+    environment:
+      # you will need more variables here to connect your lara to a portal
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: 12345
+      DB_NAME: lara
+      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/lara
+      - "bundle:/bundle"
+  db:
+    # this mysql image is used because it works out of the box on OS X
+    # the official docker mysql container has permissions issues when writing to the disk
+    # this boot2docker describes the problem: https://github.com/boot2docker/boot2docker/issues/581
+    image: dgraziotin/mysql
+    environment:
+      MYSQL_ADMIN_PASS: 12345
+volumes:
+  bundle:
