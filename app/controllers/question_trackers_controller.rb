@@ -41,29 +41,21 @@ class QuestionTrackersController < ApplicationController
     end
     respond_to do |format|
       format.html do
-        if @question_tracker.update_attributes(params[:question_tracker])
+        if @question_tracker.update_attributes(params['master_question'])
           @question_tracker.reload
           updated_or_created
         end
       end
       format.json do
-        render json: QuestionTracker::Editor.new(@question_tracker).update(params[:question_tracker]).to_json
+        render json: QuestionTracker::Editor.new(@question_tracker)
+          .update(params['question_tracker'])
+          .to_json
       end
     end
 
   end
 
-  def replace_master
-    begin
-      @question_tracker.master_question = params[:embeddable_type].constantize.create
-      @question_tracker.save
-      flash[:info] = "added new question"
-    rescue
-      flash[:warning] = "unable to find your question" # Todo
-    end
-    binding.pry
 
-  end
 
   def edit_embeddable_redirect(embeddable)
     @question_tracker.add_embeddable(embeddable)
@@ -83,6 +75,7 @@ class QuestionTrackersController < ApplicationController
   end
 
   private
+
   def canceled?
     params[:commit] == "cancel"
   end

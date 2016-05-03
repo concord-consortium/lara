@@ -15,44 +15,47 @@ modulejs.define 'components/question_tracker/open_response',
 
     React.createClass
       getInitialState: ->
-        @props.initialState
+        @resetState()
+
+      resetState: ->
+        prompt: @props.question.prompt
+        default_text: @props.question.default_text
 
       cancel: ->
-        @setState @props.initialState
-        @props.cancel?()
+        @setState @resetState()
 
       updatePrompt: (v) ->
         @setState
-          pompt:v
+          prompt:v
 
-      updateDefaultText: (v) ->
+      updateDefaultText: (evt) ->
         @setState
-          defaultText:v
+          default_text:evt.target.value
 
       save: ->
-        question = @props.question
-        @update
-          question:
-            id: @props.question.id
-            type: @props.question.type
+        @props.update
+          action:
+            type: "modifyMaster"
             question:
               prompt: @state.prompt
-              defaultText: @state.defaultText
+              default_text: @state.default_text
 
       render: ->
-
         (div {className: 'open-response-question'},
           if @props.edit
-            (EditorForm {onSave: @save, onCancel: @cancel},
-              (label {}, 'Question prompt')
-              (RichTextEditor {name:prompt, defaultValue:prompt})
-
-              (label {}, 'Default text in answer area')
-              (input {name: defaultText, defaultValue: defaultText})
+            (EditorForm {onSave: @save},
+              (div {className: "text-input"},
+                (label {}, 'Question prompt')
+                (RichTextEditor {name:'prompt', text: @props.question.prompt, onChange: @updatePrompt})
+              )
+              (div {className: "text-input"},
+                (label {}, 'Default text in answer area')
+                (input {type: 'text', name: 'default_text', defaultValue: @props.question.default_text, onChange: @updateDefaultText })
+              )
             )
           else
             (div {className: 'ia-section-text'},
-              (div {className: 'ia-section-text-value', dangerouslySetInnerHTML: {__html: @state.prompt}})
-              (textarea { defaultValue: @state.defaultText, disabled: 'disabled'})
+              (div {className: 'ia-section-text-value', dangerouslySetInnerHTML: {__html: @props.question.prompt}})
+              (textarea { defaultValue: @props.question.default_text, disabled: 'disabled'})
             )
         )

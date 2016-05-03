@@ -1,16 +1,19 @@
-{div, input, label} = React.DOM
+{div, h1, input, label} = React.DOM
 
 modulejs.define 'components/question_tracker/editor',
   [
     'components/question_tracker/text_input',
     'components/question_tracker/question_list',
     'components/question_tracker/master_question',
+    'components/question-tracker/alert'
   ],
-  (TextInputClass, QuestionsListClass, MasterQuestionClass) ->
+  (TextInputClass, QuestionsListClass, MasterQuestionClass, AlertClass) ->
 
     TextInput = React.createFactory TextInputClass
     QuestionList = React.createFactory QuestionsListClass
     MasterQuestion = React.createFactory MasterQuestionClass
+    Alert = React.createFactory AlertClass
+
     React.createClass
       componentWillMount: ->
         @alerts = []
@@ -25,7 +28,7 @@ modulejs.define 'components/question_tracker/editor',
       _processAlertQueue: ->
         if @alerts.length > 0
           @setState alert: @alerts.shift()
-          setTimeout (=> @_processAlertQueue()), 1000
+          setTimeout (=> @_processAlertQueue()), 4000
         else
           @setState alert: null
 
@@ -49,6 +52,7 @@ modulejs.define 'components/question_tracker/editor',
             })
           success: (resp) =>
             @alert 'info', 'Saved'
+            @setState(resp)
 
           error: =>
             @alert 'error', 'Save Failed!'
@@ -58,13 +62,12 @@ modulejs.define 'components/question_tracker/editor',
         @setState(newState, => @updateServer(@state))
 
       render: ->
+        edit = true # edit = @state.edit
         (div {className: 'question-tracker-editor'},
-          (div {className:'alert'}, @state.alert?.text)
-          (div {onClick: @toggleEdit}, 'EDIT')
-          if @state.edit
+          (Alert {alert: @state.alert})
+          if edit
             (div {id: "editing", className: 'edit'},
-              (div {}, "Editing")
-              (div {}, "id #{@state.id}")
+              (h1 {}, "Tracked Question #{@state.name} (#{@state.id})")
               (TextInput {name: 'name', label: "Name:", value: @state.name, onChange: @update})
               (TextInput {name: 'description', label: "Description:", value:@state.description, onChange: @update})
               (MasterQuestion {edit: true, question: @state.master_question, update: @update})

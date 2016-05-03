@@ -4,52 +4,45 @@ modulejs.define 'components/question_tracker/master_question',
   [
     'components/question_tracker/question_summary',
     'components/question_tracker/question_adder',
-    'components/question_tracker/open_response'
+    'components/question_tracker/open_response',
+    'components/question_tracker/image_question',
+    'components/question_tracker/multiple_choice'
+
   ],
-  (QuestionSummaryClass, QuestionAdderClass, OpenResponseClass) ->
+  (QuestionSummaryClass, QuestionAdderClass, OpenResponseClass, ImageQuestionClass, MultipleChoiceClass) ->
 
     QuestionSummary = React.createFactory QuestionSummaryClass
     QuestionAdder   = React.createFactory QuestionAdderClass
     OpenResponse    = React.createFactory OpenResponseClass
+    ImageQuestion   = React.createFactory ImageQuestionClass
+    MultipleChoice  = React.createFactory MultipleChoiceClass
 
     React.createClass
 
-      updateServer:(state) ->
-        return true # fake it for now.
-        $.ajax
-          url: state.update_url
-          type: 'PUT'
-          dataType: 'json'
-          contentType: 'application/json'
-          data: JSON.stringify({
-            _method: 'PUT'
-            question_tracker: state
-            id: @props.question.id
-          })
-          success: (resp) =>
-            @props.alert 'info', 'Saved'
-
-          error: =>
-            @props.alert 'error', 'Save Failed!'
-
-
       update: (newState) ->
-        @setState(newState, => @updateServer(@state))
+        @props.update(newState)
 
       render: ->
         question = @props.question
+        details = question.question
+        edit = @props.edit
         update = @update
 
         (div {className: 'master-question'},
-          (QuestionAdder {question: question, update: update, edit: @props.edit})
+          (QuestionAdder {question: question, update: update, edit: edit})
           if @props.question
             if @props.edit
               (div {className: 'edit'}, "editing")
               (QuestionSummary {question: question})
-              switch @props.question.type
-                when "Embeddable::OpenResponse" then (OpenResponse {initialValue: @props.question.question, update: update})
+              switch question.type
+                when "Embeddable::OpenResponse"
+                  (OpenResponse {question: details, update: update, edit: edit})
+                when "Embeddable::ImageQuestion"
+                  (ImageQuestion {question: details, update: update, edit: edit})
+                when "Embeddable::MultipleChoice"
+                  (MultipleChoice {question: details, update: update, edit: edit})
 
             else
               (div {className: 'viewing'}, "viewing")
-              (QuestionSummary {question: @props.question, update: update})
+              (QuestionSummary {question: question, update: update})
         )

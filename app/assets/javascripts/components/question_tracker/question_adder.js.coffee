@@ -1,4 +1,4 @@
-{div, input, select, option} = React.DOM
+{div, label, select, option} = React.DOM
 
 modulejs.define 'components/question_tracker/question_adder',
   [],
@@ -16,18 +16,18 @@ modulejs.define 'components/question_tracker/question_adder',
       onChange: (select_evt) ->
         selectValue = select_evt.target.value
         newValue =
-          action: "newMasterQuestion"
-          value: selectValue
-          lastValue: @props.question
-          master_question: {type: selectValue, id: null, question: null}
-        @props.update
-          question: newValue
+          action:
+            type: "replaceMaster"
+            value: selectValue
+            lastValue: @props.question
+        @props.update newValue
 
       render: ->
         question = @props.question
         update = @update
         can_update = @props.edit
         (div {className: 'add-question'},
+          (label {}, "Question Type:")
           (select {defaultValue: question.type, onChange:@onChange, disabled: not can_update },
             for o in @options()
               (option {value: o.type, key:o.type}, o.name)
