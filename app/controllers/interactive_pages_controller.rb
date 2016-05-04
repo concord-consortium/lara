@@ -178,7 +178,9 @@ class InteractivePagesController < ApplicationController
     @page.add_embeddable(embeddable)
     case embeddable
       when Embeddable::MultipleChoice
-        embeddable.create_default_choices
+        unless embeddable.choices.length > 0
+          embeddable.create_default_choices
+        end
         param = { :edit_embed_mc => embeddable.id }
       when Embeddable::OpenResponse
         param = { :edit_embed_or => embeddable.id }

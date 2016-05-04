@@ -7,8 +7,8 @@ class QuestionTracker < ActiveRecord::Base
   has_many :tracked_questions
 
   def self.list_tracked_questions(user)
-    # TODO: Check on the user
-    self.all
+    # TODO: Check on the user, &etc.
+    self.order('id DESC').limit(50)
   end
 
   def correct_type(question)
