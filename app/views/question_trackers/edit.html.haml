@@ -22,6 +22,6 @@
 :javascript
   QuestionTrackerEditor = React.createElement(
     modulejs.require('components/question_tracker/editor'),
-    {initialState: gon.QuestionTracker}
+    {initialState: gon.QuestionTracker, doneLink: gon.DoneLink}
   );
   React.render(QuestionTrackerEditor, $('#question-tracker-editor')[0]);

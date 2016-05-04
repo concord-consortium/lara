@@ -1,4 +1,4 @@
-{div, h1, input, label} = React.DOM
+{div, h1, input, label, a} = React.DOM
 
 modulejs.define 'components/question_tracker/editor',
   [
@@ -63,21 +63,15 @@ modulejs.define 'components/question_tracker/editor',
 
       render: ->
         edit = true # edit = @state.edit
-        (div {className: 'question-tracker-editor'},
+        (div {className: "question-tracker-editor"},
           (Alert {alert: @state.alert})
-          if edit
-            (div {id: "editing", className: 'edit'},
-              (h1 {}, "Tracked Question #{@state.name} (#{@state.id})")
-              (TextInput {name: 'name', label: "Name:", value: @state.name, onChange: @update})
-              (TextInput {name: 'description', label: "Description:", value:@state.description, onChange: @update})
-              (MasterQuestion {edit: true, question: @state.master_question, update: @update})
-            )
-          else
-            (div {id: "showing", className: 'read-only'},
-              (div {}, "id #{@state.id}" )
-              (div {}, "name: #{@state.name}" )
-              (div {}, "description: #{@state.description}")
-              (MasterQuestion {edit: false, question: @state.master_question, update: @update})
-            )
+          (div {className: "navigation"},
+            (h1 {}, "Tracked Question #{@state.name} (#{@state.id})")
+            if @props.doneLink
+              (a {id: "done-link", href: @props.doneLink, className: "done-link"}, "done")
+          )
+          (TextInput {name: "name", label: "Name:", value: @state.name, onChange: @update})
+          (TextInput {name: "description", label: "Description:", value:@state.description, onChange: @update})
+          (MasterQuestion {edit: true, question: @state.master_question, update: @update})
           (QuestionList {edit: false, questions: @state.questions })
         )
