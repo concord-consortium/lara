@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class QuestionTracker::Editor
   include LightweightStandalone::Application.routes.url_helpers
 
@@ -35,6 +37,8 @@ class QuestionTracker::Editor
       return add_choice(action)
     when "deleteChoice"
       return remove_choice(action)
+    when "updateChoice"
+      return update_choice(action)
     end
     return self
   end
@@ -43,6 +47,16 @@ class QuestionTracker::Editor
 
   def add_choice(action)
     @question_tracker.master_question.add_choice()
+    @question_tracker.master_question.reload
+    return self
+  end
+
+  def update_choice(action)
+    new_choice = action['choice']
+    choice = @question_tracker.master_question.choices.find(new_choice['id'])
+    attrs = new_choice.select { |k, v| ['choice', 'is_correct'].include? k }
+    choice.update_attributes(attrs)
+    @question_tracker.master_question.reload
     return self
   end
 
@@ -84,7 +98,7 @@ class QuestionTracker::Editor
         enable_check_answer: q.enable_check_answer,
         multi_answer: q.multi_answer,
         show_as_menu: q.show_as_menu,
-        choices: q.choices.map { |c| {prompt: c.prompt, is_correct: c.is_correct, choice: c.choice, id: c.id } }
+        choices: q.choices.sort_by{ |f| f.id }.map { |c| {prompt: c.prompt, is_correct: c.is_correct, choice: c.choice, id: c.id } }
     }
 
   end
@@ -99,7 +113,8 @@ class QuestionTracker::Editor
   end
 
   def map_question(q)
-    {
+    return {} unless q
+    return {
       id: q.id,
       type: q.class.name,
       question: question_details(q)
