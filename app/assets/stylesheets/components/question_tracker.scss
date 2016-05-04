@@ -1,10 +1,32 @@
 .question-tracker-editor {
-  h1 {
-    font-size: 16pt;
-    line-height: 2em;
-  }
+
   max-width: 800px;
   margin: auto;
+  .navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    h1 {
+      font-size: 16pt;
+      line-height: 2em;
+      display: block;
+    }
+    a.done-link {
+      text-decoration: none;
+      background: hsl(30, 83%, 53%);
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0.4em;
+      font-size: 13pt;
+      text-align: center;
+      border-radius: 0.5em;
+      align-self: flex-start;
+      &:hover {
+        background-color: hsl(30, 83%, 83%);
+      }
+    }
+  }
   .alert {
     position: relative;
     left: 0;

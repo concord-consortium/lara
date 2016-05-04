@@ -15,6 +15,7 @@ class QuestionTrackersController < ApplicationController
     mc.create_default_choices
     @question_tracker = QuestionTracker.create(master_question: mc, name: "My question tracker", description: "for …")
     gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
+    gon.DoneLink = session[:qt_origin] || question_trackers_path
     render :edit
   end
 
@@ -58,6 +59,7 @@ class QuestionTrackersController < ApplicationController
     # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
     # this is used in both the itsi editor and in the standard editor to show the published activity
     gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
+    gon.DoneLink = session[:qt_origin] || question_trackers_path
   end
 
   def redirect_or_index
