@@ -1,5 +1,3 @@
-#index
-
 #trackedQuestionSelector {
   display: none;
   position: fixed;
@@ -41,7 +39,10 @@
         font-weight: bold;
       }
       button {
-        background-color: hsl(18, 70%, 49%);
+        background-color: hsl(18, 70%, 50%);
+        &:hover {
+          background-color: hsl(18, 70%, 40%);
+        }
       }
     }
     a {
@@ -63,9 +64,15 @@
         padding: 0.5em;
         margin: 0.2em;
         background-color: #6fc5d8;
+        border: 1px solid white;
         color: white;
         border-radius: 4px;
         cursor: pointer;
+        &.new {
+          color: #6fc5d8;
+          background-color: white;
+          border: 1px solid #6fc5d8;
+        }
         &:hover {
           background-color: #4C8390;
         }
@@ -96,5 +103,5 @@
         }
       }
     }
-  };
+  }
 }

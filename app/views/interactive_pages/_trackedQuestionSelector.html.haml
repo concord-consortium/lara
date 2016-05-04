@@ -1,12 +1,20 @@
+- this_url = edit_activity_page_path(activity, page)
+- new_url = new_question_tracker_path(qt_origin: this_url)
 #trackedQuestionSelector
   .trackedQuestionContent
     .title
       %h2=t("TRACKED_QUESTION.ADD_TEXT")
       %button#closeTrackedQuestionSelector Cancel
     .searchResults
+      %a{href: new_url}
+        .result.new{id: 'new-tracked-question'}
+          .type
+          .name + New
+          .description Create a new linked question.
       - QuestionTracker.list_tracked_questions(current_user).each do |qt|
-        - url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id})
-        %a{href: url}
+        - add_url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id, qt_origin: this_url})
+
+        %a{href: add_url}
           .result{'id' => "tracked-question-#{qt.id}"}
             .type=qt.type
             .name=qt.name
@@ -40,6 +48,5 @@
 
   $(document).ready(function() {
     $('#add_embeddable_button').click(handleAddEmbed);
-    $('#trackedQuestionSelector').click(closeTrackedQuestionSelector);
     $('#closeTrackedQuestionSelector').click(closeTrackedQuestionSelector);
   });
