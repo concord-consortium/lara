@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class QuestionTrackersController < ApplicationController
   before_filter :set_question_tracker, except: [:new, :index, :create]
   before_filter :record_qt_origin
@@ -7,9 +9,9 @@ class QuestionTrackersController < ApplicationController
   end
 
   def new
-    @question_tracker = QuestionTracker.new
-    # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
-    # this is used in both the itsi editor and in the standard editor to show the published activity
+    mc = Embeddable::MultipleChoice.create
+    mc.create_default_choices
+    @question_tracker = QuestionTracker.create(master_question: mc, name: "My question tracker", description: "for …")
     gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
     render :edit
   end
@@ -26,7 +28,7 @@ class QuestionTrackersController < ApplicationController
 
   def create
     if(canceled?)
-      redirect_to(redirect_location)
+      redirect_or_index
     elsif @question_tracker = QuestionTracker.create(params[:question_tracker])
       @question_tracker.reload
       updated_or_created
@@ -37,7 +39,7 @@ class QuestionTrackersController < ApplicationController
 
   def update
     if(canceled?)
-      redirect_to redirect_location
+      redirect_or_index
     end
     respond_to do |format|
       format.html do
@@ -55,23 +57,9 @@ class QuestionTrackersController < ApplicationController
 
   end
 
-
-
-  def edit_embeddable_redirect(embeddable)
-    @question_tracker.add_embeddable(embeddable)
-    case embeddable
-      when Embeddable::MultipleChoice
-        embeddable.create_default_choices
-        param = { :edit_embed_mc => embeddable.id }
-      when Embeddable::OpenResponse
-        param = { :edit_embed_or => embeddable.id }
-      when Embeddable::ImageQuestion
-        param = { :edit_embed_iq => embeddable.id }
-      when Embeddable::Labbook
-        param = { :edit_embed_lb => embeddable.id }
-    end
-    # Add parameter to open new embeddable modal
-    redirect_to edit_activity_page_path(@activity, @page, param)
+  def destroy
+    @question_tracker.destroy
+    redirect_or_index
   end
 
   private
@@ -82,7 +70,7 @@ class QuestionTrackersController < ApplicationController
 
   def updated_or_created
     flash[:notice] = "Question Tracker was successfully updated."
-    redirect_to redirect_location
+    redirect_or_index
   end
 
   def set_question_tracker
@@ -92,11 +80,11 @@ class QuestionTrackersController < ApplicationController
     gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
   end
 
-  def redirect_location
+  def redirect_or_index
     if session[:qt_origin]
-      return session.delete(:qt_origin)
+      redirect_to session.delete(:qt_origin)
     else
-      return "/"
+      redirect_to action: "index"
     end
   end
 
