@@ -20,6 +20,7 @@ class Ability
       can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+      can :manage, QuestionTracker
       # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']

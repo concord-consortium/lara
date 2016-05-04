@@ -5,10 +5,12 @@ class QuestionTrackersController < ApplicationController
   before_filter :record_qt_origin
 
   def index
+    authorize! :manage, QuestionTracker
     @question_trackers = QuestionTracker.all # TODO Limit by user.
   end
 
   def new
+    authorize! :manage, QuestionTracker
     mc = Embeddable::MultipleChoice.create
     mc.create_default_choices
     @question_tracker = QuestionTracker.create(master_question: mc, name: "My question tracker", description: "for …")
@@ -17,6 +19,7 @@ class QuestionTrackersController < ApplicationController
   end
 
   def show
+    authorize! :manage, QuestionTracker
     respond_to do |format|
       format.html { }
       format.json { render json: QuestionTracker::Editor.new(@question_tracker).to_json  }
@@ -24,54 +27,31 @@ class QuestionTrackersController < ApplicationController
   end
 
   def edit
+    authorize! :manage, QuestionTracker
+    # renders edit form for @question_tracker
   end
 
-  def create
-    if(canceled?)
-      redirect_or_index
-    elsif @question_tracker = QuestionTracker.create(params[:question_tracker])
-      @question_tracker.reload
-      updated_or_created
-    else
-      render :edit
-    end
-  end
 
   def update
-    if(canceled?)
-      redirect_or_index
-    end
+    authorize! :manage, QuestionTracker
     respond_to do |format|
-      format.html do
-        if @question_tracker.update_attributes(params['master_question'])
-          @question_tracker.reload
-          updated_or_created
-        end
-      end
+      # no support for html.
       format.json do
         render json: QuestionTracker::Editor.new(@question_tracker)
           .update(params['question_tracker'])
           .to_json
       end
     end
-
   end
 
   def destroy
+    authorize! :manage, QuestionTracker
     @question_tracker.destroy
     redirect_or_index
   end
 
+
   private
-
-  def canceled?
-    params[:commit] == "cancel"
-  end
-
-  def updated_or_created
-    flash[:notice] = "Question Tracker was successfully updated."
-    redirect_or_index
-  end
 
   def set_question_tracker
     @question_tracker = QuestionTracker.find(params[:id])
