@@ -1,25 +1,25 @@
 # This docker-compose file can be used to build and test locally a production image of LARA.
-# A convient way to use it is to set the COMPOSE_FILE in your shell then you won't need to
-# use `docker-compose -f docker/prod/lost-test-compose.yml` each time.
+# the recommended way to use it is:
+# > export COMPOSE_FILE=docker/prod/local-test-compose.yml
+# > export COMPOSE_PROJECT_NAME=lara_local_test
+# You might want to change "_local_test" to the name of the version or branch you are testing. This will
+# keep all of the docker containers isolated from your other containers
 
-# You also might want to set set the COMPOSE_PROJECT_NAME variable. Without that set all of
-# the created containers will not have a prefix. Normally compose uses the parent directory
-# name, so for example the created contains would have a prefix of 'lara_'
-# When the compose file is passed as an arg or ENV varaible that prefix isn't used. So then
-# your containers will have generic names like app intead of lara_app.
+# The COMPOSE_PROJECT_NAME variable determins a prefix for the containers created by compose.
+# Normally compose uses the parent directory name, but when a COMPOSE_FILE is used the prefix is empty.
 
 # the production rails mailer currently can cause problems during local testing,
 # it will currenty try to connect to the AWS SES service and then fail
 
-# This does not run the migrations automatically so after building it
-# before running it you should do, `docker-compose run app rake db:migrate`
+# For first time you would do:
+# docker-compose build
+# docker-compose run app rake db:migrate
 
 # If you are starting with a new database then you will probably need to make a user and make it an
 # admin. This can be done by registering at /users/sign_up, then get into the server with
 # docker-compose run app rails c
 # followed by `user = User.last; user.is_admin=true; user.save`
 
-# note currently the worker configuration here is broken
 version: '2'
 services:
   # The rails app
