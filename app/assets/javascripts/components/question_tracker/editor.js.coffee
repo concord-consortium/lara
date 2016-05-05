@@ -73,5 +73,5 @@ modulejs.define 'components/question_tracker/editor',
           (TextInput {name: "name", label: "Name:", value: @state.name, onChange: @update})
           (TextInput {name: "description", label: "Description:", value:@state.description, onChange: @update})
           (MasterQuestion {edit: true, question: @state.master_question, update: @update})
-          (QuestionList {edit: false, questions: @state.questions })
+          (div {className: "use count"}, "Used in #{@state.questions.length} activities")
         )
