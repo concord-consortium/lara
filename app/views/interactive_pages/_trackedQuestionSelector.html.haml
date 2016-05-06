@@ -6,11 +6,12 @@
       %h2=t("TRACKED_QUESTION.ADD_TEXT")
       %button#closeTrackedQuestionSelector Cancel
     .searchResults
-      %a{href: new_url}
-        .result.new{id: 'new-tracked-question'}
-          .type
-          .name + New
-          .description Create a new linked question.
+      - if can? :modify, QuestionTracker
+        %a{href: new_url}
+          .result.new{id: 'new-tracked-question'}
+            .type
+            .name + New
+            .description Create a new linked question.
       - QuestionTracker.list_tracked_questions(current_user).each do |qt|
         - add_url = add_tracked_activity_page_path(activity, page, {question_tracker: qt.id, qt_origin: this_url})
 
