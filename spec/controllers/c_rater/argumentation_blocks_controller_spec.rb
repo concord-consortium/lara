@@ -20,15 +20,17 @@ describe CRater::ArgumentationBlocksController do
   end
 
   describe '#remove_embeddables' do
-    let (:open_response1) { FactoryGirl.create(:open_response) }
-    let (:open_response2) { FactoryGirl.create(:open_response) }
+    let (:open_response)          { FactoryGirl.create(:open_response) }
+    let (:arg_block_open_response) { FactoryGirl.create(:open_response) }
     before(:each) do
-      page.add_embeddable(open_response1)
-      page.add_embeddable(open_response1, nil, CRater::ARG_SECTION_NAME)
+      page.add_embeddable(open_response)
+      page.add_embeddable(arg_block_open_response, nil, CRater::ARG_SECTION_NAME)
     end
     it 'should remove *only* argumentation block embeddables' do
       post :remove_embeddables, page_id: page.id
       expect(page.embeddables.length).to eql(1)
+      expect(page.embeddables).to include open_response
+      expect(page.embeddables).not_to include arg_block_open_response
       expect(response).to redirect_to(prev_page)
     end
   end
