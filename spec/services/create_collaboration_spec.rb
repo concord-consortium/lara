@@ -39,18 +39,30 @@ describe CreateCollaboration do
     # Obviously it should work only after create collaboration service is called.
     let(:new_user) { User.find_by_email(collaboration_params[1][:email]) }
     let(:material) { FactoryGirl.create(:activity) }
+    let(:create_collaboration) { CreateCollaboration.new(collaborators_data_url, user, material) }
 
-    before(:each) do
-      create_collaboration = CreateCollaboration.new(collaborators_data_url, user, material)
+    it "should create new collaboration run" do
+      create_collaboration.call
+      expect(CollaborationRun.count).to eq(1)
+    end
+
+    it "should use the protocol to find the auth_token" do
+      expect(Concord::AuthPortal).to receive(:auth_token_for_url).with("http://portal.org")
       create_collaboration.call
     end
 
-    it "should create new collaboration run" do
-      expect(CollaborationRun.count).to eq(1)
+    describe "when a https url is used" do
+      let(:collaborators_data_url) { "https://portal.org/collaborations/123" }
+
+      it "should pass the https protocol through to find the auth_token" do
+        expect(Concord::AuthPortal).to receive(:auth_token_for_url).with("https://portal.org")
+        create_collaboration.call
+      end
     end
 
     describe "when an activity is provided as a material" do
       it "should create new run for each user" do
+        create_collaboration.call
         cr = CollaborationRun.first
         expect(cr.runs.count).to eq(2)
       end
@@ -65,6 +77,7 @@ describe CreateCollaboration do
         s
       }
       it "should create new runs for each user and each activity" do
+        create_collaboration.call
         cr = CollaborationRun.first
         # 2 users x 3 activities
         expect(cr.runs.count).to eq(6)
@@ -72,6 +85,7 @@ describe CreateCollaboration do
     end
 
     it "should create new users if they didn't exist before" do
+      create_collaboration.call
       expect(User.exists?(email: collaboration_params[1][:email])).to eq(true)
     end
   end

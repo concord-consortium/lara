@@ -5,7 +5,9 @@ class CreateCollaboration
   def initialize(collaborators_data_url, user, material)
     @collaborators_data_url = collaborators_data_url
     # URI.parse(url).host returns nil when scheme is not provided.
-    @portal_domain = URI(collaborators_data_url).host || URI("http://#{collaborators_data_url}")
+    uri = URI(collaborators_data_url)
+    fail 'Scheme is required for collaborators_data_url' if uri.scheme.nil?
+    @portal_url = "#{uri.scheme}://#{uri.host}"
     @owner = user
     @activity = material.is_a?(LightweightActivity) ? material : nil
     @sequence = material.is_a?(Sequence) ? material : nil
@@ -35,7 +37,7 @@ class CreateCollaboration
     response = HTTParty.get(
       @collaborators_data_url, {
         :headers => {
-          "Authorization" => Concord::AuthPortal.auth_token_for_url(@portal_domain),
+          "Authorization" => Concord::AuthPortal.auth_token_for_url(@portal_url),
           "Content-Type" => 'application/json'
         }
       }
