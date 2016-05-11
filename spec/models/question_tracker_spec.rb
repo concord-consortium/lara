@@ -2,8 +2,8 @@ require 'spec_helper'
 
 
 describe QuestionTracker do
-  let(:tested_class) { QuestionTracker }
-  subject { tested_class }
+
+  subject { QuestionTracker }
 
   describe "class methods" do
     it { should respond_to :new }
@@ -21,16 +21,15 @@ describe QuestionTracker do
       }
     end
 
-    let(:instance) { tested_class.create props }
+    let(:instance) { QuestionTracker.create props }
 
     it "should have the right master_question" do
       instance.master_question.should eql master_question
       master_question.reload.master_for_tracker.should eql instance
     end
 
-    it "should include the master question in the questions list" do
-      instance.questions.size.should eql 1
-      instance.questions.should include(master_question)
+    it "should not include the master question in the questions list" do
+      instance.questions.size.should eql 0
     end
 
     describe "add_question" do
@@ -75,7 +74,7 @@ describe QuestionTracker do
     describe "new_question" do
       before(:each) { instance.new_question(); instance.new_question()   }
       it "should duplicate the master question" do
-        instance.questions.size.should eql 3 # 2 duplicates plus the master
+        instance.questions.size.should eql 2
         instance.questions.each do |question|
           question.prompt.should eql master_question.prompt
         end

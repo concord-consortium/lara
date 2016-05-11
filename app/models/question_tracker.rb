@@ -7,8 +7,8 @@ class QuestionTracker < ActiveRecord::Base
   has_many :tracked_questions
 
   def self.list_tracked_questions(user)
-    # TODO: Check on the user, &etc.
-    self.order('id DESC').limit(50)
+    # TODO: search by user, other criteria?
+    self.order('id DESC').limit(100)
   end
 
   def correct_type(question)
@@ -16,7 +16,7 @@ class QuestionTracker < ActiveRecord::Base
   end
 
   def questions
-    [master_question] + tracked_questions.map { |tq| tq.question }
+    tracked_questions.map { |tq| tq.question }
   end
 
   def add_question(question)
