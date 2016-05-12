@@ -11,6 +11,9 @@
   -if can? :manage, Project
     |
     = link_to "Projects", projects_path
+  -if can? :manage, QuestionTracker
+    |
+    = link_to "QuestionTrackers", question_trackers_path
   -if can? :manage, User
     |
     = link_to "Failed runs", dirty_runs_path

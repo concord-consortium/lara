@@ -14,6 +14,8 @@ class Api::V1::QuestionTrackersController < ApplicationController
   end
 
   def report
+    # Right now only admins can get here.
+    authorize! :report, QuestionTracker
     tracker = QuestionTracker.find(params[:question_tracker_id])
     reporter = QuestionTracker::Reporter.new(tracker)
     render :json => {

@@ -13,6 +13,7 @@ class Ability
       can :manage, :all
       can :inspect, Run
       can :manage, QuestionTracker
+      can :report, QuestionTracker
     elsif user.author?
       # Authors can create new items and manage those they created
       can :create, Sequence
