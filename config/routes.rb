@@ -144,6 +144,15 @@ LightweightStandalone::Application.routes.draw do
     resources :labbook_answers, :only => [:update]
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :question_trackers, only: [:index] do
+        match 'report' =>  "question_trackers#report", via: ['get','post'], defaults: { format: 'json' }
+      end
+      match 'question_trackers/find/:activity_id' =>  "question_trackers#find", via: ['get'], defaults: { format: 'json' }
+    end
+  end
+
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'

@@ -25,6 +25,7 @@ class QuestionTracker::LearnerRecord
 end
 
 class QuestionTracker::Reporter
+
   attr_accessor :runs
   attr_accessor :answers
   attr_accessor :questions
@@ -33,10 +34,25 @@ class QuestionTracker::Reporter
 
   # Return a list of tracked questions in an activity to report on.
   def self.tracked_questions_for_activity(activity)
-    return activity.questions.select  {|q| q.question_tracker}
+    return activity.questions.map{ |q| q.question_tracker }.compact.uniq
   end
 
-  def initialize(question_tracker, learner_json)
+
+  # Return a list of all tracked questions
+  def self.list()
+    QuestionTracker.all
+  end
+
+  def self.tracker_json(tracker)
+    {
+      id: tracker.id,
+      name: tracker.name,
+      questions: tracker.questions.size,
+      master: tracker.master_question_info
+    }
+  end
+
+  def initialize(question_tracker, learner_json="[]")
     self.learner_map = {}
     QuestionTracker::LearnerRecord.from_json(learner_json).each do |lr|
       lr.endpoints.each do |endpoint|
@@ -50,6 +66,14 @@ class QuestionTracker::Reporter
     self.answers.map! { |ans| answer_hash(ans) }
   end
 
+  def report_info
+    {
+        name: question_tracker.name,
+        description: question_tracker.description,
+        prompt: question_tracker.master_question.prompt,
+        info: question_tracker.master_question_info
+    }
+  end
   def answer_hash(ans)
     user_record = lookup_user(ans.run.remote_endpoint)
     {
@@ -66,7 +90,9 @@ class QuestionTracker::Reporter
         "class_id" => user_record.class_id,
         "teacher_id" => user_record.teacher_id,
         "teacher_name" => user_record.teacher_name,
-        "answer_hash" => ans.portal_hash
+        "answer_hash" => ans.portal_hash,
+        "updated_int" => ans.updated_at.to_i,
+        "updated_str" => ans.updated_at
     }
   end
 

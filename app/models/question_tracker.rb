@@ -52,6 +52,6 @@ class QuestionTracker < ActiveRecord::Base
 
   def master_question_info
     return I18n.translate("QUESTION_TRACKER.MASTER_QUESTION.NOT_DEFINED") unless master_question
-    return "#{master_question_type} : #{master_question_id} : #{master_question.name}"
+    return "#{master_question_type} : #{master_question_id} : #{master_question.prompt}"
   end
 end
