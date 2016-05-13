@@ -68,7 +68,7 @@ describe QuestionTracker::Reporter do
   describe "class methods" do
     describe "finding tracked questions with #tracked_questions_for_activity 1" do
 
-      subject { QuestionTracker::Reporter.tracked_questions_for_activity(activity1) }
+      subject { QuestionTracker::Reporter.question_trackers_for_activity(activity1) }
 
       describe "activity 1 has no tracked questions" do
         it { is_expected.to eql [] }
@@ -76,7 +76,7 @@ describe QuestionTracker::Reporter do
 
       describe "activity 1 has tracked questions" do
         before(:each) { question_tracker.add_question(open_response1) }
-        it { is_expected.to include open_response1}
+        it { is_expected.to include question_tracker}
       end
     end
   end

@@ -33,7 +33,7 @@ class QuestionTracker::Reporter
   attr_accessor :learner_map
 
   # Return a list of tracked questions in an activity to report on.
-  def self.tracked_questions_for_activity(activity)
+  def self.question_trackers_for_activity(activity)
     return activity.questions.map{ |q| q.question_tracker }.compact.uniq
   end
 
