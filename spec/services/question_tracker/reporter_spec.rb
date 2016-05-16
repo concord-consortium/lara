@@ -4,39 +4,62 @@ describe QuestionTracker::Reporter do
 
   let(:portal_data) do
     [{
-        class_name: class_name,
-        class_id: class_id,
-        teacher_name: teacher_name,
-        teacher_id: teacher_id,
-        student_name: student_name1,
-        student_id: student_id1,
-        endpoints: [ endpoint1, endpoint2 ]
+         teacher: teacher,
+         clazz: clazz1,
+         clazz_id: clazz1_id,
+         activity: activity1.name,
+         students: [
+             {
+                 name: student1_name,
+                 username: student1_username,
+                 started_activity: true,
+                 endpoint_url: student1_endpoint1_url
+             },
+             {
+               name: student2_name,
+               username: student2_username,
+               started_activity: true,
+               endpoint_url: student2_endpoint1_url
+            }
+         ]
       },
       {
-       class_name: class_name,
-       class_id: class_id,
-       teacher_name: teacher_name,
-       teacher_id: teacher_id,
-       student_name: student_name2,
-       student_id: student_id2,
-       endpoints: [ endpoint3 ]
-    }]
+          teacher: teacher,
+          clazz: clazz2,
+          clazz_id: clazz2_id,
+          activity: activity2.name,
+          students: [
+              {
+                  name: student1_name,
+                  username: student1_username,
+                  started_activity: true,
+                  endpoint_url: student1_endpoint2_url
+              }
+          ]
+      }
+    ]
   end
-  let(:class_name)       { "Class 1" }
-  let(:class_id)         { "22" }
-  let(:teacher_name)     { "Teacher" }
-  let(:teacher_id)       { "11" }
-  let(:student_name1)    { "student1" }
-  let(:student_id1)      { "1" }
-  let(:student_email1)   { "fake@blarg.com" }
-  let(:student_name2)    { "student2" }
-  let(:student_id2)      { "2" }
-  let(:student_email2)   { "fake@blarg.com" }
-  let(:user)             { FactoryGirl.create(:user, email: student_email1) }
-  let(:endpoint1)        { "http://fake.blarg.com/blarg/1" }
-  let(:endpoint2)        { "http://fake.blarg.com/blarg/2" }
-  let(:endpoint3)        { "http://fake.blarg.com/blarg/3" }
+  let(:clazz1)           { "Class 1" }
+  let(:clazz1_id)        { 1 }
+  let(:clazz2)           { "Class 2" }
+  let(:clazz2_id)        { 2 }
+  let(:teacher)          { "Teacher" }
+  let(:student1_name)    { "student1" }
+  let(:student1_username){ "student1" }
+  let(:student1_email)   { "studetn1@foo.bar"}
+
+  let(:student2_name)    { "student2" }
+  let(:student2_username){ "student2" }
+
+
+  let(:student1_endpoint1_url)        { "http://fake.blarg.com/blarg/1" }
+  let(:student2_endpoint1_url)        { "http://fake.blarg.com/blarg/2" }
+  let(:student1_endpoint2_url)        { "http://fake.blarg.com/blarg/3" }
+
+  let(:user)             { FactoryGirl.create(:user, email: student1_email) }
+
   let(:learner_json)     { portal_data.to_json }
+
   let(:prompt1)          { "xyzzy" }
   let(:prompt2)          { "xyzzy2" }
   let(:master_question)  { FactoryGirl.create(:open_response, prompt:prompt1) }
@@ -86,18 +109,19 @@ describe QuestionTracker::Reporter do
       expect(reporter.learner_map.size).to eql 3
     end
   end
+
   describe "#lookup_user" do
     it "should return the same user for learners of the same student" do
-      expect(reporter.lookup_user(endpoint1)).to eql reporter.lookup_user(endpoint2)
+      expect(reporter.lookup_user(student1_endpoint1_url).name).to eql reporter.lookup_user(student1_endpoint2_url).name
     end
     it "should return different users for unrelated endpoints" do
-      expect(reporter.lookup_user(endpoint1)).not_to eql reporter.lookup_user(endpoint3)
+      expect(reporter.lookup_user(student1_endpoint1_url).name).not_to eql reporter.lookup_user(student2_endpoint1_url).name
     end
   end
 
 
   describe "finding answers" do
-    let(:run)           { Run.create(user: user, activity: activity1, remote_endpoint: endpoint1) }
+    let(:run)           { Run.create(user: user, activity: activity1, remote_endpoint: student1_endpoint1_url) }
     let(:question)      { open_response1 }
 
     def get_answer(_run, _question)
@@ -129,20 +153,19 @@ describe QuestionTracker::Reporter do
               it "user answers should have one serialized answer" do
                 expect(reporter.answers.length).to eql 1
                 user_answers = reporter.answers[0]
-                expect(user_answers["student_name"]).to eql student_name1
-                expect(user_answers["student_id"]).to eql student_id1
+                expect(user_answers["student_name"]).to eql student1_name
+                expect(user_answers["username"]).to eql student1_username
                 expect(user_answers["answer_hash"]["answer"]).to eql answer_text
-                expect(user_answers["class_name"]).to eql class_name
-                expect(user_answers["class_id"]).to eql class_id
-                expect(user_answers["teacher_name"]).to eql teacher_name
-                expect(user_answers["teacher_id"]).to eql teacher_id
+                expect(user_answers["clazz"]).to eql clazz1
+                expect(user_answers["clazz_id"]).to eql clazz1_id
+                expect(user_answers["teacher"]).to eql teacher
                 expect(user_answers["activity_id"]).to eql activity1.id
                 expect(user_answers["activity_name"]).to eql activity1.name
                 expect(user_answers["endpoint"]).to eql run.remote_endpoint
               end
 
               describe "when there is another run by the same student in activty2 with a different endpoint" do
-                let(:run2)           { Run.create(user: user, activity: activity2, remote_endpoint: endpoint2) }
+                let(:run2)           { Run.create(user: user, activity: activity2, remote_endpoint: student1_endpoint2_url) }
                 let(:answer_text2) { "I answered it again" }
                 before(:each) do
                   a = get_answer(run2, open_response2)
@@ -159,10 +182,10 @@ describe QuestionTracker::Reporter do
                   before(:each) { question_tracker.add_question(open_response2) }
                   it "the report should show data from both activitities" do
                     user_answers = reporter.answers[1]
-                    expect(user_answers["student_name"]).to eql student_name1
+                    expect(user_answers["student_name"]).to eql student1_name
                     expect(user_answers["answer_hash"]["answer"]).to eql answer_text2
-                    expect(user_answers["class_name"]).to eql class_name
-                    expect(user_answers["teacher_name"]).to eql teacher_name
+                    expect(user_answers["clazz"]).to eql clazz2
+                    expect(user_answers["teacher"]).to eql teacher
                     expect(user_answers["activity_id"]).to eql activity2.id
                     expect(user_answers["endpoint"]).to eql run2.remote_endpoint
                   end

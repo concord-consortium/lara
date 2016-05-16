@@ -1,26 +1,36 @@
 class QuestionTracker::LearnerRecord
-  attr_accessor :student_name
-  attr_accessor :student_id
-  attr_accessor :class_name
-  attr_accessor :class_id
-  attr_accessor :teacher_name
-  attr_accessor :teacher_id
-  attr_accessor :endpoints
-  attr_accessor :email
 
-  def initialize(hash_values={})
-    self.student_name     = hash_values["student_name"]     || "no name"
-    self.student_id       = hash_values["student_id"]       || "no name"
-    self.class_name       = hash_values["class_name"]       || "no class name"
-    self.class_id         = hash_values["class_id"]         || "0"
-    self.teacher_name     = hash_values["teacher_name"]     || "no teacher name"
-    self.teacher_id       = hash_values["teacher_id"]       || "0"
-    self.endpoints        = hash_values["endpoints"]        || []
+  attr_accessor :clazz
+  attr_accessor :clazz_id
+  attr_accessor :teacher
+  attr_accessor :activity
+  attr_accessor :name
+  attr_accessor :username
+  attr_accessor :endpoint_url
+
+  def initialize(data={})
+    self.clazz        = data["clazz"]        || "no class name"
+    self.clazz_id     = data["clazz_id"]     || "0"
+    self.teacher      = data["teacher"]      || "no teacher name"
+    self.activity     = data["activity"]     || "no activity"
+    self.name         = data["name"]         || "no name"
+    self.username     = data["username"]     || "no name"
+    self.endpoint_url = data["endpoint_url"] || nil
   end
 
   def self.from_json(json)
-    hash_array = JSON.parse(json)
-    hash_array.map { |h| self.new(h) }
+    offering_array = JSON.parse(json)
+    offering_array.flat_map do |offering|
+      class_info = {
+          "clazz"    => offering['clazz'],
+          "clazz_id" => offering['clazz_id'],
+          "activity" => offering['activity'],
+          "teacher"  => offering['teacher']
+      }
+      offering['students'].map do |student_hash|
+        self.new(student_hash.merge(class_info))
+      end
+    end
   end
 end
 
@@ -55,13 +65,13 @@ class QuestionTracker::Reporter
   def initialize(question_tracker, learner_json="[]")
     self.learner_map = {}
     QuestionTracker::LearnerRecord.from_json(learner_json).each do |lr|
-      lr.endpoints.each do |endpoint|
-        self.learner_map[endpoint] = lr
-      end
+      self.learner_map[lr.endpoint_url]  ||= lr
     end
 
     self.question_tracker = question_tracker
     self.questions = question_tracker.questions
+
+    # TODO Limit returned answers by matched runs
     self.answers = question_tracker.questions.flat_map { |q| q.answers }
     self.answers.map! { |ans| answer_hash(ans) }
   end
@@ -74,6 +84,7 @@ class QuestionTracker::Reporter
         info: question_tracker.master_question_info
     }
   end
+
   def answer_hash(ans)
     user_record = lookup_user(ans.run.remote_endpoint)
     {
@@ -83,20 +94,19 @@ class QuestionTracker::Reporter
         "activity_id" => ans.question.activity.id,
         "activity_name" => ans.question.activity.name,
         "endpoint" => ans.run.remote_endpoint,
-        "student_id" => user_record.student_id,
+        "username" => user_record.username,
         "lara_user_id" => ans.run.user_id,
-        "student_name" => user_record.student_name,
-        "class_name" => user_record.class_name,
-        "class_id" => user_record.class_id,
-        "teacher_id" => user_record.teacher_id,
-        "teacher_name" => user_record.teacher_name,
+        "student_name" => user_record.name,
+        "clazz" => user_record.clazz,
+        "clazz_id" => user_record.clazz_id,
+        "teacher" => user_record.teacher,
         "answer_hash" => ans.portal_hash,
         "updated_int" => ans.updated_at.to_i,
         "updated_str" => ans.updated_at
     }
   end
 
-  def lookup_user(remote_endpoint)
-    return learner_map[remote_endpoint] || QuestionTracker::LearnerRecord.new({remote_endpoints: [remote_endpoint]})
+  def lookup_user(endpoint_url)
+    return learner_map[endpoint_url] || QuestionTracker::LearnerRecord.new({endpoint_url: [endpoint_url]})
   end
 end
