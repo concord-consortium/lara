@@ -149,7 +149,8 @@ LightweightStandalone::Application.routes.draw do
       resources :question_trackers, only: [:index] do
         match 'report' =>  "question_trackers#report", via: ['get','post'], defaults: { format: 'json' }
       end
-      match 'question_trackers/find/:activity_id' =>  "question_trackers#find", via: ['get'], defaults: { format: 'json' }
+      match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
+      match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
     end
   end
 

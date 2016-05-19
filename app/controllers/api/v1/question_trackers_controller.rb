@@ -5,9 +5,17 @@ class Api::V1::QuestionTrackersController < ApplicationController
     render :json => list
   end
 
-  def find
+  def find_by_activity
     activity = LightweightActivity.find(params[:activity_id])
-    list = QuestionTracker::Reporter.tracked_questions_for_activity(activity).map do |tracker|
+    list = QuestionTracker::Reporter.question_trackers_for_activity(activity).map do |tracker|
+      QuestionTracker::Reporter.tracker_json(tracker)
+    end
+    render :json => list
+  end
+
+  def find_by_sequence
+    sequence = Sequence.find(params[:sequence_id])
+    list = QuestionTracker::Reporter.question_trackers_for_sequence(sequence).map do |tracker|
       QuestionTracker::Reporter.tracker_json(tracker)
     end
     render :json => list

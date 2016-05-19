@@ -44,9 +44,12 @@ class QuestionTracker::Reporter
 
   # Return a list of tracked questions in an activity to report on.
   def self.question_trackers_for_activity(activity)
-    return activity.questions.map{ |q| q.question_tracker }.compact.uniq
+    return activity.questions.select{ |q| q.respond_to?(:question_tracker)}.map {|q| q.question_tracker }.compact.uniq
   end
 
+  def self.question_trackers_for_sequence(sequence)
+    return sequence.activities.map{ |a| self.question_trackers_for_activity(a)}.flatten.compact.uniq
+  end
 
   # Return a list of all tracked questions
   def self.list()
@@ -57,13 +60,14 @@ class QuestionTracker::Reporter
     {
       id: tracker.id,
       name: tracker.name,
-      questions: tracker.questions.size,
+      questions: tracker.questions.count,
       master: tracker.master_question_info
     }
   end
 
-  def initialize(question_tracker, learner_json="[]")
+  def initialize(question_tracker, learner_json=nil )
     self.learner_map = {}
+    learner_json ||= "[]"
     QuestionTracker::LearnerRecord.from_json(learner_json).each do |lr|
       self.learner_map[lr.endpoint_url]  ||= lr
     end
@@ -81,7 +85,8 @@ class QuestionTracker::Reporter
         name: question_tracker.name,
         description: question_tracker.description,
         prompt: question_tracker.master_question.prompt,
-        info: question_tracker.master_question_info
+        info: question_tracker.master_question_info,
+        id: question_tracker.id
     }
   end
 
@@ -107,6 +112,6 @@ class QuestionTracker::Reporter
   end
 
   def lookup_user(endpoint_url)
-    return learner_map[endpoint_url] || QuestionTracker::LearnerRecord.new({endpoint_url: [endpoint_url]})
+    return learner_map[endpoint_url] || QuestionTracker::LearnerRecord.new({'endpoint_url' => [endpoint_url]})
   end
 end
