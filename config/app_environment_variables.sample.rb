@@ -18,7 +18,7 @@ ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
 ENV['C_RATER_CLIENT_ID']                 ||= 'XXXXXXX'
 ENV['C_RATER_USERNAME']                  ||= 'XXXXXXX'
 ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
-
+ENV['ROLLBARS_KEY']                      ||= 'XXXXXXX'
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
 
 # this specifies a | separated list of urls for interactives
