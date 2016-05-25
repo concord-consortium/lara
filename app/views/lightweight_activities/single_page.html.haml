@@ -13,37 +13,6 @@
   %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
     %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
 
-:scss
-  .submit{
-    width:80px;
-    margin:0 auto;
-  }
-
-  @media print {
-    .arg-block, .related-mod, footer {
-      page-break-inside: avoid;
-    }
-    .question,.interactive-mod {
-      img, video, .img-container {
-        page-break-inside: avoid;
-      }
-    }
-    #nav-activity-menu,.sidebar-mod,a.sp-submit,#save.error,#save {
-      display: none;
-    }
-    .interactive-container {
-      .click_to_play {
-        display: none;
-      }
-      iframe {
-        visibility: hidden;
-      }
-      .img-container,.interactive-print-text {
-        display: block !important;
-      }
-    }
-  }
-
 :javascript
   $(function(){
     if (window.location.search.indexOf("print=true") > -1) {

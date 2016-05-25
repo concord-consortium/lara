@@ -3,12 +3,7 @@
   display: none;
 }
 
-@import "compass/css3/user-interface";
-
-@media print {
-  textarea {
-    @include input-placeholder {
-      color:#fff;
-    } 
-  }
+.submit{
+  width:80px;
+  margin:0 auto;
 }

@@ -1,18 +1,14 @@
 .interactive-container{class: interactive.save_state ? 'savable' : ''}
   - if interactive.native_height > 1
+    .interactive-placeholder.print-only
+      Interactive Model
+
     - if !interactive.image_url.blank?
       .img-container{:id => dom_id_for(interactive, :interactive_image),:style => interactive.click_to_play ? "display:block" : "display:none"}
         =image_tag(interactive.image_url)
-    - else
-      .interactive-print-text
-        %div
-          Interactive Model
-        %p
-          See :-
-          =link_to "#{interactive.url}","#{interactive.url}"
 
     - if interactive.click_to_play
-      .click_to_play.shown{:id => dom_id_for(interactive, :click_to_play)}
+      .click_to_play.shown.screen-only{:id => dom_id_for(interactive, :click_to_play)}
         .background
         .text= "Click here to start the interactive."
 
@@ -30,9 +26,12 @@
         = link_to interactive.url, interactive.url
 
     - if interactive.save_state
-      .below_interactive
+      .below_interactive.screen-only
         = interactive_data_div(interactive, @run)
         = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
+
+.print-only.iframe-url
+  = link_to "#{interactive.url}", "#{interactive.url}"
 
 - labbook = show_labbook_under_interactive?(@run, interactive)
 - if labbook
