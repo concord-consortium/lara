@@ -13,7 +13,10 @@
 
 # For first time you would do:
 # docker-compose build
+# docker-compose run app rake db:create
 # docker-compose run app rake db:migrate
+# docker-compose up
+
 
 # If you are starting with a new database then you will probably need to make a user and make it an
 # admin. This can be done by registering at /users/sign_up, then get into the server with

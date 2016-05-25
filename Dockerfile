@@ -9,14 +9,6 @@ RUN apt-get install -qq -y software-properties-common
 
 # install nginx
 RUN apt-get install -qq -y nginx
-RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
-RUN chown -R www-data:www-data /var/lib/nginx
-
-# Add default nginx config
-ADD docker/prod/nginx-sites.conf /etc/nginx/sites-enabled/default
-
-# forward nginx request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # install foreman
 RUN gem install foreman
@@ -26,7 +18,6 @@ RUN gem update --system
 RUN gem update bundler
 # get rid of old bundler version
 RUN gem cleanup bundler
-RUN gem install debugger-ruby_core_source
 
 # if this is changed it also needs to be changed in nginx-sites.conf and unicorn.rb
 ENV APP_HOME /lara
@@ -37,12 +28,26 @@ WORKDIR $APP_HOME
 ADD Gemfile* $APP_HOME/
 
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile
-RUN bundle install --without development test
+
+# need to copy the Gemfile.lock created during build so it isn't overriden by the following add
+RUN bundle install --without development test && \
+    cp Gemfile.lock Gemfile.lock-docker
 ADD . $APP_HOME
 
-# get config files into the right place
-RUN cp config/database.sample.yml config/database.yml; \
+# get files into the right place
+RUN mv -f Gemfile.lock-docker Gemfile.lock && \
+    cp config/database.sample.yml config/database.yml && \
     cp docker/prod/app_environment_variables.rb config/
+
+## Configured nginx (after bundler so we don't have to wait for bundler to change config)
+RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN chown -R www-data:www-data /var/lib/nginx
+
+# Add default nginx config
+ADD docker/prod/nginx-sites.conf /etc/nginx/sites-enabled/default
+
+# forward nginx request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # set production
 ENV RAILS_ENV=production
