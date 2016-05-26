@@ -104,21 +104,6 @@ describe QuestionTracker::Reporter do
     end
   end
 
-  describe "looking up portal users" do
-    it "should have three learners registered" do
-      expect(reporter.learner_map.size).to eql 3
-    end
-  end
-
-  describe "#lookup_user" do
-    it "should return the same user for learners of the same student" do
-      expect(reporter.lookup_user(student1_endpoint1_url).name).to eql reporter.lookup_user(student1_endpoint2_url).name
-    end
-    it "should return different users for unrelated endpoints" do
-      expect(reporter.lookup_user(student1_endpoint1_url).name).not_to eql reporter.lookup_user(student2_endpoint1_url).name
-    end
-  end
-
 
   describe "finding answers" do
     let(:run)           { Run.create(user: user, activity: activity1, remote_endpoint: student1_endpoint1_url) }
@@ -153,12 +138,7 @@ describe QuestionTracker::Reporter do
               it "user answers should have one serialized answer" do
                 expect(reporter.answers.length).to eql 1
                 user_answers = reporter.answers[0]
-                expect(user_answers["student_name"]).to eql student1_name
-                expect(user_answers["username"]).to eql student1_username
                 expect(user_answers["answer_hash"]["answer"]).to eql answer_text
-                expect(user_answers["clazz"]).to eql clazz1
-                expect(user_answers["clazz_id"]).to eql clazz1_id
-                expect(user_answers["teacher"]).to eql teacher
                 expect(user_answers["activity_id"]).to eql activity1.id
                 expect(user_answers["activity_name"]).to eql activity1.name
                 expect(user_answers["endpoint"]).to eql run.remote_endpoint
@@ -182,10 +162,7 @@ describe QuestionTracker::Reporter do
                   before(:each) { question_tracker.add_question(open_response2) }
                   it "the report should show data from both activitities" do
                     user_answers = reporter.answers[1]
-                    expect(user_answers["student_name"]).to eql student1_name
                     expect(user_answers["answer_hash"]["answer"]).to eql answer_text2
-                    expect(user_answers["clazz"]).to eql clazz2
-                    expect(user_answers["teacher"]).to eql teacher
                     expect(user_answers["activity_id"]).to eql activity2.id
                     expect(user_answers["endpoint"]).to eql run2.remote_endpoint
                   end
