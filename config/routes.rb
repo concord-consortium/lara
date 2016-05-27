@@ -147,7 +147,7 @@ LightweightStandalone::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :question_trackers, only: [:index] do
-        match 'report' =>  "question_trackers#report", via: ['get','post'], defaults: { format: 'json' }
+        match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
       end
       match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
       match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
