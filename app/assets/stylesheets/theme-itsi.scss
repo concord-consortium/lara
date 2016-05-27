@@ -1,15 +1,10 @@
 @import "cc-runtime-base";
 
-$bg_src: ''; // background color is set instead.
-$main_color: #ee864e;
 $itsi_bg: #fee9aa;
+$main_color: #ee864e;
 $content_bg: #fbf4db;
 
-@include theme($bg_src, $main_color, $main_color);
-
-html {
-  background: $itsi_bg;
-}
+@include theme($itsi_bg, $main_color, $main_color);
 
 // Display full size ITSI banner (ITSI project needs to be used!).
 .site-logo-mod img {
