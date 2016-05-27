@@ -1,7 +1,5 @@
 class QuestionTracker::Reporter
-  attr_accessor :runs
   attr_accessor :answers
-  attr_accessor :questions
   attr_accessor :question_tracker
 
   # Return a list of tracked questions in an activity to report on.
@@ -27,14 +25,20 @@ class QuestionTracker::Reporter
     }
   end
 
-  def initialize(question_tracker, learner_json=nil )
-    # TODO: learner_json (should be run list)
+  def initialize(_question_tracker, endpoints)
+    self.question_tracker = _question_tracker
+    self.answers = []
+    runs = []
+    questions = self.question_tracker.questions
 
-    self.question_tracker = question_tracker
-    self.questions = question_tracker.questions
+    if (endpoints && endpoints.kind_of?(Array))
+      runs = Run.find_all_by_remote_endpoint(endpoints)
+      self.answers = runs.flat_map(&:answers)
+      self.answers.select! { |a| questions.include? a.question }
+    else
+      self.answers = questions.flat_map { |q| q.answers }
+    end
 
-    # TODO Limit returned answers by matched runs
-    self.answers = question_tracker.questions.flat_map { |q| q.answers }
     self.answers.map! { |ans| answer_hash(ans) }
   end
 
