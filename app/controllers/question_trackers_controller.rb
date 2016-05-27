@@ -38,7 +38,6 @@ class QuestionTrackersController < ApplicationController
     respond_to do |format|
       # no support for html.
       format.json do
-        # binding.pry
         render json: QuestionTracker::Editor.new(@question_tracker)
           .update(params['question_tracker'])
           .to_json

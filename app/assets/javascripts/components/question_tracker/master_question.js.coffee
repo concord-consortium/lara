@@ -30,8 +30,8 @@ modulejs.define 'components/question_tracker/master_question',
 
         (div {className: 'master-question'},
           (QuestionAdder {question: question, update: update, edit: edit})
-          if @props.question
-            if @props.edit
+          if question
+            if edit
               (div {className: 'edit'}, "editing")
               (QuestionSummary {question: question})
               switch question.type

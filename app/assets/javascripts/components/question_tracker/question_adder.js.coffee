@@ -24,11 +24,10 @@ modulejs.define 'components/question_tracker/question_adder',
 
       render: ->
         question = @props.question
-        update = @update
-        can_update = @props.edit
+        disabled = not @props.edit
         (div {className: 'add-question'},
           (label {}, "Question Type:")
-          (select {defaultValue: question.type, onChange:@onChange, disabled: not can_update },
+          (select {defaultValue: question.type, onChange:@onChange, disabled: disabled },
             for o in @options()
               (option {value: o.type, key:o.type}, o.name)
           )
