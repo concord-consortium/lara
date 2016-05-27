@@ -58,7 +58,7 @@ class QuestionTrackersController < ApplicationController
   def set_question_tracker
     @question_tracker = QuestionTracker.find(params[:id])
     # Data assigned to `gon` variable will be available for JavaScript code in `window.gon` object.
-    # this is used in both the itsi editor and in the standard editor to show the published activity
+    # this is used in the Question Tracker editor react views.
     gon.QuestionTracker = QuestionTracker::Editor.new(@question_tracker).to_json
     gon.DoneLink = session[:qt_origin] || question_trackers_path
   end

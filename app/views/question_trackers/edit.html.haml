@@ -5,6 +5,8 @@
   = "Edit #{@question_tracker.name}"
 
 :javascript
+  // QuestionTrackers share ITSI's Rich Text Editing react component.
+  // so we configure it using the same global variable.
   window.ITSIEditorTinyMCEConfig = {
       menubar: false,
       statusbar: false,

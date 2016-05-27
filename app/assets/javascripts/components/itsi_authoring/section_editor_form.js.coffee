@@ -18,8 +18,7 @@ modulejs.define 'components/itsi_authoring/section_editor_form',
       (form {className: 'ia-section-editor-form', onSubmit: @save},
         (div {className: 'ia-section-editor-buttons'},
           (div {className: 'ia-save-btn', onClick: @save}, 'Save')
-          if @props.onCancel
-            (a {href: '#', onClick: @cancel}, 'Cancel')
+          (a {href: '#', onClick: @cancel}, 'Cancel')
         )
         @props.children
       )
