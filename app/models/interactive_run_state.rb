@@ -26,6 +26,14 @@ class InteractiveRunState < ActiveRecord::Base
     return results
   end
 
+  def self.find_parent(run_state)
+    interactive = run_state.interactive
+    if ((interactive.respond_to? :parent) && interactive.parent)
+      return self.by_run_and_interactive(run_state.run, interactive.parent)
+    end
+    return nil
+  end
+
   # Make Embeddable::Answer assumptions work
   class QuestionStandin
     attr_accessor :interactive
@@ -62,9 +70,22 @@ class InteractiveRunState < ActiveRecord::Base
     (opts = data["lara_options"]) && opts["reporting_url"]
   end
 
+  def linked_state
+    parent = self.class.find_parent(self)
+    return nil unless parent
+    return parent.raw_data
+  end
+
   alias_method :answer_json, :to_json
   def to_json(arg=nil)
     arg ? original_json(arg) : answer_json
+  end
+
+  # Override ActiveRecord as_json to include some computed props
+  # in particular we lookup the linked state if it exists.
+  def as_json(options = { })
+    computed_fields = [:linked_state]
+    super((options || { }).merge({:methods => computed_fields}))
   end
 
   def show_in_report?
