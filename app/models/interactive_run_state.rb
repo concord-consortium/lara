@@ -2,7 +2,7 @@ class InteractiveRunState < ActiveRecord::Base
   alias_method :original_json, :to_json  # make sure we can still generate json of the base model after including Answer
   include Embeddable::Answer # Common methods for Answer models
 
-  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data
+  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run
 
   belongs_to :run
   belongs_to :interactive, :polymorphic => true
@@ -54,7 +54,7 @@ class InteractiveRunState < ActiveRecord::Base
   def portal_hash
     {
       "type" => "external_link",
-      "question_type" => interactive.class.string_name,
+      "question_type" => interactive.class.name,
       "question_id" => interactive.id.to_s,
       "answer" => reporting_url,
       "is_final" => false
@@ -76,16 +76,16 @@ class InteractiveRunState < ActiveRecord::Base
     return parent.raw_data
   end
 
+  # This alias makes #answer_json point at Embeddable::Answer#to_json (from inclusion of Embeddable::Answer at top)
+  # ActiveRecord's #to_json had previously be aliased to #original_json. If we are called without arg, we send answer
+  # json. Active Record Seiralization args are in the form of {methods: [method_names]} or {only: [field_names]} …
   alias_method :answer_json, :to_json
   def to_json(arg=nil)
     arg ? original_json(arg) : answer_json
   end
 
-  # Override ActiveRecord as_json to include some computed props
-  # in particular we lookup the linked state if it exists.
-  def as_json(options = { })
-    computed_fields = [:linked_state]
-    super((options || { }).merge({:methods => computed_fields}))
+  def to_runtime_json()
+    self.to_json({methods: [:linked_state]})
   end
 
   def show_in_report?
