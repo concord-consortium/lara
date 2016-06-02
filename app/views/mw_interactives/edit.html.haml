@@ -1,4 +1,7 @@
 - form_url = defined?(@page) ? page_mw_interactive_path(@page, @interactive) : mw_interactive_path(@interactive)
+.mw-interactive-edit-id
+  Interactive ID:
+  %span.mw-interactve-id=@interactive.id
 = form_for @interactive, :url => form_url do |f|
   = f.error_messages
   =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
@@ -35,8 +38,14 @@
       = f.label :has_report_url, 'This interactive has a report URL'
       = f.check_box :has_report_url, :id => "has_report_url_#{@interactive.id}"
       .clear
-      %em Warning: 
+      %em Warning:
       Please do not select this unless your interactive includes a report url in its saved state.
+      .clear
+      = f.label :parent_id, 'Link saved work from '
+      = f.text_field :parent_id, :id => "parent_id_#{@interactive.id}"
+      .clear
+      %em Warning: 
+      Please do not link to another interactive unless the interactive knows how to load prior work.
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
@@ -56,10 +65,12 @@
       if ($(this).prop('checked')) {
         // ungrey
         $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
+        $('#parent_id_#{@interactive.id}').removeAttr("disabled");
         $('#save_state_indent_#{@interactive.id}').css("opacity", 1);
       } else {
         // grey
         $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+        $('#parent_id_#{@interactive.id}').attr("disabled", true);
         $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
       }
     });
@@ -68,6 +79,7 @@
           // uncheck and grey out the 'has report url' section
           $('#has_report_url_#{@interactive.id}').prop('checked', false);
           $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+          $('#parent_id_#{@interactive.id}').attr("disabled", true);
           $('#save_state_indent_#{@interactive.id}').css("opacity", 0.3);
     }
 

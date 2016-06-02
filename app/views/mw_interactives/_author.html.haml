@@ -1,5 +1,7 @@
 .model-edit
   .toolbar
+    .interactice-id{style:"float: left; display:inline-block;"}
+      Interactive ID: #{interactive.id}
     = render partial: 'shared/hide_interactive_link', locals: {interactive: interactive, toggle_vis_path: toggle_visibility_page_mw_interactive_path(@page, interactive)}
     |
     = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
