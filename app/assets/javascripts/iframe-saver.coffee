@@ -132,6 +132,15 @@ class IFrameSaver
       callback()
       return
 
+    # this is the newer method of initializing an interactive
+    # it returns the current state and linked state
+    init_interactive = (err, response) =>
+      @iframePhone.post 'initInteractive',
+        version: 1,
+        error: err
+        interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
+        linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
+
     $.ajax
       url: @get_url
       success: (response) =>
@@ -143,7 +152,9 @@ class IFrameSaver
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
             @$delete_button.show() if @should_show_delete == null or @should_show_delete
+        init_interactive null, response
       error: (jqxhr, status, error) =>
+        init_interactive "couldn't load interactive"
         @error("couldn't load interactive")
       complete: =>
         callback()
