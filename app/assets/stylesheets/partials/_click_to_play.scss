@@ -1,6 +1,6 @@
 .interactive-container {
     position: relative;
-    .img-container,.click_to_play,.click_to_play .background,.click_to_play .text,.interactive-print-text {
+    .img-container,.click_to_play,.click_to_play .background,.click_to_play .text{
       position: absolute;
       top: 0;
       right: 0;
@@ -24,14 +24,6 @@
         text-align: center;
         font-size: 2em;
         margin-top: 4em;
-      }
-    }
-    .interactive-print-text {
-      text-align: center;
-      display: none;
-      padding-top:35%;
-      div {
-          font-size: 1.5em;
       }
     }
   }

@@ -72,7 +72,8 @@ module InteractiveRunHelper
       :mozallowfullscreen => "true",
       :src => iframe_src ? url : nil,
       :data => data,
-      :class => 'interactive',
+      # Note that iframe is hidden in print mode. It won't have enough time to load anyway.
+      :class => 'interactive screen-only',
       :id => "interactive_#{interactive.id}"
     }
     capture_haml do
