@@ -72,12 +72,12 @@ class InteractiveRunState < ActiveRecord::Base
     (opts = data["lara_options"]) && opts["reporting_url"]
   end
 
-  def has_linked_state?
+  def has_linked_state
     self.class.find_parent(self).present?
   end
 
   def linked_state
-    return nil unless has_linked_state?
+    return nil unless has_linked_state
     self.class.find_parent(self).raw_data
   end
 
@@ -90,7 +90,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def to_runtime_json()
-    self.to_json({methods: [:linked_state]})
+    self.to_json({methods: [:linked_state, :has_linked_state]})
   end
 
   def show_in_report?

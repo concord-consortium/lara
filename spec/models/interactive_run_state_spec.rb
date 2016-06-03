@@ -44,6 +44,7 @@ describe InteractiveRunState do
         end
         it "should not have any linked state" do
           expect(result_hash["linked_state"]).to be_nil
+          expect(result_hash["has_linked_state"]).to eql false
         end
       end
       describe "when the interactive run state has a parent" do
@@ -58,6 +59,7 @@ describe InteractiveRunState do
         it "should also include linked state" do
           make parent_run_state
           expect(result_hash["linked_state"]).to eql parent_run_data
+          expect(result_hash["has_linked_state"]).to eql true
         end
 
         describe "when the parent is through a sequence run" do
