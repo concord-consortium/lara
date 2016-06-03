@@ -28,10 +28,12 @@ class InteractiveRunState < ActiveRecord::Base
 
   def self.find_parent(run_state)
     interactive = run_state.interactive
-    if ((interactive.respond_to? :parent) && interactive.parent)
-      return self.by_run_and_interactive(run_state.run, interactive.parent)
-    end
-    return nil
+    interactive_parent = (interactive.respond_to? :parent) && interactive.parent
+    return nil unless interactive_parent
+    run = run_state.run
+    runs = run.sequence_run ? run.sequence_run.runs : [run]
+    parent = self.where(run_id: runs.map(&:id), interactive_id: interactive_parent.id).first
+    return parent
   end
 
   # Make Embeddable::Answer assumptions work
@@ -70,10 +72,13 @@ class InteractiveRunState < ActiveRecord::Base
     (opts = data["lara_options"]) && opts["reporting_url"]
   end
 
+  def has_linked_state?
+    self.class.find_parent(self).present?
+  end
+
   def linked_state
-    parent = self.class.find_parent(self)
-    return nil unless parent
-    return parent.raw_data
+    return nil unless has_linked_state?
+    self.class.find_parent(self).raw_data
   end
 
   # This alias makes #answer_json point at Embeddable::Answer#to_json (from inclusion of Embeddable::Answer at top)
