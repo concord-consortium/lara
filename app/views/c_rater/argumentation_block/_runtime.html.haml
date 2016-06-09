@@ -41,6 +41,8 @@
             = t 'ARG_BLOCK.RESUBMIT_ANSWER'
           %h6
             = t 'ARG_BLOCK.FEEDBACK'
+          -# Here, we compute the css class name based on index (to compensate for lack of max-score info:
+          -# eg: .ab-ab-openresponseanswer-3
           .ab-feedback-text{:class => "ab-#{m.class.to_s.demodulize.downcase}-#{index}"}
             %div.ab-robot-scale
             %div.ab-robot-feedback-text
