@@ -3,6 +3,8 @@ module CRater::SettingsProviderFunctionality
   included do |base|
     has_one :c_rater_item_settings, as: :provider, class_name: 'CRater::ItemSettings'
     
+    delegate  :max_score, to: :c_rater_item_settings, allow_nil: true
+
     alias_method_chain :duplicate, :c_rater
     
     alias_method_chain :export, :c_rater

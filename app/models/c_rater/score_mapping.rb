@@ -10,52 +10,45 @@ class CRater::ScoreMapping < ActiveRecord::Base
   scope :rationale,   -> { where('description LIKE ?', '%[rationale]%').order('created_at ASC') }
   scope :explanation, -> { where('description LIKE ?', '%[explanation]%').order('created_at ASC') }
 
+  MAP_KEY = 'score'
+
+  def map_key(score)
+    "#{MAP_KEY}#{score.to_s}"
+  end
+
+  def feedback_for(score)
+    if mapping
+      mapping[map_key(score)]
+    else
+      nil
+    end
+  end
+
   def get_feedback_text(score)
     return I18n.t('ARG_BLOCK.TEST_MODEL') if score == -1
-    text = mapping['score' + score.to_s]
+    text = feedback_for(score)
     return I18n.t('ARG_BLOCK.NO_FEEDBACK_TEXT', score: score) unless text
     text
   end
 
-  def score0
-    if !self.mapping.nil?
-      self.mapping['score0']
+  # The maximum score is inferred from mapping
+  def max_score
+    mapping.keys.map { |k| k.gsub(/#{MAP_KEY}/,'').to_i }.max || -1
+  end
+
+  def method_missing(method_sym, *arguments, &block)
+    if method_sym.to_s =~ /^#{MAP_KEY}(\d+)$/
+      feedback_for($1)
+    else
+      super
     end
   end
-  
-  def score1
-    if !self.mapping.nil?
-      self.mapping['score1']
-    end
-  end
-  
-  def score2
-    if !self.mapping.nil?
-      self.mapping['score2']
-    end
-  end
-  
-  def score3
-    if !self.mapping.nil?
-      self.mapping['score3']
-    end
-  end
-  
-  def score4
-    if !self.mapping.nil?
-      self.mapping['score4']
-    end
-  end
-  
-  def score5
-    if !self.mapping.nil?
-      self.mapping['score5']
-    end
-  end
-  
-  def score6
-    if !self.mapping.nil?
-      self.mapping['score6']
+
+  def self.respond_to?(method_sym, include_private = false)
+    if method_sym.to_s =~ /^#{MAP_KEY}(\d+)$/
+      true
+    else
+      super
     end
   end
   

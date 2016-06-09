@@ -49,6 +49,7 @@ module CRater::FeedbackFunctionality
       # Save both answer text and item id to prevent context loss - these values can be changed later by user.
       answer_text: answer_text,
       item_id: c_rater_item_settings.item_id,
+      max_score: c_rater_item_settings.max_score,
       answer: self
     )
     if options[:async]

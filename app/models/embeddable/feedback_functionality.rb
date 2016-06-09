@@ -17,7 +17,10 @@ module Embeddable::FeedbackFunctionality
       answer_text: answer_text,
       feedback_text: feedback_text
     )
-    feedback_item.score = score if self.respond_to?(:score)
+    if self.respond_to?(:score)
+      feedback_item.score = score
+      feedback_item.max_score = max_score # possibly a nil value.
+    end
     feedback_item.answer = self
     feedback_item.save!
     feedback_item
@@ -26,4 +29,13 @@ module Embeddable::FeedbackFunctionality
   def get_saved_feedback
     feedback_items.last
   end
+
+  def max_score
+    if self.question && self.question.respond_to?(:max_score)
+      self.question.max_score
+    else
+      nil
+    end
+  end
+
 end
