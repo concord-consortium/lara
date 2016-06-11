@@ -23,7 +23,7 @@ class Api::V1::QuestionTrackersController < ApplicationController
 
   def report
     tracker = QuestionTracker.find(params[:question_tracker_id])
-    reporter = QuestionTracker::Reporter.new(tracker, params[:endpoints] || nil)
+    reporter = QuestionTracker::Reporter.new(tracker, params[:endpoints])
     render :json => {
         "question_tracker" => reporter.report_info,
         "answers" => reporter.answers

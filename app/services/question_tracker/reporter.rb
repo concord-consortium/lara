@@ -36,7 +36,7 @@ class QuestionTracker::Reporter
       self.answers = runs.flat_map(&:answers)
       self.answers.select! { |a| questions.include? a.question }
     else
-      self.answers = questions.flat_map { |q| q.answers }
+      self.answers = []
     end
 
     self.answers.map! { |ans| answer_hash(ans) }
