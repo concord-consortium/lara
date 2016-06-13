@@ -11,20 +11,6 @@ class QuestionTracker::Reporter
     return sequence.activities.map{ |a| self.question_trackers_for_activity(a)}.flatten.compact.uniq
   end
 
-  # Return a list of all tracked questions
-  def self.list()
-    QuestionTracker.all
-  end
-
-  def self.tracker_json(tracker)
-    {
-      id: tracker.id,
-      name: tracker.name,
-      questions: tracker.questions.count,
-      master: tracker.master_question_info
-    }
-  end
-
   def initialize(_question_tracker, endpoints)
     self.question_tracker = _question_tracker
     self.answers = []
