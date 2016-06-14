@@ -12,6 +12,7 @@ class CRater::ScoreMappingsController < ApplicationController
   end
 
   def new
+    authorize! :manage, CRater::ScoreMapping
     @score_mapping = CRater::ScoreMapping.new()
     respond_to do |format|
       format.js { render :json => { :html => render_to_string('new'), :css_class => "feedback-set" }, :content_type => 'text/json' }
@@ -20,6 +21,7 @@ class CRater::ScoreMappingsController < ApplicationController
   end
 
   def create
+    authorize! :manage, CRater::ScoreMapping
     score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
     @score_mapping = CRater::ScoreMapping.create(score_mapping)
     @score_mapping.description = params[:c_rater_score_mapping][:description]
@@ -30,6 +32,7 @@ class CRater::ScoreMappingsController < ApplicationController
   end
 
   def edit
+    authorize! :manage, CRater::ScoreMapping
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     respond_to do |format|
       format.js { render :json => { :html => render_to_string('edit'), :css_class => "feedback-set"}, :content_type => 'text/json' }
@@ -38,6 +41,7 @@ class CRater::ScoreMappingsController < ApplicationController
   end
 
   def update
+    authorize! :manage, CRater::ScoreMapping
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     score_mapping = { mapping: params[:c_rater_score_mapping].slice(:score0,:score1,:score2,:score3,:score4,:score5,:score6)}
     @score_mapping.description = params[:c_rater_score_mapping][:description]
@@ -48,6 +52,7 @@ class CRater::ScoreMappingsController < ApplicationController
   end
 
   def destroy
+    authorize! :manage, CRater::ScoreMapping
     @score_mapping = CRater::ScoreMapping.find(params[:id])
     @score_mapping.destroy
     redirect_to(:back)
