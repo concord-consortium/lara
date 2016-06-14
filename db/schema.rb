@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160609174815) do
+ActiveRecord::Schema.define(:version => 20160614200402) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(:version => 20160609174815) do
     t.datetime "updated_at",               :null => false
     t.integer  "feedback_submission_id"
     t.string   "feedback_submission_type"
-    t.integer  "max_score"
   end
 
   add_index "c_rater_feedback_items", ["answer_id", "answer_type"], :name => "c_rat_feed_it_answer_idx"
@@ -121,7 +120,6 @@ ActiveRecord::Schema.define(:version => 20160609174815) do
     t.datetime "updated_at",               :null => false
     t.integer  "feedback_submission_id"
     t.string   "feedback_submission_type"
-    t.integer  "max_score"
   end
 
   add_index "embeddable_feedback_items", ["answer_id", "answer_type"], :name => "index_embeddable_feedback_items_on_answer_id_and_answer_type"
