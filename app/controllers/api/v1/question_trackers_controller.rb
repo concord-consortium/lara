@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 class Api::V1::QuestionTrackersController < ApplicationController
 
   def index
