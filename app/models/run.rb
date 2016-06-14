@@ -300,7 +300,7 @@ class Run < ActiveRecord::Base
   end
 
   def completed?
-    return self.num_answers == num_questions
+    return has_been_run && num_answers == num_questions
   end
 
   def percent_complete
