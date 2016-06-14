@@ -8,7 +8,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
+figure, figcaption, footer, header,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
@@ -26,7 +26,7 @@ ol, ul {
 
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+footer, header, menu, nav, section {
   display: block;
 }
 body {
@@ -256,6 +256,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   width: 94%;
   border-radius: 13px;
 }
+
 .questions {
   label {
     display: block;
@@ -704,13 +705,10 @@ div.block-empty {
   min-height: 2em;
 }
 .drag_handle {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAKCAYAAABrGwT5AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTEvMjAvMTL51e9HAAAALElEQVQokWP06Nv7mYGBgZuBdPCViQxNcMBIqob////D2ZTZPOpnkgBlfgYA0IAQnGCtpqwAAAAASUVORK5CYII=");
-  background-repeat: no-repeat;
-  height: 20px;
-  width: 20px;
-  background-position: 2px 2px;
+  line-height: 0.5em;
+  font-size: 20px;
   visibility: hidden;
-
+  &:before { content:'\2630'; }
   /* The ui-sortable class is added by jquery-ui */
   .ui-sortable & {
     visibility: visible;
@@ -780,7 +778,7 @@ fieldset {
     }
     h2 {
       width: 100%;
-      background-color: #b5e3ef;
+      background-color: hsl(192, 64%, 82%);
       color: #126eac !important;
       text-align: left;
       font-size: 1.3em;
@@ -810,7 +808,7 @@ fieldset {
     position: relative;
     h2 {
       width: 100%;
-      background-color: #b5e3ef;
+      background-color: hsl(192, 64%, 82%);
       color: #126eac !important;
       text-align: left;
       margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
@@ -829,9 +827,10 @@ fieldset {
     .embeddable_tools {
       text-align: right;
       font-weight: bold;
-      color: #6fc5d8;
+      color:  hsl(192, 64%, 42%);
       a:link {
-        color: #6fc5d8;
+        color:  hsl(192, 64%, 42%);
+        padding-left: 1em;
       }
       .drag_handle {
         float: left;
@@ -839,12 +838,26 @@ fieldset {
     }
     .embeddables_list > div {
       .embeddable_tools {
-        background-color: #b5e3ef;
+        background-color: hsl(192, 64%, 82%);
         padding: 5px;
         margin: -5px -5px 5px;
       }
       padding: 5px;
       border: 1px solid #6fc5d8;
+      &.tracked {
+        .embeddable_options {
+          opacity: 0.4;
+        }
+        border: 1px solid hsl(44, 80%, 60%);
+        .embeddable_tools {
+          background-color: hsl(44, 60%, 80%);
+          color: hsl(44, 70%, 30%);
+          a:link {  color: hsl(44, 70%, 30%);}
+          .drag_handle {
+            color: hsl(44, 70%, 30%);
+          }
+        }
+      }
       margin-bottom: 1em;
       border-radius: 0;
     }

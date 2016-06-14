@@ -239,6 +239,35 @@ describe LightweightActivity do
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
       expect(dup.copied_from_activity).to eq(activity)
     end
+    describe "an activity with an open response" do
+      let(:prompt)        { "xyzzy" }
+      let(:page)          { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
+      let(:open_response) {FactoryGirl.create(:open_response, prompt:prompt) }
+      before(:each) do
+        page.add_embeddable(open_response)
+        activity.pages << page
+      end
+      it "the duplicate should have a copy of the open response" do
+        dup = activity.duplicate(owner)
+        embeddable = dup.pages.first.embeddables.first
+        expect(embeddable.prompt).to eq prompt
+      end
+      describe "when the embeddable is a tracked question" do
+        let(:master_question)  { FactoryGirl.create(:open_response, prompt:prompt) }
+        let(:question_tracker) { QuestionTracker.create(master_question:master_question ) }
+        let(:open_response)    { question_tracker.new_question }
+        before(:each) do
+          question_tracker.add_question(open_response)
+        end
+        it "the duplicate open response should have a question_tracker" do
+          dup = activity.duplicate(owner)
+          embeddable = dup.pages.first.embeddables.first
+          expect(embeddable.question_tracker).to_not be_nil
+          expect(embeddable.prompt).to eq open_response.prompt
+        end
+      end
+    end
+
     describe "for itsi activities" do
       let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }
       let(:layout)    { LightweightActivity::LAYOUT_SINGLE_PAGE }

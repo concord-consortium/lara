@@ -75,7 +75,12 @@ module LightweightStandalone
                                               :style => :none },
                             :development => { :url => /^localhost.+$/,
                                               :color => "red"        }
-
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
+      end
+    end
     # do not initialize on precompile so that the Dockerfile can run the precompile
     config.assets.initialize_on_precompile = false
   end

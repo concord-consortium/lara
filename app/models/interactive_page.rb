@@ -219,6 +219,9 @@ class InteractivePage < ActiveRecord::Base
           end
         end
         copy.save!(validate: false)
+        if embed.respond_to? :question_tracker and embed.question_tracker
+          embed.question_tracker.add_question(copy)
+        end
         new_page.add_embeddable(copy)
       end
 

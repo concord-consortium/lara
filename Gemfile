@@ -103,3 +103,4 @@ gem "react-rails", "~> 1.0"
 gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.0"
 gem "nokogiri", "~> 1.6"
+gem "rack-cors","~> 0.4.0", :require => 'rack/cors'

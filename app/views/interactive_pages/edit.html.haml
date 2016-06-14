@@ -83,10 +83,12 @@
         %h2 Info/Assess
         = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
           = embeddable_selector
-          = submit_tag 'Add Embeddable'
+          = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
         #sort_embeddables.embeddables_list
           - @page.section_embeddables(nil).each do |e|
-            .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}"}
+            - tracked = e.respond_to?(:tracked_question) && e.tracked_question
+            - tracked_class = tracked ? 'tracked' : ''
+            .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
               = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
     -# Additional sections are dynamically loaded, based on .visible_sections value:
     - @page.visible_sections.each do |s|
@@ -103,6 +105,7 @@
       %h2
         = editable_field @page, :sidebar_title, {:type => 'text' }
       = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
+  = render :partial => "trackedQuestionSelector", locals: {page: @page, activity: @activity}
 
 :javascript
   $(function() {
