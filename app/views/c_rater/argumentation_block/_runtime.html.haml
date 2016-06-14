@@ -28,7 +28,7 @@
     - embeddables.each_with_index do |m,index|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
-        = render :partial => "feedback", locals: { feedback: m.get_saved_feedback }
+        = render :partial => "c_rater/argumentation_block/feedback", :locals => { feedback: m.get_saved_feedback, emb_id: m.id }
 
 
     - submission = last_submission(page, @run)
@@ -73,4 +73,4 @@
     $('.ab-theme-color').css('color', questionHeaderColor);
   });
 
-- render partal: 'argblock_styles'
+= render :partial => 'c_rater/argumentation_block/argblock_styles'

@@ -2,8 +2,8 @@
 - fb_visible   =  feedback && !feedback.feedback_text.blank?
 - fb_dirty     =  feedback && feedback.outdated?
 - fb_text      = (feedback && feedback.feedback_text) || ""
-- fb_score     = (feedback && feedback.score && (feedback.score >= 0 && feedback.score <= 6)) ? feedback.score : '-error'
 - fb_max_score = (feedback && feedback.max_score) || 6
+- fb_score     = (feedback && feedback.score && (feedback.score >= 0 && feedback.score <= fb_max_score)) ? feedback.score : '-error'
 - feedback_classes = "max-score-#{fb_max_score} score-#{fb_score}"
 
 .ab-feedback{:id => "feedback_on_answer_#{emb_id}",
@@ -15,7 +15,6 @@
   %h6
     = t 'ARG_BLOCK.FEEDBACK'
   .ab-feedback-item
-    = "css classes used: (#{feedback_classes})"
     .ab-robot-scale{:class => feedback_classes}
     .ab-robot-feedback-text
       #{fb_text.html_safe}
