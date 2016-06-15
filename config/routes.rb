@@ -179,9 +179,7 @@ LightweightStandalone::Application.routes.draw do
   get "/runs/dashboard" => 'runs#dashboard', :as => 'run_dashboard'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
   match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info'
-  match "test_mail" => 'application#test_mail', :as => 'test_mail'
-  match "test_exception" => 'application#test_error', :as => 'test_exception'
-  match "test_error" => 'application#test_error', :as => 'test_error'
+
 
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
@@ -193,4 +191,9 @@ LightweightStandalone::Application.routes.draw do
     warden = request.env['warden']
     warden.user && warden.user.admin?
   }
+
+  match "/dev/test_argblock" => 'dev#test_argblock', :as => 'test_argblock'
+  match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail'
+  match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception'
+  match "/dev/test_error" => 'dev#test_error', :as => 'test_error'
 end

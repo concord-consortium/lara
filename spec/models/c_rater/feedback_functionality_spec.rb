@@ -13,13 +13,17 @@ describe CRater::FeedbackFunctionality do
     # Stub interface required by feedback functionality:
     allow(ans).to receive(:answer_text).and_return(ans_text)
     allow(ans).to receive(:c_rater_item_settings).and_return(item_settings)
+    allow(ans).to receive(:question).and_return(question)
     ans
   end
 
+  # In fact the question will delegate this...
+  let(:question) { double({max_score: max_score})}
   let(:ans_text) { 'foobar' }
   let(:item_id) { 123 }
   let(:mapping_value) { 'barfoo mapping val' }
-  let(:score_mapping) { CRater::ScoreMapping.new(mapping: {'score2' => mapping_value}) }
+  let(:max_score) { 2 }
+  let(:score_mapping) { CRater::ScoreMapping.create(mapping: {'score1' => '1', 'score2' => mapping_value}) }
   let(:item_settings) do
     s = CRater::ItemSettings.new(item_id: item_id)
     s.score_mapping = score_mapping
@@ -33,9 +37,13 @@ describe CRater::FeedbackFunctionality do
     it { is_expected.to respond_to(:c_rater_enabled?) }
     it { is_expected.to respond_to(:c_rater_config) }
     it { is_expected.to respond_to(:save_feedback) }
-
+    it { is_expected.to respond_to(:max_score) }
     it 'should have access to C-Rater settings' do
       expect(answer.c_rater_item_settings).to be_a(CRater::ItemSettings)
+    end
+
+    it 'should have the max score we expect' do
+      expect(answer.max_score).to eql max_score
     end
 
     context 'C-Rater not configured' do
@@ -108,6 +116,7 @@ describe CRater::FeedbackFunctionality do
           feedback = answer.save_feedback
           expect(feedback.status).to eql('success')
           expect(feedback.score).to eql(score)
+          expect(feedback.max_score).to eql(max_score)
           expect(feedback.feedback_text).to eql(mapping_value)
           expect(feedback.response_info[:body]).to eql(response)
           expect(answer.feedback_items.count).to eql(1)

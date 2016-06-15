@@ -43,7 +43,8 @@ class DashboardRunlist
         answer: fi.answer_text,
         feedback_type: fi.class.name,
         feedback: fi.feedback_text,
-        score: fi.score
+        score: fi.score,
+        max_score: fi.max_score
       }
     end
     answers.sort { |a,b| a[:question_index] <=> b[:question_index] }
