@@ -170,9 +170,13 @@ class ArgumentationBlockController
       # Clear old score.
       $feedbackScore.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)score-\S+/g) || []).join(' ') # matches all score-<val> classes
-      # Set new score
+      # Clear old max-score.
+      $feedbackScore.removeClass (idx, oldClasses) ->
+        (oldClasses.match(/(^|\s)max-score-\S+/g) || []).join(' ') # matches all max-score-<val> classes
+      # Set new score & max-score
       if feedbackItem.score >= 0 && feedbackItem.score <= 6
         $feedbackScore.addClass("score-#{feedbackItem.score}")
+        $feedbackScore.addClass("max-score-#{feedbackItem.max_score}")
       else
         $feedbackScore.addClass("score--error")
       # Hide feedback if there is no text.
