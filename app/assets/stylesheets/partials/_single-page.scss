@@ -1,9 +1,11 @@
 // Single page class is added to the body element. It's intended to work with the full width layout.
-.l-single-page .pages {
-  display: none;
+.l-single-page {
+  .pages {
+    display: none;
+  }
+  .submit {
+    width:80px;
+    margin:0 auto;
+  }
 }
 
-.submit{
-  width:80px;
-  margin:0 auto;
-}
