@@ -6,3 +6,7 @@ $c_b: #84c6cf;
 
 @include theme($src, $c_a, $c_b);
 @include hasbot('/assets/c-rater/hasbot-final-single.png');
+
+#nav-activity-menu {
+  display: none;
+}
