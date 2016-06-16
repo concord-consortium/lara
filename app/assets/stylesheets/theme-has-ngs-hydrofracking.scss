@@ -5,3 +5,7 @@ $c_a: #602f1c;
 $c_b: #6b96ba;
 
 @include theme($src, $c_a, $c_b);
+
+#nav-activity-menu {
+  display: none;
+}

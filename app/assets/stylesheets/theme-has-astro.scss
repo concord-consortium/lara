@@ -6,3 +6,6 @@ $c_b: #BD8B8E;
 
 @include theme($src, $c_a, $c_b);
 
+#nav-activity-menu {
+  display: none;
+}
