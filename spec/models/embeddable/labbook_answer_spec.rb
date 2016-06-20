@@ -42,16 +42,13 @@ describe Embeddable::LabbookAnswer do
     end
   end
 
-  describe '#show_in_runtime? and #show_in_report' do
-    let(:stubs) { { show_in_runtime?: true, show_in_report?: true } }
+  describe '#show_in_runtime?' do
+    let(:stubs) { { show_in_runtime?: true } }
     let(:labbook) { stub_model(Embeddable::Labbook, stubs) }
 
     describe 'with an enabled labbook' do
       it "should return true for show_in_runtime?" do
         expect(labbook_answer.show_in_runtime?).to eql(true)
-      end
-      it "should return true for show_in_report?" do
-        expect(labbook_answer.show_in_report?).to eql(true)
       end
     end
 
@@ -59,9 +56,6 @@ describe Embeddable::LabbookAnswer do
       let(:stubs) { { show_in_runtime?: false, show_in_report?: false } }
       it "should return false for #show_in_runtime?" do
         expect(labbook_answer.show_in_runtime?).to eql(false)
-      end
-      it "should return false for #show_in_report?" do
-        expect(labbook_answer.show_in_report?).to eql(false)
       end
     end
 

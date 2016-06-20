@@ -87,7 +87,7 @@ describe LightweightActivity do
     end
   end
 
-  describe '#questions' do
+  describe '#reportable_items' do
     let(:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
     let(:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
     let(:non_reportable_interactive) {
@@ -106,8 +106,8 @@ describe LightweightActivity do
     end
 
     it 'returns an array of embeddables and reportable interactives' do
-      expect(activity.questions.length).to eql(3)
-      expect(activity.questions).to eql(
+      expect(activity.reportable_items.length).to eql(3)
+      expect(activity.reportable_items).to eql(
         [page1.embeddables[0], page2.embeddables[0], reportable_interactive])
     end
 
@@ -116,9 +116,9 @@ describe LightweightActivity do
 
       it 'doesnt report on items on the hidden page' do
         expect(activity.pages[1].is_hidden).to eq true
-        expect(activity.questions).not_to include reportable_interactive
-        expect(activity.questions.length).to eql(1)
-        expect(activity.questions).to eql(page1.embeddables)
+        expect(activity.reportable_items).not_to include reportable_interactive
+        expect(activity.reportable_items.length).to eql(1)
+        expect(activity.reportable_items).to eql(page1.embeddables)
       end
     end
 
@@ -131,24 +131,20 @@ describe LightweightActivity do
       }
       it 'the list of questions without the hidden reportable interactive' do
         expect(reportable_interactive.is_hidden).to eq true
-        expect(activity.questions).not_to include reportable_interactive
+        expect(activity.reportable_items).not_to include reportable_interactive
       end
     end
 
     context 'when the embeddable open reponse is hidden' do
       let (:page2) { FactoryGirl.create(:interactive_page_with_hidden_or) }
       it 'returns an the questions without the open repose' do
-        expect(activity.questions.length).to eql(2)
-        expect(activity.questions).to include page1.embeddables[0]
-        expect(activity.questions).to include reportable_interactive
+        expect(activity.reportable_items.length).to eql(2)
+        expect(activity.reportable_items).to include page1.embeddables[0]
+        expect(activity.reportable_items).to include reportable_interactive
       end
     end
-  end
 
-  describe '#question_keys' do
-    it 'returns an array of storage_keys from questions' do
-      expect(activity.question_keys).to eq([])
-    end
+    # TODO: Add tests for Labbooks in various states of being hidden or not-hidden
   end
 
   context 'it has embeddables' do
@@ -173,20 +169,14 @@ describe LightweightActivity do
     end
 
 
-    describe '#questions' do
+    describe '#reportable_items' do
       it 'returns an array of Embeddables which are MultipleChoice or OpenResponse' do
-        expect(activity.questions.length).to be(4)
-        activity.questions.each { |q| expect(activity.questions).to include(q) }
-        expect(activity.questions).not_to include(text_emb)
+        expect(activity.reportable_items.length).to be(4)
+        activity.reportable_items.each { |q| expect(activity.reportable_items).to include(q) }
+        expect(activity.reportable_items).not_to include(text_emb)
       end
     end
 
-    describe '#question_keys' do
-      it 'returns an array of storage_keys from questions' do
-        expect(activity.question_keys.length).to be(4)
-        expect(activity.question_keys.first).to be_kind_of String
-      end
-    end
   end
 
   describe "#publish!" do

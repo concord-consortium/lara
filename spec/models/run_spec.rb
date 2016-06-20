@@ -559,14 +559,14 @@ describe Run do
     let(:questions) { [1,2,3]  }
     let(:answers) { [or_answer, mc_answer, iq_answer]  }
     before(:each) do
-      allow(activity).to receive(:questions).and_return(questions)
+      allow(activity).to receive(:reportable_items).and_return(questions)
       allow(run).to receive(:answers).and_return(answers)
       allow(run).to receive(:has_been_run).and_return(true)
     end
 
-    describe "#num_questions" do
-      describe '#num_questions' do
-        subject { super().num_questions }
+    describe "#num_reportable_items" do
+      describe '#num_reportable_items' do
+        subject { super().num_reportable_items }
         it { is_expected.to eq 3}
       end
     end

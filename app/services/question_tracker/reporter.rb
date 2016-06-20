@@ -4,7 +4,7 @@ class QuestionTracker::Reporter
 
   # Return a list of tracked questions in an activity to report on.
   def self.question_trackers_for_activity(activity)
-    return activity.questions.select{ |q| q.respond_to?(:question_tracker)}.map {|q| q.question_tracker }.compact.uniq
+    return activity.reportable_items.select{ |q| q.respond_to?(:question_tracker)}.map {|q| q.question_tracker }.compact.uniq
   end
 
   def self.question_trackers_for_sequence(sequence)

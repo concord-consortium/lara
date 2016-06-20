@@ -34,6 +34,10 @@ module Embeddable
       return Embeddable::OpenResponse.new(self.to_hash)
     end
 
+    def reportable?
+      true
+    end
+
     def self.name_as_param
       :embeddable_open_response
     end

@@ -47,7 +47,13 @@ module Embeddable
     true
   end
 
+  # This should not take into account the hidden attribute. The caller should combine
+  # is_hidden with reportable? to know what to show in a report
+  def reportable?
+    raise "#reportable? unimplemented for #{self.class}"
+  end
+
   def index_in_activity(activity)
-    activity.questions.index(self) + 1
+    activity.reportable_items.index(self) + 1
   end
 end

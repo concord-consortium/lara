@@ -278,17 +278,12 @@ class Run < ActiveRecord::Base
     self.activity.increment!(:portal_run_count)
   end
 
-  def num_questions
-    return self.activity.questions.size
-  end
-
-  # HACK for interactive run state saving...
-  def question_answers
-    self.answers.reject {|a| a.question.kind_of? InteractiveRunState::QuestionStandin}
+  def num_reportable_items
+    return self.activity.reportable_items.size
   end
 
   def num_answers
-    q_answers = activity_q_answers = self.question_answers.reject { |a| !a.answered? }
+    q_answers = activity_q_answers = self.answers.reject { |a| !a.answered? }
     begin # this really shouldn't happen, but there are some bad runs in the DB
       activity_q_answers = q_answers.reject { |a| a.question.activity.id != self.activity_id }
       unless q_answers.size == activity_q_answers.size
@@ -300,11 +295,11 @@ class Run < ActiveRecord::Base
   end
 
   def completed?
-    return has_been_run && num_answers == num_questions
+    return has_been_run && num_answers == num_reportable_items
   end
 
   def percent_complete
-    return (num_answers / Float(num_questions) ) * 100.0
+    return (num_answers / Float(num_reportable_items) ) * 100.0
   end
 
   # See PT https://www.pivotaltracker.com/story/show/59365552
@@ -335,7 +330,7 @@ class Run < ActiveRecord::Base
         remote_endpoint: #{remote_endpoint}
        percent_complete: #{percent_complete}
       number of answers: #{num_answers}  (#{answers.size})
-    number of questions: #{num_questions}
+    number of questions: #{num_reportable_items}
                activity: #{activity.name} [#{activity_id}]
                sequence: #{sequence_id}
           collaboration: #{collaboration_run_id}

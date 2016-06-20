@@ -5,7 +5,7 @@ feature "Activity is run from the portal", :js => true do
   # need an activity with at least a open response question
   let(:activity)   { FactoryGirl.create(:activity_with_page_and_or) }
   let(:user)       { FactoryGirl.create(:user_with_authentication)  }
-  let(:question)   { activity.questions.find {|q| q.class == Embeddable::OpenResponse} }
+  let(:question)   { activity.reportable_items.find {|q| q.class == Embeddable::OpenResponse} }
   let(:question_id){ question.id }
   let(:url) do
     activity_path(activity, :params => {

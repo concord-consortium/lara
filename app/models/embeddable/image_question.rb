@@ -73,6 +73,10 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     bg_source == 'Drawing'
   end
 
+  def reportable?
+    true
+  end
+
   def self.name_as_param
     :embeddable_image_question
   end

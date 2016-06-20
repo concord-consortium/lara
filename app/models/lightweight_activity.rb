@@ -1,5 +1,4 @@
 class LightweightActivity < ActiveRecord::Base
-  QUESTION_TYPES = [Embeddable::OpenResponse, Embeddable::ImageQuestion, Embeddable::MultipleChoice, Embeddable::Labbook]
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
 
@@ -50,30 +49,17 @@ class LightweightActivity < ActiveRecord::Base
       .order(:position)
   end
 
-  # Returns an array of embeddables which are questions (i.e. Open Response or Multiple Choice)
-  def questions
-    q = []
+  def reportable_items
+    items = []
     visible_pages_with_embeddables.each do |p|
-      p.visible_embeddables.each do |e|
-        if QUESTION_TYPES.include? e.class
-          q << e
-        end
-      end
-      p.visible_interactives.each do |i|
-        q << i if i.respond_to?(:is_reportable) && i.is_reportable
-      end
+      items += p.reportable_items
     end
-    return q
-  end
-
-  # Returns an array of strings representing the storage_keys of all the questions
-  def question_keys
-    return questions.map { |q| q.storage_key }
+    items
   end
 
   def answers(run)
     finder = Embeddable::AnswerFinder.new(run)
-    questions.map { |q| finder.find_answer(q) }
+    reportable_items.map { |q| finder.find_answer(q) }
   end
 
   def set_user!(receiving_user)
@@ -208,16 +194,9 @@ class LightweightActivity < ActiveRecord::Base
     }
 
     pages = []
-    self.pages.each do |page|
-      # Don't publish hidden pages.
-      next if page.is_hidden
+    visible_pages_with_embeddables.each do |page|
       elements = []
-      (page.embeddables + page.interactives).each do |embeddable|
-        # skip item if hidden
-        next if embeddable.respond_to?(:is_hidden) && embeddable.is_hidden
-        # skip item if it should not be reported on
-        next if embeddable.respond_to?(:hide_from_report?) && embeddable.hide_from_report?
-
+      page.reportable_items.each do |embeddable|
         case embeddable
           # Why aren't we using the to_hash methods for each embeddable here?
           # Probably because they don't include the "type" attribute
@@ -254,12 +233,10 @@ class LightweightActivity < ActiveRecord::Base
           }
           elements.push(mc_data)
         when MwInteractive
-          if embeddable.is_reportable
-            iframe_data = embeddable.to_hash
-            iframe_data["type"] = 'iframe_interactive'
-            iframe_data["id"] = embeddable.id
-            elements.push(iframe_data)
-          end
+          iframe_data = embeddable.to_hash
+          iframe_data["type"] = 'iframe_interactive'
+          iframe_data["id"] = embeddable.id
+          elements.push(iframe_data)
         else
           # Why do we explicitly list all the embeddable types above?
           if embeddable.respond_to?(:portal_hash)

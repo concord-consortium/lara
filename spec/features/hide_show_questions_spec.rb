@@ -6,7 +6,7 @@ feature "Activity page", :js => true do
   let(:activity)     { FactoryGirl.create(:activity_with_page_and_or) }
   let(:user)       { FactoryGirl.create(:admin)  }
   let(:activity_page) { activity.pages.first }
-  let(:question)     { activity.questions.find {|q| q.class == Embeddable::OpenResponse} }
+  let(:question)     { activity.reportable_items.find {|q| q.class == Embeddable::OpenResponse} }
   let(:activity_page_url) { edit_activity_page_path(activity, activity_page) }
   let(:hideshow_url) { page_hideshow_embeddable_path(activity_page, question) }
 
