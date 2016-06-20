@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DashboardRunlist do
   include_context "activity with arg block submissions"
-  let(:runlist) { DashboardRunlist.new([@run.remote_endpoint], page.id).to_hash }
+  let(:runlist) { DashboardRunlist.new([@run.remote_endpoint], page.id).to_hash[:runs] }
 
   it 'returns all the submissions of provided runs' do
     expect(runlist.length).to eql(1)
@@ -18,6 +18,27 @@ describe DashboardRunlist do
     expect(runlist[0][:submissions][0][:answers][2][:score]).to eql(3)
     expect(runlist[0][:submissions][0][:answers][3][:answer]).to eql('text4')
     expect(runlist[0][:submissions][0][:answers][3][:score]).to eql(4)
+  end
+
+  describe "submissions_created_after argument" do
+    it "returns all submissions if timestamp is not provided or nil" do
+      runlist = DashboardRunlist.new([@run.remote_endpoint], page.id).to_hash[:runs]
+      expect(runlist[0][:submissions].length).to eql(1)
+      runlist = DashboardRunlist.new([@run.remote_endpoint], page.id, nil).to_hash[:runs]
+      expect(runlist[0][:submissions].length).to eql(1)
+    end
+
+    it "returns submissions created after provided timestamp" do
+      timestamp = @submission.created_at - 10
+      runlist = DashboardRunlist.new([@run.remote_endpoint], page.id, timestamp).to_hash[:runs]
+      expect(runlist[0][:submissions].length).to eql(1)
+    end
+
+    it "filters out submissions created before provided timestamp" do
+      timestamp = @submission.created_at + 10
+      runlist = DashboardRunlist.new([@run.remote_endpoint], page.id, timestamp).to_hash[:runs]
+      expect(runlist[0][:submissions].length).to eql(0)
+    end
   end
 
   it 'includes a reference to the sequence' do
