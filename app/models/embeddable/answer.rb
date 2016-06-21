@@ -95,8 +95,4 @@ module Embeddable::Answer
     # wont invoke callbacks
     update_column(:is_dirty, false)
   end
-
-  def show_in_report?
-    true
-  end
 end

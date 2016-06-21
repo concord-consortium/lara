@@ -1,3 +1,13 @@
+# This class is used for two general purposes:
+#  1. To get answers for reports
+#  2. To get "answers" to generate the page for the student
+#
+# In the case #2 the page is currently generated from the answer objects. It is not generated
+# from questions and then student answers filled in. So any "question" that isn't able to have
+# an answer should return itself.
+#
+# Currently in case #2 the AnswerFinder should only be passed the Page#page_items which means
+# it shouldn't be sent MwInteractives
 module Embeddable
   class AnswerFinder
     attr_accessor :run, :answer_map
@@ -15,6 +25,12 @@ module Embeddable
       when MwInteractive
         return "if_#{question.id}"
       when InteractiveRunState::QuestionStandin
+        # It is not clear but I beleive this bit of hackyness is here for this reason:
+        # When a InteractiveRunState is asked for its
+        # question, it returns an InteractiveRunState::QuestionStandin instead of MwInteractive
+        # (I'm not sure why). And then that question is sometimes used later in the process
+        # to try to find the answer again. So that is why it is OK for the same key to be used
+        # in that case. I haven't found where this happens.
         return question.interactive ? "if_#{question.interactive.id}" : nil
       end
       return nil

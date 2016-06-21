@@ -131,6 +131,9 @@ module Embeddable
       layout == "likert"
     end
 
+    def reportable?
+      true
+    end
 
     def self.import (import_hash)
       choices = import_hash[:choices]

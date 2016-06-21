@@ -33,7 +33,7 @@
             %td=run.dirty? ? " ✖ " : " ✔ "
             %td=run.run_count || 0
             %td=run.page ? run.page.position : 0
-            %td #{run.num_answers} / #{run.num_questions}
+            %td #{run.num_answers} / #{run.num_reportable_items}
             
             %td=sprintf("%04.1f%", run.percent_complete)
             %td=run.collaboration_run_id || "none"

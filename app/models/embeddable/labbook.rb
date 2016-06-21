@@ -178,12 +178,8 @@ module Embeddable
       ((action_type == UPLOAD_ACTION) && !has_interactive?) || interactive_is_visible?
     end
 
-    def show_in_report?
+    def reportable?
       show_in_runtime?
-    end
-
-    def hide_from_report?
-      !show_in_report?
     end
 
     def update_itsi_prompts

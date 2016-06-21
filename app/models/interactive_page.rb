@@ -124,6 +124,11 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(nil)
   end
 
+  def reportable_items
+    items = visible_embeddables + visible_interactives
+    items.select { |item| item.reportable? }
+  end
+
   def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true;
     self.save!(validate: validate)

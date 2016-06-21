@@ -5,7 +5,7 @@ shared_context "collaboration run" do
   let(:activity) { FactoryGirl.create(:activity_with_page_and_or) }
   # There is no need to test other types of questions, as answer copying / duplication is handled
   # in their separate unit tests.
-  let(:or_question) { activity.questions[0] }
+  let(:or_question) { activity.reportable_items[0] }
   let(:or_answer1)  { FactoryGirl.create(:or_answer, { answer_text: "the answer", question: or_question }) }
   let(:or_answer2)  { FactoryGirl.create(:or_answer, { answer_text: "the different answer", question: or_question }) }
 

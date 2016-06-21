@@ -28,6 +28,10 @@ module Embeddable
       self.as_json(only:[:name, :content, :is_hidden])
     end
 
+    def reportable?
+      false
+    end
+
     def self.import(import_hash)
       return self.new(import_hash)
     end
