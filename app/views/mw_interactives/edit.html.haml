@@ -41,8 +41,8 @@
       %em Warning:
       Please do not select this unless your interactive includes a report url in its saved state.
       .clear
-      = f.label :parent_id, 'Link saved work from '
-      = f.text_field :parent_id, :id => "parent_id_#{@interactive.id}"
+      = f.label :linked_interactive_id, 'Link saved work from '
+      = f.text_field :linked_interactive_id, :id => "linked_interactive_id_#{@interactive.id}"
       .clear
       %em Warning: 
       Please do not link to another interactive unless the interactive knows how to load prior work.

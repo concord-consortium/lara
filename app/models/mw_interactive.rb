@@ -15,7 +15,7 @@ class MwInteractive < ActiveRecord::Base
   has_many :interactive_run_states, :as => :interactive
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
-  belongs_to :parent, :class_name => 'MwInteractive'
+  belongs_to :linked_interactive, :class_name => 'MwInteractive'
 
   after_update :update_labbook_options
 

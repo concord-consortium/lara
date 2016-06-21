@@ -269,7 +269,7 @@ describe InteractivePage do
         page.reload
       end
       it "should have the same number of interactives as the original" do
-        dupe.interactives.length.should be(page.interactives.length)
+        expect(dupe.interactives.length).to be(page.interactives.length)
       end
 
       it "should have copies of interactives with the same visibility" do
