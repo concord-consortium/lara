@@ -84,7 +84,7 @@ describe InteractivePageHelper do
     let(:finder_return)  { false }
 
     before :each do
-      Embeddable::AnswerFinder.stub(:new).and_return(fake_finder)
+      allow(Embeddable::AnswerFinder).to receive(:new).and_return(fake_finder)
     end
     describe "When not configured to show the labbook under an interactive" do
       it "should always return false" do
@@ -163,7 +163,7 @@ describe InteractivePageHelper do
     let(:expected_args){ hash_including({partial: partial_name,locals:locals}) }
     
     it "should render the correct parital" do
-      helper.should_receive(:render).with(expected_args)
+      expect(helper).to receive(:render).with(expected_args)
       helper.render_interactive(interactive)
     end
   end

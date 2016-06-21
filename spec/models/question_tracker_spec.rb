@@ -24,8 +24,8 @@ describe QuestionTracker do
     let(:instance) { QuestionTracker.create props }
 
     it "should have the right master_question" do
-      instance.master_question.should eql master_question
-      master_question.reload.master_for_tracker.should eql instance
+      expect(instance.master_question).to eql master_question
+      expect(master_question.reload.master_for_tracker).to eql instance
     end
 
     it "should not include the master question in the questions list" do
