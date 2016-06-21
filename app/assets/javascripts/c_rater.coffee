@@ -166,13 +166,19 @@ class ArgumentationBlockController
       $feedback = @$element.find(FEEDBACK_ID_SEL + id)
       # Set feedback text.
       $feedback.find(FEEDBACK_TEXT_SEL).html(feedbackItem.text)
-      # Set score.
-      $feedback.removeClass (idx, oldClasses) ->
-        (oldClasses.match(/(^|\s)ab-score\S+/g) || []).join(' ') # matches all score-<val> classes
+      $feedbackScore = $feedback.find(".ab-robot-scale")
+      # Clear old score.
+      $feedbackScore.removeClass (idx, oldClasses) ->
+        (oldClasses.match(/(^|\s)score-\S+/g) || []).join(' ') # matches all score-<val> classes
+      # Clear old max-score.
+      $feedbackScore.removeClass (idx, oldClasses) ->
+        (oldClasses.match(/(^|\s)max-score-\S+/g) || []).join(' ') # matches all max-score-<val> classes
+      # Set new score & max-score
       if feedbackItem.score >= 0 && feedbackItem.score <= 6
-        $feedback.addClass("ab-score#{feedbackItem.score}")
+        $feedbackScore.addClass("score-#{feedbackItem.score}")
+        $feedbackScore.addClass("max-score-#{feedbackItem.max_score}")
       else
-        $feedback.addClass("ab-score-error")
+        $feedbackScore.addClass("score--error")
       # Hide feedback if there is no text.
       if feedbackItem.text
         $feedback.slideDown() # show

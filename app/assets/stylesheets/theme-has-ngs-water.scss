@@ -1,8 +1,12 @@
 @import "cc-runtime";
 
-$src: '/assets/has-bg/water_background.jpg';
+$src: url('/assets/has-bg/water_background.jpg');
 $c_a: #2f70b0;
 $c_b: #84c6cf;
 
 @include theme($src, $c_a, $c_b);
 @include hasbot('/assets/c-rater/hasbot-final-single.png');
+
+#nav-activity-menu {
+  display: none;
+}

@@ -90,7 +90,8 @@ class RunsController < ApplicationController
   def dashboard
     page_id = params[:page_id]
     endpoint_urls = params[:endpoint_urls] || []
-    dashboard = DashboardRunlist.new(endpoint_urls, page_id)
+    submissions_created_after = params[:submissions_created_after]
+    dashboard = DashboardRunlist.new(endpoint_urls, page_id, submissions_created_after)
     render json: dashboard.to_json, callback: params[:callback]
   end
 

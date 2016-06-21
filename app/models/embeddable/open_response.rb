@@ -12,6 +12,10 @@ module Embeddable
       :class_name  => 'Embeddable::OpenResponseAnswer',
       :foreign_key => 'open_response_id'
 
+    has_one :tracked_question, :as => :question, :dependent => :delete
+    has_one :question_tracker, :through => :tracked_question
+    has_one :master_for_tracker, :class_name => 'QuestionTracker', :as => :master_question
+
     default_value_for :prompt, "why does ..."
 
     def to_hash
@@ -56,7 +60,8 @@ module Embeddable
       return self.new(import_hash)
     end
 
-    # SettingsProviderFunctionality extends the functionality of duplicate, export and import using alias_method_chain. So these methods needs to be visible to the SettingsProviderFunctionality.
+    # SettingsProviderFunctionality extends the functionality of duplicate, export and import using alias_method_chain.
+    # So these methods needs to be visible to the SettingsProviderFunctionality.
     include CRater::SettingsProviderFunctionality
   end
 end

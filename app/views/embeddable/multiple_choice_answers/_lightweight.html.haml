@@ -10,7 +10,11 @@
     :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
     %fieldset.options
       - if embeddable.show_as_menu
-        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ), { :include_blank => t("PICK_ONE")}, { :data => {:button_id => check_button_string} }
+        = f.select :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', (embeddable.answers.empty? ? nil : embeddable.answers.last.id) ),
+                             { :include_blank => t("PICK_ONE")}, {:class => "screen-only", :data => {:button_id => check_button_string} }
+        %ul.print-only
+          - embeddable.choices.each do |choice|
+            %li= choice.choice
       - else
         .choice-container{:class => embeddable.layout}
           - embeddable.choices.each do |choice|

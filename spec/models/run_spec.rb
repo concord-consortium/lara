@@ -561,6 +561,7 @@ describe Run do
     before(:each) do
       allow(activity).to receive(:questions).and_return(questions)
       allow(run).to receive(:answers).and_return(answers)
+      allow(run).to receive(:has_been_run).and_return(true)
     end
 
     describe "#num_questions" do
@@ -577,11 +578,11 @@ describe Run do
         subject { super().num_answers }
         it { is_expected.to eq 3         }
       end
-      it                     { is_expected.to be_completed }
+      it { is_expected.to be_completed }
 
       describe '#percent_complete' do
         subject { super().percent_complete }
-        it { is_expected.to eq 100       }
+        it { is_expected.to eq 100 }
       end
     end
 
@@ -590,9 +591,9 @@ describe Run do
 
       describe '#num_answers' do
         subject { super().num_answers }
-        it { is_expected.to eq 2                    }
+        it { is_expected.to eq 2 }
       end
-      it                     { is_expected.not_to be_completed        }
+      it { is_expected.not_to be_completed }
 
       describe '#percent_complete' do
         subject { super().percent_complete }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160602182143) do
+ActiveRecord::Schema.define(:version => 20160620140813) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(:version => 20160602182143) do
   end
 
   add_index "c_rater_feedback_submissions", ["base_submission_id"], :name => "feedback_submissions_base_sub_id_idx"
-  add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id"], :name => "c_rater_fed_submission_page_run_idx"
+  add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id", "created_at"], :name => "c_rater_fed_submission_page_run_created_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
     t.string   "item_id"
@@ -393,8 +393,8 @@ ActiveRecord::Schema.define(:version => 20160602182143) do
     t.boolean  "has_report_url", :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
-    t.boolean  "is_hidden",      :default => false
     t.integer  "parent_id"
+    t.boolean  "is_hidden",      :default => false
   end
 
   add_index "mw_interactives", ["parent_id"], :name => "index_mw_interactives_on_parent_id"

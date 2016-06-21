@@ -5,6 +5,8 @@ require 'rspec/rails'
 require 'factory_girl_rails'
 require 'webmock/rspec'
 
+require 'ruby-debug'
+
 # Javascript testing with PhantomJS
 require 'capybara/rspec'
 require 'capybara/poltergeist'

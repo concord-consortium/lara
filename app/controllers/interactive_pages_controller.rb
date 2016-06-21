@@ -120,33 +120,26 @@ class InteractivePagesController < ApplicationController
     redirect_to edit_activity_page_path(@activity, @page, param)
   end
 
+  def add_tracked
+    authorize! :update, @page
+    update_activity_changed_by
+    qt = QuestionTracker.find(params[:question_tracker])
+    question = qt.new_question
+    edit_embeddable_redirect(question)
+  end
+
   def add_embeddable
     authorize! :update, @page
     update_activity_changed_by
     e = Embeddable.create_for_string(params[:embeddable_type])
-
-    @page.add_embeddable(e)
-    case e
-    when Embeddable::MultipleChoice
-      e.create_default_choices
-      param = { :edit_embed_mc => e.id }
-    when Embeddable::OpenResponse
-      param = { :edit_embed_or => e.id }
-    when Embeddable::ImageQuestion
-      param = { :edit_embed_iq => e.id }
-    when Embeddable::Labbook
-      param = { :edit_embed_lb => e.id }
-    when Embeddable::Xhtml
-      param = { :edit_embed_xhtml => e.id }
-    end
-    # Add parameter to open new embeddable modal
-    redirect_to edit_activity_page_path(@activity, @page, param)
+    edit_embeddable_redirect(e)
   end
 
   def remove_embeddable
     authorize! :update, @page
     update_activity_changed_by
     PageItem.find_by_interactive_page_id_and_embeddable_id(params[:id], params[:embeddable_id]).destroy
+    # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
@@ -180,6 +173,27 @@ class InteractivePagesController < ApplicationController
   end
 
   private
+
+  def edit_embeddable_redirect(embeddable)
+    @page.add_embeddable(embeddable)
+    case embeddable
+      when Embeddable::MultipleChoice
+        unless embeddable.choices.length > 0
+          embeddable.create_default_choices
+        end
+        param = { :edit_embed_mc => embeddable.id }
+      when Embeddable::OpenResponse
+        param = { :edit_embed_or => embeddable.id }
+      when Embeddable::ImageQuestion
+        param = { :edit_embed_iq => embeddable.id }
+      when Embeddable::Labbook
+        param = { :edit_embed_lb => embeddable.id }
+      when Embeddable::Xhtml
+        param = { :edit_embed_xhtml => embeddable.id }
+    end
+    # Add parameter to open new embeddable modal
+    redirect_to edit_activity_page_path(@activity, @page, param)
+  end
 
   def check_if_hidden
     raise ActiveRecord::RecordNotFound if @page.is_hidden

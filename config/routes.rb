@@ -10,8 +10,14 @@ LightweightStandalone::Application.routes.draw do
 
 
   resources :themes
-
   root :to => 'home#home'
+
+  resources :question_trackers do
+    member do
+      post 'add_embeddable'
+      post 'replace_master'
+    end
+  end
 
   namespace :embeddable do
     resources :image_question_answers
@@ -73,6 +79,7 @@ LightweightStandalone::Application.routes.draw do
       member do
         get 'reorder_embeddables'
         post 'add_embeddable'
+        get  'add_tracked'
         post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
@@ -137,6 +144,16 @@ LightweightStandalone::Application.routes.draw do
     resources :labbook_answers, :only => [:update]
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :question_trackers, only: [:index] do
+        match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
+      end
+      match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
+      match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
+    end
+  end
+
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'
   match "/publications/add/:publishable_type/:publishable_id"=> 'publications#add_portal', :as => 'publication_add_portal'
@@ -162,9 +179,7 @@ LightweightStandalone::Application.routes.draw do
   get "/runs/dashboard" => 'runs#dashboard', :as => 'run_dashboard'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
   match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info'
-  match "test_mail" => 'application#test_mail', :as => 'test_mail'
-  match "test_exception" => 'application#test_error', :as => 'test_exception'
-  match "test_error" => 'application#test_error', :as => 'test_error'
+
 
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
@@ -176,4 +191,9 @@ LightweightStandalone::Application.routes.draw do
     warden = request.env['warden']
     warden.user && warden.user.admin?
   }
+
+  match "/dev/test_argblock" => 'dev#test_argblock', :as => 'test_argblock'
+  match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail'
+  match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception'
+  match "/dev/test_error" => 'dev#test_error', :as => 'test_error'
 end
