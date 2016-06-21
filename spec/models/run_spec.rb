@@ -600,5 +600,74 @@ describe Run do
         it { is_expected.to be_within(0.1).of(66.6) }
       end
     end
+
+    describe "With three answers and one that is not answered" do
+      before(:each) do
+        allow(mc_answer).to receive(:answered?).and_return(false)
+      end
+      describe '#num_answers' do
+        subject { super().num_answers }
+        it { is_expected.to eq 2 }
+      end
+      it { is_expected.not_to be_completed }
+
+      describe '#percent_complete' do
+        subject { super().percent_complete }
+        it { is_expected.to be_within(0.1).of(66.6) }
+      end
+    end
+  end
+  describe "with real DB objects" do
+    let(:page) { FactoryGirl.create(:page, name: 'page 1', position: 0) }
+    before(:each) do
+      # Add answers
+      run.open_response_answers << or_answer
+      run.multiple_choice_answers << mc_answer
+
+      # make sure it has been run
+      run.increment_run_count!
+
+      activity.pages << page
+      activity.reload
+      page.add_embeddable(or_question)
+      page.add_embeddable(mc_question)
+    end
+
+    describe '#num_answers' do
+      subject { run.num_answers }
+      it { is_expected.to eq 2 }
+    end
+
+    describe "page.reportable_items" do
+      subject { page.reportable_items }
+      it { is_expected.to eql [or_question, mc_question] }
+    end
+
+    describe '#complete?' do
+      subject { run }
+      it { is_expected.to be_completed }
+    end
+
+    context 'with a disconnected labbook' do
+
+      before(:each) do
+        page.add_embeddable(FactoryGirl.create(:labbook, interactive: nil ))
+      end
+
+      describe "page.visible_embeddables.count" do
+        subject { page.visible_embeddables.count }
+        it { is_expected.to eql 3 }
+      end
+
+      describe "page.reportable_items.count" do
+        subject { page.reportable_items.count }
+        it { is_expected.to eql 2 }
+      end
+
+      describe '#complete?' do
+        subject { run }
+        it { is_expected.to be_completed }
+      end
+    end
   end
 end
