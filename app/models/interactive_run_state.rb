@@ -2,7 +2,7 @@ class InteractiveRunState < ActiveRecord::Base
   alias_method :original_json, :to_json  # make sure we can still generate json of the base model after including Answer
   include Embeddable::Answer # Common methods for Answer models
 
-  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data
+  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run
 
   belongs_to :run
   belongs_to :interactive, :polymorphic => true
@@ -49,7 +49,7 @@ class InteractiveRunState < ActiveRecord::Base
   def portal_hash
     {
       "type" => "external_link",
-      "question_type" => interactive.class.string_name,
+      "question_type" => interactive.class.name,
       "question_id" => interactive.id.to_s,
       "answer" => reporting_url,
       "is_final" => false
@@ -65,9 +65,34 @@ class InteractiveRunState < ActiveRecord::Base
     (opts = data["lara_options"]) && opts["reporting_url"]
   end
 
+  def has_linked_interactive
+    (interactive.respond_to? :linked_interactive) && !interactive.linked_interactive.nil?
+  end
+
+  # this seems like it should be modeled as a through association, but perhaps it is hard because
+  # interactives are polymorphic
+  def find_linked_interactive_state
+    return nil unless has_linked_interactive
+    linked_interactive = interactive.linked_interactive
+    runs = run.sequence_run ? run.sequence_run.runs : [run]
+    InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
+  end
+
+  def linked_state
+    return nil unless linked_state = find_linked_interactive_state
+    linked_state.raw_data
+  end
+
+  # This alias makes #answer_json point at Embeddable::Answer#to_json (from inclusion of Embeddable::Answer at top)
+  # ActiveRecord's #to_json had previously be aliased to #original_json. If we are called without arg, we send answer
+  # json. Active Record Seiralization args are in the form of {methods: [method_names]} or {only: [field_names]} …
   alias_method :answer_json, :to_json
   def to_json(arg=nil)
     arg ? original_json(arg) : answer_json
+  end
+
+  def to_runtime_json()
+    self.to_json({methods: [:linked_state, :has_linked_interactive]})
   end
 
   def answered?
