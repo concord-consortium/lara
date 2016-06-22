@@ -49,15 +49,15 @@ describe LaraSerializationHelper do
     describe "for an interactive" do
       it "should call export on our test-subject" do
         expect(interactive).to receive(:export).and_return(export)
-        expect(result).to match a_hash_including(a:1, b:2)
+        expect(result).to include(a:1, b:2)
       end
       it "should append `ref_id` and `type` tags the export data" do
         expect(interactive).to receive(:export).and_return(export)
-        expect(result).to match a_hash_including(ref_id: expected_key, type:'MwInteractive')
+        expect(result).to include(ref_id: expected_key, type:'MwInteractive')
       end
     end
 
-    describe "for an embeddable" do
+    describe "for a Labbook embeddable" do
       let(:em_stubs)      { { interactive: interactive }              }
       let(:embeddable)    { mock_model(Embeddable::Labbook, em_stubs) }
       let(:expected_hash) { {interactive_ref_id: expected_key, type:'Embeddable::Labbook'} }
@@ -65,11 +65,21 @@ describe LaraSerializationHelper do
 
       it "should call export on our test-subject" do
         expect(embeddable).to receive(:export).and_return(export)
-        expect(result).to match a_hash_including(a:1, b:2)
+        expect(result).to include(a:1, b:2)
       end
       it "should append `interactive_ref_id` and `type` tags the export data" do
         expect(embeddable).to receive(:export).and_return(export)
-        expect(result).to match a_hash_including(expected_hash)
+        expect(result).to include(expected_hash)
+      end
+
+      context "when the Labook has no interactive" do
+        let(:embeddable)    { mock_model(Embeddable::Labbook, interactive: nil) }
+        let(:expected_hash) { {interactive_ref_id: expected_key, type:'Embeddable::Labbook'} }
+
+        it "should not append `interactive_ref_id`" do
+          expect(embeddable).to receive(:export).and_return(export)
+          expect(result).not_to include(:interactive_ref_id)
+        end
       end
     end
   end

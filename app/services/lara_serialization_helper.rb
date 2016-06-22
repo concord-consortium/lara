@@ -31,7 +31,7 @@ class LaraSerializationHelper
     when MwInteractive, ImageInteractive, VideoInteractive
       results[:ref_id] = key(item)
     when Embeddable::Labbook
-      results[:interactive_ref_id] = key(item.interactive)
+      results[:interactive_ref_id] = key(item.interactive) if item.interactive
     end
     results
   end
