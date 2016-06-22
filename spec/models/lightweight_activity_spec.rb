@@ -108,7 +108,7 @@ describe LightweightActivity do
     end
 
     context 'when some pages are hidden' do
-      let (:page2) { FactoryGirl.create(:interactive_page_with_or, is_hidden: true) }
+      let (:page2) { FactoryGirl.create(:interactive_page_with_or, is_hidden: true, position: 2) }
 
       it 'doesnt report on items on the hidden page' do
         expect(activity.pages[1].is_hidden).to eq true
