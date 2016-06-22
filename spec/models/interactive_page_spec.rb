@@ -389,4 +389,80 @@ describe InteractivePage do
       end
     end
   end
+
+  describe '#reportable_items' do
+    let(:non_reportable_interactive) {
+      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
+    }
+    let(:reportable_interactive) {
+      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+    }
+    let(:video_interactive) { FactoryGirl.create(:video_interactive) }
+    let(:image_interactive) { FactoryGirl.create(:image_interactive) }
+
+    let(:or_question) { FactoryGirl.create(:or_embeddable) }
+    let(:im_question) { FactoryGirl.create(:image_question, :prompt => "draw your answer") }
+    let(:mc_question) { FactoryGirl.create(:mc_with_choices) }
+    let(:labbook_question) { FactoryGirl.create(:labbook, interactive: reportable_interactive) }
+    let(:xhtml) { FactoryGirl.create(:xhtml) }
+
+    before(:each) do
+      interactives.each{|interactive|
+        page.add_interactive interactive
+      }
+      embeddables.each{|embeddable|
+        page.add_embeddable embeddable
+      }
+      page.reload
+    end
+
+    subject { page.reportable_items }
+
+    context 'with a basic set of items' do
+      let(:interactives) { [reportable_interactive] }
+      let(:embeddables) { [or_question, im_question, mc_question]}
+      it { is_expected.to eql(embeddables + interactives) }
+    end
+
+    context 'with every possible interactive and embeddable type' do
+      let(:interactives) { [reportable_interactive, video_interactive, image_interactive]}
+      let(:embeddables) { [or_question, im_question, mc_question, labbook_question, xhtml]}
+      it 'returns just those that are reportable' do
+        expect(subject.length).to eql(5)
+      end
+    end
+
+    context 'with a non reportable interactive' do
+      let(:interactives) { [non_reportable_interactive] }
+      let(:embeddables) { [] }
+      it 'does not return it' do
+        expect(subject.length).to eql(0)
+      end
+    end
+
+    context 'when the reportable interactive is hidden' do
+      let(:reportable_interactive) {
+        FactoryGirl.create(:mw_interactive,
+          save_state: true,
+          has_report_url: true,
+          is_hidden: true)
+      }
+      let(:interactives) { [non_reportable_interactive] }
+      let(:embeddables) { [] }
+      it 'does not return it' do
+        expect(subject.length).to eql(0)
+      end
+    end
+
+    context 'when the embeddable open reponse is hidden' do
+      let(:or_question) { FactoryGirl.create(:or_embeddable, is_hidden: true) }
+      let(:interactives) { [] }
+      let(:embeddables) { [or_question] }
+      it 'does not return it' do
+        expect(subject.length).to eql(0)
+      end
+    end
+
+    # TODO: Add tests for Labbooks in various states of being hidden or not-hidden
+  end
 end

@@ -42,6 +42,10 @@ class VideoInteractive < ActiveRecord::Base
     end
   end
 
+  def reportable?
+    false
+  end
+
   def to_hash
     {
       poster_url: poster_url,
