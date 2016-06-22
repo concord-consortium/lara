@@ -1,6 +1,6 @@
 class MwInteractive < ActiveRecord::Base
   attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url,
-                  :is_hidden, :parent_id
+                  :is_hidden, :linked_interactive_id
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
