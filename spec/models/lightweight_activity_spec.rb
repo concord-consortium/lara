@@ -90,14 +90,10 @@ describe LightweightActivity do
   describe '#reportable_items' do
     let(:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
     let(:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
-    let(:non_reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
-    }
     let(:reportable_interactive) {
       FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
     }
     before(:each) do
-      page1.add_interactive non_reportable_interactive
       page2.add_interactive reportable_interactive
       activity.pages << page1
       activity.pages << page2
@@ -121,30 +117,6 @@ describe LightweightActivity do
         expect(activity.reportable_items).to eql(page1.embeddables)
       end
     end
-
-    context 'when the reportable interactive is hidden' do
-      let(:reportable_interactive) {
-        FactoryGirl.create(:mw_interactive,
-          save_state: true,
-          has_report_url: true,
-          is_hidden: true)
-      }
-      it 'the list of questions without the hidden reportable interactive' do
-        expect(reportable_interactive.is_hidden).to eq true
-        expect(activity.reportable_items).not_to include reportable_interactive
-      end
-    end
-
-    context 'when the embeddable open reponse is hidden' do
-      let (:page2) { FactoryGirl.create(:interactive_page_with_hidden_or) }
-      it 'returns an the questions without the open repose' do
-        expect(activity.reportable_items.length).to eql(2)
-        expect(activity.reportable_items).to include page1.embeddables[0]
-        expect(activity.reportable_items).to include reportable_interactive
-      end
-    end
-
-    # TODO: Add tests for Labbooks in various states of being hidden or not-hidden
   end
 
   context 'it has embeddables' do

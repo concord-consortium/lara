@@ -11,6 +11,10 @@ class ImageInteractive < ActiveRecord::Base
     "image interactive"
   end
 
+  def reportable?
+    false
+  end
+
   def to_hash
     {
       url: url,
