@@ -393,11 +393,11 @@ ActiveRecord::Schema.define(:version => 20160620140813) do
     t.boolean  "has_report_url", :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
-    t.boolean  "is_hidden",      :default => false
-    t.integer  "parent_id"
+    t.boolean  "is_hidden",             :default => false
+    t.integer  "linked_interactive_id"
   end
 
-  add_index "mw_interactives", ["parent_id"], :name => "index_mw_interactives_on_parent_id"
+  add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
 
   create_table "page_items", :force => true do |t|
     t.integer  "interactive_page_id"
