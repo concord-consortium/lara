@@ -42,20 +42,6 @@ describe SequencesController do
     end
   end
 
-  describe "GET dashboard_toc" do
-    before(:each) do
-      get :dashboard_toc, :id => sequence.to_param
-    end
-    let(:expected_json) { "{\"name\":\"MyString\",\"url\":\"/sequences/#{sequence.id}\",\"activities\":[]}"}
-    it "assigns the requested sequence as @sequence" do
-      expect(assigns(:sequence)).to eq(sequence)
-    end
-
-    it 'returns a json hash' do
-      expect(response).not_to be_nil
-      expect(response.body).to eql expected_json
-    end
-  end
 
   describe "GET new" do
     it "redirects to edit" do

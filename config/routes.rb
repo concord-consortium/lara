@@ -36,7 +36,8 @@ LightweightStandalone::Application.routes.draw do
       get :duplicate
       get :export
       get :show_status
-      get :dashboard_toc
+      # TODO: dpeprecate this Dashboard route
+      get :dashboard_toc, to: redirect { |params, request| "/api/v1/dashboard_toc/sequences/#{params[:id]}?#{request.params.to_query}" }
     end
     resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end
@@ -73,7 +74,8 @@ LightweightStandalone::Application.routes.draw do
       get 'preview'
       get 'export'
       get 'show_status'
-      get 'dashboard_toc'
+      # TODO: dpeprecate this Dashboard route
+      get :dashboard_toc, to: redirect { |params, request| "/api/v1/dashboard_toc/activities/#{params[:id]}?#{request.params.to_query}" }
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
@@ -146,11 +148,16 @@ LightweightStandalone::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      # For UW style tracked question reports (longitudinal reports)
       resources :question_trackers, only: [:index] do
         match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
       end
       match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
       match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
+
+      # For HASBOT C-Rater reports aka HAS Dashboard
+      match 'dashboard_runs' => "dashboard#runs", defaults: { format: 'json' }
+      match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc",  defaults: { format: 'json' }
     end
   end
 
@@ -176,7 +183,8 @@ LightweightStandalone::Application.routes.draw do
   get "/activities/:activity_id/single_page/:response_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
   get "/runs/details" => 'runs#details', :as => 'run_details'
-  get "/runs/dashboard" => 'runs#dashboard', :as => 'run_dashboard'
+  # TODO: Depricate this older dashboard route
+  get "/runs/dashboard" => 'api/v1/dashboard#runs'
   match "/runs/fix_broken_portal_runs/:run_id" => 'runs#fix_broken_portal_runs', :as => 'fix_broken_portal_runs'
   match "/runs/run_info/:run_id" => 'runs#run_info', :as => 'run_info'
 
