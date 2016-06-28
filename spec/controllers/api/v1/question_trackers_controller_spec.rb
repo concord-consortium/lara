@@ -56,7 +56,8 @@ describe Api::V1::QuestionTrackersController do
     it "should return a question tracker with the correct report_url" do
       get :find_by_activity, :activity_id => activity.id
       tracker_info = JSON.parse(response.body)[0]
-      expect(tracker_info['report_url']).to eq("http://test.host/api/v1/question_trackers/#{activity.id}/report")
+      # This worked before(?!) Used to check if the URL include #activity_id (instead of tracker_id), which is wrong.
+      expect(tracker_info['report_url']).to match(/\/\/test.host\/api\/v1\/question_trackers\/\d+\/report/)
     end
   end
 
