@@ -37,7 +37,7 @@ LightweightStandalone::Application.routes.draw do
       get :export
       get :show_status
       # TODO: dpeprecate this Dashboard route
-      get :dashboard_toc, to: redirect { |params, request| "/api/v1/dashboard_toc/sequences/#{params[:id]}?#{request.params.to_query}" }
+      get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/sequences/%{id}")
     end
     resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
   end
@@ -75,7 +75,7 @@ LightweightStandalone::Application.routes.draw do
       get 'export'
       get 'show_status'
       # TODO: dpeprecate this Dashboard route
-      get :dashboard_toc, to: redirect { |params, request| "/api/v1/dashboard_toc/activities/#{params[:id]}?#{request.params.to_query}" }
+      get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/activities/%{id}")
     end
     resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ } do
       member do
