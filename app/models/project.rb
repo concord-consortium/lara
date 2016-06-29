@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  DefaultName = 'Molecular Workbench'
+  DefaultName = 'Default Project'
 
   attr_accessible :footer, :logo, :title, :url, :theme_id, :about, :help
   has_many :sequences
@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 
   protected
   def self.create_default
-    self.create(:title => DefaultName, :logo => 'mw-logo.png', :url => 'http://mw.concord.org/nextgen')
+    self.create(:title => DefaultName, :logo => '', :url => 'http://concord.org/')
   end
 
   public

@@ -135,6 +135,7 @@ footer {
 .site-logo-mod {
   @extend .cf;
   padding: 13px 0;
+  min-height: 86px;
 }
 
 .site-logo {
@@ -1226,7 +1227,7 @@ footer {
     text-decoration: none;
     &:hover {
       text-decoration: underline;
-   } 
+   }
   }
 }
 
