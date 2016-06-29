@@ -11,6 +11,10 @@ class ImageInteractive < ActiveRecord::Base
     "image interactive"
   end
 
+  def self.portal_type
+    "unsupported"
+  end
+
   def reportable?
     false
   end

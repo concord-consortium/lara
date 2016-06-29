@@ -49,7 +49,7 @@ class InteractiveRunState < ActiveRecord::Base
   def portal_hash
     {
       "type" => "external_link",
-      "question_type" => interactive.class.name,
+      "question_type" => interactive.class.portal_type,
       "question_id" => interactive.id.to_s,
       "answer" => reporting_url,
       "is_final" => false
