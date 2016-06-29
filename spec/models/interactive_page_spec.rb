@@ -182,7 +182,8 @@ describe InteractivePage do
         show_interactive: page.show_interactive,
         show_info_assessment: page.show_info_assessment,
         embeddable_display_mode: page.embeddable_display_mode,
-        additional_sections: page.additional_sections
+        additional_sections: page.additional_sections,
+        is_completion: page.is_completion
       }
       expect(page.to_hash).to eq(expected)
     end
@@ -194,6 +195,7 @@ describe InteractivePage do
       expect(page_json['interactives'].length).to eq(page.interactives.count)
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
+      expect(page_json['is_completion']).to eq(page.is_completion)
     end
 
     describe "with a labbook" do
@@ -225,6 +227,7 @@ describe InteractivePage do
       expect(dupe.text).to eq(page.text)
       expect(dupe.is_hidden).to eq(page.is_hidden)
       expect(dupe.sidebar_title).to eq(page.sidebar_title)
+      expect(dupe.is_completion).to eq(page.is_completion)
     end
 
     it 'has copies of the original interactives' do
@@ -464,5 +467,23 @@ describe InteractivePage do
     end
 
     # TODO: Add tests for Labbooks in various states of being hidden or not-hidden
+  end
+
+  describe "A completion page" do
+    let(:page)       { FactoryGirl.create(:page, is_completion: true) }
+
+    describe "#to_hash" do
+      it "should respect the _is_completion property" do
+        expect(page.to_hash).to include({:is_completion => true})
+      end
+    end
+
+    describe "#duplicate" do
+      it "should respect the _is_completion property" do
+        copy = page.duplicate
+        expect(copy.is_completion).to be_truthy
+      end
+    end
+
   end
 end

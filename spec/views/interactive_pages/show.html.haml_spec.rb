@@ -86,4 +86,41 @@ describe "interactive_pages/show" do
       expect(rendered).to have_css('a.jcarousel-next')
     end
   end
+
+  describe 'the completion page' do
+    before(:each) do
+      assign(:activity, activity)
+    end
+    let (:page) do
+      p = FactoryGirl.create(:page, :name => "fake page", :lightweight_activity => activity, :is_completion => completion_flag)
+      allow(p).to receive_messages(:last? => true)
+      p
+    end
+    describe "when the page is a a completion page" do
+      let(:completion_flag) { true }
+      it 'should render the completion template' do
+        render
+        expect(rendered).to render_template(:partial => 'interactive_pages/_show_completion')
+      end
+      it 'should not render the regular show template' do
+        render
+        expect(rendered).not_to render_template(:partial => 'interactive_pages/_show')
+      end
+      it 'should include a congratulations message' do
+        render
+        expect(rendered).to have_css(".congratulations-block")
+      end
+    end
+    describe "when the page is not a completion page" do
+      let(:completion_flag) { false }
+      it 'should render the normal show template' do
+        render
+        expect(rendered).to render_template(:partial => 'interactive_pages/_show')
+      end
+      it 'should not render the completion template' do
+        render
+        expect(rendered).not_to render_template(:partial => 'interactive_pages/_show_completion')
+      end
+    end
+  end
 end
