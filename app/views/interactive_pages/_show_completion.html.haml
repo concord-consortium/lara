@@ -1,0 +1,119 @@
+- next_activity   = @sequence.next_activity(@page.lightweight_activity) if @sequence
+- report_path     = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+- page_name       = @page.name || @activity.name + ":#{@page.position}"
+- exit_link       = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
+- completed_unit  = @sequence && (!next_activity)
+
+- complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
+- congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
+- finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY')
+- finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
+- generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
+- start_next_t        = t("COMPLETION_PAGE.START_NEXT")
+- exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
+
+- if next_activity
+  - continue_text   = t("COMPLETION_PAGE.CONTINUE", {next_activity: (next_activity.name if next_activity)})
+- else
+  - continue_text   = t("COMPLETION_PAGE.EXIT")
+
+- content_for :title do
+  = page_name
+
+.intro-mod
+  %h4.h4= complete_header_t
+
+-# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-6040, r-7030
+.content-mod{ :class => 'l-full-width' }
+  .ui-block-1
+    .congratulations-block
+      %div
+        %i.fa.fa-check-square-o.fa-2x
+        %span.congratulations=congratulations_t
+        %span.finished-activity=finished_activity_t
+        - if completed_unit
+          %span.finished-sequence=finished_sequence_t
+      .submit.report
+        %a{:href => report_path, :class => 'gen-report', :target => 'new' }
+          %input{ :class => 'button', :type => 'submit', :value => generate_report_t }
+    .continue=continue_text
+    .next-activity
+      .image-preview
+        -if next_activity && next_activity.thumbnail_url.present?
+          %img{src: next_activity.thumbnail_url, alt: next_activity.name}
+      .description
+        -if next_activity
+          %h1  Next Activity
+          %h2= next_activity.name
+          = next_activity.description.html_safe
+          - if next_activity.time_to_complete
+            .estimated-time
+              %i.fa.fa-clock-o.fa-2x
+              = time_to_complete(next_activity.time_to_complete)
+          .finish-links
+            %a{ :href => runnable_activity_page_path(next_activity, next_activity.visible_pages.first ) }
+              .submit
+                %input.button{ :type => "submit", :value => start_next_t}
+            or
+            %a.exit{:href => exit_link}=exit_label_t
+        - else
+          .finish-links
+            %a.exit{:href => exit_link}=exit_label_t
+
+:sass
+  .intro-mod
+    .h4
+      font-weight: 100
+      font-size: 19pt
+  .ui-block-1
+    div
+      padding: 0.5em
+  i
+    vertical-align: middle
+
+  .content-mod
+    .congratulations-block
+      vertical-align: text-top
+      box-sizing: border-box
+      background-color: hsl(184, 67%, 91%)
+      font-style: italic
+      color: hsl(184, 67%, 40%)
+      display: flex
+      align-content: center
+      justify-content: space-between
+      .congratulations
+        font-weight: bold
+      input[type="submit"].button
+        margin: 0px
+
+    .continue
+      font-weight: 100
+
+    .finish-links
+      text-align: center
+      a:hover
+        text-decoration: none
+      a.exit
+        font-weight: bold
+        text-decoration: underline
+
+    .next-activity
+      display: flex
+      justify-content: space-between
+      align-items: flex-start
+      h1
+        font-size: 16pt
+        color: hsl(0,0%,50%)
+        text-transform: uppercase
+        font-weight: 100
+      h2
+        font-weight: 100
+        font-size: 18pt
+      div
+        padding: 0.5em
+      .image-preview
+        margin: 0px
+        overflow: hidden
+
+      .description
+        margin: 0px
