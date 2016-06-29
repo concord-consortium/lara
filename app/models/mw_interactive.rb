@@ -23,6 +23,10 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
+  def self.portal_type
+    "iframe interactive"
+  end
+
   # returns the aspect ratio of the interactive, determined by dividing the width by the height.
   # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
   # will be 2.
