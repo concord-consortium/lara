@@ -1,21 +1,27 @@
-- next_activity   = @sequence.next_activity(@page.lightweight_activity) if @sequence
-- report_path     = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
-- page_name       = @page.name || @activity.name + ":#{@page.position}"
-- exit_link       = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
-- completed_unit  = @sequence && (!next_activity)
+:ruby
+  # These strings are configured in 'config/locales/en.yml'
+  next_activity      = @sequence.next_activity(@page.lightweight_activity) if @sequence
+  report_path        = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+  page_name          = @page.name || @activity.name + ":#{@page.position}"
+  exit_link          = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
+  completed_activity = @run && @run.completed?
+  completed_sequence = completed_activity && @sequence && (!next_activity)
 
-- complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
-- congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
-- finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY')
-- finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
-- generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
-- start_next_t        = t("COMPLETION_PAGE.START_NEXT")
-- exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
+  complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
+  congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
+  finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY')
+  not_finished_activity_t = t('COMPLETION_PAGE.UNFINISHED_ACTIVITY', activity: @activity.name)
 
-- if next_activity
-  - continue_text   = t("COMPLETION_PAGE.CONTINUE", {next_activity: (next_activity.name if next_activity)})
-- else
-  - continue_text   = t("COMPLETION_PAGE.EXIT")
+  finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
+  generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
+  start_next_t        = t("COMPLETION_PAGE.START_NEXT")
+  exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
+
+  if next_activity
+    continue_text   = t("COMPLETION_PAGE.CONTINUE", {next_activity: (next_activity.name if next_activity)})
+  else
+    continue_text   = t("COMPLETION_PAGE.EXIT")
+  end
 
 - content_for :title do
   = page_name
@@ -28,11 +34,14 @@
   .ui-block-1
     .congratulations-block
       %div
-        %i.fa.fa-check-square-o.fa-2x
-        %span.congratulations=congratulations_t
-        %span.finished-activity=finished_activity_t
-        - if completed_unit
-          %span.finished-sequence=finished_sequence_t
+        - if completed_activity
+          %i.fa.fa-check-square-o.fa-2x
+          %span.congratulations=congratulations_t
+          %span.finished-activity=finished_activity_t
+          - if completed_sequence
+            %span.finished-sequence=finished_sequence_t
+        - else
+          %span.unfinished-activity=not_finished_activity_t
       .submit.report
         %a{:href => report_path, :class => 'gen-report', :target => 'new' }
           %input{ :class => 'button', :type => 'submit', :value => generate_report_t }
