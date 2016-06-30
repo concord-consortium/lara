@@ -321,8 +321,6 @@ class Run < ActiveRecord::Base
 
   def info
     # begin
-      q_activities = question_answers.map { |a| a.question.activity.id}.uniq.join(", ")
-      q_activities = "[#{q_activities}]"
       info=<<-EOF
                  run_id: #{id}
                 run_key: #{key}
@@ -337,7 +335,6 @@ class Run < ActiveRecord::Base
            sequence_run: #{sequence_run_id}
              other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
    other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
-     acitvity questions: #{q_activities}
       EOF
       info.gsub(/^\s+/,'')
     # rescue NameError => e
