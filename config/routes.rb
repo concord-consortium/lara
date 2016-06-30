@@ -67,6 +67,7 @@ LightweightStandalone::Application.routes.draw do
     member do
       get 'reorder_pages'
       get 'single_page'
+      get 'print_blank'
       get 'summary'
       get 'resubmit_answers'
       get 'publish'

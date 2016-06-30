@@ -85,6 +85,12 @@ class LightweightActivitiesController < ApplicationController
     @labbook_is_under_interactive = true
   end
 
+  def print_blank
+    authorize! :read, @activity
+    @run = Run.new() #Temporary run for the answer finder. Don't persist.
+    setup_show
+  end
+
   def summary
     authorize! :read, @activity
     current_theme
@@ -278,6 +284,8 @@ class LightweightActivitiesController < ApplicationController
       return 'runtime'
     when 'preview'
       return 'runtime'
+    when 'print_blank'
+      return 'print_blank'
     when 'single_page'
       return 'runtime'
     when 'summary'

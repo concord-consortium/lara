@@ -128,3 +128,7 @@ en:
     CONFIRM_CLOSE: "Exit %{activity}?"
     EXIT_LABEL: "Exit"
     NEXT_UP: "Next Up…"
+  PRINT_BLANK:
+    PRINT: "Print \"%{activity}\""
+    PRINT_WARNING: "Close this window when you are done printing \"%{activity}\"."
+
