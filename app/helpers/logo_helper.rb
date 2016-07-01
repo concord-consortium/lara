@@ -10,19 +10,16 @@ module LogoHelper
 
   def project_logo_tag
     project = @project
-    if project and !project.logo.blank?
+    if project and project.logo.present?
       return logo_tag(project.logo, project.title, project.url)
     end
-    return mw_logo_tag
+    return nil
   end
 
   def sequence_logo_tag
     sequence = @sequence
-    return nil unless sequence
+    return nil unless sequence && sequence.logo.present?
     logo = sequence.logo
-    if logo.blank?
-      logo = "home_blue.png"
-    end
 
     if @sequence_run
       url = sequence_path(:id => sequence.id, :show_index => true, :sequence_run => @sequence_run.id)
@@ -47,17 +44,12 @@ module LogoHelper
   end
 
   def left_logo_tag
-    default = mw_logo_tag
-    sequence = sequence_logo_tag
-    if sequence
-      return sequence
-    end
-    return project_logo_tag
+    return sequence_logo_tag || project_logo_tag || nil
   end
 
   def right_logo_tag
     if sequence_logo_tag
-      return project_logo_tag
+      return project_logo_tag || concord_logo_tag
     end
     return concord_logo_tag
   end
