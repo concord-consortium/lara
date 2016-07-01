@@ -42,13 +42,30 @@ describe PublicationsController do
   end
 
   describe "#add_portal" do
-    let(:good_body) { "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"thumbnail_url\":\"thumbnail\",\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}" }
+    let(:activity_hash) {
+      {"type"          =>"Activity",
+       "name"          =>"Activity One",
+       "description"   =>"Activity One Description",
+       "url"           =>"http://test.host/activities/#{act_one.id}",
+       "create_url"    =>"http://test.host/activities/#{act_one.id}",
+       "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
+       "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
+       "thumbnail_url" =>"thumbnail",
+       "author_email"  => @user.email,
+       "is_locked"     =>false,
+       "sections"      => [
+           {"name"  => "Activity One Section",
+            "pages" => []
+           }
+       ]}
+    }
+    let(:good_body) { activity_hash.to_json }
     let(:publishing_url) { "http://foo.bar/publish/v2/blarg"}
     let(:url) { "http://foo.bar/"}
     let(:strategy_name) { "foo_bar"}
     let(:mock_portal) { double(:publishing_url => publishing_url, :url => url, :strategy_name => strategy_name) }
     let(:good_request) {{
-      :body => "{\"type\":\"Activity\",\"name\":\"Activity One\",\"description\":\"Activity One Description\",\"url\":\"http://test.host/activities/#{act_one.id}\",\"create_url\":\"http://test.host/activities/#{act_one.id}\",\"thumbnail_url\":\"thumbnail\",\"author_email\":\"#{@user.email}\",\"is_locked\":false,\"sections\":[{\"name\":\"Activity One Section\",\"pages\":[]}]}",
+      :body => good_body,
       :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'}
     }}
     let(:good_response)   { {:status => 201, :body => "", :headers => {} }}

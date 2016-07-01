@@ -312,16 +312,20 @@ describe LightweightActivity do
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
+      author_url = "http://test.host/activities/#{activity.id}/edit"
+      print_url = "http://test.host/activities/#{activity.id}/print_blank"
       {
         "type"          =>"Activity",
         "name"          => activity.name,
         "description"   => activity.description,
         "url"           => url,
         "create_url"    => url,
+        "author_url"    => author_url,
+        "print_url"     => print_url,
         "thumbnail_url" => thumbnail_url,
         "author_email"  => activity.user.email,
         "is_locked"     => false,
-        "sections"=>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
+        "sections"      =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end
 
