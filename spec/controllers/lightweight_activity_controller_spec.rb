@@ -167,6 +167,14 @@ describe LightweightActivitiesController do
     end
   end
 
+  describe '#print_blank' do
+    it 'renders print_blank' do
+      page
+      get :print_blank, :id => act.id
+      expect(response).to render_template('lightweight_activities/print_blank')
+    end
+  end
+
   describe '#summary' do
 
     it 'renders 404 when the activity does not exist' do
