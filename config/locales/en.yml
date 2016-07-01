@@ -118,8 +118,8 @@ en:
   COMPLETION_PAGE:
     HEADER: "%{activity} activity complete!"
     CONGRATULATIONS: "Congratulations!"
-    FINISHED_ACTIVITY: "You've finished this activity and your work has been saved."
-    UNFINISHED_ACTIVITY: "It looks like you haven't quite finished %{activity} # yet. The answers you've given have been saved."
+    FINISHED_ACTIVITY: "You have reached the end of \"%{activity}\" and your work has been saved."
+    UNFINISHED_ACTIVITY: "It looks like you haven't quite finished \"%{activity}\" yet. The answers you've given have been saved."
     FINISHED_SEQUENCE: "You have completed all your work for this module!"
     CONTINUE: "Continue on to %{next_activity}, or click \"Exit\" to close the activity."
     EXIT: "Your work has been saved. Click \"Exit\" to close the activity."
@@ -127,3 +127,4 @@ en:
     GENERATE_A_REPORT: "Show All Answers"
     CONFIRM_CLOSE: "Exit %{activity}?"
     EXIT_LABEL: "Exit"
+    NEXT_UP: "Next Up…"
