@@ -87,7 +87,7 @@ class LightweightActivitiesController < ApplicationController
 
   def print_blank
     authorize! :read, @activity
-    @run = Run.new() #Temporary run for the answer finder. Don't persist.
+    @run = Run.new()
     setup_show
   end
 
