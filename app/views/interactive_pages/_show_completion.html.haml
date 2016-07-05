@@ -16,7 +16,7 @@
   generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
   start_next_t        = t("COMPLETION_PAGE.START_NEXT")
   exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
-  next_up             = t("COMPLETION_PAGE.NEXT_UP")
+  next_up_t           = t("COMPLETION_PAGE.NEXT_UP")
 
 
 - content_for :title do
@@ -49,7 +49,7 @@
           %img{src: next_activity.thumbnail_url, alt: next_activity.name}
       .description
         -if next_activity
-          %h1= next_up
+          %h1= next_up_t
           %h2.h2= next_activity.name
           = next_activity.description.html_safe
           .finish-links
