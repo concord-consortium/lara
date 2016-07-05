@@ -1,0 +1,132 @@
+:ruby
+  # These strings are configured in 'config/locales/en.yml'
+  next_activity      = @sequence.next_activity(@page.lightweight_activity) if @sequence
+  report_path        = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+  page_name          = @page.name || @activity.name + ":#{@page.position}"
+  exit_link          = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
+  completed_activity = @run && @run.completed?
+  completed_sequence = completed_activity && @sequence && (!next_activity)
+
+  complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
+  congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
+  finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY', activity: @activity.name)
+  not_finished_activity_t = t('COMPLETION_PAGE.UNFINISHED_ACTIVITY', activity: @activity.name)
+
+  finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
+  generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
+  start_next_t        = t("COMPLETION_PAGE.START_NEXT")
+  exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
+  next_up_t           = t("COMPLETION_PAGE.NEXT_UP")
+
+
+- content_for :title do
+  = page_name
+
+.intro-mod
+  - if completed_activity
+    %h4.h4= complete_header_t
+
+-# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-6040, r-7030
+.content-mod{ :class => 'l-full-width' }
+  .ui-block-1
+    .congratulations-block
+      %div
+        - if completed_activity
+          %i.fa.fa-check-square-o.fa-2x
+          %span.congratulations=congratulations_t
+          %span.finished-activity=finished_activity_t
+          - if completed_sequence
+            %span.finished-sequence=finished_sequence_t
+        - else
+          %span.unfinished-activity=not_finished_activity_t
+      .submit.report
+        %a{:href => report_path, :class => 'gen-report', :target => 'new' }
+          %input{ :class => 'button', :type => 'submit', :value => generate_report_t }
+
+    .next-activity
+      .image-preview
+        -if next_activity && next_activity.thumbnail_url.present?
+          %img{src: next_activity.thumbnail_url, alt: next_activity.name}
+      .description
+        -if next_activity
+          %h1= next_up_t
+          %h2.h2= next_activity.name
+          = next_activity.description.html_safe
+          .finish-links
+            %a{ :href => runnable_activity_page_path(next_activity, next_activity.visible_pages.first ) }
+              %input.button{ :type => "submit", :value => start_next_t}
+            or
+            %a.exit{:href => exit_link}=exit_label_t
+        - else
+          .finish-links
+            %a.exit{:href => exit_link}=exit_label_t
+
+:sass
+  .intro-mod
+    .h4
+      font-weight: 100
+      font-size: 19pt
+  .ui-block-1
+    div
+      padding: 0.5em
+  i
+    vertical-align: middle
+
+  .content-mod
+    .congratulations-block
+      vertical-align: text-top
+      box-sizing: border-box
+      background-color: hsl(184, 67%, 91%)
+      font-style: italic
+      color: hsl(184, 67%, 40%)
+      display: flex
+      align-content: center
+      justify-content: space-between
+      font-size: 16pt
+      font-weight: bold
+
+      input[type="submit"].button
+        font-size: 10pt
+        margin: 0px
+
+    .continue
+      font-weight: 100
+
+
+    .next-activity
+      display: flex
+      justify-content: flex-start
+      align-items: flex-start
+      background-color: hsl(0, 0%, 91%)
+      padding: 10px
+      margin-top: 20px
+      .finish-links
+        padding-left: 0px
+        a:hover
+          text-decoration: none
+        a.exit
+          font-weight: bold
+          text-decoration: underline
+
+      h1
+        font-size: 16pt
+        color: hsl(0,0%,50%)
+        text-transform: uppercase
+        font-weight: 100
+      h2
+        font-weight: 400
+        font-size: 18pt
+        color: hsl(184, 67%, 40%)
+      div
+        padding: 0.5em
+      .image-preview
+        margin: 0px
+        overflow: hidden
+        img
+          width: 200px
+          height: auto
+      input[type="submit"]
+        margin: 0px
+        display: inline-block
+      .description
+        margin: 0px

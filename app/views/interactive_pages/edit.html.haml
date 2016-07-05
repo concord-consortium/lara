@@ -57,55 +57,62 @@
         Hidden
       %p.page-section-controls#page-section-controls
         %label
-          = f.check_box :show_introduction, :onchange => 'this.form.submit();'
+          = f.check_box :show_introduction, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
           Page introduction
         %label
-          = f.check_box :show_info_assessment, :onchange => 'this.form.submit();'
+          = f.check_box :show_info_assessment, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
           Info/Assessment block
         %label
-          = f.check_box :show_interactive, :onchange => 'this.form.submit();'
+          = f.check_box :show_interactive, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
           Interactive box
         %label
-          = f.check_box :show_sidebar, :onchange => 'this.form.submit();'
+          = f.check_box :show_sidebar, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
           Page sidebar text
+        %label
+          = f.check_box :is_completion, :onchange => 'this.form.submit();'
+          Page is Completion page
         - InteractivePage.registered_additional_sections.each do |s|
           %label
-            = f.check_box "show_#{s[:name]}", :onchange => 'this.form.submit();'
+            = f.check_box "show_#{s[:name]}", :disabled => @page.is_completion, :onchange => 'this.form.submit();'
             = s[:label]
 
-  - if @page.show_introduction
-    .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
-      %h2 Introduction
-      = editable_field @page, :text, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
-  .text
-    - if @page.show_info_assessment
-      .questions
-        %h2 Info/Assess
-        = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-          = embeddable_selector
-          = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
-        #sort_embeddables.embeddables_list
-          - @page.section_embeddables(nil).each do |e|
-            - tracked = e.respond_to?(:tracked_question) && e.tracked_question
-            - tracked_class = tracked ? 'tracked' : ''
-            .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-              = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
-    -# Additional sections are dynamically loaded, based on .visible_sections value:
-    - @page.visible_sections.each do |s|
-      = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
-  - if @page.show_interactive
-    %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
-      = form_tag add_interactive_activity_page_path(@activity, @page), :class => 'interactives-form' do
-        = select_tag :interactive_type, options_for_select(InteractivePage::INTERACTIVE_TYPES.map { |t| [t[:name], t[:class_name]] })
-        = submit_tag 'Add Interactive'
-      - @page.interactives.each do |interactive|
-        = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive, :allow_hide => false}
-  - if @page.show_sidebar
-    .sidebar
-      %h2
-        = editable_field @page, :sidebar_title, {:type => 'text' }
-      = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
-  = render :partial => "trackedQuestionSelector", locals: {page: @page, activity: @activity}
+  - if @page.is_completion
+    - # TODO: Display preview of student completion page.
+    =render :partial => "show_completion"
+  - else
+    - if @page.show_introduction
+      .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
+        %h2 Introduction
+        = editable_field @page, :text, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
+    .text
+      - if @page.show_info_assessment
+        .questions
+          %h2 Info/Assess
+          = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+            = embeddable_selector
+            = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
+          #sort_embeddables.embeddables_list
+            - @page.section_embeddables(nil).each do |e|
+              - tracked = e.respond_to?(:tracked_question) && e.tracked_question
+              - tracked_class = tracked ? 'tracked' : ''
+              .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+                = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+      -# Additional sections are dynamically loaded, based on .visible_sections value:
+      - @page.visible_sections.each do |s|
+        = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
+    - if @page.show_interactive
+      %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
+        = form_tag add_interactive_activity_page_path(@activity, @page), :class => 'interactives-form' do
+          = select_tag :interactive_type, options_for_select(InteractivePage::INTERACTIVE_TYPES.map { |t| [t[:name], t[:class_name]] })
+          = submit_tag 'Add Interactive'
+        - @page.interactives.each do |interactive|
+          = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive, :allow_hide => false}
+    - if @page.show_sidebar
+      .sidebar
+        %h2
+          = editable_field @page, :sidebar_title, {:type => 'text' }
+        = editable_field @page, :sidebar, { :use_trigger => true, :open_if_empty => true, :edit_string => 'Edit', :type => 'wysiwyg', :rows => 5, :cols => 130, :width => '99%', :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :placeholder => '', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } } } }
+    = render :partial => "trackedQuestionSelector", locals: {page: @page, activity: @activity}
 
 :javascript
   $(function() {
