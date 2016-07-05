@@ -1,0 +1,40 @@
+= content_for :title do
+  = "Print #{@sequence.name}"
+
+= content_for :body_class do
+  = 'l-single-page'
+
+.screen-only
+  .print-warning
+    - if @sequence.thumbnail_url.present?
+      %img{src:@sequence.thumbnail_url}
+    %div=t("PRINT_BLANK.PRINT_WARNING", activity: @sequence.name)
+
+    .submit
+      - @sequence.activities.each do |a|
+        %a{href: print_blank_activity_path(a) }
+          %input.button{type: 'submit', value: t('PRINT_BLANK.PRINT', activity: a.name)}
+
+
+:sass
+  .print-warning
+    box-sizing: border-box
+    margin: 1em auto
+    width: 400px
+    padding: 10px
+    text-align: left
+    background-color: hsl(200,0%,95%)
+    border-radius: 6px
+    font-size: 12pt
+    overflow: hidden
+    .submit
+      width: auto
+      input[type="submit"], button[type="submit"]
+        margin: 1em 0px
+    img
+      max-width: 380px
+      margin-bottom: 1em
+
+  div.activity-mod
+    div.site-width
+      background: none

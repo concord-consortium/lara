@@ -182,12 +182,16 @@ class LightweightActivity < ActiveRecord::Base
 
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
+    author_url = "#{local_url}/edit"
+    print_url = "#{local_url}/print_blank"
     data = {
       'type' => "Activity",
       "name" => self.name,
       "description" => self.description,
       "url" => local_url,
       "create_url" => local_url,
+      "author_url" => author_url,
+      "print_url"  => print_url,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email,
       "is_locked" => self.is_locked
