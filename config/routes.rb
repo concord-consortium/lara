@@ -32,6 +32,7 @@ LightweightStandalone::Application.routes.draw do
       post :add_activity
       post :remove_activity
       get :reorder_activities
+      get :print_blank
       get :publish
       get :duplicate
       get :export
