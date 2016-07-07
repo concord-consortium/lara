@@ -138,7 +138,7 @@ class IFrameSaver
         version: 1,
         error: err
         interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
-        hasLinkedState: response?.has_linked_state or false
+        hasLinkedInteractive: response?.has_linked_interactive or false
         linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
 
     $.ajax
