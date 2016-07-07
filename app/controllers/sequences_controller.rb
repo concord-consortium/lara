@@ -1,7 +1,5 @@
 
 class SequencesController < ApplicationController
-  layout 'sequence_run', :only => [:show]
-  layout 'print_blank',  :only => [:print_blank]
   before_filter :set_sequence, :except => [:index, :new, :create]
   before_filter :find_or_create_sequence_run, :only => [:show]
 
@@ -22,6 +20,7 @@ class SequencesController < ApplicationController
   # GET /sequences/1/print_blank
   def print_blank
     authorize! :read, @sequence
+    render layout: "print_blank"
   end
 
   # GET /sequences/1
@@ -39,6 +38,7 @@ class SequencesController < ApplicationController
           end
         end
         # show.html.erb  ⬅ default template is shown otherwise
+        render layout: "sequence_run"
       end
       format.json { render json: @sequence }
     end
