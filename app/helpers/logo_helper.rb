@@ -18,7 +18,7 @@ module LogoHelper
 
   def sequence_logo_tag
     sequence = @sequence
-    return nil unless sequence && sequence.logo.present?
+    return nil unless sequence
     logo = sequence.logo
 
     if @sequence_run
@@ -26,7 +26,10 @@ module LogoHelper
     else
       url = sequence_path(:id => sequence.id, :show_index => true)
     end
-    buffer = logo_tag(logo, sequence.display_title, url)
+    buffer = ''.html_safe
+    if logo.present?
+      buffer << logo_tag(logo, sequence.display_title, url)
+    end
     title  = @sequence.display_title.blank? ? @sequence.title : @sequence.display_title
     unless title.blank?
       link = content_tag(:a, title, :class => "sequence_title", :href=> url)
