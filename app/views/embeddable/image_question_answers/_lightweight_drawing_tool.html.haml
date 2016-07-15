@@ -1,5 +1,4 @@
-.question-hdr
-  %h5.h5= "#{t("QUESTION")} ##{embeddable.question_index}"
+= render :partial => 'shared/question_header', :locals => { :embeddable => embeddable }
 .question-bd
   .question-txt
     != embeddable.drawing_prompt

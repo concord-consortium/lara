@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160629165445) do
+ActiveRecord::Schema.define(:version => 20160714135247) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -65,12 +65,12 @@ ActiveRecord::Schema.define(:version => 20160629165445) do
   add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id", "created_at"], :name => "c_rater_fed_submission_page_run_created_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
-    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20160629165445) do
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                :default => false
+    t.text     "hint"
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -219,6 +220,7 @@ ActiveRecord::Schema.define(:version => 20160629165445) do
     t.text     "prediction_feedback"
     t.string   "layout",                   :default => "vertical"
     t.boolean  "is_hidden",                :default => false
+    t.text     "hint"
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -243,8 +245,9 @@ ActiveRecord::Schema.define(:version => 20160629165445) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
-    t.string   "default_text"
     t.boolean  "is_hidden",                :default => false
+    t.string   "default_text"
+    t.text     "hint"
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -386,12 +389,12 @@ ActiveRecord::Schema.define(:version => 20160629165445) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "save_state",     :default => false
-    t.boolean  "has_report_url", :default => false
+    t.boolean  "save_state",            :default => false
+    t.boolean  "has_report_url",        :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
     t.boolean  "is_hidden",             :default => false
