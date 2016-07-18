@@ -78,7 +78,8 @@ module Embeddable
         name: name,
         prompt: prompt,
         custom_action_label: custom_action_label,
-        is_hidden: is_hidden
+        is_hidden: is_hidden,
+        hint: hint
       }
     end
 
@@ -92,7 +93,8 @@ module Embeddable
         :name,
         :prompt,
         :custom_action_label,
-        :is_hidden
+        :is_hidden,
+        :hint
       ])
     end
 

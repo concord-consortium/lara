@@ -92,7 +92,8 @@ module Embeddable
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         layout: layout,
-        is_hidden: is_hidden
+        is_hidden: is_hidden,
+        hint: hint
       }
     end
 
@@ -115,7 +116,8 @@ module Embeddable
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :layout,
-                                :is_hidden])
+                                :is_hidden,
+                                :hint])
 
       mc_export[:choices] = []
       

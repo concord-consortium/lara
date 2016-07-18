@@ -122,7 +122,8 @@ describe Embeddable::MultipleChoice do
         give_prediction_feedback: multichoice.give_prediction_feedback,
         prediction_feedback: multichoice.prediction_feedback,
         layout: multichoice.layout,
-        is_hidden: multichoice.is_hidden
+        is_hidden: multichoice.is_hidden,
+        hint: multichoice.hint
       }
       expect(multichoice.to_hash).to eq(expected)
     end

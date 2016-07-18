@@ -15,7 +15,8 @@ describe Embeddable::Labbook do
         name: labbook.name,
         prompt: labbook.prompt,
         custom_action_label: labbook.custom_action_label,
-        is_hidden: labbook.is_hidden
+        is_hidden: labbook.is_hidden,
+        hint: labbook.hint
       }
       expect(labbook.to_hash).to eq(expected)
     end
