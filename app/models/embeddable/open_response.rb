@@ -3,7 +3,7 @@ module Embeddable
     include Embeddable
 
 
-    attr_accessible :name, :prompt, :is_prediction, :give_prediction_feedback, :prediction_feedback, :default_text, :is_hidden
+    attr_accessible :name, :prompt, :hint, :is_prediction, :give_prediction_feedback, :prediction_feedback, :default_text, :is_hidden
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -26,7 +26,8 @@ module Embeddable
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         default_text: default_text,
-        is_hidden: is_hidden
+        is_hidden: is_hidden,
+        hint: hint
       }
     end
 
@@ -57,7 +58,8 @@ module Embeddable
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :default_text,
-                                :is_hidden])
+                                :is_hidden,
+                                :hint])
     end
 
     def self.import (import_hash)

@@ -1,0 +1,26 @@
+- embeddable_dom_id = "#{embeddable.class.to_s.demodulize.underscore}-#{embeddable.id}"
+- icon_id = "help-icon-#{embeddable_dom_id}"
+- content_id = "help-content-#{embeddable_dom_id}"
+- close_id = "help-close-#{embeddable_dom_id}"
+- label = t("QUESTION")
+- if embeddable.is_a? Embeddable::LabbookAnswer
+  - label = t("LABBOOK.ALBUM")
+
+.question-hdr
+  %h5.h5
+    = "#{label} ##{embeddable.question_index}"
+  - if embeddable.hint.present?
+    .help-icon{id: icon_id} ?
+
+- if embeddable.hint.present?
+  .help-content{id: content_id}
+    = embeddable.hint.html_safe
+    .close{id: close_id} hide this
+
+  :javascript
+    jQuery("##{icon_id}").on("click", function () {
+      jQuery("##{content_id}").slideToggle();
+    });
+    jQuery("##{close_id}").on("click", function () {
+      jQuery("##{content_id}").slideUp();
+    });

@@ -1,5 +1,5 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt, :bg_source, :bg_url, :drawing_prompt,
+  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt,
     :is_prediction, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   include Embeddable
@@ -38,7 +38,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       is_prediction: is_prediction,
       give_prediction_feedback: give_prediction_feedback,
       prediction_feedback: prediction_feedback,
-      is_hidden: is_hidden
+      is_hidden: is_hidden,
+      hint: hint
     }
   end
 
@@ -55,7 +56,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :is_prediction,
                               :give_prediction_feedback,
                               :prediction_feedback,
-                              :is_hidden])
+                              :is_hidden,
+                              :hint])
   end
   
   def self.import(import_hash)

@@ -5,6 +5,10 @@
   = f.text_field :name
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5, :class => 'wysiwyg'
+  = field_set_tag 'Hint' do
+    .help
+      If this is provided, the user will be able to see expandable hint next to the question title.
+      = f.text_area :hint, :rows => 5, :class => 'wysiwyg'
   = field_set_tag 'Layout',:id => "embeddable_layout_options" do
     .options
       %ul

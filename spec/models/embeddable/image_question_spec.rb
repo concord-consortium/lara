@@ -20,7 +20,8 @@ describe Embeddable::ImageQuestion do
         is_prediction: image_question.is_prediction,
         give_prediction_feedback: image_question.give_prediction_feedback,
         prediction_feedback: image_question.prediction_feedback,
-        is_hidden: image_question.is_hidden
+        is_hidden: image_question.is_hidden,
+        hint: image_question.hint
       }
       expect(image_question.to_hash).to eq(expected)
     end

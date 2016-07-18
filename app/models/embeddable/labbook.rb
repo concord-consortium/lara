@@ -18,7 +18,7 @@ module Embeddable
     attr_accessible :action_type, :name, :prompt,
       :custom_action_label, :is_hidden,
       :interactive_type, :interactive_id, :interactive,
-      :interactive_select_value
+      :interactive_select_value, :hint
 
     attr_writer :interactive_select_value
 
@@ -78,7 +78,8 @@ module Embeddable
         name: name,
         prompt: prompt,
         custom_action_label: custom_action_label,
-        is_hidden: is_hidden
+        is_hidden: is_hidden,
+        hint: hint
       }
     end
 
@@ -92,7 +93,8 @@ module Embeddable
         :name,
         :prompt,
         :custom_action_label,
-        :is_hidden
+        :is_hidden,
+        :hint
       ])
     end
 

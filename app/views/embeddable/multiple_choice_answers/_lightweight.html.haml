@@ -1,7 +1,6 @@
 - embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 - check_button_string = "check_button_#{embeddable_string}"
-.question-hdr
-  %h5.h5= "#{t("QUESTION")} ##{embeddable.question_index}"
+= render :partial => 'shared/question_header', :locals => { :embeddable => embeddable }
 .question-bd{ :id => embeddable_string }
   .question-txt
     != embeddable.prompt
