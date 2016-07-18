@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160714135247) do
+ActiveRecord::Schema.define(:version => 20160718123400) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20160714135247) do
     t.boolean  "is_hidden",           :default => false
     t.integer  "interactive_id"
     t.string   "interactive_type"
+    t.text     "hint"
   end
 
   add_index "embeddable_labbooks", ["interactive_id"], :name => "labbook_interactive_i_idx"

@@ -1,10 +1,13 @@
 - icon_id = "help-icon-#{embeddable.id}"
 - content_id = "help-content-#{embeddable.id}"
 - close_id = "help-close-#{embeddable.id}"
+- label = t("QUESTION")
+- if embeddable.is_a? Embeddable::LabbookAnswer
+  - label = t("LABBOOK.ALBUM")
 
 .question-hdr
   %h5.h5
-    = "#{t("QUESTION")} ##{embeddable.question_index}"
+    = "#{label} ##{embeddable.question_index}"
   - if embeddable.hint.present?
     .help-icon{id: icon_id} ?
 

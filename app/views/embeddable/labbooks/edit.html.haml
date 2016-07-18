@@ -15,6 +15,10 @@
       %li.interactive_choice
         = f.label 'Interactive'
         = f.select :interactive_select_value, @embeddable.interactives_for_select
+  = field_set_tag 'Hint' do
+    .help
+      If this is provided, the user will be able to see expandable hint next to the question title.
+      = f.text_area :hint, :rows => 5, :class => 'wysiwyg'
   = f.submit 'Cancel', class: 'close'
   = f.submit 'Save', class: 'embeddable-save'
 

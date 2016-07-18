@@ -18,7 +18,7 @@ module Embeddable
     attr_accessible :action_type, :name, :prompt,
       :custom_action_label, :is_hidden,
       :interactive_type, :interactive_id, :interactive,
-      :interactive_select_value
+      :interactive_select_value, :hint
 
     attr_writer :interactive_select_value
 
