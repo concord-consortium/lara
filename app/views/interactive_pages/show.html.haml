@@ -36,3 +36,8 @@
         .next-page
           %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.next_visible_page), :class => 'next forward_nav' }
             %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("NEXT")}
+
+-# Set Google Analytics content group based on the project. Note that project might be undefined
+-# for activity, but defined for sequence. Always try to use sequence data first.
+-# If @sequence is defined, it's a sequence run.
+= render partial: "shared/analytics_content_group", locals: {resource: @sequence || @activity}

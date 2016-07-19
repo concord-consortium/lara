@@ -16,3 +16,7 @@
       :locals => {:answer => answer, :index => index}
 
 = render :partial => 'shared/share_popup'
+-# Set Google Analytics content group based on the project. Note that project might be undefined
+-# for activity, but defined for sequence. Always try to use sequence data first.
+-# If @sequence is defined, it's a sequence run.
+= render partial: "shared/analytics_content_group", locals: {resource: @sequence || @activity}

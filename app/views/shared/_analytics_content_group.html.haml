@@ -1,0 +1,6 @@
+-# Set Google Analytics content group based on the activity or sequence (resource) project.
+- project = resource && resource.project
+- if project.present?
+  - content_for :google_analytics_setup do
+    :javascript
+      ga("set", "contentGroup1", "#{project.title}");

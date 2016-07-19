@@ -13,6 +13,11 @@
   %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
     %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
 
+-# Set Google Analytics content group based on the project. Note that project might be undefined
+-# for activity, but defined for sequence. Always try to use sequence data first.
+-# If @sequence is defined, it's a sequence run.
+= render partial: "shared/analytics_content_group", locals: {resource: @sequence || @activity}
+
 :javascript
   $(function(){
     if (window.location.search.indexOf("print=true") > -1) {
