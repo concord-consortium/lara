@@ -5,4 +5,8 @@
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-6899787-36', 'concord.org');
+
+= yield :google_analytics_setup
+
+:javascript
   ga('send', 'pageview');

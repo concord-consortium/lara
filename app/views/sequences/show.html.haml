@@ -54,4 +54,6 @@
             = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
 
     = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
-       
+
+-# Set Google Analytics content group based on the project.
+= render partial: "shared/analytics_content_group", locals: {resource: @sequence}

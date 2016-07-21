@@ -34,3 +34,8 @@
         %p.warning
           = t("NO_PAGES_IN_ACTIVITY")
           %input.button.disabled{ :type => "submit", :disabled => true, :value => t("BEGIN_ACTIVITY")}
+
+-# Set Google Analytics content group based on the project. Note that project might be undefined
+-# for activity, but defined for sequence. Always try to use sequence data first.
+-# If @sequence is defined, it's a sequence run.
+= render partial: "shared/analytics_content_group", locals: {resource: @sequence || @activity}
