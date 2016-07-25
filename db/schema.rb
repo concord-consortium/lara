@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160718123400) do
+ActiveRecord::Schema.define(:version => 20160722195644) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -359,6 +359,7 @@ ActiveRecord::Schema.define(:version => 20160718123400) do
     t.string   "publication_hash",      :limit => 40
     t.string   "imported_activity_url"
     t.integer  "copied_from_id"
+    t.text     "external_report_url"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -515,6 +516,7 @@ ActiveRecord::Schema.define(:version => 20160718123400) do
     t.text     "abstract"
     t.string   "publication_hash",      :limit => 40
     t.string   "imported_activity_url"
+    t.text     "external_report_url"
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"
