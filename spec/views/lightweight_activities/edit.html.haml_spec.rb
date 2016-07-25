@@ -8,7 +8,8 @@ end
 
 describe "lightweight_activities/edit" do
 
-  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name') }
+  let(:external_report_url) { "http://reporting.concord.org/" }
+  let(:activity)  { stub_model(LightweightActivity, :id => 1, :name => 'Activity name', :external_report_url => external_report_url) }
   let(:user)      { stub_model(User, :is_admin => false)      }
 
   before(:each) do
@@ -46,6 +47,12 @@ describe "lightweight_activities/edit" do
       render
       expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[description\]"[^<]*>/
     end
+
+    it 'should show the custom reporting URL' do
+      render
+      expect(rendered).to have_css("input#lightweight_activity_external_report_url[value=\"#{external_report_url}\"]")
+    end
+
 
     it 'should show related text' do
       render
