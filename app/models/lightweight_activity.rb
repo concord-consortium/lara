@@ -145,6 +145,7 @@ class LightweightActivity < ActiveRecord::Base
       related: activity_json_object[:related],
       theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
+      external_report_url: activity_json_object[:external_report_url],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode]

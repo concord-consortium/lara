@@ -313,10 +313,12 @@ describe LightweightActivity do
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
       imported_activity_url = "http://foo.com/"
+      external_report_url = "https://reports.concord.org/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
       expect(act.related).to eq(json[:related])
       expect(act.imported_activity_url).to eq(imported_activity_url)
+      expect(act.external_report_url).to eq(external_report_url)
       expect(act.pages.count).to eq(json[:pages].length)
     end
   end
