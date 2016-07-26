@@ -191,7 +191,9 @@ class LightweightActivity < ActiveRecord::Base
       "url" => local_url,
       "create_url" => local_url,
       "author_url" => author_url,
-      "print_url"  => print_url,
+      # disable the print url because the print_blank rendering has issues:
+      # https://www.pivotaltracker.com/story/show/102391640/comments/143981561
+      # "print_url"  => print_url,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email,
       "is_locked" => self.is_locked
