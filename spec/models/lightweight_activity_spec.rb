@@ -321,7 +321,8 @@ describe LightweightActivity do
         "url"           => url,
         "create_url"    => url,
         "author_url"    => author_url,
-        "print_url"     => print_url,
+        # print_url has been disabled due to rendering issues
+        # "print_url"     => print_url,
         "thumbnail_url" => thumbnail_url,
         "author_email"  => activity.user.email,
         "is_locked"     => false,
