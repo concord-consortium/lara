@@ -31,7 +31,7 @@ module Embeddable::Answer
       @question_index = nil
     end
     begin
-      @question_index ||= self.question.index_in_activity(self.run.activity)
+      @question_index ||= self.question.index_in_activity(self.run.activity || self.question.activity)
     rescue StandardError => e
       logger.warn "Rescued #{e.class}: #{e.message}"
       return nil

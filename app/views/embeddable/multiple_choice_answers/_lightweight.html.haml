@@ -19,7 +19,7 @@
           - embeddable.choices.each do |choice|
             = render :partial => "embeddable/multiple_choices/show_choice", :locals => {:embeddable => embeddable, :choice => choice, :check_button_string => check_button_string, :form => f}
     - if embeddable.enable_check_answer
-      %input{ :class => 'button check_answer_button',
+      %input{ :class => 'button check_answer_button screen-only',
               :type => 'button',
               :id => check_button_string,
               :value => 'Check answer',

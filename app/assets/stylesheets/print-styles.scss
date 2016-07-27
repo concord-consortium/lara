@@ -79,4 +79,29 @@
     padding-top: 0.5em;
     font-size: 0.75em;
   }
+
+  .image-question {
+    page-break-inside: avoid;
+    img {
+      width: 100%;
+      min-height: 250px;
+      border: 1px solid #333;
+      border-radius: 8px;
+    }
+  }
+
+  .jcarousel {
+    .embeddables {
+      position: initial;
+      width: 100%;
+    }
+    .question {
+      float: none;
+      overflow: auto;
+    }
+    .buttons {
+      display: none;
+    }
+  }
+
 }

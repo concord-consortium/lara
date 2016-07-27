@@ -20,7 +20,7 @@ module PredictionButtonHelper
           end
       end
       haml_tag :div, :class => 'is_final' do
-        haml_tag :div, :class => 'answer_is_final', 'data-is-final' => emb.is_final do
+        haml_tag :div, :class => 'answer_is_final screen-only', 'data-is-final' => emb.is_final do
           haml_tag :h5 do
             haml_concat t(:ANSWER_IS_FINAL)
             haml_tag :i, :class => "fa fa-lock"

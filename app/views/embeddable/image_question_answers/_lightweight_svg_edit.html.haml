@@ -3,7 +3,7 @@
 .question-bd
   .question-txt
     != embeddable.drawing_prompt
-    %div{:id => "image_question_#{embeddable.id}"}
+    %div.image-question{:id => "image_question_#{embeddable.id}"}
       = form_for embeddable, :remote => true, :html => {:'data-type' => 'json', :class=> 'live_submit'} do |f|
         -# The src of this thumbnail image will be rewritten by javascript
         %img.snapshot_thumbnail{:src => embeddable.annotated_image_url, :width => '100%'}
