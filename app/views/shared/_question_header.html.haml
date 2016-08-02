@@ -10,10 +10,10 @@
   %h5.h5
     = "#{label} ##{embeddable.question_index}"
   - if embeddable.hint.present?
-    .help-icon{id: icon_id} ?
+    .help-icon.screen-only{id: icon_id} ?
 
 - if embeddable.hint.present?
-  .help-content{id: content_id}
+  .help-content.screen-only{id: content_id}
     = embeddable.hint.html_safe
     .close{id: close_id} hide this
 

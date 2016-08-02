@@ -49,8 +49,7 @@ describe PublicationsController do
        "url"           =>"http://test.host/activities/#{act_one.id}",
        "create_url"    =>"http://test.host/activities/#{act_one.id}",
        "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
-       # print_url has been disabled due to issues with print rendering
-       #  "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
+       "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
        "thumbnail_url" =>"thumbnail",
        "author_email"  => @user.email,
        "is_locked"     =>false,
