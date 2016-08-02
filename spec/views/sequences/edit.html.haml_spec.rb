@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe "sequences/edit" do
+  let(:report_url) { "https://reporting.concord.org/" }
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
 
     @sequence = assign(:sequence, stub_model(Sequence,
       :title => "MyString",
-      :description => "MyText"
+      :description => "MyText",
+      :external_report_url => report_url
     ))
   end
 
@@ -21,6 +23,7 @@ describe "sequences/edit" do
       assert_select "select#sequence_theme_id", :name => "sequence[theme_id]" do
         assert_select 'option'
       end
+      assert_select "input#sequence_external_report_url", :value => report_url
     end
   end
 end

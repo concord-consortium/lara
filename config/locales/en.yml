@@ -29,6 +29,8 @@ en:
   PICK_ONE: "Pick one"
   GENERATE_A_REPORT: "Generate a report"
   EDIT: "Edit"
+  EXTERNAL_REPORT_URL: "Custom Reporting URL"
+  EXTERNAL_REPORT_WARNING: "(Don't change, unless you know what you are doing!)"
   DATA_WILL_NOT_BE_SAVED:  "Data will not be saved"
   TIME_TO_COMPLETE: "Estimated Time to Complete This Module:"
   MINUTES: "minutes"

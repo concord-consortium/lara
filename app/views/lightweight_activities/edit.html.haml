@@ -60,6 +60,11 @@
           .activity_thumbnail#thumbnail_preview
             %img
       .field
+        = f.label :external_report_url, t("EXTERNAL_REPORT_URL")
+        = f.text_field :external_report_url
+        %br
+          .hint=t("EXTERNAL_REPORT_WARNING")
+      .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
       - if current_user.is_admin

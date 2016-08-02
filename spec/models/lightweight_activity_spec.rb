@@ -3,8 +3,10 @@ require 'spec_helper'
 describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
+  let(:report_url)    { nil }
+  let(:act_opts)      { {thumbnail_url: thumbnail_url, external_report_url: report_url } }
   let(:activity)      {
-    activity = FactoryGirl.create(:activity, :thumbnail_url => thumbnail_url)
+    activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
     activity.save
     activity.theme = FactoryGirl.create(:theme)
@@ -168,14 +170,21 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout, editor_mode: activity.editor_mode }
+      expected = { name: activity.name, related: activity.related, :external_report_url => nil, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout, editor_mode: activity.editor_mode }
       expect(activity.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
-      it 'returns json of an activity' do
-        expect(activity.export[:pages].length).to eq(activity.pages.count)
+    let(:report_url) { "https://reports.concord.org/" }
+    before(:each) do
+      activity.external_report_url = report_url
+    end
+    it 'returns json of an activity' do
+      expect(activity.export[:pages].length).to eq(activity.pages.count)
+    end
+    it 'includes the report url' do
+      expect(activity.export['external_report_url']).to eq(report_url)
     end
   end
 
@@ -183,10 +192,12 @@ describe LightweightActivity do
     let(:owner)     { FactoryGirl.create(:user) }
     let(:edit_mode) { LightweightActivity::STANDARD_EDITOR_MODE }
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
+    let(:report_url) { "https://reports.concord.org/" }
 
     before :each do
       activity.layout = layout
       activity.editor_mode = edit_mode
+      activity.external_report_url = report_url
     end
 
     it 'creates a new LightweightActivity with attributes from the original' do
@@ -199,8 +210,9 @@ describe LightweightActivity do
       expect(dup.layout).to eq(activity.layout)
       expect(dup.editor_mode).to eq(activity.editor_mode)
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
-      expect(dup.copied_from_activity).to eq(activity)
+      expect(dup.external_report_url).to eq(report_url)
     end
+
     describe "an activity with an open response" do
       let(:prompt)        { "xyzzy" }
       let(:page)          { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
@@ -301,15 +313,18 @@ describe LightweightActivity do
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
       imported_activity_url = "http://foo.com/"
+      external_report_url = "https://reports.concord.org/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
       expect(act.related).to eq(json[:related])
       expect(act.imported_activity_url).to eq(imported_activity_url)
+      expect(act.external_report_url).to eq(external_report_url)
       expect(act.pages.count).to eq(json[:pages].length)
     end
   end
 
   describe '#serialize_for_portal' do
+    let(:report_url) { "http://reports.concord.org/" }
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
       author_url = "http://test.host/activities/#{activity.id}/edit"
@@ -322,10 +337,11 @@ describe LightweightActivity do
         "create_url"    => url,
         "author_url"    => author_url,
         "print_url"     => print_url,
-        "thumbnail_url" => thumbnail_url,
-        "author_email"  => activity.user.email,
-        "is_locked"     => false,
-        "sections"      =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
+        "thumbnail_url"       => thumbnail_url,
+        "author_email"        => activity.user.email,
+        "external_report_url" => activity.external_report_url,
+        "is_locked"           => false,
+        "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end
 
