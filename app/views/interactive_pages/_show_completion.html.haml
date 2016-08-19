@@ -53,7 +53,7 @@
           %h2.h2= next_activity.name
           = next_activity.description.html_safe
           .finish-links
-            %a{ :href => runnable_activity_page_path(next_activity, next_activity.visible_pages.first ) }
+            %a{ :href => sequence_activity_path(@sequence, next_activity, show_index: true)}
               %input.button{ :type => "submit", :value => start_next_t}
             or
             %a.exit{:href => exit_link}=exit_label_t
