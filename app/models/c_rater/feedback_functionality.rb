@@ -6,6 +6,8 @@ module CRater::FeedbackFunctionality
   extend ActiveSupport::Concern
   include Embeddable::FeedbackFunctionality
 
+  MAX_C_RATER_ATTEMPTS = 3
+
   # Overwrite Embeddable::FeedbackFunctionality association:
   included do
     has_many :feedback_items, as: :answer, class_name: 'CRater::FeedbackItem'
@@ -64,6 +66,12 @@ module CRater::FeedbackFunctionality
 
   def continue_feedback_processing(feedback_item)
     response = issue_c_rater_request(feedback_item)
+    attempts = 1
+    while !response[:success] && attempts < MAX_C_RATER_ATTEMPTS
+      sleep attempts * 0.2 # it's synchronous code, so don't wait too long
+      response = issue_c_rater_request(feedback_item)
+      attempts += 1
+    end
     if response[:success]
       feedback_item.status = CRater::FeedbackItem::STATUS_SUCCESS
       feedback_item.score = response[:score]

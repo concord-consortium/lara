@@ -6,6 +6,7 @@ class ArgumentationBlockController
   FEEDBACK_ID_SEL = '#feedback_on_answer_'
   FEEDBACK_TEXT_SEL = '.ab-robot-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
+  ERROR_MSG_SEL = '.ab-error'
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
   SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
@@ -18,15 +19,20 @@ class ArgumentationBlockController
     @submissionCount = @$submissionCount.data('submission-count') || 0
     @question = {}
     for q in @$element.find(QUESTION_FROMS_SEL)
-      isFeedbackDirty = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).data('dirty')
-      @question[q.id] = {
+      $feedbackEl = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL)
+      isFeedbackDirty = $feedbackEl.data('dirty')
+      error = $feedbackEl.data('error')
+      numericId = q.id.match(/\d+/)[0]
+      @question[numericId] = {
         # It will be updated by answer_for or no_answer_for event handler.
         answered: false,
         dirty: isFeedbackDirty,
+        error: error,
         # 'dirty-data' ensures that question will be always considered as dirty unless it's submitted.
         data: if isFeedbackDirty then 'dirty-data' else $(q).serialize(),
         formElement: q,
-        dirtyMsgElement: $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL).find(DIRTY_MSG_SEL)[0]
+        dirtyMsgElement: $feedbackEl.find(DIRTY_MSG_SEL)[0],
+        errorMsgElement: $feedbackEl.find(ERROR_MSG_SEL)[0]
       }
     @fbOnFeedback = new FeedbackOnFeedbackController(argBlockElement)
     @registerListeners()
@@ -47,7 +53,7 @@ class ArgumentationBlockController
       @submitButtonClicked(e)
 
   updateQuestion: (id, answered) ->
-    q = @question[id]
+    q = @question[id.match(/\d+/)[0]]
     # Undefined means that this question isn't part of the argumentation block.
     return unless q
     q.answered = answered
@@ -58,7 +64,7 @@ class ArgumentationBlockController
       return modalDialog(false, t('ARG_BLOCK.PLEASE_FEEDBACK_ON_FEEDBACK'))
     unless @allQuestionAnswered()
       return modalDialog(false, t('ARG_BLOCK.PLEASE_ANSWER'))
-    unless @anyQuestionDirty()
+    if !@anyQuestionDirty() && !@anyError()
       return modalDialog(false, t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
 
     @$submitBtn.prop('disabled', true)
@@ -71,9 +77,13 @@ class ArgumentationBlockController
       success: (data) =>
         for id, q of @question
           q.dirty = false # just updated
+          q.error = data.feedback_items[id].error
           q.data = $(q).serialize()
         LoggerUtils.submitArgblockLogging(@$submitBtn.data('page_id'))
-        @fbOnFeedback.activate(data.submission_id)
+        if @anyError()
+          alert(t('ARG_BLOCK.SUBMIT_ERROR'))
+        else
+          @fbOnFeedback.activate(data.submission_id)
         @submissionCount += 1
         @updateSubmitBtnText()
         @updateView(data.feedback_items)
@@ -96,13 +106,14 @@ class ArgumentationBlockController
     @updateSubmissionCount()
     @updateSubmitBtn()
     @updateDirtyQuestionMsgs()
+    @updateErrorMsgs()
     @updateForwardNavigationBlocking()
 
   updateSubmissionCount: ->
     @$submissionCount.text(@submissionCount)
 
   updateSubmitBtn: ->
-    if @allQuestionAnswered() && @anyQuestionDirty() && @feedbackOnFeedbackIsReady()
+    if @allQuestionAnswered() && (@anyQuestionDirty() || @anyError()) && @feedbackOnFeedbackIsReady()
       @$submitBtn.removeClass('disabled')
       @hideSubmitPrompt()
     else
@@ -142,7 +153,15 @@ class ArgumentationBlockController
       else
         $(q.dirtyMsgElement).slideUp()
 
+  updateErrorMsgs: ->
+    for id, q of @question
+      if q.error
+        $(q.errorMsgElement).slideDown()
+      else
+        $(q.errorMsgElement).slideUp()
+
   updateForwardNavigationBlocking: ->
+    console.log @allQuestionAnswered(),  @noDirtyQuestions(), @feedbackOnFeedbackIsReady()
     if @allQuestionAnswered() && @noDirtyQuestions() && @feedbackOnFeedbackIsReady()
       @enableForwardNavigation()
     else
@@ -174,9 +193,9 @@ class ArgumentationBlockController
       $feedbackScore.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)max-score-\S+/g) || []).join(' ') # matches all max-score-<val> classes
       # Set new score & max-score
-      if feedbackItem.score >= 0 && feedbackItem.score <= 6
+      $feedbackScore.addClass("max-score-#{feedbackItem.max_score || 6}")
+      if feedbackItem.score? && feedbackItem.score >= 0 && feedbackItem.score <= feedbackItem.max_score
         $feedbackScore.addClass("score-#{feedbackItem.score}")
-        $feedbackScore.addClass("max-score-#{feedbackItem.max_score}")
       else
         $feedbackScore.addClass("score--error")
       # Hide feedback if there is no text.
@@ -199,6 +218,11 @@ class ArgumentationBlockController
   anyQuestionDirty: ->
     for id, q of @question
       return true if q.dirty
+    false
+
+  anyError: ->
+    for id, q of @question
+      return true if q.error
     false
 
   noDirtyQuestions: ->

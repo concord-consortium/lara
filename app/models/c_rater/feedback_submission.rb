@@ -31,7 +31,7 @@ class CRater::FeedbackSubmission < ActiveRecord::Base
       unless f.nil?
         f.feedback_submission = submission
         f.save!
-        feedback_items[a.id] = {score: f.score, text: f.feedback_text, max_score: f.max_score}
+        feedback_items[a.id] = {score: f.score, text: f.feedback_text, max_score: f.max_score, error: f.error?}
       end
     end
     submission.propagate_to_collaborators
@@ -77,5 +77,9 @@ class CRater::FeedbackSubmission < ActiveRecord::Base
         fi_copy.save!
       end
     end
+  end
+
+  def any_errors?
+    feedback_items.any? {|fi| fi.error? }
   end
 end

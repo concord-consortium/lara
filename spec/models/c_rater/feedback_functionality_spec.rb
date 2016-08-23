@@ -161,6 +161,63 @@ describe CRater::FeedbackFunctionality do
         end
       end
 
+      context 'C-Rater service temporarily unavailable' do
+        let(:err_resp) { 'Service unavailable' }
+        before(:each) do
+          stub_request(:post, mock_url).to_return(
+            # 1st attempt: error
+            {status: 500, body: err_resp},
+            # 2nd attempt: error
+            {status: 500, body: err_resp},
+            # 3rd attempt: normal response
+            {:status => 200, :body => response,
+             :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'}}
+          )
+        end
+
+        describe '#save_feedback' do
+          it 'creates feedback entry in DB (success)' do
+            expect(answer.feedback_items.count).to eql(0)
+            feedback = answer.save_feedback
+            expect(feedback.status).to eql('success')
+            expect(feedback.score).to eql(score)
+            expect(feedback.max_score).to eql(max_score)
+            expect(feedback.feedback_text).to eql(mapping_value)
+            expect(feedback.response_info[:body]).to eql(response)
+            expect(answer.feedback_items.count).to eql(1)
+          end
+        end
+      end
+
+      context 'C-Rater service temporarily unavailable (but more than 3 attempts)' do
+        let(:err_resp) { 'Service unavailable' }
+        before(:each) do
+          stub_request(:post, mock_url).to_return(
+            # 1st attempt: error
+            {status: 500, body: err_resp},
+            # 2nd attempt: error
+            {status: 500, body: err_resp},
+            # 3rd attempt: error
+            {status: 500, body: err_resp},
+            # 4th attempt: normal response
+            {:status => 200, :body => response,
+             :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'}}
+          )
+        end
+
+        describe '#save_feedback' do
+          it 'creates feedback entry in DB (error)' do
+            expect(answer.feedback_items.count).to eql(0)
+            answer.save_feedback
+            expect(answer.feedback_items.count).to eql(1)
+            feedback = answer.feedback_items.last
+            expect(feedback.status).to eql('error')
+            expect(feedback.feedback_text).to eql(err_resp)
+            expect(feedback.response_info[:body]).to eql(err_resp)
+          end
+        end
+      end
+
       context 'C-Rater item settings missing' do
         before(:each) do
           allow(answer).to receive(:c_rater_item_settings).and_return(nil)

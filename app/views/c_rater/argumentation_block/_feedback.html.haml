@@ -1,5 +1,6 @@
 -# require locals   feedback, emb_id
 - fb_visible   =  feedback && !feedback.feedback_text.blank?
+- fb_error     =  feedback && feedback.error?
 - fb_dirty     =  feedback && feedback.outdated?
 - fb_text      = (feedback && feedback.feedback_text) || ""
 - fb_max_score = (feedback && feedback.max_score) || 6
@@ -9,9 +10,12 @@
 .ab-feedback{:id => "feedback_on_answer_#{emb_id}",
                    :style => fb_visible ? '' : 'display: none',
                    :class => "ab-score#{fb_score}",
-                   'data-dirty' => fb_dirty ? 'true' : 'false'}
+                   'data-dirty' => fb_dirty ? 'true' : 'false',
+                   'data-error' => fb_error ? 'true' : 'false'}
   .ab-dirty{:style => fb_dirty ? '' : 'display: none'}
     = t 'ARG_BLOCK.RESUBMIT_ANSWER'
+  .ab-error{:style => fb_error ? '' : 'display: none'}
+    = t 'ARG_BLOCK.RESUBMIT_ANSWER_ERROR'
   %h6
     = t 'ARG_BLOCK.FEEDBACK'
   .ab-feedback-item

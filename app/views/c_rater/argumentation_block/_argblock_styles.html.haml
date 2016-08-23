@@ -61,16 +61,16 @@
     }
   }
 
-  .ab-dirty {
+  .ab-dirty, .ab-error {
     color: #BD6161;
     padding: 3px 0 0 4px;
     font-size: 12px;
     border-radius: 6px;
     margin: 0 0 2px -7px;
+  }
 
-    .did_try_to_navigate & {
-      background: #FFDCDC;
-    }
+  .did_try_to_navigate .ab-dirty {
+    background: #FFDCDC;
   }
 
   .ab-feedback-on-feedback {
@@ -114,6 +114,10 @@
         &.score-4 { background-image: url('/assets/c-rater/4-6pt-scale.png'); }
         &.score-5 { background-image: url('/assets/c-rater/5-6pt-scale.png'); }
         &.score-6 { background-image: url('/assets/c-rater/6-6pt-scale.png'); }
+      }
+      &.score--error {
+        background: none;
+        height: 0;
       }
     }
   }
