@@ -5,12 +5,18 @@
   page_name          = @page.name || @activity.name + ":#{@page.position}"
   exit_link          = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
   completed_activity = @run && @run.completed?
-  completed_sequence = completed_activity && @sequence && (!next_activity)
+  last_activity      = @sequence && !next_activity
+  completed_sequence = completed_activity && last_activity
+  material_completed = completed_activity || completed_sequence
+  material_thumbnail = completed_sequence ? @sequence.thumbnail_url : @activity.thumbnail_url
+  material_name      = completed_sequence ? @sequence.title : @activity.name
 
   complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
   congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
   finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY', activity: @activity.name)
   not_finished_activity_t = t('COMPLETION_PAGE.UNFINISHED_ACTIVITY', activity: @activity.name)
+  exit_completed_material_t     = t('COMPLETION_PAGE.EXIT_COMPLETED_MATERIAL', material: material_name)
+  exit_non_completed_material_t = t('COMPLETION_PAGE.EXIT_NON_COMPLETED_MATERIAL', material: material_name)
 
   finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
   generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
@@ -43,12 +49,18 @@
         %a{:href => report_path, :class => 'gen-report', :target => 'new' }
           %input{ :class => 'button', :type => 'submit', :value => generate_report_t }
 
-    .next-activity
+    .bottom-block
       .image-preview
-        -if next_activity && next_activity.thumbnail_url.present?
+        - if next_activity && next_activity.thumbnail_url.present?
           %img{src: next_activity.thumbnail_url, alt: next_activity.name}
+        - elsif material_thumbnail.present?
+          - if material_completed
+            .ribbon_wrap
+              = ribbon(t("COMPLETED"), "my-ribbon")
+          %img{src: material_thumbnail, alt: material_name}
+
       .description
-        -if next_activity
+        - if next_activity
           %h1= next_up_t
           %h2.h2= next_activity.name
           = next_activity.description.html_safe
@@ -58,8 +70,11 @@
             or
             %a.exit{:href => exit_link}=exit_label_t
         - else
+          %p
+            = material_completed ? exit_completed_material_t : exit_non_completed_material_t
           .finish-links
-            %a.exit{:href => exit_link}=exit_label_t
+            %a.exit{:href => exit_link}
+              %input{ :class => 'button exit-btn', :type => 'submit', :value => exit_label_t }
 
 :sass
   .intro-mod
@@ -69,6 +84,8 @@
   .ui-block-1
     div
       padding: 0.5em
+    p
+      margin: 10px 0
   i
     vertical-align: middle
 
@@ -92,8 +109,7 @@
     .continue
       font-weight: 100
 
-
-    .next-activity
+    .bottom-block
       display: flex
       justify-content: flex-start
       align-items: flex-start
@@ -101,6 +117,7 @@
       padding: 10px
       margin-top: 20px
       .finish-links
+        display: inline-block
         padding-left: 0px
         a:hover
           text-decoration: none
@@ -117,10 +134,8 @@
         font-weight: 400
         font-size: 18pt
         color: hsl(184, 67%, 40%)
-      div
-        padding: 0.5em
       .image-preview
-        margin: 0px
+        margin: 0 10px 0 0
         overflow: hidden
         img
           width: 200px
@@ -130,3 +145,21 @@
         display: inline-block
       .description
         margin: 0px
+
+    .ribbon_wrap
+      padding: 0 !important
+      margin: 3px -7px 10px 10px
+
+    .exit-btn
+      font-size: 1.2em
+      background: #2869af
+      background-image: linear-gradient(top, #2869af, darken(#2869af, 10%))
+      border: 1px solid #2869af
+      &:hover
+        background-color: darken(#2869af, 5%)
+        background-image: -webkit-linear-gradient(top, darken(#2869af, 5%), darken(#2869af, 10%))
+        background-image: linear-gradient(top, darken(#2869af, 5%), darken(#2869af, 10%))
+      &:active
+        background-color: darken(#2869af, 10%)
+        background-image: -webkit-linear-gradient(top, darken(#2869af, 5%), darken(#2869af, 10%))
+        background-image: linear-gradient(top, darken(#2869af, 10%), darken(#2869af, 5%))
