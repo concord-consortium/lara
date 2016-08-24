@@ -10,6 +10,7 @@ class ArgumentationBlockController
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
   SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
+  MAX_ATTEMPTS = 3
 
   constructor: (argBlockElement) ->
     @$element = $(argBlockElement)
@@ -22,8 +23,7 @@ class ArgumentationBlockController
       $feedbackEl = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL)
       isFeedbackDirty = $feedbackEl.data('dirty')
       error = $feedbackEl.data('error')
-      numericId = q.id.match(/\d+/)[0]
-      @question[numericId] = {
+      @question[@domIDtoNumericID(q.id)] = {
         # It will be updated by answer_for or no_answer_for event handler.
         answered: false,
         dirty: isFeedbackDirty,
@@ -53,7 +53,7 @@ class ArgumentationBlockController
       @submitButtonClicked(e)
 
   updateQuestion: (id, answered) ->
-    q = @question[id.match(/\d+/)[0]]
+    q = @question[@domIDtoNumericID(id)]
     # Undefined means that this question isn't part of the argumentation block.
     return unless q
     q.answered = answered
@@ -69,7 +69,21 @@ class ArgumentationBlockController
 
     @$submitBtn.prop('disabled', true)
     @showWaiting()
-    
+    @attempts = 0
+
+    @issueRequest()
+
+    @$element.find('.did_try_to_navigate').removeClass('did_try_to_navigate')
+    e.preventDefault()
+    e.stopPropagation()
+
+  issueRequest: ->
+    @attempts += 1
+    tryAgain = =>
+      setTimeout(=>
+        @issueRequest()
+      , @attempts * 1000)
+
     $.ajax(
       type: 'POST',
       url: @$submitBtn.data('href'),
@@ -79,26 +93,30 @@ class ArgumentationBlockController
           q.dirty = false # just updated
           q.error = data.feedback_items[id].error
           q.data = $(q).serialize()
-        LoggerUtils.submitArgblockLogging(@$submitBtn.data('page_id'))
+        # Try again in case of some errors.
+        return tryAgain() if @anyError() && @attempts < MAX_ATTEMPTS
+
         if @anyError()
+          # If we are here, it means that attempts >= MAX_ATTEMPTS. Can't do anything now, just display an error.
           alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         else
           @fbOnFeedback.activate(data.submission_id)
+
         @submissionCount += 1
         @updateSubmitBtnText()
         @updateView(data.feedback_items)
         @scrollToHeader()
+        LoggerUtils.submitArgblockLogging(@$submitBtn.data('page_id'))
+        @hideWaiting()
+        @$submitBtn.prop('disabled', false)
       error: =>
+        return tryAgain() if @attempts < MAX_ATTEMPTS
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
-      complete: =>
         @hideWaiting()
         @$submitBtn.prop('disabled', false)
     )
-    @$element.find('.did_try_to_navigate').removeClass('did_try_to_navigate')
-    e.preventDefault()
-    e.stopPropagation()
 
   updateView: (feedbackData, submissionCount) ->
     if feedbackData
@@ -161,7 +179,6 @@ class ArgumentationBlockController
         $(q.errorMsgElement).slideUp()
 
   updateForwardNavigationBlocking: ->
-    console.log @allQuestionAnswered(),  @noDirtyQuestions(), @feedbackOnFeedbackIsReady()
     if @allQuestionAnswered() && @noDirtyQuestions() && @feedbackOnFeedbackIsReady()
       @enableForwardNavigation()
     else
@@ -231,6 +248,8 @@ class ArgumentationBlockController
   feedbackOnFeedbackIsReady: ->
     @fbOnFeedback.isReady()
 
+  domIDtoNumericID: (htmlId) ->
+    htmlId.match(/\d+/)[0]
 
 class FeedbackOnFeedbackController
   FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
