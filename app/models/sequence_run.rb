@@ -58,4 +58,8 @@ class SequenceRun < ActiveRecord::Base
       end
     end
   end
+
+  def completed?
+    runs.count == sequence.activities.count && runs.all? { |r| r.completed? }
+  end
 end

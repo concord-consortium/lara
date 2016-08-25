@@ -6,8 +6,8 @@
   exit_link          = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
   completed_activity = @run && @run.completed?
   last_activity      = @sequence && !next_activity
-  completed_sequence = completed_activity && last_activity
-  material_completed = completed_activity || completed_sequence
+  completed_sequence = @sequence_run && @sequence_run.completed?
+  completed_material = completed_activity || completed_sequence
   material_thumbnail = completed_sequence ? @sequence.thumbnail_url : @activity.thumbnail_url
   material_name      = completed_sequence ? @sequence.title : @activity.name
 
@@ -17,6 +17,9 @@
   not_finished_activity_t = t('COMPLETION_PAGE.UNFINISHED_ACTIVITY', activity: @activity.name)
   exit_completed_material_t     = t('COMPLETION_PAGE.EXIT_COMPLETED_MATERIAL', material: material_name)
   exit_non_completed_material_t = t('COMPLETION_PAGE.EXIT_NON_COMPLETED_MATERIAL', material: material_name)
+  if last_activity && completed_activity && !completed_sequence
+    exit_last_activity_t = t('COMPLETION_PAGE.EXIT_LAST_ACTIVITY', activity: @activity.name, sequence: @sequence.name)
+  end
 
   finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
   generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
@@ -54,7 +57,7 @@
         - if next_activity && next_activity.thumbnail_url.present?
           %img{src: next_activity.thumbnail_url, alt: next_activity.name}
         - elsif material_thumbnail.present?
-          - if material_completed
+          - if completed_material
             .ribbon_wrap
               = ribbon(t("COMPLETED"), "my-ribbon")
           %img{src: material_thumbnail, alt: material_name}
@@ -71,7 +74,10 @@
             %a.exit{:href => exit_link}=exit_label_t
         - else
           %p
-            = material_completed ? exit_completed_material_t : exit_non_completed_material_t
+            - if last_activity && completed_activity && !completed_sequence
+              = exit_last_activity_t
+            - else
+              = completed_material ? exit_completed_material_t : exit_non_completed_material_t
           .finish-links
             %a.exit{:href => exit_link}
               %input{ :class => 'button exit-btn', :type => 'submit', :value => exit_label_t }
