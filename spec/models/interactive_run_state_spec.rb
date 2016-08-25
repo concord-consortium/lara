@@ -9,6 +9,13 @@ describe InteractiveRunState do
   let(:run)             { FactoryGirl.create(:run, {activity: activity, user: user})}
 
   describe 'class methods' do
+    describe "InteractiveRunState#generate_key" do
+      it "should generate be a random non-nil 20 hex digit key" do
+        expect(InteractiveRunState.generate_key).to_not eq InteractiveRunState.generate_key
+        expect(InteractiveRunState.generate_key).to_not be_nil
+        expect(InteractiveRunState.generate_key.length).to eq 40 # 20 hex digits = 40 chars
+      end
+    end
     describe "InteractiveRunState#by_run_and_interactive" do
       describe "when no existing interactiveRunState exists" do
         it "should create an interactiveRunState for the interactive" do
@@ -109,5 +116,26 @@ describe InteractiveRunState do
 
     end
 
+    # this key is generated automatically when created
+    describe "key" do
+      describe "when not manually set" do
+        let(:run_data) {'{"second": 2}"'}
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should be a random non-nil 20 hex digit key" do
+          expect(interactive_run_state.key).to_not be_nil
+          expect(interactive_run_state.key.length).to eq 40 # 20 hex digits = 40 chars
+        end
+      end
+
+      describe "when manually set" do
+        let(:run_data) {'{"second": 2}"'}
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data, key: 'foo')}
+
+        it "should not be overwritten by a generated key" do
+          expect(interactive_run_state.key).to eq 'foo'
+        end
+      end
+    end
   end
 end
