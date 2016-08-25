@@ -1,0 +1,11 @@
+@import "cc-runtime";
+
+$src: url('/assets/has-bg/astro-dark.jpg');
+$c_a: #434960;
+$c_b: #BD8B8E;
+
+@include theme($src, $c_a, $c_b);
+
+#nav-activity-menu {
+  display: none;
+}
