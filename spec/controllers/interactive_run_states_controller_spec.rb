@@ -7,7 +7,7 @@ def expect_response_has_valid_raw_data(response)
 end
 
 def expect_response_is_not_authorized(response, reason)
-  expect(response.body).to eq "{\"error\":\"You are not authorized to get the requested owned interactive run state because you are not #{reason}.\"}"
+  expect(response.body).to eq "{\"success\":false,\"message\":\"You are not authorized to get the requested owned interactive run state because you are not #{reason}.\"}"
 end
 
 describe InteractiveRunStatesController do

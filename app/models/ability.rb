@@ -50,5 +50,10 @@ class Ability
         run.user_id == user.id
       end
     end
+
+    can [:show, :update], InteractiveRunState do |interactive_run_state|
+      # admins can do anything, unowned runs can be read/written by anyone, owned runs only by their owner
+      user.admin? || interactive_run_state.run.user.nil? || (user == interactive_run_state.run.user)
+    end
   end
 end
