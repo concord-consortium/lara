@@ -32,7 +32,7 @@
 
 
     - submission = last_submission(page, @run)
-    - show_f_on_f = submission && submission.usefulness_score.nil?
+    - show_f_on_f = submission && submission.usefulness_score.nil? && !submission.any_errors?
     .question.ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
                                       'data-submission-id' => show_f_on_f ? submission.id : nil,
                                       'data-href' => c_rater_arg_block_feedback_on_feedback_path}

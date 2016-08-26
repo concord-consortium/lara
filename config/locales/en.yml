@@ -60,6 +60,7 @@ en:
     RESUBMIT_OR_MOVE: "You may revise your answers and resubmit, or you may move to the next page."
     FEEDBACK: "Feedback"
     RESUBMIT_ANSWER: "Answer has been changed, please resubmit to update feedback!"
+    RESUBMIT_ANSWER_ERROR: "C-Rater returned an error, please try to resubmit!"
     TEST_MODEL: "C-Rater Item ID references test model"
     NO_FEEDBACK_TEXT: "No feedback text defined for score: %{score}"
     NO_SCORE_MAPPING: "Score: %{score} (score mapping undefined)"

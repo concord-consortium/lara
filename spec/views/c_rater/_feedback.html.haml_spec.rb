@@ -10,6 +10,7 @@ describe "Rendering Feedback scores" do #
     {
       feedback_text: "Feedback Text",
       outdated?: false,
+      error?: false,
       score: score,
       max_score: max_score
     }
