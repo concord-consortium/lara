@@ -100,9 +100,6 @@ LightweightStandalone::Application.routes.draw do
     end
   end
 
-  get "/interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state'
-  put "/interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state'
-
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
@@ -163,6 +160,9 @@ LightweightStandalone::Application.routes.draw do
       # For HASBOT C-Rater reports aka HAS Dashboard
       match 'dashboard_runs' => "dashboard#runs", defaults: { format: 'json' }
       match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc",  defaults: { format: 'json' }
+
+      match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'
+      match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
     end
   end
 

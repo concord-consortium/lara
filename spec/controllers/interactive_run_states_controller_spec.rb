@@ -22,15 +22,6 @@ describe InteractiveRunStatesController do
     make interactive_run_state
   end
 
-  describe 'routing' do
-    it 'recognizes and generates #show' do
-      expect({:get => "interactive_run_states/foo"}).to route_to(:controller => 'interactive_run_states', :action => 'show', :key => "foo")
-    end
-    it 'recognizes and generates #update' do
-      expect({:put => "interactive_run_states/foo"}).to route_to(:controller => 'interactive_run_states', :action => 'update', :key => "foo")
-    end
-  end
-
   describe 'show' do
 
     it 'renders 404 when the interactive run state does not exist' do
