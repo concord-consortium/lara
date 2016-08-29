@@ -1,4 +1,4 @@
-class InteractiveRunStatesController < ApplicationController
+class Api::V1::InteractiveRunStatesController < ApplicationController
   layout false
   before_filter :set_interactive_run
 

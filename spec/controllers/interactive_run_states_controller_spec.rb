@@ -10,7 +10,7 @@ def expect_response_is_not_authorized(response, reason)
   expect(response.body).to eq "{\"success\":false,\"message\":\"You are not authorized to get the requested owned interactive run state because you are not #{reason}.\"}"
 end
 
-describe InteractiveRunStatesController do
+describe Api::V1::InteractiveRunStatesController do
   let(:activity)              { FactoryGirl.create(:activity)       }
   let(:interactive)           { FactoryGirl.create(:mw_interactive) }
   let(:user)                  { FactoryGirl.create(:user)           }
@@ -20,6 +20,15 @@ describe InteractiveRunStatesController do
 
   before(:each) do
     make interactive_run_state
+  end
+
+  describe 'routing' do
+    it 'recognizes and generates #show' do
+      expect({:get => "api/v1/interactive_run_states/foo"}).to route_to(:controller => 'api/v1/interactive_run_states', :action => 'show', :key => "foo")
+    end
+    it 'recognizes and generates #update' do
+      expect({:put => "api/v1/interactive_run_states/foo"}).to route_to(:controller => 'api/v1/interactive_run_states', :action => 'update', :key => "foo")
+    end
   end
 
   describe 'show' do
