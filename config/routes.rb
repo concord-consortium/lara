@@ -99,7 +99,10 @@ LightweightStandalone::Application.routes.draw do
       post 'unauthorized_feedback'
     end
   end
-  resources :interactive_run_states
+
+  get "/interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state'
+  put "/interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state'
+
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show

@@ -2,12 +2,18 @@ class InteractiveRunState < ActiveRecord::Base
   alias_method :original_json, :to_json  # make sure we can still generate json of the base model after including Answer
   include Embeddable::Answer # Common methods for Answer models
 
-  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run
+  attr_accessible :interactive_id, :interactive_type, :run_id, :raw_data, :interactive, :run, :key
 
   belongs_to :run
   belongs_to :interactive, :polymorphic => true
 
   after_update :maybe_send_to_portal
+
+  before_save :add_key_if_nil
+
+  def self.generate_key
+    SecureRandom.hex(20)
+  end
 
   def self.by_question(q)
     where(interactive_id: q.id, interactive_type: q.class.name)
@@ -116,5 +122,9 @@ class InteractiveRunState < ActiveRecord::Base
 
   def self.default_answer(conditions)
     return AnswerStandin.new
+  end
+
+  def add_key_if_nil
+    self.key = InteractiveRunState.generate_key if self.key.nil?
   end
 end
