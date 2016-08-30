@@ -1,0 +1,24 @@
+.congratulations-block
+  %div
+    %i.fa.fa-check-square-o.fa-2x
+    %span.congratulations= t("COMPLETION_PAGE.CONGRATULATIONS")
+    %span.finished-activity= t('COMPLETION_PAGE.FINISHED_ACTIVITY', activity: activity.name)
+
+  .submit.report
+    %a{:href => report_path, :class => 'gen-report', :target => 'new' }
+      %input{ :class => 'button', :type => 'submit', :value => t("COMPLETION_PAGE.GENERATE_A_REPORT") }
+
+.bottom-block
+  .image-preview
+    - if next_activity.thumbnail_url.present?
+      %img{src: next_activity.thumbnail_url, alt: next_activity.name}
+
+  .description
+    %h1= t("COMPLETION_PAGE.NEXT_UP")
+    %h2.h2= next_activity.name
+    = next_activity.description.html_safe
+    .finish-links
+      %a{ :href => sequence_activity_path(sequence, next_activity, show_index: true)}
+        %input.button{ :type => "submit", :value => t("COMPLETION_PAGE.START_NEXT")}
+      or
+      %a.exit{:href => exit_link}=t("COMPLETION_PAGE.EXIT_LABEL")

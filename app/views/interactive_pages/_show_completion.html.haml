@@ -1,86 +1,54 @@
 :ruby
-  # These strings are configured in 'config/locales/en.yml'
-  next_activity      = @sequence.next_activity(@page.lightweight_activity) if @sequence
-  report_path        = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
-  page_name          = @page.name || @activity.name + ":#{@page.position}"
-  exit_link          = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
-  completed_activity = @run && @run.completed?
-  last_activity      = @sequence && !next_activity
-  completed_sequence = @sequence_run && @sequence_run.completed?
-  completed_material = completed_activity || completed_sequence
-  material_thumbnail = completed_sequence ? @sequence.thumbnail_url : @activity.thumbnail_url
-  material_name      = completed_sequence ? @sequence.title : @activity.name
+  # We handle 7 different use cases and display 7 different versions of the completion page:
+  # 1. Single activity is not completed.
+  # 2. Single activity is completed.
+  # 3. Activity is part of a sequence, it's not completed and it's not the last one in sequence.
+  # 4. Activity is part of a sequence, it's completed, but it's not the last one in sequence.
+  # 5. Activity is part of a sequence, it's not completed, but it's the last one in sequence.
+  # 6. Activity is part of a sequence, it's completed and it's the last one in sequence, but some other activity
+  #    in sequence is not completed, so the whole sequence is also not completed.
+  # 7. Activity is part of a sequence, it's completed and it's the last one in sequence and all the other activities
+  #    in sequence are completed.
 
-  complete_header_t   = t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
-  congratulations_t   = t("COMPLETION_PAGE.CONGRATULATIONS")
-  finished_activity_t = t('COMPLETION_PAGE.FINISHED_ACTIVITY', activity: @activity.name)
-  not_finished_activity_t = t('COMPLETION_PAGE.UNFINISHED_ACTIVITY', activity: @activity.name)
-  exit_completed_material_t     = t('COMPLETION_PAGE.EXIT_COMPLETED_MATERIAL', material: material_name)
-  exit_non_completed_material_t = t('COMPLETION_PAGE.EXIT_NON_COMPLETED_MATERIAL', material: material_name)
-  if last_activity && completed_activity && !completed_sequence
-    exit_last_activity_t = t('COMPLETION_PAGE.EXIT_LAST_ACTIVITY', activity: @activity.name, sequence: @sequence.name)
+  is_sequence = @sequence_run
+  completed_activity = @run && @run.completed?
+  completed_sequence = is_sequence && @sequence_run.completed?
+  next_activity      = is_sequence && @sequence.next_activity(@page.lightweight_activity)
+  last_activity      = is_sequence && !next_activity
+
+  use_case = nil
+  if !is_sequence && !completed_activity
+    use_case = 'single_act_not_completed'
+  elsif !is_sequence && completed_activity
+    use_case = 'single_act_completed'
+  elsif is_sequence && !completed_activity && !last_activity
+    use_case = 'sequence_act_not_completed_not_last'
+  elsif is_sequence && completed_activity && !last_activity
+    use_case = 'sequence_act_completed_not_last'
+  elsif is_sequence && !completed_activity && last_activity
+    use_case = 'sequence_act_not_completed_last'
+  elsif is_sequence && completed_activity && last_activity && !completed_sequence
+    use_case = 'sequence_act_completed_last_seq_not_completed'
+  elsif is_sequence && completed_activity && last_activity && completed_sequence
+    use_case = 'sequence_act_completed_last_seq_completed'
   end
 
-  finished_sequence_t = t('COMPLETION_PAGE.FINISHED_SEQUENCE')
-  generate_report_t   = t("COMPLETION_PAGE.GENERATE_A_REPORT")
-  start_next_t        = t("COMPLETION_PAGE.START_NEXT")
-  exit_label_t        = t("COMPLETION_PAGE.EXIT_LABEL")
-  next_up_t           = t("COMPLETION_PAGE.NEXT_UP")
-
+  report_path  = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+  page_name    = @page.name || @activity.name + ":#{@page.position}"
+  exit_link    = is_sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
 
 - content_for :title do
   = page_name
 
 .intro-mod
   - if completed_activity
-    %h4.h4= complete_header_t
+    %h4.h4= t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
 
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-6040, r-7030
 .content-mod{ :class => 'l-full-width' }
   .ui-block-1
-    .congratulations-block
-      %div
-        - if completed_activity
-          %i.fa.fa-check-square-o.fa-2x
-          %span.congratulations=congratulations_t
-          %span.finished-activity=finished_activity_t
-          - if completed_sequence
-            %span.finished-sequence=finished_sequence_t
-        - else
-          %span.unfinished-activity=not_finished_activity_t
-      .submit.report
-        %a{:href => report_path, :class => 'gen-report', :target => 'new' }
-          %input{ :class => 'button', :type => 'submit', :value => generate_report_t }
-
-    .bottom-block
-      .image-preview
-        - if next_activity && next_activity.thumbnail_url.present?
-          %img{src: next_activity.thumbnail_url, alt: next_activity.name}
-        - elsif material_thumbnail.present?
-          - if completed_material
-            .ribbon_wrap
-              = ribbon(t("COMPLETED"), "my-ribbon")
-          %img{src: material_thumbnail, alt: material_name}
-
-      .description
-        - if next_activity
-          %h1= next_up_t
-          %h2.h2= next_activity.name
-          = next_activity.description.html_safe
-          .finish-links
-            %a{ :href => sequence_activity_path(@sequence, next_activity, show_index: true)}
-              %input.button{ :type => "submit", :value => start_next_t}
-            or
-            %a.exit{:href => exit_link}=exit_label_t
-        - else
-          %p
-            - if last_activity && completed_activity && !completed_sequence
-              = exit_last_activity_t
-            - else
-              = completed_material ? exit_completed_material_t : exit_non_completed_material_t
-          .finish-links
-            %a.exit{:href => exit_link}
-              %input{ :class => 'button exit-btn', :type => 'submit', :value => exit_label_t }
+    = render partial: "interactive_pages/completion_pages/#{use_case}", locals: {activity: @activity,
+                sequence: @sequence, next_activity: next_activity, exit_link: exit_link, report_path: report_path}
 
 :sass
   .intro-mod
