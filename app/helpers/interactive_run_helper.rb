@@ -21,12 +21,12 @@ module InteractiveRunHelper
 
   def get_url(interactive,run)
     interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
-    show_interactive_run_state_path(:key => interactive_run.key)
+    api_v1_show_interactive_run_state_path(:key => interactive_run.key)
   end
 
   def put_url(interactive,run)
     interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
-    update_interactive_run_state_path(:key => interactive_run.key)
+    api_v1_update_interactive_run_state_path(:key => interactive_run.key)
   end
 
   def interactive_data_div(interactive,run)
