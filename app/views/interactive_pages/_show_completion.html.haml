@@ -71,7 +71,17 @@
 
   report_path  = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
   page_name    = @page.name || @activity.name + ":#{@page.position}"
-  exit_link    = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
+
+  if @sequence_run
+    # if there is a sequence_run then we need to explicitly indicate it
+    exit_link = sequence_path(@sequence, :show_index => true, :sequence_run => @sequence_run.id)
+  elsif @sequence
+    # Anonymous users running a sequence will have a sequence but not a sequence run
+    exit_link = sequence_path(@sequence, :show_index => true)
+  else
+    exit_link = activity_path(@activity, show_index: true)
+  end
+
   exit_label_t = t("COMPLETION_PAGE.EXIT_LABEL")
 
 - content_for :title do
