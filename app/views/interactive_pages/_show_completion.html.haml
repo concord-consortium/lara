@@ -1,18 +1,12 @@
 :ruby
   # We handle 7 different use cases and display 7 different versions of the completion page:
-  # 1. Single activity is not completed.
-  # 2. Single activity is completed.
-  # 3. Activity is part of a sequence, it's not completed and it's not the last one in sequence.
-  # 4. Activity is part of a sequence, it's completed, but it's not the last one in sequence.
-  # 5. Activity is part of a sequence, it's not completed, but it's the last one in sequence.
-  # 6. Activity is part of a sequence, it's completed and it's the last one in sequence, but some other activity
-  #    in sequence is not completed, so the whole sequence is also not completed.
-  # 7. Activity is part of a sequence, it's completed and it's the last one in sequence and all the other activities
-  #    in sequence are completed.
+  # These cases are documented in _edit_completion.html.haml
 
-  is_sequence = @sequence_run
+  is_sequence = @sequence
   completed_activity = @run && @run.completed?
-  completed_sequence = is_sequence && @sequence_run.completed?
+  # SequenceRuns do not correctly work with anonymous users. In the case of an anonymous user
+  #   @sequence_run will be nil but @sequence will be valid
+  completed_sequence = @sequence_run && @sequence_run.completed?
   next_activity      = is_sequence && @sequence.next_activity(@page.lightweight_activity)
   last_activity      = is_sequence && !next_activity
 
@@ -77,11 +71,14 @@
 
   report_path  = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
   page_name    = @page.name || @activity.name + ":#{@page.position}"
-  exit_link    = is_sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
+  exit_link    = @sequence ? sequence_path(@sequence, show_index: true) : activity_path(@activity, show_index: true)
   exit_label_t = t("COMPLETION_PAGE.EXIT_LABEL")
 
 - content_for :title do
   = page_name
+
+Is Sequence: #{is_sequence}
+Sequence: #{@sequence}
 
 .intro-mod
   - if completed_activity
