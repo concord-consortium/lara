@@ -1,0 +1,28 @@
+%h2{ style: 'font-size: x-large; padding-bottom: 2px;'}
+  Completion Page
+
+%p
+  The completion page is intended to be used at the end of the activity. Its content changes depening on how far the student is through the activity and sequence (if there is one).
+%p
+  <b>Important Note:</b> Anonymous running of sequences is not well supported. The completion page will not know if the user finished the sequence, and the sequence table of contents will not know if the user completed the activities.
+
+%h3{ style: 'font-size: large; padding-bottom: 2px; padding-top: 7px'}
+  Here are the 7 different cases that are handled
+
+%ol
+  %li
+    Single activity is not completed.
+  %li
+    Single activity is completed.
+  %li
+    Activity is part of a sequence, it's not completed and it's not the last one in sequence.
+  %li
+    Activity is part of a sequence, it's completed, but it's not the last one in sequence.
+  %li
+    Activity is part of a sequence, it's not completed, but it's the last one in sequence.
+  %li
+    Activity is part of a sequence, it's completed and it's the last one in sequence, but some other activity
+    in sequence is not completed, so the whole sequence is also not completed.
+  %li
+    Activity is part of a sequence, it's completed and it's the last one in sequence and all the other activities
+    in sequence are completed.

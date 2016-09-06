@@ -78,7 +78,7 @@
 
   - if @page.is_completion
     - # TODO: Display preview of student completion page.
-    =render :partial => "show_completion"
+    =render :partial => "edit_completion"
   - else
     - if @page.show_introduction
       .instructions{:class => @page.text.blank? ? 'block-empty' : '' }
