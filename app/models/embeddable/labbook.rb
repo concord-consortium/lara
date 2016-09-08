@@ -184,24 +184,18 @@ module Embeddable
       show_in_runtime?
     end
 
-    def update_itsi_prompts
-      return if prompt.blank?
-      def close_enough(str1,str2)
-        str1.downcase.chomp.squish.starts_with? str2.downcase.chomp.squish[0..60]
-      end
+    def self.update_itsi_prompts
 
       old_snapshot_prompt = I18n.t("LABBOOK.OLD_ITSI.SNAPSHOT_PROMPT")
       old_upload_prompt   = I18n.t("LABBOOK.OLD_ITSI.UPLOAD_PROMPT")
       new_snapshot_prompt = I18n.t("LABBOOK.ITSI.SNAPSHOT_PROMPT")
       new_upload_prompt   = I18n.t("LABBOOK.ITSI.UPLOAD_PROMPT")
 
-      if close_enough prompt, old_snapshot_prompt
-        update_attribute(:prompt, new_snapshot_prompt)
-      end
-
-      if close_enough prompt, old_upload_prompt
-        update_attribute(:prompt, new_upload_prompt)
-      end
+      changed_snapshot_count = self.where("prompt like ?", "%#{old_snapshot_prompt[0..80]}%").update_all(prompt: new_snapshot_prompt)
+      changed_upload_count = self.where("prompt like ?", "%#{old_upload_prompt[0..80]}%").update_all(prompt: new_upload_prompt)
+      report_string = "updated #{changed_snapshot_count} snapshot prompts, and #{changed_upload_count} upload labbook prompts"
+      Rails.logger.info report_string
+      puts report_string
     end
 
     private
