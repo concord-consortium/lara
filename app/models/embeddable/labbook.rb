@@ -195,7 +195,6 @@ module Embeddable
       changed_upload_count = self.where("prompt like ?", "%#{old_upload_prompt[0..80]}%").update_all(prompt: new_upload_prompt)
       report_string = "updated #{changed_snapshot_count} snapshot prompts, and #{changed_upload_count} upload labbook prompts"
       Rails.logger.info report_string
-      puts report_string
     end
 
     private
