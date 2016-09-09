@@ -283,6 +283,7 @@ div.nav-menu-top {
 	padding: 0 10px;
 	margin-top: 1px;
     .profile-u-name{
+      white-space: nowrap;
       .popup-trigger{
         cursor:pointer
       }
@@ -333,6 +334,7 @@ div.nav-menu-top {
 
 .activity-nav-mod{
   .profile-u-name{
+    white-space: nowrap;
     color:#fff;
   }
 }

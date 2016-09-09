@@ -1178,6 +1178,7 @@ footer {
 	padding: 0 10px;
 	margin-top: 1px;
     .profile-u-name{
+      white-space: nowrap;
       .popup-trigger{
         cursor:pointer
       }
@@ -1233,6 +1234,7 @@ footer {
 
 .sequence-page{
   .profile-u-name{
+    white-space: nowrap;
     color: inherit;
   }
   .profile-dropdown{
