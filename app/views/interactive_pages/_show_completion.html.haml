@@ -87,9 +87,6 @@
 - content_for :title do
   = page_name
 
-Is Sequence: #{is_sequence}
-Sequence: #{@sequence}
-
 .intro-mod
   - if completed_activity
     %h4.h4= t("COMPLETION_PAGE.HEADER", {activity: @activity.name})
