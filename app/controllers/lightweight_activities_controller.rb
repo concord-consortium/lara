@@ -271,8 +271,11 @@ class LightweightActivitiesController < ApplicationController
 
   private
   def set_activity
-    id = params[:id]
-    id = params[:activity_id] if params[:activity_id]
+    if params[:activity_id]
+      id = params[:activity_id]
+    else
+      id = params[:id]
+    end
 
     if params[:sequence_id]
       sequence = Sequence.find(params[:sequence_id])
