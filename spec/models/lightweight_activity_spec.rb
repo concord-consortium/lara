@@ -327,8 +327,8 @@ describe LightweightActivity do
     let(:report_url) { "http://reports.concord.org/" }
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
-      author_url = "http://test.host/activities/#{activity.id}/edit"
-      print_url = "http://test.host/activities/#{activity.id}/print_blank"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
       {
         "type"          =>"Activity",
         "name"          => activity.name,

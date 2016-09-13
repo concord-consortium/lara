@@ -112,6 +112,9 @@ class Sequence < ActiveRecord::Base
 
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
+    author_url = "#{local_url}/edit"
+    print_url = "#{local_url}/print_blank"
+
     data = {
       'type' => "Sequence",
       'name' => self.title,
@@ -119,6 +122,8 @@ class Sequence < ActiveRecord::Base
       'abstract' => self.abstract,
       "url" => local_url,
       "create_url" => local_url,
+      "author_url" => author_url,
+      "print_url"  => print_url,
       "external_report_url" => external_report_url,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email

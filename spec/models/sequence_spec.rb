@@ -102,10 +102,14 @@ describe Sequence do
 
     let(:simple_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
       {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "abstract" => sequence.abstract,
         "url"=> url,
         "create_url"=> url,
+        "author_url"    => author_url,
+        "print_url"     => print_url,
         "thumbnail_url" => nil, # our simple sequence doesn't have one
         "author_email" => sequence.user.email,
         "activities"=>[],
@@ -115,11 +119,15 @@ describe Sequence do
 
     let(:complex_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
       {
         "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
         "abstract" => sequence_with_activities.abstract,
         "url"=> url,
         "create_url"=> url,
+        "author_url"    => author_url,
+        "print_url"     => print_url,
         "thumbnail_url" => thumbnail_url,
         "author_email" => sequence_with_activities.user.email,
         "activities"=> [
