@@ -102,8 +102,8 @@ describe Sequence do
 
     let(:simple_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
-      author_url = "http://test.host/sequences/#{sequence.id}/edit"
-      print_url = "http://test.host/sequences/#{sequence.id}/print_blank"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
       {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "abstract" => sequence.abstract,
         "url"=> url,
@@ -119,8 +119,8 @@ describe Sequence do
 
     let(:complex_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}"
-      author_url = "http://test.host/sequences/#{sequence_with_activities.id}/edit"
-      print_url = "http://test.host/sequences/#{sequence_with_activities.id}/print_blank"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
       {
         "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
         "abstract" => sequence_with_activities.abstract,
