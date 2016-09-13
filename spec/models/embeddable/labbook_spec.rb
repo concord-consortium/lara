@@ -178,7 +178,9 @@ describe Embeddable::Labbook do
       let(:labbook) { Embeddable::Labbook.create(prompt: prompt) }
 
       before(:each) do
-        labbook.update_itsi_prompts
+        labbook
+        Embeddable::Labbook.update_itsi_prompts
+        labbook.reload
       end
 
       describe "when the prompt is nil" do
