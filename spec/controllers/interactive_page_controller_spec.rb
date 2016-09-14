@@ -22,7 +22,7 @@ describe InteractivePagesController do
   let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => user.id) }
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
-  let (:sequence) { FactoryGirl.create(:sequence) }
+  let (:sequence) { FactoryGirl.create(:sequence, :lightweight_activities => [act]) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do

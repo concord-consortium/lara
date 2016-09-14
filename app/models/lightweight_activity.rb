@@ -183,6 +183,7 @@ class LightweightActivity < ActiveRecord::Base
     seq.activities.each_with_index do |a,i|
       return i+1 if a.id == self.id
     end
+    raise "Activity #{id} is not part of Sequence #{seq.id}"
   end
 
   def serialize_for_portal(host)
