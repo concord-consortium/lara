@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160722195644) do
+ActiveRecord::Schema.define(:version => 20160824191003) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -332,8 +332,10 @@ ActiveRecord::Schema.define(:version => 20160722195644) do
     t.datetime "updated_at",                          :null => false
     t.text     "learner_url"
     t.boolean  "is_dirty",         :default => false
+    t.string   "key"
   end
 
+  add_index "interactive_run_states", ["key"], :name => "interactive_run_states_key_idx"
   add_index "interactive_run_states", ["run_id"], :name => "interactive_run_states_run_id_idx"
 
   create_table "lightweight_activities", :force => true do |t|

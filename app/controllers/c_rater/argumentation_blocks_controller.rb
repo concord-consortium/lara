@@ -50,11 +50,9 @@ class CRater::ArgumentationBlocksController < ApplicationController
   end
 
   def save_feedback
-    # set_run_key expects @page and @activity to be set...
-    @page = InteractivePage.find(params[:page_id])
-    @activity = @page.lightweight_activity
-    set_run_key # sets @run
-    feedback_info = CRater::FeedbackSubmission.generate_feedback(@page, @run)
+    page = InteractivePage.find(params[:page_id])
+    run = Run.find_by_key(params[:response_key])
+    feedback_info = CRater::FeedbackSubmission.generate_feedback(page, run)
     if request.xhr?
       render json: feedback_info
     else
