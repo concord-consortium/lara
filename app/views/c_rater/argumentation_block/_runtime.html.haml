@@ -60,7 +60,7 @@
 
     %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
-           'data-href' => c_rater_arg_block_save_feedback_path(page),
+           'data-href' => c_rater_arg_block_save_feedback_path(page, @run.key),
            'data-page_id' => page.id}
     %div.ab-submit-prompt       
 

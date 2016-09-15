@@ -27,12 +27,16 @@ describe CRater::FeedbackSubmission do
     @c_run.save!
   end
 
+  def answer_id_string(answer)
+    "#{answer.class.to_s.demodulize.underscore}_#{answer.id}"
+  end
+
   describe "CRater::FeedbackSubmission.generate_feedback" do
     it "generates submission, feedback items and returns basic information about submission" do
       info = CRater::FeedbackSubmission.generate_feedback(@page, @runs[0])
       expect(CRater::FeedbackSubmission.count).to eql(1)
       expect(info[:submission_id]).to eql(CRater::FeedbackSubmission.first.id)
-      expect(info[:feedback_items][@answers[0].id][:text]).to eql('feedback')
+      expect(info[:feedback_items][answer_id_string(@answers[0])][:text]).to eql('feedback')
     end
 
     describe "when user runs activity with collaborators" do
@@ -44,8 +48,8 @@ describe CRater::FeedbackSubmission do
         info = CRater::FeedbackSubmission.generate_feedback(@page, @runs[0])
         expect(CRater::FeedbackSubmission.count).to eql(2)
         expect(info[:submission_id]).to eql(CRater::FeedbackSubmission.first.id)
-        expect(info[:feedback_items][@answers[0].id][:text]).to eql('feedback')
-        expect(info[:feedback_items][@answers[1].id]).to be_nil # it's other user answer!
+        expect(info[:feedback_items][answer_id_string(@answers[0])][:text]).to eql('feedback')
+        expect(info[:feedback_items][answer_id_string(@answers[1])]).to be_nil # it's other user answer!
 
         submission = CRater::FeedbackSubmission.first
         submission_copy = CRater::FeedbackSubmission.last

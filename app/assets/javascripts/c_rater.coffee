@@ -23,7 +23,7 @@ class ArgumentationBlockController
       $feedbackEl = $(q).closest(QUESTION_SEL).find(FEEDBACK_SEL)
       isFeedbackDirty = $feedbackEl.data('dirty')
       error = $feedbackEl.data('error')
-      @question[@domIDtoNumericID(q.id)] = {
+      @question[@formIDtoAnswerID(q.id)] = {
         # It will be updated by answer_for or no_answer_for event handler.
         answered: false,
         dirty: isFeedbackDirty,
@@ -53,7 +53,7 @@ class ArgumentationBlockController
       @submitButtonClicked(e)
 
   updateQuestion: (id, answered) ->
-    q = @question[@domIDtoNumericID(id)]
+    q = @question[@formIDtoAnswerID(id)]
     # Undefined means that this question isn't part of the argumentation block.
     return unless q
     q.answered = answered
@@ -248,8 +248,9 @@ class ArgumentationBlockController
   feedbackOnFeedbackIsReady: ->
     @fbOnFeedback.isReady()
 
-  domIDtoNumericID: (htmlId) ->
-    htmlId.match(/\d+/)[0]
+  formIDtoAnswerID: (htmlId) ->
+    # E.g. change "edit_embeddable_open_response_answer_240" to "open_response_answer_240"
+    htmlId.replace('edit_embeddable_', '')
 
 class FeedbackOnFeedbackController
   FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
