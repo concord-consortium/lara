@@ -96,4 +96,9 @@ module Embeddable::Answer
     # wont invoke callbacks
     update_column(:is_dirty, false)
   end
+
+  # ID which is unique among all the answer types.
+  def answer_id
+    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
+  end
 end

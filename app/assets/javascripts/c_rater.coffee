@@ -3,7 +3,7 @@ class ArgumentationBlockController
   QUESTION_FROMS_SEL = QUESTION_SEL + ' form'
   SUBMIT_BTN_SEL = '.ab-submit'
   FEEDBACK_SEL = '.ab-feedback'
-  FEEDBACK_ID_SEL = '#feedback_on_answer_'
+  FEEDBACK_ID_SEL = '#feedback_on_'
   FEEDBACK_TEXT_SEL = '.ab-robot-feedback-text'
   DIRTY_MSG_SEL = '.ab-dirty'
   ERROR_MSG_SEL = '.ab-error'
@@ -210,8 +210,9 @@ class ArgumentationBlockController
       $feedbackScore.removeClass (idx, oldClasses) ->
         (oldClasses.match(/(^|\s)max-score-\S+/g) || []).join(' ') # matches all max-score-<val> classes
       # Set new score & max-score
-      $feedbackScore.addClass("max-score-#{feedbackItem.max_score || 6}")
-      if feedbackItem.score? && feedbackItem.score >= 0 && feedbackItem.score <= feedbackItem.max_score
+      maxScore = feedbackItem.max_score || 6
+      $feedbackScore.addClass("max-score-#{maxScore}")
+      if feedbackItem.score? && feedbackItem.score >= 0 && feedbackItem.score <= maxScore
         $feedbackScore.addClass("score-#{feedbackItem.score}")
       else
         $feedbackScore.addClass("score--error")

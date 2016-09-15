@@ -7,7 +7,7 @@
 - fb_score     = (feedback && feedback.score && (feedback.score >= 0 && feedback.score <= fb_max_score)) ? feedback.score : '-error'
 - feedback_classes = "max-score-#{fb_max_score} score-#{fb_score}"
 
-.ab-feedback{:id => "feedback_on_answer_#{emb_id}",
+.ab-feedback{:id => "feedback_on_#{emb_id}",
                    :style => fb_visible ? '' : 'display: none',
                    :class => "ab-score#{fb_score}",
                    'data-dirty' => fb_dirty ? 'true' : 'false',

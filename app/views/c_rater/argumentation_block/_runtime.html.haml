@@ -28,8 +28,8 @@
     - embeddables.each_with_index do |m,index|
       .question
         = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
-        = render :partial => "c_rater/argumentation_block/feedback", :locals => { feedback: m.get_saved_feedback, emb_id: m.id }
-
+        = render :partial => "c_rater/argumentation_block/feedback",
+                              :locals => { feedback: m.get_saved_feedback, emb_id: m.answer_id }
 
     - submission = last_submission(page, @run)
     - show_f_on_f = submission && submission.usefulness_score.nil? && !submission.any_errors?

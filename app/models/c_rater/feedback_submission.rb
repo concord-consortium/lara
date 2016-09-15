@@ -27,13 +27,12 @@ class CRater::FeedbackSubmission < ActiveRecord::Base
     submission = CRater::FeedbackSubmission.create!(interactive_page: page, run: run, collaboration_run: run.collaboration_run)
     feedback_items = {}
     arg_block_answers.each do |a|
-      # E.g. open_response_answer_123, multiple_choice_answer_321, etc.
-      id = "#{a.class.to_s.demodulize.underscore}_#{a.id}"
       f = a.save_feedback
       unless f.nil?
         f.feedback_submission = submission
         f.save!
-        feedback_items[id] = {score: f.score, text: f.feedback_text, max_score: f.max_score, error: f.error?}
+        # a.answer_id is unique among all the answer types, e.g. open_response_answer_123, multiple_choice_answer_321.
+        feedback_items[a.answer_id] = {score: f.score, text: f.feedback_text, max_score: f.max_score, error: f.error?}
       end
     end
     submission.propagate_to_collaborators
