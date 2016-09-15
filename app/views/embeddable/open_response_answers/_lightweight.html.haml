@@ -1,6 +1,5 @@
-- embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
 = render :partial => 'shared/question_header', :locals => { :embeddable => embeddable }
-.question-bd{ :id => embeddable_string }
+.question-bd{ :id => embeddable.answer_id }
   .question-txt
     != embeddable.prompt
   = form_for embeddable,
@@ -15,6 +14,6 @@
       new EmbeddableQuestionsLogging({
         type  :"#{embeddable.class.to_s.demodulize.underscore}",
         id    :"#{embeddable.id}",
-        dom_id:"#{embeddable_string}"
+        dom_id:"#{embeddable.answer_id}"
       });
     });

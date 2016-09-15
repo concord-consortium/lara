@@ -1,7 +1,6 @@
-- embeddable_string = "#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}"
-- check_button_string = "check_button_#{embeddable_string}"
+- check_button_string = "check_button_#{embeddable.answer_id}"
 = render :partial => 'shared/question_header', :locals => { :embeddable => embeddable }
-.question-bd{ :id => embeddable_string }
+.question-bd{ :id => embeddable.answer_id }
   .question-txt
     != embeddable.prompt
   = form_for embeddable,
@@ -24,7 +23,7 @@
               :id => check_button_string,
               :value => 'Check answer',
               :disabled => (embeddable.answers.length == 0),
-              :data => { :check => embeddable_string } }
+              :data => { :check => embeddable.answer_id } }
     = prediction_button(embeddable,f)
 - content_for :extra_javascript do
   :javascript
@@ -32,6 +31,6 @@
       new EmbeddableQuestionsLogging({
         type  :"#{embeddable.class.to_s.demodulize.underscore}",
         id    :"#{embeddable.id}",
-        dom_id:"#{embeddable_string}"
+        dom_id:"#{embeddable.answer_id}"
       });
     });
