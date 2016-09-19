@@ -12,7 +12,7 @@
 
     .submit
       - @sequence.activities.each do |a|
-        %a{href: print_blank_activity_path(a) }
+        %a{href: print_blank_activity_path(a), target: '_blank' }
           %input.button{type: 'submit', value: t('PRINT_BLANK.PRINT', activity: a.name)}
 
 
@@ -20,7 +20,7 @@
   .print-warning
     box-sizing: border-box
     margin: 1em auto
-    width: 400px
+    width: 700px
     padding: 10px
     text-align: left
     background-color: hsl(200,0%,95%)
