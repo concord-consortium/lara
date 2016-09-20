@@ -126,7 +126,7 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :external_report_url
     ])
-    activity_json[:theme_name] = self.theme.name
+    activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:pages] = []
     self.pages.each do |p|
       activity_json[:pages] << p.export
