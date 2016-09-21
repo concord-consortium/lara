@@ -204,7 +204,8 @@ class InteractivePage < ActiveRecord::Base
     self.save!(:validate => false) # This is the part we need to override
   end
 
-  def duplicate
+  def duplicate(interactives_cache=nil)
+    interactives_cache = InteractivesCache.new if interactives_cache.nil?
     new_page = InteractivePage.new(self.to_hash)
     helper = LaraSerializationHelper.new()
 
@@ -213,6 +214,15 @@ class InteractivePage < ActiveRecord::Base
 
       self.interactives.each do |inter|
         copy = inter.duplicate
+        interactives_cache.set(helper.key(inter), copy)
+        if inter.respond_to?(:linked_interactive=) && inter.linked_interactive
+          linked_key = helper.key(inter.linked_interactive)
+          copy.linked_interactive = interactives_cache.get(linked_key)
+          if !copy.linked_interactive
+            copy.linked_interactive = inter.linked_interactive.duplicate
+            interactives_cache.set(linked_key, copy.linked_interactive)
+          end
+        end
         new_page.add_interactive(copy, nil, false)
         helper.cache_item_copy(inter,copy)
       end
@@ -312,13 +322,28 @@ class InteractivePage < ActiveRecord::Base
     attributes
   end
 
-  def self.import(page_json_object)
+  def self.import(page_json_object, interactives_cache=nil)
+    interactives_cache = InteractivesCache.new if interactives_cache.nil?
     helper = LaraSerializationHelper.new
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
       import_page.save!(validate: false)
       page_json_object[:interactives].each do |inter|
+        # don't create a new linked interactive automatically as part of the interactive and instead use the cache below to avoid duplicates
+        linked_inter = inter[:linked_interactive]
+        inter.delete(:linked_interactive)
         import_interactive = helper.wrap_import(inter)
+        interactives_cache.set(inter[:ref_id], import_interactive)
+
+        if linked_inter
+          import_interactive.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
+          if !import_interactive.linked_interactive
+            import_interactive.linked_interactive = helper.wrap_import(linked_inter)
+            interactives_cache.set(linked_inter[:ref_id], import_interactive.linked_interactive)
+          end
+          import_interactive.save!(validate: false)
+        end
+
         import_page.add_interactive(import_interactive, nil, false)
       end
       page_json_object[:embeddables].each do |embed|
