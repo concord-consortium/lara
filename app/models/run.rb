@@ -282,24 +282,32 @@ class Run < ActiveRecord::Base
     return self.activity.reportable_items.size
   end
 
-  def num_answers
-    q_answers = activity_q_answers = self.answers.reject { |a| !a.answered? }
-    begin # this really shouldn't happen, but there are some bad runs in the DB
-      activity_q_answers = q_answers.reject { |a| a.question.activity.id != self.activity_id }
-      unless q_answers.size == activity_q_answers.size
-        Rails.logger.error("run #{self.id} has answers from another activity")
-      end
-    rescue
+  def num_answered_reportable_items
+    q_answers = self.answers.reject { |a| !a.answered? }
+    reportable_items = self.activity.reportable_items
+
+    # we only want to include answers that coorespond to a reportable item.
+    # some answers might not coorespond. For example if a item is hidden after students have used
+    # it, then there will still be an answer this hidden item.
+    # But the hidden item won't be in the reportable_items list
+
+    # FIXME it would be much easier if interactive_run_states just returned the iteractive as
+    # the answer, to change this we need to track down all the places where answer.question is
+    # called to see what expectations the code has about the result.
+    answered_items = q_answers.select do |a|
+      question = a.question
+      question = question.interactive if question.is_a? InteractiveRunState::QuestionStandin
+      reportable_items.include?(question)
     end
-    return activity_q_answers.size
+    answered_items.size
   end
 
   def completed?
-    return has_been_run && num_answers == num_reportable_items
+    return has_been_run && num_answered_reportable_items == num_reportable_items
   end
 
   def percent_complete
-    return (num_answers / Float(num_reportable_items) ) * 100.0
+    return (num_answered_reportable_items / Float(num_reportable_items) ) * 100.0
   end
 
   # See PT https://www.pivotaltracker.com/story/show/59365552
@@ -322,19 +330,20 @@ class Run < ActiveRecord::Base
   def info
     # begin
       info=<<-EOF
-                 run_id: #{id}
-                run_key: #{key}
-                  dirty: #{dirty?}
-        remote_endpoint: #{remote_endpoint}
-       percent_complete: #{percent_complete}
-      number of answers: #{num_answers}  (#{answers.size})
-    number of questions: #{num_reportable_items}
-               activity: #{activity.name} [#{activity_id}]
-               sequence: #{sequence_id}
-          collaboration: #{collaboration_run_id}
-           sequence_run: #{sequence_run_id}
-             other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
-   other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
+                        run_id: #{id}
+                       run_key: #{key}
+                         dirty: #{dirty?}
+               remote_endpoint: #{remote_endpoint}
+              percent_complete: #{percent_complete}
+  number of answered questions: #{num_answered_reportable_items}
+             number of answers: #{answers.size}
+           number of questions: #{num_reportable_items}
+                      activity: #{activity.name} [#{activity_id}]
+                      sequence: #{sequence_id}
+                 collaboration: #{collaboration_run_id}
+                  sequence_run: #{sequence_run_id}
+                    other_runs: #{sequence_run.runs.map { |r| r.id }.join(",") if sequence_run}
+          other seq activities: #{sequence_run.runs.map { |r| r.activity_id }.join(",") if sequence_run}
       EOF
       info.gsub(/^\s+/,'')
     # rescue NameError => e

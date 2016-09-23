@@ -16,7 +16,7 @@ This happens when individual 'answer' partials call the `Embeddable::Answer#ques
 
 LARA shows activity progress in completion ribbons on the sequence table of contents. The progess is also shown in some admin info reports.
 
-The progress is based on `Run#num_answers` / `Run#num_reportable_items`.
+The progress is based on `Run#num_answered_reportable_items` / `Run#num_reportable_items`.
 
 `Activity#reportable_items` is the combination of `Page#reportable_items` on all visible pages.
 
