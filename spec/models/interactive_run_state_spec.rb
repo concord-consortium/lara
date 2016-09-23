@@ -137,5 +137,13 @@ describe InteractiveRunState do
         end
       end
     end
+
+    describe "#answered?" do
+      let(:run_data) { '{"lara_options": {"reporting_url": "http://concord.org"}}' }
+      let(:interactive_run_state) { InteractiveRunState.create(interactive: interactive, raw_data: run_data)}
+
+      subject { interactive_run_state }
+      it { is_expected.to be_answered }
+    end
   end
 end

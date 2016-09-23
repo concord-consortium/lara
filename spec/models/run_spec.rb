@@ -22,15 +22,22 @@ describe Run do
   let(:user)       { FactoryGirl.create(:user) }
   let(:or_question){ FactoryGirl.create(:or_embeddable) }
   let(:or_answer)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question }) }
+  let(:or_question2){ FactoryGirl.create(:or_embeddable) }
+  let(:or_answer2)  { FactoryGirl.create(:or_answer, { :answer_text => "the answer", :question => or_question2 }) }
   let(:image_quest){ FactoryGirl.create(:image_question, :prompt => "draw your answer") }
   let(:iq_answer)  { FactoryGirl.create(:image_question_answer,
-    { :answer_text => "the image question answer",
-      :question => image_quest,
-      :image_url => "http://foo.com/bar.jpg" }) }
+    :answer_text => "the image question answer",
+    :question => image_quest,
+    :image_url => "http://foo.com/bar.jpg") }
   let(:a1)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_one") }
   let(:a2)         { FactoryGirl.create(:multiple_choice_choice, :choice => "answer_two") }
   let(:mc_question){ FactoryGirl.create(:multiple_choice, :choices => [a1, a2]) }
   let(:mc_answer)  { FactoryGirl.create(:multiple_choice_answer, :answers  => [a1], :question => mc_question) }
+  let(:interactive){ FactoryGirl.create(:mw_interactive)}
+  let(:interactive_run_state){ FactoryGirl.create(:interactive_run_state,
+    :interactive => interactive,
+    :raw_data => '{"lara_options": {"reporting_url": "http://concord.org"}}') }
+
 
   let(:portal_url)            { "http://portal.concord.org" }
   let(:valid_remote_endpoint) { portal_url + "/post/blah" }
@@ -556,8 +563,8 @@ describe Run do
 
   describe "Functions relating to 'completeness'" do
     subject         { run }
-    let(:questions) { [1,2,3]  }
-    let(:answers) { [or_answer, mc_answer, iq_answer]  }
+    let(:questions) { [or_question, mc_question, image_quest, interactive]  }
+    let(:answers) { [or_answer, mc_answer, iq_answer, interactive_run_state]  }
     before(:each) do
       allow(activity).to receive(:reportable_items).and_return(questions)
       allow(run).to receive(:answers).and_return(answers)
@@ -567,16 +574,14 @@ describe Run do
     describe "#num_reportable_items" do
       describe '#num_reportable_items' do
         subject { super().num_reportable_items }
-        it { is_expected.to eq 3}
+        it { is_expected.to eq 4}
       end
     end
 
-    describe "With three answers" do
-      let(:answers) { [or_answer, mc_answer, iq_answer]  }
-
-      describe '#num_answers' do
-        subject { super().num_answers }
-        it { is_expected.to eq 3         }
+    describe "With four answers" do
+      describe '#num_answered_reportable_items' do
+        subject { super().num_answered_reportable_items }
+        it { is_expected.to eq 4         }
       end
       it { is_expected.to be_completed }
 
@@ -589,33 +594,48 @@ describe Run do
     describe "With two answers" do
       let(:answers) { [or_answer, mc_answer]  }
 
-      describe '#num_answers' do
-        subject { super().num_answers }
+      describe '#num_answered_reportable_items' do
+        subject { super().num_answered_reportable_items }
         it { is_expected.to eq 2 }
       end
       it { is_expected.not_to be_completed }
 
       describe '#percent_complete' do
         subject { super().percent_complete }
-        it { is_expected.to be_within(0.1).of(66.6) }
+        it { is_expected.to be_within(0.1).of(50.0) }
       end
     end
 
-    describe "With three answers and one that is not answered" do
+    describe "With four answers and one that is not answered" do
       before(:each) do
         allow(mc_answer).to receive(:answered?).and_return(false)
       end
-      describe '#num_answers' do
-        subject { super().num_answers }
-        it { is_expected.to eq 2 }
+      describe '#num_answered_reportable_items' do
+        subject { super().num_answered_reportable_items }
+        it { is_expected.to eq 3 }
       end
       it { is_expected.not_to be_completed }
 
       describe '#percent_complete' do
         subject { super().percent_complete }
-        it { is_expected.to be_within(0.1).of(66.6) }
+        it { is_expected.to be_within(0.1).of(75.0) }
       end
     end
+
+    describe "With five answers, one that doesn't have a cooresponding question" do
+      let(:answers) { [or_answer, mc_answer, iq_answer, interactive_run_state, or_answer2]  }
+      describe '#num_answered_reportable_items' do
+        subject { super().num_answered_reportable_items }
+        it { is_expected.to eq 4 }
+      end
+      it { is_expected.to be_completed }
+
+      describe '#percent_complete' do
+        subject { super().percent_complete }
+        it { is_expected.to eq 100 }
+      end
+    end
+
   end
   describe "with real DB objects" do
     let(:page) { FactoryGirl.create(:page, name: 'page 1', position: 0) }
@@ -633,8 +653,8 @@ describe Run do
       page.add_embeddable(mc_question)
     end
 
-    describe '#num_answers' do
-      subject { run.num_answers }
+    describe '#num_answered_reportable_items' do
+      subject { run.num_answered_reportable_items }
       it { is_expected.to eq 2 }
     end
 
