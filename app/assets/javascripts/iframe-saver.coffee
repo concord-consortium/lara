@@ -11,6 +11,7 @@ class IFrameSaver
     @$delete_button = $delete_button
     @put_url = $data_div.data('puturl') # put our data here.
     @get_url = $data_div.data('geturl') # read our data from here.
+    @collaborator_urls = $data_div.data('collaboratorurls')
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
@@ -135,13 +136,18 @@ class IFrameSaver
     # it returns the current state and linked state
     init_interactive = (err, response) =>
       loc = window.location
+      url_prefix = "#{loc.protocol}//#{loc.hostname}#{if loc.port then ":#{loc.port}" else ""}"
+      collaboratorUrls = []
+      collaboratorUrls.push "#{url_prefix}#{url}" for url in @collaborator_urls.split(';') if @collaborator_urls
+
       @iframePhone.post 'initInteractive',
         version: 1,
         error: err
         interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
         hasLinkedInteractive: response?.has_linked_interactive or false
         linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
-        interactiveStateUrl: "#{loc.protocol}//#{loc.hostname}#{if loc.port then ":#{loc.port}" else ""}#{@get_url}"
+        interactiveStateUrl: "#{url_prefix}#{@get_url}"
+        collaboratorUrls: collaboratorUrls
 
     $.ajax
       url: @get_url
