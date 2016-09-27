@@ -54,6 +54,13 @@ module InteractiveRunHelper
     if run
       interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
       url = interactive_run.learner_url
+
+      # create interactive run states for collaborators so the docstore v2 api can set the doc id and access keys
+      if run.collaboration_run
+        run.collaboration_run.collaborators_runs(run.activity, run.user).each do |collaborator_run|
+          InteractiveRunState.by_run_and_interactive(collaborator_run, interactive)
+        end
+      end
     end
     url = interactive.url if url.blank?
 
