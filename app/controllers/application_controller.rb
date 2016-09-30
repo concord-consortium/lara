@@ -272,17 +272,13 @@ class ApplicationController < ActionController::Base
 
 
   def after_sign_out_path_for(resource)
-    if params[:re_login] && params[:user_provider]
+    if params[:user_provider]
       provider = params[:user_provider]
       provider_id = provider.clone
-      redirect_url = "#{request.protocol}#{request.host_with_port}"
-      params_hash = {
-        :re_login => true,
-        :redirect_uri => redirect_url,
-        :provider => provider
-      }
+      "#{Concord::AuthPortal.url_for_strategy_name(provider_id)}users/sign_out"
+    else
+      root_path
     end
-    params[:re_login] && params[:user_provider] ? "#{Concord::AuthPortal.url_for_strategy_name(provider_id)}users/sign_out?#{params_hash.to_query}" : root_path
   end
 
   def respond_with_edit_form
