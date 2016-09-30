@@ -77,11 +77,13 @@
     <div class="activity-mod">
       <!-- Add class of fixed to activity-nav-mod for fixed nav -->
       <!-- TODO: How to control that? -->
-      <div class="activity-nav-mod">
+      <% unless @hide_navigation %>
+        <div class="activity-nav-mod">
 
-        <%= render :partial => 'shared/activity_nav' %>
+          <%= render :partial => 'shared/activity_nav' %>
 
-      </div>
+        </div>
+      <% end %>
       <!-- end activity-nav-mod -->
 
       <div class="site-width">

@@ -128,6 +128,7 @@ class ApplicationController < ActionController::Base
   # if the current_user is not authorized to access the run then this method
   # is called
   def user_id_mismatch
+    @hide_navigation = true
     @user = current_user ? current_user.email : 'anonymous'
     @response_key = params[:response_key] || 'no response key'
     @session = session.clone
