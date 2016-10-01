@@ -15,4 +15,9 @@ class HomeController < ApplicationController
     render "/home/bad_browser"
   end
 
+  def print_headers
+    lines = request.env.map{|key, value| "#{key}: #{value}<br/>"}
+    # only show the capitalized keys which are the actual headers
+    render text: lines.select{|line| line =~ /^[A-Z]/}.join("\n")
+  end
 end

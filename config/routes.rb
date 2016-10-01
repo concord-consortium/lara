@@ -197,6 +197,7 @@ LightweightStandalone::Application.routes.draw do
   # Simple image proxy used by Drawing Tool.
   match "/image-proxy" => 'image_proxy#get'
   match "/home/bad_browser" => "home#bad_browser"
+  match "/print_headers" => "home#print_headers"
 
   # Web interface to show the delayed jobs for admins
   # unfortunately this route has caused other route constraints to stop working?
