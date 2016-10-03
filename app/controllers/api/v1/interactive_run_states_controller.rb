@@ -37,7 +37,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
   end
 
   def authorization_error(action)
-    reason = current_user ? "the owner or an admin" : "logged in"
+    reason = current_user ? "the owner or an admin or a collaborator" : "logged in"
     render :json => { :success => false, :message => "You are not authorized to #{action} the requested owned interactive run state because you are not #{reason}."}
   end
 end
