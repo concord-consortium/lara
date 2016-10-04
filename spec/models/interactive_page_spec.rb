@@ -338,6 +338,64 @@ describe InteractivePage do
         end
       end
     end
+
+    describe "linked interactives linked once" do
+      before(:each) do
+        page.add_interactive mw_1
+        page.add_interactive mw_2
+        page.reload
+      end
+
+      let(:linked_mw_1)  { FactoryGirl.create(:mw_interactive) }
+      let(:linked_mw_2)  { FactoryGirl.create(:mw_interactive) }
+      let(:mw_1)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_2)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
+
+      let(:dupe)         { page.duplicate }
+
+      it "should create a duplicate of the linked interactive" do
+        expect(page.interactives[0].linked_interactive.url).to eql (dupe.interactives[0].linked_interactive.url)
+        expect(page.interactives[1].linked_interactive.url).to eql (dupe.interactives[1].linked_interactive.url)
+
+        expect(page.interactives[0].linked_interactive.url).not_to eql (dupe.interactives[1].linked_interactive.url)
+        expect(page.interactives[1].linked_interactive.url).not_to eql (dupe.interactives[0].linked_interactive.url)
+      end
+    end
+
+    describe "linked interactives linked multiple times" do
+      before(:each) do
+        page.add_interactive mw_1
+        page.add_interactive mw_2
+        page.add_interactive mw_3
+        page.add_interactive mw_4
+        page.add_interactive mw_5
+        page.add_interactive mw_6
+        page.reload
+      end
+
+      let(:linked_mw_1)  { FactoryGirl.create(:mw_interactive) }
+      let(:linked_mw_2)  { FactoryGirl.create(:mw_interactive) }
+      let(:mw_1)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_2)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_3)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_1) }
+      let(:mw_4)         { FactoryGirl.create(:mw_interactive) }
+      let(:mw_5)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
+      let(:mw_6)         { FactoryGirl.create(:mw_interactive, linked_interactive: linked_mw_2) }
+
+      let(:dupe)         { page.duplicate }
+
+      it "should create a single duplicate of the linked interactive" do
+        expect(page.interactives[0].linked_interactive.url).to eql (dupe.interactives[0].linked_interactive.url)
+        expect(dupe.interactives[0].linked_interactive).to eql (dupe.interactives[1].linked_interactive)
+        expect(dupe.interactives[0].linked_interactive).to eql (dupe.interactives[2].linked_interactive)
+
+        expect(dupe.interactives[3].linked_interactive).to be_nil
+
+        expect(page.interactives[4].linked_interactive.url).to eql (dupe.interactives[4].linked_interactive.url)
+        expect(dupe.interactives[4].linked_interactive).not_to eql (dupe.interactives[2].linked_interactive)
+        expect(dupe.interactives[4].linked_interactive).to eql (dupe.interactives[5].linked_interactive)
+      end
+    end
   end
 
   describe '#import' do
