@@ -41,6 +41,12 @@ describe Embeddable::Labbook do
       it 'returns "Upload image"' do
         expect(labbook.action_label).to eql(I18n.t('UPLOAD_IMAGE'))
       end
+      context 'if we manually override custom_action_label' do
+        it 'returns "Take snapshot"' do
+          labbook.custom_action_label = I18n.t('TAKE_SNAPSHOT')
+          expect(labbook.action_label).to eql(I18n.t('TAKE_SNAPSHOT'))
+        end
+      end
     end
     context 'labbook action type is set to snapshot' do
       let(:labbook) { Embeddable::Labbook.new(action_type: Embeddable::Labbook::SNAPSHOT_ACTION) }
