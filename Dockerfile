@@ -1,23 +1,10 @@
-FROM ruby:1.9.3
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
-
-# for a JS runtime
-RUN apt-get install -qq -y nodejs
-
-# install software-properties-common for add-apt-repository
-RUN apt-get install -qq -y software-properties-common
+FROM concordconsortium/docker-rails-base
 
 # install nginx
 RUN apt-get install -qq -y nginx
 
 # install foreman
 RUN gem install foreman
-
-# clean up ruby / gems / bundler
-RUN gem update --system
-RUN gem update bundler
-# get rid of old bundler version
-RUN gem cleanup bundler
 
 # if this is changed it also needs to be changed in nginx-sites.conf and unicorn.rb
 ENV APP_HOME /lara
