@@ -70,13 +70,14 @@ class Sequence < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
+    interactives_cache = InteractivesCache.new
     new_sequence = Sequence.new(self.to_hash)
     Sequence.transaction do
       new_sequence.title = "Copy of #{self.name}"
       new_sequence.user = new_owner
       positions = []
       lightweight_activities_sequences.each do |sa|
-        new_a = sa.lightweight_activity.duplicate(new_owner)
+        new_a = sa.lightweight_activity.duplicate(new_owner, interactives_cache)
         new_a.name = new_a.name.sub('Copy of ', '')
         new_a.save!
         new_sequence.activities << new_a
@@ -148,6 +149,7 @@ class Sequence < ActiveRecord::Base
   end
 
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
+    interactives_cache = InteractivesCache.new
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
     Sequence.transaction do
       import_sequence.title = import_sequence.title
@@ -155,7 +157,7 @@ class Sequence < ActiveRecord::Base
       import_sequence.user = new_owner
       positions = []
       sequence_json_object[:activities].each do |sa|
-        import_a = LightweightActivity.import(sa, new_owner)
+        import_a = LightweightActivity.import(sa, new_owner, nil, interactives_cache)
         import_a.save!
         import_sequence.activities << import_a
         positions << sa[:position]
