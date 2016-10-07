@@ -8,6 +8,7 @@ class CreateCollaboration
     uri = URI(collaborators_data_url)
     fail 'Scheme is required for collaborators_data_url' if uri.scheme.nil?
     @portal_url = "#{uri.scheme}://#{uri.host}"
+    @portal_url = "#{@portal_url}:#{uri.port}" if (uri.port != 80) && (uri.port != 443)
     @owner = user
     @activity = material.is_a?(LightweightActivity) ? material : nil
     @sequence = material.is_a?(Sequence) ? material : nil

@@ -92,7 +92,25 @@ describe Api::V1::InteractiveRunStatesController do
 
         it 'cannot be opened' do
           get :show, :key => 'foo'
-          expect_response_is_not_authorized(response, "the owner or an admin", "get")
+          expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "get")
+        end
+      end
+
+      describe 'owned documents that the user does not own but is a collaborator' do
+        before(:each) do
+          cr = FactoryGirl.create(:collaboration_run)
+          cr.user = user2
+          cr.runs.concat([run, run2])
+          cr.save!
+        end
+
+        let(:user2) { FactoryGirl.create(:user)           }
+        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
+
+        it 'can be opened' do
+          get :show, :key => 'foo'
+          expect_response_has_valid_raw_data(response)
         end
       end
     end
@@ -186,7 +204,25 @@ describe Api::V1::InteractiveRunStatesController do
 
         it 'cannot be updated' do
           put :update, {key: 'foo', raw_data: '{"bar": 2}', learner_url: 'http://example.com'}
-          expect_response_is_not_authorized(response, "the owner or an admin", "update")
+          expect_response_is_not_authorized(response, "the owner or an admin or a collaborator", "update")
+        end
+      end
+
+      describe 'owned documents that the user does not own but is a collaborator' do
+        before(:each) do
+          cr = FactoryGirl.create(:collaboration_run)
+          cr.user = user2
+          cr.runs.concat([run, run2])
+          cr.save!
+        end
+
+        let(:user2) { FactoryGirl.create(:user)           }
+        let(:run)   { FactoryGirl.create(:run, {activity: activity, user: user2})}
+        let(:run2)  { FactoryGirl.create(:run, {activity: activity, user: user})}
+
+        it 'can be updated' do
+          put :update, {key: 'foo', raw_data: '{"bar": 2}', learner_url: 'http://example.com'}
+          expect_response_has_valid_updated_data(response)
         end
       end
     end
