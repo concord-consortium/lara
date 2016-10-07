@@ -36,10 +36,8 @@ describe 'IFrameSaver', () ->
         expect($("#interactive_data_div")).toExist()
 
     describe "constructor called in the correct context", () ->
-      it "should have a put url", () ->
-        expect(saver.put_url).toBe("foo/42")
-      it "should have a get url", () ->
-        expect(saver.get_url).toBe("bar/42")
+      it "should have a interactive run state url", () ->
+        expect(saver.interactive_run_state_url).toBe("foo/42")
     describe "save", () ->
       beforeEach () ->
         saver.save()

@@ -9,9 +9,8 @@ class IFrameSaver
   constructor: ($iframe, $data_div, $delete_button) ->
     @$iframe = $iframe
     @$delete_button = $delete_button
-    @put_url = $data_div.data('puturl') # put our data here.
-    @get_url = $data_div.data('geturl') # read our data from here.
-    @collaborator_urls = $data_div.data('collaboratorurls')
+    @interactive_run_state_url = $data_div.data('interactive-run-state-url') # get and put our data here.
+    @collaborator_urls = $data_div.data('collaborator-urls')
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
@@ -26,7 +25,7 @@ class IFrameSaver
 
     @save_indicator = SaveIndicator.instance()
 
-    if (@put_url or @get_url)
+    if (@interactive_run_state_url)
       IFrameSaver.instances.push @
 
     @already_setup = false
@@ -97,7 +96,7 @@ class IFrameSaver
       @save_to_server(null, "")
 
   save_to_server: (interactive_json, learner_url) ->
-    return unless @put_url
+    return unless @interactive_run_state_url
 
     runSuccess = =>
       @saved_state = interactive_json
@@ -119,7 +118,7 @@ class IFrameSaver
     $.ajax
       type: 'PUT'
       dataType: 'json'
-      url: @put_url
+      url: @interactive_run_state_url
       data: data
       success: (response) =>
         runSuccess()
@@ -128,29 +127,24 @@ class IFrameSaver
         @error("couldn't save interactive")
 
   load_interactive: (callback) ->
-    unless @get_url
+    unless @interactive_run_state_url
       callback()
       return
 
     # this is the newer method of initializing an interactive
     # it returns the current state and linked state
     init_interactive = (err, response) =>
-      loc = window.location
-      url_prefix = "#{loc.protocol}//#{loc.hostname}#{if loc.port then ":#{loc.port}" else ""}"
-      collaboratorUrls = []
-      collaboratorUrls.push "#{url_prefix}#{url}" for url in @collaborator_urls.split(';') if @collaborator_urls
-
       @iframePhone.post 'initInteractive',
         version: 1,
         error: err
         interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
         hasLinkedInteractive: response?.has_linked_interactive or false
         linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
-        interactiveStateUrl: "#{url_prefix}#{@get_url}"
-        collaboratorUrls: collaboratorUrls
+        interactiveStateUrl: @interactive_run_state_url
+        collaboratorUrls: @collaborator_urls.split(';')
 
     $.ajax
-      url: @get_url
+      url: @interactive_run_state_url
       success: (response) =>
         if response['raw_data']
           interactive = JSON.parse(response['raw_data'])
@@ -168,7 +162,7 @@ class IFrameSaver
         callback()
 
   set_autosave_enabled: (v) ->
-    return unless @put_url
+    return unless @interactive_run_state_url
     # Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
     # Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
     # itself, but other code can use that event too (e.g. logging).

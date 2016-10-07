@@ -5,7 +5,7 @@ module InteractiveRunHelper
     opts = {
       'data-interactive-id' => interactive.id,
       'id' =>"save_interactive",
-      'data-put-url'  => put_url(interactive,run)
+      'data-interactive-run-state-url' => interactive_run_state_url(interactive,run)
     }
     button_tag "save",  opts
   end
@@ -14,32 +14,26 @@ module InteractiveRunHelper
     opts = {
       'data-interactive-id' => interactive.id,
       'id' =>"revert_interactive",
-      'data-get-url'  => get_url(interactive,run)
+      'data-interactive-run-state-url' => interactive_run_state_url(interactive,run)
     }
     button_tag "revert",  opts
   end
 
-  def get_url(interactive,run)
+  def interactive_run_state_url(interactive,run)
     interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
-    api_v1_show_interactive_run_state_path(:key => interactive_run.key)
-  end
-
-  def put_url(interactive,run)
-    interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
-    api_v1_update_interactive_run_state_path(:key => interactive_run.key)
+    api_v1_show_interactive_run_state_url(:key => interactive_run.key)
   end
 
   def interactive_data_div(interactive,run)
     data = {}
     if (run)
-      data['puturl'] = put_url(interactive,run)
-      data['geturl'] = get_url(interactive,run)
+      data['interactive-run-state-url'] = interactive_run_state_url(interactive,run)
       if run.collaboration_run
         collaborator_urls = []
         run.collaboration_run.collaborators_runs(run.activity, run.user).each do |collaborator_run|
-          collaborator_urls.push(get_url(interactive,collaborator_run))
+          collaborator_urls.push(interactive_run_state_url(interactive,collaborator_run))
         end
-        data['collaboratorurls'] = collaborator_urls.join(';')
+        data['collaborator-urls'] = collaborator_urls.join(';')
       end
       data['loggedin'] = (!!run.user).to_s
       data['authprovider'] = (Concord::AuthPortal.url_for_strategy_name(run.user.most_recent_authentication.provider) rescue nil) if data['loggedin'] == "true"
