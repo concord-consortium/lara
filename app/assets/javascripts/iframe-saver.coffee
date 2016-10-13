@@ -141,7 +141,7 @@ class IFrameSaver
         hasLinkedInteractive: response?.has_linked_interactive or false
         linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
         interactiveStateUrl: @interactive_run_state_url
-        collaboratorUrls: @collaborator_urls.split(';')
+        collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
 
     $.ajax
       url: @interactive_run_state_url
