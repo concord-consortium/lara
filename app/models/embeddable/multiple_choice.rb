@@ -9,7 +9,10 @@ module Embeddable
     LAYOUT_LIKERT = "likert"
     
 
-    has_many :choices, :class_name => 'Embeddable::MultipleChoiceChoice', :foreign_key => 'multiple_choice_id'
+    has_many :choices,
+      :class_name => 'Embeddable::MultipleChoiceChoice',
+      :foreign_key => 'multiple_choice_id',
+      :dependent => :destroy
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     # PageItem instances are join models, so if the embeddable is gone
     # the join should go too.
@@ -17,7 +20,8 @@ module Embeddable
 
     has_many :answers,
       :class_name => 'Embeddable::MultipleChoiceAnswer',
-      :foreign_key => 'multiple_choice_id'
+      :foreign_key => 'multiple_choice_id',
+      :dependent => :destroy
 
     attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
       :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,

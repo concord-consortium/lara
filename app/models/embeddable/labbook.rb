@@ -32,7 +32,8 @@ module Embeddable
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
     has_many :answers,
-             :class_name  => 'Embeddable::LabbookAnswer'
+      :class_name  => 'Embeddable::LabbookAnswer',
+      :dependent => :destroy
 
     default_value_for :name, 'Labbook album' # it's used in Portal reports
 
