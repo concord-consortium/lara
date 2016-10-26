@@ -12,7 +12,7 @@ class MwInteractive < ActiveRecord::Base
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
   has_one :interactive_page, :through => :interactive_item
-  has_many :interactive_run_states, :as => :interactive
+  has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
   belongs_to :linked_interactive, :class_name => 'MwInteractive'

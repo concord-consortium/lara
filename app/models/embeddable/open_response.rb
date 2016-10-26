@@ -10,7 +10,8 @@ module Embeddable
     has_many :interactive_pages, :through => :page_items
     has_many :answers,
       :class_name  => 'Embeddable::OpenResponseAnswer',
-      :foreign_key => 'open_response_id'
+      :foreign_key => 'open_response_id',
+      :dependent => :destroy
 
     has_one :tracked_question, :as => :question, :dependent => :delete
     has_one :question_tracker, :through => :tracked_question
