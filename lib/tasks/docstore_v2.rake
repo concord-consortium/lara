@@ -27,9 +27,18 @@ namespace :docstore_v2 do
     InteractiveRunState.includes(:interactive).where(interactive_type: 'MwInteractive').where("raw_data like '%\"lara_options\":%'").find_in_batches(batch_size: 100) do |batch|
       docs = []
       server_urls = {}
-      interactives = {}
       interactive_urls = {}
-      stats = {total_states: 0, v1_states: 0, has_reporting_url: 0, has_interactive_id: 0, uses_prod_docstore: 0, has_recordid_and_server: 0, uses_codap_concord_org: 0, found_document: 0, updated: 0}
+      stats = {
+        total_states: 0,
+        v1_states: 0,
+        has_reporting_url: 0,
+        has_interactive: 0,
+        uses_prod_docstore: 0,
+        has_v2_interactive_url: 0,
+        has_recordid_and_server: 0,
+        uses_codap_concord_org: 0,
+        found_document: 0,
+        updated: 0}
 
       batch.each do |irs|
         stats[:total_states] = stats[:total_states] + 1
@@ -44,19 +53,30 @@ namespace :docstore_v2 do
         stats[:has_reporting_url] = stats[:has_reporting_url] + 1
 
         # skip runstates without an interactive (this should not happen, but just in case)
-        next if !irs.interactive_id
-        stats[:has_interactive_id] = stats[:has_interactive_id] + 1
+        next if !irs.interactive
+        stats[:has_interactive] = stats[:has_interactive] + 1
 
         # skip interactives not hosted on production doc store
         interactive_url = safe_parse(irs.interactive.url) # encode first to avoid URI::InvalidURIError on bad urls
         next if interactive_url.nil? || !(['document-store.herokuapp.com', 'document-store.concord.org'].include? interactive_url.host)
         stats[:uses_prod_docstore] = stats[:uses_prod_docstore] + 1
 
-        # make sure the interactive has the needed recordid and server
+        # make sure the interactive has the needed parameters
         interactive_params = CGI.parse(interactive_url.query || "")
         interactive_params.each {|key,value| interactive_params[key] = value[0]}  # CGI.parse returns ?foo=bar as {"foo":["bar"]}
-        next if !interactive_params.has_key?("recordid") || !interactive_params.has_key?("server")
-        stats[:has_recordid_and_server] = stats[:has_recordid_and_server] + 1
+
+        if interactive_url.include? '/v2/documents/' then
+          # this is a v2 style interactive, this can happen if the interactives have been partially converted
+          v1_interactive_url = false
+          stats[:has_v2_interactive_url] = stats[:has_v2_interactive_url] + 1
+          # make sure it has a server param
+          next if !interactive_params.has_key?("server")
+        else
+          # this is a v1 style interactive
+          v1_interactive_url = true
+          next if !interactive_params.has_key?("recordid") || !interactive_params.has_key?("server")
+          stats[:has_recordid_and_server] = stats[:has_recordid_and_server] + 1
+        end
 
         # make sure only production codap server interactives are changed
         server_urls[irs.id] = interactive_params["server"]
@@ -64,13 +84,14 @@ namespace :docstore_v2 do
         next if server_url.nil? || server_url.host != 'codap.concord.org'
         stats[:uses_codap_concord_org] = stats[:uses_codap_concord_org] + 1
 
-        # generate the v2 launch url and save the interactive id to update
         puts interactive_params
-        new_interactive_url = URI("#{interactive_url.scheme}://#{interactive_url.host}:#{interactive_url.port}/v2/documents/#{interactive_params['recordid']}/launch")
-        interactive_params.delete("recordid")
-        new_interactive_url.query = interactive_params.to_query
-        interactive_urls[irs.id] = new_interactive_url.to_s
-        interactives[irs.id] = irs.interactive_id
+        # generate the v2 launch url and save the interactive id to update
+        if v1_interactive_url then
+          new_interactive_url = URI("#{interactive_url.scheme}://#{interactive_url.host}:#{interactive_url.port}/v2/documents/#{interactive_params['recordid']}/launch")
+          interactive_params.delete("recordid")
+          new_interactive_url.query = interactive_params.to_query
+          interactive_urls[irs.interactive_id] = new_interactive_url.to_s
+        end
 
         # parse and select the parameters to query on the docstore
         params = CGI.parse(safe_parse(lara_options["reporting_url"]).query || "")
@@ -91,7 +112,7 @@ namespace :docstore_v2 do
           irs_id = doc["irs_id"]
           document = doc["document"]
           stats[:found_document] = stats[:found_document] + 1 if document
-          if document && server_urls[irs_id] && interactive_urls[irs_id]
+          if document && server_urls[irs_id]
             reporting_url = safe_parse(server_urls[irs_id])
             reporting_params = CGI.parse(reporting_url.query || "")
             reporting_params["launchFromLara"] = Base64.strict_encode64({recordid: document["id"], accessKeys: {readOnly: document["readAccessKey"]}}.to_json)
@@ -99,14 +120,17 @@ namespace :docstore_v2 do
 
             irs = InteractiveRunState.find(irs_id)
             irs.raw_data = {docStore: {recordid: document["id"], accessKeys: {readOnly: document["readAccessKey"], readWrite: document["readWriteAccessKey"]}}, lara_options: {reporting_url: reporting_url.to_s}}.to_json
+            irs.learner_url = nil
             irs.save
 
-            interactive = MwInteractive.find(interactives[irs_id])
-            interactive.url = interactive_urls[irs_id]
-            interactive.save
 
             stats[:updated] = stats[:updated] + 1
           end
+        end
+
+        interactive_urls.each do |key, value|
+          interactive = MwInteractive.find(key)
+          interactive.update_attribute(:url, value)
         end
       end
       puts "--- Batch Stats ---"
