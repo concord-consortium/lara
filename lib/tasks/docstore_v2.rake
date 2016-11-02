@@ -65,7 +65,7 @@ namespace :docstore_v2 do
         interactive_params = CGI.parse(interactive_url.query || "")
         interactive_params.each {|key,value| interactive_params[key] = value[0]}  # CGI.parse returns ?foo=bar as {"foo":["bar"]}
 
-        if interactive_url.include? '/v2/documents/' then
+        if interactive_url.path.include? '/v2/documents/' then
           # this is a v2 style interactive, this can happen if the interactives have been partially converted
           v1_interactive_url = false
           stats[:has_v2_interactive_url] = stats[:has_v2_interactive_url] + 1
