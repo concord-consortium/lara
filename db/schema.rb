@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160824191003) do
+ActiveRecord::Schema.define(:version => 20161108100733) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -403,6 +403,7 @@ ActiveRecord::Schema.define(:version => 20160824191003) do
     t.string   "image_url"
     t.boolean  "is_hidden",             :default => false
     t.integer  "linked_interactive_id"
+    t.boolean  "full_window",           :default => false
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
