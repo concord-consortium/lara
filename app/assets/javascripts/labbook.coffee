@@ -24,8 +24,8 @@ class LabbookController
 
     @$dialog.dialog({
       autoOpen: false,
-      width: 750,
-      height: 750,
+      width: Math.min(window.innerWidth - 10, 750),
+      height: Math.min(window.innerHeight - 10, 750),
       title: 'Labbook',
       dialogClass: 'lb-dialog',
       modal: true,

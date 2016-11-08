@@ -1,3 +1,5 @@
+- labbook = show_labbook_under_interactive?(@run, interactive)
+
 .interactive-container{class: interactive.save_state ? 'savable' : ''}
   - if interactive.native_height > 1
     .interactive-placeholder.print-only
@@ -8,11 +10,24 @@
         =image_tag(interactive.image_url)
 
     - if interactive.click_to_play
-      .click_to_play.shown.screen-only{:id => dom_id_for(interactive, :click_to_play)}
+      - if interactive.full_window
+        .full-window-overlay
+          .loading-msg
+            %i.wait-icon.fa.fa-spinner.fa-spin
+            Loading interactive...
+        .full-window-menu
+          .menu-items
+            - if labbook
+              .screenshot
+                = render partial: 'embeddable/labbook_answers/lightweight', locals: { embeddable: labbook }
+            .exit-full-window{:id => dom_id_for(interactive, :exit_full_window)}
+              Return to Activity
+
+      .click_to_play.shown.screen-only{:id => dom_id_for(interactive, :click_to_play), 'data-trigger-full-window' => interactive.full_window}
         .background
         .text= "Click here to start the interactive."
 
-      = interactive_iframe_tag(interactive, @run,false) do
+      = interactive_iframe_tag(interactive, @run, false) do
 
         Your browser does not support inline frames, or is currently not configured to display inline frames.
         Content can be viewed at the actual source page:
@@ -33,19 +48,38 @@
 .print-only.iframe-url
   = link_to "#{interactive.url}", "#{interactive.url}"
 
-- labbook = show_labbook_under_interactive?(@run, interactive)
-- if labbook
+- if labbook && !interactive.full_window
   .question
-    = render partial: 'embeddable/labbook_answers/lightweight',
-      locals: { embeddable: labbook }
+    = render partial: 'embeddable/labbook_answers/lightweight', locals: { embeddable: labbook }
+- else
+  %br
+  %br
 
 :javascript
   $(document).ready(function() {
     $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
-      $(this).css('display','none');
-      $(this).removeClass('shown')
-      $('##{dom_id_for(interactive, :interactive_image)}').css('display','none');
-      $('#interactive_#{interactive.id}').attr('src','#{interactive.url}');
-      InteractiveManager.register($(this).parent('.interactive-container'))
-    })
+      var $clickToPlay = $(this);
+      var $interactiveContainer = $clickToPlay.parent('.interactive-container');
+      $clickToPlay.css('display', 'none');
+      $clickToPlay.removeClass('shown');
+      $('##{dom_id_for(interactive, :interactive_image)}').css('display', 'none');
+      if (!$interactiveContainer.data('initialized')) {
+        $('#interactive_#{interactive.id}').attr('src','#{interactive.url}');
+        InteractiveManager.register($interactiveContainer);
+        $interactiveContainer.data('initialized', true);
+      }
+      if (#{interactive.full_window}) {
+        $interactiveContainer.addClass('full-window');
+        $('html').addClass('noscroll');
+      }
+    });
+
+    $('##{dom_id_for(interactive, :exit_full_window)}').click(function() {
+      var $clickToPlay = $('##{dom_id_for(interactive, :click_to_play)}');
+      var $interactiveContainer = $clickToPlay.parent('.interactive-container');
+      $clickToPlay.css('display', 'block');
+      $clickToPlay.addClass('shown');
+      $interactiveContainer.removeClass('full-window');
+      $('html').removeClass('noscroll');
+    });
   })
