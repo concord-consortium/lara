@@ -29,6 +29,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[image_url]': 'image_url'
       'mw_interactive[native_width]': 'native_width'
       'mw_interactive[native_height]': 'native_height'
+      'mw_interactive[full_window]': 'full_window'
 
     getInitialState: ->
       modelsByName: {}
@@ -44,6 +45,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[image_url]', model.image_url
       @valueChanged 'mw_interactive[native_width]', model.width
       @valueChanged 'mw_interactive[native_height]', model.height
+
+    onFullWindowChange: (event) ->
+      @valueChanged 'mw_interactive[full_window]', event.target.checked
 
     fetchModelList: ->
       cachedAjax
@@ -83,6 +87,11 @@ modulejs.define 'components/itsi_authoring/model_editor',
               (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
             else
               'Loading models...'
+
+            (label {},
+              (@checkbox {name: 'mw_interactive[full_window]'}),
+              'Start in full window mode'
+            )
           )
         else
           (div {className: 'ia-section-text'},

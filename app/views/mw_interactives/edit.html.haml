@@ -55,8 +55,11 @@
   function click_to_play(){
     if ($("#click_to_play_#{@interactive.id}").prop('checked')) {
         $("#mw_interactive_image_url").attr("required", true);
+        $("#full_window_#{@interactive.id}").removeAttr("disabled");
+
       } else {
         $("#mw_interactive_image_url").removeAttr("required");
+        $("#full_window_#{@interactive.id}").attr("disabled", true);
       }
   }
 

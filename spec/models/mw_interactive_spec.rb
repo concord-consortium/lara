@@ -40,6 +40,7 @@ describe MwInteractive do
         save_state: interactive.save_state,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
+        full_window: interactive.full_window,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden
        }
@@ -56,6 +57,7 @@ describe MwInteractive do
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         click_to_play: interactive.click_to_play,
+        full_window: interactive.full_window,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden
       })

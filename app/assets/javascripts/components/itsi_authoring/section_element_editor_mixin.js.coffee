@@ -95,3 +95,8 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       for item in options.options
         (option {value: item.value, key: item.name}, item.name)
     )
+
+  checkbox: (options) ->
+    changed = (e) =>
+      @_handleChange options.name, e.target.checked, options.onChange
+    input {type: 'checkbox', name: options.name, checked: @state.values[options.name], onChange: changed}
