@@ -101,4 +101,9 @@
 
 .noscroll {
   overflow-y: hidden;
+  // This class is applied to HTML tag and fixed position fixes iPad issues.
+  // Full window interactive uses fixed layout too and when iPad keyboard is opened,
+  // it might totally break it (iPad bug). Setting position of HTML element helps. See:
+  // http://stackoverflow.com/questions/14492613/ios-ipad-fixed-position-breaks-when-keyboard-is-opened
+  position: fixed;
 }

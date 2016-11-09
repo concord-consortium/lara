@@ -57,8 +57,8 @@
 
 :javascript
   $(document).ready(function() {
-    $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
-      var $clickToPlay = $(this);
+    function startInteractive(clickToPlayElem) {
+      var $clickToPlay = $(clickToPlayElem);
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
       $clickToPlay.css('display', 'none');
       $clickToPlay.removeClass('shown');
@@ -68,18 +68,34 @@
         InteractiveManager.register($interactiveContainer);
         $interactiveContainer.data('initialized', true);
       }
-      if (#{interactive.full_window}) {
-        $interactiveContainer.addClass('full-window');
-        $('html').addClass('noscroll');
-      }
-    });
-
-    $('##{dom_id_for(interactive, :exit_full_window)}').click(function() {
+    }
+    // Full window interactive uses fixed layout too and when iPad keyboard is opened,
+    // it might totally break it. It's an iOS Safari bug, see (different solutions, but the same bug):
+    // http://stackoverflow.com/questions/14492613/ios-ipad-fixed-position-breaks-when-keyboard-is-opened
+    // Setting fixed position of HTML element helps (that's done by noscroll class). However, it also resets
+    // current scroll position, so we need to save it and restore when user leaves full window mode.
+    var currentScrollTop;
+    function enterFullWindow(clickToPlayElem) {
+      var $interactiveContainer = $(clickToPlayElem).parent('.interactive-container');
+      $interactiveContainer.addClass('full-window');
+      currentScrollTop = $('body').scrollTop();
+      $('html').addClass('noscroll');
+    }
+    function exitFullWindow() {
+      $('html').removeClass('noscroll');
+      $('body').scrollTop(currentScrollTop);
       var $clickToPlay = $('##{dom_id_for(interactive, :click_to_play)}');
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
       $clickToPlay.css('display', 'block');
       $clickToPlay.addClass('shown');
       $interactiveContainer.removeClass('full-window');
-      $('html').removeClass('noscroll');
+    }
+
+    $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
+      startInteractive(this);
+      if (#{interactive.full_window}) {
+        enterFullWindow(this);
+      }
     });
+    $('##{dom_id_for(interactive, :exit_full_window)}').click(exitFullWindow);
   })
