@@ -1,29 +1,109 @@
 .interactive-container {
-    position: relative;
-    .img-container,.click_to_play,.click_to_play .background,.click_to_play .text{
-      position: absolute;
+  position: relative;
+  .img-container,.click_to_play,.click_to_play .background,.click_to_play .text{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .img-container {
+    img {
+      width : 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .click_to_play {
+    cursor: pointer;
+    .background {
+      background-color: white;
+      opacity: 0.75;
+    }
+    .text {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 4em;
+    }
+  }
+
+  .full-window-menu, .full-window-overlay {
+    display: none;
+  }
+
+  &.full-window {
+    .full-window-overlay {
+      display: block;
+      position: fixed;
       top: 0;
-      right: 0;
-      bottom: 0;
       left: 0;
-    }
-    .img-container {
-      img {
-        width : 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-    }
-    .click_to_play {
-      cursor: pointer;
-      .background {
-        background-color: white;
-        opacity: 0.75;
-      }
-      .text {
+      width: 100%;
+      height: 100%;
+      background: #f8ac1a;
+      z-index: 1;
+
+      .loading-msg {
         text-align: center;
-        font-size: 2em;
-        margin-top: 4em;
+        font-size: 30px;
+        margin-top: 20%;
+      }
+    }
+
+    iframe {
+      display: block;
+      position: fixed;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 40px);
+      z-index: 2;
+    }
+
+    .full-window-menu {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      z-index: 2;
+
+      .menu-items {
+        float: right;
+        margin-right: 10px;
+        line-height: 40px;
+        div {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+
+      /* Labbook */
+      .screenshot {
+        .question-hdr {
+          display: none;
+        }
+        .question-bd.labbook {
+          margin-top: -14px;
+          transform: scale(0.8);
+          .text_prompt {
+            display: none;
+          }
+        }
+      }
+
+      .exit-full-window {
+        cursor: pointer;
       }
     }
   }
+}
+
+.noscroll {
+  overflow-y: hidden;
+  // This class is applied to HTML tag and fixed position fixes iPad issues.
+  // Full window interactive uses fixed layout too and when iPad keyboard is opened,
+  // it might totally break it (iPad bug). Setting position of HTML element helps. See:
+  // http://stackoverflow.com/questions/14492613/ios-ipad-fixed-position-breaks-when-keyboard-is-opened
+  position: fixed;
+}

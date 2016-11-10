@@ -1,6 +1,6 @@
 class MwInteractive < ActiveRecord::Base
   attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url,
-                  :is_hidden, :linked_interactive_id
+                  :is_hidden, :linked_interactive_id, :full_window
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -52,6 +52,7 @@ class MwInteractive < ActiveRecord::Base
       save_state: save_state,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
+      full_window: full_window,
       image_url: image_url,
       is_hidden: is_hidden
     }
@@ -82,6 +83,7 @@ class MwInteractive < ActiveRecord::Base
                               :save_state,
                               :has_report_url,
                               :click_to_play,
+                              :full_window,
                               :image_url,
                               :is_hidden])
   end
