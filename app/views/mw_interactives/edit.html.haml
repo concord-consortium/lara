@@ -20,7 +20,7 @@
   %br
   = f.label :click_to_play, 'Click to play'
   = f.check_box :click_to_play, :id => "click_to_play_#{@interactive.id}"
-  = f.label :full_window, 'Full window mode'
+  = f.label :full_window, :id => "full_window_label_#{@interactive.id}", :text => 'Full window mode'
   = f.check_box :full_window, :id => "full_window_#{@interactive.id}"
   %div{:style => "margin-bottom:5px;"}
     %em Warning: 
@@ -56,10 +56,11 @@
     if ($("#click_to_play_#{@interactive.id}").prop('checked')) {
         $("#mw_interactive_image_url").attr("required", true);
         $("#full_window_#{@interactive.id}").removeAttr("disabled");
-
+        $('#full_window_label_#{@interactive.id}').css("opacity", 1);
       } else {
         $("#mw_interactive_image_url").removeAttr("required");
         $("#full_window_#{@interactive.id}").attr("disabled", true);
+        $('#full_window_label_#{@interactive.id}').css("opacity", 0.3);
       }
   }
 
