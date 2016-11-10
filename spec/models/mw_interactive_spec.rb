@@ -52,7 +52,7 @@ describe MwInteractive do
     it 'is a new instance of MwInteractive with values' do
       interactive.is_hidden = true
       expect(interactive.duplicate).to be_a_new(MwInteractive).with({
-        name: "Copy of #{interactive.name}",
+        name: interactive.name,
         url: interactive.url,
         native_width: interactive.native_width,
         native_height: interactive.native_height,
