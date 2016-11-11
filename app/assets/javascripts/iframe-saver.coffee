@@ -9,11 +9,13 @@ class IFrameSaver
   constructor: ($iframe, $data_div, $delete_button) ->
     @$iframe = $iframe
     @$delete_button = $delete_button
+    @save_state = $data_div.data('save-state');
     @interactive_run_state_url = $data_div.data('interactive-run-state-url') # get and put our data here.
     @collaborator_urls = $data_div.data('collaborator-urls')
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
+    @authoredState = $data_div.data('authored-state') # state / configuration provided during authoring
     @learner_url = null
 
     @$delete_button.click () =>
@@ -25,7 +27,7 @@ class IFrameSaver
 
     @save_indicator = SaveIndicator.instance()
 
-    if (@interactive_run_state_url)
+    if @saving_enabled()
       IFrameSaver.instances.push @
 
     @already_setup = false
@@ -59,7 +61,9 @@ class IFrameSaver
             else
               @$delete_button.hide()
       @iframePhone.post('getExtendedSupport')
-      @iframePhone.post('getLearnerUrl')
+
+      if @saving_enabled()
+        @iframePhone.post('getLearnerUrl')
 
       # Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
       # so its state would be lost.
@@ -73,6 +77,9 @@ class IFrameSaver
 
   error: (msg) ->
     @save_indicator.showSaveFailed(msg)
+
+  saving_enabled: ->
+    @save_state && @interactive_run_state_url
 
   save: (success_callback = null) ->
     @success_callback = success_callback
@@ -96,7 +103,7 @@ class IFrameSaver
       @save_to_server(null, "")
 
   save_to_server: (interactive_json, learner_url) ->
-    return unless @interactive_run_state_url
+    return unless @saving_enabled()
 
     runSuccess = =>
       @saved_state = interactive_json
@@ -127,21 +134,10 @@ class IFrameSaver
         @error("couldn't save interactive")
 
   load_interactive: (callback) ->
-    unless @interactive_run_state_url
+    unless @saving_enabled()
+      @init_interactive()
       callback()
       return
-
-    # this is the newer method of initializing an interactive
-    # it returns the current state and linked state
-    init_interactive = (err, response) =>
-      @iframePhone.post 'initInteractive',
-        version: 1,
-        error: err
-        interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
-        hasLinkedInteractive: response?.has_linked_interactive or false
-        linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
-        interactiveStateUrl: @interactive_run_state_url
-        collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
 
     $.ajax
       url: @interactive_run_state_url
@@ -154,15 +150,29 @@ class IFrameSaver
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
             @$delete_button.show() if @should_show_delete == null or @should_show_delete
-        init_interactive null, response
+        @init_interactive null, response
       error: (jqxhr, status, error) =>
-        init_interactive "couldn't load interactive"
+        @init_interactive "couldn't load interactive"
         @error("couldn't load interactive")
       complete: =>
         callback()
 
+  # this is the newer method of initializing an interactive
+  # it returns the current state and linked state
+  init_interactive: (err = null, response = null) ->
+    @iframePhone.post 'initInteractive',
+      version: 1
+      error: err
+      mode: 'runtime'
+      authoredState: @authoredState || null
+      interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
+      hasLinkedInteractive: response?.has_linked_interactive or false
+      linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
+      interactiveStateUrl: @interactive_run_state_url
+      collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
+
   set_autosave_enabled: (v) ->
-    return unless @interactive_run_state_url
+    return unless @saving_enabled()
     # Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
     # Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
     # itself, but other code can use that event too (e.g. logging).

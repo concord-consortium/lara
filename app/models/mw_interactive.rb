@@ -1,6 +1,6 @@
 class MwInteractive < ActiveRecord::Base
   attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url,
-                  :is_hidden, :linked_interactive_id, :full_window, :model_library_url
+                  :is_hidden, :linked_interactive_id, :full_window, :model_library_url, :authored_state
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -55,7 +55,8 @@ class MwInteractive < ActiveRecord::Base
       full_window: full_window,
       image_url: image_url,
       is_hidden: is_hidden,
-      model_library_url: model_library_url
+      model_library_url: model_library_url,
+      authored_state: authored_state
     }
   end
 
@@ -91,7 +92,8 @@ class MwInteractive < ActiveRecord::Base
                               :full_window,
                               :image_url,
                               :is_hidden,
-                              :model_library_url])
+                              :model_library_url,
+                              :authored_state])
   end
 
   def self.import(import_hash)

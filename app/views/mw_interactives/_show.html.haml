@@ -1,6 +1,6 @@
 - labbook = show_labbook_under_interactive?(@run, interactive)
 
-.interactive-container{class: interactive.save_state ? 'savable' : ''}
+.interactive-container
   - if interactive.native_height > 1
     .interactive-placeholder.print-only
       Interactive Model
@@ -40,9 +40,10 @@
         Content can be viewed at the actual source page:
         = link_to interactive.url, interactive.url
 
+    = interactive_data_div(interactive, @run)
+
     - if interactive.save_state
       .below_interactive.screen-only
-        = interactive_data_div(interactive, @run)
         = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
 
 .print-only.iframe-url

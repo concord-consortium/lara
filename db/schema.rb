@@ -405,6 +405,7 @@ ActiveRecord::Schema.define(:version => 20161115194608) do
     t.integer  "linked_interactive_id"
     t.boolean  "full_window",           :default => false
     t.string   "model_library_url"
+    t.text     "authored_state"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
