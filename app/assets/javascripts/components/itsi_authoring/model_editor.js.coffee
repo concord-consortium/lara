@@ -1,21 +1,24 @@
-{div, img, label} = React.DOM
+{div, img, label, input} = React.DOM
 
 modulejs.define 'components/itsi_authoring/model_editor',
 [
   'components/itsi_authoring/section_element_editor_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
+  'components/interactive_authoring',
   'components/itsi_authoring/cached_ajax'
 ],
 (
   SectionElementEditorMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
+  InteractiveAuthoringClass,
   cachedAjax
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
+  InteractiveAuthoring = React.createFactory InteractiveAuthoringClass
 
   ModelEditor = React.createClass
 
@@ -30,10 +33,12 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[native_width]': 'native_width'
       'mw_interactive[native_height]': 'native_height'
       'mw_interactive[model_library_url]': 'model_library_url'
+      'mw_interactive[authored_state]': 'authored_state'
 
     getInitialState: ->
       modelsByLibraryId: {}
       modelOptions: []
+      customizeInteractive: false
 
     initialEditState: ->
       not @props.data.image_url?
@@ -46,6 +51,12 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[image_url]', model.image_url
       @valueChanged 'mw_interactive[native_width]', model.width
       @valueChanged 'mw_interactive[native_height]', model.height
+
+    onCustomizeInteractive: (event) ->
+      @setState customizeInteractive: event.target.checked
+
+    onAuthoredStateChange: (authoredState) ->
+      @valueChanged 'mw_interactive[authored_state]', authoredState
 
     fetchModelList: ->
       url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
@@ -88,6 +99,19 @@ modulejs.define 'components/itsi_authoring/model_editor',
               (@select {name: 'mw_interactive[model_library_url]', options: @state.modelOptions, onChange: @onSelectChange})
             else
               'Loading models...'
+
+            (label {},
+              (input {type: 'checkbox', checked: @state.customizeInteractive, onChange: @onCustomizeInteractive})
+              'Customize interactive'
+            )
+            if @state.customizeInteractive
+              (div {style: {width: '100%', height: '700px'}},
+                (InteractiveAuthoring
+                  src: @state.values['mw_interactive[url]'],
+                  authoredState: @state.values['mw_interactive[authored_state]'],
+                  onAuthoredStateChange: @onAuthoredStateChange
+                )
+              )
           )
         else
           (div {className: 'ia-section-text'},

@@ -39,4 +39,6 @@
 //= require components
 //= require iframed_site_manager
 //= require tinymce-jquery
+//= require iframe-phone
+//= require iframe-phone-manager
 //= require application-init
