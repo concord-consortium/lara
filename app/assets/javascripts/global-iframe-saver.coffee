@@ -11,7 +11,7 @@ class GlobalIframeSaver
 
   constructor: (config) ->
     @_saveUrl = config.save_url
-    @_globalState = if config.raw_data then JSON.parse(config.raw_data) else null
+    @globalState = if config.raw_data then JSON.parse(config.raw_data) else null
     @_saveIndicator = SaveIndicator.instance()
 
     @_iframePhones = []
@@ -20,17 +20,17 @@ class GlobalIframeSaver
     phone = IframePhoneManager.getPhone $(iframeEl)[0]
     @_iframePhones.push phone
     @_setupPhoneListeners phone
-    if @_globalState
+    if @globalState
       @_loadGlobalState phone
 
   _setupPhoneListeners: (phone) ->
     phone.addListener 'interactiveStateGlobal', (state) =>
-      @_globalState = state
+      @globalState = state
       @_saveGlobalState()
       @_broadcastGlobalState phone
 
   _loadGlobalState: (phone) ->
-    phone.post 'loadInteractiveGlobal', @_globalState
+    phone.post 'loadInteractiveGlobal', @globalState
 
   _broadcastGlobalState: (sender) ->
     @_iframePhones.forEach (phone) =>
@@ -43,7 +43,7 @@ class GlobalIframeSaver
       type: 'POST'
       url: @_saveUrl
       data:
-        raw_data: JSON.stringify(@_globalState)
+        raw_data: JSON.stringify(@globalState)
       success: (response) =>
         console.log 'Global interactive save success.'
         @_saveIndicator.showSaved()
