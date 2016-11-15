@@ -121,6 +121,11 @@ describe QuestionTracker::Reporter do
           expect(user_answers["endpoint"]).to eql run.remote_endpoint
         end
 
+        it "questions should have one serialized question" do
+          questions = reporter.report[:questions]
+          expect(questions.length).to eql 1
+        end
+
         describe "when there is another run by the same student in activty2 with a different endpoint" do
           let(:run2)           { Run.create(user: user1, activity: activity2, remote_endpoint: student1_endpoint2_url) }
           let(:answer_text2) { "I answered it again" }
@@ -152,6 +157,12 @@ describe QuestionTracker::Reporter do
               expect(user_answers["activity_id"]).to eql activity2.id
               expect(user_answers["endpoint"]).to eql run2.remote_endpoint
             end
+
+            it "questions should have two serialized questions" do
+              questions = reporter.report[:questions]
+              expect(questions.length).to eql 2
+            end
+
           end
         end
 
