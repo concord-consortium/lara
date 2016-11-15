@@ -13,7 +13,14 @@
         $("a[id^=edit-int-#{interactive.id}]").click()
 
   .interactive-content{:style => interactive.is_hidden ? 'display: none;' : ''}
-    %iframe{:src => interactive.url, :data => {:aspect_ratio => interactive.aspect_ratio}}
-      Your browser does not support inline frames, or is currently not configured to display inline frames.
-      Content can be viewed at the actual source page:
-      = link_to interactive.url, interactive.url
+    #authorable-interactive
+
+:javascript
+  (function() {
+    var props = {
+      interactive: #{interactive.to_json},
+      updateUrl: "#{page_mw_interactive_path(page, interactive)}"
+    };
+    InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
+    React.render(InteractiveAuthoring, $('#authorable-interactive')[0]);
+  }());

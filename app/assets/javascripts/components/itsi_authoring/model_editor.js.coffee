@@ -5,20 +5,20 @@ modulejs.define 'components/itsi_authoring/model_editor',
   'components/itsi_authoring/section_element_editor_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
-  'components/interactive_authoring',
+  'components/authoring/interactive_iframe',
   'components/itsi_authoring/cached_ajax'
 ],
 (
   SectionElementEditorMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
-  InteractiveAuthoringClass,
+  InteractiveIframeClass,
   cachedAjax
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
-  InteractiveAuthoring = React.createFactory InteractiveAuthoringClass
+  InteractiveIframe = React.createFactory InteractiveIframeClass
 
   ModelEditor = React.createClass
 
@@ -38,7 +38,8 @@ modulejs.define 'components/itsi_authoring/model_editor',
     getInitialState: ->
       modelsByLibraryId: {}
       modelOptions: []
-      customizeInteractive: false
+      # !!JSON.parse(null) => false, !!JSON.parse('null') => false, !!JSON.parse('{"valid": "json"}') => true
+      customizeInteractive: !!JSON.parse(@props.data.authored_state)
 
     initialEditState: ->
       not @props.data.image_url?
@@ -53,10 +54,14 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[native_height]', model.height
 
     onCustomizeInteractive: (event) ->
-      @setState customizeInteractive: event.target.checked
+      customization = event.target.checked
+      @setState customizeInteractive: customization
+      unless customization
+        # Reset authorable state if customize checkbox is disabled.
+        @valueChanged 'mw_interactive[authored_state]', null
 
     onAuthoredStateChange: (authoredState) ->
-      @valueChanged 'mw_interactive[authored_state]', authoredState
+      @valueChanged 'mw_interactive[authored_state]', JSON.stringify(authoredState)
 
     fetchModelList: ->
       url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
@@ -106,9 +111,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
             )
             if @state.customizeInteractive
               (div {style: {width: '100%', height: '700px'}},
-                (InteractiveAuthoring
+                (InteractiveIframe
                   src: @state.values['mw_interactive[url]'],
-                  authoredState: @state.values['mw_interactive[authored_state]'],
+                  initialAuthoredState: @state.values['mw_interactive[authored_state]'],
                   onAuthoredStateChange: @onAuthoredStateChange
                 )
               )

@@ -164,7 +164,7 @@ class IFrameSaver
       version: 1
       error: err
       mode: 'runtime'
-      authoredState: @authoredState || null
+      authoredState: if @authoredState then JSON.parse(@authoredState) else null
       interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver then globalIframeSaver.globalState else null
