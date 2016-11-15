@@ -32,6 +32,15 @@ module Embeddable
       }
     end
 
+    def portal_hash
+      {
+        type: "open_response",
+        id: id,
+        prompt: prompt,
+        is_required: is_prediction,
+      }
+    end
+
     def duplicate
       return Embeddable::OpenResponse.new(self.to_hash)
     end

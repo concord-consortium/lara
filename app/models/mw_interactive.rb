@@ -58,6 +58,13 @@ class MwInteractive < ActiveRecord::Base
     }
   end
 
+  def portal_hash
+    iframe_data = to_hash
+    iframe_data[:type] = 'iframe_interactive'
+    iframe_data[:id] = id
+    iframe_data
+  end
+
   def duplicate
     # Generate a new object with those values
     new_interactive = MwInteractive.new(self.to_hash)

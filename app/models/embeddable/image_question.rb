@@ -26,8 +26,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     page && page.visible_interactives.first
   end
 
-  # NOTE: publishing to portal doesn't use this hash. See app/models/lightweight_activity.rb
-  # for the hash used in portal publishing.
+  # NOTE: publishing to portal doesn't use this hash. portal_hash is used instead
   def to_hash
     {
       name: name,
@@ -40,6 +39,16 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       prediction_feedback: prediction_feedback,
       is_hidden: is_hidden,
       hint: hint
+    }
+  end
+
+  def portal_hash
+    {
+      type: "image_question",
+      id: id,
+      prompt: prompt,
+      drawing_prompt: drawing_prompt,
+      is_required: is_prediction
     }
   end
 

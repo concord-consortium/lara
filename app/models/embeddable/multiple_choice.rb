@@ -101,6 +101,20 @@ module Embeddable
       }
     end
 
+    def portal_hash
+      {
+        type: "multiple_choice",
+        id: id,
+        prompt: prompt,
+        choices: choices.map{|choice| {
+          id: choice.id,
+          content: choice.choice,
+          correct: choice.is_correct
+        } },
+        is_required: is_prediction
+      }
+    end
+
     def duplicate
       mc = Embeddable::MultipleChoice.new(self.to_hash)
       self.choices.each do |choice|
