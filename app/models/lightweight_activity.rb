@@ -210,53 +210,10 @@ class LightweightActivity < ActiveRecord::Base
     visible_pages_with_embeddables.each do |page|
       elements = []
       page.reportable_items.each do |embeddable|
-        case embeddable
-          # Why aren't we using the to_hash methods for each embeddable here?
-          # Probably because they don't include the "type" attribute
-        when Embeddable::OpenResponse
-          elements.push({
-                          "type" => "open_response",
-                          "id" => embeddable.id,
-                          "prompt" => embeddable.prompt,
-                          "is_required" => embeddable.is_prediction
-                        })
-        when Embeddable::ImageQuestion
-          elements.push({
-                          "type" => "image_question",
-                          "id" => embeddable.id,
-                          "prompt" => embeddable.prompt,
-                          "drawing_prompt" => embeddable.drawing_prompt,
-                          "is_required" => embeddable.is_prediction
-                        })
-        when Embeddable::MultipleChoice
-          choices = []
-          embeddable.choices.each do |choice|
-            choices.push({
-                           "id" => choice.id,
-                           "content" => choice.choice,
-                           "correct" => choice.is_correct
-                         })
-          end
-          mc_data = {
-            "type" => "multiple_choice",
-            "id" => embeddable.id,
-            "prompt" => embeddable.prompt,
-            "choices" => choices,
-            "is_required" => embeddable.is_prediction
-          }
-          elements.push(mc_data)
-        when MwInteractive
-          iframe_data = embeddable.to_hash
-          iframe_data["type"] = 'iframe_interactive'
-          iframe_data["id"] = embeddable.id
-          elements.push(iframe_data)
-        else
-          # Why do we explicitly list all the embeddable types above?
-          if embeddable.respond_to?(:portal_hash)
-            elements.push(embeddable.portal_hash)
-          end
-          # Otherwise we don't support this embeddable type right now.
+        if embeddable.respond_to?(:portal_hash)
+          elements.push(embeddable.portal_hash)
         end
+        # Otherwise we don't support this embeddable type right now.
       end
       pages.push({
                    "name" => page.name,
