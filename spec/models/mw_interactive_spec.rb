@@ -41,6 +41,7 @@ describe MwInteractive do
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
         full_window: interactive.full_window,
+        model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden
        }
@@ -52,12 +53,13 @@ describe MwInteractive do
     it 'is a new instance of MwInteractive with values' do
       interactive.is_hidden = true
       expect(interactive.duplicate).to be_a_new(MwInteractive).with({
-        name: "Copy of #{interactive.name}",
+        name: interactive.name,
         url: interactive.url,
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         click_to_play: interactive.click_to_play,
         full_window: interactive.full_window,
+        model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden
       })

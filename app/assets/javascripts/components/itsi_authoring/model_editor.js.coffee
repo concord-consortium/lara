@@ -29,9 +29,10 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[image_url]': 'image_url'
       'mw_interactive[native_width]': 'native_width'
       'mw_interactive[native_height]': 'native_height'
+      'mw_interactive[model_library_url]': 'model_library_url'
 
     getInitialState: ->
-      modelsByName: {}
+      modelsByLibraryId: {}
       modelOptions: []
 
     initialEditState: ->
@@ -39,20 +40,22 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
     onSelectChange: (key, value) ->
       # update url and image_url when the select changes
-      model = @state.modelsByName[value]
+      model = @state.modelsByLibraryId[value]
       @valueChanged 'mw_interactive[url]', model.url
+      @valueChanged 'mw_interactive[name]', model.name
       @valueChanged 'mw_interactive[image_url]', model.image_url
       @valueChanged 'mw_interactive[native_width]', model.width
       @valueChanged 'mw_interactive[native_height]', model.height
 
     fetchModelList: ->
+      url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
       cachedAjax
-        url: @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
+        url: url
         success: (data) =>
           if @isMounted()
             models = data?.models
             modelOptions = []
-            modelsByName = {}
+            modelsByLibraryId = {}
 
             if models
               models.sort (a, b) ->
@@ -61,14 +64,16 @@ modulejs.define 'components/itsi_authoring/model_editor',
                 return 1 if lowerA > lowerB
                 return 0
               for model, i in models
-                modelsByName[model.name] = model
+                # e.g. https://itsi.portal.concord.org/interactives/export_model_library#123
+                libraryId = url + '#' + model.id
+                modelsByLibraryId[libraryId] = model
                 modelOptions.push
                   name: if model.id then "#{model.id}: #{model.name}" else model.name
-                  value: model.name
+                  value: libraryId
 
             @setState
               modelOptions: modelOptions
-              modelsByName: modelsByName
+              modelsByLibraryId: modelsByLibraryId
 
     switchToEditMode: ->
       @fetchModelList() if @state.modelOptions.length == 0
@@ -80,7 +85,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Model')
             if @state.modelOptions.length > 0
-              (@select {name: 'mw_interactive[name]', options: @state.modelOptions, onChange: @onSelectChange})
+              (@select {name: 'mw_interactive[model_library_url]', options: @state.modelOptions, onChange: @onSelectChange})
             else
               'Loading models...'
           )

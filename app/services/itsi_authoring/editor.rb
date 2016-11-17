@@ -97,6 +97,7 @@ class ITSIAuthoring::Editor
       is_hidden: i.is_hidden,
       url: i.url,
       image_url: i.image_url,
+      model_library_url: i.model_library_url,
       update_url: page_mw_interactive_path(page, i)
     }
   end
