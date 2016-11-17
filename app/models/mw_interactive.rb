@@ -1,6 +1,6 @@
 class MwInteractive < ActiveRecord::Base
   attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url,
-                  :is_hidden, :linked_interactive_id, :full_window
+                  :is_hidden, :linked_interactive_id, :full_window, :model_library_url
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -54,7 +54,8 @@ class MwInteractive < ActiveRecord::Base
       click_to_play: click_to_play,
       full_window: full_window,
       image_url: image_url,
-      is_hidden: is_hidden
+      is_hidden: is_hidden,
+      model_library_url: model_library_url
     }
   end
 
@@ -67,10 +68,7 @@ class MwInteractive < ActiveRecord::Base
 
   def duplicate
     # Generate a new object with those values
-    new_interactive = MwInteractive.new(self.to_hash)
-    # Clarify the name # Not sure why we do this
-    new_interactive.name = "Copy of #{new_interactive.name}"
-    return new_interactive
+    MwInteractive.new(self.to_hash)
     # N.B. the duplicate hasn't been saved yet
   end
 
@@ -92,7 +90,8 @@ class MwInteractive < ActiveRecord::Base
                               :click_to_play,
                               :full_window,
                               :image_url,
-                              :is_hidden])
+                              :is_hidden,
+                              :model_library_url])
   end
 
   def self.import(import_hash)
