@@ -28,6 +28,14 @@ class QuestionTracker::Reporter
     self.answers.map! { |ans| answer_hash(ans) }
   end
 
+  def report
+    {
+      question_tracker: report_info,
+      questions: question_tracker.questions.map(&:portal_hash),
+      answers: answers
+    }
+  end
+
   def report_info
     {
         name: question_tracker.name,
