@@ -48,7 +48,7 @@ class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_i
       # will actually stop at (2^11)*5=10240 seconds or 2.84 hours
       new_backoff = backoff * 2
       if new_backoff * publishable.auto_publish_delay < 3*60*60
-        publishable.queue_auto_publish_to_portal(auto_publish_url, new_backoff)
+        publishable.queue_auto_publish_to_portal(pending_portal_publication.auto_publish_url, new_backoff)
       end
     end
   end

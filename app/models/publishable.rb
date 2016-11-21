@@ -126,6 +126,9 @@ module Publishable
       end
 
       def queue_auto_publish_to_portal(auto_publish_url=nil, backoff=1)
+        # auto_publish_url is nil when called by the after_update line above. At this point a request is still active so the url can be built.
+        # This method is called again in process_pending_portal_publication.rb in a delayed job run and it uses the serialized url saved below
+        auto_publish_url ||= "#{request.protocol}#{request.host_with_port}"
 
         urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
         urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
@@ -139,7 +142,7 @@ module Publishable
           return if last_portal_publication.nil?
 
           # create a new pending publication pointing at the last publication
-          pending_portal_publication = PendingPortalPublication.new :portal_publication_id => last_portal_publication.id
+          pending_portal_publication = PendingPortalPublication.new :portal_publication_id => last_portal_publication.id, :auto_publish_url => auto_publish_url
 
           # try to save it - if there is an existing pending publication for this item it will throw ActiveRecord::StatementInvalid
           # because of the unique index constraint on the table
@@ -147,7 +150,6 @@ module Publishable
             pending_portal_publication.save!
 
             # if the job saved then process it
-            auto_publish_url ||= Thread.current[:auto_publish_url]
             Delayed::Job.enqueue(ProcessPendingPortalPublication.new(pending_portal_publication.id, auto_publish_url, backoff), 0, (auto_publish_delay * backoff).seconds.from_now)
 
           rescue ActiveRecord::StatementInvalid => e
