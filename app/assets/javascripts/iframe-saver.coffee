@@ -1,3 +1,11 @@
+getAuthoredState = ($dataDiv) ->
+  authoredState = $dataDiv.data('authored-state')
+  if !authoredState? || authoredState == ''
+    authoredState = null
+  if typeof authoredState == 'String'
+    authoredState = JSON.parse(authoredState)
+  authoredState
+
 # IFrameSaver : Wrapper around IFramePhone to save & Load IFrame data
 # into interactive_run_state models in LARA.
 class IFrameSaver
@@ -15,7 +23,7 @@ class IFrameSaver
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
-    @authoredState = $data_div.data('authored-state') # state / configuration provided during authoring
+    @authoredState = getAuthoredState($data_div) # state / configuration provided during authoring
     @learner_url = null
 
     @$delete_button.click () =>
@@ -164,7 +172,7 @@ class IFrameSaver
       version: 1
       error: err
       mode: 'runtime'
-      authoredState: if @authoredState then JSON.parse(@authoredState) else null
+      authoredState: @authoredState
       interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver then globalIframeSaver.globalState else null
