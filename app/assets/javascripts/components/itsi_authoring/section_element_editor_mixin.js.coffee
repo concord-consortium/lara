@@ -64,14 +64,14 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       error: (xhr, textStatus, errorThrown) =>
         @props.alert 'error', 'Save Failed!'
 
-  valueChanged: (key, value) ->
+  valueChanged: (key, value, setStateCallback = null) ->
     @state.values[key] = value
     @state.changedValues[key] = value
+    @setState {values: @state.values, changedValues: @state.changedValues}, setStateCallback
 
   _handleChange: (key, value, onChange) ->
     @valueChanged key, value
     onChange? key, value
-    @setState {values: @state.values, changedValues: @state.changedValues}
 
   richText: (options) ->
     changed = (newText) =>

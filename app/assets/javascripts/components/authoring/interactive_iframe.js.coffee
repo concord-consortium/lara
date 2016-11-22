@@ -18,6 +18,10 @@ modulejs.define 'components/authoring/interactive_iframe', [], () ->
     componentWillUnmount: ->
       @disconnect()
 
+    componentDidUpdate: (prevProps) ->
+      # When iframe src is changed, we need to reinitialize iframe phone connection.
+      @reload() if @props.src != prevProps.src
+
     reload: ->
       @disconnect()
       # We'll remove and add different iframe element because of the React's "key" property.
