@@ -38,13 +38,15 @@ modulejs.define 'components/itsi_authoring/model_editor',
     getInitialState: ->
       modelsByLibraryId: {}
       modelOptions: []
-      # !!JSON.parse(null) => false, !!JSON.parse('null') => false, !!JSON.parse('{"valid": "json"}') => true
-      customizeInteractive: !!JSON.parse(@props.data.authored_state)
+      authoringSupported: false
 
     initialEditState: ->
       not @props.data.image_url?
 
     onSelectChange: (key, value) ->
+      # Assume that authoring is not supported by default. It might be re-enabled
+      # when interactive is loaded and provides features list.
+      @setState {authoringSupported: false}
       # update url and image_url when the select changes
       model = @state.modelsByLibraryId[value]
       @valueChanged 'mw_interactive[url]', model.url
@@ -53,15 +55,11 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[native_width]', model.width
       @valueChanged 'mw_interactive[native_height]', model.height
 
-    onCustomizeInteractive: (event) ->
-      customization = event.target.checked
-      @setState customizeInteractive: customization
-      unless customization
-        # Reset authorable state if customize checkbox is disabled.
-        @valueChanged 'mw_interactive[authored_state]', null
-
     onAuthoredStateChange: (authoredState) ->
       @valueChanged 'mw_interactive[authored_state]', JSON.stringify(authoredState)
+
+    handleSupportedFeaturesUpdate: (info) ->
+      @setState {authoringSupported: !!info.features.authoredState}
 
     fetchModelList: ->
       url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
@@ -96,6 +94,8 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @edit()
 
     render: ->
+      authorable = @state.authoringSupported
+
       (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @switchToEditMode, alert: @props.alert, confirmHide: @props.confirmHide},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
@@ -105,18 +105,18 @@ modulejs.define 'components/itsi_authoring/model_editor',
             else
               'Loading models...'
 
-            (label {},
-              (input {type: 'checkbox', checked: @state.customizeInteractive, onChange: @onCustomizeInteractive})
-              'Customize interactive'
-            )
-            if @state.customizeInteractive
-              (div {style: {width: '100%', height: '700px'}},
-                (InteractiveIframe
-                  src: @state.values['mw_interactive[url]'],
-                  initialAuthoredState: @state.values['mw_interactive[authored_state]'],
-                  onAuthoredStateChange: @onAuthoredStateChange
-                )
+            (div {className: "ia-interactive-container #{unless authorable then 'not-authorable' else ''}"},
+              if authorable
+                (div {className: 'ia-authoring-status'}, 'This interactive can be customized')
+              (InteractiveIframe
+                src: @state.values['mw_interactive[url]'],
+                initialAuthoredState: @state.values['mw_interactive[authored_state]'],
+                onAuthoredStateChange: @onAuthoredStateChange
+                onSupportedFeaturesUpdate: @handleSupportedFeaturesUpdate
               )
+              unless authorable
+                (div {className: 'ia-interactive-overlay'})
+            )
           )
         else
           (div {className: 'ia-section-text'},

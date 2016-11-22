@@ -71,7 +71,7 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
   _handleChange: (key, value, onChange) ->
     @valueChanged key, value
     onChange? key, value
-    @setState @state
+    @setState {values: @state.values, changedValues: @state.changedValues}
 
   richText: (options) ->
     changed = (newText) =>

@@ -10,6 +10,7 @@ modulejs.define 'components/authoring/interactive_iframe', [], () ->
       src: ''
       initialAuthoredState: null
       onAuthoredStateChange: (authoredState) ->
+      onSupportedFeaturesUpdate: (info) ->
 
     componentDidMount: ->
       @connect()
@@ -26,9 +27,11 @@ modulejs.define 'components/authoring/interactive_iframe', [], () ->
         @connect()
 
     connect: ->
-      @iframePhone = IframePhoneManager.getPhone(@refs.iframe.getDOMNode(), @phoneAnswered)
+      @iframePhone = new iframePhone.ParentEndpoint @refs.iframe.getDOMNode(), @phoneAnswered
       @iframePhone.addListener 'authoredState', (authoredState) =>
         @props.onAuthoredStateChange(authoredState)
+      @iframePhone.addListener 'supportedFeatures', (info) =>
+        @props.onSupportedFeaturesUpdate(info)
 
     disconnect: ->
       @iframePhone.disconnect()
