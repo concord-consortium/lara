@@ -117,7 +117,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
             (div {className: "ia-interactive-container #{unless authorable then 'not-authorable' else ''}"},
               if authorable
                 (div {className: 'ia-authoring-status'},
-                  'This interactive can be customized '
+                  'This interactive can be customized. '
                   if authoredState
                     (input {type: 'button', value: 'Reset authored state', onClick: @resetAuthoredState})
                 )
