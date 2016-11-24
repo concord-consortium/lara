@@ -4,26 +4,24 @@ success_response =
 
 # this spec is very out of date with the current code
 describe 'IFrameSaver', () ->
-  fake_phone          = null
   saver               = null
   request             = null
-
-  fake_phone          = jasmine.createSpyObj('iframePhone',['post','addListener'])
-  fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
-  original_get_phone  = window.IframePhoneManager.getPhone
+  iframePhone         = jasmine.mockIframePhone
 
   beforeEach () ->
-    window.IframePhoneManager.getPhone = () ->
-      return fake_phone
+    iframePhone.install()
+    iframePhone.autoConnect = false
     loadFixtures "iframe-saver.html"
 
   afterEach () ->
-    window.IframePhoneManager.getPhone = original_get_phone
+    iframePhone.uninstall()
 
   getSaver = ->
     new IFrameSaver($('#interactive'), $('#interactive_data_div'), $('.delete_interactive_data'))
 
   describe "with an interactive in in iframe", ->
+    fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
+
     beforeEach () ->
       saver = getSaver()
       saver.save_indicator = fake_save_indicator
@@ -47,7 +45,7 @@ describe 'IFrameSaver', () ->
         saver.save()
 
       it "invokes the correct message on the iframePhone", () ->
-        expect(fake_phone.post).toHaveBeenCalledWith({ type:'getInteractiveState' });
+        expect(iframePhone.messages.findType('getInteractiveState')).toBeTruthy()
 
     describe "save_to_server", () ->
       beforeEach () ->
@@ -72,8 +70,7 @@ describe 'IFrameSaver', () ->
         jasmine.Ajax.install()
         $("#interactive_data_div").data("save-state", true)
         saver = getSaver()
-        # Pretend that communication has been started
-        saver.phone_answered()
+        iframePhone.connect()
         request = jasmine.Ajax.requests.mostRecent()
         request.respondWith({
           status: 200,
@@ -84,7 +81,7 @@ describe 'IFrameSaver', () ->
         jasmine.Ajax.uninstall()
 
       it "should post 'initInteractive'", () ->
-        expect(fake_phone.post).toHaveBeenCalledWith('initInteractive', {
+        expect(iframePhone.messages.findType('initInteractive').message.content).toEqual({
           version: 1,
           error: null,
           mode: 'runtime',
@@ -101,11 +98,10 @@ describe 'IFrameSaver', () ->
       beforeEach () ->
         $("#interactive_data_div").data("save-state", false)
         saver = getSaver()
-        # Pretend that communication has been started
-        saver.phone_answered()
+        iframePhone.connect()
 
       it "should post 'initInteractive'", () ->
-        expect(fake_phone.post).toHaveBeenCalledWith('initInteractive', {
+        expect(iframePhone.messages.findType('initInteractive').message.content).toEqual({
           version: 1,
           error: null,
           mode: 'runtime',

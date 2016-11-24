@@ -40,7 +40,7 @@ class IFrameSaver
 
     @already_setup = false
 
-    @iframePhone = IframePhoneManager.getPhone($iframe[0], => @phone_answered.bind())
+    @iframePhone = IframePhoneManager.getPhone($iframe[0], => @phone_answered())
 
   @default_success: ->
     console.log "saved"

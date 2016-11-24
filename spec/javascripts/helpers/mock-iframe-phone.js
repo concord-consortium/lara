@@ -47,7 +47,8 @@
           this._iframeEndpointInstance = new MockPhone(window.parent);
         }
         return this._iframeEndpointInstance;
-      }
+      },
+      IframePhoneRpcEndpoint: this._realIframePhoneModule.IframePhoneRpcEndpoint
     };
     this._resetState();
   };
