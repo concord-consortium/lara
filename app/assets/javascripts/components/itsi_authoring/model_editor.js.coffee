@@ -121,15 +121,17 @@ modulejs.define 'components/itsi_authoring/model_editor',
                   if authoredState
                     (input {type: 'button', className: 'ia-reset-authored-state', value: 'Reset authored state', onClick: @resetAuthoredState})
                 )
-              (InteractiveIframe
-                ref: 'iframe'
-                src: @state.values['mw_interactive[url]'],
-                initialAuthoredState: authoredState,
-                onAuthoredStateChange: @onAuthoredStateChange
-                onSupportedFeaturesUpdate: @handleSupportedFeaturesUpdate
+              (div {className: 'ia-interactive'},
+                (InteractiveIframe
+                  ref: 'iframe'
+                  src: @state.values['mw_interactive[url]'],
+                  initialAuthoredState: authoredState,
+                  onAuthoredStateChange: @onAuthoredStateChange
+                  onSupportedFeaturesUpdate: @handleSupportedFeaturesUpdate
+                )
+                unless authorable
+                 (div {className: 'ia-interactive-overlay'})
               )
-              unless authorable
-                (div {className: 'ia-interactive-overlay'})
             )
           )
         else
