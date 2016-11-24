@@ -10,11 +10,15 @@ describe 'IFrameSaver', () ->
 
   fake_phone          = jasmine.createSpyObj('iframePhone',['post','addListener'])
   fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
+  original_get_phone  = window.IframePhoneManager.getPhone
 
   beforeEach () ->
     window.IframePhoneManager.getPhone = () ->
       return fake_phone
     loadFixtures "iframe-saver.html"
+
+  afterEach () ->
+    window.IframePhoneManager.getPhone = original_get_phone
 
   getSaver = ->
     new IFrameSaver($('#interactive'), $('#interactive_data_div'), $('.delete_interactive_data'))

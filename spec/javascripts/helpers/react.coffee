@@ -28,6 +28,13 @@ jasmine.react =
     catch
       null
 
+  findComponent: (component, childComponent) ->
+    type = jasmine.react.requireClass childComponent
+    try
+      TestUtils.findRenderedComponentWithType component, type
+    catch
+      null
+
   allWhere: (component, where) ->
     all = TestUtils.findAllInRenderedTree component, where
 
