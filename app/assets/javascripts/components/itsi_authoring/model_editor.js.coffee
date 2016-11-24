@@ -119,7 +119,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
                 (div {className: 'ia-authoring-status'},
                   'This interactive can be customized. '
                   if authoredState
-                    (input {type: 'button', value: 'Reset authored state', onClick: @resetAuthoredState})
+                    (input {type: 'button', className: 'ia-reset-authored-state', value: 'Reset authored state', onClick: @resetAuthoredState})
                 )
               (InteractiveIframe
                 ref: 'iframe'

@@ -12,11 +12,15 @@ modulejs.define 'components/authoring/mw_interactive',
 
   MwInteractive = React.createClass
     getInitialState: ->
-      authoringSupported: false
-      authoredState: JSON.parse(@props.interactive.authored_state || null)
-      modified: false
-      saving: false
-      message: ''
+      authoredState = @props.interactive.authored_state
+      {
+        authoringSupported: false
+        authoredState: if typeof authoredState == 'String' then JSON.parse(authoredState) else authoredState
+        modified: false
+        saving: false
+        message: ''
+      }
+
 
     componentDidMount: ->
       window.addEventListener 'beforeunload', @onBeforeUnload
@@ -76,7 +80,7 @@ modulejs.define 'components/authoring/mw_interactive',
         (div {className: "status #{if authoringSupported then 'visible' else ''}"},
           'This interactive supports authoring'
           (input {type: 'button', className: 'save-btn', value: 'Save authored state', onClick: @save, disabled: working}) if modified
-          (input {type: 'button', value: 'Reset authored state', onClick: @reset}) if authoredState
+          (input {type: 'button', className: 'reset-btn', value: 'Reset authored state', onClick: @reset}) if authoredState
           (div {className: 'alert'},
             (i {className: 'fa fa-spinner fa-spin'}) if working
             (b {}, message)
