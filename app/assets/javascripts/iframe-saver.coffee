@@ -39,49 +39,50 @@ class IFrameSaver
       IFrameSaver.instances.push @
 
     @already_setup = false
-    phone_answered = =>
-      # Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
-      # https://www.pivotaltracker.com/story/show/89602814
-      return if @already_setup
-      @already_setup = true
 
-      @iframePhone.addListener 'setLearnerUrl', (learner_url) =>
-        @learner_url = learner_url
-      @iframePhone.addListener 'interactiveState', (interactive_json) =>
-        if @learner_url
-          @save_to_server(interactive_json, @learner_url)
-        else
-          # wait a bit and try again:
-          window.setTimeout( =>
-            @save_to_server(interactive_json, @learner_url)
-          , 500)
-      @iframePhone.addListener 'getAuthInfo', =>
-        authInfo = {provider: @auth_provider, loggedIn: @logged_in}
-        if @user_email?
-          authInfo.email = @user_email
-        @iframePhone.post('authInfo', authInfo)
-      @iframePhone.addListener 'extendedSupport', (opts)=>
-        if opts.reset?
-          @should_show_delete = opts.reset
-          if @saved_state
-            if @should_show_delete
-              @$delete_button.show()
-            else
-              @$delete_button.hide()
-      @iframePhone.post('getExtendedSupport')
-
-      if @saving_enabled()
-        @iframePhone.post('getLearnerUrl')
-
-      # Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
-      # so its state would be lost.
-      @load_interactive =>
-        @set_autosave_enabled(true)
-
-    @iframePhone = IframePhoneManager.getPhone($iframe[0], phone_answered)
+    @iframePhone = IframePhoneManager.getPhone($iframe[0], => @phone_answered.bind())
 
   @default_success: ->
     console.log "saved"
+
+  phone_answered: ->
+    # Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
+    # https://www.pivotaltracker.com/story/show/89602814
+    return if @already_setup
+    @already_setup = true
+
+    @iframePhone.addListener 'setLearnerUrl', (learner_url) =>
+      @learner_url = learner_url
+    @iframePhone.addListener 'interactiveState', (interactive_json) =>
+      if @learner_url
+        @save_to_server(interactive_json, @learner_url)
+      else
+        # wait a bit and try again:
+        window.setTimeout( =>
+          @save_to_server(interactive_json, @learner_url)
+        , 500)
+    @iframePhone.addListener 'getAuthInfo', =>
+      authInfo = {provider: @auth_provider, loggedIn: @logged_in}
+      if @user_email?
+        authInfo.email = @user_email
+      @iframePhone.post('authInfo', authInfo)
+    @iframePhone.addListener 'extendedSupport', (opts)=>
+      if opts.reset?
+        @should_show_delete = opts.reset
+        if @saved_state
+          if @should_show_delete
+            @$delete_button.show()
+          else
+            @$delete_button.hide()
+    @iframePhone.post('getExtendedSupport')
+
+    if @saving_enabled()
+      @iframePhone.post('getLearnerUrl')
+
+    # Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
+    # so its state would be lost.
+    @load_interactive =>
+      @set_autosave_enabled(true)
 
   error: (msg) ->
     @save_indicator.showSaveFailed(msg)
@@ -175,7 +176,7 @@ class IFrameSaver
       authoredState: @authoredState
       interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
       # See: global-iframe-saver.coffee
-      globalInteractiveState: if globalIframeSaver then globalIframeSaver.globalState else null
+      globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
       hasLinkedInteractive: response?.has_linked_interactive or false
       linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
       interactiveStateUrl: @interactive_run_state_url
