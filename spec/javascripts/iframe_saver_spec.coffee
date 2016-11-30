@@ -4,26 +4,27 @@ success_response =
 
 # this spec is very out of date with the current code
 describe 'IFrameSaver', () ->
-  fake_phone          = null
   saver               = null
   request             = null
-
-  fake_phone          = jasmine.createSpyObj('iframePhone',['post','addListener'])
-  fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
+  iframePhone         = jasmine.mockIframePhone
 
   beforeEach () ->
-    window.IframePhoneManager.getPhone = () ->
-      return fake_phone
+    iframePhone.install()
+    iframePhone.autoConnect = false
     loadFixtures "iframe-saver.html"
 
-  describe "with an interactive in in iframe", ->
-    beforeEach () ->
-      # jasmine.Ajax.install();
-      saver = new IFrameSaver($('#interactive'),$('#interactive_data_div'),$('.delete_interactive_data'))
-      saver.save_indicator = fake_save_indicator
+  afterEach () ->
+    iframePhone.uninstall()
 
-    afterEach () ->
-      # jasmine.Ajax.uninstall();
+  getSaver = ->
+    new IFrameSaver($('#interactive'), $('#interactive_data_div'), $('.delete_interactive_data'))
+
+  describe "with an interactive in in iframe", ->
+    fake_save_indicator = jasmine.createSpyObj('SaveIndicator',['showSaved','showSaving', 'showSaveFailed'])
+
+    beforeEach () ->
+      saver = getSaver()
+      saver.save_indicator = fake_save_indicator
 
     describe "a sane testing environment", () ->
       it 'has an instance of IFrameSaver defined', () ->
@@ -38,17 +39,18 @@ describe 'IFrameSaver', () ->
     describe "constructor called in the correct context", () ->
       it "should have a interactive run state url", () ->
         expect(saver.interactive_run_state_url).toBe("foo/42")
+
     describe "save", () ->
       beforeEach () ->
         saver.save()
 
       it "invokes the correct message on the iframePhone", () ->
-        expect(fake_phone.post).toHaveBeenCalledWith({ type:'getInteractiveState' });
+        expect(iframePhone.messages.findType('getInteractiveState')).toBeTruthy()
 
-    describe "save_to_server", () ->
+    describe "save_learner_state", () ->
       beforeEach () ->
         jasmine.Ajax.install()
-        saver.save_to_server({foo:'bar'})
+        saver.save_learner_state({foo:'bar'})
         request = jasmine.Ajax.requests.mostRecent()
         request.respondWith(success_response)
 
@@ -57,9 +59,57 @@ describe 'IFrameSaver', () ->
 
       describe "a successful save", () ->
         it "should display the show saved indicator", () ->
-          # TODO: Ran out of time writing this test...
-          # waits 2000
-          # runs ->
-          #   expect(fake_save_indicator.showSaving).toHaveBeenCalled()
-          #   expect(fake_save_indicator.showSaved).toHaveBeenCalled()
+          expect(fake_save_indicator.showSaveFailed).not.toHaveBeenCalled()
+          expect(fake_save_indicator.showSaving).toHaveBeenCalled()
+          expect(fake_save_indicator.showSaved).toHaveBeenCalled()
 
+
+  describe "interactive initialization", () ->
+    describe "when state saving is enabled", () ->
+      beforeEach () ->
+        jasmine.Ajax.install()
+        $("#interactive_data_div").data("enable-learner-state", true)
+        saver = getSaver()
+        iframePhone.connect()
+        request = jasmine.Ajax.requests.mostRecent()
+        request.respondWith({
+          status: 200,
+          responseText: JSON.stringify({"raw_data": JSON.stringify({"interactiveState": 321})})
+        })
+
+      afterEach () ->
+        jasmine.Ajax.uninstall()
+
+      it "should post 'initInteractive'", () ->
+        expect(iframePhone.messages.findType('initInteractive').message.content).toEqual({
+          version: 1,
+          error: null,
+          mode: 'runtime',
+          authoredState: {test: 123},
+          interactiveState: {interactiveState: 321},
+          globalInteractiveState: null,
+          hasLinkedInteractive: false,
+          linkedState: null,
+          interactiveStateUrl: 'foo/42',
+          collaboratorUrls: null
+        })
+
+    describe "when state saving is disabled", () ->
+      beforeEach () ->
+        $("#interactive_data_div").data("enable-learner-state", false)
+        saver = getSaver()
+        iframePhone.connect()
+
+      it "should post 'initInteractive'", () ->
+        expect(iframePhone.messages.findType('initInteractive').message.content).toEqual({
+          version: 1,
+          error: null,
+          mode: 'runtime',
+          authoredState: {test: 123},
+          interactiveState: null,
+          globalInteractiveState: null,
+          hasLinkedInteractive: false,
+          linkedState: null,
+          interactiveStateUrl: 'foo/42',
+          collaboratorUrls: null
+        })

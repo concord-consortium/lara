@@ -28,5 +28,6 @@
  *= require components/itsi_authoring
  *= require tracked-question
  *= require components/question_tracker
+ *= require components/authoring
  *= require question-tracker
  */

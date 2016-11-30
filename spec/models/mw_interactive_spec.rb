@@ -37,13 +37,14 @@ describe MwInteractive do
         url: interactive.url,
         native_width: interactive.native_width,
         native_height: interactive.native_height,
-        save_state: interactive.save_state,
+        enable_learner_state: interactive.enable_learner_state,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
         full_window: interactive.full_window,
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
-        is_hidden: interactive.is_hidden
+        is_hidden: interactive.is_hidden,
+        authored_state: interactive.authored_state
        }
       expect(interactive.to_hash).to eq(expected)
     end
@@ -61,7 +62,8 @@ describe MwInteractive do
         full_window: interactive.full_window,
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
-        is_hidden: interactive.is_hidden
+        is_hidden: interactive.is_hidden,
+        authored_state: interactive.authored_state
       })
     end
   end

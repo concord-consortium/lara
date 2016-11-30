@@ -93,7 +93,7 @@ describe LightweightActivity do
     let(:page1) { FactoryGirl.create(:interactive_page_with_or, position: 1) }
     let(:page2) { FactoryGirl.create(:interactive_page_with_or, position: 2) }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
     }
     before(:each) do
       page2.add_interactive reportable_interactive
@@ -372,11 +372,11 @@ describe LightweightActivity do
       let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
 
       let(:non_reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
+        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
       }
 
       let(:reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
       }
 
       before(:each) do

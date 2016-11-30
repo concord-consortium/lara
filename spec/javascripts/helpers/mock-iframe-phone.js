@@ -23,6 +23,12 @@
       reset: function() {
         this._messages = [];
       },
+      findType: function(type) {
+        for (var i = 0; i < this._messages.length; i++) {
+          if (this._messages[i].message.type === type) return this._messages[i];
+        }
+        return null;
+      },
       _add: function(msg) {
         this._messages.push(msg);
       }
@@ -41,7 +47,8 @@
           this._iframeEndpointInstance = new MockPhone(window.parent);
         }
         return this._iframeEndpointInstance;
-      }
+      },
+      IframePhoneRpcEndpoint: this._realIframePhoneModule.IframePhoneRpcEndpoint
     };
     this._resetState();
   };
@@ -56,6 +63,7 @@
   MockIframePhoneManager.prototype._resetState = function() {
     this.messages.reset();
     this.autoConnect = true;
+    this._phonesToConnect = [];
     this._phones = {};
     this._phonesCount = 0;
     this._iframeEndpointInstance = null;
@@ -68,6 +76,13 @@
     } finally {
       this.uninstall();
     }
+  };
+
+  MockIframePhoneManager.prototype.connect = function() {
+    this._phonesToConnect.forEach(function (phone) {
+      phone.fakeConnection();
+    });
+    this._phonesToConnect.length = 0;
   };
 
   // Posts fake message from given element (e.g. iframe). Current window is the receiver.
@@ -90,6 +105,9 @@
 
     if (this.autoConnect) {
       phone.fakeConnection();
+    } else {
+      // Connection can be established later using .connectPhones().
+      this._phonesToConnect.push(phone);
     }
   };
 

@@ -453,10 +453,10 @@ describe InteractivePage do
 
   describe '#reportable_items' do
     let(:non_reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: false)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
     }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, save_state: true, has_report_url: true)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
     }
     let(:video_interactive) { FactoryGirl.create(:video_interactive) }
     let(:image_interactive) { FactoryGirl.create(:image_interactive) }
@@ -504,7 +504,7 @@ describe InteractivePage do
     context 'when the reportable interactive is hidden' do
       let(:reportable_interactive) {
         FactoryGirl.create(:mw_interactive,
-          save_state: true,
+          enable_learner_state: true,
           has_report_url: true,
           is_hidden: true)
       }

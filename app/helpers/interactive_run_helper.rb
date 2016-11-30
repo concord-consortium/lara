@@ -39,6 +39,8 @@ module InteractiveRunHelper
       data['authprovider'] = (Concord::AuthPortal.url_for_strategy_name(run.user.most_recent_authentication.provider) rescue nil) if data['loggedin'] == "true"
       data['user-email'] = run.user.email if data['loggedin'] == "true"
     end
+    data['enable-learner-state'] = interactive.enable_learner_state.to_s
+    data['authored-state'] = interactive.authored_state
 
     opts = {
       :src => interactive.url,

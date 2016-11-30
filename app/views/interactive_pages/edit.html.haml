@@ -106,7 +106,7 @@
           = select_tag :interactive_type, options_for_select(InteractivePage::INTERACTIVE_TYPES.map { |t| [t[:name], t[:class_name]] })
           = submit_tag 'Add Interactive'
         - @page.interactives.each do |interactive|
-          = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive, :allow_hide => false}
+          = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive, :page => @page, :allow_hide => false}
     - if @page.show_sidebar
       .sidebar
         %h2

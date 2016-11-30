@@ -21,8 +21,9 @@ class InteractiveManager
     $click_to_play = $interactive.find('.click_to_play.shown')
 
     if $iframe.length != 0
-      if $interactive.hasClass('savable')
-        new IFrameSaver($iframe, $data, $delete_button)
+      # IFrameSaver does a lot more than only saving.
+      # It also initializes interactive and provides LARA Interactive API.
+      new IFrameSaver($iframe, $data, $delete_button)
 
       if globalIframeSaver
         globalIframeSaver.addNewInteractive $iframe

@@ -98,6 +98,7 @@ class ITSIAuthoring::Editor
       url: i.url,
       image_url: i.image_url,
       model_library_url: i.model_library_url,
+      authored_state: i.authored_state,
       update_url: page_mw_interactive_path(page, i)
     }
   end

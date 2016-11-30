@@ -278,6 +278,77 @@ describe "ITSI Editor", () ->
       request = jasmine.react.captureRequest ->
         jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
-      ModelEditorClass = jasmine.react.requireClass "itsi_authoring/model_editor"
       expect(request).toBeDefined()
 
+    it "loads iframe in edit mode when model is provided", ->
+      props =
+        title: "test title"
+        data:
+          is_hidden: false
+          name: 'test model'
+          url: 'test-model.txt'
+          image_url: 'test-model.jpg'
+      modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
+      jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
+
+      iframe = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      expect(iframe).not.toBe(null)
+
+    it "provides authored state to InteractiveIframe component", ->
+      props =
+        title: "test title"
+        data:
+          is_hidden: false
+          name: 'test model'
+          url: 'test-model.txt'
+          image_url: 'test-model.jpg'
+          authored_state: {test: 123}
+      modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
+      jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
+
+      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      expect(interactive.props.initialAuthoredState).toEqual(props.data.authored_state)
+
+    it "saves new authored state if it has been updated", ->
+      props =
+        title: "test title"
+        data:
+          is_hidden: false
+          name: 'test model'
+          url: 'test-model.txt'
+          image_url: 'test-model.jpg'
+          update_url: 'fake_update_url'
+      modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
+      jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
+
+      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      interactive.props.onAuthoredStateChange({test: 123})
+
+      request = jasmine.react.itsi.captureSave modelEditor
+
+      expect(request.url).toBe("fake_update_url.json")
+      expect(request.params).toBe("mw_interactive%5Bauthored_state%5D=%7B%22test%22%3A123%7D&_method=PUT")
+
+    it "saves empty authored state if it has been reset", ->
+      props =
+        title: "test title"
+        data:
+          is_hidden: false
+          name: 'test model'
+          url: 'test-model.txt'
+          image_url: 'test-model.jpg'
+          update_url: 'fake_update_url'
+          authored_state: {test: 123}
+      modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
+      jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
+
+      # Make sure that status bar and reset button are visible.
+      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      interactive.props.onSupportedFeaturesUpdate({features: {authoredState: true}})
+
+      jasmine.react.click (jasmine.react.findClass modelEditor, "ia-reset-authored-state")
+
+      request = jasmine.react.itsi.captureSave modelEditor
+
+      expect(request.url).toBe("fake_update_url.json")
+      expect(request.params).toBe("mw_interactive%5Bauthored_state%5D=&_method=PUT")

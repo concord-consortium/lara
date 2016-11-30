@@ -1,0 +1,23 @@
+.authoring-mw-interactive {
+  overflow: hidden;
+  .status {
+    background: #ffbb5f;
+    padding: 4px;
+    height: 18px;
+    margin-top: -26px;
+    transition: margin-top 1s;
+    -webkit-transition: margin-top 1s;
+
+    &.visible {
+      margin-top: 0;
+    }
+
+    input, b {
+      margin-left: 5px;
+    }
+
+    .alert {
+      float: right;
+    }
+  }
+}
