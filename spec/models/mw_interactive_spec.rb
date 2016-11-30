@@ -37,7 +37,7 @@ describe MwInteractive do
         url: interactive.url,
         native_width: interactive.native_width,
         native_height: interactive.native_height,
-        save_state: interactive.save_state,
+        enable_learner_state: interactive.enable_learner_state,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
         full_window: interactive.full_window,

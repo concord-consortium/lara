@@ -1,5 +1,5 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :native_width, :native_height, :save_state, :has_report_url, :click_to_play, :image_url,
+  attr_accessible :name, :url, :native_width, :native_height, :enable_learner_state, :has_report_url, :click_to_play, :image_url,
                   :is_hidden, :linked_interactive_id, :full_window, :model_library_url, :authored_state
 
   default_value_for :native_width, 576
@@ -49,7 +49,7 @@ class MwInteractive < ActiveRecord::Base
       url: url,
       native_width: native_width,
       native_height: native_height,
-      save_state: save_state,
+      enable_learner_state: enable_learner_state,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
       full_window: full_window,
@@ -86,7 +86,7 @@ class MwInteractive < ActiveRecord::Base
                               :url,
                               :native_width,
                               :native_height,
-                              :save_state,
+                              :enable_learner_state,
                               :has_report_url,
                               :click_to_play,
                               :full_window,
@@ -126,6 +126,6 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    return save_state && has_report_url
+    return enable_learner_state && has_report_url
   end
 end

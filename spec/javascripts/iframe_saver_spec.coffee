@@ -68,7 +68,7 @@ describe 'IFrameSaver', () ->
     describe "when state saving is enabled", () ->
       beforeEach () ->
         jasmine.Ajax.install()
-        $("#interactive_data_div").data("save-state", true)
+        $("#interactive_data_div").data("enable-learner-state", true)
         saver = getSaver()
         iframePhone.connect()
         request = jasmine.Ajax.requests.mostRecent()
@@ -96,7 +96,7 @@ describe 'IFrameSaver', () ->
 
     describe "when state saving is disabled", () ->
       beforeEach () ->
-        $("#interactive_data_div").data("save-state", false)
+        $("#interactive_data_div").data("enable-learner-state", false)
         saver = getSaver()
         iframePhone.connect()
 

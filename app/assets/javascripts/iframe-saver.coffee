@@ -17,7 +17,7 @@ class IFrameSaver
   constructor: ($iframe, $data_div, $delete_button) ->
     @$iframe = $iframe
     @$delete_button = $delete_button
-    @save_state = $data_div.data('save-state');
+    @enable_learner_state = $data_div.data('enable-learner-state');
     @interactive_run_state_url = $data_div.data('interactive-run-state-url') # get and put our data here.
     @collaborator_urls = $data_div.data('collaborator-urls')
     @auth_provider = $data_div.data('authprovider') # through which provider did the current user log in
@@ -88,7 +88,7 @@ class IFrameSaver
     @save_indicator.showSaveFailed(msg)
 
   saving_enabled: ->
-    @save_state && @interactive_run_state_url
+    @enable_learner_state && @interactive_run_state_url
 
   save: (success_callback = null) ->
     @success_callback = success_callback

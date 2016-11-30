@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161115194608) do
+ActiveRecord::Schema.define(:version => 20161130093220) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -397,15 +397,15 @@ ActiveRecord::Schema.define(:version => 20161115194608) do
     t.datetime "updated_at",                               :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "save_state",            :default => false
+    t.boolean  "enable_learner_state",  :default => false
     t.boolean  "has_report_url",        :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
     t.boolean  "is_hidden",             :default => false
     t.integer  "linked_interactive_id"
     t.boolean  "full_window",           :default => false
-    t.string   "model_library_url"
     t.text     "authored_state"
+    t.string   "model_library_url"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
