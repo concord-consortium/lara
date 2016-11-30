@@ -47,10 +47,10 @@ describe 'IFrameSaver', () ->
       it "invokes the correct message on the iframePhone", () ->
         expect(iframePhone.messages.findType('getInteractiveState')).toBeTruthy()
 
-    describe "save_to_server", () ->
+    describe "save_learner_state", () ->
       beforeEach () ->
         jasmine.Ajax.install()
-        saver.save_to_server({foo:'bar'})
+        saver.save_learner_state({foo:'bar'})
         request = jasmine.Ajax.requests.mostRecent()
         request.respondWith(success_response)
 

@@ -17,9 +17,12 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
   def update
     begin
       authorize! :update, @run
-
-      @run.raw_data = params['raw_data']
-      @run.learner_url = params['learner_url']
+      if params.has_key?('raw_data')
+        @run.raw_data = params['raw_data']
+      end
+      if params.has_key?('learner_url')
+        @run.learner_url = params['learner_url']
+      end
       if @run.save
         render :json => @run.to_runtime_json
       else

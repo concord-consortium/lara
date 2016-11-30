@@ -24,7 +24,6 @@ class IFrameSaver
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @authoredState = getAuthoredState($data_div) # state / configuration provided during authoring
-    @learner_url = null
 
     @$delete_button.click () =>
       @delete_data()
@@ -35,7 +34,7 @@ class IFrameSaver
 
     @save_indicator = SaveIndicator.instance()
 
-    if @saving_enabled()
+    if @learner_state_saving_enabled()
       IFrameSaver.instances.push @
 
     @already_setup = false
@@ -52,15 +51,9 @@ class IFrameSaver
     @already_setup = true
 
     @iframePhone.addListener 'setLearnerUrl', (learner_url) =>
-      @learner_url = learner_url
+      @save_learner_url(learner_url)
     @iframePhone.addListener 'interactiveState', (interactive_json) =>
-      if @learner_url
-        @save_to_server(interactive_json, @learner_url)
-      else
-        # wait a bit and try again:
-        window.setTimeout( =>
-          @save_to_server(interactive_json, @learner_url)
-        , 500)
+      @save_learner_state(interactive_json)
     @iframePhone.addListener 'getAuthInfo', =>
       authInfo = {provider: @auth_provider, loggedIn: @logged_in}
       if @user_email?
@@ -76,7 +69,7 @@ class IFrameSaver
             @$delete_button.hide()
     @iframePhone.post('getExtendedSupport')
 
-    if @saving_enabled()
+    if @learner_state_saving_enabled()
       @iframePhone.post('getLearnerUrl')
 
     # Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
@@ -87,13 +80,12 @@ class IFrameSaver
   error: (msg) ->
     @save_indicator.showSaveFailed(msg)
 
-  saving_enabled: ->
+  learner_state_saving_enabled: ->
     @enable_learner_state && @interactive_run_state_url
 
   save: (success_callback = null) ->
     @success_callback = success_callback
-
-    # will call back into "@save_to_server)
+    # will call back into "@save_learner_state)
     @iframePhone.post({type: 'getInteractiveState'})
 
   confirm_delete: (callback) ->
@@ -108,11 +100,11 @@ class IFrameSaver
     @success_callback = () =>
       window.location.reload()
     @confirm_delete () =>
-      @learner_url = null
-      @save_to_server(null, "")
+      @save_learner_state(null)
+      @save_learner_url("")
 
-  save_to_server: (interactive_json, learner_url) ->
-    return unless @saving_enabled()
+  save_learner_state: (interactive_json) ->
+    return unless @learner_state_saving_enabled()
 
     runSuccess = =>
       @saved_state = interactive_json
@@ -128,22 +120,31 @@ class IFrameSaver
       return
 
     @save_indicator.showSaving()
-    data =
-      raw_data: JSON.stringify(interactive_json)
-      learner_url: learner_url
     $.ajax
       type: 'PUT'
       dataType: 'json'
       url: @interactive_run_state_url
-      data: data
+      data:
+        raw_data: JSON.stringify(interactive_json)
       success: (response) =>
         runSuccess()
         @save_indicator.showSaved("Saved Interactive")
       error: (jqxhr, status, error) =>
         @error("couldn't save interactive")
 
+  save_learner_url: (learner_url) ->
+    return unless @learner_state_saving_enabled()
+    $.ajax
+      type: 'PUT'
+      dataType: 'json'
+      url: @interactive_run_state_url
+      data:
+        learner_url: learner_url
+      error: (jqxhr, status, error) =>
+        @error("couldn't save learner url")
+
   load_interactive: (callback) ->
-    unless @saving_enabled()
+    unless @learner_state_saving_enabled()
       @init_interactive()
       callback()
       return
@@ -183,7 +184,7 @@ class IFrameSaver
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
 
   set_autosave_enabled: (v) ->
-    return unless @saving_enabled()
+    return unless @learner_state_saving_enabled()
     # Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
     # Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
     # itself, but other code can use that event too (e.g. logging).
