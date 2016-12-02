@@ -1,4 +1,4 @@
-class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_id, :auto_publish_url, :backoff)
+class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_id, :backoff)
   def perform
     # immediately find and remove the pending publication so that new publications can be queued
     pending_portal_publication = PendingPortalPublication.find(pending_portal_publication_id)
@@ -34,21 +34,21 @@ class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_i
     end
 
     # skip autopublish if the hash hasn't changed since the last publish
-    json = publishable.serialize_for_portal(auto_publish_url).to_json
+    json = publishable.serialize_for_portal(portal_publication.auto_publish_url).to_json
     if last_portal_publication.publication_hash == Digest::SHA1.hexdigest(json)
       info "publication_hash hasn't changed since last publish"
       return
     end
 
     # publish to the portal
-    response = publishable.republish_for_portal(portal, auto_publish_url, json)
+    response = publishable.republish_for_portal(portal, portal_publication.auto_publish_url, json)
     unless response.code == 201
 
       # if it fails requeue with an exponentially increased backoff time with a max of 3 hours or 10800 seconds
       # will actually stop at (2^11)*5=10240 seconds or 2.84 hours
       new_backoff = backoff * 2
       if new_backoff * publishable.auto_publish_delay < 3*60*60
-        publishable.queue_auto_publish_to_portal(pending_portal_publication.auto_publish_url, new_backoff)
+        publishable.queue_auto_publish_to_portal(portal_publication.auto_publish_url, new_backoff)
       end
     end
   end

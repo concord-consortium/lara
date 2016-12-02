@@ -34,11 +34,12 @@ module Publishable
       auth_portal = Concord::AuthPortal.portal_for_url(auth_portal)
     end
 
-    self.update_attribute('publication_status','public')
+    self.update_attributes({publication_status: 'public', auto_publish_url: self_url})
     self.portal_publish_with_token(user.authentication_token(auth_portal.strategy_name),auth_portal,self_url)
   end
 
   def republish_for_portal(auth_portal,self_url,json=nil)
+    self.update_attributes({auto_publish_url: self_url})
     portal_publish_with_token(auth_portal.secret,auth_portal,self_url,true,json)
   end
 
@@ -125,10 +126,7 @@ module Publishable
         return 5
       end
 
-      def queue_auto_publish_to_portal(auto_publish_url=nil, backoff=1)
-        # auto_publish_url is nil when called by the after_update line above. At this point a request is still active so the url can be built.
-        # This method is called again in process_pending_portal_publication.rb in a delayed job run and it uses the serialized url saved below
-        auto_publish_url ||= "#{request.protocol}#{request.host_with_port}"
+      def queue_auto_publish_to_portal(backoff=1)
 
         urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
         urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
@@ -142,7 +140,7 @@ module Publishable
           return if last_portal_publication.nil?
 
           # create a new pending publication pointing at the last publication
-          pending_portal_publication = PendingPortalPublication.new :portal_publication_id => last_portal_publication.id, :auto_publish_url => auto_publish_url
+          pending_portal_publication = PendingPortalPublication.new :portal_publication_id => last_portal_publication.id
 
           # try to save it - if there is an existing pending publication for this item it will throw ActiveRecord::StatementInvalid
           # because of the unique index constraint on the table
@@ -150,7 +148,7 @@ module Publishable
             pending_portal_publication.save!
 
             # if the job saved then process it
-            Delayed::Job.enqueue(ProcessPendingPortalPublication.new(pending_portal_publication.id, auto_publish_url, backoff), 0, (auto_publish_delay * backoff).seconds.from_now)
+            Delayed::Job.enqueue(ProcessPendingPortalPublication.new(pending_portal_publication.id, backoff), 0, (auto_publish_delay * backoff).seconds.from_now)
 
           rescue ActiveRecord::StatementInvalid => e
             # Perhaps there is a better way, at least on SQLite the exception type is: ActiveRecord::RecordNotUnique
