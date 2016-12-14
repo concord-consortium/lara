@@ -75,6 +75,9 @@
   .iframe-url {
     padding-top: 0.5em;
     font-size: 0.75em;
+    a {
+      word-wrap: break-word;
+    }
   }
 
   .image-question {
