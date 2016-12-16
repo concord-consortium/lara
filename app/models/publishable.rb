@@ -117,6 +117,8 @@ module Publishable
   def self.included(clazz)
     clazz.class_eval do
 
+      attr_accessible :auto_publish_url
+
       has_many :portal_publications, :as => :publishable, :order => :updated_at
 
       # all changes will be queued for auto publishing
@@ -127,6 +129,8 @@ module Publishable
       end
 
       def queue_auto_publish_to_portal(backoff=1)
+
+        self.update_attributes({auto_publish_url: "#{request.protocol}#{request.host_with_port}"})
 
         urls = self.portal_publications.where(:success => true).pluck(:portal_url).uniq
         urls.map { |url| Concord::AuthPortal.portal_for_publishing_url(url)}.each do |portal|
