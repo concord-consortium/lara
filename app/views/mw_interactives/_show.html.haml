@@ -80,19 +80,19 @@
     // current scroll position, so we need to save it and restore when user leaves full window mode.
     var currentScrollTop;
     function enterFullWindow(clickToPlayElem) {
+      currentScrollTop = $(window).scrollTop();
       var $interactiveContainer = $(clickToPlayElem).parent('.interactive-container');
       $interactiveContainer.addClass('full-window');
-      currentScrollTop = $('body').scrollTop();
       $('html').addClass('noscroll');
     }
     function exitFullWindow() {
       $('html').removeClass('noscroll');
-      $('body').scrollTop(currentScrollTop);
       var $clickToPlay = $('##{dom_id_for(interactive, :click_to_play)}');
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
       $clickToPlay.css('display', 'block');
       $clickToPlay.addClass('shown');
       $interactiveContainer.removeClass('full-window');
+      $(window).scrollTop(currentScrollTop);
     }
 
     $('##{dom_id_for(interactive, :click_to_play)}').click(function() {
