@@ -361,7 +361,9 @@ describe LightweightActivity do
         pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
         expect(pages.length).to eql(2)
         expect(pages[0]['name']).to eql('page 1')
+        expect(pages[0]['url']).to match /http:\/\/test.host\/pages\/\d+/
         expect(pages[1]['name']).to eql('page 2')
+        expect(pages[1]['url']).to match /http:\/\/test.host\/pages\/\d+/
       end
     end
 
