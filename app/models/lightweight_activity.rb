@@ -208,6 +208,7 @@ class LightweightActivity < ActiveRecord::Base
 
     pages = []
     visible_pages_with_embeddables.each do |page|
+      page_url = "#{host}#{Rails.application.routes.url_helpers.page_path(page)}"
       elements = []
       page.reportable_items.each do |embeddable|
         if embeddable.respond_to?(:portal_hash)
@@ -217,6 +218,7 @@ class LightweightActivity < ActiveRecord::Base
       end
       pages.push({
                    "name" => page.name,
+                   "url" => page_url,
                    "elements" => elements
                  })
     end
