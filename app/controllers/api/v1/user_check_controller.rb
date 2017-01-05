@@ -4,6 +4,6 @@ class Api::V1::UserCheckController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :index
 
   def index
-    render :json => {user: current_user}
+    render :json => {user: current_user ? current_user.attributes.slice('id', 'email', 'is_admin', 'is_author') : nil}
   end
 end
