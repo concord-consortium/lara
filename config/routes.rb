@@ -163,6 +163,8 @@ LightweightStandalone::Application.routes.draw do
 
       match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
+
+      match "user_check" => 'user_check#index', defaults: { format: 'json' }
     end
   end
 
