@@ -3,6 +3,9 @@ language: ruby
 rvm:
   - "1.9.3"
 
+before_install:
+  - gem update bundler
+
 before_script:
   - cp config/database.travis.yml config/database.yml
   - cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
@@ -21,3 +24,4 @@ branches:
   except:
     - staging
     - production
+
