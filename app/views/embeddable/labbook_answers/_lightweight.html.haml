@@ -5,15 +5,18 @@
                     'data-labbook-album-id' => embeddable.album_id,
                     'data-is-upload' => embeddable.is_upload? ? 'true' : nil,
                     'data-interactive-id' => embeddable.interactive ? embeddable.interactive.id : 'null'}
-  .text_prompt
-    != embeddable.prompt
-  %button.lb-action-btn{type: 'button'}
-    %span.lb-action-btn-label
-      %i.fa.fa-camera
-      = embeddable.action_label
-  %button.lb-album-btn{type: 'button'}
-    %span.lb-album-btn-label
-      = t('OPEN_ALBUM')
+
+  - if !embeddable.interactive.no_snapshots
+    .text_prompt
+      != embeddable.prompt
+
+    %button.lb-action-btn{type: 'button'}
+      %span.lb-action-btn-label
+        %i.fa.fa-camera
+        = embeddable.action_label
+    %button.lb-album-btn{type: 'button'}
+      %span.lb-album-btn-label
+        = t('OPEN_ALBUM')
 
   .lb-dialog-content{style: 'display: none;'}
     .lb-wait-msg

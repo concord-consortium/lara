@@ -23,17 +23,21 @@
   = f.label :full_window, :id => "full_window_label_#{@interactive.id}", :text => 'Full window mode'
   = f.check_box :full_window, :id => "full_window_#{@interactive.id}"
   %div{:style => "margin-bottom:5px;"}
-    %em Warning: 
+    %em Warning:
     Please provide an image_url to use click to play.
   .image_url
     = f.label :image_url, 'Image_url'
     = f.text_field :image_url
   %br
+  = f.label :no_snapshots, 'Snapshots Not Supported'
+  = f.check_box :no_snapshots
+  %br
+  %br
   = field_set_tag 'Save Interactive state' do
     = f.label :enable_learner_state, 'Save State'
     = f.check_box :enable_learner_state, :id => "enable_learner_state_#{@interactive.id}"
     .clear
-    %em Warning: 
+    %em Warning:
     Please do not select this unless your interactive contains a serializable data set.
     .clear
     .indent{:id => "enable_learner_state_indent_#{@interactive.id}"}
@@ -46,7 +50,7 @@
       = f.label :linked_interactive_id, 'Link saved work from '
       = f.text_field :linked_interactive_id, :id => "linked_interactive_id_#{@interactive.id}"
       .clear
-      %em Warning: 
+      %em Warning:
       Please do not link to another interactive unless the interactive knows how to load prior work.
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
