@@ -18,6 +18,9 @@ class LabbookController
 
     @isUpload = @$element.data('is-upload')
 
+    @implementsIFramePhone = false
+    @hasUnsavedState = false
+
     unless @isUpload
       intId = @$element.data('interactive-id')
       @interactiveSel = if intId then "#{INTERACTIVE_SEL}#{intId}" else null
@@ -31,6 +34,8 @@ class LabbookController
       modal: true,
       close: =>
         @onDialogClose()
+      beforeClose: =>
+        @onDialogClosing()
     })
 
     @registerListeners()
@@ -74,6 +79,12 @@ class LabbookController
   showDialog: ->
     @$dialog.dialog('open')
 
+  onDialogClosing: (event) ->
+    if @implementsIFramePhone and @hasUnsavedState
+      confirm("You have unsaved Labbook content.  Are you sure you want to close?")
+    else
+      true
+
   onDialogClose: ->
     # Notify LARA that dialog has been closed, so album has been (probably!) updated.
     # That information is needed to support Portal reports and run with collaborators.
@@ -93,12 +104,22 @@ class LabbookController
     })
 
   setIframeUrl: (newUrl) ->
+    @hasUnsavedState = false
+    @implementsIFramePhone = false
+
     @startWaiting(t('LOADING_LABBOOK'))
     @$iframe.hide()
     @$iframe.attr('src', newUrl)
     @$iframe.one 'load', =>
+      @phone?.disconnect()
+      @phone = IframePhoneManager.getPhone(@$iframe[0], => @phoneAnswered())
       @stopWaiting()
       @$iframe.fadeIn()
+
+  phoneAnswered: ->
+    @implementsIFramePhone = true
+    @phone.addListener 'interactiveState', (state) =>
+      @hasUnsavedState = state isnt "nochange"
 
   startWaiting: (message) ->
     startWaiting(message, WAIT_MSG_SEL) # defined in wait-message.js
