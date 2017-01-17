@@ -36,6 +36,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[authored_state]': 'authored_state'
       'mw_interactive[full_window]': 'full_window'
       'mw_interactive[no_snapshots]': 'no_snapshots'
+      'mw_interactive[enable_learner_state]': 'save_interactive_state'
 
     getInitialState: ->
       modelsByLibraryId: {}
@@ -58,6 +59,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[native_height]', model.height
       @valueChanged 'mw_interactive[full_window]', !!model.full_window
       @valueChanged 'mw_interactive[no_snapshots]', !!model.no_snapshots
+      @valueChanged 'mw_interactive[enable_learner_state]', !!model.save_interactive_state
       # Reset authored state while switching interactives, as other model probably
       # uses different format and could be broken by old state.
       @valueChanged 'mw_interactive[authored_state]', null
