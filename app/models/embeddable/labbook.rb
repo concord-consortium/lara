@@ -160,7 +160,7 @@ module Embeddable
     end
 
     def interactive_is_visible?
-      has_interactive? && !interactive.is_hidden?
+      (has_interactive? && (!interactive.is_hidden? || (interactive.respond_to?(:no_snapshots) && !interactive.no_snapshots))
     end
 
     #| Use case                      | 'action_type' | Interactive Set | Interactive Visibility | Lab Book Visibility |
