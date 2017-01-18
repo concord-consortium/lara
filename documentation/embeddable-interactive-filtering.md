@@ -12,6 +12,10 @@ The numbering of items in the activity boils down to:
 
 This happens when individual 'answer' partials call the `Embeddable::Answer#question_index` to find the index of the 'question' on the page. The Xhtml partial  doesn't look for an index. Reportable interactives technically have an index because they are part of reportable_items, but they do not display it.
 
+### Single page special cases
+
+In single page rendering the labbooks are shown below their interactive. This labbook rendering is done by the interactive partial. If the interactive is not visible then the labbook will not be rendered. 
+
 ## Activity Progress
 
 LARA shows activity progress in completion ribbons on the sequence table of contents. The progess is also shown in some admin info reports.
