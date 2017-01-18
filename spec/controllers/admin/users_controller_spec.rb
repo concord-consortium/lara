@@ -43,7 +43,7 @@ describe Admin::UsersController do
   describe "GET index" do
     it "assigns all users as @users" do
       target
-      get :index, {}, valid_session
+      get :index
       expect(assigns(:users).include?(target)).to be_truthy
     end
   end

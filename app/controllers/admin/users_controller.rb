@@ -2,9 +2,14 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users
   # GET /admin/users.json
   def index
-    @users = User.all
     authorize! :manage, User
-
+    page_options = { page: params[:page] || 1 , per_page: 200 }
+    if q = params['q']
+      q = "%#{q}%"
+      @users = User.where("email like ?", q).paginate(page_options)
+    else
+      @users = User.paginate(page_options)
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

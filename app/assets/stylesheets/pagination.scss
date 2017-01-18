@@ -42,3 +42,46 @@
     }
   }
 }
+.users {
+  .search {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    input {
+      padding: 0.5em;
+    }
+  }
+  .pagination {
+    padding: 0.5em;
+    background-color: hsl(0,10%,95%);
+    text-align: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    cursor: default;
+    a, span {
+      padding: 0.2em 0.3em;
+    }
+    .disabled {
+      color: #aaaaaa;
+    }
+    .current {
+      font-style: normal;
+      font-weight: bold;
+      background-color: darken(#f1f1f1, 20);
+      display: inline-block;
+      width: 1.4em;
+      height: 1.4em;
+      line-height: 1.5;
+      -moz-border-radius: 1em;
+      -webkit-border-radius: 1em;
+      border-radius: 1em;
+      text-shadow: rgba(white, .8) 1px 1px 1px;
+    }
+    a {
+      text-decoration: none;
+      color: black;
+      &:hover, &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
