@@ -43,7 +43,7 @@ class LabbookController
 
     @isUpload = @$element.data('is-upload')
 
-    @implementsIFramePhone = false
+    @canCloseSupported = false
     @canClose = false
 
     unless @isUpload
@@ -105,7 +105,7 @@ class LabbookController
     @$dialog.dialog('open')
 
   onDialogClosing: (event) ->
-    return true if not @implementsIFramePhone or @canClose
+    return true if not @canCloseSupported or @canClose
     @phone.post('canClose')
     return false
 
@@ -129,7 +129,7 @@ class LabbookController
 
   setIframeUrl: (newUrl) ->
     @canClose = false
-    @implementsIFramePhone = false
+    @canCloseSupported = false
 
     @startWaiting(t('LOADING_LABBOOK'))
     @$iframe.hide()
@@ -145,7 +145,7 @@ class LabbookController
       @canClose = true
       @$dialog.dialog('close')
     @phone.addListener 'connected', (connected) =>
-      @implementsIFramePhone = connected
+      @canCloseSupported = connected
 
   startWaiting: (message) ->
     startWaiting(message, WAIT_MSG_SEL) # defined in wait-message.js
