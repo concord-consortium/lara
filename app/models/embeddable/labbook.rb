@@ -11,7 +11,6 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    WONT_DISPLAY_MSG     = I18n.t('LABBOOK.WONT_DISPLAY')
     NO_INTERACTIVE_LABLE =   I18n.t('LABBOOK.NO_INTERACTIVE')
     NO_INTERACTIVE_VALUE = "no-interactive"
     NO_INTERACTIVE_SELECT = [NO_INTERACTIVE_LABLE, NO_INTERACTIVE_VALUE];
@@ -163,13 +162,15 @@ module Embeddable
       has_interactive? && !interactive.is_hidden?
     end
 
-    #| Use case                      | 'action_type' | Interactive Set | Interactive Visibility | Lab Book Visibility |
-    #|-------------------------------|---------------|-----------------|------------------------|---------------------|
-    #| Regular model snapshot        | snapshot      | yes             | Shown                  | Shown               |
-    #| Regular model snapshot        | snapshot      | yes             | Hidden                 | Hidden              |
-    #| Dan File upload               | upload        | no              | NA                     | Shown               |
-    #| ITSI File upload (microscope) | upload        | yes             | Shown                  | Shown               |
-    #| ITSI File upload (microscope) | upload        | yes             | Hidden                 | Hidden              |
+    #|                               |             |             | Interactive | Interactive | Lab Book   |
+    #| Use case                      | action_type | Interactive | Visibility  | Snapshots   | Visibility |
+    #|-------------------------------|-------------|-------------|-------------|-------------|------------|
+    #| Regular model snapshot        | snapshot    | yes         | Shown       | yes         | Shown      |
+    #| Regular model snapshot        | snapshot    | yes         | Shown       | no          | Hidden     |
+    #| Regular model snapshot        | snapshot    | yes         | Hidden      | NA          | Hidden     |
+    #| Dan File upload               | upload      | no          | NA          | NA          | Shown      |
+    #| ITSI File upload (microscope) | upload      | yes         | Shown       | NA          | Shown      |
+    #| ITSI File upload (microscope) | upload      | yes         | Hidden      | NA          | Hidden     |
     #
     # The ITSI File upload use case uses the interactive to determine whether it is visible or not.
     # this is so an ITSI author can hide and show these upload labbooks the same way they hide and show models
@@ -178,7 +179,16 @@ module Embeddable
     # set are not included in the output which then overrides this truth table, however in the single page runtime
     # the 'is_hidden' attribute is ignored by the code that places the labbook below their interactive
     def show_in_runtime?
-      ((action_type == UPLOAD_ACTION) && !has_interactive?) || interactive_is_visible?
+      ((action_type == UPLOAD_ACTION) && !has_interactive?) ||
+      (interactive_is_visible? && !interactive.no_snapshots)
+    end
+
+    # this method assumes you've already called show_in_runtime? and it returned false
+    def why_not_show_in_runtime
+      return 'LABBOOK.NO_INTERACTIVE_SET' if !has_interactive?
+      return 'LABBOOK.INTERACTIVE_HIDDEN' if interactive.is_hidden?
+      return 'LABBOOK.INTERACTIVE_NO_SNAPSHOTS' if interactive.no_snapshots
+      return 'LABBOOK.UKNOWN_REASON'
     end
 
     def reportable?

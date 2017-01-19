@@ -50,6 +50,10 @@ class VideoInteractive < ActiveRecord::Base
     false
   end
 
+  def no_snapshots
+    false
+  end
+
   def to_hash
     {
       poster_url: poster_url,
@@ -66,7 +70,7 @@ class VideoInteractive < ActiveRecord::Base
     vi.sources = self.sources.map { |vs| vs.duplicate }
     return vi
   end
-  
+
   def export
     video_interactive_export = self.as_json(only:[:poster_url,
                                                   :caption,
@@ -76,14 +80,14 @@ class VideoInteractive < ActiveRecord::Base
                                                   :is_hidden])
 
     video_interactive_export[:sources] =  []
-    
+
     self.sources.each do |source|
        video_interactive_export[:sources] << source.export
-    end                
-    
+    end
+
     video_interactive_export
   end
-  
+
   def self.import(import_hash)
     import_video_interactive = self.new(import_hash.except(:sources))
     import_hash[:sources].each do |source|
