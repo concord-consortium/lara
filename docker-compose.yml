@@ -8,8 +8,8 @@ services:
     environment:
       # you will need more variables here to connect your lara to a portal
       DB_HOST: db
-      DB_USER: admin
-      DB_PASSWORD: 12345
+      DB_USER: master
+      DB_PASSWORD: master
       DB_NAME: lara
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
     ports:
@@ -20,11 +20,12 @@ services:
       - .:/lara
       - "bundle:/bundle"
   db:
-    # this mysql image is used because it works out of the box on OS X
-    # the official docker mysql container has permissions issues when writing to the disk
-    # this boot2docker describes the problem: https://github.com/boot2docker/boot2docker/issues/581
-    image: dgraziotin/mysql
+    image: mysql:5.6
     environment:
-      MYSQL_ADMIN_PASS: 12345
+      MYSQL_DATABASE: lara
+      MYSQL_PASSWORD: master
+      MYSQL_USER: master
+      MYSQL_ROOT_PASSWORD: xyzzy
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
 volumes:
   bundle:
