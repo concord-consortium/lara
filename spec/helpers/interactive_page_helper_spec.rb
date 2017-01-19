@@ -105,10 +105,18 @@ describe InteractivePageHelper do
       end
 
       describe "When the interactive does have an associated lab book" do
-        let(:interactive)   { double("interactive", {labbook: labbook}) }
         let(:finder_return) { labbook_answer }
-        it "should return the labbook" do
-          expect(helper.show_labbook_under_interactive?(run,interactive)).to be labbook_answer
+        describe "When the interactive supports snapshots" do
+          let(:interactive)   { double("interactive", {labbook: labbook, no_snapshots: false}) }
+          it "should return the labbook" do
+            expect(helper.show_labbook_under_interactive?(run,interactive)).to be labbook_answer
+          end
+        end
+        describe "When the interactive does not support snapshots" do
+          let(:interactive)   { double("interactive", {labbook: labbook, no_snapshots: true}) }
+          it "should not return the labbook" do
+            expect(helper.show_labbook_under_interactive?(run,interactive)).to be false
+          end
         end
       end
     end
@@ -161,7 +169,7 @@ describe InteractivePageHelper do
     let(:partial_name) { "mw_interactives/show"}
     let(:locals)       { { interactive: interactive} }
     let(:expected_args){ hash_including({partial: partial_name,locals:locals}) }
-    
+
     it "should render the correct parital" do
       expect(helper).to receive(:render).with(expected_args)
       helper.render_interactive(interactive)
