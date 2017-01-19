@@ -19,6 +19,10 @@ class ImageInteractive < ActiveRecord::Base
     false
   end
 
+  def no_snapshots
+    false
+  end
+
   def to_hash
     {
       url: url,

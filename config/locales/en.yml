@@ -79,7 +79,11 @@ en:
   LABBOOK:
     ALBUM: "Labbook album"
     NO_INTERACTIVE: "No Interactive"
-    WONT_DISPLAY: "Labbook will not be shown. No visible interactive is set. 'snapshot' is selected."
+    WONT_DISPLAY: "Labbook will not be shown."
+    NO_INTERACTIVE_SET: "Interactive is not set."
+    INTERACTIVE_HIDDEN: "Interactive is set but is hidden."
+    INTERACTIVE_NO_SNAPSHOTS: "Interactive is set but does not support snapshots."
+    UKNOWN_REASON: ""
     OLD_ITSI:
       UPLOAD_PROMPT: |
         <p>Add your pictures to your album by clicking on the "<em>Take a Snapshot</em>"
@@ -137,4 +141,3 @@ en:
   PRINT_BLANK:
     PRINT: "Print \"%{activity}\""
     PRINT_WARNING: "Close this window when you are done printing \"%{activity}\"."
-

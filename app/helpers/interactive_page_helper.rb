@@ -43,7 +43,7 @@ module InteractivePageHelper
     # In single-page runtime, the labbook is interleaved with interactions
     return false unless labbook_is_under_interactive?
     return false if interactive.labbook.nil?
-    return false if interactive.respond_to?(:no_snapshots) && interactive.no_snapshots
+    return false if interactive.no_snapshots
     finder = Embeddable::AnswerFinder.new(run)
     return finder.find_answer(interactive.labbook)
   end
