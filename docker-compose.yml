@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-dev
-    command: script/docker-app.sh
+    command: docker/dev/run.sh
     environment:
       # you will need more variables here to connect your lara to a portal
       DB_HOST: db
