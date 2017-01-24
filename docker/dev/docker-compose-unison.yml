@@ -3,7 +3,7 @@
 # You need to run docker/dev/start-unison.sh to start the sync
 
 # A convient way to overlay it is to add a `.env` file with the contents:
-#  COMPOSE_FILE=docker-compose.yml:docker-compose-unison.yml
+#  COMPOSE_FILE=docker-compose.yml:docker/dev/docker-compose-unison.yml
 # You can also do it manually when you run docker-compose each time with
 # docker-compose -f docker-compose.yml -f docker-compose-unison.yml
 # if you are making changes to docker-compose.yml or this file it is useful to
