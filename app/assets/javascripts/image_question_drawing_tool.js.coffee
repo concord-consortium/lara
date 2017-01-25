@@ -22,6 +22,7 @@ class ImageQuestionDrawingTool
     # only CORS enabled images, as not all browsers support CORS images (and our
     # own proxy ensures that the domain is the same).
     proxy: (url) ->
+      return url if not proxy_image
       # "Free" URI parser in JS.
       parser = document.createElement('a')
       parser.href = url
@@ -30,6 +31,12 @@ class ImageQuestionDrawingTool
       return '/image-proxy?url=' + url if parser.hostname != window.location.hostname
       return url
   }
+
+  proxy_image = true
+  without_proxying_image = (cb) ->
+    proxy_image = false
+    cb()
+    proxy_image = true
 
   DRAWING_TOOL_INITIAL_STATE = {
     strokeWidth: 4
@@ -61,6 +68,7 @@ class ImageQuestionDrawingTool
     @$snapshot_button           = $("#{@form_sel} .take_snapshot")
     @$replace_button            = $("#{@form_sel} .replace_snapshot")
     @$drawing_button            = $("#{@form_sel} .drawing_button")
+    @$upload_button             = $("#{@form_sel} .upload_button")
     @$edit_button               = $("#{@form_sel} .edit_answer")
     @$done_button               = $("#{@dialog_sel} .image_done_button")
     @$cancel_button             = $("#{@dialog_sel} .image_cancel_button")
@@ -103,6 +111,9 @@ class ImageQuestionDrawingTool
       @set_drawing_tool_background()
       @show_dialog()
 
+    @$upload_button.click =>
+      @show_upload_dialog()
+
     @$replace_button.click =>
       @drawing_tool.clear(true)
       if @take_interactive_snapshot()
@@ -139,7 +150,7 @@ class ImageQuestionDrawingTool
 
   shutterbug_fail_hander: (message) ->
     $('#modal-dialog').html "<div class='dialog-error'>#{message}</div>"
-    $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error")
+    $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error", width: 500, close: null)
     stopWaiting()
     @save_indicator.showSaveFailed()
     @set_dialog_buttons_enabled(true)
@@ -180,11 +191,10 @@ class ImageQuestionDrawingTool
 
   has_image_content: ->
     # This is a shutterbug question, so it's answered if there's a thumbnail
-    if (@$snapshot_button.length > 0) && (@$annotation_field.val() or @get_current_thumbnail())
-      return true
+    return true if (@$snapshot_button.length > 0) && (@$annotation_field.val() or @get_current_thumbnail())
     # This is a drawing question, so an annotation is needed for it to be answered
-    if (@$drawing_button.length > 0) && @$annotation_field.val()
-      return true
+    return true if (@$drawing_button.length > 0) && @$annotation_field.val()
+    return true if (@$upload_button.length > 0) && @$annotation_field.val()
     return false
 
   update_display: ->
@@ -208,8 +218,8 @@ class ImageQuestionDrawingTool
     @$drawing_button.hide()
     @$snapshot_button.hide()
 
-  set_drawing_tool_background: ->
-    bg_src = @$image_url_field.val()
+  set_drawing_tool_background: (bg_src = null)->
+    bg_src = bg_src or @$image_url_field.val()
     # Sometimes background image can be undefined, e.g. for plain image questions.
     return unless bg_src
     @drawing_tool.setBackgroundImage(bg_src, 'shrinkBackgroundToCanvas', =>
@@ -297,6 +307,79 @@ class ImageQuestionDrawingTool
   clear_dialog_answer: ()->
     if @$dialog_answer.val() != @$displayed_answer.data('raw')
       @$dialog_answer.val(@$displayed_answer.data('raw'))
+
+  show_upload_dialog: ->
+    $file = $("<input type='file'>")
+    $file.on 'change', (e) =>
+      file = $file[0].files?[0]
+      @upload_file file if file
+      false
+    $drop = $("<div style='margin-bottom: 10px; width: 100%; height: 200px; background-color: #ddd'><div style='padding-top: 25%; text-align: center'>Drop an image here or click the button below to choose an image</div></div>")
+    $drop.on 'dragover', false
+    $drop.on 'dragenter', false
+    $drop.on 'drop', (e) =>
+      file = e.originalEvent?.dataTransfer?.files?[0]
+      if file
+        @upload_file file
+      else
+        items = e.originalEvent?.dataTransfer?.items
+        for item in items
+          if item.kind is 'string' and item.type.match(/^text\/uri-list/)
+            item.getAsString (src) =>
+              @set_uploaded_src src, true
+            break
+      false
+    $container = $("<div>").append($drop).append($file)
+    $html = $("<div>").append $container
+    $('#modal-dialog').html $html
+    $('#modal-dialog').dialog
+      title: "Upload Image"
+      modal: true
+      width: 300
+      dialogClass: "upload-image"
+      close: null
+
+  upload_error: (message, show_dialog_on_close) ->
+    $('#modal-dialog').html $("<div style='padding: 20px; text-align: center'>").html(message)
+    $('#modal-dialog').dialog
+      title: "Upload Image Error"
+      modal: true
+      width: 500
+      dialogClass: "upload-image"
+      close: => if show_dialog_on_close then @show_upload_dialog()
+    false
+
+  upload_file: (file) ->
+
+    [major, minor] = file.type.split '/'
+    if major isnt 'image'
+      return @upload_error 'Sorry, you can only upload images', true
+    if not window.FileReader
+      return @upload_error 'Sorry, your browser does not support reading local files', false
+
+    reader = new FileReader()
+    reader.onload = =>
+      @set_uploaded_src reader.result, false
+    reader.onerror = =>
+      @upload_error reader.error.message, true
+    reader.readAsDataURL(file)
+
+  set_uploaded_src: (src, use_proxy) ->
+    loaded = =>
+      $('#modal-dialog').dialog("close")
+      @drawing_tool.clear(true)
+      @show_dialog()
+      if use_proxy
+        @set_drawing_tool_background(src)
+      else
+        without_proxying_image => @set_drawing_tool_background(src)
+      @update_display()
+    errored = =>
+      @upload_error "Sorry, the image you selected could not be loaded#{if use_proxy then " through our proxy" else ""}", true
+    $img = $("<img>").on("error", errored).on("load", loaded)
+    proxied_src = if use_proxy then DRAWING_TOOL_OPTIONS.proxy(src) else src
+    $img.attr("src", proxied_src)
+
 
 # export our class
 window.ImageQuestionDrawingTool = ImageQuestionDrawingTool

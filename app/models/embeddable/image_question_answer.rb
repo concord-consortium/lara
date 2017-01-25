@@ -14,6 +14,7 @@ module Embeddable
     delegate :drawing_prompt, :to => :question
     delegate :is_shutterbug?, :to => :question
     delegate :is_drawing?,    :to => :question
+    delegate :is_upload?,     :to => :question
     delegate :interactive,    :to => :question
 
     after_update :send_to_portal

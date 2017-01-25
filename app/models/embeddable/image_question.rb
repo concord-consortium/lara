@@ -68,20 +68,24 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :is_hidden,
                               :hint])
   end
-  
+
   def self.import(import_hash)
     new_ques = self.new(import_hash)
-    new_ques.prompt = "" unless import_hash[:prompt] 
+    new_ques.prompt = "" unless import_hash[:prompt]
     new_ques.save!
     return new_ques
   end
-  
+
   def is_shutterbug?
     bg_source == 'Shutterbug'
   end
 
   def is_drawing?
     bg_source == 'Drawing'
+  end
+
+  def is_upload?
+    bg_source == 'Upload'
   end
 
   def reportable?

@@ -27,6 +27,11 @@
             %i.fa.fa-pencil
             %span.make_drawing_label
               =t("MAKE_DRAWING")
+        - elsif embeddable.is_upload?
+          %button.image_question.button.image_upload_button.upload_button{:type => 'button'}
+            %i.fa.fa-upload
+            %span.upload_label
+              =t("UPLOAD_IMAGE")
         %button.image_question.button.image_snapshot_button.edit_answer{:type => 'button'}
           =t("EDIT")
         - if embeddable.require_image_url
