@@ -24,6 +24,9 @@ class IFrameSaver
     @user_email = $data_div.data('user-email')
     @logged_in = $data_div.data('loggedin') # true/false - is the current session associated with a user
     @authoredState = getAuthoredState($data_div) # state / configuration provided during authoring
+    @class_info_url = $data_div.data('class-info-url')
+    @interactive_id = $data_div.data('interactive-id')
+    @interactive_name = $data_div.data('interactive-name')
 
     @$delete_button.click () =>
       @delete_data()
@@ -170,6 +173,7 @@ class IFrameSaver
   # this is the newer method of initializing an interactive
   # it returns the current state and linked state
   init_interactive: (err = null, response = null) ->
+
     @iframePhone.post 'initInteractive',
       version: 1
       error: err
@@ -182,6 +186,14 @@ class IFrameSaver
       linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
       interactiveStateUrl: @interactive_run_state_url
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
+      classInfoUrl: @class_info_url
+      interactive:
+        id: @interactive_id
+        name: @interactive_name
+      authInfo:
+        provider: @auth_provider
+        loggedIn: @logged_in
+        email: @user_email
 
   set_autosave_enabled: (v) ->
     return unless @learner_state_saving_enabled()
