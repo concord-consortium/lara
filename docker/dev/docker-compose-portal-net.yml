@@ -1,0 +1,23 @@
+# This is an docker-compose overlay that connects the LARA service to a portal network
+# the Concord Portal docker-compose file sets up this network so LARA and other services
+# can access it
+
+# A convient way to overlay it is to add a `.env` file with the contents:
+#  COMPOSE_FILE=docker-compose.yml:docker/dev/docker-compose-portal-net.yml
+# You can also do it manually when you run docker-compose each time with
+# docker-compose -f docker-compose.yml -f docker/dev/docker-compose-portal-net.yml
+# if you are making changes to docker-compose.yml or this file it is useful to
+# run `docker-compose config` which shows how the two files get merged together
+
+version: '2'
+services:
+  app:
+    networks:
+      rigse_portal:
+        aliases:
+          - lara
+      default:
+
+networks:
+  rigse_portal:
+    external: true
