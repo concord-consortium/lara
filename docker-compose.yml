@@ -12,8 +12,7 @@ services:
       DB_PASSWORD: master
       DB_NAME: lara
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
-    ports:
-      - "3000:3000"
+    # no ports are published, see below for details
     depends_on:
       - db
     volumes:
@@ -29,3 +28,11 @@ services:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
 volumes:
   bundle:
+
+# In this file the web app port is not published. However, if you run
+# `docker-compose up` (without customizing your environment) the port will be published
+# to 3000.  This is because the docker-compose.override.yml file will be loaded
+# automatically by docker-compose.
+# You will likely want to modify how the port is published, so it doesn't conflict.
+# Take a look at the this overlay for more information:
+#   docker/dev/docker-compose-random-port.yml
