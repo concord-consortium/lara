@@ -1,7 +1,7 @@
 .embeddable_tools
   .drag_handle
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'iq', :allow_hide => allow_hide }
-.embeddable_options  
+.embeddable_options
   .prompt
     = embeddable.drawing_prompt.html_safe unless embeddable.drawing_prompt.blank?
     = image_tag embeddable.bg_url, { :style => "width: 100%;" } unless embeddable.bg_url.blank?
@@ -14,3 +14,7 @@
     %button.image_question.button{:type => 'submit', :id => 'image_drawing_button'}
       %i.fa.fa-pencil
       Make drawing
+  - elsif embeddable.is_upload?
+    %button.image_question.button{:type => 'submit', :id => 'image_upload_button'}
+      %i.fa.fa-upload
+      Upload image
