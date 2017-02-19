@@ -13,14 +13,22 @@ class QuestionTracker::Reporter
 
   def initialize(_question_tracker, endpoints)
     self.question_tracker = _question_tracker
-    self.answers = []
+
     runs = []
-    questions = self.question_tracker.questions
+
+    master_question = self.question_tracker.master_question
+    foreign_key = master_question.reflections[:answers].foreign_key.to_sym
+    answer_class_name = master_question.reflections[:answers].class_name
+    answer_class = answer_class_name.constantize
+
+    question_ids = self.question_tracker.tracked_questions.pluck(:question_id)
 
     if (endpoints && endpoints.kind_of?(Array))
-      runs = Run.find_all_by_remote_endpoint(endpoints)
-      self.answers = runs.flat_map(&:answers)
-      self.answers.select! { |a| questions.include? a.question }
+      run_ids = Run.where(remote_endpoint: endpoints).pluck(:id)
+
+      self.answers = answer_class.where(
+        :run_id => run_ids,
+        foreign_key => question_ids).includes(:question, :run).to_a
     else
       self.answers = []
     end
