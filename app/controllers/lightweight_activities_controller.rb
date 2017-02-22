@@ -22,6 +22,11 @@ class LightweightActivitiesController < ApplicationController
   # These are the runtime (student-facing) actions, show and summary
 
   def show # show index
+    if params[:class_info_url]
+      @run.class_info_url = params[:class_info_url]
+      @run.save!
+    end
+
     authorize! :read, @activity
     if params[:print]
       redirect_to activity_single_page_with_response_path(@activity, @run.key, request.query_parameters) and return

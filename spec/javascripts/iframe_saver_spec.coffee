@@ -91,7 +91,10 @@ describe 'IFrameSaver', () ->
           hasLinkedInteractive: false,
           linkedState: null,
           interactiveStateUrl: 'foo/42',
-          collaboratorUrls: null
+          collaboratorUrls: null,
+          classInfoUrl: null,
+          interactive: {id: 1, name: "test"},
+          authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
         })
 
     describe "when state saving is disabled", () ->
@@ -111,5 +114,8 @@ describe 'IFrameSaver', () ->
           hasLinkedInteractive: false,
           linkedState: null,
           interactiveStateUrl: 'foo/42',
-          collaboratorUrls: null
+          collaboratorUrls: null,
+          classInfoUrl: null,
+          interactive: {id: 1, name: "test"},
+          authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
         })
