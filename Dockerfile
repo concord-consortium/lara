@@ -1,4 +1,4 @@
-FROM pjanik/docker-rails-ruby226
+FROM concordconsortium/docker-rails-base-ruby-2.2.6
 
 # install nginx
 RUN apt-get install -qq -y nginx
