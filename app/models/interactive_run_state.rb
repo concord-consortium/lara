@@ -52,18 +52,37 @@ class InteractiveRunState < ActiveRecord::Base
     @question
   end
 
+  def is_external_link
+    reporting_url
+  end
+
   def portal_hash
-    {
-      "type" => "external_link",
-      "question_type" => interactive.class.portal_type,
-      "question_id" => interactive.id.to_s,
-      "answer" => reporting_url,
-      "is_final" => false
-    }
+    # There are two options how interactive can be saved in Portal:
+    # - When "reporting url" is checked, it means that interactive is supposed to be saved as an URL. It's useful
+    #   if interactive can serialize its state in the URL or saves its data in the external storage.
+    # - Otherwise, we'll simply send its state to the Portal. Later, the same state will be provided to teacher report
+    #   and sent to the interactive.
+    if is_external_link
+      {
+        "type" => "external_link",
+        "question_type" => interactive.class.portal_type,
+        "question_id" => interactive.id.to_s,
+        "answer" => reporting_url,
+        "is_final" => false
+      }
+    else
+      {
+        "type" => "interactive",
+        "question_type" => interactive.class.portal_type,
+        "question_id" => interactive.id.to_s,
+        "answer" => raw_data,
+        "is_final" => false
+      }
+    end
   end
 
   def maybe_send_to_portal
-    send_to_portal if reporting_url
+    send_to_portal if raw_data
   end
 
   def reporting_url
