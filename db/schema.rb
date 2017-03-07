@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161130093220) do
+ActiveRecord::Schema.define(:version => 20170206145939) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -65,12 +65,12 @@ ActiveRecord::Schema.define(:version => 20161130093220) do
   add_index "c_rater_feedback_submissions", ["interactive_page_id", "run_id", "created_at"], :name => "c_rater_fed_submission_page_run_created_idx"
 
   create_table "c_rater_item_settings", :force => true do |t|
+    t.string   "item_id"
     t.integer  "score_mapping_id"
     t.integer  "provider_id"
     t.string   "provider_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "item_id"
   end
 
   add_index "c_rater_item_settings", ["provider_id", "provider_type"], :name => "c_rat_set_prov_idx"
@@ -246,8 +246,8 @@ ActiveRecord::Schema.define(:version => 20161130093220) do
     t.boolean  "is_prediction",            :default => false
     t.boolean  "give_prediction_feedback", :default => false
     t.text     "prediction_feedback"
-    t.boolean  "is_hidden",                :default => false
     t.string   "default_text"
+    t.boolean  "is_hidden",                :default => false
     t.text     "hint"
   end
 
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(:version => 20161130093220) do
     t.boolean  "full_window",           :default => false
     t.text     "authored_state"
     t.string   "model_library_url"
+    t.boolean  "no_snapshots",          :default => false
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
@@ -481,6 +482,7 @@ ActiveRecord::Schema.define(:version => 20161130093220) do
     t.integer  "sequence_run_id"
     t.boolean  "is_dirty",             :default => false
     t.integer  "collaboration_run_id"
+    t.text     "class_info_url"
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
