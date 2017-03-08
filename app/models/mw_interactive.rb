@@ -126,6 +126,6 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    return enable_learner_state && has_report_url
+    enable_learner_state || has_report_url
   end
 end
