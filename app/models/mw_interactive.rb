@@ -64,6 +64,8 @@ class MwInteractive < ActiveRecord::Base
     iframe_data = to_hash
     iframe_data[:type] = 'iframe_interactive'
     iframe_data[:id] = id
+    # This info can be used by Portal to generate an iframe with album in teacher report.
+    iframe_data[:display_in_iframe] = true
     iframe_data
   end
 
