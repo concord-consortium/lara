@@ -61,7 +61,7 @@ class InteractiveRunState < ActiveRecord::Base
     # - When "reporting url" is checked, it means that interactive is supposed to be saved as an URL. It's useful
     #   if interactive can serialize its state in the URL or saves its data in the external storage.
     # - Otherwise, we'll simply send its state to the Portal. Later, the same state will be provided to teacher report
-    #   and sent to the interactive.
+    #   and sent to the interactive using LARA Interactive API format.
     if is_external_link
       {
         "type" => "external_link",
@@ -75,7 +75,7 @@ class InteractiveRunState < ActiveRecord::Base
         "type" => "interactive",
         "question_type" => interactive.class.portal_type,
         "question_id" => interactive.id.to_s,
-        "answer" => raw_data,
+        "answer" => report_state.to_json,
         "is_final" => false
       }
     end
@@ -88,6 +88,19 @@ class InteractiveRunState < ActiveRecord::Base
   def reporting_url
     data = JSON.parse(raw_data) rescue {}
     (opts = data["lara_options"]) && opts["reporting_url"]
+  end
+
+  def report_state
+    # Follow LARA Iframe API. This state will be passed directly to the interactive later by the teacher report app
+    # using iframe-phone `initInteractive` call. More properties can be provided here, e.g. globalInteractiveState,
+    # linkedState and pretty much anything that is supported by `initInteractive`.
+    # Please see LARA Interactive API docs or iframe-saver.coffee.
+    {
+      version: 1,
+      mode: 'report',
+      authoredState: interactive.authored_state,
+      interactiveState: raw_data
+    }
   end
 
   def has_linked_interactive
