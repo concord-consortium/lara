@@ -69,7 +69,6 @@ class InteractiveRunState < ActiveRecord::Base
     else
       {
         "type" => "interactive",
-        "question_type" => interactive.class.portal_type,
         "question_id" => interactive.id.to_s,
         "answer" => report_state.to_json,
         "is_final" => false
