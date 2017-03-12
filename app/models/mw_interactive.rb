@@ -64,8 +64,7 @@ class MwInteractive < ActiveRecord::Base
     iframe_data = to_hash
     iframe_data[:type] = 'iframe_interactive'
     iframe_data[:id] = id
-    # This info can be used by Portal to generate an iframe with album in teacher report.
-    iframe_data[:display_in_iframe] = true
+    iframe_data[:display_in_iframe] = reportable_in_iframe?
     iframe_data
   end
 
@@ -129,5 +128,10 @@ class MwInteractive < ActiveRecord::Base
 
   def reportable?
     enable_learner_state || has_report_url
+  end
+
+  def reportable_in_iframe?
+    # When iframe is reportable because of the learner state, it should be displayed in iframe.
+    enable_learner_state
   end
 end
