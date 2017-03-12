@@ -106,14 +106,14 @@ describe InteractiveRunState do
 
     # this hash is depended on by the Portal
     describe "portal_hash" do
-      let(:run_data) {'{"second": 2}"'}
+      # Only when reporting_url is available.
+      let(:run_data) {'{"second": 2, "lara_options": {"reporting_url": "test.com"}}'}
       let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
 
       subject { interactive_run_state.portal_hash }
 
       # the portal uses this type to match the interactive so it can't change without changing the portal
       it { should include("question_type" => "iframe interactive") }
-
     end
 
     # this key is generated automatically when created
