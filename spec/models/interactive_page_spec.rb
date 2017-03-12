@@ -453,10 +453,13 @@ describe InteractivePage do
 
   describe '#reportable_items' do
     let(:non_reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
     }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: true)
+    }
+    let(:reportable_interactive2) {
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
     }
     let(:video_interactive) { FactoryGirl.create(:video_interactive) }
     let(:image_interactive) { FactoryGirl.create(:image_interactive) }
@@ -480,16 +483,16 @@ describe InteractivePage do
     subject { page.reportable_items }
 
     context 'with a basic set of items' do
-      let(:interactives) { [reportable_interactive] }
+      let(:interactives) { [reportable_interactive, reportable_interactive2] }
       let(:embeddables) { [or_question, im_question, mc_question]}
       it { is_expected.to eql(embeddables + interactives) }
     end
 
     context 'with every possible interactive and embeddable type' do
-      let(:interactives) { [reportable_interactive, video_interactive, image_interactive]}
+      let(:interactives) { [reportable_interactive, reportable_interactive2, video_interactive, image_interactive]}
       let(:embeddables) { [or_question, im_question, mc_question, labbook_question, xhtml]}
       it 'returns just those that are reportable' do
-        expect(subject.length).to eql(5)
+        expect(subject.length).to eql(6)
       end
     end
 
@@ -508,7 +511,7 @@ describe InteractivePage do
           has_report_url: true,
           is_hidden: true)
       }
-      let(:interactives) { [non_reportable_interactive] }
+      let(:interactives) { [reportable_interactive] }
       let(:embeddables) { [] }
       it 'does not return it' do
         expect(subject.length).to eql(0)

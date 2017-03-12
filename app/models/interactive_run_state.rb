@@ -52,17 +52,13 @@ class InteractiveRunState < ActiveRecord::Base
     @question
   end
 
-  def is_external_link
-    reporting_url
-  end
-
   def portal_hash
     # There are two options how interactive can be saved in Portal:
-    # - When "reporting url" is checked, it means that interactive is supposed to be saved as an URL. It's useful
-    #   if interactive can serialize its state in the URL or saves its data in the external storage.
-    # - Otherwise, we'll simply send its state to the Portal. Later, the same state will be provided to teacher report
-    #   and sent to the interactive using LARA Interactive API format.
-    if is_external_link
+    # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
+    #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
+    # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
+    #   and sent to the interactive using LARA Interactive API.
+    if reporting_url
       {
         "type" => "external_link",
         "question_type" => interactive.class.portal_type,
@@ -82,6 +78,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def maybe_send_to_portal
+    # When raw_data is available, it means that learner state is enabled and reporting url might be available too.
     send_to_portal if raw_data
   end
 
@@ -91,10 +88,12 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def report_state
-    # Follow LARA Iframe API. This state will be passed directly to the interactive later by the teacher report app
-    # using iframe-phone `initInteractive` call. More properties can be provided here, e.g. globalInteractiveState,
-    # linkedState and pretty much anything that is supported by `initInteractive`.
+    # Follow LARA Interactive API format. This state will be passed directly to the interactive later by the teacher
+    # report app using iframe-phone `initInteractive` call. More properties can be provided here,
+    # e.g. globalInteractiveState, linkedState and pretty much anything that is supported by `initInteractive`.
     # Please see LARA Interactive API docs or iframe-saver.coffee.
+    # Note that Portal and Teacher Report app simply pass this state to the interactive, they don't know anything
+    # about LARA Interactive API.
     {
       version: 1,
       mode: 'report',
