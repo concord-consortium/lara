@@ -12,6 +12,8 @@
 //
 //= require bind-polyfill
 //= require modulejs
+//= require react
+//= require react_ujs
 //= require jquery-ajax-csrf
 //= require fabric
 //= require hammerjs
@@ -52,4 +54,5 @@
 //= require c_rater
 //= require global-iframe-saver
 //= require interactive-manager
+//= require components
 //= require runtime-init

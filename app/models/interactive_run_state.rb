@@ -35,8 +35,10 @@ class InteractiveRunState < ActiveRecord::Base
   # Make Embeddable::Answer assumptions work
   class QuestionStandin
     attr_accessor :interactive
-    def name; "Interactive"; end
-    def prompt; "Interactive"; end
+    def name
+      interactive.name.present? ? interactive.name : "Interactive"
+    end
+    def prompt; nil; end
     def is_prediction; false; end
     def give_prediction_feedback; false; end
     def prediction_feedback; nil; end
@@ -136,11 +138,9 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   class AnswerStandin
-    attr_accessor :run
     def initialize(opts={})
       q = question
       q.interactive = opts[:question] if opts[:question]
-      q.run = opts[:run] if opts[:run]
     end
     def question
       @question ||= QuestionStandin.new
@@ -148,10 +148,13 @@ class InteractiveRunState < ActiveRecord::Base
     def prompt
       question.prompt
     end
+    def name
+      question.name
+    end
   end
 
   def self.default_answer(conditions)
-    return AnswerStandin.new
+    return AnswerStandin.new(conditions)
   end
 
   def add_key_if_nil
