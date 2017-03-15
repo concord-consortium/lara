@@ -9,14 +9,19 @@ describe "Authoring components", () ->
   describe "interactive_iframe", ->
     it "loads iframe", ->
       props = {}
-      interactive = jasmine.react.renderComponent "authoring/interactive_iframe", props
+      interactive = jasmine.react.renderComponent "common/interactive_iframe", props
       iframe = jasmine.react.findTag interactive, "iframe"
       expect(iframe).not.toBe(null)
 
     it "sends 'initInteractive' message to iframe", () ->
       props =
-        initialAuthoredState: {test: 123}
-      jasmine.react.renderComponent "authoring/interactive_iframe", props
+        initMsg: {
+          version: 1,
+          error: null,
+          mode: 'authoring',
+          authoredState: {test: 123}
+        }
+      jasmine.react.renderComponent "common/interactive_iframe", props
       iframePhone.connect()
       # initInteractive should be called right after connection.
       expect(iframePhone.messages.findType('initInteractive').message.content).toEqual({
@@ -33,7 +38,7 @@ describe "Authoring components", () ->
       spyOn(props, 'onAuthoredStateChange')
       spyOn(props, 'onSupportedFeaturesUpdate')
 
-      interactive = jasmine.react.renderComponent "authoring/interactive_iframe", props
+      interactive = jasmine.react.renderComponent "common/interactive_iframe", props
       iframePhone.connect()
       iframe = jasmine.react.findTag(interactive, "iframe").getDOMNode()
 
@@ -51,7 +56,7 @@ describe "Authoring components", () ->
           url: 'test-model.txt'
           authored_state: null
       mwInteractive = jasmine.react.renderComponent "authoring/mw_interactive", props
-      iframe = jasmine.react.findComponent mwInteractive, "authoring/interactive_iframe"
+      iframe = jasmine.react.findComponent mwInteractive, "common/interactive_iframe"
       expect(iframe).not.toBe(null)
 
     it "saves updated authored state", ->
@@ -61,7 +66,7 @@ describe "Authoring components", () ->
           url: 'test-model.txt'
           authored_state: null
       mwInteractive = jasmine.react.renderComponent "authoring/mw_interactive", props
-      interactive = jasmine.react.findComponent mwInteractive, "authoring/interactive_iframe"
+      interactive = jasmine.react.findComponent mwInteractive, "common/interactive_iframe"
       interactive.props.onAuthoredStateChange({test: 123})
 
       request = jasmine.react.captureRequest ->

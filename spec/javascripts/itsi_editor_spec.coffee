@@ -291,7 +291,7 @@ describe "ITSI Editor", () ->
       modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
       jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
-      iframe = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      iframe = jasmine.react.findComponent modelEditor, "common/interactive_iframe"
       expect(iframe).not.toBe(null)
 
     it "provides authored state to InteractiveIframe component", ->
@@ -306,8 +306,13 @@ describe "ITSI Editor", () ->
       modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
       jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
-      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
-      expect(interactive.props.initialAuthoredState).toEqual(props.data.authored_state)
+      interactive = jasmine.react.findComponent modelEditor, "common/interactive_iframe"
+      expect(interactive.props.initMsg).toEqual({
+        version: 1
+        error: null
+        mode: 'authoring'
+        authoredState: props.data.authored_state
+      })
 
     it "saves new authored state if it has been updated", ->
       props =
@@ -321,7 +326,7 @@ describe "ITSI Editor", () ->
       modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
       jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
-      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      interactive = jasmine.react.findComponent modelEditor, "common/interactive_iframe"
       interactive.props.onAuthoredStateChange({test: 123})
 
       request = jasmine.react.itsi.captureSave modelEditor
@@ -343,7 +348,7 @@ describe "ITSI Editor", () ->
       jasmine.react.click (jasmine.react.findClass modelEditor, "ia-section-editor-edit")
 
       # Make sure that status bar and reset button are visible.
-      interactive = jasmine.react.findComponent modelEditor, "authoring/interactive_iframe"
+      interactive = jasmine.react.findComponent modelEditor, "common/interactive_iframe"
       interactive.props.onSupportedFeaturesUpdate({features: {authoredState: true}})
 
       jasmine.react.click (jasmine.react.findClass modelEditor, "ia-reset-authored-state")
