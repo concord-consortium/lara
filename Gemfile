@@ -23,7 +23,8 @@ end
 
 group :development do
   gem "binding_of_caller", "~> 0.7"
-  gem "bullet", "~> 4.7"
+  # bullet 5.5 does not support AR 3
+  gem 'bullet', '~> 5.4.3', '>= 5.4.3'
   gem "better_errors", "~> 1.1"
   gem "sextant", "~> 0.2"
   gem "xray-rails", "~> 0.1"
