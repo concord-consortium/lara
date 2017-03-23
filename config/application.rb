@@ -67,8 +67,6 @@ module LightweightStandalone
     config.middleware.use Rack::Environmental,
                             :delayed_job => { :url => /delayed_job/,
                                               :style => :none},
-                            :svg_edit    => { :url => /svg-editor/,
-                                              :style => :none},
                             :staging     => { :url => /staging\..+$/,
                                               :color => "blueviolet" },
                             :test        => { :url => /jasmine/,

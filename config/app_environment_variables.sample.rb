@@ -10,8 +10,6 @@ ENV['CONCORD_HAS_STAGING_DISPLAY_NAME']  ||= 'Has Staging Portal'  # Optional pa
 
 ENV['SECRET_TOKEN']                      ||= 'use `rake secret` to generate'
 
-# Decides whether SVG Edit ('svg-edit' or undefined) or CC Drawing Tool ('drawing-tool') should be used.
-ENV['CONCORD_DRAWING_TOOL']              ||= 'drawing-tool'
 ENV['SHUTTERBUG_URI']                    ||= "//snapshot.concord.org/shutterbug"
 ENV['LOGGER_URI']                        ||= '//cc-log-manager.herokuapp.com/api/logs'
 ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
