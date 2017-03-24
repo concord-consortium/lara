@@ -24,7 +24,9 @@ class Import < ActiveRecord::Base
       end
 
     rescue => e
-       return nil
+      logger.error e.message
+      logger.error e.backtrace.join("\n")
+      return nil
     end
 
     @import_item
