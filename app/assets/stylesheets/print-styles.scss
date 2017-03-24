@@ -18,8 +18,8 @@
     page-break-inside: avoid;
   }
 
-  .question,.interactive-mod {
-    img, video, .img-container {
+  .question {
+    img, video {
       page-break-inside: avoid;
     }
   }
@@ -51,7 +51,16 @@
 
   .interactive-mod {
     float: right;
-    width: 40% !important;
+    // same width and margin as the full width questions
+    width: 438px !important;
+    margin: 20px;
+    page-break-inside: avoid;
+    .img-container {
+      // switch to static position so the img container takes up space inside its parent
+      // div. In screen-only the interactive iframe is visible and it determines the size
+      // of the parent div. Without that iframe the img-container needs to do this.
+      position: static !important;
+    }
   }
 
   .activity-nav-title {
@@ -70,14 +79,6 @@
     text-align: center;
     padding-top: 25%;
     page-break-inside: avoid;
-  }
-
-  .interactive-image-placeholder {
-    width: 100%;
-    height: 250px;
-    page-break-inside: avoid;
-    background-size: contain;
-    background-repeat: no-repeat;
   }
 
   .iframe-url {

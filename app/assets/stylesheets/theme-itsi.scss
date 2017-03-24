@@ -66,6 +66,15 @@ div.activity-mod > div.site-width {
   margin-bottom: 15px;
 }
 
+// override the default print floating style because we want the interactives to always be
+// after the intro and before the embeddables
+@media print {
+  .interactive-mod {
+    float: none;
+    margin: 0 auto;
+  }
+}
+
 // Full-width question.
 .question {
   margin: 10px 0 !important;
@@ -210,7 +219,7 @@ header {
 .help-popup {
   .close {
     color: #416942;
-  }  
+  }
   h3.title {
     color: #416942;
     background: #f8ac1a;

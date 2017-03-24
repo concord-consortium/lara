@@ -3,14 +3,14 @@
 .interactive-container
   - if interactive.native_height > 1
     - if interactive.image_url.present?
-      .interactive-image-placeholder.print-only{:style => "background-image: url(#{interactive.image_url});"}
+      -# if interactive has click to play, always show the img
+      -# otherwise only show the image in the printout
+      .img-container{:id => dom_id_for(interactive, :interactive_image),
+                     :class => interactive.click_to_play ? "" : "print-only"}
+        =image_tag(interactive.image_url)
     - else
       .interactive-placeholder.print-only
         Interactive Model
-
-    - if interactive.image_url.present?
-      .img-container{:id => dom_id_for(interactive, :interactive_image),:style => interactive.click_to_play ? "display:block" : "display:none"}
-        =image_tag(interactive.image_url)
 
     - if interactive.click_to_play
       - if interactive.full_window

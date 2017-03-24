@@ -425,7 +425,10 @@ div.intra-page-nav {
   .question {
     margin: 20px;
     display: inline-block;
-    width: 45%;
+    // the questions sit in two columns in the full width layout.
+    // The 438px width is computed to maximize their size:
+    // 960/2 = 480, 480 - margins = 440, then there is 2 px of padding somewhere
+    width: 438px;
     vertical-align: top;
  }
 

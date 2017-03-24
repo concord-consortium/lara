@@ -18,6 +18,9 @@
     = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
 
 :javascript
+  // FIXME: bold text doesn't show up the first time the document is printed
+  // it doesn't mater if a long timeout is added before calling window.print()
+  // My guess is that the content has to be rendered once before it works
   $(function(){ window.print(); });
 
 :sass
