@@ -12,7 +12,7 @@ class Import < ActiveRecord::Base
       elsif (json_object[:type] == "Sequence")
         @import_item = Sequence.import(json_object,current_user,imported_activity_url)
       else
-        return nil
+        raise "Unknown object failed to import"
       end
 
       @import = Import.new({export_site:json_object[:export_site]});
