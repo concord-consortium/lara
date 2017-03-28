@@ -1,4 +1,48 @@
 footer {
+  .geode-footer {
+    background-color: rgba(255,255,255,0.8);
+    @include border-radius(3px);
+    color: $dovegrey;
+    @include helv-stack(500);
+    padding: 10px;
+    p {
+      margin: 13px 0;
+      /* @include lt-txt-shadow(#fff); */
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: darken($black-75, 5%);
+        font-weight: bold;
+        @include trans;
+
+        &:hover {
+          color: darken($lt-blue, 55%);
+        }
+      } /* a */
+    } /* p */
+    .geode-footer-logobox {
+      .geode-footer-logo {
+        text-align: center;
+        margin: 10px;
+        display: inline-block;
+      }
+      #concord-logo-footer img {
+        height: auto;
+        width: 92px;
+      }
+      #ngep-logo-footer img {
+        height: auto;
+        width: 65px;
+      }
+      #nsf-logo-footer img {
+        height: auto;
+        width: 45px;
+      }
+    }
+  } /* geode-footer */
   .has-footer {
     background-color: rgba(255,255,255,0.8);
     @include border-radius(3px);
@@ -40,4 +84,3 @@ footer {
     margin: 0 auto;
   }
 }
-
