@@ -9,7 +9,7 @@
 #
 # To setup the client id and client secret you should run this command in the portal project:
 #   docker-compose run --rm app rake sso:add_client
-# and then use the client secret below
+# When asked you can use 'unsecure local secret' so you don't need to change this file.
 version: '2'
 services:
   app:
