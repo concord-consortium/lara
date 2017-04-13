@@ -1,23 +1,39 @@
-# This is an docker-compose overlay that connects the LARA service to a portal network
-# the Concord Portal docker-compose file sets up this network so LARA and other services
-# can access it
+# If you are running with a proxy and dns setup like dinghy proxy you should use
+# docker-compose-portal-proxy.yml instead of this override
 
-# A convient way to overlay it is to add a `.env` file with the contents:
-#  COMPOSE_FILE=docker-compose.yml:docker/dev/docker-compose-portal-net.yml
-# You can also do it manually when you run docker-compose each time with
-# docker-compose -f docker-compose.yml -f docker/dev/docker-compose-portal-net.yml
-# if you are making changes to docker-compose.yml or this file it is useful to
-# run `docker-compose config` which shows how the two files get merged together
+# This override can be used to connect the portal with LARA.
+# The key issue is that both your browser and LARA need to be able to connect to lara
+# using the same URL.
 
+# To use this override you need to define a entry in your host machines /etc/hosts
+# So your browser can access the portal at some URL other than localhost.
+# for example lets say you add the the entry:
+#  127.0.0.1 portal.concord
+# You also need to know what the exposed port of the portal is. By default it will be
+# 3000 but that conflicts with the default port of LARA so you might have changed it.
+# For this example lets assume it is 9000
+# So now you need modify your .env file with:
+# COMPOSE_FILE=... # add this file to the list of files
+# PORTAL_HOST=portal.concord
+# GATEWAY_IP= # you need to set the IP of docker gateway for the lara container
+# one way to figure this out is to run this command:
+# docker-compose run --rm app ip route | awk '/^default via /{print $3}'
+
+# To setup the client id and client secret you should run this command in the portal project:
+#   docker-compose run --rm app rake sso:add_client
 version: '2'
 services:
   app:
-    networks:
-      rigse_portal:
-        aliases:
-          - lara
-      default:
-
-networks:
-  rigse_portal:
-    external: true
+    environment:
+      CONCORD_CONFIGURED_PORTALS: LOCALHOST HAS_STAGING
+      CONCORD_LOCALHOST_URL: http://${PORTAL_HOST}:${PORTAL_PORT}/
+      CONCORD_LOCALHOST_CLIENT_ID: localhost
+      CONCORD_LOCALHOST_CLIENT_SECRET: 'unsecure local secret'
+      # the code requires at least 2 portals configured this second one to has Staging
+      # will not actually work
+      CONCORD_HAS_STAGING_URL: http://has.staging.concord.org/
+      CONCORD_HAS_STAGING_CLIENT_ID: localhost
+      CONCORD_HAS_STAGING_CLIENT_SECRET: XXXXXX
+      CONCORD_HAS_STAGING_DISPLAY_NAME: Do not use
+    extra_hosts:
+      - '${PORTAL_HOST}:${GATEWAY_IP}'

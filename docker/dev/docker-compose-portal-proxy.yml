@@ -1,0 +1,28 @@
+# This is an docker-compose overlay that connects LARA to the portal via a proxy
+# container. It assumes the proxy container name is http-proxy.  This is the name
+# the dinghy proxy will have if you followed its documentation:
+#   https://github.com/codekitchen/dinghy-http-proxy#os-x
+# You will also need to set the PORTAL_HOST environment variable to match the name of
+# the portal host. If you are using the dinghy proxy this will be:
+#   app.[project name of portal].docker
+#   examples: app.portal.docker, app.rigse.docker
+#
+# To setup the client id and client secret you should run this command in the portal project:
+#   docker-compose run --rm app rake sso:add_client
+# and then use the client secret below
+version: '2'
+services:
+  app:
+    environment:
+      CONCORD_CONFIGURED_PORTALS: LOCALHOST HAS_STAGING
+      CONCORD_LOCALHOST_URL: http://${PORTAL_HOST}/
+      CONCORD_LOCALHOST_CLIENT_ID: localhost
+      CONCORD_LOCALHOST_CLIENT_SECRET: 'unsecure local secret'
+      # the code requires at least 2 portals configured this second one to has Staging
+      # will not actually work
+      CONCORD_HAS_STAGING_URL: http://has.staging.concord.org/
+      CONCORD_HAS_STAGING_CLIENT_ID: localhost
+      CONCORD_HAS_STAGING_CLIENT_SECRET: XXXXXX
+      CONCORD_HAS_STAGING_DISPLAY_NAME: Do not use
+    external_links:
+      - http-proxy:${PORTAL_HOST}
