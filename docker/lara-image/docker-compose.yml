@@ -20,8 +20,7 @@ services:
     #
     # To use a different tag, create an .env file with LARA_IMAGE_TAG defined
     #
-    # image: concordconsortium/lara:${LARA_IMAGE_TAG:-latest}
-    image: bug143956207-2
+    image: concordconsortium/lara:${LARA_IMAGE_TAG:-latest}
     environment:
       DB_HOST: db
       DB_USER: master
