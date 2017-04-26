@@ -102,3 +102,6 @@ gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbo
 gem "spreadsheet", "~> 1.0"
 gem "nokogiri", "~> 1.6"
 gem "rack-cors","~> 0.4.0", :require => 'rack/cors'
+gem "test-unit", "~> 3.0"
+
+
