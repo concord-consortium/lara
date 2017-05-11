@@ -58,7 +58,7 @@ LightweightStandalone::Application.configure do
   #
   # Here is a sample local-development.rb file to speed up requests
   #
-  # RailsPortal::Application.configure do
+  # LightweightStandalone::Application.configure do
   #   config.assets.debug = false
   #   config.after_initialize do
   #     Bullet.enable = false
