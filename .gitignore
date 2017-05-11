@@ -53,3 +53,6 @@ config/database.yml
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# local development overrides
+config/environments/local-development.rb

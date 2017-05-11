@@ -53,6 +53,22 @@ LightweightStandalone::Application.configure do
 
   # allow for test add-ons
   config.react.addons = true
+
+  # include per developer environment files if found (the default is excluded by .gitignore)
+  #
+  # Here is a sample local-development.rb file to speed up requests
+  #
+  # RailsPortal::Application.configure do
+  #   config.assets.debug = false
+  #   config.after_initialize do
+  #     Bullet.enable = false
+  #     Bullet.bullet_logger = false
+  #     Bullet.rails_logger = false
+  #     Bullet.add_footer = false
+  #   end
+  # end
+  localDevPath = File.expand_path((ENV['LOCAL_DEV_ENVIRONMENT_FILE'] || 'local-development.rb'), File.dirname(__FILE__))
+  require(localDevPath) if File.file?(localDevPath)
 end
 
 # Open file links in BetterErrors in sublime text.
