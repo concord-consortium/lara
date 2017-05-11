@@ -24,5 +24,8 @@ services:
       CONCORD_HAS_STAGING_CLIENT_ID: localhost
       CONCORD_HAS_STAGING_CLIENT_SECRET: XXXXXX
       CONCORD_HAS_STAGING_DISPLAY_NAME: Do not use
+
+      # import local PORTAL_HOST
+      PORTAL_HOST:
     external_links:
       - http-proxy:${PORTAL_HOST}
