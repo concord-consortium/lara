@@ -2,7 +2,7 @@
 
 modulejs.define 'components/authoring/mw_interactive',
 [
-  'components/authoring/interactive_iframe',
+  'components/common/interactive_iframe',
 ],
 (
   InteractiveIframeClass,
@@ -20,7 +20,6 @@ modulejs.define 'components/authoring/mw_interactive',
         saving: false
         message: ''
       }
-
 
     componentDidMount: ->
       window.addEventListener 'beforeunload', @onBeforeUnload
@@ -89,7 +88,12 @@ modulejs.define 'components/authoring/mw_interactive',
         (InteractiveIframe
           ref: 'interactive'
           src: interactive.url
-          initialAuthoredState: authoredState
+          initMsg: {
+            version: 1
+            error: null
+            mode: 'authoring'
+            authoredState: authoredState
+          }
           onAuthoredStateChange: @handleAuthoredStateChange
           onSupportedFeaturesUpdate: @handleSupportedFeatures
         )

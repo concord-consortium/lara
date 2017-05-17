@@ -374,7 +374,7 @@ describe LightweightActivity do
       let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
 
       let(:non_reportable_interactive) {
-        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
+        FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
       }
 
       let(:reportable_interactive) {

@@ -64,6 +64,7 @@ class MwInteractive < ActiveRecord::Base
     iframe_data = to_hash
     iframe_data[:type] = 'iframe_interactive'
     iframe_data[:id] = id
+    iframe_data[:display_in_iframe] = reportable_in_iframe?
     iframe_data
   end
 
@@ -126,6 +127,11 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    return enable_learner_state && has_report_url
+    enable_learner_state || has_report_url
+  end
+
+  def reportable_in_iframe?
+    # When iframe is reportable because of the learner state, it should be displayed in iframe.
+    enable_learner_state
   end
 end

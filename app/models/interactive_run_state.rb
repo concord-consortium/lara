@@ -35,8 +35,10 @@ class InteractiveRunState < ActiveRecord::Base
   # Make Embeddable::Answer assumptions work
   class QuestionStandin
     attr_accessor :interactive
-    def name; "Interactive"; end
-    def prompt; "Interactive"; end
+    def name
+      interactive.name.present? ? interactive.name : "Interactive"
+    end
+    def prompt; nil; end
     def is_prediction; false; end
     def give_prediction_feedback; false; end
     def prediction_feedback; nil; end
@@ -53,22 +55,52 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def portal_hash
-    {
-      "type" => "external_link",
-      "question_type" => interactive.class.portal_type,
-      "question_id" => interactive.id.to_s,
-      "answer" => reporting_url,
-      "is_final" => false
-    }
+    # There are two options how interactive can be saved in Portal:
+    # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
+    #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
+    # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
+    #   and sent to the interactive using LARA Interactive API.
+    if reporting_url
+      {
+        "type" => "external_link",
+        "question_type" => interactive.class.portal_type,
+        "question_id" => interactive.id.to_s,
+        "answer" => reporting_url,
+        "is_final" => false
+      }
+    else
+      {
+        "type" => "interactive",
+        "question_id" => interactive.id.to_s,
+        "answer" => report_state.to_json,
+        "is_final" => false
+      }
+    end
   end
 
   def maybe_send_to_portal
-    send_to_portal if reporting_url
+    # When raw_data is available, it means that learner state is enabled and reporting url might be available too.
+    send_to_portal if raw_data
   end
 
   def reporting_url
     data = JSON.parse(raw_data) rescue {}
     (opts = data["lara_options"]) && opts["reporting_url"]
+  end
+
+  def report_state
+    # Follow LARA Interactive API format. This state will be passed directly to the interactive later by the teacher
+    # report app using iframe-phone `initInteractive` call. More properties can be provided here,
+    # e.g. globalInteractiveState, linkedState and pretty much anything that is supported by `initInteractive`.
+    # Please see LARA Interactive API docs or iframe-saver.coffee.
+    # Note that Portal and Teacher Report app simply pass this state to the interactive, they don't know anything
+    # about LARA Interactive API.
+    {
+      version: 1,
+      mode: 'report',
+      authoredState: interactive.authored_state,
+      interactiveState: raw_data
+    }
   end
 
   def has_linked_interactive
@@ -106,11 +138,9 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   class AnswerStandin
-    attr_accessor :run
     def initialize(opts={})
       q = question
       q.interactive = opts[:question] if opts[:question]
-      q.run = opts[:run] if opts[:run]
     end
     def question
       @question ||= QuestionStandin.new
@@ -118,10 +148,13 @@ class InteractiveRunState < ActiveRecord::Base
     def prompt
       question.prompt
     end
+    def name
+      question.name
+    end
   end
 
   def self.default_answer(conditions)
-    return AnswerStandin.new
+    return AnswerStandin.new(conditions)
   end
 
   def add_key_if_nil

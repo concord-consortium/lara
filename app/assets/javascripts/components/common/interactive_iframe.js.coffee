@@ -1,6 +1,6 @@
 {iframe} = React.DOM
 
-modulejs.define 'components/authoring/interactive_iframe', [], () ->
+modulejs.define 'components/common/interactive_iframe', [], () ->
 
   InteractiveIframe = React.createClass
     getInitialState: ->
@@ -8,6 +8,8 @@ modulejs.define 'components/authoring/interactive_iframe', [], () ->
 
     getDefaultProps: ->
       src: ''
+      width: '100%'
+      height: '100%'
       initialAuthoredState: null
       onAuthoredStateChange: (authoredState) ->
       onSupportedFeaturesUpdate: (info) ->
@@ -41,17 +43,9 @@ modulejs.define 'components/authoring/interactive_iframe', [], () ->
       @iframePhone.disconnect()
 
     phoneAnswered: ->
-      authoredState = if typeof @props.initialAuthoredState == 'string'
-                        JSON.parse(@props.initialAuthoredState)
-                      else
-                        @props.initialAuthoredState
-      @iframePhone.post 'initInteractive',
-        version: 1
-        error: null
-        mode: 'authoring'
-        authoredState: authoredState
+      @iframePhone.post 'initInteractive', @props.initMsg
 
     render: ->
       { iframeId } = @state
-      { src } = @props
-      (iframe {ref: 'iframe', key: iframeId, src: src, width: '100%', height: '100%', frameBorder: 'no', allowFullScreen: 'true'})
+      { src, width, height } = @props
+      (iframe {ref: 'iframe', src, width, height, key: iframeId, frameBorder: 'no', allowFullScreen: 'true'})
