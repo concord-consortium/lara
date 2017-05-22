@@ -275,7 +275,9 @@ class InteractivePage < ActiveRecord::Base
 
     self.interactives.each do |inter|
       interactive_hash = helper.wrap_export(inter)
-      interactive_hash[:linked_interactive] = inter.linked_interactive.present? ? helper.wrap_export(inter.linked_interactive) : nil
+      if inter.respond_to? :linked_interactive
+        interactive_hash[:linked_interactive] = inter.linked_interactive.present? ? helper.wrap_export(inter.linked_interactive) : nil
+      end
       page_json[:interactives] << interactive_hash
     end
     self.main_embeddables.each do |embed|
