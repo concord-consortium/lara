@@ -53,7 +53,7 @@ If you haven't run tests on this project before, you first need to initialize th
 
 Then, from the application root, run
 
-      RAILS_ENV=test rspec spec
+      RAILS_ENV=test bundle exec rspec spec
 
 To re-initialize the test database, should that be necessary:
 
@@ -79,6 +79,11 @@ To run the jasmine tests in a browser, run the command below and open your brows
 To run the jasmine tests with PhantomJS, run
 
     rake jasmine:ci
+
+## Running tests in docker containers for developers:
+
+To run all the (non phantom) spec tests:
+`docker-compose run --rm app docker/dev/run-spec.sh`
 
 ## Adding Embeddable support
 _This may be obsolete as of April 2013_

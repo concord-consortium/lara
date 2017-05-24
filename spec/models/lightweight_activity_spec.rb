@@ -242,6 +242,23 @@ describe LightweightActivity do
       end
     end
 
+   describe "an activity with an image interactive" do
+      let(:prompt)        { "xyzzy" }
+      let(:page)          { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
+      let(:url)           { "http://foo.bar/kitten.jpg" }
+      let(:interactive)   { FactoryGirl.create(:image_interactive, url:url) }
+      before(:each) do
+        page.add_interactive(interactive)
+        page.reload
+        activity.pages << page
+      end
+      it "the duplicate should have a copy of the interactive" do
+        dup = activity.duplicate(owner)
+        dup_int = dup.pages.first.interactives.first
+        expect(dup_int.url).to eq url
+      end
+    end
+
     describe "for itsi activities" do
       let(:edit_mode) { LightweightActivity::ITSI_EDITOR_MODE   }
       let(:layout)    { LightweightActivity::LAYOUT_SINGLE_PAGE }
