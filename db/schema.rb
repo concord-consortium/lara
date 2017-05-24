@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170206145939) do
+ActiveRecord::Schema.define(:version => 20170524180857) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -442,6 +442,7 @@ ActiveRecord::Schema.define(:version => 20170206145939) do
     t.datetime "updated_at",                     :null => false
     t.string   "publication_hash", :limit => 40
     t.integer  "publication_time"
+    t.text     "sent_data"
   end
 
   add_index "portal_publications", ["publishable_id", "publishable_type"], :name => "index_portal_publications_on_publishable_id_and_publishable_type"

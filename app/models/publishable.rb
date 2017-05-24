@@ -79,6 +79,7 @@ module Publishable
     Rails.logger.info "Response: #{response.inspect}"
     self.portal_publications.create({
       portal_url: auth_portal.publishing_url,
+      sent_data: json,
       response: response.inspect,
       success: ( response.code == 201 ) ? true : false,
       publishable: self,
