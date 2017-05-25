@@ -1,15 +1,36 @@
-# This is an docker-compose overlay that connects LARA to the portal via a proxy
-# container. It assumes the proxy container name is http-proxy.  This is the name
-# the dinghy proxy will have if you followed its documentation:
+#
+# This is a docker-compose overlay that connects LARA to the portal via a 
+# proxy container. It assumes the proxy container name is "http-proxy"  
+#
+# - If you are running dinghy on Mac OS, this is the name the dinghy proxy 
+#   will have if you followed its documentation here:
 #   https://github.com/codekitchen/dinghy-http-proxy#os-x
-# You will also need to set the PORTAL_HOST environment variable to match the name of
-# the portal host. If you are using the dinghy proxy this will be:
+#
+# - If you are running dory on linux, you will need to change the default
+#   name of the http proxy container. To do that you will need to tell
+#   dory to generate a config file. Do that with
+#       `dory config-file`
+#   This will write the config file ~/.dory.yml
+#   Change the following config file line in the "nginx_proxy" section from:
+#       container_name: dory_dinghy_http_proxy
+#   to:
+#       container_name: http-proxy
+#
+# NOTE if your proxy is not configured correctly, oauth will fail to
+# authenticate users against portal. 
+#
+# You will also need to set the PORTAL_HOST environment variable to match 
+# the name of the portal host. If you are using the dinghy or dory proxy
+# this will be:
 #   app.[project name of portal].docker
 #   examples: app.portal.docker, app.rigse.docker
 #
-# To setup the client id and client secret you should run this command in the portal project:
+# To setup the client id and client secret you should run this command in 
+# the portal project:
 #   docker-compose run --rm app rake sso:add_client
-# When asked you can use 'unsecure local secret' so you don't need to change this file.
+# When asked for "secret" you can use 'unsecure local secret' so you don't 
+# need to change this file.
+#
 version: '2'
 services:
   app:
