@@ -32,6 +32,9 @@ shared_examples "an answer" do
   describe "send_to_portal" do
     describe "with a run" do
       it "should call run.send_to_portal(self, nil)" do
+        if described_class == Embeddable::OpenResponseAnswer
+            answer.answer_text = "some answer"
+        end
         allow(answer).to receive_messages(:run => run)
         expect(run).to receive(:queue_for_portal).with(answer)
         answer.send_to_portal

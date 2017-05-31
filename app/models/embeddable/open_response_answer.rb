@@ -15,6 +15,15 @@ module Embeddable
     after_update :send_to_portal
     after_update :propagate_to_collaborators
 
+    #
+    # Only send to portal if answer text is not nil
+    #
+    def send_to_portal
+        if ! self.answer_text.nil?
+            super
+        end
+    end
+
     def self.by_question(q)
       where(:open_response_id => q.id)
     end
