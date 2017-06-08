@@ -12,6 +12,7 @@ services:
       DB_PASSWORD: master
       DB_NAME: lara
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+      C_RATER_FAKE:
     # no ports are published, see below for details
     depends_on:
       - db
