@@ -17,6 +17,21 @@ class Api::V1::DashboardController < ApplicationController
     render json: dashboard.to_json, callback: params[:callback]
   end
 
+  # `#runs_all` returns the json representing all the latest answer for all the endpoint_urls provided.
+  # This will include stitching together activitiy runs for one sequence.
+  # Params:
+  #   endpoint_urls: The runs (students) to report on.
+  #   submissions_created_after: Only report on runs updated after this timestamp. (optional)
+  #   callback: Client side javascript method to invoke. Sent by jquery `jsonP` request. TODO: stop using jsonP.
+  def runs_all
+    endpoint_urls = params[:endpoint_urls] || []
+    submissions_created_after = params[:submissions_created_after]
+    sequence_runs = params[:sequence_runs]
+    dashboard = DashboardSequenceRunlist.new(endpoint_urls, submissions_created_after, sequence_runs)
+    render json: dashboard.to_json, callback: params[:callback]
+  end
+
+
   # `#toc` returns the json structure of the offering used in the table of contents in the report.
   # Params:
   #   runnable_type: one of either 'sequences' or 'activities'. Clients extract this from the portal run urls.
