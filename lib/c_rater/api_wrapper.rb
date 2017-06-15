@@ -3,7 +3,7 @@ require 'builder'
 class CRater::APIWrapper
   # Pilot environment has been recommended by ETS.
   C_RATER_URI = 'https://nlp-pilot.ets.org/crater/scoring/internal/CraterScoringServlet'
-  # C-Rater supports only ISO-8859-1 encoding.
+  # C-Rater supports only ISO-8859-1 AKA Latin1 encoding.
   ENCODING = 'ISO-8859-1'
 
   def initialize(client_id, username, password, url = nil)

@@ -159,6 +159,7 @@ LightweightStandalone::Application.routes.draw do
 
       # For HASBOT C-Rater reports aka HAS Dashboard
       match 'dashboard_runs' => "dashboard#runs", defaults: { format: 'json' }
+      match 'dashboard_runs_all' => "dashboard#runs_all", defaults: { format: 'json' }
       match 'dashboard_toc/:runnable_type/:runnable_id' => "dashboard#toc",  defaults: { format: 'json' }
 
       match "interactive_run_states/:key" => 'interactive_run_states#show', :as => 'show_interactive_run_state', :via => 'get'

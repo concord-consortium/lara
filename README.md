@@ -80,10 +80,6 @@ To run the jasmine tests with PhantomJS, run
 
     rake jasmine:ci
 
-## Running tests in docker containers for developers:
-
-To run all the (non phantom) spec tests:
-`docker-compose run --rm app docker/dev/run-spec.sh`
 
 ## Adding Embeddable support
 _This may be obsolete as of April 2013_
@@ -140,10 +136,10 @@ If you are going to deploy to a server with load balancing enabled (production),
   `export AWS_SECRET_ACCESS_KEY='xxxx'`
 
 
-## WIP: Development environment with docker:
+## Docker and docker-compose for developers:
 
-* See: [the docker documentation](documentation/dockerdev.md) for vanilla docker
-* See: [the vagrant-docker](documentation/vagrant-docker.md) for vagrant + docker
+* See [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/doc/docker.md) for an overview of how to get your develepment environment configured with docker-compose.
+* There is [LARA specific docker documentation][documentation/dockerdev.md] in this repo.
 
 ## History
 
