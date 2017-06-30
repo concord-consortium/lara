@@ -48,10 +48,15 @@ class DashboardToc
   end
   def questions(page)
     questions = page.section_embeddables(CRater::ARG_SECTION_NAME).map do |q|
+      choices = []
+      if q.respond_to? :choices
+        choices = q.choices.map { |c| c.choice }
+      end
       {
           index: q.index_in_activity(page.lightweight_activity),
           name: q.name,
-          prompt: q.prompt
+          prompt: q.prompt,
+          choices: choices
       }
     end
     questions.sort! { |a,b| a[:index] <=> b[:index] }
