@@ -81,15 +81,15 @@ class DashboardSequenceRunlist
       return []
     end
     submissions = submissions.group_by(&:interactive_page_id)
-    submissions.map do |page_id, sumbissions|
-      num_tries = sumbissions.length
-      submission = sumbissions.last
+    submissions.map do |page_id, page_sumbissions|
+      num_tries = page_sumbissions.length
+      page_sumbission = page_sumbissions.last
       {
         page: page_id,
-        pageIndex: submission.interactive_page.position,
+        pageIndex: page_sumbission.interactive_page.position,
         tryCount: num_tries,
         numQuestions: 4,
-        answers: submission_answers(submission)
+        answers: submission_answers(page_sumbission)
       }
     end
   end
