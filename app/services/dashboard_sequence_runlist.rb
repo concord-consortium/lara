@@ -80,14 +80,18 @@ class DashboardSequenceRunlist
     if num_tries < 1
       return []
     end
-    submission = submissions.last
-    return {
-      page: submission.interactive_page_id,
-      pageIndex: submission.interactive_page.position,
-      tryCount: num_tries,
-      numQuestions: 4,
-      answers: submission_answers(submission)
-    }
+    submissions = submissions.group_by(&:interactive_page_id)
+    submissions.map do |page_id, page_submissions|
+      num_tries = page_submissions.length
+      page_submission = page_submissions.last
+      {
+        page: page_id,
+        pageIndex: page_submission.interactive_page.position,
+        tryCount: num_tries,
+        numQuestions: 4,
+        answers: submission_answers(page_submission)
+      }
+    end
   end
 
   def submission_answers(submission)
