@@ -127,11 +127,16 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def reportable?
-    enable_learner_state || has_report_url
+    enable_learner_state
   end
 
   def reportable_in_iframe?
-    # When iframe is reportable because of the learner state, it should be displayed in iframe.
-    enable_learner_state
+    # An MwInactive should only be reported on in iframe if it doesn't have a report url
+    # This is mainly for backwards compatibility. Previously interactives were only
+    # reportable if they had a report_url, and they always showed as links (not iframes)
+    # in the report. We want these old interactives to continue to work that way.
+    # If we need more flexibility then we'll need to add a new option on MwInteractive
+    # indicated if the interactive should be reported on in an iframe or not
+    !has_report_url
   end
 end
