@@ -138,8 +138,8 @@ If you are going to deploy to a server with load balancing enabled (production),
 
 ## Docker and docker-compose for developers:
 
-* See [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/doc/docker.md) for an overview of how to get your develepment environment configured with docker-compose.
-* There is [LARA specific docker documentation][documentation/dockerdev.md] in this repo.
+* See [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/docs/docker.md) for an overview of how to get your develepment environment configured with docker-compose.
+* There is [LARA specific docker documentation][https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md] in this repo.
 
 ## History
 
