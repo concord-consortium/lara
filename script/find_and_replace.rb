@@ -15,7 +15,9 @@ text_fields = {
     :notes
   ],
   "MwInteractive" => [
-    :name
+    :name,
+    :url,
+    :image_url
   ],
   "Sequence" => [
     :description,
@@ -24,7 +26,11 @@ text_fields = {
   ],
   "VideoInteractive" => [
     :caption,
-    :credit
+    :credit,
+    :poster_url
+  ],
+  "VideoSource" => [
+    :url
   ],
   "Embeddable::Xhtml" => [
     :name,
@@ -87,6 +93,15 @@ def print_results(results, field_name, text)
   nil
 end
 
+def matching_text(results, field_name, text, ending_character)
+  matches = []
+  results.each do |model|
+    found_text = model.send(field_name.to_s)
+    matches += found_text.scan(/#{text}[^#{ending_character}]*/)
+  end
+  matches
+end
+
 def find_and_print_all(text_fields, text)
   total = 0
   text_fields.each do |model_class, fields|
@@ -98,6 +113,17 @@ def find_and_print_all(text_fields, text)
   end
   puts "------------"
   puts "Total Found: #{total}"
+end
+
+def find_all_unqiue_matches(text_fields, text, ending_character)
+  matches = []
+  text_fields.each do |model_class, fields|
+    fields.each do |field_sym|
+      results = find_text(model_class, field_sym.to_s, text)
+      matches += matching_text(results, field_sym.to_s, text, ending_character)
+    end
+  end
+  matches.uniq.sort
 end
 
 # https://s3.amazonaws.com/itsi-production/images-2009
