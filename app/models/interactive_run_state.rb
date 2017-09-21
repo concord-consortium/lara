@@ -60,11 +60,15 @@ class InteractiveRunState < ActiveRecord::Base
     #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
     # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
     #   and sent to the interactive using LARA Interactive API.
-    if reporting_url
+    if interactive.has_report_url
       {
         "type" => "external_link",
         "question_type" => interactive.class.portal_type,
         "question_id" => interactive.id.to_s,
+        # there is a chance that answer will be set to 'nil' here. That will happen
+        # if there is no state or the state doesn't have a report url. In practice
+        # this nil should not actually be sent to the portal because the
+        # maybe_send_to_portal method below should only send it if reporting_url is present.
         "answer" => reporting_url,
         "is_final" => false
       }
@@ -79,8 +83,11 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def maybe_send_to_portal
-    # When raw_data is available, it means that learner state is enabled and reporting url might be available too.
-    send_to_portal if raw_data
+    if interactive.has_report_url
+      send_to_portal if reporting_url.present?
+    else
+      send_to_portal if raw_data
+    end
   end
 
   def reporting_url
@@ -134,7 +141,15 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def answered?
-    reporting_url.present?
+    # if interactives have a reporting url they are answered only if that reporting url
+    # is available. Otherwise any run state counts as answered.
+    # Also note that even though interactive_run_states are considered polymorphic
+    # they are actually only used by MwInteractive
+    if interactive.has_report_url
+      reporting_url.present?
+    else
+      raw_data.present?
+    end
   end
 
   class AnswerStandin

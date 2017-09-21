@@ -456,10 +456,10 @@ describe InteractivePage do
       FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
     }
     let(:reportable_interactive) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: true)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
     }
     let(:reportable_interactive2) {
-      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false)
+      FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
     }
     let(:video_interactive) { FactoryGirl.create(:video_interactive) }
     let(:image_interactive) { FactoryGirl.create(:image_interactive) }
