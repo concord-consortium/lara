@@ -3,6 +3,8 @@ language: ruby
 rvm:
   - "2.2.6"
 
+dist: precise
+
 before_install:
   - gem update bundler
 
@@ -11,7 +13,7 @@ before_script:
   - cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
   - mysql -e 'create database lara_test;'
   - bundle exec rake db:migrate
-    
+
 # uncomment this line if your project needs to run something other than `rake`:
 script: bundle exec rake && bundle exec rake jasmine:ci
 
@@ -24,4 +26,3 @@ branches:
   except:
     - staging
     - production
-
