@@ -56,7 +56,8 @@ group :test, :development do
   gem "faker", "~> 1.2"
   gem "capybara", "~> 2.4"
   gem "timecop", "~> 0.6"
-  gem "poltergeist", "~> 1.5"
+  gem "poltergeist", "~> 1.16.0"
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem "jasmine", "~> 2.2"
   gem "jasmine-jquery-rails", "~> 2.0"
   gem "launchy", "~> 2.4"
