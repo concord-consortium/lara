@@ -171,8 +171,6 @@ class ImageQuestionDrawingTool
         stopWaiting()
         @set_dialog_buttons_enabled(true)
         @hide_dialog()
-      format: 'jpeg'
-      quality: 0.85
     true # snapshot request succeeded
 
   take_drawing_tool_snapshot: ->
@@ -186,8 +184,6 @@ class ImageQuestionDrawingTool
         @shutterbug_fail_hander(t('DRAWING_SAVE_ERROR'))
         stopWaiting()
         @set_dialog_buttons_enabled(true)
-      format: 'jpeg'
-      quality: 0.85
 
   has_image_content: ->
     # This is a shutterbug question, so it's answered if there's a thumbnail
