@@ -93,6 +93,7 @@ class LabbookController
     @showDialog()
     Shutterbug.snapshot({
       selector: @interactiveSel,
+      server: SHUTTERBUG_URI # defined in api-urls.js.erb
       done: (imgSrc) =>
         @stopWaiting()
         @setIframeUrl("#{@baseUrl}/albums?#{@albumId}&todo=create&source_url=#{imgSrc}")

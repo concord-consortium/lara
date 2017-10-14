@@ -17,7 +17,6 @@ end
 # Rails assets:
 source 'https://rails-assets.org' do
   gem 'rails-assets-drawing-tool', '1.3.2'
-  gem 'rails-assets-shutterbug', '0.5.4'
   gem 'rails-assets-modulejs', '1.6.0'
 end
 
@@ -56,8 +55,9 @@ group :test, :development do
   gem "faker", "~> 1.2"
   gem "capybara", "~> 2.4"
   gem "timecop", "~> 0.6"
-  gem "poltergeist", "~> 1.5"
-  gem "jasmine", "~> 2.2"
+  gem "poltergeist", "~> 1.16.0"
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem "jasmine", "~> 2.8"
   gem "jasmine-jquery-rails", "~> 2.0"
   gem "launchy", "~> 2.4"
 end
