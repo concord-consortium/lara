@@ -20,7 +20,6 @@
 //= require eventemitter2
 //= require iframe-phone-manager
 //= require drawing-tool
-//= require shutterbug
 //= require api-urls
 //= require jquery_ujs
 //= require jquery.placeholder
