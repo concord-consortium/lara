@@ -179,13 +179,20 @@ class @ForwardBlocker
     @binding.bind 'navigate_away', (e,opts) =>
       @navigate_away(opts.click_element, opts.action_to_perform)
 
-  prevent_forward_navigation_for: (blocker) ->
-    if blocker not in @blockers
-      @blockers.push blocker
+  get_blocker_index: (blocker) ->
+    firstBlocker = (b for b in @blockers when b.blocker is blocker)[0]
+    @blockers.indexOf(firstBlocker)
+
+  get_latest_disabled_forward_nav_message: ->
+    (b.disabledForwardNavMessage for b in @blockers when b.disabledForwardNavMessage?).reverse()[0]
+
+  prevent_forward_navigation_for: (blocker, disabledForwardNavMessage) ->
+    if @get_blocker_index(blocker) is -1
+      @blockers.push({blocker, disabledForwardNavMessage})
       @update_display()
 
   enable_forward_navigation_for: (blocker) ->
-    index = @blockers.indexOf(blocker)
+    index = @get_blocker_index(blocker)
     if index > -1
       @blockers.splice(index,1)
       @update_display()
@@ -193,7 +200,8 @@ class @ForwardBlocker
   navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
-      modalDialog(false, t('PLEASE_SUBMIT'))
+      message = @get_latest_disabled_forward_nav_message() or t('PLEASE_SUBMIT')
+      modalDialog(false, message)
     else
       action_to_perform and action_to_perform();
 
@@ -211,7 +219,7 @@ class @ForwardBlocker
      return @blocking
 
 class @SaveOnChangePage
-  constructor: (@blocker = new ForwardBlocker()) ->
+  constructor: (@blocker = ForwardBlocker.instance) ->
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
@@ -228,8 +236,8 @@ class @SaveOnChangePage
       click_element = @click_element
       LoggerUtils.pageExitLogging();
       @force_save_dirty ->
-        if click_element 
-          args = 
+        if click_element
+          args =
             click_element: click_element
             action_to_perform: () ->
               window.location = click_element.href
@@ -292,6 +300,9 @@ class @SaveOnChangePage
 
 
 $(document).ready ->
+  window.ForwardBlocker   = ForwardBlocker
+  ForwardBlocker.instance = new ForwardBlocker()
+
   window.SaveOnChangePage = SaveOnChangePage
   window.SaveOnChange     = SaveOnChange
   SaveOnChangePage.instance = new SaveOnChangePage()
