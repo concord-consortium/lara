@@ -173,26 +173,26 @@ class @ForwardBlocker
 
   bind_events: ->
     @binding.bind 'prevent_forward_navigation', (e,opts) =>
-      @prevent_forward_navigation_for(opts.source)
+      @prevent_forward_navigation_for(opts.source, opts.message)
     @binding.bind 'enable_forward_navigation', (e,opts) =>
       @enable_forward_navigation_for(opts.source)
     @binding.bind 'navigate_away', (e,opts) =>
       @navigate_away(opts.click_element, opts.action_to_perform)
 
-  get_blocker_index: (blocker) ->
-    firstBlocker = (b for b in @blockers when b.blocker is blocker)[0]
+  get_blocker_index: (element) ->
+    firstBlocker = (b for b in @blockers when b.element is element)[0]
     @blockers.indexOf(firstBlocker)
 
-  get_latest_disabled_forward_nav_message: ->
-    (b.disabledForwardNavMessage for b in @blockers when b.disabledForwardNavMessage?).reverse()[0]
+  get_latest_message: ->
+    (b.message for b in @blockers when b.message?).reverse()[0]
 
-  prevent_forward_navigation_for: (blocker, disabledForwardNavMessage) ->
-    if @get_blocker_index(blocker) is -1
-      @blockers.push({blocker, disabledForwardNavMessage})
+  prevent_forward_navigation_for: (element, message) ->
+    if @get_blocker_index(element) is -1
+      @blockers.push({element, message})
       @update_display()
 
-  enable_forward_navigation_for: (blocker) ->
-    index = @get_blocker_index(blocker)
+  enable_forward_navigation_for: (element) ->
+    index = @get_blocker_index(element)
     if index > -1
       @blockers.splice(index,1)
       @update_display()
@@ -200,7 +200,7 @@ class @ForwardBlocker
   navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
-      message = @get_latest_disabled_forward_nav_message() or t('PLEASE_SUBMIT')
+      message = @get_latest_message() or t('PLEASE_SUBMIT')
       modalDialog(false, message)
     else
       action_to_perform and action_to_perform();

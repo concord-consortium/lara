@@ -137,10 +137,10 @@ class ArgumentationBlockController
     else
       @$submitBtn.addClass('disabled')
       @showSubmitPrompt()
-      
+
   updateSubmitBtnText: ->
     @$submitBtn[0].value = 'Resubmit'
-  
+
   showSubmitPrompt: ->
     @$submitPrompt.show()
     unless @feedbackOnFeedbackIsReady()
@@ -151,15 +151,15 @@ class ArgumentationBlockController
       return
     unless @anyQuestionDirty()
       @$submitPrompt.html( t('ARG_BLOCK.RESUBMIT_OR_MOVE'))
-    
+
   hideSubmitPrompt: ->
     @$submitPrompt.css('display', 'none')
-  
+
   showWaiting: ->
     startWaiting 'Please wait while we analyze your responses...','#loading-container'
     $('#modal-container').show()
     $('#loading-container').css('top', $(window).scrollTop() + 200).show()
-  
+
   hideWaiting: ->
     stopWaiting('#loading-container')
     $('#modal-container').hide()
@@ -193,7 +193,7 @@ class ArgumentationBlockController
     $(document).trigger('enable_forward_navigation', {source: 'arg-block'})
 
   disableForwardNavigation: ->
-    $(document).trigger('prevent_forward_navigation', {source: 'arg-block'})
+    $(document).trigger('prevent_forward_navigation', {source: 'arg-block', message: t('PLEASE_SUBMIT')})
 
   updateFeedback: (feedbackData) ->
     anyFeedbackVisible = false
