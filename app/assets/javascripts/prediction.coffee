@@ -57,7 +57,7 @@ class Prediction
     @enable_forward_navigation()
 
   disable_forward_navigation: ->
-    $(document).trigger("prevent_forward_navigation",{source: @$form, message: t('PLEASE_SUBMIT')})
+    $(document).trigger("prevent_forward_navigation",{source: @$form, message: t?('PLEASE_SUBMIT')})
 
   enable_forward_navigation: ->
     $(document).trigger("enable_forward_navigation",{source: @$form})
