@@ -200,7 +200,7 @@ class @ForwardBlocker
   navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
-      message = @get_latest_message() or t('PLEASE_SUBMIT')
+      message = @get_latest_message()
       modalDialog(false, message)
     else
       action_to_perform and action_to_perform();
