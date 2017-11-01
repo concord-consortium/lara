@@ -70,6 +70,12 @@ class IFrameSaver
             @$delete_button.show()
           else
             @$delete_button.hide()
+    @iframePhone.addListener 'navigation', (opts={})=>
+      if opts.hasOwnProperty('enableForwardNav')
+        if opts.enableForwardNav
+          ForwardBlocker.instance.enable_forward_navigation_for(@$iframe[0])
+        else
+          ForwardBlocker.instance.prevent_forward_navigation_for(@$iframe[0], opts.message)
     @iframePhone.post('getExtendedSupport')
 
     if @learner_state_saving_enabled()

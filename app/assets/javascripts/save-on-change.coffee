@@ -173,19 +173,26 @@ class @ForwardBlocker
 
   bind_events: ->
     @binding.bind 'prevent_forward_navigation', (e,opts) =>
-      @prevent_forward_navigation_for(opts.source)
+      @prevent_forward_navigation_for(opts.source, opts.message)
     @binding.bind 'enable_forward_navigation', (e,opts) =>
       @enable_forward_navigation_for(opts.source)
     @binding.bind 'navigate_away', (e,opts) =>
       @navigate_away(opts.click_element, opts.action_to_perform)
 
-  prevent_forward_navigation_for: (blocker) ->
-    if blocker not in @blockers
-      @blockers.push blocker
+  get_blocker_index: (element) ->
+    firstBlocker = (b for b in @blockers when b.element is element)[0]
+    @blockers.indexOf(firstBlocker)
+
+  get_latest_message: ->
+    (b.message for b in @blockers when b.message?).reverse()[0]
+
+  prevent_forward_navigation_for: (element, message) ->
+    if @get_blocker_index(element) is -1
+      @blockers.push({element, message})
       @update_display()
 
-  enable_forward_navigation_for: (blocker) ->
-    index = @blockers.indexOf(blocker)
+  enable_forward_navigation_for: (element) ->
+    index = @get_blocker_index(element)
     if index > -1
       @blockers.splice(index,1)
       @update_display()
@@ -193,7 +200,8 @@ class @ForwardBlocker
   navigate_away: (click_element, action_to_perform) ->
     if @block_for_element(click_element)
       $('.question').addClass('did_try_to_navigate')
-      modalDialog(false, t('PLEASE_SUBMIT'))
+      message = @get_latest_message()
+      modalDialog(false, message)
     else
       action_to_perform and action_to_perform();
 
@@ -211,7 +219,7 @@ class @ForwardBlocker
      return @blocking
 
 class @SaveOnChangePage
-  constructor: (@blocker = new ForwardBlocker()) ->
+  constructor: (@blocker = ForwardBlocker.instance) ->
     @save_indicator = SaveIndicator.instance()
     @intercept_navigation()
     @forms = []
@@ -228,8 +236,8 @@ class @SaveOnChangePage
       click_element = @click_element
       LoggerUtils.pageExitLogging();
       @force_save_dirty ->
-        if click_element 
-          args = 
+        if click_element
+          args =
             click_element: click_element
             action_to_perform: () ->
               window.location = click_element.href
@@ -292,6 +300,9 @@ class @SaveOnChangePage
 
 
 $(document).ready ->
+  window.ForwardBlocker   = ForwardBlocker
+  ForwardBlocker.instance = new ForwardBlocker()
+
   window.SaveOnChangePage = SaveOnChangePage
   window.SaveOnChange     = SaveOnChange
   SaveOnChangePage.instance = new SaveOnChangePage()
