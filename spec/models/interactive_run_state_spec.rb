@@ -46,7 +46,11 @@ describe InteractiveRunState do
       let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
       let(:result_hash) { JSON.parse(interactive_run_state.to_runtime_json) }
 
-      describe "when the interactice run state has no linked interactive" do
+      it "should have a run_remote_endpoint" do
+        expect(result_hash).to have_key "run_remote_endpoint"
+      end
+
+      describe "when the interactive run state has no linked interactive" do
         it "should return the raw_data" do
           expect(result_hash["raw_data"]).to eql run_data
         end

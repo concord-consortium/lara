@@ -128,6 +128,10 @@ class InteractiveRunState < ActiveRecord::Base
     linked_state.raw_data
   end
 
+  def run_remote_endpoint
+    run.remote_endpoint
+  end
+
   # This alias makes #answer_json point at Embeddable::Answer#to_json (from inclusion of Embeddable::Answer at top)
   # ActiveRecord's #to_json had previously be aliased to #original_json. If we are called without arg, we send answer
   # json. Active Record Seiralization args are in the form of {methods: [method_names]} or {only: [field_names]} …
@@ -137,7 +141,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def to_runtime_json()
-    self.to_json({methods: [:linked_state, :has_linked_interactive]})
+    self.to_json({methods: [:linked_state, :has_linked_interactive, :run_remote_endpoint]})
   end
 
   def answered?
