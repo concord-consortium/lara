@@ -127,7 +127,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
 
     var available = $(window).height() - offset.top;
     if (this.isFullWidth()) {
-        this.bestHeight = Math.min(this.tallestQuestion(), available);
+        this.bestHeight = Math.max(this.tallestQuestion(), available) + 30;
     }
     else {
         this.bestHeight = Math.max(interactiveHeight, this.tallestQuestion());
@@ -174,4 +174,3 @@ $(window).resize(function () {
         carousel.setCarouselSize();
     }
 });
-
