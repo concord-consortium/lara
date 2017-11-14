@@ -1,0 +1,1251 @@
+@import "runtime-base";
+
+/* ## Bring in all Compass Helpers */
+@import "partials/base";
+@import "project/fonts";
+@import "project/base-fonts";
+
+
+// *********************************************
+// Table of Contents
+// *********************************************
+
+
+//   1. Universal
+//   2. Molecular Workbench Helpers
+//   3. Project Styles
+//   4. Activity nav
+//   5. Layout modes
+//   6. Headline + Intro
+//   7. Sticky Interactives
+//   8. Interactive + Questions
+//   9. Styling for typographic elements
+//  10. Sidebar
+//  11. Related Module
+//  12. Image Types
+//  13. Activity Footer
+//  14. Site Footer
+//  15. Saved Label
+//  16. Activity Index Page
+//  17. Activity Summary Page
+
+// *********************************************
+//  1. Universal
+// *********************************************
+
+a     {   text-decoration: none; color: inherit; }
+b, strong  { font-weight: bold; font-family: $lato-bold;  }
+em    { font-style: italic; }
+
+header,
+footer {
+  margin: 0 0 26px;
+  background-color: #e5e5e5;
+  color: white;
+}
+
+footer {
+  margin-bottom: 0;
+  padding: 26px;
+}
+
+
+// *********************************************
+//  2. Molecular Workbench Helpers
+// *********************************************
+
+// Text shadows included on various elements
+@mixin drk-txt-shadow($color: $black-50) {
+  @include text-shadow(0 -1px 0 darken($color, 15%));
+}
+
+@mixin lt-txt-shadow($color: #fff) {
+  @include text-shadow(0 1px 0 lighten($color, 10%));
+}
+
+// Border used on questions and related-mod
+.mod-border-rounded {
+  border: 1px solid $black-10;
+  @include border-radius(0 0 13px 13px);
+}
+
+// Clearfix
+.cf { @include pie-clearfix; }
+
+// Extra padding applied via JS when nav is in fixed position
+.extra-pad { padding-top: 70px; }
+
+// Button mixin. By default, a btn will be blue. Pass two colors into include to change color scheme
+@mixin btn( $color1: lighten($btn-blue2, 5%), $color2: darken($btn-blue, 5%) ) {
+  font-size: 15px;
+  font-family: $lato-reg;
+  padding: 9px 13px;
+  background: $color1;
+  background-image: -webkit-linear-gradient( top, $color1, $color2);
+  background-image:         linear-gradient( top, $color1, $color2);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
+                      rgba(0, 0, 0, 0.2) 0 1px 2px;
+          box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 inset,
+                      rgba(0, 0, 0, 0.2) 0 1px 2px;
+  @include border-radius(4px);
+  @include drk-txt-shadow( darken($color1, 10%) );
+  border: 1px solid $color2;
+  margin-top: 13px;
+  cursor: pointer;
+  text-transform: none;
+  text-align: center;
+  @include trans;
+  color: #fcfcfc;
+
+  &:hover {
+    background-color: darken($color1, 5%);
+    background-image: -webkit-linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
+    background-image:         linear-gradient( top, darken($color1, 5%), darken($color2, 10%) );
+  }
+
+  &:active {
+    @include drk-txt-shadow( darken($color1, 10%) );
+    background-color: darken($color1, 10%);
+    background-image: -webkit-linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
+    background-image:         linear-gradient( top, darken($color1, 10%), darken($color2, 5%) );
+  }
+}
+
+
+// *********************************************
+//  3. Project Styles
+// *********************************************
+
+// Site Width
+.site-width {
+  width: 960px;
+  margin: 0 auto;
+}
+
+
+.activity-mod {
+  margin-bottom: 26px;
+  position: relative;
+  font-family: $lato-reg;
+}
+
+// Site header
+// --------------------------------
+
+.site-logo-mod {
+  @extend .cf;
+  padding: 13px 0;
+  min-height: 86px;
+}
+
+.site-logo {
+  width: 20%;
+
+  img {
+    max-width: 100%;
+  }
+
+  &.logo-l {
+    float: left;
+  }
+
+  &.logo-r {
+    float: right;
+  }
+
+}
+
+
+// *********************************************
+//  4. Activity nav
+// *********************************************
+
+.activity-nav-mod {
+  margin: 0 0 40px;
+  position: relative;
+  width: 100%;
+  color: #fff;
+  @extend .cf;
+  @include trans;
+
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    background-color: lighten($lt-blue, 15%);
+    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.2) );
+    padding: 10px 6px;
+    z-index: 9999;
+
+    .activity-nav-title {
+      color: #313131;
+    }
+  }
+}
+
+.activity-nav-logo {
+  float: left;
+
+  img {
+    max-width: 100%;
+  }
+
+  .h2 {
+    font-family: $lato-reg;
+    font-size: 18px;
+    font-weight: normal;
+    color: $drk-orange;
+    opacity: 0;
+    line-height: 36px;
+    opacity: 0;
+    @include trans;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+}
+
+// This controlls the layout of the nav
+.l-nav {
+      @include ui-grid-2(50%, 50%, 5%);
+}
+table.l-nav {
+  td {
+    vertical-align: middle;
+  }
+}
+
+.nav-menu,
+ul.nav-menu-top {
+  /* This is the drop-down navigation menu */
+  /* MW and default don't use it */
+  display: none;
+}
+
+div.intra-page-nav {
+  /* Page navigation links at bottom of each page. MW and default don't use them. */
+  display: none;
+}
+
+/* Next and previous page links at bottom of each page */
+
+.bottom-buttons {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  .next-page, .last-page {
+    display: none;
+  }
+  .button-right {
+    float: right;
+    div {
+      float: right;
+    }
+  }
+  .button-left, .button-center {
+    float: left;
+  }
+  .button-left, .button-right {
+    min-height: 10px;
+    width: 300px;
+  }
+  .button-center {
+    left: 55px;
+    position: relative;
+  }
+  .report {
+    float: left;
+    width: 240px;
+    input {
+      width: 240px;
+    }
+  }
+}
+.activity-nav-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.activity-nav {
+  margin-top: 8px;
+  position: relative;
+  @extend .cf;
+
+  .prev_and_next {
+    white-space: nowrap;
+    .prev,
+    .next {
+      disaplay:block;
+      background-color: lighten($med-blue, 5%);
+      border: 1px solid $med-blue;
+      @include border-radius(3px);
+      text-align: center;
+      margin-left: 8px;
+      @include trans;
+      font-size: 14px;
+      padding: 2px 10px;
+      &:hover {
+        background-color: darken($med-blue, 5%);
+      }
+
+      &:active {
+        background-color: darken($med-blue, 20%);
+      }
+    }
+  }
+  .pages {
+    float: right;
+
+
+  }
+} // end .activity-nav
+
+
+.pagination {
+  @extend .cf;
+  text-align:left;
+  margin-right: 8px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.pagination-item {
+  margin-left: 0px;
+  margin-right: 6px;
+  margin-bottom: 4px;
+  @include border-radius(10px);
+  text-align: center;
+  display: inline-block;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .pagination-link {
+    background-color: lighten($med-blue, 27%);
+    color: $med-blue;
+    @include border-radius(3px);
+    @include lt-txt-shadow(#fff);
+    border: 1px solid lighten($med-blue, 18%);
+    padding: 3px 5px;
+    display: block;
+    @include trans;
+
+    &:hover {
+      background: lighten($med-blue, 5%);
+      @include drk-txt-shadow($med-blue);
+      color: #fff;
+    }
+
+    &.selected {
+      background: darken($med-blue, 12%);
+      color: #fff;
+      border: 1px solid darken($med-blue, 10%);
+      @include drk-txt-shadow($med-blue);
+    }
+  } // end .pagination-link
+
+  &.home-link {
+    text-indent: -9999px;
+    .pagination-link {
+      background-image: url('/assets/home_blue.png');
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRDQ4MDg2NEEwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRDQ4MDg2M0EwOUMxMUUyQUNFMkQyMTJFN0ExRTE4MiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDg4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4bkDIfAAADmElEQVR42uyYS2gTURSGb5JJMpOZSWaSSWP6CKIBxRetIChSXOiiIiLShaigILhxowii4kIEtaKCLxRBBAUFFyoiogtXFqmIFRUtVoUuxJ0P2iYmtbTG/4QLvlrtI8nMNPfARzOTdDL55t57zrmeueduMAdGI2gDfrAXPGEODa/D7qcBXARPNTPaopmx5Xj9GFwHs4XA0SMMDoI3asTYYtWnvLKqMVlVGV57VMNsxXsvwQVQ7ySBHpunME3RreCAooetkB5mHu/ozzSX6We5vt48Xp4FR8Dnaha4FhyVNS2tqDrz+f1j+qdCocDyJLK/rxeHx8BpkK2mKbwYdASU0M2IVZPWjOiY5RWfuMfDQuEIiybrDIzaQzj1FmwDgakuMM2TQYcejS0Jxyzml+WJ37jPx7BeMjORTGIU05TuAhsqPSgq8WUWn2ZdasRspaQQDKkluziNXhrFkXgijetepQwOVlZKoFTGaytgO9iNKWdQgsD8K182CgaLBEOhxoFs9u7gQP4BryEfuW0E0jU3gW5F19uiyVqD1qxyyvs1ArLCwlacYZlYJgWCHTh1C8xxi8AVoBNT6bJRk0hhymKtkpgdQcsE7gHT21zDa8hLIOVUgfPBPX9Qvo/k0ISnz/D0HVHoyppOxbgXCWczDt+BE3xddoTAWt56PcdC3hKJ1zCUJ47sWVHysFhdQwDLyQ4c9oD9QLOrkKYv3gN24oaU4hrnovg+PMzy2QwV5B95C3keDFZiBEq8aO3BE90Xq613nbzfashpybii6aeoB+eJz1tOgdR6vaKiFcVrnG7gX32rG8In+ZlqmJRsplPiw6kXYHWpBVLr1c5br1njbb3cEJTwKPGh/JmHMug2Tj0EzZMVSK3XNd56NU+29XJD/KwhraUoyttx6g5YMF6BFk/11HqtK3Xr5YZAN0OtIdPM6CocPgNXwIz/CaTWaxfVSpTqKeWjk2DVHLSpy2vIjTh8Dc6AxJ9lDElcDw5DWEqmvTlJYtUew0NDf537lvtK+5C093gSHAd9ZKoTNNEH8plMkZEreq2461ENke39wgay2Z4R3sqRR77bswi0kcCFY7koLlioFoH4rfRnpl27MVUVQqAQKAQKgUKgCCFQCBQChUAREwjbdg14v1mSa9nZp9s2Ark8Tyko1YMQU1gIFAKFQBFCoBAoBAqBIoRAIVAIFAJFCIFCoBA4xWNcG6qfPrx37A+x695+CDAAyz21HWnm6YoAAAAASUVORK5CYII=');
+      background-repeat: no-repeat;
+      background-size: 80%;
+      background-position: 50% 50%;
+      width: 24px;
+    }
+  } // end .home-link
+
+  &.home-link {
+    .selected {
+      background-image: url('/assets/home_white.png');
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAzCAYAAAAAcY9ZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMTgwMTE3NDA3MjA2ODExODA4M0NDNkQzM0M1RUMzRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZBNjY3QUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZBNjY3OUEzOTAxMUUyQkZGMEYwQkUwQzI4NjhERiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDE4MDExNzQwNzIwNjgxMTgyMkFFQkJEMTk0QkM0NjEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDE4MDExNzQwNzIwNjgxMTgwODNDQzZEMzNDNUVDM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7Q8BpbAAAEE0lEQVR42uya/U8TdxzHe32wFHrtyV171+YOih05C7JCAYFqnPEh1viID4QYk2X7wV+3H/arf4N/gD8YliwzSsyGbrLM6IwCCiZmM1FA1G1o6QMFChqDIWHv73ZmzJlJeVjv7PeTvAL90h7HK/f9PHwD81nPoEmnUQ6OACs4B57o8SatOrynUtAKtnyq+qssDMOcHnxWhdd3QCcYowLfHg6wB8Tag1JVk+guZ0wmhvzgVFT13x2fUb8cjkfw8gb4BkxQgX/fw0fg0MGAd0OL6A7YLWbbwjcQixGBLavlVaU/lVXPPkpEsXQFXALPC1lgPWiPKUJ9o8cl80U253+92cyYmGYIrve4lL7klHrhSWorlr8HP4DZQhIYBMeiIhfFEycrziI+lw/bzIxli29tMCK45P50NtT1a3o7lrvAdTD3PgsUQRtoOBGSN1StLfEt52JOm8W+zV9aGS5lfQPp6Zru0fEYli+AW2D+fRLIggNg2/FKXwhbsJxZwYuTrR9T+PVh3indSmbD18cmb2P5PPjF6AJJMdgF9h5ZJ1ZHRXeFmWHMq/XLfMV2rrXCy9UKrNibmIrgqezResgRowkkD9gmcHhfuaeuyesuw3Yr+r/yRAXr8BCQI6Ubicmm+5Mvrmki40YQWE0qK3JT80avW5aK17jzVeJDyLEE9JBSx3C8Dks3tRyZ0aNAhRSIOoHduknklA/cxV69dOi4J6VWUGX0kJVfjyRatB7yIpjRg0CObFUyen2i+kNhnpX1OLOSqQapJNDgcZX1JbOVnY+TpHm/rDGbD4F2sI+MXm1BMdQicoHXo5eeA7O1ebPEBesFNOOpqfXoIXdg+VtwbSk95FIEWgCZAFr3Bzw12K7/Gr2MEA6reQ3pISO8yz+QzlZ/9/v4bi0/9uTSQ+YqkIxebRi9GhczehkhOLu1ZKfMqzWlrIQcWXM1PtGvnfrcXUmBZPRqx+i1eSmjlxGCdAvYUe4PeaeIHFl3O5Xt1ZrxoeUIFLUC0bQSo5cRIsA6BEJEYKWbiamN9yae/6SJHM1FIKsViB2rMXoZIVSuRCL8nJmRzgzFw1jq03Jk6h/V/Y0jfVIMdoL9ZPTCdq2wrOLoZZRARZm/k57+7auHY4NatSZVe3qhQPKAkQbzKBm9Gr0uxWWzOgpd3PSruZdvrmFLj51/nLxv+usM8jIRGMI3x0DZuy4YU3gZFThUCPK6R8cfdI9m3laJZxf0izMkBz4AJxd30UxH4QjMPMWXL971voLPb8sNKpAKpAKpQCqQBhVIBVKBVCANKpAKNFzk9d/btBOPp0v9vB5Oh/Is8E95Hy/j83k/HaJbmAqkAqlAKpAGFUgFUoFUIA0qkAqkAqlAGjlFzqcxn/cO/ainPyDf9/OHAAMAk6sLm1uGWagAAAAASUVORK5CYII=');
+    }
+  }
+} // end .pagination-item
+
+
+
+// *********************************************
+//  5. Layout modes
+// *********************************************
+
+// Layout: 6040
+.l-6040 {
+  @extend .cf;
+  @include ui-grid-rl(60%, 40%, 2%);
+} // end .l-6040
+
+
+// Layout: 7030
+.l-7030 {
+  @extend .cf;
+  @include ui-grid-rl(70%, 30%, 2%);
+}
+
+.r-4060 {
+  @extend .cf;
+  @include ui-grid-lr(60%, 40%, 2%);
+} // end .r-4060
+
+.r-3070 {
+  @extend .cf;
+  @include ui-grid-lr(70%, 30%, 2%);
+}
+
+// Layout: full-width
+.l-full-width {
+
+  .question-hdr {
+    width: 100%;
+    float: left;
+  }
+
+  .question-bd {
+    width: 100%;
+    float: right;
+  }
+
+  .challenge {
+    .h5 {
+      &:after {
+        border-left-color: darken($black-15, 3%);
+        background-color: none;
+        display: none;
+      }
+    }
+  }
+
+  .h5 {
+    &:after {
+      border-left-color: darken($black-15, 3%);
+      background-color: none;
+      display: none;
+    }
+  }
+
+  .question {
+    margin: 20px;
+    display: inline-block;
+    // the questions sit in two columns in the full width layout.
+    // The 438px width is computed to maximize their size:
+    // 960/2 = 480, 480 - margins = 440, then there is 2 px of padding somewhere
+    width: 438px;
+    vertical-align: top;
+ }
+
+ .question.likert{
+    width: 95%;
+    input{
+      margin-right:5px;
+    }
+ }
+} // .l-full-width
+
+// *********************************************
+//  6. Headline + Intro
+// *********************************************
+
+
+// Headline block
+.content-hdr {
+  font-family: $lato-reg;
+  margin-bottom: 30px;
+
+  .h2 {
+    // font-family: $lato-light;
+    font-size: 36px;
+    // font-weight: normal;
+    letter-spacing: -1px;
+    color: $drk-orange;
+  }
+}
+
+
+
+// Intro block
+.intro-mod {
+  font-size: 16px;
+  line-height: 1.45;
+  font-family: $lato-reg;
+  margin-bottom: 39px;
+
+ .h4 {
+    font-weight: normal;
+    font-size: 20px;
+    margin-bottom: 13px;
+    color: $med-blue;
+  }
+
+  .intro-txt {
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+// *********************************************
+//  7. Sticky Interactives
+// *********************************************
+
+.sticky-wrapper { margin-bottom: 52px; }
+
+.interactive-mod {
+  &.stuck {
+    position: fixed;
+    top: 65px;
+  }
+
+  &.bottomed {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+@import 'partials/click_to_play';
+
+
+// .sticky-wrapper need to have hard px widths to work correctly in fixed state
+.l-7030 {
+
+  .sticky-wrapper {
+    width: 672px;
+    float: right;
+  }
+
+  .interactive-mod {
+    width: 672px;
+  }
+
+}
+
+
+// *********************************************
+//  8. Interactive + Questions
+// *********************************************
+
+.content-mod {
+  @extend .cf;
+  position: relative;
+}
+
+
+.interactive-mod {
+  margin-bottom: 52px;
+  width: 100%;
+  z-index: 100;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+  }
+
+  .under-image {
+    .fullscreen {
+      float: right;
+      a {
+        outline: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+      }
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
+    .caption {
+      display: block;
+      font-size: 14px;
+      margin: 0px;
+    }
+    .credit {
+      display: block;
+      font-size: 10px;
+      font-style: italic;
+      margin: 0px;
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.questions-mod {
+  margin-bottom: 52px;
+  position: relative;
+}
+
+.question {
+  margin: 0 0 52px;
+  @extend .cf;
+  .answer_text {
+    font-style: italic;
+    font-size: 0.9em;
+  }
+}
+
+.challenge {
+  .question-hdr, .question-hdr-collapse {
+    background: darken($black-15, 3%);
+
+    .h5 {
+      @include drk-txt-shadow($black-15);
+    }
+  }
+  .question-bd {
+    background: $black-5;
+  }
+} // end .challenge
+
+
+.question-hdr, .question-hdr-collapse {
+  background: $med-blue;
+  position: relative;
+  padding: 4px 8px;
+  clear: both;
+
+  .h5 {
+    font-family: $lato-reg;
+    font-weight: normal;
+    position: relative;
+    color: #fff;
+    font-size: 16px;
+    @include drk-txt-shadow($med-blue);
+  }
+}
+
+.question-bd {
+  padding: 26px;
+  @extend .mod-border-rounded;
+}
+
+
+
+// *********************************************
+//  9. Styling for typographic elements
+// *********************************************
+
+.intro-mod,
+.content-mod {
+  font-size: 16px;
+  line-height: 1.35;
+  ol,
+  ul,
+  dl,
+  blockquote,
+  p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+// disable extra margin on first and last paragraphs in a module
+.intro-mod,
+.question-bd {
+  p {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ordered lists
+
+.intro-mod,
+.content-mod {
+  ol {
+    counter-reset: li;
+    list-style: none;
+    *list-style: decimal;
+    padding: 0;
+    margin: 16px 0;
+
+    ol, ul {
+      margin: 16px 0 16px 16px;
+    }
+
+    > li {
+      margin-bottom: 13px;
+      position: relative;
+      &:before {
+        content:counter(li)".";
+        counter-increment:li;
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 0.65em;
+        padding: 3px 5px;
+        background-color: $black-5;
+        position: relative;
+        top: -2px;
+        @include border-radius(2px);
+      }
+    } //li
+  }//ol
+}//content-mod
+
+
+// unordered lists
+.intro-mod,
+.content-mod {
+  ul {
+    list-style: square;
+    margin-left: 16px;
+
+    ul, ol {
+      margin: 16px 0 16px 16px;
+    }
+
+    li {
+      margin-bottom: 13px;
+    }
+  }//ul
+}//content-mod
+
+
+//definition lists
+.intro-mod,
+.content-mod {
+  dl {
+
+  }
+  dt {
+    font-weight: bold;
+    margin-top: 13px;
+  }
+  dd {
+    margin-left: 16px;
+  }
+}
+
+
+// text areas
+.intro-mod,
+.content-mod {
+  form {
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+  textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid $black-15;
+    font-family: $lato-reg;
+    @include border-radius(8px);
+  }
+
+  em.credit {
+    display: block;
+    font-size: 0.75em;
+    text-align: right;
+    color: $black-15;
+  }
+}
+
+// radio buttons
+.intro-mod,
+.content-mod {
+  label {
+    margin-bottom: 13px;
+  }
+  input {
+    margin-right: 8px;
+    &[type="checkbox"]{
+	    margin-bottom: 3px;
+    }
+  }
+  .page-index {
+      border: 0px;
+  }
+}
+// screen shot answer
+.image-answer {
+  border: 3px dashed $lt-blue;
+  padding: 40px;
+  text-align: center;
+  @include border-radius(10px);
+
+  &.complete {
+    margin-bottom: 12px;
+  }
+}
+
+.image-file {
+  @include border-radius(5px);
+  background-color: #FFF;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    opacity: 0.6;
+    @include border-radius(5px);
+  }
+
+  p {
+    margin: 0;
+  }
+  a {
+    font-size: 11px;
+    color: $btn-blue;
+    text-transform: uppercase;
+    float: right;
+  }
+}
+
+// submit
+input[type="submit"],
+button[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  @include btn ( lighten($btn-orange, 8%), $btn-orange2 );
+  padding: 15px 30px;
+  font-size: 15px;
+  color: #fff;
+  @include drk-txt-shadow($btn-orange);
+}
+
+// button
+input[type="button"],
+button[type="button"] {
+  border: 0;
+  @include btn;
+}
+input:disabled {
+  opacity: 0.3;
+}
+.disabled {
+  opacity: 0.3;
+}
+
+// ******************************************
+//  10. Sidebar
+// ******************************************
+@import "partials/runtime-sidebar";
+
+// ******************************************
+//  11. Related Module
+// ******************************************
+
+.related-mod {
+  margin-bottom: 50px;
+  margin-top: 50px;
+  border-top: none;
+  background-color: lighten($related-green, 40%);
+  border: 1px solid lighten($related-green, 30%);
+  @extend .mod-border-rounded;
+  @extend .cf;
+}
+
+.related-hdr {
+  // background-color: $med-blue;
+  background-color: $related-green;
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 13px;
+  margin-bottom: 8px;
+  @include box-shadow(0 2px 5px -1px $black-15);
+  //@extend .drk-text-shadow;
+}
+
+.related-bd {
+  padding: 16px 26px 30px;
+  @extend .cf;
+}
+
+.related-items {
+  @extend .cf;
+}
+
+.related-item {
+  width: 30%;
+  margin-left: 5%;
+  float: left;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .h6 {
+    font-size: 16px;
+    margin-bottom: 3px;
+    color: #000;
+  }
+
+  .related-item-txt {
+    font-size: 14px;
+    line-height: 1.35;
+
+    a {
+      // @include btn;
+      display: inline-block;
+      padding: 7px 11px;
+      color: lighten($btn-blue2, 40%);
+      margin-top: 13px;
+      background-color: lighten($btn-blue2, 2%);
+      @include drk-txt-shadow($btn-blue2);
+      @include trans;
+
+      &:hover {
+        background-color: darken($btn-blue2, 4%);
+      }
+
+      &:active {
+        background-color: darken($btn-blue2, 10%);
+      }
+    }//a
+  }//related-item-txt
+} //related-item
+
+
+.related-img {
+  margin-bottom: 16px;
+  width: 25%;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+// ******************************************
+//  12. Image Types
+// ******************************************
+
+.content-img {
+  position: relative;
+
+  img {
+    max-width: 100%;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border: 1px solid #e9e9e9;
+  }
+
+  figcaption {
+    margin-top: 5px;
+    font-size: 12px;
+  }
+} // .content-img
+
+.img-reg { max-width: 60%; }
+
+.img-inset {
+  max-width: 30%;
+  float: right;
+  margin-left: 2em;
+}
+
+// img inside a question
+.question-bd {
+  .content-img {
+    position: relative;
+    img {
+      padding: 0;
+      background-color: transparent;
+      // border: 0;
+    }
+  }
+
+  .img-reg {
+    max-width: 100%;
+  }
+} //question-bd
+
+// expandable img icon
+.img-expandable {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: $med-blue url('/assets/plus.png') no-repeat center;
+  background: $med-blue url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowNDgwMTE3NDA3MjA2ODExODIyQUE0NzczNTQ2ODgzRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3RDI1OEQ3RUEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3RDI1OEQ3REEyRjAxMUUyODc4QkNENDU5RjNFMTk1RSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDQ4MDExNzQwNzIwNjgxMTgyMkFBNDc3MzU0Njg4M0QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7eT1LfAAAALElEQVR42mL4//8/Axac9h8VYKhhYiATDCGNII/O/E8GGBinjsYjtTUCBBgAZiiR6+hReNkAAAAASUVORK5CYII=') no-repeat center;
+  @include box-shadow(-1px 1px 2px rgba(0, 0, 0, 0.3) );
+  @include trans;
+
+  &:hover {
+    background-color: darken($med-blue, 8%);
+  }
+}//img-expandable
+
+
+
+// ******************************************
+//  13. Activity Footer
+// ******************************************
+
+.activity-footer-mod {
+  margin-bottom: 48px;
+
+  .site-logo {
+    margin: 0 auto;
+  }
+}
+
+
+
+// ******************************************
+//  14. Site Footer
+// ******************************************
+
+footer {
+  .footer-txt {
+    margin-bottom: 13px;
+    color: $black-75;
+    @include lt-txt-shadow(#fff);
+    font-family: $lato-reg;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: darken($black-75, 5%);
+      font-weight: bold;
+      @include trans;
+
+      &:hover {
+        color: darken($lt-blue, 55%);
+      }
+    }//a
+  }//footer-txt
+}//footer
+
+
+
+
+// ******************************************
+//  16. Activity Index Page
+// ******************************************
+
+.index-width {
+  width: 675px;
+  margin: 0 auto;
+}
+
+.index-mod {
+  text-align: left;
+
+  .intro-mod {
+    margin-bottom: 60px;
+
+    .intro-txt {
+      font-size: 20px;
+      line-height: 1.35;
+      max-width: 100%;
+    }
+
+  } // end intro-mod
+
+  .estimated-txt {
+    margin-top: 0.6em;
+  }
+
+  input[type="submit"],
+  button[type="submit"] {
+    font-size: 20px;
+    padding: 20px 86px;
+    margin: 0 auto 24px;
+  }
+
+  .nav-buttons {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    .in-sequence {
+      /* If we're in a sequence, I want to float this to the right. */
+      float: right;
+    }
+
+    .back-sequence {
+      float: left;
+    }
+  }
+
+  &.intro-mod {
+
+    ul, ol {
+      font-size: 20px;
+
+      li {
+        margin-bottom: 24px;
+        &:before {
+          background-color: lighten($med-blue, 27%);
+          border: 1px solid lighten($med-blue, 18%);
+          color: $med-blue;
+          @include lt-txt-shadow(#fff);
+        }
+
+        a {
+          color: #666;
+          color: $med-blue;
+          @include trans;
+
+          &:visited {
+            color: #aaa;
+          }
+
+          &:hover {
+            color: darken($med-blue, 20%);
+          }
+
+
+        }//a
+      }//li
+    }//ul,ol
+  } // end &.intro-mod
+} // end index-mod
+
+.index-list-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 36px 0 20px;
+  color: #666;
+}
+
+// ******************************************
+//  17. Activity Summary Page
+// ******************************************
+
+@import "partials/runtime-summary";
+@import "activity-menu-report-buttons";
+
+/* Miscellaneous junk */
+
+.question, .intro-mod, .related-mod, .sidebar-mod {
+  a {
+    color: darken($med-blue, 20%);
+    @include trans;
+    text-decoration: underline;
+    &:visited {
+      color: #aaa;
+    }
+    &:hover {
+      color: $med-blue;
+    }
+  }
+}
+
+.intro-mod.index-mod a {
+  text-decoration: none;
+}
+
+.intro-mod.index-mod ol a:hover {
+  text-decoration: underline;
+}
+
+/* social tools on index page */
+.social-media-mod {
+  margin-bottom: 12px;
+
+  .fb-link {
+    position: relative;
+    top: -7px;
+  }
+}
+.time_to_complete {
+  font-size: 12pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  .time_estimate {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 100;
+    color:#7FA8F8;
+    .minutes_to_complete {
+      font-size: 18pt;
+    }
+  }
+}
+
+.profile-nav {
+  position: relative;
+  .profile-dropdown{
+    height: 20px;
+	background-color: #414546;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	line-height: 22px;
+	padding: 0 10px;
+	margin-top: 1px;
+    .profile-u-name{
+      white-space: nowrap;
+      .popup-trigger{
+        cursor:pointer
+      }
+    }
+  }
+  .popup-prompt{
+    display:none;
+    background-color: white;
+    border: 1px solid #cccccc;
+    width: 141px;
+    position: absolute;
+    top: 20px;
+    left: 825px;
+    color: #525252;
+    padding: 8px 10px;
+    z-index: 100;
+    margin-top: 10px;
+    &.anonymous-user{
+      width: 220px;
+      left: 740px;
+      .arrow{
+        left:180px;
+      }
+    }
+    .arrow{
+      border-style: solid;
+      border-width: 10px;
+      position: absolute;
+    }
+    .nav-popup-border{
+      border-color: transparent transparent #cccccc transparent;
+      top: -20px;
+      left: 110px;
+    }
+    .nav-popup{
+      border-color: transparent transparent white transparent;
+      top: -18px;
+      left: 110px;
+    }
+    span{
+      .re-login{
+        cursor:pointer
+      }
+    }
+  }
+  a{
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+   }
+  }
+}
+
+.sequence-page{
+  .profile-u-name{
+    white-space: nowrap;
+    color: inherit;
+  }
+  .profile-dropdown{
+    background-color:transparent
+  }
+}
+
+@import "partials/prediction";
