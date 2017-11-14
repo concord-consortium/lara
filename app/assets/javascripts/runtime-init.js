@@ -5,8 +5,8 @@ $(document).ready(function () {
   var headerTop = null;
 
   // Calculate header size
-  if ($('.content-hdr').length > 0) {
-    headerTop = $('.content-hdr').offset().top;
+  if ($('.site-width > .content-hdr').length > 0) {
+    headerTop = $('.site-width > .content-hdr').offset().top;
   }
 
   $(window).scroll(function () {
