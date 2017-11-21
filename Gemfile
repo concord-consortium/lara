@@ -83,7 +83,7 @@ gem "aws-ses", "~> 0.5", {:require=>"aws/ses"}
 gem "uuidtools", "~> 2.1"
 gem "httparty", "~> 0.12"
 gem "exception_notification", "~> 4.0"
-gem "newrelic_rpm", "~> 3.9"
+gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
 gem "rack-environmental", "~> 1.3"
 gem "sketchily", "~> 1.5", {:git=>"git://github.com/concord-consortium/sketchily.git", :branch=>"concord"}
 gem "sqlite3", "~> 1.3"
@@ -102,5 +102,3 @@ gem "spreadsheet", "~> 1.0"
 gem "nokogiri", "~> 1.6"
 gem "rack-cors","~> 0.4.0", :require => 'rack/cors'
 gem "test-unit", "~> 3.0"
-
-
