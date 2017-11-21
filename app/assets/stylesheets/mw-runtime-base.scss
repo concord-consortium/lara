@@ -622,7 +622,11 @@ div.intra-page-nav {
   @extend .mod-border-rounded;
 }
 
-
+.jcarousel {
+  .question {
+    margin: 20px 20px 20px 0;
+  }
+} // .jcarousel
 
 // *********************************************
 //  9. Styling for typographic elements
