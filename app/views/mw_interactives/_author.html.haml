@@ -13,7 +13,7 @@
         $("a[id^=edit-int-#{interactive.id}]").click()
 
   .interactive-content{:style => interactive.is_hidden ? 'display: none;' : ''}
-    #authorable-interactive
+    %div{:id => "authorable-interactive-#{interactive.id}"}
 
 :javascript
   (function() {
@@ -22,5 +22,5 @@
       updateUrl: "#{page_mw_interactive_path(page, interactive)}"
     };
     InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
-    React.render(InteractiveAuthoring, $('#authorable-interactive')[0]);
+    React.render(InteractiveAuthoring, $("#authorable-interactive-#{interactive.id}")[0]);
   }());

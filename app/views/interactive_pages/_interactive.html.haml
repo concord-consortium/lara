@@ -1,7 +1,5 @@
-.interactive-mod{class: (layout == 'l-full-width') ? nil : 'pinned'}
-  - if page.show_multiple_interactives?
-    - page.visible_interactives.each do |interactive|
-      = render_interactive(interactive)
-
-  - elsif page.visible_interactives.first
-    = render_interactive(page.visible_interactives.first)
+-# Do not pin multiple interactives, as it means that the user might not be able to see the bottom ones
+-# if his screen is shorter that the height of all the interactives
+.interactive-mod{class: (page.visible_interactives.count > 1 || layout == 'l-full-width') ? nil : 'pinned'}
+  - page.visible_interactives.each do |interactive|
+    = render_interactive(interactive)
