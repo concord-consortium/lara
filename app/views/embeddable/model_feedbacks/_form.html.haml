@@ -1,0 +1,15 @@
+Add logging script here:
+= form_for @embeddable do |f|
+  = f.error_messages
+  %div{style: "display: grid; grid-template-columns: 50px auto;"}
+    %div
+      = f.label "Name"
+    %div
+      = f.text_field :name
+    %div
+      = f.label "URL"
+    %div
+      = f.text_field :url
+
+  = f.submit "Cancel", :class => 'close'
+  = f.submit "Save", :class => 'embeddable-save'

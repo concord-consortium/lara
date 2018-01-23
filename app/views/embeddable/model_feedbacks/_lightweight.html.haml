@@ -1,0 +1,16 @@
+- unless embeddable.name.blank?
+  .question-hdr
+    %h5.h5= embeddable.name
+.question-bd
+  .question-txt
+    != embeddable.url
+  %script{src:embeddable.url}
+  .output#logOutput
+
+:javascript
+
+  var loadFeedbackInstruments = function() {
+    console.log("boo yah");
+    window.FeedbackInstruments.addInstrument(document.getElementById('logOutput'));
+  };
+  $(document).ready(loadFeedbackInstruments);
