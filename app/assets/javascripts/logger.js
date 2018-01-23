@@ -3,10 +3,15 @@ function LoggerUtils(logger) {
 };
 
 LoggerUtils.instance = function(loggerConfig) {
-  return new LoggerUtils(new Logger({
+  var logger_utils = new LoggerUtils(new Logger({
     server     : loggerConfig.server,
     defaultData: loggerConfig.data
   }));
+  var instruments = window.FeedbackInstruments;
+  if (instruments && instruments.instruments) {
+    logger_utils._logger.addInstrument(instruments.instruments[0]);
+  }
+  return logger_utils;
 };
 
 LoggerUtils.submittedQuestionLogging = function(data,autoSave) {
@@ -184,6 +189,11 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
 function Logger(options) {
   this._server = options.server;
   this._defaultData = options.defaultData;
+  this._logInstruments = [];
+}
+
+Logger.prototype.addInstrument = function(instrument) {
+  this._logInstruments.push(instrument);
 }
 
 Logger.prototype.log = function(data) {
@@ -191,6 +201,11 @@ Logger.prototype.log = function(data) {
     data = {event: data};
   }
   data.time = Date.now(); // millisecons
+
+  for(var i=0; i < this._logInstruments.length; i++) {
+    var logInstrument = this._logInstruments[i];
+    logInstrument.log(data);
+  }
   this._post(data);
 };
 
