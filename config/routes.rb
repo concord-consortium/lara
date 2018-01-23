@@ -143,6 +143,7 @@ LightweightStandalone::Application.routes.draw do
       end
     end
     resources :xhtmls
+    resources :logging_feedbacks
     resources :open_responses
     resources :labbooks
     resources :labbook_answers, :only => [:update]

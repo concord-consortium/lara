@@ -5,7 +5,8 @@ module Embeddable
       Embeddable::OpenResponse   => "Open response",
       Embeddable::Xhtml          => "Text box",
       Embeddable::Labbook        => "Labbook",
-      QuestionTracker            => "Tracked Question"
+      QuestionTracker            => "Tracked Question",
+      Embeddable::LoggingFeedback=> "Logging Feedback"
     }
 
   def self.table_name_prefix
