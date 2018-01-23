@@ -1,0 +1,17 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  New Approved Script
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li 
+        \/
+        = link_to 'All Approved Scripts', projects_path
+      %li / New Approved Script
+
+%h1.title New Approved Script
+
+=render :partial => 'form'

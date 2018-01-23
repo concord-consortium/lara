@@ -48,6 +48,7 @@
 //= require prediction
 //= require activity-box-click
 //= require wait-message
+//= require external-scripts
 //= require logger
 //= require sidebar
 //= require labbook

@@ -1,5 +1,8 @@
 LightweightStandalone::Application.routes.draw do
 
+  resources :approved_scripts
+
+
   resources :projects do
     member do
       get :about
@@ -143,6 +146,7 @@ LightweightStandalone::Application.routes.draw do
       end
     end
     resources :xhtmls
+    resources :external_scripts
     resources :open_responses
     resources :labbooks
     resources :labbook_answers, :only => [:update]

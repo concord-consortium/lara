@@ -101,6 +101,7 @@ class ArgumentationBlockController
           alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         else
           @fbOnFeedback.activate(data.submission_id)
+          LoggerUtils.craterResponseLogging(data)
 
         @submissionCount += 1
         @updateSubmitBtnText()
