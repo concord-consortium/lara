@@ -139,4 +139,8 @@ class MwInteractive < ActiveRecord::Base
     # indicated if the interactive should be reported on in an iframe or not
     !has_report_url
   end
+
+  def page_section
+    page_item && page_item.section
+  end
 end

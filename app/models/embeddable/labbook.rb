@@ -111,11 +111,15 @@ module Embeddable
       action_type == SNAPSHOT_ACTION
     end
 
-
     def page
       # Return first page (note that in practice it's impossible that this model has more
       # than one page, even though it's many-to-many association).
       interactive_pages.first
+    end
+
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
     end
 
     def possible_interactives

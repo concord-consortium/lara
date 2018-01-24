@@ -200,6 +200,7 @@ class InteractivePage < ActiveRecord::Base
     InteractivePage.transaction do
       new_page.save!(validate: false)
 
+      # Preprocess interactives. We need to do that before we start processing any question.
       self.interactives.each do |inter|
         copy = inter.duplicate
         interactives_cache.set(helper.key(inter), copy)
@@ -211,32 +212,28 @@ class InteractivePage < ActiveRecord::Base
             interactives_cache.set(linked_key, copy.linked_interactive)
           end
         end
-        position = inter.page_item.position
-        section = inter.page_item.section
-        new_page.add_embeddable(copy, position, section)
-        helper.cache_item_copy(inter,copy)
+        helper.cache_item_copy(inter, copy)
       end
 
-      self.main_questions.each do |embed|
+      self.embeddables.each do |embed|
         copy = embed.duplicate
-        if embed.respond_to? :interactive=
-          unless embed.interactive.nil?
-            copy.interactive = helper.lookup_new_item(embed.interactive)
+        # Interactives
+        if Embeddable::is_interactive?(embed)
+          inter_copy = helper.lookup_new_item(embed)
+          new_page.add_embeddable(inter_copy, nil, embed.page_section)
+        end
+        # Questions
+        if Embeddable::is_question?(embed)
+          if embed.respond_to? :interactive=
+            unless embed.interactive.nil?
+              copy.interactive = helper.lookup_new_item(embed.interactive)
+            end
           end
-        end
-        copy.save!(validate: false)
-        if embed.respond_to? :question_tracker and embed.question_tracker
-          embed.question_tracker.add_question(copy)
-        end
-        position = embed.page_items.first.position
-        new_page.add_embeddable(copy, position)
-      end
-
-      self.class.registered_additional_sections.each do |s|
-        self.section_embeddables(s[:name]).each do |embed|
-          copy = embed.duplicate
           copy.save!(validate: false)
-          new_page.add_embeddable(copy,nil,s[:name])
+          if embed.respond_to? :question_tracker and embed.question_tracker
+            embed.question_tracker.add_question(copy)
+          end
+          new_page.add_embeddable(copy, nil, embed.page_section)
         end
       end
     end
@@ -259,32 +256,17 @@ class InteractivePage < ActiveRecord::Base
                                     :embeddable_display_mode,
                                     :additional_sections,
                                     :is_completion])
-
-    page_json[:interactives] = []
     page_json[:embeddables] = []
-    page_json[:sections] = []
 
-    self.interactives.each do |inter|
-      interactive_hash = helper.wrap_export(inter)
-      if inter.respond_to? :linked_interactive
-        interactive_hash[:linked_interactive] = inter.linked_interactive.present? ? helper.wrap_export(inter.linked_interactive) : nil
-      end
-      page_json[:interactives] << interactive_hash
-    end
-    self.main_embeddables.each do |embed|
+    self.embeddables.each do |embed|
       embeddable_hash = helper.wrap_export(embed)
-      page_json[:embeddables] << embeddable_hash
-    end
-    self.class.registered_additional_sections.each do |s|
-      additional_section = {name:s[:name],section_embeddables:[]}
-      self.section_embeddables(s[:name]).each do |embed|
-        section_embeddable_hash = helper.wrap_export(embed)
-        additional_section[:section_embeddables] << section_embeddable_hash
+      if embed.respond_to? :linked_interactive
+        embeddable_hash[:linked_interactive] = embed.linked_interactive.present? ? helper.wrap_export(embed.linked_interactive) : nil
       end
-      page_json[:sections] << additional_section
+      page_json[:embeddables] << { embeddable: embeddable_hash, section: embed.page_section }
     end
 
-    return page_json
+    page_json
   end
 
   def self.extact_from_hash(page_json_object)
@@ -309,9 +291,6 @@ class InteractivePage < ActiveRecord::Base
       attributes[key] = page_json_object[key] if page_json_object.has_key?(key)
     end
 
-    if page_json_object[:additional_sections]
-      attributes[:additional_sections] = page_json_object[:additional_sections].as_json
-    end
     attributes
   end
 
@@ -321,35 +300,28 @@ class InteractivePage < ActiveRecord::Base
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
       import_page.save!(validate: false)
-      page_json_object[:interactives].each do |inter|
-        # don't create a new linked interactive automatically as part of the interactive and instead use the cache below to avoid duplicates
-        linked_inter = inter[:linked_interactive]
-        inter.delete(:linked_interactive)
-        import_interactive = helper.wrap_import(inter)
-        interactives_cache.set(inter[:ref_id], import_interactive)
+      page_json_object[:embeddables].each do |embed_hash|
+        embed = embed_hash[:embeddable]
+        section = embed_hash[:section]
+        linked_inter = embed[:linked_interactive]
+        embed.delete(:linked_interactive)
+
+        import_embeddable = helper.wrap_import(embed)
+
+        if Embeddable::is_interactive?(import_embeddable)
+          interactives_cache.set(embed[:ref_id], import_embeddable)
+        end
 
         if linked_inter
-          import_interactive.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
-          if !import_interactive.linked_interactive
-            import_interactive.linked_interactive = helper.wrap_import(linked_inter)
-            interactives_cache.set(linked_inter[:ref_id], import_interactive.linked_interactive)
+          import_embeddable.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
+          if !import_embeddable.linked_interactive
+            import_embeddable.linked_interactive = helper.wrap_import(linked_inter)
+            interactives_cache.set(linked_inter[:ref_id], import_embeddable.linked_interactive)
           end
-          import_interactive.save!(validate: false)
+          import_embeddable.save!(validate: false)
         end
 
-        import_page.add_interactive(import_interactive, nil, false)
-      end
-      page_json_object[:embeddables].each do |embed|
-        import_embeddable = helper.wrap_import(embed)
-        import_page.add_embeddable(import_embeddable)
-      end
-      if page_json_object[:sections]
-        page_json_object[:sections].each do |sec|
-          sec[:section_embeddables].each do |embed|
-            import_embeddable = helper.wrap_import(embed)
-            import_page.add_embeddable(import_embeddable,nil,sec[:name])
-          end
-        end
+        import_page.add_embeddable(import_embeddable, nil, section)
       end
     end
     return import_page
