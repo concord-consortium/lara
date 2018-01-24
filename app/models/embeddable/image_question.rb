@@ -92,6 +92,11 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     true
   end
 
+  def page_section
+    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+    page_items.count > 0 && page_items.first.section
+  end
+
   def self.name_as_param
     :embeddable_image_question
   end
