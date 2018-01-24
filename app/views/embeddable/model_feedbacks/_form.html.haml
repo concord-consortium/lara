@@ -1,15 +1,49 @@
-Add logging script here:
+%h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+  Model Feedback Decision Tree
+
 = form_for @embeddable do |f|
   = f.error_messages
-  %div{style: "display: grid; grid-template-columns: 50px auto;"}
+  %div{style: "display: grid; grid-template-columns: 100px auto;"}
     %div
-      = f.label "Name"
+      = f.label "Name of tree:"
     %div
       = f.text_field :name
     %div
-      = f.label "URL"
+      = f.label "Script URL"
     %div
       = f.text_field :url
-
+  %div{style: "margin-top: 0.5em;"}
+  = f.label "tree json"
+  %div{style: "margin-top: 0.5em;overflow: auto; background-color: #506756; color: white;"}
+    %code
+      %pre{style:"font-family: monospace; padding: 0.25em;"}
+        :preserve
+          [
+            {
+              "factors": [
+                {"label": "R_t1", "description": "Elapsed run time in Seconds", "type": "Timer"},
+                {"label": "m_t1", "description": "Model time in Seconds?", "type": "Timer"},
+                {"label": "m_n1", "description": "Model launch count?", "type": "Count"},
+                {"label": "f_t1", "description": "Follow time Seconds", "type": "Timer"}
+              ],
+              "results": [
+                {"label": "R0", "feedback": "You should …"},
+                {"label": "R1", "feedback": "You should …"},
+                {"label": "R2", "feedback": "You should …"},
+                {"label": "R3", "feedback": "Did you try  … ?"},
+                {"label": "R4", "feedback": "Did you try  … ?"},
+                {"label": "R5", "feedback": "Did you try  … ?"},
+                {"label": "R6", "feedback": "Great!"}
+              ],
+              "conditons": [
+                {"label": "C0", "expression": "R_t1 <  23", "true": "R0", "false": "C1"},
+                {"label": "C1", "expression": "m_t1 >= 98", "true": "C2", "false": "R6"},
+                {"label": "C2", "expression": "m_n1 <  2.5","true": "C3", "false": "R5"},
+                {"label": "C3", "expression": "R_t1 <  90", "true": "C4", "false": "R4"},
+                {"label": "C4", "expression": "f_t1 <  40", "true": "R1", "false": "C5"},
+                {"label": "C5", "expression": "f_t1 <  211","true": "R2", "false": "R3"}
+              ]
+            }
+          ]
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
