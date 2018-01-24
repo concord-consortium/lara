@@ -35,6 +35,17 @@ LoggerUtils.submitArgblockLogging = function(data) {
 };
 
 
+LoggerUtils.craterResponseLogging = function(data) {
+  var loggerConfig = window.gon && window.gon.loggerConfig;
+  if (!loggerConfig) {
+    return;
+  };
+
+  var logger_utils = LoggerUtils.instance(loggerConfig);
+  logger_utils._craterResponseLogging(data);
+};
+
+
 LoggerUtils.logInteractiveEvents = function(iframe){
   var loggerConfig = window.gon && window.gon.loggerConfig;
   if (!loggerConfig) {
@@ -104,6 +115,13 @@ LoggerUtils.prototype._submittedQuestionLogging = function(data,autoSave) {
 LoggerUtils.prototype._submitArgblockLogging = function(data) {
   this._logger.log({
     event  : "arg-block submit",
+    page_id: data
+  });
+};
+
+LoggerUtils.prototype._craterResponseLogging = function(data) {
+  this._logger.log({
+    event  : "c-rater response",
     page_id: data
   });
 };
