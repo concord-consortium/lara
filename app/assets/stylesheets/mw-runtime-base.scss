@@ -590,6 +590,12 @@ div.intra-page-nav {
   }
 }
 
+.embedded-interactive {
+  width: 200px;
+  height: 200px;
+  background: red;
+}
+
 .challenge {
   .question-hdr, .question-hdr-collapse {
     background: darken($black-15, 3%);

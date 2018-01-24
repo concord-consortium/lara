@@ -1,13 +1,28 @@
 module Embeddable
-  Types = {
-      Embeddable::ImageQuestion  => "Image question",
-      Embeddable::MultipleChoice => "Multiple choice",
-      Embeddable::OpenResponse   => "Open response",
-      Embeddable::Xhtml          => "Text box",
-      Embeddable::Labbook        => "Labbook",
-      QuestionTracker            => "Tracked Question",
-      Embeddable::ExternalScript  => "External Script"
-    }
+  QuestionTypes = {
+    Embeddable::ImageQuestion  => "Image question",
+    Embeddable::MultipleChoice => "Multiple choice",
+    Embeddable::OpenResponse   => "Open response",
+    Embeddable::Xhtml          => "Text box",
+    Embeddable::Labbook        => "Labbook",
+    QuestionTracker            => "Tracked Question",
+    Embeddable::ExternalScript  => "External Script"
+  }
+
+  InteractiveTypes = {
+    MwInteractive => "Iframe Interactive"
+  }
+
+  # Types is just sum of question and interactives.
+  Types = QuestionTypes.merge(InteractiveTypes)
+
+  def self.is_question?(e)
+    QuestionTypes.keys.include?(e.class)
+  end
+
+  def self.is_interactive?(e)
+    InteractiveTypes.keys.include?(e.class)
+  end
 
   def self.table_name_prefix
     'embeddable_'

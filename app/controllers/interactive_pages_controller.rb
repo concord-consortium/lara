@@ -125,6 +125,7 @@ class InteractivePagesController < ApplicationController
     update_activity_changed_by
     qt = QuestionTracker.find(params[:question_tracker])
     question = qt.new_question
+    @page.add_embeddable(question)
     edit_embeddable_redirect(question)
   end
 
@@ -132,6 +133,8 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     e = Embeddable.create_for_string(params[:embeddable_type])
+    @page.add_embeddable(e, nil, params[:section])
+    # The call below supposed to open edit dialog, but it doesn't seem to work anymore.
     edit_embeddable_redirect(e)
   end
 
@@ -175,7 +178,6 @@ class InteractivePagesController < ApplicationController
   private
 
   def edit_embeddable_redirect(embeddable)
-    @page.add_embeddable(embeddable)
     case embeddable
       when Embeddable::MultipleChoice
         unless embeddable.choices.length > 0
@@ -190,6 +192,8 @@ class InteractivePagesController < ApplicationController
         param = { :edit_embed_lb => embeddable.id }
       when Embeddable::Xhtml
         param = { :edit_embed_xhtml => embeddable.id }
+      when MwInteractive
+        param = { :edit_mw_int => embeddable.id }
     end
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)

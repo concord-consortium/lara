@@ -18,16 +18,11 @@ module InteractivePageHelper
     return link_to name, runnable_activity_page_path(activity,page), opts
   end
 
-  def main_section_embeddables(page, run)
-    finder = Embeddable::AnswerFinder.new(run)
-    # Limit embeddables to ones that do not belong to any section.
-    page.main_embeddables.map { |e| finder.find_answer(e) }
-  end
-
   def main_section_visible_embeddables(page, run)
     finder = Embeddable::AnswerFinder.new(run)
     # Limit visible embeddables to ones that do not belong to any section.
-    page.main_visible_embeddables.map { |e| finder.find_answer(e) }
+    # Don't return answer objects for interactives.
+    page.main_visible_embeddables.map { |e| Embeddable::is_interactive?(e) ? e : finder.find_answer(e) }
   end
 
   def labbook_is_under_interactive?

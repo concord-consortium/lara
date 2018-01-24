@@ -1,3 +1,3 @@
 .interactive-mod{class: layout == 'l-full-width' ? nil : 'pinned'}
-  - page.visible_interactives.each do |interactive|
+  - page.interactive_box_visible_embeddables.each do |interactive|
     = render_interactive(interactive)
