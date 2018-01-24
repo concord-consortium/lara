@@ -20,14 +20,14 @@ $(document).ready(function () {
     // Set up sortable lists:
     // TODO: Refactor this into an object
     // Embeddables in page edit
-    $('#sort_embeddables').sortable({ handle: '.drag_handle',
+    $('.sortable_embeddables').sortable({ handle: '.drag_handle',
         opacity: 0.8,
         tolerance: 'pointer',
-        update: function () {
+        update: function (event, ui) {
             $.ajax({
                 type: "GET",
                 url: "reorder_embeddables",
-                data: $("#sort_embeddables").sortable("serialize")
+                data: ui.item.closest(".sortable_embeddables").sortable("serialize")
             });
         }
     });

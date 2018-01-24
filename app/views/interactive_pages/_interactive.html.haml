@@ -1,5 +1,5 @@
 -# Do not pin multiple interactives, as it means that the user might not be able to see the bottom ones
 -# if his screen is shorter that the height of all the interactives
-.interactive-mod{class: (page.visible_interactives.count > 1 || layout == 'l-full-width') ? nil : 'pinned'}
-  - page.visible_interactives.each do |interactive|
+.interactive-mod{class: (page.interactive_box_visible_embeddables.count > 1 || layout == 'l-full-width') ? nil : 'pinned'}
+  - page.interactive_box_visible_embeddables.each do |interactive|
     = render_interactive(interactive)

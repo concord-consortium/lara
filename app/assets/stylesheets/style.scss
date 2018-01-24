@@ -223,7 +223,6 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .text {
   float: left;
   height: auto;
-  padding: 1% 1% 1% 0;
   width: 38%;
 }
 .stacked-right .text {
@@ -872,12 +871,6 @@ fieldset {
       }
       margin-bottom: 1em;
       border-radius: 0;
-    }
-  }
-  /* Interactives block */
-  div.other {
-    form.interactives-form {
-      margin-top: 8px;
     }
   }
   div.sidebar {

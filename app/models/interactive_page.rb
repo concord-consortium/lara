@@ -17,9 +17,7 @@ class InteractivePage < ActiveRecord::Base
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
-  INTERACTIVE_TYPES = [{ :name => 'Image',  :class_name => 'ImageInteractive' },
-                       { :name => 'Iframe', :class_name => 'MwInteractive' },
-                       { :name => 'Video',  :class_name => 'VideoInteractive' }]
+  INTERACTIVE_BOX = 'interactive_box'
 
   validates :sidebar_title, presence: true
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
@@ -80,21 +78,16 @@ class InteractivePage < ActiveRecord::Base
                                                label: CRater::ARG_SECTION_LABEL})
 
   # This is a sort of polymorphic has_many :through.
-  def interactives
-    self.interactive_items.collect{|ii| ii.interactive}
-  end
-
-  def visible_interactives
-    interactives.select { |i| !i.is_hidden }
-  end
-
-  # This is a sort of polymorphic has_many :through.
   def embeddables
-    self.page_items.collect{ |qi| qi.embeddable }
+    page_items.collect{ |qi| qi.embeddable }
+  end
+
+  def interactives
+    embeddables.select{ |e| Embeddable::is_interactive?(e) }
   end
 
   def section_embeddables(section)
-    self.page_items.where(section: section).collect{ |qi| qi.embeddable }
+    page_items.where(section: section).collect{ |qi| qi.embeddable }
   end
 
   def main_embeddables
@@ -102,12 +95,20 @@ class InteractivePage < ActiveRecord::Base
     section_embeddables(nil)
   end
 
+  def main_questions
+    section_embeddables(nil).select{ |e| Embeddable::is_question?(e) }
+  end
+
   def visible_embeddables
-    self.page_items.collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+    embeddables.select{ |e| !e.is_hidden }
+  end
+
+  def visible_interactives
+    interactives.select{ |e| !e.is_hidden }
   end
 
   def section_visible_embeddables(section)
-    self.page_items.where(section: section).collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+    section_embeddables(section).select{ |e| !e.is_hidden }
   end
 
   def main_visible_embeddables
@@ -115,26 +116,16 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(nil)
   end
 
+  def interactive_box_embeddables
+    section_embeddables(INTERACTIVE_BOX)
+  end
+
+  def interactive_box_visible_embeddables
+    section_visible_embeddables(INTERACTIVE_BOX)
+  end
+
   def reportable_items
-    items = visible_embeddables + visible_interactives
-    items.select { |item| item.reportable? }
-  end
-
-  def add_interactive(interactive, position = nil, validate = true)
-    self[:show_interactive] = true;
-    self.save!(validate: validate)
-    InteractiveItem.create!(:interactive_page => self, :interactive => interactive, :position => (position || self.interactive_items.size))
-  end
-
-  def remove_interactives
-    self[:show_interactive] = false;
-    self.save!
-    self.interactives.each do |i|
-      i.destroy
-    end
-    self.interactive_items.each do |ii|
-      ii.destroy
-    end
+    visible_embeddables.select { |item| item.reportable? }
   end
 
   def add_embeddable(embeddable, position = nil, section = nil)
@@ -143,6 +134,12 @@ class InteractivePage < ActiveRecord::Base
     unless position
       join.move_to_bottom
     end
+  end
+
+  def add_interactive(interactive, position = nil, validate = true)
+    self[:show_interactive] = true
+    self.save!(validate: validate)
+    add_embeddable(interactive, position, INTERACTIVE_BOX)
   end
 
   def next_visible_page
@@ -214,11 +211,13 @@ class InteractivePage < ActiveRecord::Base
             interactives_cache.set(linked_key, copy.linked_interactive)
           end
         end
-        new_page.add_interactive(copy, nil, false)
+        position = inter.page_item.position
+        section = inter.page_item.section
+        new_page.add_embeddable(copy, position, section)
         helper.cache_item_copy(inter,copy)
       end
 
-      self.main_embeddables.each do |embed|
+      self.main_questions.each do |embed|
         copy = embed.duplicate
         if embed.respond_to? :interactive=
           unless embed.interactive.nil?
@@ -229,7 +228,8 @@ class InteractivePage < ActiveRecord::Base
         if embed.respond_to? :question_tracker and embed.question_tracker
           embed.question_tracker.add_question(copy)
         end
-        new_page.add_embeddable(copy)
+        position = embed.page_items.first.position
+        new_page.add_embeddable(copy, position)
       end
 
       self.class.registered_additional_sections.each do |s|
@@ -240,7 +240,7 @@ class InteractivePage < ActiveRecord::Base
         end
       end
     end
-    return new_page.reload
+    new_page.reload
   end
 
   def export

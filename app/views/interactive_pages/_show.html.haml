@@ -8,7 +8,7 @@
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-4060, r-3070
 .content-mod{ :class => layout }
   .ui-block-1
-    - if page.visible_interactives.length > 0 && page.show_interactive
+    - if page.show_interactive && page.interactive_box_visible_embeddables.length > 0
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}
 
   .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }

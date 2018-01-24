@@ -8,10 +8,10 @@ class MwInteractive < ActiveRecord::Base
   validates_numericality_of :native_width
   validates_numericality_of :native_height
 
-  has_one :interactive_item, :as => :interactive, :dependent => :destroy
+  has_one :page_item, :as => :embeddable, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, that instance should go too
 
-  has_one :interactive_page, :through => :interactive_item
+  has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'

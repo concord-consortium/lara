@@ -91,7 +91,7 @@
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
             = embeddable_selector
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
-          #sort_embeddables.embeddables_list
+          .embeddables_list.sortable_embeddables
             - @page.section_embeddables(nil).each do |e|
               - tracked = e.respond_to?(:tracked_question) && e.tracked_question
               - tracked_class = tracked ? 'tracked' : ''
@@ -102,11 +102,16 @@
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
     - if @page.show_interactive
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
-        = form_tag add_interactive_activity_page_path(@activity, @page), :class => 'interactives-form' do
-          = select_tag :interactive_type, options_for_select(InteractivePage::INTERACTIVE_TYPES.map { |t| [t[:name], t[:class_name]] })
-          = submit_tag 'Add Interactive'
-        - @page.interactives.each do |interactive|
-          = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:interactive => interactive, :page => @page, :allow_hide => false}
+        .questions
+          %h2 Interactive Box
+          = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+            = embeddable_interactives_selector
+            = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
+            = submit_tag 'Add Interactive'
+          .embeddables_list.sortable_embeddables
+            - @page.interactive_box_visible_embeddables.each do |interactive|
+              .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+                = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:embeddable => interactive, :page => @page, :allow_hide => false}
     - if @page.show_sidebar
       .sidebar
         %h2
