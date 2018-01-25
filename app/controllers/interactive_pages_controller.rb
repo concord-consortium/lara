@@ -103,23 +103,6 @@ class InteractivePagesController < ApplicationController
     end
   end
 
-  def add_interactive
-    authorize! :update, @page
-    update_activity_changed_by
-    if %w(ImageInteractive MwInteractive VideoInteractive).include?(params[:interactive_type])
-      i = params[:interactive_type].constantize.create!
-    else
-      raise ArgumentError, 'Not a valid Interactive type'
-    end
-    @page.add_interactive(i)
-    param = case i.class.name
-    when "ImageInteractive"   then { :edit_img_int => i.id }
-    when "MwInteractive"      then { :edit_mw_int => i.id }
-    when "VideoInteractive"   then { :edit_vid_int => i.id }
-    end
-    redirect_to edit_activity_page_path(@activity, @page, param)
-  end
-
   def add_tracked
     authorize! :update, @page
     update_activity_changed_by

@@ -28,11 +28,7 @@ class InteractivePage < ActiveRecord::Base
   # See https://www.pivotaltracker.com/story/show/60459320
   validates :text, :sidebar, :html => true
 
-  # InteractiveItem is a join model; if this is deleted, it should go too
-  has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
-
-  # Like InteractiveItems, PageItems are join models, so they should not
-  # survive the deletion of associated instances of InteractivePage.
+  # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
 
   # Interactive page can register additional page sections:

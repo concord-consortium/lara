@@ -1,7 +1,7 @@
 class VideoInteractive < ActiveRecord::Base
-  has_one :interactive_item, :as => :interactive, :dependent => :destroy
+  has_one :page_item, :as => :embeddable, :dependent => :destroy
   # InteractiveItem is a join model; if this is deleted, that instance should go too
-  has_one :interactive_page, :through => :interactive_item
+  has_one :interactive_page, :through => :page_item
   has_many :sources, :class_name => 'VideoSource',
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
@@ -52,6 +52,10 @@ class VideoInteractive < ActiveRecord::Base
 
   def no_snapshots
     false
+  end
+
+  def page_section
+    page_item && page_item.section
   end
 
   def to_hash
