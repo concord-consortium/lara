@@ -28,6 +28,10 @@
       edit_embeddable_xhtml_path(embeddable)
     when "mw_int"
       edit_page_mw_interactive_path(page, embeddable)
+    when "image"
+      edit_page_image_interactive_path(page, embeddable)
+    when "video"
+      edit_page_video_interactive_path(page, embeddable)
   end
 
 - if tracked

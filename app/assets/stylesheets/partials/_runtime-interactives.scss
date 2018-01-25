@@ -14,39 +14,40 @@
   img {
     max-width: 100%;
   }
+}
 
-  .under-image {
-    .fullscreen {
-      float: right;
-      a {
-        outline: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-      }
-      img {
-        height: 35px;
-        width: 35px;
-      }
-    }
-  }
-  .caption {
-    display: block;
-    font-size: 14px;
-    margin: 0px;
-  }
-  .credit {
-    display: block;
-    font-size: 10px;
-    font-style: italic;
-    margin: 0px;
+.under-image {
+  .fullscreen {
+    float: right;
     a {
-      text-decoration: underline;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+    }
+    img {
+      height: 35px;
+      width: 35px;
     }
   }
 }
+.caption {
+  display: block;
+  font-size: 14px;
+  margin: 0px;
+}
+.credit {
+  display: block;
+  font-size: 10px;
+  font-style: italic;
+  margin: 0px;
+  a {
+    text-decoration: underline;
+  }
+}
+
 @import 'partials/click_to_play';
 
 .questions-mod {
