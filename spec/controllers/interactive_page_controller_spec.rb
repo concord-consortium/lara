@@ -355,33 +355,6 @@ describe InteractivePagesController do
       end
     end
 
-    describe 'add_interactive' do
-      it 'creates an arbitrary interactive and adds it to the page' do
-        images_count = ImageInteractive.count()
-        interactives_count = page1.interactives.length
-        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
-        page1.reload
-        expect(page1.interactives.count).to eq(interactives_count + 1)
-        expect(ImageInteractive.count()).to eq(interactives_count + 1)
-      end
-
-      it 'redirects to the edit page' do
-        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
-        interactive_id = page1.interactives.last.id
-        act.reload
-        expect(act.changed_by).to eq(@user)
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
-      end
-
-      it 'raises an error on invalid interactive_type' do
-        begin
-          post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'BogusInteractive'
-          raise 'Should not have been able to post a bogus interactive_type'
-        rescue ArgumentError
-        end
-      end
-    end
-
     describe 'add_embeddable' do
       it 'creates an arbitrary embeddable and adds it to the page' do
         xhtml_count = Embeddable::Xhtml.count()
@@ -410,6 +383,25 @@ describe InteractivePagesController do
           raise 'Should not have been able to post a bogus embeddable_type'
         rescue ArgumentError
         end
+      end
+    end
+
+    describe 'add_embeddable used with Interactive' do
+      it 'creates an arbitrary interactive and adds it to the page' do
+        images_count = ImageInteractive.count()
+        interactives_count = page1.interactives.length
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
+        page1.reload
+        expect(page1.interactives.count).to eq(interactives_count + 1)
+        expect(ImageInteractive.count()).to eq(images_count + 1)
+      end
+
+      it 'redirects to the edit page' do
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
+        interactive_id = page1.interactives.last.id
+        act.reload
+        expect(act.changed_by).to eq(@user)
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
     end
 

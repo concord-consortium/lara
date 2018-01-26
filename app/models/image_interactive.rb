@@ -2,8 +2,7 @@ class ImageInteractive < ActiveRecord::Base
   attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden
 
   has_one :page_item, :as => :embeddable, :dependent => :destroy
-  # InteractiveItem is a join model; if this is deleted, that instance should go too
-
+  # PageItem is a join model; if this is deleted, that instance should go too
   has_one :interactive_page, :through => :page_item
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 

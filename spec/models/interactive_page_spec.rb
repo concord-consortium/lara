@@ -192,7 +192,6 @@ describe InteractivePage do
   describe '#export' do
     it 'returns json of an interactive page' do
       page_json = page.export.as_json
-      expect(page_json['interactives'].length).to eq(page.interactives.count)
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
       expect(page_json['is_completion']).to eq(page.is_completion)
@@ -213,8 +212,9 @@ describe InteractivePage do
         expect(interactive).not_to be_nil
         expect(labbook.interactive).not_to be_nil
         export_data = page.export.as_json
-        interactive_id = export_data['interactives'].first['ref_id']
-        expect(export_data['embeddables'].last).to match a_hash_including('interactive_ref_id' => interactive_id)
+        interactive_id = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }.first['embeddable']['ref_id']
+        labbook = export_data['embeddables'].select { |e| e['section'] == nil }.last['embeddable']
+        expect(labbook).to match a_hash_including('interactive_ref_id' => interactive_id)
       end
     end
   end
@@ -308,6 +308,7 @@ describe InteractivePage do
     describe "copying a labbook with a reference to an interactive" do
       before(:each) do
         page.add_embeddable labbook
+        page.reload
       end
 
       let(:args)              { {interactive: page_interactive}  }
