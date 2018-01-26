@@ -222,7 +222,7 @@ Logger.prototype.log = function(data) {
 
   for(var i=0; i < this._logInstruments.length; i++) {
     var logInstrument = this._logInstruments[i];
-    logInstrument.log(data);
+    logInstrument.handleEvent(data);
   }
   this._post(data);
 };
