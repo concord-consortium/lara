@@ -53,7 +53,7 @@ class InteractiveController < ApplicationController
   end
 
   def destroy
-    @interactive.interactive_item.delete
+    @interactive.page_item.delete
     typestring = @interactive.class.to_s.match(/(.+)Interactive/)[1]
     if @interactive.delete
       @activity = @page.lightweight_activity

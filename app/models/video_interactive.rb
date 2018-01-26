@@ -1,6 +1,6 @@
 class VideoInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
-  # InteractiveItem is a join model; if this is deleted, that instance should go too
+  # PageItem is a join model; if this is deleted, that instance should go too
   has_one :interactive_page, :through => :page_item
   has_many :sources, :class_name => 'VideoSource',
            :foreign_key => 'video_interactive_id',

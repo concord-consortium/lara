@@ -111,7 +111,7 @@ describe VideoInteractivesController do
         it 'removes the requested Video Interactive from the database and page and redirects to the page edit page' do
           activity
           int
-          InteractiveItem.create!(:interactive_page => page, :interactive => int)
+          PageItem.create!(:interactive_page => page, :embeddable => int)
           interactive_count = VideoInteractive.count()
           page.reload
           page_count = page.interactives.length

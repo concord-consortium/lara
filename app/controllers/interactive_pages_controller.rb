@@ -177,6 +177,10 @@ class InteractivePagesController < ApplicationController
         param = { :edit_embed_xhtml => embeddable.id }
       when MwInteractive
         param = { :edit_mw_int => embeddable.id }
+      when ImageInteractive
+        param = { :edit_img_int => embeddable.id }
+      when VideoInteractive
+        param = { :edit_vid_int => embeddable.id }
     end
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)
