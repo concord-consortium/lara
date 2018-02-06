@@ -97,6 +97,22 @@ To support new Embeddables:
 ## Current work: reporting
 LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
+
+## External Scripting ##
+
+* Admins must create a new `ApprovedScript` record.  The record includes the
+    * URL to the remote script
+    * An internal label for reference.
+* ExternalScripts must conform to this (developing) API:
+    * They must call `ExternalScripts.register("label", NewableClass)` immediately;
+    * `new NewableClass(config, ctx)` must return an instance of an ExternalScript
+        * `config` is an object of your choice.  Author's can edit this as json when adding a script instance.
+        * `ctx` is the runtime context. Includes  `name`,`scriptLabel`, `scriptUrl`, `embeddableId` and `div`.
+    * The API for a `NewableClass` is still being worked out.  Right now it only needs to implement `handleEvent({event: string, time: number, parameters: {}})`. These are logEvents as per `logger.js`.
+    * see `external-scripts.js` and `external_script.rb` for more info.
+
+
+
 ## Single Sign-On
 If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
 
