@@ -8,6 +8,7 @@
   <%= include_gon %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= yield :external_scripts %>
 </head>
 <%- @body_class = request.original_fullpath.split('/').join(' ') -%>
 <%- if @session_key -%>

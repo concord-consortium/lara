@@ -1,31 +1,25 @@
-- outputId = "output-#{embeddable.id}"
+- runtimeDiv = "output-#{embeddable.id}"
+= content_for :external_scripts do
+  %script{src:embeddable.url}
 - unless embeddable.name.blank?
   .question-hdr
     %h5.h5= embeddable.name
 .question-bd
   .question-txt
     != embeddable.url
-  .output{id:outputId}
+  .output{id:runtimeDiv}
 
-%script{src:embeddable.url}
+
 :javascript
   // Begin script for #{embeddable.name}
   $(document).ready( function() {
-    var env = {};
-    if(typeof ScriptConstructor == 'undefined') {
-      console.group("External Script Error");
-        console.error("External Scripts must define a temporary 'ScriptConstructor' object");
-        console.error("See README document section ExternalScript");
-      console.groupEnd();
+    env = {
+      name: '#{embeddable.name}',
+      scriptLabel: '#{embeddable.label}',
+      scriptUrl: '#{embeddable.url}',
+      embeddableId: '#{embeddable.id}',
+      config: '#{embeddable.configuration.gsub(/'/, "").gsub(/\s+/i, " " )}',
+      div: $('#{runtimeDiv}')
     }
-    else {
-      env = {
-        name: '#{embeddable.name}',
-        scriptUrl: '#{embeddable.url}',
-        embeddableId: '#{embeddable.id}',
-        config: '#{embeddable.configuration.gsub(/'/, "").gsub(/\s+/i, " " )}',
-        div: $('#{outputId}')
-      }
-      ExternalScripts.register(ScriptConstructor, env);
-    }
+    ExternalScripts.init('#{embeddable.label}', env);
   });
