@@ -11,6 +11,7 @@ ExternalScripts.register = function(_constructor, env) {
     this._scripts.push(script);
     console.group("ExternalScripts: Register");
       console.dir(env);
+      console.dir(config);
     console.groupEnd();
   }
   catch(e) {

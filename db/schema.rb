@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180202184436) do
+ActiveRecord::Schema.define(:version => 20180206162724) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20180202184436) do
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "label"
   end
 
   create_table "authentications", :force => true do |t|

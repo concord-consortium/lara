@@ -1,25 +1,29 @@
 = form_for(@approved_script) do |f|
-  - if @approved_script.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@approved_script.errors.count, "error")
-        prohibited this approved_script from being saved:
-      %ul
-        - @approved_script.errors.full_messages.each do |msg|
-          %li= msg
+  %div{style: "margin: 0em 5em; display: flex; flex-direction: column; width: 300px;"}
+    - if @approved_script.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@approved_script.errors.count, "error")
+          prohibited this approved_script from being saved:
+        %ul
+          - @approved_script.errors.full_messages.each do |msg|
+            %li= msg
 
-  .field
-    = f.label :name
-    %br
-    = f.text_field :name
-  .field
-  .field
-    = f.label :url
-    %br
-    = f.text_field :url
-  .field
-    = f.label :description
-    %br
-    = f.text_area :description
-  .actions
-    = f.submit
+    .field{style: "margin: 1em 0px;"}
+      = f.label :name
+      %br
+      = f.text_field :name
+    .field{style: "margin: 1em 0px;"}
+      = f.label :label
+      %br
+      = f.text_field :label
+    .field{style: "margin: 1em 0px;"}
+      = f.label :url
+      %br
+      = f.text_field :url
+    .field{style: "margin: 1em 0px;"}
+      = f.label :description
+      %br
+      = f.text_area :description
+    .actions{style: "margin: 1em 0px;"}
+      = f.submit

@@ -23,8 +23,8 @@
         name: '#{embeddable.name}',
         scriptUrl: '#{embeddable.url}',
         embeddableId: '#{embeddable.id}',
-        config: '#{embeddable.configuration}',
-        div: '#{outputId}'
+        config: '#{embeddable.configuration.gsub(/'/, "").gsub(/\s+/i, " " )}',
+        div: $('#{outputId}')
       }
       ExternalScripts.register(ScriptConstructor, env);
     }

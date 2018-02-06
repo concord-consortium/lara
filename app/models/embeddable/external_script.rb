@@ -8,7 +8,8 @@ module Embeddable
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
     delegate :name,  to: :approved_script, allow_nil: true
-    delegate :url,  to: :approved_script, allow_nil: true
+    delegate :label, to: :approved_script, allow_nil: true
+    delegate :url,   to: :approved_script, allow_nil: true
 
     def self.name_as_param
       :embeddable_external_script
