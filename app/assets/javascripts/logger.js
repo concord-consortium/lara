@@ -211,7 +211,7 @@ Logger.prototype.log = function(data) {
   }
   data.time = Date.now(); // millisecons
   if (( typeof ExternalScripts != "undefined") && ExternalScripts.handleLogEvent) {
-    ExternalScripts.handleLogEvent(data);
+    ExternalScripts.handleLogEvent(data, this);
   };
   this._post(data);
 };

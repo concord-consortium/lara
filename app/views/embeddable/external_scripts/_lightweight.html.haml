@@ -1,10 +1,7 @@
 - runtimeDiv = "output-#{embeddable.id}"
 = content_for :external_scripts do
   %script{src:embeddable.url}
-- unless embeddable.name.blank?
-  .question-hdr
-    %h5.h5= embeddable.name
-.question-bd
+.question-bd{style: "display:none;"}
   .question-txt
     != embeddable.url
   .output{id:runtimeDiv}

@@ -10,9 +10,9 @@
       = f.collection_select(:approved_script_id, ApprovedScript.all, :id, :name)
   %div{style: "margin-top: 0.5em;"}
     = f.label "description"
-    = f.text_area :configuration, :size => "40,10"
+    = f.text_field :description
   %div{style: "margin-top: 0.5em;"}
     = f.label "tree json"
-    = f.text_area :configuration
+    = f.text_area :configuration, {id:'jsonConfigText'}
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
