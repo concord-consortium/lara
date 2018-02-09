@@ -14,6 +14,9 @@
   -if can? :manage, QuestionTracker
     |
     = link_to "QuestionTrackers", question_trackers_path
+  -if can? :manage, ApprovedScript
+    |
+    = link_to "Scripts", approved_scripts_path
   -if can? :manage, User
     |
     = link_to "Failed runs", dirty_runs_path

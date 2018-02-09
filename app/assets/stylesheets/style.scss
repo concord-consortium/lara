@@ -1065,3 +1065,16 @@ body.iframed {
   }
 }
 
+form {
+  #error_explanation {
+    margin: 2em 0px;
+    border: 2px solid #800000;
+    padding: 1em;
+  }
+
+  .field_with_errors {
+    background-color: #CAA;
+    padding: 0.5em;
+  }
+}
+

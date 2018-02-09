@@ -1,0 +1,22 @@
+- runtimeDiv = "output-#{embeddable.id}"
+= content_for :external_scripts do
+  %script{src:embeddable.url}
+.question-bd{style: "display:none;"}
+  .question-txt
+    != embeddable.url
+  .output{id:runtimeDiv}
+
+
+:javascript
+  // Begin script for #{embeddable.name}
+  $(document).ready( function() {
+    env = {
+      name: '#{embeddable.name}',
+      scriptLabel: '#{embeddable.label}',
+      scriptUrl: '#{embeddable.url}',
+      embeddableId: '#{embeddable.id}',
+      config: '#{embeddable.configuration.gsub(/'/, "").gsub(/\s+/i, " " )}',
+      div: $('#{runtimeDiv}')
+    }
+    ExternalScripts.init('#{embeddable.label}', env);
+  });
