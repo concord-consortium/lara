@@ -151,6 +151,12 @@ footer {
 
   &.logo-r {
     float: right;
+    margin-top: 12px;
+    text-align: right;
+
+    img {
+      max-width: 114px;
+    }
   }
 
 }
@@ -1173,6 +1179,7 @@ footer {
 }
 
 .profile-nav {
+  min-height: 20px;
   position: relative;
   .profile-dropdown{
     height: 20px;
@@ -1235,6 +1242,19 @@ footer {
     &:hover {
       text-decoration: underline;
    }
+  }
+}
+
+.sequence_logo_block {
+  display: flex;
+  align-items: center;
+  a {
+    color: #3f3f3f;
+  }
+  h3, h2, h1 {
+    font-family: $lato-reg;
+    font-size: 2em;
+    line-height: 1;
   }
 }
 
