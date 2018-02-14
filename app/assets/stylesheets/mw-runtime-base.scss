@@ -151,6 +151,12 @@ footer {
 
   &.logo-r {
     float: right;
+    margin-top: 12px;
+    text-align: right;
+
+    img {
+      max-width: 114px;
+    }
   }
 
 }
@@ -1173,6 +1179,7 @@ footer {
 }
 
 .profile-nav {
+  min-height: 20px;
   position: relative;
   .profile-dropdown{
     height: 20px;
