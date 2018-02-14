@@ -118,16 +118,21 @@ footer.sequence_run {
 }
 
 .sequence_logo_block {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 780px; /* Leave room for logo in header */
   a {
+    color: #3f3f3f;
     line-height: 80%;
     vertical-align: bottom;
   }
   h3, h2, h1 {
+    font-family: $lato-reg;
+    font-size: 2em;
     vertical-align: bottom;
     padding-left: 0;
     left: 10px;
+    line-height: 1;
     position: relative;
     display: inline;
     clear: none;
