@@ -1245,6 +1245,19 @@ footer {
   }
 }
 
+.sequence_logo_block {
+  display: flex;
+  align-items: center;
+  a {
+    color: #3f3f3f;
+  }
+  h3, h2, h1 {
+    font-family: $lato-reg;
+    font-size: 2em;
+    line-height: 1;
+  }
+}
+
 .sequence-page{
   .profile-u-name{
     white-space: nowrap;
