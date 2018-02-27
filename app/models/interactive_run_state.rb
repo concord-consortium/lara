@@ -114,13 +114,23 @@ class InteractiveRunState < ActiveRecord::Base
     (interactive.respond_to? :linked_interactive) && !interactive.linked_interactive.nil?
   end
 
-  # this seems like it should be modeled as a through association, but perhaps it is hard because
-  # interactives are polymorphic
   def find_linked_interactive_state
-    return nil unless has_linked_interactive
-    linked_interactive = interactive.linked_interactive
-    runs = run.sequence_run ? run.sequence_run.runs : [run]
-    InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
+    # Note that this method will return the first available state of the linked interactives *chain*.
+    # Sometimes the interactive that is directly linked might have not be run by student (e.g. when he skipped a page).
+    current_interactive = interactive
+    while (current_interactive.respond_to? :linked_interactive) && !current_interactive.linked_interactive.nil?
+      linked_interactive = current_interactive.linked_interactive
+      runs = run.sequence_run ? run.sequence_run.runs : [run]
+      state = InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
+      if state
+        return state
+      else
+        # Try next interactive in chain.
+        current_interactive = linked_interactive
+      end
+    end
+    # Return nil if nothing is found.
+    nil
   end
 
   def linked_state
