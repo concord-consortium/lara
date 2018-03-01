@@ -114,7 +114,7 @@ class InteractiveRunState < ActiveRecord::Base
     (interactive.respond_to? :linked_interactive) && !interactive.linked_interactive.nil?
   end
 
-  def find_linked_interactive_state
+  def linked_state
     # Note that this method will return the first available state of the linked interactives *chain*.
     # Sometimes the interactive that is directly linked might have not be run by student (e.g. when he skipped a page).
     current_interactive = interactive
@@ -122,8 +122,8 @@ class InteractiveRunState < ActiveRecord::Base
       linked_interactive = current_interactive.linked_interactive
       runs = run.sequence_run ? run.sequence_run.runs : [run]
       state = InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
-      if state
-        return state
+      if state && state.raw_data
+        return state.raw_data
       else
         # Try next interactive in chain.
         current_interactive = linked_interactive
@@ -131,11 +131,6 @@ class InteractiveRunState < ActiveRecord::Base
     end
     # Return nil if nothing is found.
     nil
-  end
-
-  def linked_state
-    return nil unless linked_state = find_linked_interactive_state
-    linked_state.raw_data
   end
 
   def run_remote_endpoint
