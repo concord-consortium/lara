@@ -114,22 +114,38 @@ class InteractiveRunState < ActiveRecord::Base
     (interactive.respond_to? :linked_interactive) && !interactive.linked_interactive.nil?
   end
 
-  def linked_state
-    # Note that this method will return the first available state of the linked interactives *chain*.
-    # Sometimes the interactive that is directly linked might have not be run by student (e.g. when he skipped a page).
+  # Returns all linked states. 1st element in the array is an interactive directly linked to given one.
+  def all_linked_states
+    result = []
     current_interactive = interactive
     while (current_interactive.respond_to? :linked_interactive) && !current_interactive.linked_interactive.nil?
       linked_interactive = current_interactive.linked_interactive
       runs = run.sequence_run ? run.sequence_run.runs : [run]
       state = InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
-      if state && state.raw_data
-        return state.raw_data
-      else
-        # Try next interactive in chain.
-        current_interactive = linked_interactive
+      # It's not necessary to provide some metadata even for empty linked states, although it doesn't cost much
+      # and it can be useful for interactive itself to know that there are some linked interactives,
+      # but not run by student yet.
+      linked_state_info = { interactive_id: current_interactive.id, data: nil, created_at: nil, updated_at: nil }
+      if state
+        linked_state_info[:data] = state.raw_data
+        linked_state_info[:created_at] = state.created_at
+        linked_state_info[:updated_at] = state.updated_at
       end
+      result.push(linked_state_info)
+      # Go to the next interactive in linked interactives chain.
+      current_interactive = linked_interactive
     end
-    # Return nil if nothing is found.
+    result
+  end
+
+  def linked_state
+    # Note that this method will return the first available state of the linked interactives *chain*.
+    # Sometimes the interactive that is directly linked might have not be run by student yet (e.g. when he skipped a page).
+    non_empty_state = all_linked_states.find { |state| state[:data] }
+    unless non_empty_state.nil?
+      return non_empty_state[:data]
+    end
+    # Return nil if there's no linked state.
     nil
   end
 
@@ -146,7 +162,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def to_runtime_json()
-    self.to_json({methods: [:linked_state, :has_linked_interactive, :run_remote_endpoint]})
+    self.to_json({methods: [:has_linked_interactive, :linked_state, :all_linked_states, :run_remote_endpoint]})
   end
 
   def answered?

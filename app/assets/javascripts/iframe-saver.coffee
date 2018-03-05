@@ -6,6 +6,13 @@ getAuthoredState = ($dataDiv) ->
     authoredState = JSON.parse(authoredState)
   authoredState
 
+parseLinkedStateMetadata = (metadataArray) ->
+  metadataArray.map (metadata) ->
+    interactiveId: metadata.interactive_id
+    data: JSON.parse(metadata.data)
+    createdAt: metadata.created_at
+    updatedAt: metadata.updated_at
+
 # IFrameSaver : Wrapper around IFramePhone to save & Load IFrame data
 # into interactive_run_state models in LARA.
 class IFrameSaver
@@ -123,8 +130,9 @@ class IFrameSaver
         @default_success
 
     # Do not send the same state to server over and over again.
-    # "nochange" is a special type of response from CODAP.
-    if JSON.stringify(interactive_json) == JSON.stringify(@saved_state) || interactive_json is "nochange"
+    # "nochange" is a special type of response.
+    # "touch" is an another special type of response which will triger timestamp update only.
+    if interactive_json isnt "touch" && (interactive_json is "nochange" || JSON.stringify(interactive_json) == JSON.stringify(@saved_state))
       runSuccess()
       return
 
@@ -134,7 +142,7 @@ class IFrameSaver
       dataType: 'json'
       url: @interactive_run_state_url
       data:
-        raw_data: JSON.stringify(interactive_json)
+        if interactive_json is "touch" then {} else { raw_data: JSON.stringify(interactive_json) }
       success: (response) =>
         runSuccess()
         @save_indicator.showSaved("Saved Interactive")
@@ -186,10 +194,13 @@ class IFrameSaver
       mode: 'runtime'
       authoredState: @authoredState
       interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
+      interactiveStateCreatedAt: response?.created_at
+      interactiveStateUpdatedAt: response?.updated_at
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
       hasLinkedInteractive: response?.has_linked_interactive or false
       linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
+      allLinkedStates: parseLinkedStateMetadata(response.all_linked_states)
       interactiveStateUrl: @interactive_run_state_url
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
       classInfoUrl: @class_info_url
