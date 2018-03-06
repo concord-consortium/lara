@@ -200,7 +200,7 @@ class IFrameSaver
       globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
       hasLinkedInteractive: response?.has_linked_interactive or false
       linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
-      allLinkedStates: parseLinkedStateMetadata(response.all_linked_states)
+      allLinkedStates: if response?.all_linked_states then parseLinkedStateMetadata(response.all_linked_states) else []
       interactiveStateUrl: @interactive_run_state_url
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
       classInfoUrl: @class_info_url
