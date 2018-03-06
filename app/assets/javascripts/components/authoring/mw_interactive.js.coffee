@@ -15,7 +15,7 @@ modulejs.define 'components/authoring/mw_interactive',
       authoredState = @props.interactive.authored_state
       {
         authoringSupported: false
-        authoredState: if typeof authoredState == 'String' then JSON.parse(authoredState) else authoredState
+        authoredState: if typeof authoredState == 'string' then JSON.parse(authoredState) else authoredState
         modified: false
         saving: false
         message: ''

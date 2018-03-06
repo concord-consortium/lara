@@ -2,7 +2,7 @@ getAuthoredState = ($dataDiv) ->
   authoredState = $dataDiv.data('authored-state')
   if !authoredState? || authoredState == ''
     authoredState = null
-  if typeof authoredState == 'String'
+  if typeof authoredState == 'string'
     authoredState = JSON.parse(authoredState)
   authoredState
 
