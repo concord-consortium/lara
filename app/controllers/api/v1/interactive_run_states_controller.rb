@@ -4,11 +4,15 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
 
   skip_before_filter :verify_authenticity_token, :only => :update
 
+  def host
+    "#{request.protocol}#{request.host_with_port}"
+  end
+
   def show
     begin
       authorize! :show, @run
 
-      render :json => @run.to_runtime_json
+      render :json => @run.to_runtime_json(host)
     rescue CanCan::AccessDenied
       authorization_error("get")
     end
@@ -26,7 +30,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
         @run.learner_url = params['learner_url']
       end
       if @run.save
-        render :json => @run.to_runtime_json
+        render :json => @run.to_runtime_json(host)
       else
         render :json => { :success => false }
       end

@@ -115,7 +115,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   # Returns all linked states. 1st element in the array is an interactive directly linked to given one.
-  def all_linked_states
+  def all_linked_states(host = nil)
     result = []
     current_interactive = interactive
     while (current_interactive.respond_to? :linked_interactive) && !current_interactive.linked_interactive.nil?
@@ -130,6 +130,9 @@ class InteractiveRunState < ActiveRecord::Base
         linked_state_info[:data] = state.raw_data
         linked_state_info[:created_at] = state.created_at
         linked_state_info[:updated_at] = state.updated_at
+        if host
+          linked_state_info[:interactive_state_url] = state.interactive_state_url(host)
+        end
       end
       result.push(linked_state_info)
       # Go to the next interactive in linked interactives chain.
@@ -161,8 +164,14 @@ class InteractiveRunState < ActiveRecord::Base
     arg ? original_json(arg) : answer_json
   end
 
-  def to_runtime_json()
-    self.to_json({methods: [:has_linked_interactive, :linked_state, :all_linked_states, :run_remote_endpoint]})
+  def to_runtime_json(host)
+    hash = self.as_json
+    hash[:has_linked_interactive] = has_linked_interactive
+    hash[:linked_state] = linked_state
+    hash[:run_remote_endpoint] = run_remote_endpoint
+    hash[:all_linked_states] = all_linked_states(host)
+    hash[:interactive_state_url] = interactive_state_url(host)
+    hash.to_json
   end
 
   def answered?
@@ -199,5 +208,9 @@ class InteractiveRunState < ActiveRecord::Base
 
   def add_key_if_nil
     self.key = InteractiveRunState.generate_key if self.key.nil?
+  end
+
+  def interactive_state_url(host)
+    host + Rails.application.routes.url_helpers.api_v1_show_interactive_run_state_path(key: self.key)
   end
 end

@@ -9,6 +9,7 @@ getAuthoredState = ($dataDiv) ->
 parseLinkedStateMetadata = (metadataArray) ->
   metadataArray.map (metadata) ->
     interactiveId: metadata.interactive_id
+    interactiveStateUrl: metadata.interactive_state_url
     data: JSON.parse(metadata.data)
     createdAt: metadata.created_at
     updatedAt: metadata.updated_at

@@ -43,8 +43,9 @@ describe InteractiveRunState do
   describe "instance methods" do
     describe "to_runtime_json" do
       let(:run_data) {'{"second": 2}"'}
+      let(:host) { "https://test.authoring.org" }
       let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
-      let(:result_hash) { JSON.parse(interactive_run_state.to_runtime_json) }
+      let(:result_hash) { JSON.parse(interactive_run_state.to_runtime_json(host)) }
 
       it "should have a run_remote_endpoint" do
         expect(result_hash).to have_key "run_remote_endpoint"
