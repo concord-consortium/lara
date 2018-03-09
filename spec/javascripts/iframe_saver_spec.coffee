@@ -91,8 +91,8 @@ describe 'IFrameSaver', () ->
           mode: 'runtime',
           authoredState: {test: 123},
           interactiveState: {interactiveState: 321},
-          interactiveStateCreatedAt: '2017'
-          interactiveStateUpdatedAt: '2018'
+          createdAt: '2017'
+          updatedAt: '2018'
           globalInteractiveState: null,
           hasLinkedInteractive: false,
           linkedState: null,

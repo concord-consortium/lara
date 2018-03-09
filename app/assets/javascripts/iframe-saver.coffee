@@ -13,6 +13,9 @@ parseLinkedStateMetadata = (metadataArray) ->
     data: JSON.parse(metadata.data)
     createdAt: metadata.created_at
     updatedAt: metadata.updated_at
+    pageIndex: metadata.page_index
+    pageName: metadata.page_name
+    activityName: metadata.activity_name
 
 # IFrameSaver : Wrapper around IFramePhone to save & Load IFrame data
 # into interactive_run_state models in LARA.
@@ -195,8 +198,8 @@ class IFrameSaver
       mode: 'runtime'
       authoredState: @authoredState
       interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
-      interactiveStateCreatedAt: response?.created_at
-      interactiveStateUpdatedAt: response?.updated_at
+      createdAt: response?.created_at
+      updatedAt: response?.updated_at
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
       hasLinkedInteractive: response?.has_linked_interactive or false
@@ -208,6 +211,9 @@ class IFrameSaver
       interactive:
         id: @interactive_id
         name: @interactive_name
+      pageIndex: if response?.page_index then response.page_index else null
+      pageName: if response?.page_name then response.page_name else null
+      activityName: if response?.activity_name then response.activity_name else null
       authInfo:
         provider: @auth_provider
         loggedIn: @logged_in
