@@ -54,6 +54,14 @@ class InteractiveRunState < ActiveRecord::Base
     @question
   end
 
+  def page
+    interactive.interactive_page
+  end
+
+  def activity
+    page && page.lightweight_activity
+  end
+
   def portal_hash
     # There are two options how interactive can be saved in Portal:
     # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
@@ -130,9 +138,11 @@ class InteractiveRunState < ActiveRecord::Base
         linked_state_info[:data] = state.raw_data
         linked_state_info[:created_at] = state.created_at
         linked_state_info[:updated_at] = state.updated_at
-        linked_state_info[:page_index] = state.interactive.interactive_page.index_in_activity
-        linked_state_info[:page_name] = state.interactive.interactive_page.name
-        linked_state_info[:activity_name] = state.interactive.interactive_page.lightweight_activity.name
+        linked_page = state.interactive.interactive_page
+        linked_activity = linked_page && linked_page.lightweight_activity
+        linked_state_info[:page_index] = linked_page && linked_page.index_in_activity
+        linked_state_info[:page_name] = linked_page && linked_page.name
+        linked_state_info[:activity_name] = linked_activity && linked_activity.name
         if host
           linked_state_info[:interactive_state_url] = state.interactive_state_url(host)
         end
@@ -174,9 +184,9 @@ class InteractiveRunState < ActiveRecord::Base
     hash[:run_remote_endpoint] = run_remote_endpoint
     hash[:all_linked_states] = all_linked_states(host)
     hash[:interactive_state_url] = interactive_state_url(host)
-    hash[:page_index] = interactive.interactive_page.index_in_activity
-    hash[:page_name] = interactive.interactive_page.name
-    hash[:activity_name] = interactive.interactive_page.lightweight_activity.name
+    hash[:page_index] = page && page.index_in_activity
+    hash[:page_name] = page && page.name
+    hash[:activity_name] = activity && activity.name
     hash.to_json
   end
 

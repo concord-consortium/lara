@@ -102,6 +102,9 @@ describe 'IFrameSaver', () ->
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
+          pageIndex: null
+          pageName: null
+          activityName: null
         })
 
     describe "when state saving is disabled", () ->
@@ -117,8 +120,8 @@ describe 'IFrameSaver', () ->
           mode: 'runtime',
           authoredState: {test: 123},
           interactiveState: null,
-          interactiveStateCreatedAt: undefined
-          interactiveStateUpdatedAt: undefined
+          createdAt: undefined
+          updatedAt: undefined
           globalInteractiveState: null,
           hasLinkedInteractive: false,
           linkedState: null,
@@ -128,4 +131,7 @@ describe 'IFrameSaver', () ->
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
+          pageIndex: null
+          pageName: null
+          activityName: null
         })
