@@ -77,7 +77,10 @@ describe 'IFrameSaver', () ->
           responseText: JSON.stringify({
             "raw_data": JSON.stringify({"interactiveState": 321}),
             "created_at": "2017",
-            "updated_at": "2018"
+            "updated_at": "2018",
+            "activity_name": "test act",
+            "page_name": "test page",
+            "page_number": 2
           })
         })
 
@@ -94,17 +97,14 @@ describe 'IFrameSaver', () ->
           createdAt: '2017'
           updatedAt: '2018'
           globalInteractiveState: null,
-          hasLinkedInteractive: false,
-          linkedState: null,
-          allLinkedStates: [],
           interactiveStateUrl: 'foo/42',
           collaboratorUrls: null,
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
-          pageIndex: null
-          pageName: null
-          activityName: null
+          pageNumber: 2
+          pageName: "test page"
+          activityName: "test act"
         })
 
     describe "when state saving is disabled", () ->
@@ -120,18 +120,10 @@ describe 'IFrameSaver', () ->
           mode: 'runtime',
           authoredState: {test: 123},
           interactiveState: null,
-          createdAt: undefined
-          updatedAt: undefined
           globalInteractiveState: null,
-          hasLinkedInteractive: false,
-          linkedState: null,
-          allLinkedStates: [],
           interactiveStateUrl: 'foo/42',
           collaboratorUrls: null,
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
-          pageIndex: null
-          pageName: null
-          activityName: null
         })
