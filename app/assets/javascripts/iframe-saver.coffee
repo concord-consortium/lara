@@ -13,7 +13,7 @@ parseLinkedStateMetadata = (metadataArray) ->
     data: JSON.parse(metadata.data)
     createdAt: metadata.created_at
     updatedAt: metadata.updated_at
-    pageIndex: metadata.page_index
+    pageNumber: metadata.page_number
     pageName: metadata.page_name
     activityName: metadata.activity_name
 
@@ -211,7 +211,7 @@ class IFrameSaver
       interactive:
         id: @interactive_id
         name: @interactive_name
-      pageIndex: if response?.page_index then response.page_index else null
+      pageNumber: if response?.page_number then response.page_number else null
       pageName: if response?.page_name then response.page_name else null
       activityName: if response?.activity_name then response.activity_name else null
       authInfo:

@@ -123,7 +123,7 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   # Returns all linked states. 1st element in the array is an interactive directly linked to given one.
-  def all_linked_states(host = nil)
+  def all_linked_states(protocol = nil, host = nil)
     result = []
     current_interactive = interactive
     while (current_interactive.respond_to? :linked_interactive) && !current_interactive.linked_interactive.nil?
@@ -133,18 +133,18 @@ class InteractiveRunState < ActiveRecord::Base
       # It's not necessary to provide some metadata even for empty linked states, although it doesn't cost much
       # and it can be useful for interactive itself to know that there are some linked interactives,
       # but not run by student yet.
-      linked_state_info = { interactive_id: current_interactive.id, data: nil, created_at: nil, updated_at: nil }
+      linked_state_info = { interactive_id: linked_interactive.id, data: nil, created_at: nil, updated_at: nil }
       if state
         linked_state_info[:data] = state.raw_data
         linked_state_info[:created_at] = state.created_at
         linked_state_info[:updated_at] = state.updated_at
         linked_page = state.interactive.interactive_page
         linked_activity = linked_page && linked_page.lightweight_activity
-        linked_state_info[:page_index] = linked_page && linked_page.index_in_activity
+        linked_state_info[:page_number] = linked_page && linked_page.page_number
         linked_state_info[:page_name] = linked_page && linked_page.name
         linked_state_info[:activity_name] = linked_activity && linked_activity.name
         if host
-          linked_state_info[:interactive_state_url] = state.interactive_state_url(host)
+          linked_state_info[:interactive_state_url] = state.interactive_state_url(protocol, host)
         end
       end
       result.push(linked_state_info)
@@ -177,14 +177,14 @@ class InteractiveRunState < ActiveRecord::Base
     arg ? original_json(arg) : answer_json
   end
 
-  def to_runtime_json(host)
+  def to_runtime_json(protocol, host)
     hash = self.as_json
     hash[:has_linked_interactive] = has_linked_interactive
     hash[:linked_state] = linked_state
     hash[:run_remote_endpoint] = run_remote_endpoint
     hash[:all_linked_states] = all_linked_states(host)
-    hash[:interactive_state_url] = interactive_state_url(host)
-    hash[:page_index] = page && page.index_in_activity
+    hash[:interactive_state_url] = interactive_state_url(protocol, host)
+    hash[:page_number] = page && page.page_number
     hash[:page_name] = page && page.name
     hash[:activity_name] = activity && activity.name
     hash.to_json
@@ -226,7 +226,7 @@ class InteractiveRunState < ActiveRecord::Base
     self.key = InteractiveRunState.generate_key if self.key.nil?
   end
 
-  def interactive_state_url(host)
-    host + Rails.application.routes.url_helpers.api_v1_show_interactive_run_state_path(key: self.key)
+  def interactive_state_url(protocol, host)
+    Rails.application.routes.url_helpers.api_v1_show_interactive_run_state_url(key: self.key, protocol: protocol, host: host)
   end
 end

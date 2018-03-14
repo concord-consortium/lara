@@ -195,8 +195,8 @@ class InteractivePage < ActiveRecord::Base
     self.save!(:validate => false) # This is the part we need to override
   end
 
-  def index_in_activity
-    lightweight_activity.visible_pages.index(self) + 1
+  def page_number
+    lightweight_activity.visible_page_ids.index(self.id) + 1
   end
 
   def duplicate(interactives_cache=nil)
