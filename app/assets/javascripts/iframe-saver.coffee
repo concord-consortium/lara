@@ -6,6 +6,24 @@ getAuthoredState = ($dataDiv) ->
     authoredState = JSON.parse(authoredState)
   authoredState
 
+interactiveStateProps = (data) ->
+  interactiveState: if data?.raw_data then JSON.parse(data.raw_data) else null
+  hasLinkedInteractive: data?.has_linked_interactive
+  linkedState: if data?.linked_state then JSON.parse(data.linked_state) else undefined
+  allLinkedStates: if data?.all_linked_states then data.all_linked_states.map(interactiveStateProps) else undefined
+  createdAt: data?.created_at
+  updatedAt: data?.updated_at
+  interactiveStateUrl: data?.interactive_state_url
+  interactive:
+    # Keep default values `undefined` (data?.something returns undefined if data is not available),
+    # as they might be obtained the other way. See "init_interactive" function which extends basic data using object
+    # returned from this one. `undefined` ensures that we won't overwrite a valid value.
+    id: data?.interactive_id
+    name: data?.interactive_name
+  pageNumber: data?.page_number
+  pageName: data?.page_name
+  activityName: data?.activity_name
+
 # IFrameSaver : Wrapper around IFramePhone to save & Load IFrame data
 # into interactive_run_state models in LARA.
 class IFrameSaver
@@ -123,8 +141,9 @@ class IFrameSaver
         @default_success
 
     # Do not send the same state to server over and over again.
-    # "nochange" is a special type of response from CODAP.
-    if JSON.stringify(interactive_json) == JSON.stringify(@saved_state) || interactive_json is "nochange"
+    # "nochange" is a special type of response.
+    # "touch" is an another special type of response which will triger timestamp update only.
+    if interactive_json isnt "touch" && (interactive_json is "nochange" || JSON.stringify(interactive_json) == JSON.stringify(@saved_state))
       runSuccess()
       return
 
@@ -134,7 +153,7 @@ class IFrameSaver
       dataType: 'json'
       url: @interactive_run_state_url
       data:
-        raw_data: JSON.stringify(interactive_json)
+        if interactive_json is "touch" then {} else { raw_data: JSON.stringify(interactive_json) }
       success: (response) =>
         runSuccess()
         @save_indicator.showSaved("Saved Interactive")
@@ -179,17 +198,13 @@ class IFrameSaver
   # this is the newer method of initializing an interactive
   # it returns the current state and linked state
   init_interactive: (err = null, response = null) ->
-
-    @iframePhone.post 'initInteractive',
+    init_interactive_msg =
       version: 1
       error: err
       mode: 'runtime'
       authoredState: @authoredState
-      interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
-      hasLinkedInteractive: response?.has_linked_interactive or false
-      linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
       interactiveStateUrl: @interactive_run_state_url
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
       classInfoUrl: @class_info_url
@@ -200,6 +215,12 @@ class IFrameSaver
         provider: @auth_provider
         loggedIn: @logged_in
         email: @user_email
+    # Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing
+    # it directly into general init message. However, multiple interactives are already using this format
+    # and it doesn't seem to be worth changing at this point.
+    $.extend(true, init_interactive_msg, interactiveStateProps(response))
+
+    @iframePhone.post 'initInteractive', init_interactive_msg
 
   set_autosave_enabled: (v) ->
     return unless @learner_state_saving_enabled()

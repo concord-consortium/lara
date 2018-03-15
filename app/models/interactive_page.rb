@@ -195,6 +195,10 @@ class InteractivePage < ActiveRecord::Base
     self.save!(:validate => false) # This is the part we need to override
   end
 
+  def page_number
+    lightweight_activity.visible_page_ids.index(self.id) + 1
+  end
+
   def duplicate(interactives_cache=nil)
     interactives_cache = InteractivesCache.new if interactives_cache.nil?
     new_page = InteractivePage.new(self.to_hash)
