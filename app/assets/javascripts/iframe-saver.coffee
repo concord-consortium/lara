@@ -88,6 +88,10 @@ class IFrameSaver
             @$delete_button.show()
           else
             @$delete_button.hide()
+      if opts.aspectRatio?
+        # Iframe can provide suggested aspect-ratio.
+        @$iframe.data('aspect-ratio', opts.aspectRatio)
+        @$iframe.trigger('sizeUpdate')
     @iframePhone.addListener 'navigation', (opts={})=>
       if opts.hasOwnProperty('enableForwardNav')
         if opts.enableForwardNav

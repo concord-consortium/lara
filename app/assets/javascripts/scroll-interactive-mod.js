@@ -1,186 +1,76 @@
-/*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
-/*global $ */
+$(window).ready(function () {
+  var offset = 65;
+  var $sticky = $('.pinned');
+  if ($sticky.length === 0) {
+    return;
+  }
+  var stickyTop = $sticky.offset().top - offset;
+  var $trackEnd = $('.end-scroll-track');
+  var originalCss = {};
+  var $window = $(window);
+  var $stickyClone;
 
-var scrollingInteractive, scrollTrack, waypointWatcher;
+  function cloneDomItem($elem, elemTag) {
+    var $returnElm = $(elemTag);
+    $returnElm.addClass($elem.attr('class'));
+    $returnElm.attr('id', $elem.attr('id'));
+    $returnElm.attr('style', $elem.attr('style'));
+    $returnElm.css('height', $elem.height());
+    return $returnElm;
+  }
 
-// FIXME: This doesn't do well with interactives that change their size on load, i.e. iframes.
-// FIXME: How do we ensure waypoints are set when an image is completely loaded? 
+  function pin() {
+    originalCss.position = $sticky[0].style.position;
+    originalCss.top = $sticky[0].style.top;
+    originalCss.width = $sticky[0].style.width;
+    // Attach a clone to replace the "missing" body height.
+    $stickyClone = cloneDomItem($sticky, '<div>');
+    $stickyClone = $stickyClone.insertBefore($sticky);
+    $sticky.css('position', 'fixed');
+  }
 
-// Object responsible for managing information about the space in which
-// the interactive travels.
-var ScrollTrack = function (contentModule, trackEnd) {
-    this.contentModule  = contentModule;
-    this.trackEnd       = trackEnd;
-};
-
-ScrollTrack.prototype.getTop = function ()  {
-    return this.contentModule.offset().top;
-};
-
-ScrollTrack.prototype.getBottom = function () {
-    return this.trackEnd.offset().top;
-};
-
-ScrollTrack.prototype.getHeight = function () {
-    return this.getBottom() - this.getTop();
-};
-
-// This is the main method: given an interactive height, could that interactive scroll in
-// the track described here?
-ScrollTrack.prototype.isScrollable = function (interactiveHeight) {
-    var canIScroll;
-    if ((this.contentModule.length === 0) || (this.trackEnd.length === 0) || (interactiveHeight === null)) {
-        canIScroll = false;
-    } else if (interactiveHeight < this.getHeight()) {
-        canIScroll = true;
-    } else {
-        canIScroll = false;
+  function unpin() {
+    if (!$stickyClone) {
+      return;
     }
-    return canIScroll;
-};
+    // Since $sticky is in the viewport again, we can remove the clone and the class.
+    $stickyClone.remove();
+    $stickyClone = null;
+    $sticky[0].style.position = originalCss.position;
+    $sticky[0].style.top = originalCss.top;
+    $sticky[0].style.width = originalCss.width;
+  }
 
-// Object to handle fixing of the interactive module
-var InteractiveModule = function (object, scrollTrack) {
-    this.module          = object;
-    this.lastHeight      = object.height();
-    this.heightCount     = 0;
-    this.bMargin         = parseInt(object.css('margin-bottom'), 10);
-    this.topBuffer       = 120; // Magic number: how far is the interactive from the page top when we pin it?
-    this.fudgeFactor     = 20; // Magic number: how much scroll track do we want before we let the interactive scroll?
-    this.scrollTrack     = scrollTrack;
-
-    this.setWaypoints();
-};
-
-// Wrap the ScrollTrack's isScrollable method
-InteractiveModule.prototype.canScroll = function () {
-    return this.scrollTrack.isScrollable(this.getHeightWithMargin() + this.fudgeFactor);
-};
-
-// Fixes the interactive mod when the window hits the questions scrolling down
-InteractiveModule.prototype.fixTop = function () {
-    // console.log('^^^ fixTop: pin interactive, scrolling down');
-	if (this.canScroll()) {
-        this.module.css({
-            'width': this.module.width(),
-            'height': this.module.height()
-        });
-        this.module.addClass('stuck');
+  function handleScroll(e) {
+    var stickyHeight = $sticky.height();
+    if (stickyHeight > $window.height()) {
+      // Element is too high to pin it.
+      unpin();
+      return;
     }
-};
 
-// Un-fixes the interactive mod when the window hits the questions scrolling up
-InteractiveModule.prototype.unFixTop = function () {
-    // console.log('^^^ unFixTop: un-pin interactive, scrolling up');
-	if (this.canScroll() && this.module.hasClass('stuck')) {
-        this.module.removeClass('stuck');
+    var scrollTop = $window.scrollTop();
+
+    if (scrollTop >= stickyTop && !$stickyClone) {
+      pin();
+    } else if (scrollTop < stickyTop && $stickyClone) {
+      unpin();
     }
-};
 
-// Fixes the interactive mod when the window hits the bottom marker scrolling up
-InteractiveModule.prototype.fixBottom = function () {
-    // console.log('^^^ fixBottom: pin interactive, scrolling up');
-	if (this.canScroll() && this.module.hasClass('bottomed')) {
-        this.module.addClass('stuck');
-        this.module.removeClass('bottomed');
-	}
-};
-
-InteractiveModule.prototype.unFixBottom = function () {
-    // console.log('^^^ unFixBottom: un-pin interactive, scrolling down');
-	if (this.canScroll() && this.module.hasClass('stuck')) {
-        this.module.removeClass('stuck');
-        this.module.addClass('bottomed');
+    if ($stickyClone) { // element is pinned
+      var trackTop = $trackEnd.offset().top - offset;
+      if (scrollTop + stickyHeight > trackTop) {
+        // Pins interactive to the bottom track.
+        $sticky.css('top', offset + trackTop - scrollTop - stickyHeight);
+      } else {
+        // Pins interactive to the top edge.
+        $sticky.css('top', offset);
+      }
+      // Necessary to maintain width of the pinned element.
+      $sticky.width($stickyClone.width());
     }
-};
+  }
 
-InteractiveModule.prototype.setWaypoints = function () {
-    // These blocks use jquery.waypoints
-    var self = this;
-    self.scrollTrack.contentModule.waypoint( function (direction) {
-        // Pin interactive scrolling down
-        if (direction === 'down') {
-            self.fixTop();
-            $('.questions-full').css({
-                'margin-top': self.getHeightWithMargin()
-            });
-        }
-        // Un-pin interactive scrolling up
-        if (direction === 'up') {
-            self.unFixTop();
-            $('.questions-full').css({
-                'margin-top': 0
-            });
-        }
-    }, {
-        // context: '#container',
-        offset: self.topBuffer // when $('.content-mod') is 120px from the top of the viewport
-    });
-    self.scrollTrack.trackEnd.waypoint(function (direction) {
-        // Un-pin interactive scrolling down
-        if (direction === 'down') {
-            self.unFixBottom();
-        }
-        // Pin interactive scrolling up
-        if (direction === 'up') {
-            self.fixBottom();
-        }
-    }, {
-        // context: '#container',
-        offset: self.getHeightWithMargin() + self.topBuffer
-    });
-};
-
-// These just wrap the $.waypoints() functions, but it seems useful to have this
-// object know about them.
-InteractiveModule.prototype.clearWaypoints = function () {
-    $.waypoints('destroy');
-};
-
-InteractiveModule.prototype.disableWaypoints = function () {
-    $.waypoints('disable');
-};
-
-InteractiveModule.prototype.enableWaypoints = function () {
-    $.waypoints('enable');
-};
-
-InteractiveModule.prototype.getHeight = function () {
-    return this.module.height();
-};
-
-InteractiveModule.prototype.getBottomMargin = function () {
-    return this.bMargin;
-};
-
-InteractiveModule.prototype.getHeightWithMargin = function () {
-    return this.module.height() + this.bMargin;
-};
-
-$(document).ready(function () {
-    var $trackEnd   = $('.end-scroll-track'),
-        $contentMod = $('.content-mod'),
-        $intMod     = $('.pinned');
-
-    scrollTrack = new ScrollTrack($contentMod, $trackEnd);
-    scrollingInteractive = new InteractiveModule($intMod, scrollTrack);
-
-    // Watch for changes to size and re-build waypoints if needed.
-    waypointWatcher = setInterval(function () {
-        // console.log('Checking if height is still ' + scrollingInteractive.lastHeight + 'px.');
-        if (scrollingInteractive.lastHeight !== $intMod.height()) {
-            console.log('Interactive height has changed, clearing and re-setting waypoints.');
-            scrollingInteractive.lastHeight = $intMod.height();
-            scrollingInteractive.clearWaypoints();
-            scrollingInteractive.setWaypoints();
-        } else {
-            scrollingInteractive.heightCount++;
-        }
-        // Don't do this forever if it isn't changing.
-        if (scrollingInteractive.heightCount > 2) {
-            console.log('Interactive height seems set, stopping watching.');
-            clearInterval(waypointWatcher);
-        }
-    }, 2500);
+  $window.on('scroll', handleScroll);
+  $window.on('resize', handleScroll);
 });
-

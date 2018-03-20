@@ -1,5 +1,10 @@
 = render partial: 'runs/unauthorized_dialog'
 
+-# Some layouts need to control more than just the inner DIVs (e.g. responsive layout which needs to be full-width).
+-# Let's add additional, layout-based class so they can modify some generic styles.
+= content_for :body_class do
+  = @page.layout + '-wrapper'
+
 - # This page is the 'completion page' for the activity. It has its own template.
 - if @page.is_completion
   = render :partial => 'show_completion', :locals => {:page => @page, :layout => @page.layout}
@@ -16,23 +21,22 @@
 
   .bottom-buttons
     - next_activity = @sequence.next_activity(@page.lightweight_activity) if @sequence
-    - unless @page.first_visible?
-      .button-left
+    .button-left
+      - unless @page.first_visible?
         .last-page
           %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.prev_visible_page), :class => 'prev' }
             %input{ :class => 'button', :type => 'submit', :value => t("BACK") }
-    - if @page.last_visible?
-      .button-center
+    .button-center
+      - if @page.last_visible?
         .submit.report
           %a{ :href => summary_with_response_path(@page.lightweight_activity, @session_key), :class => 'gen-report', :target => 'new' }
             %input{ :class => 'button', :type => 'submit', :value => t("GENERATE_A_REPORT") }
-    - if @page.last_visible? && next_activity
-      .button-right
+    .button-right
+      - if @page.last_visible? && next_activity
         .next-page
           %a{ :href => sequence_activity_path(@sequence, next_activity), :title => next_activity.name, :class => 'next forward_nav'}
             %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("BEGIN_NEXT_ACTIVITY") }
-    - elsif @page.next_visible_page
-      .button-right
+      - elsif @page.next_visible_page
         .next-page
           %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.next_visible_page), :class => 'next forward_nav' }
             %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("NEXT")}
