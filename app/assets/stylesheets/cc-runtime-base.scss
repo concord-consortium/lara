@@ -13,17 +13,17 @@
 //   4. Activity nav
 //   5. Layout modes
 //   6. Headline + Intro
-//   7. Sticky Interactives
-//   8. Interactive + Questions
-//   9. Styling for typographic elements
-//  10. Sidebar ( see partials/runtime-sidebar)
-//  11. Related Module
-//  12. Image Types
-//  13. Activity Footer
-//  14. Site Footer
-//  15. Saved Label
-//  16. Activity Index Page
-//  17. Activity Summary Page
+//   7. Interactive + Questions
+//   8. Styling for typographic elements
+//  9. Sidebar ( see partials/runtime-sidebar)
+//  10. Related Module
+//  11. Image Types
+//  12. Activity Footer
+//  13. Site Footer
+//  14. Activity Index Page
+//  15. Activity Summary Page
+//  16. Social
+//  17. Misc changes
 
 // *********************************************
 //  1. Universal
@@ -175,53 +175,53 @@ div.activity-mod>div.site-width {
 }
 
 // *********************************************
-//  8. Interactive + Questions
+//  7. Interactive + Questions
 // *********************************************
 @import "partials/runtime-interactives";
 
 // *********************************************
-//  9. Styling for typographic elements
+//  8. Styling for typographic elements
 // *********************************************
 @import "partials/runtime-typography";
 
 // ******************************************
-// 10. Sidebar
+//  9. Sidebar
 // ******************************************
 @import "partials/runtime-sidebar";
 
 // ******************************************
-//  11. Related Module
+//  10. Related Module
 // ******************************************
 @import "partials/runtime-related";
 
 // ******************************************
-//  12. Image Types
+//  11. Image Types
 // ******************************************
 @import "partials/runtime-image-types";
 
 // ******************************************
-//  13. Activity Footer
-//  14. Site Footer
+//  12. Activity Footer
+//  13. Site Footer
 // ******************************************
 @import "partials/runtime-footer";
 
 // ******************************************
-//  16. Activity Index Page
+//  14. Activity Index Page
 // ******************************************
 @import "partials/runtime-activity-index";
 
 // ******************************************
-//  17. Activity Summary Page
+//  15. Activity Summary Page
 // ******************************************
 @import "partials/runtime-summary";
 
 // ******************************************
-//  18. Social
+//  16. Social
 // ******************************************
 @import "partials/runtime-social";
 
 // ******************************************
-//  19. Misc Changes
+//  17. Misc Changes
 // ******************************************
 
 .question, .intro-mod, .related-mod, .sidebar-mod {
