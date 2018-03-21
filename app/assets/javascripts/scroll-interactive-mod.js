@@ -4,7 +4,7 @@ $(window).ready(function () {
   if ($sticky.length === 0) {
     return;
   }
-  var stickyTop = $sticky.offset().top - offset;
+
   var $trackEnd = $('.end-scroll-track');
   var originalCss = {};
   var $window = $(window);
@@ -42,7 +42,7 @@ $(window).ready(function () {
   }
 
   function handleScroll(e) {
-    var stickyHeight = $sticky.height();
+    var stickyHeight = $sticky.height() + offset;
     if (stickyHeight > $window.height()) {
       // Element is too high to pin it.
       unpin();
@@ -50,6 +50,9 @@ $(window).ready(function () {
     }
 
     var scrollTop = $window.scrollTop();
+    // If sticky clone is available, use it to define waypoint. It's in the original spot.
+    // Sticky element is already moving while user is scrolling.
+    var stickyTop = ($stickyClone || $sticky).offset().top - offset;
 
     if (scrollTop >= stickyTop && !$stickyClone) {
       pin();
@@ -58,7 +61,7 @@ $(window).ready(function () {
     }
 
     if ($stickyClone) { // element is pinned
-      var trackTop = $trackEnd.offset().top - offset;
+      var trackTop = $trackEnd.offset().top;
       if (scrollTop + stickyHeight > trackTop) {
         // Pins interactive to the bottom track.
         $sticky.css('top', offset + trackTop - scrollTop - stickyHeight);
