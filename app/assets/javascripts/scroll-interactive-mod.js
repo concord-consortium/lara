@@ -1,5 +1,5 @@
 $(window).ready(function () {
-  var offset = 65;
+  var offset = 75;
   var $sticky = $('.pinned');
   if ($sticky.length === 0) {
     return;

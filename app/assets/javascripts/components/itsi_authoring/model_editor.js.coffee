@@ -75,6 +75,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
 
     handleSupportedFeaturesUpdate: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
+      if (info.features.aspectRatio?)
+        container = @refs.iframeContainer.getDOMNode()
+        container.style.height = Math.round(container.offsetWidth / info.features.aspectRatio) + 'px'
 
     fetchModelList: ->
       url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
@@ -127,7 +130,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
                   if authoredState
                     (input {type: 'button', className: 'ia-reset-authored-state', value: 'Reset authored state', onClick: @resetAuthoredState})
                 )
-              (div {className: 'ia-interactive'},
+              (div {className: 'ia-interactive', ref: 'iframeContainer'},
                 (InteractiveIframe
                   ref: 'iframe'
                   src: @state.values['mw_interactive[url]'],
