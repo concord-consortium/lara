@@ -83,6 +83,7 @@ module InteractiveRunHelper
       :allowfullscreen => "true",
       :webkitallowfullscreen => "true",
       :mozallowfullscreen => "true",
+      :allow => "geolocation *; microphone *; camera *",
       :src => iframe_src ? url : nil,
       :data => data,
       # Note that iframe is hidden in print mode. It won't have enough time to load anyway.
