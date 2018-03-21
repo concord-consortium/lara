@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180206162724) do
+ActiveRecord::Schema.define(:version => 20180321211835) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(:version => 20180206162724) do
     t.text     "authored_state"
     t.string   "model_library_url"
     t.boolean  "no_snapshots",          :default => false
+    t.string   "click_to_play_prompt"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

@@ -40,6 +40,7 @@ describe MwInteractive do
         enable_learner_state: interactive.enable_learner_state,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
+        click_to_play_prompt: interactive.click_to_play_prompt,
         full_window: interactive.full_window,
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
