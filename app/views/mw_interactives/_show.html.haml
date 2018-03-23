@@ -30,7 +30,7 @@
 
       .click_to_play.shown.screen-only{:id => dom_id_for(interactive, :click_to_play), 'data-trigger-full-window' => interactive.full_window}
         .background
-        .text= "Click here to start the interactive."
+        .text= interactive.click_to_play_prompt.present? ? interactive.click_to_play_prompt : MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
 
       = interactive_iframe_tag(interactive, @run, false) do
 
