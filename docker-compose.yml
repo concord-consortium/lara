@@ -23,9 +23,6 @@ services:
   db:
     image: mysql:5.6
     environment:
-      MYSQL_DATABASE: lara
-      MYSQL_PASSWORD: master
-      MYSQL_USER: master
       MYSQL_ROOT_PASSWORD: xyzzy
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
