@@ -80,7 +80,19 @@ class IFrameSaver
       if @user_email?
         authInfo.email = @user_email
       @iframePhone.post('authInfo', authInfo)
-    @iframePhone.addListener 'extendedSupport', (opts)=>
+    @iframePhone.addListener 'supportedFeatures', (info) =>
+      if info.features?.aspectRatio?
+        # Iframe can provide suggested aspect-ratio.
+        @$iframe.data('aspect-ratio', info.features.aspectRatio)
+        @$iframe.trigger('sizeUpdate')
+      if info.features?.reset?
+        @should_show_delete = info.features.reset
+        if @saved_state
+          if @should_show_delete
+            @$delete_button.show()
+          else
+            @$delete_button.hide()
+    @iframePhone.addListener 'extendedSupport', (opts) =>
       if opts.reset?
         @should_show_delete = opts.reset
         if @saved_state

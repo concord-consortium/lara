@@ -11,8 +11,8 @@
     - if page.visible_interactives.length > 0 && page.show_interactive
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}
 
-  .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
-    - if page.show_info_assessment
+  - if page.show_info_assessment
+    .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
       = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: main_section_visible_embeddables(page, @run)}
 
     .buttons
@@ -51,3 +51,8 @@
         Related activities
     .related-bd
       != page.lightweight_activity.related
+
+- if page.layout == 'l-responsive'
+  :javascript
+    // Initialize responsive layout when page is loaded.
+    $(function() { responsiveLayout(); });

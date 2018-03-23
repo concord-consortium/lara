@@ -13,7 +13,8 @@ class InteractivePage < ActiveRecord::Base
                     { :name => '60-40',                    :class_val => 'l-6040' },
                     { :name => '70-30',                    :class_val => 'l-7030' },
                     { :name => '60-40 (interactive left)', :class_val => 'r-4060' },
-                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' }]
+                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' },
+                    { :name => 'Responsive', :class_val => 'l-responsive' }]
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 

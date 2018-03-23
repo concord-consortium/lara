@@ -26,12 +26,12 @@
 .l-full-width {
 
   .question-hdr {
-    width: 28%;
+    width: 100%;
     float: left;
   }
 
   .question-bd {
-    width: 70%;
+    width: 100%;
     float: right;
   }
 
@@ -55,34 +55,25 @@
       border-bottom-color: transparent;
     }
   }
-} // .l-full-width
 
-
-
-// *****************************************
-// 2-Column layout w/ full width interactive
-// *****************************************
-.l-full-width  {
   .question {
     margin: 20px;
     display: inline-block;
     width: 45%;
     vertical-align: top;
   }
-  .question-hdr {
-    width: 100%;
-  }
+
   h5:after {
     background-color: none;
     display:none;
   }
-  .question-bd {
-    width: 100%;
-  }
+
   .question.likert{
     width: 95%;
     input{
       margin-right:5px;
     }
   }
-}
+} // .l-full-width
+
+@import "responsive-layout";

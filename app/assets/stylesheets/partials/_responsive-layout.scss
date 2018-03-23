@@ -1,0 +1,70 @@
+// Class added to the body element.
+.l-responsive-wrapper {
+  .site-width {
+    width: calc(100% - 40px);
+  }
+
+  div.activity-mod > div.site-width {
+    padding: 12px 0 0 0 ;
+  }
+
+  .bottom-buttons {
+    width: 100%;
+    .button-left, .button-center, .button-right {
+      width: 33%;
+      display: inline-block;
+    }
+    .button-center {
+      position: static;
+      left: 0;
+    }
+    .report {
+      float: none;
+      width: auto;
+    }
+  }
+
+  .intro-mod {
+    max-width: 900px;
+  }
+}
+
+// Class added to the main section of the interactive
+.l-responsive {
+  display: flex;
+
+  .ui-block-1 { // interactive
+    flex: 1 1;
+    order: 2;
+  }
+
+  .ui-block-2 {
+    flex: 0;
+    order: 1;
+  }
+
+  .question {
+    display: block;
+    vertical-align: top;
+    width: 250px;
+    margin: 0 20px 20px 0;
+  }
+
+  .interactive-mod {
+    margin-bottom: 0;
+  }
+
+  .question-hdr {
+    width: 100%;
+  }
+
+  .question-bd {
+    width: 100%;
+  }
+
+  .question.likert{
+    input{
+      margin-right: 5px;
+    }
+  }
+}

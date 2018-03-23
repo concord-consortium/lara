@@ -442,6 +442,8 @@ div.intra-page-nav {
  }
 } // .l-full-width
 
+@import "partials/responsive-layout";
+
 // *********************************************
 //  6. Headline + Intro
 // *********************************************
@@ -533,7 +535,6 @@ div.intra-page-nav {
 
 
 .interactive-mod {
-  margin-bottom: 52px;
   width: 100%;
   z-index: 100;
   overflow: hidden;
