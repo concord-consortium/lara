@@ -1,6 +1,6 @@
 class CollectionFilter
-  attr_accessor :my, :user, :klass, :limit
-  VALID_PARAMS = [:my, :limit]
+  attr_accessor :my, :user, :klass, :limit, :search
+  VALID_PARAMS = [:my, :limit, :search]
 
   def initialize(user,klass, attributes = {})
     @user  = user
@@ -16,7 +16,9 @@ class CollectionFilter
   end
 
   def collection
-    if @my && @user
+    if @search
+      results = @klass.search(@search)
+    elsif @my && @user
       results = @klass.my(@user)
     elsif @user
       results = @klass.visible(@user)
