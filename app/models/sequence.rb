@@ -168,6 +168,10 @@ class Sequence < ActiveRecord::Base
     return import_sequence
   end
 
+  def self.search(query)
+    where("title LIKE ?", "%#{query}%")
+  end
+
   private
   def get_neighbor(activity, higher)
     join = lightweight_activities_sequences.find_by_lightweight_activity_id(activity.id)

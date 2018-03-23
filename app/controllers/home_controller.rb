@@ -1,6 +1,10 @@
 class HomeController < ApplicationController
   def home
-    @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
+    attributes = (params[:filter] || {})
+    if params.has_key?('search')
+      attributes[:search] = params[:search]
+    end
+    @filter  = CollectionFilter.new(current_user, LightweightActivity, attributes)
     # TODO: Add 'oficial' to the criteron?
     @activities = @filter.collection.includes(:user,:changed_by,:portal_publications).first(10)
     @filter.klass = Sequence
