@@ -46,21 +46,27 @@ class IFrameSaver
     @interactive_id = $data_div.data('interactive-id')
     @interactive_name = $data_div.data('interactive-name')
 
-    @$delete_button.click () =>
-      @delete_data()
-    @$delete_button.hide()
-    @should_show_delete = null
-    @saved_state = null
-    @autosave_interval_id = null
-
+    @should_show_delete = true
     @save_indicator = SaveIndicator.instance()
 
-    if @learner_state_saving_enabled()
-      IFrameSaver.instances.push @
+    # Delete all previous handles (they might have been added before interactive iframe was even loaded,
+    # see "Click to play" case described below).
+    @$delete_button.off 'click'
+    @$delete_button.click () =>
+      @delete_data()
 
-    @already_setup = false
+    # In some cases IframeSaver might be initialized even if there's no iframe element present yet.
+    # For example, when "Click to play". In such case, only delete data button should be initialized.
+    if $iframe.length != 0
+      @saved_state = null
+      @autosave_interval_id = null
 
-    @iframePhone = IframePhoneManager.getPhone($iframe[0], => @phone_answered())
+      if @learner_state_saving_enabled()
+        IFrameSaver.instances.push @
+
+      @already_setup = false
+
+      @iframePhone = IframePhoneManager.getPhone($iframe[0], => @phone_answered())
 
   @default_success: ->
     console.log "saved"
@@ -199,7 +205,6 @@ class IFrameSaver
             @iframePhone.post({type: 'loadInteractive', content: interactive})
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
-            @$delete_button.show() if @should_show_delete == null or @should_show_delete
         @init_interactive null, response
       error: (jqxhr, status, error) =>
         @init_interactive "couldn't load interactive"

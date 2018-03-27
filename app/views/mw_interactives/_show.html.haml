@@ -47,9 +47,8 @@
 
     = interactive_data_div(interactive, @run)
 
-    - if interactive.enable_learner_state
-      .below_interactive.screen-only
-        = button_tag 'Undo all my work', {class: 'delete_interactive_data'}
+- if interactive.enable_learner_state
+  = button_tag 'Undo all my work', {class: 'delete_interactive_data screen-only'}
 
 .print-only.iframe-url
   = link_to "#{interactive.url}", "#{interactive.url}"
