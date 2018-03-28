@@ -21,3 +21,8 @@ es:
   MINUTES: "minutos"
   DONE: "Hecho"
   CANCEL: "Cancelar"
+
+  MAKE_DRAWING: "Dibujar"
+  CHECK_ANSWER: "Chequear respuesta"
+  PAGES_IN_THIS_ACTIVITY: "Páginas en esta Actividad"
+  WELCOME: "Bienvenido"

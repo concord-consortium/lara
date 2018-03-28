@@ -48,6 +48,9 @@ en:
   NEW_SEQUENCE_BUTTON: "Create new sequence"
   IMPORT: "Import"
   COLLECTION_SORT_ORDER: " – most recently modified first."
+  CHECK_ANSWER: "Check answer"
+  PAGES_IN_THIS_ACTIVITY: "Pages in this Activity"
+  WELCOME: "Welcome"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."

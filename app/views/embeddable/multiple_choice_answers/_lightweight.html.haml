@@ -21,7 +21,7 @@
       %input{ :class => 'button check_answer_button screen-only',
               :type => 'button',
               :id => check_button_string,
-              :value => 'Check answer',
+              :value => t("CHECK_ANSWER"),
               :disabled => (embeddable.answers.length == 0),
               :data => { :check => embeddable.answer_id } }
     = prediction_button(embeddable,f)
