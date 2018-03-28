@@ -19,7 +19,7 @@
         = time_to_complete(@activity.time_to_complete)
   .page-index.mod-border-rounded
 
-    %p.index-heading= t(:pages_in_this_activity)
+    %p.index-heading= t("PAGES_IN_THIS_ACTIVITY")
     %ol
       - @activity.visible_pages.each do |page|
         %li
