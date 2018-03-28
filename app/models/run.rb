@@ -355,7 +355,7 @@ class Run < ActiveRecord::Base
   def run_info_string()
     "remote_endpoint:#{remote_endpoint}, run_id:#{id}, " +
     "run_key:#{key}, dirty:#{dirty?}, " +
-    "activity:#{activity_id}, activity_name:\"#{activity.name}\", " +
+    "activity:#{activity_id}, activity_name:\"#{activity ? activity.name : 'nil'}\", " +
     "sequence:#{sequence_id}"
   end
 
