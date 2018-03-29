@@ -19,13 +19,12 @@ class InteractiveManager
     $data = $interactive.find('.interactive_data_div')
     # Delete data button is rendered outside interactive container, just next to it.
     $delete_button = $interactive.siblings('.delete_interactive_data').first()
-    # IFrameSaver does a lot more than only saving.
-    # It also initializes interactive and provides LARA Interactive API.
-    # Create IframeSaver even if there's no iframe yet (it might happen when "Click to play" is being used).
-    # It ensures that delete data button still works.
-    new IFrameSaver($iframe, $data, $delete_button)
 
     if $iframe.length != 0
+      # IFrameSaver does a lot more than only saving.
+      # It also initializes interactive and provides LARA Interactive API.
+      new IFrameSaver($iframe, $data, $delete_button)
+
       if globalIframeSaver
         globalIframeSaver.addNewInteractive $iframe
       LoggerUtils.logInteractiveEvents($iframe)
