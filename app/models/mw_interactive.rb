@@ -2,7 +2,7 @@ class MwInteractive < ActiveRecord::Base
   DEFAULT_CLICK_TO_PLAY_PROMPT = "Click here to start the interactive."
   attr_accessible :name, :url, :native_width, :native_height, :enable_learner_state, :has_report_url, :click_to_play,
                   :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :full_window, :model_library_url,
-                  :authored_state, :no_snapshots
+                  :authored_state, :no_snapshots, :show_delete_data_button
 
   default_value_for :native_width, 576
   default_value_for :native_height, 435
@@ -52,6 +52,7 @@ class MwInteractive < ActiveRecord::Base
       native_width: native_width,
       native_height: native_height,
       enable_learner_state: enable_learner_state,
+      show_delete_data_button: show_delete_data_button,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
       click_to_play_prompt: click_to_play_prompt,
@@ -91,6 +92,7 @@ class MwInteractive < ActiveRecord::Base
                               :native_width,
                               :native_height,
                               :enable_learner_state,
+                              :show_delete_data_button,
                               :has_report_url,
                               :click_to_play,
                               :click_to_play_prompt,

@@ -47,7 +47,7 @@
 
     = interactive_data_div(interactive, @run)
 
-- if interactive.enable_learner_state
+- if interactive.enable_learner_state && interactive.show_delete_data_button
   = button_tag 'Undo all my work', {class: 'delete_interactive_data screen-only', id: dom_id_for(interactive, :undo_work), style: 'display: none;'}
 
 .print-only.iframe-url

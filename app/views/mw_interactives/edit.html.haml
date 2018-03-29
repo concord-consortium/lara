@@ -45,6 +45,9 @@
     Please do not select this unless your interactive contains a serializable data set.
     .clear
     .indent{:id => "enable_learner_state_indent_#{@interactive.id}"}
+      = f.label :show_delete_data_button, 'Show "Undo all my work" button'
+      = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@interactive.id}"
+      %br
       = f.label :has_report_url, 'This interactive has a report URL'
       = f.check_box :has_report_url, :id => "has_report_url_#{@interactive.id}"
       .clear
@@ -83,11 +86,13 @@
       if ($(this).prop('checked')) {
         // ungrey
         $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
+        $('#show_delete_data_button_#{@interactive.id}').removeAttr("disabled");
         $('#parent_id_#{@interactive.id}').removeAttr("disabled");
         $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 1);
       } else {
         // grey
         $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+        $('#show_delete_data_button_#{@interactive.id}').attr("disabled", true);
         $('#parent_id_#{@interactive.id}').attr("disabled", true);
         $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 0.3);
       }
@@ -97,6 +102,7 @@
           // uncheck and grey out the 'has report url' section
           $('#has_report_url_#{@interactive.id}').prop('checked', false);
           $('#has_report_url_#{@interactive.id}').attr("disabled", true);
+          $('#show_delete_data_button_#{@interactive.id}').attr("disabled", true);
           $('#parent_id_#{@interactive.id}').attr("disabled", true);
           $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 0.3);
     }
