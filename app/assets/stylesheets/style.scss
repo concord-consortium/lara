@@ -56,7 +56,7 @@ body {
   color: #3f3f3f;
   font: 80% 'Lato', arial, helvetica, sans-serif;
 }
-button, .btn-primary, span.edit_trigger, #modal .embeddable-save {
+button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close {
   background: #6fc5d8;
   border: none;
   color: #fff;
@@ -69,6 +69,7 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save {
   text-decoration: none;
   display: inline-block;
 }
+
 button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #ccc !important;
 }
@@ -368,32 +369,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     width: 174px;
   }
 }
-.sidebar {
-  background: #6fc5d8;
-  clear: both;
-  color: #fff;
-  height: auto;
-  margin-top: 20px;
-  min-height: 224px;
-  padding: 1%;
-  border-radius: 13px;
-  h2 {
-    font: 500 2em 'Lato', georgia, 'times new roman', serif;
-    margin: 0 0 20px;
-  }
-  img {
-    float: left;
-    margin: 0 10px 0 0;
-  }
-  p {
-    font-size: 1em;
-    line-height: 1.5;
-    margin-bottom: 1em;
-  }
-  small {
-    font-size: .9em;
-  }
-}
+
 .related {
   background: #6fc5d8;
   clear: both;
@@ -775,43 +751,6 @@ fieldset {
   div.edit_interactive_page{
     padding-bottom: 20px;
   }
-  /* Page intro */
-  div.instructions, div.sidebar {
-    border: 1px solid #6fc5d8;
-    position: relative;
-    padding: 5px;
-    .edit_trigger {
-      position: absolute;
-      top: 3px;
-      right: 5px;
-      margin: 0;
-      background: 0;
-      color: #126eac;
-    }
-    h2 {
-      width: 100%;
-      background-color: hsl(192, 64%, 82%);
-      color: #126eac !important;
-      text-align: left;
-      font-size: 1.3em;
-      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
-      padding: 5px; /* Gives the head itself some padding */
-    }
-    .editable button {
-      position: absolute;
-      top: 3px;
-      right: 5px;
-      margin: 0;
-      background: 0;
-      color: #126eac;
-    }
-    .editable button.jeditable-submit {
-      right: 55px;
-    }
-    .editable button.jeditable-submit:after {
-      content: " |";
-    }
-  }
   /* Info/assessment block */
   div.questions {
     border: 1px solid #6fc5d8;
@@ -879,11 +818,6 @@ fieldset {
     form.interactives-form {
       margin-top: 8px;
     }
-  }
-  div.sidebar {
-    background: 0;
-    border-radius: 0;
-    color: #000;
   }
   h2.question {
     margin-bottom: 1em;

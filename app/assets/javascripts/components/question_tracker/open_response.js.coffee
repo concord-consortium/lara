@@ -3,7 +3,7 @@
 modulejs.define 'components/question_tracker/open_response',
   [
     'components/question_tracker/throttle_mixin',
-    'components/itsi_authoring/rich_text_editor'
+    'components/common/rich_text_editor'
   ],
   (
     ThrottleMixin,

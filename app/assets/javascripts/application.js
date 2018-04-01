@@ -38,6 +38,7 @@
 //= require c_rater/score_mapping
 //= require components
 //= require iframed_site_manager
+//= require tinymce-config
 //= require tinymce-jquery
 //= require iframe-phone
 //= require iframe-phone-manager

@@ -35,17 +35,9 @@
   = field_set_tag 'Publication status' do
     = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
   = field_set_tag 'Activity Description' do
-    = f.text_area :description, :cols => 80, :rows => 5
-    :javascript
-      $(function() {
-          $('#lightweight_activity_description').wysiwyg({'controls': { 'html': { 'visible': true } } });
-      });
+    = f.text_area :description, :cols => 80, :rows => 5, :class => 'wysiwyg'
   = field_set_tag 'Related Content' do
-    = f.text_area :related, :cols => 80, :rows => 5
-    :javascript
-      $(function() {
-          $('#lightweight_activity_related').wysiwyg({'controls': { 'html': { 'visible': true } } });
-      });
+    = f.text_area :related, :cols => 80, :rows => 5, :class => 'wysiwyg'
   = field_set_tag 'Estimated time to complete, in minutes' do
     = f.text_field :time_to_complete
   = field_set_tag 'Thumbnail URL' do
@@ -58,4 +50,3 @@
   = field_set_tag 'Notes' do
     The notes area is for storing information for other authors, e.g. source material or usage restrictions, and is not intended to be displayed in the runtime.
     = f.text_area :notes
-=# javascript_tag("focus_first_field();");

@@ -10,11 +10,7 @@
   = field_set_tag 'Question Prompt' do
     .help
       This appears next to the text response area. If this is blank, the user will not be shown a text response area.
-      = f.text_area :prompt, :rows => 5
-      :javascript
-        $(function() {
-            $('#embeddable_image_question_prompt').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
-        });
+      = f.text_area :prompt, :rows => 5, :class => 'wysiwyg'
   = field_set_tag 'Hint' do
     .help
       If this is provided, the user will be able to see expandable hint next to the question title.
@@ -38,7 +34,7 @@
       = render :partial => 'shared/edit_prediction', :locals => { :f => f }
   :javascript
     $(function() {
-        $('.wysiwyg').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
+      initTinyMCE('.wysiwyg', window.TinyMCEConfigMinimal);
     });
 
   = f.submit "Cancel", :class => 'close'

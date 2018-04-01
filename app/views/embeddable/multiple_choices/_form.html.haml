@@ -57,7 +57,7 @@
     = f.link_to_add "Add choice", :choices
     :javascript
       $(function() {
-          $('.wysiwyg').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
+          initTinyMCE('.wysiwyg', window.TinyMCEConfigMinimal);
 
           var $radios = $('#embeddable_layout_options input'),
               $showAsMenu = $('##{show_as_menu_id}');

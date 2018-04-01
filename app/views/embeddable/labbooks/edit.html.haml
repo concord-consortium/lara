@@ -24,12 +24,5 @@
 
 :javascript
   $(function() {
-    $('.wysiwyg').wysiwyg({
-      'controls': {
-        'html': {'visible': true},
-        'h1': {'visible': false},
-        'h2': {'visible': false},
-        'h3': {'visible': false}
-       }
-    });
+    initTinyMCE('.wysiwyg', window.TinyMCEConfigMinimal);
   });

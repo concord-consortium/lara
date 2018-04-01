@@ -77,7 +77,7 @@ gem "cancancan", "~> 1.10"
 gem "omniauth", "~> 1.1"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
 gem "default_value_for", "~> 2.0"
-gem "tinymce-rails", "~> 4.2"
+gem "tinymce-rails", "~> 4.7"
 gem "yaml_db", "~> 0.2", {:git=>"git://github.com/lostapathy/yaml_db.git"}
 gem "aws-ses", "~> 0.5", {:require=>"aws/ses"}
 gem "uuidtools", "~> 2.1"

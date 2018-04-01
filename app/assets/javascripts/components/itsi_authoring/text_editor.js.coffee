@@ -2,23 +2,20 @@
 
 modulejs.define 'components/itsi_authoring/text_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin'
+  'components/common/ajax_form_mixin'
   'components/itsi_authoring/section_editor_form',
-  'components/itsi_authoring/rich_text_editor',
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
-  RichTextEditorClass,
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
-  RichTextEditor = React.createFactory RichTextEditorClass
 
   React.createClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:

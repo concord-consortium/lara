@@ -15,9 +15,10 @@
       .ul
         = render :partial => 'shared/edit_prediction', :locals => { :f => f }
 
-    :javascript
-      $(function() {
-          $('.wysiwyg').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
-      });
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
+
+  :javascript
+    $(function() {
+      initTinyMCE('.wysiwyg', window.TinyMCEConfigMinimal);
+    });

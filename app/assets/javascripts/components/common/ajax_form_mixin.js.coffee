@@ -1,9 +1,10 @@
 {textarea, input, select, option} = React.DOM
 
+# Mixin that provides helper methods to build dynamic form which can be udpated and saved without page reload.
 # Component that includes this mixin needs to define @updateUrl property.
-modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
+modulejs.define 'components/common/ajax_form_mixin',
 [
-  'components/itsi_authoring/rich_text_editor'
+  'components/common/rich_text_editor'
 ],
 (
   RichTextEditorClass
@@ -18,6 +19,10 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
       for key, value of @dataMap
         values[key] = @props.data[value]
         defaultValues[key] = @props.data[value]
+    else
+      for key, value of @props.data
+        values[key] = value
+        defaultValues[key] = value
 
     initialState =
       edit: @initialEditState?()
@@ -49,20 +54,20 @@ modulejs.define 'components/itsi_authoring/section_element_editor_mixin',
 
     # Don't issue request if nothing has been updated.
     if $.isEmptyObject @state.changedValues
-      @props.alert 'warn', 'No changes to save'
+      @props.alert? 'warn', 'No changes to save'
       return
 
     # Rails-specific approach to PUT requests.
     @state.changedValues._method = 'PUT'
     $.ajax
-      url: "#{@props.data.update_url}.json"
+      url: "#{@props.updateUrl || @props.data.update_url}.json" # two formats available
       data: @state.changedValues
       type: 'POST',
       success: =>
-        @props.alert 'info', 'Saved'
+        @props.alert? 'info', 'Saved'
         @setState changedValues: {}
       error: (xhr, textStatus, errorThrown) =>
-        @props.alert 'error', 'Save Failed!'
+        @props.alert? 'error', 'Save Failed!'
 
   valueChanged: (key, value, setStateCallback = null) ->
     @state.values[key] = value
