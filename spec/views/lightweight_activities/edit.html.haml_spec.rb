@@ -45,7 +45,7 @@ describe "lightweight_activities/edit" do
 
     it 'should show the current activity description' do
       render
-      expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[description\]"[^<]*>/
+      expect(rendered).to match /<textarea[^>]+name="lightweight_activity\[description\]"[^<]*>/
     end
 
     it 'should show the custom reporting URL' do
@@ -56,7 +56,7 @@ describe "lightweight_activities/edit" do
 
     it 'should show related text' do
       render
-      expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="lightweight_activity\[related\]"[^<]*>/
+      expect(rendered).to match /<textarea[^>]+name="lightweight_activity\[related\]"[^<]*>/
     end
 
     # TODO: This is breadcrumbs and doesn't get tested in this view
