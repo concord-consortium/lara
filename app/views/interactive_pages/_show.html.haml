@@ -11,8 +11,8 @@
     - if page.visible_interactives.length > 0 && page.show_interactive
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}
 
-  - if page.show_info_assessment
-    .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
+  .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
+    - if page.show_info_assessment
       = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: main_section_visible_embeddables(page, @run)}
 
     .buttons
