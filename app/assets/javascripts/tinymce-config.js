@@ -10,7 +10,7 @@ window.TinyMCEConfig = {
   autoresize_bottom_margin: 5
 };
 
-window.TinyMCEConfigMinimal = Object.assign({}, window.TinyMCEConfig, {
+window.TinyMCEConfigMinimal = $.extend({}, window.TinyMCEConfig, {
   toolbar: "bold italic strikethrough underline indent outdent " +
            "subscript superscript numlist bullist link unlink hr image"
 });
