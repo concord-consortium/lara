@@ -43,7 +43,7 @@
   = render :partial => "publications/publication_failures", :locals =>{ :publication => @activity}
 
   %h2.question
-    = text_field @page, :name, { :placeholder => 'page title' }
+    = editable_field @page, :name, { :placeholder => 'page title' }
     %span.preview
       = link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
   %div.edit_interactive_page

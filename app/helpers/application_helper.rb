@@ -166,7 +166,7 @@ module ApplicationHelper
   end
 
   # Inserts a simple text field that let users edit given property (text property).
-  def text_field (object, property, options={})
+  def editable_field (object, property, options={})
     update_url = options.delete(:update_url) || url_for(object)
     id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
     prop_name = "#{object.class.to_s.underscore}[#{property}]"
@@ -183,8 +183,8 @@ module ApplicationHelper
             propName: "#{prop_name}",
             placeholder: "#{options[:placeholder]}"
           };
-          TextField = React.createElement(modulejs.require('components/authoring/text_field'), props);
-          React.render(TextField, $("##{id}")[0]);
+          EditableField = React.createElement(modulejs.require('components/authoring/editable_field'), props);
+          React.render(EditableField, $("##{id}")[0]);
         }());
       </script>
     }.html_safe

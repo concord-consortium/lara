@@ -1,6 +1,6 @@
 {div, span, h2} = React.DOM
 
-modulejs.define 'components/authoring/text_field',
+modulejs.define 'components/authoring/editable_field',
 [
   'components/common/ajax_form_mixin'
 ],
@@ -8,7 +8,7 @@ modulejs.define 'components/authoring/text_field',
   AjaxFormMixin
 ) ->
 
-  TextField = React.createClass
+  EditableField = React.createClass
     mixins:
       [AjaxFormMixin]
 
