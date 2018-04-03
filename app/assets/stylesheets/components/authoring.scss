@@ -56,3 +56,24 @@
     }
   }
 }
+
+.authoring-text-field {
+  display: inline-block;
+
+  input {
+    width: 200px;
+    font-size: 1.1em;
+  }
+
+  .text-field-links {
+    margin-left: 10px;
+    color: #6fc5d8;
+    text-decoration: underline;
+    font-weight: normal;
+    font-size: 0.66em;
+    span {
+      cursor: pointer;
+      margin: 0 3px;
+    }
+  }
+}

@@ -145,7 +145,7 @@ module ApplicationHelper
     header_prop_name = options[:header_prop] ? "#{object.class.to_s.underscore}[#{options[:header_prop]}]" : "non-editable-header"
     header_value =  options[:header_prop] ? object.send(options[:header_prop]) : nil
     %{
-      <div class="text-editor" id="#{id}"></div>
+      <div id="#{id}"></div>
       <script type="text/javascript">
         (function() {
           var props = {
@@ -160,6 +160,31 @@ module ApplicationHelper
           };
           TextEditor = React.createElement(modulejs.require('components/authoring/text_editor'), props);
           React.render(TextEditor, $("##{id}")[0]);
+        }());
+      </script>
+    }.html_safe
+  end
+
+  # Inserts a simple text field that let users edit given property (text property).
+  def text_field (object, property, options={})
+    update_url = options.delete(:update_url) || url_for(object)
+    id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
+    prop_name = "#{object.class.to_s.underscore}[#{property}]"
+    value = object.send(property)
+    %{
+      <span id="#{id}"></span>
+      <script type="text/javascript">
+        (function() {
+          var props = {
+            data: {
+              "#{prop_name}": #{value.to_json}
+            },
+            updateUrl: "#{update_url}",
+            propName: "#{prop_name}",
+            placeholder: "#{options[:placeholder]}"
+          };
+          TextField = React.createElement(modulejs.require('components/authoring/text_field'), props);
+          React.render(TextField, $("##{id}")[0]);
         }());
       </script>
     }.html_safe

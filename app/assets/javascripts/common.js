@@ -55,6 +55,4 @@ $(document).ready(function () {
             });
         }
     });
-    // Init TinyMCE text editors.
-    initTinyMCE('.wysiwyg', window.TinyMCEConfig);
 });
