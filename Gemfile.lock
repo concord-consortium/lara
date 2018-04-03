@@ -8,14 +8,6 @@ GIT
       capistrano (< 3)
 
 GIT
-  remote: git://github.com/concord-consortium/jeditable-wysiwyg-rails.git
-  revision: 801fd737847f98b481dadfc2780f9c61cda27a01
-  specs:
-    jeditable_wysiwyg_rails (0.3.12)
-      jquery-rails
-      rails (~> 3.2.0)
-
-GIT
   remote: git://github.com/concord-consortium/ribbons-rails.git
   revision: 8e5f5701f53ad2026c3cafb0d2bc49b2d172a69d
   specs:
@@ -514,7 +506,6 @@ DEPENDENCIES
   httparty (~> 0.12)
   jasmine (~> 2.2)
   jasmine-jquery-rails (~> 2.0)
-  jeditable_wysiwyg_rails (~> 0.3)!
   jquery-rails (~> 3.0)
   jquery-ui-rails (~> 4.1)
   launchy (~> 2.4)

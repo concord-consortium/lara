@@ -67,7 +67,6 @@ gem "jquery-rails", "~> 3.0"
 gem "jquery-ui-rails", "~> 4.1"
 gem "haml", "~> 4.0"
 gem "dynamic_form", "~> 1.1"
-gem "jeditable_wysiwyg_rails", "~> 0.3", {:git=>"git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"}
 gem "acts_as_list", "~> 0.3"
 gem "nested_form", "~> 0.3"
 gem "gon", "~> 5.2"
