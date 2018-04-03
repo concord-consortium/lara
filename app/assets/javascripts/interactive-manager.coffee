@@ -18,7 +18,7 @@ class InteractiveManager
     $iframe = $interactive.find('iframe[src]')
     $data = $interactive.find('.interactive_data_div')
     # Delete data button is rendered outside interactive container, just next to it.
-    $delete_button = $interactive.siblings('.delete_interactive_data').first()
+    $delete_button = $("#delete-int-data-#{$data.data('interactive-id')}")
 
     if $iframe.length != 0
       # IFrameSaver does a lot more than only saving.
