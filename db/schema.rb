@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180321211835) do
+ActiveRecord::Schema.define(:version => 20180329231011) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -410,21 +410,22 @@ ActiveRecord::Schema.define(:version => 20180321211835) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "enable_learner_state",  :default => false
-    t.boolean  "has_report_url",        :default => false
+    t.boolean  "enable_learner_state",    :default => false
+    t.boolean  "has_report_url",          :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
-    t.boolean  "is_hidden",             :default => false
+    t.boolean  "is_hidden",               :default => false
     t.integer  "linked_interactive_id"
-    t.boolean  "full_window",           :default => false
+    t.boolean  "full_window",             :default => false
     t.text     "authored_state"
     t.string   "model_library_url"
-    t.boolean  "no_snapshots",          :default => false
+    t.boolean  "no_snapshots",            :default => false
     t.string   "click_to_play_prompt"
+    t.boolean  "show_delete_data_button", :default => true
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

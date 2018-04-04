@@ -38,6 +38,7 @@ describe MwInteractive do
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         enable_learner_state: interactive.enable_learner_state,
+        show_delete_data_button: interactive.show_delete_data_button,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
         click_to_play_prompt: interactive.click_to_play_prompt,

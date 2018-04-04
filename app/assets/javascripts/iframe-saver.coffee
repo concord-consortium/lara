@@ -46,14 +46,13 @@ class IFrameSaver
     @interactive_id = $data_div.data('interactive-id')
     @interactive_name = $data_div.data('interactive-name')
 
+    @save_indicator = SaveIndicator.instance()
+
     @$delete_button.click () =>
       @delete_data()
-    @$delete_button.hide()
-    @should_show_delete = null
+
     @saved_state = null
     @autosave_interval_id = null
-
-    @save_indicator = SaveIndicator.instance()
 
     if @learner_state_saving_enabled()
       IFrameSaver.instances.push @
@@ -85,28 +84,12 @@ class IFrameSaver
         # Iframe can provide suggested aspect-ratio.
         @$iframe.data('aspect-ratio', info.features.aspectRatio)
         @$iframe.trigger('sizeUpdate')
-      if info.features?.reset?
-        @should_show_delete = info.features.reset
-        if @saved_state
-          if @should_show_delete
-            @$delete_button.show()
-          else
-            @$delete_button.hide()
-    @iframePhone.addListener 'extendedSupport', (opts) =>
-      if opts.reset?
-        @should_show_delete = opts.reset
-        if @saved_state
-          if @should_show_delete
-            @$delete_button.show()
-          else
-            @$delete_button.hide()
     @iframePhone.addListener 'navigation', (opts={})=>
       if opts.hasOwnProperty('enableForwardNav')
         if opts.enableForwardNav
           ForwardBlocker.instance.enable_forward_navigation_for(@$iframe[0])
         else
           ForwardBlocker.instance.prevent_forward_navigation_for(@$iframe[0], opts.message)
-    @iframePhone.post('getExtendedSupport')
 
     if @learner_state_saving_enabled()
       @iframePhone.post('getLearnerUrl')
@@ -168,6 +151,8 @@ class IFrameSaver
         if interactive_json is "touch" then {} else { raw_data: JSON.stringify(interactive_json) }
       success: (response) =>
         runSuccess()
+        # State has been saved. Show "Undo all my work" button.
+        @$delete_button.show()
         @save_indicator.showSaved("Saved Interactive")
       error: (jqxhr, status, error) =>
         @error("couldn't save interactive")
@@ -199,7 +184,8 @@ class IFrameSaver
             @iframePhone.post({type: 'loadInteractive', content: interactive})
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
-            @$delete_button.show() if @should_show_delete == null or @should_show_delete
+            # State is available. Show "Undo all my work" button.
+            @$delete_button.show()
         @init_interactive null, response
       error: (jqxhr, status, error) =>
         @init_interactive "couldn't load interactive"
