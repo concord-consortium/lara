@@ -4,12 +4,14 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
 [
   'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
-  'components/itsi_authoring/section_editor_element'
+  'components/itsi_authoring/section_editor_element',
+  'components/itsi_authoring/tiny_mce_config'
 ],
 (
   AjaxFormMixin,
   SectionEditorFormClass,
-  SectionEditorElementClass
+  SectionEditorElementClass,
+  ITSITinyMCEConfig
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
@@ -33,7 +35,7 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
             (label {}, 'Question prompt')
-            (@richText {name: 'embeddable_open_response[prompt]'})
+            (@richText {name: 'embeddable_open_response[prompt]', TinyMCEConfig: ITSITinyMCEConfig})
 
             (label {}, 'Default text in answer area')
             (@text {name: 'embeddable_open_response[default_text]'})

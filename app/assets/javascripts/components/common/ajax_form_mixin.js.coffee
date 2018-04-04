@@ -81,7 +81,7 @@ modulejs.define 'components/common/ajax_form_mixin',
   richText: (options) ->
     changed = (newText) =>
       @_handleChange options.name, newText, options.onChange
-    RichTextEditor {name: options.name, text: @state.values[options.name], onChange: changed}
+    RichTextEditor {name: options.name, text: @state.values[options.name], TinyMCEConfig: options.TinyMCEConfig, onChange: changed}
 
   text: (options) ->
     changed = (e) =>

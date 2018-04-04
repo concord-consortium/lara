@@ -3,10 +3,10 @@
   = field_set_tag 'Heading' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :rows => 5, :class => 'wysiwyg'
+    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
     :javascript
       $(function() {
-        initTinyMCE('.wysiwyg', window.TinyMCEConfigMinimal);
+        initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
       });
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
