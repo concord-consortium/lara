@@ -12,7 +12,7 @@ window.TinyMCEConfig = {
 
 window.TinyMCEConfigMinimal = $.extend({}, window.TinyMCEConfig, {
   toolbar: "bold italic strikethrough underline indent outdent " +
-           "subscript superscript numlist bullist link unlink hr image"
+           "subscript superscript numlist bullist link unlink hr image code"
 });
 
 window.initTinyMCE = function (selector, config) {
