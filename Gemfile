@@ -10,7 +10,7 @@ group :assets do
   gem "coffee-rails", "~> 3.2"
   gem "compass-rails", "~> 2.0"
   gem "compass-blueprint", "~> 1.0"
-  gem "uglifier", "~> 2.3"
+  gem "uglifier", "~> 4.1"
   gem "turbo-sprockets-rails3", "~> 0.3"
 end
 
