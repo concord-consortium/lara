@@ -20,12 +20,6 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery_nested_form
-//= require jquery.jeditable
-//= require jquery.wysiwyg
-//= require wysiwyg.image
-//= require wysiwyg.link
-//= require wysiwyg.table
-//= require jquery.jeditable.wysiwyg
 //= require jquery.jcarousel
 //= require modals
 //= require modal-dialog
@@ -38,6 +32,7 @@
 //= require c_rater/score_mapping
 //= require components
 //= require iframed_site_manager
+//= require tinymce-config
 //= require tinymce-jquery
 //= require iframe-phone
 //= require iframe-phone-manager

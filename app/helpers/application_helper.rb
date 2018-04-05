@@ -120,6 +120,7 @@ module ApplicationHelper
     return default_footer if @project.footer.blank?
     return @project.footer
   end
+
   def time_to_complete(min)
     results = <<-EOF
       <span class='time_to_complete'>
@@ -131,6 +132,62 @@ module ApplicationHelper
       </span>
     EOF
     results.html_safe
+  end
+
+  # Inserts TinyMCE text editor that edits given property (text property).
+  # If :editable_header and :header_prop options are provided, the header will be editable too.
+  # Otherwise, :header option can be used to use constant header / title
+  def text_editor (object, property, options={})
+    update_url = options.delete(:update_url) || url_for(object)
+    id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
+    text_prop_name = "#{object.class.to_s.underscore}[#{property}]"
+    text_value = object.send(property)
+    header_prop_name = options[:header_prop] ? "#{object.class.to_s.underscore}[#{options[:header_prop]}]" : "non-editable-header"
+    header_value =  options[:header_prop] ? object.send(options[:header_prop]) : nil
+    %{
+      <div id="#{id}"></div>
+      <script type="text/javascript">
+        (function() {
+          var props = {
+            data: {
+              "#{text_prop_name}": #{text_value.to_json},
+              "#{header_prop_name}": #{(header_value ? header_value : options[:header]).to_json},
+            },
+            updateUrl: "#{update_url}",
+            textPropName: "#{text_prop_name}",
+            headerPropName: "#{header_prop_name}",
+            editableHeader: #{options[:editable_header] || false}
+          };
+          TextEditor = React.createElement(modulejs.require('components/authoring/text_editor'), props);
+          React.render(TextEditor, $("##{id}")[0]);
+        }());
+      </script>
+    }.html_safe
+  end
+
+  # Inserts a simple text field that let users edit given property (text property).
+  def editable_field (object, property, options={})
+    update_url = options.delete(:update_url) || url_for(object)
+    id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
+    prop_name = "#{object.class.to_s.underscore}[#{property}]"
+    value = object.send(property)
+    %{
+      <span id="#{id}"></span>
+      <script type="text/javascript">
+        (function() {
+          var props = {
+            data: {
+              "#{prop_name}": #{value.to_json}
+            },
+            updateUrl: "#{update_url}",
+            propName: "#{prop_name}",
+            placeholder: "#{options[:placeholder]}"
+          };
+          EditableField = React.createElement(modulejs.require('components/authoring/editable_field'), props);
+          React.render(EditableField, $("##{id}")[0]);
+        }());
+      </script>
+    }.html_safe
   end
 
 end

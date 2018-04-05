@@ -55,24 +55,4 @@ $(document).ready(function () {
             });
         }
     });
-
-    // WYSIWYG editing, if that's needed
-    if ($('.wysiwyg-text').length > 0) {
-        $('.wysiwyg-text').wysiwyg({
-            "controls": {
-                "html": {
-                    "visible": true
-                },
-                "h1": {
-                    "visible": false
-                },
-                "h2": {
-                    "visible": false
-                },
-                "h3": {
-                    "visible": false
-                }
-            }
-        });
-    }
 });

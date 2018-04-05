@@ -2,18 +2,18 @@
 
 modulejs.define 'components/itsi_authoring/metadata_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
 
   React.createClass
-    mixins: [SectionElementEditorMixin]
+    mixins: [AjaxFormMixin]
 
     updateUrl: ->
       @props.data.update_url

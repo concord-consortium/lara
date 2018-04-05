@@ -2,14 +2,14 @@
 
 modulejs.define 'components/itsi_authoring/model_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
   'components/common/interactive_iframe',
   'components/itsi_authoring/cached_ajax'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
   InteractiveIframeClass,
@@ -23,7 +23,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
   ModelEditor = React.createClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:

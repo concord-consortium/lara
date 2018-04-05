@@ -42,10 +42,10 @@
         = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
       .field
         = f.label :description, 'Activity Description'
-        = editable_field @activity, :description, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } }, :rmUnwantedBr => true } }
+        = f.text_area :description, :class => 'wysiwyg'
       .field
         = f.label :related, 'Related Content'
-        = editable_field @activity, :related, { :use_trigger => true, :edit_string => 'Edit', :update_url => activity_path(@activity), :type => 'wysiwyg', :rows => 5, :cols => 55, :submit => '<button type="submit" class="jeditable-submit">Save</button>', :cancel => '<button type="cancel" class="jeditable-cancel">Cancel</button>', :onblur => 'ignore', :wysiwyg => { :controls => { :html => { :visible => true }, :h1 => { :visible => false }, :h2 => { :visible => false }, :h3 => { :visible => false } }, :rmUnwantedBr => true } }
+        = f.text_area :related, :class => 'wysiwyg'
       .field
         = f.label :time_to_complete,  'Estimated time to complete, in minutes'
         = f.text_field :time_to_complete

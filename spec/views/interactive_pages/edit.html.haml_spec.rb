@@ -22,12 +22,6 @@ describe "interactive_pages/edit" do
     assign(:all_pages, [page])
   end
 
-  it 'displays page fields with edit-in-place capacity' do
-    render
-    expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[name\]"[^>]*>#{page.name}<\/span>/
-    expect(rendered).to match /<span[^>]+class="editable"[^>]+data-name="interactive_page\[text\]"[^>]*>#{page.text}<\/span>/
-  end
-
   # it 'saves first edits made in the WYSIWYG editor', :js => true, :slow => true do
   #   pending 'This is an issue with the editor, not this application'
   #   page.show_introduction = 1

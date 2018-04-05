@@ -2,12 +2,12 @@
 
 modulejs.define 'components/itsi_authoring/drawing_response_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
   SectionEditorElementClass
 ) ->
@@ -18,7 +18,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
   React.createClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:
