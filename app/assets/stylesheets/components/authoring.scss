@@ -55,6 +55,13 @@
       cursor: pointer;
     }
   }
+
+  // Clear all the floating images.
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }
 
 .authoring-text-field {
