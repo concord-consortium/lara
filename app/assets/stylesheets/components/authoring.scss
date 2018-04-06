@@ -26,6 +26,15 @@
   border: 1px solid #6fc5d8;
   padding: 5px;
 
+  .authoring-text-content {
+    // Make content similar to what will be rendered in the runtime mode.
+    font-size: 16px;
+    p {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
+
   h2 {
     width: 100%;
     background-color: hsl(192, 64%, 82%);

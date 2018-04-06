@@ -63,8 +63,8 @@ LightweightStandalone::Application.configure do
   theme-interactions.css theme-inquiryspace.css theme-itsi.css theme-itsi-survey.css theme-has-astro.css
   theme-has-astro-dark.css theme-ngss-assessment.css theme-building-models.css theme-geode-himalayas.css
   theme-ipums-terra.css theme-data-games.css theme-precipitating-change.css)
-  # TinyMCE:
-  config.assets.precompile += %w(tinymce.css)
+  # CSS file used by TinyMCE iframe:
+  config.assets.precompile += %w(tinymce-content.css)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   # config.action_mailer.default_url_options = { :host => 'authoring.concord.org' }
