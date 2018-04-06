@@ -17,3 +17,13 @@
 @import "activity-menu";
 @import "multiple-choice-answers";
 @import "print-styles";
+@import "common";
+
+.intro-txt {
+  // Clearfix.
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
