@@ -29,4 +29,5 @@
  *= require components/question_tracker
  *= require components/authoring
  *= require question-tracker
+ *= require common
  */

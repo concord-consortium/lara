@@ -7,7 +7,13 @@ window.TinyMCEConfig = {
            "subscript superscript | numlist bullist | link unlink | hr image | code",
   plugins: 'paste link hr image autoresize code',
   paste_as_text: true,
-  autoresize_bottom_margin: 5
+  image_class_list: [
+    {title: 'None', value: ''},
+    {title: 'Float left', value: 'tinymce-img-float-left'},
+    {title: 'Float right', value: 'tinymce-img-float-right'}
+  ],
+  autoresize_bottom_margin: 5,
+  content_css: "<%= asset_path('tinymce-content.css') %>"
 };
 
 window.TinyMCEConfigMinimal = $.extend({}, window.TinyMCEConfig, {
