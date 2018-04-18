@@ -26,6 +26,8 @@ Now open your browser to [http://localhost:3000](http://localhost:3000)
 
 If you work with [Portal](https://github.com/concord-consortium/rigse) take a look how to [integrate it with LARA](https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration).
 
+If you use Docker to run Portal and LARA, this is not enough. Take a look at [docker/dev/docker-compose-portal-proxy.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-proxy.yml) and [docker/dev/docker-compose-portal-net.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-net.yml) files.
+
 ## Editing CSS
 
 This project was setup with [Compass](http://compass-style.org/), however, you shouldn't ever need to run `compass watch`. The asset pipeline should take care of itself in development mode.
