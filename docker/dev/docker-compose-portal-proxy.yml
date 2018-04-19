@@ -19,8 +19,8 @@
 # NOTE if your proxy is not configured correctly, oauth will fail to
 # authenticate users against portal. 
 #
-# You will also need to set the PORTAL_HOST environment variable to match 
-# the name of the portal host. If you are using the dinghy or dory proxy
+# You will also need to set the PORTAL_HOST environment variable (e.g. using `.env` file)
+# to match the name of the portal host. If you are using the dinghy or dory proxy
 # this will be:
 #   app.[project name of portal].docker
 #   examples: app.portal.docker, app.rigse.docker
@@ -31,6 +31,13 @@
 # When asked for "secret" you can use 'unsecure local secret' so you don't 
 # need to change this file.
 #
+# Also, you need to set SITE_URL environment variable in the portal project (e.g. using `.env` file)
+# to match your proxy host. If you are using the dinghy or dory proxy this will be:
+#   http://app.[project name of portal].docker
+#   examples: http://app.portal.docker, http://app.rigse.docker
+# (protocol is necessary in this case)
+# Portal uses this value when providing `remote_endpoint` to LARA,
+# which then uses it to send students answers back to Portal.
 version: '2'
 services:
   app:
