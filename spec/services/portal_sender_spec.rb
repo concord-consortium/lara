@@ -6,7 +6,9 @@ describe PortalSender::Protocol do
   let(:protocol)            { PortalSender::Protocol.new       }
   let(:mock_auth_provider)  { double(auth_stubs)               }
   let(:post_results)        { {}                               }
-  let(:answer_data)         { double({portal_hash: {one: 1}, updated_at: Time.now }) }
+  let(:answer_data)         { double({portal_hash: {one: 1},
+                                      updated_at: Time.now,
+                                      dirty?: true}) }
   let(:sad_result)   { double({ success?: false, code: 500, message: 'failure'})}
   let(:happy_result) { double({ success?: true, code: 200, message: 'yipee'})}
 
@@ -148,22 +150,83 @@ describe PortalSender::Protocol do
           expected_serialized  = {
             "answers"    => one_expected,
             "lara_end"   => frozen_time,
-            "lara_start" => frozen_time,
             "version"    => "1"
           }
-          expect(JSON.parse(protocol.response_for_portal_1_0(one_answer))).to eq(expected_serialized)
+          one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(one_answer_json)).to eq(expected_serialized)
         end
 
         it "matches the expected JSON for multiple specified answers" do
           expected_serialized = {
               "answers"    => all_expected,
               "lara_end"   => frozen_time,
-              "lara_start" => frozen_time,
               "version"    => "1"
           }
-          puts "FROZEN TIME:  '#{frozen_time}'"
-          expect(JSON.parse(protocol.response_for_portal_1_0(all_answers))).to eq(expected_serialized)
+          all_answers_json = protocol.response_for_portal_1_0(all_answers)
+          expect(JSON.parse(all_answers_json)).to eq(expected_serialized)
         end
+
+        it 'sends lara_start only when there is a dirty answer' do
+          start_time = Time.now.utc.to_s
+          first_one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(first_one_answer_json)).not_to include("lara_start")
+
+          one_answer.mark_dirty
+          second_one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(second_one_answer_json)).to include(
+            "lara_start" => start_time
+          )
+        end
+
+        it 'has a lara_start time indicates when an answer was last modified' do
+          first_time = Time.now.utc.to_s
+          # force creation of one_answer
+          one_answer
+
+          Timecop.travel(3.hours.from_now)
+          modified_time = Time.now.utc.to_s
+          # this is normally handled by an update handler, the updated_at time will be
+          # modified and if there is a run then the object will be marked dirty
+          one_answer.touch
+          one_answer.mark_dirty
+
+          Timecop.travel(3.hours.from_now)
+          send_time = Time.now.utc.to_s
+          portal_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(portal_json)).to include(
+            "lara_end"   => send_time,
+            "lara_start" => modified_time
+          )
+        end
+
+        it 'has a lara_start time that is the modified time only of dirty answers' do
+          first_time = Time.now.utc.to_s
+          three_answers = [or_answer, mc_answer,iq_answer]
+
+          three_answers.each{|a| a.mark_clean}
+
+          Timecop.travel(3.hours.from_now)
+          # touch this one but don't make it dirty
+          mc_answer.touch
+
+          Timecop.travel(3.hours.from_now)
+          modified_time = Time.now.utc.to_s
+
+          # this is normally handled by an update handler the updated_at time will be
+          # modified and if there is a run then the object will be marked dirty
+          or_answer.touch
+          or_answer.mark_dirty
+
+          Timecop.travel(3.hours.from_now)
+          send_time = Time.now.utc.to_s
+          portal_json = protocol.response_for_portal_1_0(three_answers)
+          expect(JSON.parse(portal_json)).to include(
+            "lara_end"   => send_time,
+            "lara_start" => modified_time
+          )
+
+        end
+
       end
 
     end
