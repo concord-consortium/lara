@@ -96,14 +96,24 @@ module PortalSender
     ################################################
     def response_for_portal_1_0(_answer)
       answers  = arrayify_answers(_answer)
-      lara_start = answers.map(&:updated_at).min
 
-      return {
+      data_for_portal = {
         answers: answers.map { |ans| ans.portal_hash },
         version: "1",
         lara_end: Time.now.utc.to_s,
-        lara_start: lara_start.utc.to_s
-      }.to_json
+      }
+
+      # lara_start is used by the portal to track how long the latency is from a change
+      # made by a student in LARA to when that changes is fully available in the portal.
+      # This is only relevant when there are dirty answers.
+      # Sometimes all of the answers of a Run are sent to the portal regardless if they
+      # are dirty. In that case there isn't a useful lara_start.
+      dirty_answers = answers.select(&:dirty?)
+      if !dirty_answers.empty?
+        data_for_portal[:lara_start] = dirty_answers.map(&:updated_at).min.utc.to_s
+      end
+
+      return data_for_portal.to_json
     end
 
     ################################################
