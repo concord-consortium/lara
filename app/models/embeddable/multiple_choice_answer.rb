@@ -90,6 +90,16 @@ module Embeddable
       return self.update_attributes(params)
     end
 
+    def send_to_portal
+      # we do an explicit touch because it seems that Active Record does not update
+      # updated_at when just the answers change. The updated callback seemes to be
+      # triggered, but updated_at is not changed.
+      # the updated_at time is used to keep track of how long it takes changes to go from
+      # lara to the portal
+      self.touch
+      super
+    end
+
     def answered?
       answers.size > 0
     end
