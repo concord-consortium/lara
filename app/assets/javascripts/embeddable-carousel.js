@@ -120,16 +120,21 @@ EmbeddableCarousel.prototype.isFullWidth = function() {
     return $('.content-mod').hasClass('l-full-width');
 };
 
+EmbeddableCarousel.prototype.isResponsive = function() {
+  return $('.content-mod').hasClass('l-responsive');
+};
+
 /** Calculates the proper height for the carousel container. */
 EmbeddableCarousel.prototype.calculateHeight = function() {
     var interactiveHeight = $('.interactive-mod').height();
     var offset = $('.content-mod').offset();
 
     var available = $(window).height() - offset.top;
-    if (this.isFullWidth()) {
+    if (this.isResponsive()) {
+        this.bestHeight = this.tallestQuestion() + 30;
+    } else if (this.isFullWidth()) {
         this.bestHeight = Math.max(this.tallestQuestion(), available) + 30;
-    }
-    else {
+    } else {
         this.bestHeight = Math.max(interactiveHeight, this.tallestQuestion());
         // limit to the window?
         this.bestHeight = Math.min(this.bestHeight, available);
@@ -140,6 +145,10 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
 EmbeddableCarousel.prototype.calculateWidth = function() {
     if (this.isFullWidth()) {
         this.bestWidth = 960;
+        return;
+    }
+    if (this.isResponsive()) {
+        this.bestWidth = 278;
         return;
     }
     if ($('.content-mod').hasClass('l-6040')) {
