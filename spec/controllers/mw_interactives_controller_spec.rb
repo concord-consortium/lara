@@ -24,46 +24,6 @@ describe MwInteractivesController do
 
   context 'when the logged-in user is an author' do
     # Authorization is tested in spec/models/user_spec.rb
-    context 'and an InteractivePage ID is provided' do
-      describe 'new' do
-        it 'automatically creates a new interactive' do
-          activity
-          starting_count = MwInteractive.count()
-          join_count = InteractiveItem.count()
-          get :new, :page_id => page.id
-
-          expect(MwInteractive.count()).to equal starting_count + 1
-          expect(InteractiveItem.count()).to equal join_count + 1
-        end
-
-        it 'redirects the submitter back to the page edit page' do
-          activity
-          get :new, :page_id => page.id
-          new_id = MwInteractive.last().id
-          expect(response).to redirect_to(edit_activity_page_path(activity, page, :edit_mw_int => new_id))
-        end
-      end
-
-      describe 'create' do
-        it 'creates an empty MW Interactive' do
-          activity
-          starting_count = MwInteractive.count()
-          join_count = InteractiveItem.count()
-          post :create, :page_id => page.id
-
-          expect(MwInteractive.count()).to equal starting_count + 1
-          expect(InteractiveItem.count()).to equal join_count + 1
-        end
-
-        it 'redirects the submitter to the page edit page' do
-          activity
-          post :create, :page_id => page.id
-          new_id = MwInteractive.last().id
-          expect(response).to redirect_to(edit_activity_page_path(activity, page, :edit_mw_int => new_id))
-        end
-      end
-    end
-
     context 'when editing an existing MW Interactive' do
       describe 'edit' do
         it 'shows a form with values of the MW Interactive filled in' do
@@ -110,25 +70,6 @@ describe MwInteractivesController do
           post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
           expect(flash[:warning]).to eq('There was a problem updating your iframe interactive.')
-        end
-      end
-
-      describe 'destroy' do
-        it 'removes the requested MW Interactive from the database and page and redirects to the page edit page' do
-          activity
-          int
-          PageItem.create!(:interactive_page => page, :embeddable => int)
-          interactive_count = MwInteractive.count()
-          page.reload
-          page_count = page.interactives.length
-
-          post :destroy, :id => int.id, :page_id => page.id
-
-          expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(MwInteractive.count()).to eq(interactive_count - 1)
-          page.reload
-          expect(page.interactives.length).to eq(page_count - 1)
-          expect(flash[:notice]).to eq('Your Mw interactive was deleted.')
         end
       end
     end
