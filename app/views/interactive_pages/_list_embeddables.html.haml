@@ -2,7 +2,7 @@
   - unless embeddables.blank?
     - embeddables.each do |e|
       - if Embeddable::is_interactive?(e)
-        .embedded-interactive
+        .question.embedded-interactive
           = render_interactive(e)
       - else
         -# Embeddable is a question.

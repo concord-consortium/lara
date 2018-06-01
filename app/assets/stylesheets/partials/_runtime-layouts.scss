@@ -63,6 +63,16 @@
     vertical-align: top;
   }
 
+  .question.embedded-interactive {
+    margin: 0 20px;
+    display: block;
+    width: auto;
+  }
+
+  .jcarousel .question {
+    margin: 0;
+  }
+
   h5:after {
     background-color: none;
     display:none;
