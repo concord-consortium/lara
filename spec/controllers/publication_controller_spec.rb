@@ -15,7 +15,7 @@ describe PublicationsController do
     it 'recognizes and generates #show_status' do
       expect({:get => "/publications/show_status/LightweigthActivity/3"}).
         to route_to({
-          :controller       => 'publications', 
+          :controller       => 'publications',
           :action           => 'show_status',
           :publishable_type => 'LightweigthActivity',
           :publishable_id   => "3"
@@ -51,6 +51,7 @@ describe PublicationsController do
        "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
        "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
        "external_report_url"  => act_one.external_report_url,
+       "student_report_enabled" => act_one.student_report_enabled,
        "thumbnail_url" =>"thumbnail",
        "author_email"  => @user.email,
        "is_locked"     =>false,
@@ -84,9 +85,9 @@ describe PublicationsController do
     it "should have proper routing" do
       expect({:get => "/publications/add/LightweightActivity/1"}).
         to route_to({
-          :controller       => 'publications', 
+          :controller       => 'publications',
           :action           => 'add_portal',
-          :publishable_type => 'LightweightActivity', 
+          :publishable_type => 'LightweightActivity',
           :publishable_id   => "1"
       })
     end

@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :external_report_url
+                  :external_report_url, :student_report_enabled
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -91,7 +91,8 @@ class LightweightActivity < ActiveRecord::Base
       notes: notes,
       layout: layout,
       editor_mode: editor_mode,
-      external_report_url: external_report_url
+      external_report_url: external_report_url,
+      student_report_enabled: student_report_enabled
     }
   end
 
@@ -125,7 +126,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :notes,
                                         :layout,
                                         :editor_mode,
-                                        :external_report_url
+                                        :external_report_url,
+                                        :student_report_enabled
     ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
@@ -148,6 +150,7 @@ class LightweightActivity < ActiveRecord::Base
       theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
       external_report_url: activity_json_object[:external_report_url],
+      student_report_enabled: activity_json_object[:student_report_enabled],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode]
@@ -202,6 +205,7 @@ class LightweightActivity < ActiveRecord::Base
       "author_url" => author_url,
       "print_url"  => print_url,
       "external_report_url"  => external_report_url,
+      "student_report_enabled"  => student_report_enabled,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email,
       "is_locked" => self.is_locked
