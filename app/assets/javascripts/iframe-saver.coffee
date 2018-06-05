@@ -90,6 +90,8 @@ class IFrameSaver
           ForwardBlocker.instance.enable_forward_navigation_for(@$iframe[0])
         else
           ForwardBlocker.instance.prevent_forward_navigation_for(@$iframe[0], opts.message)
+    @iframePhone.addListener 'getFirebaseJWT', (opts={}) =>
+      @get_firebase_jwt(opts)
 
     if @learner_state_saving_enabled()
       @iframePhone.post('getLearnerUrl')
@@ -237,6 +239,17 @@ class IFrameSaver
       $(window).off focus_namespace
       @$iframe.off mouseout_namespace
 
+  get_firebase_jwt: (opts) ->
+    $.ajax
+      type: 'POST'
+      url: "#{@auth_provider}api/v1/jwt/firebase"
+      data: opts
+      crossDomain: true
+      xhrFields: {withCredentials: true}
+      success: (response) =>
+        @iframePhone.post 'firebaseJWT', response
+      error: (jqxhr, status, error) =>
+        @iframePhone.post 'firebaseJWT', {response_type: "ERROR", message: error}
 
 # Export constructor.
 window.IFrameSaver = IFrameSaver
