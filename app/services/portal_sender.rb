@@ -41,12 +41,12 @@ module PortalSender
       "#{endpoint}/#{PortalSender::Protocol::VersionRoutePrefix}/#{self.version[:name]}"
     end
 
-    def post_answers(answers, remote_endpoint)
+    def post_answers(answers, remote_endpoint, start_time = nil)
       assume_latest_version if @last_try < retry_interval.ago
       try_again = true
       while try_again
         @last_try = Time.now
-        serialized_data = self.send serialization_method_name, answers
+        serialized_data = self.send serialization_method_name, answers, start_time
         response = HTTParty.post(
             versioned_endpoint(remote_endpoint), {
             :body => serialized_data,
@@ -94,7 +94,7 @@ module PortalSender
     ################################################
     # Version 1.0 of the protocol
     ################################################
-    def response_for_portal_1_0(_answer)
+    def response_for_portal_1_0(_answer, start_time = nil)
       answers  = arrayify_answers(_answer)
 
       data_for_portal = {
@@ -105,12 +105,8 @@ module PortalSender
 
       # lara_start is used by the portal to track how long the latency is from a change
       # made by a student in LARA to when that changes is fully available in the portal.
-      # This is only relevant when there are dirty answers.
-      # Sometimes all of the answers of a Run are sent to the portal regardless if they
-      # are dirty. In that case there isn't a useful lara_start.
-      dirty_answers = answers.select(&:dirty?)
-      if !dirty_answers.empty?
-        data_for_portal[:lara_start] = dirty_answers.map(&:updated_at).min.utc.to_s
+      if start_time
+        data_for_portal[:lara_start] = start_time.utc.to_s
       end
 
       return data_for_portal.to_json
@@ -119,7 +115,7 @@ module PortalSender
     ################################################
     # Version 0.0 of the protocol
     ################################################
-    def response_for_portal(_answer)
+    def response_for_portal(_answer, start_time = nil)
       answers = arrayify_answers(_answer)
       answers.map { |ans| ans.portal_hash }.to_json
     end
