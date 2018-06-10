@@ -44,6 +44,7 @@ module InteractiveRunHelper
     data['authored-state'] = interactive.authored_state
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
+    data['get-firebase-jwt-url'] = api_v1_get_firebase_jwt_url(run.id)
 
     opts = {
       :src => interactive.url,
