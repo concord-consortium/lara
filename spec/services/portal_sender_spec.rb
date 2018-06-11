@@ -166,67 +166,16 @@ describe PortalSender::Protocol do
           expect(JSON.parse(all_answers_json)).to eq(expected_serialized)
         end
 
-        it 'sends lara_start only when there is a dirty answer' do
-          start_time = Time.now.utc.to_s
+        it 'sends lara_start only when it is provided' do
           first_one_answer_json = protocol.response_for_portal_1_0(one_answer)
           expect(JSON.parse(first_one_answer_json)).not_to include("lara_start")
 
-          one_answer.mark_dirty
-          second_one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          start_time = Time.now
+          second_one_answer_json = protocol.response_for_portal_1_0(one_answer, start_time)
           expect(JSON.parse(second_one_answer_json)).to include(
-            "lara_start" => start_time
+            "lara_start" => start_time.utc.to_s
           )
         end
-
-        it 'has a lara_start time indicates when an answer was last modified' do
-          first_time = Time.now.utc.to_s
-          # force creation of one_answer
-          one_answer
-
-          Timecop.travel(3.hours.from_now)
-          modified_time = Time.now.utc.to_s
-          # this is normally handled by an update handler, the updated_at time will be
-          # modified and if there is a run then the object will be marked dirty
-          one_answer.touch
-          one_answer.mark_dirty
-
-          Timecop.travel(3.hours.from_now)
-          send_time = Time.now.utc.to_s
-          portal_json = protocol.response_for_portal_1_0(one_answer)
-          expect(JSON.parse(portal_json)).to include(
-            "lara_end"   => send_time,
-            "lara_start" => modified_time
-          )
-        end
-
-        it 'has a lara_start time that is the modified time only of dirty answers' do
-          first_time = Time.now.utc.to_s
-          three_answers = [or_answer, mc_answer,iq_answer]
-
-          three_answers.each{|a| a.mark_clean}
-
-          Timecop.travel(3.hours.from_now)
-          # touch this one but don't make it dirty
-          mc_answer.touch
-
-          Timecop.travel(3.hours.from_now)
-          modified_time = Time.now.utc.to_s
-
-          # this is normally handled by an update handler the updated_at time will be
-          # modified and if there is a run then the object will be marked dirty
-          or_answer.touch
-          or_answer.mark_dirty
-
-          Timecop.travel(3.hours.from_now)
-          send_time = Time.now.utc.to_s
-          portal_json = protocol.response_for_portal_1_0(three_answers)
-          expect(JSON.parse(portal_json)).to include(
-            "lara_end"   => send_time,
-            "lara_start" => modified_time
-          )
-
-        end
-
       end
 
     end
