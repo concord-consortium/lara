@@ -45,7 +45,7 @@ class LightweightActivity < ActiveRecord::Base
   # Just a way of getting self.visible_pages with the embeddables eager-loaded
   def visible_pages_with_embeddables
     InteractivePage
-      .includes(:interactive_items, :page_items => :embeddable)
+      .includes(:page_items => :embeddable)
       .where(:lightweight_activity_id => self.id, :is_hidden => false)
       .order(:position)
   end
@@ -127,6 +127,7 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :external_report_url
     ])
+    activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:pages] = []
     self.pages.each do |p|

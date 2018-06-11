@@ -20,73 +20,97 @@
     "sidebar_title": "Did you know?",
     "text": null,
     "is_hidden": false,
-    "interactives": [{
-      "caption": "lightbox",
-      "credit": "lightbox",
-      "credit_url": "",
-      "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-      "type": "ImageInteractive"
-    }, {
-      "name": "air pollution",
-      "native_height": 435,
-      "native_width": 576,
-      "url": "http://concord-consortium.github.io/agentscript-models/air-pollution/air-pollution-1.html",
-      "type": "MwInteractive"
-    }, {
-      "caption": "caption text",
-      "credit": "credit text",
-      "height": 240,
-      "poster_url": "",
-      "width": 556,
-      "sources": [{
-        "format": "video/mp4",
-        "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
-      }],
-      "type": "VideoInteractive"
-    }],
     "embeddables": [{
-      "bg_source": "Shutterbug",
-      "bg_url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-      "drawing_prompt": "\u003Cspan style=\"color: rgb(63, 63, 63); font-family: Lato, arial, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 255);\"\u003EDrawing Prompt text\u003C/span\u003E",
-      "name": "Image Question",
-      "prompt": "why does ...",
-      "type": "Embeddable::ImageQuestion"
+      "embeddable": {
+        "caption": "lightbox",
+        "credit": "lightbox",
+        "credit_url": "",
+        "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
+        "type": "ImageInteractive"
+      },
+      "section": "interactive_box"
     }, {
-      "custom": false,
-      "enable_check_answer": true,
-      "multi_answer": false,
-      "name": "Multiple Choice Question element",
-      "prompt": "why does ...",
-      "show_as_menu": false,
-      "choices": [{
-        "choice": "a",
-        "is_correct": true,
-        "prompt": ""
-      }, {
-        "choice": "b",
-        "is_correct": false,
-        "prompt": ""
-      }, {
-        "choice": "c",
-        "is_correct": false,
-        "prompt": ""
-      }],
-      "type": "Embeddable::MultipleChoice"
+      "embeddable": {
+        "name": "air pollution",
+        "native_height": 435,
+        "native_width": 576,
+        "url": "http://concord-consortium.github.io/agentscript-models/air-pollution/air-pollution-1.html",
+        "type": "MwInteractive"
+      },
+      "section": "interactive_box"
     }, {
-           "action_type":1,
-           "custom_action_label": "",
-           "name": "Labbook album",
-           "prompt": "This is Labbook!",
-           "type":"Embeddable::Labbook"
+      "embeddable": {
+        "caption": "caption text",
+        "credit": "credit text",
+        "height": 240,
+        "poster_url": "",
+        "width": 556,
+        "sources": [{
+          "format": "video/mp4",
+          "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
+        }],
+        "type": "VideoInteractive"
+      },
+      "section": "interactive_box"
+    }, {
+      "embeddable": {
+        "bg_source": "Shutterbug",
+        "bg_url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
+        "drawing_prompt": "\u003Cspan style=\"color: rgb(63, 63, 63); font-family: Lato, arial, helvetica, sans-serif; font-size: 13px; background-color: rgb(255, 255, 255);\"\u003EDrawing Prompt text\u003C/span\u003E",
+        "name": "Image Question",
+        "prompt": "why does ...",
+        "type": "Embeddable::ImageQuestion"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": true,
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prompt": "why does ...",
+        "show_as_menu": false,
+        "choices": [{
+          "choice": "a",
+          "is_correct": true,
+          "prompt": ""
         }, {
-      "name": "open responce",
-      "prompt": "why does ...",
-      "type": "Embeddable::OpenResponse"
+          "choice": "b",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "c",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice"
+      },
+      "section": null
     }, {
-      "content": "\u003Cb style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003EBlack Sabbath\u003C/b\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;are an English\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Rock_music\" title=\"Rock music\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Erock\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;band, formed in\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Birmingham\" title=\"Birmingham\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EBirmingham\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;in 1968, by guitarist and main songwriter\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Tony_Iommi\" title=\"Tony Iommi\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003ETony Iommi\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, bassist and main lyricist\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Geezer_Butler\" title=\"Geezer Butler\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EGeezer Butler\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, singer\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Ozzy_Osbourne\" title=\"Ozzy Osbourne\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EOzzy Osbourne\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, and drummer\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Bill_Ward_(musician)\" title=\"Bill Ward (musician)\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EBill Ward\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E. The band have since experienced multiple line-up changes, with guitarist Iommi being the only constant presence in the band through the years. Originally formed in 1968 as a\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Blues_rock\" title=\"Blues rock\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Eblues rock\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;band, the group soon adopted the Black Sabbath moniker and began incorporating\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Occultism\" title=\"Occultism\" class=\"mw-redirect\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Eoccult\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;themes with horror-inspired lyrics and tuned-down guitars. Despite an association with these two themes, Black Sabbath also composed songs dealing with social instability, political corruption, the dangers of drug abuse and apocalyptic prophecies of the horrors of war.\u003C/span\u003E",
-      "name": "Black Sabbath",
-      "type": "Embeddable::Xhtml"
-    }]
+        "embeddable": {
+          "action_type":1,
+          "custom_action_label": "",
+          "name": "Labbook album",
+          "prompt": "This is Labbook!",
+          "type":"Embeddable::Labbook"
+        },
+        "section": null
+      }, {
+      "embeddable": {
+        "name": "open responce",
+        "prompt": "why does ...",
+        "type": "Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "content": "\u003Cb style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003EBlack Sabbath\u003C/b\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;are an English\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Rock_music\" title=\"Rock music\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Erock\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;band, formed in\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Birmingham\" title=\"Birmingham\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EBirmingham\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;in 1968, by guitarist and main songwriter\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Tony_Iommi\" title=\"Tony Iommi\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003ETony Iommi\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, bassist and main lyricist\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Geezer_Butler\" title=\"Geezer Butler\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EGeezer Butler\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, singer\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Ozzy_Osbourne\" title=\"Ozzy Osbourne\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EOzzy Osbourne\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E, and drummer\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Bill_Ward_(musician)\" title=\"Bill Ward (musician)\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003EBill Ward\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E. The band have since experienced multiple line-up changes, with guitarist Iommi being the only constant presence in the band through the years. Originally formed in 1968 as a\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Blues_rock\" title=\"Blues rock\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Eblues rock\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;band, the group soon adopted the Black Sabbath moniker and began incorporating\u0026nbsp;\u003C/span\u003E\u003Ca href=\"http://en.wikipedia.org/wiki/Occultism\" title=\"Occultism\" class=\"mw-redirect\" style=\"text-decoration: none; color: rgb(11, 0, 128); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background: none rgb(255, 255, 255);\"\u003Eoccult\u003C/a\u003E\u003Cspan style=\"color: rgb(37, 37, 37); font-family: sans-serif; font-size: 14px; line-height: 22.3999996185303px; background-color: rgb(255, 255, 255);\"\u003E\u0026nbsp;themes with horror-inspired lyrics and tuned-down guitars. Despite an association with these two themes, Black Sabbath also composed songs dealing with social instability, political corruption, the dangers of drug abuse and apocalyptic prophecies of the horrors of war.\u003C/span\u003E",
+        "name": "Black Sabbath",
+        "type": "Embeddable::Xhtml"
+      },
+      "section": null
+    }
+    ]
   }, {
     "layout": "l-6040",
     "name": null,
@@ -99,31 +123,39 @@
     "sidebar_title": "Did you know?",
     "text": null,
     "is_hidden": false,
-    "interactives": [{
-      "caption": "page 2",
-      "credit": "page 2",
-      "credit_url": "",
-      "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-      "type": "ImageInteractive"
+    "embeddables": [{
+      "embeddable": {
+        "caption": "page 2",
+        "credit": "page 2",
+        "credit_url": "",
+        "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
+        "type": "ImageInteractive"
+      },
+      "section": "interactive_box"
     }, {
-      "name": "simple gas",
-      "native_height": 435,
-      "native_width": 576,
-      "url": "https://lab.concord.org/embeddable.html#interactives/samples/2-simple-gas.json",
-      "type": "MwInteractive"
+      "embeddable":  {
+        "name": "simple gas",
+        "native_height": 435,
+        "native_width": 576,
+        "url": "https://lab.concord.org/embeddable.html#interactives/samples/2-simple-gas.json",
+        "type": "MwInteractive"
+      },
+      "section": "interactive_box"
     }, {
-      "caption": "asd",
-      "credit": "asd",
-      "height": 240,
-      "poster_url": "",
-      "width": 556,
-      "sources": [{
-        "format": "video/mp4",
-        "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
-      }],
-      "type": "VideoInteractive"
-    }],
-    "embeddables": []
+      "embeddable": {
+        "caption": "asd",
+        "credit": "asd",
+        "height": 240,
+        "poster_url": "",
+        "width": 556,
+        "sources": [{
+          "format": "video/mp4",
+          "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
+        }],
+        "type": "VideoInteractive"
+      },
+      "section": "interactive_box"
+    }]
   }, {
     "layout": "l-6040",
     "name": null,
@@ -136,46 +168,59 @@
     "sidebar_title": "Did you know?",
     "text": null,
     "is_hidden": false,
-    "interactives": [{
-      "caption": "page 3",
-      "credit": "page3",
-      "credit_url": "",
-      "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-      "type": "ImageInteractive",
-      "ref_id":"1164-ImageInteractive"
+    "embeddables": [{
+      "embeddable": {
+        "caption": "page 3",
+        "credit": "page3",
+        "credit_url": "",
+        "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
+        "type": "ImageInteractive",
+        "ref_id":"1164-ImageInteractive"
+      },
+      "section": "interactive_box"
+      }, {
+        "embeddable": {
+          "name": null,
+          "native_height": 435,
+          "native_width": 576,
+          "url": null,
+          "type": "MwInteractive"
+        },
+        "section": "interactive_box"
+      }, {
+        "embeddable": {
+          "name": "simple gas 2",
+          "native_height": 435,
+          "native_width": 576,
+          "url": "http://concord-consortium.github.io/agentscript-models/air-pollution/air-pollution-1.html",
+          "type": "MwInteractive"
+        },
+        "section": "interactive_box"
+      }, {
+      "embeddable": {
+        "caption": "page 3",
+        "credit": "page 3",
+        "height": 240,
+        "poster_url": "",
+        "width": 556,
+        "sources": [{
+          "format": "video/mp4",
+          "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
+        }],
+        "type": "VideoInteractive"
+      },
+      "section": "interactive_box"
     }, {
-      "name": null,
-      "native_height": 435,
-      "native_width": 576,
-      "url": null,
-      "type": "MwInteractive"
-    }, {
-      "name": "simple gas 2",
-      "native_height": 435,
-      "native_width": 576,
-      "url": "http://concord-consortium.github.io/agentscript-models/air-pollution/air-pollution-1.html",
-      "type": "MwInteractive"
-    }, {
-      "caption": "page 3",
-      "credit": "page 3",
-      "height": 240,
-      "poster_url": "",
-      "width": 556,
-      "sources": [{
-        "format": "video/mp4",
-        "url": "http://media.w3.org/2010/05/sintel/trailer.mp4"
-      }],
-      "type": "VideoInteractive"
-    }],
-    "embeddables": [
-      {
-         "action_type":1,
-         "custom_action_label":"LB1",
-         "name":"Lab Book 1",
-         "prompt":"Take a picture of the model",
-         "type":"Embeddable::Labbook",
-         "interactive_ref_id":"1164-ImageInteractive"
-      }
+      "embeddable": {
+        "action_type":1,
+        "custom_action_label":"LB1",
+        "name":"Lab Book 1",
+        "prompt":"Take a picture of the model",
+        "type":"Embeddable::Labbook",
+        "interactive_ref_id":"1164-ImageInteractive"
+      },
+      "section": null
+    }
     ]
   }],
   "type":"LightweightActivity"

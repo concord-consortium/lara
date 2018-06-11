@@ -1,12 +1,17 @@
 .embeddables
   - unless embeddables.blank?
     - embeddables.each do |e|
-      -# If a labbooks is included within the interactives section,
-      -# dont also display that item here.
-      - unless show_labbook_in_assessment_block?(e)
-        - is_likert = e.is_a?(Embeddable::MultipleChoiceAnswer) && e.is_likert
-        - css_class = e.is_a?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : ""
-        - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
-        - if e.show_in_runtime?
-          .question{ class: css_class }
-            = render(partial: partial_name, locals: { embeddable: e })
+      - if Embeddable::is_interactive?(e)
+        .question.embedded-interactive
+          = render_interactive(e)
+      - else
+        -# Embeddable is a question.
+        -# If a labbooks is included within the interactives section,
+        -# dont also display that item here.
+        - unless show_labbook_in_assessment_block?(e)
+          - is_likert = e.is_a?(Embeddable::MultipleChoiceAnswer) && e.is_likert
+          - css_class = e.is_a?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : ""
+          - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
+          - if e.show_in_runtime?
+            .question{ class: css_class }
+              = render(partial: partial_name, locals: { embeddable: e })

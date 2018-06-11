@@ -63,12 +63,6 @@ describe "interactive_pages/edit" do
     expect(rendered).to match /<select[^>]+name="embeddable_type"[^>]*>/
   end
 
-  it 'has links for adding Interactives to the page' do
-    render
-    expect(rendered).to match /<form[^>]+action="\/activities\/#{activity.id}\/pages\/#{page.id}\/add_interactive"[^<]*>/
-    expect(rendered).to match /<select[^>]+name="interactive_type"[^>]*>/
-  end
-
   it 'shows navigation links' do
     page1
     page2

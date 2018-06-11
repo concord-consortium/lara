@@ -224,7 +224,6 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .text {
   float: left;
   height: auto;
-  padding: 1% 1% 1% 0;
   width: 38%;
 }
 .stacked-right .text {
@@ -818,6 +817,11 @@ fieldset {
     form.interactives-form {
       margin-top: 8px;
     }
+  }
+  div.sidebar {
+    background: 0;
+    border-radius: 0;
+    color: #000;
   }
   h2.question {
     margin-bottom: 1em;

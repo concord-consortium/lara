@@ -31,13 +31,16 @@ var EmbeddableCarousel = function (element) {
 };
 
 EmbeddableCarousel.prototype.setCarouselSize = function () {
-    // Set 'bestHeight' and 'bestWidth' values
-    this.calculateSize();
-    // Set the carousel to those values and reload it
-    this.setHeight(this.bestHeight);
-    this.setWidth(this.bestWidth);
-	// recalculate scroll values for new dimensions
-    this.container.jcarousel('reload');
+  // Set 'bestHeight' and 'bestWidth' values
+  this.calculateWidth()
+  this.setWidth(this.bestWidth)
+  // Make sure that interactives have correct height.
+  $('[data-aspect-ratio]').trigger('sizeUpdate')
+  // Set the carousel to those values and reload it
+  this.calculateHeight()
+  this.setHeight(this.bestHeight)
+  // recalculate scroll values for new dimensions
+  this.container.jcarousel('reload')
 };
 
 // Set the height of the container
@@ -144,7 +147,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
 /** Calculates the proper width for the carousel container. */
 EmbeddableCarousel.prototype.calculateWidth = function() {
     if (this.isFullWidth()) {
-        this.bestWidth = 960;
+        this.bestWidth = 936;
         return;
     }
     if (this.isResponsive()) {
@@ -152,20 +155,14 @@ EmbeddableCarousel.prototype.calculateWidth = function() {
         return;
     }
     if ($('.content-mod').hasClass('l-6040')) {
-        this.bestWidth = 374;
+        this.bestWidth = 365;
         return;
     }
     if ($('.content-mod').hasClass('r-4060')) {
-        this.bestWidth =  374;
+        this.bestWidth =  365;
         return;
     }
-    this.bestWidth = 278;
-};
-
-/** Calculates the proper width & height the carousel container. */
-EmbeddableCarousel.prototype.calculateSize = function () {
-    this.calculateWidth();
-    this.calculateHeight();
+    this.bestWidth = 271;
 };
 
 // unlike document.ready window.load() is called

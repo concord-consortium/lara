@@ -4,7 +4,7 @@ function interactiveSizing () {
   function setSize () {
     var $iframe = $(this);
     var aspectRatio = $iframe.data('aspect-ratio');
-    var currWidth = $('.interactive-mod').width();
+    var currWidth = $iframe.width()
     $iframe.attr('width', '100%');
     $iframe.attr('height', currWidth / aspectRatio);
   }
@@ -17,3 +17,4 @@ function interactiveSizing () {
 }
 
 $(document).ready(interactiveSizing);
+

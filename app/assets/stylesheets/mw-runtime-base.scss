@@ -542,43 +542,43 @@ div.intra-page-nav {
   img {
     max-width: 100%;
   }
-
-  .under-image {
-    .fullscreen {
-      float: right;
-      a {
-        outline: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-      }
-      img {
-        height: 35px;
-        width: 35px;
-      }
-    }
-    .caption {
-      display: block;
-      font-size: 14px;
-      margin: 0px;
-    }
-    .credit {
-      display: block;
-      font-size: 10px;
-      font-style: italic;
-      margin: 0px;
-      a {
-        text-decoration: underline;
-      }
-    }
-  }
 }
 
 .questions-mod {
   margin-bottom: 52px;
   position: relative;
+}
+
+.under-image {
+  .fullscreen {
+    float: right;
+    a {
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+    }
+    img {
+      height: 35px;
+      width: 35px;
+    }
+  }
+  .caption {
+    display: block;
+    font-size: 14px;
+    margin: 0px;
+  }
+  .credit {
+    display: block;
+    font-size: 10px;
+    font-style: italic;
+    margin: 0px;
+    a {
+      text-decoration: underline;
+    }
+  }
 }
 
 .question {
@@ -588,6 +588,12 @@ div.intra-page-nav {
     font-style: italic;
     font-size: 0.9em;
   }
+}
+
+.embedded-interactive {
+  width: 200px;
+  height: 200px;
+  background: red;
 }
 
 .challenge {
