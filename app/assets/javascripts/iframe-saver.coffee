@@ -45,6 +45,7 @@ class IFrameSaver
     @class_info_url = $data_div.data('class-info-url')
     @interactive_id = $data_div.data('interactive-id')
     @interactive_name = $data_div.data('interactive-name')
+    @get_firebase_jwt_url = $data_div.data('get-firebase-jwt-url')
 
     @save_indicator = SaveIndicator.instance()
 
@@ -242,10 +243,8 @@ class IFrameSaver
   get_firebase_jwt: (opts) ->
     $.ajax
       type: 'POST'
-      url: "#{@auth_provider}api/v1/jwt/firebase"
+      url: @get_firebase_jwt_url
       data: opts
-      crossDomain: true
-      xhrFields: {withCredentials: true}
       success: (response) =>
         @iframePhone.post 'firebaseJWT', response
       error: (jqxhr, status, error) =>

@@ -168,6 +168,8 @@ LightweightStandalone::Application.routes.draw do
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
 
       match "user_check" => 'user_check#index', defaults: { format: 'json' }
+
+      match 'get_firebase_jwt/:run_id' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
     end
   end
 
