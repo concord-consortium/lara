@@ -111,9 +111,10 @@
           %span.finished-activity= t('COMPLETION_PAGE.FINISHED_ACTIVITY', activity: @activity.name)
           %span.finished-sequence= t('COMPLETION_PAGE.FINISHED_SEQUENCE')
 
-      .submit.report
-        %a{:href => report_path, :class => 'gen-report', :target => 'new' }
-          %input{ :class => 'button', :type => 'submit', :value => t("COMPLETION_PAGE.GENERATE_A_REPORT") }
+      - if @page.lightweight_activity.student_report_enabled
+        .submit.report
+          %a{:href => report_path, :class => 'gen-report', :target => 'new' }
+            %input{ :class => 'button', :type => 'submit', :value => t("COMPLETION_PAGE.GENERATE_A_REPORT") }
 
     .bottom-block
       .image-preview

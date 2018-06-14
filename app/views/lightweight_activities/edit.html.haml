@@ -65,6 +65,12 @@
         %br
           .hint=t("EXTERNAL_REPORT_WARNING")
       .field
+        = f.label :student_report_enabled, t("STUDENT_REPORT_ENABLED")
+        = f.check_box :student_report_enabled
+        %br
+          .hint
+            Show a link to the student so they can see all their answers and see if they are correct
+      .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
       - if current_user.is_admin
