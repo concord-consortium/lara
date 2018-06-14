@@ -7,6 +7,8 @@ class Api::V1::JwtController < ApplicationController
     run = Run.find_by_id(params[:run_id])
     return error(404, "Run not found: #{params[:run_id]}") unless run
     return error(500, "Run has no remote_endpoint") unless run.remote_endpoint && !run.remote_endpoint.empty?
+    return error(500, "Anonymous runs cannot request a JWT") unless current_user
+    return error(500, "You are not the owner of the run or an admin") unless (run.user_id == current_user.id) || current_user.is_admin
 
     begin
       auth_token = Concord::AuthPortal.auth_token_for_url(run.remote_endpoint)
