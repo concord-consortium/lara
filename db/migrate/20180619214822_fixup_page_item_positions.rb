@@ -14,7 +14,7 @@ class FixupPageItemPositions < ActiveRecord::Migration
       page.page_items.each_with_index do |item,index|
         new_position = index + 1
         next if item.position == new_position
-        item.update_attributes(:position => new_position)
+        item.update_attribute('position', new_position)
       end
     end
   end
