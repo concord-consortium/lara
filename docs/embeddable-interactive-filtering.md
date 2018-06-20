@@ -14,11 +14,11 @@ This happens when individual 'answer' partials call the `Embeddable::Answer#ques
 
 ### Single page special cases
 
-In single page rendering the labbooks are shown below their interactive. This labbook rendering is done by the interactive partial. If the interactive is not visible then the labbook will not be rendered. 
+In single page rendering the labbooks are shown below their interactive. This labbook rendering is done by the interactive partial. If the interactive is not visible then the labbook will not be rendered.
 
 ## Activity Progress
 
-LARA shows activity progress in completion ribbons on the sequence table of contents. The progess is also shown in some admin info reports.
+LARA shows activity progress in completion ribbons on the sequence table of contents. The progress is also shown in some admin info reports.
 
 The progress is based on `Run#num_answered_reportable_items` / `Run#num_reportable_items`.
 
