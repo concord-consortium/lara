@@ -14,6 +14,7 @@
     = field_set_tag "options" do
       .ul
         = render :partial => 'shared/edit_prediction', :locals => { :f => f }
+        = render :partial => 'shared/edit_featured', :locals => { :f => f }
 
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

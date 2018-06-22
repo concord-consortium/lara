@@ -46,7 +46,8 @@ describe MwInteractive do
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
-        authored_state: interactive.authored_state
+        authored_state: interactive.authored_state,
+        is_featured: interactive.is_featured
        }
       expect(interactive.to_hash).to eq(expected)
     end

@@ -19,6 +19,7 @@ describe Embeddable::OpenResponse do
         prediction_feedback: open_response.prediction_feedback,
         default_text: open_response.default_text,
         is_hidden: open_response.is_hidden,
+        is_featured: open_response.is_featured,
         hint: open_response.hint
       }
       expect(open_response.to_hash).to eq(expected)
