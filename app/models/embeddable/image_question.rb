@@ -1,6 +1,6 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
   attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt,
-    :is_prediction, :give_prediction_feedback, :prediction_feedback, :is_hidden
+    :is_prediction, :is_featured, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   include Embeddable
 
@@ -35,6 +35,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       bg_source: bg_source,
       bg_url: bg_url,
       is_prediction: is_prediction,
+      is_featured: is_featured,
       give_prediction_feedback: give_prediction_feedback,
       prediction_feedback: prediction_feedback,
       is_hidden: is_hidden,
@@ -48,7 +49,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       id: id,
       prompt: prompt,
       drawing_prompt: drawing_prompt,
-      is_required: is_prediction
+      is_required: is_prediction,
+      is_featured: is_featured
     }
   end
 
@@ -63,6 +65,7 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :bg_source,
                               :bg_url,
                               :is_prediction,
+                              :is_featured,
                               :give_prediction_feedback,
                               :prediction_feedback,
                               :is_hidden,

@@ -59,6 +59,7 @@
       .clear
       %em Warning:
       Please do not link to another interactive unless the interactive knows how to load prior work.
+      = render :partial => 'shared/edit_featured', :locals => { :f => f }
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 

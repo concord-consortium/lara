@@ -119,6 +119,7 @@ describe Embeddable::MultipleChoice do
         multi_answer: multichoice.multi_answer,
         show_as_menu: multichoice.show_as_menu,
         is_prediction: multichoice.is_prediction,
+        is_featured: multichoice.is_featured,
         give_prediction_feedback: multichoice.give_prediction_feedback,
         prediction_feedback: multichoice.prediction_feedback,
         layout: multichoice.layout,
@@ -137,6 +138,25 @@ describe Embeddable::MultipleChoice do
     it 'preserves is_hidden' do
       multichoice.is_hidden = true
       expect(multichoice_json['is_hidden']).to eq true
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(multichoice.portal_hash).to eq(
+        type: "multiple_choice",
+        id: multichoice.id,
+        prompt: multichoice.prompt,
+        is_required: multichoice.is_prediction,
+        is_featured: multichoice.is_featured,
+        choices: multichoice.choices.map { |choice|
+          {
+            id: choice.id,
+            content: choice.choice,
+            correct: choice.is_correct
+          }
+        }
+      )
     end
   end
 

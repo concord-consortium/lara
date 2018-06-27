@@ -25,7 +25,7 @@ module Embeddable
 
     attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
       :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,
-      :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
+      :is_featured, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     has_one :tracked_question, :as => :question, :dependent => :delete
@@ -93,6 +93,7 @@ module Embeddable
         multi_answer: multi_answer,
         show_as_menu: show_as_menu,
         is_prediction: is_prediction,
+        is_featured: is_featured,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         layout: layout,
@@ -111,7 +112,8 @@ module Embeddable
           content: choice.choice,
           correct: choice.is_correct
         } },
-        is_required: is_prediction
+        is_required: is_prediction,
+        is_featured: is_featured
       }
     end
 
@@ -131,6 +133,7 @@ module Embeddable
                                 :multi_answer,
                                 :show_as_menu,
                                 :is_prediction,
+                                :is_featured,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :layout,

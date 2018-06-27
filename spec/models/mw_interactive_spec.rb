@@ -46,7 +46,8 @@ describe MwInteractive do
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
-        authored_state: interactive.authored_state
+        authored_state: interactive.authored_state,
+        is_featured: interactive.is_featured
        }
       expect(interactive.to_hash).to eq(expected)
     end
@@ -67,6 +68,21 @@ describe MwInteractive do
         is_hidden: interactive.is_hidden,
         authored_state: interactive.authored_state
       })
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(interactive.portal_hash).to include(
+        type: 'iframe_interactive',
+        id: interactive.id,
+        name: interactive.name,
+        url: interactive.url,
+        native_width: interactive.native_width,
+        native_height: interactive.native_height,
+        display_in_iframe: interactive.reportable_in_iframe?,
+        is_featured: interactive.is_featured
+      )
     end
   end
 

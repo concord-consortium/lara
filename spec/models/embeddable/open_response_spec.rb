@@ -19,18 +19,31 @@ describe Embeddable::OpenResponse do
         prediction_feedback: open_response.prediction_feedback,
         default_text: open_response.default_text,
         is_hidden: open_response.is_hidden,
+        is_featured: open_response.is_featured,
         hint: open_response.hint
       }
       expect(open_response.to_hash).to eq(expected)
     end
   end
 
-  describe "export" do
+  describe "#export" do
     let(:json){ emb.export.as_json }
     let(:emb) { open_response}
     it 'preserves is_hidden' do
       emb.is_hidden = true
       expect(json['is_hidden']).to eq true
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(open_response.portal_hash).to eq(
+        type: "open_response",
+        id: open_response.id,
+        prompt: open_response.prompt,
+        is_required: open_response.is_prediction,
+        is_featured: open_response.is_featured
+      )
     end
   end
 
