@@ -141,6 +141,25 @@ describe Embeddable::MultipleChoice do
     end
   end
 
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(multichoice.portal_hash).to eq(
+        type: "multiple_choice",
+        id: multichoice.id,
+        prompt: multichoice.prompt,
+        is_required: multichoice.is_prediction,
+        is_featured: multichoice.is_featured,
+        choices: multichoice.choices.map { |choice|
+          {
+            id: choice.id,
+            content: choice.choice,
+            correct: choice.is_correct
+          }
+        }
+      )
+    end
+  end
+
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
       expect(multichoice.duplicate).to be_a_new(Embeddable::MultipleChoice).with({

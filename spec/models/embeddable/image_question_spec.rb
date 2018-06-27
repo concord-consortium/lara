@@ -28,12 +28,25 @@ describe Embeddable::ImageQuestion do
     end
   end
 
-  describe "export" do
+  describe "#export" do
     let(:json){ emb.export.as_json }
     let(:emb) { image_question }
     it 'preserves is_hidden' do
       emb.is_hidden = true
       expect(json['is_hidden']).to eq true
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(image_question.portal_hash).to eq(
+        type: "image_question",
+        id: image_question.id,
+        prompt: image_question.prompt,
+        drawing_prompt: image_question.drawing_prompt,
+        is_required: image_question.is_prediction,
+        is_featured: image_question.is_featured
+      )
     end
   end
 

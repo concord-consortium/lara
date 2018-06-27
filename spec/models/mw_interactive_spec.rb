@@ -71,6 +71,21 @@ describe MwInteractive do
     end
   end
 
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(interactive.portal_hash).to include(
+        type: 'iframe_interactive',
+        id: interactive.id,
+        name: interactive.name,
+        url: interactive.url,
+        native_width: interactive.native_width,
+        native_height: interactive.native_height,
+        display_in_iframe: interactive.reportable_in_iframe?,
+        is_featured: interactive.is_featured
+      )
+    end
+  end
+
   # This approach is temporary, it is specific for ITSI style authoring.
   # It allows authors to select a special interactive, and then the labbook automatically becomes an
   # uploading labbook

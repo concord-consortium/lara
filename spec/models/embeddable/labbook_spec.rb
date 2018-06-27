@@ -22,7 +22,8 @@ describe Embeddable::Labbook do
       expect(labbook.to_hash).to eq(expected)
     end
   end
-  describe "export" do
+
+  describe "#export" do
     let(:json){ emb.export.as_json }
     let(:emb) { labbook}
     it 'preserves is_hidden' do
@@ -30,9 +31,24 @@ describe Embeddable::Labbook do
       expect(json['is_hidden']).to eq true
     end
   end
+
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
       expect(labbook.duplicate).to be_a_new(Embeddable::Labbook)
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(labbook.portal_hash).to eq(
+        type: 'iframe_interactive',
+        id: labbook.portal_id,
+        name: labbook.name,
+        is_featured: labbook.is_featured,
+        display_in_iframe: true,
+        native_width: 600,
+        native_height: 500
+      )
     end
   end
 
