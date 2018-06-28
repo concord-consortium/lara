@@ -24,7 +24,7 @@ module Embeddable
       :dependent => :destroy
 
     attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
-      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,
+      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction, :is_full_width,
       :is_featured, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
@@ -98,6 +98,7 @@ module Embeddable
         prediction_feedback: prediction_feedback,
         layout: layout,
         is_hidden: is_hidden,
+        is_full_width: is_full_width,
         hint: hint
       }
     end
@@ -138,6 +139,7 @@ module Embeddable
                                 :prediction_feedback,
                                 :layout,
                                 :is_hidden,
+                                :is_full_width,
                                 :hint])
 
       mc_export[:choices] = []

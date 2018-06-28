@@ -74,4 +74,10 @@ module Embeddable
   def index_in_activity(activity)
     activity.reportable_items.index(self) + 1
   end
+
+  # This can be implemented by subclass.
+  # If it's true, embeddable will stretch across the whole page in full-width layout.
+  def full_width?
+    false
+  end
 end

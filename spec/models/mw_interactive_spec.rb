@@ -46,6 +46,7 @@ describe MwInteractive do
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
+        is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state,
         is_featured: interactive.is_featured
        }
@@ -66,6 +67,7 @@ describe MwInteractive do
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
+        is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state
       })
     end

@@ -20,6 +20,7 @@ describe Embeddable::OpenResponse do
         default_text: open_response.default_text,
         is_hidden: open_response.is_hidden,
         is_featured: open_response.is_featured,
+        is_full_width: open_response.is_full_width,
         hint: open_response.hint
       }
       expect(open_response.to_hash).to eq(expected)
