@@ -1,17 +1,17 @@
 .embeddables
   - unless embeddables.blank?
     - embeddables.each do |e|
-      - if Embeddable::is_interactive?(e)
-        .question.embedded-interactive
+      - css_class = e.respond_to?(:is_full_width) && e.is_full_width ? "full-width-item" : ""
+      - is_likert = e.is_a?(Embeddable::MultipleChoiceAnswer) && e.is_likert
+      - css_class += e.is_a?(Embeddable::Xhtml) ? " challenge" : (is_likert ? " likert" : "")
+      .question{ class: css_class }
+        - if Embeddable::is_interactive?(e)
           = render_interactive(e)
-      - else
-        -# Embeddable is a question.
-        -# If a labbooks is included within the interactives section,
-        -# dont also display that item here.
-        - unless show_labbook_in_assessment_block?(e)
-          - is_likert = e.is_a?(Embeddable::MultipleChoiceAnswer) && e.is_likert
-          - css_class = e.is_a?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : ""
-          - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
-          - if e.show_in_runtime?
-            .question{ class: css_class }
+        - else
+          -# Embeddable is a question.
+          -# If a labbooks is included within the interactives section,
+          -# dont also display that item here.
+          - unless show_labbook_in_assessment_block?(e)
+            - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
+            - if e.show_in_runtime?
               = render(partial: partial_name, locals: { embeddable: e })

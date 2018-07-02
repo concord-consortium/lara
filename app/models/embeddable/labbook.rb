@@ -17,7 +17,7 @@ module Embeddable
     attr_accessible :action_type, :name, :prompt,
       :custom_action_label, :is_hidden, :is_featured,
       :interactive_type, :interactive_id, :interactive,
-      :interactive_select_value, :hint
+      :interactive_select_value, :hint, :is_full_width
 
     attr_writer :interactive_select_value
 
@@ -80,6 +80,7 @@ module Embeddable
         prompt: prompt,
         custom_action_label: custom_action_label,
         is_hidden: is_hidden,
+        is_full_width: is_full_width,
         hint: hint,
         is_featured: is_featured
       }
@@ -96,6 +97,7 @@ module Embeddable
         :prompt,
         :custom_action_label,
         :is_hidden,
+        :is_full_width,
         :hint,
         :is_featured
       ])

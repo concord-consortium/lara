@@ -19,6 +19,7 @@ describe Embeddable::ImageQuestion do
         bg_url: image_question.bg_url,
         is_prediction: image_question.is_prediction,
         is_featured: image_question.is_featured,
+        is_full_width: image_question.is_full_width,
         give_prediction_feedback: image_question.give_prediction_feedback,
         prediction_feedback: image_question.prediction_feedback,
         is_hidden: image_question.is_hidden,

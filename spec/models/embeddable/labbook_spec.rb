@@ -17,6 +17,7 @@ describe Embeddable::Labbook do
         custom_action_label: labbook.custom_action_label,
         is_hidden: labbook.is_hidden,
         is_featured: labbook.is_featured,
+        is_full_width: labbook.is_full_width,
         hint: labbook.hint
       }
       expect(labbook.to_hash).to eq(expected)

@@ -32,10 +32,11 @@
   .image_url
     = f.label :image_url, 'Image_url'
     = f.text_field :image_url
+  = f.label :is_full_width, t(:IS_FULL_WIDTH_ASSESMENT_ITEM)
+  = f.check_box :is_full_width
   %br
   = f.label :no_snapshots, 'Snapshots Not Supported'
   = f.check_box :no_snapshots
-  %br
   %br
   = field_set_tag 'Save Interactive state' do
     = f.label :enable_learner_state, 'Save State'

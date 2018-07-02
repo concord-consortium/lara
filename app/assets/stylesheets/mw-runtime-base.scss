@@ -432,7 +432,12 @@ div.intra-page-nav {
     // 960/2 = 480, 480 - margins = 440, then there is 2 px of padding somewhere
     width: 438px;
     vertical-align: top;
- }
+
+    &.full-width-item {
+      width: 100%;
+      margin: 20px 0;
+    }
+  }
 
  .question.likert{
     width: 95%;
@@ -588,12 +593,6 @@ div.intra-page-nav {
     font-style: italic;
     font-size: 0.9em;
   }
-}
-
-.embedded-interactive {
-  width: 200px;
-  height: 200px;
-  background: red;
 }
 
 .challenge {

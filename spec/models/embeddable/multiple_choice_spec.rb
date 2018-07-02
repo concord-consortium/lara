@@ -120,6 +120,7 @@ describe Embeddable::MultipleChoice do
         show_as_menu: multichoice.show_as_menu,
         is_prediction: multichoice.is_prediction,
         is_featured: multichoice.is_featured,
+        is_full_width: multichoice.is_full_width,
         give_prediction_feedback: multichoice.give_prediction_feedback,
         prediction_feedback: multichoice.prediction_feedback,
         layout: multichoice.layout,
