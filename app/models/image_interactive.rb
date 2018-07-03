@@ -1,4 +1,6 @@
 class ImageInteractive < ActiveRecord::Base
+  include Embeddable
+
   attr_accessible :url, :caption, :credit, :show_lightbox, :credit_url, :is_hidden, :is_full_width
 
   has_one :page_item, :as => :embeddable, :dependent => :destroy

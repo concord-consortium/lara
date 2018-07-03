@@ -1,4 +1,6 @@
 class MwInteractive < ActiveRecord::Base
+  include Embeddable
+
   DEFAULT_CLICK_TO_PLAY_PROMPT = "Click here to start the interactive."
   attr_accessible :name, :url, :native_width, :native_height, :enable_learner_state, :has_report_url, :click_to_play,
                   :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :full_window, :model_library_url,

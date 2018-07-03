@@ -1,4 +1,6 @@
 class VideoInteractive < ActiveRecord::Base
+  include Embeddable
+
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
   has_one :interactive_page, :through => :page_item
