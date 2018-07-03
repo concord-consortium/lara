@@ -15,7 +15,7 @@ module Embeddable
     NO_INTERACTIVE_VALUE = "no-interactive"
     NO_INTERACTIVE_SELECT = [NO_INTERACTIVE_LABLE, NO_INTERACTIVE_VALUE];
     attr_accessible :action_type, :name, :prompt,
-      :custom_action_label, :is_hidden, :is_featured,
+      :custom_action_label, :is_hidden, :show_in_featured_question_report,
       :interactive_type, :interactive_id, :interactive,
       :interactive_select_value, :hint, :is_full_width
 
@@ -62,7 +62,7 @@ module Embeddable
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
         name: name,
-        is_featured: is_featured,
+        show_in_featured_question_report: show_in_featured_question_report,
         # This info can be used by Portal to generate an iframe with album in teacher report.
         display_in_iframe: true,
         # These dimensions are pretty random at the moment. Labbook album doesn't look good
@@ -82,7 +82,7 @@ module Embeddable
         is_hidden: is_hidden,
         is_full_width: is_full_width,
         hint: hint,
-        is_featured: is_featured
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -99,7 +99,7 @@ module Embeddable
         :is_hidden,
         :is_full_width,
         :hint,
-        :is_featured
+        :show_in_featured_question_report
       ])
     end
 

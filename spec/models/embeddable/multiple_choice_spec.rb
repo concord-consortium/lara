@@ -119,7 +119,7 @@ describe Embeddable::MultipleChoice do
         multi_answer: multichoice.multi_answer,
         show_as_menu: multichoice.show_as_menu,
         is_prediction: multichoice.is_prediction,
-        is_featured: multichoice.is_featured,
+        show_in_featured_question_report: multichoice.show_in_featured_question_report,
         is_full_width: multichoice.is_full_width,
         give_prediction_feedback: multichoice.give_prediction_feedback,
         prediction_feedback: multichoice.prediction_feedback,
@@ -149,7 +149,7 @@ describe Embeddable::MultipleChoice do
         id: multichoice.id,
         prompt: multichoice.prompt,
         is_required: multichoice.is_prediction,
-        is_featured: multichoice.is_featured,
+        show_in_featured_question_report: multichoice.show_in_featured_question_report,
         choices: multichoice.choices.map { |choice|
           {
             id: choice.id,
