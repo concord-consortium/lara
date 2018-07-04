@@ -6,6 +6,9 @@
     = embeddable.drawing_prompt.html_safe unless embeddable.drawing_prompt.blank?
     = image_tag embeddable.bg_url, { :style => "width: 100%;" } unless embeddable.bg_url.blank?
     = embeddable.prompt.html_safe unless embeddable.prompt.blank?
+  - if embeddable.configuration_error
+    .warning
+      = embeddable.configuration_error
   - if embeddable.is_shutterbug?
     %button.image_question.button{:type => 'submit', :id => 'image_snapshot_button'}
       %i.fa.fa-camera

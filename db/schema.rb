@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180628101909) do
+ActiveRecord::Schema.define(:version => 20180703131647) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -172,8 +172,10 @@ ActiveRecord::Schema.define(:version => 20180628101909) do
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
     t.boolean  "is_full_width",            :default => false
+    t.boolean  "is_featured",              :default => false
+    t.integer  "interactive_id"
+    t.string   "interactive_type"
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -198,8 +200,8 @@ ActiveRecord::Schema.define(:version => 20180628101909) do
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.text     "hint"
-    t.boolean  "is_featured",         :default => false
     t.boolean  "is_full_width",       :default => false
+    t.boolean  "is_featured",         :default => false
   end
 
   add_index "embeddable_labbooks", ["interactive_id"], :name => "labbook_interactive_i_idx"
@@ -243,8 +245,8 @@ ActiveRecord::Schema.define(:version => 20180628101909) do
     t.string   "layout",                   :default => "vertical"
     t.boolean  "is_hidden",                :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
     t.boolean  "is_full_width",            :default => false
+    t.boolean  "is_featured",              :default => false
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -272,8 +274,8 @@ ActiveRecord::Schema.define(:version => 20180628101909) do
     t.string   "default_text"
     t.boolean  "is_hidden",                :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
     t.boolean  "is_full_width",            :default => false
+    t.boolean  "is_featured",              :default => false
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -437,8 +439,8 @@ ActiveRecord::Schema.define(:version => 20180628101909) do
     t.boolean  "no_snapshots",            :default => false
     t.string   "click_to_play_prompt"
     t.boolean  "show_delete_data_button", :default => true
-    t.boolean  "is_featured",             :default => false
     t.boolean  "is_full_width",           :default => true
+    t.boolean  "is_featured",             :default => false
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

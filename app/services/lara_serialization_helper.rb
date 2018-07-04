@@ -27,10 +27,10 @@ class LaraSerializationHelper
   def wrap_export(item)
     results = item.export
     results[:type] = item.class.name
-    case item
-    when MwInteractive, ImageInteractive, VideoInteractive
+    if Embeddable::is_interactive?(item)
       results[:ref_id] = key(item)
-    when Embeddable::Labbook
+    end
+    if item.respond_to?(:interactive) && item.interactive
       results[:interactive_ref_id] = key(item.interactive) if item.interactive
     end
     results
