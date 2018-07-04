@@ -19,11 +19,13 @@ module Embeddable
   Types = QuestionTypes.merge(InteractiveTypes)
 
   def self.is_question?(e)
-    QuestionTypes.keys.include?(e.class)
+    # Support both instance and class.
+    QuestionTypes.keys.include?(e.class) || QuestionTypes.keys.include?(e)
   end
 
   def self.is_interactive?(e)
-    InteractiveTypes.keys.include?(e.class)
+    # Support both instance and class.
+    InteractiveTypes.keys.include?(e.class) || InteractiveTypes.keys.include?(e)
   end
 
   def self.table_name_prefix
