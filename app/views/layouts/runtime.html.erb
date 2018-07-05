@@ -43,6 +43,13 @@
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>
   <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>
+  <script>
+    // NP 2018-07-05 We need this next line to work around a bug in text-plugins.
+    // TODO: We need to figure out how to build text-plugins without React dependancy..
+    window.React = {}
+  </script>
+  <%# Text Decorator for glossary. See also views/shared/_glossary.html.haml %>
+  <%= javascript_include_tag '//concord-consortium.github.io/text-plugins/dist/text-decorator.js' %>
 </head>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -134,5 +141,8 @@
 
 <%= yield :extra_javascript %>
 <%= yield :external_scripts %>
+
+<%= render partial: 'shared/glossary', locals: {activity: @activity} %>
+
 </body>
 </html>
