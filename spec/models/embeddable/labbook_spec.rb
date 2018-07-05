@@ -16,7 +16,7 @@ describe Embeddable::Labbook do
         prompt: labbook.prompt,
         custom_action_label: labbook.custom_action_label,
         is_hidden: labbook.is_hidden,
-        is_featured: labbook.is_featured,
+        show_in_featured_question_report: labbook.show_in_featured_question_report,
         is_full_width: labbook.is_full_width,
         hint: labbook.hint
       }
@@ -45,7 +45,7 @@ describe Embeddable::Labbook do
         type: 'iframe_interactive',
         id: labbook.portal_id,
         name: labbook.name,
-        is_featured: labbook.is_featured,
+        show_in_featured_question_report: labbook.show_in_featured_question_report,
         display_in_iframe: true,
         native_width: 600,
         native_height: 500
