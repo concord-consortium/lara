@@ -169,16 +169,6 @@
     "text": null,
     "is_hidden": false,
     "embeddables": [{
-      "embeddable": {
-        "caption": "page 3",
-        "credit": "page3",
-        "credit_url": "",
-        "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
-        "type": "ImageInteractive",
-        "ref_id":"1164-ImageInteractive"
-      },
-      "section": "interactive_box"
-      }, {
         "embeddable": {
           "name": null,
           "native_height": 435,
@@ -220,8 +210,17 @@
         "interactive_ref_id":"1164-ImageInteractive"
       },
       "section": null
-    }
-    ]
+    }, {
+      "embeddable": {
+        "caption": "page 3",
+        "credit": "page3",
+        "credit_url": "",
+        "url": "http://imagens.ailhadometal.com/2013/02/black-sabbath-logo.jpg",
+        "type": "ImageInteractive",
+        "ref_id":"1164-ImageInteractive"
+      },
+      "section": "interactive_box"
+    }]
   }],
   "type":"LightweightActivity"
 }
