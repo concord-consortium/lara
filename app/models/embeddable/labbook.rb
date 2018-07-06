@@ -12,10 +12,8 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    attr_accessible :action_type, :name, :prompt,
-      :custom_action_label, :is_hidden, :is_featured,
-      :interactive_type, :interactive_id, :interactive,
-      :hint, :is_full_width
+    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden, :is_featured,
+      :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
