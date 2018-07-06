@@ -3,7 +3,7 @@ module Embeddable
     include Embeddable
 
 
-    attr_accessible :name, :prompt, :hint, :is_prediction, :is_featured, :give_prediction_feedback, :prediction_feedback,
+    attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
       :default_text, :is_hidden, :is_full_width
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
@@ -25,7 +25,7 @@ module Embeddable
         name: name,
         prompt: prompt,
         is_prediction: is_prediction,
-        is_featured: is_featured,
+        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         default_text: default_text,
@@ -41,7 +41,7 @@ module Embeddable
         id: id,
         prompt: prompt,
         is_required: is_prediction,
-        is_featured: is_featured
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -74,7 +74,7 @@ module Embeddable
       return self.as_json(only:[:name,
                                 :prompt,
                                 :is_prediction,
-                                :is_featured,
+                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :default_text,

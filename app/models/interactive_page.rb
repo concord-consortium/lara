@@ -301,27 +301,32 @@ class InteractivePage < ActiveRecord::Base
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
     InteractivePage.transaction do
       import_page.save!(validate: false)
+      # The first pass. Look for all interactives and process them, so they can be referenced by other embeddables later.
+      page_json_object[:embeddables].each do |embed_hash|
+        embed = embed_hash[:embeddable]
+        if Embeddable::is_interactive?(embed[:type].constantize)
+          linked_inter = embed[:linked_interactive]
+          embed.delete(:linked_interactive)
+
+          import_embeddable = helper.wrap_import(embed)
+          interactives_cache.set(embed[:ref_id], import_embeddable)
+
+          if linked_inter
+            import_embeddable.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
+            if !import_embeddable.linked_interactive
+              import_embeddable.linked_interactive = helper.wrap_import(linked_inter)
+              interactives_cache.set(linked_inter[:ref_id], import_embeddable.linked_interactive)
+            end
+            import_embeddable.save!(validate: false)
+          end
+        end
+      end
+      # The second pass. Process all the embeddables and add them to page in right order.
       page_json_object[:embeddables].each do |embed_hash|
         embed = embed_hash[:embeddable]
         section = embed_hash[:section]
-        linked_inter = embed[:linked_interactive]
-        embed.delete(:linked_interactive)
-
-        import_embeddable = helper.wrap_import(embed)
-
-        if Embeddable::is_interactive?(import_embeddable)
-          interactives_cache.set(embed[:ref_id], import_embeddable)
-        end
-
-        if linked_inter
-          import_embeddable.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
-          if !import_embeddable.linked_interactive
-            import_embeddable.linked_interactive = helper.wrap_import(linked_inter)
-            interactives_cache.set(linked_inter[:ref_id], import_embeddable.linked_interactive)
-          end
-          import_embeddable.save!(validate: false)
-        end
-
+        import_embeddable = Embeddable::is_interactive?(embed[:type].constantize) ?
+          interactives_cache.get(embed[:ref_id]) : helper.wrap_import(embed)
         import_page.add_embeddable(import_embeddable, nil, section)
       end
     end

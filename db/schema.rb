@@ -162,18 +162,18 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
-    t.string   "bg_source",                :default => "Shutterbug"
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.string   "bg_source",                        :default => "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
-    t.boolean  "is_hidden",                :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
     t.boolean  "is_full_width",            :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
     t.integer  "interactive_id"
     t.string   "interactive_type"
   end
@@ -190,18 +190,18 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
 
   create_table "embeddable_labbooks", :force => true do |t|
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.integer  "action_type",         :default => 0,     :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.integer  "action_type",                      :default => 0,     :null => false
     t.string   "name"
     t.text     "prompt"
     t.string   "custom_action_label"
-    t.boolean  "is_hidden",           :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.text     "hint"
-    t.boolean  "is_featured",         :default => false
-    t.boolean  "is_full_width",       :default => false
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   add_index "embeddable_labbooks", ["interactive_id"], :name => "labbook_interactive_i_idx"
@@ -233,20 +233,20 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-    t.boolean  "custom",                   :default => false
-    t.boolean  "enable_check_answer",      :default => true
-    t.boolean  "multi_answer",             :default => false
-    t.boolean  "show_as_menu",             :default => false
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+    t.boolean  "custom",                           :default => false
+    t.boolean  "enable_check_answer",              :default => true
+    t.boolean  "multi_answer",                     :default => false
+    t.boolean  "show_as_menu",                     :default => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
-    t.string   "layout",                   :default => "vertical"
-    t.boolean  "is_hidden",                :default => false
+    t.string   "layout",                           :default => "vertical"
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
-    t.boolean  "is_full_width",            :default => false
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -266,16 +266,16 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
     t.string   "default_text"
-    t.boolean  "is_hidden",                :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_featured",              :default => false
-    t.boolean  "is_full_width",            :default => false
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -423,24 +423,24 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "enable_learner_state",    :default => false
-    t.boolean  "has_report_url",          :default => false
+    t.boolean  "enable_learner_state",             :default => false
+    t.boolean  "has_report_url",                   :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
-    t.boolean  "is_hidden",               :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.integer  "linked_interactive_id"
-    t.boolean  "full_window",             :default => false
+    t.boolean  "full_window",                      :default => false
     t.text     "authored_state"
     t.string   "model_library_url"
-    t.boolean  "no_snapshots",            :default => false
+    t.boolean  "no_snapshots",                     :default => false
     t.string   "click_to_play_prompt"
-    t.boolean  "show_delete_data_button", :default => true
-    t.boolean  "is_featured",             :default => false
-    t.boolean  "is_full_width",           :default => true
+    t.boolean  "show_delete_data_button",          :default => true
+    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

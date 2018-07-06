@@ -411,9 +411,11 @@ describe InteractivePage do
         expect(p[:position]).to be(page.position)
       end
       # Test last page for interactive and labbook combo
+      # Note that interactive is positioned AFTER labbook in embeddables list.
+      # This case used to cause problems before, so test it explicitly.
       page = InteractivePage.import(activity_json[:pages].last).reload
-      expect(page.interactives.first).to be_a ImageInteractive
-      expect(page.embeddables.first.interactive).to eq page.interactives.first
+      expect(page.interactives.last).to be_a ImageInteractive
+      expect(page.embeddables.first.interactive).to eq page.interactives.last
     end
   end
 

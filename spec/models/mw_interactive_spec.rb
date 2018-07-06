@@ -48,7 +48,7 @@ describe MwInteractive do
         is_hidden: interactive.is_hidden,
         is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state,
-        is_featured: interactive.is_featured
+        show_in_featured_question_report: interactive.show_in_featured_question_report
        }
       expect(interactive.to_hash).to eq(expected)
     end
@@ -83,7 +83,7 @@ describe MwInteractive do
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         display_in_iframe: interactive.reportable_in_iframe?,
-        is_featured: interactive.is_featured
+        show_in_featured_question_report: interactive.show_in_featured_question_report
       )
     end
   end

@@ -12,8 +12,8 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden, :is_featured,
-      :interactive, :hint, :is_full_width
+    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden,
+      :show_in_featured_question_report, :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
@@ -52,7 +52,7 @@ module Embeddable
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
         name: name,
-        is_featured: is_featured,
+        show_in_featured_question_report: show_in_featured_question_report,
         # This info can be used by Portal to generate an iframe with album in teacher report.
         display_in_iframe: true,
         # These dimensions are pretty random at the moment. Labbook album doesn't look good
@@ -72,7 +72,7 @@ module Embeddable
         is_hidden: is_hidden,
         is_full_width: is_full_width,
         hint: hint,
-        is_featured: is_featured
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -89,7 +89,7 @@ module Embeddable
         :is_hidden,
         :is_full_width,
         :hint,
-        :is_featured
+        :show_in_featured_question_report
       ])
     end
 

@@ -19,7 +19,7 @@ describe Embeddable::ImageQuestion do
         bg_source: image_question.bg_source,
         bg_url: image_question.bg_url,
         is_prediction: image_question.is_prediction,
-        is_featured: image_question.is_featured,
+        show_in_featured_question_report: image_question.show_in_featured_question_report,
         is_full_width: image_question.is_full_width,
         give_prediction_feedback: image_question.give_prediction_feedback,
         prediction_feedback: image_question.prediction_feedback,
@@ -47,7 +47,7 @@ describe Embeddable::ImageQuestion do
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
         is_required: image_question.is_prediction,
-        is_featured: image_question.is_featured
+        show_in_featured_question_report: image_question.show_in_featured_question_report
       )
     end
   end
