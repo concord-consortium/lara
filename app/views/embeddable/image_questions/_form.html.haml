@@ -21,11 +21,17 @@
         %label
           Source
           = f.select :bg_source, ['Shutterbug', 'Drawing', 'Upload']
+      %li.interactive_choice
+        %label
+          Interactive
+          = f.select :interactive_select_value, @embeddable.interactives_for_select
+          .help
+            Optional, should be set when Shutterbug (snapshot) is used as a source.
       %li
         %label
           Background image URL
           = f.text_field :bg_url
-          %span.help
+          .help
             Optional, will be ignored for Shutterbug questions. The drawing
             canvas is 648 pixels wide by 496 pixels high.  Smaller images will
             be centered in the canvas; larger images will be scaled to fit in

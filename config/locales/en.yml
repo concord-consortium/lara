@@ -54,6 +54,8 @@ en:
   CHECK_ANSWER: "Check answer"
   PAGES_IN_THIS_ACTIVITY: "Pages in this Activity"
   WELCOME: "Welcome"
+  NO_INTERACTIVE: "No Interactive"
+  SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."
@@ -84,7 +86,6 @@ en:
     USEFUL_2: "Very"
   LABBOOK:
     ALBUM: "Labbook album"
-    NO_INTERACTIVE: "No Interactive"
     WONT_DISPLAY: "Labbook will not be shown."
     NO_INTERACTIVE_SET: "Interactive is not set."
     INTERACTIVE_HIDDEN: "Interactive is set but is hidden."

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180702132852) do
+ActiveRecord::Schema.define(:version => 20180703131647) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -172,8 +172,10 @@ ActiveRecord::Schema.define(:version => 20180702132852) do
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "is_full_width",            :default => false
     t.boolean  "show_in_featured_question_report", :default => true
+    t.integer  "interactive_id"
+    t.string   "interactive_type"
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|

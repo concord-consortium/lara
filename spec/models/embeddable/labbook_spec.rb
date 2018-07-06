@@ -2,6 +2,7 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::Labbook do
   it_behaves_like "a question"
+  it_behaves_like "attached to interactive"
 
   let(:labbook) { Embeddable::Labbook.new }
 
@@ -146,102 +147,47 @@ describe Embeddable::Labbook do
     end
   end
 
-  describe "interactive methods" do
-    let(:hidden_mw_interactive) { FactoryGirl.create(:hidden_mw_interactive) }
-    let(:mw_interactive)        { FactoryGirl.create(:mw_interactive) }
-    let(:interactives) { [] }
-    let(:page)         { FactoryGirl.create(:page_with_or, interactives: interactives) }
-    let(:args)         { {} }
-    let(:labbook)      do
-      lb = Embeddable::Labbook.create(args)
-      page.add_embeddable(lb)
-      lb
+  describe "#update_itsi_prompts" do
+    let(:labbook) { Embeddable::Labbook.create(prompt: prompt) }
+
+    before(:each) do
+      labbook
+      Embeddable::Labbook.update_itsi_prompts
+      labbook.reload
     end
-    describe "#possible_interactives" do
-      describe "when there aren't any interactives" do
-        it "should return an empty list" do
-          expect(labbook.possible_interactives).to be_empty
-        end
-      end
 
-      describe "when there is one invisible interactives" do
-        let(:interactives) { [hidden_mw_interactive] }
-        it "should return the hidden interactive" do
-          expect(labbook.possible_interactives).to include hidden_mw_interactive
-        end
-      end
-
-      describe "when there is one visibile and one invisible interactive" do
-        let(:interactives) { [hidden_mw_interactive, mw_interactive] }
-        it "should return both of them" do
-            expect(labbook.possible_interactives).to include mw_interactive
-            expect(labbook.possible_interactives).to include hidden_mw_interactive
-        end
+    describe "when the prompt is nil" do
+      let(:prompt) { nil }
+      it "the prompt should not be changed" do
+        expect(labbook.prompt).to eql prompt
       end
     end
 
-    describe "#interactives_for_select" do
-      let(:interactive_a)         { FactoryGirl.create(:mw_interactive) }
-      let(:interactive_b)         { FactoryGirl.create(:mw_interactive) }
-
-      let(:expected_identifier_1) { Embeddable::Labbook::NO_INTERACTIVE_SELECT }
-      let(:expected_identifier_2) { ["Mw interactive (1)", "#{interactive_a.id}-MwInteractive"]}
-      let(:expected_identifier_3) { ["Mw interactive (2)", "#{interactive_b.id}-MwInteractive"]}
-      let(:expected_identifier_4) { ["Mw interactive (hidden)(3)", "#{hidden_mw_interactive.id}-MwInteractive"]}
-
-      let(:interactives) { [interactive_a, interactive_b, hidden_mw_interactive] }
-      it "should have good options" do
-        expect(labbook.interactives_for_select).to include expected_identifier_1
-        expect(labbook.interactives_for_select).to include expected_identifier_2
-        expect(labbook.interactives_for_select).to include expected_identifier_3
-        expect(labbook.interactives_for_select).to include expected_identifier_3
+    describe "when the prompt is empty" do
+      let(:prompt) { "" }
+      it "the prompt should not be changed" do
+        expect(labbook.prompt).to eql prompt
       end
     end
 
-    describe "#update_itsi_prompts" do
-      let(:labbook) { Embeddable::Labbook.create(prompt: prompt) }
-
-      before(:each) do
-        labbook
-        Embeddable::Labbook.update_itsi_prompts
-        labbook.reload
+    describe "when the promt is something random" do
+      let(:prompt) { "describe why these two things look so similar "}
+      it "the prompt should not be changed" do
+        expect(labbook.prompt).to eql prompt
       end
+    end
 
-      describe "when the prompt is nil" do
-        let(:prompt) { nil }
-        it "the prompt should not be changed" do
-          expect(labbook.prompt).to eql prompt
-        end
+    describe "when the promt is the old snapshot prompt" do
+      let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.SNAPSHOT_PROMPT") }
+      it "the prompt should be updated to the new snapshot prompt" do
+        expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.SNAPSHOT_PROMPT")
       end
-
-      describe "when the prompt is empty" do
-        let(:prompt) { "" }
-        it "the prompt should not be changed" do
-          expect(labbook.prompt).to eql prompt
-        end
+    end
+    describe "when the promt is the old itsi upload prompt" do
+      let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.UPLOAD_PROMPT") }
+      it "the prompt should be updated to the new upload prompt" do
+        expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.UPLOAD_PROMPT")
       end
-
-      describe "when the promt is something random" do
-        let(:prompt) { "describe why these two things look so similar "}
-        it "the prompt should not be changed" do
-          expect(labbook.prompt).to eql prompt
-        end
-      end
-
-      describe "when the promt is the old snapshot prompt" do
-        let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.SNAPSHOT_PROMPT") }
-        it "the prompt should be updated to the new snapshot prompt" do
-          expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.SNAPSHOT_PROMPT")
-        end
-      end
-      describe "when the promt is the old itsi upload prompt" do
-        let(:prompt) { I18n.t("LABBOOK.OLD_ITSI.UPLOAD_PROMPT") }
-        it "the prompt should be updated to the new upload prompt" do
-          expect(labbook.prompt).to eql I18n.t("LABBOOK.ITSI.UPLOAD_PROMPT")
-        end
-      end
-
-
     end
   end
 end
