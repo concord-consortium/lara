@@ -184,6 +184,8 @@ class IFrameSaver
           interactive = JSON.parse(response['raw_data'])
           if interactive
             @saved_state = interactive
+            # DEPRECATED: the initInteractive message includes the interactive state so
+            # interactives should use the initInteractive method instead
             @iframePhone.post({type: 'loadInteractive', content: interactive})
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
