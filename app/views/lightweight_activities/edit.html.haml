@@ -41,7 +41,7 @@
         = f.label :publication_status, 'Publication status'
         = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
       .field
-        = f.label :description, 'Activity Description'
+        = f.label :description, 'Text for index page'
         = f.text_area :description, :class => 'wysiwyg'
       .field
         = f.label :related, 'Related Content'

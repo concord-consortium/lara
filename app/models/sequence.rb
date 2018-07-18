@@ -119,7 +119,13 @@ class Sequence < ActiveRecord::Base
     data = {
       'type' => "Sequence",
       'name' => self.title,
+      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       'description' => self.description,
+      # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       'abstract' => self.abstract,
       "url" => local_url,
       "create_url" => local_url,

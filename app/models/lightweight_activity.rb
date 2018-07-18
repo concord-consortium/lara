@@ -199,6 +199,9 @@ class LightweightActivity < ActiveRecord::Base
     data = {
       'type' => "Activity",
       "name" => self.name,
+      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its description copy each time the activity was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       "description" => self.description,
       "url" => local_url,
       "create_url" => local_url,

@@ -48,11 +48,11 @@
       = f.check_box :is_official
 
     .field
-      = f.label :description
+      = f.label :description, "Text for index page"
       %br
       = f.text_area :description, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
     .field
-      = f.label :abstract
+      = f.label :abstract, "Abstract [DEPRECATED] Works only with old Portals"
       %br
       = f.text_area :abstract, { :class => 'wysiwyg', :cols => 60, :rows => 10 }
     .actions
