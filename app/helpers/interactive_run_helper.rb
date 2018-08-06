@@ -39,12 +39,12 @@ module InteractiveRunHelper
       data['authprovider'] = (Concord::AuthPortal.url_for_strategy_name(run.user.most_recent_authentication.provider) rescue nil) if data['loggedin'] == "true"
       data['user-email'] = run.user.email if data['loggedin'] == "true"
       data['class-info-url'] = run.class_info_url
+      data['get-firebase-jwt-url'] = api_v1_get_firebase_jwt_url(run.id)
     end
     data['enable-learner-state'] = interactive.enable_learner_state.to_s
     data['authored-state'] = interactive.authored_state
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
-    data['get-firebase-jwt-url'] = api_v1_get_firebase_jwt_url(run.id)
 
     opts = {
       :src => interactive.url,
