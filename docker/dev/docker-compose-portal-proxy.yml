@@ -31,13 +31,15 @@
 # When asked for "secret" you can use 'unsecure local secret' so you don't 
 # need to change this file.
 #
-# Also, you need to set SITE_URL environment variable in the portal project (e.g. using `.env` file)
-# to match your proxy host. If you are using the dinghy or dory proxy this will be:
-#   http://app.[project name of portal].docker
-#   examples: http://app.portal.docker, http://app.rigse.docker
-# (protocol is necessary in this case)
-# Portal uses this value when providing `remote_endpoint` to LARA,
-# which then uses it to send students answers back to Portal.
+# Also, you need to do a few things on the Portal side:
+# 1. Set SITE_URL environment variable in the portal project (e.g. using `.env` file)
+#    to match your proxy host. If you are using the dinghy or dory proxy this will be:
+#      http://app.[project name of portal].docker
+#      examples: http://app.portal.docker, http://app.rigse.docker
+#    (protocol is necessary in this case)
+#    Portal uses this value when providing `remote_endpoint` to LARA,
+#    which then uses it to send students answers back to Portal.
+# 2. Use docker/dev/docker-compose-lara-proxy.yml overlay.
 version: '3'
 services:
   app:
