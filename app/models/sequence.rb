@@ -117,7 +117,8 @@ class Sequence < ActiveRecord::Base
     print_url = "#{local_url}/print_blank"
 
     data = {
-      'type' => "Sequence",
+      'source_type' => 'LARA',
+      'type' => 'Sequence',
       'name' => self.title,
       # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
       # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
