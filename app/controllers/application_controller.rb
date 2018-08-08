@@ -351,17 +351,17 @@ class ApplicationController < ActionController::Base
       user = "Anonymous"
     end
 
-    className = resource.class.name
+    className = resource && resource.class.name
     if className == "LightweightActivity" || className == "Sequence"
       message = "#{user}, you don't have permission to #{action} the #{className} with id : #{resource.id}"
     else
       message = "#{user}, you don't have permission to access this page."
     end
 
-    data = {
+    {
       :user => user,
       :className => className,
-      :id => resource.respond_to?(:id) ? resource.id : 'n/a',
+      :id => resource && resource.respond_to?(:id) ? resource.id : 'n/a',
       :message => message
     }
   end
