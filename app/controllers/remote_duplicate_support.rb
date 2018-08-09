@@ -35,15 +35,13 @@ module RemoteDuplicateSupport
       # not all the field make so much sense. Also, we don't get response from Portal whether it has been
       # successful or not, so we have to assume it was.
       auth_portal = Concord::AuthPortal.portal_for_url(params['add_to_portal'])
-      new_resource.portal_publications.create({
-        portal_url: auth_portal.publishing_url,
-        sent_data: publication_data,
-        response: nil,
-        success: true,
-        publishable: new_resource,
-        publication_hash: publication_data,
-        publication_time: nil
-      })
+      new_resource.add_portal_publication(auth_portal) do
+        {
+          publication_data: publication_data.to_json,
+          response: "published during copy, we don't really know if it is succeeded",
+          success: true
+        }
+      end
       render status: 200, json: { publication_data: publication_data }, content_type: 'text/json'
     else
       render status: 500, json: { error: "Remote duplicate failed" }, content_type: 'text/json'

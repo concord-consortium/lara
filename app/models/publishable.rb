@@ -57,7 +57,7 @@ module Publishable
     return return_vals
   end
 
-  def portal_publish_with_token(token,auth_portal,self_url,republish=false,json=nil)
+  def portal_publish_with_token(token, auth_portal, self_url, republish=false, json=nil)
     # TODO: better error handling
     raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
     url = auth_portal.publishing_url
@@ -65,39 +65,58 @@ module Publishable
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
     auth_token = 'Bearer %s' % token
 
+    # Note that add_portal_publication will return response provided by the block itself
+    # and this value will be returned from this method too.
+    add_portal_publication(auth_portal) do
+      json = json || self.serialize_for_portal(self_url).to_json
+      response = HTTParty.post(url,
+        :body => json,
+        :headers => { "Authorization" => auth_token, "Content-Type" => "application/json" }
+      )
+      {
+        # response is returned from add_portal_publication too.
+        response: response,
+        success: response.code == 201,
+        publication_data: json
+      }
+    end
+  end
+
+  # This method creates a portal publication entry in the database. It expects client code to pass a block that
+  # returns status of the publication (and perform it im some cases). The status should be a hash that provides
+  # following properties:
+  # - publication_data -> string, data that is used for publishing (usually after calling .to_json)
+  # - response -> string, response from Portal (if available) or some information useful for debugging
+  # - success -> boolean
+  # It returns response (described above).
+  def add_portal_publication(auth_portal)
     start_time = Time.now.to_f
-
-    json = json || self.serialize_for_portal(self_url).to_json
-    hash = Digest::SHA1.hexdigest(json)
-    response = HTTParty.post(url,
-      :body => json,
-      :headers => {"Authorization" => auth_token, "Content-Type" => 'application/json'})
-
+    result = yield
     end_time = Time.now.to_f
 
-    Rails.logger.info "Response Time: #{end_time - start_time}"
-    Rails.logger.info "Response: #{response.inspect}"
-    self.portal_publications.create({
-      portal_url: auth_portal.publishing_url,
-      sent_data: json,
-      response: response.inspect,
-      success: ( response.code == 201 ) ? true : false,
-      publishable: self,
-      publication_hash: hash,
-      publication_time: (end_time - start_time) * 1000
-    })
+    puts 'PUBADD'
 
+    Rails.logger.info "Response Time: #{end_time - start_time}"
+    Rails.logger.info "Response: #{result[:response].inspect}"
+
+    publication_hash = Digest::SHA1.hexdigest(result[:publication_data])
+    portal_publications.create({
+      # Properties that have to be provided by the block execution result.
+      sent_data: result[:publication_data],
+      response: result[:response].inspect, # it works fine for actual HTTP response or any other value (e.g. string)
+      success: result[:success],
+      # Automatically calculated properties.
+      publication_hash: publication_hash,
+      portal_url: auth_portal.publishing_url,
+      publishable: self,
+      publication_time: (end_time - start_time) * 1000,
+    })
     # update_column is necessary so this change doesn't trigger update_after
     # if update_after is triggered then a new Job will be queued and we don't need
     # to do that. This also means that updated_at column won't be changed by this
-    self.update_column(:publication_hash, hash)
-
-    return response
-  end
-
-  def add_portal_publication(concord_auth_portal)
-   found = find_portal_publication(concord_auth_portal)
-   self.portal_publications.create(portal_url: concord_auth_portal.publishing_url) unless found
+    self.update_column(:publication_hash, publication_hash)
+    # Return response provided by a block execution.
+    result[:response]
   end
 
   def remove_portal_publication(concord_auth_portal)
