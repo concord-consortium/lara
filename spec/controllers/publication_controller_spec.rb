@@ -42,25 +42,28 @@ describe PublicationsController do
   end
 
   describe "#add_portal" do
-    let(:activity_hash) {
-      {"type"          =>"Activity",
-       "name"          =>"Activity One",
-       "description"   =>"Activity One Description",
-       "url"           =>"http://test.host/activities/#{act_one.id}",
-       "create_url"    =>"http://test.host/activities/#{act_one.id}",
-       "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
-       "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
-       "external_report_url"  => act_one.external_report_url,
-       "student_report_enabled" => act_one.student_report_enabled,
-       "thumbnail_url" =>"thumbnail",
-       "author_email"  => @user.email,
-       "is_locked"     =>false,
-       "sections"      => [
+    let(:activity_hash) do
+      {
+        "source_type"   => "LARA",
+        "type"          =>"Activity",
+        "name"          =>"Activity One",
+        "description"   =>"Activity One Description",
+        "url"           =>"http://test.host/activities/#{act_one.id}",
+        "create_url"    =>"http://test.host/activities/#{act_one.id}",
+        "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
+        "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
+        "external_report_url"  => act_one.external_report_url,
+        "student_report_enabled" => act_one.student_report_enabled,
+        "thumbnail_url" =>"thumbnail",
+        "author_email"  => @user.email,
+        "is_locked"     =>false,
+        "sections"      => [
            {"name"  => "Activity One Section",
             "pages" => []
            }
-       ]}
-    }
+        ]
+      }
+    end
     let(:good_body) { activity_hash.to_json }
     let(:publishing_url) { "http://foo.bar/publish/v2/blarg"}
     let(:url) { "http://foo.bar/"}

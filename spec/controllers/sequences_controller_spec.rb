@@ -4,6 +4,10 @@ describe SequencesController do
   let(:sequence) { FactoryGirl.create(:sequence) }
   let(:activity) { FactoryGirl.create(:public_activity) }
 
+  it_behaves_like "remote duplicate support" do
+    let(:resource) { FactoryGirl.create(:sequence) }
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # Sequence. As you add validations to Sequence, be sure to
   # update the return value of this method accordingly.

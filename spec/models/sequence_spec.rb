@@ -104,7 +104,9 @@ describe Sequence do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
-      {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
+      {
+        "source_type" => "LARA",
+        "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "abstract" => sequence.abstract,
         "url"=> url,
         "create_url"=> url,
@@ -122,6 +124,7 @@ describe Sequence do
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
       {
+        "source_type" => "LARA",
         "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
         "abstract" => sequence_with_activities.abstract,
         "url"=> url,
