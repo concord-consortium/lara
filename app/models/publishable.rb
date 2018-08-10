@@ -94,8 +94,6 @@ module Publishable
     result = yield
     end_time = Time.now.to_f
 
-    puts 'PUBADD'
-
     Rails.logger.info "Response Time: #{end_time - start_time}"
     Rails.logger.info "Response: #{result[:response].inspect}"
 
