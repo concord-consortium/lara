@@ -14,7 +14,6 @@ describe InteractiveRunHelper do
   let(:activity)     { mock_model(LightweightActivity, act_stubs) }
   let(:page)         { mock_model(InteractivePage, page_stubs)    }
   let(:run)          { mock_model(Run, run_stubs)                 }
-  let(:new_run)      { stub_model(Run).as_new_record }
   let(:sequence_run) { nil }
   let(:interactive)  { mock_model(MwInteractive, interactive_stubs) }
   let(:user_stubs)   { {
@@ -43,9 +42,11 @@ describe InteractiveRunHelper do
     }
   end
 
+  subject {helper.interactive_data_div(interactive,run)}
+
   describe "#interactive_data_div(interactive,run)" do
     describe "without a run" do
-      subject {helper.interactive_data_div(interactive,nil)}
+      let(:run) { nil }
 
       it "should not include run specific info" do
         expect(subject).not_to include("data-interactive-run-state-url")
@@ -64,7 +65,6 @@ describe InteractiveRunHelper do
     end
 
     describe "with a run" do
-      subject {helper.interactive_data_div(interactive,run)}
 
       it "should include run specific info" do
         expect(subject).to include("data-interactive-run-state-url")
@@ -83,7 +83,7 @@ describe InteractiveRunHelper do
     end
 
     describe "with a new unsaved run" do
-      subject {helper.interactive_data_div(interactive,new_run)}
+      let(:run)      { stub_model(Run).as_new_record }
 
       it "should not include firebase jwt url" do
         expect(subject).not_to include("data-get-firebase-jwt-url")
