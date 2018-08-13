@@ -5,6 +5,9 @@ class SequencesController < ApplicationController
 
   before_filter :enable_js_logger, :only => [:show]
 
+  # Adds remote_duplicate handler (POST remote_duplicate)
+  include RemoteDuplicateSupport
+
   # GET /sequences
   # GET /sequences.json
   def index

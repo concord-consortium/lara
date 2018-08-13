@@ -11,6 +11,9 @@ class LightweightActivitiesController < ApplicationController
 
   layout :set_layout
 
+  # Adds remote_duplicate handler (POST remote_duplicate)
+  include RemoteDuplicateSupport
+
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
     @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications).community

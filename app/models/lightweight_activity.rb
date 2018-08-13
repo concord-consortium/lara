@@ -197,7 +197,8 @@ class LightweightActivity < ActiveRecord::Base
     author_url = "#{local_url}/edit"
     print_url = "#{local_url}/print_blank"
     data = {
-      'type' => "Activity",
+      "source_type" => "LARA",
+      "type" => "Activity",
       "name" => self.name,
       # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
       # Otherwise, the old Portal code would reset its description copy each time the activity was published.

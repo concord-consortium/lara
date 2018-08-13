@@ -2,12 +2,6 @@ class ImportController < ApplicationController
 
   include PeerAccess
 
-  skip_before_filter :verify_authenticity_token, if: :verified_json_request?
-
-  def verified_json_request?
-    verify_request_is_peer
-  end
-
   def import_status
     @message = params[:message] || ''
     respond_to do |format|
@@ -36,6 +30,8 @@ class ImportController < ApplicationController
   end
 
   def import_portal_activity
+    authorize_peer!
+
     request_json = JSON.parse "#{request.body.read}", :symbolize_names => true
 
     unless User.find_by_email request_json[:activity][:user_email]

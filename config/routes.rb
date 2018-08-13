@@ -34,6 +34,7 @@ LightweightStandalone::Application.routes.draw do
     member do
       post :add_activity
       post :remove_activity
+      post :remote_duplicate
       get :reorder_activities
       get :print_blank
       get :publish
@@ -76,6 +77,7 @@ LightweightStandalone::Application.routes.draw do
       get 'resubmit_answers'
       get 'publish'
       get 'duplicate'
+      post 'remote_duplicate'
       get 'preview'
       get 'export'
       get 'show_status'

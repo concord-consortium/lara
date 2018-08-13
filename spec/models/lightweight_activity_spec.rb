@@ -347,6 +347,7 @@ describe LightweightActivity do
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
       {
+        "source_type"   => "LARA",
         "type"          =>"Activity",
         "name"          => activity.name,
         "description"   => activity.description,

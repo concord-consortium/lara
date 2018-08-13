@@ -3,6 +3,10 @@ require 'spec_helper'
 # There's a slow test in here somewhere.
 describe LightweightActivitiesController do
   render_views
+
+  it_behaves_like "remote duplicate support" do
+    let(:resource) { FactoryGirl.create(:activity) }
+  end
   
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
