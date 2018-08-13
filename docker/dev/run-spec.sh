@@ -8,6 +8,8 @@
 
 export RAILS_ENV=test
 
+bundle check || bundle install
+
 #
 # Prepare spec tests
 #
