@@ -92,9 +92,6 @@ ExternalScripts.try = function() {
         // script[funcName].apply(script,args) was insufficient …
         script[funcName].bind(script).apply(script,args);
       }
-      else {
-        this._externalScriptError("script " + name + " doesn't respond to  " + funcName);
-      }
     }
     catch (exception) {
       this._externalScriptError(exception, {name: name, funcName: funcName});

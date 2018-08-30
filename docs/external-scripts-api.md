@@ -16,7 +16,7 @@
 ----
 
 ## NOTES
-- Scripts are inialized when theirview partial `external_scripts/_lightweight` is rendered.
+- Scripts are inialized when their view partial `external_scripts/_lightweight` is rendered.
 - This is how scripts can be bound to specific dom elements.
 - `external-scripts.js` defines the external registration API
 - `app/views/embeddable/external_scripts/_lightweight.html.haml` initializes the script on the page. (Important i)

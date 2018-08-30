@@ -31,7 +31,7 @@ LARA.openPopup(popupOptions: IPopupOptions) : DomNode
 
 
 /****************************************************************************
-@function openPopup: Ask lara to add a new popup window
+@function decorateContent: Ask LARA to decorate authored content (text / html)
 @arg {string[]} words - a list of case-insensitive words to be decorated
     can use limited regex
 @arg {string} replace - the replacement string.
@@ -60,7 +60,6 @@ interface ISidebarOptions {
 // @interface IPopupOptions:
 interface IPopupOptions {
   title: string,
-  content: HTMLElement,
   color?: string,
   position?: {screenX: number, screenY: number}
   origin?: string,
@@ -79,7 +78,7 @@ type IEventListeners = IEventListener | IEventListener[]
 ```
 
 
-## Sample Usage
+## Sample Usage ##
 
 Here is an example of how a LARA Plugin
 
@@ -123,7 +122,7 @@ constructor(context:Context) {
 }
 ```
 
-## Plugin Constract
+## Plugin Constract ##
 Methods we expect to exist on our plugins:
 * constructor
 * …
