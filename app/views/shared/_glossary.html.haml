@@ -1,0 +1,33 @@
+-# Locals: activity (should be @activity)
+- if defined?(activity) && defined?(activity.glossary)
+  :css
+    .cc-glossary-word {
+      color: red;
+      font-weight: bold;
+    }
+
+  :javascript
+    var classNames = ['question-txt', 'intro-txt'];
+    var options = {
+      words: #{activity.glossary.words},
+      replace: '#{activity.glossary.replace}'
+    }
+
+    classNames.forEach( function(className) {
+      var elements = document.getElementsByClassName(className);
+        Array.prototype.forEach.call(elements, function (elt) {
+          elt.innerHTML = TextDecorator.decorateHtml(elt.innerHTML, options);
+        });
+    });
+
+    var glossaryWordClicked = function(evt) {
+      alert(`You clicked: "${evt.target.textContent}"!`);
+    }
+
+    TextDecorator.addEventListeners(
+      'cc-glossary-word',
+      [{
+        type: 'click',
+        listener: glossaryWordClicked
+      }]
+    );

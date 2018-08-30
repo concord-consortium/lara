@@ -271,4 +271,8 @@ class LightweightActivity < ActiveRecord::Base
   def self.search(query)
     where("name LIKE ?", "%#{query}%")
   end
+
+  def glossary
+    return Glossary.new
+  end
 end
