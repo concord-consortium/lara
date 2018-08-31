@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180703131647) do
+ActiveRecord::Schema.define(:version => 20180830181911) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -465,6 +465,18 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
   end
 
   add_index "pending_portal_publications", ["portal_publication_id"], :name => "unique_publications_per_portal", :unique => true
+
+  create_table "plugins", :force => true do |t|
+    t.string   "approved_script_id"
+    t.integer  "plugin_scope_id"
+    t.string   "plugin_scope_type"
+    t.text     "author_data"
+    t.text     "description"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], :name => "plugin_scopes"
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
