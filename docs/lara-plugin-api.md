@@ -17,17 +17,17 @@ LARA exports.
 /****************************************************************************
 // @function addSidebar: Ask lara to add a new sidebar window
 // @arg {ISidebarOptions} sidebarOptions
-// @returns A parent DomNode where component can render content
+// @returns void
 ****************************************************************************/
-LARA.addSidebar(sidebarOptions: ISidebarOptions) : DomNode
+LARA.addSidebar(sidebarOptions: ISidebarOptions) : void
 
 
 /****************************************************************************
 @function openPopup: Ask lara to add a new popup window
 @arg {IPopupOptions} popupOptions
-@returns A parent DomNode node where component can render content
+@returns void
 ****************************************************************************/
-LARA.openPopup(popupOptions: IPopupOptions) : DomNode
+LARA.openPopup(popupOptions: IPopupOptions) : void
 
 
 /****************************************************************************
@@ -55,6 +55,7 @@ interface ISidebarOptions {
   title: string
   color?: string,
   icon?: HTMLElement,
+  content: DomNode
 }
 
 // @interface IPopupOptions:
@@ -63,6 +64,7 @@ interface IPopupOptions {
   color?: string,
   position?: {screenX: number, screenY: number}
   origin?: string,
+  content: DomNode,
   draggable?: boolean,
   onClose?: () => void
 }

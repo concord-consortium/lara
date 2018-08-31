@@ -25,7 +25,6 @@ Called from the LARA partial `_lightweight.html.haml`
       scriptUrl -- where the script was loaded from.
       embeddableId -- the embeddableId of the script.
       config -- author configuration.
-      div -- the invisible div on the page for this script to render.
 **************************************************************/
 ExternalScripts.init = function(_label, ctx) {
   var constructor = this._classes[_label];
