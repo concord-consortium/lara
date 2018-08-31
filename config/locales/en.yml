@@ -38,6 +38,7 @@ en:
   MAKE_DRAWING: "Make drawing"
   DONE: "Done"
   CANCEL: "Cancel"
+  SAVE: "Save"
   PREDICTION_BUTTON: "Submit"
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Answer required?"
@@ -148,3 +149,13 @@ en:
   PRINT_BLANK:
     PRINT: "Print \"%{activity}\""
     PRINT_WARNING: "Close this window when you are done printing \"%{activity}\"."
+  PLUGIN:
+    DELETE_WARNING: "Are you sure you want to remove this plugin?"
+    ACTIVITY_LIST_TITLE: "Activity Plugins"
+    ACTIVITY_PLUGIN: "Activity Plugin"
+    EDIT: "Edit"
+    DELETE: "Delete"
+    ADD: "Add Plugin"
+    APPROVED_SCRIPT: "Approved Plugin:"
+    DESCRIPTION: "Description:"
+    AUTHORING_DATA: "Authoring Data:"

@@ -1,0 +1,17 @@
+%div{style: "margin-top: 0.5em; padding: 0.5em; background: white;" }
+
+  %h3 #{t("PLUGIN.ACTIVITY_PLUGIN")} <em>#{plugin.name}</em>
+  = form_for plugin, remote: true do |f|
+    = f.error_messages
+    %div{style: "display: flex; flex-direction: column;"}
+      %div{style: "margin-top: 0.5em; display: flex; justify-content: space-between;"}
+        = f.label t("PLUGIN.APPROVED_SCRIPT")
+        = f.collection_select(:approved_script_id, ApprovedScript.all, :id, :name)
+      %div{style: "margin-top: 0.5em; display: flex; justify-content: space-between;"}
+        = f.label t("PLUGIN.DESCRIPTION")
+        = f.text_field :description
+      %div{style: "margin-top: 0.5em; flex-direction: column; align-items: stretch;"}
+        = f.label t("PLUGIN.AUTHORING_DATA")
+        = f.text_area :author_data
+    = f.submit t("CANCEL"), :class => 'close'
+    = f.submit t("SAVE"), :class => 'embeddable-save'

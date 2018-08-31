@@ -1,0 +1,5 @@
+- plugins.each do |plugin|
+  .item
+    #{plugin.name} –
+  .edit= link_to t("PLUGIN.EDIT"), edit_plugin_path(plugin), remote: true, :"data-replace" => '#plugin_form'
+  .delete= link_to t("PLUGIN.DELETE"), plugin_path(plugin), remote: true,  method: :delete, data: { confirm: t("PLUGIN.DELETE_WARNING") }

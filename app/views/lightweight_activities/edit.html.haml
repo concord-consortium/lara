@@ -108,3 +108,5 @@
               %li.drag_handle
                 &nbsp;
         %li#add= link_to "Add Page", new_activity_page_path(@activity)
+    #plugins
+      =render partial: 'plugins/list', locals: {activity: @activity}
