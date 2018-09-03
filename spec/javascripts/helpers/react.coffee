@@ -1,5 +1,3 @@
-TestUtils = React.addons.TestUtils
-
 jasmine.react =
   requireClass: (name) ->
     modulejs.require "components/#{name}"
@@ -8,11 +6,11 @@ jasmine.react =
     React.createFactory modulejs.require "components/#{name}"
 
   renderComponent: (path, props, children = null) ->
-    TestUtils.renderIntoDocument ((jasmine.react.requireComponent path) props, children)
+    ReactTestUtils.renderIntoDocument ((jasmine.react.requireComponent path) props, children)
 
   findTag: (component, tag) ->
     try
-      TestUtils.findRenderedDOMComponentWithTag component, tag
+      ReactTestUtils.findRenderedDOMComponentWithTag component, tag
     catch
       null
 
@@ -24,25 +22,25 @@ jasmine.react =
 
   findClass: (component, className) ->
     try
-      TestUtils.findRenderedDOMComponentWithClass component, className
+      ReactTestUtils.findRenderedDOMComponentWithClass component, className
     catch
       null
 
   findComponent: (component, childComponent) ->
     type = jasmine.react.requireClass childComponent
     try
-      TestUtils.findRenderedComponentWithType component, type
+      ReactTestUtils.findRenderedComponentWithType component, type
     catch
       null
 
   allWhere: (component, where) ->
-    all = TestUtils.findAllInRenderedTree component, where
+    all = ReactTestUtils.findAllInRenderedTree component, where
 
   findWhere: (component, where) ->
     (jasmine.react.allWhere component, where)?[0] or null
 
   allWhereDOMNode: (component, where) ->
-    all = TestUtils.findAllInRenderedTree component, (test) -> where test.getDOMNode()
+    all = ReactTestUtils.findAllInRenderedTree component, (test) -> where ReactDOM.findDOMNode(test)
 
   findWhereDOMNode: (component, where) ->
     (jasmine.react.allWhereDOMNode component, where)?[0] or null
@@ -58,7 +56,7 @@ jasmine.react =
     request
 
   click: (node) ->
-    React.addons.TestUtils.Simulate.click node
+    ReactTestUtils.Simulate.click node
 
   change: (node, attrs) ->
-    React.addons.TestUtils.Simulate.change node, attrs
+    ReactTestUtils.Simulate.change node, attrs
