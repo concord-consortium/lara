@@ -1,10 +1,10 @@
-{div, input, label} = React.DOM
+{div, input, label} = ReactFactories
 
 modulejs.define 'components/question_tracker/text_input',
   [],
   () ->
 
-    React.createClass
+    createReactClass
       update: (evt) ->
         change = {"#{@props.name}": evt.target.value}
         @props.onChange?(change)

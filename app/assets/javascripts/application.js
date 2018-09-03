@@ -11,10 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 // N.B. will need to load specific jquery-ui modules for production
-//= require bind-polyfill
+//= require core-js-3.0.0-beta.3
 //= require modulejs
-//= require react
-//= require react_ujs
+//= require react-16.4.2
+//= require react-dom-16.4.2
+//= require create-react-class-15.6.3
+//= require react-factories
 //= require jquery
 //= require jquery-ajax-csrf
 //= require jquery_ujs

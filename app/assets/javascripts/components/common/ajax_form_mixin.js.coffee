@@ -1,4 +1,4 @@
-{textarea, input, select, option} = React.DOM
+{textarea, input, select, option} = ReactFactories
 
 # Mixin that provides helper methods to build dynamic form which can be udpated and saved without page reload.
 # Component that includes this mixin needs to define @updateUrl property.

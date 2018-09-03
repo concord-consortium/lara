@@ -1,4 +1,4 @@
-{div, label, input, textarea, a, span} = React.DOM
+{div, label, input, textarea, a, span} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/open_response_question_editor',
 [
@@ -17,7 +17,7 @@ modulejs.define 'components/itsi_authoring/open_response_question_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
       [AjaxFormMixin]

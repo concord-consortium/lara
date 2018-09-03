@@ -11,4 +11,4 @@
     modulejs.require('components/question_tracker/editor'),
     {initialState: gon.QuestionTracker, doneLink: gon.DoneLink}
   );
-  React.render(QuestionTrackerEditor, $('#question-tracker-editor')[0]);
+  ReactDOM.render(QuestionTrackerEditor, $('#question-tracker-editor')[0]);

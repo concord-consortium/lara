@@ -1,4 +1,4 @@
-{div, input, textarea} = React.DOM
+{div, input, textarea} = ReactFactories
 
 # Component that includes this mixin needs to define updateUrl() method.
 modulejs.define 'components/itsi_authoring/form_mixin', ->

@@ -1,4 +1,4 @@
-{div, span, h2} = React.DOM
+{div, span, h2} = ReactFactories
 
 modulejs.define 'components/authoring/text_editor',
 [
@@ -12,7 +12,7 @@ modulejs.define 'components/authoring/text_editor',
 
   RichTextEditor = React.createFactory RichTextEditorClass
 
-  TextEditor = React.createClass
+  TextEditor = createReactClass
     mixins:
       [AjaxFormMixin]
 

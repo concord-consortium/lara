@@ -15,7 +15,7 @@
             initMsg: #{answer.report_state.to_json}
           };
           InteractiveIframe = React.createElement(modulejs.require('components/common/interactive_iframe'), props);
-          React.render(InteractiveIframe, $('##{interactive_id}')[0]);
+          ReactDOM.render(InteractiveIframe, $('##{interactive_id}')[0]);
         }());
   - else
     %p! &nbsp;
