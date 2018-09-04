@@ -1,4 +1,4 @@
-{div, label, img} = React.DOM
+{div, label, img} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/drawing_response_editor',
 [
@@ -15,7 +15,7 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
       [AjaxFormMixin]

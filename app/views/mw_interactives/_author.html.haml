@@ -15,6 +15,6 @@
     };
     if (props.interactive.url) {
       InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
-      React.render(InteractiveAuthoring, $("#authorable-interactive-#{embeddable.id}")[0]);
+      ReactDOM.render(InteractiveAuthoring, $("#authorable-interactive-#{embeddable.id}")[0]);
     }
   }());

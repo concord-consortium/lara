@@ -1,8 +1,8 @@
-{div, label, input, span, button} = React.DOM
+{div, label, input, span, button} = ReactFactories
 
 modulejs.define 'components/question_tracker/choice', [], () ->
 
-    React.createClass
+    createReactClass
       updateIsCorrect: (evt) ->
         @props.onChange
           choice: @props.choice.choice

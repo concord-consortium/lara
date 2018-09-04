@@ -1,4 +1,4 @@
-{div, img, label} = React.DOM
+{div, img, label} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/sensor_editor',
 [
@@ -15,7 +15,7 @@ modulejs.define 'components/itsi_authoring/sensor_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
       [AjaxFormMixin]

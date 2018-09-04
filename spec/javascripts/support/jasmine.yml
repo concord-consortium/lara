@@ -21,7 +21,6 @@ src_files:
 
   # for react component testing
   - assets/modulejs.js
-  - assets/react.js
   - assets/components.js
 
 # stylesheets
@@ -49,6 +48,7 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
+  - 'lib/**/*.{js,coffee}'
   - 'helpers/**/*.{js,coffee}'
 
 # spec_files

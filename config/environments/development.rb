@@ -48,12 +48,6 @@ LightweightStandalone::Application.configure do
     # Bullet.add_footer = true
   end
 
-  # set to development mode for better error messages
-  config.react.variant = :development
-
-  # allow for test add-ons
-  config.react.addons = true
-
   # include per developer environment files if found (the default is excluded by .gitignore)
   #
   # Here is a sample local-development.rb file to speed up requests

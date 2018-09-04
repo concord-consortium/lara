@@ -172,10 +172,10 @@ ActiveRecord::Schema.define(:version => 20180703131647) do
     t.text     "prediction_feedback"
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
-    t.boolean  "is_full_width",            :default => false
-    t.boolean  "show_in_featured_question_report", :default => true
+    t.boolean  "is_full_width",                    :default => false
     t.integer  "interactive_id"
     t.string   "interactive_type"
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|

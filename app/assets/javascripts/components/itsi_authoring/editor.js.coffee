@@ -1,4 +1,4 @@
-{div} = React.DOM
+{div} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/editor',
 [
@@ -19,7 +19,7 @@ modulejs.define 'components/itsi_authoring/editor',
   Alert = React.createFactory AlertClass
   PublicationFailureAlert = React.createFactory PublicationFailureAlertClass
 
-  React.createClass
+  createReactClass
 
     componentWillMount: ->
       @alerts = []

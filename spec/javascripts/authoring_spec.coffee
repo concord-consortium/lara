@@ -40,7 +40,7 @@ describe "Authoring components", () ->
 
       interactive = jasmine.react.renderComponent "common/interactive_iframe", props
       iframePhone.connect()
-      iframe = jasmine.react.findTag(interactive, "iframe").getDOMNode()
+      iframe = ReactDOM.findDOMNode(jasmine.react.findTag(interactive, "iframe"))
 
       iframePhone.postMessageFrom(iframe, {type: "authoredState", content: {test: 123}})
       expect(props.onAuthoredStateChange).toHaveBeenCalledWith({test: 123})

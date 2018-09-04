@@ -1,4 +1,4 @@
-{div, label, input, textarea} = React.DOM
+{div, label, input, textarea} = ReactFactories
 
 modulejs.define 'components/question_tracker/open_response',
   [
@@ -12,7 +12,7 @@ modulejs.define 'components/question_tracker/open_response',
 
     RichTextEditor = React.createFactory RichTextEditorClass
 
-    React.createClass
+    createReactClass
       mixins:
         [ThrottleMixin]
 

@@ -1,10 +1,12 @@
-{textarea} = React.DOM
+{textarea} = ReactFactories
 
 modulejs.define 'components/common/rich_text_editor',
 [],
 ->
 
-  React.createClass
+  createReactClass
+    textarea: React.createRef()
+
     shouldComponentUpdate: ->
       false
 
@@ -13,7 +15,7 @@ modulejs.define 'components/common/rich_text_editor',
         @props.onChange editor.getContent()
 
     componentDidMount: ->
-      $node = $(React.findDOMNode(@refs.textarea))
+      $node = $(@textarea.current)
       options = $.extend({}, @props.TinyMCEConfig || window.TinyMCEConfig)
       options.setup = (editor) =>
           # both events are needed as the 'change' event is only sent when the input loses focus (which handles menu choices like formatting)
@@ -25,4 +27,4 @@ modulejs.define 'components/common/rich_text_editor',
       $node.tinymce(options)
 
     render: ->
-      (textarea {ref: 'textarea', name: @props.name, cols: 100, rows: 5, defaultValue: @props.text})
+      (textarea {ref: @textarea, name: @props.name, cols: 100, rows: 5, defaultValue: @props.text})

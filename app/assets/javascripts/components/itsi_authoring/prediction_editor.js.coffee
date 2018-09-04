@@ -1,4 +1,4 @@
-{div, img, label} = React.DOM
+{div, img, label} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/prediction_editor',
 [
@@ -17,7 +17,7 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
       [AjaxFormMixin]

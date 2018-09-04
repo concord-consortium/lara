@@ -1,4 +1,4 @@
-{div, a, h1, label} = React.DOM
+{div, a, h1, label} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/metadata_editor',
 [
@@ -12,7 +12,7 @@ modulejs.define 'components/itsi_authoring/metadata_editor',
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
 
-  React.createClass
+  createReactClass
     mixins: [AjaxFormMixin]
 
     updateUrl: ->

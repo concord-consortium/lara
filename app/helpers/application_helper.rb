@@ -159,7 +159,7 @@ module ApplicationHelper
             editableHeader: #{options[:editable_header] || false}
           };
           TextEditor = React.createElement(modulejs.require('components/authoring/text_editor'), props);
-          React.render(TextEditor, $("##{id}")[0]);
+          ReactDOM.render(TextEditor, $("##{id}")[0]);
         }());
       </script>
     }.html_safe
@@ -184,7 +184,7 @@ module ApplicationHelper
             placeholder: "#{options[:placeholder]}"
           };
           EditableField = React.createElement(modulejs.require('components/authoring/editable_field'), props);
-          React.render(EditableField, $("##{id}")[0]);
+          ReactDOM.render(EditableField, $("##{id}")[0]);
         }());
       </script>
     }.html_safe

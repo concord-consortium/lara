@@ -2,5 +2,5 @@
 
 :javascript
   var PublicationDetails = React.createElement(modulejs.require('components/itsi_authoring/publication_details'), {publicationDetails: gon.publication_details || gon.ITSIEditor.publication_details});
-  React.render(PublicationDetails, $('#publication-details')[0]);
+  ReactDOM.render(PublicationDetails, $('#publication-details')[0]);
 

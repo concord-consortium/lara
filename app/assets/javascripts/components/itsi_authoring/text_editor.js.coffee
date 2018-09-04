@@ -1,4 +1,4 @@
-{div, form, textarea, a} = React.DOM
+{div, form, textarea, a} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/text_editor',
 [
@@ -14,7 +14,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
 
-  React.createClass
+  createReactClass
 
     mixins:
       [AjaxFormMixin]
