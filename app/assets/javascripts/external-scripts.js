@@ -105,9 +105,3 @@ ExternalScripts.try = function() {
 ExternalScripts.handleLogEvent = function(evt, logger) {
   this.try('handleEvent', evt, logger);
 };
-
-// see jest/external-scripts.spec.js
-// where we consume this module
-if (typeof module !== 'undefined') {
-  module.exports = ExternalScripts
-}

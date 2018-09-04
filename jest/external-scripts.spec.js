@@ -1,6 +1,6 @@
-const ExternalScripts = require("../app/assets/javascripts/external-scripts")
+require("../app/assets/javascripts/external-scripts")
 
-describe("ExternalSCript", () => {
+describe("ExternalScript", () => {
   it("should exist", () => {
     expect(ExternalScripts).toBeDefined()
   })
