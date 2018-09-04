@@ -1,0 +1,19 @@
+- runtimeDiv = "output-#{plugin.id}"
+= content_for :external_scripts do
+  %script{src:plugin.url}
+
+.output{id:runtimeDiv}
+
+:javascript
+  // Begin script for #{plugin.name}
+  $(document).ready( function() {
+    env = {
+      name: '#{plugin.name}',
+      scriptLabel: '#{plugin.label}',
+      scriptUrl: '#{plugin.url}',
+      pluginId: '#{plugin.id}',
+      config: '#{ j plugin.author_data }',
+      div: $('##{runtimeDiv}')
+    }
+    ExternalScripts.init('#{plugin.label}', env);
+  });
