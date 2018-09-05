@@ -14,17 +14,19 @@
 :javascript
   $(function() {
     var url = document.URL;
-    $('#share-popup').dialog({
+    var popup = LARA.addPopup({
+      content: $('#share-popup')[0],
+      removeOnClose: false,
       autoOpen: false,
       width: 500,
-      height: 130,
+      height: 140,
       title: 'Share Summary Report',
       modal: true,
-      dialogClass: 'share-popup-dialog'
+      dialogClass: 'share-popup-dialog',
     });
     $('a#opens-in-new-window').attr('href', url);
     $('textarea#share-link-to-copy').val(url);
     $('.share').on('click', function(event) {
-      $('#share-popup').dialog('open');
+      popup.open();
     });
   });
