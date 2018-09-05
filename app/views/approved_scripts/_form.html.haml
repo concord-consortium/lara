@@ -22,6 +22,10 @@
       %br
       = f.text_field :url
     .field{style: "margin: 1em 0px;"}
+      = f.label :version
+      %br
+      = f.select :version, ['1','2']
+    .field{style: "margin: 1em 0px;"}
       = f.label :description
       %br
       = f.text_area :description

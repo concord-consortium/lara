@@ -9,6 +9,7 @@ class Plugin < ActiveRecord::Base
   delegate :name,  to: :approved_script, allow_nil: true
   delegate :label, to: :approved_script, allow_nil: true
   delegate :url,   to: :approved_script, allow_nil: true
+  delegate :version, to: :approved_script, allow_nil: true
 
   # TODO: Import / export / to_hash &etc for duplicating ...
   #
