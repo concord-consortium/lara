@@ -29,9 +29,10 @@
 //= require responsive-layout
 //= require shutterbug
 //= require page-unload-warning
-//= require common
 //= require modals
 //= require modal-dialog
+//= require lara-api
+//= require common
 //= require check-answer
 //= require scroll-interactive-mod
 //= require save-indicator

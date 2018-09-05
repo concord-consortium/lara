@@ -6,16 +6,26 @@
 }
 
 .ui-dialog {
-  background: #fef7e0;
+  background: #eee;
   box-shadow: 0 0 15px #aaa;
   border: none !important;
-  font-size: .9em;
-  line-height: 1.5;
   z-index: 1000;
 }
 
 .ui-dialog-titlebar {
-  color: #fff;
+  border: none;
+  background: #bcbcbc;
+  color: #eee;
+
+  button.ui-dialog-titlebar-close {
+    background: #eee;
+    &:hover, &:active {
+      // Some theming affects this tiny button and it doesn't look good.
+      background: #eee;
+      color: #777;
+      border: none;
+    }
+  }
 }
 
 .correct {

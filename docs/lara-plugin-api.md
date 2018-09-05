@@ -60,12 +60,17 @@ interface ISidebarOptions {
 
 // @interface IPopupOptions:
 interface IPopupOptions {
-  title: string,
+  content: HTMLElement,
+  title?: string,
   color?: string,
-  position?: {screenX: number, screenY: number}
-  origin?: string,
-  content: DomNode,
+  modal?: boolean,
   draggable?: boolean,
+  resizable?: boolean,
+  // Please see: https://api.jqueryui.com/dialog/#option-position
+  position?: { my: string, at: string, of: HTMLElement},
+  width?: number,
+  // number in px or "auto"
+  height?: number | string,
   onClose?: () => void
 }
 
@@ -82,49 +87,50 @@ type IEventListeners = IEventListener | IEventListener[]
 
 ## Sample Usage ##
 
-Here is an example of how a LARA Plugin
+Here is an example of a LARA Plugin
 
 ```typescript
 
-constructor(context:Context) {
-   this.name = "Glossary"
-   this.runKey = context.runKey
-   this.definitions = context.authoredState.definitions
-   this.userDefinitions = context.userState.definitions
-   this.setupSidebar()
-   this.decorate() // invoke the text-decorator
- }
+class GlossaryPlugin {
+    constructor(context: Context) {
+    this.name = "Glossary";
+    this.runKey = context.runKey;
+    this.definitions = context.authoredState.definitions;
+    this.userDefinitions = context.userState.definitions;
+    this.setupSidebar();
+    this.decorate(); // invoke the text-decorator
+  }
 
- setupSidebar() {
-   const { container, icon } = LARA.addSidebar({
-      title: “Glossary”,
-      color: “gray”
-   });
-  ReactDOM.render(<GlossaryPopup>, container);
-  ReactDOM.render(<GlossaryIcon>, icon);
- }
+  setupSidebar() {
+    ReactDOM.render(<GlossaryPopup>, container);
+    ReactDOM.render(<GlossaryIcon>, icon);
+    LARA.addSidebar({
+      content: container,
+      icon: icon,
+      title: "Glossary",
+      color: "gray"
+    });
+  }
 
+  decorate() {
+    const words = Object.keys(this.definitions);
+    const replace = `<span class="cc-glossary-word">$1</span>`;
+    LARA.decorateText(words, replace, this.wordClicked);
+  }
 
- decorate() {
-   const words = Object.keys(this.definitions)
-   const replace = `<span class="cc-glossary-word">$1</span>`
-   LARA.decorateText(words, replace, this.wordClicked)
- }
-
- wordClicked = (word, event) => {
-   const popup = this.renderPopup(word, this.userDefinitions)
-   const position = // some magic calculations taking into account 
-                    // event.screenX/Y, popup size, screen size etc.
-   const { container } = LARA.openPopup({
-	     title: “Glossary”,
-      color: “gray”,
-      position: position
-   })  // returns {container: <>}
-   ReactDOM.render(<GlossaryPopup>, container);
+  wordClicked = (word, event) => {
+    ReactDOM.render(<GlossaryPopup>, container);
+    const wordDomELement = event.target;
+    LARA.openPopup({
+      content: container,
+      title: "Glossary",
+      position: { my: "left top", at: "left bottom", of: wordDomELement }
+    });
+  }
 }
 ```
 
-## Plugin Constract ##
+## Plugin Contract ##
 Methods we expect to exist on our plugins:
 * constructor
 * …
