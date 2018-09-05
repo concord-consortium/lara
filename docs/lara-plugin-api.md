@@ -19,15 +19,68 @@ LARA exports.
 // @arg {ISidebarOptions} sidebarOptions
 // @returns void
 ****************************************************************************/
-LARA.addSidebar(sidebarOptions: ISidebarOptions) : void
+LARA.addSidebar = function (sidebarOptions: ISidebarOptions): void;
 
+interface ISidebarOptions {
+  title: string;
+  color?: string;
+  icon?: HTMLElement;
+  content: HTMLElement;
+}
 
 /****************************************************************************
-@function openPopup: Ask lara to add a new popup window
+@function addPopup: Ask LARA to add a new popup window
 @arg {IPopupOptions} popupOptions
-@returns void
+@returns {IPopupController} popupController
+
+Note that many options closely resemble jQuery UI dialog options which is used under the hood.
+You can refer to jQuery UI API docs in many cases: https://api.jqueryui.com/dialog
+Only `content` is required. Other options have reasonable default values (subject to change,
+so if you expect particular behaviour, provide necessary options explicitly).
+
+React warning: if you use React to render content, remember to call `ReactDOM.unmountComponentAtNode(content)`
+in `onRemove` handler.
 ****************************************************************************/
-LARA.openPopup(popupOptions: IPopupOptions) : void
+LARA.addPopup = function (popupOptions: IPopupOptions): IPopupController;
+
+interface IPopupOptions {
+  content: HTMLElement | string;
+  autoOpen?: boolean;
+  closeOnEscape?: boolean;
+  // Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be
+  // reopened programmatically.
+  removeOnClose?: boolean;
+  title?: string;
+  closeButton?: boolean;
+  color?: string;
+  modal?: boolean;
+  draggable?: boolean;
+  resizable?: boolean;
+  // Please see: https://api.jqueryui.com/dialog/#option-position
+  position?: { my: string, at: string, of: HTMLElement};
+  width?: number;
+  // number in px or "auto"
+  height?: number | string;
+  padding?: number;
+  backgroundColor?: string;
+  titlebarColor?: string;
+  onOpen?: () => void;
+  onClose?: () => void;
+  // Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
+  onBeforeClose?: () => boolean;
+  onResize?: () => void;
+  onDragStart?: () => void;
+  onDragStop?: () => void;
+}
+
+interface IPopupController {
+  // Opens popup (makes sense only if autoOpen option is set to false during initialization).
+  open: () => void;
+  // Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true.
+  close: () => void;
+  // Removes HTML element from DOM tree.
+  remove: () => void;
+}
 
 
 /****************************************************************************
@@ -39,7 +92,14 @@ LARA.openPopup(popupOptions: IPopupOptions) : void
 @arg {IEventListeners} listeners - one or more { type, listener } tuples
 @returns void
 ****************************************************************************/
-LARA.decorateContent(words: string[], replace: string, listeners: IEventListeners) : void
+LARA.decorateContent = function (words: string[], replace: string, listeners: IEventListeners): void;
+
+interface IEventListener {
+  type: string;
+  listener: (evt: Event) => void;
+}
+
+type IEventListeners = IEventListener | IEventListener[];
 
 
 /****************************************************************************
@@ -48,39 +108,7 @@ LARA.decorateContent(words: string[], replace: string, listeners: IEventListener
 @arg {string} state - A JSON string representing serialized plugin state.
 @returns Promise
 ****************************************************************************/
-LARA.saveUserState(pluginInstance: ILaraPluginRef, state: string) : Promise
-
-// @interface ISidebarOptions:
-interface ISidebarOptions {
-  title: string
-  color?: string,
-  icon?: HTMLElement,
-  content: DomNode
-}
-
-// @interface IPopupOptions:
-interface IPopupOptions {
-  content: HTMLElement,
-  title?: string,
-  color?: string,
-  modal?: boolean,
-  draggable?: boolean,
-  resizable?: boolean,
-  // Please see: https://api.jqueryui.com/dialog/#option-position
-  position?: { my: string, at: string, of: HTMLElement},
-  width?: number,
-  // number in px or "auto"
-  height?: number | string,
-  onClose?: () => void
-}
-
-// @interface IEventListener:
-interface IEventListener {
-    type: string;
-    listener: (evt: Event) => void;
-}
-// @type IEventListener:
-type IEventListeners = IEventListener | IEventListener[]
+LARA.saveUserState = function(pluginInstance: ILaraPluginRef, state: string): Promise;
 
 ```
 
@@ -121,7 +149,7 @@ class GlossaryPlugin {
   wordClicked = (word, event) => {
     ReactDOM.render(<GlossaryPopup>, container);
     const wordDomELement = event.target;
-    LARA.openPopup({
+    LARA.addPopup({
       content: container,
       title: "Glossary",
       position: { my: "left top", at: "left bottom", of: wordDomELement }

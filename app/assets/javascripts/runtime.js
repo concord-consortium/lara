@@ -41,7 +41,6 @@
 //= require video
 //= require interactive-sizing
 //= require embeddable-carousel
-//= require image_question
 //= require image_question_drawing_tool
 //= require nav_menu
 //= require profile

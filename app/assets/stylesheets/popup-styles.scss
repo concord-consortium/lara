@@ -9,7 +9,13 @@
   background: #eee;
   box-shadow: 0 0 15px #aaa;
   border: none !important;
-  z-index: 1000;
+  z-index: 100000;
+}
+
+.ui-widget-overlay.ui-front {
+  z-index: 99999;
+  background: #333;
+  opacity: 0.5;
 }
 
 .ui-dialog-titlebar {
@@ -25,19 +31,6 @@
       color: #777;
       border: none;
     }
-  }
-}
-
-.correct {
-  .ui-dialog-titlebar {
-    background: #75a643;
-    border-color: #fef7e0 !important;
-  }
-}
-
-.incorrect {
-  .ui-dialog-titlebar {
-    background: #b45532;
   }
 }
 

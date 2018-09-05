@@ -50,16 +50,19 @@ class LabbookController
       intId = @$element.data('interactive-id')
       @interactiveSel = if intId then "#{INTERACTIVE_SEL}#{intId}" else null
 
-    @$dialog.dialog({
+    @popup = LARA.addPopup({
+      content: @$dialog,
       autoOpen: false,
+      removeOnClose: false,
       width: Math.min(window.innerWidth - 10, 750),
       height: Math.min(window.innerHeight - 10, 750),
       title: 'Labbook',
-      dialogClass: 'lb-dialog',
+      backgroundColor: 'rgb(189, 223, 223)',
+      padding: 0,
       modal: true,
-      close: =>
+      onClose: =>
         @onDialogClose()
-      beforeClose: =>
+      onBeforeClose: =>
         @onDialogClosing()
     })
 
@@ -103,7 +106,7 @@ class LabbookController
     })
 
   showDialog: ->
-    @$dialog.dialog('open')
+    @popup.open()
 
   onDialogClosing: (event) ->
     return true if not @canCloseSupported or @canClose
@@ -144,7 +147,7 @@ class LabbookController
     @phone = IframePhoneManager.getPhone @$iframe[0], =>
     @phone.addListener 'close', =>
       @canClose = true
-      @$dialog.dialog('close')
+      @popup.close()
     @phone.addListener 'connected', (connected) =>
       @canCloseSupported = connected
 
@@ -155,9 +158,12 @@ class LabbookController
     stopWaiting(WAIT_MSG_SEL) # defined in wait-message.js
 
   showError: (message) ->
-    @$dialog.dialog('close')
-    $('#modal-dialog').html("<div class='dialog-error'>#{message}</div>")
-    $('#modal-dialog').dialog(title: t('ERROR'), modal: true)
+    @popup.close()
+    LARA.addPopup({
+      content: $("<div class='dialog-error'>#{message}</div>")[0],
+      title: t('ERROR'),
+      modal: true
+    })
 
 $(document).ready ->
   $('.labbook').each ->
