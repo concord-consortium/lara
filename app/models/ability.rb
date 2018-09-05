@@ -20,9 +20,13 @@ class Ability
       can :create, Sequence
       can :create, LightweightActivity
       can :create, InteractivePage
+      can :create, Plugin
       can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+      can :manage, Plugin do |plugin|
+        plugin.plugin_scope.user_id == user.id
+      end
       # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']

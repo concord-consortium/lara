@@ -23,6 +23,7 @@ class LightweightActivity < ActiveRecord::Base
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
 
+  has_many :plugins, as: :plugin_scope
   has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
   has_many :visible_pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position,
              :conditions => {interactive_pages: {is_hidden: false}}

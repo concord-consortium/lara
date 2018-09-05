@@ -7,7 +7,7 @@ $(function () {
         .data('type', 'html')
         .on('ajax:success', function (event, data) {
             var $this = $(this);
-            $($this.data('replace')).html(data.html);
+            $($this.data('replace')).html(JSON.parse(data).html);
             $this.trigger('ajax:replaced');
         });
 });

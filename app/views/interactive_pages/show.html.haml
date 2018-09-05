@@ -16,7 +16,8 @@
   .content-hdr
     %h2.h2
       = @page.lightweight_activity.name
-
+  - @page.lightweight_activity.plugins.each do |p|
+    = render partial: 'plugins/show', locals: {plugin: p }
   = render :partial => 'show', :locals => {:page => @page, :layout => @page.layout}
 
   .bottom-buttons

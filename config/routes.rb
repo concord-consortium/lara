@@ -138,6 +138,7 @@ LightweightStandalone::Application.routes.draw do
   # the in-place editor needed interactive_page_path
   resources :pages, :as => 'interactive_pages', :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => [:new, :create]
 
+  resources :plugins
   namespace :embeddable do
     # When new embeddables are supported, they should be added here.
     resources :multiple_choices do
