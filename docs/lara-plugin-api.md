@@ -89,10 +89,11 @@ interface IPopupController {
     can use limited regex
 @arg {string} replace - the replacement string.
      Can include '$1' representing the matched word.
+@arg {string} wordClass - class used for the enclosing tag (e.g. 'cc-glossary-word')
 @arg {IEventListeners} listeners - one or more { type, listener } tuples
 @returns void
 ****************************************************************************/
-LARA.decorateContent = function (words: string[], replace: string, listeners: IEventListeners): void;
+LARA.decorateContent = function (words: string[], replace: string, wordClass: string. listeners: IEventListeners): void;
 
 interface IEventListener {
   type: string;

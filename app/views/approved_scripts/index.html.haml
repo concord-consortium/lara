@@ -7,7 +7,7 @@
   .breadcrumbs
     %ul
       %li= link_to "Home", root_path
-      %li= link_to "Approved Scripts", approved_scripts_path
+      %li= link_to "Approved Plugins", approved_scripts_path
 
 .action_menu#activity-actions
   .action_menu_header
@@ -18,7 +18,7 @@
           %li#add= link_to 'create new approved_script', new_approved_script_path
 
 #official_listing_heading
-  %h1 ApprovedScripts
+  %h1 Approved Plugins
 %ul.quiet_list.official_listing
   - @approved_scripts.each do |approved_script|
     %li{ :id => dom_id_for(approved_script, :item), :class => 'item' }

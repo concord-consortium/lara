@@ -1,5 +1,5 @@
 class ApprovedScript < ActiveRecord::Base
-  attr_accessible :name, :url, :label, :description
+  attr_accessible :name, :url, :label, :description, :version
   validates :name, presence: true
   validates :label, format: {
     with: /^([A-Za-z0-9]+)$/,

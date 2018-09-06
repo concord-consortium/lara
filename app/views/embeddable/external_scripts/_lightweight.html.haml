@@ -15,7 +15,7 @@
       scriptLabel: '#{embeddable.label}',
       scriptUrl: '#{embeddable.url}',
       embeddableId: '#{embeddable.id}',
-      config: '#{embeddable.configuration.gsub(/'/, "").gsub(/\s+/i, " " )}',
+      config: '#{escape_javascript(embeddable.configuration)}',
       div: $('#{runtimeDiv}')
     }
     ExternalScripts.init('#{embeddable.label}', env);

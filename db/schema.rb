@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180830181911) do
+ActiveRecord::Schema.define(:version => 20180905185210) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -24,9 +24,10 @@ ActiveRecord::Schema.define(:version => 20180830181911) do
     t.string   "name"
     t.string   "url"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.string   "label"
+    t.decimal  "version",     :precision => 10, :scale => 0, :default => 1
   end
 
   create_table "authentications", :force => true do |t|
@@ -173,9 +174,9 @@ ActiveRecord::Schema.define(:version => 20180830181911) do
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
     t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
     t.integer  "interactive_id"
     t.string   "interactive_type"
-    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
