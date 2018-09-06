@@ -151,21 +151,21 @@ window.LARA = {
     console.log('Plugin', pluginInstance, 'wants to save a state:', state);
   },
 
-
   /****************************************************************************
   @function decorateContent: Ask LARA to decorate authored content (text / html)
-  @arg {string[]} words - a list of case-insensitive words to be decorated
-      can use limited regex
-  @arg {string} replace - the replacement string.
-      Can include '$1' representing the matched word.
-  @arg {IEventListeners} listeners - one or more { type, listener } tuples
+  @arg {string[]} words - a list of case-insensitive words to be decorated. Can use limited regex.
+  @arg {string} replace - the replacement string. Can include '$1' representing the matched word.
+  @arg {wordClass} wordClass - CSS class used in replacement string. Necessary only if `listeners` are provided too.
+  @arg {IEventListeners} listeners - one or more { type, listener } tuples. Note that events are added to `wordClass`
+      described above. It's client code responsibility to use this class in the `replace` string.
+  @returns void
+
   interface IEventListener {
     type: string;
     listener: (evt: Event) => void;
   }
 
   type IEventListeners = IEventListener | IEventListener[];
-  @returns void
   ****************************************************************************/
   decorateContent: function (words, replace, wordClass, listeners) {
     var domClasses = ['question-txt', 'intro-txt'];
@@ -174,17 +174,7 @@ window.LARA = {
       replace: replace
     }
     TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-    var debuggingListener = {
-      type: 'click',
-      listener: function (evt)  {
-        alert("You clicked: ", evt.target.textContent, "!");
-      }
-    };
-    TextDecorator.addEventListeners(wordClass, [debuggingListener]);
   },
-
-
-
 
   /****************************************************************************
    private variables to keep track of our plugins.
