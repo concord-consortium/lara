@@ -28,6 +28,7 @@
 //= require jquery.jcarousel
 //= require responsive-layout
 //= require shutterbug
+//= require text-decorator-1.0.0.umd.js
 //= require page-unload-warning
 //= require modals
 //= require modal-dialog
