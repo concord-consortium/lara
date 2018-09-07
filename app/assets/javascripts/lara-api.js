@@ -151,21 +151,21 @@ window.LARA = {
     console.log('Plugin', pluginInstance, 'wants to save a state:', state);
   },
 
-
   /****************************************************************************
   @function decorateContent: Ask LARA to decorate authored content (text / html)
-  @arg {string[]} words - a list of case-insensitive words to be decorated
-      can use limited regex
-  @arg {string} replace - the replacement string.
-      Can include '$1' representing the matched word.
-  @arg {IEventListeners} listeners - one or more { type, listener } tuples
+  @arg {string[]} words - a list of case-insensitive words to be decorated. Can use limited regex.
+  @arg {string} replace - the replacement string. Can include '$1' representing the matched word.
+  @arg {wordClass} wordClass - CSS class used in replacement string. Necessary only if `listeners` are provided too.
+  @arg {IEventListeners} listeners - one or more { type, listener } tuples. Note that events are added to `wordClass`
+      described above. It's client code responsibility to use this class in the `replace` string.
+  @returns void
+
   interface IEventListener {
     type: string;
     listener: (evt: Event) => void;
   }
 
   type IEventListeners = IEventListener | IEventListener[];
-  @returns void
   ****************************************************************************/
   decorateContent: function (words, replace, wordClass, listeners) {
     var domClasses = ['question-txt', 'intro-txt'];
@@ -174,94 +174,18 @@ window.LARA = {
       replace: replace
     }
     TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-    var debuggingListener = {
-      type: 'click',
-      listener: function (evt)  {
-        alert("You clicked: ", evt.target.textContent, "!");
-      }
-    };
-    TextDecorator.addEventListeners(wordClass, [debuggingListener]);
-  },
-
-
-
-
-  /****************************************************************************
-   private variables to keep track of our plugins.
-  ****************************************************************************/
-  _pluginClasses: {},
-  _plugins:[],
-  _plugin_labels:[],
-
-  _pluginError: function(e, other) {
-    console.group("LARA Plugin Error");
-    console.error(e);
-    console.dir(other);
-    console.groupEnd();
-  },
-
-  _nameForPlugin: function(plugin) {
-    return(plugin.name || "(unknown)");
-  },
-
-  /**************************************************************
-  @function init
-  This method is called to initialize the external scripts
-  Called at runtime by LARA to create an instance of the plugin
-  as would happen in `views/plugin/_show.html.haml`
-  @arg {string} label - the the script identifier.
-  @arg {IRuntimContext} runtimeContext - context for the plugin
-
-  // Its likely we dont need most of these context values. TBD.
-  Interface IRuntimeContext {
-    name: string;         // Name of the plugin
-    url: string;          // Url from which the plugin was loaded
-    pluginId: string;     // Active record ID of the plugin scope id
-    authorData: string;   // The authored configuration for this instance
-    learnerData: string;  // The saved learner data for this instance
-    div: DomNode;         // reserved DomNode for the plugin in ther runtime.
-  }
-  **************************************************************/
-  initPlugin: function(_label, runtimeContext) {
-    var constructor = this._pluginClasses[_label];
-    var config = {};
-    var plugin = null;
-    if (typeof constructor == 'function') {
-      try {
-        if (typeof runtimeContext.config == 'string'){
-          config = JSON.parse(runtimeContext.config);
-          delete runtimeContext.config;
-        }
-        plugin = new constructor(config, runtimeContext);
-        this._plugins.push(plugin);
-        this._plugin_labels.push(_label);
-      }
-      catch(e) {
-        this._pluginError(e, runtimeContext);
-      }
-      console.log('Plugin', _label, 'is now registered');
-    }
-    else {
-      console.error("No plugin registered for label:", _label);
-    }
   },
 
 
   /**************************************************************
    @function register
    Register a new external script as `label` with `_class `
-   @arg label - the identifier of the sctipt
-   @arg Class - the Plugin Class being associated with the identifier
-   @example: `ExternalScripts.register('debugger', Dubugger)`
+   @arg label - the identifier of the script
+   @arg _class - the Plugin Class being associated with the identifier
+   @returns void
+   @example: `LARA.registerPlugin('debugger', Dubugger);`
    **************************************************************/
-  registerPlugin: function(_label, _class) {
-    if(typeof _class == 'function') {
-      if(this._pluginClasses[_label]) {
-        console.error("Duplicate Plugin for label " + _label);
-      }
-      else {
-        this._pluginClasses[_label] = _class;
-      }
-    }
-  },
+  registerPlugin: function(label, _class) {
+    Plugins.registerPlugin(label, _class);
+  }
 };
