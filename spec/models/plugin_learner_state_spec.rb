@@ -56,6 +56,20 @@ describe PluginLearnerState do
         expect(@plugin_learner_state).to be_instance_of(PluginLearnerState)
       end
     end
+
+    describe "loading and saving data" do
+      let(:state) do
+        {testing: 1, two: 2, three: 3}.to_json()
+      end
+
+      before(:each) do
+        @plugin_learner_state.update_attribute(:state, state)
+      end
+
+      it "should be able to load state" do
+        expect(@plugin_learner_state.reload.state).to eql(state)
+      end
+    end
   end
 
 end

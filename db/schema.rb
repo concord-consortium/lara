@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180910174604) do
+ActiveRecord::Schema.define(:version => 20180910194602) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -474,6 +474,7 @@ ActiveRecord::Schema.define(:version => 20180910174604) do
     t.string   "shared_learner_state_key"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.text     "state"
   end
 
   add_index "plugin_learner_states", ["plugin_id", "run_id"], :name => "plugin_run__states"

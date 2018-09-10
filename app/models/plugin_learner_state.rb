@@ -69,7 +69,7 @@ class PluginLearnerState < ActiveRecord::Base
     foreign_key: 'shared_learner_state_key',
     primary_key: 'shared_learner_state_key'
 
-  attr_accessible :shared_learner_state_key, :user_id, :run_id, :plugin_id
+  attr_accessible :shared_learner_state_key, :user_id, :run_id, :plugin_id, :state
 
   def self.get_lookup_strategy(plugin, run)
     LookupStrategy.get_lookup_strategy(plugin,run)
