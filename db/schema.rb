@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180905185210) do
+ActiveRecord::Schema.define(:version => 20180910174604) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -467,14 +467,28 @@ ActiveRecord::Schema.define(:version => 20180905185210) do
 
   add_index "pending_portal_publications", ["portal_publication_id"], :name => "unique_publications_per_portal", :unique => true
 
+  create_table "plugin_learner_states", :force => true do |t|
+    t.integer  "plugin_id"
+    t.integer  "user_id"
+    t.integer  "run_id"
+    t.string   "shared_learner_state_key"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "plugin_learner_states", ["plugin_id", "run_id"], :name => "plugin_run__states"
+  add_index "plugin_learner_states", ["shared_learner_state_key", "run_id"], :name => "shared_run_plugin_states"
+  add_index "plugin_learner_states", ["shared_learner_state_key", "user_id"], :name => "shared_user_plugin_states"
+
   create_table "plugins", :force => true do |t|
     t.string   "approved_script_id"
     t.integer  "plugin_scope_id"
     t.string   "plugin_scope_type"
     t.text     "author_data"
     t.text     "description"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "shared_learner_state_key"
   end
 
   add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], :name => "plugin_scopes"
