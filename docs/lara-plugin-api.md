@@ -104,12 +104,12 @@ type IEventListeners = IEventListener | IEventListener[];
 
 
 /****************************************************************************
-@function saveUserState: Ask lara to save the users state for the plugin
+@function saveLearnerState: Ask lara to save the users state for the plugin
 @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
 @arg {string} state - A JSON string representing serialized plugin state.
 @returns Promise
 ****************************************************************************/
-LARA.saveUserState = function(pluginInstance: ILaraPluginRef, state: string): Promise;
+LARA.saveLearnerState = function(pluginInstance: ILaraPluginRef, state: string): Promise;
 
 ```
 

@@ -142,12 +142,16 @@ window.LARA = {
   },
 
   /****************************************************************************
-   @function saveUserState: Ask LARA to save the users state for the plugin
+   @function saveLearnerState: Ask LARA to save the users state for the plugin
    @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
    @arg {string} state - A JSON string representing serialized plugin state.
    @returns Promise
+   TOOD:
+    * Rename to savePluginState (because of plugin instance argument)
+    * Add more generic function saving unspecified resources … ?
+    * Use Promise polyfill for IE support ?
   ****************************************************************************/
-  saveUserState: function (pluginInstance, state) {
+  saveLearnerState: function (pluginInstance, state) {
     console.log('Plugin', pluginInstance, 'wants to save a state:', state);
   },
 
