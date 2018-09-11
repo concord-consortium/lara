@@ -157,5 +157,6 @@ en:
     DELETE: "Delete"
     ADD: "Add Plugin"
     APPROVED_SCRIPT: "Approved Plugin:"
+    GLOBAL_ID: "Plugin Identifier"
     DESCRIPTION: "Description:"
     AUTHORING_DATA: "Authoring Data:"
