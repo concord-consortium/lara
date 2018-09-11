@@ -40,6 +40,7 @@ window.Plugins = {
         plugin = new constructor(runtimeContext);
         this._plugins.push(plugin);
         this._pluginLabels.push(label);
+        plugin.__LaraPluginContext = runtimeContext;
       }
       catch(e) {
         this._pluginError(e, runtimeContext);

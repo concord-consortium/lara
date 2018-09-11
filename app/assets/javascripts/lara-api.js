@@ -153,6 +153,26 @@ window.LARA = {
   ****************************************************************************/
   saveLearnerState: function (pluginInstance, state) {
     console.log('Plugin', pluginInstance, 'wants to save a state:', state);
+    var context = pluginInstance.__LaraPluginContext
+    if(context) {
+      var url = context.pluginUserStatePath
+      return new Promise(function(resolve, reject) {
+        $.ajax({
+          url: url,
+          type: 'PUT',
+          data: {state: state},
+          success: function(data) {
+            resolve(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            reject(textStatus);
+          }
+        });
+      });
+    }
+    else {
+      console.warn('Cant save. Plugin', pluginInstance, 'was incorrectly initialized. No __LaraPluginContext')
+    }
   },
 
   /****************************************************************************
