@@ -37,7 +37,6 @@ class Api::V1::PluginLearnerStatesController < ApplicationController
     getPluginState
     begin
       state = params[:state]
-      puts params
       @p_state.update_attribute(:state, state)
       success(@p_state.reload.state)
     rescue => err

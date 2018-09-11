@@ -23,12 +23,13 @@ window.Plugins = {
 
   // Its likely we dont need most of these context values. TBD.
   Interface IRuntimeContext {
-    name: string;         // Name of the plugin
-    url: string;          // Url from which the plugin was loaded
-    pluginId: string;     // Active record ID of the plugin scope id
-    authorData: string;   // The authored configuration for this instance
-    learnerData: string;  // The saved learner data for this instance
-    div: HTMLElement;     // reserved HTMLElement for the plugin output
+    name: string;               // Name of the plugin
+    url: string;                // Url from which the plugin was loaded
+    pluginId: string;           // Active record ID of the plugin scope id
+    authorData: string;         // The authored configuration for this instance
+    learnerData: string;        // The saved learner data for this instance
+    pluginUserStatePath: string // Where to save / load data from for this instance.
+    div: HTMLElement;           // reserved HTMLElement for the plugin output
   }
   **************************************************************/
   initPlugin: function(label, runtimeContext) {
@@ -40,6 +41,9 @@ window.Plugins = {
         plugin = new constructor(runtimeContext);
         this._plugins.push(plugin);
         this._pluginLabels.push(label);
+        // FIXME: We need some way to costomize the save & load paths.
+        // This isn't great. Maybe we change how we store plugins so that
+        // we can save our own copy of `runtimeContext` without messing with the plugin.
         plugin.__LaraPluginContext = runtimeContext;
       }
       catch(e) {
