@@ -24,7 +24,12 @@
   - learner_state = PluginLearnerState.find_or_create(plugin, @run).state
   :javascript
     // Begin script for #{plugin.name}
-    var pluginUserStatePath=`#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
+    var savePath = `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
+    var loadPath = `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
+    var pluginStatePaths = {
+      savePath: savePath,
+      loadPath: loadPath
+    };
     var learner_state  = '#{ escape_javascript(learner_state) }'
     $(document).ready( function() {
       env = {
@@ -33,9 +38,8 @@
         pluginId: '#{plugin.id}',
         authoredState: '#{ escape_javascript(plugin.author_data) }',
         learnerState: learner_state,
-        pluginUserStatePath: pluginUserStatePath,
         div: $('##{runtimeDiv}')[0]
       }
       console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
-      Plugins.initPlugin('#{plugin.label}', env);
+      Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);
     });

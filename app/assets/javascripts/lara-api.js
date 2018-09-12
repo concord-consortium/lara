@@ -140,39 +140,33 @@ window.LARA = {
       remove: remove
     }
   },
-
   /****************************************************************************
-   @function saveLearnerState: Ask LARA to save the users state for the plugin
-   @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
-   @arg {string} state - A JSON string representing serialized plugin state.
-   @returns Promise
-   TOOD:
-    * Rename to savePluginState (because of plugin instance argument)
-    * Add more generic function saving unspecified resources … ?
-    * Use Promise polyfill for IE support ?
+  @deprecated saveLearnerState
+  @see savePluginState
   ****************************************************************************/
   saveLearnerState: function (pluginInstance, state) {
-    console.log('Plugin', pluginInstance, 'wants to save a state:', state);
-    var context = pluginInstance.__LaraPluginContext
-    if(context) {
-      var url = context.pluginUserStatePath
-      return new Promise(function(resolve, reject) {
-        $.ajax({
-          url: url,
-          type: 'PUT',
-          data: {state: state},
-          success: function(data) {
-            resolve(data);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            reject(textStatus);
-          }
-        });
-      });
+    var deprication =
+      'saveLearnerState is depricated, use `savePluginState` instead'
+    console.warn(deprication);
+    this.savePluginState(pluginInstance, state);
+  },
+
+  /****************************************************************************
+   @function savePluginState: Ask LARA to save the users state for the plugin
+   @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
+   @arg {string} state - A JSON string representing serialized plugin state.
+   @example
+    LARA.savePluginState(plugin, '{"one": 1}').then((data) => console.log(data))
+   @returns Promise
+  ****************************************************************************/
+  savePluginState: function (pluginInstance, state) {
+    var pluginsApi = window.Plugins;
+    if (pluginsApi && typeof pluginsApi.savePluginState === 'function') {
+      return pluginsApi.savePluginState(pluginInstance, state);
     }
-    else {
-      console.warn('Cant save. Plugin', pluginInstance, 'was incorrectly initialized. No __LaraPluginContext')
-    }
+    return new Promise( function(resolve, reject) {
+      reject('window.Plugins not defined. savePluginState failed.')
+    });
   },
 
   /****************************************************************************
