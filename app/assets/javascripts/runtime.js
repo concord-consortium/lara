@@ -33,6 +33,7 @@
 //= require modals
 //= require modal-dialog
 //= require plugins
+//= require sidebar
 //= require lara-api
 //= require common
 //= require check-answer
@@ -53,7 +54,6 @@
 //= require wait-message
 //= require external-scripts
 //= require logger
-//= require sidebar
 //= require labbook
 //= require c_rater
 //= require global-iframe-saver

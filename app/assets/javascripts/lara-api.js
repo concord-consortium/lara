@@ -51,7 +51,7 @@ window.LARA = {
      remove: () => void;
    }
    ****************************************************************************/
-   OPEN_POPUP_DEFAULT_OPTIONS: {
+   ADD_POPUP_DEFAULT_OPTIONS: {
     title: '',
     autoOpen: true,
     closeButton: true,
@@ -78,7 +78,7 @@ window.LARA = {
   },
 
   addPopup: function (options) {
-    options = $.extend({}, this.OPEN_POPUP_DEFAULT_OPTIONS, options);
+    options = $.extend({}, this.ADD_POPUP_DEFAULT_OPTIONS, options);
     if (!options.content) {
       throw new Error('LARA.addPopup - content option is required');
     }
@@ -139,6 +139,18 @@ window.LARA = {
       },
       remove: remove
     }
+  },
+
+  ADD_SIDEBAR_DEFAULT_OPTIONS: {
+    title: '',
+    handleColor: '#f4a035',
+    icon: null,
+    width: 500,
+    height: 500
+  },
+  addSidebar: function (options) {
+    options = $.extend({}, this.ADD_SIDEBAR_DEFAULT_OPTIONS, options);
+    Sidebar.addSidebar(options);
   },
 
   /****************************************************************************

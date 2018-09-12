@@ -28,21 +28,22 @@
 
 .end-scroll-track
 
--# -- Add expanded class to sidebar-mod for expanded view.
-- if page.show_sidebar && !page.sidebar.blank?
-  .sidebar-mod
-    .sidebar-hdr
-      %i.fa.fa-arrow-circle-left
-      %h5.h5
-        = page.sidebar_title
-    .sidebar-bd
-      .sidebar-bd-close
-        X
-      %h4.h4
-        -# TODO: Content for this head
-        -# Why does chewing gum prevent your ears from popping?
-      .sidebar-txt
-        != page.sidebar
+#sidebars-container
+  -# -- Add expanded class to sidebar-mod for expanded view.
+  - if page.show_sidebar && !page.sidebar.blank?
+    .sidebar-mod
+      .sidebar-hdr
+        %i.default-icon.fa.fa-arrow-circle-left
+        %h5.h5
+          = page.sidebar_title
+      .sidebar-bd
+        .sidebar-bd-close
+          X
+        %h4.h4
+          -# TODO: Content for this head
+          -# Why does chewing gum prevent your ears from popping?
+        .sidebar-txt
+          != page.sidebar
 
 - if page.last? && has_good_content(page.lightweight_activity.related)
   .related-mod
