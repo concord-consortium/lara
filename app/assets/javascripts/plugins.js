@@ -5,7 +5,7 @@ window.Plugins = {
       Note, we call these `classes` but any constructor function will do.
     @var Plugins._plugins: [PluginClass]
     @var Plugins._pluginLabels: [string]
-    @var Plugins._pluginStatePaths: {[PluginClass]:{savePath: string, loadPath: string}
+    @var Plugins._pluginStatePaths: {[string]:{savePath: string, loadPath: string}
   ****************************************************************************/
   _pluginClasses: {},
   _plugins:[],
@@ -61,16 +61,14 @@ window.Plugins = {
   },
 
   /****************************************************************************
-   @function savePluginState: Ask LARA to save the users state for the plugin
+   @function saveLearnerPluginState: Ask LARA to save the users state for the plugin
    @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
    @arg {string} state - A JSON string representing serialized plugin state.
-
    @example
-    LARA.savePluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
-
+    LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
    @returns Promise resolve: <string>
   ****************************************************************************/
-  savePluginState: function(pluginId, state) {
+  saveLearnerPluginState: function(pluginId, state) {
     var paths = this._pluginStatePaths[pluginId];
     if(paths && paths.savePath) {
       return new Promise(function(resolve, reject) {
@@ -89,22 +87,25 @@ window.Plugins = {
   },
 
   /****************************************************************************
-   @function register
+   @function registerPlugin
    Register a new external script as `label` with `_class `
    @arg {string} label - the identifier of the script
    @arg {class} _class - the Plugin Class being associated with the identifier
    @example: `Plugins.register('debugger', Dubugger)`
+   @returns {boolean} – true if plugin was registered correctly.
    ***************************************************************************/
   registerPlugin: function(label, _class) {
     if (typeof _class !== 'function') {
-      return;
+      console.error('Plugin did not provide constructor', label);
+      return false;
     }
     if(this._pluginClasses[label]) {
       console.error('Duplicate Plugin for label', label);
+      return false
     } else {
       this._pluginClasses[label] = _class;
+      return true
     }
   }
-
 
 };

@@ -1,4 +1,7 @@
+
 window.LARA = {
+  PluginsApi: function() { return window.Plugins} ,
+
   /****************************************************************************
    @function addPopup: Ask LARA to add a new popup window
    @arg {IPopupOptions} popupOptions
@@ -142,30 +145,30 @@ window.LARA = {
   },
   /****************************************************************************
   @deprecated saveLearnerState
-  @see savePluginState
+  @see saveLearnerPluginState
   ****************************************************************************/
   saveLearnerState: function (pluginId, state) {
     var deprication =
-      'saveLearnerState is depricated, use `savePluginState` instead'
+      '⚠️ saveLearnerState is depricated, use `saveLearnerPluginState` instead'
     console.warn(deprication);
-    this.savePluginState(pluginId, state);
+    this.saveLearnerPluginState(pluginId, state);
   },
 
   /****************************************************************************
-   @function savePluginState: Ask LARA to save the users state for the plugin
+   @function saveLearnerPluginState: Ask LARA to save the users state for the plugin
    @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
    @arg {string} state - A JSON string representing serialized plugin state.
    @example
-    LARA.savePluginState(plugin, '{"one": 1}').then((data) => console.log(data))
+    LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
    @returns Promise
   ****************************************************************************/
-  savePluginState: function (pluginId, state) {
+  saveLearnerPluginState: function (pluginId, state) {
     var pluginsApi = window.Plugins;
-    if (pluginsApi && typeof pluginsApi.savePluginState === 'function') {
-      return pluginsApi.savePluginState(pluginId, state);
+    if (pluginsApi && typeof pluginsApi.saveLearnerPluginState === 'function') {
+      return pluginsApi.saveLearnerPluginState(pluginId, state);
     }
     return new Promise( function(resolve, reject) {
-      reject('window.Plugins not defined. savePluginState failed.')
+      reject('pluginApi not defined. saveLearnerPluginState failed.')
     });
   },
 
@@ -196,14 +199,19 @@ window.LARA = {
 
 
   /**************************************************************
-   @function register
+   @function registerPlugin
    Register a new external script as `label` with `_class `
+   Deligates to this.PluginsApi
    @arg label - the identifier of the script
    @arg _class - the Plugin Class being associated with the identifier
-   @returns void
-   @example: `LARA.registerPlugin('debugger', Dubugger);`
+   @returns boolean - true if plugin was registered correctly.
+   @example: `LARA.registerPlugin('debugger', Dubugger);
    **************************************************************/
   registerPlugin: function(label, _class) {
-    Plugins.registerPlugin(label, _class);
+    var pluginsApi = window.Plugins;
+    if(pluginsApi && pluginsApi.registerPlugin){
+      return pluginsApi.registerPlugin(label, _class);
+    }
+    return false;
   }
 };
