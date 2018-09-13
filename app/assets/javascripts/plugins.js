@@ -44,14 +44,13 @@ window.Plugins = {
   ****************************************************************************/
   initPlugin: function(label, runtimeContext, pluginStatePaths) {
     var constructor = this._pluginClasses[label];
-    var config = {};
     var plugin = null;
     if (typeof constructor === 'function') {
       try {
         plugin = new constructor(runtimeContext);
         this._plugins.push(plugin);
         this._pluginLabels.push(label);
-        this._pluginStatePaths[plugin] = pluginStatePaths;
+        this._pluginStatePaths[runtimeContext.pluginId] = pluginStatePaths;
       }
       catch(e) { this._pluginError(e, runtimeContext); }
       console.info('Plugin', label, 'is now registered');
@@ -63,16 +62,16 @@ window.Plugins = {
 
   /****************************************************************************
    @function savePluginState: Ask LARA to save the users state for the plugin
-   @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
+   @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
    @arg {string} state - A JSON string representing serialized plugin state.
 
    @example
-    LARA.savePluginState(plugin, '{"one": 1}').then((data) => console.log(data))
+    LARA.savePluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
 
    @returns Promise resolve: <string>
   ****************************************************************************/
-  savePluginState: function(pluginInstance, state) {
-    var paths = this._pluginStatePaths[pluginInstance];
+  savePluginState: function(pluginId, state) {
+    var paths = this._pluginStatePaths[pluginId];
     if(paths && paths.savePath) {
       return new Promise(function(resolve, reject) {
         $.ajax({
@@ -85,7 +84,7 @@ window.Plugins = {
       });
     }
     else {
-      console.warn('Not saved.`pluginStatePaths` missing for' , pluginInstance);
+      console.warn('Not saved.`pluginStatePaths` missing for plugin ID:' , pluginId);
     }
   },
 
