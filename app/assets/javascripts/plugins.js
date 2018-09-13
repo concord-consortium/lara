@@ -77,13 +77,13 @@ window.Plugins = {
           type: 'PUT',
           data: {state: state},
           success: function(data) { resolve(data); },
-          error: function(jqXHR, errText, err) { reject(errText); }
+          error: function(jqXHR, errText, err) { reject(err); }
         });
       });
     }
-    else {
-      console.warn('Not saved.`pluginStatePaths` missing for plugin ID:' , pluginId);
-    }
+    const msg = 'Not saved.`pluginStatePaths` missing for plugin ID:'
+    console.warn(msg , pluginId);
+    return Promise.reject(msg)
   },
 
   /****************************************************************************

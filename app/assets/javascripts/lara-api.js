@@ -1,6 +1,5 @@
 
 window.LARA = {
-  PluginsApi: function() { return window.Plugins} ,
 
   /****************************************************************************
    @function addPopup: Ask LARA to add a new popup window
@@ -163,13 +162,7 @@ window.LARA = {
    @returns Promise
   ****************************************************************************/
   saveLearnerPluginState: function (pluginId, state) {
-    var pluginsApi = window.Plugins;
-    if (pluginsApi && typeof pluginsApi.saveLearnerPluginState === 'function') {
-      return pluginsApi.saveLearnerPluginState(pluginId, state);
-    }
-    return new Promise( function(resolve, reject) {
-      reject('pluginApi not defined. saveLearnerPluginState failed.')
-    });
+    return Plugins.saveLearnerPluginState(pluginId, state);
   },
 
   /****************************************************************************
@@ -208,10 +201,6 @@ window.LARA = {
    @example: `LARA.registerPlugin('debugger', Dubugger);
    **************************************************************/
   registerPlugin: function(label, _class) {
-    var pluginsApi = window.Plugins;
-    if(pluginsApi && pluginsApi.registerPlugin){
-      return pluginsApi.registerPlugin(label, _class);
-    }
-    return false;
+    return Plugins.registerPlugin(label, _class);
   }
 };
