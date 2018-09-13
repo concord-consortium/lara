@@ -8,8 +8,10 @@
   function positionMultipleSidebars() {
     // First, make sure that sidebars are below navigation menu, as if handles overlap with it,
     // it might be problematic to navigate between pages.
-    var navMenuBottom = $('.activity-nav-mod')[0].getBoundingClientRect().bottom;
-    var startHeight = navMenuBottom + SIDEBAR_SPACER; // add a little margin, it looks better.
+    var $navMenu = $('.activity-nav-mod');
+    // Note that .activity-nav-mod might not be present in test environment.
+    var refHeight = $navMenu.length > 0 ? $navMenu[0].getBoundingClientRect().bottom : 0;
+    var startHeight = refHeight + SIDEBAR_SPACER; // add a little margin, it looks better.
     // Then, make sure that multiple handles don't overlap and they don't go off screen.
     var sidebarSpacing = $('.sidebar-hdr').height() + SIDEBAR_SPACER;
     var titleBarHeight = $('.sidebar-mod .title-bar').height();
@@ -53,7 +55,7 @@
       // Final setup.
       $sidebar.append($handle);
       $sidebar.append($body);
-      $('#sidebars-container').append($sidebar);
+      $('body').append($sidebar);
 
       // Add event handlers.
       var isOpen = function () {
