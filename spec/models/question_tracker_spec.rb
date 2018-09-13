@@ -29,20 +29,20 @@ describe QuestionTracker do
     end
 
     it "should not include the master question in the questions list" do
-      instance.questions.size.should eql 0
+      expect(instance.questions.size).to eql 0
     end
 
     describe "add_question" do
       before(:each) { instance.add_question(question) }
       describe "when the question is the same type as the master_question" do
         it "s questions should include the newly added question" do
-          instance.questions.should include(question)
+          expect(instance.questions).to include(question)
         end
         describe "when the question is already in the list" do
           it "shouldn't add it again" do
             count = instance.questions.size
             instance.add_question(question)
-            instance.questions.size.should eql(count)
+            expect(instance.questions.size).to eql(count)
           end
         end
       end
@@ -50,7 +50,7 @@ describe QuestionTracker do
       describe "when the question is of the wrong type" do
         let(:question)        {  FactoryGirl.create :open_response }
         it "s questions should not include the newly added question" do
-          instance.questions.should_not include(question)
+          expect(instance.questions).not_to include(question)
         end
       end
 
@@ -62,11 +62,11 @@ describe QuestionTracker do
         before(:each) { instance.add_question(question) }
         it "s questions should include the newly added question" do
           instance.remove_question(question)
-          instance.questions.should_not include(question)
+          expect(instance.questions).not_to include(question)
         end
         it "the question should still exists" do
           instance.remove_question(question)
-          question.reload.should be_persisted
+          expect(question.reload).to be_persisted
         end
       end
     end
@@ -74,9 +74,9 @@ describe QuestionTracker do
     describe "new_question" do
       before(:each) { instance.new_question(); instance.new_question()   }
       it "should duplicate the master question" do
-        instance.questions.size.should eql 2
+        expect(instance.questions.size).to eql 2
         instance.questions.each do |question|
-          question.prompt.should eql master_question.prompt
+          expect(question.prompt).to eql master_question.prompt
         end
       end
     end
