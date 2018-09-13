@@ -6,17 +6,25 @@
 
   // Dynamically setup position of sidebar handles.
   function positionMultipleSidebars() {
-    // First, make sure that sidebars are below navigation menu, as if handles overlap with it,
-    // it might be problematic to navigate between pages.
+    // First, make sure that sidebars are below page navigation menu.
+    var minOffset = 0;
     var $navMenu = $('.activity-nav-mod');
     // Note that .activity-nav-mod might not be present in test environment.
-    var refHeight = $navMenu.length > 0 ? $navMenu[0].getBoundingClientRect().bottom : 0;
-    var startHeight = refHeight + SIDEBAR_SPACER; // add a little margin, it looks better.
+    if ($navMenu.length > 0) {
+      minOffset = $navMenu[0].getBoundingClientRect().bottom;
+    }
+    // Also, take into account aet of small icons displayed on the side of the page. They look like mini-sidebar handles.
+    // Not available in all the layouts, so this selector might not be present. Again, avoid overlapping.
+    var $sideNavigation = $('#nav-activity-menu');
+    if ($sideNavigation.length > 0) {
+      minOffset = Math.max(minOffset, $sideNavigation[0].getBoundingClientRect().bottom)
+    }
+    minOffset = minOffset + SIDEBAR_SPACER; // add a little margin, it looks better.
     // Then, make sure that multiple handles don't overlap and they don't go off screen.
     var sidebarSpacing = $('.sidebar-hdr').height() + SIDEBAR_SPACER;
     var titleBarHeight = $('.sidebar-mod .title-bar').height();
     $('.sidebar-mod').each(function (idx) {
-      const top = startHeight + idx * sidebarSpacing;
+      const top = minOffset + idx * sidebarSpacing;
       $(this).css('top', top);
       // Also, ensure that sidebar content is fully visible, even on the pretty short screens.
       $(this).find('.sidebar-content').css('max-height', window.innerHeight - top - titleBarHeight - BOTTOM_MARGIN);
