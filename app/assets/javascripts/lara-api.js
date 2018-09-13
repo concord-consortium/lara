@@ -144,25 +144,25 @@ window.LARA = {
   @deprecated saveLearnerState
   @see savePluginState
   ****************************************************************************/
-  saveLearnerState: function (pluginInstance, state) {
+  saveLearnerState: function (pluginId, state) {
     var deprication =
       'saveLearnerState is depricated, use `savePluginState` instead'
     console.warn(deprication);
-    this.savePluginState(pluginInstance, state);
+    this.savePluginState(pluginId, state);
   },
 
   /****************************************************************************
    @function savePluginState: Ask LARA to save the users state for the plugin
-   @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
+   @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
    @arg {string} state - A JSON string representing serialized plugin state.
    @example
     LARA.savePluginState(plugin, '{"one": 1}').then((data) => console.log(data))
    @returns Promise
   ****************************************************************************/
-  savePluginState: function (pluginInstance, state) {
+  savePluginState: function (pluginId, state) {
     var pluginsApi = window.Plugins;
     if (pluginsApi && typeof pluginsApi.savePluginState === 'function') {
-      return pluginsApi.savePluginState(pluginInstance, state);
+      return pluginsApi.savePluginState(pluginId, state);
     }
     return new Promise( function(resolve, reject) {
       reject('window.Plugins not defined. savePluginState failed.')
