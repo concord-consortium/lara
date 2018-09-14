@@ -1,7 +1,7 @@
 
 class Plugin < ActiveRecord::Base
 
-  attr_accessible :description, :author_data, :approved_script_id, :approved_script
+  attr_accessible :description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key
 
   belongs_to :approved_script
   belongs_to :plugin_scope, polymorphic: true
@@ -11,6 +11,11 @@ class Plugin < ActiveRecord::Base
   delegate :url,   to: :approved_script, allow_nil: true
   delegate :version, to: :approved_script, allow_nil: true
 
+  after_initialize :generate_rare_key
+
+  def generate_rare_key
+    self.shared_learner_state_key ||= SecureRandom.uuid()
+  end
   # TODO: Import / export / to_hash &etc for duplicating ...
   #
   # def self.import(import_hash)

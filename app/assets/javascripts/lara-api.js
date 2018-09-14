@@ -1,4 +1,6 @@
+
 window.LARA = {
+
   /****************************************************************************
    @function addPopup: Ask LARA to add a new popup window
    @arg {IPopupOptions} popupOptions
@@ -140,6 +142,16 @@ window.LARA = {
       remove: remove
     }
   },
+  /****************************************************************************
+  @deprecated saveLearnerState
+  @see saveLearnerPluginState
+  ****************************************************************************/
+  saveLearnerState: function (pluginId, state) {
+    var deprication =
+      '⚠️ saveLearnerState is depricated, use `saveLearnerPluginState` instead'
+    console.warn(deprication);
+    this.saveLearnerPluginState(pluginId, state);
+  },
 
   /****************************************************************************
    @function addSidebar: Ask LARA to add a new sidebar
@@ -198,13 +210,15 @@ window.LARA = {
   },
 
   /****************************************************************************
-   @function saveUserState: Ask LARA to save the users state for the plugin
-   @arg {ILaraPluginRef} pluginInstance - The plugin trying to save data
+   @function saveLearnerPluginState: Ask LARA to save the users state for the plugin
+   @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
    @arg {string} state - A JSON string representing serialized plugin state.
+   @example
+    LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
    @returns Promise
   ****************************************************************************/
-  saveUserState: function (pluginInstance, state) {
-    console.log('Plugin', pluginInstance, 'wants to save a state:', state);
+  saveLearnerPluginState: function (pluginId, state) {
+    return Plugins.saveLearnerPluginState(pluginId, state);
   },
 
   /****************************************************************************
@@ -234,14 +248,15 @@ window.LARA = {
 
 
   /**************************************************************
-   @function register
+   @function registerPlugin
    Register a new external script as `label` with `_class `
+   Deligates to this.PluginsApi
    @arg label - the identifier of the script
    @arg _class - the Plugin Class being associated with the identifier
-   @returns void
-   @example: `LARA.registerPlugin('debugger', Dubugger);`
+   @returns boolean - true if plugin was registered correctly.
+   @example: `LARA.registerPlugin('debugger', Dubugger);
    **************************************************************/
   registerPlugin: function(label, _class) {
-    Plugins.registerPlugin(label, _class);
+    return Plugins.registerPlugin(label, _class);
   }
 };
