@@ -63,5 +63,55 @@ describe("LARA API", () => {
       })
     })
   })
-})
 
+  describe("#saveLearnerPluginState", () => {
+    const plugin = jest.fn()
+    const state = JSON.toString({this: "is a test"});
+
+    let pluginFunction = jest.fn((plugin,state) => Promise.resolve(state))
+    beforeEach(()=> global.Plugins= { saveLearnerPluginState: pluginFunction})
+
+    it("should exist", () => {
+      expect(LARA.saveLearnerPluginState).toBeDefined();
+    })
+
+    it("should deligate the function to Plugins", () => {
+      expect.assertions(2);
+      return LARA.saveLearnerPluginState(plugin, state)
+        .then((d) => {
+          expect(d).toMatch(state)
+          expect(pluginFunction).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    describe("when saving fails", () => {
+      let pluginFunction = jest.fn((plugin,state) => Promise.reject("fail"))
+      beforeEach(()=> global.Plugins= { saveLearnerPluginState: pluginFunction})
+      it("should throw an exception", () => {
+        expect.assertions(2);
+        return LARA.saveLearnerPluginState(plugin, state)
+          .catch((e) => {
+            expect(e).toMatch("fail")
+            expect(pluginFunction).toHaveBeenCalledTimes(1)
+          })
+      })
+    })
+  })
+
+  describe("#registerPlugin", () => {
+    const plugin = jest.fn()
+    const label  = 'fakePlugin'
+
+    let pluginFunction = jest.fn((plugin,state) => true)
+    beforeEach(()=> global.Plugins= { registerPlugin: pluginFunction})
+    it("should exist", () => {
+      expect(LARA.registerPlugin).toBeDefined();
+    })
+
+    it("should deligate to Plugin", () => {
+      expect(LARA.registerPlugin(label, plugin)).toBeTruthy()
+      expect(pluginFunction).toHaveBeenCalledTimes(1)
+    })
+
+  })
+})

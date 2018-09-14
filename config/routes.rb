@@ -173,6 +173,11 @@ LightweightStandalone::Application.routes.draw do
       match "user_check" => 'user_check#index', defaults: { format: 'json' }
 
       match 'get_firebase_jwt/:run_id' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
+
+      match 'plugin_learner_states/:plugin_id/:run_id' =>
+        'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
+      match 'plugin_plugin_learner_state/:plugin_id/:run_id' =>
+        'plugin_learner_states#save', as: 'update_plugin_learner_state', via: 'put'
     end
   end
 
