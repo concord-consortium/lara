@@ -161,13 +161,6 @@ describe InteractivePagesController do
       expect(response.body).not_to match /<a class='next'>/
     end
 
-    it 'shows sidebar content on pages which have it' do
-      page1
-      get :show, :id => page1.id, :response_key => ar.key
-
-      expect(response.body).to match /<div class='sidebar-mod'>/
-    end
-
     it 'shows related content on the last page' do
       page1
       get :show, :id => page1.id, :response_key => ar.key
@@ -184,13 +177,14 @@ describe InteractivePagesController do
       expect(response.body).not_to match /<div class='related-mod'>/
     end
 
-    it 'does not show page areas which are not selected to be shown' do
+    it 'calls LARA.addSidebar content on pages which have authored sidebar' do
       get :show, :id => page1.id, :response_key => ar.key
-      expect(response.body).to match /<div class='sidebar-mod'>/
+      # Note that page factory creates a page with sidebar by default.
+      expect(response.body).to match /LARA\.addSidebar\({/
       page2.show_sidebar = false
       page2.save
       get :show, :id => page2.id, :response_key => ar.key
-      expect(response.body).not_to match /<div class='sidebar-mod'>/
+      expect(response.body).not_to match /LARA\.addSidebar\({/
     end
     # --- Ends section which should go to view spec ---
   end

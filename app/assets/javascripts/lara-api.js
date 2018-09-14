@@ -53,7 +53,7 @@ window.LARA = {
      remove: () => void;
    }
    ****************************************************************************/
-   OPEN_POPUP_DEFAULT_OPTIONS: {
+   ADD_POPUP_DEFAULT_OPTIONS: {
     title: '',
     autoOpen: true,
     closeButton: true,
@@ -80,7 +80,7 @@ window.LARA = {
   },
 
   addPopup: function (options) {
-    options = $.extend({}, this.OPEN_POPUP_DEFAULT_OPTIONS, options);
+    options = $.extend({}, this.ADD_POPUP_DEFAULT_OPTIONS, options);
     if (!options.content) {
       throw new Error('LARA.addPopup - content option is required');
     }
@@ -151,6 +151,62 @@ window.LARA = {
       '⚠️ saveLearnerState is depricated, use `saveLearnerPluginState` instead'
     console.warn(deprication);
     this.saveLearnerPluginState(pluginId, state);
+  },
+
+  /****************************************************************************
+   @function addSidebar: Ask LARA to add a new sidebar
+   @arg {ISidebarOptions} sidebarOptions
+   @returns {ISidebarController} sidebarController
+
+   Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
+   to specify their positions, so no assumptions should be made about current display - it might change.
+
+   Sidebar height cannot be specified. It's done on purpose to prevent issues on very short screens. It's based on the
+   provided content HTML element, but it's limited to following range:
+     - 100px is the min-height
+     - max-height is calculated dynamically and ensures that sidebar won't go off the screen
+   If the provided content is taller than the max-height of the sidebar, a sidebar content container will scroll.
+
+   It returns a simple controller that can be used to open or close sidebar.
+
+   interface ISidebarOptions {
+     content: string | HTMLElement;
+     // Icon can be 'default' (arrow) or an HTML element.
+     icon?: string | HTMLElement;
+     // Text displayed on the sidebar handle.
+     handle?: string;
+     handleColor?: string;
+     // Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
+     titleBar?: string;
+     titleBarColor?: string;
+     width?: number;
+     padding?: 25;
+     onOpen?: () => void;
+     onClose?: () => void;
+   }
+
+   interface ISidebarController {
+     open: () => void;
+     close: () => void;
+   }
+   ****************************************************************************/
+  ADD_SIDEBAR_DEFAULT_OPTIONS: {
+    icon: 'default', // arrow pointing left
+    handle: '',
+    handleColor: '#aaa',
+    titleBar: null,
+    titleBarColor: '#bbb',
+    width: 500,
+    padding: 25,
+    onOpen: null,
+    onClose: null
+  },
+  addSidebar: function (options) {
+    options = $.extend({}, this.ADD_SIDEBAR_DEFAULT_OPTIONS, options);
+    if (options.icon === 'default') {
+      options.icon = $("<i class='default-icon fa fa-arrow-circle-left'>")[0];
+    }
+    return Sidebar.addSidebar(options);
   },
 
   /****************************************************************************

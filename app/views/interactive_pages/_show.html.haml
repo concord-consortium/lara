@@ -28,21 +28,20 @@
 
 .end-scroll-track
 
--# -- Add expanded class to sidebar-mod for expanded view.
 - if page.show_sidebar && !page.sidebar.blank?
-  .sidebar-mod
-    .sidebar-hdr
-      %i.fa.fa-arrow-circle-left
-      %h5.h5
-        = page.sidebar_title
-    .sidebar-bd
-      .sidebar-bd-close
-        X
-      %h4.h4
-        -# TODO: Content for this head
-        -# Why does chewing gum prevent your ears from popping?
-      .sidebar-txt
-        != page.sidebar
+  :javascript
+    // Render "Did you know?" sidebar that can be specified by authors.
+    $(function () {
+      LARA.addSidebar({
+        handle: "#{page.sidebar_title}",
+        titleBar: "#{page.sidebar_title}",
+        handleColor: '#f4a035',
+        titleBarColor: '#ffbc67',
+        // Use jQuery to process markup created by rich text editor.
+        content: $("<div>#{page.sidebar}</div>")[0]
+      });
+    });
+
 
 - if page.last? && has_good_content(page.lightweight_activity.related)
   .related-mod
