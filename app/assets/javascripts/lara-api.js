@@ -142,16 +142,6 @@ window.LARA = {
       remove: remove
     }
   },
-  /****************************************************************************
-  @deprecated saveLearnerState
-  @see saveLearnerPluginState
-  ****************************************************************************/
-  saveLearnerState: function (pluginId, state) {
-    var deprication =
-      '⚠️ saveLearnerState is depricated, use `saveLearnerPluginState` instead'
-    console.warn(deprication);
-    this.saveLearnerPluginState(pluginId, state);
-  },
 
   /****************************************************************************
    @function addSidebar: Ask LARA to add a new sidebar
