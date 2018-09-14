@@ -194,10 +194,12 @@ describe LightweightActivity do
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
     let(:report_url) { "https://reports.concord.org/" }
 
+    let(:plugins)   { FactoryGirl.create_list(:plugin, 2)}
     before :each do
       activity.layout = layout
       activity.editor_mode = edit_mode
       activity.external_report_url = report_url
+      plugins.each { |p| activity.plugins.push(p) }
     end
 
     it 'creates a new LightweightActivity with attributes from the original' do
@@ -211,6 +213,16 @@ describe LightweightActivity do
       expect(dup.editor_mode).to eq(activity.editor_mode)
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
       expect(dup.external_report_url).to eq(report_url)
+    end
+
+    it 'copies the activities plugins' do
+      dup = activity.duplicate(owner)
+      expect(dup.plugins.length).to eq(plugins.length)
+      dup.plugins.each do |p|
+        expect(plugins.map(&:name)).to include(p.name)
+        expect(p).not_to eql(plugins[0])
+        expect(p).not_to eql(plugins[1])
+      end
     end
 
     describe "an activity with an open response" do

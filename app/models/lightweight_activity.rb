@@ -113,6 +113,9 @@ class LightweightActivity < ActiveRecord::Base
         new_page.save!(validate: false)
       end
       new_activity.fix_page_positions
+      self.plugins.each do |p|
+        new_activity.plugins.push(p.duplicate)
+      end
     end
     return new_activity
   end
