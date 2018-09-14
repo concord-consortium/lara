@@ -70,7 +70,7 @@
         return $sidebar.hasClass('expanded')
       };
       $handle.add($closeBtn) // .add creates a set of elements, so we can apply click handler just once
-        .on('click.sidebarToggle', function () {
+        .on('click', function () {
           if (!isOpen()) {
             // We're opening a sidebar. Close all the others first.
             this._closeAllSidebars();
