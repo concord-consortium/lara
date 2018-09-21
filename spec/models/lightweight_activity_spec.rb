@@ -170,7 +170,20 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, :external_report_url => nil, :student_report_enabled => true, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout, editor_mode: activity.editor_mode }
+      expected = {
+        name: activity.name,
+        related: activity.related,
+        publication_status: activity.publication_status,
+        external_report_url: nil,
+        student_report_enabled: true,
+        description: activity.description,
+        time_to_complete: activity.time_to_complete,
+        project_id: activity.project_id,
+        theme_id: activity.theme_id,
+        thumbnail_url: activity.thumbnail_url,
+        notes: activity.notes,
+        layout: activity.layout,
+        editor_mode: activity.editor_mode }
       expect(activity.to_hash).to eq(expected)
     end
   end
