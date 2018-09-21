@@ -284,6 +284,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     font-weight: bold;
     margin-top: 1em;
   }
+  .prompt {
+    overflow: hidden;
+  }
 }
 .questions.full-width {
   .embeddable {
