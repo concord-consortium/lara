@@ -41,12 +41,12 @@ class Sequence < ActiveRecord::Base
 
   def to_hash
     # We're intentionally not copying:
-    # - publication status (the copy should start as draft like everything else)
     # - is_official (defaults to false, can be changed)
     # - user_id (the copying user should be the owner)
     {
       title: title,
       description: description,
+      publication_status: publication_status,
       abstract: abstract,
       theme_id: theme_id,
       project_id: project_id,

@@ -156,9 +156,17 @@ describe Sequence do
     let(:report_url)    { "https://foo.bar.report/" }
     let(:sequence_opts) { {external_report_url: report_url } }
     it 'returns a hash with relevant values for sequence duplication' do
-      expected = { title: sequence.title, description: sequence.description, abstract: sequence.abstract, theme_id: sequence.theme_id, project_id: sequence.project_id,
-                   logo: sequence.logo, display_title: sequence.display_title, thumbnail_url: sequence.thumbnail_url,
-                   external_report_url: report_url
+      expected = {
+        title: sequence.title,
+        description: sequence.description,
+        publication_status: sequence.publication_status,
+        abstract: sequence.abstract,
+        theme_id: sequence.theme_id,
+        project_id: sequence.project_id,
+        logo: sequence.logo,
+        display_title: sequence.display_title,
+        thumbnail_url: sequence.thumbnail_url,
+        external_report_url: report_url
       }
       expect(sequence.to_hash).to eq(expected)
     end

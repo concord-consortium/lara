@@ -77,12 +77,12 @@ class LightweightActivity < ActiveRecord::Base
 
   def to_hash
     # We're intentionally not copying:
-    # - Publication status (the copy should start as draft like everything else)
     # - user_id (the copying user should be the owner)
     # - Pages (associations will be done differently)
     {
       name: name,
       related: related,
+      publication_status: publication_status,
       description: description,
       time_to_complete: time_to_complete,
       project_id: project_id,
