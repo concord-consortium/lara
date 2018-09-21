@@ -58,6 +58,9 @@
 .question {
   margin: 0 0 20px;
   @extend .cf;
+  .question-txt {
+    overflow: hidden;
+  }
   .answer_text {
     font-style: italic;
     font-size: 0.9em;
