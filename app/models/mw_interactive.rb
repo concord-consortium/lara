@@ -40,19 +40,31 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
-  # returns the aspect ratio of the interactive, determined by dividing the width by the height.
-  # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
-  # will be 2.
-  def aspect_ratio
-    if self.native_width && self.native_height
-      return self.native_width/self.native_height.to_f
-    else
-      return 1.324 # Derived from the default values, above
+  # returns the aspect ratio of the interactive, dividing the width by the height.
+  # For an interactive with a native width of 400 and native height of 200,
+  # the aspect_ratio will be 2.
+  # If ASPECT_RATIO_MAX_METHOD is being used, it is expected that the available
+  # width and height are provided as arugments used to calculated an aspect_ratio
+  def aspect_ratio(avail_width=nil, avail_height=nil)
+    case self.aspect_ratio_method
+      when ASPECT_RATIO_DEFAULT_METHOD
+        return ASPECT_RATIO_DEFAULT_WIDTH / ASPECT_RATIO_DEFAULT_HEIGHT.to_f
+      when ASPECT_RATIO_MANUAL_METHOD
+        return self.native_width/self.native_height.to_f
+      when ASPECT_RATIO_MAX_METHOD
+        width  = avail_width  || ASPECT_RATIO_DEFAULT_WIDTH
+        height = avail_height || ASPECT_RATIO_DEFAULT_HEIGHT
+        return width / height.to_f
     end
   end
 
-  def height(width)
-    return width/self.aspect_ratio
+  def height(avail_width, avail_height=nil)
+    case self.aspect_ratio
+      when ASPECT_RATIO_MAX_METHOD
+        return avail_width / aspect_ratio(avail_width, avail_height)
+      else
+        return avail_width / self.aspect_ratio(avail_width, avail_height)
+    end
   end
 
   def to_hash

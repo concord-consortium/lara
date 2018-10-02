@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe MwInteractive do
-  let (:interactive) { FactoryGirl.create(:mw_interactive) }
+  let (:interactive_options) { {} }
+  let (:interactive) { FactoryGirl.create(:mw_interactive, interactive_options) }
   let (:page) { FactoryGirl.create(:page) }
 
   it 'has valid attributes' do
@@ -126,15 +127,77 @@ describe MwInteractive do
   end
 
   describe "aspect_ratio_method" do
+    let (:ar_method) { MwInteractive::ASPECT_RATIO_DEFAULT_METHOD }
+    let (:width)  { 800 }
+    let (:height) { 400 }
+    let (:interactive_options) do
+      {
+        aspect_ratio_method: ar_method,
+        native_width: width,
+        native_height: height
+      }
+    end
+
     describe "the default value" do
       it "Should be 'DEFAULT'" do
         expect(interactive.aspect_ratio_method).to eq(MwInteractive::ASPECT_RATIO_DEFAULT_METHOD)
         expect(interactive.aspect_ratio_method).to eq("DEFAULT")
       end
-      describe "when the user has set a custom aspect ratio" do
+    end
 
+
+    describe "with manually set values of width 800 and height 400" do
+      let (:width)  { 800 }
+      let (:height) { 400 }
+      describe "With 'default' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_DEFAULT_METHOD }
+        describe "aspect_ratio" do
+          it 'should use the default value of 1.324' do
+            expect(interactive.aspect_ratio).to be_within(0.01).of(1.32)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height from a supplied width, based on aspect ratio' do
+            # (800 / 1.324) ~ 604
+            expect(interactive.height(800)).to be_within(1).of(604)
+          end
+        end
+      end
+
+      describe "With 'manual' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_MANUAL_METHOD }
+        describe "aspect_ratio" do
+          it 'should use the calculated value of 800/400 == 2' do
+            expect(interactive.aspect_ratio).to be_within(0.01).of(2)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height from a supplied width, based on aspect ratio' do
+            # (1000 / 2) ~ 500
+            expect(interactive.height(1000)).to be_within(0.01).of(500)
+          end
+        end
+      end
+
+      describe "With 'maximum' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_MAX_METHOD }
+        let (:available_width)  { 500 }
+        let (:available_height) { 100 }
+        describe "aspect_ratio" do
+          it 'should use the available width and height to calc 500/100 == 5' do
+            expect(interactive.aspect_ratio(available_width, available_height))
+              .to be_within(0.01).of(5)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height equal to available height' do
+            # (500 / 5) ~ 100
+            expect(interactive.height(available_width, available_height))
+              .to be_within(0.01).of(available_height)
+          end
+        end
       end
     end
-  end
 
+  end
 end
