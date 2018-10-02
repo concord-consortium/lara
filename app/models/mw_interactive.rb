@@ -2,12 +2,21 @@ class MwInteractive < ActiveRecord::Base
   include Embeddable
 
   DEFAULT_CLICK_TO_PLAY_PROMPT = "Click here to start the interactive."
-  attr_accessible :name, :url, :native_width, :native_height, :enable_learner_state, :has_report_url, :click_to_play,
-                  :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :full_window, :model_library_url,
-                  :authored_state, :no_snapshots, :show_delete_data_button, :show_in_featured_question_report, :is_full_width
+  ASPECT_RATIO_DEFAULT_WIDTH   = 576
+  ASPECT_RATIO_DEFAULT_HEIGHT  =  435
+  ASPECT_RATIO_DEFAULT_METHOD  = 'DEFAULT'
+  ASPECT_RATIO_MANUAL_METHOD   = 'MANUAL'
+  ASPECT_RATIO_MAX_METHOD      = 'MAX'
 
-  default_value_for :native_width, 576
-  default_value_for :native_height, 435
+  attr_accessible :name, :url, :native_width, :native_height,
+    :enable_learner_state, :has_report_url, :click_to_play,
+    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id,
+    :full_window, :model_library_url, :authored_state, :no_snapshots,
+    :show_delete_data_button, :show_in_featured_question_report, :is_full_width,
+    :aspect_ratio_method
+
+  default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
+  default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
 
   validates_numericality_of :native_width
   validates_numericality_of :native_height
@@ -64,7 +73,8 @@ class MwInteractive < ActiveRecord::Base
       is_full_width: is_full_width,
       show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
-      authored_state: authored_state
+      authored_state: authored_state,
+      aspect_ratio_method: aspect_ratio_method
     }
   end
 
@@ -106,7 +116,8 @@ class MwInteractive < ActiveRecord::Base
                               :is_hidden,
                               :is_full_width,
                               :model_library_url,
-                              :authored_state])
+                              :authored_state,
+                              :aspect_ratio_method])
   end
 
   def self.import(import_hash)

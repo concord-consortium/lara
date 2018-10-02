@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180910194602) do
+ActiveRecord::Schema.define(:version => 20181001211438) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -442,6 +442,7 @@ ActiveRecord::Schema.define(:version => 20180910194602) do
     t.boolean  "show_delete_data_button",          :default => true
     t.boolean  "is_full_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
+    t.string   "aspect_ratio_method",              :default => "DEFAULT"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

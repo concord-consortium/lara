@@ -18,18 +18,6 @@ describe MwInteractive do
     expect(interactive.interactive_page).to eq(page)
   end
 
-  it 'returns an aspect ratio based on native height and native width' do
-    expect(interactive.aspect_ratio).to be === 1.3241379310344827
-    interactive.native_width = 500
-    interactive.native_height = 250
-    interactive.save
-    expect(interactive.aspect_ratio).to be === 2
-  end
-
-  it 'returns a calculated height from a supplied width, based on aspect ratio' do
-    expect(interactive.height(800)).to be === 604.1666666666666
-  end
-
   describe '#to_hash' do
     it 'has useful values' do
       expected = {
@@ -48,7 +36,8 @@ describe MwInteractive do
         is_hidden: interactive.is_hidden,
         is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state,
-        show_in_featured_question_report: interactive.show_in_featured_question_report
+        show_in_featured_question_report: interactive.show_in_featured_question_report,
+        aspect_ratio_method: interactive.aspect_ratio_method
        }
       expect(interactive.to_hash).to eq(expected)
     end
@@ -135,4 +124,17 @@ describe MwInteractive do
       expect(interactive.labbook.custom_action_label).to eq(nil)
     end
   end
+
+  describe "aspect_ratio_method" do
+    describe "the default value" do
+      it "Should be 'DEFAULT'" do
+        expect(interactive.aspect_ratio_method).to eq(MwInteractive::ASPECT_RATIO_DEFAULT_METHOD)
+        expect(interactive.aspect_ratio_method).to eq("DEFAULT")
+      end
+      describe "when the user has set a custom aspect ratio" do
+
+      end
+    end
+  end
+
 end
