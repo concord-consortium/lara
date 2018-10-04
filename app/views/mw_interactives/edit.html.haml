@@ -9,14 +9,13 @@
     = f.text_field :name
   = field_set_tag 'URL' do
     = f.text_area :url, size: "45x4"
-  = field_set_tag 'Dimensions' do
-    = f.label :native_width, 'Width'
-    = f.text_field :native_width
+
+  = field_set_tag 'Aspect Ratio' do
+    %div{id:"aspect_ratio"}
+    = f.hidden_field :native_width,  :id => 'width'
+    = f.hidden_field :native_height, :id => 'height'
+    = f.hidden_field :aspect_ratio_method, :id => 'method'
     .clear
-    = f.label :native_height, 'Height'
-    = f.text_field :native_height
-    .clear
-    This width and height will be used to maintain a fixed aspect ratio for the interactive.
   %br
   = f.label :click_to_play, 'Click to play'
   = f.check_box :click_to_play, :id => "click_to_play_#{@interactive.id}"
@@ -110,4 +109,23 @@
     }
 
     $("#click_to_play_#{@interactive.id}").click(click_to_play);
+
+    var available_ratios = #{@interactive.available_aspect_ratios.to_json}
+    var props = {
+      initialState: {
+        width: "#{@interactive.native_width}",
+        height: "#{@interactive.native_height}",
+        mode: "#{@interactive.aspect_ratio_method}"
+      },
+      availableAspectRatios: available_ratios,
+      updateValues: function(aspect_ratio_values) {
+        $('#width').val( aspect_ratio_values.width);
+        $('#height').val(aspect_ratio_values.height);
+        $('#method').val(aspect_ratio_values.mode);
+      }
+    };
+
+    Chooser = React.createElement(modulejs.require('components/common/aspect_ratio_chooser'), props);
+    ReactDOM.render(Chooser, $("#aspect_ratio")[0]);
+
   });
