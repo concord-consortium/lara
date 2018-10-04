@@ -40,6 +40,15 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
+  def available_aspect_ratios
+    [
+      MwInteractive::ASPECT_RATIO_DEFAULT_METHOD,
+      MwInteractive::ASPECT_RATIO_MANUAL_METHOD,
+      MwInteractive::ASPECT_RATIO_MAX_METHOD
+    ].map do |key|
+      { key: key, value: I18n.t("INTERACTIVE.ASPECT_RATIO.#{key}") }
+    end
+  end
   # returns the aspect ratio of the interactive, dividing the width by the height.
   # For an interactive with a native width of 400 and native height of 200,
   # the aspect_ratio will be 2.
