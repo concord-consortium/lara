@@ -160,3 +160,8 @@ en:
     GLOBAL_ID: "Plugin Identifier"
     DESCRIPTION: "Description:"
     AUTHORING_DATA: "Authoring Data:"
+  INTERACTIVE:
+    ASPECT_RATIO:
+      DEFAULT: 'Default aspect ratio, or set by interactive.'
+      MANUAL: 'Manually set the aspect ratio.'
+      MAX: 'Use all available space.'
