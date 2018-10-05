@@ -82,9 +82,12 @@ class IFrameSaver
       @iframePhone.post('authInfo', authInfo)
     @iframePhone.addListener 'supportedFeatures', (info) =>
       if info.features?.aspectRatio?
-        # Iframe can provide suggested aspect-ratio.
-        @$iframe.data('aspect-ratio', info.features.aspectRatio)
-        @$iframe.trigger('sizeUpdate')
+        # If the author specifies the aspect-ratio-method as "DEFAULT"
+        # then the Interactive can provide suggested aspect-ratio.
+        if(@$iframe.data('aspect-ratio-method') == "DEFAULT")
+          @$iframe.data('aspect-ratio', info.features.aspectRatio)
+          @$iframe.trigger('sizeUpdate')
+
     @iframePhone.addListener 'navigation', (opts={})=>
       if opts.hasOwnProperty('enableForwardNav')
         if opts.enableForwardNav

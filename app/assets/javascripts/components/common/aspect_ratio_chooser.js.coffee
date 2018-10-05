@@ -2,10 +2,8 @@
 
 modulejs.define 'components/common/aspect_ratio_chooser', [], () ->
 
-  SpecialNumericField = createReactClass
-
+  FormattedField = createReactClass
     getDefaultProps: ->
-      disabled: true
       inputWidth: '3em'
       value: 10
       label: 'input'
@@ -21,7 +19,6 @@ modulejs.define 'components/common/aspect_ratio_chooser', [], () ->
     value: ->
       (input {
         value: @props.value,
-        disabled: @props.disabled,
         onChange: @props.onChange,
         style: {
           width: @props.inputWidth
@@ -37,7 +34,7 @@ modulejs.define 'components/common/aspect_ratio_chooser', [], () ->
         @value()
       )
 
-  numerberInput = React.createFactory SpecialNumericField
+  numberInput = React.createFactory FormattedField
 
   AspectRatioChooser = createReactClass
 
@@ -58,48 +55,46 @@ modulejs.define 'components/common/aspect_ratio_chooser', [], () ->
         {key: 'MAX', value: "Use all available space for the interactive …"}
       ]
 
-      updateValues: (newValues) ->
-        console.log(newValues)
+      updateValues: (newValues) -> console.log(newValues)
 
+    # Update the internal state, then call this.props.updateValues(state)
     myUpdate: (changes) ->
       @setState(changes)
       delayedUpdate = () =>
         @props.updateValues(@state)
-
-      setTimeout(delayedUpdate,1)
+      # Wait for the end of the event loop:
+      setTimeout(delayedUpdate, 1)
 
     render: ->
       { mode, width, height } = @state
       { availableAspectRatios } = @props
-      disabledInputs = if mode == 'MANUAL' then false else true
+      enabledInputs = if mode == 'MANUAL' then true else false
       inputStyle =
         'display': 'flex'
         'flex-direction': 'row'
         'flex-wrap': 'wrap'
         'margin-right': '0.5em'
-        'opacity': if disabledInputs then '0.5' else '1.0'
-      (div {style: {'padding': '1em', 'background-color': 'hsl(0,0%,95%'}},
+      (div {style: {'display': 'flex', 'flex-direction': 'row', 'padding': '0.5em'}},
         (select {
             style:{'margin': '.2em'}
             onChange: (e) => @myUpdate(mode: e.target.value)
           },
           availableAspectRatios.map (m) ->
             (option {value:m.key, label:m.value, selected: m.key==mode} )
-
         )
-        (div {style: inputStyle},
-          (numerberInput {
-            disabled: disabledInputs
-            value: width,
-            label: 'width'
-            onChange: (e) => @myUpdate({width: e.target.value})
-          })
-          (numerberInput {
-            disabled: disabledInputs
-            value: height,
-            label: 'height',
-            onChange: (e) => @myUpdate({height: e.target.value})
-          })
-        )
+        if enabledInputs
+          (div {style: inputStyle},
+            (numberInput {
+              value: width,
+              label: 'width'
+              onChange: (e) => @myUpdate({width: e.target.value})
+            })
+            (numberInput {
+              value: height,
+              label: 'height',
+              onChange: (e) => @myUpdate({height: e.target.value})
+            })
+          )
+        else ""
       )
 
