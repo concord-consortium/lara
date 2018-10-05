@@ -42,3 +42,4 @@
 //= require idle
 //= require check-author-idle
 //= require application-init
+//= require webpack-out

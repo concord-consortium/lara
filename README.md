@@ -158,6 +158,14 @@ This application was developed as a standalone version of the original code deve
 
 The LARA Interactive API defines how the runtime javascript of LARA interacts with embedded iframe content. The [documentation can be found here](http://concord-consortium.github.io/lara-interactive-api/docs/)
 
+## WEBPACK & TYPESCRIPT (EXPERIMENTAL)
+
+If you would like to produce javascript / react components using typescript:
+`npm install`
+`npx webpack --watch`
+You will have to update `app/assets/javascripts/webpack/index.ts` with module entries.
+Concatentated JS will be built in `app/assets/javascripts/webpack-out.js`
+
 ## License
 
 LARA is released under the [MIT License](LICENSE).

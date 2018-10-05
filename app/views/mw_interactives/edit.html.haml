@@ -9,7 +9,7 @@
     = f.text_field :name
   = field_set_tag 'URL' do
     = f.text_area :url, size: "45x4"
-
+  %div{id:"noah-div"}
   = field_set_tag 'Aspect Ratio' do
     %div{id:"aspect_ratio"}
     = f.hidden_field :native_width,  :id => 'width'
@@ -127,5 +127,5 @@
 
     Chooser = React.createElement(modulejs.require('components/common/aspect_ratio_chooser'), props);
     ReactDOM.render(Chooser, $("#aspect_ratio")[0]);
-
+    RenderComponent(NoahDiv, {label: 'world'}, $("#noah-div")[0])
   });

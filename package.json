@@ -1,0 +1,43 @@
+{
+  "name": "lara-javascript",
+  "version": "1.0.0",
+  "description": "Javascript for Lara",
+  "main": "server/index.js",
+  "scripts": {},
+  "standard": {
+    "globals": [
+      "React",
+      "ReactDOM",
+      "jQuery",
+      "Portal",
+      "PortalPages",
+      "ga"
+    ]
+  },
+  "jest": {},
+  "repository": {},
+  "author": "The Concord Consortium",
+  "license": "MIT",
+  "homepage": "https://github.com/concord-consortium/lara",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "@babel/preset-react": "^7.0.0-rc.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.0.0-beta.4",
+    "jest": "^23.5.0",
+    "live-server": "^1.2.0",
+    "react-test-renderer": "^16.4.2",
+    "standard": "^11.0.1",
+    "ts-loader": "^5.2.1",
+    "typescript": "^3.1.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-serve": "^2.0.2"
+  },
+  "dependencies": {
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2"
+  }
+}
