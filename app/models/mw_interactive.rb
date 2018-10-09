@@ -68,12 +68,7 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def height(avail_width, avail_height=nil)
-    case self.aspect_ratio
-      when ASPECT_RATIO_MAX_METHOD
-        return avail_width / aspect_ratio(avail_width, avail_height)
-      else
-        return avail_width / self.aspect_ratio(avail_width, avail_height)
-    end
+    return avail_width / aspect_ratio(avail_width, avail_height)
   end
 
   def to_hash

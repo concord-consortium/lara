@@ -48,6 +48,8 @@ class IFrameSaver
     @get_firebase_jwt_url = $data_div.data('get-firebase-jwt-url')
 
     @save_indicator = SaveIndicator.instance()
+    @optionally_resize()
+    window.addEventListener('resize', ()=> @optionally_resize() )
 
     @$delete_button.click () =>
       @delete_data()
@@ -64,6 +66,13 @@ class IFrameSaver
 
   @default_success: ->
     console.log "saved"
+
+  optionally_resize: () ->
+    resizeMethod = @$iframe.data('aspect-ratio-method')
+    if resizeMethod == 'MAX'
+      magicNumber = 125
+      newHeight = window.innerHeight - magicNumber
+      @$iframe.attr('height', newHeight)
 
   phone_answered: ->
     # Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
