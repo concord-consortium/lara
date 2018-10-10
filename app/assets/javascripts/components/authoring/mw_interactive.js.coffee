@@ -42,8 +42,9 @@ modulejs.define 'components/authoring/mw_interactive',
     handleSupportedFeatures: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
       if (info.features.aspectRatio?)
-        iframe = ReactDOM.findDOMNode(@interactive.current)
-        iframe.style.height = Math.round(iframe.offsetWidth / info.features.aspectRatio) + 'px'
+        if (@props.interactive.aspect_ratio_method == "DEFAULT")
+          iframe = ReactDOM.findDOMNode(@interactive.current)
+          iframe.style.height = Math.round(iframe.offsetWidth / info.features.aspectRatio) + 'px'
 
     save: ->
       data = {

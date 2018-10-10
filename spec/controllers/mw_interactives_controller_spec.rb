@@ -34,8 +34,8 @@ describe MwInteractivesController do
 
           expect(response.body).to match /<input[^<]+id="mw_interactive_name"[^<]+name="mw_interactive\[name\]"[^<]+type="text"[^>]+value="#{int.name}"[^<]*\/>/
           expect(response.body).to match /<textarea[^<]+id="mw_interactive_url"[^<]+name="mw_interactive\[url\]"[^<]*>[^<]*#{int.url}[^<]*<\/textarea>/
-          expect(response.body).to match /<input[^<]+id="mw_interactive_native_width"[^<]+name="mw_interactive\[native_width\]"[^<]+type="text"[^<]+value="#{int.native_width}"[^<]*\/>/
-          expect(response.body).to match /<input[^<]+id="mw_interactive_native_height"[^<]+name="mw_interactive\[native_height\]"[^<]+type="text"[^<]+value="#{int.native_height}"[^<]*\/>/
+          expect(response.body).to match /<input[^<]+id="width"[^<]+name="mw_interactive\[native_width\]"[^<]+type="hidden"[^<]+value="#{int.native_width}"[^<]*\/>/
+          expect(response.body).to match /<input[^<]+id="height"[^<]+name="mw_interactive\[native_height\]"[^<]+type="hidden"[^<]+value="#{int.native_height}"[^<]*\/>/
         end
 
         it 'responds to js-format requests with JSON' do
