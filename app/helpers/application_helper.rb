@@ -190,4 +190,13 @@ module ApplicationHelper
     }.html_safe
   end
 
+  def pass_white_list_params(url_or_path)
+    mode = params[:mode]
+    if (url_or_path and mode)
+      "#{url_or_path}?mode=#{mode}"
+    else
+      url_or_path
+    end
+  end
+
 end

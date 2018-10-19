@@ -11,9 +11,9 @@ module LightweightActivityHelper
 
   def runnable_activity_path(activity, opts ={})
     if @sequence
-      sequence_activity_path(@sequence, activity, opts)
+      pass_white_list_params sequence_activity_path(@sequence, activity, opts)
     else
-      activity_path(activity, opts)
+      pass_white_list_params activity_path(activity, opts)
     end
   end
 

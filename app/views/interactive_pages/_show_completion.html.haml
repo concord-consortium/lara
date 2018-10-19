@@ -147,7 +147,7 @@
         - case data[:prompt]
         - when 'next-activity-or-exit'
           .finish-links
-            %a{ :href => sequence_activity_path(@sequence, next_activity, show_index: true)}
+            %a{ :href => runnable_activity_path(next_activity, show_index: true)}
               %input.button{ :type => "submit", :value => t("COMPLETION_PAGE.START_NEXT")}
             or
             %a.exit{:href => exit_link}=exit_label_t

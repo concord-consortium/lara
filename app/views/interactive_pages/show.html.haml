@@ -35,11 +35,11 @@
     .button-right
       - if @page.last_visible? && next_activity
         .next-page
-          %a{ :href => sequence_activity_path(@sequence, next_activity), :title => next_activity.name, :class => 'next forward_nav'}
+          %a{ :href => runnable_activity_path(next_activity), :title => next_activity.name, :class => 'next forward_nav'}
             %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("BEGIN_NEXT_ACTIVITY") }
       - elsif @page.next_visible_page
         .next-page
-          %a{ :href => runnable_activity_page_path(@page.lightweight_activity, @page.next_visible_page), :class => 'next forward_nav' }
+          %a{:href => runnable_activity_page_path(@page.lightweight_activity, @page.next_visible_page), :class => 'next forward_nav' }
             %input{ :class => 'button next forward_nav', :type => 'submit', :value => t("NEXT")}
 
 -# Set Google Analytics content group based on the project. Note that project might be undefined
