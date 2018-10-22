@@ -91,7 +91,7 @@ module ApplicationHelper
   def default_footer
     <<-EOF
       <p class="footer-txt">
-        Copyright © 2018 <a href="http://concord.org/">The Concord Consortium</a>. 
+        Copyright © 2018 <a href="http://concord.org/">The Concord Consortium</a>.
         All rights reserved. This activity is licensed under a
         <a href="http://creativecommons.org/licenses/by/3.0/">
           Creative Commons Attribution 3.0 Unported License
@@ -190,13 +190,27 @@ module ApplicationHelper
     }.html_safe
   end
 
-  def pass_white_list_params(url_or_path)
-    mode = params[:mode]
-    if (url_or_path and mode)
-      "#{url_or_path}?mode=#{mode}"
-    else
-      url_or_path
-    end
+  # The default is hardcoded, here, in place, for the time being. If and
+  # when the functionality is extended, the white-list could be located in
+  # a more reasonable location in the code-base.
+  def default_param_whitelist
+      ["mode"]
+  end
+
+  def pass_white_list_params(url_or_path, whitelist=default_param_whitelist)
+    # Construct query string from the contents of a url and those parameters
+    # that are whitelisted, passing thruough the ones in the whitelist and
+    # stripping those that are not in the whitelist.
+    #
+    # eg:
+    #      url_or_path                   => url://localhost/activites/2/?foo=xx&bar=yy
+    #      whitelist                     => [:foo, :bar])
+    #      params (from the fails route) => {foo:'xx', bar:'yy', activity:2}
+    #
+    # yields:
+    #      `?foo=xx&bar=yy` (activity is missing)
+    q = params.select { |key| whitelist.include?(key) }.to_query
+    url_or_path + ( q.length > 0 ? "?" + q : "")
   end
 
 end
