@@ -1,11 +1,6 @@
 require 'spec_helper'
 require 'uri'
 
-# 0: Clean up test
-# 2: Refactor the helper to use a white-list.
-# 3: Verifty proper URL formatting in all cases. (if ?mode is present, for example)
-# 4: Banner
-
 feature "Visiting all pages of a Sequence" do
   let(:sequence)          { FactoryGirl.create(:sequence_with_activity, seq_options) }
   let(:params)            { {} }
@@ -81,9 +76,8 @@ feature "Visiting all pages of a Sequence" do
     sequence.activities[1].pages.each do
       navigate_and_verify :page, param_assertions
     end
+
   end
-
-
 
   feature "'mode' query parameter handling" do
 
@@ -98,6 +92,11 @@ feature "Visiting all pages of a Sequence" do
         let(:params) { {mode: 'teacher-view' } }
         scenario "We should see 'mode=teacher-view' in the url" do
           verify_param_passed_through_sequence(present: {mode:'teacher-view'})
+        end
+        scenario "We should see the Teacher View banner on the page" do
+          verify_param_passed_through_sequence(present: {mode:'teacher-view'})
+          expect(page.body).to match("Teacher View")
+
         end
       end
       feature "Combined with non-pass-through param `foo=bar` " do

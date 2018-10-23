@@ -197,6 +197,10 @@ module ApplicationHelper
       ["mode"]
   end
 
+  def teacher_content
+    params['mode'] == 'teacher-view'
+  end
+
   def pass_white_list_params(url_or_path, whitelist=default_param_whitelist)
     # Construct query string from the contents of a url and those parameters
     # that are whitelisted, passing thruough the ones in the whitelist and
