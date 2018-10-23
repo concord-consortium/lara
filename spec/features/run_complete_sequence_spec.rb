@@ -2,6 +2,14 @@ require 'spec_helper'
 require 'uri'
 
 feature "Visiting all pages of a Sequence" do
+  let(:run_page) { nil }
+
+  before(:each) do
+    page = sequence.activities.first.pages.first
+    Run.any_instance.stub(:page).and_return(run_page)
+    Run.any_instance.stub(:last_page).and_return(run_page)
+  end
+
   let(:sequence)          { FactoryGirl.create(:sequence_with_activity, seq_options) }
   let(:params)            { {} }
   let(:activities_count)  { 2 }
@@ -93,12 +101,47 @@ feature "Visiting all pages of a Sequence" do
         scenario "We should see 'mode=teacher-view' in the url" do
           verify_param_passed_through_sequence(present: {mode:'teacher-view'})
         end
-        scenario "We should see the Teacher View banner on the page" do
+
+        scenario "We should see the Teacher View banner on the first page" do
+          visit sequence_url
+          expect(page.body).to match("Teacher View")
+        end
+
+        feature "When we are redirected to page 2 of activity 1 by our run" do
+          let(:activity) { sequence.activities.first }
+          let(:run_page) { activity.pages[1] }
+          let(:activity_url) do
+            sequence_activity_path(sequence, activity, params: params)
+          end
+
+          scenario "The redirected page retain our mode param" do
+            visit activity_url
+            # We assume that we have been redirected to
+            # /sequence/:id/activity/:id/page/:id
+            expected_url = "/activities/#{activity.id}/pages/#{run_page.id}"
+            expect(current_url).to match(expected_url)
+            teacher_mode = "mode=teacher-view"
+            expect(current_url).to match(teacher_mode)
+            expect(page.body).to match("Teacher View")
+          end
+
+          scenario "We click on the Sequence title and retain our mode param" do
+            visit activity_url
+            selector = "#container > header > div > div.site-logo.logo-l > div > h2 > a"
+            find(:css, selector, match: :first).click
+            teacher_mode = "mode=teacher-view"
+            expect(current_url).to match(teacher_mode)
+            expect(page.body).to match("Teacher View")
+          end
+        end
+
+        scenario "We should see the Teacher View banner on the last page" do
           verify_param_passed_through_sequence(present: {mode:'teacher-view'})
           expect(page.body).to match("Teacher View")
-
+          expect(current_url).to match "mode=teacher-view"
         end
       end
+
       feature "Combined with non-pass-through param `foo=bar` " do
         let(:params) { {mode: 'teacher-view', foo: 'bar'} }
         scenario "We should see 'mode=teacher-view' in the url, and not foo=bar" do
@@ -108,8 +151,8 @@ feature "Visiting all pages of a Sequence" do
           )
         end
       end
+
     end
   end
-
-  
 end
+

@@ -13,7 +13,7 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     if !params[:response_key]
-      redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
+      redirect_to page_with_response_path(@activity.id, @page.id, @session_key, request.query_parameters) and return
     end
 
     begin

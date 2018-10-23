@@ -214,7 +214,11 @@ module ApplicationHelper
     # yields:
     #      `?foo=xx&bar=yy` (activity is missing)
     q = params.select { |key| whitelist.include?(key) }.to_query
-    url_or_path + ( q.length > 0 ? "?" + q : "")
+    if q.length > 0
+      sep = url_or_path.match(/\?/) ? '&' : '?'
+      url_or_path + sep + q
+    else
+      url_or_path
+    end
   end
-
 end
