@@ -198,7 +198,7 @@ module ApplicationHelper
   end
 
   def teacher_content
-    params['mode'] == 'teacher-view'
+    params['mode'] == 'teacher-edition'
   end
 
   def pass_white_list_params(url_or_path, whitelist=default_param_whitelist)
