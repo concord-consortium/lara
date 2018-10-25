@@ -7,13 +7,15 @@ function interactiveSizing () {
     var resizeMethod = $iframe.data('aspect-ratio-method');
     var magicNumber = 125;
     var maxHeight = window.innerHeight - magicNumber;
+    $iframe.attr('width', '100%');
 
     if(resizeMethod === 'MAX') {
       $iframe.height(maxHeight);
-      $iframe.attr('width', '100%');
     }
-    else {
-      $iframe.attr('width', '100%');
+    else if(resizeMethod === 'MANUAL') {
+      $iframe.height($iframe.width() / aspectRatio);
+    }
+    else  /* (resizeMethod === 'DEFAULT') */ {
       $iframe.height($iframe.width() / aspectRatio);
       if ($iframe.height() > maxHeight) {
         var scale = maxHeight / $iframe.height();
