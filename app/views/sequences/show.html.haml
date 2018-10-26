@@ -49,9 +49,9 @@
           %span.position
             = las.position.to_s
           %span.title
-            = link_to activity.name, sequence_activity_path(@sequence, activity)
+            = link_to activity.name, pass_white_list_params(sequence_activity_path(@sequence, activity))
           .thumbnail
-            = link_to image_tag(activity.thumbnail_url), sequence_activity_path(@sequence, activity) unless activity.thumbnail_url.blank?
+            = link_to image_tag(activity.thumbnail_url), pass_white_list_params(sequence_activity_path(@sequence, activity)) unless activity.thumbnail_url.blank?
 
     = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
 

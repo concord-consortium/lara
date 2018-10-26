@@ -1,6 +1,11 @@
 module InteractivePageHelper
   def runnable_activity_page_path(activity, page)
-    run = run_for_activity(activity,@run)
+    path_base = fetch_path_base(activity, @run, page)
+    pass_white_list_params(path_base) if path_base
+  end
+
+  def fetch_path_base(activity, run, page)  # move me to be private.
+    run = run_for_activity(activity, run)
     if run
       page_with_response_path(activity.id, page.id, run.key)
     elsif activity and page
@@ -8,9 +13,11 @@ module InteractivePageHelper
     elsif activity
       activity_path(activity)
     else
-      nil
+       nil
     end
   end
+
+
 
   def page_link(activity,page, opts={})
     name = "Page #{page.position}"
