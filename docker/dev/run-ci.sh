@@ -6,7 +6,15 @@
 #        then type `dci` to start Continuous Integration Testing.
 #   – Or run from shell in docker (`docker-compose run --rm bash` … ./docker/dev/run-ci.sh`)
 
+
 export RAILS_ENV=test
+export BUNDLE_PATH=/bundle
+export GEMPATH_PATH=/bundle
+export GEM_HOME=/bundle
+
+bundle binstubs spring
+spring stop
+spring binstub
 
 #
 # Prepare spec tests
