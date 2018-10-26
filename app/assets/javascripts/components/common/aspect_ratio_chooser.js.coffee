@@ -80,7 +80,7 @@ modulejs.define 'components/common/aspect_ratio_chooser', [], () ->
             onChange: (e) => @myUpdate(mode: e.target.value)
           },
           availableAspectRatios.map (m) ->
-            (option {value:m.key, label:m.value, selected: m.key==mode} )
+            (option {value:m.key, label:m.value, selected: m.key==mode}, m.value)
         )
         if enabledInputs
           (div {style: inputStyle},
