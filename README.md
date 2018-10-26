@@ -48,6 +48,14 @@ On a local development instance, you can make an admin user by registering a new
 Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
 
 ## Running RSpec tests
+While developing, you might wish to run continuous integration tests inside a
+Docker container.  
+
+Run `docker-compose up`  followed by
+`docker-compose exec app docker/dev/run-ci.sh` from your local machine.
+
+### Older non-docker instructions:
+
 If you haven't run tests on this project before, you first need to initialize the test database.
 
       RAILS_ENV=test rake db:setup
