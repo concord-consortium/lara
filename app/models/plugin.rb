@@ -1,5 +1,6 @@
 
 class Plugin < ActiveRecord::Base
+  include Embeddable
 
   attr_accessible :description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key
 
@@ -10,6 +11,9 @@ class Plugin < ActiveRecord::Base
   delegate :label, to: :approved_script, allow_nil: true
   delegate :url,   to: :approved_script, allow_nil: true
   delegate :version, to: :approved_script, allow_nil: true
+
+  has_many :page_items, :as => :embeddable, :dependent => :destroy
+  has_many :interactive_pages, :through => :page_items
 
   after_initialize :generate_rare_key
 
@@ -28,6 +32,14 @@ class Plugin < ActiveRecord::Base
 
   def duplicate
     return Plugin.new(self.to_hash)
+  end
+
+  def reportable?
+    false
+  end
+
+  def is_hidden
+    false
   end
 
 end

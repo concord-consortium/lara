@@ -1,0 +1,51 @@
+- runtimeDiv = "output-#{embeddable.id}"
+- plugin = embeddable
+- learner_state = PluginLearnerState.find_or_create(plugin, @run).state
+
+= content_for :external_scripts do
+  %script{src:plugin.url}
+.question-bd{}
+  .question-txt
+  .output{id:runtimeDiv}
+
+
+:javascript
+
+- if plugin.version < 2
+  :javascript
+    // Begin script for #{plugin.name}
+    $(document).ready( function() {
+      env = {
+        name: '#{plugin.name}',
+        scriptLabel: '#{plugin.label}',
+        scriptUrl: '#{plugin.url}',
+        pluginId: '#{plugin.id}',
+        config: '#{ escape_javascript(plugin.author_data) }',
+        div: $('##{runtimeDiv}')
+      }
+      console.log("Adding script #{plugin.label} with V1 (ExternalScript) API");
+      ExternalScripts.init('#{plugin.label}', env);
+
+    });
+- else
+  :javascript
+    // Begin script for #{plugin.name}
+    var savePath = `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
+    var loadPath = `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
+    var pluginStatePaths = {
+      savePath: savePath,
+      loadPath: loadPath
+    };
+    var learner_state  = '#{ escape_javascript(learner_state) }'
+    $(document).ready( function() {
+      env = {
+        name: '#{plugin.name}',
+        url: '#{plugin.url}',
+        pluginId: '#{plugin.id}',
+        authoredState: '#{ escape_javascript(plugin.author_data) }',
+        learnerState: learner_state,
+        div: $('##{runtimeDiv}')[0]
+      }
+      console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
+      Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);
+    });
