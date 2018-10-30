@@ -151,6 +151,13 @@ type IEventListeners = IEventListener | IEventListener[];
 ****************************************************************************/
 LARA.saveLearnerState = function(pluginInstance: ILaraPluginRef, state: string): Promise;
 
+/**************************************************************
+ @function isTeacherEdition
+  Find out if the page being displayed is being run in teacher-edition
+  @returns boolean - true if lara is running in teacher-edition
+  **************************************************************/
+LARA.isTeacherEdition: function(): boolean;
+
 ```
 
 
