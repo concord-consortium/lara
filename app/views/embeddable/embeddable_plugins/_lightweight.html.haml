@@ -1,22 +1,3 @@
-- runtimeDiv = "output-#{embeddable.id}"
-= content_for :external_scripts do
-  %script{src:embeddable.url}
-.question-bd{style: "display:none;"}
-  .question-txt
-    != embeddable.url
-  .output{id:runtimeDiv}
 
 
-:javascript
-  // Begin script for #{embeddable.name}
-  $(document).ready( function() {
-    env = {
-      name: '#{embeddable.name}',
-      scriptLabel: '#{embeddable.label}',
-      scriptUrl: '#{embeddable.url}',
-      embeddableId: '#{embeddable.id}',
-      config: '#{escape_javascript(embeddable.configuration)}',
-      div: $('#{runtimeDiv}')
-    }
-    ExternalScripts.init('#{embeddable.label}', env);
-  });
+= render :partial => 'plugins/show',locals: {plugin: embeddable.plugin }
