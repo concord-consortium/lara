@@ -36,6 +36,8 @@
       edit_page_image_interactive_path(page, embeddable)
     when "video"
       edit_page_video_interactive_path(page, embeddable)
+    else
+      raise "Unkown Embeddable type: #{type}"
   end
 
 - if tracked
