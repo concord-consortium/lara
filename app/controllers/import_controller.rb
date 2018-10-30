@@ -2,6 +2,8 @@ class ImportController < ApplicationController
 
   include PeerAccess
 
+  skip_before_filter :verify_authenticity_token, :only => :import
+
   def import_status
     @message = params[:message] || ''
     respond_to do |format|
@@ -11,20 +13,15 @@ class ImportController < ApplicationController
   end
 
   def import
-    @import_item = Import.import(params[:import],current_user,params[:imported_activity_url])
-    res_name = @import_item.nil? ? '' : @import_item.class.name == 'LightweightActivity' ? 'activities' : 'sequences'
+    import_result = Import.import("#{params[:import][:import].read}", current_user, params[:imported_activity_url])
     respond_to do |format|
-      unless(res_name == '')
-        unless @import_item.valid?
-          flash[:warning] =  "<p>The import activity had validation issues:</p> #{@import_item.errors}"
-        end
-        if @import_item.save(:validations => false)
-          format.js { render :js => "window.location.href = '#{res_name}/#{@import_item.id}/edit';" }
-        else
-          format.js { render :json => { :error =>"Import failed."}, :status => 500 }
-        end
+      if import_result[:success]
+        path = import_result[:type] === "Sequence" ? edit_sequence_path(import_result[:import_item]) :
+                                                     edit_activity_path(import_result[:import_item])
+        format.js { render :js => "window.location.href = '#{path}';" }
       else
-        format.js { render :json => { :error =>"Import failed because of invalid JSON file."}, :status => 500 }
+        flash[:warning] = import_result[:error]
+        format.js { render :json => { :error => import_result[:error] }, :status => 500 }
       end
     end
   end
