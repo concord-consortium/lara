@@ -1,0 +1,10 @@
+.embeddable_tools
+  .drag_handle
+  = render :partial => "shared/embedded_editor_links",
+    :locals => { :embeddable => embeddable, :page => page, :type => 'embeddable_plugin',
+    :allow_hide => allow_hide }
+.embeddable_options
+  .name
+    Name: #{embeddable.name.html_safe unless embeddable.name.blank?}
+  .url{name: "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
+    URL: #{(embeddable.url or "")}

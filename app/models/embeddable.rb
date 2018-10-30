@@ -7,7 +7,7 @@ module Embeddable
     Embeddable::Labbook        => "Labbook",
     QuestionTracker            => "Tracked Question",
     Embeddable::ExternalScript => "External Script",
-    Embeddable::Windowshade    => "Plugin",
+    Embeddable::EmbeddablePlugin => "Plugin"
   }
 
   InteractiveTypes = {

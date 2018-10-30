@@ -148,6 +148,7 @@ LightweightStandalone::Application.routes.draw do
     end
     resources :xhtmls
     resources :external_scripts
+    resources :embeddable_plugins
     resources :open_responses
     resources :labbooks
     resources :labbook_answers, :only => [:update]

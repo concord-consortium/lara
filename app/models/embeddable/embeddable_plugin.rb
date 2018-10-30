@@ -1,11 +1,12 @@
 module Embeddable
-  class Windowshade < ActiveRecord::Base
+  class EmbeddablePlugin < ActiveRecord::Base
     include Embeddable
     def self.table_name
       'embeddable_plugins'
     end
 
-    attr_accessible :plugin
+    attr_accessible :plugin, :approved_script_id, :description, :author_data
+
     belongs_to :plugin, autosave: true
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -13,11 +14,16 @@ module Embeddable
 
     delegate :approved_script,  to: :plugin
     delegate :approved_script=,  to: :plugin
+    delegate :approved_script_id,  to: :plugin
+    delegate :approved_script_id=,  to: :plugin
     delegate :author_data, to: :plugin
     delegate :author_data=, to: :plugin
     delegate :shared_learner_state_key, to: :plugin
     delegate :description, to: :plugin
     delegate :description=, to: :plugin
+    delegate :name,  to: :plugin, allow_nil: true
+    delegate :label, to: :plugin, allow_nil: true
+    delegate :url, to: :plugin, allow_nil: true
 
     before_create do |embeddable|
       embeddable.plugin = Plugin.create({})
@@ -25,7 +31,7 @@ module Embeddable
     end
 
     def self.name_as_param
-      :embeddable_plugin
+      :embeddable_embeddable_plugin
     end
 
     def self.display_partial
