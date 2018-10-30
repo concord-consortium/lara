@@ -256,7 +256,8 @@ window.LARA = {
    @returns boolean - true if lara is running in teacher-edition
    **************************************************************/
   isTeacherEdition: function() {
-    // Should we do this another way?
+    // If we decide to do something more complex in the future,
+    // the client's API won't change.
     return window.location.search.indexOf('mode=teacher-edition') > 0
   }
 
