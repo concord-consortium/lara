@@ -3,16 +3,18 @@
 
 = form_for @embeddable do |f|
   = f.error_messages
-  %div{style: "display: grid; grid-template-columns: 100px auto;"}
+  %div{style: "display: grid; grid-template-columns: 100px auto;grid-row-gap: 2em;"}
     %div
-      = f.label "Script:"
+      = f.label "Plugin:"
     %div
       = f.collection_select(:approved_script_id, ApprovedScript.all, :id, :name)
-  %div{style: "margin-top: 0.5em;"}
-    = f.label "description"
-    = f.text_field :description
-  %div{style: "margin-top: 0.5em;"}
-    = f.label "tree json"
-    = f.text_area :author_data, {id:'jsonConfigText'}
+    %div
+      = f.label "Description:"
+    %div
+      = f.text_field :description
+    %div
+      = f.label "Author Data:"
+    %div
+      = f.text_area :author_data, {id:'jsonConfigText'}
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
