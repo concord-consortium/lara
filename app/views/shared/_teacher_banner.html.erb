@@ -1,8 +1,8 @@
 <% if teacher_content %>
     <div class="teacher-edition-banner valign-center">
-      <span>
-        <%= image_tag('teacher-edition-icons/teacher_edition_A.svg', {width: 50, height: 50}) %>
+      <div class="halign-center">
+        <%= render partial: 'shared/teacher_edition_icon' %>
         Teacher Edition
-      </span>
+      </div>
     </div>
 <% end %>

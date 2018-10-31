@@ -1,9 +1,6 @@
 
-.valign-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+
+
 .teacher-edition-banner {
   width: 100%;
   background-color: #FDA61C;
@@ -14,4 +11,22 @@
   font-size:  20pt;
   font-weight: Bold;
   text-align: center;
+  .halign-center {
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+  }
+  svg {
+    width: 50px;
+  }
+  path {
+    fill: #FFF4E5;
+  }
+  &.valign-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
 }
