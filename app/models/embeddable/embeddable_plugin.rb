@@ -70,6 +70,10 @@ module Embeddable
       false
     end
 
+    def is_full_width
+      true
+    end
+
     def export
       plugin.export
     end
