@@ -281,8 +281,11 @@ ActiveRecord::Schema.define(:version => 20181031151100) do
 
   create_table "embeddable_plugins", :force => true do |t|
     t.integer  "plugin_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "is_hidden",     :default => false
+    t.boolean  "is_full_width", :default => false
+
     t.integer  "embeddable_id"
     t.string   "embeddable_type"
   end
