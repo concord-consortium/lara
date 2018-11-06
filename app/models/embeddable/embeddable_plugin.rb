@@ -5,7 +5,8 @@ module Embeddable
       'embeddable_plugins'
     end
 
-    attr_accessible :plugin, :approved_script_id, :description, :author_data
+    attr_accessible :plugin, :approved_script_id, :description, :author_data,
+    :is_full_width, :is_hidden
 
     belongs_to :plugin, autosave: true
 
@@ -26,7 +27,9 @@ module Embeddable
     delegate :url, to: :plugin, allow_nil: true
 
     before_create do |embeddable|
-      embeddable.plugin = Plugin.create({})
+      unless(embeddable.plugin)
+        embeddable.plugin = Plugin.create({})
+      end
       embeddable.plugin.plugin_scope = embeddable
     end
 
@@ -41,42 +44,47 @@ module Embeddable
     def self.human_description
       "Plugin"
     end
-
-    def self.import(import_hash)
-      return self.new(import_hash)
-    end
-
     def to_hash
-      this.plugin.to_hash
-    end
-
-    def portal_hash
       {
-        type: "external_plugin",
-        id: id,
-        plugin_id: plugin_id
+        plugin: self.plugin.to_hash,
+        is_hidden: self.is_hidden,
+        is_full_width: self.is_full_width
       }
     end
 
+    # NP: 2018-11-06 probably not needed at the moment...
+    def portal_hash
+      {
+        type: "embeddable_plugin",
+        id: id,
+        plugin: plugin.to_hash
+      }
+    end
+
+    def self.import(import_hash)
+      plugin_hash = import_hash.delete(:plugin)
+      copy =  Embeddable::EmbeddablePlugin.new(import_hash)
+      copy.plugin = Plugin.import(plugin_hash)
+      return copy
+    end
+
     def duplicate
-      return Embeddable::Plugin.new(self.to_hash)
+      hash_values = self.to_hash
+      return EmbeddablePlugin.import(hash_values)
     end
 
     def reportable?
       false
     end
 
-    def is_hidden
-      false
-    end
-
-    def is_full_width
-      true
-    end
-
     def export
-      plugin.export
+      self.to_hash
     end
 
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
+    end
+    
   end
 end

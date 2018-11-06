@@ -139,6 +139,10 @@ class LightweightActivity < ActiveRecord::Base
     self.pages.each do |p|
       activity_json[:pages] << p.export
     end
+    activity_json[:plugins] = []
+    self.plugins.each do |p|
+      activity_json[:plugins] << p.export
+    end
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
     return activity_json

@@ -10,14 +10,13 @@ describe Plugin do
 
   let(:shared_learner_state_key)  {'global-plugin-id'}
 
-  let(:activity)           { mock_model LightweightActivity, activity_opts }
-  let(:approved_script)    { mock_model ApprovedScript, approved_script_opts}
-  let(:description)        { "description" }
-  let(:author_data)        { "authored_data" }
+  let(:activity)        { mock_model LightweightActivity, activity_opts }
+  let(:approved_script) { FactoryGirl.create(:approved_script, approved_script_opts) }
+  let(:description)     { "description" }
+  let(:author_data)     { "authored_data" }
   let(:plugin_opts) do
     {
       shared_learner_state_key: shared_learner_state_key,
-      # plugin_scope: activity,
       description: description,
       author_data: author_data,
       approved_script: approved_script
@@ -46,8 +45,7 @@ describe Plugin do
         {
           description: description,
           author_data: author_data,
-          approved_script_id: approved_script.id,
-          shared_learner_state_key: shared_learner_state_key
+          approved_script_label: approved_script.label
         }
       )
     end
@@ -55,10 +53,24 @@ describe Plugin do
 
   describe "#duplicate" do
     let(:copy) { plugin.duplicate }
-    it "should create an almost identical copy of the plugin" do
-      [:description, :author_data, :approved_script_id,
-        :shared_learner_state_key].each do |attribute|
-          expect(copy.send attribute).to eql(plugin.send attribute)
+    describe "when the approved script exists" do
+      it "should create an almost identical copy of the plugin" do
+        [:description, :author_data, :approved_script_id].each do |atr|
+            expect(copy.send atr).to eql(plugin.send atr)
+        end
+      end
+    end
+    describe "when the associated approved script does not exist" do
+      before(:each) do
+        expect(ApprovedScript).to receive(:find_by_label).and_return(nil)
+      end
+      it "should create an almost identical copy of the plugin" do
+        [:description, :author_data ].each do |atr|
+            expect(copy.send atr).to eql(plugin.send atr)
+        end
+      end
+      it "the copy should not include a reference to an approved script" do
+        expect(copy.approved_script_id).to be_nil
       end
     end
   end

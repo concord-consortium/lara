@@ -193,11 +193,17 @@ describe LightweightActivity do
     before(:each) do
       activity.external_report_url = report_url
     end
-    it 'returns json of an activity' do
-      expect(activity.export[:pages].length).to eq(activity.pages.count)
-    end
-    it 'includes the report url' do
-      expect(activity.export['external_report_url']).to eq(report_url)
+    let(:export) { activity.export }
+    describe "the activity json" do
+      it 'includes the activity pages' do
+        expect(export[:pages].length).to eq(activity.pages.count)
+      end
+      it 'includes the plugins' do
+        expect(export[:plugins].length).to eq(activity.plugins.count)
+      end
+      it 'includes the report url' do
+        expect(export['external_report_url']).to eq(report_url)
+      end
     end
   end
 
@@ -207,7 +213,10 @@ describe LightweightActivity do
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
     let(:report_url) { "https://reports.concord.org/" }
 
-    let(:plugins)   { FactoryGirl.create_list(:plugin, 2)}
+    let(:approved_script) { FactoryGirl.create(:approved_script) }
+    let(:plugins) do
+      FactoryGirl.create_list(:plugin, 2, approved_script: approved_script)
+    end
     before :each do
       activity.layout = layout
       activity.editor_mode = edit_mode
@@ -228,13 +237,28 @@ describe LightweightActivity do
       expect(dup.external_report_url).to eq(report_url)
     end
 
-    it 'copies the activities plugins' do
-      dup = activity.duplicate(owner)
-      expect(dup.plugins.length).to eq(plugins.length)
-      dup.plugins.each do |p|
-        expect(plugins.map(&:name)).to include(p.name)
-        expect(p).not_to eql(plugins[0])
-        expect(p).not_to eql(plugins[1])
+    describe 'describe copying the activities plugins' do
+      let(:dup) { activity.duplicate(owner) }
+      describe "when the approved_script exists" do
+        it "will copy all the plugins" do
+          dup.plugins.each do |p|
+            expect(plugins.map(&:name)).to include(p.name)
+            expect(p.approved_script).to eql(approved_script)
+            expect(p).not_to eql(plugins[0])
+            expect(p).not_to eql(plugins[1])
+          end
+        end
+      end
+      describe "when the approved_script does not exist" do
+        before(:each) do
+          expect(ApprovedScript).to receive(:find_by_label).at_least(:once).and_return(nil)
+        end
+        it "will copy the plugins even without approved_script set" do
+          dup.plugins.each do |p|
+            expect(p.plugin_scope).to eql(dup)
+            expect(p.approved_script).to be_nil
+          end
+        end
       end
     end
 

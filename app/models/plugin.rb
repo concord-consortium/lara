@@ -21,13 +21,29 @@ class Plugin < ActiveRecord::Base
     {
       description: description,
       author_data: author_data,
-      approved_script_id: approved_script_id,
-      shared_learner_state_key: shared_learner_state_key
+      approved_script_label: approved_script && approved_script.label
     }
   end
 
+  def export
+    self.to_hash
+  end
+
+  def self.import(import_hash)
+    approved_script_label = import_hash.delete(:approved_script_label)
+    if approved_script_label
+      script = ApprovedScript.find_by_label(approved_script_label)
+      if(script)
+        import_hash[:approved_script_id] = script.id
+      end
+    end
+    the_copy = self.new(import_hash)
+    return the_copy
+  end
+
   def duplicate
-    return Plugin.new(self.to_hash)
+    serialized = self.to_hash
+    Plugin.import(serialized)
   end
 
 end
