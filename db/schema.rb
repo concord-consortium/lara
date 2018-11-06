@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20181001211438) do
+ActiveRecord::Schema.define(:version => 20181031151100) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -174,9 +174,9 @@ ActiveRecord::Schema.define(:version => 20181001211438) do
     t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
     t.boolean  "is_full_width",                    :default => false
-    t.boolean  "show_in_featured_question_report", :default => true
     t.integer  "interactive_id"
     t.string   "interactive_type"
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -278,6 +278,16 @@ ActiveRecord::Schema.define(:version => 20181001211438) do
     t.boolean  "is_full_width",                    :default => false
     t.boolean  "show_in_featured_question_report", :default => true
   end
+
+  create_table "embeddable_plugins", :force => true do |t|
+    t.integer  "plugin_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "embeddable_id"
+    t.string   "embeddable_type"
+  end
+
+  add_index "embeddable_plugins", ["plugin_id"], :name => "index_embeddable_plugins_on_plugin_id"
 
   create_table "embeddable_xhtmls", :force => true do |t|
     t.string   "name"
@@ -424,8 +434,8 @@ ActiveRecord::Schema.define(:version => 20181001211438) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.integer  "native_width"
     t.integer  "native_height"
     t.boolean  "enable_learner_state",             :default => false

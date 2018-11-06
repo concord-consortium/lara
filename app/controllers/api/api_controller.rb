@@ -1,8 +1,6 @@
 class API::APIController < ApplicationController
   layout false
 
-  protected
-
   def error(message, status = 500)
     render status: status, json: {
       response_type: "ERROR",
@@ -10,8 +8,12 @@ class API::APIController < ApplicationController
     }
   end
 
-  def not_authorized(message = "Not authorized")
-    error(message, 403)
+  rescue_from CanCan::AccessDenied do
+    error("Not authorized", 403)
+  end
+
+  rescue_from API::APIError do |e|
+    error(e.message, 500)
   end
 
   public
