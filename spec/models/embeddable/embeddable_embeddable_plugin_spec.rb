@@ -1,6 +1,8 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::EmbeddablePlugin do
+  it_behaves_like "attached to embeddable"
+
   let (:is_full_width) {true}
   let (:is_hidden) {true}
   let (:plugin) { FactoryGirl.create(:plugin) }

@@ -16,15 +16,14 @@ module AttachedToEmbeddable
   NO_EMBEDDABLE_SELECT = [NO_EMBEDDABLE_LABEL, NO_EMBEDDABLE_VALUE]
 
   def possible_embeddables
-    page ? page.embeddables : []
+    # Do not let embeddable attach to itself
+    page ? page.embeddables.select { |e| e != self } : []
   end
 
   def embeddables_for_select
     # Because embeddable is polymorphic association, normal AR options for select don't work.
     options = [NO_EMBEDDABLE_SELECT]
     possible_embeddables.each_with_index do |pi, i|
-      # Do not let embeddable attach to itself
-      next if pi === self
       hidden_text =  pi.is_hidden? ? "(hidden)" : ""
       options << ["#{pi.class.model_name.human} #{hidden_text}(#{i+1})", make_embeddable_select_value(pi)]
     end

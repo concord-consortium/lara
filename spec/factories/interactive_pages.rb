@@ -17,12 +17,18 @@ FactoryGirl.define do
 
     ignore do
       interactives []
+      embeddables []
     end
 
     after(:create) do |page,evaluator|
       interactives =  evaluator.interactives || []
       interactives.each do |interactive|
         page.add_interactive interactive
+      end
+
+      embeddables =  evaluator.embeddables || []
+      embeddables.each do |embeddable|
+        page.add_embeddable embeddable
       end
     end
 

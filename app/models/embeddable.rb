@@ -74,8 +74,8 @@ module Embeddable
     raise "#reportable? unimplemented for #{self.class}"
   end
 
-  def index_in_activity(activity)
-    activity.reportable_items.index(self) + 1
+  def index_in_activity(act = nil)
+    (act ? act : self.activity).reportable_items.index(self) + 1
   end
 
   # ID which is unique among all the embeddable types.
