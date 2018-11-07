@@ -13,6 +13,10 @@
     %div
       = f.text_field :description
     %div
+      = f.label "Wrapped Embeddable:"
+    %div
+      = f.select :embeddable_select_value, @embeddable.embeddables_for_select
+    %div
       = f.label "Author Data:"
     %div
       = f.text_area :author_data, {id:'jsonConfigText'}

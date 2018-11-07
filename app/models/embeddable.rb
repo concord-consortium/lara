@@ -63,7 +63,7 @@ module Embeddable
       "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
     end
   end
-  
+
   def show_in_runtime?
     true
   end
@@ -76,5 +76,10 @@ module Embeddable
 
   def index_in_activity(activity)
     activity.reportable_items.index(self) + 1
+  end
+
+  # ID which is unique among all the embeddable types.
+  def embeddable_id
+    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 end
