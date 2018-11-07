@@ -26,6 +26,8 @@
       edit_embeddable_labbook_path(embeddable)
     when "external_script"
       edit_embeddable_external_script_path(embeddable)
+    when "embeddable_plugin"
+      edit_embeddable_embeddable_plugin_path(embeddable)
     when "xhtml"
       edit_embeddable_xhtml_path(embeddable)
     when "mw_int"
@@ -34,6 +36,8 @@
       edit_page_image_interactive_path(page, embeddable)
     when "video"
       edit_page_video_interactive_path(page, embeddable)
+    else
+      raise "Unkown Embeddable type: #{type}"
   end
 
 - if tracked

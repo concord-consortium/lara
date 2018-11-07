@@ -6,7 +6,8 @@ module Embeddable
     Embeddable::Xhtml          => "Text box",
     Embeddable::Labbook        => "Labbook",
     QuestionTracker            => "Tracked Question",
-    Embeddable::ExternalScript  => "External Script"
+    Embeddable::ExternalScript => "External Script",
+    Embeddable::EmbeddablePlugin => "Plugin"
   }
 
   InteractiveTypes = {

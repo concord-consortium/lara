@@ -3,7 +3,9 @@ require 'uri'
 
 feature "Visiting all pages of a Sequence" do
   let(:run_page) { nil }
-
+  # If we change to using plugins for banners, we will need to remove
+  # any assertions that use the teacher edition regex pattern....
+  let(:teacher_edition_regex)  { /teacher edition/i }
   before(:each) do
     page = sequence.activities.first.pages.first
     Run.any_instance.stub(:page).and_return(run_page)
@@ -104,7 +106,7 @@ feature "Visiting all pages of a Sequence" do
 
         scenario "We should see the Teacher View banner on the first page" do
           visit sequence_url
-          expect(page.body).to match("Teacher View")
+          expect(page.body).to match(teacher_edition_regex)
         end
 
         feature "When we are redirected to page 2 of activity 1 by our run" do
@@ -122,7 +124,7 @@ feature "Visiting all pages of a Sequence" do
             expect(current_url).to match(expected_url)
             teacher_mode = "mode=teacher-edition"
             expect(current_url).to match(teacher_mode)
-            expect(page.body).to match("Teacher View")
+            expect(page.body).to match(teacher_edition_regex)
           end
 
           scenario "We click on the Sequence title and retain our mode param" do
@@ -131,13 +133,13 @@ feature "Visiting all pages of a Sequence" do
             find(:css, selector, match: :first).click
             teacher_mode = "mode=teacher-edition"
             expect(current_url).to match(teacher_mode)
-            expect(page.body).to match("Teacher View")
+            expect(page.body).to match(teacher_edition_regex)
           end
         end
 
         scenario "We should see the Teacher View banner on the last page" do
           verify_param_passed_through_sequence(present: {mode:'teacher-edition'})
-          expect(page.body).to match("Teacher View")
+          expect(page.body).to match(teacher_edition_regex)
           expect(current_url).to match "mode=teacher-edition"
         end
       end

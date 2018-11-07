@@ -248,5 +248,18 @@ window.LARA = {
    **************************************************************/
   registerPlugin: function(label, _class) {
     return Plugins.registerPlugin(label, _class);
+  },
+
+  /**************************************************************
+   @function isTeacherEdition
+   Find out if the page being displayed is being run in teacher-edition
+   @returns boolean - true if lara is running in teacher-edition
+   **************************************************************/
+  isTeacherEdition: function() {
+    // If we decide to do something more complex in the future,
+    // the client's API won't change.
+    return window.location.search.indexOf('mode=teacher-edition') > 0
   }
+
+
 };

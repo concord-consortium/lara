@@ -1,6 +1,8 @@
 - runtimeDiv = "output-#{plugin.id}"
-= content_for :external_scripts do
-  %script{src:plugin.url}
+
+- unless plugin_loaded(plugin.url)
+  = content_for :external_scripts do
+    %script{src:plugin.url}
 
 .plugin-output{id:runtimeDiv}
 
