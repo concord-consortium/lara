@@ -4,7 +4,9 @@
 
 - if plugin.version < 2
   -# Version 1
-  .plugin-output{id: "output-#{plugin.id}"}
+  - output_id = "output-#{plugin.id}"
+  .plugin-output{id: output_id}
+  - runtime_div_selector = "##{output_id}"
   :javascript
     // Begin script for #{plugin.name}
     $(document).ready( function() {
@@ -14,11 +16,10 @@
         scriptUrl: '#{plugin.url}',
         pluginId: '#{plugin.id}',
         config: '#{ escape_javascript(plugin.author_data) }',
-        div: $('##{runtime_div}')
+        div: $('#{runtime_div_selector}')[0]
       }
       console.log("Adding script #{plugin.label} with V1 (ExternalScript) API");
       ExternalScripts.init('#{plugin.label}', env);
-
     });
 - else
   -# Version 2
@@ -29,8 +30,9 @@
     - wrapped_selector = "#question-#{wrapped_embeddable.embeddable_id} .question-container"
   - else
     -# Typical case. Plugin renders its own output.
-    .plugin-output{id: "output-#{plugin.id}"}
-    - runtime_div_selector = "#output-#{plugin.id}"
+    - output_id = "output-#{plugin.id}"
+    .plugin-output{id: output_id}
+    - runtime_div_selector = "##{output_id}"
     - wrapped_selector = nil
 
   :javascript
