@@ -53,7 +53,7 @@
         learnerState: learner_state,
         div: $('#{runtime_div_selector}')[0],
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
-        wrappedEmbeddableContext: #{wrapped_embeddable ? (LaraSerializationHelper.new).wrap_export(wrapped_embeddable).to_json : 'null'}
+        wrappedEmbeddableContext: #{wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json : 'null'}
       }
       console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
       Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);

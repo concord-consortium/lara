@@ -193,49 +193,32 @@ class InteractivePage < ActiveRecord::Base
     lightweight_activity.visible_page_ids.index(self.id) + 1
   end
 
-  def duplicate(interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+  def duplicate(helper=nil)
+    helper = LaraDuplicationHelper.new if helper.nil?
     new_page = InteractivePage.new(self.to_hash)
-    helper = LaraSerializationHelper.new()
 
     InteractivePage.transaction do
       new_page.save!(validate: false)
 
-      # Preprocess interactives. We need to do that before we start processing any question.
-      self.interactives.each do |inter|
-        copy = inter.duplicate
-        interactives_cache.set(helper.key(inter), copy)
-        if inter.respond_to?(:linked_interactive=) && inter.linked_interactive
-          linked_key = helper.key(inter.linked_interactive)
-          copy.linked_interactive = interactives_cache.get(linked_key)
-          if !copy.linked_interactive
-            copy.linked_interactive = inter.linked_interactive.duplicate
-            interactives_cache.set(linked_key, copy.linked_interactive)
-          end
-        end
-        helper.cache_item_copy(inter, copy)
-      end
-
+      # Now, add them to the page and resolve some dependencies between embeddables.
       self.embeddables.each do |embed|
-        copy = embed.duplicate
-        # Interactives
-        if Embeddable::is_interactive?(embed)
-          inter_copy = helper.lookup_new_item(embed)
-          new_page.add_embeddable(inter_copy, nil, embed.page_section)
+        copy = helper.get_copy(embed)
+
+        if embed.respond_to?(:embeddable=) && embed.embeddable
+          copy.embeddable = helper.get_copy(embed.embeddable)
         end
-        # Questions
-        if Embeddable::is_question?(embed)
-          if embed.respond_to? :interactive=
-            unless embed.interactive.nil?
-              copy.interactive = helper.lookup_new_item(embed.interactive)
-            end
-          end
-          copy.save!(validate: false)
-          if embed.respond_to? :question_tracker and embed.question_tracker
-            embed.question_tracker.add_question(copy)
-          end
-          new_page.add_embeddable(copy, nil, embed.page_section)
+        if embed.respond_to?(:interactive=) && embed.interactive
+          copy.interactive = helper.get_copy(embed.interactive)
         end
+        if embed.respond_to?(:linked_interactive=) && embed.linked_interactive
+          copy.linked_interactive = helper.get_copy(embed.linked_interactive)
+        end
+        copy.save!(validate: false)
+        if embed.respond_to? :question_tracker and embed.question_tracker
+          embed.question_tracker.add_question(copy)
+        end
+
+        new_page.add_embeddable(copy, nil, embed.page_section)
       end
     end
     new_page.reload
@@ -260,10 +243,7 @@ class InteractivePage < ActiveRecord::Base
     page_json[:embeddables] = []
 
     self.embeddables.each do |embed|
-      embeddable_hash = helper.wrap_export(embed)
-      if embed.respond_to? :linked_interactive
-        embeddable_hash[:linked_interactive] = embed.linked_interactive.present? ? helper.wrap_export(embed.linked_interactive) : nil
-      end
+      embeddable_hash = helper.export(embed)
       page_json[:embeddables] << { embeddable: embeddable_hash, section: embed.page_section }
     end
 
@@ -295,41 +275,25 @@ class InteractivePage < ActiveRecord::Base
     attributes
   end
 
-  def self.import(page_json_object, interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
-    helper = LaraSerializationHelper.new
+  def self.import(page_json_object, helper=nil)
+    helper = LaraSerializationHelper.new if helper.nil?
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+
     InteractivePage.transaction do
       import_page.save!(validate: false)
-      # The first pass. Look for all interactives and process them, so they can be referenced by other embeddables later.
-      page_json_object[:embeddables].each do |embed_hash|
-        embed = embed_hash[:embeddable]
-        if Embeddable::is_interactive?(embed[:type].constantize)
-          linked_inter = embed[:linked_interactive]
-          embed.delete(:linked_interactive)
 
-          import_embeddable = helper.wrap_import(embed)
-          interactives_cache.set(embed[:ref_id], import_embeddable)
-
-          if linked_inter
-            import_embeddable.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
-            if !import_embeddable.linked_interactive
-              import_embeddable.linked_interactive = helper.wrap_import(linked_inter)
-              interactives_cache.set(linked_inter[:ref_id], import_embeddable.linked_interactive)
-            end
-            import_embeddable.save!(validate: false)
-          end
-        end
-      end
-      # The second pass. Process all the embeddables and add them to page in right order.
+      # First, import and cache all the embeddables.
       page_json_object[:embeddables].each do |embed_hash|
-        embed = embed_hash[:embeddable]
+        embed = helper.import(embed_hash[:embeddable])
         section = embed_hash[:section]
-        import_embeddable = Embeddable::is_interactive?(embed[:type].constantize) ?
-          interactives_cache.get(embed[:ref_id]) : helper.wrap_import(embed)
-        import_page.add_embeddable(import_embeddable, nil, section)
+        import_page.add_embeddable(embed, nil, section)
+      end
+      # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
+      # one embeddable pointing to another one).
+      page_json_object[:embeddables].each do |embed_hash|
+        helper.set_references(embed_hash[:embeddable])
       end
     end
-    return import_page
+    import_page
   end
 end

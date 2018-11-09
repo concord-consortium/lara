@@ -182,4 +182,8 @@ class MwInteractive < ActiveRecord::Base
   def page_section
     page_item && page_item.section
   end
+
+  def index_in_activity
+    interactive_page.interactives.index(self) + 1
+  end
 end
