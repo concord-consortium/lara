@@ -398,12 +398,10 @@ div.intra-page-nav {
 
   .question-hdr {
     width: 100%;
-    float: left;
   }
 
   .question-bd {
     width: 100%;
-    float: right;
   }
 
   .challenge {
@@ -436,6 +434,10 @@ div.intra-page-nav {
     &.full-width-item {
       width: 100%;
       margin: 20px 0;
+    }
+
+    &.hidden {
+      display: none;
     }
   }
 

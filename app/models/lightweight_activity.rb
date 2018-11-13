@@ -97,8 +97,8 @@ class LightweightActivity < ActiveRecord::Base
     }
   end
 
-  def duplicate(new_owner, interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+  def duplicate(new_owner, helper=nil)
+    helper = LaraDuplicationHelper.new if helper.nil?
     new_activity = LightweightActivity.new(self.to_hash)
     LightweightActivity.transaction do
       new_activity.save!(validate: false)
@@ -107,7 +107,7 @@ class LightweightActivity < ActiveRecord::Base
       new_activity.user = new_owner
       new_activity.copied_from_id = self.id
       self.pages.each do |p|
-        new_page = p.duplicate(interactives_cache)
+        new_page = p.duplicate(helper)
         new_page.lightweight_activity = new_activity
         new_page.set_list_position(p.position)
         new_page.save!(validate: false)
@@ -117,7 +117,7 @@ class LightweightActivity < ActiveRecord::Base
         new_activity.plugins.push(p.duplicate)
       end
     end
-    return new_activity
+    new_activity
   end
 
   def export
@@ -166,13 +166,13 @@ class LightweightActivity < ActiveRecord::Base
 
   end
 
-  def self.import(activity_json_object,new_owner,imported_activity_url=nil,interactives_cache=nil)
+  def self.import(activity_json_object,new_owner,imported_activity_url=nil,helper=nil)
     author_user = activity_json_object[:user_email] ? User.find_by_email(activity_json_object[:user_email]) : nil
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+    helper = LaraSerializationHelper.new if helper.nil?
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
       # Clarify name
@@ -182,7 +182,7 @@ class LightweightActivity < ActiveRecord::Base
       import_activity.user.is_author = true
       import_activity.user.save!
       activity_json_object[:pages].each do |p|
-        import_page = InteractivePage.import(p, interactives_cache)
+        import_page = InteractivePage.import(p, helper)
         import_page.lightweight_activity = import_activity
         import_page.set_list_position(p[:position])
         import_page.save!(validate: false)

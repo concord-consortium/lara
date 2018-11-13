@@ -1,12 +1,12 @@
-- runtimeDiv = "output-#{plugin.id}"
-
 - unless plugin_loaded(plugin.url)
   = content_for :external_scripts do
     %script{src:plugin.url}
 
-.plugin-output{id:runtimeDiv}
-
 - if plugin.version < 2
+  -# Version 1
+  - output_id = "output-#{plugin.id}"
+  .plugin-output{id: output_id}
+  - runtime_div_selector = "##{output_id}"
   :javascript
     // Begin script for #{plugin.name}
     $(document).ready( function() {
@@ -16,14 +16,25 @@
         scriptUrl: '#{plugin.url}',
         pluginId: '#{plugin.id}',
         config: '#{ escape_javascript(plugin.author_data) }',
-        div: $('##{runtimeDiv}')
+        div: $('#{runtime_div_selector}')[0]
       }
       console.log("Adding script #{plugin.label} with V1 (ExternalScript) API");
       ExternalScripts.init('#{plugin.label}', env);
-
     });
 - else
+  -# Version 2
   - learner_state = PluginLearnerState.find_or_create(plugin, @run).state
+  - if wrapped_embeddable
+    -# Plugin is wrapping some other embeddable. It's injected into its div and gets question content.
+    - runtime_div_selector = "#question-#{wrapped_embeddable.embeddable_id}"
+    - wrapped_selector = "#question-#{wrapped_embeddable.embeddable_id} .question-container"
+  - else
+    -# Typical case. Plugin renders its own output.
+    - output_id = "output-#{plugin.id}"
+    .plugin-output{id: output_id}
+    - runtime_div_selector = "##{output_id}"
+    - wrapped_selector = nil
+
   :javascript
     // Begin script for #{plugin.name}
     var savePath = `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
@@ -40,7 +51,9 @@
         pluginId: '#{plugin.id}',
         authoredState: '#{ escape_javascript(plugin.author_data) }',
         learnerState: learner_state,
-        div: $('##{runtimeDiv}')[0]
+        div: $('#{runtime_div_selector}')[0],
+        wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
+        wrappedEmbeddableContext: #{wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json : 'null'}
       }
       console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
       Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);

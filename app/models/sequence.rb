@@ -70,14 +70,14 @@ class Sequence < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    interactives_cache = InteractivesCache.new
+    helper = LaraDuplicationHelper.new
     new_sequence = Sequence.new(self.to_hash)
     Sequence.transaction do
       new_sequence.title = "Copy of #{self.name}"
       new_sequence.user = new_owner
       positions = []
       lightweight_activities_sequences.each do |sa|
-        new_a = sa.lightweight_activity.duplicate(new_owner, interactives_cache)
+        new_a = sa.lightweight_activity.duplicate(new_owner, helper)
         new_a.name = new_a.name.sub('Copy of ', '')
         new_a.save!
         new_sequence.activities << new_a
@@ -86,7 +86,7 @@ class Sequence < ActiveRecord::Base
       new_sequence.save!
       new_sequence.fix_activity_position(positions)
     end
-    return new_sequence
+    new_sequence
   end
 
   def export
@@ -156,7 +156,7 @@ class Sequence < ActiveRecord::Base
   end
 
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
-    interactives_cache = InteractivesCache.new
+    helper = LaraSerializationHelper.new
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
     Sequence.transaction do
       import_sequence.title = import_sequence.title
@@ -164,7 +164,7 @@ class Sequence < ActiveRecord::Base
       import_sequence.user = new_owner
       positions = []
       sequence_json_object[:activities].each do |sa|
-        import_a = LightweightActivity.import(sa, new_owner, nil, interactives_cache)
+        import_a = LightweightActivity.import(sa, new_owner, nil, helper)
         import_a.save!
         import_sequence.activities << import_a
         positions << sa[:position]
