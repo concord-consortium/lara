@@ -1,0 +1,16 @@
+{
+  "name": "lara-cypress-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:dev": "cypress open --env testEnv=dev",
+    "test:staging": "cypress open --env testEnv=staging",
+    "test:production": "cypress open --env testEnv=production"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^3.1.0"
+  }
+}
