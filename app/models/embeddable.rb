@@ -46,12 +46,14 @@ module Embeddable
     return nil
   end
 
+  def page
+    # Some embeddables define interactive_page, some interactive_pages.
+    # In pratice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:interactive_page) ? interactive_page : interactive_pages.first
+  end
+
   def activity
-    if interactive_pages.length > 0 && interactive_pages.first.lightweight_activity.present?
-      return interactive_pages.first.lightweight_activity
-    else
-      return nil
-    end
+    page && page.lightweight_activity
   end
 
   # A unique key to use for local storage
