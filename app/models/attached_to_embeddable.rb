@@ -15,6 +15,34 @@ module AttachedToEmbeddable
   NO_EMBEDDABLE_VALUE = "no-embeddable"
   NO_EMBEDDABLE_SELECT = [NO_EMBEDDABLE_LABEL, NO_EMBEDDABLE_VALUE]
 
+  # Model can be attached to the next embeddable present on a given page.
+  # It will be calculated dynamically when needed (see embeddable method below).
+  # That way, an author can use embeddable item positioning to wrap other embeddables / attach them to each other.
+  NEXT_EMBEDDABLE_LABEL = I18n.t('NEXT_EMBEDDABLE')
+  NEXT_EMBEDDABLE_VALUE = "next-embeddable"
+  NEXT_EMBEDDABLE_SELECT = [NEXT_EMBEDDABLE_LABEL, NEXT_EMBEDDABLE_VALUE]
+
+  def embeddable
+    if attached_to_next_interactive
+      embeddables = page.embeddables
+      self_index = embeddables.index(self)
+      embeddables[self_index + 1]
+    else
+      super
+    end
+  end
+
+  def attached_to_next_interactive
+    embeddable_type == NEXT_EMBEDDABLE_VALUE
+  end
+
+  def attached_to_embeddable
+    # Note that it's not enough to check embeddable value. If this item is the last one in the page and is attached
+    # to the next interactive, #embeddable will return nil. However, we still should consider this item as attached
+    # to something (e.g. in authoring forms).
+    attached_to_next_interactive || !!embeddable
+  end
+
   def possible_embeddables
     # Do not let embeddable attach to itself
     page ? page.embeddables.select { |e| e != self } : []
@@ -22,21 +50,37 @@ module AttachedToEmbeddable
 
   def embeddables_for_select
     # Because embeddable is polymorphic association, normal AR options for select don't work.
-    options = [NO_EMBEDDABLE_SELECT]
-    possible_embeddables.each_with_index do |pi, i|
-      hidden_text =  pi.is_hidden? ? "(hidden)" : ""
-      options << ["#{pi.class.model_name.human} #{hidden_text}(#{i+1})", make_embeddable_select_value(pi)]
+    options = [NO_EMBEDDABLE_SELECT, NEXT_EMBEDDABLE_SELECT]
+    possible_embeddables.each do |possible_embed|
+      options << [make_embeddable_select_label(possible_embed), make_embeddable_select_value(possible_embed)]
     end
     options
   end
 
   def embeddable_select_value
     return @embeddable_select_value if @embeddable_select_value
-    return make_embeddable_select_value(embeddable) if embeddable
+    if attached_to_next_interactive
+      NEXT_EMBEDDABLE_VALUE
+    else
+      make_embeddable_select_value(embeddable) if embeddable
+    end
+  end
+
+  def embeddable_select_label
+    if attached_to_next_interactive
+      NEXT_EMBEDDABLE_LABEL
+    else
+      make_embeddable_select_label(embeddable) if embeddable
+    end
   end
 
   def make_embeddable_select_value(embeddable)
     "#{embeddable.id}-#{embeddable.class.name}"
+  end
+
+  def make_embeddable_select_label(embeddable)
+    hidden_text =  embeddable.is_hidden? ? "(hidden)" : ""
+    "#{embeddable.class.model_name.human} #{hidden_text}(#{page.embeddables.index(embeddable) + 1})"
   end
 
   def parse_embeddable_select_value
@@ -44,11 +88,15 @@ module AttachedToEmbeddable
     # Turn it into a type of embeddable, or nil.
     if embeddable_select_value
       _embeddable = nil
-      if embeddable_select_value != NO_EMBEDDABLE_VALUE
+      if embeddable_select_value == NEXT_EMBEDDABLE_VALUE
+        self.embeddable_type = NEXT_EMBEDDABLE_VALUE
+      elsif embeddable_select_value == NO_EMBEDDABLE_VALUE
+        self.embeddable = nil
+      else embeddable_select_value != NO_EMBEDDABLE_VALUE
         id, model = self.embeddable_select_value.split('-')
         _embeddable = Kernel.const_get(model).send(:find, id) rescue nil
+        self.embeddable = _embeddable
       end
-      self.embeddable = _embeddable
     end
   end
 end

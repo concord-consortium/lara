@@ -29,10 +29,10 @@ shared_examples "attached to embeddable form" do
 
   describe "with two embeddables on the page" do
     let(:embeddables)  {[embeddable_a,embeddable_b]}
-    it "includes three choices" do
+    it "includes four choices (no interactive, next interactive, and two embeddables)" do
       assign(:embeddable, test_embeddable)
       render
-      expect(rendered).to have_css embeddable_choice_select_css, count: 3
+      expect(rendered).to have_css embeddable_choice_select_css, count: 4
     end
   end
 end
