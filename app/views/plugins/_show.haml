@@ -26,8 +26,8 @@
   - learner_state = PluginLearnerState.find_or_create(plugin, @run).state
   - if wrapped_embeddable
     -# Plugin is wrapping some other embeddable. It's injected into its div and gets question content.
-    - runtime_div_selector = "#question-#{wrapped_embeddable.embeddable_id}"
-    - wrapped_selector = "#question-#{wrapped_embeddable.embeddable_id} .question-container"
+    - runtime_div_selector = "##{wrapped_embeddable.embeddable_dom_id}"
+    - wrapped_selector = "#{runtime_div_selector} .embeddable-container"
   - else
     -# Typical case. Plugin renders its own output.
     - output_id = "output-#{plugin.id}"

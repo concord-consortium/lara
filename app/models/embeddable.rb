@@ -81,7 +81,7 @@ module Embeddable
   end
 
   # ID which is unique among all the embeddable types.
-  def embeddable_id
-    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
+  def embeddable_dom_id
+    "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 end
