@@ -46,9 +46,15 @@ module Embeddable
     return nil
   end
 
+  def p_item
+    # Some embeddables define page_item, some page_items.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:page_item) ? page_item : page_items.first
+  end
+
   def page
     # Some embeddables define interactive_page, some interactive_pages.
-    # In pratice, there's always just one page, so many to many relationship isn't necessary.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
     respond_to?(:interactive_page) ? interactive_page : interactive_pages.first
   end
 

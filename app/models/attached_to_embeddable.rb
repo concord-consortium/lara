@@ -23,16 +23,17 @@ module AttachedToEmbeddable
   NEXT_EMBEDDABLE_SELECT = [NEXT_EMBEDDABLE_LABEL, NEXT_EMBEDDABLE_VALUE]
 
   def embeddable
-    if attached_to_next_interactive
-      embeddables = page.embeddables
-      self_index = embeddables.index(self)
-      embeddables[self_index + 1]
+    if attached_to_next_embeddable
+      # p_item is a page item, which `acts as a list`. That lets us quickly get the next item and embeddable
+      # without loading all the embeddables and manually checking index.
+      next_page_item = p_item.lower_item
+      next_page_item && next_page_item.embeddable
     else
       super
     end
   end
 
-  def attached_to_next_interactive
+  def attached_to_next_embeddable
     embeddable_type == NEXT_EMBEDDABLE_VALUE
   end
 
@@ -40,7 +41,7 @@ module AttachedToEmbeddable
     # Note that it's not enough to check embeddable value. If this item is the last one in the page and is attached
     # to the next interactive, #embeddable will return nil. However, we still should consider this item as attached
     # to something (e.g. in authoring forms).
-    attached_to_next_interactive || !!embeddable
+    attached_to_next_embeddable || !!embeddable
   end
 
   def possible_embeddables
@@ -59,7 +60,7 @@ module AttachedToEmbeddable
 
   def embeddable_select_value
     return @embeddable_select_value if @embeddable_select_value
-    if attached_to_next_interactive
+    if attached_to_next_embeddable
       NEXT_EMBEDDABLE_VALUE
     else
       make_embeddable_select_value(embeddable) if embeddable
@@ -67,7 +68,7 @@ module AttachedToEmbeddable
   end
 
   def embeddable_select_label
-    if attached_to_next_interactive
+    if attached_to_next_embeddable
       NEXT_EMBEDDABLE_LABEL
     else
       make_embeddable_select_label(embeddable) if embeddable
