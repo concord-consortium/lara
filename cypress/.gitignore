@@ -1,0 +1,12 @@
+.idea
+.DS_Store
+node_modules
+
+# Cypress output
+cypress/screenshots
+cypress/videos
+
+# Config
+config/user-config.json
+cypress.env.json
+

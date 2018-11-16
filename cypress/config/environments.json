@@ -1,0 +1,11 @@
+{
+  "production": {
+    "baseUrl": "https://authoring.concord.org"
+  },
+  "staging": {
+    "baseUrl": "https://authoring.staging.concord.org"
+  },
+  "dev": {
+    "baseUrl": "dev baseUrl needs to be set in config/user-config.json (see config/user-config.sample.json)"
+  }
+}
