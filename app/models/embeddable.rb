@@ -46,12 +46,20 @@ module Embeddable
     return nil
   end
 
+  def p_item
+    # Some embeddables define page_item, some page_items.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:page_item) ? page_item : page_items.first
+  end
+
+  def page
+    # Some embeddables define interactive_page, some interactive_pages.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:interactive_page) ? interactive_page : interactive_pages.first
+  end
+
   def activity
-    if interactive_pages.length > 0 && interactive_pages.first.lightweight_activity.present?
-      return interactive_pages.first.lightweight_activity
-    else
-      return nil
-    end
+    page && page.lightweight_activity
   end
 
   # A unique key to use for local storage
@@ -79,7 +87,7 @@ module Embeddable
   end
 
   # ID which is unique among all the embeddable types.
-  def embeddable_id
-    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
+  def embeddable_dom_id
+    "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 end

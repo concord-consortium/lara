@@ -12,5 +12,4 @@
   - if embeddable.wrapping_plugin?
     .wrapped-embeddable
       Wrapped embeddable:
-      - wrapped = embeddable.embeddable
-      = "#{wrapped.class.model_name.human} (#{wrapped.index_in_activity})"
+      = embeddable.embeddable_select_label

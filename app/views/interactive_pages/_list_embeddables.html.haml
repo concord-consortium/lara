@@ -12,8 +12,9 @@
           -# e variable is actually either embeddable (for interactives, plugins, etc.) or embeddable answer
           -# (open response, multiple choice and all the question types). If the latter, get a real question object.
           - question = e.respond_to?(:question) ? e.question : e
-          .question{ class: css_class, id: "question-#{question.embeddable_id}" }
-            .question-container
+          .question{ class: css_class, id: question.embeddable_dom_id }
+            -#This CSS class is important, as it might be referenced by plugins and passed to a plugin instance.
+            .embeddable-container
               - if Embeddable::is_interactive?(e)
                 = render_interactive(e)
               - else

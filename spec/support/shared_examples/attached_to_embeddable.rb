@@ -34,21 +34,42 @@ shared_examples "attached to embeddable" do
     end
   end
 
+  describe "#embeddable" do
+    it "when regular reference is used, it should return correct embeddable item" do
+      test_embeddable.embeddable_select_value = test_embeddable.make_embeddable_select_value(open_response_embeddable)
+      expect(test_embeddable.save).to eql(true)
+      expect(test_embeddable.attached_to_embeddable).to eql(true)
+      expect(test_embeddable.embeddable).to eql(open_response_embeddable)
+    end
+
+    it "when 'next embeddable' special value is used, it should return next embeddable from the same page" do
+      test_embeddable.embeddable_select_value = AttachedToEmbeddable::NEXT_EMBEDDABLE_VALUE
+      expect(test_embeddable.save).to eql(true)
+      expect(test_embeddable.attached_to_embeddable).to eql(true)
+      expect(test_embeddable.embeddable).to eql(nil) # no other embeddables on this page yet
+
+      page.add_embeddable(open_response_embeddable)
+      expect(test_embeddable.embeddable).to eql(open_response_embeddable)
+    end
+  end
+
   describe "#embeddables_for_select" do
     let(:embeddable_a)         { FactoryGirl.create(:open_response) }
     let(:embeddable_b)         { FactoryGirl.create(:open_response) }
 
     let(:expected_identifier_1) { AttachedToEmbeddable::NO_EMBEDDABLE_SELECT }
-    let(:expected_identifier_2) { ["Open response (1)", "#{embeddable_a.id}-Embeddable::OpenResponse"]}
-    let(:expected_identifier_3) { ["Open response (2)", "#{embeddable_b.id}-Embeddable::OpenResponse"]}
-    let(:expected_identifier_4) { ["Open response (hidden)(3)", "#{hidden_open_response_embeddable.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_2) { AttachedToEmbeddable::NEXT_EMBEDDABLE_SELECT }
+    let(:expected_identifier_3) { ["Open response (1)", "#{embeddable_a.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_4) { ["Open response (2)", "#{embeddable_b.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_5) { ["Open response (hidden)(3)", "#{hidden_open_response_embeddable.id}-Embeddable::OpenResponse"]}
 
     let(:embeddables) { [embeddable_a, embeddable_b, hidden_open_response_embeddable] }
     it "should have good options" do
       expect(test_embeddable.embeddables_for_select).to include expected_identifier_1
       expect(test_embeddable.embeddables_for_select).to include expected_identifier_2
       expect(test_embeddable.embeddables_for_select).to include expected_identifier_3
-      expect(test_embeddable.embeddables_for_select).to include expected_identifier_3
+      expect(test_embeddable.embeddables_for_select).to include expected_identifier_4
+      expect(test_embeddable.embeddables_for_select).to include expected_identifier_5
     end
   end
 end

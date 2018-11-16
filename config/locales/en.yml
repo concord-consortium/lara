@@ -57,6 +57,7 @@ en:
   WELCOME: "Welcome"
   NO_INTERACTIVE: "No Interactive"
   NO_EMBEDDABLE: "No Embeddable"
+  NEXT_EMBEDDABLE: "Next Embeddable"
   SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."

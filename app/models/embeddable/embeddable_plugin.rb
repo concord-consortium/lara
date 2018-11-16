@@ -88,15 +88,9 @@ module Embeddable
       page_items.count > 0 && page_items.first.section
     end
 
-    def page
-      # Return first page (note that in practice it's impossible that this model has more
-      # than one page, even though it's many-to-many association).
-      interactive_pages.first
-    end
-
     def wrapping_plugin?
       # It is if it's attached to some other embeddable.
-      !!embeddable
+      attached_to_embeddable
     end
   end
 end
