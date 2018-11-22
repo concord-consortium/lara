@@ -228,7 +228,7 @@ window.LARA = {
   type IEventListeners = IEventListener | IEventListener[];
   ****************************************************************************/
   decorateContent: function (words, replace, wordClass, listeners) {
-    var domClasses = ['question-txt', 'intro-txt'];
+    var domClasses = ['question-txt', 'help-content', 'intro-txt'];
     var options = {
       words: words,
       replace: replace
