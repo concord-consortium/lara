@@ -69,3 +69,7 @@ end
 # On a mac, you will need to use this tool, or something similar:
 # https://github.com/dhoulb/subl
 BetterErrors.editor = :subl
+
+# Flush stdout which is used for logging, in some cases docker was not seeing the
+# output. There might be a better way to handle this.
+$stdout.sync = true
