@@ -83,6 +83,12 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     margin: 0 auto;
     position: relative;
     width: 960px;
+
+    img {
+      height: auto;
+      max-height: 70px;
+      width: auto;
+    }
   }
   #mw-logo {
     border: none;
@@ -1064,4 +1070,3 @@ body.iframed {
     display: none;
   }
 }
-
