@@ -2,9 +2,27 @@ getAuthoredState = ($dataDiv) ->
   authoredState = $dataDiv.data('authored-state')
   if !authoredState? || authoredState == ''
     authoredState = null
-  if typeof authoredState == 'String'
+  if typeof authoredState == 'string'
     authoredState = JSON.parse(authoredState)
   authoredState
+
+interactiveStateProps = (data) ->
+  interactiveState: if data?.raw_data then JSON.parse(data.raw_data) else null
+  hasLinkedInteractive: data?.has_linked_interactive
+  linkedState: if data?.linked_state then JSON.parse(data.linked_state) else undefined
+  allLinkedStates: if data?.all_linked_states then data.all_linked_states.map(interactiveStateProps) else undefined
+  createdAt: data?.created_at
+  updatedAt: data?.updated_at
+  interactiveStateUrl: data?.interactive_state_url
+  interactive:
+    # Keep default values `undefined` (data?.something returns undefined if data is not available),
+    # as they might be obtained the other way. See "init_interactive" function which extends basic data using object
+    # returned from this one. `undefined` ensures that we won't overwrite a valid value.
+    id: data?.interactive_id
+    name: data?.interactive_name
+  pageNumber: data?.page_number
+  pageName: data?.page_name
+  activityName: data?.activity_name
 
 # IFrameSaver : Wrapper around IFramePhone to save & Load IFrame data
 # into interactive_run_state models in LARA.
@@ -27,15 +45,15 @@ class IFrameSaver
     @class_info_url = $data_div.data('class-info-url')
     @interactive_id = $data_div.data('interactive-id')
     @interactive_name = $data_div.data('interactive-name')
+    @get_firebase_jwt_url = $data_div.data('get-firebase-jwt-url')
+
+    @save_indicator = SaveIndicator.instance()
 
     @$delete_button.click () =>
       @delete_data()
-    @$delete_button.hide()
-    @should_show_delete = null
+
     @saved_state = null
     @autosave_interval_id = null
-
-    @save_indicator = SaveIndicator.instance()
 
     if @learner_state_saving_enabled()
       IFrameSaver.instances.push @
@@ -62,21 +80,22 @@ class IFrameSaver
       if @user_email?
         authInfo.email = @user_email
       @iframePhone.post('authInfo', authInfo)
-    @iframePhone.addListener 'extendedSupport', (opts)=>
-      if opts.reset?
-        @should_show_delete = opts.reset
-        if @saved_state
-          if @should_show_delete
-            @$delete_button.show()
-          else
-            @$delete_button.hide()
+    @iframePhone.addListener 'supportedFeatures', (info) =>
+      if info.features?.aspectRatio?
+        # If the author specifies the aspect-ratio-method as "DEFAULT"
+        # then the Interactive can provide suggested aspect-ratio.
+        if(@$iframe.data('aspect-ratio-method') == "DEFAULT")
+          @$iframe.data('aspect-ratio', info.features.aspectRatio)
+          @$iframe.trigger('sizeUpdate')
+
     @iframePhone.addListener 'navigation', (opts={})=>
       if opts.hasOwnProperty('enableForwardNav')
         if opts.enableForwardNav
           ForwardBlocker.instance.enable_forward_navigation_for(@$iframe[0])
         else
           ForwardBlocker.instance.prevent_forward_navigation_for(@$iframe[0], opts.message)
-    @iframePhone.post('getExtendedSupport')
+    @iframePhone.addListener 'getFirebaseJWT', (opts={}) =>
+      @get_firebase_jwt(opts)
 
     if @learner_state_saving_enabled()
       @iframePhone.post('getLearnerUrl')
@@ -123,8 +142,9 @@ class IFrameSaver
         @default_success
 
     # Do not send the same state to server over and over again.
-    # "nochange" is a special type of response from CODAP.
-    if JSON.stringify(interactive_json) == JSON.stringify(@saved_state) || interactive_json is "nochange"
+    # "nochange" is a special type of response.
+    # "touch" is an another special type of response which will triger timestamp update only.
+    if interactive_json isnt "touch" && (interactive_json is "nochange" || JSON.stringify(interactive_json) == JSON.stringify(@saved_state))
       runSuccess()
       return
 
@@ -134,9 +154,11 @@ class IFrameSaver
       dataType: 'json'
       url: @interactive_run_state_url
       data:
-        raw_data: JSON.stringify(interactive_json)
+        if interactive_json is "touch" then {} else { raw_data: JSON.stringify(interactive_json) }
       success: (response) =>
         runSuccess()
+        # State has been saved. Show "Undo all my work" button.
+        @$delete_button.show()
         @save_indicator.showSaved("Saved Interactive")
       error: (jqxhr, status, error) =>
         @error("couldn't save interactive")
@@ -165,10 +187,13 @@ class IFrameSaver
           interactive = JSON.parse(response['raw_data'])
           if interactive
             @saved_state = interactive
+            # DEPRECATED: the initInteractive message includes the interactive state so
+            # interactives should use the initInteractive method instead
             @iframePhone.post({type: 'loadInteractive', content: interactive})
             # Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging @$iframe[0]
-            @$delete_button.show() if @should_show_delete == null or @should_show_delete
+            # State is available. Show "Undo all my work" button.
+            @$delete_button.show()
         @init_interactive null, response
       error: (jqxhr, status, error) =>
         @init_interactive "couldn't load interactive"
@@ -179,17 +204,13 @@ class IFrameSaver
   # this is the newer method of initializing an interactive
   # it returns the current state and linked state
   init_interactive: (err = null, response = null) ->
-
-    @iframePhone.post 'initInteractive',
+    init_interactive_msg =
       version: 1
       error: err
       mode: 'runtime'
       authoredState: @authoredState
-      interactiveState: if response?.raw_data then JSON.parse(response.raw_data) else null
       # See: global-iframe-saver.coffee
       globalInteractiveState: if globalIframeSaver? then globalIframeSaver.globalState else null
-      hasLinkedInteractive: response?.has_linked_interactive or false
-      linkedState: if response?.linked_state then JSON.parse(response.linked_state) else null
       interactiveStateUrl: @interactive_run_state_url
       collaboratorUrls: if @collaborator_urls? then @collaborator_urls.split(';') else null
       classInfoUrl: @class_info_url
@@ -200,6 +221,12 @@ class IFrameSaver
         provider: @auth_provider
         loggedIn: @logged_in
         email: @user_email
+    # Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing
+    # it directly into general init message. However, multiple interactives are already using this format
+    # and it doesn't seem to be worth changing at this point.
+    $.extend(true, init_interactive_msg, interactiveStateProps(response))
+
+    @iframePhone.post 'initInteractive', init_interactive_msg
 
   set_autosave_enabled: (v) ->
     return unless @learner_state_saving_enabled()
@@ -218,6 +245,15 @@ class IFrameSaver
       $(window).off focus_namespace
       @$iframe.off mouseout_namespace
 
+  get_firebase_jwt: (opts) ->
+    $.ajax
+      type: 'POST'
+      url: @get_firebase_jwt_url
+      data: opts
+      success: (response) =>
+        @iframePhone.post 'firebaseJWT', response
+      error: (jqxhr, status, error) =>
+        @iframePhone.post 'firebaseJWT', {response_type: "ERROR", message: error}
 
 # Export constructor.
 window.IFrameSaver = IFrameSaver

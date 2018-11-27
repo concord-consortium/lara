@@ -1,15 +1,15 @@
-{div, img, label, input} = React.DOM
+{div, img, label, input} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/model_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
   'components/common/interactive_iframe',
   'components/itsi_authoring/cached_ajax'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
   InteractiveIframeClass,
@@ -20,10 +20,10 @@ modulejs.define 'components/itsi_authoring/model_editor',
   SectionEditorElement = React.createFactory SectionEditorElementClass
   InteractiveIframe = React.createFactory InteractiveIframeClass
 
-  ModelEditor = React.createClass
+  ModelEditor = createReactClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:
@@ -37,6 +37,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
       'mw_interactive[full_window]': 'full_window'
       'mw_interactive[no_snapshots]': 'no_snapshots'
       'mw_interactive[enable_learner_state]': 'save_interactive_state'
+
+    iframeContainer: React.createRef()
+    iframe: React.createRef()
 
     getInitialState: ->
       modelsByLibraryId: {}
@@ -71,10 +74,13 @@ modulejs.define 'components/itsi_authoring/model_editor',
       @valueChanged 'mw_interactive[authored_state]', null, =>
         # Callback executed when state is updated.
         # Reload iframe to apply "null" initial state.
-        @refs.iframe.reload()
+        @iframe.current.reload()
 
     handleSupportedFeaturesUpdate: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
+      if (info.features.aspectRatio?)
+        container = @iframeContainer.current
+        container.style.height = Math.round(container.offsetWidth / info.features.aspectRatio) + 'px'
 
     fetchModelList: ->
       url = @props.jsonListUrls?.models or 'https://s3.amazonaws.com/sensorconnector-s3.concord.org/model_list.json'
@@ -127,9 +133,9 @@ modulejs.define 'components/itsi_authoring/model_editor',
                   if authoredState
                     (input {type: 'button', className: 'ia-reset-authored-state', value: 'Reset authored state', onClick: @resetAuthoredState})
                 )
-              (div {className: 'ia-interactive'},
+              (div {className: 'ia-interactive', ref: @iframeContainer},
                 (InteractiveIframe
-                  ref: 'iframe'
+                  ref: @iframe
                   src: @state.values['mw_interactive[url]'],
                   initMsg: {
                     version: 1

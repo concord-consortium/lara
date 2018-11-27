@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   app:
     build:
@@ -6,13 +6,14 @@ services:
       dockerfile: Dockerfile-dev
     command: docker/dev/run.sh
     environment:
-      # you will need more variables here to connect your lara to a portal
+      # Look at the docker/dev/docker-compose-*.yml files for configuratio of
+      # additional variables.
       DB_HOST: db
-      DB_USER: master
-      DB_PASSWORD: master
-      DB_NAME: lara
+      DB_USER: root
+      DB_PASSWORD: xyzzy
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
       C_RATER_FAKE:
+      LARA_VERSION: Local Docker
     # no ports are published, see below for details
     depends_on:
       - db
@@ -22,9 +23,6 @@ services:
   db:
     image: mysql:5.6
     environment:
-      MYSQL_DATABASE: lara
-      MYSQL_PASSWORD: master
-      MYSQL_USER: master
       MYSQL_ROOT_PASSWORD: xyzzy
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:

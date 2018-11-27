@@ -1,17 +1,30 @@
 class MwInteractive < ActiveRecord::Base
-  attr_accessible :name, :url, :native_width, :native_height, :enable_learner_state, :has_report_url, :click_to_play, :image_url,
-                  :is_hidden, :linked_interactive_id, :full_window, :model_library_url, :authored_state, :no_snapshots
+  include Embeddable
 
-  default_value_for :native_width, 576
-  default_value_for :native_height, 435
+  DEFAULT_CLICK_TO_PLAY_PROMPT = "Click here to start the interactive."
+  ASPECT_RATIO_DEFAULT_WIDTH   = 576
+  ASPECT_RATIO_DEFAULT_HEIGHT  =  435
+  ASPECT_RATIO_DEFAULT_METHOD  = 'DEFAULT'
+  ASPECT_RATIO_MANUAL_METHOD   = 'MANUAL'
+  ASPECT_RATIO_MAX_METHOD      = 'MAX'
+
+  attr_accessible :name, :url, :native_width, :native_height,
+    :enable_learner_state, :has_report_url, :click_to_play,
+    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id,
+    :full_window, :model_library_url, :authored_state, :no_snapshots,
+    :show_delete_data_button, :show_in_featured_question_report, :is_full_width,
+    :aspect_ratio_method
+
+  default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
+  default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
 
   validates_numericality_of :native_width
   validates_numericality_of :native_height
 
-  has_one :interactive_item, :as => :interactive, :dependent => :destroy
-  # InteractiveItem is a join model; if this is deleted, that instance should go too
+  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  # PageItem is a join model; if this is deleted, that instance should go too
 
-  has_one :interactive_page, :through => :interactive_item
+  has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
@@ -27,19 +40,35 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
-  # returns the aspect ratio of the interactive, determined by dividing the width by the height.
-  # So for an interactive with a native width of 400 and native height of 200, the aspect_ratio
-  # will be 2.
-  def aspect_ratio
-    if self.native_width && self.native_height
-      return self.native_width/self.native_height.to_f
-    else
-      return 1.324 # Derived from the default values, above
+  def available_aspect_ratios
+    [
+      MwInteractive::ASPECT_RATIO_DEFAULT_METHOD,
+      MwInteractive::ASPECT_RATIO_MANUAL_METHOD,
+      MwInteractive::ASPECT_RATIO_MAX_METHOD
+    ].map do |key|
+      { key: key, value: I18n.t("INTERACTIVE.ASPECT_RATIO.#{key}") }
+    end
+  end
+  # returns the aspect ratio of the interactive, dividing the width by the height.
+  # For an interactive with a native width of 400 and native height of 200,
+  # the aspect_ratio will be 2.
+  # If ASPECT_RATIO_MAX_METHOD is being used, it is expected that the available
+  # width and height are provided as arugments used to calculated an aspect_ratio
+  def aspect_ratio(avail_width=nil, avail_height=nil)
+    case self.aspect_ratio_method
+      when ASPECT_RATIO_DEFAULT_METHOD
+        return ASPECT_RATIO_DEFAULT_WIDTH / ASPECT_RATIO_DEFAULT_HEIGHT.to_f
+      when ASPECT_RATIO_MANUAL_METHOD
+        return self.native_width/self.native_height.to_f
+      when ASPECT_RATIO_MAX_METHOD
+        width  = avail_width  || ASPECT_RATIO_DEFAULT_WIDTH
+        height = avail_height || ASPECT_RATIO_DEFAULT_HEIGHT
+        return width / height.to_f
     end
   end
 
-  def height(width)
-    return width/self.aspect_ratio
+  def height(avail_width, avail_height=nil)
+    return avail_width / aspect_ratio(avail_width, avail_height)
   end
 
   def to_hash
@@ -50,13 +79,18 @@ class MwInteractive < ActiveRecord::Base
       native_width: native_width,
       native_height: native_height,
       enable_learner_state: enable_learner_state,
+      show_delete_data_button: show_delete_data_button,
       has_report_url: has_report_url,
       click_to_play: click_to_play,
+      click_to_play_prompt: click_to_play_prompt,
       full_window: full_window,
       image_url: image_url,
       is_hidden: is_hidden,
+      is_full_width: is_full_width,
+      show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
-      authored_state: authored_state
+      authored_state: authored_state,
+      aspect_ratio_method: aspect_ratio_method
     }
   end
 
@@ -88,13 +122,18 @@ class MwInteractive < ActiveRecord::Base
                               :native_width,
                               :native_height,
                               :enable_learner_state,
+                              :show_delete_data_button,
                               :has_report_url,
                               :click_to_play,
+                              :click_to_play_prompt,
                               :full_window,
+                              :show_in_featured_question_report,
                               :image_url,
                               :is_hidden,
+                              :is_full_width,
                               :model_library_url,
-                              :authored_state])
+                              :authored_state,
+                              :aspect_ratio_method])
   end
 
   def self.import(import_hash)
@@ -138,5 +177,9 @@ class MwInteractive < ActiveRecord::Base
     # If we need more flexibility then we'll need to add a new option on MwInteractive
     # indicated if the interactive should be reported on in an iframe or not
     !has_report_url
+  end
+
+  def page_section
+    page_item && page_item.section
   end
 end

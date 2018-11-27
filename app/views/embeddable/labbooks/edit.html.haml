@@ -3,7 +3,7 @@
   = f.label 'Name (visible in reports)'
   = f.text_field :name
   = field_set_tag 'Prompt' do
-    = f.text_area :prompt, :rows => 5, class: 'wysiwyg'
+    = f.text_area :prompt, :rows => 5, class: 'wysiwyg-minimal'
   = field_set_tag 'Options' do
     %ul
       %li
@@ -15,21 +15,16 @@
       %li.interactive_choice
         = f.label 'Interactive'
         = f.select :interactive_select_value, @embeddable.interactives_for_select
+      = render :partial => 'shared/edit_featured', :locals => { :f => f }
+      = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   = field_set_tag 'Hint' do
     .help
       If this is provided, the user will be able to see expandable hint next to the question title.
-      = f.text_area :hint, :rows => 5, :class => 'wysiwyg'
+      = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
   = f.submit 'Cancel', class: 'close'
   = f.submit 'Save', class: 'embeddable-save'
 
 :javascript
   $(function() {
-    $('.wysiwyg').wysiwyg({
-      'controls': {
-        'html': {'visible': true},
-        'h1': {'visible': false},
-        'h2': {'visible': false},
-        'h3': {'visible': false}
-       }
-    });
+    initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
   });

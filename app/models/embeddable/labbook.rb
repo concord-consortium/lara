@@ -2,6 +2,7 @@
 module Embeddable
   class Labbook < ActiveRecord::Base
     include Embeddable
+    include AttachedToInteractive
 
     UPLOAD_ACTION = 0
     SNAPSHOT_ACTION = 1
@@ -11,22 +12,11 @@ module Embeddable
       ['Snapshot', SNAPSHOT_ACTION]
     ]
 
-    NO_INTERACTIVE_LABLE =   I18n.t('LABBOOK.NO_INTERACTIVE')
-    NO_INTERACTIVE_VALUE = "no-interactive"
-    NO_INTERACTIVE_SELECT = [NO_INTERACTIVE_LABLE, NO_INTERACTIVE_VALUE];
-    attr_accessible :action_type, :name, :prompt,
-      :custom_action_label, :is_hidden,
-      :interactive_type, :interactive_id, :interactive,
-      :interactive_select_value, :hint
-
-    attr_writer :interactive_select_value
-
-    before_validation :parse_interactive_select_value
+    attr_accessible :action_type, :name, :prompt, :custom_action_label, :is_hidden,
+      :show_in_featured_question_report, :interactive, :hint, :is_full_width
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
-
-    belongs_to :interactive, :polymorphic => true
 
     # "Answer" isn't the best word probably, but it fits the rest of names and convention.
     # LabbookAnswer is an instance related to particular activity run and user.
@@ -62,6 +52,7 @@ module Embeddable
         type: self.class.portal_type.gsub(' ', '_'),
         id: portal_id,
         name: name,
+        show_in_featured_question_report: show_in_featured_question_report,
         # This info can be used by Portal to generate an iframe with album in teacher report.
         display_in_iframe: true,
         # These dimensions are pretty random at the moment. Labbook album doesn't look good
@@ -79,7 +70,9 @@ module Embeddable
         prompt: prompt,
         custom_action_label: custom_action_label,
         is_hidden: is_hidden,
-        hint: hint
+        is_full_width: is_full_width,
+        hint: hint,
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -94,7 +87,9 @@ module Embeddable
         :prompt,
         :custom_action_label,
         :is_hidden,
-        :hint
+        :is_full_width,
+        :hint,
+        :show_in_featured_question_report
       ])
     end
 
@@ -111,37 +106,9 @@ module Embeddable
       action_type == SNAPSHOT_ACTION
     end
 
-
-    def page
-      # Return first page (note that in practice it's impossible that this model has more
-      # than one page, even though it's many-to-many association).
-      interactive_pages.first
-    end
-
-    def possible_interactives
-      # Only the visible_interactives should be used when selecting an interactive
-      return page.interactives if page
-      return []
-    end
-
-    def interactives_for_select
-      # Because interactive is ploymorphic association, normal AR optinons
-      # for select don't work.
-      options = [NO_INTERACTIVE_SELECT]
-      possible_interactives.each_with_index do |pi,i|
-        hidden_text =  pi.is_hidden? ? "(hidden)" : ""
-        options << ["#{pi.class.model_name.human} #{hidden_text}(#{i+1})", make_interactive_select_value(pi)]
-      end
-      options
-    end
-
-    def interactive_select_value
-      return @interactive_select_value if @interactive_select_value
-      return make_interactive_select_value(interactive) if interactive
-    end
-
-    def make_interactive_select_value(interactive)
-      "#{interactive.id}-#{interactive.class.name}"
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
     end
 
     def action_label
@@ -207,20 +174,5 @@ module Embeddable
       report_string = "updated #{changed_snapshot_count} snapshot prompts, and #{changed_upload_count} upload labbook prompts"
       Rails.logger.info report_string
     end
-
-    private
-    def parse_interactive_select_value
-      # Parse the interactive form select input value
-      # Turn it into a type of interactive, or nil.
-      if interactive_select_value
-        _interactive = nil
-        if interactive_select_value != NO_INTERACTIVE_VALUE
-          id, model = self.interactive_select_value.split('-')
-          _interactive = Kernel.const_get(model).send(:find, id) rescue nil
-        end
-        self.interactive = _interactive
-      end
-    end
-
   end
 end

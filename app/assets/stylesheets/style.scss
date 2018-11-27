@@ -56,7 +56,7 @@ body {
   color: #3f3f3f;
   font: 80% 'Lato', arial, helvetica, sans-serif;
 }
-button, .btn-primary, span.edit_trigger, #modal .embeddable-save {
+button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close {
   background: #6fc5d8;
   border: none;
   color: #fff;
@@ -69,6 +69,7 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save {
   text-decoration: none;
   display: inline-block;
 }
+
 button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #ccc !important;
 }
@@ -229,7 +230,6 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .text {
   float: left;
   height: auto;
-  padding: 1% 1% 1% 0;
   width: 38%;
 }
 .stacked-right .text {
@@ -289,6 +289,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     color: #ba431e;
     font-weight: bold;
     margin-top: 1em;
+  }
+  .prompt {
+    overflow: hidden;
   }
 }
 .questions.full-width {
@@ -374,32 +377,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     width: 174px;
   }
 }
-.sidebar {
-  background: #6fc5d8;
-  clear: both;
-  color: #fff;
-  height: auto;
-  margin-top: 20px;
-  min-height: 224px;
-  padding: 1%;
-  border-radius: 13px;
-  h2 {
-    font: 500 2em 'Lato', georgia, 'times new roman', serif;
-    margin: 0 0 20px;
-  }
-  img {
-    float: left;
-    margin: 0 10px 0 0;
-  }
-  p {
-    font-size: 1em;
-    line-height: 1.5;
-    margin-bottom: 1em;
-  }
-  small {
-    font-size: .9em;
-  }
-}
+
 .related {
   background: #6fc5d8;
   clear: both;
@@ -614,6 +592,47 @@ form.new_lightweight_activity {
     padding-top: 0;
   }
 }
+#plugins {
+  margin-top: 1em;
+  background: #c9e9e6;
+  padding: 15px;
+  border-radius: 8px;
+    width: 100%;
+  #plugin_list {
+    grid-template-columns: 3fr 1fr 1fr;
+    display: grid;
+    div {
+      margin: 0.5em;
+    }
+    .edit a {
+      background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+      text-decoration: none;
+    }
+    .delete a {
+      background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+      text-decoration: none;
+    }
+  }
+  #add_plugin {
+    margin-top: 10px;
+    a {
+      background: transparent url(/assets/icons/add.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+       text-decoration: none;
+    }
+  }
+}
 ul#new {
    margin-top: 1em;
   li#add a {
@@ -780,43 +799,6 @@ fieldset {
   }
   div.edit_interactive_page{
     padding-bottom: 20px;
-  }
-  /* Page intro */
-  div.instructions, div.sidebar {
-    border: 1px solid #6fc5d8;
-    position: relative;
-    padding: 5px;
-    .edit_trigger {
-      position: absolute;
-      top: 3px;
-      right: 5px;
-      margin: 0;
-      background: 0;
-      color: #126eac;
-    }
-    h2 {
-      width: 100%;
-      background-color: hsl(192, 64%, 82%);
-      color: #126eac !important;
-      text-align: left;
-      font-size: 1.3em;
-      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
-      padding: 5px; /* Gives the head itself some padding */
-    }
-    .editable button {
-      position: absolute;
-      top: 3px;
-      right: 5px;
-      margin: 0;
-      background: 0;
-      color: #126eac;
-    }
-    .editable button.jeditable-submit {
-      right: 55px;
-    }
-    .editable button.jeditable-submit:after {
-      content: " |";
-    }
   }
   /* Info/assessment block */
   div.questions {
@@ -1009,12 +991,11 @@ ul#new-menu {
 }
 
 .import_activity_sequence, .export {
-    padding: 0px;
+    padding: 0;
     .title{
       font-weight: bold;
     }
     .header {
-      position: absolute;
       top: 0px;
       left: 0px;
       right: 0px;
@@ -1022,8 +1003,10 @@ ul#new-menu {
       padding: 0px;
       min-height: 1.1em;
       height: auto;
-      border-bottom: 2px solid;
       margin-bottom: 10px;
+    }
+    form {
+      margin-top: 30px;
     }
     .info {
       margin-top: 10px;
@@ -1070,3 +1053,17 @@ body.iframed {
     display: none;
   }
 }
+
+form {
+  #error_explanation {
+    margin: 2em 0px;
+    border: 2px solid #800000;
+    padding: 1em;
+  }
+
+  .field_with_errors {
+    background-color: #CAA;
+    padding: 0.5em;
+  }
+}
+

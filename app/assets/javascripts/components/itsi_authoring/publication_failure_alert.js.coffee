@@ -1,10 +1,10 @@
-{div, ul, li, span, a} = React.DOM
+{div, ul, li, span, a} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/publication_failure_alert',
 ['components/itsi_authoring/publication_ajax_mixin'],
 (PublicationAjaxMixin) ->
 
-  React.createClass
+  createReactClass
 
     mixins: [PublicationAjaxMixin]
 

@@ -43,8 +43,10 @@ describe InteractiveRunState do
   describe "instance methods" do
     describe "to_runtime_json" do
       let(:run_data) {'{"second": 2}"'}
+      let(:host) { "test.authoring.org" }
+      let(:protocol) { "https" }
       let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
-      let(:result_hash) { JSON.parse(interactive_run_state.to_runtime_json) }
+      let(:result_hash) { JSON.parse(interactive_run_state.to_runtime_json(protocol, host)) }
 
       it "should have a run_remote_endpoint" do
         expect(result_hash).to have_key "run_remote_endpoint"
@@ -59,6 +61,7 @@ describe InteractiveRunState do
           expect(result_hash["has_linked_interactive"]).to eql false
         end
       end
+
       describe "when the interactive has a linked interactive but the linked interactive has no state" do
         let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
         let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive_id: linked_interactive.id})}
@@ -73,6 +76,7 @@ describe InteractiveRunState do
           expect(result_hash["linked_state"]).to be_nil
         end
       end
+
       describe "when the interactive run state has a linked interactive" do
         let(:linked_run_data)    {'{"first": 1}"'}
         let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
@@ -104,6 +108,26 @@ describe InteractiveRunState do
           it "should also include linked state" do
             expect(result_hash["linked_state"]).to eql linked_run_data
           end
+        end
+      end
+
+      describe "when the interactive run state has a linked interactives chain and the previous interactive doesn't have a state" do
+        let(:run_data_1)    {'{"first": 1}"'}
+        let(:interactive_1) { FactoryGirl.create(:mw_interactive)}
+        let(:run_state_1)   { InteractiveRunState.create(run: run, interactive: interactive_1, raw_data: run_data_1)}
+        let(:interactive_2) { FactoryGirl.create(:mw_interactive, {linked_interactive_id: interactive_1.id})}
+        let(:interactive) { FactoryGirl.create(:mw_interactive, {linked_interactive_id: interactive_2.id})}
+
+        before(:each) do
+          make run_state_1
+        end
+
+        it "should return the raw_data" do
+          expect(result_hash["raw_data"]).to eql run_data
+        end
+        it "should also include linked state" do
+          expect(result_hash["linked_state"]).to eql run_data_1
+          expect(result_hash["has_linked_interactive"]).to eql true
         end
       end
     end

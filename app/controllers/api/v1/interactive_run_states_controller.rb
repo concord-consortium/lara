@@ -8,7 +8,7 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
     begin
       authorize! :show, @run
 
-      render :json => @run.to_runtime_json
+      render :json => @run.to_runtime_json(request.protocol, request.host_with_port)
     rescue CanCan::AccessDenied
       authorization_error("get")
     end
@@ -17,14 +17,16 @@ class Api::V1::InteractiveRunStatesController < ApplicationController
   def update
     begin
       authorize! :update, @run
+      @run.touch # update timestamp even if no data is provided
       if params.has_key?('raw_data')
-        @run.raw_data = params['raw_data']
+        # Handle 'null' value, so interactive can reset / clear its state if necessary.
+        @run.raw_data = params['raw_data'] == 'null' ? nil : params['raw_data']
       end
       if params.has_key?('learner_url')
         @run.learner_url = params['learner_url']
       end
       if @run.save
-        render :json => @run.to_runtime_json
+        render :json => @run.to_runtime_json(request.protocol, request.host_with_port)
       else
         render :json => { :success => false }
       end

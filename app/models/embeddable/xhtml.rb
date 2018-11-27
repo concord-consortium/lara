@@ -1,6 +1,6 @@
 module Embeddable
   class Xhtml < ActiveRecord::Base
-    attr_accessible :name, :content, :is_hidden
+    attr_accessible :name, :content, :is_hidden, :is_full_width
 
     include Embeddable
 
@@ -16,7 +16,8 @@ module Embeddable
       {
         name: name,
         content: content,
-        is_hidden: is_hidden
+        is_hidden: is_hidden,
+        is_full_width: is_full_width
       }
     end
 
@@ -25,11 +26,16 @@ module Embeddable
     end
 
     def export
-      self.as_json(only:[:name, :content, :is_hidden])
+      self.as_json(only:[:name, :content, :is_hidden, :is_full_width])
     end
 
     def reportable?
       false
+    end
+
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
     end
 
     def self.import(import_hash)

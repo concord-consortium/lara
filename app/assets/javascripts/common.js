@@ -7,7 +7,7 @@ $(function () {
         .data('type', 'html')
         .on('ajax:success', function (event, data) {
             var $this = $(this);
-            $($this.data('replace')).html(data.html);
+            $($this.data('replace')).html(JSON.parse(data).html);
             $this.trigger('ajax:replaced');
         });
 });
@@ -20,14 +20,14 @@ $(document).ready(function () {
     // Set up sortable lists:
     // TODO: Refactor this into an object
     // Embeddables in page edit
-    $('#sort_embeddables').sortable({ handle: '.drag_handle',
+    $('.sortable_embeddables').sortable({ handle: '.drag_handle',
         opacity: 0.8,
         tolerance: 'pointer',
-        update: function () {
+        update: function (event, ui) {
             $.ajax({
                 type: "GET",
                 url: "reorder_embeddables",
-                data: $("#sort_embeddables").sortable("serialize")
+                data: ui.item.closest(".sortable_embeddables").sortable("serialize")
             });
         }
     });
@@ -55,24 +55,4 @@ $(document).ready(function () {
             });
         }
     });
-
-    // WYSIWYG editing, if that's needed
-    if ($('.wysiwyg-text').length > 0) {
-        $('.wysiwyg-text').wysiwyg({
-            "controls": {
-                "html": {
-                    "visible": true
-                },
-                "h1": {
-                    "visible": false
-                },
-                "h2": {
-                    "visible": false
-                },
-                "h3": {
-                    "visible": false
-                }
-            }
-        });
-    }
 });

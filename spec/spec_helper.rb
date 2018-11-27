@@ -108,6 +108,9 @@ RSpec.configure do |config|
   config.before(:each) do
     stub_temporary_protocol_routes
   end
+
+  # include the Haml helper module
+  config.include Haml::Helpers, type: :helper
 end
 
 class ActiveRecord::Base

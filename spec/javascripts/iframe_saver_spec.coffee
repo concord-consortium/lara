@@ -74,7 +74,14 @@ describe 'IFrameSaver', () ->
         request = jasmine.Ajax.requests.mostRecent()
         request.respondWith({
           status: 200,
-          responseText: JSON.stringify({"raw_data": JSON.stringify({"interactiveState": 321})})
+          responseText: JSON.stringify({
+            "raw_data": JSON.stringify({"interactiveState": 321}),
+            "created_at": "2017",
+            "updated_at": "2018",
+            "activity_name": "test act",
+            "page_name": "test page",
+            "page_number": 2
+          })
         })
 
       afterEach () ->
@@ -87,14 +94,17 @@ describe 'IFrameSaver', () ->
           mode: 'runtime',
           authoredState: {test: 123},
           interactiveState: {interactiveState: 321},
+          createdAt: '2017'
+          updatedAt: '2018'
           globalInteractiveState: null,
-          hasLinkedInteractive: false,
-          linkedState: null,
           interactiveStateUrl: 'foo/42',
           collaboratorUrls: null,
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
+          pageNumber: 2
+          pageName: "test page"
+          activityName: "test act"
         })
 
     describe "when state saving is disabled", () ->
@@ -111,8 +121,6 @@ describe 'IFrameSaver', () ->
           authoredState: {test: 123},
           interactiveState: null,
           globalInteractiveState: null,
-          hasLinkedInteractive: false,
-          linkedState: null,
           interactiveStateUrl: 'foo/42',
           collaboratorUrls: null,
           classInfoUrl: null,

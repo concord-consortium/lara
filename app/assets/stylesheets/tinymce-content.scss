@@ -1,0 +1,15 @@
+// These styles are applied to TinyMCE Editor iframe *content* (while user is editing).
+// Custom classes should be also included in runtime and authoring styles.
+@import "partials/tinymce-classes";
+
+body {
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+
+  // Clear all the floating images in editor.
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

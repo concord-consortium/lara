@@ -11,13 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170524180857) do
+ActiveRecord::Schema.define(:version => 20181105221848) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
     t.text     "message"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "approved_scripts", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.text     "description"
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
+    t.string   "label"
+    t.decimal  "version",     :precision => 10, :scale => 0, :default => 1
   end
 
   create_table "authentications", :force => true do |t|
@@ -110,6 +120,14 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "embeddable_external_scripts", :force => true do |t|
+    t.integer  "approved_script_id"
+    t.text     "configuration"
+    t.text     "description"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
   create_table "embeddable_feedback_items", :force => true do |t|
     t.integer  "answer_id"
     t.string   "answer_type"
@@ -145,16 +163,20 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   create_table "embeddable_image_questions", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
-    t.string   "bg_source",                :default => "Shutterbug"
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.string   "bg_source",                        :default => "Shutterbug"
     t.string   "bg_url"
     t.text     "drawing_prompt"
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
-    t.boolean  "is_hidden",                :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
+    t.boolean  "is_full_width",                    :default => false
+    t.integer  "interactive_id"
+    t.string   "interactive_type"
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_labbook_answers", :force => true do |t|
@@ -169,16 +191,18 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   add_index "embeddable_labbook_answers", ["run_id"], :name => "index_embeddable_labbook_answers_on_run_id"
 
   create_table "embeddable_labbooks", :force => true do |t|
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.integer  "action_type",         :default => 0,     :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.integer  "action_type",                      :default => 0,     :null => false
     t.string   "name"
     t.text     "prompt"
     t.string   "custom_action_label"
-    t.boolean  "is_hidden",           :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.text     "hint"
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   add_index "embeddable_labbooks", ["interactive_id"], :name => "labbook_interactive_i_idx"
@@ -210,18 +234,20 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   create_table "embeddable_multiple_choices", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-    t.boolean  "custom",                   :default => false
-    t.boolean  "enable_check_answer",      :default => true
-    t.boolean  "multi_answer",             :default => false
-    t.boolean  "show_as_menu",             :default => false
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+    t.boolean  "custom",                           :default => false
+    t.boolean  "enable_check_answer",              :default => true
+    t.boolean  "multi_answer",                     :default => false
+    t.boolean  "show_as_menu",                     :default => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
-    t.string   "layout",                   :default => "vertical"
-    t.boolean  "is_hidden",                :default => false
+    t.string   "layout",                           :default => "vertical"
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
 
   create_table "embeddable_open_response_answers", :force => true do |t|
@@ -241,22 +267,37 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   create_table "embeddable_open_responses", :force => true do |t|
     t.string   "name"
     t.text     "prompt"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
-    t.boolean  "is_prediction",            :default => false
-    t.boolean  "give_prediction_feedback", :default => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.boolean  "is_prediction",                    :default => false
+    t.boolean  "give_prediction_feedback",         :default => false
     t.text     "prediction_feedback"
     t.string   "default_text"
-    t.boolean  "is_hidden",                :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.text     "hint"
+    t.boolean  "is_full_width",                    :default => false
+    t.boolean  "show_in_featured_question_report", :default => true
   end
+
+  create_table "embeddable_plugins", :force => true do |t|
+    t.integer  "plugin_id"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "is_hidden",     :default => false
+    t.boolean  "is_full_width", :default => false
+    t.integer  "embeddable_id"
+    t.string   "embeddable_type"
+  end
+
+  add_index "embeddable_plugins", ["plugin_id"], :name => "index_embeddable_plugins_on_plugin_id"
 
   create_table "embeddable_xhtmls", :force => true do |t|
     t.string   "name"
     t.text     "content"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "is_hidden",  :default => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "is_hidden",     :default => false
+    t.boolean  "is_full_width", :default => false
   end
 
   create_table "global_interactive_states", :force => true do |t|
@@ -277,6 +318,7 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
     t.boolean  "show_lightbox", :default => true
     t.string   "credit_url"
     t.boolean  "is_hidden",     :default => false
+    t.boolean  "is_full_width", :default => true
   end
 
   create_table "imports", :force => true do |t|
@@ -341,27 +383,28 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.string   "publication_status",                  :default => "private"
-    t.datetime "created_at",                                                 :null => false
-    t.datetime "updated_at",                                                 :null => false
+    t.string   "publication_status",                   :default => "private"
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
     t.integer  "offerings_count"
     t.text     "related"
     t.text     "description"
     t.integer  "changed_by_id"
-    t.boolean  "is_official",                         :default => false
+    t.boolean  "is_official",                          :default => false
     t.integer  "time_to_complete"
-    t.boolean  "is_locked",                           :default => false
+    t.boolean  "is_locked",                            :default => false
     t.text     "notes"
     t.string   "thumbnail_url"
     t.integer  "theme_id"
     t.integer  "project_id"
-    t.integer  "portal_run_count",                    :default => 0
-    t.integer  "layout",                              :default => 0
-    t.integer  "editor_mode",                         :default => 0
-    t.string   "publication_hash",      :limit => 40
+    t.integer  "portal_run_count",                     :default => 0
+    t.integer  "layout",                               :default => 0
+    t.integer  "editor_mode",                          :default => 0
+    t.string   "publication_hash",       :limit => 40
     t.string   "imported_activity_url"
     t.integer  "copied_from_id"
     t.text     "external_report_url"
+    t.boolean  "student_report_enabled",               :default => true
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -393,20 +436,25 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   create_table "mw_interactives", :force => true do |t|
     t.string   "name"
     t.text     "url"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.integer  "native_width"
     t.integer  "native_height"
-    t.boolean  "enable_learner_state",  :default => false
-    t.boolean  "has_report_url",        :default => false
+    t.boolean  "enable_learner_state",             :default => false
+    t.boolean  "has_report_url",                   :default => false
     t.boolean  "click_to_play"
     t.string   "image_url"
-    t.boolean  "is_hidden",             :default => false
+    t.boolean  "is_hidden",                        :default => false
     t.integer  "linked_interactive_id"
-    t.boolean  "full_window",           :default => false
+    t.boolean  "full_window",                      :default => false
     t.text     "authored_state"
     t.string   "model_library_url"
-    t.boolean  "no_snapshots",          :default => false
+    t.boolean  "no_snapshots",                     :default => false
+    t.string   "click_to_play_prompt"
+    t.boolean  "show_delete_data_button",          :default => true
+    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "show_in_featured_question_report", :default => true
+    t.string   "aspect_ratio_method",              :default => "DEFAULT"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"
@@ -431,6 +479,33 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
   end
 
   add_index "pending_portal_publications", ["portal_publication_id"], :name => "unique_publications_per_portal", :unique => true
+
+  create_table "plugin_learner_states", :force => true do |t|
+    t.integer  "plugin_id"
+    t.integer  "user_id"
+    t.integer  "run_id"
+    t.string   "shared_learner_state_key"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.text     "state"
+  end
+
+  add_index "plugin_learner_states", ["plugin_id", "run_id"], :name => "plugin_run__states"
+  add_index "plugin_learner_states", ["shared_learner_state_key", "run_id"], :name => "shared_run_plugin_states"
+  add_index "plugin_learner_states", ["shared_learner_state_key", "user_id"], :name => "shared_user_plugin_states"
+
+  create_table "plugins", :force => true do |t|
+    t.string   "approved_script_id"
+    t.integer  "plugin_scope_id"
+    t.string   "plugin_scope_type"
+    t.text     "author_data"
+    t.text     "description"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "shared_learner_state_key"
+  end
+
+  add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], :name => "plugin_scopes"
 
   create_table "portal_publications", :force => true do |t|
     t.string   "portal_url"
@@ -573,11 +648,12 @@ ActiveRecord::Schema.define(:version => 20170524180857) do
     t.string   "poster_url"
     t.text     "caption"
     t.text     "credit"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.integer  "width",      :default => 556,   :null => false
-    t.integer  "height",     :default => 240,   :null => false
-    t.boolean  "is_hidden",  :default => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "width",         :default => 556,   :null => false
+    t.integer  "height",        :default => 240,   :null => false
+    t.boolean  "is_hidden",     :default => false
+    t.boolean  "is_full_width", :default => true
   end
 
   create_table "video_sources", :force => true do |t|

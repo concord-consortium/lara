@@ -161,13 +161,6 @@ describe InteractivePagesController do
       expect(response.body).not_to match /<a class='next'>/
     end
 
-    it 'shows sidebar content on pages which have it' do
-      page1
-      get :show, :id => page1.id, :response_key => ar.key
-
-      expect(response.body).to match /<div class='sidebar-mod'>/
-    end
-
     it 'shows related content on the last page' do
       page1
       get :show, :id => page1.id, :response_key => ar.key
@@ -184,13 +177,14 @@ describe InteractivePagesController do
       expect(response.body).not_to match /<div class='related-mod'>/
     end
 
-    it 'does not show page areas which are not selected to be shown' do
+    it 'calls LARA.addSidebar content on pages which have authored sidebar' do
       get :show, :id => page1.id, :response_key => ar.key
-      expect(response.body).to match /<div class='sidebar-mod'>/
+      # Note that page factory creates a page with sidebar by default.
+      expect(response.body).to match /LARA\.addSidebar\({/
       page2.show_sidebar = false
       page2.save
       get :show, :id => page2.id, :response_key => ar.key
-      expect(response.body).not_to match /<div class='sidebar-mod'>/
+      expect(response.body).not_to match /LARA\.addSidebar\({/
     end
     # --- Ends section which should go to view spec ---
   end
@@ -355,33 +349,6 @@ describe InteractivePagesController do
       end
     end
 
-    describe 'add_interactive' do
-      it 'creates an arbitrary interactive and adds it to the page' do
-        images_count = ImageInteractive.count()
-        interactives_count = page1.interactives.length
-        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
-        page1.reload
-        expect(page1.interactives.count).to eq(interactives_count + 1)
-        expect(ImageInteractive.count()).to eq(interactives_count + 1)
-      end
-
-      it 'redirects to the edit page' do
-        post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'ImageInteractive'
-        interactive_id = page1.interactives.last.id
-        act.reload
-        expect(act.changed_by).to eq(@user)
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
-      end
-
-      it 'raises an error on invalid interactive_type' do
-        begin
-          post :add_interactive, :activity_id => act.id, :id => page1.id, :interactive_type => 'BogusInteractive'
-          raise 'Should not have been able to post a bogus interactive_type'
-        rescue ArgumentError
-        end
-      end
-    end
-
     describe 'add_embeddable' do
       it 'creates an arbitrary embeddable and adds it to the page' do
         xhtml_count = Embeddable::Xhtml.count()
@@ -410,6 +377,25 @@ describe InteractivePagesController do
           raise 'Should not have been able to post a bogus embeddable_type'
         rescue ArgumentError
         end
+      end
+    end
+
+    describe 'add_embeddable used with Interactive' do
+      it 'creates an arbitrary interactive and adds it to the page' do
+        images_count = ImageInteractive.count()
+        interactives_count = page1.interactives.length
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
+        page1.reload
+        expect(page1.interactives.count).to eq(interactives_count + 1)
+        expect(ImageInteractive.count()).to eq(images_count + 1)
+      end
+
+      it 'redirects to the edit page' do
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
+        interactive_id = page1.interactives.last.id
+        act.reload
+        expect(act.changed_by).to eq(@user)
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
       end
     end
 

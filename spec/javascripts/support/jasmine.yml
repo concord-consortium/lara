@@ -11,7 +11,7 @@
 #   - dist/**/*.js
 #
 src_files:
-  - assets/jquery-2.0.1.js
+  - assets/jquery-2.2.4.js
   - assets/runtime.js
   - assets/jasmine-jquery.js
   - assets/jquery.ui.all.js
@@ -21,7 +21,6 @@ src_files:
 
   # for react component testing
   - assets/modulejs.js
-  - assets/react.js
   - assets/components.js
 
 # stylesheets
@@ -49,6 +48,7 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
+  - 'lib/**/*.{js,coffee}'
   - 'helpers/**/*.{js,coffee}'
 
 # spec_files

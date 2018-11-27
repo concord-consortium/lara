@@ -1,4 +1,4 @@
-{div, input, b, i} = React.DOM
+{div, input, b, i} = ReactFactories
 
 modulejs.define 'components/authoring/mw_interactive',
 [
@@ -10,12 +10,14 @@ modulejs.define 'components/authoring/mw_interactive',
 
   InteractiveIframe = React.createFactory InteractiveIframeClass
 
-  MwInteractive = React.createClass
+  MwInteractive = createReactClass
+    interactive: React.createRef()
+
     getInitialState: ->
       authoredState = @props.interactive.authored_state
       {
         authoringSupported: false
-        authoredState: if typeof authoredState == 'String' then JSON.parse(authoredState) else authoredState
+        authoredState: if typeof authoredState == 'string' then JSON.parse(authoredState) else authoredState
         modified: false
         saving: false
         message: ''
@@ -39,6 +41,10 @@ modulejs.define 'components/authoring/mw_interactive',
 
     handleSupportedFeatures: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
+      if (info.features.aspectRatio?)
+        if (@props.interactive.aspect_ratio_method == "DEFAULT")
+          iframe = ReactDOM.findDOMNode(@interactive.current)
+          iframe.style.height = Math.round(iframe.offsetWidth / info.features.aspectRatio) + 'px'
 
     save: ->
       data = {
@@ -63,7 +69,7 @@ modulejs.define 'components/authoring/mw_interactive',
         # Save empty state.
         @save()
         # Reload iframe to initialize it with a new, empty state.
-        @refs.interactive.reload()
+        @interactive.current.reload()
 
     notify: (message, working) ->
       @setState {message: message, working: working}
@@ -86,7 +92,7 @@ modulejs.define 'components/authoring/mw_interactive',
           )
         )
         (InteractiveIframe
-          ref: 'interactive'
+          ref: @interactive
           src: interactive.url
           initMsg: {
             version: 1

@@ -14,14 +14,19 @@ class Ability
       can :inspect, Run
       can :manage, QuestionTracker
       can :report, QuestionTracker
+      can :manage, ApprovedScript
     elsif user.author?
       # Authors can create new items and manage those they created
       can :create, Sequence
       can :create, LightweightActivity
       can :create, InteractivePage
+      can :create, Plugin
       can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id
       can :manage, InteractivePage, :lightweight_activity => { :user_id => user.id }
+      can :manage, Plugin do |plugin|
+        plugin.plugin_scope.user_id == user.id
+      end
       # and duplicate unlocked activities and sequences
       can :duplicate, LightweightActivity, :is_locked => false, :publication_status => ['public', 'hidden']
       can :duplicate, Sequence, :publication_status => ['public', 'hidden']

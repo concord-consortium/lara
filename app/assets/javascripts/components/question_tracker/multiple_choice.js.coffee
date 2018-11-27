@@ -1,9 +1,9 @@
-{div, label, button} = React.DOM
+{div, label, button} = ReactFactories
 
 modulejs.define 'components/question_tracker/multiple_choice',
   [
     'components/question_tracker/throttle_mixin',
-    'components/itsi_authoring/rich_text_editor',
+    'components/common/rich_text_editor',
     'components/question_tracker/choice'
   ],
   (
@@ -15,7 +15,7 @@ modulejs.define 'components/question_tracker/multiple_choice',
     RichTextEditor = React.createFactory RichTextEditorClass
     Choice         = React.createFactory ChoiceClass
 
-    React.createClass
+    createReactClass
       mixins:
         [ThrottleMixin]
 

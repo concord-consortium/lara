@@ -1,4 +1,4 @@
-{div, span} = React.DOM
+{div, span} = ReactFactories
 
 modulejs.define 'components/question_tracker/master_question',
   [
@@ -17,7 +17,7 @@ modulejs.define 'components/question_tracker/master_question',
     ImageQuestion   = React.createFactory ImageQuestionClass
     MultipleChoice  = React.createFactory MultipleChoiceClass
 
-    React.createClass
+    createReactClass
 
       update: (newState) ->
         @props.update(newState)

@@ -26,7 +26,7 @@
   <%= favicon_link_tag %>
 
   <!-- Stylesheets -->
-  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css' %>
   <%- if @theme && @theme.css_file %>
       <%= stylesheet_link_tag @theme.css_file, :media => 'all' %>
   <%- else -%>
@@ -41,8 +41,8 @@
 	<![endif]-->
   <%= javascript_include_tag 'modernizr.min' %>
   <!-- TODO: CDN or include? Lab is using 2.0.x but self-hosting. -->
-  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js' %>
-  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js' %>
+  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js' %>
+  <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js' %>
 </head>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -52,6 +52,7 @@
 <body class=<%= yield :body_class %>>
 
 <div id="container">
+  <%= render :partial => "shared/teacher_banner" %>
 
   <header>
     <div class="site-logo-mod site-width">
@@ -87,9 +88,7 @@
       <!-- end activity-nav-mod -->
 
       <div class="site-width">
-
         <%= yield %>
-
       </div>
       <!-- end site-width -->
 
@@ -113,7 +112,6 @@
 </div>
 <!-- eo #container -->
 <%= render :partial => "shared/i18njs" %>
-<%= render :partial => 'shared/modal' %>
 <%= render :partial => 'shared/loading' %>
 <%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
 
@@ -135,6 +133,6 @@
 <![endif]-->
 
 <%= yield :extra_javascript %>
-
+<%= yield :external_scripts %>
 </body>
 </html>

@@ -1,5 +1,8 @@
 LightweightStandalone::Application.routes.draw do
 
+  resources :approved_scripts
+
+
   resources :projects do
     member do
       get :about
@@ -31,6 +34,7 @@ LightweightStandalone::Application.routes.draw do
     member do
       post :add_activity
       post :remove_activity
+      post :remote_duplicate
       get :reorder_activities
       get :print_blank
       get :publish
@@ -73,6 +77,7 @@ LightweightStandalone::Application.routes.draw do
       get 'resubmit_answers'
       get 'publish'
       get 'duplicate'
+      post 'remote_duplicate'
       get 'preview'
       get 'export'
       get 'show_status'
@@ -84,7 +89,6 @@ LightweightStandalone::Application.routes.draw do
         get 'reorder_embeddables'
         post 'add_embeddable'
         get  'add_tracked'
-        post 'add_interactive'
         get 'move_up', :controller => 'lightweight_activities'
         get 'move_down', :controller => 'lightweight_activities'
         get 'preview'
@@ -110,7 +114,6 @@ LightweightStandalone::Application.routes.draw do
     end
   end
 
-  # This is so we can build the InteractiveItem at the same time as the Interactive
   resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
     resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show do
       member do
@@ -135,6 +138,7 @@ LightweightStandalone::Application.routes.draw do
   # the in-place editor needed interactive_page_path
   resources :pages, :as => 'interactive_pages', :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => [:new, :create]
 
+  resources :plugins
   namespace :embeddable do
     # When new embeddables are supported, they should be added here.
     resources :multiple_choices do
@@ -143,6 +147,8 @@ LightweightStandalone::Application.routes.draw do
       end
     end
     resources :xhtmls
+    resources :external_scripts
+    resources :embeddable_plugins
     resources :open_responses
     resources :labbooks
     resources :labbook_answers, :only => [:update]
@@ -154,6 +160,12 @@ LightweightStandalone::Application.routes.draw do
       resources :question_trackers, only: [:index] do
         match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
       end
+
+      resources :activities, :controller => 'lightweight_activities', only: [:destroy]
+      resources :sequences, only: [:destroy]
+
+      match 'import' => 'import#import', :via => 'post'
+
       match 'question_trackers/find_by_activity/:activity_id' =>  "question_trackers#find_by_activity", via: ['get'], defaults: { format: 'json' }
       match 'question_trackers/find_by_sequence/:sequence_id' =>  "question_trackers#find_by_sequence", via: ['get'], defaults: { format: 'json' }
 
@@ -166,6 +178,13 @@ LightweightStandalone::Application.routes.draw do
       match "interactive_run_states/:key" => 'interactive_run_states#update', :as => 'update_interactive_run_state', :via => 'put'
 
       match "user_check" => 'user_check#index', defaults: { format: 'json' }
+
+      match 'get_firebase_jwt/:run_id' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
+
+      match 'plugin_learner_states/:plugin_id/:run_id' =>
+        'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
+      match 'plugin_plugin_learner_state/:plugin_id/:run_id' =>
+        'plugin_learner_states#save', as: 'update_plugin_learner_state', via: 'put'
     end
   end
 

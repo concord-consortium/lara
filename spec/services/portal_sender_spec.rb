@@ -6,7 +6,9 @@ describe PortalSender::Protocol do
   let(:protocol)            { PortalSender::Protocol.new       }
   let(:mock_auth_provider)  { double(auth_stubs)               }
   let(:post_results)        { {}                               }
-  let(:answer_data)         { double({portal_hash: {one: 1}, updated_at: Time.now }) }
+  let(:answer_data)         { double({portal_hash: {one: 1},
+                                      updated_at: Time.now,
+                                      dirty?: true}) }
   let(:sad_result)   { double({ success?: false, code: 500, message: 'failure'})}
   let(:happy_result) { double({ success?: true, code: 200, message: 'yipee'})}
 
@@ -148,21 +150,31 @@ describe PortalSender::Protocol do
           expected_serialized  = {
             "answers"    => one_expected,
             "lara_end"   => frozen_time,
-            "lara_start" => frozen_time,
             "version"    => "1"
           }
-          expect(JSON.parse(protocol.response_for_portal_1_0(one_answer))).to eq(expected_serialized)
+          one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(one_answer_json)).to eq(expected_serialized)
         end
 
         it "matches the expected JSON for multiple specified answers" do
           expected_serialized = {
               "answers"    => all_expected,
               "lara_end"   => frozen_time,
-              "lara_start" => frozen_time,
               "version"    => "1"
           }
-          puts "FROZEN TIME:  '#{frozen_time}'"
-          expect(JSON.parse(protocol.response_for_portal_1_0(all_answers))).to eq(expected_serialized)
+          all_answers_json = protocol.response_for_portal_1_0(all_answers)
+          expect(JSON.parse(all_answers_json)).to eq(expected_serialized)
+        end
+
+        it 'sends lara_start only when it is provided' do
+          first_one_answer_json = protocol.response_for_portal_1_0(one_answer)
+          expect(JSON.parse(first_one_answer_json)).not_to include("lara_start")
+
+          start_time = Time.now
+          second_one_answer_json = protocol.response_for_portal_1_0(one_answer, start_time)
+          expect(JSON.parse(second_one_answer_json)).to include(
+            "lara_start" => start_time.utc.to_s
+          )
         end
       end
 

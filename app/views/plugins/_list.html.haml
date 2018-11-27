@@ -1,0 +1,7 @@
+%h2=t("PLUGIN.ACTIVITY_LIST_TITLE")
+
+#plugin_list
+  =render partial: 'plugins/list_plugins', locals: {plugins: activity.plugins}
+
+#add_plugin= link_to t("PLUGIN.ADD"), new_plugin_path(params: {activity_id: activity.id}), remote: true, :"data-replace" => '#plugin_form'
+#plugin_form

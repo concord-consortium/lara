@@ -1,12 +1,33 @@
 module Embeddable
-  Types = {
-      Embeddable::ImageQuestion  => "Image question",
-      Embeddable::MultipleChoice => "Multiple choice",
-      Embeddable::OpenResponse   => "Open response",
-      Embeddable::Xhtml          => "Text box",
-      Embeddable::Labbook        => "Labbook",
-      QuestionTracker            => "Tracked Question"
-    }
+  QuestionTypes = {
+    Embeddable::ImageQuestion  => "Image question",
+    Embeddable::MultipleChoice => "Multiple choice",
+    Embeddable::OpenResponse   => "Open response",
+    Embeddable::Xhtml          => "Text box",
+    Embeddable::Labbook        => "Labbook",
+    QuestionTracker            => "Tracked Question",
+    Embeddable::ExternalScript => "External Script",
+    Embeddable::EmbeddablePlugin => "Plugin"
+  }
+
+  InteractiveTypes = {
+    MwInteractive    => "Iframe Interactive",
+    ImageInteractive => "Image",
+    VideoInteractive => "Video"
+  }
+
+  # Types is just sum of question and interactives.
+  Types = QuestionTypes.merge(InteractiveTypes)
+
+  def self.is_question?(e)
+    # Support both instance and class.
+    QuestionTypes.keys.include?(e.class) || QuestionTypes.keys.include?(e)
+  end
+
+  def self.is_interactive?(e)
+    # Support both instance and class.
+    InteractiveTypes.keys.include?(e.class) || InteractiveTypes.keys.include?(e)
+  end
 
   def self.table_name_prefix
     'embeddable_'
@@ -25,12 +46,20 @@ module Embeddable
     return nil
   end
 
+  def p_item
+    # Some embeddables define page_item, some page_items.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:page_item) ? page_item : page_items.first
+  end
+
+  def page
+    # Some embeddables define interactive_page, some interactive_pages.
+    # In practice, there's always just one page, so many to many relationship isn't necessary.
+    respond_to?(:interactive_page) ? interactive_page : interactive_pages.first
+  end
+
   def activity
-    if interactive_pages.length > 0 && interactive_pages.first.lightweight_activity.present?
-      return interactive_pages.first.lightweight_activity
-    else
-      return nil
-    end
+    page && page.lightweight_activity
   end
 
   # A unique key to use for local storage
@@ -42,7 +71,7 @@ module Embeddable
       "#{interactive_pages.first.lightweight_activity.id}_#{interactive_pages.first.id}_#{id}_#{self.class.to_s.underscore.gsub(/\//, '_')}"
     end
   end
-  
+
   def show_in_runtime?
     true
   end
@@ -53,7 +82,12 @@ module Embeddable
     raise "#reportable? unimplemented for #{self.class}"
   end
 
-  def index_in_activity(activity)
-    activity.reportable_items.index(self) + 1
+  def index_in_activity(act = nil)
+    (act ? act : self.activity).reportable_items.index(self) + 1
+  end
+
+  # ID which is unique among all the embeddable types.
+  def embeddable_dom_id
+    "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 end

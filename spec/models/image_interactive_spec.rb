@@ -24,7 +24,8 @@ describe ImageInteractive do
         caption: image_interactive.caption,
         credit: image_interactive.credit,
         credit_url: image_interactive.credit_url,
-        is_hidden: image_interactive.is_hidden
+        is_hidden: image_interactive.is_hidden,
+        is_full_width: image_interactive.is_full_width
       }
       expect(image_interactive.to_hash).to eq(expected)
     end

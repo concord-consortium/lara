@@ -26,6 +26,8 @@ Now open your browser to [http://localhost:3000](http://localhost:3000)
 
 If you work with [Portal](https://github.com/concord-consortium/rigse) take a look how to [integrate it with LARA](https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration).
 
+If you use Docker to run Portal and LARA, this is not enough. Take a look at [docker/dev/docker-compose-portal-proxy.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-proxy.yml) and [docker/dev/docker-compose-portal-net.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-net.yml) files.
+
 ## Editing CSS
 
 This project was setup with [Compass](http://compass-style.org/), however, you shouldn't ever need to run `compass watch`. The asset pipeline should take care of itself in development mode.
@@ -46,6 +48,14 @@ On a local development instance, you can make an admin user by registering a new
 Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
 
 ## Running RSpec tests
+While developing, you might wish to run continuous integration tests inside a
+Docker container.  
+
+Run `docker-compose up`  followed by
+`docker-compose exec app docker/dev/run-ci.sh` from your local machine.
+
+### Older non-docker instructions:
+
 If you haven't run tests on this project before, you first need to initialize the test database.
 
       RAILS_ENV=test rake db:setup
@@ -97,6 +107,12 @@ To support new Embeddables:
 ## Current work: reporting
 LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
+
+## External Scripting & new LARA Plugin API##
+
+* Legacy ExternalScript functionality is described in [external scripts doc](./docs/external-scripts-api.md)
+* Proposed API is defined in [LARA API Doc](./docs/lara-plugin-api.md)
+
 ## Single Sign-On
 If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
 
@@ -139,7 +155,7 @@ If you are going to deploy to a server with load balancing enabled (production),
 ## Docker and docker-compose for developers:
 
 * See [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/docs/docker.md) for an overview of how to get your develepment environment configured with docker-compose.
-* There is [LARA specific docker documentation][https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md] in this repo.
+* There is [LARA specific docker documentation](https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md) in this repo.
 
 ## History
 

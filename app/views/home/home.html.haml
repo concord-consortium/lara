@@ -7,6 +7,10 @@
 %ul#new-menu
   %li#desc-toggle= toggle_all 'descriptions'
   %li#collection_filter= collection_filter_tag @filter
+  %li#search
+    %form
+      %input{:type => "text", :name => "search", :placeholder => "Search..."}
+      %input{:type => "submit", :value => "Search"}
 .buttons-menu
   - if can? :create, LightweightActivity
     %a{ :href => new_activity_path }
@@ -17,7 +21,7 @@
   - if can? :import, [LightweightActivity, Sequence]
     %a{ :href => import_status_path, 'data-remote'=>"true" }
       %button=t("IMPORT")
-      
+
 -if @activities
   #activity_listing_head
     %h1 Activities:

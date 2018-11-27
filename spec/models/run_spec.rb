@@ -469,7 +469,7 @@ describe Run do
         stub_http_request(:post, remote_endpoint).to_return(
           :body   => "OK", # TODO: What returns?
           :status => result_status)
-        allow(run).to receive_messages(:answers => answers)
+        allow_any_instance_of(Run).to receive(:answers).and_return(answers)
         run.mark_dirty
       end
       describe 'when there are no dirty answers' do
@@ -494,8 +494,8 @@ describe Run do
           let(:result_status) { 200 }
 
           it "calls send_to_portal with the dirty answers as argument" do
-            allow(run).to receive_messages(:send_to_portal => true)
-            expect(run).to receive(:send_to_portal).with(answers)
+            allow_any_instance_of(Run).to receive_messages(:send_to_portal => true)
+            expect_any_instance_of(Run).to receive(:send_to_portal).with(answers, instance_of(Time))
             expect(run.submit_dirty_answers).to be_truthy
           end
 
@@ -508,6 +508,7 @@ describe Run do
 
           it "marks itself as clean after a successful update" do
             run.submit_dirty_answers
+            run.reload
             expect(run).not_to be_dirty
           end
 
@@ -538,7 +539,7 @@ describe Run do
             answers.each do |a|
               expect(a).to receive(:mark_clean).and_return false
             end
-            allow(run).to receive_messages(:dirty_answers => answers)
+            allow_any_instance_of(Run).to receive(:dirty_answers).and_return(answers)
           end
 
           it "Raises PortalUpdateIncomplete to keep the job in the queue" do

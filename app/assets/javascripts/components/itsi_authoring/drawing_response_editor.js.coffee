@@ -1,13 +1,13 @@
-{div, label, img} = React.DOM
+{div, label, img} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/drawing_response_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
   SectionEditorElementClass
 ) ->
@@ -15,10 +15,10 @@ modulejs.define 'components/itsi_authoring/drawing_response_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:

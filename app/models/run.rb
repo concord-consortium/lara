@@ -186,12 +186,14 @@ class Run < ActiveRecord::Base
 
   # return true if we want to take this run out of the queue: either for success, or any
   # other case where retrying is pointless (e.g. nowhere to send the data, no data to send).
-  def send_to_portal(answers)
+  def send_to_portal(answers, start_time = Time.now)
     return true if remote_endpoint.nil? || remote_endpoint.blank? # Drop it on the floor
     return true if answers.blank? # Pretend we sent it, nobody will notice
-    is_success = PortalSender::Protocol.instance(remote_endpoint).post_answers(answers,remote_endpoint)
+    is_success = PortalSender::Protocol.instance(remote_endpoint).post_answers(answers, remote_endpoint, start_time)
+    Rails.logger.info("Run sent to portal, success:#{is_success}, " +
+      "num_answers:#{answers.count}, #{run_info_string}")
     # TODO: better error detection?
-    abort_job_and_requeue(error_string() ) unless is_success
+    abort_job_and_requeue(run_info_string() ) unless is_success
     is_success
   end
 
@@ -202,7 +204,7 @@ class Run < ActiveRecord::Base
       # no-op: only queue one time
     else
       mark_dirty
-      submit_dirty_answers #will happen asyncronously sometime in the future...
+      submit_dirty_answers
     end
   end
 
@@ -230,25 +232,8 @@ class Run < ActiveRecord::Base
   end
 
   def submit_dirty_answers
-    # Find array of dirty answers and send them to the portal
-    da = dirty_answers
-    return if da.empty?
-    if send_to_portal(da)
-      set_answers_clean(da) # We're only cleaning the same set we sent to the portal
-      self.reload
-      if dirty_answers.empty?
-        self.mark_clean
-      else
-        # I'm not sure about using this method here, because it raises an error when the
-        # "problem" may just be that (a) new dirty answer(s) were submitted between the
-        # send_to_portal call and the check here.
-        abort_job_and_requeue
-      end
-    else
-      abort_job_and_requeue
-    end
+    Delayed::Job.enqueue(SubmitDirtyAnswersJob.new(self.id, Time.now))
   end
-  handle_asynchronously :submit_dirty_answers, :run_at => Proc.new { 30.seconds.from_now }
 
   def set_answers_clean(answers=[])
     # Takes an array of answers and sets their is_dirty bits to clean
@@ -350,15 +335,11 @@ class Run < ActiveRecord::Base
     # end
   end
 
-  def error_string()
-    "
-    remote_endpoint:#{remote_endpoint}\
-    run_id: #{id}\
-    run_key: #{key}\
-    dirty: #{dirty?}\
-    activity: #{activity.name} [#{activity_id}]\
-    sequence: #{sequence_id}
-    "
+  def run_info_string()
+    "remote_endpoint:#{remote_endpoint}, run_id:#{id}, " +
+    "run_key:#{key}, dirty:#{dirty?}, " +
+    "activity:#{activity_id}, activity_name:\"#{activity ? activity.name : 'nil'}\", " +
+    "sequence:#{sequence_id}"
   end
 
   def lara_to_portal_secret_auth

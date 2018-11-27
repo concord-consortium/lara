@@ -8,7 +8,7 @@
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-4060, r-3070
 .content-mod{ :class => layout }
   .ui-block-1
-    - if page.visible_interactives.length > 0 && page.show_interactive
+    - if page.show_interactive && page.interactive_box_visible_embeddables.length > 0
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}
 
   .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
@@ -28,21 +28,20 @@
 
 .end-scroll-track
 
--# -- Add expanded class to sidebar-mod for expanded view.
 - if page.show_sidebar && !page.sidebar.blank?
-  .sidebar-mod
-    .sidebar-hdr
-      %i.fa.fa-arrow-circle-left
-      %h5.h5
-        = page.sidebar_title
-    .sidebar-bd
-      .sidebar-bd-close
-        X
-      %h4.h4
-        -# TODO: Content for this head
-        -# Why does chewing gum prevent your ears from popping?
-      .sidebar-txt
-        != page.sidebar
+  :javascript
+    // Render "Did you know?" sidebar that can be specified by authors.
+    $(function () {
+      LARA.addSidebar({
+        handle: "#{page.sidebar_title}",
+        titleBar: "#{page.sidebar_title}",
+        handleColor: '#f4a035',
+        titleBarColor: '#ffbc67',
+        // Use jQuery to process markup created by rich text editor.
+        content: $("<div>#{page.sidebar}</div>")[0]
+      });
+    });
+
 
 - if page.last? && has_good_content(page.lightweight_activity.related)
   .related-mod
@@ -51,3 +50,8 @@
         Related activities
     .related-bd
       != page.lightweight_activity.related
+
+- if page.layout == 'l-responsive'
+  :javascript
+    // Initialize responsive layout when page is loaded.
+    $(function() { responsiveLayout(); });

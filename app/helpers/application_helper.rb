@@ -91,24 +91,24 @@ module ApplicationHelper
   def default_footer
     <<-EOF
       <p class="footer-txt">
-        Copyright © 2013 <a href="http://concord.org/">The Concord Consortium</a>. 
-        All rights reserved. This activity is licensed under a 
+        Copyright © 2018 <a href="http://concord.org/">The Concord Consortium</a>.
+        All rights reserved. This activity is licensed under a
         <a href="http://creativecommons.org/licenses/by/3.0/">
           Creative Commons Attribution 3.0 Unported License
-        </a>. 
-        The software is licensed under 
+        </a>.
+        The software is licensed under
         <a href="http://opensource.org/licenses/BSD-2-Clause">
           Simplified BSD
         </a>, <a href="http://opensource.org/licenses/MIT">MIT</a>
-        or <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0</a> 
-        licenses. Please provide attribution to the Concord Consortium and 
+        or <a href="http://opensource.org/licenses/Apache-2.0">Apache 2.0</a>
+        licenses. Please provide attribution to the Concord Consortium and
         the URL <a href="http://concord.org">http://concord.org</a>.
      </p>
       <p class="footer-txt">
-        This Next-Generation Molecular Workbench activity was developed with a grant from 
-        <a href="http://www.google.org/">Google.org</a>. 
-        The original <a href="http://mw.concord.org/modeler/">Classic Molecular Workbench</a> 
-        was supported by a series of grants from the 
+        This Next-Generation Molecular Workbench activity was developed with a grant from
+        <a href="http://www.google.org/">Google.org</a>.
+        The original <a href="http://mw.concord.org/modeler/">Classic Molecular Workbench</a>
+        was supported by a series of grants from the
         <a href="http://nsf.gov/">National Science Foundation</a>.
       </p>
     EOF
@@ -120,6 +120,7 @@ module ApplicationHelper
     return default_footer if @project.footer.blank?
     return @project.footer
   end
+
   def time_to_complete(min)
     results = <<-EOF
       <span class='time_to_complete'>
@@ -133,4 +134,91 @@ module ApplicationHelper
     results.html_safe
   end
 
+  # Inserts TinyMCE text editor that edits given property (text property).
+  # If :editable_header and :header_prop options are provided, the header will be editable too.
+  # Otherwise, :header option can be used to use constant header / title
+  def text_editor (object, property, options={})
+    update_url = options.delete(:update_url) || url_for(object)
+    id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
+    text_prop_name = "#{object.class.to_s.underscore}[#{property}]"
+    text_value = object.send(property)
+    header_prop_name = options[:header_prop] ? "#{object.class.to_s.underscore}[#{options[:header_prop]}]" : "non-editable-header"
+    header_value =  options[:header_prop] ? object.send(options[:header_prop]) : nil
+    %{
+      <div id="#{id}"></div>
+      <script type="text/javascript">
+        (function() {
+          var props = {
+            data: {
+              "#{text_prop_name}": #{text_value.to_json},
+              "#{header_prop_name}": #{(header_value ? header_value : options[:header]).to_json},
+            },
+            updateUrl: "#{update_url}",
+            textPropName: "#{text_prop_name}",
+            headerPropName: "#{header_prop_name}",
+            editableHeader: #{options[:editable_header] || false}
+          };
+          TextEditor = React.createElement(modulejs.require('components/authoring/text_editor'), props);
+          ReactDOM.render(TextEditor, $("##{id}")[0]);
+        }());
+      </script>
+    }.html_safe
+  end
+
+  # Inserts a simple text field that let users edit given property (text property).
+  def editable_field (object, property, options={})
+    update_url = options.delete(:update_url) || url_for(object)
+    id = "text-editor-#{property}-#{object.class.to_s.underscore}-#{object.id}"
+    prop_name = "#{object.class.to_s.underscore}[#{property}]"
+    value = object.send(property)
+    %{
+      <span id="#{id}"></span>
+      <script type="text/javascript">
+        (function() {
+          var props = {
+            data: {
+              "#{prop_name}": #{value.to_json}
+            },
+            updateUrl: "#{update_url}",
+            propName: "#{prop_name}",
+            placeholder: "#{options[:placeholder]}"
+          };
+          EditableField = React.createElement(modulejs.require('components/authoring/editable_field'), props);
+          ReactDOM.render(EditableField, $("##{id}")[0]);
+        }());
+      </script>
+    }.html_safe
+  end
+
+  # The default is hardcoded, here, in place, for the time being. If and
+  # when the functionality is extended, the white-list could be located in
+  # a more reasonable location in the code-base.
+  def default_param_whitelist
+      ["mode"]
+  end
+
+  def teacher_content
+    params['mode'] == 'teacher-edition'
+  end
+
+  def pass_white_list_params(url_or_path, whitelist=default_param_whitelist)
+    # Construct query string from the contents of a url and those parameters
+    # that are whitelisted, passing thruough the ones in the whitelist and
+    # stripping those that are not in the whitelist.
+    #
+    # eg:
+    #      url_or_path                   => url://localhost/activites/2/?foo=xx&bar=yy
+    #      whitelist                     => [:foo, :bar])
+    #      params (from the fails route) => {foo:'xx', bar:'yy', activity:2}
+    #
+    # yields:
+    #      `?foo=xx&bar=yy` (activity is missing)
+    q = params.select { |key| whitelist.include?(key) }.to_query
+    if q.length > 0
+      sep = url_or_path.match(/\?/) ? '&' : '?'
+      url_or_path + sep + q
+    else
+      url_or_path
+    end
+  end
 end

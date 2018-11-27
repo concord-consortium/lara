@@ -81,6 +81,9 @@ module LightweightStandalone
     end
     # do not initialize on precompile so that the Dockerfile can run the precompile
     config.assets.initialize_on_precompile = false
+
+    # Set TinyMCE asset compilation method.
+    config.tinymce.install = :copy
   end
 end
 

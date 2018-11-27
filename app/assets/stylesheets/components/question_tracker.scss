@@ -78,7 +78,7 @@
     background-color: hsl(0, 2%, 99%);
   }
   button {
-    margin: 1em;
+    // margin: 1em;
     margin-left: 0;
   }
   .ia-section-editor-buttons {
@@ -125,5 +125,7 @@
       color: hsl(0, 70%, 50%);
     }
   }
-
+  .mce-tinymce {
+    width: 80% !important;
+  }
 }

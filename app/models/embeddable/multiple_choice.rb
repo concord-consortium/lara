@@ -24,8 +24,8 @@ module Embeddable
       :dependent => :destroy
 
     attr_accessible :name, :prompt, :hint, :custom, :choices_attributes,
-      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction,
-      :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
+      :enable_check_answer, :multi_answer, :show_as_menu, :is_prediction, :is_full_width,
+      :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :layout, :is_hidden
     accepts_nested_attributes_for :choices, :allow_destroy => true
 
     has_one :tracked_question, :as => :question, :dependent => :delete
@@ -93,10 +93,12 @@ module Embeddable
         multi_answer: multi_answer,
         show_as_menu: show_as_menu,
         is_prediction: is_prediction,
+        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         layout: layout,
         is_hidden: is_hidden,
+        is_full_width: is_full_width,
         hint: hint
       }
     end
@@ -111,7 +113,8 @@ module Embeddable
           content: choice.choice,
           correct: choice.is_correct
         } },
-        is_required: is_prediction
+        is_required: is_prediction,
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -131,10 +134,12 @@ module Embeddable
                                 :multi_answer,
                                 :show_as_menu,
                                 :is_prediction,
+                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :layout,
                                 :is_hidden,
+                                :is_full_width,
                                 :hint])
 
       mc_export[:choices] = []
@@ -153,6 +158,11 @@ module Embeddable
 
     def reportable?
       true
+    end
+
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
     end
 
     def self.import (import_hash)

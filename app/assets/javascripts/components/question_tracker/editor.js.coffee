@@ -1,4 +1,4 @@
-{div, h1, input, label, a} = React.DOM
+{div, h1, input, label, a} = ReactFactories
 
 modulejs.define 'components/question_tracker/editor',
   [
@@ -14,7 +14,7 @@ modulejs.define 'components/question_tracker/editor',
     MasterQuestion = React.createFactory MasterQuestionClass
     Alert = React.createFactory AlertClass
 
-    React.createClass
+    createReactClass
       componentWillMount: ->
         @alerts = []
 

@@ -1,4 +1,4 @@
-{div, input, label, span} = React.DOM
+{div, input, label, span} = ReactFactories
 
 modulejs.define 'components/question_tracker/question_list',
   ['components/question_tracker/question_summary'],
@@ -6,7 +6,7 @@ modulejs.define 'components/question_tracker/question_list',
 
     QuestionSummary = React.createFactory QuestionSummaryClass
 
-    React.createClass
+    createReactClass
       render: ->
         edit = @props.edit
         questions = @props.questions

@@ -1,7 +1,7 @@
-{div} = React.DOM
+{div} = ReactFactories
 
 modulejs.define 'components/question-tracker/alert', [], () ->
-    React.createClass
+    createReactClass
       render: ->
         if @props.alert
           (div {className: "alert #{@props.alert.type}"}, @props.alert.text)

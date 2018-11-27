@@ -22,9 +22,15 @@ class ProcessPendingPortalPublication < Struct.new(:pending_portal_publication_i
     end
 
     portal = Concord::AuthPortal.portal_for_publishing_url(portal_publication.portal_url)
+    if portal.nil?
+      info "cannot find Portal for: #{portal_publication.portal_url}"
+      return
+    end
+
     last_portal_publication = publishable.last_publication(portal)
     if last_portal_publication.nil?
       info "no previous publication"
+      return
     end
 
     # if the portal publication is not the latest one another job has published behind us so we are done

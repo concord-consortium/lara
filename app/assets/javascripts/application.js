@@ -11,25 +11,22 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 // N.B. will need to load specific jquery-ui modules for production
-//= require bind-polyfill
+//= require core-js-3.0.0-beta.3
 //= require modulejs
-//= require react
-//= require react_ujs
+//= require react-16.4.2
+//= require react-dom-16.4.2
+//= require create-react-class-15.6.3
+//= require react-factories
 //= require jquery
 //= require jquery-ajax-csrf
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery_nested_form
-//= require jquery.jeditable
-//= require jquery.wysiwyg
-//= require wysiwyg.image
-//= require wysiwyg.link
-//= require wysiwyg.table
-//= require jquery.jeditable.wysiwyg
 //= require jquery.jcarousel
 //= require modals
 //= require modal-dialog
 //= require check-answer
+//= require lara-api
 //= require ./common.js
 //= require edit_sequence
 //= require login_menu
@@ -38,6 +35,7 @@
 //= require c_rater/score_mapping
 //= require components
 //= require iframed_site_manager
+//= require tinymce-config
 //= require tinymce-jquery
 //= require iframe-phone
 //= require iframe-phone-manager

@@ -1,12 +1,12 @@
-{div, label, input, textarea, img, option, select} = React.DOM
+{div, label, input, textarea, img, option, select} = ReactFactories
 
 modulejs.define 'components/question_tracker/image_question',
-  ['components/question_tracker/throttle_mixin', 'components/itsi_authoring/rich_text_editor'],
+  ['components/question_tracker/throttle_mixin', 'components/common/rich_text_editor'],
   ( ThrottleMixin, RichTextEditorClass) ->
 
     RichTextEditor = React.createFactory RichTextEditorClass
 
-    React.createClass
+    createReactClass
       mixins:
         [ThrottleMixin]
 

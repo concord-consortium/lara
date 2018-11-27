@@ -1,8 +1,8 @@
-{div} = React.DOM
+{div} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/alert',
 ->
-  React.createClass
+  createReactClass
 
     render: ->
       if @props.alert

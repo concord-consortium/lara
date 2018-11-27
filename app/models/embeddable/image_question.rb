@@ -1,8 +1,9 @@
 class Embeddable::ImageQuestion < ActiveRecord::Base
-  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt,
-    :is_prediction, :give_prediction_feedback, :prediction_feedback, :is_hidden
-
   include Embeddable
+  include AttachedToInteractive
+
+  attr_accessible :name, :prompt, :hint, :bg_source, :bg_url, :drawing_prompt, :is_full_width,
+    :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback, :is_hidden
 
   has_many :page_items, :as => :embeddable, :dependent => :destroy
   has_many :interactive_pages, :through => :page_items
@@ -18,14 +19,6 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   default_value_for :prompt, "why does ..."
 
-  def interactive
-    # Return first interactive available on the page (note that in practice it's impossible that this model has more
-    # than one page, even though it's many-to-many association).
-    # In the future we can let authors explicitly select which interactive an image question is connected to.
-    page = interactive_pages.first
-    page && page.visible_interactives.first
-  end
-
   # NOTE: publishing to portal doesn't use this hash. portal_hash is used instead
   def to_hash
     {
@@ -35,9 +28,11 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       bg_source: bg_source,
       bg_url: bg_url,
       is_prediction: is_prediction,
+      show_in_featured_question_report: show_in_featured_question_report,
       give_prediction_feedback: give_prediction_feedback,
       prediction_feedback: prediction_feedback,
       is_hidden: is_hidden,
+      is_full_width: is_full_width,
       hint: hint
     }
   end
@@ -48,7 +43,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       id: id,
       prompt: prompt,
       drawing_prompt: drawing_prompt,
-      is_required: is_prediction
+      is_required: is_prediction,
+      show_in_featured_question_report: show_in_featured_question_report
     }
   end
 
@@ -63,9 +59,11 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
                               :bg_source,
                               :bg_url,
                               :is_prediction,
+                              :show_in_featured_question_report,
                               :give_prediction_feedback,
                               :prediction_feedback,
                               :is_hidden,
+                              :is_full_width,
                               :hint])
   end
 
@@ -90,6 +88,16 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
 
   def reportable?
     true
+  end
+
+  def page_section
+    # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+    page_items.count > 0 && page_items.first.section
+  end
+
+  def configuration_error
+    return I18n.t('SNAPSHOT_WITHOUT_INTERACTIVE') if is_shutterbug? && interactive.nil?
+    nil
   end
 
   def self.name_as_param

@@ -151,6 +151,8 @@ footer {
 
   &.logo-r {
     float: right;
+    margin-top: 12px;
+    text-align: right;
   }
 
 }
@@ -396,12 +398,10 @@ div.intra-page-nav {
 
   .question-hdr {
     width: 100%;
-    float: left;
   }
 
   .question-bd {
     width: 100%;
-    float: right;
   }
 
   .challenge {
@@ -430,7 +430,16 @@ div.intra-page-nav {
     // 960/2 = 480, 480 - margins = 440, then there is 2 px of padding somewhere
     width: 438px;
     vertical-align: top;
- }
+
+    &.full-width-item {
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    &.hidden {
+      display: none;
+    }
+  }
 
  .question.likert{
     width: 95%;
@@ -439,6 +448,8 @@ div.intra-page-nav {
     }
  }
 } // .l-full-width
+
+@import "partials/responsive-layout";
 
 // *********************************************
 //  6. Headline + Intro
@@ -531,7 +542,6 @@ div.intra-page-nav {
 
 
 .interactive-mod {
-  margin-bottom: 52px;
   width: 100%;
   z-index: 100;
   overflow: hidden;
@@ -539,43 +549,43 @@ div.intra-page-nav {
   img {
     max-width: 100%;
   }
-
-  .under-image {
-    .fullscreen {
-      float: right;
-      a {
-        outline: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-      }
-      img {
-        height: 35px;
-        width: 35px;
-      }
-    }
-    .caption {
-      display: block;
-      font-size: 14px;
-      margin: 0px;
-    }
-    .credit {
-      display: block;
-      font-size: 10px;
-      font-style: italic;
-      margin: 0px;
-      a {
-        text-decoration: underline;
-      }
-    }
-  }
 }
 
 .questions-mod {
   margin-bottom: 52px;
   position: relative;
+}
+
+.under-image {
+  .fullscreen {
+    float: right;
+    a {
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+    }
+    img {
+      height: 35px;
+      width: 35px;
+    }
+  }
+  .caption {
+    display: block;
+    font-size: 14px;
+    margin: 0px;
+  }
+  .credit {
+    display: block;
+    font-size: 10px;
+    font-style: italic;
+    margin: 0px;
+    a {
+      text-decoration: underline;
+    }
+  }
 }
 
 .question {
@@ -624,7 +634,7 @@ div.intra-page-nav {
 
 .jcarousel {
   .question {
-    margin: 20px 20px 20px 0;
+    margin: 0 20px 0 0;
   }
 } // .jcarousel
 
@@ -1173,6 +1183,7 @@ footer {
 }
 
 .profile-nav {
+  min-height: 20px;
   position: relative;
   .profile-dropdown{
     height: 20px;
@@ -1235,6 +1246,19 @@ footer {
     &:hover {
       text-decoration: underline;
    }
+  }
+}
+
+.sequence_logo_block {
+  display: flex;
+  align-items: center;
+  a {
+    color: #3f3f3f;
+  }
+  h3, h2, h1 {
+    font-family: $lato-reg;
+    font-size: 2em;
+    line-height: 1;
   }
 }
 

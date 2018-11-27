@@ -1,7 +1,6 @@
-.interactive-mod{class: (layout == 'l-full-width') ? nil : 'pinned'}
-  - if page.show_multiple_interactives?
-    - page.visible_interactives.each do |interactive|
-      = render_interactive(interactive)
-
-  - elsif page.visible_interactives.first
-    = render_interactive(page.visible_interactives.first)
+.interactive-mod{class: layout == 'l-full-width' ? nil : 'pinned'}
+  - page.interactive_box_visible_embeddables.each do |interactive|
+    %div{ id: interactive.embeddable_dom_id }
+      -# This CSS class is important, as it might be referenced by plugins and passed to a plugin instance.
+      .embeddable-container
+        = render_interactive(interactive)

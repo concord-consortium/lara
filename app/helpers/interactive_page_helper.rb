@@ -1,6 +1,11 @@
 module InteractivePageHelper
   def runnable_activity_page_path(activity, page)
-    run = run_for_activity(activity,@run)
+    path_base = fetch_path_base(activity, @run, page)
+    pass_white_list_params(path_base) if path_base
+  end
+
+  def fetch_path_base(activity, run, page)  # move me to be private.
+    run = run_for_activity(activity, run)
     if run
       page_with_response_path(activity.id, page.id, run.key)
     elsif activity and page
@@ -8,9 +13,11 @@ module InteractivePageHelper
     elsif activity
       activity_path(activity)
     else
-      nil
+       nil
     end
   end
+
+
 
   def page_link(activity,page, opts={})
     name = "Page #{page.position}"
@@ -18,16 +25,11 @@ module InteractivePageHelper
     return link_to name, runnable_activity_page_path(activity,page), opts
   end
 
-  def main_section_embeddables(page, run)
-    finder = Embeddable::AnswerFinder.new(run)
-    # Limit embeddables to ones that do not belong to any section.
-    page.main_embeddables.map { |e| finder.find_answer(e) }
-  end
-
   def main_section_visible_embeddables(page, run)
     finder = Embeddable::AnswerFinder.new(run)
     # Limit visible embeddables to ones that do not belong to any section.
-    page.main_visible_embeddables.map { |e| finder.find_answer(e) }
+    # Don't return answer objects for interactives.
+    page.main_visible_embeddables.map { |e| Embeddable::is_interactive?(e) ? e : finder.find_answer(e) }
   end
 
   def labbook_is_under_interactive?

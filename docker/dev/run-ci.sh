@@ -6,13 +6,15 @@
 #        then type `dci` to start Continuous Integration Testing.
 #   – Or run from shell in docker (`docker-compose run --rm bash` … ./docker/dev/run-ci.sh`)
 
-# We have to explicitly set these, because the docker compose files
-# Assume master/master and mysql image wont let us create more than
-# one DB at startup.  master/master doesn't have create DB permissions.
+
 export RAILS_ENV=test
-export DB_NAME=lara_test
-export DB_USER=root
-export DB_PASSWORD=xyzzy
+export BUNDLE_PATH=/bundle
+export GEMPATH_PATH=/bundle
+export GEM_HOME=/bundle
+
+bundle binstubs spring
+spring stop
+spring binstub
 
 #
 # Prepare spec tests
@@ -25,4 +27,3 @@ bundle exec rake db:test:prepare
 # Run spec tests
 #
 bundle exec guard
-

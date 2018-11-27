@@ -1,8 +1,10 @@
-{iframe} = React.DOM
+{iframe} = ReactFactories
 
 modulejs.define 'components/common/interactive_iframe', [], () ->
 
-  InteractiveIframe = React.createClass
+  InteractiveIframe = createReactClass
+    iframe: React.createRef()
+
     getInitialState: ->
       iframeId: 0
 
@@ -33,7 +35,7 @@ modulejs.define 'components/common/interactive_iframe', [], () ->
         @connect()
 
     connect: ->
-      @iframePhone = new iframePhone.ParentEndpoint @refs.iframe.getDOMNode(), @phoneAnswered
+      @iframePhone = new iframePhone.ParentEndpoint @iframe.current, @phoneAnswered
       @iframePhone.addListener 'authoredState', (authoredState) =>
         @props.onAuthoredStateChange(authoredState)
       @iframePhone.addListener 'supportedFeatures', (info) =>
@@ -48,4 +50,4 @@ modulejs.define 'components/common/interactive_iframe', [], () ->
     render: ->
       { iframeId } = @state
       { src, width, height } = @props
-      (iframe {ref: 'iframe', src, width, height, key: iframeId, frameBorder: 'no', allowFullScreen: 'true'})
+      (iframe {ref: @iframe, src, width, height, key: iframeId, frameBorder: 'no', allowFullScreen: 'true'})

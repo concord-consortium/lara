@@ -11,6 +11,9 @@ class LightweightActivitiesController < ApplicationController
 
   layout :set_layout
 
+  # Adds remote_duplicate handler (POST remote_duplicate)
+  include RemoteDuplicateSupport
+
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
     @community_activities = @filter.collection.includes(:user,:changed_by,:portal_publications).community
@@ -50,7 +53,7 @@ class LightweightActivitiesController < ApplicationController
         Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
         @activity = @run.last_page.lightweight_activity
       end
-      redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key) and return
+      redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
     end
 
     setup_show

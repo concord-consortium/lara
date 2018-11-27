@@ -3,10 +3,14 @@
   = field_set_tag 'Heading' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :rows => 5
+    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
     :javascript
       $(function() {
-          $('#embeddable_xhtml_content').wysiwyg({"controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
+        initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
       });
+  .options
+    = field_set_tag "Options" do
+      .ul
+        = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'

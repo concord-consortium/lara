@@ -26,3 +26,6 @@ ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
 # upload LabBook
 ENV['UPLOAD_ONLY_MODEL_URLS']            ||= "https://models-resources.concord.org/itsi/upload_photo/index.html"
 ENV['MODEL_JSON_LIST_URL']               ||= 'https://itsi.portal.concord.org/interactives/export_model_library'
+
+# Set the portal version displayed in the UI footer.
+ENV['LARA_VERSION']                      ||= ''

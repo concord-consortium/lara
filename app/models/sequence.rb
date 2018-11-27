@@ -41,12 +41,12 @@ class Sequence < ActiveRecord::Base
 
   def to_hash
     # We're intentionally not copying:
-    # - publication status (the copy should start as draft like everything else)
     # - is_official (defaults to false, can be changed)
     # - user_id (the copying user should be the owner)
     {
       title: title,
       description: description,
+      publication_status: publication_status,
       abstract: abstract,
       theme_id: theme_id,
       project_id: project_id,
@@ -70,14 +70,14 @@ class Sequence < ActiveRecord::Base
   end
 
   def duplicate(new_owner)
-    interactives_cache = InteractivesCache.new
+    helper = LaraDuplicationHelper.new
     new_sequence = Sequence.new(self.to_hash)
     Sequence.transaction do
       new_sequence.title = "Copy of #{self.name}"
       new_sequence.user = new_owner
       positions = []
       lightweight_activities_sequences.each do |sa|
-        new_a = sa.lightweight_activity.duplicate(new_owner, interactives_cache)
+        new_a = sa.lightweight_activity.duplicate(new_owner, helper)
         new_a.name = new_a.name.sub('Copy of ', '')
         new_a.save!
         new_sequence.activities << new_a
@@ -86,7 +86,7 @@ class Sequence < ActiveRecord::Base
       new_sequence.save!
       new_sequence.fix_activity_position(positions)
     end
-    return new_sequence
+    new_sequence
   end
 
   def export
@@ -117,9 +117,16 @@ class Sequence < ActiveRecord::Base
     print_url = "#{local_url}/print_blank"
 
     data = {
-      'type' => "Sequence",
+      'source_type' => 'LARA',
+      'type' => 'Sequence',
       'name' => self.title,
+      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       'description' => self.description,
+      # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       'abstract' => self.abstract,
       "url" => local_url,
       "create_url" => local_url,
@@ -149,7 +156,7 @@ class Sequence < ActiveRecord::Base
   end
 
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
-    interactives_cache = InteractivesCache.new
+    helper = LaraSerializationHelper.new
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
     Sequence.transaction do
       import_sequence.title = import_sequence.title
@@ -157,7 +164,7 @@ class Sequence < ActiveRecord::Base
       import_sequence.user = new_owner
       positions = []
       sequence_json_object[:activities].each do |sa|
-        import_a = LightweightActivity.import(sa, new_owner, nil, interactives_cache)
+        import_a = LightweightActivity.import(sa, new_owner, nil, helper)
         import_a.save!
         import_sequence.activities << import_a
         positions << sa[:position]
@@ -166,6 +173,10 @@ class Sequence < ActiveRecord::Base
       import_sequence.fix_activity_position(positions)
     end
     return import_sequence
+  end
+
+  def self.search(query)
+    where("title LIKE ?", "%#{query}%")
   end
 
   private

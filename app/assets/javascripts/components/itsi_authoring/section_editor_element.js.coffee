@@ -1,10 +1,10 @@
-{div, label, input, span, a} = React.DOM
+{div, label, input, span, a} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/section_editor_element',
 [],
 ->
 
-  React.createClass
+  createReactClass
 
     getInitialState: ->
       selected: not @props.data.is_hidden

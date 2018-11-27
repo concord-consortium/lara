@@ -1,26 +1,37 @@
-/*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
-var resizingInteractive;
+function interactiveSizing () {
+  function setSize () {
+    var $iframe = $(this);
+    var aspectRatio = $iframe.data('aspect-ratio');
+    var resizeMethod = $iframe.data('aspect-ratio-method');
+    var magicNumber = 125;
+    var maxHeight = window.innerHeight - magicNumber;
+    $iframe.attr('width', '100%');
 
-// Object to handle sizing of interactive object
-var ResizableInteractive = function (element) {
-    this.element = element;
-    this.aspectRatio = this.element.data('aspect-ratio');
-    this.currWidth = $('.interactive-mod').width();
-    this.targetHeight = this.currWidth/this.aspectRatio;
-};
+    if(resizeMethod === 'MAX') {
+      $iframe.height(maxHeight);
+    }
+    else if(resizeMethod === 'MANUAL') {
+      $iframe.height($iframe.width() / aspectRatio);
+    }
+    else  /* (resizeMethod === 'DEFAULT') */ {
+      $iframe.height($iframe.width() / aspectRatio);
+      if ($iframe.height() > maxHeight) {
+        var scale = maxHeight / $iframe.height();
+        $iframe.attr('width', scale * 100 + '%');
+        $iframe.height(maxHeight);
+      }
+    }
+  }
 
-ResizableInteractive.prototype.fixSize = function () {
-    // Hitting the width and height attrs should work for both video and iframe
-    this.element.attr('width', this.currWidth);
-    this.element.attr('height', this.targetHeight);
-};
+  $('[data-aspect-ratio]').each(function () {
+    var $iframe = $(this);
+    $iframe.on('sizeUpdate', setSize);
+    $iframe.trigger('sizeUpdate');
+  });
 
-// Setup
-$(document).ready(function () {
-    $('[data-aspect-ratio]').each(function (index, element){
-      resizingInteractive = new ResizableInteractive($(element));
-      resizingInteractive.fixSize();
-    });
-});
+}
+
+$(document).ready(interactiveSizing);
+

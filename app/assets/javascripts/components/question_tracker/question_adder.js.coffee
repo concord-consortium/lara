@@ -1,10 +1,10 @@
-{div, label, select, option} = React.DOM
+{div, label, select, option} = ReactFactories
 
 modulejs.define 'components/question_tracker/question_adder',
   [],
   () ->
 
-    React.createClass
+    createReactClass
 
       options: ->
         [

@@ -1,0 +1,28 @@
+window.TinyMCEConfig = {
+  menubar: false,
+  statusbar: false,
+  toolbar_items_size: 'small',
+  toolbar: "undo redo | bold italic strikethrough underline | " +
+           "aligncenter alignjustify alignleft alignright indent outdent | " +
+           "subscript superscript | numlist bullist | link unlink | hr image | code",
+  plugins: 'paste link hr image autoresize code',
+  paste_as_text: true,
+  image_class_list: [
+    {title: 'None', value: ''},
+    {title: 'Float left', value: 'tinymce-img-float-left'},
+    {title: 'Float right', value: 'tinymce-img-float-right'}
+  ],
+  autoresize_bottom_margin: 5,
+  content_css: "<%= asset_path('tinymce-content.css') %>"
+};
+
+window.TinyMCEConfigMinimal = $.extend({}, window.TinyMCEConfig, {
+  toolbar: "bold italic strikethrough underline indent outdent " +
+           "subscript superscript numlist bullist link unlink hr image code"
+});
+
+window.initTinyMCE = function (selector, config) {
+  // Cleanup previous instances first. If TinyMCE is added twice to the same element, it doesn't work.
+  tinymce.remove(selector);
+  $(selector).tinymce(config)
+};

@@ -10,7 +10,7 @@ group :assets do
   gem "coffee-rails", "~> 3.2"
   gem "compass-rails", "~> 2.0"
   gem "compass-blueprint", "~> 1.0"
-  gem "uglifier", "~> 2.3"
+  gem "uglifier", "~> 4.1"
   gem "turbo-sprockets-rails3", "~> 0.3"
 end
 
@@ -67,7 +67,6 @@ gem "jquery-rails", "~> 3.0"
 gem "jquery-ui-rails", "~> 4.1"
 gem "haml", "~> 4.0"
 gem "dynamic_form", "~> 1.1"
-gem "jeditable_wysiwyg_rails", "~> 0.3", {:git=>"git://github.com/concord-consortium/jeditable-wysiwyg-rails.git"}
 gem "acts_as_list", "~> 0.3"
 gem "nested_form", "~> 0.3"
 gem "gon", "~> 5.2"
@@ -77,7 +76,7 @@ gem "cancancan", "~> 1.10"
 gem "omniauth", "~> 1.1"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
 gem "default_value_for", "~> 2.0"
-gem "tinymce-rails", "~> 4.2"
+gem "tinymce-rails", "~> 4.7"
 gem "yaml_db", "~> 0.2", {:git=>"git://github.com/lostapathy/yaml_db.git"}
 gem "aws-ses", "~> 0.5", {:require=>"aws/ses"}
 gem "uuidtools", "~> 2.1"
@@ -96,9 +95,8 @@ gem "chosen-rails", "~> 1.0"
 gem "safe_yaml", "~> 1.0"
 gem "will_paginate", "~> 3.0"
 gem "useragent", "~> 0.10"
-gem "react-rails", "~> 1.0"
 gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.0"
 gem "nokogiri", "~> 1.6"
-gem "rack-cors","~> 0.4.0", :require => 'rack/cors'
+gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
 gem "test-unit", "~> 3.0"

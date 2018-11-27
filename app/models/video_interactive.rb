@@ -1,7 +1,9 @@
 class VideoInteractive < ActiveRecord::Base
-  has_one :interactive_item, :as => :interactive, :dependent => :destroy
-  # InteractiveItem is a join model; if this is deleted, that instance should go too
-  has_one :interactive_page, :through => :interactive_item
+  include Embeddable
+
+  has_one :page_item, :as => :embeddable, :dependent => :destroy
+  # PageItem is a join model; if this is deleted, that instance should go too
+  has_one :interactive_page, :through => :page_item
   has_many :sources, :class_name => 'VideoSource',
            :foreign_key => 'video_interactive_id',
            :dependent => :destroy # If we delete this video we should dump its sources
@@ -9,7 +11,7 @@ class VideoInteractive < ActiveRecord::Base
   # TODO: Not sure if labbooks work with video interactives.
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
-  attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes, :is_hidden
+  attr_accessible :poster_url, :caption, :credit, :height, :width, :sources_attributes, :is_hidden, :is_full_width
 
   accepts_nested_attributes_for :sources, :allow_destroy => true
 
@@ -54,6 +56,10 @@ class VideoInteractive < ActiveRecord::Base
     false
   end
 
+  def page_section
+    page_item && page_item.section
+  end
+
   def to_hash
     {
       poster_url: poster_url,
@@ -61,7 +67,8 @@ class VideoInteractive < ActiveRecord::Base
       credit: credit,
       height: height,
       width: width,
-      is_hidden: is_hidden
+      is_hidden: is_hidden,
+      is_full_width: is_full_width
     }
   end
 
@@ -77,6 +84,7 @@ class VideoInteractive < ActiveRecord::Base
                                                   :credit,
                                                   :height,
                                                   :width,
+                                                  :is_full_width,
                                                   :is_hidden])
 
     video_interactive_export[:sources] =  []

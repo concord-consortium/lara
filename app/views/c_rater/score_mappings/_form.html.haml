@@ -49,8 +49,6 @@
 = f.submit "Cancel", :class => 'close'
 = f.submit "Save", :class => 'embeddable-save'
 :javascript
-$(function() {
-    $('.wysiwyg').each(function(){
-        $( this ).wysiwyg({height: "60px","controls": { "html": { "visible": true }, "h1": { "visible": false }, "h2": { "visible": false }, "h3": { "visible": false } } });
-    });
-});
+  $(function() {
+    initTinyMCE('.wysiwyg', window.TinyMCEConfig);
+  });

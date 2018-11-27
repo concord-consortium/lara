@@ -1,26 +1,20 @@
-.model-edit
-  .toolbar
-    .interactice-id{style:"float: left; display:inline-block;"}
-      Interactive ID: #{interactive.id}
-    = render partial: 'shared/hide_interactive_link', locals: {interactive: interactive, toggle_vis_path: toggle_visibility_page_mw_interactive_path(@page, interactive)}
-    |
-    = link_to "Edit", edit_page_mw_interactive_path(@page, interactive), :remote => true, :id => "edit-int-#{interactive.id}"
-    |
-    - confirm_message = "Are you sure you want to delete this element? You will lose data from #{pluralize(@activity.active_runs, "learner")} that #{"has".pluralize(@activity.active_runs)} answered this question."
-    = link_to "Delete", page_mw_interactive_path(@page, interactive), :method => :delete, :data => ({:confirm => (@activity.active_runs > 0) ? confirm_message : 'Are you sure?'} if interactive.enable_learner_state)
-    - if params[:edit_mw_int].to_i == interactive.id
-      :javascript
-        $("a[id^=edit-int-#{interactive.id}]").click()
-
-  .interactive-content{:style => interactive.is_hidden ? 'display: none;' : ''}
-    #authorable-interactive
+.embeddable_tools
+  .drag_handle
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'mw_int', :allow_hide => allow_hide }
+.embeddable_options
+  Iframe interactive
+  .model-edit
+    .interactive-content
+      %div{:id => "authorable-interactive-#{embeddable.id}"}
 
 :javascript
   (function() {
     var props = {
-      interactive: #{interactive.to_json},
-      updateUrl: "#{page_mw_interactive_path(page, interactive)}"
+      interactive: #{embeddable.to_json},
+      updateUrl: "#{page_mw_interactive_path(page, embeddable)}"
     };
-    InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
-    React.render(InteractiveAuthoring, $('#authorable-interactive')[0]);
+    if (props.interactive.url) {
+      InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
+      ReactDOM.render(InteractiveAuthoring, $("#authorable-interactive-#{embeddable.id}")[0]);
+    }
   }());

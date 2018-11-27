@@ -51,17 +51,19 @@ class ImageQuestionDrawingTool
 
     # DOM entities:
     @$content = $(@dialog_sel)
-    @$content.dialog({
-      dialogClass: "no-close",
+    @popup = LARA.addPopup({
+      content: @$content,
+      closeButton: false,
       autoOpen: false,
+      removeOnClose: false,
       width: 950,
       title: "Snapshot",
       modal: true,
-      open: =>
+      onOpen: =>
         @drawing_tool.calcOffset()
-      dragStop: =>
+      onDragStop: =>
         @drawing_tool.calcOffset()
-      resize: =>
+      onResize: =>
         @drawing_tool.calcOffset()
     })
 
@@ -149,8 +151,13 @@ class ImageQuestionDrawingTool
       )
 
   shutterbug_fail_hander: (message) ->
-    $('#modal-dialog').html "<div class='dialog-error'>#{message}</div>"
-    $('#modal-dialog').dialog(title: "Network error", modal: true, dialogClass:"network-error", width: 500, close: null)
+    LARA.addPopup({
+      content: $("<div class='dialog-error'>#{message}</div>")[0]
+      title: "Network error",
+      modal: true,
+      titlebarColor: '#2f70b0',
+      width: 500
+    })
     stopWaiting()
     @save_indicator.showSaveFailed()
     @set_dialog_buttons_enabled(true)
@@ -240,14 +247,14 @@ class ImageQuestionDrawingTool
     @$main_form.submit()
 
   show_dialog: ->
-    @$content.dialog("open")
+    @popup.open()
     # Always reset history (undo / redo) when user opens a dialog, as it may be confusing otherwise.
     @drawing_tool.resetHistory()
     # Lock page as soon as the user opens drawing tool.
     @page_lock_id = lockPageUnload() if @page_lock_id == null
 
   hide_dialog: () ->
-    @$content.dialog("close");
+    @popup.close()
     # Unlock page when dialog is closed.
     # Note that when user clicks "Save", we hide dialog only when question is successfuly saved.
     if @page_lock_id != null
@@ -327,22 +334,22 @@ class ImageQuestionDrawingTool
       false
     $container = $("<div>").append($drop).append($file)
     $html = $("<div>").append $container
-    $('#modal-dialog').html $html
-    $('#modal-dialog').dialog
+    @uploadPopup = LARA.addPopup({
+      content: $html[0],
       title: "Upload Image"
       modal: true
       width: 300
-      dialogClass: "upload-image"
-      close: null
+    })
 
   upload_error: (message, show_dialog_on_close) ->
-    $('#modal-dialog').html $("<div style='padding: 20px; text-align: center'>").html(message)
-    $('#modal-dialog').dialog
+    $content = $("<div style='padding: 20px; text-align: center'>")
+    $content.html(message)
+    LARA.addPopup
+      content: $content[0]
       title: "Upload Image Error"
       modal: true
       width: 500
-      dialogClass: "upload-image"
-      close: => if show_dialog_on_close then @show_upload_dialog()
+      onClose: => if show_dialog_on_close then @show_upload_dialog()
     false
 
   upload_file: (file) ->
@@ -362,7 +369,7 @@ class ImageQuestionDrawingTool
 
   set_uploaded_src: (src, use_proxy) ->
     loaded = =>
-      $('#modal-dialog').dialog("close")
+      @uploadPopup.close()
       @drawing_tool.clear(true)
       @show_dialog()
       if use_proxy

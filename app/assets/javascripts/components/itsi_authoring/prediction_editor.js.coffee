@@ -1,14 +1,14 @@
-{div, img, label} = React.DOM
+{div, img, label} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/prediction_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin',
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
   'components/itsi_authoring/section_editor_element',
   'components/itsi_authoring/cached_ajax'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
   SectionEditorElementClass,
   cachedAjax
@@ -17,10 +17,10 @@ modulejs.define 'components/itsi_authoring/prediction_editor',
   SectionEditorForm = React.createFactory SectionEditorFormClass
   SectionEditorElement = React.createFactory SectionEditorElementClass
 
-  React.createClass
+  createReactClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:

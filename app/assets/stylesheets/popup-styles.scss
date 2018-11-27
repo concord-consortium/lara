@@ -1,0 +1,54 @@
+/* This partial should be @imported into your layout Sass file, or included via the Asset Pipeline */
+/* Source : https://gist.github.com/1456815 */
+
+#modal {
+  font: 400 100% lato, arial, helvetica, sans-serif;
+}
+
+.ui-dialog {
+  background: #eee;
+  box-shadow: 0 0 15px #aaa;
+  border: none !important;
+  z-index: 100000;
+}
+
+.ui-widget-overlay.ui-front {
+  z-index: 99999;
+  background: #333;
+  opacity: 0.5;
+}
+
+.ui-dialog-titlebar {
+  border: none;
+  background: #bcbcbc;
+  color: #eee;
+
+  button.ui-dialog-titlebar-close {
+    background: #eee;
+    &:hover, &:active {
+      // Some theming affects this tiny button and it doesn't look good.
+      background: #eee;
+      color: #777;
+      border: none;
+    }
+  }
+}
+
+.ui-dialog-title {
+  font: 700 1.25em lato, arial, helvetica, sans-serif;
+  margin: 0 !important;
+}
+
+.ui-widget-content {
+  p.response {
+    font-size: 1.1em;
+  }
+}
+
+.ui-dialog-titlebar-close {
+  background-color: #ccc;
+  border: 1px solid #888;
+}
+.ui-button.ui-widget {
+  outline: none;
+}

@@ -14,7 +14,7 @@
 .modal {
   display: none;
   position: absolute;
-  width: 350px;
+  width: 450px;
   left: 50%;
   margin-left: (-350px - 40px) / 2;
   padding: 20px;
@@ -33,9 +33,6 @@
 
   input.close {
     float: right;
-    margin: 1em 1em 5px 0;
-    line-height: 1;
-    height: 1.6em;
   }
 
   input.embeddable-save {

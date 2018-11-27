@@ -1,0 +1,63 @@
+#
+# This docker-compose.yml builds a local production docker image an uses that
+# it is useful to testing issues that only show up in the production environment
+#
+# It uses dynamically assigned ports so they won't conflict with other
+# services you might have running.
+# You can use `docker-compose port app 80` to find the UI port or
+# if you have dinghy-http-proxy installed you can point your browser
+# at app.localproduction.docker
+#
+# NOTE if this is your first time running the production image in a
+# local docker container, you will need to create the database tables.
+# To create database tables, prior to initially
+# running "docker-compose up" you should:
+# In one terminal run:
+#   docker-compose up db
+# In another termal run:
+#   docker-compose run app rake db:setup
+# Now you can exit the `docker-compose up db` command and run
+#   docker-compose up
+#
+version: '2.1'
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_USER: master
+      DB_PASSWORD: master
+      DB_NAME: lara
+      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+    ports:
+    - '80'
+    command: bash -c "rm /lara/tmp/unicorn.pid; ./docker/prod/run.sh"
+    #
+    # For debugging, a command to start the container without starting
+    # any services. (Just runs bash without exiting. Equivalent to
+    # "docker run -it ..." but you have to connect to the container
+    # with separate "docker-compose exec ..." commands.)
+    #
+    # stdin_open: true
+    # tty: true
+    # command: bash
+    #
+    depends_on:
+      - db
+  db:
+    image: mysql:5.6
+    environment:
+      MYSQL_DATABASE: lara
+      MYSQL_PASSWORD: master
+      MYSQL_USER: master
+      MYSQL_ROOT_PASSWORD: xyzzy
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    volumes:
+      #
+      # use a named volume here so the database is preserved after a down and up
+      #
+      - mysql:/var/lib/mysql
+volumes:
+  mysql:

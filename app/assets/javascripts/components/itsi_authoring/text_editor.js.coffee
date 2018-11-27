@@ -1,24 +1,23 @@
-{div, form, textarea, a} = React.DOM
+{div, form, textarea, a} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/text_editor',
 [
-  'components/itsi_authoring/section_element_editor_mixin'
+  'components/common/ajax_form_mixin',
   'components/itsi_authoring/section_editor_form',
-  'components/itsi_authoring/rich_text_editor',
+  'components/itsi_authoring/tiny_mce_config'
 ],
 (
-  SectionElementEditorMixin,
+  AjaxFormMixin,
   SectionEditorFormClass,
-  RichTextEditorClass,
+  ITSITinyMCEConfig
 ) ->
 
   SectionEditorForm = React.createFactory SectionEditorFormClass
-  RichTextEditor = React.createFactory RichTextEditorClass
 
-  React.createClass
+  createReactClass
 
     mixins:
-      [SectionElementEditorMixin]
+      [AjaxFormMixin]
 
     # maps form names to @props.data keys
     dataMap:
@@ -32,7 +31,7 @@ modulejs.define 'components/itsi_authoring/text_editor',
       (div {className: 'ia-section-editor-element'},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
-            (@richText {name: 'interactive_page[text]'})
+            (@richText {name: 'interactive_page[text]', TinyMCEConfig: ITSITinyMCEConfig})
           )
         else
           (div {className: 'ia-section-text'},

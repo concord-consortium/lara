@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe MwInteractive do
-  let (:interactive) { FactoryGirl.create(:mw_interactive) }
+  let (:interactive_options) { {} }
+  let (:interactive) { FactoryGirl.create(:mw_interactive, interactive_options) }
   let (:page) { FactoryGirl.create(:page) }
 
   it 'has valid attributes' do
@@ -18,18 +19,6 @@ describe MwInteractive do
     expect(interactive.interactive_page).to eq(page)
   end
 
-  it 'returns an aspect ratio based on native height and native width' do
-    expect(interactive.aspect_ratio).to be === 1.3241379310344827
-    interactive.native_width = 500
-    interactive.native_height = 250
-    interactive.save
-    expect(interactive.aspect_ratio).to be === 2
-  end
-
-  it 'returns a calculated height from a supplied width, based on aspect ratio' do
-    expect(interactive.height(800)).to be === 604.1666666666666
-  end
-
   describe '#to_hash' do
     it 'has useful values' do
       expected = {
@@ -38,13 +27,18 @@ describe MwInteractive do
         native_width: interactive.native_width,
         native_height: interactive.native_height,
         enable_learner_state: interactive.enable_learner_state,
+        show_delete_data_button: interactive.show_delete_data_button,
         has_report_url: interactive.has_report_url,
         click_to_play: interactive.click_to_play,
+        click_to_play_prompt: interactive.click_to_play_prompt,
         full_window: interactive.full_window,
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
-        authored_state: interactive.authored_state
+        is_full_width: interactive.is_full_width,
+        authored_state: interactive.authored_state,
+        show_in_featured_question_report: interactive.show_in_featured_question_report,
+        aspect_ratio_method: interactive.aspect_ratio_method
        }
       expect(interactive.to_hash).to eq(expected)
     end
@@ -63,8 +57,24 @@ describe MwInteractive do
         model_library_url: interactive.model_library_url,
         image_url: interactive.image_url,
         is_hidden: interactive.is_hidden,
+        is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state
       })
+    end
+  end
+
+  describe "#portal_hash" do
+    it 'returns properties supported by Portal' do
+      expect(interactive.portal_hash).to include(
+        type: 'iframe_interactive',
+        id: interactive.id,
+        name: interactive.name,
+        url: interactive.url,
+        native_width: interactive.native_width,
+        native_height: interactive.native_height,
+        display_in_iframe: interactive.reportable_in_iframe?,
+        show_in_featured_question_report: interactive.show_in_featured_question_report
+      )
     end
   end
 
@@ -114,5 +124,80 @@ describe MwInteractive do
       expect(interactive.labbook.action_type).to eq(Embeddable::Labbook::SNAPSHOT_ACTION)
       expect(interactive.labbook.custom_action_label).to eq(nil)
     end
+  end
+
+  describe "aspect_ratio_method" do
+    let (:ar_method) { MwInteractive::ASPECT_RATIO_DEFAULT_METHOD }
+    let (:width)  { 800 }
+    let (:height) { 400 }
+    let (:interactive_options) do
+      {
+        aspect_ratio_method: ar_method,
+        native_width: width,
+        native_height: height
+      }
+    end
+
+    describe "the default value" do
+      it "Should be 'DEFAULT'" do
+        expect(interactive.aspect_ratio_method).to eq(MwInteractive::ASPECT_RATIO_DEFAULT_METHOD)
+        expect(interactive.aspect_ratio_method).to eq("DEFAULT")
+      end
+    end
+
+
+    describe "with manually set values of width 800 and height 400" do
+      let (:width)  { 800 }
+      let (:height) { 400 }
+      describe "With 'default' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_DEFAULT_METHOD }
+        describe "aspect_ratio" do
+          it 'should use the default value of 1.324' do
+            expect(interactive.aspect_ratio).to be_within(0.01).of(1.32)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height from a supplied width, based on aspect ratio' do
+            # (800 / 1.324) ~ 604
+            expect(interactive.height(800)).to be_within(1).of(604)
+          end
+        end
+      end
+
+      describe "With 'manual' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_MANUAL_METHOD }
+        describe "aspect_ratio" do
+          it 'should use the calculated value of 800/400 == 2' do
+            expect(interactive.aspect_ratio).to be_within(0.01).of(2)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height from a supplied width, based on aspect ratio' do
+            # (1000 / 2) ~ 500
+            expect(interactive.height(1000)).to be_within(0.01).of(500)
+          end
+        end
+      end
+
+      describe "With 'maximum' aspect_ratio_method selected" do
+        let (:ar_method) { MwInteractive::ASPECT_RATIO_MAX_METHOD }
+        let (:available_width)  { 500 }
+        let (:available_height) { 100 }
+        describe "aspect_ratio" do
+          it 'should use the available width and height to calc 500/100 == 5' do
+            expect(interactive.aspect_ratio(available_width, available_height))
+              .to be_within(0.01).of(5)
+          end
+        end
+        describe "height" do
+          it 'returns a calculated height equal to available height' do
+            # (500 / 5) ~ 100
+            expect(interactive.height(available_width, available_height))
+              .to be_within(0.01).of(available_height)
+          end
+        end
+      end
+    end
+
   end
 end

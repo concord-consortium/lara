@@ -48,12 +48,6 @@ LightweightStandalone::Application.configure do
     # Bullet.add_footer = true
   end
 
-  # set to development mode for better error messages
-  config.react.variant = :development
-
-  # allow for test add-ons
-  config.react.addons = true
-
   # include per developer environment files if found (the default is excluded by .gitignore)
   #
   # Here is a sample local-development.rb file to speed up requests
@@ -75,3 +69,7 @@ end
 # On a mac, you will need to use this tool, or something similar:
 # https://github.com/dhoulb/subl
 BetterErrors.editor = :subl
+
+# Flush stdout which is used for logging, in some cases docker was not seeing the
+# output. There might be a better way to handle this.
+$stdout.sync = true

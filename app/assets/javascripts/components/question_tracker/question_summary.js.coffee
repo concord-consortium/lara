@@ -1,8 +1,8 @@
-{div, span} = React.DOM
+{div, span} = ReactFactories
 
 modulejs.define 'components/question_tracker/question_summary',[],() ->
 
-  React.createClass
+  createReactClass
 
     key: ->
       "question_#{@props.question.id}"

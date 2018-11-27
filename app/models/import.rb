@@ -4,32 +4,40 @@ class Import < ActiveRecord::Base
   belongs_to :user
   belongs_to :import_item, polymorphic: true
 
-  def self.import(upload,current_user,imported_activity_url=nil)
+  def self.import(json_object, user, imported_activity_url = nil)
     begin
-      json_object = JSON.parse "#{upload['import'].read}", :symbolize_names => true
-      if(json_object[:type] == "LightweightActivity")
-        @import_item = LightweightActivity.import(json_object,current_user,imported_activity_url)
-      elsif (json_object[:type] == "Sequence")
-        @import_item = Sequence.import(json_object,current_user,imported_activity_url)
+      if json_object.instance_of?(String)
+        json_object = JSON.parse json_object, :symbolize_names => true
+      end
+      if json_object[:type] == "LightweightActivity"
+        @import_item = LightweightActivity.import(json_object, user, imported_activity_url)
+      elsif json_object[:type] == "Sequence"
+        @import_item = Sequence.import(json_object, user, imported_activity_url)
       else
-        raise "Unknown object failed to import"
+        return {success: false, error: "Import failed: unknown type"}
       end
 
-      @import = Import.new({export_site:json_object[:export_site]});
-
+      @import = Import.new
       Import.transaction do
-        @import.user = current_user
+        @import.user = user
         @import.import_item = @import_item
+        @import.export_site = json_object[:export_site]
         @import.save!(validate: false)
+      end
+
+      unless @import_item.valid?
+        return {success: false, error: "Import failed, validation issues: #{@import_item.errors}"}
+      end
+      if @import_item.save(:validations => false)
+        return {success: true, import_item: @import_item, type: json_object[:type]}
+      else
+        return {success: false, error: "Import failed: can't save activity"}
       end
 
     rescue => e
       logger.error e.message
       logger.error e.backtrace.join("\n")
-      return nil
+      return {success: false, error: "Import failed: #{e.message.truncate(200)}"}
     end
-
-    @import_item
-
   end
 end

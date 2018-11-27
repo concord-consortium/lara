@@ -192,7 +192,6 @@ describe InteractivePage do
   describe '#export' do
     it 'returns json of an interactive page' do
       page_json = page.export.as_json
-      expect(page_json['interactives'].length).to eq(page.interactives.count)
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
       expect(page_json['is_completion']).to eq(page.is_completion)
@@ -213,8 +212,9 @@ describe InteractivePage do
         expect(interactive).not_to be_nil
         expect(labbook.interactive).not_to be_nil
         export_data = page.export.as_json
-        interactive_id = export_data['interactives'].first['ref_id']
-        expect(export_data['embeddables'].last).to match a_hash_including('interactive_ref_id' => interactive_id)
+        interactive_id = export_data['embeddables'].select { |e| e['section'] == 'interactive_box' }.first['embeddable']['ref_id']
+        labbook = export_data['embeddables'].select { |e| e['section'] == nil }.last['embeddable']
+        expect(labbook).to match a_hash_including('interactive_ref_id' => interactive_id)
       end
     end
   end
@@ -308,6 +308,7 @@ describe InteractivePage do
     describe "copying a labbook with a reference to an interactive" do
       before(:each) do
         page.add_embeddable labbook
+        page.reload
       end
 
       let(:args)              { {interactive: page_interactive}  }
@@ -410,9 +411,11 @@ describe InteractivePage do
         expect(p[:position]).to be(page.position)
       end
       # Test last page for interactive and labbook combo
+      # Note that interactive is positioned AFTER labbook in embeddables list.
+      # This case used to cause problems before, so test it explicitly.
       page = InteractivePage.import(activity_json[:pages].last).reload
-      expect(page.interactives.first).to be_a ImageInteractive
-      expect(page.embeddables.first.interactive).to eq page.interactives.first
+      expect(page.interactives.last).to be_a ImageInteractive
+      expect(page.embeddables.first.interactive).to eq page.interactives.last
     end
   end
 
@@ -426,28 +429,6 @@ describe InteractivePage do
       expect(page).not_to respond_to(:show_unexisting_section)
       expect(page).to respond_to(:show_test_section)
       expect(page).to respond_to(:show_test_section=)
-    end
-  end
-
-  describe "#show_multiple_interactives?" do
-    let(:single_page){ LightweightActivity::LAYOUT_SINGLE_PAGE }
-    let(:multi_page) { LightweightActivity::LAYOUT_MULTI_PAGE }
-    let(:layout)     { nil }
-    let(:activity)   { mock_model(LightweightActivity, { layout: layout })     }
-    let(:page)       { InteractivePage.new( { lightweight_activity: activity })}
-
-    describe "When the activity is using single page layout" do
-      let(:layout) { single_page }
-      it "should show multiple interactives on one page" do
-        expect(page.show_multiple_interactives?).to eq true
-      end
-    end
-
-    describe "When the activity is using multi-page layout" do
-      let(:layout) { multi_page }
-      it "should NOT show multiple interactives on one page" do
-        expect(page.show_multiple_interactives?).to eq false
-      end
     end
   end
 

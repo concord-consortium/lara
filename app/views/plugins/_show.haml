@@ -1,0 +1,62 @@
+- unless plugin_loaded(plugin.url)
+  = content_for :external_scripts do
+    %script{src:plugin.url}
+
+- if plugin.version < 2
+  -# Version 1
+  - output_id = "output-#{plugin.id}"
+  .plugin-output{id: output_id}
+  - runtime_div_selector = "##{output_id}"
+  :javascript
+    // Begin script for #{plugin.name}
+    $(document).ready( function() {
+      env = {
+        name: '#{plugin.name}',
+        scriptLabel: '#{plugin.label}',
+        scriptUrl: '#{plugin.url}',
+        pluginId: '#{plugin.id}',
+        config: '#{ escape_javascript(plugin.author_data) }',
+        div: $('#{runtime_div_selector}')[0]
+      }
+      console.log("Adding script #{plugin.label} with V1 (ExternalScript) API");
+      ExternalScripts.init('#{plugin.label}', env);
+    });
+- else
+  -# Version 2
+  - learner_state = PluginLearnerState.find_or_create(plugin, @run).state
+  -# wrapped_embeddable template variable might be undefined when the activity level plugins are rendered
+  - wrapped_embedd = defined?(wrapped_embeddable) && wrapped_embeddable
+  - if wrapped_embedd
+    -# Plugin is wrapping some other embeddable. It's injected into its div and gets question content.
+    - runtime_div_selector = "##{wrapped_embedd.embeddable_dom_id}"
+    - wrapped_selector = "#{runtime_div_selector} .embeddable-container"
+  - else
+    -# Typical case. Plugin renders its own output.
+    - output_id = "output-#{plugin.id}"
+    .plugin-output{id: output_id}
+    - runtime_div_selector = "##{output_id}"
+    - wrapped_selector = nil
+
+  :javascript
+    // Begin script for #{plugin.name}
+    var savePath = `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
+    var loadPath = `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
+    var pluginStatePaths = {
+      savePath: savePath,
+      loadPath: loadPath
+    };
+    var learner_state  = '#{ escape_javascript(learner_state) }'
+    $(document).ready( function() {
+      env = {
+        name: '#{plugin.name}',
+        url: '#{plugin.url}',
+        pluginId: '#{plugin.id}',
+        authoredState: '#{ escape_javascript(plugin.author_data) }',
+        learnerState: learner_state,
+        div: $('#{runtime_div_selector}')[0],
+        wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
+        wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'}
+      }
+      console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
+      Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);
+    });

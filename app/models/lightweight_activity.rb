@@ -18,18 +18,19 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :external_report_url
+                  :external_report_url, :student_report_enabled
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
 
-  has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position
+  has_many :plugins, as: :plugin_scope, :dependent => :destroy
+  has_many :pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position, :dependent => :destroy
   has_many :visible_pages, :foreign_key => 'lightweight_activity_id', :class_name => 'InteractivePage', :order => :position,
              :conditions => {interactive_pages: {is_hidden: false}}
 
   has_many :lightweight_activities_sequences, :dependent => :destroy
   has_many :sequences, :through => :lightweight_activities_sequences
-  has_many :runs, :foreign_key => 'activity_id'
+  has_many :runs, :foreign_key => 'activity_id', :dependent => :destroy
   belongs_to :theme
   belongs_to :project
 
@@ -45,7 +46,7 @@ class LightweightActivity < ActiveRecord::Base
   # Just a way of getting self.visible_pages with the embeddables eager-loaded
   def visible_pages_with_embeddables
     InteractivePage
-      .includes(:interactive_items, :page_items => :embeddable)
+      .includes(:page_items => :embeddable)
       .where(:lightweight_activity_id => self.id, :is_hidden => false)
       .order(:position)
   end
@@ -77,12 +78,12 @@ class LightweightActivity < ActiveRecord::Base
 
   def to_hash
     # We're intentionally not copying:
-    # - Publication status (the copy should start as draft like everything else)
     # - user_id (the copying user should be the owner)
     # - Pages (associations will be done differently)
     {
       name: name,
       related: related,
+      publication_status: publication_status,
       description: description,
       time_to_complete: time_to_complete,
       project_id: project_id,
@@ -91,12 +92,13 @@ class LightweightActivity < ActiveRecord::Base
       notes: notes,
       layout: layout,
       editor_mode: editor_mode,
-      external_report_url: external_report_url
+      external_report_url: external_report_url,
+      student_report_enabled: student_report_enabled
     }
   end
 
-  def duplicate(new_owner, interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+  def duplicate(new_owner, helper=nil)
+    helper = LaraDuplicationHelper.new if helper.nil?
     new_activity = LightweightActivity.new(self.to_hash)
     LightweightActivity.transaction do
       new_activity.save!(validate: false)
@@ -105,14 +107,17 @@ class LightweightActivity < ActiveRecord::Base
       new_activity.user = new_owner
       new_activity.copied_from_id = self.id
       self.pages.each do |p|
-        new_page = p.duplicate(interactives_cache)
+        new_page = p.duplicate(helper)
         new_page.lightweight_activity = new_activity
         new_page.set_list_position(p.position)
         new_page.save!(validate: false)
       end
       new_activity.fix_page_positions
+      self.plugins.each do |p|
+        new_activity.plugins.push(p.duplicate)
+      end
     end
-    return new_activity
+    new_activity
   end
 
   def export
@@ -125,12 +130,18 @@ class LightweightActivity < ActiveRecord::Base
                                         :notes,
                                         :layout,
                                         :editor_mode,
-                                        :external_report_url
+                                        :external_report_url,
+                                        :student_report_enabled
     ])
+    activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:pages] = []
     self.pages.each do |p|
       activity_json[:pages] << p.export
+    end
+    activity_json[:plugins] = []
+    self.plugins.each do |p|
+      activity_json[:plugins] << p.export
     end
     activity_json[:type] = "LightweightActivity"
     activity_json[:export_site] = "Lightweight Activities Runtime and Authoring"
@@ -147,6 +158,7 @@ class LightweightActivity < ActiveRecord::Base
       theme_id: activity_json_object[:theme_id],
       thumbnail_url: activity_json_object[:thumbnail_url],
       external_report_url: activity_json_object[:external_report_url],
+      student_report_enabled: activity_json_object[:student_report_enabled],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode]
@@ -154,13 +166,13 @@ class LightweightActivity < ActiveRecord::Base
 
   end
 
-  def self.import(activity_json_object,new_owner,imported_activity_url=nil,interactives_cache=nil)
+  def self.import(activity_json_object,new_owner,imported_activity_url=nil,helper=nil)
     author_user = activity_json_object[:user_email] ? User.find_by_email(activity_json_object[:user_email]) : nil
     import_activity = LightweightActivity.new(self.extact_from_hash(activity_json_object))
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+    helper = LaraSerializationHelper.new if helper.nil?
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
       # Clarify name
@@ -170,7 +182,7 @@ class LightweightActivity < ActiveRecord::Base
       import_activity.user.is_author = true
       import_activity.user.save!
       activity_json_object[:pages].each do |p|
-        import_page = InteractivePage.import(p, interactives_cache)
+        import_page = InteractivePage.import(p, helper)
         import_page.lightweight_activity = import_activity
         import_page.set_list_position(p[:position])
         import_page.save!(validate: false)
@@ -193,14 +205,19 @@ class LightweightActivity < ActiveRecord::Base
     author_url = "#{local_url}/edit"
     print_url = "#{local_url}/print_blank"
     data = {
-      'type' => "Activity",
+      "source_type" => "LARA",
+      "type" => "Activity",
       "name" => self.name,
+      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+      # Otherwise, the old Portal code would reset its description copy each time the activity was published.
+      # When all Portals are upgraded to v1.31 we can stop sending this property.
       "description" => self.description,
       "url" => local_url,
       "create_url" => local_url,
       "author_url" => author_url,
       "print_url"  => print_url,
       "external_report_url"  => external_report_url,
+      "student_report_enabled"  => student_report_enabled,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email,
       "is_locked" => self.is_locked
@@ -259,4 +276,7 @@ class LightweightActivity < ActiveRecord::Base
     return { activity_id: self.id, fail_count: fail_count, success_count: success_count}
   end
 
+  def self.search(query)
+    where("name LIKE ?", "%#{query}%")
+  end
 end

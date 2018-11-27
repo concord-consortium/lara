@@ -3,19 +3,19 @@ require 'spec_helper'
 describe Sequence do
   let (:user) { FactoryGirl.create(:user) }
   let (:sequence_opts) { {} }
-  let (:sequence) { 
+  let (:sequence) {
       sequence = FactoryGirl.create(:sequence, sequence_opts)
       sequence.user = user
       sequence.save
       sequence
     }
-  let (:activity1) { 
+  let (:activity1) {
      activity = FactoryGirl.create(:activity, :time_to_complete => 45)
      activity.user = user
      activity.save
      activity
     }
-  let (:activity2) { 
+  let (:activity2) {
      activity = FactoryGirl.create(:activity, :time_to_complete => 40)
      activity.user = user
      activity.save
@@ -75,17 +75,17 @@ describe Sequence do
     let(:user) { FactoryGirl.create(:user) }
     let(:report_url)    { "https://foo.bar.report/" }
     let(:sequence_opts) { {external_report_url: report_url } }
-    let(:act1) { 
+    let(:act1) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = user
       activity.save
       activity
     }
-    let(:act2) { 
+    let(:act2) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = user
       activity.save
-      activity 
+      activity
     }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence, sequence_opts)
@@ -104,7 +104,9 @@ describe Sequence do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
-      {"type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
+      {
+        "source_type" => "LARA",
+        "type"=>"Sequence", "name"=> sequence.title, "description"=> sequence.description,
         "abstract" => sequence.abstract,
         "url"=> url,
         "create_url"=> url,
@@ -122,6 +124,7 @@ describe Sequence do
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
       {
+        "source_type" => "LARA",
         "type"=>"Sequence", "name"=> sequence_with_activities.title, "description"=> sequence_with_activities.description,
         "abstract" => sequence_with_activities.abstract,
         "url"=> url,
@@ -153,9 +156,17 @@ describe Sequence do
     let(:report_url)    { "https://foo.bar.report/" }
     let(:sequence_opts) { {external_report_url: report_url } }
     it 'returns a hash with relevant values for sequence duplication' do
-      expected = { title: sequence.title, description: sequence.description, abstract: sequence.abstract, theme_id: sequence.theme_id, project_id: sequence.project_id,
-                   logo: sequence.logo, display_title: sequence.display_title, thumbnail_url: sequence.thumbnail_url,
-                   external_report_url: report_url
+      expected = {
+        title: sequence.title,
+        description: sequence.description,
+        publication_status: sequence.publication_status,
+        abstract: sequence.abstract,
+        theme_id: sequence.theme_id,
+        project_id: sequence.project_id,
+        logo: sequence.logo,
+        display_title: sequence.display_title,
+        thumbnail_url: sequence.thumbnail_url,
+        external_report_url: report_url
       }
       expect(sequence.to_hash).to eq(expected)
     end
@@ -168,7 +179,7 @@ describe Sequence do
       sequence_json = JSON.parse(sequence.export)
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
       expect(sequence_json['external_report_url']).to eq(report_url)
-    end 
+    end
   end
 
   describe '#import' do
@@ -191,23 +202,23 @@ describe Sequence do
     let(:report_url)    { "https://reports.concord.org/" }
     let(:sequence_opts) { { external_report_url: report_url} }
     let(:owner)         { FactoryGirl.create(:user) }
-    let(:act1) { 
+    let(:act1) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = owner
       activity.save
-      activity 
+      activity
     }
-    let(:act2) { 
+    let(:act2) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = owner
       activity.save
-      activity 
+      activity
     }
-    let(:act3) { 
+    let(:act3) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = owner
       activity.save
-      activity 
+      activity
     }
     let(:sequence_with_activities) do
       seq = FactoryGirl.build(:sequence)

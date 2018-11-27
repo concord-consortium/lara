@@ -54,6 +54,14 @@ class InteractiveRunState < ActiveRecord::Base
     @question
   end
 
+  def page
+    interactive.interactive_page
+  end
+
+  def activity
+    page && page.lightweight_activity
+  end
+
   def portal_hash
     # There are two options how interactive can be saved in Portal:
     # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
@@ -114,18 +122,38 @@ class InteractiveRunState < ActiveRecord::Base
     (interactive.respond_to? :linked_interactive) && !interactive.linked_interactive.nil?
   end
 
-  # this seems like it should be modeled as a through association, but perhaps it is hard because
-  # interactives are polymorphic
-  def find_linked_interactive_state
-    return nil unless has_linked_interactive
-    linked_interactive = interactive.linked_interactive
-    runs = run.sequence_run ? run.sequence_run.runs : [run]
-    InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
+  # Returns all linked states. 1st element in the array is an interactive directly linked to given one.
+  def all_linked_states(protocol = nil, host = nil)
+    result = []
+    current_interactive = interactive
+    while (current_interactive.respond_to? :linked_interactive) && !current_interactive.linked_interactive.nil?
+      linked_interactive = current_interactive.linked_interactive
+      runs = run.sequence_run ? run.sequence_run.runs : [run]
+      state = InteractiveRunState.where(run_id: runs.map(&:id), interactive_id: linked_interactive.id).first
+      # It's not necessary to provide some metadata even for empty linked states, although it doesn't cost much
+      # and it can be useful for interactive itself to know that there are some linked interactives,
+      # but not run by student yet.
+      linked_state_info = if state
+                            state.to_runtime_hash(protocol, host, false)
+                          else
+                            { interactive_id: linked_interactive.id, raw_data: nil, created_at: nil, updated_at: nil }
+                          end
+      result.push(linked_state_info)
+      # Go to the next interactive in linked interactives chain.
+      current_interactive = linked_interactive
+    end
+    result
   end
 
   def linked_state
-    return nil unless linked_state = find_linked_interactive_state
-    linked_state.raw_data
+    # Note that this method will return the first available state of the linked interactives *chain*.
+    # Sometimes the interactive that is directly linked might have not be run by student yet (e.g. when he skipped a page).
+    non_empty_state = all_linked_states.find { |state| state[:raw_data] }
+    unless non_empty_state.nil?
+      return non_empty_state[:raw_data]
+    end
+    # Return nil if there's no linked state.
+    nil
   end
 
   def run_remote_endpoint
@@ -140,8 +168,33 @@ class InteractiveRunState < ActiveRecord::Base
     arg ? original_json(arg) : answer_json
   end
 
-  def to_runtime_json()
-    self.to_json({methods: [:linked_state, :has_linked_interactive, :run_remote_endpoint]})
+  def to_runtime_hash(protocol, host, include_linked_states = true)
+    hash = {
+        id: id,
+        key: key,
+        raw_data: raw_data,
+        learner_url: learner_url,
+        run_remote_endpoint: run_remote_endpoint,
+        interactive_state_url: interactive_state_url(protocol, host),
+        interactive_id: interactive_id,
+        interactive_name: interactive.name,
+        page_number: page && page.page_number,
+        page_name: page && page.name,
+        activity_name: activity && activity.name,
+        created_at: created_at,
+        updated_at: updated_at
+    }
+    if include_linked_states
+      hash[:has_linked_interactive] = has_linked_interactive
+      hash[:linked_state] = linked_state
+      hash[:all_linked_states] = all_linked_states(protocol, host)
+    end
+
+    hash
+  end
+
+  def to_runtime_json(protocol, host, include_linked_states = true)
+    to_runtime_hash(protocol, host, include_linked_states).to_json
   end
 
   def answered?
@@ -178,5 +231,13 @@ class InteractiveRunState < ActiveRecord::Base
 
   def add_key_if_nil
     self.key = InteractiveRunState.generate_key if self.key.nil?
+  end
+
+  def interactive_state_url(protocol, host)
+    if protocol && host
+      Rails.application.routes.url_helpers.api_v1_show_interactive_run_state_url(key: self.key, protocol: protocol, host: host)
+    else
+      nil
+    end
   end
 end

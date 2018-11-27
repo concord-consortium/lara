@@ -13,13 +13,12 @@ class InteractivePage < ActiveRecord::Base
                     { :name => '60-40',                    :class_val => 'l-6040' },
                     { :name => '70-30',                    :class_val => 'l-7030' },
                     { :name => '60-40 (interactive left)', :class_val => 'r-4060' },
-                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' }]
+                    { :name => '70-30 (interactive left)', :class_val => 'r-3070' },
+                    { :name => 'Responsive', :class_val => 'l-responsive' }]
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
-  INTERACTIVE_TYPES = [{ :name => 'Image',  :class_name => 'ImageInteractive' },
-                       { :name => 'Iframe', :class_name => 'MwInteractive' },
-                       { :name => 'Video',  :class_name => 'VideoInteractive' }]
+  INTERACTIVE_BOX = 'interactive_box'
 
   validates :sidebar_title, presence: true
   validates :layout, :inclusion => { :in => LAYOUT_OPTIONS.map { |l| l[:class_val] } }
@@ -29,11 +28,7 @@ class InteractivePage < ActiveRecord::Base
   # See https://www.pivotaltracker.com/story/show/60459320
   validates :text, :sidebar, :html => true
 
-  # InteractiveItem is a join model; if this is deleted, it should go too
-  has_many :interactive_items, :order => :position, :dependent => :destroy, :include => [:interactive]
-
-  # Like InteractiveItems, PageItems are join models, so they should not
-  # survive the deletion of associated instances of InteractivePage.
+  # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
 
   # Interactive page can register additional page sections:
@@ -80,30 +75,16 @@ class InteractivePage < ActiveRecord::Base
                                                label: CRater::ARG_SECTION_LABEL})
 
   # This is a sort of polymorphic has_many :through.
-  def interactives
-    self.interactive_items.collect{|ii| ii.interactive}
-  end
-
-  def visible_interactives
-    interactives.select { |i| !i.is_hidden }
-  end
-
-  # can this page display multiple interactives?
-  # depending on the activity layout, possibly.
-  # For now, only with single-page louts.
-  def show_multiple_interactives?
-    lightweight_activity &&
-      lightweight_activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-  end
-
-
-  # This is a sort of polymorphic has_many :through.
   def embeddables
-    self.page_items.collect{ |qi| qi.embeddable }
+    page_items.collect{ |qi| qi.embeddable }
+  end
+
+  def interactives
+    embeddables.select{ |e| Embeddable::is_interactive?(e) }
   end
 
   def section_embeddables(section)
-    self.page_items.where(section: section).collect{ |qi| qi.embeddable }
+    page_items.where(section: section).collect{ |qi| qi.embeddable }
   end
 
   def main_embeddables
@@ -111,12 +92,20 @@ class InteractivePage < ActiveRecord::Base
     section_embeddables(nil)
   end
 
+  def main_questions
+    section_embeddables(nil).select{ |e| Embeddable::is_question?(e) }
+  end
+
   def visible_embeddables
-    self.page_items.collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+    embeddables.select{ |e| !e.is_hidden }
+  end
+
+  def visible_interactives
+    interactives.select{ |e| !e.is_hidden }
   end
 
   def section_visible_embeddables(section)
-    self.page_items.where(section: section).collect{ |qi| qi.embeddable }.select{ |e| !e.is_hidden }
+    section_embeddables(section).select{ |e| !e.is_hidden }
   end
 
   def main_visible_embeddables
@@ -124,26 +113,16 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(nil)
   end
 
+  def interactive_box_embeddables
+    section_embeddables(INTERACTIVE_BOX)
+  end
+
+  def interactive_box_visible_embeddables
+    section_visible_embeddables(INTERACTIVE_BOX)
+  end
+
   def reportable_items
-    items = visible_embeddables + visible_interactives
-    items.select { |item| item.reportable? }
-  end
-
-  def add_interactive(interactive, position = nil, validate = true)
-    self[:show_interactive] = true;
-    self.save!(validate: validate)
-    InteractiveItem.create!(:interactive_page => self, :interactive => interactive, :position => (position || self.interactive_items.size))
-  end
-
-  def remove_interactives
-    self[:show_interactive] = false;
-    self.save!
-    self.interactives.each do |i|
-      i.destroy
-    end
-    self.interactive_items.each do |ii|
-      ii.destroy
-    end
+    visible_embeddables.select { |item| item.reportable? }
   end
 
   def add_embeddable(embeddable, position = nil, section = nil)
@@ -152,6 +131,12 @@ class InteractivePage < ActiveRecord::Base
     unless position
       join.move_to_bottom
     end
+  end
+
+  def add_interactive(interactive, position = nil, validate = true)
+    self[:show_interactive] = true
+    self.save!(validate: validate)
+    add_embeddable(interactive, position, INTERACTIVE_BOX)
   end
 
   def next_visible_page
@@ -204,52 +189,39 @@ class InteractivePage < ActiveRecord::Base
     self.save!(:validate => false) # This is the part we need to override
   end
 
-  def duplicate(interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
+  def page_number
+    lightweight_activity.visible_page_ids.index(self.id) + 1
+  end
+
+  def duplicate(helper=nil)
+    helper = LaraDuplicationHelper.new if helper.nil?
     new_page = InteractivePage.new(self.to_hash)
-    helper = LaraSerializationHelper.new()
 
     InteractivePage.transaction do
       new_page.save!(validate: false)
 
-      self.interactives.each do |inter|
-        copy = inter.duplicate
-        interactives_cache.set(helper.key(inter), copy)
-        if inter.respond_to?(:linked_interactive=) && inter.linked_interactive
-          linked_key = helper.key(inter.linked_interactive)
-          copy.linked_interactive = interactives_cache.get(linked_key)
-          if !copy.linked_interactive
-            copy.linked_interactive = inter.linked_interactive.duplicate
-            interactives_cache.set(linked_key, copy.linked_interactive)
-          end
-        end
-        new_page.add_interactive(copy, nil, false)
-        helper.cache_item_copy(inter,copy)
-      end
+      # Now, add them to the page and resolve some dependencies between embeddables.
+      self.embeddables.each do |embed|
+        copy = helper.get_copy(embed)
 
-      self.main_embeddables.each do |embed|
-        copy = embed.duplicate
-        if embed.respond_to? :interactive=
-          unless embed.interactive.nil?
-            copy.interactive = helper.lookup_new_item(embed.interactive)
-          end
+        if embed.respond_to?(:embeddable=) && embed.embeddable
+          copy.embeddable = helper.get_copy(embed.embeddable)
+        end
+        if embed.respond_to?(:interactive=) && embed.interactive
+          copy.interactive = helper.get_copy(embed.interactive)
+        end
+        if embed.respond_to?(:linked_interactive=) && embed.linked_interactive
+          copy.linked_interactive = helper.get_copy(embed.linked_interactive)
         end
         copy.save!(validate: false)
         if embed.respond_to? :question_tracker and embed.question_tracker
           embed.question_tracker.add_question(copy)
         end
-        new_page.add_embeddable(copy)
-      end
 
-      self.class.registered_additional_sections.each do |s|
-        self.section_embeddables(s[:name]).each do |embed|
-          copy = embed.duplicate
-          copy.save!(validate: false)
-          new_page.add_embeddable(copy,nil,s[:name])
-        end
+        new_page.add_embeddable(copy, nil, embed.page_section)
       end
     end
-    return new_page.reload
+    new_page.reload
   end
 
   def export
@@ -268,32 +240,14 @@ class InteractivePage < ActiveRecord::Base
                                     :embeddable_display_mode,
                                     :additional_sections,
                                     :is_completion])
-
-    page_json[:interactives] = []
     page_json[:embeddables] = []
-    page_json[:sections] = []
 
-    self.interactives.each do |inter|
-      interactive_hash = helper.wrap_export(inter)
-      if inter.respond_to? :linked_interactive
-        interactive_hash[:linked_interactive] = inter.linked_interactive.present? ? helper.wrap_export(inter.linked_interactive) : nil
-      end
-      page_json[:interactives] << interactive_hash
-    end
-    self.main_embeddables.each do |embed|
-      embeddable_hash = helper.wrap_export(embed)
-      page_json[:embeddables] << embeddable_hash
-    end
-    self.class.registered_additional_sections.each do |s|
-      additional_section = {name:s[:name],section_embeddables:[]}
-      self.section_embeddables(s[:name]).each do |embed|
-        section_embeddable_hash = helper.wrap_export(embed)
-        additional_section[:section_embeddables] << section_embeddable_hash
-      end
-      page_json[:sections] << additional_section
+    self.embeddables.each do |embed|
+      embeddable_hash = helper.export(embed)
+      page_json[:embeddables] << { embeddable: embeddable_hash, section: embed.page_section }
     end
 
-    return page_json
+    page_json
   end
 
   def self.extact_from_hash(page_json_object)
@@ -318,49 +272,28 @@ class InteractivePage < ActiveRecord::Base
       attributes[key] = page_json_object[key] if page_json_object.has_key?(key)
     end
 
-    if page_json_object[:additional_sections]
-      attributes[:additional_sections] = page_json_object[:additional_sections].as_json
-    end
     attributes
   end
 
-  def self.import(page_json_object, interactives_cache=nil)
-    interactives_cache = InteractivesCache.new if interactives_cache.nil?
-    helper = LaraSerializationHelper.new
+  def self.import(page_json_object, helper=nil)
+    helper = LaraSerializationHelper.new if helper.nil?
     import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+
     InteractivePage.transaction do
       import_page.save!(validate: false)
-      page_json_object[:interactives].each do |inter|
-        # don't create a new linked interactive automatically as part of the interactive and instead use the cache below to avoid duplicates
-        linked_inter = inter[:linked_interactive]
-        inter.delete(:linked_interactive)
-        import_interactive = helper.wrap_import(inter)
-        interactives_cache.set(inter[:ref_id], import_interactive)
 
-        if linked_inter
-          import_interactive.linked_interactive = interactives_cache.get(linked_inter[:ref_id])
-          if !import_interactive.linked_interactive
-            import_interactive.linked_interactive = helper.wrap_import(linked_inter)
-            interactives_cache.set(linked_inter[:ref_id], import_interactive.linked_interactive)
-          end
-          import_interactive.save!(validate: false)
-        end
-
-        import_page.add_interactive(import_interactive, nil, false)
+      # First, import and cache all the embeddables.
+      page_json_object[:embeddables].each do |embed_hash|
+        embed = helper.import(embed_hash[:embeddable])
+        section = embed_hash[:section]
+        import_page.add_embeddable(embed, nil, section)
       end
-      page_json_object[:embeddables].each do |embed|
-        import_embeddable = helper.wrap_import(embed)
-        import_page.add_embeddable(import_embeddable)
-      end
-      if page_json_object[:sections]
-        page_json_object[:sections].each do |sec|
-          sec[:section_embeddables].each do |embed|
-            import_embeddable = helper.wrap_import(embed)
-            import_page.add_embeddable(import_embeddable,nil,sec[:name])
-          end
-        end
+      # Now when all the objects are created, setup references (e.g. question pointing to interactive, or
+      # one embeddable pointing to another one).
+      page_json_object[:embeddables].each do |embed_hash|
+        helper.set_references(embed_hash[:embeddable])
       end
     end
-    return import_page
+    import_page
   end
 end

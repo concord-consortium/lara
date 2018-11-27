@@ -13,7 +13,7 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     if !params[:response_key]
-      redirect_to page_with_response_path(@activity.id, @page.id, @session_key) and return
+      redirect_to page_with_response_path(@activity.id, @page.id, @session_key, request.query_parameters) and return
     end
 
     begin
@@ -103,28 +103,12 @@ class InteractivePagesController < ApplicationController
     end
   end
 
-  def add_interactive
-    authorize! :update, @page
-    update_activity_changed_by
-    if %w(ImageInteractive MwInteractive VideoInteractive).include?(params[:interactive_type])
-      i = params[:interactive_type].constantize.create!
-    else
-      raise ArgumentError, 'Not a valid Interactive type'
-    end
-    @page.add_interactive(i)
-    param = case i.class.name
-    when "ImageInteractive"   then { :edit_img_int => i.id }
-    when "MwInteractive"      then { :edit_mw_int => i.id }
-    when "VideoInteractive"   then { :edit_vid_int => i.id }
-    end
-    redirect_to edit_activity_page_path(@activity, @page, param)
-  end
-
   def add_tracked
     authorize! :update, @page
     update_activity_changed_by
     qt = QuestionTracker.find(params[:question_tracker])
     question = qt.new_question
+    @page.add_embeddable(question)
     edit_embeddable_redirect(question)
   end
 
@@ -132,6 +116,8 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     e = Embeddable.create_for_string(params[:embeddable_type])
+    @page.add_embeddable(e, nil, params[:section])
+    # The call below supposed to open edit dialog, but it doesn't seem to work anymore.
     edit_embeddable_redirect(e)
   end
 
@@ -175,7 +161,6 @@ class InteractivePagesController < ApplicationController
   private
 
   def edit_embeddable_redirect(embeddable)
-    @page.add_embeddable(embeddable)
     case embeddable
       when Embeddable::MultipleChoice
         unless embeddable.choices.length > 0
@@ -190,6 +175,12 @@ class InteractivePagesController < ApplicationController
         param = { :edit_embed_lb => embeddable.id }
       when Embeddable::Xhtml
         param = { :edit_embed_xhtml => embeddable.id }
+      when MwInteractive
+        param = { :edit_mw_int => embeddable.id }
+      when ImageInteractive
+        param = { :edit_img_int => embeddable.id }
+      when VideoInteractive
+        param = { :edit_vid_int => embeddable.id }
     end
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)

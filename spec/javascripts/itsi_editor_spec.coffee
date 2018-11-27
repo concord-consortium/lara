@@ -11,7 +11,7 @@ describe "ITSI Editor", () ->
         node = jasmine.react.findTag component, tag
         jasmine.react.change node,
           target:
-            name: node.getDOMNode().name
+            name: ReactDOM.findDOMNode(node).name
             value: newValue
 
   describe "alert", ->
@@ -22,14 +22,14 @@ describe "ITSI Editor", () ->
           layout: 'test-layout'
           type: 'test-type'
           text: 'test-text'
-      div = (jasmine.react.findTag alertComponent, "div").getDOMNode()
+      div = ReactDOM.findDOMNode(jasmine.react.findTag alertComponent, "div")
       expect(div.className).toBe('ia-alert-test-layout ia-alert-test-type')
       expect(div.innerHTML).toBe('test-text')
 
 
     it "renders without alert prop", ->
       alertComponent = jasmine.react.renderComponent "itsi_authoring/alert", {}
-      div = (jasmine.react.findTag alertComponent, "div").getDOMNode()
+      div = ReactDOM.findDOMNode(jasmine.react.findTag alertComponent, "div")
       expect(div.className).toBe('')
       expect(div.innerHTML).toBe('')
 
@@ -46,8 +46,8 @@ describe "ITSI Editor", () ->
       metadataEditor = jasmine.react.renderComponent "itsi_authoring/metadata_editor", @props
       heading = jasmine.react.findTag metadataEditor, "h1"
       description = jasmine.react.findClass metadataEditor, "ia-section-text-value"
-      expect(heading.getDOMNode().innerHTML).toBe(@props.data.name)
-      expect(description.getDOMNode().innerHTML).toBe(@props.data.description)
+      expect(ReactDOM.findDOMNode(heading).innerHTML).toBe(@props.data.name)
+      expect(ReactDOM.findDOMNode(description).innerHTML).toBe(@props.data.description)
 
 
     it "does not save when no changes are made", ->
@@ -104,14 +104,13 @@ describe "ITSI Editor", () ->
         title: "test title"
         data:
           is_hidden: false
-      sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props, (React.DOM.div {className: "kids"}, "kids here")
-      title = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-title").getDOMNode()
-      children = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements").getDOMNode()
-      kids = (jasmine.react.findClass sectionEditorElement, "kids").getDOMNode()
+      sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props, (React.createElement('div', {className: "kids"}, "kids here"))
+      title = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "ia-section-editor-title")
+      children = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements")
+      kids = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "kids")
       expect(title.innerHTML).toBe("test title")
       expect(children.style.display).toBe("block")
       expect(kids.innerHTML).toBe("kids here")
-
 
     it "renders invisible children when is_hidden is true", ->
       props =
@@ -119,7 +118,7 @@ describe "ITSI Editor", () ->
         data:
           is_hidden: true
       sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props
-      children = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements").getDOMNode()
+      children = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements")
       expect(children.style.display).toBe("none")
 
 
@@ -134,7 +133,7 @@ describe "ITSI Editor", () ->
       sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props
 
       checkbox = jasmine.react.findTag sectionEditorElement, "input"
-      children = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements").getDOMNode()
+      children = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements")
 
       expect(children.style.display).toBe("block")
 
@@ -162,7 +161,7 @@ describe "ITSI Editor", () ->
       sectionEditorElement = jasmine.react.renderComponent "itsi_authoring/section_editor_element", props
 
       checkbox = jasmine.react.findTag sectionEditorElement, "input"
-      children = (jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements").getDOMNode()
+      children = ReactDOM.findDOMNode(jasmine.react.findClass sectionEditorElement, "ia-section-editor-elements")
 
       expect(children.style.display).toBe("block")
 
@@ -186,7 +185,7 @@ describe "ITSI Editor", () ->
           bg_url: null
       drawingResponseEditor = jasmine.react.renderComponent "itsi_authoring/drawing_response_editor", props
       defaultBackground = jasmine.react.findClass drawingResponseEditor, "ia-section-default-drawing-tool"
-      expect(defaultBackground.getDOMNode().innerHTML).toBe("")
+      expect(ReactDOM.findDOMNode(defaultBackground).innerHTML).toBe("")
 
 
     it "renders custom background image", ->
@@ -197,7 +196,7 @@ describe "ITSI Editor", () ->
           bg_url: "background.jpg"
       drawingResponseEditor = jasmine.react.renderComponent "itsi_authoring/drawing_response_editor", props
       background = jasmine.react.findTag drawingResponseEditor, "img"
-      expect(background.getDOMNode().src).toContain("background.jpg")
+      expect(ReactDOM.findDOMNode(background).src).toContain("background.jpg")
 
 
     it "shows editor when edit is clicked", ->
@@ -216,7 +215,7 @@ describe "ITSI Editor", () ->
       expect(form).toBeDefined()
 
       input = jasmine.react.findName drawingResponseEditor, "embeddable_image_question[bg_url]"
-      expect(input.getDOMNode().value).toBe(props.data.bg_url)
+      expect(ReactDOM.findDOMNode(input).value).toBe(props.data.bg_url)
 
 
     it "saves background when changed and save is clicked", ->
@@ -232,7 +231,7 @@ describe "ITSI Editor", () ->
 
       input = jasmine.react.findName drawingResponseEditor, "embeddable_image_question[bg_url]"
       jasmine.react.change input, {target: {value: "new-background.jpg"}}
-      expect(input.getDOMNode().value).toBe("new-background.jpg")
+      expect(ReactDOM.findDOMNode(input).value).toBe("new-background.jpg")
 
       request = jasmine.react.itsi.captureSave drawingResponseEditor
       expect(request.url).toBe("fake_update_url.json")
@@ -249,7 +248,7 @@ describe "ITSI Editor", () ->
           image_url: 'test-model.jpg'
       modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
       text = jasmine.react.findClass modelEditor, "ia-section-text"
-      expect(text.getDOMNode().innerHTML).toBe("No model selected")
+      expect(ReactDOM.findDOMNode(text).innerHTML).toBe("No model selected")
 
 
     it "renders model name with name prop", ->
@@ -262,7 +261,7 @@ describe "ITSI Editor", () ->
           image_url: 'test-model.jpg'
       modelEditor = jasmine.react.renderComponent "itsi_authoring/model_editor", props
       text = jasmine.react.findClass modelEditor, "ia-section-text"
-      expect(text.getDOMNode().innerHTML).toContain(props.data.name)
+      expect(ReactDOM.findDOMNode(text).innerHTML).toContain(props.data.name)
 
 
     it "loads remote model list when edit clicked", ->

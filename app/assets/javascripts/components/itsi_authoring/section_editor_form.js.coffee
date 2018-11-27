@@ -1,10 +1,10 @@
-{div, label, input, span, a, form} = React.DOM
+{div, label, input, span, a, form} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/section_editor_form',
 [],
 ->
 
-  React.createClass
+  createReactClass
 
     save: (e) ->
       e?.preventDefault()

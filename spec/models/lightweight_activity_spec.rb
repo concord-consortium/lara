@@ -170,7 +170,20 @@ describe LightweightActivity do
 
   describe '#to_hash' do
     it 'returns a hash with relevant values for activity duplication' do
-      expected = { name: activity.name, related: activity.related, :external_report_url => nil, description: activity.description, time_to_complete: activity.time_to_complete, project_id: activity.project_id, theme_id: activity.theme_id, thumbnail_url: activity.thumbnail_url, notes: activity.notes, layout: activity.layout, editor_mode: activity.editor_mode }
+      expected = {
+        name: activity.name,
+        related: activity.related,
+        publication_status: activity.publication_status,
+        external_report_url: nil,
+        student_report_enabled: true,
+        description: activity.description,
+        time_to_complete: activity.time_to_complete,
+        project_id: activity.project_id,
+        theme_id: activity.theme_id,
+        thumbnail_url: activity.thumbnail_url,
+        notes: activity.notes,
+        layout: activity.layout,
+        editor_mode: activity.editor_mode }
       expect(activity.to_hash).to eq(expected)
     end
   end
@@ -180,11 +193,17 @@ describe LightweightActivity do
     before(:each) do
       activity.external_report_url = report_url
     end
-    it 'returns json of an activity' do
-      expect(activity.export[:pages].length).to eq(activity.pages.count)
-    end
-    it 'includes the report url' do
-      expect(activity.export['external_report_url']).to eq(report_url)
+    let(:export) { activity.export }
+    describe "the activity json" do
+      it 'includes the activity pages' do
+        expect(export[:pages].length).to eq(activity.pages.count)
+      end
+      it 'includes the plugins' do
+        expect(export[:plugins].length).to eq(activity.plugins.count)
+      end
+      it 'includes the report url' do
+        expect(export['external_report_url']).to eq(report_url)
+      end
     end
   end
 
@@ -194,10 +213,15 @@ describe LightweightActivity do
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
     let(:report_url) { "https://reports.concord.org/" }
 
+    let(:approved_script) { FactoryGirl.create(:approved_script) }
+    let(:plugins) do
+      FactoryGirl.create_list(:plugin, 2, approved_script: approved_script)
+    end
     before :each do
       activity.layout = layout
       activity.editor_mode = edit_mode
       activity.external_report_url = report_url
+      plugins.each { |p| activity.plugins.push(p) }
     end
 
     it 'creates a new LightweightActivity with attributes from the original' do
@@ -211,6 +235,31 @@ describe LightweightActivity do
       expect(dup.editor_mode).to eq(activity.editor_mode)
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
       expect(dup.external_report_url).to eq(report_url)
+    end
+
+    describe 'describe copying the activities plugins' do
+      let(:dup) { activity.duplicate(owner) }
+      describe "when the approved_script exists" do
+        it "will copy all the plugins" do
+          dup.plugins.each do |p|
+            expect(plugins.map(&:name)).to include(p.name)
+            expect(p.approved_script).to eql(approved_script)
+            expect(p).not_to eql(plugins[0])
+            expect(p).not_to eql(plugins[1])
+          end
+        end
+      end
+      describe "when the approved_script does not exist" do
+        before(:each) do
+          expect(ApprovedScript).to receive(:find_by_label).at_least(:once).and_return(nil)
+        end
+        it "will copy the plugins even without approved_script set" do
+          dup.plugins.each do |p|
+            expect(p.plugin_scope).to eql(dup)
+            expect(p.approved_script).to be_nil
+          end
+        end
+      end
     end
 
     describe "an activity with an open response" do
@@ -347,6 +396,7 @@ describe LightweightActivity do
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
       {
+        "source_type"   => "LARA",
         "type"          =>"Activity",
         "name"          => activity.name,
         "description"   => activity.description,
@@ -357,6 +407,7 @@ describe LightweightActivity do
         "thumbnail_url"       => thumbnail_url,
         "author_email"        => activity.user.email,
         "external_report_url" => activity.external_report_url,
+        "student_report_enabled" => activity.student_report_enabled,
         "is_locked"           => false,
         "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }

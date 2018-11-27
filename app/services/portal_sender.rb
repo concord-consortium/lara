@@ -41,12 +41,12 @@ module PortalSender
       "#{endpoint}/#{PortalSender::Protocol::VersionRoutePrefix}/#{self.version[:name]}"
     end
 
-    def post_answers(answers, remote_endpoint)
+    def post_answers(answers, remote_endpoint, start_time = nil)
       assume_latest_version if @last_try < retry_interval.ago
       try_again = true
       while try_again
         @last_try = Time.now
-        serialized_data = self.send serialization_method_name, answers
+        serialized_data = self.send serialization_method_name, answers, start_time
         response = HTTParty.post(
             versioned_endpoint(remote_endpoint), {
             :body => serialized_data,
@@ -94,22 +94,28 @@ module PortalSender
     ################################################
     # Version 1.0 of the protocol
     ################################################
-    def response_for_portal_1_0(_answer)
+    def response_for_portal_1_0(_answer, start_time = nil)
       answers  = arrayify_answers(_answer)
-      lara_start = answers.map(&:updated_at).min
 
-      return {
+      data_for_portal = {
         answers: answers.map { |ans| ans.portal_hash },
         version: "1",
         lara_end: Time.now.utc.to_s,
-        lara_start: lara_start.utc.to_s
-      }.to_json
+      }
+
+      # lara_start is used by the portal to track how long the latency is from a change
+      # made by a student in LARA to when that changes is fully available in the portal.
+      if start_time
+        data_for_portal[:lara_start] = start_time.utc.to_s
+      end
+
+      return data_for_portal.to_json
     end
 
     ################################################
     # Version 0.0 of the protocol
     ################################################
-    def response_for_portal(_answer)
+    def response_for_portal(_answer, start_time = nil)
       answers = arrayify_answers(_answer)
       answers.map { |ans| ans.portal_hash }.to_json
     end

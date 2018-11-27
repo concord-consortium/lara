@@ -30,6 +30,7 @@ en:
   GENERATE_A_REPORT: "Generate a report"
   EDIT: "Edit"
   EXTERNAL_REPORT_URL: "Custom Reporting URL"
+  STUDENT_REPORT_ENABLED: "Student Report Enabled"
   EXTERNAL_REPORT_WARNING: "(Don't change, unless you know what you are doing!)"
   DATA_WILL_NOT_BE_SAVED:  "Data will not be saved"
   TIME_TO_COMPLETE: "Estimated Time to Complete This Module:"
@@ -37,9 +38,12 @@ en:
   MAKE_DRAWING: "Make drawing"
   DONE: "Done"
   CANCEL: "Cancel"
+  SAVE: "Save"
   PREDICTION_BUTTON: "Submit"
   ANSWER_IS_FINAL: "Your answer is now locked."
   IS_PREDICTION_QUESTION: "Answer required?"
+  SHOW_IN_FEATURED_QUESTION_REPORT: "Show in featured question report?"
+  IS_FULL_WIDTH_ASSESMENT_ITEM: "Full width? (Full width layout only)"
   LET_USERS_CHECK_MC_ANSWERS: "Allow users to check answers?"
   GIVE_PREDICTION_FEEDBACK: "Provide prediction feedback?"
   PREDICTION_FEEDBACK: "Prediction feedback"
@@ -48,6 +52,13 @@ en:
   NEW_SEQUENCE_BUTTON: "Create new sequence"
   IMPORT: "Import"
   COLLECTION_SORT_ORDER: " – most recently modified first."
+  CHECK_ANSWER: "Check answer"
+  PAGES_IN_THIS_ACTIVITY: "Pages in this Activity"
+  WELCOME: "Welcome"
+  NO_INTERACTIVE: "No Interactive"
+  NO_EMBEDDABLE: "No Embeddable"
+  NEXT_EMBEDDABLE: "Next Embeddable"
+  SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."
@@ -78,7 +89,6 @@ en:
     USEFUL_2: "Very"
   LABBOOK:
     ALBUM: "Labbook album"
-    NO_INTERACTIVE: "No Interactive"
     WONT_DISPLAY: "Labbook will not be shown."
     NO_INTERACTIVE_SET: "Interactive is not set."
     INTERACTIVE_HIDDEN: "Interactive is set but is hidden."
@@ -141,3 +151,19 @@ en:
   PRINT_BLANK:
     PRINT: "Print \"%{activity}\""
     PRINT_WARNING: "Close this window when you are done printing \"%{activity}\"."
+  PLUGIN:
+    DELETE_WARNING: "Are you sure you want to remove this plugin?"
+    ACTIVITY_LIST_TITLE: "Activity Plugins"
+    ACTIVITY_PLUGIN: "Activity Plugin"
+    EDIT: "Edit"
+    DELETE: "Delete"
+    ADD: "Add Plugin"
+    APPROVED_SCRIPT: "Approved Plugin:"
+    GLOBAL_ID: "Plugin Identifier"
+    DESCRIPTION: "Description:"
+    AUTHORING_DATA: "Authoring Data:"
+  INTERACTIVE:
+    ASPECT_RATIO:
+      DEFAULT: 'Default aspect ratio, or set by interactive.'
+      MANUAL: 'Manually set the aspect ratio.'
+      MAX: 'Use all available space.'

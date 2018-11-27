@@ -6,6 +6,8 @@
 = content_for :body_class do
   = 'l-single-page'
 
+- @activity.plugins.each do |p|
+  = render partial: 'plugins/show', locals: {plugin: p }
 - @activity.visible_pages.each do |p|
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}

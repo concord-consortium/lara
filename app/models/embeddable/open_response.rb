@@ -3,7 +3,8 @@ module Embeddable
     include Embeddable
 
 
-    attr_accessible :name, :prompt, :hint, :is_prediction, :give_prediction_feedback, :prediction_feedback, :default_text, :is_hidden
+    attr_accessible :name, :prompt, :hint, :is_prediction, :show_in_featured_question_report, :give_prediction_feedback, :prediction_feedback,
+      :default_text, :is_hidden, :is_full_width
 
     # PageItem instances are join models, so if the embeddable is gone the join should go too.
     has_many :page_items, :as => :embeddable, :dependent => :destroy
@@ -24,10 +25,12 @@ module Embeddable
         name: name,
         prompt: prompt,
         is_prediction: is_prediction,
+        show_in_featured_question_report: show_in_featured_question_report,
         give_prediction_feedback: give_prediction_feedback,
         prediction_feedback: prediction_feedback,
         default_text: default_text,
         is_hidden: is_hidden,
+        is_full_width: is_full_width,
         hint: hint
       }
     end
@@ -38,6 +41,7 @@ module Embeddable
         id: id,
         prompt: prompt,
         is_required: is_prediction,
+        show_in_featured_question_report: show_in_featured_question_report
       }
     end
 
@@ -47,6 +51,11 @@ module Embeddable
 
     def reportable?
       true
+    end
+
+    def page_section
+      # In practice one question can't be added to multiple pages. Perhaps it should be refactored to has_one / belongs_to relation.
+      page_items.count > 0 && page_items.first.section
     end
 
     def self.name_as_param
@@ -65,10 +74,12 @@ module Embeddable
       return self.as_json(only:[:name,
                                 :prompt,
                                 :is_prediction,
+                                :show_in_featured_question_report,
                                 :give_prediction_feedback,
                                 :prediction_feedback,
                                 :default_text,
                                 :is_hidden,
+                                :is_full_width,
                                 :hint])
     end
 
