@@ -82,6 +82,7 @@ h3 {
     background: url(/assets/precipitating-change/students.jpg) no-repeat;
     background-size: cover;
     height: 150px;
+    margin-top: 0;
     position: relative;
     width: 40%;
 
@@ -127,7 +128,11 @@ h3 {
           color: $col-darkgray-50;
           font-weight: normal;
           }
-        .profile-nav .profile-dropdown { right: 20px; }
+          .profile-nav {
+            background: $col-white;
+
+            .profile-dropdown { right: 20px; }
+          }
 
         .activity-nav .prev_and_next .prev, .activity-nav .prev_and_next .next {
           background: #dbf1f5;
@@ -152,6 +157,7 @@ h3 {
             -webkit-border-radius: 0;
             border-radius: 0;
 
+            &:hover { color: $col-white; }
             &.disabled { opacity: .5; }
             &.selected { color: $col-white; }
           }
@@ -171,7 +177,11 @@ h3 {
           }
 
           .activity-nav-title { color: $col-darkgray; }
-          .profile-nav .profile-dropdown { right: 0; }
+          .profile-nav {
+            background: #f1f8f8;
+
+            .profile-dropdown { right: 0; }
+          }
         }
       } // end .activity-nav-mod
     .activity-footer-mod {
