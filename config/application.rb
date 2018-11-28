@@ -79,6 +79,10 @@ module LightweightStandalone
         resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
       end
     end
+
+    # Add a middlewere to log more info about the response
+    config.middleware.insert_before 0, "Rack::ResponseLogger"
+
     # do not initialize on precompile so that the Dockerfile can run the precompile
     config.assets.initialize_on_precompile = false
 
