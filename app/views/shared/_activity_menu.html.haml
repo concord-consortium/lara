@@ -34,7 +34,7 @@
           %i.fa.fa-times
           %span.text
             Close
-      - if @activity && @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
+      - if @activity
         %li.am-print
           %a{:href => "javascript:void(0);", :title => "Print activity", :onclick => "window.print();"}
             %i.fa
