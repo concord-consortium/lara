@@ -6,7 +6,7 @@
 # services you might have running.
 # You can use `docker-compose port app 80` to find the UI port or
 # if you have dinghy-http-proxy installed you can point your browser
-# at app.localproduction.docker
+# at app.local-production.docker
 #
 # NOTE if this is your first time running the production image in a
 # local docker container, you will need to create the database tables.
@@ -31,6 +31,7 @@ services:
       DB_PASSWORD: master
       DB_NAME: lara
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+      RAILS_STDOUT_LOGGING: 'true'
     ports:
     - '80'
     command: bash -c "rm /lara/tmp/unicorn.pid; ./docker/prod/run.sh"
