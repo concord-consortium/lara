@@ -364,6 +364,13 @@ div.intra-page-nav {
   }
 } // end .pagination-item
 
+/* Hide print button in activity menu by default. Individual themes can override this if desired. */
+#nav-activity-menu {
+  .am-print {
+    display: none;
+  }
+}
+
 
 
 // *********************************************
