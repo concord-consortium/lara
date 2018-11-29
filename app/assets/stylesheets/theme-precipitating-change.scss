@@ -91,6 +91,16 @@ h3 {
     }
   } // end .logo-r
 
+@media print {
+  header:first-child {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  .logo-r {
+    content: url(/assets/precipitating-change/students.jpg);
+  }
+}
+
   #main {
 
     .activity-mod {
