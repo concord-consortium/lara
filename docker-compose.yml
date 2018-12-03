@@ -14,6 +14,7 @@ services:
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
       C_RATER_FAKE:
       LARA_VERSION: Local Docker
+      GOOGLE_ANALYTICS_ACCOUNT:
     # no ports are published, see below for details
     depends_on:
       - db
