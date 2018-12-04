@@ -170,7 +170,7 @@ header {
     li:first-child {
       border-left: none;
     }
-    li.am-home {
+    li.am-home, li.am-print {
       display: list-item;
     }
     // Hide the close link normally

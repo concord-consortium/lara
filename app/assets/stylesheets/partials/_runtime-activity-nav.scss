@@ -328,7 +328,7 @@ div.nav-menu-top {
         cursor:pointer
       }
     }
-    
+
   }
 }
 
@@ -416,5 +416,12 @@ div.nav-menu-top {
   }
   .last-activity {
     float: left;
+  }
+}
+
+/* Hide print button in activity menu by default. Individual themes can override this if desired. */
+#nav-activity-menu {
+  .am-print {
+    display: none;
   }
 }
