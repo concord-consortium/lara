@@ -113,7 +113,7 @@
 <!-- eo #container -->
 <%= render :partial => "shared/i18njs" %>
 <%= render :partial => 'shared/loading' %>
-<%= render :partial => 'shared/analytics' if Rails.env == 'production' && !request.host.match(/staging/) %>
+<%= render :partial => 'shared/analytics' %>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- Scripts					-->
