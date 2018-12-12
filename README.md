@@ -15,9 +15,9 @@ This example assumes that [rvm](https://rvm.io/) is installed. This
     cp config/database.sample.yml config/database.yml (need to fix the mysql password and/or user)
     cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
     rake db:setup
-    
+
 Run `rake secret` and copy result to `ENV['SECRET_TOKEN']` in `config/app_environment_variables.rb`.
-   
+
     rails s
 
 Now open your browser to [http://localhost:3000](http://localhost:3000)
@@ -38,6 +38,9 @@ This project does use [Sass](http://sass-lang.com/) for the stylesheets.
 The runtime environment supports the idea of themes. Themes mostly take
 the form of stylesheets. The themes come in two main families, the CC
 theme and the MW theme. You can look at `app/assets/stylesheets/cc-runtime-base.scss` or `app/assets/stylesheets/mw-runtime-base.scss` to see the two main families. Most themes inherit from cc-runtime-base, see for example has-atmosphere.scss which uses `partials/_cc-theme-template.scss`
+
+Theme stylesheets must be added to the config.assets.precompile list in `config/environments/production.rb`
+in order to function in production environments.
 
 
 ## Users and administration
