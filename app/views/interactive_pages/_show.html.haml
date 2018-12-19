@@ -38,7 +38,7 @@
         handleColor: '#f4a035',
         titleBarColor: '#ffbc67',
         // Use jQuery to process markup created by rich text editor.
-        content: $("<div>#{escape_javascript(page.sidebar).html_safe}</div>")[0]
+        content: $("<div>#{escape_javascript(page.sidebar)}</div>")[0]
       });
     });
 
