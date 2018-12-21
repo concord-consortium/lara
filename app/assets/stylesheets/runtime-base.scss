@@ -4,7 +4,6 @@
 @import "popup-styles";
 @import "jcarousel";
 @import "colorbox";
-@import "video-js";
 @import "font-awesome";
 @import "image-question-drawing-tool";
 @import "activity-sequences";
@@ -27,4 +26,8 @@
     display: table;
     clear: both;
   }
+}
+
+.video-interactive {
+  background: #000;
 }
