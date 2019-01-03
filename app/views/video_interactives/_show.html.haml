@@ -1,4 +1,4 @@
-%video{ id: "video-interactive-#{interactive.id}", class: "video-js vjs-default-skin", controls: '', preload: "auto", width: "100%", height: interactive.height, poster: interactive.poster_url, data: { setup: '{"example_option":true}', aspect_ratio: interactive.aspect_ratio } }
+%video{ id: "video-interactive-#{interactive.id}", class: 'video-interactive', controls: '', preload: "auto", width: "100%", poster: interactive.poster_url }
   - interactive.sources.each do |source|
     %source{ :src => source.url, :type => source.format }
 .under-image

@@ -3,12 +3,6 @@
   = f.error_messages
   = field_set_tag 'Poster URL' do
     = f.text_field :poster_url
-  = field_set_tag 'Size in pixels' do
-    Width:
-    = f.text_field :width
-    %br
-    Height:
-    = f.text_field :height
   %br
   = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   = field_set_tag 'Caption' do
