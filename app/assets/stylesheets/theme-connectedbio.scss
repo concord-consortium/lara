@@ -1,0 +1,72 @@
+@import "cc-runtime";
+
+$col-blue: #008fd7;
+$col-dark-blue: #006faf;
+$col-light-blue: #c8effc;
+$col-green: #39b54a;
+$col-light-green: #a2ca28;
+$col-orange: #f15a24;
+$col-yellow: #fac10d;
+
+$bg: $col-blue;
+$c_a: $col-orange;
+$c_b: #f8ab4e;
+
+@include theme($bg, $c_a, $c_b);
+
+.site-logo-mod .logo-l img {
+  margin-top: 1px;
+  max-height: 70px;
+}
+.site-logo.logo-r {
+  margin-top: 18px;
+}
+
+table.l-nav {
+  background-color: $col-blue;
+}
+.pagination-item .pagination-link {
+  background: $col-light-blue;
+  border-color: $col-dark-blue;
+  color: $col-dark-blue;
+
+  &.selected {
+    text-shadow: none;
+  }
+}
+
+.intro-mod.index-mod .page-index {
+  width: 35%;
+}
+
+.activities .activity {
+  .title {
+    font-size: 12pt;
+  }
+  .position {
+    padding-top: 2px;
+  }
+}
+
+.ui-dialog {
+  .ui-dialog-titlebar, .ui-dialog-title {
+    color: $c_b;
+    min-height: 2em;
+  }
+  .ui-dialog-title {
+    display: none;
+  }
+}
+
+.question-hdr {
+  background-color: $col-blue;
+
+  .h5 {
+    text-shadow: none;
+  }
+}
+
+.content-mod .congratulations-block {
+  background-color: $col-light-blue !important;
+  color: $col-blue !important;
+}
