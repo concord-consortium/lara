@@ -14,6 +14,11 @@ $c_b: #f8ab4e;
 
 @include theme($bg, $c_a, $c_b);
 
+#container {
+  background-image: -webkit-linear-gradient(top, #fff, rgba(255,255,255,.5), rgba(255,255,255,0));
+  background-image: linear-gradient(to bottom, #fff, rgba(255,255,255,.5), rgba(255,255,255,0));
+}
+
 .site-logo-mod .logo-l img {
   margin-top: 1px;
   max-height: 70px;
