@@ -1,10 +1,12 @@
 @import "cc-runtime";
 
-$bg: #c9e9e6;
-$c_a: #2f70b0;
-$c_b: #84c6cf;
+$theme-params: (
+  bgColorOrUrl: #c9e9e6,
+  theme-color-a: #2f70b0,
+  theme-color-b: #84c6cf
+);
 
-@include theme($bg, $c_a, $c_b);
+@include theme($theme-params...);
 
 .activities .activity {
   .title {
@@ -17,7 +19,7 @@ $c_b: #84c6cf;
 
 .ui-dialog {
   .ui-dialog-titlebar, .ui-dialog-title {
-    color: $c_b;
+    color: #84c6cf;
     min-height: 2em;
   }
   .ui-dialog-title {
