@@ -5,12 +5,12 @@ $col-dark-blue: #006faf;
 $col-light-blue: #c8effc;
 $col-green: #39b54a;
 $col-light-green: #a2ca28;
-$col-orange: #f15a24;
+$col-orange: #f8ab4e;
 $col-yellow: #fac10d;
 
 $bg: $col-blue;
-$c_a: $col-orange;
-$c_b: #f8ab4e;
+$c_a: $col-blue;
+$c_b: $col-orange;
 
 @include theme($bg, $c_a, $c_b);
 
@@ -65,10 +65,6 @@ table.l-nav {
 
 .question-hdr {
   background-color: $col-blue;
-
-  .h5 {
-    text-shadow: none;
-  }
 }
 
 .content-mod .congratulations-block {
