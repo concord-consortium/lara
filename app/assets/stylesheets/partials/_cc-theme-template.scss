@@ -1,4 +1,4 @@
-@mixin theme($bgColorOrUrl, $theme-color-a, $theme-color-b) {
+@mixin theme($bgColorOrUrl, $theme-color-a, $theme-color-b, $right-logo-display: 'block', $social-media-btn-display: 'block') {
   html {
     background: $bgColorOrUrl no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -11,6 +11,11 @@
   }
   div.activity-mod>div.site-width {
     background-color: rgba(255,255,255,0.95);
+  }
+
+  /* Right side header logo visibility */
+  .site-logo.logo-r {
+    display: $right-logo-display;
   }
 
   a.sequence_title{
@@ -46,6 +51,11 @@
   }
   .question-hdr {
     background-color: $theme-color-a;
+  }
+
+  // social media display
+  .social-media-mod {
+    display: $social-media-btn-display;
   }
 
   // buttons
