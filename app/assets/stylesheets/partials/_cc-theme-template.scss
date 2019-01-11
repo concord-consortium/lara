@@ -18,7 +18,7 @@
     @include helv-stack(bold);
     font-size: 24pt;
   }
-  
+
   .sequence-page{
     .profile-u-name{
       color: $theme-color-a;
@@ -46,9 +46,6 @@
   }
   .question-hdr {
     background-color: $theme-color-a;
-    .h5 {
-      @include drk-txt-shadow(darken($theme-color-a,30%));
-    }
   }
 
   // buttons
