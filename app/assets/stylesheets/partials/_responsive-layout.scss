@@ -1,5 +1,8 @@
 // Class added to the body element.
 .l-responsive-wrapper {
+  #container {
+    min-width: auto;
+  }
   .site-width {
     width: calc(100% - 40px);
   }
