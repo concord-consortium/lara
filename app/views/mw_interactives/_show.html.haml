@@ -1,5 +1,7 @@
 - labbook = show_labbook_under_interactive?(@run, interactive)
 
+- if interactive.reportable?
+  = render :partial => 'shared/question_header', :locals => { :embeddable => interactive }
 .interactive-container
   - if interactive.native_height > 1
     - if interactive.image_url.present?
