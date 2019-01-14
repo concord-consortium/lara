@@ -6,10 +6,6 @@ $c_b: #754210;
 
 @include theme($src, $c_a, $c_b);
 
-header {
-  margin-bottom: 0;
-}
-
 input[type="button"], input[type="submit"], button[type="button"] {
   background-image: none !important;
   text-shadow: none;

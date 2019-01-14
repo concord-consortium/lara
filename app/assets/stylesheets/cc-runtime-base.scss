@@ -35,10 +35,13 @@ b, strong  {
 }
 em         { font-style: italic; }
 
-header,
-footer {
-  margin: 0 0 13px;
+header {
   color: white;
+  margin: 0;
+}
+footer {
+  color: white;
+  margin: 0 0 13px;
 }
 
 div.activity-mod>div.site-width {
