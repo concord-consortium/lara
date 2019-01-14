@@ -20,7 +20,6 @@ $c_b: $col-orange;
 }
 
 .site-logo-mod .logo-l img {
-  margin-top: 1px;
   max-height: 70px;
 }
 
@@ -35,10 +34,6 @@ table.l-nav {
   &.selected {
     text-shadow: none;
   }
-}
-
-.intro-mod.index-mod .page-index {
-  width: 35%;
 }
 
 .content-mod .congratulations-block {
