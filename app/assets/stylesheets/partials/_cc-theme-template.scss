@@ -13,7 +13,7 @@
     background-color: rgba(255,255,255,0.95);
   }
 
-  /* Right side header logo visibility */
+  // Right side header logo visibility
   .site-logo.logo-r {
     display: $right-logo-display;
   }
@@ -38,7 +38,7 @@
     background-color: $theme-color-b;
   }
 
-  /* could also potentially use #A43900 drk orange */
+  // could also potentially use #A43900 drk orange
   .activities {
     .activity-bg:hover {
       background: lighten($theme-color-a, 50%);
@@ -53,7 +53,7 @@
     background-color: $theme-color-a;
   }
 
-  // social media display
+  // social media visibility
   .social-media-mod {
     display: $social-media-btn-display;
   }
