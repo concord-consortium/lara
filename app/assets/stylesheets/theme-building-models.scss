@@ -1,9 +1,13 @@
 @import "cc-runtime";
 
+$col-blue: #2f70b0;
+$col-medium-blue: #84c6cf;
+$col-light-blue: #c9e9e6;
+
 $theme-params: (
-  bgColorOrUrl: #c9e9e6,
-  theme-color-a: #2f70b0,
-  theme-color-b: #84c6cf
+  bgColorOrUrl: $col-blue,
+  theme-color-a: $col-medium-blue,
+  theme-color-b: $col-medium-blue
 );
 
 @include theme($theme-params...);
@@ -19,7 +23,7 @@ $theme-params: (
 
 .ui-dialog {
   .ui-dialog-titlebar, .ui-dialog-title {
-    color: #84c6cf;
+    color: $col-medium-blue;
     min-height: 2em;
   }
   .ui-dialog-title {

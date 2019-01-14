@@ -1,10 +1,12 @@
 @import "cc-runtime";
 
-$src: url('/assets/geniventure-bg/mission-control.jpg');
-$c_a: #f88c22;
-$c_b: #f5a744;
+$theme-params: (
+  bgColorOrUrl: url('/assets/geniventure-bg/mission-control.jpg'),
+  theme-color-a: #f88c22,
+  theme-color-b: #f5a744
+);
 
-@include theme($src, $c_a, $c_b);
+@include theme($theme-params...);
 
 $dark-olive-green: #402e17;
 $dark-khaki: #b0925c;
