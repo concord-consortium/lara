@@ -8,7 +8,8 @@
 #container {
   height: 100%;
   min-height: 100%;
-  margin: 0px;
+  min-width: 960px;
+  margin: 0;
   background-image: -webkit-linear-gradient(top, white, rgba(255,255,255,0), rgba(255,255,255,0));
   background-image: linear-gradient(to bottom, white, rgba(255,255,255,0), rgba(255,255,255,0));
 }
