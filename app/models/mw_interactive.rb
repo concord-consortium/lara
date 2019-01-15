@@ -182,4 +182,15 @@ class MwInteractive < ActiveRecord::Base
   def page_section
     page_item && page_item.section
   end
+
+  def question_index
+    if respond_to? :index_in_activity 
+      begin
+        return self.index_in_activity()
+      rescue StandardError => e
+        logger.warn "Rescued #{e.class}: #{e.message}"
+      end
+    end
+    return nil
+  end  
 end
