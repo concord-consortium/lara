@@ -32,10 +32,6 @@ table.l-nav {
   background: $col-light-blue;
   border-color: $col-dark-blue;
   color: $col-dark-blue;
-
-  &.selected {
-    text-shadow: none;
-  }
 }
 
 .content-mod .congratulations-block {
