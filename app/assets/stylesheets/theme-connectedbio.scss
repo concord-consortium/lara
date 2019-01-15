@@ -8,11 +8,13 @@ $col-light-green: #a2ca28;
 $col-orange: #f8ab4e;
 $col-yellow: #fac10d;
 
-$bg: $col-blue;
-$c_a: $col-blue;
-$c_b: $col-orange;
+$theme-params: (
+  bgColorOrUrl: $col-blue,
+  theme-color-a: $col-blue,
+  theme-color-b: $col-orange
+);
 
-@include theme($bg, $c_a, $c_b);
+@include theme($theme-params...);
 
 #container {
   background-image: -webkit-linear-gradient(top, #fff, rgba(255,255,255,.5), rgba(255,255,255,0));
