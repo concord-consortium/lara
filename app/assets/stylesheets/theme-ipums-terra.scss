@@ -1,11 +1,9 @@
 @import "cc-runtime";
 
-$col-yellow-green: #a8be75;
-
 $theme-params: (
-  bgColorOrUrl: $col-yellow-green,
-  theme-color-a: $col-yellow-green,
-  theme-color-b: $col-yellow-green
+  bgColorOrUrl: #a8be75,
+  theme-color-a: #a8be75,
+  theme-color-b: #a8be75
 );
 
 @include theme($theme-params...);
@@ -16,15 +14,5 @@ $theme-params: (
   }
   .position {
     padding-top: 2px;
-  }
-}
-
-.ui-dialog {
-  .ui-dialog-titlebar, .ui-dialog-title {
-    color: $col-yellow-green;
-    min-height: 2em;
-  }
-  .ui-dialog-title {
-    display: none;
   }
 }
