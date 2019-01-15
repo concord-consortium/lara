@@ -1,34 +1,31 @@
 @import "cc-runtime";
 
+$col-dark-olive-green: #402e17;
+$col-dark-khaki: #b0925c;
+$col-dim-gray: #4c4a42;
+$col-sea-green: #a7be99;
+$col-dark-sea-green: #7d8d75;
+$col-orange: #f88c22;
+
 $theme-params: (
   bgColorOrUrl: url('/assets/geniventure-bg/mission-control.jpg'),
-  theme-color-a: #f88c22,
-  theme-color-b: #f5a744
+  theme-color-a: $col-dark-olive-green,
+  theme-color-b: $col-orange
 );
 
 @include theme($theme-params...);
 
-$dark-olive-green: #402e17;
-$dark-khaki: #b0925c;
-$dim-gray: #4c4a42;
-$sea-green: #a7be99;
-$dark-sea-green: #7d8d75;
-
 table.l-nav {
-  background-color: $dark-olive-green;
+  background-color: $col-dark-olive-green;
 }
 .pagination-item .pagination-link {
-  border-color: $sea-green;
+  border-color: $col-sea-green;
   &.selected {
-    background: $sea-green;
+    background: $col-sea-green;
   }
 }
 .profile-nav .profile-dropdown {
-  background-color: $dark-olive-green;
-}
-
-a.sequence_title {
-  color: $dark-olive-green;
+  background-color: $col-dark-olive-green;
 }
 
 .sequence-page {
@@ -36,22 +33,15 @@ a.sequence_title {
 }
 
 .estimated-time {
-  background-color: $sea-green;
-}
-.time_to_complete .time_estimate {
-  color: $dark-olive-green;
+  background-color: $col-sea-green;
 }
 
 .activities .activity .title, .activities .activity .position {
   color: #3f3f3f;
 }
 
-.question-hdr {
-  background-color: $dark-olive-green;
-}
-
-.intro-mod.index-mod .intro-txt h2, .intro-mod .h4, .content-mod .bottom-block h2 {
-  color: $dark-olive-green !important;
+.intro-mod.index-mod .intro-txt h2, .content-mod .bottom-block h2 {
+  color: $col-dark-olive-green !important;
 }
 
 .bottom-buttons .gen-report input[type="submit"] {
@@ -63,8 +53,8 @@ div.activity-mod > div.site-width {
 }
 
 .activity-mod .content-mod .congratulations-block {
-  background-color: $sea-green;
-  color: $dark-olive-green;
+  background-color: $col-sea-green;
+  color: $col-dark-olive-green;
 }
 
 #nav-activity-menu {
