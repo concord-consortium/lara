@@ -13,7 +13,6 @@ $theme-params: (
 
 input[type="button"], input[type="submit"], button[type="button"] {
   background-image: none !important;
-  text-shadow: none;
 }
 
 a.sequence_title {
@@ -44,7 +43,6 @@ a.sequence_title {
 .bottom-buttons .gen-report input[type="submit"] {
   background-image: none !important;
   background: $col-blue !important;
-  text-shadow: none;
 }
 
 #nav-activity-menu {
