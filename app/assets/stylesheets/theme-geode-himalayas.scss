@@ -6,7 +6,8 @@ $col-rust-brown: #754210;
 $theme-params: (
   bgColorOrUrl: url('/assets/geode-bg/himalayas.jpg'),
   theme-color-a: $col-blue,
-  theme-color-b: $col-rust-brown
+  theme-color-b: $col-rust-brown,
+  activity-menu-display: none
 );
 
 @include theme($theme-params...);
@@ -43,8 +44,4 @@ a.sequence_title {
 .bottom-buttons .gen-report input[type="submit"] {
   background-image: none !important;
   background: $col-blue !important;
-}
-
-#nav-activity-menu {
-  display: none;
 }

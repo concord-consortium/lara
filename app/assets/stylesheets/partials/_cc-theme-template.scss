@@ -3,7 +3,8 @@
     $theme-color-a, // intro heading text, page index links, question headings background, more
     $theme-color-b, // selected pagination link, most buttons (except report button), more
     $right-logo-display: 'block', // show or hide logo at top right of page
-    $social-media-btn-display: 'block' // show or hide social media buttons
+    $social-media-btn-display: 'block', // show or hide social media buttons
+    $activity-menu-display: 'block' // show or hide the activity menu that contains the report and print links
   ) {
 
   html {
@@ -43,6 +44,10 @@
 
   .pagination-item .pagination-link.selected {
     background-color: $theme-color-b;
+  }
+
+  #nav-activity-menu-container {
+    display: $activity-menu-display;
   }
 
   // could also potentially use #A43900 drk orange

@@ -10,7 +10,8 @@ $col-orange: #f88c22;
 $theme-params: (
   bgColorOrUrl: url('/assets/geniventure-bg/mission-control.jpg'),
   theme-color-a: $col-dark-olive-green,
-  theme-color-b: $col-orange
+  theme-color-b: $col-orange,
+  activity-menu-display: none
 );
 
 @include theme($theme-params...);
@@ -51,8 +52,4 @@ div.activity-mod > div.site-width {
 .activity-mod .content-mod .congratulations-block {
   background-color: $col-sea-green;
   color: $col-dark-olive-green;
-}
-
-#nav-activity-menu {
-  display: none;
 }
