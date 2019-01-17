@@ -1,32 +1,23 @@
 @import "cc-runtime";
 
-$src: url('/assets/geode-bg/himalayas.jpg');
-$c_a: #5c6f9a;
-$c_b: #754210;
+$col-blue: #5c6f9a;
+$col-rust-brown: #754210;
 
-@include theme($src, $c_a, $c_b);
+$theme-params: (
+  bgColorOrUrl: url('/assets/geode-bg/himalayas.jpg'),
+  theme-color-a: $col-blue,
+  theme-color-b: $col-rust-brown,
+  activity-menu-display: none
+);
 
-header {
-  margin-bottom: 0;
-}
+@include theme($theme-params...);
 
 input[type="button"], input[type="submit"], button[type="button"] {
   background-image: none !important;
-  text-shadow: none;
-}
-
-.site-logo.logo-l {
-  margin-left: 6px;
-}
-.site-logo.logo-r {
-  margin-right: 9px;
-  img {
-    margin-top: 8px;
-  }
 }
 
 a.sequence_title {
-  color: #754210;
+  color: $col-rust-brown;
 }
 
 .sequence-page {
@@ -43,23 +34,14 @@ a.sequence_title {
 
 .content-mod .congratulations-block {
   background: transparent !important;
-  color: #5c6f9a !important;
+  color: $col-blue !important;
 }
 
 .intro-mod.index-mod .intro-txt h2, .intro-mod .h4, .content-mod .bottom-block h2 {
-  color: #754210 !important;
+  color: $col-rust-brown !important;
 }
 
 .bottom-buttons .gen-report input[type="submit"] {
   background-image: none !important;
-  background: #5d709a !important;
-  text-shadow: none;
-}
-
-.pagination-item .pagination-link.selected {
-  text-shadow: none;
-}
-
-#nav-activity-menu {
-  display: none;
+  background: $col-blue !important;
 }

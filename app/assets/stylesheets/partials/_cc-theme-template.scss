@@ -1,4 +1,12 @@
-@mixin theme($bgColorOrUrl, $theme-color-a, $theme-color-b) {
+@mixin theme(
+    $bgColorOrUrl, // page background
+    $theme-color-a, // intro heading text, page index links, question headings background, more
+    $theme-color-b, // selected pagination link, most buttons (except report button), more
+    $right-logo-display: 'block', // show or hide logo at top right of page
+    $social-media-btn-display: 'block', // show or hide social media buttons
+    $activity-menu-display: 'block' // show or hide the activity menu that contains the report and print links
+  ) {
+
   html {
     background: $bgColorOrUrl no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -13,12 +21,17 @@
     background-color: rgba(255,255,255,0.95);
   }
 
+  // Right side header logo visibility
+  .site-logo.logo-r {
+    display: $right-logo-display;
+  }
+
   a.sequence_title{
     color: $theme-color-a;
     @include helv-stack(bold);
     font-size: 24pt;
   }
-  
+
   .sequence-page{
     .profile-u-name{
       color: $theme-color-a;
@@ -33,7 +46,11 @@
     background-color: $theme-color-b;
   }
 
-  /* could also potentially use #A43900 drk orange */
+  #nav-activity-menu-container {
+    display: $activity-menu-display;
+  }
+
+  // could also potentially use #A43900 drk orange
   .activities {
     .activity-bg:hover {
       background: lighten($theme-color-a, 50%);
@@ -46,9 +63,11 @@
   }
   .question-hdr {
     background-color: $theme-color-a;
-    .h5 {
-      @include drk-txt-shadow(darken($theme-color-a,30%));
-    }
+  }
+
+  // social media visibility
+  .social-media-mod {
+    display: $social-media-btn-display;
   }
 
   // buttons

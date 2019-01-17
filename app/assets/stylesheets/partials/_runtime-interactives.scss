@@ -70,10 +70,6 @@
 .challenge {
   .question-hdr, .question-hdr-collapse {
     background: darken($black-15, 3%);
-
-    .h5 {
-      @include drk-txt-shadow($black-15);
-    }
   }
   .question-bd {
     background: $black-5;
@@ -92,7 +88,6 @@
     position: relative;
     color: #fff;
     font-size: 16px;
-    @include drk-txt-shadow($med-blue);
   }
 }
 
@@ -179,4 +174,3 @@ button[type="button"] {
 input:disabled {
   opacity: 0.3;
 }
-

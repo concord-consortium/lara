@@ -254,7 +254,6 @@ div.nav-menu-top {
       width: 28px;
       padding-top: 3px;
       @include border-radius(14px);
-      @include drk-txt-shadow(#64c500);
       /* TODO: gradient? */
     }
   } // end .pagination-link

@@ -3,17 +3,21 @@
 $itsi_bg: #fee9aa;
 $main_color: #ee864e;
 $content_bg: #fbf4db;
+$right-logo-display: none;
+$social-media-display: none;
 
-@include theme($itsi_bg, $main_color, $main_color);
+$theme-params: (
+  bgColorOrUrl: $itsi_bg,
+  theme-color-a: $main_color,
+  theme-color-b: $main_color,
+  right-logo-display: none
+);
+
+@include theme($theme-params...);
 
 // Display full size ITSI banner (ITSI project needs to be used!).
 .site-logo-mod img {
   max-height: none;
-}
-
-// Hide Concord logo in top-right corner.
-.site-logo.logo-r {
-  display: none;
 }
 
 // Modify activity title style.
@@ -49,8 +53,7 @@ div.activity-mod > div.site-width {
   margin-bottom: 10px;
 }
 
-.intro-mod,
-.content-mod{
+.intro-mod, .content-mod{
   em.credit {
     font-size: inherit;
     color: inherit;
@@ -119,10 +122,6 @@ button[type="button"].lb-album-btn {
   }
 }
 //ITSI orange menu bar
-header {
-  margin-bottom: 0px;
-}
-
 .site-logo-mod {
   margin-bottom: 0px;
   padding-top: 0px;
