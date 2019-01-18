@@ -33,13 +33,35 @@ window.Plugins = {
     loadPath: string;
   }
 
+  Interface IEmbeddableContext {
+    // TBD, can be almost anything, details of the wrapped embeddable, eg:
+    // Serialized form of the embeddable, eg:
+    aspect_ratio_method: "DEFAULT",
+    authored_state: null,
+    click_to_play: false,
+    enable_learner_state": true,
+    name: "Test Interactive",
+    native_height: 435,
+    native_width: 576,
+    url: "http://concord-consortium.github.io/lara-interactive-api/iframe.html",
+    type: "MwInteractive",
+    ref_id: "86-MwInteractive"
+  }
+
   Interface IRuntimeContext {
     name: string;               // Name of the plugin
     url: string;                // Url from which the plugin was loaded
     pluginId: string;           // Active record ID of the plugin scope id
-    authorData: string;         // The authored configuration for this instance
-    learnerData: string;        // The saved learner data for this instance
+    authoredState: string;      // The authored configuration for this instance
+    learnerState: string;       // The saved learner data for this instance
     div: HTMLElement;           // reserved HTMLElement for the plugin output
+    runID: integer,             // The run ID for the current run
+    userEmail: string,          // The current users email address if available
+    classInfoUrl: string,       // The portal URL for class details (if avail)
+    remoteEndpoint: string,     // The portal remote endpoint (if available)
+    getFirebaseJwtUrl: function,// A function that retuns the URL to use fetch a JWT
+    wrappedEmbeddableDiv: HTMLElement, // If we are wrapping an embeddable its DOM
+    wrappedEmbeddableContext: IEmbeddableContext // Data about our embeddable
   }
   ****************************************************************************/
   initPlugin: function(label, runtimeContext, pluginStatePaths) {

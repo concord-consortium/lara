@@ -23,7 +23,8 @@
     });
 - else
   -# Version 2
-  - learner_state = PluginLearnerState.find_or_create(plugin, @run).state
+  - plugin_learner_state = PluginLearnerState.find_or_create(plugin, @run)
+  - learner_state = plugin_learner_state.state
   -# wrapped_embeddable template variable might be undefined when the activity level plugins are rendered
   - wrapped_embedd = defined?(wrapped_embeddable) && wrapped_embeddable
   - if wrapped_embedd
@@ -36,24 +37,33 @@
     .plugin-output{id: output_id}
     - runtime_div_selector = "##{output_id}"
     - wrapped_selector = nil
-
+  - firebase_jwt_url = api_v1_get_firebase_jwt_url(@run.id, {firebase_app: '_FIREBASE_APP_'})
+  - user_email = @run.user ? @run.user.email : 'anonymous'
+  - class_info_url = @run.class_info_url
   :javascript
     // Begin script for #{plugin.name}
-    var savePath = `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`
-    var loadPath = `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
     var pluginStatePaths = {
-      savePath: savePath,
-      loadPath: loadPath
+      savePath: `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`,
+      loadPath: `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
     };
-    var learner_state  = '#{ escape_javascript(learner_state) }'
     $(document).ready( function() {
+      var getFirebaseJwtUrl = function(appName) {
+        var laraJwtGettingUrl = '#{escape_javascript(firebase_jwt_url)}';
+        return laraJwtGettingUrl.replace('_FIREBASE_APP_', appName);
+      }
       env = {
         name: '#{plugin.name}',
         url: '#{plugin.url}',
         pluginId: '#{plugin.id}',
+        pluginStateKey:'#{ escape_javascript(plugin_learner_state.shared_learner_state_key)}',
         authoredState: '#{ escape_javascript(plugin.author_data) }',
-        learnerState: learner_state,
+        learnerState:  '#{ escape_javascript(learner_state) }',
         div: $('#{runtime_div_selector}')[0],
+        runID: #{@run.id},
+        userEmail: '#{escape_javascript(user_email)}',
+        classInfoUrl: '#{escape_javascript(class_info_url)}',
+        remoteEndpoint: '#{escape_javascript(@run.remote_endpoint)}',
+        getFirebaseJwtUrl: getFirebaseJwtUrl,
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
         wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'}
       }
