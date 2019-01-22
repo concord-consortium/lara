@@ -40,6 +40,10 @@
   - firebase_jwt_url = api_v1_get_firebase_jwt_url(@run.id, {firebase_app: '_FIREBASE_APP_'})
   - user_email = @run.user ? @run.user.email : 'anonymous'
   - class_info_url = @run.class_info_url
+  - interactive_state_url = ''
+  - if (wrapped_embedd && wrapped_embedd.respond_to?(:interactive_run_states))
+    - irs = InteractiveRunState.by_run_and_interactive(@run,wrapped_embedd)
+    - interactive_state_url = irs && irs.key ? api_v1_show_interactive_run_state_path({key: irs.key}) : ''
   :javascript
     // Begin script for #{plugin.name}
     var pluginStatePaths = {
@@ -63,6 +67,7 @@
         userEmail: '#{escape_javascript(user_email)}',
         classInfoUrl: '#{escape_javascript(class_info_url)}',
         remoteEndpoint: '#{escape_javascript(@run.remote_endpoint)}',
+        interactiveStateUrl: '#{escape_javascript(interactive_state_url)}',
         getFirebaseJwtUrl: getFirebaseJwtUrl,
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
         wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'}
