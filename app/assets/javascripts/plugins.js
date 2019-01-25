@@ -62,6 +62,7 @@ window.Plugins = {
     getFirebaseJwtUrl: function,// A function that retuns the URL to use fetch a JWT
     wrappedEmbeddableDiv: HTMLElement, // If we are wrapping an embeddable its DOM
     wrappedEmbeddableContext: IEmbeddableContext // Data about our embeddable
+    clickToPlayId: string,      // DOM id of click to play overlay if enabled
   }
   ****************************************************************************/
   initPlugin: function(label, runtimeContext, pluginStatePaths) {
