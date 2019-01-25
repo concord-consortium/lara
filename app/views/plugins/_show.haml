@@ -75,7 +75,9 @@
         getFirebaseJwtUrl: getFirebaseJwtUrl,
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
         wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'},
-        clickToPlayId: '#{escape_javascript(click_to_play_id)}'
+        experimental: {
+          clickToPlayId: '#{escape_javascript(click_to_play_id)}'
+        }
       }
       console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
       Plugins.initPlugin('#{plugin.label}', env, pluginStatePaths);
