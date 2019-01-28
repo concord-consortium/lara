@@ -1,7 +1,7 @@
 @mixin theme(
-    $bgColorOrUrl, // page background
-    $theme-color-a, // intro heading text, page index links, question headings background, more
-    $theme-color-b, // selected pagination link, most buttons (except report button), more
+    $bgColorOrUrl: #f3f3f3, // page background
+    $theme-color-a: #0592af, // intro heading text, page index links, question headings background, more
+    $theme-color-b: #2da343, // selected pagination link, most buttons (except report button), more
     $right-logo-display: 'block', // show or hide logo at top right of page
     $social-media-btn-display: 'block', // show or hide social media buttons
     $activity-menu-display: 'block' // show or hide the activity menu that contains the report and print links
