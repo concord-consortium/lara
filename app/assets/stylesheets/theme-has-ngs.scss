@@ -1,5 +1,7 @@
 @import "cc-runtime";
 
-#nav-activity-menu {
-  display: none;
-}
+$theme-params: (
+  activity-menu-display: none
+);
+
+@include theme($theme-params...);

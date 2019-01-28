@@ -1,11 +1,10 @@
 @import "cc-runtime";
 
-$src: url('/assets/has-bg/astro.jpg');
-$c_a: #434960;
-$c_b: #BD8B8E;
+$theme-params: (
+  bgColorOrUrl: url('/assets/has-bg/astro.jpg'),
+  theme-color-a: #434960,
+  theme-color-b: #bd8b8e,
+  activity-menu-display: none
+);
 
-@include theme($src, $c_a, $c_b);
-
-#nav-activity-menu {
-  display: none;
-}
+@include theme($theme-params...);

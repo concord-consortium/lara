@@ -1,11 +1,10 @@
 @import "cc-runtime";
 
-$src: url('/assets/has-bg/airPollution_background2.jpg');
-$c_a: #763e4b;
-$c_b: #C98980;
+$theme-params: (
+  bgColorOrUrl: url('/assets/has-bg/airPollution_background2.jpg'),
+  theme-color-a: #763e4b,
+  theme-color-b: #c98980,
+  activity-menu-display: none
+);
 
-@include theme($src, $c_a, $c_b);
-
-#nav-activity-menu {
-  display: none;
-}
+@include theme($theme-params...);
