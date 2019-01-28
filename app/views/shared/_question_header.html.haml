@@ -5,11 +5,14 @@
 - label = t("QUESTION")
 - if embeddable.is_a? Embeddable::LabbookAnswer
   - label = t("LABBOOK.ALBUM")
+- header_text = "#{label} ##{embeddable.question_index}"
+- if embeddable.is_a?(MwInteractive) && embeddable.name.present?
+  - header_text = "#{header_text}: #{embeddable.name}"
 - has_hint = embeddable.respond_to?(:hint) && embeddable.hint.present?
 
 .question-hdr
   %h5.h5
-    = "#{label} ##{embeddable.question_index}"
+    = header_text
   - if has_hint
     .help-icon.screen-only{id: icon_id} ?
 
