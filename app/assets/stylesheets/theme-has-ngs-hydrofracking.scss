@@ -1,11 +1,10 @@
 @import "cc-runtime";
 
-$src: url('/assets/has-bg/hydrofracking_background.png');
-$c_a: #602f1c;
-$c_b: #6b96ba;
+$theme-params: (
+  bgColorOrUrl: url('/assets/has-bg/hydrofracking_background.png'),
+  theme-color-a: #602f1c,
+  theme-color-b: #6b96ba,
+  activity-menu-display: none
+);
 
-@include theme($src, $c_a, $c_b);
-
-#nav-activity-menu {
-  display: none;
-}
+@include theme($theme-params...);
