@@ -38,3 +38,7 @@ table.l-nav {
   background-color: $col-light-blue !important;
   color: $col-blue !important;
 }
+
+.l-full-width-wrapper .site-width {
+  width: calc(100% - 40px);
+}
