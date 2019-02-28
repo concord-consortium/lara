@@ -10,6 +10,7 @@ describe CRater::APIWrapper do
   let(:response_id)   { 123 }
   let(:response_text) { 'response abc xyz' }
   let(:score)         { 2 }
+  let(:api_key)       { 'fakekey' }
   let(:xml_req_spec) do
     xml = <<-EOS
       <crater-request includeRNS="N">
@@ -49,7 +50,7 @@ describe CRater::APIWrapper do
     process_xml(xml)
   end
 
-  let(:crater) { CRater::APIWrapper.new(client_id, username, password, "#{protocol}#{url}") }
+  let(:crater) { CRater::APIWrapper.new(client_id, username, password, api_key, "#{protocol}#{url}") }
 
   def process_xml(xml_string)
     # Remove new lines and unnecessary whitespaces
@@ -91,6 +92,21 @@ describe CRater::APIWrapper do
           with(:body    => xml_req_spec,
                :headers => {'Content-Type' => 'text/xml; charset=ISO-8859-1'}).
           to_return(:status => status_code, :body => err_body, :headers => headers)
+      end
+
+      context 'quota exceeded error' do
+        let(:status_code) { 429 }
+        let(:err_body) { 'Sorry, automated scoring is not available at this time.' }
+        let(:headers) { {'Content-Type' => 'text/plain; charset=ISO-8859-1'} }
+
+        it 'returns only debug information' do
+          expect(subject[:success]).to be false
+          expect(subject[:score]).to be_nil
+          expect(subject[:error]).to eql(err_body)
+          expect(subject[:response_info][:code]).to eql(status_code)
+          expect(subject[:response_info][:body]).to eql(err_body)
+          expect(subject[:response_info][:headers]).not_to be_nil
+        end
       end
 
       context 'unknown error' do

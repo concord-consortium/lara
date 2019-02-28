@@ -23,8 +23,9 @@ module CRater::FeedbackFunctionality
       client_id:    ENV['C_RATER_CLIENT_ID'],
       username:     ENV['C_RATER_USERNAME'],
       password:     ENV['C_RATER_PASSWORD'],
-      url:          ENV['C_RATER_URL'], # optional, APIWrapper will use default URL if not provided.
-      fake_service: ENV['C_RATER_FAKE'] # true here will fake score results (for testing) all other config opts ignored.
+      url:          ENV['C_RATER_URL'],  # optional, APIWrapper will use default URL if not provided.
+      fake_service: ENV['C_RATER_FAKE'], # true here will fake score results (for testing) all other config opts ignored.
+      api_key:      ENV['C_RATER_API_KEY']
     }
   end
 
@@ -37,7 +38,7 @@ module CRater::FeedbackFunctionality
   def c_rater_configured?
     config = c_rater_config
     return true if config[:fake_service]
-    !!config[:client_id] && !!config[:username] && !!config[:password]
+    !!config[:client_id] && !!config[:username] && !!config[:password] && !!config[:api_key]
   end
 
   def c_rater_item_settings_provided?
@@ -117,7 +118,7 @@ module CRater::FeedbackFunctionality
     if config[:fake_service]
       return issue_fake_feedback(feedback_item)
     else
-      crater = CRater::APIWrapper.new(config[:client_id], config[:username], config[:password], config[:url])
+      crater = CRater::APIWrapper.new(config[:client_id], config[:username], config[:password], config[:api_key], config[:url])
       # Use answer.id (as answer class includes this module) as response_id provided to C-Rater.
       return crater.get_feedback(feedback_item.item_id, id, feedback_item.answer_text)
     end

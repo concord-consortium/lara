@@ -52,7 +52,8 @@ describe CRater::FeedbackFunctionality do
       before(:each) do
         allow(answer).to receive(:c_rater_config).and_return(client_id: nil,
                                                              username: nil,
-                                                             password: nil)
+                                                             password: nil,
+                                                             api_key: nil)
       end
       describe '#c_rater_enabled?' do
         subject { answer.c_rater_enabled? }
@@ -77,6 +78,7 @@ describe CRater::FeedbackFunctionality do
       let(:url) { 'fake.c-rater.api/api/v1' }
       let(:mock_url) { "#{protocol}#{username}:#{password}@#{url}" }
       let(:score) { 2 }
+      let(:api_key) { 'fakekey' }
       let(:response) do
         <<-EOS
           <crater-results>
@@ -101,6 +103,7 @@ describe CRater::FeedbackFunctionality do
         allow(answer).to receive(:c_rater_config).and_return(client_id: client_id,
                                                              username: username,
                                                              password: password,
+                                                             api_key: api_key,
                                                              url: "#{protocol}#{url}")
         stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
           to_return(:status => 200, :body => response,

@@ -6,11 +6,12 @@ class CRater::APIWrapper
   # C-Rater supports only ISO-8859-1 AKA Latin1 encoding.
   ENCODING = 'ISO-8859-1'
 
-  def initialize(client_id, username, password, url = nil)
+  def initialize(client_id, username, password, api_key, url = nil)
     @client_id = client_id
     @username  = username
     @password  = password
-    @url       = url.present? ? url : C_RATER_URI
+    @api_key   = api_key
+    @url       = url || C_RATER_URI
   end
 
   def request_xml(item_id, response_id, response_text)
@@ -42,6 +43,11 @@ class CRater::APIWrapper
                  success: true,
                  score: score
                }
+             elsif resp.code == 429  # too many requests
+               {
+                  success: false,
+                  error: I18n.t('ARG_BLOCK.NOT_AVAILABLE')
+               }
              else
                {
                  success: false,
@@ -63,7 +69,8 @@ class CRater::APIWrapper
   def request_options(body)
     {
       headers: {
-        'Content-Type' => "text/xml; charset=#{ENCODING}"
+        'Content-Type' => "text/xml; charset=#{ENCODING}",
+        'x-api-key' => @api_key
       },
       basic_auth: {
         username: @username,
