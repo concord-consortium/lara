@@ -44,8 +44,26 @@ module CRater::FeedbackFunctionality
     !!c_rater_item_settings && !c_rater_item_settings.item_id.blank?
   end
 
-  def request_c_rater_feedback(options = {})
-    return not_configured unless c_rater_enabled?
+  def find_prev_feedback
+    return CRater::FeedbackItem.where({
+      answer_type: self.class.name,
+      answer_id: self.id,
+      answer_text: self.answer_text
+    }).first
+  end
+
+  def copy_of_feedback(prev_feedback)
+    feedback_item = CRater::FeedbackItem.new({
+    status: prev_feedback.status,
+    answer: self,
+    answer_text: self.answer_text,
+    score: prev_feedback.score
+  })
+    feedback_item.save!
+    return feedback_item
+  end
+
+  def request_feedback_from_service(options={})
     feedback_item = CRater::FeedbackItem.new(
       status: CRater::FeedbackItem::STATUS_REQUESTED,
       # Save both answer text and item id to prevent context loss - these values can be changed later by user.
@@ -60,6 +78,18 @@ module CRater::FeedbackFunctionality
       continue_feedback_processing(feedback_item)
     end
     feedback_item
+  end
+
+  def request_c_rater_feedback(options = {})
+    # Return copy of  existing feedback for the same answer_text:
+    found = find_prev_feedback
+    return copy_of_feedback(found) if found
+
+    # Return an error feedback item if not configured:
+    return not_configured unless c_rater_enabled?
+    
+    # Otherwise call out to scoring service:
+    return request_feedback_from_service
   end
 
   def continue_feedback_processing(feedback_item)
