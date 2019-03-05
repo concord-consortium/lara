@@ -6,12 +6,14 @@ describe CRater::FeedbackFunctionality do
     # isolated from the class that includes it.
     self.table_name = :embeddable_open_response_answers
     include CRater::FeedbackFunctionality
+    attr_accessible :answer_text
   end
 
   let(:answer) do
-    ans = CRaterFeedbackFunctionalityTestClass.create
+    ans = CRaterFeedbackFunctionalityTestClass.create({
+      answer_text: ans_text
+    })
     # Stub interface required by feedback functionality:
-    allow(ans).to receive(:answer_text).and_return(ans_text)
     allow(ans).to receive(:c_rater_item_settings).and_return(item_settings)
     allow(ans).to receive(:question).and_return(question)
     ans
@@ -127,6 +129,48 @@ describe CRater::FeedbackFunctionality do
           answer.save_feedback
           answer.save_feedback
           expect(answer.feedback_items.count).to eql(3)
+        end
+
+        describe "when answer_text matches a previous summission" do
+          before(:each) do
+            answer.save_feedback
+          end
+
+          it "wont call the scoring service" do
+            expect(answer).to_not receive(:request_feedback_from_service)
+            answer.save_feedback
+          end
+
+          it "will create a copy of the matching feedback item" do
+            expect(answer).to receive(:copy_of_feedback)
+            answer.save_feedback
+          end
+          it "will add a new feedback item" do
+            expect(answer.feedback_items.count).to eql(1)
+            answer.save_feedback
+            expect(answer.feedback_items.count).to eql(2)
+          end
+
+          it "will have the same score as the previous item" do
+            last_score = answer.feedback_items.last.score
+            answer.save_feedback
+            expect(answer.feedback_items.last.score).to eql(last_score)
+          end
+
+        end
+
+        describe "when answer_text doesn't match a previous sumbission" do
+          before(:each) do
+            answer.save_feedback
+          end
+
+          it "it will ask the service to score again" do
+            answer.update_attribute(:answer_text, 'A NOVEL ANSWER')
+            expect(answer).to_not receive(:copy_of_feedback)
+            expect(answer).to receive(:request_feedback_from_service)
+            answer.save_feedback
+          end
+
         end
       end
 
