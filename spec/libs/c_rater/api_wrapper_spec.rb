@@ -50,7 +50,7 @@ describe CRater::APIWrapper do
     process_xml(xml)
   end
 
-  let(:crater) { CRater::APIWrapper.new(client_id, username, password, api_key, "#{protocol}#{url}") }
+  let(:crater) { CRater::APIWrapper.new(client_id, username, password, "#{protocol}#{url}", api_key)}
 
   def process_xml(xml_string)
     # Remove new lines and unnecessary whitespaces
@@ -157,7 +157,7 @@ describe CRater::APIWrapper do
   describe "The Constructor params" do
 
     describe "The url param" do
-      let(:crater) { CRater::APIWrapper.new(client_id, username, password, url) }
+      let(:crater) { CRater::APIWrapper.new(client_id, username, password, url, api_key) }
       let(:default_url) { CRater::APIWrapper::C_RATER_URI }
 
       describe "When blank" do
@@ -179,6 +179,32 @@ describe CRater::APIWrapper do
         let(:url) { "https://some.place.com" }
         it "should use the param url" do
           expect(crater.instance_variable_get(:@url)).to eql(url)
+        end
+      end
+    end
+
+    describe "The api_key param" do
+      describe "when nil" do
+        let(:api_key) { nil }
+        it "will set @api_key to nil" do
+          expect(crater.instance_variable_get(:@api_key)).to be_nil
+        end
+
+        it "will not set special api-key headers" do
+          headers = crater.send(:request_headers)
+          expect(headers.keys).not_to include('x-api-key')
+        end
+      end
+
+      describe "when blank" do
+        let(:api_key) { "" }
+        it "will set @api_key to '' (blank)" do
+          expect(crater.instance_variable_get(:@api_key)).to eql("")
+        end
+
+        it "will not set special api-key headers" do
+          headers = crater.send(:request_headers)
+          expect(headers.keys).not_to include('x-api-key')
         end
       end
     end

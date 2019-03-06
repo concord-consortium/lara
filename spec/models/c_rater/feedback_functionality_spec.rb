@@ -110,9 +110,29 @@ describe CRater::FeedbackFunctionality do
                     :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'})
       end
 
+
       describe '#c_rater_enabled?' do
         subject { answer.c_rater_enabled? }
         it { is_expected.to be true }
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is nil' do
+          let(:api_key) { nil }
+          it { is_expected.to be true }
+        end
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is blank' do
+          let(:api_key) {''}
+          it { is_expected.to be true }
+        end
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is present' do
+          let(:api_key) {'something'}
+          it { is_expected.to be true }
+        end
+
       end
 
       describe '#save_feedback' do
