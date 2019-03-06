@@ -34,19 +34,15 @@ class ArgumentationBlockController
         dirtyMsgElement: $feedbackEl.find(DIRTY_MSG_SEL)[0],
         errorMsgElement: $feedbackEl.find(ERROR_MSG_SEL)[0]
       }
-    @fbOnFeedback = new FeedbackOnFeedbackController(argBlockElement)
     @registerListeners()
 
   registerListeners: ->
     # 'answer_for' and 'no_answer_for' events are defined in save-on-change.
-    # 'feedback_on_feedback_sent' is defined in FeedbackOnFeedbackController.
     $(document).on 'answer_for', (e, opt) =>
       @updateQuestion(opt.source, true)
       @updateView()
     $(document).on 'no_answer_for', (e, opt) =>
       @updateQuestion(opt.source, false)
-      @updateView()
-    $(document).on 'feedback_on_feedback_sent', (e, opt) =>
       @updateView()
 
     @$submitBtn.on 'click', (e) =>
@@ -60,8 +56,6 @@ class ArgumentationBlockController
     q.dirty = q.data != $(q.formElement).serialize()
 
   submitButtonClicked: (e) ->
-    unless @feedbackOnFeedbackIsReady()
-      return modalDialog(false, t('ARG_BLOCK.PLEASE_FEEDBACK_ON_FEEDBACK'))
     unless @allQuestionAnswered()
       return modalDialog(false, t('ARG_BLOCK.PLEASE_ANSWER'))
     if !@anyQuestionDirty() && !@anyError()
@@ -100,7 +94,6 @@ class ArgumentationBlockController
           # If we are here, it means that attempts >= MAX_ATTEMPTS. Can't do anything now, just display an error.
           alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         else
-          @fbOnFeedback.activate(data.submission_id)
           LoggerUtils.craterResponseLogging(data)
 
         @submissionCount += 1
@@ -132,7 +125,7 @@ class ArgumentationBlockController
     @$submissionCount.text(@submissionCount)
 
   updateSubmitBtn: ->
-    if @allQuestionAnswered() && (@anyQuestionDirty() || @anyError()) && @feedbackOnFeedbackIsReady()
+    if @allQuestionAnswered() && (@anyQuestionDirty() || @anyError())
       @$submitBtn.removeClass('disabled')
       @hideSubmitPrompt()
     else
@@ -144,9 +137,6 @@ class ArgumentationBlockController
 
   showSubmitPrompt: ->
     @$submitPrompt.show()
-    unless @feedbackOnFeedbackIsReady()
-      @$submitPrompt.html( t('ARG_BLOCK.PLEASE_FEEDBACK_ON_FEEDBACK') )
-      return
     unless @allQuestionAnswered()
       @$submitPrompt.html( t('ARG_BLOCK.PLEASE_ANSWER') )
       return
@@ -180,7 +170,7 @@ class ArgumentationBlockController
         $(q.errorMsgElement).slideUp()
 
   updateForwardNavigationBlocking: ->
-    if @allQuestionAnswered() && @noDirtyQuestions() && @feedbackOnFeedbackIsReady()
+    if @allQuestionAnswered() && @noDirtyQuestions()
       @enableForwardNavigation()
     else
       @disableForwardNavigation()
@@ -247,54 +237,9 @@ class ArgumentationBlockController
   noDirtyQuestions: ->
     !@anyQuestionDirty()
 
-  feedbackOnFeedbackIsReady: ->
-    @fbOnFeedback.isReady()
-
   formIDtoAnswerID: (htmlId) ->
     # E.g. change "edit_embeddable_open_response_answer_240" to "open_response_answer_240"
     htmlId.replace('edit_embeddable_', '')
-
-class FeedbackOnFeedbackController
-  FEEDBACK_ON_FEEDBACK_SEL = '.ab-feedback-on-feedback'
-
-  constructor: (argBlockElement) ->
-    @$element = $(argBlockElement).find(FEEDBACK_ON_FEEDBACK_SEL)
-    @endpointUrl = @$element.data('href')
-    @submissionId = @$element.data('submission-id')
-    @registerListeners()
-
-  registerListeners: ->
-    @$element.find('input').on 'change', =>
-      @sendAndDeactivate()
-
-  activate: (submissionId) ->
-    @submissionId = submissionId
-    @$element.find('input').prop('checked', false)
-    @$element.removeClass('did_try_to_navigate')
-    @$element.fadeIn()
-
-  deactivate: ->
-    # Note that we accept the fact that feedback on feedback failed. We don't want to block page completely.
-    @submissionId = null
-    @$element.fadeOut()
-    $(document).trigger('feedback_on_feedback_sent')
-
-  sendAndDeactivate: ->
-    score = @$element.find('input:checked').val()
-    $.ajax(
-      type: 'POST',
-      url: @endpointUrl,
-      contentType: 'application/json',
-      data: JSON.stringify({
-        submission_id: @submissionId,
-        score: score
-      }),
-      complete: =>
-        @deactivate()
-    )
-
-  isReady: ->
-    @submissionId == null || @submissionId == undefined
 
 $(document).ready ->
   $('.arg-block').each ->
