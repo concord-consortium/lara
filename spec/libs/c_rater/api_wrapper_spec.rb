@@ -137,4 +137,34 @@ describe CRater::APIWrapper do
       end
     end
   end
+
+  describe "The Constructor params" do
+
+    describe "The url param" do
+      let(:crater) { CRater::APIWrapper.new(client_id, username, password, url) }
+      let(:default_url) { CRater::APIWrapper::C_RATER_URI }
+
+      describe "When blank" do
+        # See: https://www.pivotaltracker.com/story/show/164411237
+        let(:url) { "" }
+        it "Will set @url to the default value" do
+          expect(crater.instance_variable_get(:@url)).to eql(default_url)
+        end
+      end
+
+      describe "When a nil" do
+        let(:url) { nil }
+        it "should use the default value of CRater::APIWrapper::C_RATER_URI" do
+          expect(crater.instance_variable_get(:@url)).to eql(default_url)
+        end
+      end
+
+      describe "When a valid URL" do
+        let(:url) { "https://some.place.com" }
+        it "should use the param url" do
+          expect(crater.instance_variable_get(:@url)).to eql(url)
+        end
+      end
+    end
+  end
 end

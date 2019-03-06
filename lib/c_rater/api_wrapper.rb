@@ -10,7 +10,7 @@ class CRater::APIWrapper
     @client_id = client_id
     @username  = username
     @password  = password
-    @url       = url || C_RATER_URI
+    @url       = url.present? ? url : C_RATER_URI
   end
 
   def request_xml(item_id, response_id, response_text)
