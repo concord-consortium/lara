@@ -3,8 +3,9 @@
 
 guard :rspec,
   cmd: 'bundle exec spring rspec --tag ~slow --tag ~js',
-  all_after_pass: true,
-  all_on_start: true do
+  # To run all tets, just hit "<return>" in the console.
+  all_after_pass: false,
+  all_on_start: false do
 
   watch(%r{^spec/.+_spec\.rb$})
   watch('spec/spec_helper.rb')  { "spec" }
