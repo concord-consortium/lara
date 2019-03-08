@@ -156,18 +156,19 @@ describe CRater::FeedbackFunctionality do
 
         describe "when answer_text matches a previous summission" do
           before(:each) do
-            answer.save_feedback
+            answer.save_feedback # Creates a first feedback item
           end
 
           it "wont call the scoring service" do
             expect(answer).to_not receive(:request_feedback_from_service)
-            answer.save_feedback
+            answer.save_feedback # Save a duplicate feedback item
           end
 
-          it "will create a copy of the matching feedback item" do
+          it "will create a copy of the item" do
             expect(answer).to receive(:copy_of_feedback)
             answer.save_feedback
           end
+
           it "will add a new feedback item" do
             expect(answer.feedback_items.count).to eql(1)
             answer.save_feedback
@@ -180,6 +181,30 @@ describe CRater::FeedbackFunctionality do
             expect(answer.feedback_items.last.score).to eql(last_score)
           end
 
+          it "will have the same feedback_text as the previous item" do
+            feedback_text = answer.feedback_items.last.feedback_text
+            answer.save_feedback
+            expect(answer.feedback_items.last.feedback_text).to eql(feedback_text)
+          end
+
+          it "will have the same status as the previous item" do
+            status = answer.feedback_items.last.status
+            answer.save_feedback
+            expect(answer.feedback_items.last.status).to eql(status)
+          end
+
+          it "will have the same answer_text as the previous item" do
+            answer_text = answer.feedback_items.last.answer_text
+            answer.save_feedback
+            expect(answer.feedback_items.last.answer_text).to eql(answer_text)
+          end
+
+          # TODO: How important is it to copy response_info?
+          it "will have the same response_info as the previous item" do
+            response_info = answer.feedback_items.last.response_info
+            answer.save_feedback
+            expect(answer.feedback_items.last.response_info).to eql(response_info)
+          end
         end
 
         describe "when answer_text doesn't match a previous sumbission" do

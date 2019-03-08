@@ -54,13 +54,14 @@ module CRater::FeedbackFunctionality
   end
 
   def copy_of_feedback(prev_feedback)
-    feedback_item = CRater::FeedbackItem.new({
-    status: prev_feedback.status,
-    answer: self,
-    answer_text: self.answer_text,
-    score: prev_feedback.score
-  })
-    feedback_item.save!
+    feedback_item = CRater::FeedbackItem.create!({
+      status: prev_feedback.status,
+      answer: self,
+      answer_text: self.answer_text,
+      score: prev_feedback.score,
+      feedback_text: prev_feedback.feedback_text,
+      response_info: prev_feedback.response_info
+    })
     return feedback_item
   end
 
