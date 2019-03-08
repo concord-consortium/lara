@@ -52,7 +52,8 @@ describe CRater::FeedbackFunctionality do
       before(:each) do
         allow(answer).to receive(:c_rater_config).and_return(client_id: nil,
                                                              username: nil,
-                                                             password: nil)
+                                                             password: nil,
+                                                             api_key: nil)
       end
       describe '#c_rater_enabled?' do
         subject { answer.c_rater_enabled? }
@@ -77,6 +78,7 @@ describe CRater::FeedbackFunctionality do
       let(:url) { 'fake.c-rater.api/api/v1' }
       let(:mock_url) { "#{protocol}#{username}:#{password}@#{url}" }
       let(:score) { 2 }
+      let(:api_key) { 'fakekey' }
       let(:response) do
         <<-EOS
           <crater-results>
@@ -101,15 +103,36 @@ describe CRater::FeedbackFunctionality do
         allow(answer).to receive(:c_rater_config).and_return(client_id: client_id,
                                                              username: username,
                                                              password: password,
+                                                             api_key: api_key,
                                                              url: "#{protocol}#{url}")
         stub_request(:post, "#{protocol}#{username}:#{password}@#{url}").
           to_return(:status => 200, :body => response,
                     :headers => {'Content-Type'=>'application/xml; charset=iso-8859-1'})
       end
 
+
       describe '#c_rater_enabled?' do
         subject { answer.c_rater_enabled? }
         it { is_expected.to be true }
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is nil' do
+          let(:api_key) { nil }
+          it { is_expected.to be true }
+        end
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is blank' do
+          let(:api_key) {''}
+          it { is_expected.to be true }
+        end
+
+        # API Key is an optional parameter used for new C-Rater service only
+        describe 'when api_key is present' do
+          let(:api_key) {'something'}
+          it { is_expected.to be true }
+        end
+
       end
 
       describe '#save_feedback' do
