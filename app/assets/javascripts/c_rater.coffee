@@ -10,7 +10,7 @@ class ArgumentationBlockController
   FEEDBACK_HEADER_SEL = '.ab-feedback-header'
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
   SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
-  MAX_ATTEMPTS = 3
+  MAX_ERROR_RETRIES = 3
 
   constructor: (argBlockElement) ->
     @$element = $(argBlockElement)
@@ -63,7 +63,7 @@ class ArgumentationBlockController
 
     @$submitBtn.prop('disabled', true)
     @showWaiting()
-    @attempts = 0
+    @service_attempts = 0
 
     @issueRequest()
 
@@ -72,11 +72,11 @@ class ArgumentationBlockController
     e.stopPropagation()
 
   issueRequest: ->
-    @attempts += 1
+    @service_attempts += 1
     tryAgain = =>
       setTimeout(=>
         @issueRequest()
-      , @attempts * 1000)
+      , @service_attempts * 1000)
 
     $.ajax(
       type: 'POST',
@@ -88,10 +88,10 @@ class ArgumentationBlockController
           q.error = data.feedback_items[id].error
           q.data = $(q).serialize()
         # Try again in case of some errors.
-        return tryAgain() if @anyError() && @attempts < MAX_ATTEMPTS
+        return tryAgain() if @anyError() && @service_attempts < MAX_ERROR_RETRIES
 
         if @anyError()
-          # If we are here, it means that attempts >= MAX_ATTEMPTS. Can't do anything now, just display an error.
+          # If we are here, it means that service_attempts >= MAX_ERROR_RETRIES. Can't do anything now, just display an error.
           alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         else
           LoggerUtils.craterResponseLogging(data)
@@ -104,7 +104,7 @@ class ArgumentationBlockController
         @hideWaiting()
         @$submitBtn.prop('disabled', false)
       error: =>
-        return tryAgain() if @attempts < MAX_ATTEMPTS
+        return tryAgain() if @service_attempts < MAX_ERROR_RETRIES
         alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         # Make sure that user can proceed anyway!
         @enableForwardNavigation()
