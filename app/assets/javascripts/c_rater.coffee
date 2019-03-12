@@ -11,8 +11,10 @@ class ArgumentationBlockController
   SUBMISSION_COUNT_SEL = '.ab-submission-count'
   SUBMIT_BTN_PROMPT = '.ab-submit-prompt'
   MAX_ERROR_RETRIES = 3
+  MAX_STUDENT_SUBMISSIONS = 4
 
   constructor: (argBlockElement) ->
+    @student_submission_attempts = 0
     @$element = $(argBlockElement)
     @$submitBtn = @$element.find(SUBMIT_BTN_SEL)
     @$submitPrompt = @$element.find(SUBMIT_BTN_PROMPT)
@@ -35,6 +37,8 @@ class ArgumentationBlockController
         errorMsgElement: $feedbackEl.find(ERROR_MSG_SEL)[0]
       }
     @registerListeners()
+    if(@$submitBtn[0].value != t('ARG_BLOCK.SUBMIT'))
+      @updateSubmitBtnText()
 
   registerListeners: ->
     # 'answer_for' and 'no_answer_for' events are defined in save-on-change.
@@ -56,14 +60,18 @@ class ArgumentationBlockController
     q.dirty = q.data != $(q.formElement).serialize()
 
   submitButtonClicked: (e) ->
+    return unless @studentCanSubmit()
     unless @allQuestionAnswered()
       return modalDialog(false, t('ARG_BLOCK.PLEASE_ANSWER'))
     if !@anyQuestionDirty() && !@anyError()
       return modalDialog(false, t('ARG_BLOCK.ANSWERS_NOT_CHANGED'))
 
+
     @$submitBtn.prop('disabled', true)
+    return if (@student_submission_attempts > MAX_STUDENT_SUBMISSIONS)
     @showWaiting()
     @service_attempts = 0
+    @student_submission_attempts = @student_submission_attempts + 1
 
     @issueRequest()
 
@@ -124,19 +132,28 @@ class ArgumentationBlockController
   updateSubmissionCount: ->
     @$submissionCount.text(@submissionCount)
 
+  studentCanSubmit: ->
+    @student_submission_attempts < MAX_STUDENT_SUBMISSIONS
+
   updateSubmitBtn: ->
     if @allQuestionAnswered() && (@anyQuestionDirty() || @anyError())
-      @$submitBtn.removeClass('disabled')
-      @hideSubmitPrompt()
+      if @studentCanSubmit()
+        @$submitBtn.removeClass('disabled')
+        @hideSubmitPrompt()
     else
       @$submitBtn.addClass('disabled')
       @showSubmitPrompt()
 
   updateSubmitBtnText: ->
-    @$submitBtn[0].value = 'Resubmit'
+    tries_left = MAX_STUDENT_SUBMISSIONS - @student_submission_attempts
+    try_or_tries = if (tries_left == 1) then "try" else "tries"
+    @$submitBtn[0].value = "Resubmit (#{tries_left} #{try_or_tries} left)"
 
   showSubmitPrompt: ->
     @$submitPrompt.show()
+    unless @studentCanSubmit()
+      @$submitPrompt.html( t('ARG_BLOCK.MAX_SUMISSIONS_REACHED') )
+      return
     unless @allQuestionAnswered()
       @$submitPrompt.html( t('ARG_BLOCK.PLEASE_ANSWER') )
       return
@@ -157,6 +174,8 @@ class ArgumentationBlockController
 
   updateDirtyQuestionMsgs: ->
     for id, q of @question
+      unless @studentCanSubmit()
+        $(q.dirtyMsgElement).html(t('ARG_BLOCK.RESUBMIT_ANSWER_LIMIT_REACHED'))
       if q.dirty
         $(q.dirtyMsgElement).slideDown()
       else

@@ -75,8 +75,11 @@
   input[type="submit"],
   button[type="button"] {
     border: 0;
-    @include btn($theme-color-b, darken($theme-color-b, 10%))
+    @include btn($theme-color-b, darken($theme-color-b, 10%));
     /*@include btn(lighten($theme-color-a, 10%), $theme-color-a);*/
+    &.disabled {
+      cursor: not-allowed;
+    }
   }
 
   .related-hdr {

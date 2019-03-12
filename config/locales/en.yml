@@ -61,6 +61,7 @@ en:
   SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
+    MAX_SUMISSIONS_REACHED: "You have exceeded the allowed feedback retries."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."
     SUBMIT: "Submit"
     RESUBMIT: "Resubmit"
@@ -71,6 +72,7 @@ en:
     RESUBMIT_OR_MOVE: "You may revise your answers and resubmit, or you may move to the next page."
     FEEDBACK: "Feedback"
     RESUBMIT_ANSWER: "Answer has been changed, please resubmit to update feedback!"
+    RESUBMIT_ANSWER_LIMIT_REACHED: "Answer has been changed, but you are out of feedback tries."
     TEST_MODEL: "C-Rater Item ID references test model"
     NO_FEEDBACK_TEXT: "No feedback text defined for score: %{score}"
     NO_SCORE_MAPPING: "Score: %{score} (score mapping undefined)"
