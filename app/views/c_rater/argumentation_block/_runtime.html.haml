@@ -32,31 +32,6 @@
                               :locals => { feedback: m.get_saved_feedback, emb_id: m.answer_id }
 
     - submission = last_submission(page, @run)
-    - show_f_on_f = submission && submission.usefulness_score.nil? && !submission.any_errors?
-    .question.ab-feedback-on-feedback{:style => show_f_on_f ? '' : 'display: none;',
-                                      'data-submission-id' => show_f_on_f ? submission.id : nil,
-                                      'data-href' => c_rater_arg_block_feedback_on_feedback_path}
-      - if page.layout == "l-7030" || page.layout == "r-3070"
-        .ab-robot-wrap
-          .ab-robot-figure
-          %div
-            = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
-            - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
-              %label
-                = radio_button_tag(:feedback_on_feedback, value)
-                = label
-      - else
-        %table.ab-robot-wrap
-          %tr
-            %td
-              .ab-robot-figure{:id => 'ab-robot-image'}
-            %td         
-              %div
-                = t('ARG_BLOCK.FEEDBACK_ON_FEEDBACK')
-                - CRater::FeedbackSubmission.usefulness_score_names.each do |value, label|
-                  %label
-                    = radio_button_tag(:feedback_on_feedback, value)
-                    = label
 
     %input{:class => 'ab-submit button', :type => 'submit',
            :value => submission_count > 0 ? t('ARG_BLOCK.RESUBMIT') : t('ARG_BLOCK.SUBMIT'),
