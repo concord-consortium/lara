@@ -264,7 +264,8 @@ class InteractivePage < ActiveRecord::Base
       :show_sidebar,
       :show_interactive,
       :show_info_assessment,
-      :embeddable_display_mode
+      :embeddable_display_mode,
+      :additional_sections
     ]
 
     attributes = {}
