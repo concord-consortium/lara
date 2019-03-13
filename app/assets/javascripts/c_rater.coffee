@@ -71,7 +71,6 @@ class ArgumentationBlockController
     return if (@student_submission_attempts > MAX_STUDENT_SUBMISSIONS)
     @showWaiting()
     @service_attempts = 0
-    @student_submission_attempts = @student_submission_attempts + 1
 
     @issueRequest()
 
@@ -102,6 +101,7 @@ class ArgumentationBlockController
           # If we are here, it means that service_attempts >= MAX_ERROR_RETRIES. Can't do anything now, just display an error.
           alert(t('ARG_BLOCK.SUBMIT_ERROR'))
         else
+          @student_submission_attempts = @student_submission_attempts + 1
           LoggerUtils.craterResponseLogging(data)
 
         @submissionCount += 1
@@ -189,7 +189,7 @@ class ArgumentationBlockController
         $(q.errorMsgElement).slideUp()
 
   updateForwardNavigationBlocking: ->
-    if @allQuestionAnswered() && @noDirtyQuestions()
+    if @allQuestionAnswered() && (@noDirtyQuestions() || !@studentCanSubmit() )
       @enableForwardNavigation()
     else
       @disableForwardNavigation()

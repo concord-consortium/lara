@@ -61,7 +61,7 @@ en:
   SNAPSHOT_WITHOUT_INTERACTIVE: "Snapshot won't work, as the interactive is not selected"
   ARG_BLOCK:
     PLEASE_ANSWER: "Please answer all questions in the argumentation block."
-    MAX_SUMISSIONS_REACHED: "You have exceeded the allowed feedback retries."
+    MAX_SUMISSIONS_REACHED: "You have used up all of your tries. Please move on to the next page."
     ANSWERS_NOT_CHANGED: "Answers have not been changed."
     SUBMIT: "Submit"
     RESUBMIT: "Resubmit"
