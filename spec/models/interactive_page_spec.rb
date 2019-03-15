@@ -399,24 +399,53 @@ describe InteractivePage do
     end
   end
 
+  ## TODO: Test that 'additional_sections' imports from json.
   describe '#import' do
-    it 'imports page from json' do
-      activity_json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
-      activity_json[:pages].each_with_index do |p, i|
-        page = InteractivePage.import(p)
-        expect(page).to be_a(InteractivePage)
-        expect(p[:name]).to eq(page.name)
-        expect(p[:text]).to eq(page.text)
-        expect(p[:sidebar_title]).to eq(page.sidebar_title)
-        expect(p[:position]).to be(page.position)
-      end
-      # Test last page for interactive and labbook combo
-      # Note that interactive is positioned AFTER labbook in embeddables list.
-      # This case used to cause problems before, so test it explicitly.
-      page = InteractivePage.import(activity_json[:pages].last).reload
-      expect(page.interactives.last).to be_a ImageInteractive
-      expect(page.embeddables.first.interactive).to eq page.interactives.last
+    let(:example_json_file) { 'valid_lightweight_activity_import' }
+    let(:activity_json) do
+      JSON.parse(File.read(
+        Rails.root +
+        "spec/import_examples/#{example_json_file}.json"),
+        :symbolize_names => true)
     end
+
+    describe "from a valid_lightweight_activity" do
+      let(:example_json_file) { 'valid_lightweight_activity_import' }
+      it 'imports page from json' do
+        activity_json[:pages].each_with_index do |p, i|
+          page = InteractivePage.import(p)
+          expect(page).to be_a(InteractivePage)
+          expect(p[:name]).to eq(page.name)
+          expect(p[:text]).to eq(page.text)
+          expect(p[:sidebar_title]).to eq(page.sidebar_title)
+          expect(p[:position]).to be(page.position)
+        end
+        # Test last page for interactive and labbook combo
+        # Note that interactive is positioned AFTER labbook in embeddables list.
+        # This case used to cause problems before, so test it explicitly.
+        page = InteractivePage.import(activity_json[:pages].last).reload
+        expect(page.interactives.last).to be_a ImageInteractive
+        expect(page.embeddables.first.interactive).to eq page.interactives.last
+      end
+    end
+
+    describe "from a lightweight activity with arg block section" do
+      let(:example_json_file) { 'activity_with_arg_block_section' }
+      let(:test_page_index) { 1 }
+      let(:page_json) { activity_json[:pages][test_page_index] }
+      let(:page) { InteractivePage.import(page_json)}
+      it 'imports the arg block as an addition section' do
+        expect(page.name).to eql("page 2")
+        expect(page.additional_sections).to_not be_nil
+        expect(page.additional_sections["arg_block"]).to be_truthy
+      end
+      it 'has at least one embeddable arg block' do
+        embeddable = page.embeddables.first
+        expect(page.section_embeddables("arg_block")).to_not be_nil
+        expect(page.section_embeddables("arg_block")).to include(embeddable)
+      end
+    end
+
   end
 
   describe 'InteractivePage#register_additional_section' do
