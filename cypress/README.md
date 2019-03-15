@@ -15,10 +15,10 @@ test environments that you are planning to use:
  - staging
  - production
  
-Note that these credentials must work on `/user/sign_in` page, e.g. http://authoring.staging.concord.org/users/sign_in. 
+Note that these credentials must work on `/users/sign_in` page, e.g. http://authoring.staging.concord.org/users/sign_in.
 You **can't** use Portal to login (tests should not depend on Portal).
 
-These credentials and any other user-specific configuration should be specified in `config/user-config.json`. 
+These credentials and any other user-specific configuration should be specified in `config/user-config.json`.
 Copy existing sample and modify it:
 
 ```
