@@ -282,6 +282,16 @@ class InteractivePage < ActiveRecord::Base
     InteractivePage.transaction do
       import_page.save!(validate: false)
 
+      # import :additional_sections from page_json_object.
+      # It will be a hash looking like this {:arg_block => true }
+      # but we need string keys, eg: {"arg_block" => true }
+      if page_json_object[:additional_sections]
+        page_json_object[:additional_sections].each do |k,v|
+          import_page.additional_sections ||= {}
+          import_page.additional_sections[k.to_s] = v
+        end
+      end
+
       # First, import and cache all the embeddables.
       page_json_object[:embeddables].each do |embed_hash|
         embed = helper.import(embed_hash[:embeddable])
