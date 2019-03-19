@@ -61,7 +61,6 @@ const answerPullDown = (choiceNo = 2) => {
   ]
   const choice = choices[choiceNo - 1]
   cy.get('select').select(choice)
-  // cy.get('select').select(choice)
 }
 
 context('Arg block sections', function () {
@@ -139,7 +138,11 @@ context('Arg block sections', function () {
       cy.wait(5000)
       cy.get('.ab-submit.button').click()
       cy.wait(10000)
-    })    
+    })
+    // NOTE: C-RATER features won't work on Travis,
+    // Becuase C_RATER_FAKE isn't defined in the environment.
+    // So this test only asserts that the navigation still works.
+    // Even when C-Rater services isn't available.
     it('should show the submission results', () => {
       submitButtonShouldBe(ENABLED)
       submitPromptShouldBe(HIDDEN)
