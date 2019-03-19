@@ -118,30 +118,14 @@ context('Arg block sections', function () {
       answerOpenResponse(2, 'This is my other answer')
       cy.wait(5000)
     })
-
-    describe('The submit button', () => {
-      it('should be enabled', () => {
-        submitButtonShouldBe(ENABLED)
-      })
+    
+    it('The submit button should be enabled', () => {
+      submitButtonShouldBe(ENABLED)
+      submitPromptShouldBe(HIDDEN)
+      navButtonShouldBe(DISABLED)
+      navButtonShouldBe(DISABLED)
     })
 
-    describe('The submit prompt', () => {
-      it('should be hidden', () => {
-        submitPromptShouldBe(HIDDEN)
-      })
-    })
-
-    describe('The navigation button', () => {
-      it('should be disabled', () => {
-        navButtonShouldBe(DISABLED)
-      })
-    })
-
-    describe('The navigation button', () => {
-      it('should be disabled', () => {
-        navButtonShouldBe(DISABLED)
-      })
-    })
     //   navButtonShouldBe(DISABLED)
     //   feedbackShouldBe(HIDDEN)
     // })
