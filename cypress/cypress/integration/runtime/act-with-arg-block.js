@@ -18,8 +18,8 @@ const submitButtonShouldBe = (enabledOrDisabled) => {
 const submitPromptShouldBe = (shownOrHidden, text=DEFAULT_SUBMIT_PROMPT) => {
   cy.get('.ab-submit-prompt').should(($p) => {
     shownOrHidden
-      ? expect($p).to.exist
-      : expect($p).to.exist
+      ? expect($p).to.not.be.hidden
+      : expect($p).to.be.hidden
   })
 }
 
@@ -76,15 +76,16 @@ context('Arg block sections', function () {
     cy.deleteMaterial(activityUrl)
   })
 
-  // 1: Visit the page
-  // 2: Fill in our text boxes
-  // 3: Change the pulldown / multiple choice answers
+  // Roughly speaking, we want to test the following:
+  // 1: Visit the page.
+  // 2: Fill in our text boxes.
+  // 3: Change the pulldown / multiple choice answers.
   // 4: Check our messages:
-  // 5: When the answers are changed we need to see something about 'feedback …'
-  // xx: Forward navigation should be disbled.
-  // 6: Check the text of the submit button
-  // 8: Click the 'submit' button
-  // 9: Check for feedback on open respones
+  // 5:   When the answers are changed, we see something about 'feedback …'
+  // 6:   Forward navigation should be disabled.
+  // 7:   Check the text of the submit button
+  // 8:   Click the 'submit' button.
+  // 9:   Check for feedback on open responses.
   // 10:  Forward navigation should be enabled.
   describe('when first loaded', () => {
     it('Navigation and sumbit buttons should be disabled', () => {
@@ -96,6 +97,7 @@ context('Arg block sections', function () {
       feedbackShouldBe(HIDDEN)
     })
   })
+
   describe('after answering all one question', () => {
     beforeEach(() => {
       cy.visitActivityPage(activityUrl, 1)
@@ -109,6 +111,7 @@ context('Arg block sections', function () {
       feedbackShouldBe(HIDDEN)
     })
   })
+
   describe('after all the questions are answered', () => {
     beforeEach(() => {
       cy.visitActivityPage(activityUrl, 1)
@@ -118,36 +121,30 @@ context('Arg block sections', function () {
       answerOpenResponse(2, 'This is my other answer')
       cy.wait(5000)
     })
-    
     it('The submit button should be enabled', () => {
       submitButtonShouldBe(ENABLED)
       submitPromptShouldBe(HIDDEN)
       navButtonShouldBe(DISABLED)
-      navButtonShouldBe(DISABLED)
+      feedbackShouldBe(HIDDEN)
     })
-
-    //   navButtonShouldBe(DISABLED)
-    //   feedbackShouldBe(HIDDEN)
-    // })
   })
+
+  describe('after all the questions are answered and submitted', () => {
+    beforeEach(() => {
+      cy.visitActivityPage(activityUrl, 1)
+      answerRadioButton(1)
+      answerOpenResponse(1, 'This is my answer')
+      answerPullDown(1)
+      answerOpenResponse(2, 'This is my other answer')
+      cy.wait(5000)
+      cy.get('.ab-submit.button').click()
+      cy.wait(10000)
+    })    
+    it('should show the submission results', () => {
+      submitButtonShouldBe(ENABLED)
+      submitPromptShouldBe(HIDDEN)
+      navButtonShouldBe(ENABLED)
+    })
+  })
+
 })
-
-// cy.get('.choice-container').first().find('.choice input').eq(1).click()
-// cy.get('textarea').eq(1).first().type('first answer')
-// cy.get('textarea').eq(2).type('second answer')
-// cy.get('select').select('(2)')
-// submitShouldBe(enabled)
-// cy.wait(2000)
-// buttonAndFeedbackAssert()
-// cy.wait(300)
-// cy.get('.sequence_title').click()
-// cy.get('.embeddables div:nth-child(2) .interactive-container').should('exist')
-// cy.get('.embeddables div:nth-child(2) .question-hdr').should(($p) => {
-//   expect($p.length).to.equal(1)
-//   const text = $p[0].innerText.trim();
-//   expect(text).to.equal('Question #2');
-// })
-
-// the first interactive saves state so it should have a header
-// cy.get('.interactive-mod div:nth-child(1) .interactive-container').should('exist')
-// cy.get('.interactive-mod div:nth-child(1) .question-hdr').should('contain', 'Question #4: Saves state #1')
