@@ -34,6 +34,15 @@ table.l-nav {
   color: $col-dark-blue;
 }
 
+.activities .activity {
+  .title {
+    line-height: 1;
+    a {
+      font-size: 12pt;
+    }
+  }
+}
+
 .content-mod .congratulations-block {
   background-color: $col-light-blue !important;
   color: $col-blue !important;
