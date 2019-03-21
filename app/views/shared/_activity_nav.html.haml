@@ -63,25 +63,25 @@
               %i.fa.fa-arrow-left
             %a{ :class => next_classes, :href => next_href }
               %i.fa.fa-arrow-right
-                
+
 .site-width.profile-nav
   - portal_user = session[:portal_username]
   .profile-dropdown
     %div.profile-u-name
-      #{t("WELCOME")}, 
+      #{t("WELCOME")},
       %a.popup-trigger{:href => "javascript:void(0);", "data-trigger-save" => "false"}
-        - if portal_user.nil? 
+        - if portal_user.nil?
           Anonymous
-        - else  
+        - else
           #{portal_user}
   .popup-prompt{:class => portal_user.nil? ? 'anonymous-user' : 'known-user'}
     .nav-popup-border.arrow
     .nav-popup.arrow
-    
+
     - if portal_user.nil?
-      %span  
+      %span
         If you are taking a class, check in with your teacher about logging in to save your work.
-    - else  
+    - else
       %span
         - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
         Not You?
@@ -91,5 +91,7 @@
     var rowWidth = jQuery('.l-nav').outerWidth();
     var menuWidth = jQuery('.nav-menu').outerWidth(true);
     var paginationWidth = jQuery('.pagination').outerWidth(true);
-    jQuery('.activity-nav-title').css('max-width', rowWidth - menuWidth - paginationWidth - 20);
+    var navWidth = rowWidth - menuWidth - paginationWidth - 20;
+    var navTitleWidth = navWidth > 350 ? navWidth : 350;
+    jQuery('.activity-nav-title').css('max-width', navTitleWidth);
   });
