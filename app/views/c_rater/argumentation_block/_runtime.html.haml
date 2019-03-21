@@ -26,9 +26,14 @@
                 %div= t 'ARG_BLOCK.RESUBMIT_OR_MOVE'
 
     - embeddables.each_with_index do |m,index|
-      .question
-        = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
-        = render :partial => "c_rater/argumentation_block/feedback",
+      - question = m.respond_to?(:question) ? m.question : m
+      -# The next two CSS selectors are important,they might be referenced
+      -# by plugins and passed to a plugin instance for wrapped content.
+      -# e.g. Teacher Edition
+      .question{ id: question.embeddable_dom_id }
+        .embeddable-container
+          = render :partial => "#{m.class.name.underscore.pluralize}/lightweight", :locals => {:embeddable => m}
+          = render :partial => "c_rater/argumentation_block/feedback",
                               :locals => { feedback: m.get_saved_feedback, emb_id: m.answer_id }
 
     - submission = last_submission(page, @run)
