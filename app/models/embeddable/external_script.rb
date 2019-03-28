@@ -57,6 +57,10 @@ module Embeddable
       false
     end
 
+    def is_hidden?
+      is_hidden
+    end
+
     def export
       return self.as_json(only:[:name, :url, :configuration, :description])
     end
