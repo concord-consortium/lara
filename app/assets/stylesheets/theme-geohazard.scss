@@ -11,3 +11,7 @@ $theme-params: (
 );
 
 @include theme($theme-params...);
+
+.site-width {
+  width: 1100px;
+}
