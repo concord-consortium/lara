@@ -8,8 +8,8 @@ feature "Visiting all pages of a Sequence" do
   let(:teacher_edition_regex)  { /teacher edition/i }
   before(:each) do
     page = sequence.activities.first.pages.first
-    Run.any_instance.stub(:page).and_return(run_page)
-    Run.any_instance.stub(:last_page).and_return(run_page)
+    allow_any_instance_of(Run).to receive(:page).and_return(run_page)
+    allow_any_instance_of(Run).to receive(:last_page).and_return(run_page)
   end
 
   let(:sequence)          { FactoryGirl.create(:sequence_with_activity, seq_options) }
@@ -67,7 +67,7 @@ feature "Visiting all pages of a Sequence" do
     # activity 1, Intro Page
     click_link "begin_activity"
     verify_param_assertions(param_assertions)
-    
+
     expect(find("//h4")).to have_content(activity.pages.first.name)
 
     activity.pages.each do

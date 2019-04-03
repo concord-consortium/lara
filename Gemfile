@@ -41,6 +41,7 @@ end
 
 group :test do
   gem "webmock", "~> 1.20"
+  gem 'simplecov', require: false
 end
 
 group :test, :development do

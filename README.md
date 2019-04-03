@@ -51,11 +51,24 @@ On a local development instance, you can make an admin user by registering a new
 Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
 
 ## Running RSpec tests
-While developing, you might wish to run continuous integration tests inside a
-Docker container.  
+While developing, you might wish to run integration tests inside a
+Docker container.
 
 Run `docker-compose up`  followed by
-`docker-compose exec app docker/dev/run-ci.sh` from your local machine.
+`docker-compose exec app docker/dev/run-ci.sh` from your local machine for a continuous test run.
+
+or
+
+Run `docker-compose up`  followed by
+`docker-compose exec app docker/dev/run-spec.sh` from your local machine for single test run.
+
+## Adding code coverage reports
+If you set the `COVERAGE_REPORT` environment variable to a non-falsy value a html code coverage report will be generated in the (git ignored) `coverage` directory.
+
+To use this under Docker run `docker-compose up` followed by either
+
+- `docker-compose exec -e COVERAGE_REPORT=true app docker/dev/run-ci.sh`
+- `docker-compose exec -e COVERAGE_REPORT=true app docker/dev/run-spec.sh`
 
 ### Older non-docker instructions:
 
