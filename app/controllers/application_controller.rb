@@ -181,7 +181,9 @@ class ApplicationController < ActionController::Base
       @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
       # If activity is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
-      @run.disable_collaboration if portal.valid?
+      if portal.valid?
+        @run.disable_collaboration
+      end
     end
 
     @sequence_run = @run.sequence_run if @run.sequence_run

@@ -57,3 +57,6 @@ config/database.yml
 
 # local development overrides
 config/environments/local-development.rb
+
+# simplecov output
+coverage/

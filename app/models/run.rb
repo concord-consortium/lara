@@ -71,7 +71,10 @@ class Run < ActiveRecord::Base
       sequence_id:     seq_id
     }
     found = self.find(:first, :conditions => conditions)
-    return found || self.create(conditions)
+    if found
+      return found
+    end
+    return self.create(conditions)
   end
 
   def self.for_user_and_portal(user,activity,portal)
@@ -83,7 +86,10 @@ class Run < ActiveRecord::Base
     }
     conditions[:activity_id]     = activity.id if activity
     found = self.find(:first, :conditions => conditions)
-    return found || self.create(conditions)
+    if found
+      return found
+    end
+    return self.create(conditions)
   end
 
   def self.for_user_and_activity(user,activity)
@@ -92,18 +98,33 @@ class Run < ActiveRecord::Base
       user_id:         user.id
     }
     found = self.find(:first, :conditions => conditions)
-    return found || self.create(conditions)
+    if found
+      return found
+    end
+    return self.create(conditions)
   end
 
   def self.for_key(key, activity)
-    self.by_key(key).first || self.create(activity: activity)
+    first = self.by_key(key).first
+    if first
+      return first
+    end
+    return self.create(activity: activity)
   end
 
   def self.lookup(key, activity, user, portal,seq_id)
-    return self.for_user_and_portal(user, activity, portal) if user && portal && portal.valid?
-    return self.for_key(key, activity) if (key && activity)
-    return self.for_user_activity_and_sequence(user,activity,seq_id) if (user && activity && seq_id)
-    return self.for_user_and_activity(user,activity) if (user && activity)
+    if user && portal && portal.valid?
+      return self.for_user_and_portal(user, activity, portal)
+    end
+    if (key && activity)
+      return self.for_key(key, activity)
+    end
+    if (user && activity && seq_id)
+      return self.for_user_activity_and_sequence(user,activity,seq_id)
+    end
+    if (user && activity)
+      return self.for_user_and_activity(user,activity)
+    end
     return self.create(activity: activity)
   end
 
@@ -171,7 +192,9 @@ class Run < ActiveRecord::Base
   end
 
   def disable_collaboration
-    collaboration_run.disable if collaboration_run
+    if collaboration_run
+      collaboration_run.disable
+    end
   end
 
   # TODO: Alias to all_responses_for_portal

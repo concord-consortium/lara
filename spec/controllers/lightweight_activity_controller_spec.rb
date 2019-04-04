@@ -7,13 +7,13 @@ describe LightweightActivitiesController do
   it_behaves_like "remote duplicate support" do
     let(:resource) { FactoryGirl.create(:activity) }
   end
-  
+
   before(:each) do
     @user ||= FactoryGirl.create(:admin)
     sign_in @user
   end
 
-  let (:act) { 
+  let (:act) {
     activity = FactoryGirl.create(:public_activity)
     activity.user = @user
     activity.theme = FactoryGirl.create(:theme)
@@ -24,6 +24,18 @@ describe LightweightActivitiesController do
   let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
   let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
   let (:sequence) { FactoryGirl.create(:sequence) }
+  let(:seq)     { nil }
+  let(:seq_run) { nil }
+  let(:run) do
+    mock_model(Run, {
+      :last_page => page,
+      :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
+      :activity => act,
+      :sequence => seq,
+      :sequence_run => seq_run,
+      :increment_run_count! => nil
+    })
+  end
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -53,18 +65,6 @@ describe LightweightActivitiesController do
     end
 
     describe "when the run has a page" do
-      let(:seq)     { nil }
-      let(:seq_run) { nil }
-      let(:run) do
-        mock_model(Run, {
-          :last_page => page,
-          :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
-          :activity => act,
-          :sequence => seq,
-          :sequence_run => seq_run,
-          :increment_run_count! => nil
-        })
-      end
       before(:each) do
         allow(Run).to receive(:lookup).and_return(run)
       end
@@ -82,7 +82,7 @@ describe LightweightActivitiesController do
           expect(response).to render_template('lightweight_activities/show')
         end
       end
-      
+
       describe "when the run page is for a different activity" do
         let(:other_act) { FactoryGirl.create(:public_activity) }
         let(:page)      { other_act.pages.create!(:name => "Page 2", :text => "This page isn't in Act 1.") }
@@ -100,6 +100,21 @@ describe LightweightActivitiesController do
         it 'should redirect to the single page view instead' do
           get :show, :id => act.id
           expect(subject).to redirect_to(activity_single_page_with_response_path(act.id, run.key))
+        end
+      end
+
+      describe 'when a collaborative activity has a collaborators_data_url param' do
+        it 'should call CreateCollaboration' do
+          allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(run)
+          expect_any_instance_of(CreateCollaboration).to receive(:call)
+          get :show, :id => act.id, :collaborators_data_url => "http://example.com/"
+        end
+      end
+
+      describe 'when a non-collaborative activity has valid portal parameters' do
+        it 'should call disable_collaboration' do
+          expect(run).to receive(:disable_collaboration)
+          get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
         end
       end
     end
@@ -131,6 +146,16 @@ describe LightweightActivitiesController do
         ar.save
         ar.reload
         get :show, :id => act.id, :response_key => ar.key, :sequence_id => sequence.id
+        expect(ar.reload.sequence_id).to be(sequence.id)
+      end
+
+      it 'when the run has an existing sequence the user owns' do
+        page
+        ar.sequence = sequence
+        ar.user = @user
+        ar.save
+        ar.reload
+        get :show, :id => act.id, :sequence_id => sequence.id
         expect(ar.reload.sequence_id).to be(sequence.id)
       end
     end
@@ -168,6 +193,78 @@ describe LightweightActivitiesController do
       page
       get :preview, :id => act.id
       expect(response).to render_template('lightweight_activities/show')
+    end
+  end
+
+  describe '#single_page' do
+    before(:each) do
+      allow(Run).to receive(:lookup).and_return(run)
+    end
+
+    it 'redirects without response_key param' do
+      page
+      get :single_page, :id => act.id
+      expect(subject).to redirect_to(activity_single_page_with_response_path(act.id, run.key))
+    end
+
+    describe 'with response_key param' do
+      before(:each) do
+        allow_any_instance_of(LightweightActivitiesController).to receive(:setup_single_page_show).and_return(nil)
+      end
+
+      it 'renders single' do
+        page
+        get :single_page, :id => act.id, :response_key => ar.key
+        expect(response).to be_success
+        expect(response).to render_template('lightweight_activities/single')
+      end
+
+      describe 'with another users run signed in as admin' do
+        some_other_user = FactoryGirl.create(:user)
+        let(:run) do
+          mock_model(Run, {
+            :last_page => page,
+            :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
+            :activity => act,
+            :sequence => seq,
+            :sequence_run => seq_run,
+            :increment_run_count! => nil,
+            :user => some_other_user
+          })
+        end
+
+        it 'renders single because user is admin' do
+          page
+          get :single_page, :id => act.id, :response_key => ar.key
+          expect(response).to be_success
+          expect(response).to render_template('lightweight_activities/single')
+        end
+      end
+
+      describe 'with another users run signed in as non-admin' do
+        before(:each) do
+          non_admin_user = FactoryGirl.create(:user)
+          sign_in non_admin_user
+        end
+        some_other_user = FactoryGirl.create(:user)
+        let(:run) do
+          mock_model(Run, {
+            :last_page => page,
+            :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
+            :activity => act,
+            :sequence => seq,
+            :sequence_run => seq_run,
+            :increment_run_count! => nil,
+            :user => some_other_user
+          })
+        end
+
+        it 'renders unauthorized_run' do
+          page
+          get :single_page, :id => act.id, :response_key => ar.key
+          expect(response).to render_template('runs/unauthorized_run')
+        end
+      end
     end
   end
 
@@ -335,7 +432,7 @@ describe LightweightActivitiesController do
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
 
-      
+
       it 'decrements the position value of the page' do
         page = act.pages[2]
         old_position = page.position
@@ -452,7 +549,7 @@ describe LightweightActivitiesController do
     it "should call 'export' on the activity" do
       get :export, { :id => act.id }
       expect(response).to be_success
-    end 
+    end
   end
 
   describe '#resubmit_answers' do
