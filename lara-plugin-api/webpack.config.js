@@ -6,11 +6,11 @@ module.exports = (env, argv) => {
   return {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
-    entry: './src/index.tsx',
+    entry: './src/lara-plugin-api.ts',
     mode: 'development',
     output: {
-      filename: 'lara-plugin-api-ts.js',
-      library: 'LARAPluginAPI',
+      filename: 'lara-plugin-api.js',
+      library: 'LARA',
       libraryTarget: 'umd'
     },
     performance: { hints: false },
@@ -43,6 +43,13 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new ForkTsCheckerWebpackPlugin()
-    ]
+    ],
+    externals: {
+      'jquery': 'jQuery',
+      'jqueryui': 'jQuery.ui',
+      "sidebar": "Sidebar", // LARA module exported to the window.Sidebar namespace
+      "plugins": "Plugins", // LARA module exported to the window.Plugins namespace
+      "text-decorator": "TextDecorator", // LARA module exported to the window.TextDecorator namespace
+    }
   };
 };

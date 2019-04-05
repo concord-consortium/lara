@@ -2,10 +2,11 @@
   "name": "lara-plugin-api",
   "version": "2.0.0",
   "description": "LARA Plugin API",
-  "main": "index.js",
+  "main": "./dist/lara-plugin-api.js",
+  "types": "./dist/lara-plugin-api.d.js",
   "scripts": {
     "build": "npm-run-all lint:build clean build:webpack",
-    "build:webpack": "webpack --devtool false && cp ./dist/lara-plugin-api-ts.js ../app/assets/javascripts/",
+    "build:webpack": "webpack --devtool false && cp ./dist/*.js ../app/assets/javascripts/",
     "clean": "rimraf dist",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
