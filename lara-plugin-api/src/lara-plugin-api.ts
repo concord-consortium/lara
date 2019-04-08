@@ -8,8 +8,10 @@ export interface IPopupOptions {
   content: HTMLElement | string;
   autoOpen?: boolean;
   closeOnEscape?: boolean;
-  // Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be
-  // reopened programmatically.
+  /**
+   * Removes popup HTMLElement when it is closed by the user.
+   * Otherwise, it will stay hidden and might be reopened programmatically.
+   */
   removeOnClose?: boolean;
   title?: string;
   closeButton?: boolean;
@@ -18,17 +20,17 @@ export interface IPopupOptions {
   dialogClass?: string;
   draggable?: boolean;
   resizable?: boolean;
-  // Please see: https://api.jqueryui.com/dialog/#option-position
+  /** Please see: https://api.jqueryui.com/dialog/#option-position */
   position?: { my: string, at: string, of: HTMLElement};
   width?: number;
-  // number in px or "auto"
+  /** Number in px or "auto" */
   height?: number | string;
   padding?: number;
   backgroundColor?: string;
   titlebarColor?: string;
   onOpen?: () => void;
   onClose?: () => void;
-  // Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
+  /** Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close. */
   onBeforeClose?: () => boolean;
   onRemove?: () => void;
   onResize?: () => void;
@@ -37,11 +39,11 @@ export interface IPopupOptions {
 }
 
 export interface IPopupController {
-  // Opens popup (makes sense only if autoOpen option is set to false during initialization).
+  /** Opens popup (makes sense only if autoOpen option is set to false during initialization). */
   open: () => void;
-  // Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true.
+  /** Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true. */
   close: () => void;
-  // Removes HTML element from DOM tree.
+  /** Removes HTML element from DOM tree. */
   remove: () => void;
 }
 
@@ -57,8 +59,10 @@ const ADD_POPUP_DEFAULT_OPTIONS = {
   width: 300,
   height: "auto",
   padding: 10,
-  // Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
-  // current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+  /**
+   * Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
+   * current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+   */
   dialogClass: "",
   backgroundColor: "",
   titlebarColor: "",
@@ -71,9 +75,7 @@ const ADD_POPUP_DEFAULT_OPTIONS = {
 };
 
 /****************************************************************************
- @function addPopup: Ask LARA to add a new popup window
- @arg {IPopupOptions} popupOptions
- @returns {IPopupController} popupController
+ Ask LARA to add a new popup window.
 
  Note that many options closely resemble jQuery UI dialog options which is used under the hood.
  You can refer to jQuery UI API docs in many cases: https://api.jqueryui.com/dialog
@@ -182,9 +184,7 @@ const ADD_SIDEBAR_DEFAULT_OPTIONS = {
 };
 
 /****************************************************************************
- @function addSidebar: Ask LARA to add a new sidebar
- @arg {ISidebarOptions} sidebarOptions
- @returns {ISidebarController} sidebarController
+ Ask LARA to add a new sidebar.
 
  Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
  to specify their positions, so no assumptions should be made about current display - it might change.
@@ -206,14 +206,14 @@ export const addSidebar = (options: ISidebarOptions): ISidebarController => {
 };
 
 /****************************************************************************
- @function saveLearnerPluginState: Ask LARA to save the users state for the plugin
- @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
- @arg {string} state - A JSON string representing serialized plugin state.
- @example
+ Ask LARA to save the users state for the plugin.
+ ```
  LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
- @returns Promise
+ ```
+ @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context
+ @param state A JSON string representing serialized plugin state.
  ****************************************************************************/
-export const saveLearnerPluginState = (pluginId: string, state: string) => {
+export const saveLearnerPluginState = (pluginId: string, state: string): Promise<string> => {
   return Plugins.saveLearnerPluginState(pluginId, state);
 };
 
@@ -225,13 +225,13 @@ export interface IEventListener {
 type IEventListeners = IEventListener | IEventListener[];
 
 /****************************************************************************
- @function decorateContent: Ask LARA to decorate authored content (text / html)
- @arg {string[]} words - a list of case-insensitive words to be decorated. Can use limited regex.
- @arg {string} replace - the replacement string. Can include '$1' representing the matched word.
- @arg {wordClass} wordClass - CSS class used in replacement string. Necessary only if `listeners` are provided too.
- @arg {IEventListeners} listeners - one or more { type, listener } tuples. Note that events are added to `wordClass`
+ Ask LARA to decorate authored content (text / html).
+
+ @param words A list of case-insensitive words to be decorated. Can use limited regex.
+ @param replace The replacement string. Can include '$1' representing the matched word.
+ @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
+ @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
  described above. It's client code responsibility to use this class in the `replace` string.
- @returns void
  ****************************************************************************/
 export const decorateContent = (words: string[], replace: string, wordClass: string, listeners: IEventListeners) => {
   const domClasses = ["question-txt", "help-content", "intro-txt"];
@@ -243,22 +243,21 @@ export const decorateContent = (words: string[], replace: string, wordClass: str
 };
 
 /**************************************************************
- @function registerPlugin
- Register a new external script as `label` with `_class `
- Deligates to this.PluginsApi
- @arg label - the identifier of the script
- @arg _class - the Plugin Class being associated with the identifier
- @returns boolean - true if plugin was registered correctly.
- @example: `LARA.registerPlugin('debugger', Dubugger);
+ Register a new external script as `label` with `_class `.
+ ```
+ LARA.registerPlugin('debugger', Dubugger);
+ ```
+ @param label The identifier of the script.
+ @param _class The Plugin Class being associated with the identifier.
+ @returns `true` if plugin was registered correctly.
  **************************************************************/
 export const registerPlugin = (label: string, _class: any) => {
   return Plugins.registerPlugin(label, _class);
 };
 
 /**************************************************************
- @function isTeacherEdition
  Find out if the page being displayed is being run in teacher-edition
- @returns boolean - true if lara is running in teacher-edition
+ @returns `true` if lara is running in teacher-edition.
  **************************************************************/
 export const isTeacherEdition = () => {
   // If we decide to do something more complex in the future,
