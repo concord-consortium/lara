@@ -123,8 +123,10 @@ var ADD_POPUP_DEFAULT_OPTIONS = {
     width: 300,
     height: "auto",
     padding: 10,
-    // Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
-    // current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+    /**
+     * Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
+     * current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+     */
     dialogClass: "",
     backgroundColor: "",
     titlebarColor: "",
@@ -136,9 +138,7 @@ var ADD_POPUP_DEFAULT_OPTIONS = {
     onDragStop: null
 };
 /****************************************************************************
- @function addPopup: Ask LARA to add a new popup window
- @arg {IPopupOptions} popupOptions
- @returns {IPopupController} popupController
+ Ask LARA to add a new popup window.
 
  Note that many options closely resemble jQuery UI dialog options which is used under the hood.
  You can refer to jQuery UI API docs in many cases: https://api.jqueryui.com/dialog
@@ -224,9 +224,7 @@ var ADD_SIDEBAR_DEFAULT_OPTIONS = {
     onClose: null
 };
 /****************************************************************************
- @function addSidebar: Ask LARA to add a new sidebar
- @arg {ISidebarOptions} sidebarOptions
- @returns {ISidebarController} sidebarController
+ Ask LARA to add a new sidebar.
 
  Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
  to specify their positions, so no assumptions should be made about current display - it might change.
@@ -247,24 +245,24 @@ exports.addSidebar = function (options) {
     return Sidebar.addSidebar(options);
 };
 /****************************************************************************
- @function saveLearnerPluginState: Ask LARA to save the users state for the plugin
- @arg {string} pluginId - ID of the plugin trying to save data, initially passed to plugin constructor in the context
- @arg {string} state - A JSON string representing serialized plugin state.
- @example
+ Ask LARA to save the users state for the plugin.
+ ```
  LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
- @returns Promise
+ ```
+ @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context
+ @param state A JSON string representing serialized plugin state.
  ****************************************************************************/
 exports.saveLearnerPluginState = function (pluginId, state) {
     return Plugins.saveLearnerPluginState(pluginId, state);
 };
 /****************************************************************************
- @function decorateContent: Ask LARA to decorate authored content (text / html)
- @arg {string[]} words - a list of case-insensitive words to be decorated. Can use limited regex.
- @arg {string} replace - the replacement string. Can include '$1' representing the matched word.
- @arg {wordClass} wordClass - CSS class used in replacement string. Necessary only if `listeners` are provided too.
- @arg {IEventListeners} listeners - one or more { type, listener } tuples. Note that events are added to `wordClass`
+ Ask LARA to decorate authored content (text / html).
+
+ @param words A list of case-insensitive words to be decorated. Can use limited regex.
+ @param replace The replacement string. Can include '$1' representing the matched word.
+ @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
+ @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
  described above. It's client code responsibility to use this class in the `replace` string.
- @returns void
  ****************************************************************************/
 exports.decorateContent = function (words, replace, wordClass, listeners) {
     var domClasses = ["question-txt", "help-content", "intro-txt"];
@@ -275,21 +273,20 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
     TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
 };
 /**************************************************************
- @function registerPlugin
- Register a new external script as `label` with `_class `
- Deligates to this.PluginsApi
- @arg label - the identifier of the script
- @arg _class - the Plugin Class being associated with the identifier
- @returns boolean - true if plugin was registered correctly.
- @example: `LARA.registerPlugin('debugger', Dubugger);
+ Register a new external script as `label` with `_class `.
+ ```
+ LARA.registerPlugin('debugger', Dubugger);
+ ```
+ @param label The identifier of the script.
+ @param _class The Plugin Class being associated with the identifier.
+ @returns `true` if plugin was registered correctly.
  **************************************************************/
 exports.registerPlugin = function (label, _class) {
     return Plugins.registerPlugin(label, _class);
 };
 /**************************************************************
- @function isTeacherEdition
  Find out if the page being displayed is being run in teacher-edition
- @returns boolean - true if lara is running in teacher-edition
+ @returns `true` if lara is running in teacher-edition.
  **************************************************************/
 exports.isTeacherEdition = function () {
     // If we decide to do something more complex in the future,
