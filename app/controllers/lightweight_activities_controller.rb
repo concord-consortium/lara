@@ -35,8 +35,13 @@ class LightweightActivitiesController < ApplicationController
     end
 
     if params[:run_key]
-      redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
-      redirect_to activity_path(@activity, request.query_parameters) and return
+      if @run.sequence
+        # only redirect if not part of a sequence resource url so that sequence show pages can include run_key params
+        in_sequence_resource = request.url.include? "/sequences/"
+        redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if !in_sequence_resource
+      else
+        redirect_to activity_path(@activity, request.query_parameters) and return
+      end
     end
 
     @run.increment_run_count!

@@ -10,26 +10,26 @@
     - portal_user = session[:portal_username]
     .profile-dropdown
       %div.profile-u-name
-        Hi, 
-        %a.popup-trigger{:href => "javascript:void(0);"} 
-          - if portal_user.nil? 
+        Hi,
+        %a.popup-trigger{:href => "javascript:void(0);"}
+          - if portal_user.nil?
             Anonymous
-          - else  
+          - else
             #{portal_user}
     .popup-prompt{:class => portal_user.nil? ? 'anonymous-user' : 'known-user'}
       .nav-popup-border.arrow
       .nav-popup.arrow
-      
+
       - if portal_user.nil?
-        %span  
+        %span
           If you are taking a class, check in with your teacher about logging in to save your work.
-      - else  
+      - else
         %span
           - user_provider = current_user.nil? ? nil : current_user.authentications.first.provider
           Not You?
           = link_to " Click here", destroy_user_session_path(:user_provider => user_provider), :method => :delete, :data_trigger_save => false
 
-  
+
   .sequence_info
     - unless @sequence.description.blank?
       .description
@@ -42,6 +42,8 @@
   .activities
     - @sequence.lightweight_activities_sequences.each do |las|
       - activity = las.lightweight_activity
+      - activity_path_params = @sequence_run ? [:run_key => @sequence_run.run_for_activity(activity).key] : []
+      - activity_path_link = pass_white_list_params(sequence_activity_path(@sequence, activity, *activity_path_params))
       .activity-bg
         .ribbon_wrap
           = complete_badge_for(activity)
@@ -49,9 +51,9 @@
           %span.position
             = las.position.to_s
           %span.title
-            = link_to activity.name, pass_white_list_params(sequence_activity_path(@sequence, activity))
+            = link_to activity.name, activity_path_link
           .thumbnail
-            = link_to image_tag(activity.thumbnail_url), pass_white_list_params(sequence_activity_path(@sequence, activity)) unless activity.thumbnail_url.blank?
+            = link_to image_tag(activity.thumbnail_url), activity_path_link unless activity.thumbnail_url.blank?
 
     = link_to 'Edit', edit_sequence_path(@sequence) if can? :update, @sequence
 
