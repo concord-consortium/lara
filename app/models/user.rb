@@ -114,6 +114,5 @@ class User < ActiveRecord::Base
    rack_session.delete "portal_user_id"
    rack_session.delete "portal_domain"
    rack_session.delete "user_return_to"
-   rack_session.delete "run_key"
   end
 end

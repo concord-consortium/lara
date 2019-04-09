@@ -142,33 +142,8 @@ class ApplicationController < ActionController::Base
     })
   end
 
-  def clear_session_run_key
-    session.delete(:run_key)
-  end
-
-  def session_run_key(new_val=nil?)
-    return nil unless current_user.nil?
-    session[:run_key] ||= {}
-    # If there is a run key in the session which doesn't match up to a
-    # current run, return nil (as though there's no run key)
-    if Run.for_key(session[:run_key][@activity.id], @activity).nil?
-      return nil
-    end
-    session[:run_key][@activity.id] = new_val if new_val
-    session[:run_key][@activity.id]
-  end
-
-  def set_run_key_REFACTOR(key)
-    @run_key = key
-    session_run_key(@run_key)
-  end
-
-  def update_run_key
-    set_run_key_REFACTOR(params[:run_key] || session_run_key)
-  end
-
   def set_run_key
-    update_run_key
+    @run_key = params[:run_key]
 
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
@@ -187,8 +162,7 @@ class ApplicationController < ActionController::Base
     end
 
     @sequence_run = @run.sequence_run if @run.sequence_run
-    # This is redundant but necessary if the first pass through set_run_key_REFACTOR returned nil
-    set_run_key_REFACTOR(@run.key)
+    @run_key = @run.key
   end
 
   # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
@@ -268,7 +242,6 @@ class ApplicationController < ActionController::Base
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
-    clear_session_run_key
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 
