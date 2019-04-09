@@ -22,7 +22,7 @@
 
 **● clickToPlayId**: *`string`*
 
-*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/api/plugins.ts#L56)*
+*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/api/plugins.ts#L56)*
 
 DOM id of click to play overlay if enabled.
 

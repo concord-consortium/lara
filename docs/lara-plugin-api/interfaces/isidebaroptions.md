@@ -31,7 +31,7 @@
 
 **● content**: *`string` \| `HTMLElement`*
 
-*Defined in [lara-plugin-api.ts:157](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L157)*
+*Defined in [lara-plugin-api.ts:157](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L157)*
 
 ___
 <a id="handle"></a>
@@ -40,7 +40,7 @@ ___
 
 **● handle**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:161](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L161)*
+*Defined in [lara-plugin-api.ts:161](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L161)*
 
 ___
 <a id="handlecolor"></a>
@@ -49,7 +49,7 @@ ___
 
 **● handleColor**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:162](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L162)*
+*Defined in [lara-plugin-api.ts:162](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L162)*
 
 ___
 <a id="icon"></a>
@@ -58,7 +58,7 @@ ___
 
 **● icon**: *`string` \| `HTMLElement`*
 
-*Defined in [lara-plugin-api.ts:159](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L159)*
+*Defined in [lara-plugin-api.ts:159](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L159)*
 
 ___
 <a id="onclose"></a>
@@ -67,7 +67,7 @@ ___
 
 **● onClose**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:169](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L169)*
+*Defined in [lara-plugin-api.ts:169](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L169)*
 
 ___
 <a id="onopen"></a>
@@ -76,7 +76,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:168](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L168)*
+*Defined in [lara-plugin-api.ts:168](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L168)*
 
 ___
 <a id="padding"></a>
@@ -85,7 +85,7 @@ ___
 
 **● padding**: *`undefined` \| `25`*
 
-*Defined in [lara-plugin-api.ts:167](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L167)*
+*Defined in [lara-plugin-api.ts:167](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L167)*
 
 ___
 <a id="titlebar"></a>
@@ -94,7 +94,7 @@ ___
 
 **● titleBar**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:164](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L164)*
+*Defined in [lara-plugin-api.ts:164](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L164)*
 
 ___
 <a id="titlebarcolor"></a>
@@ -103,7 +103,7 @@ ___
 
 **● titleBarColor**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:165](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L165)*
+*Defined in [lara-plugin-api.ts:165](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L165)*
 
 ___
 <a id="width"></a>
@@ -112,7 +112,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
-*Defined in [lara-plugin-api.ts:166](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L166)*
+*Defined in [lara-plugin-api.ts:166](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L166)*
 
 ___
 
