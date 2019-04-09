@@ -132,7 +132,6 @@ class ApplicationController < ActionController::Base
     @user = current_user ? current_user.email : 'anonymous'
     @run_key = params[:run_key] || 'no run key'
     @session = session.clone
-    session.delete("run_key")
 
     NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
       uri: request.original_url,
