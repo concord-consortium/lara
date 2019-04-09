@@ -8,8 +8,8 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<%- if @session_key -%>
-  <body class="right <%= request.original_fullpath.split('/').join(' ') %>" data-session-key="<%= @session_key %>">
+<%- if @run_key -%>
+  <body class="right <%= request.original_fullpath.split('/').join(' ') %>" data-session-key="<%= @run_key %>">
 <%- else -%>
   <body class="right <%= request.original_fullpath.split('/').join(' ') %>">
 <%- end -%>
@@ -33,7 +33,7 @@
     </p>
     <p style="margin-top:10px" id="license">This Next-Generation Molecular Workbench activity was developed with a grant from <a href="http://www.google.org/" title="Google.org">Google.org</a>. The original <a href="http://mw.concord.org/" title="Classic Molecular Workbench">Classic Molecular Workbench</a> was supported by a series of grants from the <a href="http://nsf.gov/" title="National Science Foundation">National Science Foundation</a>.
     </p>
-    <% unless params[:response_key] %>
+    <% unless params[:run_key] %>
       <p style="margin-top:10px">
         Need help?
         <a href="mailto:authoring-help@concord.org?subject=Authoring%20question">Send us an email</a>

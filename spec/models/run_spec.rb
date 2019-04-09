@@ -49,7 +49,7 @@ describe Run do
   end
 
   describe 'validation' do
-    it 'ensures session keys are 36 characters' do
+    it 'ensures run keys are 36 characters' do
       run.key = 'short'
       expect(run).not_to be_valid
       run.key = 'thiskeyistoolongtobevalidreallyitisseriouslylongevenforauuidIpromisethisislongerthan36charactersnowaythisisshort'
@@ -58,7 +58,7 @@ describe Run do
       expect(run).to be_valid
     end
 
-    it 'ensures session keys only have hyphens, letters and numbers' do
+    it 'ensures run keys only have hyphens, letters and numbers' do
       run.key = '88e0aff5-db3f-4087-8fda-49ec579980ee'
       expect(run).to be_valid
       run.key = '88e0aff5/db3f-4087-8fda-49ec579980e;'

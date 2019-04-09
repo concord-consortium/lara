@@ -44,12 +44,12 @@ describe InteractivePagesController do
     end
 
     it 'assigns a run key' do
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:run)).not_to be_nil
     end
 
     it 'assigns a project and theme' do
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:project)).not_to be_nil
       expect(assigns(:theme)).not_to be_nil
     end
@@ -57,7 +57,7 @@ describe InteractivePagesController do
     it 'assigns a sequence if one is in the run' do
       ar.sequence = sequence
       ar.save
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:sequence)).to eq(sequence)
     end
 
@@ -88,7 +88,7 @@ describe InteractivePagesController do
       page1.add_interactive(interactive)
 
       # get the rendering
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       # verify the page is as expected
       expect(response.body).to match /<iframe/m
@@ -108,7 +108,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
@@ -118,7 +118,7 @@ describe InteractivePagesController do
     it 'only renders the forward navigation link on the first page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev disabled'>/
       expect(response.body).to match /<a class='pagination-link'/
@@ -128,7 +128,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages[1].id, :response_key => ar.key
+      get :show, :id => act.pages[1].id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
@@ -138,7 +138,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.last.id, :response_key => ar.key
+      get :show, :id => act.pages.last.id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='pagination-link next forward_nav disabled'>/
@@ -148,14 +148,14 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
       page1
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       expect(response.body).not_to match /<a class='prev'>/
       expect(response.body).not_to match /<a class='next'>/
@@ -163,7 +163,7 @@ describe InteractivePagesController do
 
     it 'shows related content on the last page' do
       page1
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       expect(response.body).to match /<div class='related-mod'>/
       expect(response.body).to match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
@@ -172,18 +172,18 @@ describe InteractivePagesController do
     it 'does not show related content on pages other than the last page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).not_to match /<div class='related-mod'>/
     end
 
     it 'calls LARA.addSidebar content on pages which have authored sidebar' do
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       # Note that page factory creates a page with sidebar by default.
       expect(response.body).to match /LARA\.addSidebar\({/
       page2.show_sidebar = false
       page2.save
-      get :show, :id => page2.id, :response_key => ar.key
+      get :show, :id => page2.id, :run_key => ar.key
       expect(response.body).not_to match /LARA\.addSidebar\({/
     end
     # --- Ends section which should go to view spec ---

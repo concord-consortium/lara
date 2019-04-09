@@ -7,7 +7,7 @@ module InteractivePageHelper
   def fetch_path_base(activity, run, page)  # move me to be private.
     run = run_for_activity(activity, run)
     if run
-      page_with_response_path(activity.id, page.id, run.key)
+      page_with_run_path(activity.id, page.id, run.key)
     elsif activity and page
       activity_page_path(activity, page)
     elsif activity

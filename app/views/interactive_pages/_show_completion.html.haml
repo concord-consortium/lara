@@ -69,7 +69,7 @@
     }
   end
 
-  report_path  = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+  report_path  = summary_with_run_path(@page.lightweight_activity, @run_key) if @run_key
   page_name    = @page.name || @activity.name + ":#{@page.position}"
 
   if @sequence_run

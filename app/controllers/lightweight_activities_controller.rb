@@ -2,7 +2,6 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
 
-  # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
   before_filter :set_sequence, :only   => [:summary, :show, :single_page]
@@ -32,10 +31,10 @@ class LightweightActivitiesController < ApplicationController
 
     authorize! :read, @activity
     if params[:print]
-      redirect_to activity_single_page_with_response_path(@activity, @run.key, request.query_parameters) and return
+      redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
     end
 
-    if params[:response_key]
+    if params[:run_key]
       redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
       redirect_to activity_path(@activity, request.query_parameters) and return
     end
@@ -43,7 +42,7 @@ class LightweightActivitiesController < ApplicationController
     @run.increment_run_count!
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-      redirect_to activity_single_page_with_response_path(@activity, @run.key) and return
+      redirect_to activity_single_page_with_run_path(@activity, @run.key) and return
     end
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
       # TODO: If the Page isn't in this activity... Then we need to log that as an error,
@@ -53,7 +52,7 @@ class LightweightActivitiesController < ApplicationController
         Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
         @activity = @run.last_page.lightweight_activity
       end
-      redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
+      redirect_to page_with_run_path(@activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
     end
 
     setup_show
@@ -75,8 +74,8 @@ class LightweightActivitiesController < ApplicationController
 
   def single_page
     authorize! :read, @activity
-    if !params[:response_key]
-      redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
+    if !params[:run_key]
+      redirect_to activity_single_page_with_run_path(@activity, @run_key) and return
     end
 
     setup_single_page_show
@@ -103,8 +102,8 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     current_theme
     current_project
-    if !params[:response_key]
-      redirect_to summary_with_response_path(@activity, @session_key) and return
+    if !params[:run_key]
+      redirect_to summary_with_run_path(@activity, @run_key) and return
     end
     @answers = @activity.answers(@run)
   end
@@ -265,9 +264,9 @@ class LightweightActivitiesController < ApplicationController
 
   def resubmit_answers
     authorize! :manage, :all
-    if !params[:response_key]
+    if !params[:run_key]
       # If we don't know the run, we can't do this.
-      redirect_to summary_with_response_path(@activity, @session_key) and return
+      redirect_to summary_with_run_path(@activity, @run_key) and return
     end
     answers = @activity.answers(@run)
     answers.each { |a| a.mark_dirty }

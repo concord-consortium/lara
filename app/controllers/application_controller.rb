@@ -124,51 +124,51 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # this is used by controllers that look up a Run based on a response_key
+  # this is used by controllers that look up a Run based on a run_key
   # if the current_user is not authorized to access the run then this method
   # is called
   def user_id_mismatch
     @hide_navigation = true
     @user = current_user ? current_user.email : 'anonymous'
-    @response_key = params[:response_key] || 'no response key'
+    @run_key = params[:run_key] || 'no run key'
     @session = session.clone
-    session.delete("response_key")
+    session.delete("run_key")
 
     NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
       uri: request.original_url,
       referer: request.referer,
       request_params: params,
-      custom_params: { user: @user, response_key: @response_key }.merge(@session)
+      custom_params: { user: @user, run_key: @run_key }.merge(@session)
     })
   end
 
-  def clear_session_response_key
-    session.delete(:response_key)
+  def clear_session_run_key
+    session.delete(:run_key)
   end
 
-  def session_response_key(new_val=nil?)
+  def session_run_key(new_val=nil?)
     return nil unless current_user.nil?
-    session[:response_key] ||= {}
-    # If there is a response key in the session which doesn't match up to a
-    # current run, return nil (as though there's no session key)
-    if Run.for_key(session[:response_key][@activity.id], @activity).nil?
+    session[:run_key] ||= {}
+    # If there is a run key in the session which doesn't match up to a
+    # current run, return nil (as though there's no run key)
+    if Run.for_key(session[:run_key][@activity.id], @activity).nil?
       return nil
     end
-    session[:response_key][@activity.id] = new_val if new_val
-    session[:response_key][@activity.id]
+    session[:run_key][@activity.id] = new_val if new_val
+    session[:run_key][@activity.id]
   end
 
-  def set_response_key(key)
-    @session_key = key
-    session_response_key(@session_key)
+  def set_run_key_REFACTOR(key)
+    @run_key = key
+    session_run_key(@run_key)
   end
 
-  def update_response_key
-    set_response_key(params[:response_key] || session_response_key)
+  def update_run_key
+    set_run_key_REFACTOR(params[:run_key] || session_run_key)
   end
 
   def set_run_key
-    update_response_key
+    update_run_key
 
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
@@ -178,7 +178,7 @@ class ApplicationController < ActionController::Base
     else
       portal = RemotePortal.new(params)
       # This creates a new key if one didn't exist before
-      @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+      @run = Run.lookup(@run_key, @activity, current_user, portal, params[:sequence_id])
       # If activity is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
       if portal.valid?
@@ -187,8 +187,8 @@ class ApplicationController < ActionController::Base
     end
 
     @sequence_run = @run.sequence_run if @run.sequence_run
-    # This is redundant but necessary if the first pass through set_response_key returned nil
-    set_response_key(@run.key)
+    # This is redundant but necessary if the first pass through set_run_key_REFACTOR returned nil
+    set_run_key_REFACTOR(@run.key)
   end
 
   # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
@@ -268,7 +268,7 @@ class ApplicationController < ActionController::Base
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
-    clear_session_response_key
+    clear_session_run_key
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 

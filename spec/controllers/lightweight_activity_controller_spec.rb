@@ -70,15 +70,15 @@ describe LightweightActivitiesController do
       end
       subject { get :show, :id => act.id}
       it "should redirect to the run page" do
-        # page_with_response_path(@activity.id, @run.last_page.id, @run)
-        expect(subject).to redirect_to(page_with_response_path(act.id, page.id, run.key))
+        # page_with_run_path(@activity.id, @run.last_page.id, @run)
+        expect(subject).to redirect_to(page_with_run_path(act.id, page.id, run.key))
       end
 
       describe "when the run page is hidden" do
         let(:page) { act.pages.create!(:name => "Page 1", :text => "This page is hidden.", :is_hidden => true) }
         subject { get :show, :id => act.id}
         it "should not redirect to the run page" do
-          expect(subject).not_to redirect_to(page_with_response_path(act.id, page.id, run.key))
+          expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, run.key))
           expect(response).to render_template('lightweight_activities/show')
         end
       end
@@ -88,7 +88,7 @@ describe LightweightActivitiesController do
         let(:page)      { other_act.pages.create!(:name => "Page 2", :text => "This page isn't in Act 1.") }
         subject { get :show, :id => act.id}
         it "should redirect to Act 2 run page." do
-          expect(subject).to redirect_to(page_with_response_path(other_act.id, page.id, run.key))
+          expect(subject).to redirect_to(page_with_run_path(other_act.id, page.id, run.key))
         end
       end
 
@@ -99,7 +99,7 @@ describe LightweightActivitiesController do
         end
         it 'should redirect to the single page view instead' do
           get :show, :id => act.id
-          expect(subject).to redirect_to(activity_single_page_with_response_path(act.id, run.key))
+          expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, run.key))
         end
       end
 
@@ -136,7 +136,7 @@ describe LightweightActivitiesController do
         page
         ar.sequence = sequence
         ar.save
-        get :show, :id => act.id, :response_key => ar.key
+        get :show, :id => act.id, :run_key => ar.key
         expect(assigns(:sequence)).to eq(sequence)
       end
 
@@ -145,7 +145,7 @@ describe LightweightActivitiesController do
         ar.sequence = nil
         ar.save
         ar.reload
-        get :show, :id => act.id, :response_key => ar.key, :sequence_id => sequence.id
+        get :show, :id => act.id, :run_key => ar.key, :sequence_id => sequence.id
         expect(ar.reload.sequence_id).to be(sequence.id)
       end
 
@@ -163,7 +163,7 @@ describe LightweightActivitiesController do
     it 'renders the activity if it exists and is public' do
       page
       get :show, :id => act.id
-      expect(assigns[:session_key]).not_to be_nil
+      expect(assigns[:run_key]).not_to be_nil
       expect(response).to be_success
     end
 
@@ -201,20 +201,20 @@ describe LightweightActivitiesController do
       allow(Run).to receive(:lookup).and_return(run)
     end
 
-    it 'redirects without response_key param' do
+    it 'redirects without run_key param' do
       page
       get :single_page, :id => act.id
-      expect(subject).to redirect_to(activity_single_page_with_response_path(act.id, run.key))
+      expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, run.key))
     end
 
-    describe 'with response_key param' do
+    describe 'with run_key param' do
       before(:each) do
         allow_any_instance_of(LightweightActivitiesController).to receive(:setup_single_page_show).and_return(nil)
       end
 
       it 'renders single' do
         page
-        get :single_page, :id => act.id, :response_key => ar.key
+        get :single_page, :id => act.id, :run_key => ar.key
         expect(response).to be_success
         expect(response).to render_template('lightweight_activities/single')
       end
@@ -235,7 +235,7 @@ describe LightweightActivitiesController do
 
         it 'renders single because user is admin' do
           page
-          get :single_page, :id => act.id, :response_key => ar.key
+          get :single_page, :id => act.id, :run_key => ar.key
           expect(response).to be_success
           expect(response).to render_template('lightweight_activities/single')
         end
@@ -261,7 +261,7 @@ describe LightweightActivitiesController do
 
         it 'renders unauthorized_run' do
           page
-          get :single_page, :id => act.id, :response_key => ar.key
+          get :single_page, :id => act.id, :run_key => ar.key
           expect(response).to render_template('runs/unauthorized_run')
         end
       end
@@ -286,7 +286,7 @@ describe LightweightActivitiesController do
     end
 
     it 'assigns a project and theme' do
-      get :summary, :id => act.id, :response_key => ar.key
+      get :summary, :id => act.id, :run_key => ar.key
       expect(assigns(:project)).not_to be_nil
       expect(assigns(:theme)).not_to be_nil
     end
@@ -295,7 +295,7 @@ describe LightweightActivitiesController do
       page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page.add_embeddable(FactoryGirl.create(:mc_embeddable))
 
-      get :summary, :id => act.id, :response_key => ar.key
+      get :summary, :id => act.id, :run_key => ar.key
 
       expect(assigns(:answers)).not_to be_nil
       expect(response.body).to match /Response Summary for/
@@ -553,14 +553,14 @@ describe LightweightActivitiesController do
   end
 
   describe '#resubmit_answers' do
-    context 'without a response key' do
+    context 'without a run key' do
       it 'redirects to summary' do
         get :resubmit_answers, { :id => act.id }
-        expect(response).to redirect_to summary_with_response_path(act.id, assigns(:session_key))
+        expect(response).to redirect_to summary_with_run_path(act.id, assigns(:run_key))
       end
     end
 
-    context 'with a response key' do
+    context 'with a run key' do
       let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
       let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
 
@@ -575,18 +575,18 @@ describe LightweightActivitiesController do
         expect(ar.answers.length).not_to be(0)
         expect(answer1).to receive(:mark_dirty)
         expect(answer1).not_to receive(:send_to_portal)
-        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
       end
 
       it 'calls send_to_portal for the last answer' do
         [answer1, answer2]
         expect(ar.answers.length).not_to be(0)
         expect(answer2).to receive(:send_to_portal)
-        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
       end
 
       it 'sets a flash notice for success' do
-        get :resubmit_answers, { :id => act.id, :response_key => ar.key }
+        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
         expect(flash[:notice]).to match /requeued for submission/
       end
     end

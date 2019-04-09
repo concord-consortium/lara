@@ -23,7 +23,7 @@ describe "interactive_pages/show" do
   let(:all_pages) { [page] }
 
   before :each do
-    assign(:session_key, UUIDTools::UUID.random_create.to_s)
+    assign(:run_key, UUIDTools::UUID.random_create.to_s)
     assign(:page, page)
     assign(:run, run)
     assign(:all_pages, all_pages)

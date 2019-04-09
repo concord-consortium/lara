@@ -56,7 +56,7 @@ LightweightStandalone::Application.routes.draw do
     resources :item_settings, :only => [:edit, :update]
     post "/argumentation_blocks/:page_id/create_embeddables" => 'argumentation_blocks#create_embeddables', :as => 'arg_block_create_embeddables'
     post "/argumentation_blocks/:page_id/remove_embeddables" => 'argumentation_blocks#remove_embeddables', :as => 'arg_block_remove_embeddables'
-    post "/argumentation_blocks/:page_id/save_feedback/:response_key" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback', :constraints => { :response_key => /[-\w]{36}/ }
+    post "/argumentation_blocks/:page_id/save_feedback/:run_key" => 'argumentation_blocks#save_feedback', :as => 'arg_block_save_feedback', :constraints => { :run_key => /[-\w]{36}/ }
     post "/argumentation_blocks/feedback_on_feedback" => 'argumentation_blocks#feedback_on_feedback', :as => 'arg_block_feedback_on_feedback'
     resources :score_mappings
     post "/argumentation_blocks/report" => 'argumentation_blocks#report'
@@ -203,11 +203,11 @@ LightweightStandalone::Application.routes.draw do
   post "/pages/:id/remove_embeddable/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
   post "/pages/:id/hideshow_embeddable/:embeddable_id" => 'interactive_pages#toggle_hideshow_embeddable', :as => 'page_hideshow_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
   get "/embeddable/multiple_choice/:id/check" => 'embeddable/multiple_choices#check', :as => 'check_multiple_choice_answer', :constraints => { :id => /\d+/ }
-  get "/activities/:activity_id/pages/:id/:response_key" => 'interactive_pages#show', :as => 'page_with_response', :constraints => { :id => /\d+/, :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/summary/:response_key" => 'lightweight_activities#summary', :as => 'summary_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/resubmit_answers/:response_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/:response_key" => 'lightweight_activities#show', :as => 'activity_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/single_page/:response_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_response', :constraints => { :activity_id => /\d+/, :response_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'page_with_run', :constraints => { :id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/summary/:run_key" => 'lightweight_activities#summary', :as => 'summary_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/resubmit_answers/:run_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/:run_key" => 'lightweight_activities#show', :as => 'activity_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/activities/:activity_id/single_page/:run_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
   get "/runs/details" => 'runs#details', :as => 'run_details'
   # TODO: Depricate this older dashboard route

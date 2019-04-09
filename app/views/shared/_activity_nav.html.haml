@@ -18,7 +18,7 @@
                   .activity-list-head.open-close
                     = link_to "#{las.position.to_s}. #{activity.name}", runnable_activity_path(activity, :show_index => true)
                     %span{:class => "activity-icons"}
-                      = link_to "", summary_with_response_path(activity, @session_key), :class => "report-link", :title => "Report", :target => "_blank"
+                      = link_to "", summary_with_run_path(activity, @run_key), :class => "report-link", :title => "Report", :target => "_blank"
                       %i{ :class => (@activity == activity) ? 'fa fa-angle-up' : 'fa fa-bars' }
                   %ol.pages.in-sequence
                     = render :partial => 'shared/nav_page_list', :locals => { :pages => activity.pages, :activity => activity }
