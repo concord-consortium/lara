@@ -1,5 +1,4 @@
 'use strict';
-const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -49,7 +48,7 @@ module.exports = (env, argv) => {
       'jqueryui': 'jQuery.ui',
       'react': 'react',
       'react-dom': 'ReactDOM',
-      "sidebar": "Sidebar" // LARA module exported to the window.Sidebar namespace
+      'sidebar': 'Sidebar' // LARA module exported to the window.Sidebar namespace
     }
   };
 };
