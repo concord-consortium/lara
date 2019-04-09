@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"), require("jQuery.ui"), require("Plugins"), require("Sidebar"), require("TextDecorator"));
+		module.exports = factory(require("jQuery"), require("jQuery.ui"), require("Sidebar"), require("TextDecorator"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery", "jQuery.ui", "Plugins", "Sidebar", "TextDecorator"], factory);
+		define(["jQuery", "jQuery.ui", "Sidebar", "TextDecorator"], factory);
 	else if(typeof exports === 'object')
-		exports["LARA"] = factory(require("jQuery"), require("jQuery.ui"), require("Plugins"), require("Sidebar"), require("TextDecorator"));
+		exports["LARA"] = factory(require("jQuery"), require("jQuery.ui"), require("Sidebar"), require("TextDecorator"));
 	else
-		root["LARA"] = factory(root["jQuery"], root["jQuery.ui"], root["Plugins"], root["Sidebar"], root["TextDecorator"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_jqueryui__, __WEBPACK_EXTERNAL_MODULE_plugins__, __WEBPACK_EXTERNAL_MODULE_sidebar__, __WEBPACK_EXTERNAL_MODULE_text_decorator__) {
+		root["LARA"] = factory(root["jQuery"], root["jQuery.ui"], root["Sidebar"], root["TextDecorator"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_jqueryui__, __WEBPACK_EXTERNAL_MODULE_sidebar__, __WEBPACK_EXTERNAL_MODULE_text_decorator__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -96,6 +96,122 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/api/plugins.ts":
+/*!****************************!*\
+  !*** ./src/api/plugins.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/****************************************************************************
+ Module variables to keep track of our plugins.
+ Note, we call these `classes` but any constructor function will do.
+ ****************************************************************************/
+var pluginClasses = {};
+var plugins = [];
+var pluginLabels = [];
+var pluginStatePaths = {};
+var pluginError = function (e, other) {
+    // tslint:disable-next-line:no-console
+    console.group("LARA Plugin Error");
+    // tslint:disable-next-line:no-console
+    console.error(e);
+    // tslint:disable-next-line:no-console
+    console.dir(other);
+    // tslint:disable-next-line:no-console
+    console.groupEnd();
+};
+/****************************************************************************
+ Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
+ This method is called to initialize the plugin.
+ Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
+ @param label The the script identifier.
+ @param runtimeContext Context for the plugin.
+ @param pluginStatePath For saving & loading learner data.
+ ****************************************************************************/
+exports.initPlugin = function (label, runtimeContext, pluginStatePath) {
+    var constructor = pluginClasses[label];
+    var plugin = null;
+    if (typeof constructor === "function") {
+        try {
+            plugin = new constructor(runtimeContext);
+            plugins.push(plugin);
+            pluginLabels.push(label);
+            pluginStatePaths[runtimeContext.pluginId] = pluginStatePath;
+        }
+        catch (e) {
+            pluginError(e, runtimeContext);
+        }
+        // tslint:disable-next-line:no-console
+        console.info("Plugin", label, "is now registered");
+    }
+    else {
+        // tslint:disable-next-line:no-console
+        console.error("No plugin registered for label:", label);
+    }
+};
+/****************************************************************************
+ Ask LARA to save the users state for the plugin.
+ ```
+ LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
+ ```
+ @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context.
+ @param state A JSON string representing serialized plugin state.
+ ****************************************************************************/
+exports.saveLearnerPluginState = function (pluginId, state) {
+    var paths = pluginStatePaths[pluginId];
+    if (paths && paths.savePath) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: paths.savePath,
+                type: "PUT",
+                data: { state: state },
+                success: function (data) {
+                    resolve(data);
+                },
+                error: function (jqXHR, errText, err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+    var msg = "Not saved.`pluginStatePaths` missing for plugin ID:";
+    // tslint:disable-next-line:no-console
+    console.warn(msg, pluginId);
+    return Promise.reject(msg);
+};
+/****************************************************************************
+ Register a new external script as `label` with `_class `, e.g.:
+ ```
+ registerPlugin('debugger', Dubugger)
+ ```
+ @param label The identifier of the script.
+ @param _class The Plugin class/constructor being associated with the identifier.
+ @returns `true` if plugin was registered correctly.
+ ***************************************************************************/
+exports.registerPlugin = function (label, _class) {
+    if (typeof _class !== "function") {
+        // tslint:disable-next-line:no-console
+        console.error("Plugin did not provide constructor", label);
+        return false;
+    }
+    if (pluginClasses[label]) {
+        // tslint:disable-next-line:no-console
+        console.error("Duplicate Plugin for label", label);
+        return false;
+    }
+    else {
+        pluginClasses[label] = _class;
+        return true;
+    }
+};
+
+
+/***/ }),
+
 /***/ "./src/lara-plugin-api.ts":
 /*!********************************!*\
   !*** ./src/lara-plugin-api.ts ***!
@@ -109,8 +225,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var $ = __webpack_require__(/*! jquery */ "jquery");
 __webpack_require__(/*! jqueryui */ "jqueryui");
 var Sidebar = __webpack_require__(/*! sidebar */ "sidebar");
-var Plugins = __webpack_require__(/*! plugins */ "plugins");
 var TextDecorator = __webpack_require__(/*! text-decorator */ "text-decorator");
+var plugins_1 = __webpack_require__(/*! ./api/plugins */ "./src/api/plugins.ts");
+exports.registerPlugin = plugins_1.registerPlugin;
+exports.initPlugin = plugins_1.initPlugin;
+exports.saveLearnerPluginState = plugins_1.saveLearnerPluginState;
 var ADD_POPUP_DEFAULT_OPTIONS = {
     title: "",
     autoOpen: true,
@@ -245,17 +364,6 @@ exports.addSidebar = function (options) {
     return Sidebar.addSidebar(options);
 };
 /****************************************************************************
- Ask LARA to save the users state for the plugin.
- ```
- LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
- ```
- @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context
- @param state A JSON string representing serialized plugin state.
- ****************************************************************************/
-exports.saveLearnerPluginState = function (pluginId, state) {
-    return Plugins.saveLearnerPluginState(pluginId, state);
-};
-/****************************************************************************
  Ask LARA to decorate authored content (text / html).
 
  @param words A list of case-insensitive words to be decorated. Can use limited regex.
@@ -271,18 +379,6 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
         replace: replace
     };
     TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-};
-/**************************************************************
- Register a new external script as `label` with `_class `.
- ```
- LARA.registerPlugin('debugger', Dubugger);
- ```
- @param label The identifier of the script.
- @param _class The Plugin Class being associated with the identifier.
- @returns `true` if plugin was registered correctly.
- **************************************************************/
-exports.registerPlugin = function (label, _class) {
-    return Plugins.registerPlugin(label, _class);
 };
 /**************************************************************
  Find out if the page being displayed is being run in teacher-edition
@@ -316,17 +412,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_jquery__;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_jqueryui__;
-
-/***/ }),
-
-/***/ "plugins":
-/*!**************************!*\
-  !*** external "Plugins" ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_plugins__;
 
 /***/ }),
 

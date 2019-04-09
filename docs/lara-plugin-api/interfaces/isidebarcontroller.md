@@ -23,7 +23,7 @@
 
 **● close**: *`function`*
 
-*Defined in [lara-plugin-api.ts:171](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L171)*
+*Defined in [lara-plugin-api.ts:174](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L174)*
 
 #### Type declaration
 ▸(): `void`
@@ -37,7 +37,7 @@ ___
 
 **● open**: *`function`*
 
-*Defined in [lara-plugin-api.ts:170](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L170)*
+*Defined in [lara-plugin-api.ts:173](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L173)*
 
 #### Type declaration
 ▸(): `void`

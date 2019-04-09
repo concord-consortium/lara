@@ -24,7 +24,7 @@
 
 **● close**: *`function`*
 
-*Defined in [lara-plugin-api.ts:45](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L45)*
+*Defined in [lara-plugin-api.ts:48](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L48)*
 
 Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true.
 
@@ -40,7 +40,7 @@ ___
 
 **● open**: *`function`*
 
-*Defined in [lara-plugin-api.ts:43](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L43)*
+*Defined in [lara-plugin-api.ts:46](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L46)*
 
 Opens popup (makes sense only if autoOpen option is set to false during initialization).
 
@@ -56,7 +56,7 @@ ___
 
 **● remove**: *`function`*
 
-*Defined in [lara-plugin-api.ts:47](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L47)*
+*Defined in [lara-plugin-api.ts:50](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L50)*
 
 Removes HTML element from DOM tree.
 

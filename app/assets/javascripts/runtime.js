@@ -32,7 +32,6 @@
 //= require page-unload-warning
 //= require modals
 //= require modal-dialog
-//= require plugins
 //= require sidebar
 //= require lara-plugin-api
 //= require common

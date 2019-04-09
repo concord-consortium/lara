@@ -48,7 +48,6 @@ module.exports = (env, argv) => {
       'jquery': 'jQuery',
       'jqueryui': 'jQuery.ui',
       "sidebar": "Sidebar", // LARA module exported to the window.Sidebar namespace
-      "plugins": "Plugins", // LARA module exported to the window.Plugins namespace
       "text-decorator": "TextDecorator", // LARA module exported to the window.TextDecorator namespace
     }
   };

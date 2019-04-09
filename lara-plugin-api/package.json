@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && cp ./dist/*.js ../app/assets/javascripts/",
-    "build:docs": "typedoc --theme markdown --readme none --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs ./src/lara-plugin-api.ts && cp -R ./docs ../docs/lara-plugin-api/",
+    "build:docs": "typedoc --theme markdown --readme none --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs ./src/lara-plugin-api.ts ./src/api/* && cp -R ./docs ../docs/lara-plugin-api/",
     "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",

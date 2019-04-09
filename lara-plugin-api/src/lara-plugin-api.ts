@@ -1,8 +1,11 @@
 import * as $ from "jquery";
 import "jqueryui";
 import * as Sidebar from "sidebar";
-import * as Plugins from "plugins";
 import * as TextDecorator from "text-decorator";
+
+export {
+  IPlugin, IPluginConstructor, IRuntimeContext, registerPlugin, initPlugin, saveLearnerPluginState
+} from "./api/plugins";
 
 export interface IPopupOptions {
   content: HTMLElement | string;
@@ -205,18 +208,6 @@ export const addSidebar = (options: ISidebarOptions): ISidebarController => {
   return Sidebar.addSidebar(options);
 };
 
-/****************************************************************************
- Ask LARA to save the users state for the plugin.
- ```
- LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
- ```
- @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context
- @param state A JSON string representing serialized plugin state.
- ****************************************************************************/
-export const saveLearnerPluginState = (pluginId: string, state: string): Promise<string> => {
-  return Plugins.saveLearnerPluginState(pluginId, state);
-};
-
 export interface IEventListener {
   type: string;
   listener: (evt: Event) => void;
@@ -240,19 +231,6 @@ export const decorateContent = (words: string[], replace: string, wordClass: str
     replace
   };
   TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-};
-
-/**************************************************************
- Register a new external script as `label` with `_class `.
- ```
- LARA.registerPlugin('debugger', Dubugger);
- ```
- @param label The identifier of the script.
- @param _class The Plugin Class being associated with the identifier.
- @returns `true` if plugin was registered correctly.
- **************************************************************/
-export const registerPlugin = (label: string, _class: any) => {
-  return Plugins.registerPlugin(label, _class);
 };
 
 /**************************************************************

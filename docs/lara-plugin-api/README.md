@@ -6,21 +6,44 @@
 ### Interfaces
 
 * [IEventListener](interfaces/ieventlistener.md)
+* [IPlugin](interfaces/iplugin.md)
+* [IPluginStatePath](interfaces/ipluginstatepath.md)
 * [IPopupController](interfaces/ipopupcontroller.md)
 * [IPopupOptions](interfaces/ipopupoptions.md)
+* [IRuntimeContext](interfaces/iruntimecontext.md)
+* [IRuntimeContextExperimentalFeatures](interfaces/iruntimecontextexperimentalfeatures.md)
 * [ISidebarController](interfaces/isidebarcontroller.md)
 * [ISidebarOptions](interfaces/isidebaroptions.md)
+
+### Type aliases
+
+* [IPluginConstructor](#ipluginconstructor)
 
 ### Functions
 
 * [addPopup](#addpopup)
 * [addSidebar](#addsidebar)
 * [decorateContent](#decoratecontent)
+* [initPlugin](#initplugin)
 * [isTeacherEdition](#isteacheredition)
 * [registerPlugin](#registerplugin)
 * [saveLearnerPluginState](#savelearnerpluginstate)
 
 ---
+
+## Type aliases
+
+<a id="ipluginconstructor"></a>
+
+###  IPluginConstructor
+
+**Ƭ IPluginConstructor**: *`object`*
+
+*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L5)*
+
+#### Type declaration
+
+___
 
 ## Functions
 
@@ -30,7 +53,7 @@
 
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
-*Defined in [lara-plugin-api.ts:88](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L88)*
+*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L91)*
 
 Ask LARA to add a new popup window.
 
@@ -53,7 +76,7 @@ ___
 
 ▸ **addSidebar**(options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
-*Defined in [lara-plugin-api.ts:200](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L200)*
+*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L203)*
 
 Ask LARA to add a new sidebar.
 
@@ -81,7 +104,7 @@ ___
 
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *`IEventListeners`*): `void`
 
-*Defined in [lara-plugin-api.ts:236](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L236)*
+*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L227)*
 
 Ask LARA to decorate authored content (text / html).
 
@@ -97,13 +120,34 @@ Ask LARA to decorate authored content (text / html).
 **Returns:** `void`
 
 ___
+<a id="initplugin"></a>
+
+### `<Const>` initPlugin
+
+▸ **initPlugin**(label: *`string`*, runtimeContext: *[IRuntimeContext](interfaces/iruntimecontext.md)*, pluginStatePath: *[IPluginStatePath](interfaces/ipluginstatepath.md)*): `void`
+
+*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L92)*
+
+Note that this method is NOT meant to be called by plugins. It's used by LARA internals. This method is called to initialize the plugin. Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| label | `string` |  The the script identifier. |
+| runtimeContext | [IRuntimeContext](interfaces/iruntimecontext.md) |  Context for the plugin. |
+| pluginStatePath | [IPluginStatePath](interfaces/ipluginstatepath.md) |  For saving & loading learner data. |
+
+**Returns:** `void`
+
+___
 <a id="isteacheredition"></a>
 
 ### `<Const>` isTeacherEdition
 
 ▸ **isTeacherEdition**(): `boolean`
 
-*Defined in [lara-plugin-api.ts:262](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L262)*
+*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L240)*
 
 Find out if the page being displayed is being run in teacher-edition
 
@@ -115,14 +159,14 @@ ___
 
 ### `<Const>` registerPlugin
 
-▸ **registerPlugin**(label: *`string`*, _class: *`any`*): `any`
+▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
-*Defined in [lara-plugin-api.ts:254](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L254)*
+*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L152)*
 
-Register a new external script as `label` with `_class`.
+Register a new external script as `label` with `_class`, e.g.:
 
 ```
-LARA.registerPlugin('debugger', Dubugger);
+registerPlugin('debugger', Dubugger)
 ```
 
 **Parameters:**
@@ -130,9 +174,9 @@ LARA.registerPlugin('debugger', Dubugger);
 | Name | Type | Description |
 | ------ | ------ | ------ |
 | label | `string` |  The identifier of the script. |
-| _class | `any` |  The Plugin Class being associated with the identifier. |
+| _class | [IPluginConstructor](#ipluginconstructor) |  The Plugin class/constructor being associated with the identifier. |
 
-**Returns:** `any`
+**Returns:** `boolean`
 `true` if plugin was registered correctly.
 
 ___
@@ -140,22 +184,22 @@ ___
 
 ### `<Const>` saveLearnerPluginState
 
-▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`string`*): `Promise`<`string`>
+▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`any`*): `Promise`<`string`>
 
-*Defined in [lara-plugin-api.ts:216](https://github.com/concord-consortium/lara/blob/ffbf9439/lara-plugin-api/src/lara-plugin-api.ts#L216)*
+*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L120)*
 
 Ask LARA to save the users state for the plugin.
 
 ```
-LARA.saveLearnerPluginState(plugin, '{"one": 1}').then((data) => console.log(data))
+LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
 ```
 
 **Parameters:**
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| pluginId | `string` |  ID of the plugin trying to save data, initially passed to plugin constructor in the context |
-| state | `string` |  A JSON string representing serialized plugin state. |
+| pluginId | `string` |  ID of the plugin trying to save data, initially passed to plugin constructor in the context. |
+| state | `any` |  A JSON string representing serialized plugin state. |
 
 **Returns:** `Promise`<`string`>
 
