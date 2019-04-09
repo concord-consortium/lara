@@ -95,7 +95,8 @@ class Run < ActiveRecord::Base
   def self.for_user_and_activity(user,activity)
     conditions = {
       activity_id:     activity.id,
-      user_id:         user.id
+      user_id:         user.id,
+      sequence_id:     nil
     }
     found = self.find(:first, :conditions => conditions)
     if found
