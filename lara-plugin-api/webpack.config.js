@@ -47,8 +47,9 @@ module.exports = (env, argv) => {
     externals: {
       'jquery': 'jQuery',
       'jqueryui': 'jQuery.ui',
-      "sidebar": "Sidebar", // LARA module exported to the window.Sidebar namespace
-      "text-decorator": "TextDecorator", // LARA module exported to the window.TextDecorator namespace
+      'react': 'react',
+      'react-dom': 'ReactDOM',
+      "sidebar": "Sidebar" // LARA module exported to the window.Sidebar namespace
     }
   };
 };

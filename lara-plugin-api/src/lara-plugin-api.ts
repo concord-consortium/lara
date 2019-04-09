@@ -1,7 +1,7 @@
 import * as $ from "jquery";
 import "jqueryui";
 import * as Sidebar from "sidebar";
-import * as TextDecorator from "text-decorator";
+import * as TextDecorator from "@concord-consortium/text-decorator";
 
 export {
   IPlugin, IPluginConstructor, IRuntimeContext, registerPlugin, initPlugin, saveLearnerPluginState

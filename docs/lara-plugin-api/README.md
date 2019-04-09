@@ -39,7 +39,7 @@
 
 **Ƭ IPluginConstructor**: *`object`*
 
-*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L5)*
+*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/api/plugins.ts#L5)*
 
 #### Type declaration
 
@@ -53,7 +53,7 @@ ___
 
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
-*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L91)*
+*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L91)*
 
 Ask LARA to add a new popup window.
 
@@ -76,7 +76,7 @@ ___
 
 ▸ **addSidebar**(options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
-*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L203)*
+*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L203)*
 
 Ask LARA to add a new sidebar.
 
@@ -104,7 +104,7 @@ ___
 
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *`IEventListeners`*): `void`
 
-*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L227)*
+*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L227)*
 
 Ask LARA to decorate authored content (text / html).
 
@@ -126,7 +126,7 @@ ___
 
 ▸ **initPlugin**(label: *`string`*, runtimeContext: *[IRuntimeContext](interfaces/iruntimecontext.md)*, pluginStatePath: *[IPluginStatePath](interfaces/ipluginstatepath.md)*): `void`
 
-*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L92)*
+*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/api/plugins.ts#L92)*
 
 Note that this method is NOT meant to be called by plugins. It's used by LARA internals. This method is called to initialize the plugin. Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
 
@@ -147,7 +147,7 @@ ___
 
 ▸ **isTeacherEdition**(): `boolean`
 
-*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/lara-plugin-api.ts#L240)*
+*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/lara-plugin-api.ts#L240)*
 
 Find out if the page being displayed is being run in teacher-edition
 
@@ -161,7 +161,7 @@ ___
 
 ▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
-*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L152)*
+*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/api/plugins.ts#L152)*
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -186,7 +186,7 @@ ___
 
 ▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`any`*): `Promise`<`string`>
 
-*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/c356eaff/lara-plugin-api/src/api/plugins.ts#L120)*
+*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/282bbe90/lara-plugin-api/src/api/plugins.ts#L120)*
 
 Ask LARA to save the users state for the plugin.
 
