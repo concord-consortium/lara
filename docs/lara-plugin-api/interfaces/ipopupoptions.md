@@ -45,7 +45,7 @@
 
 **● autoOpen**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:12](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L12)*
+*Defined in [lara-plugin-api.ts:12](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L12)*
 
 ___
 <a id="backgroundcolor"></a>
@@ -54,7 +54,7 @@ ___
 
 **● backgroundColor**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:32](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L32)*
+*Defined in [lara-plugin-api.ts:32](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L32)*
 
 ___
 <a id="closebutton"></a>
@@ -63,7 +63,7 @@ ___
 
 **● closeButton**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:20](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L20)*
+*Defined in [lara-plugin-api.ts:20](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L20)*
 
 ___
 <a id="closeonescape"></a>
@@ -72,7 +72,7 @@ ___
 
 **● closeOnEscape**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:13](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L13)*
+*Defined in [lara-plugin-api.ts:13](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L13)*
 
 ___
 <a id="color"></a>
@@ -81,7 +81,7 @@ ___
 
 **● color**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:21](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L21)*
+*Defined in [lara-plugin-api.ts:21](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L21)*
 
 ___
 <a id="content"></a>
@@ -90,7 +90,7 @@ ___
 
 **● content**: *`HTMLElement` \| `string`*
 
-*Defined in [lara-plugin-api.ts:11](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L11)*
+*Defined in [lara-plugin-api.ts:11](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L11)*
 
 ___
 <a id="dialogclass"></a>
@@ -99,7 +99,7 @@ ___
 
 **● dialogClass**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:23](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L23)*
+*Defined in [lara-plugin-api.ts:23](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L23)*
 
 ___
 <a id="draggable"></a>
@@ -108,7 +108,7 @@ ___
 
 **● draggable**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:24](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L24)*
+*Defined in [lara-plugin-api.ts:24](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L24)*
 
 ___
 <a id="height"></a>
@@ -117,7 +117,7 @@ ___
 
 **● height**: *`number` \| `string`*
 
-*Defined in [lara-plugin-api.ts:30](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L30)*
+*Defined in [lara-plugin-api.ts:30](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L30)*
 
 Number in px or "auto"
 
@@ -128,7 +128,7 @@ ___
 
 **● modal**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:22](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L22)*
+*Defined in [lara-plugin-api.ts:22](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L22)*
 
 ___
 <a id="onbeforeclose"></a>
@@ -137,7 +137,7 @@ ___
 
 **● onBeforeClose**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:37](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L37)*
+*Defined in [lara-plugin-api.ts:37](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L37)*
 
 Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
 
@@ -148,7 +148,7 @@ ___
 
 **● onClose**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:35](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L35)*
+*Defined in [lara-plugin-api.ts:35](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L35)*
 
 ___
 <a id="ondragstart"></a>
@@ -157,7 +157,7 @@ ___
 
 **● onDragStart**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:40](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L40)*
+*Defined in [lara-plugin-api.ts:40](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L40)*
 
 ___
 <a id="ondragstop"></a>
@@ -166,7 +166,7 @@ ___
 
 **● onDragStop**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:41](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L41)*
+*Defined in [lara-plugin-api.ts:41](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L41)*
 
 ___
 <a id="onopen"></a>
@@ -175,7 +175,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:34](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L34)*
+*Defined in [lara-plugin-api.ts:34](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L34)*
 
 ___
 <a id="onremove"></a>
@@ -184,7 +184,7 @@ ___
 
 **● onRemove**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:38](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L38)*
+*Defined in [lara-plugin-api.ts:38](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L38)*
 
 ___
 <a id="onresize"></a>
@@ -193,7 +193,7 @@ ___
 
 **● onResize**: *`undefined` \| `function`*
 
-*Defined in [lara-plugin-api.ts:39](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L39)*
+*Defined in [lara-plugin-api.ts:39](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L39)*
 
 ___
 <a id="padding"></a>
@@ -202,7 +202,7 @@ ___
 
 **● padding**: *`undefined` \| `number`*
 
-*Defined in [lara-plugin-api.ts:31](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L31)*
+*Defined in [lara-plugin-api.ts:31](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L31)*
 
 ___
 <a id="position"></a>
@@ -211,7 +211,7 @@ ___
 
 **● position**: *`undefined` \| `object`*
 
-*Defined in [lara-plugin-api.ts:27](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L27)*
+*Defined in [lara-plugin-api.ts:27](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L27)*
 
 Please see: [https://api.jqueryui.com/dialog/#option-position](https://api.jqueryui.com/dialog/#option-position)
 
@@ -222,7 +222,7 @@ ___
 
 **● removeOnClose**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:18](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L18)*
+*Defined in [lara-plugin-api.ts:18](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L18)*
 
 Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be reopened programmatically.
 
@@ -233,7 +233,7 @@ ___
 
 **● resizable**: *`undefined` \| `false` \| `true`*
 
-*Defined in [lara-plugin-api.ts:25](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L25)*
+*Defined in [lara-plugin-api.ts:25](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L25)*
 
 ___
 <a id="title"></a>
@@ -242,7 +242,7 @@ ___
 
 **● title**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:19](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L19)*
+*Defined in [lara-plugin-api.ts:19](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L19)*
 
 ___
 <a id="titlebarcolor"></a>
@@ -251,7 +251,7 @@ ___
 
 **● titlebarColor**: *`undefined` \| `string`*
 
-*Defined in [lara-plugin-api.ts:33](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L33)*
+*Defined in [lara-plugin-api.ts:33](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L33)*
 
 ___
 <a id="width"></a>
@@ -260,7 +260,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
-*Defined in [lara-plugin-api.ts:28](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L28)*
+*Defined in [lara-plugin-api.ts:28](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L28)*
 
 ___
 

@@ -2,28 +2,66 @@
 LARA Plugin API
 ===============
 
-#### This document is meant to be used by LARA Plugin developers.
+### This document is meant to be used by LARA Plugin developers.
+
+#### Setup and webpack configuration
+
+LARA API will be available under `window.LARA` object / namespace once the plugin is initialized by LARA.
+
+However, if the plugin is implemented using TypeScript, the best way to get type checking and hints in your IDE is to install [LARA Plugin API NPM package](https://www.npmjs.com/package/@concord-consortium/lara-plugin-api):
+
+```
+npm i --save-dev @concord-consortium/lara-plugin-api
+```
+
+Then, you need to configure [webpack externals](https://webpack.js.org/configuration/externals/), so webpack does not bundle Plugin API code but looks for global `window.LARA` object instead (and do the same for React if the plugin uses it).
+
+Example of **webpack.config.js**:
+
+```
+  externals: {
+    // LARA Plugin API implementation is exported to the window.LARA namespace.
+    '@concord-consortium/lara-plugin-api': 'LARA',
+    // Use React and ReactDOM provided by LARA, do not bundle an own copy.  
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+  }
+```
+
+Finally, you can import LARA Plugin API anywhere in your code and benefit from automatic type checking:
+
+```typescript
+import * as LARAPluginAPI from "@concord-consortium/lara-plugin-api";
+// (...)
+LARAPluginAPI.registerPlugin("test", Test);
+// (...)
+LARAPluginAPI.addSidebar({ content: "test sidebar" });
+// etc.
+```
+
+#### Plugin implementation
 
 LARA Plugin is a regular JavaScript class (or constructor). There are no special requirements regarding its interface at the moment, but it's a subject to change. Always check [IPlugin](interfaces/iplugin.md) interface first.
 
 The first thing that should be done by plugin script is call to [registerPlugin](#registerplugin).
 
-Later, the Plugin will be initialized by LARA automatically. LARA calls its constructor and provide the runtime context object. The plugin constructor should expect [IRuntimeContext](interfaces/iruntimecontext.md) instance as the only argument.
+The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IRuntimeContext](interfaces/iruntimecontext.md) instance as the only argument.
 
 Example:
 
 ```typescript
 class TestPlugin {
   constructor(context: IRuntimeContext) {
-    this.context = context;
-    console.log('Plugin initialized');
+    console.log("Plugin initialized, id:", context.pluginId);
   }
 }  
 
-LARA.registerPlugin("testPlugin", TestPlugin);
+LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
 ```
 
-Plugins can use all the functions documented below to modify LARA or provide custom features.
+[registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin.
+
+Plugins can use all the functions documented below to modify LARA runtime or provide custom features.
 
 ## Index
 
@@ -63,7 +101,7 @@ Plugins can use all the functions documented below to modify LARA or provide cus
 
 **Ƭ IPluginConstructor**: *`object`*
 
-*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/api/plugins.ts#L5)*
+*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L5)*
 
 #### Type declaration
 
@@ -77,7 +115,7 @@ ___
 
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
-*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L91)*
+*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L91)*
 
 Ask LARA to add a new popup window.
 
@@ -100,7 +138,7 @@ ___
 
 ▸ **addSidebar**(options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
-*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L203)*
+*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L203)*
 
 Ask LARA to add a new sidebar.
 
@@ -128,7 +166,7 @@ ___
 
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *`IEventListeners`*): `void`
 
-*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L227)*
+*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L227)*
 
 Ask LARA to decorate authored content (text / html).
 
@@ -150,7 +188,7 @@ ___
 
 ▸ **initPlugin**(label: *`string`*, runtimeContext: *[IRuntimeContext](interfaces/iruntimecontext.md)*, pluginStatePath: *[IPluginStatePath](interfaces/ipluginstatepath.md)*): `void`
 
-*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/api/plugins.ts#L92)*
+*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L92)*
 
 Note that this method is NOT meant to be called by plugins. It's used by LARA internals. This method is called to initialize the plugin. Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
 
@@ -171,7 +209,7 @@ ___
 
 ▸ **isTeacherEdition**(): `boolean`
 
-*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/lara-plugin-api.ts#L240)*
+*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L240)*
 
 Find out if the page being displayed is being run in teacher-edition
 
@@ -185,7 +223,7 @@ ___
 
 ▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
-*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/api/plugins.ts#L152)*
+*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L152)*
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -210,7 +248,7 @@ ___
 
 ▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`any`*): `Promise`<`string`>
 
-*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/bc186f7e/lara-plugin-api/src/api/plugins.ts#L120)*
+*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L120)*
 
 Ask LARA to save the users state for the plugin.
 
