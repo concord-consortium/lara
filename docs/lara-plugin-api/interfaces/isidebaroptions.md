@@ -31,7 +31,7 @@
 
 **● content**: *`string` \| `HTMLElement`*
 
-*Defined in [api/sidebar.ts:11](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L11)*
+*Defined in [api/sidebar.ts:11](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L11)*
 
 ___
 <a id="handle"></a>
@@ -40,7 +40,9 @@ ___
 
 **● handle**: *`undefined` \| `string`*
 
-*Defined in [api/sidebar.ts:15](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L15)*
+*Defined in [api/sidebar.ts:15](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L15)*
+
+Text displayed on the sidebar handle.
 
 ___
 <a id="handlecolor"></a>
@@ -49,7 +51,7 @@ ___
 
 **● handleColor**: *`undefined` \| `string`*
 
-*Defined in [api/sidebar.ts:16](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L16)*
+*Defined in [api/sidebar.ts:16](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L16)*
 
 ___
 <a id="icon"></a>
@@ -58,7 +60,9 @@ ___
 
 **● icon**: *`string` \| `HTMLElement`*
 
-*Defined in [api/sidebar.ts:13](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L13)*
+*Defined in [api/sidebar.ts:13](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L13)*
+
+Icon can be 'default' (arrow) or an HTML element.
 
 ___
 <a id="onclose"></a>
@@ -67,7 +71,7 @@ ___
 
 **● onClose**: *`undefined` \| `function`*
 
-*Defined in [api/sidebar.ts:23](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L23)*
+*Defined in [api/sidebar.ts:23](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L23)*
 
 ___
 <a id="onopen"></a>
@@ -76,7 +80,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
-*Defined in [api/sidebar.ts:22](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L22)*
+*Defined in [api/sidebar.ts:22](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L22)*
 
 ___
 <a id="padding"></a>
@@ -85,7 +89,7 @@ ___
 
 **● padding**: *`undefined` \| `25`*
 
-*Defined in [api/sidebar.ts:21](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L21)*
+*Defined in [api/sidebar.ts:21](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L21)*
 
 ___
 <a id="titlebar"></a>
@@ -94,7 +98,9 @@ ___
 
 **● titleBar**: *`undefined` \| `string`*
 
-*Defined in [api/sidebar.ts:18](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L18)*
+*Defined in [api/sidebar.ts:18](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L18)*
+
+Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
 
 ___
 <a id="titlebarcolor"></a>
@@ -103,7 +109,7 @@ ___
 
 **● titleBarColor**: *`undefined` \| `string`*
 
-*Defined in [api/sidebar.ts:19](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L19)*
+*Defined in [api/sidebar.ts:19](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L19)*
 
 ___
 <a id="width"></a>
@@ -112,7 +118,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
-*Defined in [api/sidebar.ts:20](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/sidebar.ts#L20)*
+*Defined in [api/sidebar.ts:20](https://github.com/concord-consortium/lara/blob/6c40ce49/lara-plugin-api/src/api/sidebar.ts#L20)*
 
 ___
 

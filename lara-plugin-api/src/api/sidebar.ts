@@ -9,12 +9,12 @@ const BOTTOM_MARGIN = 30;
 
 export interface ISidebarOptions {
   content: string | HTMLElement;
-  // Icon can be 'default' (arrow) or an HTML element.
+  /** Icon can be 'default' (arrow) or an HTML element. */
   icon?: string | HTMLElement;
-  // Text displayed on the sidebar handle.
+  /** Text displayed on the sidebar handle. */
   handle?: string;
   handleColor?: string;
-  // Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
+  /** Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all. */
   titleBar?: string;
   titleBarColor?: string;
   width?: number;
@@ -29,7 +29,8 @@ export interface ISidebarController {
 }
 
 export const ADD_SIDEBAR_DEFAULT_OPTIONS = {
-  icon: "default", // arrow pointing left
+  /** Arrow pointing left. */
+  icon: "default",
   handle: "",
   handleColor: "#aaa",
   titleBar: null,

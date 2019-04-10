@@ -8439,6 +8439,7 @@ var SIDEBAR_SPACER = 35;
 // Distance to the bottom edge of the window if sidebar content gets pretty tall.
 var BOTTOM_MARGIN = 30;
 exports.ADD_SIDEBAR_DEFAULT_OPTIONS = {
+    /** Arrow pointing left. */
     icon: "default",
     handle: "",
     handleColor: "#aaa",
