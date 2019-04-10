@@ -60,7 +60,7 @@ describe "plugins/_show.html.haml" do
       /div:/,
       /wrappedEmbeddableDiv:/,
       /wrappedEmbeddableContext:/,
-      /Plugins\.initPlugin\('plugin-label', env, pluginStatePaths/,
+      /LARA\.initPlugin\('plugin-label', env, pluginStatePaths/,
       /clickToPlayId/
     ].each do |expected_string|
       expect(rendered).to match(expected_string)
