@@ -2,7 +2,7 @@
 LARA Plugin API
 ===============
 
-### This document is meant to be used by LARA Plugin developers.
+### This documentation is meant to be used by LARA Plugin developers.
 
 #### Setup and webpack configuration
 
@@ -59,9 +59,9 @@ class TestPlugin {
 LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
 ```
 
-[registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin.
+[registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin (e.g. if the activity author adds multiple plugin instances to a page).
 
-Plugins can use all the functions documented below to modify LARA runtime or provide custom features.
+Plugins can use all the functions documented below to modify LARA runtime or provide custom features. This documentation is generated automatically from TypeScript definitions and comments.
 
 ## Index
 
@@ -91,6 +91,11 @@ Plugins can use all the functions documented below to modify LARA runtime or pro
 * [registerPlugin](#registerplugin)
 * [saveLearnerPluginState](#savelearnerpluginstate)
 
+### Object literals
+
+* [ADD_POPUP_DEFAULT_OPTIONS](#add_popup_default_options)
+* [ADD_SIDEBAR_DEFAULT_OPTIONS](#add_sidebar_default_options)
+
 ---
 
 ## Type aliases
@@ -101,7 +106,7 @@ Plugins can use all the functions documented below to modify LARA runtime or pro
 
 **Ƭ IPluginConstructor**: *`object`*
 
-*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L5)*
+*Defined in [api/plugins.ts:5](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L5)*
 
 #### Type declaration
 
@@ -115,7 +120,7 @@ ___
 
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
-*Defined in [lara-plugin-api.ts:91](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L91)*
+*Defined in [lara-plugin-api.ts:94](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L94)*
 
 Ask LARA to add a new popup window.
 
@@ -136,9 +141,9 @@ ___
 
 ### `<Const>` addSidebar
 
-▸ **addSidebar**(options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
+▸ **addSidebar**(_options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
-*Defined in [lara-plugin-api.ts:203](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L203)*
+*Defined in [api/sidebar.ts:89](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L89)*
 
 Ask LARA to add a new sidebar.
 
@@ -155,7 +160,7 @@ It returns a simple controller that can be used to open or close sidebar.
 
 | Name | Type |
 | ------ | ------ |
-| options | [ISidebarOptions](interfaces/isidebaroptions.md) |
+| _options | [ISidebarOptions](interfaces/isidebaroptions.md) |
 
 **Returns:** [ISidebarController](interfaces/isidebarcontroller.md)
 
@@ -166,7 +171,7 @@ ___
 
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *`IEventListeners`*): `void`
 
-*Defined in [lara-plugin-api.ts:227](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L227)*
+*Defined in [lara-plugin-api.ts:173](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L173)*
 
 Ask LARA to decorate authored content (text / html).
 
@@ -188,7 +193,7 @@ ___
 
 ▸ **initPlugin**(label: *`string`*, runtimeContext: *[IRuntimeContext](interfaces/iruntimecontext.md)*, pluginStatePath: *[IPluginStatePath](interfaces/ipluginstatepath.md)*): `void`
 
-*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L92)*
+*Defined in [api/plugins.ts:92](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L92)*
 
 Note that this method is NOT meant to be called by plugins. It's used by LARA internals. This method is called to initialize the plugin. Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
 
@@ -209,7 +214,7 @@ ___
 
 ▸ **isTeacherEdition**(): `boolean`
 
-*Defined in [lara-plugin-api.ts:240](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/lara-plugin-api.ts#L240)*
+*Defined in [lara-plugin-api.ts:186](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L186)*
 
 Find out if the page being displayed is being run in teacher-edition
 
@@ -223,7 +228,7 @@ ___
 
 ▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
-*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L152)*
+*Defined in [api/plugins.ts:152](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L152)*
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -248,7 +253,7 @@ ___
 
 ▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`any`*): `Promise`<`string`>
 
-*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/e0cb6cdb/lara-plugin-api/src/api/plugins.ts#L120)*
+*Defined in [api/plugins.ts:120](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L120)*
 
 Ask LARA to save the users state for the plugin.
 
@@ -264,6 +269,302 @@ LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(d
 | state | `any` |  A JSON string representing serialized plugin state. |
 
 **Returns:** `Promise`<`string`>
+
+___
+
+## Object literals
+
+<a id="add_popup_default_options"></a>
+
+### `<Const>` ADD_POPUP_DEFAULT_OPTIONS
+
+**ADD_POPUP_DEFAULT_OPTIONS**: *`object`*
+
+*Defined in [lara-plugin-api.ts:56](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L56)*
+
+<a id="add_popup_default_options.autoopen"></a>
+
+####  autoOpen
+
+**● autoOpen**: *`boolean`* = true
+
+*Defined in [lara-plugin-api.ts:58](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L58)*
+
+___
+<a id="add_popup_default_options.backgroundcolor"></a>
+
+####  backgroundColor
+
+**● backgroundColor**: *`string`* = ""
+
+*Defined in [lara-plugin-api.ts:73](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L73)*
+
+___
+<a id="add_popup_default_options.closebutton"></a>
+
+####  closeButton
+
+**● closeButton**: *`boolean`* = true
+
+*Defined in [lara-plugin-api.ts:59](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L59)*
+
+___
+<a id="add_popup_default_options.closeonescape"></a>
+
+####  closeOnEscape
+
+**● closeOnEscape**: *`boolean`* = false
+
+*Defined in [lara-plugin-api.ts:60](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L60)*
+
+___
+<a id="add_popup_default_options.dialogclass"></a>
+
+####  dialogClass
+
+**● dialogClass**: *`string`* = ""
+
+*Defined in [lara-plugin-api.ts:72](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L72)*
+
+Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+
+___
+<a id="add_popup_default_options.draggable"></a>
+
+####  draggable
+
+**● draggable**: *`boolean`* = true
+
+*Defined in [lara-plugin-api.ts:63](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L63)*
+
+___
+<a id="add_popup_default_options.height"></a>
+
+####  height
+
+**● height**: *`string`* = "auto"
+
+*Defined in [lara-plugin-api.ts:66](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L66)*
+
+___
+<a id="add_popup_default_options.modal"></a>
+
+####  modal
+
+**● modal**: *`boolean`* = false
+
+*Defined in [lara-plugin-api.ts:62](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L62)*
+
+___
+<a id="add_popup_default_options.onbeforeclose"></a>
+
+####  onBeforeClose
+
+**● onBeforeClose**: *`null`* =  null
+
+*Defined in [lara-plugin-api.ts:77](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L77)*
+
+___
+<a id="add_popup_default_options.ondragstart"></a>
+
+####  onDragStart
+
+**● onDragStart**: *`null`* =  null
+
+*Defined in [lara-plugin-api.ts:79](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L79)*
+
+___
+<a id="add_popup_default_options.ondragstop"></a>
+
+####  onDragStop
+
+**● onDragStop**: *`null`* =  null
+
+*Defined in [lara-plugin-api.ts:80](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L80)*
+
+___
+<a id="add_popup_default_options.onopen"></a>
+
+####  onOpen
+
+**● onOpen**: *`null`* =  null
+
+*Defined in [lara-plugin-api.ts:76](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L76)*
+
+___
+<a id="add_popup_default_options.onresize"></a>
+
+####  onResize
+
+**● onResize**: *`null`* =  null
+
+*Defined in [lara-plugin-api.ts:78](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L78)*
+
+___
+<a id="add_popup_default_options.padding"></a>
+
+####  padding
+
+**● padding**: *`number`* = 10
+
+*Defined in [lara-plugin-api.ts:67](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L67)*
+
+___
+<a id="add_popup_default_options.removeonclose"></a>
+
+####  removeOnClose
+
+**● removeOnClose**: *`boolean`* = true
+
+*Defined in [lara-plugin-api.ts:61](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L61)*
+
+___
+<a id="add_popup_default_options.resizable"></a>
+
+####  resizable
+
+**● resizable**: *`boolean`* = true
+
+*Defined in [lara-plugin-api.ts:64](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L64)*
+
+___
+<a id="add_popup_default_options.title"></a>
+
+####  title
+
+**● title**: *`string`* = ""
+
+*Defined in [lara-plugin-api.ts:57](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L57)*
+
+___
+<a id="add_popup_default_options.titlebarcolor"></a>
+
+####  titlebarColor
+
+**● titlebarColor**: *`string`* = ""
+
+*Defined in [lara-plugin-api.ts:74](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L74)*
+
+___
+<a id="add_popup_default_options.width"></a>
+
+####  width
+
+**● width**: *`number`* = 300
+
+*Defined in [lara-plugin-api.ts:65](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L65)*
+
+___
+<a id="add_popup_default_options.position"></a>
+
+####  position
+
+**position**: *`object`*
+
+*Defined in [lara-plugin-api.ts:75](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L75)*
+
+<a id="add_popup_default_options.position.at"></a>
+
+####  at
+
+**● at**: *`string`* = "center"
+
+*Defined in [lara-plugin-api.ts:75](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L75)*
+
+___
+<a id="add_popup_default_options.position.my"></a>
+
+####  my
+
+**● my**: *`string`* = "center"
+
+*Defined in [lara-plugin-api.ts:75](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L75)*
+
+___
+<a id="add_popup_default_options.position.of"></a>
+
+####  of
+
+**● of**: *`Window`* =  window
+
+*Defined in [lara-plugin-api.ts:75](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L75)*
+
+___
+
+___
+
+___
+<a id="add_sidebar_default_options"></a>
+
+### `<Const>` ADD_SIDEBAR_DEFAULT_OPTIONS
+
+**ADD_SIDEBAR_DEFAULT_OPTIONS**: *`object`*
+
+*Defined in [api/sidebar.ts:30](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L30)*
+
+<a id="add_sidebar_default_options.handle"></a>
+
+####  handle
+
+**● handle**: *`string`* = ""
+
+*Defined in [api/sidebar.ts:32](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L32)*
+
+___
+<a id="add_sidebar_default_options.handlecolor"></a>
+
+####  handleColor
+
+**● handleColor**: *`string`* = "#aaa"
+
+*Defined in [api/sidebar.ts:33](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L33)*
+
+___
+<a id="add_sidebar_default_options.icon"></a>
+
+####  icon
+
+**● icon**: *`string`* = "default"
+
+*Defined in [api/sidebar.ts:31](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L31)*
+
+___
+<a id="add_sidebar_default_options.padding"></a>
+
+####  padding
+
+**● padding**: *`number`* = 25
+
+*Defined in [api/sidebar.ts:37](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L37)*
+
+___
+<a id="add_sidebar_default_options.titlebar"></a>
+
+####  titleBar
+
+**● titleBar**: *`null`* =  null
+
+*Defined in [api/sidebar.ts:34](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L34)*
+
+___
+<a id="add_sidebar_default_options.titlebarcolor"></a>
+
+####  titleBarColor
+
+**● titleBarColor**: *`string`* = "#bbb"
+
+*Defined in [api/sidebar.ts:35](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L35)*
+
+___
+<a id="add_sidebar_default_options.width"></a>
+
+####  width
+
+**● width**: *`number`* = 500
+
+*Defined in [api/sidebar.ts:36](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/sidebar.ts#L36)*
+
+___
 
 ___
 

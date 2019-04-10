@@ -47,8 +47,7 @@ module.exports = (env, argv) => {
       'jquery': 'jQuery',
       'jqueryui': 'jQuery.ui',
       'react': 'react',
-      'react-dom': 'ReactDOM',
-      'sidebar': 'Sidebar' // LARA module exported to the window.Sidebar namespace
+      'react-dom': 'ReactDOM'
     }
   };
 };

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"), require("jQuery.ui"), require("react"), require("Sidebar"));
+		module.exports = factory(require("jQuery"), require("jQuery.ui"), require("react"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery", "jQuery.ui", "react", "Sidebar"], factory);
+		define(["jQuery", "jQuery.ui", "react"], factory);
 	else if(typeof exports === 'object')
-		exports["LARA"] = factory(require("jQuery"), require("jQuery.ui"), require("react"), require("Sidebar"));
+		exports["LARA"] = factory(require("jQuery"), require("jQuery.ui"), require("react"));
 	else
-		root["LARA"] = factory(root["jQuery"], root["jQuery.ui"], root["react"], root["Sidebar"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_jqueryui__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_sidebar__) {
+		root["LARA"] = factory(root["jQuery"], root["jQuery.ui"], root["react"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_jqueryui__, __WEBPACK_EXTERNAL_MODULE_react__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -8273,6 +8273,158 @@ exports.registerPlugin = function (label, _class) {
 
 /***/ }),
 
+/***/ "./src/api/sidebar.ts":
+/*!****************************!*\
+  !*** ./src/api/sidebar.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var $ = __webpack_require__(/*! jquery */ "jquery");
+// Distance between sidebar handles (in pixels).
+var SIDEBAR_SPACER = 35;
+// Distance to the bottom edge of the window if sidebar content gets pretty tall.
+var BOTTOM_MARGIN = 30;
+exports.ADD_SIDEBAR_DEFAULT_OPTIONS = {
+    icon: "default",
+    handle: "",
+    handleColor: "#aaa",
+    titleBar: null,
+    titleBarColor: "#bbb",
+    width: 500,
+    padding: 25
+};
+// List of all existing sidebars (their controllers).
+var controllers = [];
+// Dynamically setup position of sidebar handles.
+var positionMultipleSidebars = function () {
+    // First, make sure that sidebars are below page navigation menu.
+    var minOffset = 0;
+    var $navMenu = $(".activity-nav-mod");
+    // Note that .activity-nav-mod might not be present in test environment.
+    if ($navMenu.length > 0) {
+        minOffset = $navMenu[0].getBoundingClientRect().bottom;
+    }
+    // Also, take into account aet of small icons displayed on the side of the page. They look like mini-sidebar handles.
+    // Not available in all the layouts, so this selector might not be present. Again, avoid overlapping.
+    var $sideNavigation = $("#nav-activity-menu");
+    if ($sideNavigation.length > 0) {
+        minOffset = Math.max(minOffset, $sideNavigation[0].getBoundingClientRect().bottom);
+    }
+    minOffset = minOffset + SIDEBAR_SPACER; // add a little margin, it looks better.
+    // Then, make sure that multiple handles don't overlap and they don't go off screen.
+    var $sidebarHdr = $(".sidebar-hdr");
+    var sidebarSpacing = ($sidebarHdr.height() || 0) + SIDEBAR_SPACER;
+    var titleBarHeight = $(".sidebar-mod .title-bar").height() || 0;
+    $(".sidebar-mod").each(function (idx) {
+        var top = minOffset + idx * sidebarSpacing;
+        $(this).css("top", top);
+        // Also, ensure that sidebar content is fully visible, even on the pretty short screens.
+        $(this).find(".sidebar-content").css("max-height", window.innerHeight - top - titleBarHeight - BOTTOM_MARGIN);
+    });
+};
+var closeAllSidebars = function () {
+    controllers.forEach(function (controller) { return controller.close(); });
+};
+/****************************************************************************
+ Ask LARA to add a new sidebar.
+
+ Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
+ to specify their positions, so no assumptions should be made about current display - it might change.
+
+ Sidebar height cannot be specified. It's done on purpose to prevent issues on very short screens. It's based on the
+ provided content HTML element, but it's limited to following range:
+ - 100px is the min-height
+ - max-height is calculated dynamically and ensures that sidebar won't go off the screen
+ If the provided content is taller than the max-height of the sidebar, a sidebar content container will scroll.
+
+ It returns a simple controller that can be used to open or close sidebar.
+ ****************************************************************************/
+exports.addSidebar = function (_options) {
+    var options = $.extend({}, exports.ADD_SIDEBAR_DEFAULT_OPTIONS, _options);
+    if (options.icon === "default") {
+        options.icon = $("<i class='default-icon fa fa-arrow-circle-left'>")[0];
+    }
+    // Generate HTML.
+    var $sidebar = $('<div class="sidebar-mod">');
+    var $handle = $('<div class="sidebar-hdr">');
+    var $body = $('<div class="sidebar-bd">');
+    // Handle.
+    if (options.icon) {
+        $handle.append(options.icon);
+    }
+    var $handleText = $('<h5 class="h5">');
+    $handle.append($handleText);
+    // Body / main container.
+    var $closeBtn = $('<button class="sidebar-bd-close">');
+    // Note that ButtonOptions interface is out of date, `icon` is a valid option in jQuery UI 1.12.
+    // There's `as ButtonOptions` so TS doesn't complain about mismatching interfaces.
+    $closeBtn.button({ icon: "ui-icon-closethick" });
+    $body.append($closeBtn);
+    var $contentContainer = $('<div class="sidebar-content">');
+    $body.append($contentContainer);
+    // Final setup.
+    $sidebar.append($handle);
+    $sidebar.append($body);
+    $("body").append($sidebar);
+    // Add event handlers.
+    var isOpen = function () {
+        return $sidebar.hasClass("expanded");
+    };
+    $handle.add($closeBtn) // .add creates a set of elements, so we can apply click handler just once
+        .on("click", function () {
+        if (!isOpen()) {
+            // We're opening a sidebar. Close all the others first.
+            closeAllSidebars();
+            if (options.onOpen) {
+                options.onOpen();
+            }
+        }
+        if (isOpen() && options.onClose) {
+            options.onClose();
+        }
+        $sidebar.toggleClass("expanded");
+    });
+    // It triggers CSS transition.
+    $(".sidebar-mod").addClass("visible");
+    // Apply options.
+    $handleText.text(options.handle);
+    $contentContainer.append(options.content);
+    if (options.titleBar) {
+        var $titleBar = $('<div class="title-bar">');
+        $body.prepend($titleBar);
+        $titleBar.text(options.titleBar);
+        $titleBar.css("background", options.titleBarColor);
+    }
+    $handle.css("background-color", options.handleColor);
+    $contentContainer.css("padding", options.padding);
+    $sidebar.css("width", options.width);
+    // Hide sidebar on load.
+    $sidebar.css("right", options.width * -1);
+    var controller = {
+        open: function () {
+            if (!isOpen()) {
+                $handle.trigger("click");
+            }
+        },
+        close: function () {
+            if (isOpen()) {
+                $handle.trigger("click");
+            }
+        }
+    };
+    controllers.push(controller);
+    positionMultipleSidebars();
+    // Return controller.
+    return controller;
+};
+
+
+/***/ }),
+
 /***/ "./src/lara-plugin-api.ts":
 /*!********************************!*\
   !*** ./src/lara-plugin-api.ts ***!
@@ -8285,13 +8437,15 @@ exports.registerPlugin = function (label, _class) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var $ = __webpack_require__(/*! jquery */ "jquery");
 __webpack_require__(/*! jqueryui */ "jqueryui");
-var Sidebar = __webpack_require__(/*! sidebar */ "sidebar");
 var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 var plugins_1 = __webpack_require__(/*! ./api/plugins */ "./src/api/plugins.ts");
 exports.registerPlugin = plugins_1.registerPlugin;
 exports.initPlugin = plugins_1.initPlugin;
 exports.saveLearnerPluginState = plugins_1.saveLearnerPluginState;
-var ADD_POPUP_DEFAULT_OPTIONS = {
+var sidebar_1 = __webpack_require__(/*! ./api/sidebar */ "./src/api/sidebar.ts");
+exports.ADD_SIDEBAR_DEFAULT_OPTIONS = sidebar_1.ADD_SIDEBAR_DEFAULT_OPTIONS;
+exports.addSidebar = sidebar_1.addSidebar;
+exports.ADD_POPUP_DEFAULT_OPTIONS = {
     title: "",
     autoOpen: true,
     closeButton: true,
@@ -8329,7 +8483,7 @@ var ADD_POPUP_DEFAULT_OPTIONS = {
  in `onRemove` handler.
  ****************************************************************************/
 exports.addPopup = function (_options) {
-    var options = $.extend({}, ADD_POPUP_DEFAULT_OPTIONS, _options);
+    var options = $.extend({}, exports.ADD_POPUP_DEFAULT_OPTIONS, _options);
     if (!options.content) {
         throw new Error("LARA.addPopup - content option is required");
     }
@@ -8392,38 +8546,6 @@ exports.addPopup = function (_options) {
         remove: remove
     };
 };
-var ADD_SIDEBAR_DEFAULT_OPTIONS = {
-    icon: "default",
-    handle: "",
-    handleColor: "#aaa",
-    titleBar: null,
-    titleBarColor: "#bbb",
-    width: 500,
-    padding: 25,
-    onOpen: null,
-    onClose: null
-};
-/****************************************************************************
- Ask LARA to add a new sidebar.
-
- Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
- to specify their positions, so no assumptions should be made about current display - it might change.
-
- Sidebar height cannot be specified. It's done on purpose to prevent issues on very short screens. It's based on the
- provided content HTML element, but it's limited to following range:
- - 100px is the min-height
- - max-height is calculated dynamically and ensures that sidebar won't go off the screen
- If the provided content is taller than the max-height of the sidebar, a sidebar content container will scroll.
-
- It returns a simple controller that can be used to open or close sidebar.
- ****************************************************************************/
-exports.addSidebar = function (options) {
-    options = $.extend({}, ADD_SIDEBAR_DEFAULT_OPTIONS, options);
-    if (options.icon === "default") {
-        options.icon = $("<i class='default-icon fa fa-arrow-circle-left'>")[0];
-    }
-    return Sidebar.addSidebar(options);
-};
 /****************************************************************************
  Ask LARA to decorate authored content (text / html).
 
@@ -8484,17 +8606,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_jqueryui__;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
-
-/***/ }),
-
-/***/ "sidebar":
-/*!**************************!*\
-  !*** external "Sidebar" ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_sidebar__;
 
 /***/ })
 

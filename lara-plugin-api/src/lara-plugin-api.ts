@@ -1,11 +1,14 @@
 import * as $ from "jquery";
 import "jqueryui";
-import * as Sidebar from "sidebar";
 import * as TextDecorator from "@concord-consortium/text-decorator";
 
 export {
   IPlugin, IPluginConstructor, IRuntimeContext, registerPlugin, initPlugin, saveLearnerPluginState
 } from "./api/plugins";
+
+export {
+  ISidebarOptions, ISidebarController, ADD_SIDEBAR_DEFAULT_OPTIONS, addSidebar
+} from "./api/sidebar";
 
 export interface IPopupOptions {
   content: HTMLElement | string;
@@ -50,7 +53,7 @@ export interface IPopupController {
   remove: () => void;
 }
 
-const ADD_POPUP_DEFAULT_OPTIONS = {
+export const ADD_POPUP_DEFAULT_OPTIONS = {
   title: "",
   autoOpen: true,
   closeButton: true,
@@ -153,68 +156,11 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
   };
 };
 
-export interface ISidebarOptions {
-  content: string | HTMLElement;
-  // Icon can be 'default' (arrow) or an HTML element.
-  icon?: string | HTMLElement;
-  // Text displayed on the sidebar handle.
-  handle?: string;
-  handleColor?: string;
-  // Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
-  titleBar?: string;
-  titleBarColor?: string;
-  width?: number;
-  padding?: 25;
-  onOpen?: () => void;
-  onClose?: () => void;
-}
-
-export interface ISidebarController {
-  open: () => void;
-  close: () => void;
-}
-
-const ADD_SIDEBAR_DEFAULT_OPTIONS = {
-  icon: "default", // arrow pointing left
-  handle: "",
-  handleColor: "#aaa",
-  titleBar: null,
-  titleBarColor: "#bbb",
-  width: 500,
-  padding: 25,
-  onOpen: null,
-  onClose: null
-};
-
-/****************************************************************************
- Ask LARA to add a new sidebar.
-
- Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way
- to specify their positions, so no assumptions should be made about current display - it might change.
-
- Sidebar height cannot be specified. It's done on purpose to prevent issues on very short screens. It's based on the
- provided content HTML element, but it's limited to following range:
- - 100px is the min-height
- - max-height is calculated dynamically and ensures that sidebar won't go off the screen
- If the provided content is taller than the max-height of the sidebar, a sidebar content container will scroll.
-
- It returns a simple controller that can be used to open or close sidebar.
- ****************************************************************************/
-export const addSidebar = (options: ISidebarOptions): ISidebarController => {
-  options = $.extend({}, ADD_SIDEBAR_DEFAULT_OPTIONS, options);
-  if (options.icon === "default") {
-    options.icon = $("<i class='default-icon fa fa-arrow-circle-left'>")[0];
-  }
-  return Sidebar.addSidebar(options);
-};
-
 export interface IEventListener {
   type: string;
   listener: (evt: Event) => void;
 }
-
 type IEventListeners = IEventListener | IEventListener[];
-
 /****************************************************************************
  Ask LARA to decorate authored content (text / html).
 
