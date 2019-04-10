@@ -8157,6 +8157,38 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 
 /***/ }),
 
+/***/ "./src/api/decorate-content.ts":
+/*!*************************************!*\
+  !*** ./src/api/decorate-content.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
+/****************************************************************************
+ Ask LARA to decorate authored content (text / html).
+
+ @param words A list of case-insensitive words to be decorated. Can use limited regex.
+ @param replace The replacement string. Can include '$1' representing the matched word.
+ @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
+ @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
+ described above. It's client code responsibility to use this class in the `replace` string.
+ ****************************************************************************/
+exports.decorateContent = function (words, replace, wordClass, listeners) {
+    var domClasses = ["question-txt", "help-content", "intro-txt"];
+    var options = {
+        words: words,
+        replace: replace
+    };
+    TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
+};
+
+
+/***/ }),
+
 /***/ "./src/api/plugins.ts":
 /*!****************************!*\
   !*** ./src/api/plugins.ts ***!
@@ -8273,6 +8305,123 @@ exports.registerPlugin = function (label, _class) {
 
 /***/ }),
 
+/***/ "./src/api/popup.ts":
+/*!**************************!*\
+  !*** ./src/api/popup.ts ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var $ = __webpack_require__(/*! jquery */ "jquery");
+__webpack_require__(/*! jqueryui */ "jqueryui");
+exports.ADD_POPUP_DEFAULT_OPTIONS = {
+    title: "",
+    autoOpen: true,
+    closeButton: true,
+    closeOnEscape: false,
+    removeOnClose: true,
+    modal: false,
+    draggable: true,
+    resizable: true,
+    width: 300,
+    height: "auto",
+    padding: 10,
+    /**
+     * Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
+     * current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+     */
+    dialogClass: "",
+    backgroundColor: "",
+    titlebarColor: "",
+    position: { my: "center", at: "center", of: window },
+    onOpen: null,
+    onBeforeClose: null,
+    onResize: null,
+    onDragStart: null,
+    onDragStop: null
+};
+/****************************************************************************
+ Ask LARA to add a new popup window.
+
+ Note that many options closely resemble jQuery UI dialog options which is used under the hood.
+ You can refer to jQuery UI API docs in many cases: https://api.jqueryui.com/dialog
+ Only `content` is required. Other options have reasonable default values (subject to change,
+ so if you expect particular behaviour, provide necessary options explicitly).
+
+ React warning: if you use React to render content, remember to call `ReactDOM.unmountComponentAtNode(content)`
+ in `onRemove` handler.
+ ****************************************************************************/
+exports.addPopup = function (_options) {
+    var options = $.extend({}, exports.ADD_POPUP_DEFAULT_OPTIONS, _options);
+    if (!options.content) {
+        throw new Error("LARA.addPopup - content option is required");
+    }
+    if (options.dialogClass) {
+        // tslint:disable-next-line:no-console
+        console.warn("LARA.addPopup - dialogClass option is discouraged and should not be used by plugins");
+    }
+    var $content = typeof options.content === "string" ?
+        $("<span>" + options.content + "</span>") : $(options.content);
+    var $dialog;
+    var remove = function () {
+        if (options.onRemove) {
+            options.onRemove();
+        }
+        $dialog.remove();
+    };
+    $content.dialog({
+        title: options.title,
+        autoOpen: options.autoOpen,
+        closeOnEscape: options.closeOnEscape,
+        modal: options.modal,
+        draggable: options.draggable,
+        width: options.width,
+        height: options.height,
+        resizable: options.resizable,
+        // Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
+        // current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
+        dialogClass: options.dialogClass,
+        position: options.position,
+        open: options.onOpen,
+        close: function () {
+            if (options.onClose) {
+                options.onClose();
+            }
+            // Remove dialog from DOM tree.
+            if (options.removeOnClose) {
+                remove();
+            }
+        },
+        beforeClose: options.onBeforeClose,
+        resize: options.onResize,
+        dragStart: options.onDragStart,
+        dragStop: options.onDragStop
+    });
+    $dialog = $content.closest(".ui-dialog");
+    $dialog.css("background", options.backgroundColor);
+    $dialog.find(".ui-dialog-titlebar").css("background", options.titlebarColor);
+    $dialog.find(".ui-dialog-content").css("padding", options.padding);
+    if (!options.closeButton) {
+        $dialog.find(".ui-dialog-titlebar-close").remove();
+    }
+    // IPopupController implementation.
+    return {
+        open: function () {
+            $content.dialog("open");
+        },
+        close: function () {
+            $content.dialog("close");
+        },
+        remove: remove
+    };
+};
+
+
+/***/ }),
+
 /***/ "./src/api/sidebar.ts":
 /*!****************************!*\
   !*** ./src/api/sidebar.ts ***!
@@ -8284,6 +8433,7 @@ exports.registerPlugin = function (label, _class) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var $ = __webpack_require__(/*! jquery */ "jquery");
+__webpack_require__(/*! jqueryui */ "jqueryui");
 // Distance between sidebar handles (in pixels).
 var SIDEBAR_SPACER = 35;
 // Distance to the bottom edge of the window if sidebar content gets pretty tall.
@@ -8435,9 +8585,6 @@ exports.addSidebar = function (_options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var $ = __webpack_require__(/*! jquery */ "jquery");
-__webpack_require__(/*! jqueryui */ "jqueryui");
-var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 var plugins_1 = __webpack_require__(/*! ./api/plugins */ "./src/api/plugins.ts");
 exports.registerPlugin = plugins_1.registerPlugin;
 exports.initPlugin = plugins_1.initPlugin;
@@ -8445,124 +8592,11 @@ exports.saveLearnerPluginState = plugins_1.saveLearnerPluginState;
 var sidebar_1 = __webpack_require__(/*! ./api/sidebar */ "./src/api/sidebar.ts");
 exports.ADD_SIDEBAR_DEFAULT_OPTIONS = sidebar_1.ADD_SIDEBAR_DEFAULT_OPTIONS;
 exports.addSidebar = sidebar_1.addSidebar;
-exports.ADD_POPUP_DEFAULT_OPTIONS = {
-    title: "",
-    autoOpen: true,
-    closeButton: true,
-    closeOnEscape: false,
-    removeOnClose: true,
-    modal: false,
-    draggable: true,
-    resizable: true,
-    width: 300,
-    height: "auto",
-    padding: 10,
-    /**
-     * Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
-     * current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
-     */
-    dialogClass: "",
-    backgroundColor: "",
-    titlebarColor: "",
-    position: { my: "center", at: "center", of: window },
-    onOpen: null,
-    onBeforeClose: null,
-    onResize: null,
-    onDragStart: null,
-    onDragStop: null
-};
-/****************************************************************************
- Ask LARA to add a new popup window.
-
- Note that many options closely resemble jQuery UI dialog options which is used under the hood.
- You can refer to jQuery UI API docs in many cases: https://api.jqueryui.com/dialog
- Only `content` is required. Other options have reasonable default values (subject to change,
- so if you expect particular behaviour, provide necessary options explicitly).
-
- React warning: if you use React to render content, remember to call `ReactDOM.unmountComponentAtNode(content)`
- in `onRemove` handler.
- ****************************************************************************/
-exports.addPopup = function (_options) {
-    var options = $.extend({}, exports.ADD_POPUP_DEFAULT_OPTIONS, _options);
-    if (!options.content) {
-        throw new Error("LARA.addPopup - content option is required");
-    }
-    if (options.dialogClass) {
-        // tslint:disable-next-line:no-console
-        console.warn("LARA.addPopup - dialogClass option is discouraged and should not be used by plugins");
-    }
-    var $content = typeof options.content === "string" ?
-        $("<span>" + options.content + "</span>") : $(options.content);
-    var $dialog;
-    var remove = function () {
-        if (options.onRemove) {
-            options.onRemove();
-        }
-        $dialog.remove();
-    };
-    $content.dialog({
-        title: options.title,
-        autoOpen: options.autoOpen,
-        closeOnEscape: options.closeOnEscape,
-        modal: options.modal,
-        draggable: options.draggable,
-        width: options.width,
-        height: options.height,
-        resizable: options.resizable,
-        // Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
-        // current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
-        dialogClass: options.dialogClass,
-        position: options.position,
-        open: options.onOpen,
-        close: function () {
-            if (options.onClose) {
-                options.onClose();
-            }
-            // Remove dialog from DOM tree.
-            if (options.removeOnClose) {
-                remove();
-            }
-        },
-        beforeClose: options.onBeforeClose,
-        resize: options.onResize,
-        dragStart: options.onDragStart,
-        dragStop: options.onDragStop
-    });
-    $dialog = $content.closest(".ui-dialog");
-    $dialog.css("background", options.backgroundColor);
-    $dialog.find(".ui-dialog-titlebar").css("background", options.titlebarColor);
-    $dialog.find(".ui-dialog-content").css("padding", options.padding);
-    if (!options.closeButton) {
-        $dialog.find(".ui-dialog-titlebar-close").remove();
-    }
-    // IPopupController implementation.
-    return {
-        open: function () {
-            $content.dialog("open");
-        },
-        close: function () {
-            $content.dialog("close");
-        },
-        remove: remove
-    };
-};
-/****************************************************************************
- Ask LARA to decorate authored content (text / html).
-
- @param words A list of case-insensitive words to be decorated. Can use limited regex.
- @param replace The replacement string. Can include '$1' representing the matched word.
- @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
- @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
- described above. It's client code responsibility to use this class in the `replace` string.
- ****************************************************************************/
-exports.decorateContent = function (words, replace, wordClass, listeners) {
-    var domClasses = ["question-txt", "help-content", "intro-txt"];
-    var options = {
-        words: words,
-        replace: replace
-    };
-    TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-};
+var popup_1 = __webpack_require__(/*! ./api/popup */ "./src/api/popup.ts");
+exports.ADD_POPUP_DEFAULT_OPTIONS = popup_1.ADD_POPUP_DEFAULT_OPTIONS;
+exports.addPopup = popup_1.addPopup;
+var decorate_content_1 = __webpack_require__(/*! ./api/decorate-content */ "./src/api/decorate-content.ts");
+exports.decorateContent = decorate_content_1.decorateContent;
 /**************************************************************
  Find out if the page being displayed is being run in teacher-edition
  @returns `true` if lara is running in teacher-edition.

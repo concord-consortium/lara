@@ -1,4 +1,5 @@
 import * as $ from "jquery";
+import "jqueryui";
 import ButtonOptions = JQueryUI.ButtonOptions;
 
 // Distance between sidebar handles (in pixels).

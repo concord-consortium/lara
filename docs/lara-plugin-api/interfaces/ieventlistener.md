@@ -23,7 +23,7 @@
 
 **● listener**: *`function`*
 
-*Defined in [lara-plugin-api.ts:161](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L161)*
+*Defined in [api/decorate-content.ts:5](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/decorate-content.ts#L5)*
 
 #### Type declaration
 ▸(evt: *`Event`*): `void`
@@ -43,7 +43,7 @@ ___
 
 **● type**: *`string`*
 
-*Defined in [lara-plugin-api.ts:160](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/lara-plugin-api.ts#L160)*
+*Defined in [api/decorate-content.ts:4](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/decorate-content.ts#L4)*
 
 ___
 

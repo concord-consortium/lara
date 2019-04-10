@@ -35,7 +35,7 @@
 
 **● authoredState**: *`string`*
 
-*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L15)*
+*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L15)*
 
 The authored configuration for this instance.
 
@@ -46,7 +46,7 @@ ___
 
 **● classInfoUrl**: *`string`*
 
-*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L25)*
+*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L25)*
 
 The portal URL for class details (if available).
 
@@ -57,7 +57,7 @@ ___
 
 **● div**: *`HTMLElement`*
 
-*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L19)*
+*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L19)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -68,7 +68,7 @@ ___
 
 **● experimental**: *[IRuntimeContextExperimentalFeatures](iruntimecontextexperimentalfeatures.md)*
 
-*Defined in [api/plugins.ts:51](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L51)*
+*Defined in [api/plugins.ts:51](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L51)*
 
 ___
 <a id="getfirebasejwturl"></a>
@@ -77,7 +77,7 @@ ___
 
 **● getFirebaseJwtUrl**: *`function`*
 
-*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L29)*
+*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L29)*
 
 A function that returns the URL to use fetch a JWT.
 
@@ -93,7 +93,7 @@ ___
 
 **● learnerState**: *`string`*
 
-*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L17)*
+*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L17)*
 
 The saved learner data for this instance.
 
@@ -104,7 +104,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [api/plugins.ts:9](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L9)*
+*Defined in [api/plugins.ts:9](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L9)*
 
 Name of the plugin
 
@@ -115,7 +115,7 @@ ___
 
 **● pluginId**: *`string`*
 
-*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L13)*
+*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L13)*
 
 Active record ID of the plugin scope id.
 
@@ -126,7 +126,7 @@ ___
 
 **● remoteEndpoint**: *`string`*
 
-*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L27)*
+*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L27)*
 
 The portal remote endpoint (if available).
 
@@ -137,7 +137,7 @@ ___
 
 **● runID**: *`number`*
 
-*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L21)*
+*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L21)*
 
 The run ID for the current run.
 
@@ -148,7 +148,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L11)*
+*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L11)*
 
 Url from which the plugin was loaded.
 
@@ -159,7 +159,7 @@ ___
 
 **● userEmail**: *`string`*
 
-*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L23)*
+*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L23)*
 
 The current users email address if available.
 
@@ -170,7 +170,7 @@ ___
 
 **● wrappedEmbeddableContext**: *`any`*
 
-*Defined in [api/plugins.ts:50](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L50)*
+*Defined in [api/plugins.ts:50](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L50)*
 
 TBD, it can be almost anything, details of the wrapped embeddable, serialized form of the embeddable, e.g.:
 
@@ -196,7 +196,7 @@ ___
 
 **● wrappedEmbeddableDiv**: *`HTMLElement`*
 
-*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/93f2901a/lara-plugin-api/src/api/plugins.ts#L31)*
+*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/30e7426a/lara-plugin-api/src/api/plugins.ts#L31)*
 
 If we are wrapping an embeddable its DOM.
 
