@@ -1,119 +1,49 @@
-# Starter Projects
+# LARA Plugin API
 
-## Development
+### This documentation is meant to be used by LARA Plugin API developers.
 
-### Copying a starter project
+This package was created to let LARA Plugin API developers use modern TypeScript environment and allow LARA plugin 
+developers to get automatic type checking in their repositories.
 
-1. Create a new public repository for your project (e.g. `new-repository`)
-2. Create a clone of the starter repo
-    ```
-    git clone --single-branch https://github.com/concord-consortium/lara-plugin-api.git new-repository
-    ```
-3. Update the starter repo
+#### API development workflow
 
-    First, update and run the starter project:
-    ```
-    cd new-repository
-    npm install
-    npm update
-    npm start
-    ``` 
-    Then, verify the project works by visiting [localhost:8080](http://localhost:8080) and checking for the words "Hello World". 
-    Also verify that the test suite still passes:
-    ```
-    npm run test:full
-    ```
-    If the updates are functional, please commit any changes to `package.json` or `package-lock.json` back to the 
-    Starter Projects repository for future use.
+Basically, it's a typical TypeScript + webpack package, but embedded within LARA code base. 
+Before you start development, you need to install dependencies:
+```
+cd lara-plugin-api
+npm install
+``` 
 
-4. Next, re-initialize the repo to create a new history
-    ```
-    rm -rf .git
-    git init
-    ```
-5. Create an initial commit for your new project
-    ```
-    git add .
-    git commit -m "Initial commit"
-    ```
-6. Push to your new repository
-    ```
-    git remote add origin https://github.com/concord-consortium/new-repository.git
-    git push -u origin master
-    ```
-7. Open your new repository and update all instances of `lara-plugin-api` to `new-repository` and `Starter Projects` to `New Repository`. 
-   Note: this will do some of the configuration for Travis deployment to S3, but you'll still need to follow 
-   the instructions [here](https://docs.google.com/document/d/e/2PACX-1vTpYjbGmUMxk_FswUmapK_RzVyEtm1WdnFcNByp9mqwHnp0nR_EzRUOiubuUCsGwzQgOnut_UiabYOM/pub).
-8. Your new repository is ready! Remove this section of the `README`, and follow the steps below to use it.
+Then, you can make necessary code changes and finally you need to build this project:
 
-### Initial steps
+```
+npm run build
+```
 
-1. Clone this repo and `cd` into it
-2. Run `npm install` to pull dependencies
-3. Run `npm start` to run `webpack-dev-server` in development mode with hot module replacement
+You can check `package.json` to see what's being called when you run this command. Also, note that the build artifacts 
+are automatically copied into parent LARA directories after every build. These files need to be checked in into git 
+repository. At the moment, it's JavaScript bundle (`lara/src/assets/lara-plugin-api.js`) and automatically 
+generated documentation (`lara/docs/lara-plugin/api`).
 
-### Building
 
-If you want to build a local version run `npm build`, it will create the files in the `dist` folder.
-You *do not* need to build to deploy the code, that is automatic.  See more info in the Deployment section below.
+#### Documentation and code structure.
 
-### Notes
+This codebase uses TypeScript and [TypeDoc](https://typedoc.org/). Please follow existing patterns and document
+new features using TypeDoc format. Note that that the final documentation is meant to be used by LARA plugin developers,
+not LARA Plugin API developers. So, it should cover only publicly accessible functions available externally.
 
-1. Make sure if you are using Visual Studio Code that you use the workspace version of TypeScript.
-   To ensure that you are open a TypeScript file in VSC and then click on the version number next to
-   `TypeScript React` in the status bar and select 'Use Workspace Version' in the popup menu.
+If you take a look at package.json `script/build:doc`, you'll notice that documentation is generated only for
+`src/lara-plugin-api.ts` and `src/api/*` files, and only for exported variables. So, everything that is meant to be
+used by LARA plugin developers should be placed in these directories.
 
-## Deployment
+If you need to some private helpers that are used by other parts of the API, they could be placed e.g. in `src/helpers`
+or any other directory. That way, they won't be included in the documentation, but they can be used by the API internally.
 
-*TODO* Set up Travis Deployment
+#### Publishing package to NPM
 
-Production releases to S3 are based on the contents of the /dist folder and are built automatically by Travis
-for each branch pushed to GitHub and each merge into production.
+Note that this package can used by LARA plugins to provide type checking. If you update LARA Plugin API, remember
+to bump version number following semver and publish new version to NPM:
 
-Merges into production are deployed to http://lara-plugin-api.concord.org.
-
-Other branches are deployed to http://lara-plugin-api.concord.org/branch/<name>.
-
-You can view the status of all the branch deploys [here](https://travis-ci.org/concord-consortium/lara-plugin-api/branches).
-
-To deploy a production release:
-
-1. Increment version number in package.json
-2. Create new entry in CHANGELOG.md
-3. Run `git log --pretty=oneline --reverse <last release tag>...HEAD | grep '#' | grep -v Merge` and add contents (after edits if needed to CHANGELOG.md)
-4. Run `npm run build`
-5. Copy asset size markdown table from previous release and change sizes to match new sizes in `dist`
-6. Create `release-<version>` branch and commit changes, push to GitHub, create PR and merge
-7. Checkout master and pull
-8. Checkout production
-9. Run `git merge master --no-ff`
-10. Push production to GitHub
-11. Use https://github.com/concord-consortium/lara-plugin-api/releases to create a new release tag
-
-### Testing
-
-Run `npm test` to run jest tests. Run `npm run test:full` to run jest and Cypress tests.
-
-##### Cypress Run Options
-
-Inside of your `package.json` file:
-1. `--browser browser-name`: define browser for running tests
-2. `--group group-name`: assign a group name for tests running
-3. `--spec`: define the spec files to run
-4. `--headed`: show cypress test runner GUI while running test (will exit by default when done)
-5. `--no-exit`: keep cypress test runner GUI open when done running
-6. `--record`: decide whether or not tests will have video recordings
-7. `--key`: specify your secret record key
-8. `--reporter`: specify a mocha reporter
-
-##### Cypress Run Examples
-
-1. `cypress run --browser chrome` will run cypress in a chrome browser
-2. `cypress run --headed --no-exit` will open cypress test runner when tests begin to run, and it will remain open when tests are finished running.
-3. `cypress run --spec 'cypress/integration/examples/smoke-test.js'` will point to a smoke-test file rather than running all of the test files for a project.
-
-## License
-
-Starter Projects are Copyright 2018 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).
-
-See license.md for the complete license text.
+```
+npm publish --access public
+```

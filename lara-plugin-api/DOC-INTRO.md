@@ -1,6 +1,6 @@
 # LARA Plugin API
 
-### This document is meant to be used by LARA Plugin developers.
+### This documentation is meant to be used by LARA Plugin developers.
 
 #### Setup and webpack configuration
 
@@ -62,6 +62,7 @@ LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
 ```
 
 [registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances
-of the same plugin.
+of the same plugin (e.g. if the activity author adds multiple plugin instances to a page).
 
-Plugins can use all the functions documented below to modify LARA runtime or provide custom features.
+Plugins can use all the functions documented below to modify LARA runtime or provide custom features. This documentation
+is generated automatically from TypeScript definitions and comments.
