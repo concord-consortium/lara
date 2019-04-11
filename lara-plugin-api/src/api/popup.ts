@@ -1,5 +1,6 @@
 import * as $ from "jquery";
-import "jqueryui";
+import "jquery-ui/ui/widgets/button";
+import "jquery-ui/ui/widgets/dialog";
 
 export interface IPopupOptions {
   content: HTMLElement | string;

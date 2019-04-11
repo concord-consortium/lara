@@ -1,6 +1,5 @@
 import * as $ from "jquery";
-import "jqueryui";
-import ButtonOptions = JQueryUI.ButtonOptions;
+import "jquery-ui/ui/widgets/button";
 
 // Distance between sidebar handles (in pixels).
 const SIDEBAR_SPACER = 35;
@@ -106,8 +105,8 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   // Body / main container.
   const $closeBtn = $('<button class="sidebar-bd-close">');
   // Note that ButtonOptions interface is out of date, `icon` is a valid option in jQuery UI 1.12.
-  // There's `as ButtonOptions` so TS doesn't complain about mismatching interfaces.
-  $closeBtn.button({ icon: "ui-icon-closethick" } as ButtonOptions);
+  // @ts-ignore
+  $closeBtn.button({ icon: "ui-icon-closethick" });
   $body.append($closeBtn);
   const $contentContainer = $('<div class="sidebar-content">');
   $body.append($contentContainer);

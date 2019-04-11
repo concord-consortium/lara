@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
-    "types": ["jest"],
+    "types": ["jest", "jquery", "jqueryui"],
     "jsx": "react",
     "lib": [
       "dom",

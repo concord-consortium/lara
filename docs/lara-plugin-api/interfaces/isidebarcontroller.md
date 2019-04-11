@@ -23,7 +23,7 @@
 
 **● close**: *`function`*
 
-*Defined in [api/sidebar.ts:27](https://github.com/concord-consortium/lara/blob/ef83a8df/lara-plugin-api/src/api/sidebar.ts#L27)*
+*Defined in [api/sidebar.ts:27](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/sidebar.ts#L27)*
 
 #### Type declaration
 ▸(): `void`
@@ -37,7 +37,7 @@ ___
 
 **● open**: *`function`*
 
-*Defined in [api/sidebar.ts:26](https://github.com/concord-consortium/lara/blob/ef83a8df/lara-plugin-api/src/api/sidebar.ts#L26)*
+*Defined in [api/sidebar.ts:26](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/sidebar.ts#L26)*
 
 #### Type declaration
 ▸(): `void`
