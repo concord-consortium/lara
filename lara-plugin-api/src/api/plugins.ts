@@ -1,3 +1,5 @@
+import * as $ from "jquery";
+
 export interface IPlugin {
   /** No special requirements for plugin class */
 }
@@ -11,6 +13,8 @@ export interface IRuntimeContext {
   url: string;
   /** Active record ID of the plugin scope id. */
   pluginId: string;
+  /** Plugin learner state key. Is this necessary and what can that be used for? TDB. */
+  pluginStateKey: string;
   /** The authored configuration for this instance. */
   authoredState: string;
   /** The saved learner data for this instance. */
@@ -25,35 +29,37 @@ export interface IRuntimeContext {
   classInfoUrl: string;
   /** The portal remote endpoint (if available). */
   remoteEndpoint: string;
+  /** Interactive state URL, available only when plugin is wrapping an interactive (empty string otherwise). */
+  interactiveStateUrl: string;
   /** A function that returns the URL to use fetch a JWT. */
   getFirebaseJwtUrl: () => string;
-  /** If we are wrapping an embeddable its DOM. */
-  wrappedEmbeddableDiv: HTMLElement;
+  /** Wrapped embeddable container, available only when plugin is wrapping an interactive. */
+  wrappedEmbeddableDiv: HTMLElement | undefined;
   /****************************************************************************
-   TBD, it can be almost anything, details of the wrapped embeddable,
-   serialized form of the embeddable, e.g.:
+   When plugin is wrapping an embeddable, this field will contain its properties - serialized
+   form of the embeddable, e.g.:
    ```
    {
-   aspect_ratio_method: "DEFAULT",
-   authored_state: null,
-   click_to_play: false,
-   enable_learner_state: true,
-   name: "Test Interactive",
-   native_height: 435,
-   native_width: 576,
-   url: "http://concord-consortium.github.io/lara-interactive-api/iframe.html",
-   type: "MwInteractive",
-   ref_id: "86-MwInteractive"
- }
+     aspect_ratio_method: "DEFAULT",
+     authored_state: null,
+     click_to_play: false,
+     enable_learner_state: true,
+     name: "Test Interactive",
+     native_height: 435,
+     native_width: 576,
+     url: "http://concord-consortium.github.io/lara-interactive-api/iframe.html",
+     type: "MwInteractive",
+     ref_id: "86-MwInteractive"
+   }
    ```
    ****************************************************************************/
-  wrappedEmbeddableContext: any;
+  wrappedEmbeddableContext: any | null;
   experimental: IRuntimeContextExperimentalFeatures;
 }
 
 export interface IRuntimeContextExperimentalFeatures {
   /** DOM id of click to play overlay if enabled. */
-  clickToPlayId: string;
+  clickToPlayId: string | null;
 }
 
 export interface IPluginStatePath {
@@ -62,13 +68,17 @@ export interface IPluginStatePath {
 }
 
 /****************************************************************************
- Module variables to keep track of our plugins.
- Note, we call these `classes` but any constructor function will do.
+ Module variables to keep track of our plugins. Exported only because some tests use them directly.
+ These variables are not meant to be used by plugin developers.
  ****************************************************************************/
-const pluginClasses: { [label: string]: IPluginConstructor } = {};
-const plugins: IPlugin[] = [];
-const pluginLabels: string[] = [];
-const pluginStatePaths: { [pluginId: string]: IPluginStatePath } = {};
+/** @hidden Note, we call these `classes` but any constructor function will do. */
+export const pluginClasses: { [label: string]: IPluginConstructor } = {};
+/** @hidden */
+export const plugins: IPlugin[] = [];
+/** @hidden */
+export const pluginLabels: string[] = [];
+/** @hidden */
+export const pluginStatePaths: { [pluginId: string]: IPluginStatePath } = {};
 
 const pluginError = (e: string, other: any) => {
   // tslint:disable-next-line:no-console
@@ -82,6 +92,7 @@ const pluginError = (e: string, other: any) => {
 };
 
 /****************************************************************************
+ @hidden
  Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
  This method is called to initialize the plugin.
  Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
