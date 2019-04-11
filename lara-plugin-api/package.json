@@ -1,6 +1,6 @@
 {
   "name": "@concord-consortium/lara-plugin-api",
-  "version": "2.0.0-pre.1",
+  "version": "2.0.0-pre.2",
   "description": "LARA Plugin API",
   "main": "./dist/lara-plugin-api.js",
   "types": "./dist/lara-plugin-api.d.ts",
@@ -31,7 +31,7 @@
     "url": "https://github.com/concord-consortium/lara-plugin-api/issues"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js",
+    "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.ts",
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
