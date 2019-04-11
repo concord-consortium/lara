@@ -50,29 +50,23 @@
     - click_to_play_id = nil
   :javascript
     // Begin script for #{plugin.name}
-    var pluginStatePaths = {
-      savePath: `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`,
-      loadPath: `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
-    };
     $(document).ready( function() {
-      var getFirebaseJwtUrl = function(appName) {
-        var laraJwtGettingUrl = '#{escape_javascript(firebase_jwt_url)}';
-        return laraJwtGettingUrl.replace('_FIREBASE_APP_', appName);
-      }
-      env = {
+      // It's impossible to get type checking here, but object below MUST always implement IPluginContext interface
+      // defined at lara-plugin-api/helpers/runtime-context.ts.
+      var pluginContextSeed = {
         name: '#{plugin.name}',
         url: '#{plugin.url}',
         pluginId: '#{plugin.id}',
-        pluginStateKey:'#{ escape_javascript(plugin_learner_state.shared_learner_state_key)}',
         authoredState: '#{ escape_javascript(plugin.author_data) }',
         learnerState:  '#{ escape_javascript(learner_state) }',
+        learnerStateSaveUrl: `#{escape_javascript(api_v1_update_plugin_learner_state_url(plugin.id, @run.id))}`,
         div: $('#{runtime_div_selector}')[0],
-        runID: #{@run.id},
+        runId: #{@run.id},
         userEmail: '#{escape_javascript(user_email)}',
         classInfoUrl: '#{escape_javascript(class_info_url)}',
         remoteEndpoint: '#{escape_javascript(@run.remote_endpoint)}',
         interactiveStateUrl: '#{escape_javascript(interactive_state_url)}',
-        getFirebaseJwtUrl: getFirebaseJwtUrl,
+        firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
         wrappedEmbeddableDiv: $('#{wrapped_selector}')[0],
         wrappedEmbeddableContext: #{wrapped_embedd ? (LaraSerializationHelper.new).export(wrapped_embedd).to_json : 'null'},
         experimental: {
@@ -80,5 +74,5 @@
         }
       }
       console.log("Adding script #{plugin.label} with V2 LARA Plugin API")
-      LARA.initPlugin('#{plugin.label}', env, pluginStatePaths);
+      LARA.initPlugin('#{plugin.label}', pluginContextSeed);
     });

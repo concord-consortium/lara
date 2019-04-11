@@ -1,4 +1,5 @@
 import * as Plugins from "./plugins";
+import { generateRuntimeContext } from "../helpers/runtime-context";
 import * as $ from "jquery";
 
 describe("Plugins", () => {
@@ -9,26 +10,22 @@ describe("Plugins", () => {
   describe("initPlugin", () => {
     const name = "myPlugin";
     const pluginId = "123";
-    const pluginStatePaths = {
-      savePath: "save/1/2",
-      loadPath: "load/1/2"
-    };
     const pluginConstructor = jest.fn();
-
-    const config = {
+    const context = {
       name,
       pluginId,
       url: "http://google.com/",
       pluginStateKey: "123",
       authoredState: '{"configured": true }',
       learnerState: '{"answered": true }',
+      learnerStateSaveUrl: "http://learner.save",
       div: $('<div class="myplugin" />')[0],
-      runID: 123,
+      runId: 123,
       userEmail: "",
       classInfoUrl: "",
       remoteEndpoint: "",
       interactiveStateUrl: "",
-      getFirebaseJwtUrl: () => "http://fake.jwt",
+      firebaseJwtUrl: "http://fake.jwt",
       wrappedEmbeddableDiv: undefined,
       wrappedEmbeddableContext: null,
       experimental: {
@@ -39,18 +36,13 @@ describe("Plugins", () => {
     beforeAll(() => {
       // Implicit test of registerPlugin
       Plugins.registerPlugin(name, pluginConstructor);
-      Plugins.initPlugin(name, config, pluginStatePaths);
+      Plugins.initPlugin(name, context);
     });
 
     it("should call the plugins constructor with the config", () => {
       expect(pluginConstructor).toHaveBeenCalledTimes(1);
-      expect(pluginConstructor).toHaveBeenCalledWith(config);
-    });
-
-    it("should maintain a list of plugins", () => {
-      expect(Plugins.pluginLabels).toContain(name);
-      expect(Plugins.pluginStatePaths[pluginId]).toEqual(pluginStatePaths);
-      expect(Plugins.pluginClasses[name]).toEqual(pluginConstructor);
+      // Why keys? Some functions are dynamically generated and we cannot compare them.
+      expect(Object.keys(pluginConstructor.mock.calls[0][0])).toEqual(Object.keys(generateRuntimeContext(context)));
     });
 
     describe("saveLearnerPluginState", () => {
