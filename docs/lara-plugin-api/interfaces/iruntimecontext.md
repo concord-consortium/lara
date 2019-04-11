@@ -11,17 +11,17 @@
 ### Properties
 
 * [authoredState](iruntimecontext.md#authoredstate)
-* [classInfoUrl](iruntimecontext.md#classinfourl)
 * [div](iruntimecontext.md#div)
 * [experimental](iruntimecontext.md#experimental)
-* [getFirebaseJwtUrl](iruntimecontext.md#getfirebasejwturl)
-* [interactiveStateUrl](iruntimecontext.md#interactivestateurl)
+* [getClassInfo](iruntimecontext.md#getclassinfo)
+* [getFirebaseJwt](iruntimecontext.md#getfirebasejwt)
+* [getInteractiveState](iruntimecontext.md#getinteractivestate)
+* [getReportingUrl](iruntimecontext.md#getreportingurl)
 * [learnerState](iruntimecontext.md#learnerstate)
 * [name](iruntimecontext.md#name)
 * [pluginId](iruntimecontext.md#pluginid)
-* [pluginStateKey](iruntimecontext.md#pluginstatekey)
 * [remoteEndpoint](iruntimecontext.md#remoteendpoint)
-* [runID](iruntimecontext.md#runid)
+* [runId](iruntimecontext.md#runid)
 * [url](iruntimecontext.md#url)
 * [userEmail](iruntimecontext.md#useremail)
 * [wrappedEmbeddableContext](iruntimecontext.md#wrappedembeddablecontext)
@@ -37,20 +37,9 @@
 
 **● authoredState**: *`string`*
 
-*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L19)*
+*Defined in [api/types.ts:15](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L15)*
 
 The authored configuration for this instance.
-
-___
-<a id="classinfourl"></a>
-
-###  classInfoUrl
-
-**● classInfoUrl**: *`string`*
-
-*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L29)*
-
-The portal URL for class details (if available).
 
 ___
 <a id="div"></a>
@@ -59,7 +48,7 @@ ___
 
 **● div**: *`HTMLElement`*
 
-*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L23)*
+*Defined in [api/types.ts:19](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L19)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -70,34 +59,77 @@ ___
 
 **● experimental**: *[IRuntimeContextExperimentalFeatures](iruntimecontextexperimentalfeatures.md)*
 
-*Defined in [api/plugins.ts:57](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L57)*
+*Defined in [api/types.ts:58](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L58)*
 
 ___
-<a id="getfirebasejwturl"></a>
+<a id="getclassinfo"></a>
 
-###  getFirebaseJwtUrl
+###  getClassInfo
 
-**● getFirebaseJwtUrl**: *`function`*
+**● getClassInfo**: *`function`*
 
-*Defined in [api/plugins.ts:35](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L35)*
+*Defined in [api/types.ts:29](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L29)*
 
-A function that returns the URL to use fetch a JWT.
+Function that returns class details (Promise) or null if class info is not available.
 
 #### Type declaration
-▸(): `string`
+▸(): `Promise`<[IClassInfo](iclassinfo.md)> \| `null`
 
-**Returns:** `string`
+**Returns:** `Promise`<[IClassInfo](iclassinfo.md)> \| `null`
 
 ___
-<a id="interactivestateurl"></a>
+<a id="getfirebasejwt"></a>
 
-###  interactiveStateUrl
+###  getFirebaseJwt
 
-**● interactiveStateUrl**: *`string`*
+**● getFirebaseJwt**: *`function`*
 
-*Defined in [api/plugins.ts:33](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L33)*
+*Defined in [api/types.ts:27](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L27)*
 
-Interactive state URL, available only when plugin is wrapping an interactive (empty string otherwise).
+Function that returns JWT (Promise) for given app name.
+
+#### Type declaration
+▸(appName: *`string`*): `Promise`<[IJwtResponse](ijwtresponse.md)>
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| appName | `string` |
+
+**Returns:** `Promise`<[IJwtResponse](ijwtresponse.md)>
+
+___
+<a id="getinteractivestate"></a>
+
+###  getInteractiveState
+
+**● getInteractiveState**: *`function`*
+
+*Defined in [api/types.ts:31](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L31)*
+
+Function that returns interactive state (Promise) or null if plugin is not wrapping an interactive.
+
+#### Type declaration
+▸(): `Promise`<[IInteractiveState](iinteractivestate.md)> \| `null`
+
+**Returns:** `Promise`<[IInteractiveState](iinteractivestate.md)> \| `null`
+
+___
+<a id="getreportingurl"></a>
+
+###  getReportingUrl
+
+**● getReportingUrl**: *`function`*
+
+*Defined in [api/types.ts:36](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L36)*
+
+Function that returns reporting URL (Promise) or null if plugin is not wrapping an interactive or reporting URL is not defined.
+
+#### Type declaration
+▸(): `Promise`<`string` \| `null`> \| `null`
+
+**Returns:** `Promise`<`string` \| `null`> \| `null`
 
 ___
 <a id="learnerstate"></a>
@@ -106,7 +138,7 @@ ___
 
 **● learnerState**: *`string`*
 
-*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L21)*
+*Defined in [api/types.ts:17](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L17)*
 
 The saved learner data for this instance.
 
@@ -117,7 +149,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L11)*
+*Defined in [api/types.ts:9](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L9)*
 
 Name of the plugin
 
@@ -128,20 +160,9 @@ ___
 
 **● pluginId**: *`string`*
 
-*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L15)*
+*Defined in [api/types.ts:13](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L13)*
 
 Active record ID of the plugin scope id.
-
-___
-<a id="pluginstatekey"></a>
-
-###  pluginStateKey
-
-**● pluginStateKey**: *`string`*
-
-*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L17)*
-
-Plugin learner state key. Is this necessary and what can that be used for? TDB.
 
 ___
 <a id="remoteendpoint"></a>
@@ -150,18 +171,18 @@ ___
 
 **● remoteEndpoint**: *`string`*
 
-*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L31)*
+*Defined in [api/types.ts:25](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L25)*
 
 The portal remote endpoint (if available).
 
 ___
 <a id="runid"></a>
 
-###  runID
+###  runId
 
-**● runID**: *`number`*
+**● runId**: *`number`*
 
-*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L25)*
+*Defined in [api/types.ts:21](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L21)*
 
 The run ID for the current run.
 
@@ -172,7 +193,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L13)*
+*Defined in [api/types.ts:11](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L11)*
 
 Url from which the plugin was loaded.
 
@@ -183,7 +204,7 @@ ___
 
 **● userEmail**: *`string`*
 
-*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L27)*
+*Defined in [api/types.ts:23](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L23)*
 
 The current users email address if available.
 
@@ -194,7 +215,7 @@ ___
 
 **● wrappedEmbeddableContext**: *`any` \| `null`*
 
-*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L56)*
+*Defined in [api/types.ts:57](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L57)*
 
 When plugin is wrapping an embeddable, this field will contain its properties - serialized form of the embeddable, e.g.:
 
@@ -220,7 +241,7 @@ ___
 
 **● wrappedEmbeddableDiv**: *`HTMLElement` \| `undefined`*
 
-*Defined in [api/plugins.ts:37](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L37)*
+*Defined in [api/types.ts:38](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L38)*
 
 Wrapped embeddable container, available only when plugin is wrapping an interactive.
 

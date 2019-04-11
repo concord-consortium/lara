@@ -1,0 +1,48 @@
+[LARA Plugin API](../README.md) > [IUser](../interfaces/iuser.md)
+
+# Interface: IUser
+
+## Hierarchy
+
+**IUser**
+
+## Index
+
+### Properties
+
+* [first_name](iuser.md#first_name)
+* [id](iuser.md#id)
+* [last_name](iuser.md#last_name)
+
+---
+
+## Properties
+
+<a id="first_name"></a>
+
+###  first_name
+
+**● first_name**: *`string`*
+
+*Defined in [api/types.ts:88](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L88)*
+
+___
+<a id="id"></a>
+
+###  id
+
+**● id**: *`string`*
+
+*Defined in [api/types.ts:87](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L87)*
+
+___
+<a id="last_name"></a>
+
+###  last_name
+
+**● last_name**: *`string`*
+
+*Defined in [api/types.ts:89](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L89)*
+
+___
+

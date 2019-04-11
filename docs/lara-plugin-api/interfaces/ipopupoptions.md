@@ -45,7 +45,7 @@
 
 **● autoOpen**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:7](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L7)*
+*Defined in [api/popup.ts:7](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L7)*
 
 ___
 <a id="backgroundcolor"></a>
@@ -54,7 +54,7 @@ ___
 
 **● backgroundColor**: *`undefined` \| `string`*
 
-*Defined in [api/popup.ts:27](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L27)*
+*Defined in [api/popup.ts:27](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L27)*
 
 ___
 <a id="closebutton"></a>
@@ -63,7 +63,7 @@ ___
 
 **● closeButton**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:15](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L15)*
+*Defined in [api/popup.ts:15](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L15)*
 
 ___
 <a id="closeonescape"></a>
@@ -72,7 +72,7 @@ ___
 
 **● closeOnEscape**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:8](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L8)*
+*Defined in [api/popup.ts:8](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L8)*
 
 ___
 <a id="color"></a>
@@ -81,7 +81,7 @@ ___
 
 **● color**: *`undefined` \| `string`*
 
-*Defined in [api/popup.ts:16](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L16)*
+*Defined in [api/popup.ts:16](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L16)*
 
 ___
 <a id="content"></a>
@@ -90,7 +90,7 @@ ___
 
 **● content**: *`HTMLElement` \| `string`*
 
-*Defined in [api/popup.ts:6](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L6)*
+*Defined in [api/popup.ts:6](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L6)*
 
 ___
 <a id="dialogclass"></a>
@@ -99,7 +99,7 @@ ___
 
 **● dialogClass**: *`undefined` \| `string`*
 
-*Defined in [api/popup.ts:18](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L18)*
+*Defined in [api/popup.ts:18](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L18)*
 
 ___
 <a id="draggable"></a>
@@ -108,7 +108,7 @@ ___
 
 **● draggable**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:19](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L19)*
+*Defined in [api/popup.ts:19](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L19)*
 
 ___
 <a id="height"></a>
@@ -117,7 +117,7 @@ ___
 
 **● height**: *`number` \| `string`*
 
-*Defined in [api/popup.ts:25](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L25)*
+*Defined in [api/popup.ts:25](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L25)*
 
 Number in px or "auto"
 
@@ -128,7 +128,7 @@ ___
 
 **● modal**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:17](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L17)*
+*Defined in [api/popup.ts:17](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L17)*
 
 ___
 <a id="onbeforeclose"></a>
@@ -137,7 +137,7 @@ ___
 
 **● onBeforeClose**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:32](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L32)*
+*Defined in [api/popup.ts:32](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L32)*
 
 Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
 
@@ -148,7 +148,7 @@ ___
 
 **● onClose**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:30](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L30)*
+*Defined in [api/popup.ts:30](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L30)*
 
 ___
 <a id="ondragstart"></a>
@@ -157,7 +157,7 @@ ___
 
 **● onDragStart**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:35](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L35)*
+*Defined in [api/popup.ts:35](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L35)*
 
 ___
 <a id="ondragstop"></a>
@@ -166,7 +166,7 @@ ___
 
 **● onDragStop**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:36](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L36)*
+*Defined in [api/popup.ts:36](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L36)*
 
 ___
 <a id="onopen"></a>
@@ -175,7 +175,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:29](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L29)*
+*Defined in [api/popup.ts:29](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L29)*
 
 ___
 <a id="onremove"></a>
@@ -184,7 +184,7 @@ ___
 
 **● onRemove**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:33](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L33)*
+*Defined in [api/popup.ts:33](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L33)*
 
 ___
 <a id="onresize"></a>
@@ -193,7 +193,7 @@ ___
 
 **● onResize**: *`undefined` \| `function`*
 
-*Defined in [api/popup.ts:34](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L34)*
+*Defined in [api/popup.ts:34](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L34)*
 
 ___
 <a id="padding"></a>
@@ -202,7 +202,7 @@ ___
 
 **● padding**: *`undefined` \| `number`*
 
-*Defined in [api/popup.ts:26](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L26)*
+*Defined in [api/popup.ts:26](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L26)*
 
 ___
 <a id="position"></a>
@@ -211,7 +211,7 @@ ___
 
 **● position**: *`undefined` \| `object`*
 
-*Defined in [api/popup.ts:22](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L22)*
+*Defined in [api/popup.ts:22](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L22)*
 
 Please see: [https://api.jqueryui.com/dialog/#option-position](https://api.jqueryui.com/dialog/#option-position)
 
@@ -222,7 +222,7 @@ ___
 
 **● removeOnClose**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:13](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L13)*
+*Defined in [api/popup.ts:13](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L13)*
 
 Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be reopened programmatically.
 
@@ -233,7 +233,7 @@ ___
 
 **● resizable**: *`undefined` \| `false` \| `true`*
 
-*Defined in [api/popup.ts:20](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L20)*
+*Defined in [api/popup.ts:20](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L20)*
 
 ___
 <a id="title"></a>
@@ -242,7 +242,7 @@ ___
 
 **● title**: *`undefined` \| `string`*
 
-*Defined in [api/popup.ts:14](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L14)*
+*Defined in [api/popup.ts:14](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L14)*
 
 ___
 <a id="titlebarcolor"></a>
@@ -251,7 +251,7 @@ ___
 
 **● titlebarColor**: *`undefined` \| `string`*
 
-*Defined in [api/popup.ts:28](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L28)*
+*Defined in [api/popup.ts:28](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L28)*
 
 ___
 <a id="width"></a>
@@ -260,7 +260,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
-*Defined in [api/popup.ts:23](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/popup.ts#L23)*
+*Defined in [api/popup.ts:23](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/popup.ts#L23)*
 
 ___
 

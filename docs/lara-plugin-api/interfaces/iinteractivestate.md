@@ -1,0 +1,78 @@
+[LARA Plugin API](../README.md) > [IInteractiveState](../interfaces/iinteractivestate.md)
+
+# Interface: IInteractiveState
+
+## Hierarchy
+
+**IInteractiveState**
+
+## Index
+
+### Properties
+
+* [activity_name](iinteractivestate.md#activity_name)
+* [id](iinteractivestate.md#id)
+* [interactive_name](iinteractivestate.md#interactive_name)
+* [interactive_state_url](iinteractivestate.md#interactive_state_url)
+* [key](iinteractivestate.md#key)
+* [raw_data](iinteractivestate.md#raw_data)
+
+---
+
+## Properties
+
+<a id="activity_name"></a>
+
+###  activity_name
+
+**● activity_name**: *`string`*
+
+*Defined in [api/types.ts:113](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L113)*
+
+___
+<a id="id"></a>
+
+###  id
+
+**● id**: *`number`*
+
+*Defined in [api/types.ts:108](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L108)*
+
+___
+<a id="interactive_name"></a>
+
+###  interactive_name
+
+**● interactive_name**: *`string`*
+
+*Defined in [api/types.ts:111](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L111)*
+
+___
+<a id="interactive_state_url"></a>
+
+###  interactive_state_url
+
+**● interactive_state_url**: *`string`*
+
+*Defined in [api/types.ts:112](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L112)*
+
+___
+<a id="key"></a>
+
+###  key
+
+**● key**: *`string`*
+
+*Defined in [api/types.ts:109](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L109)*
+
+___
+<a id="raw_data"></a>
+
+###  raw_data
+
+**● raw_data**: *`string`*
+
+*Defined in [api/types.ts:110](https://github.com/concord-consortium/lara/blob/fadb0910/lara-plugin-api/src/api/types.ts#L110)*
+
+___
+
