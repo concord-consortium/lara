@@ -34,6 +34,10 @@ class SequencesController < ApplicationController
     current_project
     respond_to do |format|
       format.html do
+        if @sequence_run && !params[:sequence_run_key]
+          redirect_to sequence_with_sequence_run_key_path(@sequence, @sequence_run.key, params)
+          return
+        end
         if @sequence_run && @sequence_run.has_been_run
           unless params[:show_index]
             activity = @sequence_run.most_recent_activity
@@ -180,8 +184,8 @@ class SequencesController < ApplicationController
   end
 
   def find_or_create_sequence_run
-    if sequence_run_id = params['sequence_run']
-      @sequence_run = SequenceRun.find(sequence_run_id)
+    if sequence_run_key = params['sequence_run_key']
+      @sequence_run = SequenceRun.find_by_key(sequence_run_key)
       return @sequence_run if @sequence_run
     end
 

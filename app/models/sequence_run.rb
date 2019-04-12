@@ -1,9 +1,15 @@
 class SequenceRun < ActiveRecord::Base
-  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id
+  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id, :key
 
   has_many :runs
   belongs_to :sequence
   belongs_to :user
+
+  before_save :add_key_if_nil
+
+  def self.generate_key
+    SecureRandom.hex(20)
+  end
 
   def self.lookup_or_create(sequence, user, portal)
 
@@ -61,5 +67,9 @@ class SequenceRun < ActiveRecord::Base
 
   def completed?
     runs.count == sequence.activities.count && runs.all? { |r| r.completed? }
+  end
+
+  def add_key_if_nil
+    self.key = SequenceRun.generate_key if self.key.nil?
   end
 end
