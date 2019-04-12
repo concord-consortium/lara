@@ -2,43 +2,41 @@ export interface IPlugin {
   /** No special requirements for plugin class */
 }
 
-export type IPluginConstructor = new(runtimeContext: IRuntimeContext) => IPlugin;
+export type IPluginConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
 
-export interface IRuntimeContext {
+export interface IPluginRuntimeContext {
   /** Name of the plugin */
   name: string;
   /** Url from which the plugin was loaded. */
   url: string;
-  /** Active record ID of the plugin scope id. */
-  pluginId: string;
-  /** The authored configuration for this instance. */
-  authoredState: string;
-  /** The saved learner data for this instance. */
-  learnerState: string;
+  /** Plugin instance ID. */
+  pluginId: number;
+  /** The authored configuration for this instance (if available). */
+  authoredState: string | null;
+  /** The saved learner data for this instance (if available). */
+  learnerState: string | null;
   /** Reserved HTMLElement for the plugin output. */
-  div: HTMLElement;
-  /** The run ID for the current run. */
+  container: HTMLElement;
+  /** The run ID for the current LARA run. */
   runId: number;
-  /** The current users email address if available. */
-  userEmail: string;
   /** The portal remote endpoint (if available). */
-  remoteEndpoint: string;
-  /** Function that returns JWT (Promise) for given app name. */
-  getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
+  remoteEndpoint: string | null;
+  /** The current user email address (if available). */
+  userEmail: string | null;
   /** Function that returns class details (Promise) or null if class info is not available. */
   getClassInfo: () => Promise<IClassInfo> | null;
-  /** Function that returns interactive state (Promise) or null if plugin is not wrapping an interactive. */
-  getInteractiveState: () => Promise<IInteractiveState> | null;
-  /**
-   * Function that returns reporting URL (Promise) or null if plugin is not wrapping an interactive or
-   * reporting URL is not defined.
-   */
-  getReportingUrl: () => Promise<string | null> | null;
-  /** Wrapped embeddable container, available only when plugin is wrapping an interactive. */
-  wrappedEmbeddableDiv: HTMLElement | undefined;
+  /** Function that returns JWT (Promise) for given app name. */
+  getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  wrappedEmbeddable: IEmbeddableRuntimeContext | null;
+}
+
+export interface IEmbeddableRuntimeContext {
+  /** Embeddable container. */
+  container: HTMLElement;
   /****************************************************************************
-   When plugin is wrapping an embeddable, this field will contain its properties - serialized
-   form of the embeddable, e.g.:
+   Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here.
+   Example (interactive):
    ```
    {
      aspect_ratio_method: "DEFAULT",
@@ -54,11 +52,13 @@ export interface IRuntimeContext {
    }
    ```
    ****************************************************************************/
-  wrappedEmbeddableContext: any | null;
-  experimental: IRuntimeContextExperimentalFeatures;
-}
-
-export interface IRuntimeContextExperimentalFeatures {
+  laraJson: any;
+  /** Function that returns interactive state (Promise) or null if embeddable isn't interactive. */
+  getInteractiveState: () => Promise<IInteractiveState> | null;
+  /**
+   * Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
+   */
+  getReportingUrl: () => Promise<string | null> | null;
   /** DOM id of click to play overlay if enabled. */
   clickToPlayId: string | null;
 }

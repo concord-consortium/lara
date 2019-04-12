@@ -9,28 +9,22 @@ describe("Plugins", () => {
 
   describe("initPlugin", () => {
     const name = "myPlugin";
-    const pluginId = "123";
+    const pluginId = 123;
     const pluginConstructor = jest.fn();
     const context = {
       name,
       pluginId,
       url: "http://google.com/",
-      pluginStateKey: "123",
       authoredState: '{"configured": true }',
       learnerState: '{"answered": true }',
       learnerStateSaveUrl: "http://learner.save",
-      div: $('<div class="myplugin" />')[0],
+      container: $('<div class="myplugin" />')[0],
       runId: 123,
-      userEmail: "",
-      classInfoUrl: "",
-      remoteEndpoint: "",
-      interactiveStateUrl: "",
+      userEmail: null,
+      classInfoUrl: null,
+      remoteEndpoint: null,
       firebaseJwtUrl: "http://fake.jwt",
-      wrappedEmbeddableDiv: undefined,
-      wrappedEmbeddableContext: null,
-      experimental: {
-        clickToPlayId: null
-      }
+      wrappedEmbeddable: null
     };
 
     beforeAll(() => {
