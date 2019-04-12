@@ -42,7 +42,13 @@ class LightweightActivitiesController < ApplicationController
       if @run.sequence
         # only redirect if not part of a sequence resource url so that sequence show pages can include run_key params
         in_sequence_resource = request.url.include? "/sequences/"
-        redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters) and return if !in_sequence_resource
+        if !in_sequence_resource
+          if @sequence_run
+            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
+          else
+            redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters)
+          end
+        end
       else
         redirect_to activity_path(@activity, request.query_parameters) and return
       end

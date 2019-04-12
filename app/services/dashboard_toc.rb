@@ -40,7 +40,11 @@ class DashboardToc
   private
   def url
     if @sequence.activities.empty?
-      return sequence_path(@sequence)
+      if @sequence_run
+        return sequence_with_sequence_run_key_path(@sequence, @sequence_run.key)
+      else
+        return sequence_path(@sequence)
+      end
     else
       return activity_path(@sequence.activities.first)
     end

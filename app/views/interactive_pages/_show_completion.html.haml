@@ -74,7 +74,7 @@
 
   if @sequence_run
     # if there is a sequence_run then we need to explicitly indicate it
-    exit_link = sequence_path(@sequence, :show_index => true, :sequence_run => @sequence_run.id)
+    exit_link = sequence_with_sequence_run_key_path(@sequence, @sequence_run.key, :show_index => true)
   elsif @sequence
     # Anonymous users running a sequence will have a sequence but not a sequence run
     exit_link = sequence_path(@sequence, :show_index => true)

@@ -6,8 +6,8 @@ module InteractivePageHelper
 
   def fetch_path_base(sequence, activity, run, page)  # move me to be private.
     run = run_for_activity(activity, run)
-    if sequence and sequence != run.sequence
-      # ERROR - 404
+    if sequence and run and (sequence != run.sequence)
+      raise Exception.new("Sequence and run sequence do not match!")
     end
     if run
       if sequence
