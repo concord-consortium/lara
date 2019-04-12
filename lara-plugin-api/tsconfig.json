@@ -13,6 +13,7 @@
     "strictNullChecks": true,
     "types": ["jest", "jquery", "jqueryui"],
     "jsx": "react",
+    "skipLibCheck": true,
     "lib": [
       "dom",
       "es5",

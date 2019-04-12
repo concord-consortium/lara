@@ -26,7 +26,7 @@
 
 **● clickToPlayId**: *`string` \| `null`*
 
-*Defined in [api/types.ts:63](https://github.com/concord-consortium/lara/blob/c535a346/lara-plugin-api/src/api/types.ts#L63)*
+*Defined in [api/types.ts:63](https://github.com/concord-consortium/lara/blob/44b1522d/lara-plugin-api/src/api/types.ts#L63)*
 
 DOM id of click to play overlay if enabled.
 
@@ -37,7 +37,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [api/types.ts:36](https://github.com/concord-consortium/lara/blob/c535a346/lara-plugin-api/src/api/types.ts#L36)*
+*Defined in [api/types.ts:36](https://github.com/concord-consortium/lara/blob/44b1522d/lara-plugin-api/src/api/types.ts#L36)*
 
 Embeddable container.
 
@@ -48,7 +48,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [api/types.ts:57](https://github.com/concord-consortium/lara/blob/c535a346/lara-plugin-api/src/api/types.ts#L57)*
+*Defined in [api/types.ts:57](https://github.com/concord-consortium/lara/blob/44b1522d/lara-plugin-api/src/api/types.ts#L57)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -64,7 +64,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [api/types.ts:61](https://github.com/concord-consortium/lara/blob/c535a346/lara-plugin-api/src/api/types.ts#L61)*
+*Defined in [api/types.ts:61](https://github.com/concord-consortium/lara/blob/44b1522d/lara-plugin-api/src/api/types.ts#L61)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
 
@@ -80,7 +80,7 @@ ___
 
 **● laraJson**: *`any`*
 
-*Defined in [api/types.ts:55](https://github.com/concord-consortium/lara/blob/c535a346/lara-plugin-api/src/api/types.ts#L55)*
+*Defined in [api/types.ts:55](https://github.com/concord-consortium/lara/blob/44b1522d/lara-plugin-api/src/api/types.ts#L55)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 

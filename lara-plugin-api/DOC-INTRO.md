@@ -47,7 +47,7 @@ at the moment, but it's a subject to change. Always check [IPlugin](interfaces/i
 The first thing that should be done by plugin script is call to [registerPlugin](#registerplugin).
 
 The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context 
-object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/iruntimecontext.md) instance as the only 
+object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only 
 argument.
 
 Example:
