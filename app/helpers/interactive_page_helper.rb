@@ -1,13 +1,20 @@
 module InteractivePageHelper
   def runnable_activity_page_path(activity, page)
-    path_base = fetch_path_base(activity, @run, page)
+    path_base = fetch_path_base(@sequence, activity, @run, page)
     pass_white_list_params(path_base) if path_base
   end
 
-  def fetch_path_base(activity, run, page)  # move me to be private.
+  def fetch_path_base(sequence, activity, run, page)  # move me to be private.
     run = run_for_activity(activity, run)
+    if sequence and sequence != run.sequence
+      # ERROR - 404
+    end
     if run
-      page_with_run_path(activity.id, page.id, run.key)
+      if sequence
+        sequence_page_with_run_path(sequence, activity.id, page.id, run.key)
+      else
+        page_with_run_path(activity.id, page.id, run.key)
+      end
     elsif activity and page
       activity_page_path(activity, page)
     elsif activity

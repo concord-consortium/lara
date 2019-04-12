@@ -141,6 +141,17 @@ class ApplicationController < ActionController::Base
     })
   end
 
+  def not_authorized_run?(run)
+    begin
+      authorize! :access, @run
+    rescue
+      user_id_mismatch()
+      render 'runs/unauthorized_run', status: :unauthorized
+      return true
+    end
+    return false
+  end
+
   def set_run_key
     @run_key = params[:run_key]
 

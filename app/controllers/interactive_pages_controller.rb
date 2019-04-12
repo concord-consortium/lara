@@ -13,18 +13,16 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     if !params[:run_key]
-      redirect_to page_with_run_path(@activity.id, @page.id, @run_key, request.query_parameters) and return
-    end
-
-    begin
-      authorize! :access, @run
-    rescue
-      user_id_mismatch()
-      render 'runs/unauthorized_run'
-      return
+      if @sequence
+        redirect_to sequence_page_with_run_path(@sequence, @activity.id, @page.id, @run_key, request.query_parameters) and return
+      else
+        redirect_to page_with_run_path(@activity.id, @page.id, @run_key, request.query_parameters) and return
+      end
     end
 
     setup_show
+    return if not_authorized_run?(@run)
+
     respond_to do |format|
       format.html
       format.xml

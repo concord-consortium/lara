@@ -36,7 +36,8 @@ class SequencesController < ApplicationController
       format.html do
         if @sequence_run && @sequence_run.has_been_run
           unless params[:show_index]
-            redirect_to sequence_activity_path(@sequence, @sequence_run.most_recent_activity)
+            activity = @sequence_run.most_recent_activity
+            redirect_to sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity))
             return
           end
         end
