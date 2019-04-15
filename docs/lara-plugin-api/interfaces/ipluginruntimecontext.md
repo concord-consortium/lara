@@ -33,7 +33,7 @@
 
 **● authoredState**: *`string` \| `null`*
 
-*Defined in [api/types.ts:15](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L15)*
+*Defined in [api/types.ts:15](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L15)*
 
 The authored configuration for this instance (if available).
 
@@ -44,7 +44,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [api/types.ts:19](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L19)*
+*Defined in [api/types.ts:19](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L19)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -55,7 +55,7 @@ ___
 
 **● getClassInfo**: *`function`*
 
-*Defined in [api/types.ts:27](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L27)*
+*Defined in [api/types.ts:27](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L27)*
 
 Function that returns class details (Promise) or null if class info is not available.
 
@@ -71,7 +71,7 @@ ___
 
 **● getFirebaseJwt**: *`function`*
 
-*Defined in [api/types.ts:29](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L29)*
+*Defined in [api/types.ts:29](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L29)*
 
 Function that returns JWT (Promise) for given app name.
 
@@ -93,7 +93,7 @@ ___
 
 **● learnerState**: *`string` \| `null`*
 
-*Defined in [api/types.ts:17](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L17)*
+*Defined in [api/types.ts:17](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L17)*
 
 The saved learner data for this instance (if available).
 
@@ -104,7 +104,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [api/types.ts:9](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L9)*
+*Defined in [api/types.ts:9](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L9)*
 
 Name of the plugin
 
@@ -115,7 +115,7 @@ ___
 
 **● pluginId**: *`number`*
 
-*Defined in [api/types.ts:13](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L13)*
+*Defined in [api/types.ts:13](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L13)*
 
 Plugin instance ID.
 
@@ -126,7 +126,7 @@ ___
 
 **● remoteEndpoint**: *`string` \| `null`*
 
-*Defined in [api/types.ts:23](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L23)*
+*Defined in [api/types.ts:23](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L23)*
 
 The portal remote endpoint (if available).
 
@@ -137,7 +137,7 @@ ___
 
 **● runId**: *`number`*
 
-*Defined in [api/types.ts:21](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L21)*
+*Defined in [api/types.ts:21](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L21)*
 
 The run ID for the current LARA run.
 
@@ -148,7 +148,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [api/types.ts:11](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L11)*
+*Defined in [api/types.ts:11](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L11)*
 
 Url from which the plugin was loaded.
 
@@ -159,7 +159,7 @@ ___
 
 **● userEmail**: *`string` \| `null`*
 
-*Defined in [api/types.ts:25](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L25)*
+*Defined in [api/types.ts:25](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L25)*
 
 The current user email address (if available).
 
@@ -170,7 +170,7 @@ ___
 
 **● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-*Defined in [api/types.ts:31](https://github.com/concord-consortium/lara/blob/22b6b3d8/lara-plugin-api/src/api/types.ts#L31)*
+*Defined in [api/types.ts:31](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L31)*
 
 Wrapped embeddable runtime context if plugin is wrapping some embeddable.
 
