@@ -15309,46 +15309,34 @@ exports.addSidebar = function (_options) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
-    return new Promise(function (resolve, reject) {
-        var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
-        fetch(appSpecificUrl, { method: "POST" })
-            .then(function (response) {
-            response.json()
-                .then(function (data) {
-                try {
-                    var token = data.token.split(".")[1];
-                    var claimsJson = atob(token);
-                    var claims = JSON.parse(claimsJson);
-                    resolve({ token: data.token, claims: claims });
-                }
-                catch (error) {
-                    // tslint:disable-next-line:no-console
-                    console.error("unable to parse JWT Token");
-                    // tslint:disable-next-line:no-console
-                    console.error(error);
-                }
-                resolve({ token: data, claims: {} });
-            });
-        });
+    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
+    return fetch(appSpecificUrl, { method: "POST" })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+        try {
+            var token = data.token.split(".")[1];
+            var claimsJson = atob(token);
+            var claims = JSON.parse(claimsJson);
+            return { token: data.token, claims: claims };
+        }
+        catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error);
+            throw { message: "Unable to parse JWT Token", error: error };
+        }
     });
 };
 var getClassInfo = function (classInfoUrl) {
     if (!classInfoUrl) {
         return null;
     }
-    return new Promise(function (resolve, reject) {
-        fetch(classInfoUrl, { method: "get", credentials: "include" })
-            .then(function (resp) { return resp.json().then(function (data) { return resolve(data); }); });
-    });
+    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
 };
 var getInteractiveState = function (interactiveStateUrl) {
     if (!interactiveStateUrl) {
         return null;
     }
-    return new Promise(function (resolve, reject) {
-        fetch(interactiveStateUrl, { method: "get", credentials: "include" })
-            .then(function (resp) { return resp.json().then(function (data) { return resolve(data); }); });
-    });
+    return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
 };
 var getReportingUrl = function (interactiveStateUrl) {
     if (!interactiveStateUrl) {
@@ -15362,9 +15350,9 @@ var getReportingUrl = function (interactiveStateUrl) {
             }
             return null;
         }
-        catch (e) {
+        catch (error) {
             // tslint:disable-next-line:no-console
-            console.error(e);
+            console.error(error);
             return null;
         }
     });

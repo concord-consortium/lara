@@ -62,47 +62,35 @@ export interface IEmbeddableContext {
 }
 
 const getFirebaseJwt = (firebaseJwtUrl: string, appName: string): Promise<IJwtResponse> => {
-  return new Promise((resolve, reject) => {
-    const appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
-    fetch(appSpecificUrl, {method: "POST"})
-      .then(response => {
-        response.json()
-          .then((data) => {
-            try {
-              const token = data.token.split(".")[1];
-              const claimsJson = atob(token);
-              const claims = JSON.parse(claimsJson);
-              resolve({token: data.token, claims});
-            } catch (error) {
-              // tslint:disable-next-line:no-console
-              console.error("unable to parse JWT Token");
-              // tslint:disable-next-line:no-console
-              console.error(error);
-            }
-            resolve({token: data, claims: {}});
-          });
-      });
-  });
+  const appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
+  return fetch(appSpecificUrl, {method: "POST"})
+    .then(response => response.json())
+    .then(data => {
+      try {
+        const token = data.token.split(".")[1];
+        const claimsJson = atob(token);
+        const claims = JSON.parse(claimsJson);
+        return {token: data.token, claims};
+      } catch (error) {
+        // tslint:disable-next-line:no-console
+        console.error(error);
+        throw { message: "Unable to parse JWT Token", error };
+      }
+    });
 };
 
 const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null => {
   if (!classInfoUrl) {
     return null;
   }
-  return new Promise((resolve, reject) => {
-    fetch(classInfoUrl, {method: "get", credentials: "include"})
-      .then(resp => resp.json().then((data) => resolve(data)));
-  });
+  return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
   if (!interactiveStateUrl) {
     return null;
   }
-  return new Promise((resolve, reject) => {
-    fetch(interactiveStateUrl, {method: "get", credentials: "include"})
-      .then(resp => resp.json().then((data) => resolve(data)));
-  });
+  return fetch(interactiveStateUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
 const getReportingUrl = (interactiveStateUrl: string | null): Promise<string | null> | null => {
@@ -117,9 +105,9 @@ const getReportingUrl = (interactiveStateUrl: string | null): Promise<string | n
       }
       return null;
     }
-    catch (e) {
+    catch (error) {
       // tslint:disable-next-line:no-console
-      console.error(e);
+      console.error(error);
       return null;
     }
   });

@@ -1,5 +1,5 @@
 import { generateRuntimeContext } from "./runtime-context";
-import { IJwtResponse, IClassInfo } from "../api/types";
+import { IClassInfo } from "../api/types";
 import * as fetch from "jest-fetch-mock";
 (window as any).fetch = fetch;
 
@@ -46,27 +46,56 @@ describe("Runtime context helper", () => {
     expect(runtimeContext.userEmail).toEqual(pluginContext.userEmail);
   });
 
-  it("provide getClassInfo function", (done) => {
-    const classInfo: IClassInfo = { id: 123 } as IClassInfo;
-    fetch.mockResponse(JSON.stringify(classInfo));
-    const resp = runtimeContext.getClassInfo();
-    if (resp) {
-      resp.then(data => {
+  describe("#getClassInfo", () => {
+    it("provides class information", done => {
+      const classInfo: IClassInfo = {id: 123} as IClassInfo;
+      fetch.mockResponse(JSON.stringify(classInfo));
+      const resp = runtimeContext.getClassInfo();
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
+      expect(resp).toBeInstanceOf(Promise);
+      resp!.then(data => {
         expect(data).toEqual(classInfo);
         done();
       });
-    }
-  });
+    });
 
-  it("provide getFirebaseJwt function", (done) => {
-    const jwtInfo: IJwtResponse = { token: "testToken", claims: {} };
-    fetch.mockResponse(JSON.stringify(jwtInfo));
-    const resp = runtimeContext.getClassInfo();
-    if (resp) {
-      resp.then(data => {
-        expect(data).toEqual(jwtInfo);
+    it("returns error when LARA response is malformed", done => {
+      fetch.mockResponse("{malformedString:");
+      const resp = runtimeContext.getClassInfo();
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
+      expect(resp).toBeInstanceOf(Promise);
+      resp!.catch(err => {
         done();
       });
-    }
+    });
+  });
+
+  describe("#getFirebaseJwt", () => {
+    it("provides token when LARA response is valid", done => {
+      const jwtResp = { token: `jwtToken.${btoa(JSON.stringify({claimsJson: true}))}`};
+      fetch.mockResponse(JSON.stringify(jwtResp));
+      const resp = runtimeContext.getFirebaseJwt("testAppName");
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.firebaseJwtUrl.replace("_FIREBASE_APP_", "testAppName"));
+      expect(resp).toBeInstanceOf(Promise);
+      resp!.then(data => {
+        expect(data).toEqual({
+          token: jwtResp.token,
+          claims: {claimsJson: true}
+        });
+        done();
+      });
+    });
+
+    it("returns error when LARA response is malformed", done => {
+      const jwtResp = { token: `bad.jwtToken`};
+      fetch.mockResponse(JSON.stringify(jwtResp));
+      const resp = runtimeContext.getFirebaseJwt("testAppName");
+      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.firebaseJwtUrl.replace("_FIREBASE_APP_", "testAppName"));
+      expect(resp).toBeInstanceOf(Promise);
+      resp!.catch(err => {
+        expect(err.message).toEqual("Unable to parse JWT Token");
+        done();
+      });
+    });
   });
 });
