@@ -1,9 +1,9 @@
-import { generateRuntimeContext } from "./runtime-context";
+import { generatePluginRuntimeContext } from "./plugin-runtime-context";
 import { IClassInfo } from "../api/types";
 import * as fetch from "jest-fetch-mock";
 (window as any).fetch = fetch;
 
-describe("Runtime context helper", () => {
+describe("Plugin runtime context helper", () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
@@ -21,20 +21,11 @@ describe("Runtime context helper", () => {
     userEmail: "user@email.com",
     classInfoUrl: "http://portal.class.info.url",
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
-    wrappedEmbeddable: {
-      container: document.createElement("div"),
-      laraJson: {
-        name: "Test Interactive",
-        type: "MwInteractive",
-        ref_id: "86-MwInteractive"
-      },
-      interactiveStateUrl: "http://interactive.state.url",
-      clickToPlayId: "#clickToPlayId"
-    }
+    wrappedEmbeddable: null
   };
-  const runtimeContext = generateRuntimeContext(pluginContext);
 
   it("should copy basic properties to runtime context", () => {
+    const runtimeContext = generatePluginRuntimeContext(pluginContext);
     expect(runtimeContext.name).toEqual(pluginContext.name);
     expect(runtimeContext.url).toEqual(pluginContext.url);
     expect(runtimeContext.pluginId).toEqual(pluginContext.pluginId);
@@ -47,7 +38,14 @@ describe("Runtime context helper", () => {
   });
 
   describe("#getClassInfo", () => {
-    it("provides class information", done => {
+    it("returns null when classInfoUrl is not available", () => {
+      const runtimeContext = generatePluginRuntimeContext(Object.assign({}, pluginContext, {classInfoUrl: null}));
+      const resp = runtimeContext.getClassInfo();
+      expect(resp).toBeNull();
+    });
+
+    it("provides class information when classInfoUrl is available", done => {
+      const runtimeContext = generatePluginRuntimeContext(pluginContext);
       const classInfo: IClassInfo = {id: 123} as IClassInfo;
       fetch.mockResponse(JSON.stringify(classInfo));
       const resp = runtimeContext.getClassInfo();
@@ -60,7 +58,8 @@ describe("Runtime context helper", () => {
     });
 
     it("returns error when LARA response is malformed", done => {
-      fetch.mockResponse("{malformedString:");
+      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      fetch.mockResponse("{malformedJSON:");
       const resp = runtimeContext.getClassInfo();
       expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
       expect(resp).toBeInstanceOf(Promise);
@@ -72,6 +71,7 @@ describe("Runtime context helper", () => {
 
   describe("#getFirebaseJwt", () => {
     it("provides token when LARA response is valid", done => {
+      const runtimeContext = generatePluginRuntimeContext(pluginContext);
       const jwtResp = { token: `jwtToken.${btoa(JSON.stringify({claimsJson: true}))}`};
       fetch.mockResponse(JSON.stringify(jwtResp));
       const resp = runtimeContext.getFirebaseJwt("testAppName");
@@ -87,6 +87,7 @@ describe("Runtime context helper", () => {
     });
 
     it("returns error when LARA response is malformed", done => {
+      const runtimeContext = generatePluginRuntimeContext(pluginContext);
       const jwtResp = { token: `bad.jwtToken`};
       fetch.mockResponse(JSON.stringify(jwtResp));
       const resp = runtimeContext.getFirebaseJwt("testAppName");
@@ -96,6 +97,28 @@ describe("Runtime context helper", () => {
         expect(err.message).toEqual("Unable to parse JWT Token");
         done();
       });
+    });
+  });
+
+  describe("#wrappedEmbeddable", () => {
+    it("is null when context is not provided", () => {
+      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      expect(runtimeContext.wrappedEmbeddable).toBeNull();
+    });
+
+    it("is IEmbeddableRuntimeContext instance when initial context is provided", () => {
+      const wrappedEmbeddable = {
+        container: document.createElement("div"),
+        laraJson: {
+          name: "Test Interactive",
+          type: "MwInteractive",
+          ref_id: "86-MwInteractive"
+        },
+        interactiveStateUrl: "http://interactive.state.url",
+        clickToPlayId: "#clickToPlayId"
+      };
+      const runtimeContext = generatePluginRuntimeContext(Object.assign({}, pluginContext, { wrappedEmbeddable }));
+      expect(runtimeContext.wrappedEmbeddable).not.toBeNull();
     });
   });
 });

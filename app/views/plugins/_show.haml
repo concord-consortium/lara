@@ -50,7 +50,7 @@
     // Begin script for #{plugin.name}
     $(document).ready(function() {
       // It's impossible to get type checking here, but object below MUST always implement IEmbeddableContext interface
-      // defined at lara-plugin-api/helpers/runtime-context.ts.
+      // defined at lara-plugin-api/helpers/embeddable-runtime-context.ts.
       var embeddableContext = #{!wrapped_embedd ? 'null' : "{
         container: $('#{wrapped_selector}')[0],
         laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json},
@@ -58,7 +58,7 @@
         clickToPlayId: #{click_to_play_id ? "'#{escape_javascript(click_to_play_id)}'" : 'null'}
       }"};
       // It's impossible to get type checking here, but object below MUST always implement IPluginContext interface
-      // defined at lara-plugin-api/helpers/runtime-context.ts.
+      // defined at lara-plugin-api/helpers/plugin-runtime-context.ts.
       var pluginContext = {
         name: '#{plugin.name}',
         url: '#{plugin.url}',

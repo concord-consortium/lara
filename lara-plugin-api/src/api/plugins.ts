@@ -1,6 +1,6 @@
 import * as $ from "jquery";
 import { IPlugin, IPluginConstructor } from "./types";
-import { IPluginContext, generateRuntimeContext } from "../helpers/runtime-context";
+import { IPluginContext, generatePluginRuntimeContext } from "../helpers/plugin-runtime-context";
 
 /** @hidden Note, we call these `classes` but any constructor function will do. */
 const pluginClasses: { [label: string]: IPluginConstructor } = {};
@@ -33,7 +33,7 @@ export const initPlugin = (label: string, context: IPluginContext) => {
   let plugin = null;
   if (typeof constructor === "function") {
     try {
-      plugin = new constructor(generateRuntimeContext(context));
+      plugin = new constructor(generatePluginRuntimeContext(context));
       plugins.push(plugin);
       pluginContext[context.pluginId] = context;
     } catch (e) {

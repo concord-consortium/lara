@@ -14928,7 +14928,7 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var $ = __webpack_require__(/*! jquery */ "jquery");
-var runtime_context_1 = __webpack_require__(/*! ../helpers/runtime-context */ "./src/helpers/runtime-context.ts");
+var plugin_runtime_context_1 = __webpack_require__(/*! ../helpers/plugin-runtime-context */ "./src/helpers/plugin-runtime-context.ts");
 /** @hidden Note, we call these `classes` but any constructor function will do. */
 var pluginClasses = {};
 /** @hidden */
@@ -14958,7 +14958,7 @@ exports.initPlugin = function (label, context) {
     var plugin = null;
     if (typeof constructor === "function") {
         try {
-            plugin = new constructor(runtime_context_1.generateRuntimeContext(context));
+            plugin = new constructor(plugin_runtime_context_1.generatePluginRuntimeContext(context));
             plugins.push(plugin);
             pluginContext[context.pluginId] = context;
         }
@@ -15298,40 +15298,16 @@ exports.addSidebar = function (_options) {
 
 /***/ }),
 
-/***/ "./src/helpers/runtime-context.ts":
-/*!****************************************!*\
-  !*** ./src/helpers/runtime-context.ts ***!
-  \****************************************/
+/***/ "./src/helpers/embeddable-runtime-context.ts":
+/*!***************************************************!*\
+  !*** ./src/helpers/embeddable-runtime-context.ts ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var getFirebaseJwt = function (firebaseJwtUrl, appName) {
-    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
-    return fetch(appSpecificUrl, { method: "POST" })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-        try {
-            var token = data.token.split(".")[1];
-            var claimsJson = atob(token);
-            var claims = JSON.parse(claimsJson);
-            return { token: data.token, claims: claims };
-        }
-        catch (error) {
-            // tslint:disable-next-line:no-console
-            console.error(error);
-            throw { message: "Unable to parse JWT Token", error: error };
-        }
-    });
-};
-var getClassInfo = function (classInfoUrl) {
-    if (!classInfoUrl) {
-        return null;
-    }
-    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
-};
 var getInteractiveState = function (interactiveStateUrl) {
     if (!interactiveStateUrl) {
         return null;
@@ -15357,18 +15333,55 @@ var getReportingUrl = function (interactiveStateUrl) {
         }
     });
 };
-exports.generateRuntimeContext = function (context) {
-    var wrappedEmbeddableRuntimeContext = null;
-    if (context.wrappedEmbeddable) {
-        var embed_1 = context.wrappedEmbeddable;
-        wrappedEmbeddableRuntimeContext = {
-            container: embed_1.container,
-            laraJson: embed_1.laraJson,
-            getInteractiveState: function () { return getInteractiveState(embed_1.interactiveStateUrl); },
-            getReportingUrl: function () { return getReportingUrl(embed_1.interactiveStateUrl); },
-            clickToPlayId: embed_1.clickToPlayId
-        };
+exports.generateEmbeddableRuntimeContext = function (context) {
+    return {
+        container: context.container,
+        laraJson: context.laraJson,
+        getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
+        getReportingUrl: function () { return getReportingUrl(context.interactiveStateUrl); },
+        clickToPlayId: context.clickToPlayId
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/helpers/plugin-runtime-context.ts":
+/*!***********************************************!*\
+  !*** ./src/helpers/plugin-runtime-context.ts ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/helpers/embeddable-runtime-context.ts");
+var getFirebaseJwt = function (firebaseJwtUrl, appName) {
+    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
+    return fetch(appSpecificUrl, { method: "POST" })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+        try {
+            var token = data.token.split(".")[1];
+            var claimsJson = atob(token);
+            var claims = JSON.parse(claimsJson);
+            return { token: data.token, claims: claims };
+        }
+        catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error);
+            throw { message: "Unable to parse JWT Token", error: error };
+        }
+    });
+};
+var getClassInfo = function (classInfoUrl) {
+    if (!classInfoUrl) {
+        return null;
     }
+    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
+};
+exports.generatePluginRuntimeContext = function (context) {
     return {
         name: context.name,
         url: context.url,
@@ -15381,7 +15394,7 @@ exports.generateRuntimeContext = function (context) {
         userEmail: context.userEmail,
         getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
-        wrappedEmbeddable: wrappedEmbeddableRuntimeContext
+        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
     };
 };
 

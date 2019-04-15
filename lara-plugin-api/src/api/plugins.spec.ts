@@ -1,5 +1,5 @@
 import * as Plugins from "./plugins";
-import { generateRuntimeContext } from "../helpers/runtime-context";
+import { generatePluginRuntimeContext } from "../helpers/plugin-runtime-context";
 import * as $ from "jquery";
 
 describe("Plugins", () => {
@@ -36,7 +36,9 @@ describe("Plugins", () => {
     it("should call the plugins constructor with the config", () => {
       expect(pluginConstructor).toHaveBeenCalledTimes(1);
       // Why keys? Some functions are dynamically generated and we cannot compare them.
-      expect(Object.keys(pluginConstructor.mock.calls[0][0])).toEqual(Object.keys(generateRuntimeContext(context)));
+      expect(Object.keys(pluginConstructor.mock.calls[0][0])).toEqual(
+        Object.keys(generatePluginRuntimeContext(context))
+      );
     });
 
     describe("saveLearnerPluginState", () => {
