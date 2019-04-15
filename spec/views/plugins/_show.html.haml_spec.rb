@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "plugins/_show.html.haml" do
-  let(:version) { 2 }
+  let(:version) { 3 }
   let(:shared_learner_state_key) { 'shared-learner-state-key-is-a-string' }
   let(:class_info_url) { 'http://class-info.url/'}
   let(:email) { 'fake-user-name@fake-domain.com' }
@@ -58,7 +58,7 @@ describe "plugins/_show.html.haml" do
       /remoteEndpoint: null/,
       /container:/,
       /wrappedEmbeddable:/,
-      /LARA\.initPlugin\('plugin-label', pluginContext\)/,
+      /LARA_V3\.initPlugin\('plugin-label', pluginContext\)/,
     ].each do |expected_string|
       expect(rendered).to match(expected_string)
     end
