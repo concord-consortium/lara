@@ -37,7 +37,7 @@
 
 **● authoredState**: *`string`*
 
-*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L19)*
+*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L19)*
 
 The authored configuration for this instance.
 
@@ -48,7 +48,7 @@ ___
 
 **● classInfoUrl**: *`string`*
 
-*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L29)*
+*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L29)*
 
 The portal URL for class details (if available).
 
@@ -59,7 +59,7 @@ ___
 
 **● div**: *`HTMLElement`*
 
-*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L23)*
+*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L23)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -70,7 +70,7 @@ ___
 
 **● experimental**: *[IRuntimeContextExperimentalFeatures](iruntimecontextexperimentalfeatures.md)*
 
-*Defined in [api/plugins.ts:57](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L57)*
+*Defined in [api/plugins.ts:57](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L57)*
 
 ___
 <a id="getfirebasejwturl"></a>
@@ -79,7 +79,7 @@ ___
 
 **● getFirebaseJwtUrl**: *`function`*
 
-*Defined in [api/plugins.ts:35](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L35)*
+*Defined in [api/plugins.ts:35](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L35)*
 
 A function that returns the URL to use fetch a JWT.
 
@@ -95,7 +95,7 @@ ___
 
 **● interactiveStateUrl**: *`string`*
 
-*Defined in [api/plugins.ts:33](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L33)*
+*Defined in [api/plugins.ts:33](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L33)*
 
 Interactive state URL, available only when plugin is wrapping an interactive (empty string otherwise).
 
@@ -106,7 +106,7 @@ ___
 
 **● learnerState**: *`string`*
 
-*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L21)*
+*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L21)*
 
 The saved learner data for this instance.
 
@@ -117,7 +117,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L11)*
+*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L11)*
 
 Name of the plugin
 
@@ -128,7 +128,7 @@ ___
 
 **● pluginId**: *`string`*
 
-*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L15)*
+*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L15)*
 
 Active record ID of the plugin scope id.
 
@@ -139,7 +139,7 @@ ___
 
 **● pluginStateKey**: *`string`*
 
-*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L17)*
+*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L17)*
 
 Plugin learner state key. Is this necessary and what can that be used for? TDB.
 
@@ -150,7 +150,7 @@ ___
 
 **● remoteEndpoint**: *`string`*
 
-*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L31)*
+*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L31)*
 
 The portal remote endpoint (if available).
 
@@ -161,7 +161,7 @@ ___
 
 **● runID**: *`number`*
 
-*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L25)*
+*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L25)*
 
 The run ID for the current run.
 
@@ -172,7 +172,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L13)*
+*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L13)*
 
 Url from which the plugin was loaded.
 
@@ -183,7 +183,7 @@ ___
 
 **● userEmail**: *`string`*
 
-*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L27)*
+*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L27)*
 
 The current users email address if available.
 
@@ -194,7 +194,7 @@ ___
 
 **● wrappedEmbeddableContext**: *`any` \| `null`*
 
-*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L56)*
+*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L56)*
 
 When plugin is wrapping an embeddable, this field will contain its properties - serialized form of the embeddable, e.g.:
 
@@ -220,7 +220,7 @@ ___
 
 **● wrappedEmbeddableDiv**: *`HTMLElement` \| `undefined`*
 
-*Defined in [api/plugins.ts:37](https://github.com/concord-consortium/lara/blob/3aa9451f/lara-plugin-api/src/api/plugins.ts#L37)*
+*Defined in [api/plugins.ts:37](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L37)*
 
 Wrapped embeddable container, available only when plugin is wrapping an interactive.
 
