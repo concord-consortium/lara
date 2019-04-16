@@ -10,11 +10,7 @@ module InteractivePageHelper
       raise Exception.new("Sequence and run sequence do not match!")
     end
     if run
-      if sequence
-        sequence_page_with_run_path(sequence, activity.id, page.id, run.key)
-      else
-        page_with_run_path(activity.id, page.id, run.key)
-      end
+      get_page_with_run_path(sequence, activity.id, page.id, run.key)
     elsif activity and page
       activity_page_path(activity, page)
     elsif activity
@@ -23,8 +19,6 @@ module InteractivePageHelper
        nil
     end
   end
-
-
 
   def page_link(activity,page, opts={})
     name = "Page #{page.position}"

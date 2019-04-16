@@ -13,11 +13,7 @@ class InteractivePagesController < ApplicationController
   def show
     authorize! :read, @page
     if !params[:run_key]
-      if @sequence
-        redirect_to sequence_page_with_run_path(@sequence, @activity.id, @page.id, @run_key, request.query_parameters) and return
-      else
-        redirect_to page_with_run_path(@activity.id, @page.id, @run_key, request.query_parameters) and return
-      end
+      redirect_to_page_with_run_path(@sequence, @activity.id, @page.id, @run_key, request.query_parameters) and return
     end
 
     setup_show
