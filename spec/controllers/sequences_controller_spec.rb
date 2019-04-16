@@ -120,7 +120,7 @@ describe SequencesController do
     it "should call 'export' on the sequence" do
       get :export, { :id => sequence.id }
       expect(response).to be_success
-    end 
+    end
   end
 
   describe "PUT update" do

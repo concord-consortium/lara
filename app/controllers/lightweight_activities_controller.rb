@@ -79,7 +79,7 @@ class LightweightActivitiesController < ApplicationController
     end
 
     setup_show
-    return if not_authorized_run?(@run)
+    raise_error_if_not_authorized_run(@run)
   end
 
   def preview
@@ -110,7 +110,7 @@ class LightweightActivitiesController < ApplicationController
 
     # the authorization needs to be after the setup method so that at least the @theme instance variable
     # is set, so the theme of the unauthorized_run page remains the same.
-    return if not_authorized_run?(@run)
+    raise_error_if_not_authorized_run(@run)
     @labbook_is_under_interactive = true
   end
 

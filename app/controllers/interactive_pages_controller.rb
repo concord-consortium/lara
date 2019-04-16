@@ -21,7 +21,7 @@ class InteractivePagesController < ApplicationController
     end
 
     setup_show
-    return if not_authorized_run?(@run)
+    raise_error_if_not_authorized_run(@run)
 
     respond_to do |format|
       format.html

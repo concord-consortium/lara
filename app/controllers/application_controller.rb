@@ -2,6 +2,8 @@
 # see reject_old_browsers method
 BrowserSpecificiation = Struct.new(:browser, :version)
 
+class NotAuthorizedRunError < StandardError; end
+
 class ApplicationController < ActionController::Base
 
   # Run authorization on all actions
@@ -15,6 +17,11 @@ class ApplicationController < ActionController::Base
       format.html { render :partial => "shared/unauthorized", :locals => {:message => response_data[:message]}, :status => 403 }
       format.json { render json: response_data, status: 403}
     end
+  end
+
+  # thrown by #raise_error_if_not_authorized_run()
+  rescue_from NotAuthorizedRunError do
+    render 'runs/unauthorized_run', status: :unauthorized
   end
 
   # With +respond_to do |format|+, "406 Not Acceptable" is sent on invalid format.
@@ -124,32 +131,25 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # this is used by controllers that look up a Run based on a run_key
-  # if the current_user is not authorized to access the run then this method
-  # is called
-  def user_id_mismatch
-    @hide_navigation = true
-    @user = current_user ? current_user.email : 'anonymous'
-    @run_key = params[:run_key] || 'no run key'
-    @session = session.clone
-
-    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
-      uri: request.original_url,
-      referer: request.referer,
-      request_params: params,
-      custom_params: { user: @user, run_key: @run_key }.merge(@session)
-    })
-  end
-
-  def not_authorized_run?(run)
+  def raise_error_if_not_authorized_run(run)
     begin
-      authorize! :access, @run
+      authorize! :access, run
     rescue
-      user_id_mismatch()
-      render 'runs/unauthorized_run', status: :unauthorized
-      return true
+      @hide_navigation = true
+      @user = current_user ? current_user.email : 'anonymous'
+      @run_key = params[:run_key] || 'no run key'
+      @sequence_run_key = params[:sequence_run_key] || 'no sequence run key'
+      @session = session.clone
+
+      NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
+        uri: request.original_url,
+        referer: request.referer,
+        request_params: params,
+        custom_params: { user: @user, run_key: @run_key, sequence_run_key: @sequence_run_key }.merge(@session)
+      })
+
+      raise NotAuthorizedRunError
     end
-    return false
   end
 
   def set_run_key

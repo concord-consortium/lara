@@ -45,6 +45,7 @@ class SequencesController < ApplicationController
             return
           end
         end
+        raise_error_if_not_authorized_run(@sequence_run) if @sequence_run
         # show.html.erb  ⬅ default template is shown otherwise
         render layout: "sequence_run"
       end
