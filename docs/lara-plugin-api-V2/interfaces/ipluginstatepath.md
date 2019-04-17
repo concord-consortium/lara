@@ -23,7 +23,7 @@
 
 **● loadPath**: *`string`*
 
-*Defined in [api/plugins.ts:67](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api-V2/src/api/plugins.ts#L67)*
+*Defined in [api/plugins.ts:67](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L67)*
 
 ___
 <a id="savepath"></a>
@@ -32,7 +32,7 @@ ___
 
 **● savePath**: *`string`*
 
-*Defined in [api/plugins.ts:66](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api-V2/src/api/plugins.ts#L66)*
+*Defined in [api/plugins.ts:66](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L66)*
 
 ___
 

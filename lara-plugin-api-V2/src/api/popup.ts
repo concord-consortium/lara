@@ -19,7 +19,7 @@ export interface IPopupOptions {
   draggable?: boolean;
   resizable?: boolean;
   /** Please see: https://api.jqueryui.com/dialog/#option-position */
-  position?: { my: string, at: string, of: HTMLElement};
+  position?: { my: string, at: string, of: Element, collision: string };
   width?: number;
   /** Number in px or "auto" */
   height?: number | string;

@@ -24,7 +24,7 @@
 
 **● first_name**: *`string`*
 
-*Defined in [api/types.ts:109](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L109)*
+*Defined in [api/types.ts:109](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api/src/api/types.ts#L109)*
 
 ___
 <a id="id"></a>
@@ -33,7 +33,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [api/types.ts:108](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L108)*
+*Defined in [api/types.ts:108](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api/src/api/types.ts#L108)*
 
 ___
 <a id="last_name"></a>
@@ -42,7 +42,7 @@ ___
 
 **● last_name**: *`string`*
 
-*Defined in [api/types.ts:110](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L110)*
+*Defined in [api/types.ts:110](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api/src/api/types.ts#L110)*
 
 ___
 
