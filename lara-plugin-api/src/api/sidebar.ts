@@ -17,7 +17,7 @@ export interface ISidebarOptions {
   titleBar?: string;
   titleBarColor?: string;
   width?: number;
-  padding?: 25;
+  padding?: number;
   onOpen?: () => void;
   onClose?: () => void;
 }

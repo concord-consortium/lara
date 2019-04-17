@@ -27,7 +27,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [api/types.ts:122](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L122)*
+*Defined in [api/types.ts:122](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L122)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [api/types.ts:120](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L120)*
+*Defined in [api/types.ts:120](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L120)*
 
 ___
 <a id="offerings"></a>
@@ -45,7 +45,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
-*Defined in [api/types.ts:125](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L125)*
+*Defined in [api/types.ts:125](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L125)*
 
 ___
 <a id="students"></a>
@@ -54,7 +54,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
-*Defined in [api/types.ts:124](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L124)*
+*Defined in [api/types.ts:124](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L124)*
 
 ___
 <a id="teachers"></a>
@@ -63,7 +63,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
-*Defined in [api/types.ts:123](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L123)*
+*Defined in [api/types.ts:123](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L123)*
 
 ___
 <a id="uri"></a>
@@ -72,7 +72,7 @@ ___
 
 **● uri**: *`string`*
 
-*Defined in [api/types.ts:121](https://github.com/concord-consortium/lara/blob/371383a2/lara-plugin-api/src/api/types.ts#L121)*
+*Defined in [api/types.ts:121](https://github.com/concord-consortium/lara/blob/2d9328ea/lara-plugin-api/src/api/types.ts#L121)*
 
 ___
 
