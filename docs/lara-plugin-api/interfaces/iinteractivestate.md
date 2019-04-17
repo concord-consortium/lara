@@ -27,7 +27,7 @@
 
 **● activity_name**: *`string`*
 
-*Defined in [api/types.ts:113](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L113)*
+*Defined in [api/types.ts:131](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L131)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [api/types.ts:108](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L108)*
+*Defined in [api/types.ts:126](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L126)*
 
 ___
 <a id="interactive_name"></a>
@@ -45,7 +45,7 @@ ___
 
 **● interactive_name**: *`string`*
 
-*Defined in [api/types.ts:111](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L111)*
+*Defined in [api/types.ts:129](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L129)*
 
 ___
 <a id="interactive_state_url"></a>
@@ -54,7 +54,7 @@ ___
 
 **● interactive_state_url**: *`string`*
 
-*Defined in [api/types.ts:112](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L112)*
+*Defined in [api/types.ts:130](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L130)*
 
 ___
 <a id="key"></a>
@@ -63,7 +63,7 @@ ___
 
 **● key**: *`string`*
 
-*Defined in [api/types.ts:109](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L109)*
+*Defined in [api/types.ts:127](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L127)*
 
 ___
 <a id="raw_data"></a>
@@ -72,7 +72,7 @@ ___
 
 **● raw_data**: *`string`*
 
-*Defined in [api/types.ts:110](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L110)*
+*Defined in [api/types.ts:128](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L128)*
 
 ___
 

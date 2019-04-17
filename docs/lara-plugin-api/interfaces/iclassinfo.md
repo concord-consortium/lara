@@ -27,7 +27,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [api/types.ts:101](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L101)*
+*Defined in [api/types.ts:119](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L119)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [api/types.ts:99](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L99)*
+*Defined in [api/types.ts:117](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L117)*
 
 ___
 <a id="offerings"></a>
@@ -45,7 +45,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
-*Defined in [api/types.ts:104](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L104)*
+*Defined in [api/types.ts:122](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L122)*
 
 ___
 <a id="students"></a>
@@ -54,7 +54,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
-*Defined in [api/types.ts:103](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L103)*
+*Defined in [api/types.ts:121](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L121)*
 
 ___
 <a id="teachers"></a>
@@ -63,7 +63,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
-*Defined in [api/types.ts:102](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L102)*
+*Defined in [api/types.ts:120](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L120)*
 
 ___
 <a id="uri"></a>
@@ -72,7 +72,7 @@ ___
 
 **● uri**: *`string`*
 
-*Defined in [api/types.ts:100](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L100)*
+*Defined in [api/types.ts:118](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L118)*
 
 ___
 

@@ -26,9 +26,11 @@
 
 **● clickToPlayId**: *`string` \| `null`*
 
-*Defined in [api/types.ts:63](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L63)*
+*Defined in [api/types.ts:81](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L81)*
 
 DOM id of click to play overlay if enabled.
+
+*__deprecated__*: This property will be removed soon and replaced with a better mechanism that lets the plugin monitor interactive status, including click to play state.
 
 ___
 <a id="container"></a>
@@ -37,7 +39,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [api/types.ts:36](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L36)*
+*Defined in [api/types.ts:44](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L44)*
 
 Embeddable container.
 
@@ -48,7 +50,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [api/types.ts:57](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L57)*
+*Defined in [api/types.ts:65](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L65)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -64,12 +66,20 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [api/types.ts:61](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L61)*
+*Defined in [api/types.ts:75](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L75)*
 
-Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
+Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
+
+*__param__*: An optional promise returned from #getInteractiveState method. If it's provided this function will use it to get interacive state and won't issue any additional network requests.
 
 #### Type declaration
-▸(): `Promise`<`string` \| `null`> \| `null`
+▸(interactiveStatePromise?: *`Promise`<[IInteractiveState](iinteractivestate.md)>*): `Promise`<`string` \| `null`> \| `null`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| `Optional` interactiveStatePromise | `Promise`<[IInteractiveState](iinteractivestate.md)> |
 
 **Returns:** `Promise`<`string` \| `null`> \| `null`
 
@@ -80,7 +90,7 @@ ___
 
 **● laraJson**: *`any`*
 
-*Defined in [api/types.ts:55](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L55)*
+*Defined in [api/types.ts:63](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L63)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 

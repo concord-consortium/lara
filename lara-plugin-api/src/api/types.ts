@@ -73,7 +73,11 @@ export interface IEmbeddableRuntimeContext {
           this function will use it to get interacive state and won't issue any additional network requests.
    ****************************************************************************/
   getReportingUrl: (interactiveStatePromise?: Promise<IInteractiveState>) => Promise<string | null> | null;
-  /** DOM id of click to play overlay if enabled. */
+  /****************************************************************************
+   DOM id of click to play overlay if enabled.
+   @deprecated This property will be removed soon and replaced with a better mechanism that lets the plugin monitor
+   interactive status, including click to play state.
+   ****************************************************************************/
   clickToPlayId: string | null;
 }
 

@@ -14927,7 +14927,6 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var $ = __webpack_require__(/*! jquery */ "jquery");
 var plugin_runtime_context_1 = __webpack_require__(/*! ../helpers/plugin-runtime-context */ "./src/helpers/plugin-runtime-context.ts");
 /** @hidden Note, we call these `classes` but any constructor function will do. */
 var pluginClasses = {};
@@ -14972,30 +14971,6 @@ exports.initPlugin = function (label, context) {
         // tslint:disable-next-line:no-console
         console.error("No plugin registered for label:", label);
     }
-};
-/****************************************************************************
- Ask LARA to save the users state for the plugin.
- ```
- LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
- ```
- @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context.
- @param state A JSON string representing serialized plugin state.
- ****************************************************************************/
-exports.saveLearnerPluginState = function (pluginId, state) {
-    var context = pluginContext[pluginId];
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: context.learnerStateSaveUrl,
-            type: "PUT",
-            data: { state: state },
-            success: function (data) {
-                resolve(data);
-            },
-            error: function (jqXHR, errText, err) {
-                reject(err);
-            }
-        });
-    });
 };
 /****************************************************************************
  Register a new external script as `label` with `_class `, e.g.:
@@ -15314,11 +15289,14 @@ var getInteractiveState = function (interactiveStateUrl) {
     }
     return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
 };
-var getReportingUrl = function (interactiveStateUrl) {
+var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
     if (!interactiveStateUrl) {
         return null;
     }
-    return getInteractiveState(interactiveStateUrl).then(function (interactiveState) {
+    if (!interactiveStatePromise) {
+        interactiveStatePromise = getInteractiveState(interactiveStateUrl);
+    }
+    return interactiveStatePromise.then(function (interactiveState) {
         try {
             var rawJSON = JSON.parse(interactiveState.raw_data);
             if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
@@ -15338,7 +15316,9 @@ exports.generateEmbeddableRuntimeContext = function (context) {
         container: context.container,
         laraJson: context.laraJson,
         getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
-        getReportingUrl: function () { return getReportingUrl(context.interactiveStateUrl); },
+        getReportingUrl: function (getInteractiveStatePromise) {
+            return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
+        },
         clickToPlayId: context.clickToPlayId
     };
 };
@@ -15357,6 +15337,22 @@ exports.generateEmbeddableRuntimeContext = function (context) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/helpers/embeddable-runtime-context.ts");
+var $ = __webpack_require__(/*! jquery */ "jquery");
+exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: learnerStateSaveUrl,
+            type: "PUT",
+            data: { state: state },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, errText, err) {
+                reject(err);
+            }
+        });
+    });
+};
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
     return fetch(appSpecificUrl, { method: "POST" })
@@ -15392,6 +15388,7 @@ exports.generatePluginRuntimeContext = function (context) {
         runId: context.runId,
         remoteEndpoint: context.remoteEndpoint,
         userEmail: context.userEmail,
+        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(context.learnerStateSaveUrl, state); },
         getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
         wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null

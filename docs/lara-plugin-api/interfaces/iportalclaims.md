@@ -25,7 +25,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [api/types.ts:69](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L69)*
+*Defined in [api/types.ts:87](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L87)*
 
 ___
 <a id="offering_id"></a>
@@ -34,7 +34,7 @@ ___
 
 **● offering_id**: *`number`*
 
-*Defined in [api/types.ts:70](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L70)*
+*Defined in [api/types.ts:88](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L88)*
 
 ___
 <a id="user_id"></a>
@@ -43,7 +43,7 @@ ___
 
 **● user_id**: *`string`*
 
-*Defined in [api/types.ts:68](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L68)*
+*Defined in [api/types.ts:86](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L86)*
 
 ___
 <a id="user_type"></a>
@@ -52,7 +52,7 @@ ___
 
 **● user_type**: *"learner" \| "teacher"*
 
-*Defined in [api/types.ts:67](https://github.com/concord-consortium/lara/blob/4825314e/lara-plugin-api/src/api/types.ts#L67)*
+*Defined in [api/types.ts:85](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L85)*
 
 ___
 
