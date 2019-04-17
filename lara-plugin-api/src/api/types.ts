@@ -63,10 +63,16 @@ export interface IEmbeddableRuntimeContext {
   laraJson: any;
   /** Function that returns interactive state (Promise) or null if embeddable isn't interactive. */
   getInteractiveState: () => Promise<IInteractiveState> | null;
-  /**
-   * Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
-   */
-  getReportingUrl: () => Promise<string | null> | null;
+  /****************************************************************************
+   Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
+   Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method).
+   If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument
+   to this method to limit number of network requests.
+
+   @param interactiveStatePromise? An optional promise returned from #getInteractiveState method. If it's provided
+          this function will use it to get interacive state and won't issue any additional network requests.
+   ****************************************************************************/
+  getReportingUrl: (interactiveStatePromise?: Promise<IInteractiveState>) => Promise<string | null> | null;
   /** DOM id of click to play overlay if enabled. */
   clickToPlayId: string | null;
 }

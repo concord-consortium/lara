@@ -38,11 +38,17 @@ const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInter
   return fetch(interactiveStateUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
-const getReportingUrl = (interactiveStateUrl: string | null): Promise<string | null> | null => {
+const getReportingUrl = (
+  interactiveStateUrl: string | null,
+  interactiveStatePromise?: Promise<IInteractiveState>
+): Promise<string | null> | null => {
   if (!interactiveStateUrl) {
     return null;
   }
-  return getInteractiveState(interactiveStateUrl)!.then(interactiveState => {
+  if (!interactiveStatePromise) {
+    interactiveStatePromise = getInteractiveState(interactiveStateUrl)!;
+  }
+  return interactiveStatePromise.then(interactiveState => {
     try {
       const rawJSON = JSON.parse(interactiveState.raw_data);
       if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
@@ -63,7 +69,8 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): I
     container: context.container,
     laraJson: context.laraJson,
     getInteractiveState: () => getInteractiveState(context.interactiveStateUrl),
-    getReportingUrl: () => getReportingUrl(context.interactiveStateUrl),
+    getReportingUrl: (getInteractiveStatePromise?: Promise<IInteractiveState>) =>
+      getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise),
     clickToPlayId: context.clickToPlayId
   };
 };

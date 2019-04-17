@@ -1,6 +1,7 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState } from "../api/types";
 import * as fetch from "jest-fetch-mock";
+import {run} from "tslint/lib/runner";
 (window as any).fetch = fetch;
 
 describe("Embeddable runtime context helper", () => {
@@ -87,6 +88,25 @@ describe("Embeddable runtime context helper", () => {
         raw_data: '{"lara_options": {"reporting_url": "reporting.url" }}'
       } as IInteractiveState));
       const resp = runtimeContext.getReportingUrl();
+      expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
+      expect(resp).toBeInstanceOf(Promise);
+      resp!.then(data => {
+        expect(data).toEqual("reporting.url");
+        done();
+      });
+    });
+
+    it("accepts interactiveStatePromise as an optional parameter and performs only one network request", done => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      fetch.mockResponseOnce(JSON.stringify({
+        raw_data: '{"lara_options": {"reporting_url": "reporting.url" }}'
+      } as IInteractiveState));
+      // Note that reporting URL is different here. Test below ensures that only one network request is performed.
+      fetch.mockResponseOnce(JSON.stringify({
+        raw_data: '{"lara_options": {"reporting_url": "WRONG reporting.url" }}'
+      } as IInteractiveState));
+      const interactiveStatePromise = runtimeContext.getInteractiveState();
+      const resp = runtimeContext.getReportingUrl(interactiveStatePromise!);
       expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
       expect(resp).toBeInstanceOf(Promise);
       resp!.then(data => {
