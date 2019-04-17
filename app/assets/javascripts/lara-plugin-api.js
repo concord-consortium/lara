@@ -15365,8 +15365,6 @@ var getFirebaseJwt = function (firebaseJwtUrl, appName) {
             return { token: data.token, claims: claims };
         }
         catch (error) {
-            // tslint:disable-next-line:no-console
-            console.error(error);
             throw { message: "Unable to parse JWT Token", error: error };
         }
     });

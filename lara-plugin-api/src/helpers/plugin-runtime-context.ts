@@ -90,8 +90,6 @@ const getFirebaseJwt = (firebaseJwtUrl: string, appName: string): Promise<IJwtRe
         const claims = JSON.parse(claimsJson);
         return {token: data.token, claims};
       } catch (error) {
-        // tslint:disable-next-line:no-console
-        console.error(error);
         throw { message: "Unable to parse JWT Token", error };
       }
     });
