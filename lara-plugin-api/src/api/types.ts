@@ -25,6 +25,9 @@ export interface IPluginRuntimeContext {
   userEmail: string | null;
   /****************************************************************************
    Function that saves the users state for the plugin.
+   Note that plugins can have different scopes, e.g. activity or a single page.
+   If the plugin instance is added to the activity, its state will be shared across all the pages.
+   If multiple plugin instances are added to various pages, their state will be different on every page.
    ```
    context.saveLearnerPluginState('{"one": 1}').then((data) => console.log(data))
    ```

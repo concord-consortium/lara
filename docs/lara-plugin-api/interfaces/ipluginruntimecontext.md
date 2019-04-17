@@ -34,7 +34,7 @@
 
 **● authoredState**: *`string` \| `null`*
 
-*Defined in [api/types.ts:15](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L15)*
+*Defined in [api/types.ts:15](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L15)*
 
 The authored configuration for this instance (if available).
 
@@ -45,7 +45,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [api/types.ts:19](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L19)*
+*Defined in [api/types.ts:19](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L19)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -56,7 +56,7 @@ ___
 
 **● getClassInfo**: *`function`*
 
-*Defined in [api/types.ts:35](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L35)*
+*Defined in [api/types.ts:38](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L38)*
 
 Function that returns class details (Promise) or null if class info is not available.
 
@@ -72,7 +72,7 @@ ___
 
 **● getFirebaseJwt**: *`function`*
 
-*Defined in [api/types.ts:37](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L37)*
+*Defined in [api/types.ts:40](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L40)*
 
 Function that returns JWT (Promise) for given app name.
 
@@ -94,7 +94,7 @@ ___
 
 **● learnerState**: *`string` \| `null`*
 
-*Defined in [api/types.ts:17](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L17)*
+*Defined in [api/types.ts:17](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L17)*
 
 The saved learner data for this instance (if available).
 
@@ -105,7 +105,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [api/types.ts:9](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L9)*
+*Defined in [api/types.ts:9](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L9)*
 
 Name of the plugin
 
@@ -116,7 +116,7 @@ ___
 
 **● pluginId**: *`number`*
 
-*Defined in [api/types.ts:13](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L13)*
+*Defined in [api/types.ts:13](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L13)*
 
 Plugin instance ID.
 
@@ -127,7 +127,7 @@ ___
 
 **● remoteEndpoint**: *`string` \| `null`*
 
-*Defined in [api/types.ts:23](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L23)*
+*Defined in [api/types.ts:23](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L23)*
 
 The portal remote endpoint (if available).
 
@@ -138,7 +138,7 @@ ___
 
 **● runId**: *`number`*
 
-*Defined in [api/types.ts:21](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L21)*
+*Defined in [api/types.ts:21](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L21)*
 
 The run ID for the current LARA run.
 
@@ -149,9 +149,9 @@ ___
 
 **● saveLearnerPluginState**: *`function`*
 
-*Defined in [api/types.ts:33](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L33)*
+*Defined in [api/types.ts:36](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L36)*
 
-Function that saves the users state for the plugin.
+Function that saves the users state for the plugin. Note that plugins can have different scopes, e.g. activity or a single page. If the plugin instance is added to the activity, its state will be shared across all the pages. If multiple plugin instances are added to various pages, their state will be different on every page.
 
 ```
 context.saveLearnerPluginState('{"one": 1}').then((data) => console.log(data))
@@ -177,7 +177,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [api/types.ts:11](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L11)*
+*Defined in [api/types.ts:11](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L11)*
 
 Url from which the plugin was loaded.
 
@@ -188,7 +188,7 @@ ___
 
 **● userEmail**: *`string` \| `null`*
 
-*Defined in [api/types.ts:25](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L25)*
+*Defined in [api/types.ts:25](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L25)*
 
 The current user email address (if available).
 
@@ -199,7 +199,7 @@ ___
 
 **● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-*Defined in [api/types.ts:39](https://github.com/concord-consortium/lara/blob/5d88539c/lara-plugin-api/src/api/types.ts#L39)*
+*Defined in [api/types.ts:42](https://github.com/concord-consortium/lara/blob/d4ac322a/lara-plugin-api/src/api/types.ts#L42)*
 
 Wrapped embeddable runtime context if plugin is wrapping some embeddable.
 
