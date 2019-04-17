@@ -5,7 +5,6 @@ describe("LARA API", () => {
     expect(LARA).toBeDefined();
     expect(LARA.registerPlugin).toBeDefined();
     expect(LARA.initPlugin).toBeDefined();
-    expect(LARA.saveLearnerPluginState).toBeDefined();
     expect(LARA.addSidebar).toBeDefined();
     expect(LARA.addPopup).toBeDefined();
     expect(LARA.decorateContent).toBeDefined();

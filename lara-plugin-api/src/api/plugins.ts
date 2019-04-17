@@ -48,31 +48,6 @@ export const initPlugin = (label: string, context: IPluginContext) => {
 };
 
 /****************************************************************************
- Ask LARA to save the users state for the plugin.
- ```
- LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
- ```
- @param pluginId ID of the plugin trying to save data, initially passed to plugin constructor in the context.
- @param state A JSON string representing serialized plugin state.
- ****************************************************************************/
-export const saveLearnerPluginState = (pluginId: number, state: any): Promise<string> => {
-  const context = pluginContext[pluginId];
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: context.learnerStateSaveUrl,
-      type: "PUT",
-      data: { state },
-      success(data) {
-        resolve(data);
-      },
-      error(jqXHR, errText, err) {
-        reject(err);
-      }
-    });
-  });
-};
-
-/****************************************************************************
  Register a new external script as `label` with `_class `, e.g.:
  ```
  registerPlugin('debugger', Dubugger)

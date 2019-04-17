@@ -23,6 +23,14 @@ export interface IPluginRuntimeContext {
   remoteEndpoint: string | null;
   /** The current user email address (if available). */
   userEmail: string | null;
+  /****************************************************************************
+   Function that saves the users state for the plugin.
+   ```
+   context.saveLearnerPluginState('{"one": 1}').then((data) => console.log(data))
+   ```
+   @param state A string representing serialized plugin state; if it's JSON, remember to stringify it first.
+   ****************************************************************************/
+  saveLearnerPluginState: (state: string) => Promise<string>;
   /** Function that returns class details (Promise) or null if class info is not available. */
   getClassInfo: () => Promise<IClassInfo> | null;
   /** Function that returns JWT (Promise) for given app name. */

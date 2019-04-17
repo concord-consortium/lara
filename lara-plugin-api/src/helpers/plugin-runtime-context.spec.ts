@@ -1,6 +1,7 @@
 import { generatePluginRuntimeContext } from "./plugin-runtime-context";
 import { IClassInfo } from "../api/types";
 import * as fetch from "jest-fetch-mock";
+import * as $ from "jquery";
 (window as any).fetch = fetch;
 
 describe("Plugin runtime context helper", () => {
@@ -35,6 +36,40 @@ describe("Plugin runtime context helper", () => {
     expect(runtimeContext.runId).toEqual(pluginContext.runId);
     expect(runtimeContext.remoteEndpoint).toEqual(pluginContext.remoteEndpoint);
     expect(runtimeContext.userEmail).toEqual(pluginContext.userEmail);
+  });
+
+  describe("#saveLearnerPluginState", () => {
+    const runtimeContext = generatePluginRuntimeContext(pluginContext);
+    const state = '{"new": "state"}';
+    let ajax = jest.fn();
+    beforeEach(() => {
+      ajax = jest.fn((opts) => {
+        opts.success(state);
+      });
+      jest.spyOn($, "ajax").mockImplementation(ajax);
+    });
+
+    describe("when save succeeds", () => {
+      it("should save data", () => {
+        expect.assertions(1);
+        return runtimeContext.saveLearnerPluginState(state)
+          .then((d) => expect(d).toEqual(state));
+      });
+    });
+
+    describe("when save fails", () => {
+      beforeEach(() => {
+        ajax = jest.fn((opts) => {
+          opts.error("jqXHR", "error", "boom");
+        });
+        jest.spyOn($, "ajax").mockImplementation(ajax);
+      });
+      it("should save data", () => {
+        expect.assertions(1);
+        return runtimeContext.saveLearnerPluginState(state)
+          .catch((e) => expect(e).toEqual("boom"));
+      });
+    });
   });
 
   describe("#getClassInfo", () => {

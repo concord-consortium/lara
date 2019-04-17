@@ -40,38 +40,5 @@ describe("Plugins", () => {
         Object.keys(generatePluginRuntimeContext(context))
       );
     });
-
-    describe("saveLearnerPluginState", () => {
-      const state = '{"new": "state"}';
-      let ajax = jest.fn();
-      beforeEach(() => {
-        ajax = jest.fn((opts) => {
-          opts.success(state);
-        });
-        jest.spyOn($, "ajax").mockImplementation(ajax);
-      });
-
-      describe("When save succeeds", () => {
-        it("should save data", () => {
-          expect.assertions(1);
-          return Plugins.saveLearnerPluginState(pluginId, state)
-            .then((d) => expect(d).toEqual(state));
-        });
-      });
-
-      describe("When save fails", () => {
-        beforeEach(() => {
-          ajax = jest.fn((opts) => {
-            opts.error("jqXHR", "error", "boom");
-          });
-          jest.spyOn($, "ajax").mockImplementation(ajax);
-        });
-        it("should save data", () => {
-          expect.assertions(1);
-          return Plugins.saveLearnerPluginState(pluginId, state)
-            .catch((e) => expect(e).toEqual("boom"));
-        });
-      });
-    });
   });
 });
