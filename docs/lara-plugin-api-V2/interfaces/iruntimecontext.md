@@ -37,7 +37,11 @@
 
 **● authoredState**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L19)*
+=======
+*Defined in [api/plugins.ts:19](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L19)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The authored configuration for this instance.
 
@@ -48,7 +52,11 @@ ___
 
 **● classInfoUrl**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L29)*
+=======
+*Defined in [api/plugins.ts:29](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L29)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The portal URL for class details (if available).
 
@@ -59,7 +67,11 @@ ___
 
 **● div**: *`HTMLElement`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L23)*
+=======
+*Defined in [api/plugins.ts:23](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L23)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Reserved HTMLElement for the plugin output.
 
@@ -70,7 +82,11 @@ ___
 
 **● experimental**: *[IRuntimeContextExperimentalFeatures](iruntimecontextexperimentalfeatures.md)*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:57](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L57)*
+=======
+*Defined in [api/plugins.ts:57](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L57)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 ___
 <a id="getfirebasejwturl"></a>
@@ -79,7 +95,11 @@ ___
 
 **● getFirebaseJwtUrl**: *`function`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:35](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L35)*
+=======
+*Defined in [api/plugins.ts:35](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L35)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 A function that returns the URL to use fetch a JWT.
 
@@ -95,7 +115,11 @@ ___
 
 **● interactiveStateUrl**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:33](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L33)*
+=======
+*Defined in [api/plugins.ts:33](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L33)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Interactive state URL, available only when plugin is wrapping an interactive (empty string otherwise).
 
@@ -106,7 +130,11 @@ ___
 
 **● learnerState**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L21)*
+=======
+*Defined in [api/plugins.ts:21](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L21)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The saved learner data for this instance.
 
@@ -117,7 +145,11 @@ ___
 
 **● name**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L11)*
+=======
+*Defined in [api/plugins.ts:11](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L11)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Name of the plugin
 
@@ -128,7 +160,11 @@ ___
 
 **● pluginId**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L15)*
+=======
+*Defined in [api/plugins.ts:15](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L15)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Active record ID of the plugin scope id.
 
@@ -139,7 +175,11 @@ ___
 
 **● pluginStateKey**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L17)*
+=======
+*Defined in [api/plugins.ts:17](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L17)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Plugin learner state key. Is this necessary and what can that be used for? TDB.
 
@@ -150,7 +190,11 @@ ___
 
 **● remoteEndpoint**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L31)*
+=======
+*Defined in [api/plugins.ts:31](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L31)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The portal remote endpoint (if available).
 
@@ -161,7 +205,11 @@ ___
 
 **● runID**: *`number`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L25)*
+=======
+*Defined in [api/plugins.ts:25](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L25)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The run ID for the current run.
 
@@ -172,7 +220,11 @@ ___
 
 **● url**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L13)*
+=======
+*Defined in [api/plugins.ts:13](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L13)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Url from which the plugin was loaded.
 
@@ -183,7 +235,11 @@ ___
 
 **● userEmail**: *`string`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L27)*
+=======
+*Defined in [api/plugins.ts:27](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L27)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 The current users email address if available.
 
@@ -194,7 +250,11 @@ ___
 
 **● wrappedEmbeddableContext**: *`any` \| `null`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L56)*
+=======
+*Defined in [api/plugins.ts:56](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L56)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 When plugin is wrapping an embeddable, this field will contain its properties - serialized form of the embeddable, e.g.:
 
@@ -220,7 +280,11 @@ ___
 
 **● wrappedEmbeddableDiv**: *`HTMLElement` \| `undefined`*
 
+<<<<<<< HEAD:docs/lara-plugin-api-V2/interfaces/iruntimecontext.md
 *Defined in [api/plugins.ts:37](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/api/plugins.ts#L37)*
+=======
+*Defined in [api/plugins.ts:37](https://github.com/concord-consortium/lara/blob/d93798e3/lara-plugin-api/src/api/plugins.ts#L37)*
+>>>>>>> master:docs/lara-plugin-api/interfaces/iruntimecontext.md
 
 Wrapped embeddable container, available only when plugin is wrapping an interactive.
 
