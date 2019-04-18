@@ -10,6 +10,8 @@ class InteractivePagesController < ApplicationController
 
   layout 'runtime', :only => [:show, :preview]
 
+  include PageHelper
+
   def show
     authorize! :read, @page
     if !params[:run_key]
