@@ -12,7 +12,6 @@ class SequenceRun < ActiveRecord::Base
   end
 
   def self.lookup_or_create(sequence, user, portal)
-
     conditions = {
       remote_endpoint: portal.remote_endpoint,
       remote_id:       portal.remote_id,
@@ -24,6 +23,19 @@ class SequenceRun < ActiveRecord::Base
     found ||= self.create(conditions)
     found.make_or_update_runs
     found
+  end
+
+  def self.create_anonymous(sequence)
+    conditions = {
+      remote_endpoint: nil,
+      remote_id:       nil,
+      user_id:         nil,
+      sequence_id:     sequence.id
+      #TODO: add domain
+    }
+    sequence_run = self.create(conditions)
+    sequence_run.make_or_update_runs
+    sequence_run
   end
 
   def run_for_activity(activity)
@@ -57,7 +69,7 @@ class SequenceRun < ActiveRecord::Base
         runs.create!({
           remote_endpoint: remote_endpoint,
           remote_id:       remote_id,
-          user_id:         user.id,
+          user_id:         user ? user.id : nil,
           activity_id:     activity.id,
           sequence_id:     sequence.id
           })

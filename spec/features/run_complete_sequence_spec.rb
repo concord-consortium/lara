@@ -2,29 +2,32 @@ require 'spec_helper'
 require 'uri'
 
 feature "Visiting all pages of a Sequence" do
-  let(:run_page) { nil }
   # If we change to using plugins for banners, we will need to remove
   # any assertions that use the teacher edition regex pattern....
   let(:teacher_edition_regex)  { /teacher edition/i }
-  before(:each) do
-    page = sequence.activities.first.pages.first
-    allow_any_instance_of(Run).to receive(:page).and_return(run_page)
-    allow_any_instance_of(Run).to receive(:last_page).and_return(run_page)
-  end
 
-  let(:sequence)          { FactoryGirl.create(:sequence_with_activity, seq_options) }
-  let(:params)            { {} }
-  let(:activities_count)  { 2 }
-  let(:name) { 'teacher-edition mode test Sequence'}
-  let(:seq_options) do
-    {
-      title: name,
-      activities_count: activities_count
-    }
-  end
+  let(:user)         { FactoryGirl.create(:user) }
+  let(:page1)        { FactoryGirl.create(:page) }
+  let(:page2)        { FactoryGirl.create(:page) }
+  let(:page3)        { FactoryGirl.create(:page) }
+  let(:page4)        { FactoryGirl.create(:page) }
+  let(:activity1)    { FactoryGirl.create(:activity, pages: [page1, page2]) }
+  let(:activity2)    { FactoryGirl.create(:activity, pages: [page3, page4]) }
+  let(:sequence)     { FactoryGirl.create(:sequence, :title => 'teacher-edition mode test Sequence', :user_id => user.id, :lightweight_activities => [activity1, activity2], :publication_status => 'public')}
+  let(:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id, remote_id: nil, remote_endpoint: nil) }
+  let(:run1)         { FactoryGirl.create(:run, :activity_id => activity1.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
+  let(:run2)         { FactoryGirl.create(:run, :activity_id => activity2.id, :user_id => user.id, :sequence => sequence, :sequence_run => sequence_run) }
+  let(:params)       { {} }
 
   let(:sequence_url) do
     sequence_path(sequence, params: params)
+  end
+
+  before(:each) do
+    # reference the runs so they are created
+    run1
+    run2
+    login_as user, :scope => :user
   end
 
   def navigate(selector)
@@ -113,6 +116,9 @@ feature "Visiting all pages of a Sequence" do
           let(:activity) { sequence.activities.first }
           let(:run_page) { activity.pages[1] }
           let(:activity_url) do
+            # set the last active page
+            run1.page = run_page
+            run1.save!
             sequence_activity_path(sequence, activity, params: params)
           end
 
@@ -120,7 +126,7 @@ feature "Visiting all pages of a Sequence" do
             visit activity_url
             # We assume that we have been redirected to
             # /sequence/:id/activity/:id/page/:id
-            expected_url = "/activities/#{activity.id}/pages/#{run_page.id}"
+            expected_url = "/sequences/#{sequence.id}/activities/#{activity.id}/pages/#{run_page.id}"
             expect(current_url).to match(expected_url)
             teacher_mode = "mode=teacher-edition"
             expect(current_url).to match(teacher_mode)

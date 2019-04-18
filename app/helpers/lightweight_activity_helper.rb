@@ -10,7 +10,7 @@ module LightweightActivityHelper
   end
 
   def runnable_activity_path(activity, opts ={})
-    if @sequence and @sequence_run
+    if @sequence && @sequence_run
       pass_white_list_params sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity), opts)
     elsif @sequence
       pass_white_list_params sequence_activity_path(@sequence, activity, opts)

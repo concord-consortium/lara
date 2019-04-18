@@ -120,6 +120,9 @@ describe LightweightActivitiesController do
     end
 
     describe 'when it is part of a sequence' do
+      let (:user)    { FactoryGirl.create(:user) }
+      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id) }
+
       before(:each) do
         # Add the activity to the sequence
         act.sequences = [sequence]
@@ -135,6 +138,7 @@ describe LightweightActivitiesController do
       it 'assigns a sequence if one is in the run' do
         page
         ar.sequence = sequence
+        ar.sequence_run = seq_run
         ar.save
         get :show, :id => act.id, :run_key => ar.key
         expect(assigns(:sequence)).to eq(sequence)
@@ -143,6 +147,7 @@ describe LightweightActivitiesController do
       it 'assigns the sequence from the URL to the run' do
         page
         ar.sequence = nil
+        ar.sequence_run = seq_run
         ar.save
         ar.reload
         get :show, :id => act.id, :run_key => ar.key, :sequence_id => sequence.id

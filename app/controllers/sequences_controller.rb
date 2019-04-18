@@ -34,18 +34,18 @@ class SequencesController < ApplicationController
     current_project
     respond_to do |format|
       format.html do
-        if @sequence_run && !params[:sequence_run_key]
+        if !params[:sequence_run_key]
           redirect_to sequence_with_sequence_run_key_path(@sequence, @sequence_run.key, params)
           return
         end
-        if @sequence_run && @sequence_run.has_been_run
+        if @sequence_run.has_been_run
           unless params[:show_index]
             activity = @sequence_run.most_recent_activity
             redirect_to sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity))
             return
           end
         end
-        raise_error_if_not_authorized_run(@sequence_run) if @sequence_run
+        raise_error_if_not_authorized_run(@sequence_run)
         # show.html.erb  ⬅ default template is shown otherwise
         render layout: "sequence_run"
       end
@@ -190,9 +190,11 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    return nil unless current_user
-    # Special case when collaborators_data_url is provided (usually as a GET param).
-    if params[:collaborators_data_url]
+    if !current_user
+      # create anonymous sequence run
+      @sequence_run = SequenceRun.create_anonymous(@sequence)
+    elsif params[:collaborators_data_url]
+      # Special case when collaborators_data_url is provided (usually as a GET param).
       cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
       @sequence_run = cc.call
     else

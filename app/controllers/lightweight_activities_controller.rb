@@ -14,6 +14,7 @@ class LightweightActivitiesController < ApplicationController
   include RemoteDuplicateSupport
 
   include PageHelper
+  include ApplicationHelper
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
@@ -46,13 +47,13 @@ class LightweightActivitiesController < ApplicationController
         in_sequence_resource = request.url.include? "/sequences/"
         if !in_sequence_resource
           if @sequence_run
-            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
+            redirect_to pass_white_list_params sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
           else
-            redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters)
+            redirect_to pass_white_list_params sequence_activity_path(@run.sequence, @activity, request.query_parameters)
           end
         end
       else
-        redirect_to activity_path(@activity, request.query_parameters) and return
+        redirect_to pass_white_list_params activity_path(@activity, request.query_parameters) and return
       end
     end
 

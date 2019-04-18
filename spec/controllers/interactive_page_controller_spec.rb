@@ -23,6 +23,7 @@ describe InteractivePagesController do
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
   let (:sequence) { FactoryGirl.create(:sequence, :lightweight_activities => [act]) }
+  let (:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -56,6 +57,7 @@ describe InteractivePagesController do
 
     it 'assigns a sequence if one is in the run' do
       ar.sequence = sequence
+      ar.sequence_run = sequence_run
       ar.save
       get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:sequence)).to eq(sequence)
