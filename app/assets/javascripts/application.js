@@ -26,6 +26,7 @@
 //= require modals
 //= require modal-dialog
 //= require check-answer
+//= require lara-plugin-api-V2
 //= require lara-plugin-api
 //= require ./common.js
 //= require edit_sequence

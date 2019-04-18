@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "plugins/_show.html.haml" do
-  let(:version) { 2 }
+  let(:version) { 3 }
   let(:shared_learner_state_key) { 'shared-learner-state-key-is-a-string' }
   let(:class_info_url) { 'http://class-info.url/'}
   let(:email) { 'fake-user-name@fake-domain.com' }
@@ -49,19 +49,16 @@ describe "plugins/_show.html.haml" do
 
   it "should render a javascript to call Plugins.initPlugin with values" do
     [
+      /name: '#{plugin_name}'/,
       /url: '#{plugin_url}'/,
-      /pluginId: '#{plugin_id}'/,
-      /pluginStateKey:'#{shared_learner_state_key}'/,
-      /runID: #{run_id}/,
+      /pluginId: #{plugin_id}/,
+      /runId: #{run_id}/,
       /userEmail: '#{email}'/,
       /classInfoUrl: '#{class_info_url}'/,
-      /remoteEndpoint: '#{run_remote_endpoint}'/,
-      /getFirebaseJwtUrl: getFirebaseJwtUrl/,
-      /div:/,
-      /wrappedEmbeddableDiv:/,
-      /wrappedEmbeddableContext:/,
-      /LARA\.initPlugin\('plugin-label', env, pluginStatePaths/,
-      /clickToPlayId/
+      /remoteEndpoint: null/,
+      /container:/,
+      /wrappedEmbeddable:/,
+      /LARA_V3\.initPlugin\('plugin-label', pluginContext\)/,
     ].each do |expected_string|
       expect(rendered).to match(expected_string)
     end

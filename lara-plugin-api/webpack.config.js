@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
     mode: 'development',
     output: {
       filename: 'lara-plugin-api.js',
-      library: 'LARA',
+      library: 'LARA_V3',
       libraryTarget: 'umd'
     },
     performance: { hints: false },
