@@ -1,13 +1,4 @@
-FROM concordconsortium/docker-rails-base-ruby-2.2.6
-
-# Debian 8 (jessie) is no longer supported
-RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
-RUN sed -i '/deb http:\/\/\(deb\|httpredir\).debian.org\/debian jessie.* main/d' /etc/apt/sources.list
-RUN apt-get -o Acquire::Check-Valid-Until=false update
-
-#
-# update apt libraries
-# RUN apt-get update
+FROM concordconsortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.13
 
 # install nginx
 RUN apt-get install -qq -y nginx

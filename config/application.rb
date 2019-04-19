@@ -12,6 +12,8 @@ end
 module LightweightStandalone
   # TODO: This module name is obsolete.
   class Application < Rails::Application
+    config.rails_lts_options = { default: :compatible }
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
