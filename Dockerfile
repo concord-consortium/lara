@@ -1,5 +1,8 @@
 FROM concordconsortium/docker-rails-base-private:ruby-2.3.7-rails-3.2.22.13
 
+# update apt libraries
+RUN apt-get update
+
 # install nginx
 RUN apt-get install -qq -y nginx
 
