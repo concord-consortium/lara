@@ -21,7 +21,10 @@ class ApplicationController < ActionController::Base
 
   # thrown by #raise_error_if_not_authorized_run()
   rescue_from NotAuthorizedRunError do
-    render 'runs/unauthorized_run', status: :unauthorized
+    respond_to do |format|
+      format.html { render 'runs/unauthorized_run', status: :unauthorized }
+      format.json { render nothing: true, status: unauthorized}
+    end
   end
 
   # With +respond_to do |format|+, "406 Not Acceptable" is sent on invalid format.
