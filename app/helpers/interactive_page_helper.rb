@@ -1,7 +1,7 @@
 module InteractivePageHelper
   def runnable_activity_page_path(activity, page)
     path_base = fetch_path_base(@sequence, activity, @run, page)
-    pass_white_list_params(path_base) if path_base
+    append_white_list_params(path_base) if path_base
   end
 
   def fetch_path_base(sequence, activity, run, page)  # move me to be private.

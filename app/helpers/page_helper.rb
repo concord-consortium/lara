@@ -1,7 +1,7 @@
 module PageHelper
 
   def redirect_to_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters = {})
-    redirect_to get_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters)
+    redirect_to append_white_list_params get_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters)
   end
 
   def get_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters = {})

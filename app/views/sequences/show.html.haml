@@ -42,7 +42,7 @@
   .activities
     - @sequence.lightweight_activities_sequences.each do |las|
       - activity = las.lightweight_activity
-      - activity_path_link = pass_white_list_params(sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity)))
+      - activity_path_link = append_white_list_params(sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity)))
       .activity-bg
         .ribbon_wrap
           = complete_badge_for(activity)
