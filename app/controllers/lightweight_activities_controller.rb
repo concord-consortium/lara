@@ -47,13 +47,13 @@ class LightweightActivitiesController < ApplicationController
         in_sequence_resource = request.url.include? "/sequences/"
         if !in_sequence_resource
           if @sequence_run
-            redirect_to pass_white_list_params sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
+            redirect_to pass_white_list_params sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity))
           else
-            redirect_to pass_white_list_params sequence_activity_path(@run.sequence, @activity, request.query_parameters)
+            redirect_to pass_white_list_params sequence_activity_path(@run.sequence, @activity)
           end
         end
       else
-        redirect_to pass_white_list_params activity_path(@activity, request.query_parameters) and return
+        redirect_to pass_white_list_params activity_path(@activity) and return
       end
     end
 
@@ -61,9 +61,9 @@ class LightweightActivitiesController < ApplicationController
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       if @run.sequence
-        redirect_to pass_white_list_params sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
+        redirect_to pass_white_list_params sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key) and return
       else
-        redirect_to pass_white_list_params activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
+        redirect_to pass_white_list_params activity_single_page_with_run_path(@activity, @run.key) and return
       end
     end
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
@@ -99,9 +99,9 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     if !params[:run_key]
       if @sequence
-        redirect_to pass_white_list_params sequence_activity_single_page_with_run_path(@sequence, @activity, @run_key, request.query_parameters) and return
+        redirect_to pass_white_list_params sequence_activity_single_page_with_run_path(@sequence, @activity, @run_key) and return
       else
-        redirect_to pass_white_list_params  activity_single_page_with_run_path(@activity, @run_key, request.query_parameters) and return
+        redirect_to pass_white_list_params  activity_single_page_with_run_path(@activity, @run_key) and return
       end
     end
 
