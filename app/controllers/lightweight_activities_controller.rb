@@ -14,7 +14,6 @@ class LightweightActivitiesController < ApplicationController
   include RemoteDuplicateSupport
 
   include PageHelper
-  include ApplicationHelper
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})

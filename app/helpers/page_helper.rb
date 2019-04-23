@@ -1,5 +1,8 @@
 module PageHelper
 
+  # include so append_white_list_params is available during rspec tests as the controller helpers are not automatically loaded
+  include ApplicationHelper
+
   def redirect_to_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters = {})
     redirect_to append_white_list_params get_page_with_run_path(sequence, activity_id, page_id, run_key, query_parameters)
   end
