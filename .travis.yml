@@ -7,7 +7,7 @@ dist: precise
 
 before_install:
   - gem update bundler
-  - nvm install node
+  - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
 
 before_script:
