@@ -34,9 +34,9 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     if params[:print]
       if @run.sequence
-        redirect_to append_white_list_params sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
+        redirect_to sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
       else
-        redirect_to append_white_list_params activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
+        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
       end
     end
 
@@ -46,13 +46,13 @@ class LightweightActivitiesController < ApplicationController
         in_sequence_resource = request.url.include? "/sequences/"
         if !in_sequence_resource
           if @sequence_run
-            redirect_to append_white_list_params sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
+            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
           else
-            redirect_to append_white_list_params sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters)
+            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters)
           end
         end
       else
-        redirect_to append_white_list_params activity_path_with_run(@activity, @run.key, request.query_parameters) and return
+        redirect_to activity_path_with_run(@activity, @run.key, request.query_parameters) and return
       end
     end
 
@@ -60,9 +60,9 @@ class LightweightActivitiesController < ApplicationController
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       if @run.sequence
-        redirect_to append_white_list_params sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
+        redirect_to sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
       else
-        redirect_to append_white_list_params activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
+        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
       end
     end
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
@@ -98,9 +98,9 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     if !params[:run_key]
       if @sequence
-        redirect_to append_white_list_params sequence_activity_single_page_with_run_path(@sequence, @activity, @run.key, request.query_parameters) and return
+        redirect_to sequence_activity_single_page_with_run_path(@sequence, @activity, @run.key, request.query_parameters) and return
       else
-        redirect_to append_white_list_params  activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
+        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
       end
     end
 
@@ -123,7 +123,7 @@ class LightweightActivitiesController < ApplicationController
     current_theme
     current_project
     if !params[:run_key]
-      redirect_to append_white_list_params summary_with_run_path(@activity, @run_key, request.query_parameters) and return
+      redirect_to summary_with_run_path(@activity, @run_key, request.query_parameters) and return
     end
     @answers = @activity.answers(@run)
   end
