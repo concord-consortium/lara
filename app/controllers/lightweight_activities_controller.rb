@@ -46,9 +46,9 @@ class LightweightActivitiesController < ApplicationController
         in_sequence_resource = request.url.include? "/sequences/"
         if !in_sequence_resource
           if @sequence_run
-            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters)
+            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters) and return
           else
-            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters)
+            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
           end
         end
       else
