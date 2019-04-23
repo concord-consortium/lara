@@ -8,6 +8,7 @@ dist: precise
 before_install:
   - gem update bundler
   - nvm install node
+  - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
 
 before_script:
   - cp config/database.travis.yml config/database.yml

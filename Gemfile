@@ -63,7 +63,18 @@ group :test, :development do
 end
 
 gem "highline", "~> 1.6"
-gem "rails", "~> 3.2.22"
+source 'https://gems.railslts.com' do
+  gem 'rails', '~> 3.2.22'
+  gem 'actionmailer',     :require => false
+  gem 'actionpack',       :require => false
+  gem 'activemodel',      :require => false
+  gem 'activerecord',     :require => false
+  gem 'activeresource',   :require => false
+  gem 'activesupport',    :require => false
+  gem 'railties',         :require => false
+  gem 'railslts-version', :require => false
+end
+gem 'rake', '< 11'
 gem "jquery-rails", "~> 3.0"
 gem "jquery-ui-rails", "~> 4.1"
 gem "haml", "~> 4.0"
