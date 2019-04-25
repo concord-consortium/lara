@@ -6,6 +6,13 @@ WORKDIR /usr/local/bin
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh && \
     chmod +x wait-for-it.sh
 
+# Install phatomjs for javascript testing in docker
+ENV PHANTOMJS_VERSION 1.9.8
+
+RUN curl -SLO "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2" \
+	&& tar -xjf "phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2" -C /usr/local --strip-components=1 \
+	&& rm "phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2"
+
 ENV APP_HOME /lara
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
