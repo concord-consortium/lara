@@ -201,7 +201,7 @@ describe InteractivePagesController do
       it 'clears answers from the run' do
         page1
         expect(ar).to receive(:clear_answers)
-        expect(Run).to receive(:find).and_return(ar)
+        expect(Run).to receive(:lookup).and_return(ar)
         get :preview, :id => page1.id
       end
 

@@ -5,19 +5,19 @@ describe Run do
   let(:seq)             { FactoryGirl.create(:sequence, :lightweight_activities => [activity]) }
   let(:remote_endpoint) { nil }
   let(:run) {
-    r = FactoryGirl.create(:run)
-    r.activity = activity
-    r.remote_endpoint = remote_endpoint
-    r.user = user
-    r
+    FactoryGirl.create(:run,
+      activity: activity,
+      remote_endpoint: remote_endpoint,
+      user: user
+    )
   }
   let(:run_in_sequence) {
-    r = FactoryGirl.create(:run)
-    r.activity = activity
-    r.sequence = seq
-    r.remote_endpoint = remote_endpoint
-    r.user = user
-    r
+    FactoryGirl.create(:run,
+      activity: activity,
+      sequence: seq,
+      remote_endpoint: remote_endpoint,
+      user: user
+    )
   }
   let(:user)       { FactoryGirl.create(:user) }
   let(:or_question){ FactoryGirl.create(:or_embeddable) }
@@ -263,8 +263,7 @@ describe Run do
   describe "self.lookup(key,activity,user=nil,portal,seq_id)" do
     describe "with a key" do
       it "should simply use the key" do
-        allow(Run).to receive_messages(:by_key => [run])
-        expect(Run.lookup("sdfsdfsdf",activity, user, nil,nil)).to eq(run)
+        expect(Run.lookup(run.key,activity, user, nil,nil)).to eq(run)
       end
     end
 
@@ -288,48 +287,43 @@ describe Run do
 
         describe "with an existing user" do
           describe "when the user has run it before" do
-            it "should find the existing users run for the activity" do
-              expect(Run).to receive(:find)
-                .with(:first, :conditions =>
-                  hash_including(:user_id => user.id, :activity_id => activity.id))
-                .and_return(run)
+            it "should find the existing user's run for the activity" do
+              # need to create run before looking it up
+              run
               expect(Run.lookup(nil,activity,user,nil,nil)).to eq(run)
             end
           end
 
           describe "when this is the first time for the user" do
             it "should create a new run for the user and activity" do
-              expect(Run).to receive(:find)
-                .with(:first, :conditions =>
-                  hash_including(:user_id => user.id, :activity_id => activity.id))
-                .and_return(nil)
-              expect(Run).to receive(:create).and_return(run)
-              expect(Run.lookup(nil,activity,user,nil,nil)).to eq(run)
+              expect(Run).to receive(:create).and_return("fake_run")
+              expect(Run.lookup(nil,activity,user,nil,nil)).to eq("fake_run")
             end
           end
         end
       end
 
       describe "with a remote endpoint" do
-        let(:remote) do
+        let(:remote) {
           RemotePortal.new({
             externalId: "23",
             returnUrl: "http://foo.bar/",
             domain: "blah"
           })
-        end
+        }
+        let(:remote_run) {
+          FactoryGirl.create(:run,
+            activity: activity,
+            remote_endpoint: remote.remote_endpoint,
+            remote_id: remote.remote_id,
+            user: user
+          )
+        }
 
         it "should find a run by using a remote_endpoint" do
-          expect(Run).to receive(:find)
-            .with(:first, :conditions =>
-              hash_including(
-                :user_id => user.id,
-                :activity_id => activity.id,
-                :remote_endpoint => remote.remote_endpoint,
-                :remote_id => remote.remote_id
-            ))
-            .and_return(run)
-          expect(Run.lookup(nil,activity, user, remote,nil)).to eq(run)
+          # create the run first
+          remote_run
+          expect(Run.lookup(nil,activity, user, remote,nil)).to eq(remote_run)
         end
       end
     end

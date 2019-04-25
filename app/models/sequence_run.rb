@@ -15,7 +15,7 @@ class SequenceRun < ActiveRecord::Base
     conditions = {
       remote_endpoint: portal.remote_endpoint,
       remote_id:       portal.remote_id,
-      user_id:         user.id,
+      user_id:         user ? user.id : nil,
       sequence_id:     sequence.id
       #TODO: add domain
     }

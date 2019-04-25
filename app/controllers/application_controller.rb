@@ -88,9 +88,9 @@ class ApplicationController < ActionController::Base
   def current_theme
     # Assigns @theme
     # This counts on @activity and/or @sequence being already assigned.
-    if defined?(@sequence) && @sequence.theme
+    if defined?(@sequence) && @sequence  && @sequence.theme
       @theme = @sequence.theme
-    elsif defined?(@activity) && @activity.theme
+    elsif defined?(@activity) && @activity && @activity.theme
       @theme = @activity.theme
     elsif defined?(@project) && @project.theme
       @theme = @project.theme
@@ -103,10 +103,10 @@ class ApplicationController < ActionController::Base
   def current_project
     # Assigns @project
     # This counts on @activity and/or @sequence being already assigned.
-    if defined?(@sequence) && @sequence.project
+    if defined?(@sequence) && @sequence && @sequence.project
       # Sequence project overrides activity and default
       @project = @sequence.project
-    elsif defined?(@activity) && @activity.project
+    elsif defined?(@activity) && @activity && @activity.project
       # Activity project overrides default
       @project = @activity.project
     else
@@ -116,18 +116,23 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sequence
-    # First, respect the sequence ID in the request params if one is provided
+    # First, respect the sequence ID in the request if one is provided
     if params[:sequence_id]
       @sequence = Sequence.find(params[:sequence_id])
-      # Save this in the run
-      if @sequence && @run
-        @run.sequence = @sequence
-        @run.save
+
+      # Fail fast if there is also a run and the sequence in the run doesn't match
+      if @run && @run.sequence != @sequence
+        raise ActiveRecord::RecordNotFound
       end
-    # Second, if there's no sequence ID in the request params, there's an existing
-    # run, and a sequence is set for that run, use that sequence
+
+    # Second, if there's no sequence ID in the request, and there's an existing
+    # run with a sequence, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
+
+    # Third there is no sequence
+    else
+      @sequence = nil
     end
     @sequence
   end

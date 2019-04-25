@@ -8,34 +8,18 @@ describe LightweightActivitiesController do
     let(:resource) { FactoryGirl.create(:activity) }
   end
 
-  before(:each) do
-    @user ||= FactoryGirl.create(:admin)
-    sign_in @user
-  end
-
+  let (:admin) { FactoryGirl.create(:admin) }
+  let (:author) { FactoryGirl.create(:author) }
+  let (:page) { FactoryGirl.create(:page, name: "Page 1", text: "This is the main activity text." ) }
+  # act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
   let (:act) {
-    activity = FactoryGirl.create(:public_activity)
-    activity.user = @user
-    activity.theme = FactoryGirl.create(:theme)
-    activity.save
-    activity
+    activity = FactoryGirl.create(:public_activity,
+      user: author, theme: FactoryGirl.create(:theme), pages: [page])
   }
   let (:private_act) { FactoryGirl.create(:activity)}
-  let (:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
-  let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  let (:ar_run)  { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
+  # let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
   let (:sequence) { FactoryGirl.create(:sequence) }
-  let(:seq)     { nil }
-  let(:seq_run) { nil }
-  let(:run) do
-    mock_model(Run, {
-      :last_page => page,
-      :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
-      :activity => act,
-      :sequence => seq,
-      :sequence_run => seq_run,
-      :increment_run_count! => nil
-    })
-  end
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -45,75 +29,81 @@ describe LightweightActivitiesController do
 
   describe '#show' do
     it 'renders 404 when the activity does not exist' do
-      begin
+      expect{
         get :show, :id => 9876548376394
-      rescue ActiveRecord::RecordNotFound
-      end
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'assigns a run key' do
-      page
       get :show, :id => act.id
       expect(assigns(:run)).not_to be_nil
     end
 
     it 'assigns a project and theme' do
-      page
       get :show, :id => act.id
       expect(assigns(:project)).not_to be_nil
       expect(assigns(:theme)).not_to be_nil
     end
 
     describe "when the run has a page" do
+      let(:last_page) { page }
       before(:each) do
-        allow(Run).to receive(:lookup).and_return(run)
+        ar_run.set_last_page(last_page)
       end
-      subject { get :show, :id => act.id}
+      subject { get :show, :id => act.id, :run_key => ar_run.key}
+
       it "should redirect to the run page" do
         # page_with_run_path(@activity.id, @run.last_page.id, @run)
-        expect(subject).to redirect_to(page_with_run_path(act.id, page.id, run.key))
+        expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
       end
 
       describe "when the run page is hidden" do
-        let(:page) { act.pages.create!(:name => "Page 1", :text => "This page is hidden.", :is_hidden => true) }
-        subject { get :show, :id => act.id}
+        let(:page) { FactoryGirl.create(:page, name: "Page 1", text: "This page is hidden.", is_hidden: true) }
+
         it "should not redirect to the run page" do
-          expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, run.key))
+          expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
           expect(response).to render_template('lightweight_activities/show')
         end
       end
 
       describe "when the run page is for a different activity" do
         let(:other_act) { FactoryGirl.create(:public_activity) }
-        let(:page)      { other_act.pages.create!(:name => "Page 2", :text => "This page isn't in Act 1.") }
-        subject { get :show, :id => act.id}
+        let(:other_page) { FactoryGirl.create(:page, name: "Page 2",
+          text: "This page isn't in Act 1.", lightweight_activity: other_act) }
+        let(:last_page) { other_page }
+
         it "should redirect to Act 2 run page." do
-          expect(subject).to redirect_to(page_with_run_path(other_act.id, page.id, run.key))
+          expect(subject).to redirect_to(page_with_run_path(other_act.id, other_page.id, ar_run.key))
         end
       end
 
       describe 'when activity has a single page layout' do
-        before do
+        before(:each) do
           act.layout = LightweightActivity::LAYOUT_SINGLE_PAGE
           act.save
         end
         it 'should redirect to the single page view instead' do
           get :show, :id => act.id
-          expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, run.key))
+          expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
         end
       end
 
       describe 'when a collaborative activity has a collaborators_data_url param' do
         it 'should call CreateCollaboration' do
-          allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(run)
+          allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(ar_run)
           expect_any_instance_of(CreateCollaboration).to receive(:call)
           get :show, :id => act.id, :collaborators_data_url => "http://example.com/"
         end
       end
 
       describe 'when a non-collaborative activity has valid portal parameters' do
+        before(:each) do
+          # we need this so we receive the same run object that we are spying on
+          allow(Run).to receive(:lookup).and_return(ar_run)
+        end
+
         it 'should call disable_collaboration' do
-          expect(run).to receive(:disable_collaboration)
+          expect(ar_run).to receive(:disable_collaboration)
           get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
         end
       end
@@ -129,44 +119,68 @@ describe LightweightActivitiesController do
         act.save
       end
 
+      it 'creates a sequence run and activity run if not specificied' do
+        get :show, :id => act.id, :sequence_id => sequence.id
+        expect(assigns(:sequence_run)).not_to be_nil
+      end
+
       it 'assigns a sequence if one is in the URL' do
-        page
         get :show, :id => act.id, :sequence_id => sequence.id
         expect(assigns(:sequence)).not_to be_nil
       end
 
       it 'assigns a sequence if one is in the run' do
-        page
-        ar.sequence = sequence
-        ar.sequence_run = seq_run
-        ar.save
-        get :show, :id => act.id, :run_key => ar.key
+        ar_run.sequence = sequence
+        ar_run.sequence_run = seq_run
+        ar_run.save
+        get :show, :id => act.id, :run_key => ar_run.key
         expect(assigns(:sequence)).to eq(sequence)
       end
 
-      it 'assigns the sequence from the URL to the run' do
-        page
-        ar.sequence = nil
-        ar.sequence_run = seq_run
-        ar.save
-        ar.reload
-        get :show, :id => act.id, :run_key => ar.key, :sequence_id => sequence.id
-        expect(ar.reload.sequence_id).to be(sequence.id)
+      it 'when the run has an existing sequence the user owns' do
+        ar_run.sequence = sequence
+        ar_run.user = @user
+        ar_run.save
+        ar_run.reload
+        get :show, :id => act.id, :sequence_id => sequence.id
+        expect(ar_run.reload.sequence_id).to be(sequence.id)
       end
 
-      it 'when the run has an existing sequence the user owns' do
-        page
-        ar.sequence = sequence
-        ar.user = @user
-        ar.save
-        ar.reload
-        get :show, :id => act.id, :sequence_id => sequence.id
-        expect(ar.reload.sequence_id).to be(sequence.id)
+      it 'fails if URL has a sequence but the run does not' do
+        ar_run.sequence = nil
+        ar_run.sequence_run = seq_run
+        ar_run.save
+        ar_run.reload
+        expect {
+          get :show, :id => act.id, :run_key => ar_run.key, :sequence_id => sequence.id
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
+
+      it "fails if the run's sequence doesn't match the URL sequence" do
+        other_activity = FactoryGirl.create(:activity)
+        other_sequence = FactoryGirl.create(:sequence, lightweight_activities: [other_activity])
+
+        ar_run.sequence = sequence
+        ar_run.sequence_run = seq_run
+        ar_run.save
+        ar_run.reload
+        expect {
+          get :show, :id => other_activity.id, :run_key => ar_run.key, :sequence_id => other_sequence.id
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'fails if the activity is not part of the sequence' do
+        other_activity = FactoryGirl.create(:activity)
+        expect {
+          get :show, :id => other_activity.id, :sequence_id => sequence.id
+        }.to raise_error(ActiveRecord::RecordNotFound)
+
+      end
+
+      pending 'if a new activity is added to a sequence after the sequence run has been created this should still work'
     end
 
     it 'renders the activity if it exists and is public' do
-      page
       get :show, :id => act.id
       expect(assigns[:run_key]).not_to be_nil
       expect(response).to be_success
@@ -178,38 +192,62 @@ describe LightweightActivitiesController do
       let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
       it "should force a new user session" do
         expect(controller).to receive(:sign_out).and_return(:true)
-        page
 
         get :show, :id => act.id, :domain => domain, :externalId => "bar"
         expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
       end
     end
+
+    describe "when called with a run_key" do
+      it 'renders show' do
+        get :show, :id => act.id, :run_key => ar_run.key
+        expect(response).to be_success
+        expect(response).to render_template('lightweight_activities/show')
+      end
+    end
+
+    describe "when the run is owned by a user" do
+      let (:user)    { FactoryGirl.create(:user) }
+      before(:each) do
+        # Add the activity to the sequence
+        ar_run.user = user
+        ar_run.save
+      end
+
+      it 'renders unauthorized run message' do
+        get :show, :id => act.id, :run_key => ar_run.key
+        expect(response).to render_template('runs/unauthorized_run')
+      end
+    end
   end
 
   describe '#preview' do
+    before(:each) {
+      sign_in author
+    }
+
     it 'calls clear_answers on the run' do
-      page
-      expect(ar).to receive(:clear_answers).and_return(:true)
-      expect(Run).to receive(:find).and_return(ar)
+      expect(Run).to receive(:lookup).and_return(ar_run)
+      expect(ar_run).to receive(:clear_answers).and_return(:true)
       get :preview, :id => act.id
     end
 
     it 'renders show' do
-      page
       get :preview, :id => act.id
       expect(response).to render_template('lightweight_activities/show')
     end
   end
 
   describe '#single_page' do
-    before(:each) do
-      allow(Run).to receive(:lookup).and_return(run)
-    end
+    describe 'without run_key param' do
+      before(:each) do
+        allow(Run).to receive(:lookup).and_return(ar_run)
+      end
 
-    it 'redirects without run_key param' do
-      page
-      get :single_page, :id => act.id
-      expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, run.key))
+      it 'redirects' do
+        get :single_page, :id => act.id
+        expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
+      end
     end
 
     describe 'with run_key param' do
@@ -218,29 +256,34 @@ describe LightweightActivitiesController do
       end
 
       it 'renders single' do
-        page
-        get :single_page, :id => act.id, :run_key => ar.key
+        get :single_page, :id => act.id, :run_key => ar_run.key
         expect(response).to be_success
         expect(response).to render_template('lightweight_activities/single')
       end
 
-      describe 'with another users run signed in as admin' do
-        some_other_user = FactoryGirl.create(:user)
-        let(:run) do
-          mock_model(Run, {
-            :last_page => page,
-            :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
-            :activity => act,
-            :sequence => seq,
-            :sequence_run => seq_run,
-            :increment_run_count! => nil,
-            :user => some_other_user
-          })
+      describe 'with another users run and no one signed in' do
+        let(:other_user) { FactoryGirl.create(:user) }
+        let(:ar_run) {
+          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
+        }
+
+        it 'renders unauthorized run message' do
+          get :single_page, :id => act.id, :run_key => ar_run.key
+          expect(response).to render_template('runs/unauthorized_run')
         end
+      end
+
+      describe 'with another users run signed in as admin' do
+        let(:other_user) { FactoryGirl.create(:user) }
+        let(:ar_run) {
+          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
+        }
+        before(:each) {
+          sign_in admin
+        }
 
         it 'renders single because user is admin' do
-          page
-          get :single_page, :id => act.id, :run_key => ar.key
+          get :single_page, :id => act.id, :run_key => ar_run.key
           expect(response).to be_success
           expect(response).to render_template('lightweight_activities/single')
         end
@@ -248,25 +291,15 @@ describe LightweightActivitiesController do
 
       describe 'with another users run signed in as non-admin' do
         before(:each) do
-          non_admin_user = FactoryGirl.create(:user)
-          sign_in non_admin_user
+          sign_in FactoryGirl.create(:user)
         end
-        some_other_user = FactoryGirl.create(:user)
-        let(:run) do
-          mock_model(Run, {
-            :last_page => page,
-            :key => "4875ade4-8529-46b2-bb34-b87158f265ae",
-            :activity => act,
-            :sequence => seq,
-            :sequence_run => seq_run,
-            :increment_run_count! => nil,
-            :user => some_other_user
-          })
-        end
+        let(:other_user) { FactoryGirl.create(:user) }
+        let(:ar_run) {
+          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
+        }
 
         it 'renders unauthorized_run' do
-          page
-          get :single_page, :id => act.id, :run_key => ar.key
+          get :single_page, :id => act.id, :run_key => ar_run.key
           expect(response).to render_template('runs/unauthorized_run')
         end
       end
@@ -275,7 +308,6 @@ describe LightweightActivitiesController do
 
   describe '#print_blank' do
     it 'renders print_blank' do
-      page
       get :print_blank, :id => act.id
       expect(response).to render_template('lightweight_activities/print_blank')
     end
@@ -284,23 +316,21 @@ describe LightweightActivitiesController do
   describe '#summary' do
 
     it 'renders 404 when the activity does not exist' do
-      begin
+      expect {
         get :summary, :id => 9876548376394
-      rescue ActiveRecord::RecordNotFound
-      end
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'assigns a project and theme' do
-      get :summary, :id => act.id, :run_key => ar.key
+      get :summary, :id => act.id, :run_key => ar_run.key
       expect(assigns(:project)).not_to be_nil
       expect(assigns(:theme)).not_to be_nil
     end
 
     it 'renders the summary page if the activity exists and is public' do
-      page = act.pages.create!(:name => "Page 1", :text => "This is the main activity text.")
       page.add_embeddable(FactoryGirl.create(:mc_embeddable))
 
-      get :summary, :id => act.id, :run_key => ar.key
+      get :summary, :id => act.id, :run_key => ar_run.key
 
       expect(assigns(:answers)).not_to be_nil
       expect(response.body).to match /Response Summary for/
@@ -310,6 +340,7 @@ describe LightweightActivitiesController do
   context 'when the current user is an author' do
     # Access control/authorization is tested in spec/models/user_spec.rb
     before(:each) do
+      sign_in author
       make_collection_with_rand_modication_time(:activity,3, :publication_status => 'public', :is_official => false)
       make_collection_with_rand_modication_time(:activity,4, :publication_status => 'public', :is_official => true)
     end
@@ -345,10 +376,10 @@ describe LightweightActivitiesController do
       end
 
       it 'creates LightweightActivities owned by the current_user' do
-        existing_activities = LightweightActivity.count(:conditions => {:user_id => @user.id})
+        existing_activities = LightweightActivity.count(:conditions => {:user_id => author.id})
         post :create, {:lightweight_activity => {:name => 'Owned Activity', :description => "Test Activity's description", :user_id => 10}}
 
-        expect(LightweightActivity.count(:conditions => {:user_id => @user.id})).to equal existing_activities + 1
+        expect(LightweightActivity.count(:conditions => {:user_id => author.id})).to equal existing_activities + 1
       end
 
       it 'returns to the form with an error message when submitted with invalid data' do
@@ -524,76 +555,83 @@ describe LightweightActivitiesController do
         expect(act.pages.last.name).to eq("Page 1")
       end
     end
-  end
 
-  describe '#duplicate' do
-    let (:duplicate_act) {  FactoryGirl.build(:activity) }
+    describe '#duplicate' do
+      let (:duplicate_act) {  FactoryGirl.build(:activity) }
 
-    it "should call 'duplicate' on the activity" do
-      allow(LightweightActivity).to receive(:find).and_return(act)
-      expect(act).to receive(:duplicate).and_return(duplicate_act)
-      get :duplicate, { :id => act.id }
-    end
-
-    it 'should redirect to edit the new activity' do
-      get :duplicate, { :id => act.id }
-      expect(response).to redirect_to(edit_activity_url(assigns(:new_activity)))
-    end
-
-    let (:portal_url) { "https://fake.portal.com" }
-
-    it "should publish the new activity if asked to do so" do
-      allow(LightweightActivity).to receive(:find).and_return(act)
-      allow(act).to receive(:duplicate).and_return(duplicate_act)
-      expect(duplicate_act).to receive(:portal_publish).with(@user, portal_url, "#{request.protocol}#{request.host_with_port}")
-      get :duplicate, { :id => act.id, :add_to_portal => portal_url }
-    end
-  end
-
-  describe '#export' do
-    it "should call 'export' on the activity" do
-      get :export, { :id => act.id }
-      expect(response).to be_success
-    end
-  end
-
-  describe '#resubmit_answers' do
-    context 'without a run key' do
-      it 'redirects to summary' do
-        get :resubmit_answers, { :id => act.id }
-        expect(response).to redirect_to summary_with_run_path(act.id, assigns(:run_key))
-      end
-    end
-
-    context 'with a run key' do
-      let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
-      let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar)}
-
-      before(:each) do
-        allow(act).to receive_messages(:answers => [answer1, answer2])
-        allow(LightweightActivity).to receive_messages(:find => act)
-        request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
+      it "should call 'duplicate' on the activity" do
+        allow(LightweightActivity).to receive(:find).and_return(act)
+        expect(act).to receive(:duplicate).and_return(duplicate_act)
+        get :duplicate, { :id => act.id }
       end
 
-      it 'marks answers as dirty' do
-        [answer1, answer2]
-        expect(ar.answers.length).not_to be(0)
-        expect(answer1).to receive(:mark_dirty)
-        expect(answer1).not_to receive(:send_to_portal)
-        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
+      it 'should redirect to edit the new activity' do
+        get :duplicate, { :id => act.id }
+        expect(response).to redirect_to(edit_activity_url(assigns(:new_activity)))
       end
 
-      it 'calls send_to_portal for the last answer' do
-        [answer1, answer2]
-        expect(ar.answers.length).not_to be(0)
-        expect(answer2).to receive(:send_to_portal)
-        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
-      end
+      let (:portal_url) { "https://fake.portal.com" }
 
-      it 'sets a flash notice for success' do
-        get :resubmit_answers, { :id => act.id, :run_key => ar.key }
-        expect(flash[:notice]).to match /requeued for submission/
+      it "should publish the new activity if asked to do so" do
+        allow(LightweightActivity).to receive(:find).and_return(act)
+        allow(act).to receive(:duplicate).and_return(duplicate_act)
+        expect(duplicate_act).to receive(:portal_publish).with(author, portal_url, "#{request.protocol}#{request.host_with_port}")
+        get :duplicate, { :id => act.id, :add_to_portal => portal_url }
       end
     end
   end
+
+  context 'when the user is an admin' do
+    before(:each) do
+      sign_in admin
+    end
+
+    describe '#export' do
+      it "should call 'export' on the activity" do
+        get :export, { :id => act.id }
+        expect(response).to be_success
+      end
+    end
+
+    describe '#resubmit_answers' do
+      context 'without a run key' do
+        it 'redirects to summary' do
+          get :resubmit_answers, { :id => act.id }
+          expect(response).to redirect_to summary_with_run_path(act.id, assigns(:run_key))
+        end
+      end
+
+      context 'with a run key' do
+        let (:answer1) { FactoryGirl.create(:multiple_choice_answer, :run => ar_run)}
+        let (:answer2) { FactoryGirl.create(:multiple_choice_answer, :run => ar_run)}
+
+        before(:each) do
+          allow(act).to receive_messages(:answers => [answer1, answer2])
+          allow(LightweightActivity).to receive_messages(:find => act)
+          request.env["HTTP_REFERER"] = 'http://localhost:3000/activities'
+        end
+
+        it 'marks answers as dirty' do
+          [answer1, answer2]
+          expect(ar_run.answers.length).not_to be(0)
+          expect(answer1).to receive(:mark_dirty)
+          expect(answer1).not_to receive(:send_to_portal)
+          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+        end
+
+        it 'calls send_to_portal for the last answer' do
+          [answer1, answer2]
+          expect(ar_run.answers.length).not_to be(0)
+          expect(answer2).to receive(:send_to_portal)
+          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+        end
+
+        it 'sets a flash notice for success' do
+          get :resubmit_answers, { :id => act.id, :run_key => ar_run.key }
+          expect(flash[:notice]).to match /requeued for submission/
+        end
+      end
+    end
+  end
+
 end

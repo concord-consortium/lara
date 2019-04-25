@@ -32,6 +32,8 @@ class LightweightActivitiesController < ApplicationController
     end
 
     authorize! :read, @activity
+    raise_error_if_not_authorized_run(@run)
+
     if params[:print]
       if @run.sequence
         redirect_to sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
@@ -40,23 +42,10 @@ class LightweightActivitiesController < ApplicationController
       end
     end
 
-    if params[:run_key]
-      if @run.sequence
-        # only redirect if not part of a sequence resource url so that sequence show pages can include run_key params
-        in_sequence_resource = request.url.include? "/sequences/"
-        if !in_sequence_resource
-          if @sequence_run
-            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @sequence_run.run_for_activity(@activity), request.query_parameters) and return
-          else
-            redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
-          end
-        end
-      else
-        redirect_to activity_path_with_run(@activity, @run.key, request.query_parameters) and return
-      end
+    # redirect if this run has a sequence and sequences is not part of the path
+    if @run.sequence && !(request.url.include? "/sequences/")
+      redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
     end
-
-    @run.increment_run_count!
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       if @run.sequence
@@ -65,6 +54,11 @@ class LightweightActivitiesController < ApplicationController
         redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
       end
     end
+
+    setup_show
+
+    @run.increment_run_count!
+
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
       # TODO: If the Page isn't in this activity... Then we need to log that as an error,
       # and do the best we can to get back to the right page...
@@ -76,8 +70,9 @@ class LightweightActivitiesController < ApplicationController
       redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
     end
 
-    setup_show
-    raise_error_if_not_authorized_run(@run)
+    # TODO we might want to redirect if there is no run_key param that will make the URLs more consistent and
+    # won't allow a user to be sitting on the activity show page without a run_key
+
   end
 
   def preview
@@ -110,6 +105,8 @@ class LightweightActivitiesController < ApplicationController
     # is set, so the theme of the unauthorized_run page remains the same.
     raise_error_if_not_authorized_run(@run)
     @labbook_is_under_interactive = true
+
+    @run.increment_run_count!
   end
 
   def print_blank
