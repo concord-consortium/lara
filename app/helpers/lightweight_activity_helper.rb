@@ -9,11 +9,15 @@ module LightweightActivityHelper
     return (!related.blank?)
   end
 
+  # Try to find the most specific path for the passed in activity, and the current state
+  # of the sequence_run, sequence, and run
   def runnable_activity_path(activity, opts ={})
     if @sequence && @sequence_run
       append_white_list_params sequence_activity_with_run_path(@sequence, activity, @sequence_run.run_for_activity(activity), opts)
     elsif @sequence
       append_white_list_params sequence_activity_path(@sequence, activity, opts)
+    elsif @run && @run.activity == activity
+      append_white_list_params activity_with_run_path(activity, @run, opts)
     else
       append_white_list_params activity_path(activity, opts)
     end

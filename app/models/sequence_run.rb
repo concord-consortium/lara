@@ -39,7 +39,25 @@ class SequenceRun < ActiveRecord::Base
   end
 
   def run_for_activity(activity)
-    runs.find {|run| run.activity_id == activity.id}
+    run = runs.find {|run| run.activity_id == activity.id}
+    if run.nil?
+      if !sequence.lightweight_activities.exists?(activity.id)
+        # probably need a better exception here, technically it would be possible for an
+        # author to remove a activity just as the student loads the page so they might
+        # request an activity that is no longer part of the sequence
+        raise Exception.new("Activity is not part of this sequence")
+      end
+
+      # create the run
+      run = runs.create!({
+        remote_endpoint: remote_endpoint,
+        remote_id:       remote_id,
+        user_id:         user ? user.id : nil,
+        activity_id:     activity.id,
+        sequence_id:     sequence.id
+      })
+    end
+    run
   end
 
   def most_recent_run
@@ -65,15 +83,7 @@ class SequenceRun < ActiveRecord::Base
 
   def make_or_update_runs
     sequence.activities.each do |activity|
-      unless run_for_activity(activity)
-        runs.create!({
-          remote_endpoint: remote_endpoint,
-          remote_id:       remote_id,
-          user_id:         user ? user.id : nil,
-          activity_id:     activity.id,
-          sequence_id:     sequence.id
-          })
-      end
+      run_for_activity(activity)
     end
   end
 

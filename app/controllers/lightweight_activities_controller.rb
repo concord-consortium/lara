@@ -14,6 +14,7 @@ class LightweightActivitiesController < ApplicationController
   include RemoteDuplicateSupport
 
   include PageHelper
+  include LightweightActivityHelper
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
@@ -32,6 +33,8 @@ class LightweightActivitiesController < ApplicationController
     end
 
     authorize! :read, @activity
+
+    setup_show
     raise_error_if_not_authorized_run(@run)
 
     if params[:print]
@@ -55,8 +58,14 @@ class LightweightActivitiesController < ApplicationController
       end
     end
 
-    setup_show
-
+    # this run count seems to be pretty useless it might be incremented mutliple times
+    # depending on redirects. It will also be incremented whenever the user returns to
+    # this show page. I suspect it was added to try to track how many times the activity
+    # has been access by a user. If we really wanted to get a more accurate count this
+    # probably needs to be moved into the client code. The client can store a
+    # sessionStorage variable which will be unique to the browser tab. On each page load
+    # the client can async send this to the server and the server can track the unique
+    # values. Perhaps there is a more simple way to do this.
     @run.increment_run_count!
 
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
@@ -70,8 +79,13 @@ class LightweightActivitiesController < ApplicationController
       redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
     end
 
-    # TODO we might want to redirect if there is no run_key param that will make the URLs more consistent and
-    # won't allow a user to be sitting on the activity show page without a run_key
+    # if we haven't done any other redirects and we don't have a run_key parameter,
+    # redirect back here with a run_key, this way the user sees a consistant URL.
+    # And if the user stays on this page and gets signed out we will know which run
+    # they were originally accessing
+    if params[:run_key].blank?
+      redirect_to runnable_activity_path(@activity) and return
+    end
 
   end
 

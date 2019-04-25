@@ -12,9 +12,11 @@ describe LightweightActivitiesController do
   let (:author) { FactoryGirl.create(:author) }
   let (:page) { FactoryGirl.create(:page, name: "Page 1", text: "This is the main activity text." ) }
   # act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  let (:theme) { FactoryGirl.create(:theme) }
+  let (:project) { FactoryGirl.create(:project) }
   let (:act) {
     activity = FactoryGirl.create(:public_activity,
-      user: author, theme: FactoryGirl.create(:theme), pages: [page])
+      user: author, theme: theme, project: project, pages: [page])
   }
   let (:private_act) { FactoryGirl.create(:activity)}
   let (:ar_run)  { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
@@ -41,8 +43,18 @@ describe LightweightActivitiesController do
 
     it 'assigns a project and theme' do
       get :show, :id => act.id
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).not_to be_nil
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:theme)).to eq(theme)
+    end
+
+    it 'redirects to a URL with a run key' do
+      result = get :show, :id => act.id
+      expect(result).to redirect_to(activity_with_run_path(act.id, assigns(:run_key)))
+    end
+
+    it 'renders the activity if it exists and is public' do
+      get :show, :id => act.id, :run_key => ar_run.key
+      expect(response).to be_success
     end
 
     describe "when the run has a page" do
@@ -176,14 +188,6 @@ describe LightweightActivitiesController do
         }.to raise_error(ActiveRecord::RecordNotFound)
 
       end
-
-      pending 'if a new activity is added to a sequence after the sequence run has been created this should still work'
-    end
-
-    it 'renders the activity if it exists and is public' do
-      get :show, :id => act.id
-      expect(assigns[:run_key]).not_to be_nil
-      expect(response).to be_success
     end
 
     describe "when called from the portal" do
@@ -218,6 +222,17 @@ describe LightweightActivitiesController do
         get :show, :id => act.id, :run_key => ar_run.key
         expect(response).to render_template('runs/unauthorized_run')
       end
+
+      it 'uses the theme of the activity' do
+        get :show, :id => act.id, :run_key => ar_run.key
+        expect(assigns(:theme)).to eq(theme)
+      end
+
+      it 'uses the project of the activity' do
+        get :show, :id => act.id, :run_key => ar_run.key
+        expect(assigns(:project)).to eq(project)
+      end
+
     end
   end
 
@@ -324,7 +339,7 @@ describe LightweightActivitiesController do
     it 'assigns a project and theme' do
       get :summary, :id => act.id, :run_key => ar_run.key
       expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).not_to be_nil
+      expect(assigns(:theme)).to eq(theme)
     end
 
     it 'renders the summary page if the activity exists and is public' do

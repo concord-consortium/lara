@@ -75,27 +75,38 @@ describe SequenceRun do
   describe "run_for_activity" do
     subject            { existing_seq_run }
 
-    let(:activity)     { FactoryGirl.create(:activity) }
-    let(:sequence)     { FactoryGirl.create(:sequence, :lightweight_activities => [activity])}
-    let(:activity_run) { FactoryGirl.create(:run,
+    let(:activity1) { FactoryGirl.create(:activity) }
+    let(:activity2) { FactoryGirl.create(:activity) }
+    let(:outside_activity) { FactoryGirl.create(:activity) }
+    let(:sequence) { FactoryGirl.create(:sequence,
+      :lightweight_activities => [activity1, activity2])}
+    let(:activity_run_in_seq_run) { FactoryGirl.create(:run,
         :user => user,
-        :activity => activity,
+        :activity => activity1,
         # TODO:  The current implementation looks up the sequence runs
         # this way.  We may want to look them up using other means.
         :sequence_run => existing_seq_run)
       }
 
-    describe "when there is no existing run for an activity for that sequence_run" do
-      it "should return nil" do
-        expect(subject.run_for_activity(activity)).to be_nil
+    describe "when there is no existing run for an activity in the sequence" do
+      it "should create one" do
+        expect(subject.runs.count).to eq 0
+        expect(subject.run_for_activity(activity2)).to_not be_nil
+        expect(subject.runs.count).to eq 1
+      end
+    end
+
+    describe "when there is no existing run for an activity not in the sequence" do
+      it "should raise an exception" do
+        expect{subject.run_for_activity(activity3)}.to raise_error(Exception)
       end
     end
 
     describe "when there is already a run for an activity for that sequence_run" do
 
       it "should return the existing run" do
-        make activity_run
-        expect(subject.run_for_activity(activity)).to eq(activity_run)
+        make activity_run_in_seq_run
+        expect(subject.run_for_activity(activity1)).to eq(activity_run_in_seq_run)
       end
     end
   end
