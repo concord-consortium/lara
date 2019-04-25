@@ -1,13 +1,13 @@
 sudo: false # see: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 language: ruby
 rvm:
-  - "2.2.6"
+  - "2.3.7"
 
 dist: precise
 
 before_install:
   - gem update bundler
-  - nvm install node
+  - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
 
 before_script:
@@ -19,8 +19,8 @@ before_script:
 # uncomment this line if your project needs to run something other than `rake`:
 script:
   - bundle exec rake
-  - bundle exec rake jasmine:ci
   - cd lara-plugin-api && npm i && npm run test
+  - bundle exec rake jasmine:ci
 
 cache: bundler
 
