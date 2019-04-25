@@ -60,6 +60,8 @@ group :test, :development do
   gem "jasmine", "~> 2.2"
   gem "jasmine-jquery-rails", "~> 2.0"
   gem "launchy", "~> 2.4"
+  gem "pry"
+  gem 'pry-byebug'
 end
 
 gem "highline", "~> 1.6"

@@ -106,6 +106,7 @@ GEM
     bullet (5.4.3)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.10.0)
+    byebug (11.0.1)
     cancancan (1.10.1)
     capistrano (2.15.5)
       highline
@@ -305,6 +306,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.7.0)
+      byebug (~> 11.0)
+      pry (~> 0.10)
     public_suffix (2.0.5)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -527,6 +531,8 @@ DEPENDENCIES
   omniauth (~> 1.1)
   omniauth-oauth2 (~> 1.1)!
   poltergeist (~> 1.5)
+  pry
+  pry-byebug
   quiet_assets (~> 1.1)
   rack-cors (~> 0.4.1)
   rack-environmental (~> 1.3)
