@@ -20,7 +20,7 @@ before_script:
 script:
   - bundle exec rake
   - cd lara-plugin-api && npm i && npm run test
-  - bundle exec rake jasmine:ci
+  - cd - && bundle exec rake jasmine:ci
 
 cache: bundler
 
