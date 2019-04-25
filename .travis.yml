@@ -19,8 +19,8 @@ before_script:
 # uncomment this line if your project needs to run something other than `rake`:
 script:
   - bundle exec rake
-  - bundle exec rake jasmine:ci
   - cd lara-plugin-api && npm i && npm run test
+  - cd - && bundle exec rake jasmine:ci
 
 cache: bundler
 
