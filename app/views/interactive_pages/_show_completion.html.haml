@@ -69,7 +69,7 @@
     }
   end
 
-  report_path  = summary_with_run_path(@page.lightweight_activity, @run_key) if @run_key
+  report_path  = runnable_summary_path(@page.lightweight_activity)
   page_name    = @page.name || @activity.name + ":#{@page.position}"
 
   if @sequence_run

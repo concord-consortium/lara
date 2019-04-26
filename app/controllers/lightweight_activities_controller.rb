@@ -134,7 +134,7 @@ class LightweightActivitiesController < ApplicationController
     current_theme
     current_project
     if !params[:run_key]
-      redirect_to summary_with_run_path(@activity, @run_key, request.query_parameters) and return
+      raise ActiveRecord::RecordNotFound
     end
     @answers = @activity.answers(@run)
   end

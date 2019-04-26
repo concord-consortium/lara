@@ -19,7 +19,7 @@
               About
       - if @activity
         %li.am-report
-          = link_to summary_with_run_path(@activity, @run_key),:title => "Report",:target => "_blank" do
+          = link_to runnable_summary_path(@activity),:title => "Report",:target => "_blank" do
             %i.fa.fa-print
             %span.text
               Report
