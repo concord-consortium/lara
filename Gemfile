@@ -49,7 +49,7 @@ group :test, :development do
   gem "spring-commands-rspec", "~> 1.0"
   gem "spring", "~> 1.2"
   gem "test-unit", "~> 3.0"
-  gem "rspec-rails", "~> 3.1"
+  gem "rspec-rails", "~> 3.8"
   gem "rspec-activemodel-mocks", "~> 1.0"
   gem "ci_reporter", "~> 1.7"
   gem "factory_girl_rails", "~> 4.3", {:require=>false}

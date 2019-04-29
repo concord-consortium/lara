@@ -54,7 +54,7 @@ describe Concord::AuthPortal do
         end
         describe "when there is no match" do
           it "should raise an error" do
-            expect { Concord::AuthPortal.strategy_name_for_url('csdfs')}.to raise_error
+            expect { Concord::AuthPortal.strategy_name_for_url('csdfs')}.to raise_error(RuntimeError)
           end
         end
       end
