@@ -19,23 +19,21 @@ class SequenceRun < ActiveRecord::Base
       sequence_id:     sequence.id
       #TODO: add domain
     }
-    found = self.find(:first, :conditions => conditions)
-    found ||= self.create(conditions)
-    found.make_or_update_runs
-    found
-  end
+    seq_run = nil
 
-  def self.create_anonymous(sequence)
-    conditions = {
-      remote_endpoint: nil,
-      remote_id:       nil,
-      user_id:         nil,
-      sequence_id:     sequence.id
-      #TODO: add domain
-    }
-    sequence_run = self.create(conditions)
-    sequence_run.make_or_update_runs
-    sequence_run
+    # we only look for an existing sequence run if there is a user
+    # there will be multipe runs that match without a user and we won't know which one
+    # so without a user we always create one
+    if user
+      seq_run = self.find(:first, :conditions => conditions)
+    end
+
+    if seq_run.nil?
+      seq_run = self.create!(conditions)
+    end
+
+    seq_run.make_or_update_runs
+    seq_run
   end
 
   def run_for_activity(activity)
@@ -48,16 +46,22 @@ class SequenceRun < ActiveRecord::Base
         raise Exception.new("Activity is not part of this sequence")
       end
 
-      # create the run
-      run = runs.create!({
+      # create the run, we use this form instead of runs.create to make testing
+      # easier
+      run = Run.create!({
         remote_endpoint: remote_endpoint,
         remote_id:       remote_id,
         user_id:         user ? user.id : nil,
         activity_id:     activity.id,
         sequence_id:     sequence.id
       })
+      runs << run
     end
     run
+  end
+
+  def to_param
+    key
   end
 
   def most_recent_run

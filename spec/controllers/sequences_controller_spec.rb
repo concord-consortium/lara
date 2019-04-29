@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SequencesController do
-  let(:sequence) { FactoryGirl.create(:sequence) }
+  let(:sequence) { FactoryGirl.create(:sequence, publication_status: 'public') }
   let(:activity) { FactoryGirl.create(:public_activity) }
 
   it_behaves_like "remote duplicate support" do
@@ -34,6 +34,13 @@ describe SequencesController do
   end
 
   describe "GET show" do
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+      # the run lookup logic is based on the current_user so it is better to start
+      # anonymously
+      sign_out @user
+    end
+
     it "assigns the requested sequence as @sequence" do
       get :show, {:id => sequence.to_param}
       expect(assigns(:sequence)).to eq(sequence)
@@ -44,6 +51,15 @@ describe SequencesController do
       expect(assigns(:project)).not_to be_nil
       expect(assigns(:theme)).not_to be_nil
     end
+
+    it_behaves_like "runnable resource launchable by the portal", SequenceRun do
+      let(:base_params) { {id: sequence.id} }
+      let(:base_factory_params) { {sequence_id: sequence.id}}
+      let(:run_path_helper) { :sequence_with_sequence_run_key_path }
+      let(:run_key_param_name) { :sequence_run_key }
+      let(:run_variable_name) { :sequence_run }
+    end
+
   end
 
 

@@ -190,10 +190,7 @@ class SequencesController < ApplicationController
       return @sequence_run if @sequence_run
     end
 
-    if !current_user
-      # create anonymous sequence run
-      @sequence_run = SequenceRun.create_anonymous(@sequence)
-    elsif params[:collaborators_data_url]
+    if params[:collaborators_data_url]
       # Special case when collaborators_data_url is provided (usually as a GET param).
       cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
       @sequence_run = cc.call

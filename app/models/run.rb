@@ -76,18 +76,28 @@ class Run < ActiveRecord::Base
     if found
       return found
     end
-    return self.create(conditions)
+    return self.create!(conditions)
   end
 
   def self.for_user_activity_and_sequence(user,activity,seq_id)
+    # we limit this to only finding runs without portal properties, those lookups
+    # should happen via for_user_and_portal
     conditions = {
       activity_id:     activity.id,
       user_id:         user ? user.id : nil,
-      sequence_id:     seq_id
+      sequence_id:     seq_id,
+      remote_endpoint: nil,
+      remote_id:       nil
     }
-    found = self.where(conditions).first
-    if found
-      return found
+
+    # we can only look for an existing run if the user is set
+    # if the user is anonymous there will be many matching runs but we don't
+    # know which one is the right one
+    if (user)
+      found = self.where(conditions).first
+      if found
+        return found
+      end
     end
 
     # if no run has been found and there is a seq_id, create a sequence run too
@@ -95,7 +105,7 @@ class Run < ActiveRecord::Base
       seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}))
       return seq_run.run_for_activity(activity)
     else
-      return self.create(conditions)
+      return self.create!(conditions)
     end
   end
 
@@ -103,6 +113,9 @@ class Run < ActiveRecord::Base
     if user && portal && portal.valid?
       # if the seq_id is set here, this is an un-handled state
       # a lookup like this with a valid portal should only be called without a sequence
+      if seq_id
+        raise ActiveRecord::RecordNotFound
+      end
       return self.for_user_and_portal(user, activity, portal)
     end
     if key

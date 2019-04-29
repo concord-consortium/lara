@@ -57,19 +57,7 @@ describe SequenceRun do
           expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
         end
       end
-
     end
-
-    describe "create_anonymous" do
-      it "should set the user to nil" do
-        expect(subject.create_anonymous(sequence).user).to eq(nil)
-      end
-
-      it "should generate new sequence runs per call" do
-        expect(subject.create_anonymous(sequence).id).not_to eq(subject.create_anonymous(sequence).id)
-      end
-    end
-
   end
 
   describe "run_for_activity" do

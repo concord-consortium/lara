@@ -23,6 +23,8 @@ describe LightweightActivitiesController do
   # let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
   let (:sequence) { FactoryGirl.create(:sequence) }
 
+  let (:user)    { FactoryGirl.create(:user) }
+
   describe 'routing' do
     it 'recognizes and generates #show' do
       expect({:get => "activities/3"}).to route_to(:controller => 'lightweight_activities', :action => 'show', :id => "3")
@@ -47,15 +49,38 @@ describe LightweightActivitiesController do
       expect(assigns(:theme)).to eq(theme)
     end
 
-    it 'redirects to a URL with a run key' do
-      result = get :show, :id => act.id
-      expect(result).to redirect_to(activity_with_run_path(act.id, assigns(:run_key)))
+
+    it_behaves_like "runnable resource launchable by the portal", Run do
+      let(:base_params) { {id: act.id} }
+      let(:base_factory_params) { {activity_id: act.id}}
+      let(:run_path_helper) { :activity_with_run_path }
+      let(:run_key_param_name) { :run_key }
+      let(:run_variable_name) { :run }
     end
 
     it 'renders the activity if it exists and is public' do
       get :show, :id => act.id, :run_key => ar_run.key
       expect(response).to be_success
     end
+
+    describe 'when the current_user has a run with portal properties' do
+
+      before(:each) do
+        ar_run.user = user
+        ar_run.remote_endpoint = 'http://example.com'
+        ar_run.remote_id = 1
+        ar_run.save
+        sign_in user
+      end
+
+      describe 'when the URL has matching portal parameters' do
+        it 'finds the existing run' do
+          get :show, id: act.id, returnUrl: 'http://example.com', externalId: 1
+          expect(assigns[:run]).to eq(ar_run)
+        end
+      end
+    end
+
 
     describe "when the run has a page" do
       let(:last_page) { page }
@@ -122,8 +147,7 @@ describe LightweightActivitiesController do
     end
 
     describe 'when it is part of a sequence' do
-      let (:user)    { FactoryGirl.create(:user) }
-      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id) }
+      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
 
       before(:each) do
         # Add the activity to the sequence
@@ -131,9 +155,53 @@ describe LightweightActivitiesController do
         act.save
       end
 
+      it_behaves_like "runnable resource not launchable by the portal", Run do
+        let(:base_params) { {id: act.id, sequence_id: sequence.id} }
+        # this might somehow need a sequence_run id too
+        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id}}
+        let(:run_path_helper) { :sequence_activity_with_run_path }
+        let(:run_key_param_name) { :run_key }
+        let(:run_variable_name) { :run }
+      end
+
+
       it 'creates a sequence run and activity run if not specificied' do
         get :show, :id => act.id, :sequence_id => sequence.id
         expect(assigns(:sequence_run)).not_to be_nil
+      end
+
+      describe "when an anonymous run with a sequence run already exists" do
+        before(:each) do
+          ar_run.sequence = sequence
+          ar_run.sequence_run = seq_run
+          ar_run.save
+        end
+
+        it "assigns a sequence even if the URL doesn't have one" do
+          ar_run.sequence = sequence
+          ar_run.sequence_run = seq_run
+          ar_run.save
+          get :show, :id => act.id, :run_key => ar_run.key
+          expect(assigns(:sequence)).to eq(sequence)
+        end
+
+        # this is mostly duplicated in the runnable_resource shared examples but those
+        # examples don't currently check that the sequencerun is created too
+        describe "when the activity is loaded without a run_key" do
+          # build is used here so this new_seq_run cannot be accidentally found during a
+          # broken lookup
+          let(:new_seq_run) { FactoryGirl.build(:sequence_run, sequence_id: sequence.id) }
+
+          it 'creates a new run, it does not reuse the existing run' do
+            expect(new_seq_run).to_not be_persisted
+            # we need to save this sequence run so the runs.create can be called later
+            expect(SequenceRun).to receive(:create!) { new_seq_run.save; new_seq_run }
+            get :show, sequence_id: sequence.id, id: act.id
+            expect(assigns[:sequence_run]).to eq(new_seq_run)
+            expect(assigns[:run].sequence_run).to eq(new_seq_run)
+            expect(assigns[:run]).to_not eq(ar_run)
+          end
+        end
       end
 
       it 'assigns a sequence if one is in the URL' do
@@ -141,21 +209,46 @@ describe LightweightActivitiesController do
         expect(assigns(:sequence)).not_to be_nil
       end
 
-      it 'assigns a sequence if one is in the run' do
-        ar_run.sequence = sequence
-        ar_run.sequence_run = seq_run
-        ar_run.save
-        get :show, :id => act.id, :run_key => ar_run.key
-        expect(assigns(:sequence)).to eq(sequence)
-      end
+      describe 'when the current_user has a run with portal properties with this sequence' do
 
-      it 'when the run has an existing sequence the user owns' do
-        ar_run.sequence = sequence
-        ar_run.user = @user
-        ar_run.save
-        ar_run.reload
-        get :show, :id => act.id, :sequence_id => sequence.id
-        expect(ar_run.reload.sequence_id).to be(sequence.id)
+        before(:each) do
+          ar_run.sequence_run = seq_run
+          ar_run.sequence = sequence
+          ar_run.user = user
+          ar_run.remote_endpoint = 'http://example.com'
+          ar_run.remote_id = 1
+          ar_run.save
+          sign_in user
+        end
+
+        # this is mostly duplicated by the runnable_resource shared examples but those
+        # examples don't check if the SequenceRun is created
+        describe 'when the URL has no parameters' do
+          # build is used here so this new_seq_run cannot be accidentally found during a
+          # broken lookup
+          let(:new_seq_run) { FactoryGirl.build(:sequence_run, sequence_id: sequence.id) }
+
+          it 'creates a new run, it does not reuse the existing run' do
+            expect(new_seq_run).to_not be_persisted
+            # we need to save this sequence run so the runs.create can be called later
+            expect(SequenceRun).to receive(:create!) { new_seq_run.save; new_seq_run }
+            get :show, sequence_id: sequence.id, id: act.id
+            expect(assigns[:sequence_run]).to eq(new_seq_run)
+            expect(assigns[:run].sequence_run).to eq(new_seq_run)
+            expect(assigns[:run]).to_not eq(ar_run)
+          end
+        end
+
+        describe 'when the URL has matching portal parameters' do
+          it 'fails with a 404' do
+            expect {
+              get :show, sequence_id: sequence.id, id: act.id,
+                returnUrl: 'http://example.com', externalId: 1
+            }.to raise_error ActiveRecord::RecordNotFound
+          end
+        end
+
+        pending 'test the positive case which probably should be in the sequences_controller_spec'
       end
 
       it 'fails if URL has a sequence but the run does not' do
@@ -218,21 +311,28 @@ describe LightweightActivitiesController do
         ar_run.save
       end
 
-      it 'renders unauthorized run message' do
-        get :show, :id => act.id, :run_key => ar_run.key
-        expect(response).to render_template('runs/unauthorized_run')
+      describe "when the request is anonymous" do
+        it 'renders unauthorized run message' do
+          get :show, :id => act.id, :run_key => ar_run.key
+          expect(response).to render_template('runs/unauthorized_run')
+        end
+
+        it 'uses the theme of the activity' do
+          get :show, :id => act.id, :run_key => ar_run.key
+          expect(assigns(:theme)).to eq(theme)
+        end
+
+        it 'uses the project of the activity' do
+          get :show, :id => act.id, :run_key => ar_run.key
+          expect(assigns(:project)).to eq(project)
+        end
       end
 
-      it 'uses the theme of the activity' do
-        get :show, :id => act.id, :run_key => ar_run.key
-        expect(assigns(:theme)).to eq(theme)
+      describe "when the request is from the owner" do
+        before(:each) do
+          sign_in user
+        end
       end
-
-      it 'uses the project of the activity' do
-        get :show, :id => act.id, :run_key => ar_run.key
-        expect(assigns(:project)).to eq(project)
-      end
-
     end
   end
 

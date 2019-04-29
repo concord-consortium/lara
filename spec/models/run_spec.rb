@@ -278,7 +278,7 @@ describe Run do
     describe "without a key" do
       describe "with no user" do
         it "should create a new run" do
-          expect(Run).to receive(:create).and_return(run)
+          expect(Run).to receive(:create!).and_return(run)
           expect(Run.lookup(nil,activity,nil,nil,nil)).to eq(run)
         end
       end
@@ -296,7 +296,7 @@ describe Run do
 
           describe "when this is the first time for the user" do
             it "should create a new run for the user and activity" do
-              expect(Run).to receive(:create).and_return("fake_run")
+              expect(Run).to receive(:create!).and_return("fake_run")
               expect(Run.lookup(nil,activity,user,nil,nil)).to eq("fake_run")
             end
           end

@@ -206,11 +206,11 @@ LightweightStandalone::Application.routes.draw do
   get "/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'page_with_run', :constraints => { :id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/activities/:activity_id/summary/:run_key" => 'lightweight_activities#summary', :as => 'summary_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/activities/:activity_id/resubmit_answers/:run_key" => 'lightweight_activities#resubmit_answers', :as => 'resubmit_answers_for_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
-  get "/activities/:activity_id/:run_key" => 'lightweight_activities#show', :as => 'activity_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/activities/:id/:run_key" => 'lightweight_activities#show', :as => 'activity_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/activities/:activity_id/single_page/:run_key" => 'lightweight_activities#single_page', :as => 'activity_single_page_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/runs/dirty" => 'runs#dirty', :as => 'dirty_runs'
   get "/runs/details" => 'runs#details', :as => 'run_details'
-  get "/sequences/:sequence_id/activities/:activity_id/:run_key" => 'lightweight_activities#show', :as => 'sequence_activity_with_run', :constraints => { :sequence_id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
+  get "/sequences/:sequence_id/activities/:id/:run_key" => 'lightweight_activities#show', :as => 'sequence_activity_with_run', :constraints => { :sequence_id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/sequences/:sequence_id/activities/:activity_id/single_page/:run_key" => 'lightweight_activities#single_page', :as => 'sequence_activity_single_page_with_run', :constraints => { :sequence_id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/sequences/:sequence_id/activities/:activity_id/pages/:id" => 'interactive_pages#show', :as => 'sequence_page', :constraints => { :id => /\d+/, :sequence_id => /\d+/, :activity_id => /\d+/ }
   get "/sequences/:sequence_id/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'sequence_page_with_run', :constraints => { :id => /\d+/, :sequence_id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
