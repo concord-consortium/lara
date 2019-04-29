@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
   # thrown by #raise_error_if_not_authorized_run()
   rescue_from NotAuthorizedRunError do
     respond_to do |format|
-      format.html { render 'runs/unauthorized_run', status: :unauthorized }
-      format.json { render nothing: true, status: unauthorized}
+      format.html { render 'runs/unauthorized_run', status: :forbidden }
+      format.json { render nothing: true, status: :forbidden}
     end
   end
 
@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_run_key
+  def set_run_key(opts)
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
     if params[:collaborators_data_url]
@@ -168,6 +168,10 @@ class ApplicationController < ActionController::Base
       @run = cc.call
     else
       portal = RemotePortal.new(params)
+      if (portal.valid? && !opts[:portal_launchable])
+        raise ActiveRecord::RecordNotFound
+      end
+
       # This creates a new key if one didn't exist before
       @run = Run.lookup(params[:run_key], @activity, current_user, portal, params[:sequence_id])
       # If activity is ran with "portal" params, it means that user wants to run it individually.

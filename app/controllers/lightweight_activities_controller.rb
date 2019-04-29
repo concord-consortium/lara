@@ -3,7 +3,10 @@ require_dependency "application_controller"
 class LightweightActivitiesController < ApplicationController
 
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
+  before_filter :only => [:summary, :show, :preview, :resubmit_answers, :single_page] {
+    not_inside_of_sequence = params[:sequence_id].blank?
+    set_run_key(portal_launchable: not_inside_of_sequence)
+  }
   before_filter :set_sequence, :only   => [:summary, :show, :single_page]
 
   before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]

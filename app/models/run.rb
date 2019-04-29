@@ -110,25 +110,41 @@ class Run < ActiveRecord::Base
   end
 
   def self.lookup(key, activity, user, portal, seq_id)
-    if user && portal && portal.valid?
-      # if the seq_id is set here, this is an un-handled state
-      # a lookup like this with a valid portal should only be called without a sequence
-      if seq_id
-        raise ActiveRecord::RecordNotFound
+    if portal && portal.valid?
+      if user
+        # if the seq_id is set here, this is an un-handled state
+        if seq_id
+          # this should be be cut off before it even gets here see:
+          # portal_launchable in lightweight_activities_controller
+          raise Exception.new("portal launch of activity inside of a sequences")
+        end
+        return self.for_user_and_portal(user, activity, portal)
+      else
+        raise ActiveRecord::RecordNotFound.new(
+          "user must be logged in to access a Run via portal parameters"
+        )
       end
-      return self.for_user_and_portal(user, activity, portal)
     end
     if key
       # error out if run can't be found
       run = self.where(key: key).first!
 
-      if activity && run.activity != activity
-        raise ActiveRecord::RecordNotFound
+      if activity && run.activity_id != activity.id
+        raise ActiveRecord::RecordNotFound.new(
+          "Activity: #{activity.id} doesn't match run.activity_id: #{run.activity_id}")
       end
 
-      if seq_id &&
-        ( run.sequence_id != seq_id.to_i || run.sequence_run.nil? )
-        raise ActiveRecord::RecordNotFound
+      if seq_id
+        if run.sequence_id != seq_id.to_i
+          raise ActiveRecord::RecordNotFound.new(
+            "Sequence: #{seq_id} doesn't match run.sequence_id: #{run.sequence_id}"
+          )
+        end
+        if run.sequence_run.nil?
+          raise ActiveRecord::RecordNotFound.new(
+            "run.sequence_run is nil looking up a run for Sequence: #{seq_id}"
+          )
+        end
       end
 
       return run

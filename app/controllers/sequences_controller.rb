@@ -8,6 +8,9 @@ class SequencesController < ApplicationController
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
 
+  # Adds append_white_list_params support
+  include ApplicationHelper
+
   # GET /sequences
   # GET /sequences.json
   def index
@@ -34,8 +37,9 @@ class SequencesController < ApplicationController
     current_project
     respond_to do |format|
       format.html do
+        raise_error_if_not_authorized_run(@sequence_run)
         if !params[:sequence_run_key]
-          redirect_to sequence_with_sequence_run_key_path(@sequence, @sequence_run.key, params)
+          redirect_to append_white_list_params sequence_with_sequence_run_key_path(@sequence, @sequence_run.key)
           return
         end
         if @sequence_run.has_been_run
@@ -45,7 +49,6 @@ class SequencesController < ApplicationController
             return
           end
         end
-        raise_error_if_not_authorized_run(@sequence_run)
         # show.html.erb  ⬅ default template is shown otherwise
         render layout: "sequence_run"
       end
@@ -186,8 +189,8 @@ class SequencesController < ApplicationController
 
   def find_or_create_sequence_run
     if sequence_run_key = params['sequence_run_key']
-      @sequence_run = SequenceRun.find_by_key(sequence_run_key)
-      return @sequence_run if @sequence_run
+      @sequence_run = SequenceRun.where(key: sequence_run_key).first!
+      return @sequence_run
     end
 
     if params[:collaborators_data_url]

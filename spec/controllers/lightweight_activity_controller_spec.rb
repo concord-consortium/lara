@@ -157,8 +157,8 @@ describe LightweightActivitiesController do
 
       it_behaves_like "runnable resource not launchable by the portal", Run do
         let(:base_params) { {id: act.id, sequence_id: sequence.id} }
-        # this might somehow need a sequence_run id too
-        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id}}
+        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
+          sequence_run: seq_run }}
         let(:run_path_helper) { :sequence_activity_with_run_path }
         let(:run_key_param_name) { :run_key }
         let(:run_variable_name) { :run }
@@ -239,16 +239,6 @@ describe LightweightActivitiesController do
           end
         end
 
-        describe 'when the URL has matching portal parameters' do
-          it 'fails with a 404' do
-            expect {
-              get :show, sequence_id: sequence.id, id: act.id,
-                returnUrl: 'http://example.com', externalId: 1
-            }.to raise_error ActiveRecord::RecordNotFound
-          end
-        end
-
-        pending 'test the positive case which probably should be in the sequences_controller_spec'
       end
 
       it 'fails if URL has a sequence but the run does not' do

@@ -19,11 +19,11 @@ describe InteractivePagesController do
   end
 
   let (:user) { FactoryGirl.create(:user) }
-  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => user.id) }
+  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
   let (:sequence) { FactoryGirl.create(:sequence, :lightweight_activities => [act]) }
-  let (:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => user.id) }
+  let (:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -33,15 +33,19 @@ describe InteractivePagesController do
 
   describe 'show' do
 
-    before(:each) do
-      sign_in user
-    end
-
     it 'renders 404 when the activity does not exist' do
       begin
         get :show, :id => 34
       rescue ActiveRecord::RecordNotFound
       end
+    end
+
+    it_behaves_like "runnable resource not launchable by the portal", Run do
+      let(:base_params) { {activity_id: act.id, id: page1.id } }
+      let(:base_factory_params) { {activity_id: act.id} }
+      let(:run_path_helper) { :page_with_run_path }
+      let(:run_key_param_name) { :run_key }
+      let(:run_variable_name) { :run }
     end
 
     it 'assigns a run key' do
@@ -61,6 +65,25 @@ describe InteractivePagesController do
       ar.save
       get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:sequence)).to eq(sequence)
+    end
+
+    describe 'when it is part of a sequence' do
+      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
+
+      before(:each) do
+        # Add the activity to the sequence
+        act.sequences = [sequence]
+        act.save
+      end
+
+      it_behaves_like "runnable resource not launchable by the portal", Run do
+        let(:base_params) { {id: page1.id, activity_id: act.id, sequence_id: sequence.id} }
+        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
+          sequence_run: sequence_run} }
+        let(:run_path_helper) { :sequence_page_with_run_path }
+        let(:run_key_param_name) { :run_key }
+        let(:run_variable_name) { :run }
+      end
     end
 
     it 'renders the page if it exists' do

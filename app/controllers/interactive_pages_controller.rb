@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_run_key, :only => [:show, :preview]
+  before_filter :only => [:show, :preview] { set_run_key(portal_launchable: false) }
   before_filter :set_sequence, :only => [:show]
   before_filter :check_if_hidden, :only => [:show, :preview]
 

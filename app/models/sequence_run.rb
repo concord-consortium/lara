@@ -12,6 +12,12 @@ class SequenceRun < ActiveRecord::Base
   end
 
   def self.lookup_or_create(sequence, user, portal)
+    if portal.valid? && user.nil?
+      raise ActiveRecord::RecordNotFound.new(
+        "user must be logged in to access a SequenceRun via portal parameters"
+      )
+    end
+
     conditions = {
       remote_endpoint: portal.remote_endpoint,
       remote_id:       portal.remote_id,

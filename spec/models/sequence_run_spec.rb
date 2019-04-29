@@ -12,7 +12,8 @@ describe SequenceRun do
   let(:portal) do
     double("portal",
       :remote_endpoint => remote_endpoint,
-      :remote_id       => remote_id)
+      :remote_id       => remote_id,
+      :valid?          => true)
   end
 
   let(:existing_seq_run) do
@@ -52,7 +53,11 @@ describe SequenceRun do
       end
 
       describe "when the portal isn't the same as the existing" do
-        let(:other_portal) { double("portal", :remote_id => "something_else", :remote_endpoint => remote_endpoint) }
+        let(:other_portal) {
+          double("portal",
+            :remote_id       => "something_else",
+            :remote_endpoint => remote_endpoint,
+            :valid?          => true) }
         it "should make a new run" do
           expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
         end
