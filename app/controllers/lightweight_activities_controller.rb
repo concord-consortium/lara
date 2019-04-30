@@ -79,7 +79,7 @@ class LightweightActivitiesController < ApplicationController
         Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
         @activity = @run.last_page.lightweight_activity
       end
-      redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
+      redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key) and return
     end
 
     # if we haven't done any other redirects and we don't have a run_key parameter,

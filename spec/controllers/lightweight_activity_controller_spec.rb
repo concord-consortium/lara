@@ -68,61 +68,81 @@ describe LightweightActivitiesController do
       before(:each) do
         ar_run.set_last_page(last_page)
       end
-      subject { get :show, :id => act.id, :run_key => ar_run.key}
+      describe "when the URL has a run_key" do
+        subject { get :show, :id => act.id, :run_key => ar_run.key}
 
-      it "should redirect to the run page" do
-        # page_with_run_path(@activity.id, @run.last_page.id, @run)
-        expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
-      end
+        it "should redirect to the run page" do
+          # page_with_run_path(@activity.id, @run.last_page.id, @run)
+          expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
+        end
 
-      describe "when the run page is hidden" do
-        let(:page) { FactoryGirl.create(:page, name: "Page 1", text: "This page is hidden.", is_hidden: true) }
+        describe "when the run page is hidden" do
+          let(:page) { FactoryGirl.create(:page, name: "Page 1", text: "This page is hidden.", is_hidden: true) }
 
-        it "should not redirect to the run page" do
-          expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
-          expect(response).to render_template('lightweight_activities/show')
+          it "should not redirect to the run page" do
+            expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
+            expect(response).to render_template('lightweight_activities/show')
+          end
+        end
+
+        describe "when the run page is for a different activity" do
+          let(:other_act) { FactoryGirl.create(:public_activity) }
+          let(:other_page) { FactoryGirl.create(:page, name: "Page 2",
+            text: "This page isn't in Act 1.", lightweight_activity: other_act) }
+          let(:last_page) { other_page }
+
+          it "should redirect to Act 2 run page." do
+            expect(subject).to redirect_to(page_with_run_path(other_act.id, other_page.id, ar_run.key))
+          end
+        end
+
+        describe 'when activity has a single page layout' do
+          before(:each) do
+            act.layout = LightweightActivity::LAYOUT_SINGLE_PAGE
+            act.save
+          end
+          it 'should redirect to the single page view instead' do
+            get :show, :id => act.id
+            expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
+          end
+        end
+
+        describe 'when a collaborative activity has a collaborators_data_url param' do
+          it 'should call CreateCollaboration' do
+            allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(ar_run)
+            expect_any_instance_of(CreateCollaboration).to receive(:call)
+            get :show, :id => act.id, :collaborators_data_url => "http://example.com/"
+          end
+        end
+
+        describe 'when a non-collaborative activity has valid portal parameters' do
+          before(:each) do
+            # we need this so we receive the same run object that we are spying on
+            allow(Run).to receive(:lookup).and_return(ar_run)
+          end
+
+          it 'should call disable_collaboration' do
+            expect(ar_run).to receive(:disable_collaboration)
+            get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
+          end
         end
       end
 
-      describe "when the run page is for a different activity" do
-        let(:other_act) { FactoryGirl.create(:public_activity) }
-        let(:other_page) { FactoryGirl.create(:page, name: "Page 2",
-          text: "This page isn't in Act 1.", lightweight_activity: other_act) }
-        let(:last_page) { other_page }
-
-        it "should redirect to Act 2 run page." do
-          expect(subject).to redirect_to(page_with_run_path(other_act.id, other_page.id, ar_run.key))
-        end
-      end
-
-      describe 'when activity has a single page layout' do
+      describe "when the URL has portal properties" do
         before(:each) do
-          act.layout = LightweightActivity::LAYOUT_SINGLE_PAGE
-          act.save
-        end
-        it 'should redirect to the single page view instead' do
-          get :show, :id => act.id
-          expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
-        end
-      end
-
-      describe 'when a collaborative activity has a collaborators_data_url param' do
-        it 'should call CreateCollaboration' do
-          allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(ar_run)
-          expect_any_instance_of(CreateCollaboration).to receive(:call)
-          get :show, :id => act.id, :collaborators_data_url => "http://example.com/"
-        end
-      end
-
-      describe 'when a non-collaborative activity has valid portal parameters' do
-        before(:each) do
-          # we need this so we receive the same run object that we are spying on
-          allow(Run).to receive(:lookup).and_return(ar_run)
+          ar_run.remote_endpoint = 'https://example.com'
+          ar_run.remote_id = 1
+          ar_run.user = user
+          ar_run.save
+          sign_in user
         end
 
-        it 'should call disable_collaboration' do
-          expect(ar_run).to receive(:disable_collaboration)
-          get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
+        subject { get :show, id: act.id,
+           returnUrl: 'https://example.com', externalId: 1 }
+
+        it "should redirect to the run page" do
+          # page_with_run_path(@activity.id, @run.last_page.id, @run)
+          expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
         end
       end
     end
