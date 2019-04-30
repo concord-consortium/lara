@@ -156,9 +156,9 @@ describe SequencesController do
         expect(assigns(:sequence)).to eq(sequence)
       end
 
-      it "redirects to the sequence" do
+      it "returns to the edit page" do
         put :update, {:id => sequence.to_param, :sequence => valid_attributes}
-        expect(response).to redirect_to(sequence)
+        expect(response).to redirect_to(edit_sequence_path(sequence))
       end
     end
 
@@ -170,11 +170,11 @@ describe SequencesController do
         expect(assigns(:sequence)).to eq(sequence)
       end
 
-      it "re-renders the 'edit' template" do
+      it "redirects to the edit page" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Sequence).to receive(:save).and_return(false)
         put :update, {:id => sequence.to_param, :sequence => {}}
-        expect(response).to render_template("edit")
+        expect(response).to redirect_to(edit_sequence_path(sequence))
       end
     end
   end

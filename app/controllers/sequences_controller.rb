@@ -95,10 +95,16 @@ class SequencesController < ApplicationController
     authorize! :update, @sequence
     respond_to do |format|
       if @sequence.update_attributes(params[:sequence])
-        format.html { redirect_to @sequence, notice: 'Sequence was successfully updated.' }
+        format.html {
+          flash[:notice] = "Sequence was successfully updated."
+          redirect_to edit_sequence_path(@sequence)
+        }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html {
+          flash[:warning] = "There was a problem updating the sequence."
+          redirect_to edit_sequence_path(@sequence)
+        }
         format.json { render json: @sequence.errors, status: :unprocessable_entity }
       end
     end
