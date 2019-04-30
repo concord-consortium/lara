@@ -63,25 +63,6 @@ describe LightweightActivitiesController do
       expect(response).to be_success
     end
 
-    describe 'when the current_user has a run with portal properties' do
-
-      before(:each) do
-        ar_run.user = user
-        ar_run.remote_endpoint = 'http://example.com'
-        ar_run.remote_id = 1
-        ar_run.save
-        sign_in user
-      end
-
-      describe 'when the URL has matching portal parameters' do
-        it 'finds the existing run' do
-          get :show, id: act.id, returnUrl: 'http://example.com', externalId: 1
-          expect(assigns[:run]).to eq(ar_run)
-        end
-      end
-    end
-
-
     describe "when the run has a page" do
       let(:last_page) { page }
       before(:each) do
@@ -290,38 +271,6 @@ describe LightweightActivitiesController do
         get :show, :id => act.id, :run_key => ar_run.key
         expect(response).to be_success
         expect(response).to render_template('lightweight_activities/show')
-      end
-    end
-
-    describe "when the run is owned by a user" do
-      let (:user)    { FactoryGirl.create(:user) }
-      before(:each) do
-        # Add the activity to the sequence
-        ar_run.user = user
-        ar_run.save
-      end
-
-      describe "when the request is anonymous" do
-        it 'renders unauthorized run message' do
-          get :show, :id => act.id, :run_key => ar_run.key
-          expect(response).to render_template('runs/unauthorized_run')
-        end
-
-        it 'uses the theme of the activity' do
-          get :show, :id => act.id, :run_key => ar_run.key
-          expect(assigns(:theme)).to eq(theme)
-        end
-
-        it 'uses the project of the activity' do
-          get :show, :id => act.id, :run_key => ar_run.key
-          expect(assigns(:project)).to eq(project)
-        end
-      end
-
-      describe "when the request is from the owner" do
-        before(:each) do
-          sign_in user
-        end
       end
     end
   end

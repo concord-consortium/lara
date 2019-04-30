@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe SequencesController do
-  let(:sequence) { FactoryGirl.create(:sequence, publication_status: 'public') }
+  let(:project) { FactoryGirl.create(:project) }
+  let(:theme) { FactoryGirl.create(:theme) }
+  let(:sequence) { FactoryGirl.create(:sequence,
+    publication_status: 'public',
+    theme: theme,
+    project: project) }
   let(:activity) { FactoryGirl.create(:public_activity) }
 
   it_behaves_like "remote duplicate support" do
@@ -58,6 +63,23 @@ describe SequencesController do
       let(:run_path_helper) { :sequence_with_sequence_run_key_path }
       let(:run_key_param_name) { :sequence_run_key }
       let(:run_variable_name) { :sequence_run }
+    end
+
+    describe "when there is a sequence run that has been run before" do
+      let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: nil) }
+      let(:run) { FactoryGirl.create(:run,
+        sequence: sequence,
+        sequence_run: sequence_run,
+        activity: activity,
+        run_count: 1,
+        user_id: nil) }
+      before(:each) {
+        run
+      }
+      it "redirects to the most recent activity with the run key" do
+        get :show, id: sequence.id, sequence_run_key: sequence_run.key
+        expect(response).to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
+      end
     end
 
   end

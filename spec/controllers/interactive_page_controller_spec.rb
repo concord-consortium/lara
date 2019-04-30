@@ -4,7 +4,9 @@ describe InteractivePagesController do
   # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
 
   render_views
-  let (:act) { FactoryGirl.create(:public_activity) }
+  let(:project) { FactoryGirl.create(:project) }
+  let(:theme) { FactoryGirl.create(:theme) }
+  let (:act) { FactoryGirl.create(:public_activity, project: project, theme: theme ) }
 
   let (:page1) do
     page1 = FactoryGirl.create(:page, :lightweight_activity => act)

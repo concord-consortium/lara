@@ -117,6 +117,19 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         it "returns 403" do
           expect(response).to have_http_status(403)
         end
+
+        it 'renders unauthorized run message' do
+          expect(response).to render_template('runs/unauthorized_run')
+        end
+
+        it 'uses the theme of the resource' do
+          expect(assigns(:theme)).to eq(theme)
+        end
+
+        it 'uses the project of the resource' do
+          expect(assigns(:project)).to eq(project)
+        end
+
       end
     end
 
