@@ -1,8 +1,8 @@
 #
-# This is a docker-compose overlay that connects LARA to the portal via a 
-# proxy container. It assumes the proxy container name is "http-proxy"  
+# This is a docker-compose overlay that connects LARA to the portal via a
+# proxy container. It assumes the proxy container name is "http-proxy"
 #
-# - If you are running dinghy on Mac OS, this is the name the dinghy proxy 
+# - If you are running dinghy on Mac OS, this is the name the dinghy proxy
 #   will have if you followed its documentation here:
 #   https://github.com/codekitchen/dinghy-http-proxy#os-x
 #
@@ -17,7 +17,7 @@
 #       container_name: http-proxy
 #
 # NOTE if your proxy is not configured correctly, oauth will fail to
-# authenticate users against portal. 
+# authenticate users against portal.
 #
 # You will also need to set the PORTAL_HOST environment variable (e.g. using `.env` file)
 # to match the name of the portal host. If you are using the dinghy or dory proxy
@@ -25,10 +25,10 @@
 #   app.[project name of portal].docker
 #   examples: app.portal.docker, app.rigse.docker
 #
-# To setup the client id and client secret you should run this command in 
+# To setup the client id and client secret you should run this command in
 # the portal project:
-#   docker-compose run --rm app rake sso:add_client
-# When asked for "secret" you can use 'unsecure local secret' so you don't 
+#   docker-compose run --rm app bundle exec rake sso:add_client
+# When asked for "secret" you can use 'unsecure local secret' so you don't
 # need to change this file.
 #
 # Also, you need to do a few things on the Portal side:
