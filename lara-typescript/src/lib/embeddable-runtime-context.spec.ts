@@ -1,5 +1,5 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import { IInteractiveState } from "../plugin-api/";
+import { IInteractiveState } from "../plugin-api";
 import * as fetch from "jest-fetch-mock";
 (window as any).fetch = fetch;
 

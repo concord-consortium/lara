@@ -14907,10 +14907,26 @@ window.LARA.InternalAPI = InternalAPI;
 
 /***/ }),
 
-/***/ "./src/internal-api/embeddable-runtime-context.ts":
-/*!********************************************************!*\
-  !*** ./src/internal-api/embeddable-runtime-context.ts ***!
-  \********************************************************/
+/***/ "./src/internal-api/index.ts":
+/*!***********************************!*\
+  !*** ./src/internal-api/index.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
+exports.initPlugin = plugins_1.initPlugin;
+
+
+/***/ }),
+
+/***/ "./src/lib/embeddable-runtime-context.ts":
+/*!***********************************************!*\
+  !*** ./src/lib/embeddable-runtime-context.ts ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14960,33 +14976,17 @@ exports.generateEmbeddableRuntimeContext = function (context) {
 
 /***/ }),
 
-/***/ "./src/internal-api/index.ts":
-/*!***********************************!*\
-  !*** ./src/internal-api/index.ts ***!
-  \***********************************/
+/***/ "./src/lib/plugin-runtime-context.ts":
+/*!*******************************************!*\
+  !*** ./src/lib/plugin-runtime-context.ts ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var plugins_1 = __webpack_require__(/*! ./plugins */ "./src/internal-api/plugins.ts");
-exports.initPlugin = plugins_1.initPlugin;
-
-
-/***/ }),
-
-/***/ "./src/internal-api/plugin-runtime-context.ts":
-/*!****************************************************!*\
-  !*** ./src/internal-api/plugin-runtime-context.ts ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/internal-api/embeddable-runtime-context.ts");
+var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/lib/embeddable-runtime-context.ts");
 var $ = __webpack_require__(/*! jquery */ "jquery");
 exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
     return new Promise(function (resolve, reject) {
@@ -15046,17 +15046,17 @@ exports.generatePluginRuntimeContext = function (context) {
 
 /***/ }),
 
-/***/ "./src/internal-api/plugins.ts":
-/*!*************************************!*\
-  !*** ./src/internal-api/plugins.ts ***!
-  \*************************************/
+/***/ "./src/lib/plugins.ts":
+/*!****************************!*\
+  !*** ./src/lib/plugins.ts ***!
+  \****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_runtime_context_1 = __webpack_require__(/*! ./plugin-runtime-context */ "./src/internal-api/plugin-runtime-context.ts");
+var plugin_runtime_context_1 = __webpack_require__(/*! ./plugin-runtime-context */ "./src/lib/plugin-runtime-context.ts");
 var pluginError = function (e, other) {
     // tslint:disable-next-line:no-console
     console.group("LARA Plugin Error");
@@ -15185,7 +15185,7 @@ __export(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorat
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var plugins_1 = __webpack_require__(/*! ../internal-api/plugins */ "./src/internal-api/plugins.ts");
+var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
 /****************************************************************************
  Register a new external script as `label` with `_class `, e.g.:
  ```

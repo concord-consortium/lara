@@ -1,5 +1,5 @@
 import { IPluginConstructor } from "./types";
-import { registerPlugin as _registerPlugin } from "../internal-api/plugins";
+import { registerPlugin as _registerPlugin } from "../lib/plugins";
 
 /****************************************************************************
  Register a new external script as `label` with `_class `, e.g.:

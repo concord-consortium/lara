@@ -1,1 +1,1 @@
-export { initPlugin } from "./plugins";
+export { initPlugin } from "../lib/plugins";

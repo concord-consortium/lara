@@ -1,6 +1,6 @@
 import * as Plugins from "./plugins";
-import { generatePluginRuntimeContext } from "../internal-api/plugin-runtime-context";
-import { initPlugin } from "../internal-api/plugins";
+import { generatePluginRuntimeContext } from "../lib/plugin-runtime-context";
+import { initPlugin } from "../lib/plugins";
 import * as $ from "jquery";
 
 describe("Plugins", () => {
