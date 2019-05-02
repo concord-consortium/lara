@@ -10,7 +10,9 @@ module.exports = (env, argv) => {
     mode: 'development',
     output: {
       filename: 'lara-typescript.js',
-      library: 'LARA',
+      // Temporarily disabled, as it conflicts with V2 definition. Instead, src/index.ts file exports library
+      // manually by extending LARA namespace. When lara-plugin-api-V2 is removed, this can be uncommented.
+      // library: 'LARA',
       libraryTarget: 'umd'
     },
     performance: { hints: false },

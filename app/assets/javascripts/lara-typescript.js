@@ -3,10 +3,10 @@
 		module.exports = factory(require("jQuery"), require("React"));
 	else if(typeof define === 'function' && define.amd)
 		define(["jQuery", "React"], factory);
-	else if(typeof exports === 'object')
-		exports["LARA"] = factory(require("jQuery"), require("React"));
-	else
-		root["LARA"] = factory(root["jQuery"], root["React"]);
+	else {
+		var a = typeof exports === 'object' ? factory(require("jQuery"), require("React")) : factory(root["jQuery"], root["React"]);
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
 })(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_react__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -14899,6 +14899,10 @@ var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.
 exports.PluginAPI = PluginAPI;
 var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
 exports.InternalAPI = InternalAPI;
+// Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
+// removed and "library": "LARA" option in webpack.config.js should be re-enabled.
+window.LARA.PluginAPI = PluginAPI;
+window.LARA.InternalAPI = InternalAPI;
 
 
 /***/ }),
