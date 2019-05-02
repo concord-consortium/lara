@@ -1,5 +1,5 @@
 import { generatePluginRuntimeContext } from "./plugin-runtime-context";
-import { IClassInfo } from "../api/types";
+import { IClassInfo } from "../plugin-api";
 import * as fetch from "jest-fetch-mock";
 import * as $ from "jquery";
 (window as any).fetch = fetch;

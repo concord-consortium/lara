@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"), require("react"));
+		module.exports = factory(require("jQuery"), require("React"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery", "react"], factory);
+		define(["jQuery", "React"], factory);
 	else if(typeof exports === 'object')
-		exports["LARA_V3"] = factory(require("jQuery"), require("react"));
+		exports["LARA"] = factory(require("jQuery"), require("React"));
 	else
-		root["LARA_V3"] = factory(root["jQuery"], root["react"]);
+		root["LARA"] = factory(root["jQuery"], root["React"]);
 })(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_react__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/lara-plugin-api.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -14885,9 +14885,166 @@ return $.ui.resizable;
 
 /***/ }),
 
-/***/ "./src/api/decorate-content.ts":
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
+exports.PluginAPI = PluginAPI;
+var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
+exports.InternalAPI = InternalAPI;
+
+
+/***/ }),
+
+/***/ "./src/internal-api/embeddable-runtime-context.ts":
+/*!********************************************************!*\
+  !*** ./src/internal-api/embeddable-runtime-context.ts ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var getInteractiveState = function (interactiveStateUrl) {
+    if (!interactiveStateUrl) {
+        return null;
+    }
+    return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
+};
+var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
+    if (!interactiveStateUrl) {
+        return null;
+    }
+    if (!interactiveStatePromise) {
+        interactiveStatePromise = getInteractiveState(interactiveStateUrl);
+    }
+    return interactiveStatePromise.then(function (interactiveState) {
+        try {
+            var rawJSON = JSON.parse(interactiveState.raw_data);
+            if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
+                return rawJSON.lara_options.reporting_url;
+            }
+            return null;
+        }
+        catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error);
+            return null;
+        }
+    });
+};
+exports.generateEmbeddableRuntimeContext = function (context) {
+    return {
+        container: context.container,
+        laraJson: context.laraJson,
+        getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
+        getReportingUrl: function (getInteractiveStatePromise) {
+            return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
+        },
+        clickToPlayId: context.clickToPlayId
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/internal-api/index.ts":
+/*!***********************************!*\
+  !*** ./src/internal-api/index.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugins_1 = __webpack_require__(/*! ./plugins */ "./src/internal-api/plugins.ts");
+exports.initPlugin = plugins_1.initPlugin;
+
+
+/***/ }),
+
+/***/ "./src/internal-api/plugin-runtime-context.ts":
+/*!****************************************************!*\
+  !*** ./src/internal-api/plugin-runtime-context.ts ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/internal-api/embeddable-runtime-context.ts");
+var $ = __webpack_require__(/*! jquery */ "jquery");
+exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: learnerStateSaveUrl,
+            type: "PUT",
+            data: { state: state },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, errText, err) {
+                reject(err);
+            }
+        });
+    });
+};
+var getFirebaseJwt = function (firebaseJwtUrl, appName) {
+    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
+    return fetch(appSpecificUrl, { method: "POST" })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+        try {
+            var token = data.token.split(".")[1];
+            var claimsJson = atob(token);
+            var claims = JSON.parse(claimsJson);
+            return { token: data.token, claims: claims };
+        }
+        catch (error) {
+            throw { message: "Unable to parse JWT Token", error: error };
+        }
+    });
+};
+var getClassInfo = function (classInfoUrl) {
+    if (!classInfoUrl) {
+        return null;
+    }
+    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
+};
+exports.generatePluginRuntimeContext = function (context) {
+    return {
+        name: context.name,
+        url: context.url,
+        pluginId: context.pluginId,
+        authoredState: context.authoredState,
+        learnerState: context.learnerState,
+        container: context.container,
+        runId: context.runId,
+        remoteEndpoint: context.remoteEndpoint,
+        userEmail: context.userEmail,
+        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(context.learnerStateSaveUrl, state); },
+        getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
+        getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
+        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/internal-api/plugins.ts":
 /*!*************************************!*\
-  !*** ./src/api/decorate-content.ts ***!
+  !*** ./src/internal-api/plugins.ts ***!
   \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -14895,45 +15052,7 @@ return $.ui.resizable;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
-/****************************************************************************
- Ask LARA to decorate authored content (text / html).
-
- @param words A list of case-insensitive words to be decorated. Can use limited regex.
- @param replace The replacement string. Can include '$1' representing the matched word.
- @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
- @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
- described above. It's client code responsibility to use this class in the `replace` string.
- ****************************************************************************/
-exports.decorateContent = function (words, replace, wordClass, listeners) {
-    var domClasses = ["question-txt", "help-content", "intro-txt"];
-    var options = {
-        words: words,
-        replace: replace
-    };
-    TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
-};
-
-
-/***/ }),
-
-/***/ "./src/api/plugins.ts":
-/*!****************************!*\
-  !*** ./src/api/plugins.ts ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_runtime_context_1 = __webpack_require__(/*! ../helpers/plugin-runtime-context */ "./src/helpers/plugin-runtime-context.ts");
-/** @hidden Note, we call these `classes` but any constructor function will do. */
-var pluginClasses = {};
-/** @hidden */
-var plugins = [];
-/** @hidden */
-var pluginContext = {};
+var plugin_runtime_context_1 = __webpack_require__(/*! ./plugin-runtime-context */ "./src/internal-api/plugin-runtime-context.ts");
 var pluginError = function (e, other) {
     // tslint:disable-next-line:no-console
     console.group("LARA Plugin Error");
@@ -14944,8 +15063,9 @@ var pluginError = function (e, other) {
     // tslint:disable-next-line:no-console
     console.groupEnd();
 };
+/** @hidden Note, we call these `classes` but any constructor function will do. */
+var pluginClasses = {};
 /****************************************************************************
- @hidden
  Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
  This method is called to initialize the plugin.
  Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
@@ -14953,13 +15073,10 @@ var pluginError = function (e, other) {
  @param context Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
  ****************************************************************************/
 exports.initPlugin = function (label, context) {
-    var constructor = pluginClasses[label];
-    var plugin = null;
-    if (typeof constructor === "function") {
+    var Constructor = pluginClasses[label];
+    if (typeof Constructor === "function") {
         try {
-            plugin = new constructor(plugin_runtime_context_1.generatePluginRuntimeContext(context));
-            plugins.push(plugin);
-            pluginContext[context.pluginId] = context;
+            var plugin = new Constructor(plugin_runtime_context_1.generatePluginRuntimeContext(context));
         }
         catch (e) {
             pluginError(e, context);
@@ -15001,10 +15118,90 @@ exports.registerPlugin = function (label, _class) {
 
 /***/ }),
 
-/***/ "./src/api/popup.ts":
-/*!**************************!*\
-  !*** ./src/api/popup.ts ***!
-  \**************************/
+/***/ "./src/plugin-api/decorate-content.ts":
+/*!********************************************!*\
+  !*** ./src/plugin-api/decorate-content.ts ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
+/****************************************************************************
+ Ask LARA to decorate authored content (text / html).
+
+ @param words A list of case-insensitive words to be decorated. Can use limited regex.
+ @param replace The replacement string. Can include '$1' representing the matched word.
+ @param wordClass CSS class used in replacement string. Necessary only if `listeners` are provided too.
+ @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
+ described above. It's client code responsibility to use this class in the `replace` string.
+ ****************************************************************************/
+exports.decorateContent = function (words, replace, wordClass, listeners) {
+    var domClasses = ["question-txt", "help-content", "intro-txt"];
+    var options = {
+        words: words,
+        replace: replace
+    };
+    TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
+};
+
+
+/***/ }),
+
+/***/ "./src/plugin-api/index.ts":
+/*!*********************************!*\
+  !*** ./src/plugin-api/index.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(/*! ./plugins */ "./src/plugin-api/plugins.ts"));
+__export(__webpack_require__(/*! ./sidebar */ "./src/plugin-api/sidebar.ts"));
+__export(__webpack_require__(/*! ./popup */ "./src/plugin-api/popup.ts"));
+__export(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorate-content.ts"));
+
+
+/***/ }),
+
+/***/ "./src/plugin-api/plugins.ts":
+/*!***********************************!*\
+  !*** ./src/plugin-api/plugins.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugins_1 = __webpack_require__(/*! ../internal-api/plugins */ "./src/internal-api/plugins.ts");
+/****************************************************************************
+ Register a new external script as `label` with `_class `, e.g.:
+ ```
+ registerPlugin('debugger', Dubugger)
+ ```
+ @param label The identifier of the script.
+ @param _class The Plugin class/constructor being associated with the identifier.
+ @returns `true` if plugin was registered correctly.
+ ***************************************************************************/
+exports.registerPlugin = function (label, _class) {
+    return plugins_1.registerPlugin(label, _class);
+};
+
+
+/***/ }),
+
+/***/ "./src/plugin-api/popup.ts":
+/*!*********************************!*\
+  !*** ./src/plugin-api/popup.ts ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15119,10 +15316,10 @@ exports.addPopup = function (_options) {
 
 /***/ }),
 
-/***/ "./src/api/sidebar.ts":
-/*!****************************!*\
-  !*** ./src/api/sidebar.ts ***!
-  \****************************/
+/***/ "./src/plugin-api/sidebar.ts":
+/*!***********************************!*\
+  !*** ./src/plugin-api/sidebar.ts ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15273,150 +15470,6 @@ exports.addSidebar = function (_options) {
 
 /***/ }),
 
-/***/ "./src/helpers/embeddable-runtime-context.ts":
-/*!***************************************************!*\
-  !*** ./src/helpers/embeddable-runtime-context.ts ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var getInteractiveState = function (interactiveStateUrl) {
-    if (!interactiveStateUrl) {
-        return null;
-    }
-    return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
-};
-var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
-    if (!interactiveStateUrl) {
-        return null;
-    }
-    if (!interactiveStatePromise) {
-        interactiveStatePromise = getInteractiveState(interactiveStateUrl);
-    }
-    return interactiveStatePromise.then(function (interactiveState) {
-        try {
-            var rawJSON = JSON.parse(interactiveState.raw_data);
-            if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
-                return rawJSON.lara_options.reporting_url;
-            }
-            return null;
-        }
-        catch (error) {
-            // tslint:disable-next-line:no-console
-            console.error(error);
-            return null;
-        }
-    });
-};
-exports.generateEmbeddableRuntimeContext = function (context) {
-    return {
-        container: context.container,
-        laraJson: context.laraJson,
-        getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
-        getReportingUrl: function (getInteractiveStatePromise) {
-            return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
-        },
-        clickToPlayId: context.clickToPlayId
-    };
-};
-
-
-/***/ }),
-
-/***/ "./src/helpers/plugin-runtime-context.ts":
-/*!***********************************************!*\
-  !*** ./src/helpers/plugin-runtime-context.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/helpers/embeddable-runtime-context.ts");
-var $ = __webpack_require__(/*! jquery */ "jquery");
-exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: learnerStateSaveUrl,
-            type: "PUT",
-            data: { state: state },
-            success: function (data) {
-                resolve(data);
-            },
-            error: function (jqXHR, errText, err) {
-                reject(err);
-            }
-        });
-    });
-};
-var getFirebaseJwt = function (firebaseJwtUrl, appName) {
-    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
-    return fetch(appSpecificUrl, { method: "POST" })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-        try {
-            var token = data.token.split(".")[1];
-            var claimsJson = atob(token);
-            var claims = JSON.parse(claimsJson);
-            return { token: data.token, claims: claims };
-        }
-        catch (error) {
-            throw { message: "Unable to parse JWT Token", error: error };
-        }
-    });
-};
-var getClassInfo = function (classInfoUrl) {
-    if (!classInfoUrl) {
-        return null;
-    }
-    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
-};
-exports.generatePluginRuntimeContext = function (context) {
-    return {
-        name: context.name,
-        url: context.url,
-        pluginId: context.pluginId,
-        authoredState: context.authoredState,
-        learnerState: context.learnerState,
-        container: context.container,
-        runId: context.runId,
-        remoteEndpoint: context.remoteEndpoint,
-        userEmail: context.userEmail,
-        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(context.learnerStateSaveUrl, state); },
-        getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
-        getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
-        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
-    };
-};
-
-
-/***/ }),
-
-/***/ "./src/lara-plugin-api.ts":
-/*!********************************!*\
-  !*** ./src/lara-plugin-api.ts ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(/*! ./api/plugins */ "./src/api/plugins.ts"));
-__export(__webpack_require__(/*! ./api/sidebar */ "./src/api/sidebar.ts"));
-__export(__webpack_require__(/*! ./api/popup */ "./src/api/popup.ts"));
-__export(__webpack_require__(/*! ./api/decorate-content */ "./src/api/decorate-content.ts"));
-
-
-/***/ }),
-
 /***/ "jquery":
 /*!*************************!*\
   !*** external "jQuery" ***!
@@ -15430,7 +15483,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_jquery__;
 
 /***/ "react":
 /*!************************!*\
-  !*** external "react" ***!
+  !*** external "React" ***!
   \************************/
 /*! no static exports found */
 /***/ (function(module, exports) {

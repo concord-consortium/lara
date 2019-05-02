@@ -27,7 +27,7 @@
 //= require modal-dialog
 //= require check-answer
 //= require lara-plugin-api-V2
-//= require lara-plugin-api
+//= require lara-typescript
 //= require ./common.js
 //= require edit_sequence
 //= require login_menu

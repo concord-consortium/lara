@@ -1,17 +1,13 @@
 {
-  "name": "@concord-consortium/lara-plugin-api",
-  "version": "3.0.0-pre.7",
-  "description": "LARA Plugin API",
-  "main": "./dist/lara-plugin-api.js",
-  "types": "./dist/lara-plugin-api.d.ts",
-  "files": [
-    "dist",
-    "docs"
-  ],
+  "name": "lara-typescript",
+  "version": "0.0.1",
+  "description": "LARA TypeScript code",
   "scripts": {
+    "publish:plugin-api": "npm run build && cd dist/plugin-api && npm publish --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && cp ./dist/*.js ../app/assets/javascripts/",
-    "build:docs": "typedoc --theme markdown --readme DOC-INTRO.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs ./src/lara-plugin-api.ts ./src/api/* && cp -R ./docs ../docs/lara-plugin-api/",
+    "build:docs": "npm-run-all build:docs:plugin-api",
+    "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api/* && cp -R ./docs/lara-plugin-api ../docs/lara-plugin-api/",
     "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
@@ -62,6 +58,7 @@
     "@types/jqueryui": "^1.12.7",
     "@types/react": "^16.8.13",
     "babel-core": "^6.26.3",
+    "copy-webpack-plugin": "^5.0.3",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "jest": "^23.6.0",
     "jest-fetch-mock": "^1.7.5",

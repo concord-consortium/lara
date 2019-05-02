@@ -1,5 +1,6 @@
 import * as Plugins from "./plugins";
-import { generatePluginRuntimeContext } from "../helpers/plugin-runtime-context";
+import { generatePluginRuntimeContext } from "../internal-api/plugin-runtime-context";
+import { initPlugin } from "../internal-api/plugins";
 import * as $ from "jquery";
 
 describe("Plugins", () => {
@@ -30,7 +31,7 @@ describe("Plugins", () => {
     beforeAll(() => {
       // Implicit test of registerPlugin
       Plugins.registerPlugin(name, pluginConstructor);
-      Plugins.initPlugin(name, context);
+      initPlugin(name, context);
     });
 
     it("should call the plugins constructor with the config", () => {

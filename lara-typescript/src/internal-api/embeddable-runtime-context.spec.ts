@@ -1,7 +1,6 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import { IInteractiveState } from "../api/types";
+import { IInteractiveState } from "../plugin-api/";
 import * as fetch from "jest-fetch-mock";
-import {run} from "tslint/lib/runner";
 (window as any).fetch = fetch;
 
 describe("Embeddable runtime context helper", () => {

@@ -4,7 +4,7 @@
 
 #### Setup and webpack configuration
 
-LARA API will be available under `window.LARA_V3` object / namespace once the plugin is initialized by LARA. 
+LARA API will be available under `window.LARA.PluginAPI` object / namespace once the plugin is initialized by LARA. 
 
 However, if the plugin is implemented using TypeScript, the best way to get type checking and hints in your IDE is to 
 install [LARA Plugin API NPM package](https://www.npmjs.com/package/@concord-consortium/lara-plugin-api):
@@ -14,14 +14,14 @@ npm i --save-dev @concord-consortium/lara-plugin-api
 ```
 
 Then, you need to configure [webpack externals](https://webpack.js.org/configuration/externals/), so webpack does not 
-bundle Plugin API code but looks for global `window.LARA_V3` object instead (and do the same for React if the plugin 
-uses it).
+bundle Plugin API code but looks for global `window.LARA.PluginAPI` object instead (and do the same for React if the 
+plugin uses it).
 
 Example of **webpack.config.js**:
 ```
   externals: {
-    // LARA Plugin API implementation is exported to the window.LARA_V3 namespace.
-    '@concord-consortium/lara-plugin-api': 'LARA_V3',
+    // LARA Plugin API implementation is exported to the window.LARA.PluginAPI namespace.
+    '@concord-consortium/lara-plugin-api': 'LARA.PluginAPI',
     // Use React and ReactDOM provided by LARA, do not bundle an own copy.  
     'react': 'React',
     'react-dom': 'ReactDOM',

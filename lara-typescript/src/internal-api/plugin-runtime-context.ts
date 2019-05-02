@@ -1,6 +1,6 @@
 import {
   IPluginRuntimeContext, IJwtResponse, IClassInfo
-} from "../api/types";
+} from "../plugin-api";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import * as $ from "jquery";
 
