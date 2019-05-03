@@ -24,7 +24,7 @@ Data passed to ClickToPlayStarted event handlers.
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:168](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L168)*
+*Defined in [types.ts:168](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L168)*
 
 Interactive container of the interactive that was just started.
 

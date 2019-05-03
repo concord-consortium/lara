@@ -27,7 +27,7 @@
 
 **● clickToPlayId**: *`string` \| `null`*
 
-*Defined in [types.ts:84](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L84)*
+*Defined in [types.ts:84](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L84)*
 
 DOM id of click to play overlay if enabled.
 
@@ -40,7 +40,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:47](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L47)*
+*Defined in [types.ts:47](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L47)*
 
 Embeddable container.
 
@@ -51,7 +51,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [types.ts:68](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L68)*
+*Defined in [types.ts:68](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L68)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -67,7 +67,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [types.ts:78](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L78)*
+*Defined in [types.ts:78](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L78)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -91,7 +91,7 @@ ___
 
 **● laraJson**: *`any`*
 
-*Defined in [types.ts:66](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L66)*
+*Defined in [types.ts:66](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L66)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -117,7 +117,7 @@ ___
 
 **● onClickToPlayStarted**: *`function`*
 
-*Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/types.ts#L92)*
+*Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L92)*
 
 Function that subscribes provided handler to event that gets called when the interactive with click to play mode is started by the user. Note that it will work only if given embeddable is an interactive and it has click to play mode enabled by author.
 
