@@ -82,6 +82,14 @@ export interface IEmbeddableRuntimeContext {
    interactive status, including click to play state.
    ****************************************************************************/
   clickToPlayId: string | null;
+  /****************************************************************************
+   Function that subscribes provided handler to event that gets called when the interactive with click to play mode
+   is started by the user. Note that it will work only if given embeddable is an interactive and it has click to play
+   mode enabled by author.
+
+   @param handler Event handler function.
+   ****************************************************************************/
+  onClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => void;
 }
 
 export interface IPortalClaims {
@@ -135,7 +143,32 @@ export interface IInteractiveState {
 }
 
 /**
+ * That's the minimal set of properties that needs to be provided.
+ * All the other properties provides go to the `extra` hash.
+ */
+export interface ILogData {
+  event: string;
+  event_value?: any;
+  parameters?: any;
+}
+
+/**
  * Log event handler.
  * @param logData Data logged by the code.
  */
-export type ILogEventHandler = (logData: any) => void;
+export type ILogEventHandler = (event: ILogData) => void;
+
+/**
+ * Data passed to ClickToPlayStarted event handlers.
+ */
+export interface IClickToPlayStartedEvent {
+  /**
+   * Interactive container of the interactive that was just started.
+   */
+  container: HTMLElement;
+}
+
+/**
+ * ClickToPlayStarted event handler.
+ */
+export type IClickToPlayStartedEventHandler = (event: IClickToPlayStartedEvent) => void;

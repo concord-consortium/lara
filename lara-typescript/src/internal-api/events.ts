@@ -1,5 +1,6 @@
-import { emitLog } from "../lib/events";
+import { emitLog, emitClickToPlayStarted } from "../lib/events";
 
 export const events = {
-  emitLog
+  emitLog,
+  emitClickToPlayStarted
 };

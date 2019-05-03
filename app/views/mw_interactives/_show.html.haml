@@ -66,6 +66,10 @@
     function startInteractive(clickToPlayElem) {
       var $clickToPlay = $(clickToPlayElem);
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
+      var $embeddableContainer = $clickToPlay.parents('.embeddable-container');
+      LARA.InternalAPI.events.emitClickToPlayStarted({
+        container: $embeddableContainer[0]
+      });
       $clickToPlay.css('display', 'none');
       $clickToPlay.removeClass('shown');
       $('##{dom_id_for(interactive, :interactive_image)}').css('display', 'none');

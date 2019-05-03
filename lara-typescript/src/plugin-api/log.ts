@@ -1,12 +1,4 @@
-/**
- * That's the minimal set of properties that needs to be provided.
- * All the other properties provides go to the `extra` hash.
- */
-export interface ILogData {
-  event: string;
-  event_value?: any;
-  parameters?: any;
-}
+import { ILogData } from "./types";
 
 /**
  * Logs event to the CC Log Server. Note that logging must be enabled for a given activity.

@@ -15902,7 +15902,8 @@ window.LARA.InternalAPI = InternalAPI;
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
 exports.events = {
-    emitLog: events_1.emitLog
+    emitLog: events_1.emitLog,
+    emitClickToPlayStarted: events_1.emitClickToPlayStarted
 };
 
 
@@ -15938,6 +15939,7 @@ __export(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"));
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var events_1 = __webpack_require__(/*! ./events */ "./src/lib/events.ts");
 var getInteractiveState = function (interactiveStateUrl) {
     if (!interactiveStateUrl) {
         return null;
@@ -15974,7 +15976,15 @@ exports.generateEmbeddableRuntimeContext = function (context) {
         getReportingUrl: function (getInteractiveStatePromise) {
             return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
         },
-        clickToPlayId: context.clickToPlayId
+        clickToPlayId: context.clickToPlayId,
+        onClickToPlayStarted: function (handler) {
+            // Add generic listener and filter events to limit them just to this given embeddable.
+            events_1.onClickToPlayStarted(function (event) {
+                if (event.container === context.container) {
+                    handler(event);
+                }
+            });
+        }
     };
 };
 
@@ -16003,6 +16013,15 @@ exports.onLog = function (handler) {
 };
 exports.offLog = function (handler) {
     emitter.off("log", handler);
+};
+exports.emitClickToPlayStarted = function (event) {
+    emitter.emit("clickToPlayStarted", event);
+};
+exports.onClickToPlayStarted = function (handler) {
+    emitter.on("clickToPlayStarted", handler);
+};
+exports.offClickToPlayStarted = function (handler) {
+    emitter.off("clickToPlayStarted", handler);
 };
 
 
@@ -16208,7 +16227,16 @@ exports.events = {
     /**
      * Removes log event handler.
      */
-    offLog: function (handler) { return events_1.offLog(handler); }
+    offLog: function (handler) { return events_1.offLog(handler); },
+    /**
+     * Subscribes to ClickToPlayStarted events. Gets called when any interactive that has click to play mode enabled
+     * is started by the user.
+     */
+    onClickToPlayStarted: function (handler) { return events_1.onClickToPlayStarted(handler); },
+    /**
+     * Removes ClickToPlayStarted event handler.
+     */
+    offClickToPlayStarted: function (handler) { return events_1.offClickToPlayStarted(handler); },
 };
 
 

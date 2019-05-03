@@ -31,7 +31,7 @@
 
 **● content**: *`string` \| `HTMLElement`*
 
-*Defined in [sidebar.ts:10](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L10)*
+*Defined in [sidebar.ts:10](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L10)*
 
 ___
 <a id="handle"></a>
@@ -40,7 +40,7 @@ ___
 
 **● handle**: *`undefined` \| `string`*
 
-*Defined in [sidebar.ts:14](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L14)*
+*Defined in [sidebar.ts:14](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L14)*
 
 Text displayed on the sidebar handle.
 
@@ -51,7 +51,7 @@ ___
 
 **● handleColor**: *`undefined` \| `string`*
 
-*Defined in [sidebar.ts:15](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L15)*
+*Defined in [sidebar.ts:15](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L15)*
 
 ___
 <a id="icon"></a>
@@ -60,7 +60,7 @@ ___
 
 **● icon**: *`string` \| `HTMLElement`*
 
-*Defined in [sidebar.ts:12](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L12)*
+*Defined in [sidebar.ts:12](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L12)*
 
 Icon can be 'default' (arrow) or an HTML element.
 
@@ -71,7 +71,7 @@ ___
 
 **● onClose**: *`undefined` \| `function`*
 
-*Defined in [sidebar.ts:22](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L22)*
+*Defined in [sidebar.ts:22](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L22)*
 
 ___
 <a id="onopen"></a>
@@ -80,7 +80,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
-*Defined in [sidebar.ts:21](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L21)*
+*Defined in [sidebar.ts:21](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L21)*
 
 ___
 <a id="padding"></a>
@@ -89,7 +89,7 @@ ___
 
 **● padding**: *`undefined` \| `number`*
 
-*Defined in [sidebar.ts:20](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L20)*
+*Defined in [sidebar.ts:20](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L20)*
 
 ___
 <a id="titlebar"></a>
@@ -98,7 +98,7 @@ ___
 
 **● titleBar**: *`undefined` \| `string`*
 
-*Defined in [sidebar.ts:17](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L17)*
+*Defined in [sidebar.ts:17](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L17)*
 
 Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
 
@@ -109,7 +109,7 @@ ___
 
 **● titleBarColor**: *`undefined` \| `string`*
 
-*Defined in [sidebar.ts:18](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L18)*
+*Defined in [sidebar.ts:18](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L18)*
 
 ___
 <a id="width"></a>
@@ -118,7 +118,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
-*Defined in [sidebar.ts:19](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/sidebar.ts#L19)*
+*Defined in [sidebar.ts:19](https://github.com/concord-consortium/lara/blob/4998d73d/lara-typescript/src/plugin-api/sidebar.ts#L19)*
 
 ___
 
