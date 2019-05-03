@@ -47,6 +47,7 @@ module.exports = (env, argv) => {
       new ForkTsCheckerWebpackPlugin(),
       new CopyPlugin([
         { from: 'src/plugin-api/package.json', to: 'plugin-api' },
+        { from: 'src/plugin-api/README.md', to: 'plugin-api' },
       ]),
     ],
     externals: {

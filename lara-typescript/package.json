@@ -7,7 +7,7 @@
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && cp ./dist/*.js ../app/assets/javascripts/",
     "build:docs": "npm-run-all build:docs:plugin-api",
-    "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api/* && cp -R ./docs/lara-plugin-api ../docs/lara-plugin-api/",
+    "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api && cp -R ./docs/lara-plugin-api ../docs/lara-plugin-api/",
     "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
@@ -80,6 +80,7 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "@concord-consortium/text-decorator": "^1.0.2"
+    "@concord-consortium/text-decorator": "^1.0.2",
+    "eventemitter2": "^5.0.1"
   }
 }

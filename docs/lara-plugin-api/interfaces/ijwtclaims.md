@@ -26,7 +26,7 @@
 
 **● claims**: *[IPortalClaims](iportalclaims.md)*
 
-*Defined in [types.ts:99](https://github.com/concord-consortium/lara/blob/80a682ff/lara-typescript/src/plugin-api/types.ts#L99)*
+*Defined in [types.ts:99](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/types.ts#L99)*
 
 ___
 <a id="class_info_url"></a>
@@ -35,7 +35,7 @@ ___
 
 **● class_info_url**: *`string`*
 
-*Defined in [types.ts:98](https://github.com/concord-consortium/lara/blob/80a682ff/lara-typescript/src/plugin-api/types.ts#L98)*
+*Defined in [types.ts:98](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/types.ts#L98)*
 
 ___
 <a id="domain"></a>
@@ -44,7 +44,7 @@ ___
 
 **● domain**: *`string`*
 
-*Defined in [types.ts:95](https://github.com/concord-consortium/lara/blob/80a682ff/lara-typescript/src/plugin-api/types.ts#L95)*
+*Defined in [types.ts:95](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/types.ts#L95)*
 
 ___
 <a id="externalid"></a>
@@ -53,7 +53,7 @@ ___
 
 **● externalId**: *`number`*
 
-*Defined in [types.ts:97](https://github.com/concord-consortium/lara/blob/80a682ff/lara-typescript/src/plugin-api/types.ts#L97)*
+*Defined in [types.ts:97](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/types.ts#L97)*
 
 ___
 <a id="returnurl"></a>
@@ -62,7 +62,7 @@ ___
 
 **● returnUrl**: *`string`*
 
-*Defined in [types.ts:96](https://github.com/concord-consortium/lara/blob/80a682ff/lara-typescript/src/plugin-api/types.ts#L96)*
+*Defined in [types.ts:96](https://github.com/concord-consortium/lara/blob/c6470a88/lara-typescript/src/plugin-api/types.ts#L96)*
 
 ___
 

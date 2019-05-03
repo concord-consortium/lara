@@ -133,3 +133,9 @@ export interface IInteractiveState {
   interactive_state_url: string;
   activity_name: string;
 }
+
+/**
+ * Log event handler.
+ * @param logData Data logged by the code.
+ */
+export type ILogEventHandler = (logData: any) => void;
