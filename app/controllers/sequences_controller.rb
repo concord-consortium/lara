@@ -209,7 +209,9 @@ class SequencesController < ApplicationController
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
       # If sequence is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
-      @sequence_run.disable_collaboration if portal.valid?
+      if portal.valid?
+        @sequence_run.disable_collaboration
+      end
     end
   end
 
