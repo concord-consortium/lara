@@ -90,6 +90,24 @@ describe LightweightActivitiesController do
             get :show, :id => act.id
             expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
           end
+
+          describe "when the URL has portal properties" do
+            before(:each) do
+              ar_run.remote_endpoint = 'https://example.com'
+              ar_run.remote_id = 1
+              ar_run.user = user
+              ar_run.save
+              sign_in user
+            end
+
+            subject { get :show, id: act.id,
+               returnUrl: 'https://example.com', externalId: 1 }
+
+            it "should redirect to the run page" do
+              expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
+            end
+          end
+
         end
 
         describe 'when a collaborative activity has a collaborators_data_url param' do
@@ -110,24 +128,6 @@ describe LightweightActivitiesController do
             expect(ar_run).to receive(:disable_collaboration)
             get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
           end
-        end
-      end
-
-      describe "when the URL has portal properties" do
-        before(:each) do
-          ar_run.remote_endpoint = 'https://example.com'
-          ar_run.remote_id = 1
-          ar_run.user = user
-          ar_run.save
-          sign_in user
-        end
-
-        subject { get :show, id: act.id,
-           returnUrl: 'https://example.com', externalId: 1 }
-
-        it "should redirect to the run page" do
-          # page_with_run_path(@activity.id, @run.last_page.id, @run)
-          expect(subject).to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
         end
       end
     end

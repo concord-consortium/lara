@@ -41,11 +41,9 @@ class LightweightActivitiesController < ApplicationController
     raise_error_if_not_authorized_run(@run)
 
     if params[:print]
-      if @run.sequence
-        redirect_to sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
-      else
-        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
-      end
+      # we pass all query_parameters through so the print param is passed too
+      # however, it might be better to just pass the print param explictly
+      redirect_to runnable_single_page_activity_path(@activity, request.query_parameters) and return
     end
 
     # redirect if this run has a sequence and sequences is not part of the path
@@ -54,11 +52,7 @@ class LightweightActivitiesController < ApplicationController
     end
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-      if @run.sequence
-        redirect_to sequence_activity_single_page_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
-      else
-        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
-      end
+      redirect_to runnable_single_page_activity_path(@activity) and return
     end
 
     # this run count seems to be pretty useless it might be incremented mutliple times
@@ -109,11 +103,7 @@ class LightweightActivitiesController < ApplicationController
   def single_page
     authorize! :read, @activity
     if !params[:run_key]
-      if @sequence
-        redirect_to sequence_activity_single_page_with_run_path(@sequence, @activity, @run.key, request.query_parameters) and return
-      else
-        redirect_to activity_single_page_with_run_path(@activity, @run.key, request.query_parameters) and return
-      end
+      redirect_to runnable_single_page_activity_path(@activity) and return
     end
 
     setup_single_page_show

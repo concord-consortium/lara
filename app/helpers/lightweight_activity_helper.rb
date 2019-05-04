@@ -35,6 +35,14 @@ module LightweightActivityHelper
     end
   end
 
+  def runnable_single_page_activity_path(activity, opts={})
+    if @sequence
+      append_white_list_params sequence_activity_single_page_with_run_path(@sequence, @activity, @run.key, opts)
+    else
+      append_white_list_params activity_single_page_with_run_path(@activity, @run.key, opts)
+    end
+  end
+
   def activity_name_for_menu
     results = t("ACTIVITY")
     if @sequence
