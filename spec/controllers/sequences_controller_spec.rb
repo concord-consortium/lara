@@ -51,13 +51,9 @@ describe SequencesController do
       expect(assigns(:sequence)).to eq(sequence)
     end
 
-    it 'assigns a project and a theme' do
-      get :show, {:id => sequence.to_param}
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).not_to be_nil
-    end
-
     it_behaves_like "runnable resource launchable by the portal", SequenceRun do
+      let(:action) { :show }
+      let(:resource_template) { 'sequences/show' }
       let(:base_params) { {id: sequence.id} }
       let(:base_factory_params) { {sequence_id: sequence.id}}
       let(:run_path_helper) { :sequence_with_sequence_run_key_path }

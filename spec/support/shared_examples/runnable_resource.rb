@@ -1,25 +1,42 @@
-# These shared examples are intended to be used for 5 show actions:
+# These shared examples are used for 6 show actions:
 # /sequences/:id
 # /sequences/:sequence_id/activities/:id
 # /sequences/:sequence_id/activities/:activity_id/pages/:id
 # /activities/:id
+# /activities/:id/single_page
 # /activities/:activity_id/pages/:id
 
 # the /sequences/:id is the only one that works directly with sequence runs
 # the rest work with activity runs and if they are part of sequence they will indirectly
 # work with sequence runs
-# there has to be a lot of variables to handle the sequence and activity run case
-# it might not be worth the trouble, but it does make sure that any new features of runs
-# should get added to sequence runs (if the tests get updated)
 
-# this should be included in a controller and needs the following context
-# base_params: the params passed to get as well as any route helpers
+# this should be included in a controller test and needs the following context
+#
+# The type of run being tested should be passed as an argument currently supported are
+#   SequenceRun and Run
+#
+# The following variables should be defined with let statements
+#
+# action: the controller action being tested
+# resource_template: the template that should be rendered on success
+# base_params: the base parameters of the request so a simple request will look like:
+#     get action, base_params
+#   these base_params are also passed to route helpers to construct redirect paths
+# base_factory_params: parameters passed to FactoryGirl to create an instance of the
+#   run type
+# run_path_helper: the name of the route helper for constructing a path to the resource
+#   with a run key.
+# run_key_param_name: the name of the parameter passed to this run_path_helper to
+#   construct the run
+# run_variable_name: the name of the instance variable assigned by the controller for
+#   the run
+
 shared_examples "runnable launched without run_key" do |run_type|
   let (:running_user) { FactoryGirl.create(:user) }
   let (:run_factory_type) { run_type.model_name.underscore.to_sym}
   describe "when the user is anonymous" do
     it "redirects with a #{run_type} key in the URL" do
-      result = get :show, base_params
+      result = get action, base_params
       redirect_params = base_params.clone
       redirect_params[run_key_param_name] = assigns[run_variable_name]
       expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -39,7 +56,7 @@ shared_examples "runnable launched without run_key" do |run_type|
         # we save the new_run during creation because sequence runs create
         # activity runs on initialization and that requires a saved model
         expect(run_type).to receive(:create!) { new_run.save; new_run }
-        get :show, base_params
+        get action, base_params
         expect(assigns[run_variable_name]).to eq(new_run)
       end
     end
@@ -60,7 +77,7 @@ shared_examples "runnable launched without run_key" do |run_type|
       }
       describe "when this #{run_type} has no portal properties" do
         it "finds this existing #{run_type}" do
-          get :show, base_params
+          get action, base_params
           expect(assigns[run_variable_name]).to eq(owned_run)
         end
       end
@@ -70,7 +87,7 @@ shared_examples "runnable launched without run_key" do |run_type|
 
         it "creates a new #{run_type}, it does not use the existing #{run_type}" do
           expect(run_type).to receive(:create!) { new_run.save; new_run }
-          get :show, base_params
+          get action, base_params
           expect(assigns[run_variable_name]).to eq(new_run)
         end
       end
@@ -86,7 +103,7 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
       params_with_invalid_run_key = base_params.clone()
       params_with_invalid_run_key[run_key_param_name] = UUIDTools::UUID.random_create.to_s
       expect{
-        get :show, params_with_invalid_run_key
+        get action, params_with_invalid_run_key
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -103,12 +120,25 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
 
     describe "when the user is anonymous" do
       before(:each){
-        get :show, params_with_existing_run_key
+        get action, params_with_existing_run_key
       }
       describe "when this #{run_type} is anonymous" do
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: nil) }
         it "finds this existing #{run_type}" do
           expect(assigns[run_variable_name]).to eq(existing_run)
+        end
+
+        it 'returns success' do
+          expect(response).to be_success
+        end
+
+        it 'renders the resource' do
+          expect(response).to render_template(resource_template)
+        end
+
+        it 'assigns a project and a theme' do
+          expect(assigns(:project)).not_to be_nil
+          expect(assigns(:theme)).not_to be_nil
         end
       end
       describe "but the #{run_type} is owned by a user" do
@@ -136,12 +166,26 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
     describe "when a user is signed in" do
       before(:each) do
         sign_in running_user
-        get :show, params_with_existing_run_key
+        get action, params_with_existing_run_key
       end
       describe "when this #{run_type} is anonymous" do
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: nil) }
         it "returns 403" do
           expect(response).to have_http_status(403)
+        end
+        describe "when the current user is an admin" do
+          let (:running_user) { FactoryGirl.create(:admin) }
+          it "finds this existing #{run_type}" do
+            expect(assigns[run_variable_name]).to eq(existing_run)
+          end
+
+          it 'returns success' do
+            expect(response).to be_success
+          end
+
+          it 'renders the resource' do
+            expect(response).to render_template(resource_template)
+          end
         end
       end
       describe "when the #{run_type} is owned by a different user" do
@@ -150,12 +194,35 @@ shared_examples "runnable launched with run_key" do |run_type, portal_launchable
         it "returns 403" do
           expect(response).to have_http_status(403)
         end
+
+        describe "when the current user is an admin" do
+          let (:running_user) { FactoryGirl.create(:admin) }
+          it "finds this existing #{run_type}" do
+            expect(assigns[run_variable_name]).to eq(existing_run)
+          end
+
+          it 'returns success' do
+            expect(response).to be_success
+          end
+
+          it 'renders the resource' do
+            expect(response).to render_template(resource_template)
+          end
+        end
       end
       describe "when the #{run_type} is owned by the current user" do
         let (:existing_run_factory_params) { base_factory_params.merge(user_id: running_user.id) }
         describe "when this #{run_type} has no portal properties" do
           it "finds this existing #{run_type}" do
             expect(assigns[run_variable_name]).to eq(existing_run)
+          end
+
+          it 'returns success' do
+            expect(response).to be_success
+          end
+
+          it 'renders the resource' do
+            expect(response).to render_template(resource_template)
           end
         end
         describe "when this existing #{run_type} has portal properties" do
@@ -179,12 +246,28 @@ shared_examples "runnable launched with portal parameters" do |run_type|
   let (:run_factory_portal_params) {
     { remote_endpoint: 'https:/example.com', remote_id: 1 }
   }
+
+  # this test is applicable to every route in the application but it is particularly
+  # important here
+  describe "when called with a domain parameter" do
+    let(:domain)    { 'http://portal.org/' }
+    let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
+    it "should force a new user session" do
+      expect(controller).to receive(:sign_out).and_return(:true)
+
+      # the order of the params gets reversed so we are just adding one fakeParam here
+      # instead of the two normal portal params
+      get action, base_params.merge(domain: domain, fakeParam: 'testing-pass-through')
+      expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
+    end
+  end
+
   describe "when the user is anonymous" do
     # perhaps this should be a 403, but perhaps we don't want people thinking they
     # can fish for valid portal properties
     it "returns 404" do
       expect {
-        get :show, request_params_with_portal_properties
+        get action, request_params_with_portal_properties
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
@@ -211,7 +294,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       }
 
       it "redirects with a #{run_type} key in the URL" do
-        result = get :show, request_params_with_portal_properties
+        result = get action, request_params_with_portal_properties
         redirect_params = base_params.clone
         redirect_params[run_key_param_name] = assigns[run_variable_name]
         expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -219,7 +302,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
 
       it "creates a #{run_type}" do
         expect(run_type).to receive(:create!) { new_run.save; new_run }
-        get :show, request_params_with_portal_properties
+        get action, request_params_with_portal_properties
         expect(assigns[run_variable_name]).to eq(new_run)
       end
     end
@@ -231,7 +314,7 @@ shared_examples "runnable launched with portal parameters" do |run_type|
       }
       describe "when this #{run_type} is owned by the current user" do
         it "redirects to a URL with the #{run_type} key" do
-          result = get :show, request_params_with_portal_properties
+          result = get action, request_params_with_portal_properties
           redirect_params = base_params.clone
           redirect_params[run_key_param_name] = assigns[run_variable_name]
           expect(result).to redirect_to(send(run_path_helper, redirect_params))
@@ -255,10 +338,10 @@ shared_examples "runnable resource not launchable by the portal" do |run_type|
     before(:each) do
       sign_in FactoryGirl.create(:user)
     end
-    it "returns an error when launched with portal parameters" do
+    it "returns an error" do
       with_portal_params = base_params.merge(returnUrl: 'https:/example.com', externalId: 1)
       expect {
-        get :show, with_portal_params
+        get action, with_portal_params
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

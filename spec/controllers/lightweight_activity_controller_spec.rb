@@ -38,29 +38,14 @@ describe LightweightActivitiesController do
       }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'assigns a run key' do
-      get :show, :id => act.id
-      expect(assigns(:run)).not_to be_nil
-    end
-
-    it 'assigns a project and theme' do
-      get :show, :id => act.id
-      expect(assigns(:project)).to eq(project)
-      expect(assigns(:theme)).to eq(theme)
-    end
-
-
     it_behaves_like "runnable resource launchable by the portal", Run do
+      let(:action) { :show }
+      let(:resource_template) { 'lightweight_activities/show' }
       let(:base_params) { {id: act.id} }
       let(:base_factory_params) { {activity_id: act.id}}
       let(:run_path_helper) { :activity_with_run_path }
       let(:run_key_param_name) { :run_key }
       let(:run_variable_name) { :run }
-    end
-
-    it 'renders the activity if it exists and is public' do
-      get :show, :id => act.id, :run_key => ar_run.key
-      expect(response).to be_success
     end
 
     describe "when the run has a page" do
@@ -157,6 +142,8 @@ describe LightweightActivitiesController do
       end
 
       it_behaves_like "runnable resource not launchable by the portal", Run do
+        let(:action) { :show }
+        let(:resource_template) { 'lightweight_activities/show' }
         let(:base_params) { {id: act.id, sequence_id: sequence.id} }
         let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
           sequence_run: seq_run }}
@@ -274,25 +261,6 @@ describe LightweightActivitiesController do
       end
     end
 
-    describe "when called from the portal" do
-      # TODO: we need to abstract away these specifics in the test:
-      let(:domain)    { 'http://portal.org/' }
-      let(:auth_path) { Concord::AuthPortal.strategy_name_for_url(domain) }
-      it "should force a new user session" do
-        expect(controller).to receive(:sign_out).and_return(:true)
-
-        get :show, :id => act.id, :domain => domain, :externalId => "bar"
-        expect(response).to redirect_to user_omniauth_authorize_path(auth_path, :origin => request.url)
-      end
-    end
-
-    describe "when called with a run_key" do
-      it 'renders show' do
-        get :show, :id => act.id, :run_key => ar_run.key
-        expect(response).to be_success
-        expect(response).to render_template('lightweight_activities/show')
-      end
-    end
   end
 
   describe '#preview' do
@@ -313,71 +281,17 @@ describe LightweightActivitiesController do
   end
 
   describe '#single_page' do
-    describe 'without run_key param' do
-      before(:each) do
-        allow(Run).to receive(:lookup).and_return(ar_run)
-      end
 
-      it 'redirects' do
-        get :single_page, :id => act.id
-        expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
-      end
+    it_behaves_like "runnable resource not launchable by the portal", Run do
+      let(:action) { :single_page }
+      let(:resource_template) { 'lightweight_activities/single' }
+      let(:base_params) { {id: act.id } }
+      let(:base_factory_params) { {activity_id: act.id }}
+      let(:run_path_helper) { :activity_single_page_with_run_path }
+      let(:run_key_param_name) { :run_key }
+      let(:run_variable_name) { :run }
     end
 
-    describe 'with run_key param' do
-      before(:each) do
-        allow_any_instance_of(LightweightActivitiesController).to receive(:setup_single_page_show).and_return(nil)
-      end
-
-      it 'renders single' do
-        get :single_page, :id => act.id, :run_key => ar_run.key
-        expect(response).to be_success
-        expect(response).to render_template('lightweight_activities/single')
-      end
-
-      describe 'with another users run and no one signed in' do
-        let(:other_user) { FactoryGirl.create(:user) }
-        let(:ar_run) {
-          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
-        }
-
-        it 'renders unauthorized run message' do
-          get :single_page, :id => act.id, :run_key => ar_run.key
-          expect(response).to render_template('runs/unauthorized_run')
-        end
-      end
-
-      describe 'with another users run signed in as admin' do
-        let(:other_user) { FactoryGirl.create(:user) }
-        let(:ar_run) {
-          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
-        }
-        before(:each) {
-          sign_in admin
-        }
-
-        it 'renders single because user is admin' do
-          get :single_page, :id => act.id, :run_key => ar_run.key
-          expect(response).to be_success
-          expect(response).to render_template('lightweight_activities/single')
-        end
-      end
-
-      describe 'with another users run signed in as non-admin' do
-        before(:each) do
-          sign_in FactoryGirl.create(:user)
-        end
-        let(:other_user) { FactoryGirl.create(:user) }
-        let(:ar_run) {
-          FactoryGirl.create(:run, activity_id: act.id, user: other_user)
-        }
-
-        it 'renders unauthorized_run' do
-          get :single_page, :id => act.id, :run_key => ar_run.key
-          expect(response).to render_template('runs/unauthorized_run')
-        end
-      end
-    end
   end
 
   describe '#print_blank' do

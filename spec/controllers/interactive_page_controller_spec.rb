@@ -43,22 +43,13 @@ describe InteractivePagesController do
     end
 
     it_behaves_like "runnable resource not launchable by the portal", Run do
+      let(:action) { :show }
+      let(:resource_template) { 'interactive_pages/show' }
       let(:base_params) { {activity_id: act.id, id: page1.id } }
       let(:base_factory_params) { {activity_id: act.id} }
       let(:run_path_helper) { :page_with_run_path }
       let(:run_key_param_name) { :run_key }
       let(:run_variable_name) { :run }
-    end
-
-    it 'assigns a run key' do
-      get :show, :id => page1.id, :run_key => ar.key
-      expect(assigns(:run)).not_to be_nil
-    end
-
-    it 'assigns a project and theme' do
-      get :show, :id => page1.id, :run_key => ar.key
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).not_to be_nil
     end
 
     it 'assigns a sequence if one is in the run' do
@@ -79,6 +70,8 @@ describe InteractivePagesController do
       end
 
       it_behaves_like "runnable resource not launchable by the portal", Run do
+        let(:action) { :show }
+        let(:resource_template) { 'interactive_pages/show' }
         let(:base_params) { {id: page1.id, activity_id: act.id, sequence_id: sequence.id} }
         let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
           sequence_run: sequence_run} }

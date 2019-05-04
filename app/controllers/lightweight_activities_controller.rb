@@ -4,8 +4,8 @@ class LightweightActivitiesController < ApplicationController
 
   before_filter :set_activity, :except => [:index, :new, :create]
   before_filter :only => [:summary, :show, :preview, :resubmit_answers, :single_page] {
-    not_inside_of_sequence = params[:sequence_id].blank?
-    set_run_key(portal_launchable: not_inside_of_sequence)
+    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
+    set_run_key(portal_launchable: portal_launchable)
   }
   before_filter :set_sequence, :only   => [:summary, :show, :single_page]
 
