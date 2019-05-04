@@ -246,6 +246,13 @@ shared_examples "runnable launched with portal parameters" do |run_type|
   let (:run_factory_portal_params) {
     { remote_endpoint: 'https:/example.com', remote_id: 1 }
   }
+  let (:lookup_method) {
+    if run_type == Run
+      :lookup
+    elsif run_type == SequenceRun
+      :lookup_or_create
+    end
+  }
 
   # this test is applicable to every route in the application but it is particularly
   # important here
@@ -319,8 +326,28 @@ shared_examples "runnable launched with portal parameters" do |run_type|
           redirect_params[run_key_param_name] = assigns[run_variable_name]
           expect(result).to redirect_to(send(run_path_helper, redirect_params))
         end
+        it "should call disable_collaboration" do
+          allow(run_type).to receive(lookup_method).and_return(matching_run)
+          expect(matching_run).to receive(:disable_collaboration)
+          get action, request_params_with_portal_properties
+        end
       end
     end
+
+    describe "when a collaborative activity has a collaborators_data_url param" do
+      let (:collaboration_run) {
+        params = base_factory_params.merge(user_id: running_user.id)
+        params = params.merge(run_factory_portal_params)
+        FactoryGirl.create(run_factory_type, params)
+      }
+
+      it "should call CreateCollaboration" do
+        allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(collaboration_run)
+        expect_any_instance_of(CreateCollaboration).to receive(:call)
+        get action, base_params.merge(collaborators_data_url: "http://example.com/")
+      end
+    end
+
   end
 end
 

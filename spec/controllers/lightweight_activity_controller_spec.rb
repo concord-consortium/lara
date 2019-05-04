@@ -103,32 +103,13 @@ describe LightweightActivitiesController do
             subject { get :show, id: act.id,
                returnUrl: 'https://example.com', externalId: 1 }
 
-            it "should redirect to the run page" do
+            it "should redirect to the single page with a run key" do
               expect(subject).to redirect_to(activity_single_page_with_run_path(act.id, ar_run.key))
             end
           end
 
         end
 
-        describe 'when a collaborative activity has a collaborators_data_url param' do
-          it 'should call CreateCollaboration' do
-            allow_any_instance_of(CreateCollaboration).to receive(:call).and_return(ar_run)
-            expect_any_instance_of(CreateCollaboration).to receive(:call)
-            get :show, :id => act.id, :collaborators_data_url => "http://example.com/"
-          end
-        end
-
-        describe 'when a non-collaborative activity has valid portal parameters' do
-          before(:each) do
-            # we need this so we receive the same run object that we are spying on
-            allow(Run).to receive(:lookup).and_return(ar_run)
-          end
-
-          it 'should call disable_collaboration' do
-            expect(ar_run).to receive(:disable_collaboration)
-            get :show, :id => act.id, :returnUrl => "http://example.com/", :externalId => 1
-          end
-        end
       end
     end
 
