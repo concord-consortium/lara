@@ -28,7 +28,8 @@ before_script:
 script:
   - bundle exec rake
   - cd lara-plugin-api && npm i && npm run test
-#  - cd - && bundle exec rake jasmine:ci
+  - cd -
+  # - bundle exec rake jasmine:ci
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
