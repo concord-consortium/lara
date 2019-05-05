@@ -160,7 +160,7 @@ describe User do
           { :email => auth_email}  )
         authentication = FactoryGirl.create(:authentication,
           {:user => expected, :provider => auth_provider, :uid => "222"})
-        expect { User.find_for_concord_portal_oauth(auth) }.to raise_error
+        expect { User.find_for_concord_portal_oauth(auth) }.to raise_error(UncaughtThrowError)
       end
     end
 

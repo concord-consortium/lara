@@ -2,6 +2,8 @@
 # see reject_old_browsers method
 BrowserSpecificiation = Struct.new(:browser, :version)
 
+class NotAuthorizedRunError < StandardError; end
+
 class ApplicationController < ActionController::Base
 
   # Run authorization on all actions
@@ -14,6 +16,14 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { render :partial => "shared/unauthorized", :locals => {:message => response_data[:message]}, :status => 403 }
       format.json { render json: response_data, status: 403}
+    end
+  end
+
+  # thrown by #raise_error_if_not_authorized_run()
+  rescue_from NotAuthorizedRunError do
+    respond_to do |format|
+      format.html { render 'runs/unauthorized_run', status: :forbidden }
+      format.json { render nothing: true, status: :forbidden}
     end
   end
 
@@ -78,9 +88,9 @@ class ApplicationController < ActionController::Base
   def current_theme
     # Assigns @theme
     # This counts on @activity and/or @sequence being already assigned.
-    if defined?(@sequence) && @sequence.theme
+    if defined?(@sequence) && @sequence  && @sequence.theme
       @theme = @sequence.theme
-    elsif defined?(@activity) && @activity.theme
+    elsif defined?(@activity) && @activity && @activity.theme
       @theme = @activity.theme
     elsif defined?(@project) && @project.theme
       @theme = @project.theme
@@ -93,10 +103,10 @@ class ApplicationController < ActionController::Base
   def current_project
     # Assigns @project
     # This counts on @activity and/or @sequence being already assigned.
-    if defined?(@sequence) && @sequence.project
+    if defined?(@sequence) && @sequence && @sequence.project
       # Sequence project overrides activity and default
       @project = @sequence.project
-    elsif defined?(@activity) && @activity.project
+    elsif defined?(@activity) && @activity && @activity.project
       # Activity project overrides default
       @project = @activity.project
     else
@@ -106,70 +116,51 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sequence
-    # First, respect the sequence ID in the request params if one is provided
+    # First, respect the sequence ID in the request if one is provided
     if params[:sequence_id]
       @sequence = Sequence.find(params[:sequence_id])
-      # Save this in the run
-      if @sequence && @run
-        @run.sequence = @sequence
-        @run.save
+
+      # Fail fast if there is also a run and the sequence in the run doesn't match
+      if @run && @run.sequence != @sequence
+        raise ActiveRecord::RecordNotFound
       end
-    # Second, if there's no sequence ID in the request params, there's an existing
-    # run, and a sequence is set for that run, use that sequence
+
+    # Second, if there's no sequence ID in the request, and there's an existing
+    # run with a sequence, use that sequence
     elsif @run && @run.sequence
       @sequence ||= @run.sequence
+
+    # Third there is no sequence
+    else
+      @sequence = nil
     end
     @sequence
   end
 
   protected
 
-  # this is used by controllers that look up a Run based on a response_key
-  # if the current_user is not authorized to access the run then this method
-  # is called
-  def user_id_mismatch
-    @hide_navigation = true
-    @user = current_user ? current_user.email : 'anonymous'
-    @response_key = params[:response_key] || 'no response key'
-    @session = session.clone
-    session.delete("response_key")
+  def raise_error_if_not_authorized_run(run)
+    begin
+      authorize! :access, run
+    rescue
+      @hide_navigation = true
+      @user = current_user ? current_user.email : 'anonymous'
+      @run_key = params[:run_key] || 'no run key'
+      @sequence_run_key = params[:sequence_run_key] || 'no sequence run key'
+      @session = session.clone
 
-    NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
-      uri: request.original_url,
-      referer: request.referer,
-      request_params: params,
-      custom_params: { user: @user, response_key: @response_key }.merge(@session)
-    })
-  end
+      NewRelic::Agent.notice_error(RuntimeError.new("_run_user_id_mismatch"), {
+        uri: request.original_url,
+        referer: request.referer,
+        request_params: params,
+        custom_params: { user: @user, run_key: @run_key, sequence_run_key: @sequence_run_key }.merge(@session)
+      })
 
-  def clear_session_response_key
-    session.delete(:response_key)
-  end
-
-  def session_response_key(new_val=nil?)
-    return nil unless current_user.nil?
-    session[:response_key] ||= {}
-    # If there is a response key in the session which doesn't match up to a
-    # current run, return nil (as though there's no session key)
-    if Run.for_key(session[:response_key][@activity.id], @activity).nil?
-      return nil
+      raise NotAuthorizedRunError
     end
-    session[:response_key][@activity.id] = new_val if new_val
-    session[:response_key][@activity.id]
   end
 
-  def set_response_key(key)
-    @session_key = key
-    session_response_key(@session_key)
-  end
-
-  def update_response_key
-    set_response_key(params[:response_key] || session_response_key)
-  end
-
-  def set_run_key
-    update_response_key
-
+  def set_run_key(opts)
     # Special case when collaborators_data_url is provided (usually as a GET param).
     # New collaboration will be created and setup and call finally returns collaboration owner
     if params[:collaborators_data_url]
@@ -177,8 +168,12 @@ class ApplicationController < ActionController::Base
       @run = cc.call
     else
       portal = RemotePortal.new(params)
+      if (portal.valid? && !opts[:portal_launchable])
+        raise ActiveRecord::RecordNotFound
+      end
+
       # This creates a new key if one didn't exist before
-      @run = Run.lookup(@session_key, @activity, current_user, portal, params[:sequence_id])
+      @run = Run.lookup(params[:run_key], @activity, current_user, portal, params[:sequence_id])
       # If activity is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
       if portal.valid?
@@ -187,8 +182,7 @@ class ApplicationController < ActionController::Base
     end
 
     @sequence_run = @run.sequence_run if @run.sequence_run
-    # This is redundant but necessary if the first pass through set_response_key returned nil
-    set_response_key(@run.key)
+    @run_key = @run.key
   end
 
   # Exports logger configuration and data. Note that you have to explicitly specify 'enable_js_logger' as before_filter
@@ -268,7 +262,6 @@ class ApplicationController < ActionController::Base
   # override devise's built in method so we can go back to the path
   # from which authentication was initiated
   def after_sign_in_path_for(resource)
-    clear_session_response_key
     request.env['omniauth.origin'] || stored_location_for(resource) || signed_in_root_path(resource)
   end
 

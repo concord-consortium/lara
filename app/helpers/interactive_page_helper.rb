@@ -1,13 +1,16 @@
 module InteractivePageHelper
   def runnable_activity_page_path(activity, page)
-    path_base = fetch_path_base(activity, @run, page)
-    pass_white_list_params(path_base) if path_base
+    path_base = fetch_path_base(@sequence, activity, @run, page)
+    append_white_list_params(path_base) if path_base
   end
 
-  def fetch_path_base(activity, run, page)  # move me to be private.
+  def fetch_path_base(sequence, activity, run, page)  # move me to be private.
     run = run_for_activity(activity, run)
+    if sequence and run and (sequence != run.sequence)
+      raise Exception.new("Sequence and run sequence do not match!")
+    end
     if run
-      page_with_response_path(activity.id, page.id, run.key)
+      get_page_with_run_path(sequence, activity.id, page.id, run.key)
     elsif activity and page
       activity_page_path(activity, page)
     elsif activity
@@ -16,8 +19,6 @@ module InteractivePageHelper
        nil
     end
   end
-
-
 
   def page_link(activity,page, opts={})
     name = "Page #{page.position}"

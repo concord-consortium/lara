@@ -51,7 +51,7 @@ class CRater::ArgumentationBlocksController < ApplicationController
 
   def save_feedback
     page = InteractivePage.find(params[:page_id])
-    run = Run.find_by_key(params[:response_key])
+    run = Run.find_by_key(params[:run_key])
     feedback_info = CRater::FeedbackSubmission.generate_feedback(page, run)
     if request.xhr?
       render json: feedback_info

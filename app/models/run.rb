@@ -64,19 +64,6 @@ class Run < ActiveRecord::Base
     UUIDTools::UUID.random_create.to_s
   end
 
-  def self.for_user_activity_and_sequence(user,activity,seq_id)
-    conditions = {
-      activity_id:     activity.id,
-      user_id:         user.id,
-      sequence_id:     seq_id
-    }
-    found = self.find(:first, :conditions => conditions)
-    if found
-      return found
-    end
-    return self.create(conditions)
-  end
-
   def self.for_user_and_portal(user,activity,portal)
     conditions = {
       remote_endpoint: portal.remote_endpoint,
@@ -85,47 +72,90 @@ class Run < ActiveRecord::Base
       #TODO: add domain
     }
     conditions[:activity_id]     = activity.id if activity
-    found = self.find(:first, :conditions => conditions)
+    found = self.where(conditions).first
     if found
       return found
     end
-    return self.create(conditions)
+    return self.create!(conditions)
   end
 
-  def self.for_user_and_activity(user,activity)
+  def self.for_user_activity_and_sequence(user,activity,seq_id)
+    # we limit this to only finding runs without portal properties, those lookups
+    # should happen via for_user_and_portal
     conditions = {
       activity_id:     activity.id,
-      user_id:         user.id
+      user_id:         user ? user.id : nil,
+      sequence_id:     seq_id,
+      remote_endpoint: nil,
+      remote_id:       nil
     }
-    found = self.find(:first, :conditions => conditions)
-    if found
-      return found
+
+    # we can only look for an existing run if the user is set
+    # if the user is anonymous there will be many matching runs but we don't
+    # know which one is the right one
+    if (user)
+      found = self.where(conditions).first
+      if found
+        return found
+      end
     end
-    return self.create(conditions)
+
+    # if no run has been found and there is a seq_id, create a sequence run too
+    if seq_id
+      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}))
+      return seq_run.run_for_activity(activity)
+    else
+      return self.create!(conditions)
+    end
   end
 
-  def self.for_key(key, activity)
-    first = self.by_key(key).first
-    if first
-      return first
+  def self.lookup(key, activity, user, portal, seq_id)
+    if portal && portal.valid?
+      if user
+        # if the seq_id is set here, this is an un-handled state
+        if seq_id
+          # this should be be cut off before it even gets here see:
+          # portal_launchable in lightweight_activities_controller
+          raise Exception.new("portal launch of activity inside of a sequences")
+        end
+        return self.for_user_and_portal(user, activity, portal)
+      else
+        raise ActiveRecord::RecordNotFound.new(
+          "user must be logged in to access a Run via portal parameters"
+        )
+      end
     end
-    return self.create(activity: activity)
-  end
+    if key
+      # error out if run can't be found
+      run = self.where(key: key).first!
 
-  def self.lookup(key, activity, user, portal,seq_id)
-    if user && portal && portal.valid?
-      return self.for_user_and_portal(user, activity, portal)
+      if activity && run.activity_id != activity.id
+        raise ActiveRecord::RecordNotFound.new(
+          "Activity: #{activity.id} doesn't match run.activity_id: #{run.activity_id}")
+      end
+
+      if seq_id
+        if run.sequence_id != seq_id.to_i
+          raise ActiveRecord::RecordNotFound.new(
+            "Sequence: #{seq_id} doesn't match run.sequence_id: #{run.sequence_id}"
+          )
+        end
+        if run.sequence_run.nil?
+          raise ActiveRecord::RecordNotFound.new(
+            "run.sequence_run is nil looking up a run for Sequence: #{seq_id}"
+          )
+        end
+      end
+
+      return run
     end
-    if (key && activity)
-      return self.for_key(key, activity)
+
+    # it is an error condition if the activity is not set
+    if (activity.nil?)
+      raise ActiveRecord::RecordNotFound
     end
-    if (user && activity && seq_id)
-      return self.for_user_activity_and_sequence(user,activity,seq_id)
-    end
-    if (user && activity)
-      return self.for_user_and_activity(user,activity)
-    end
-    return self.create(activity: activity)
+
+    return self.for_user_activity_and_sequence(user,activity,seq_id)
   end
 
   def self.auth_provider(remote_endpoint)

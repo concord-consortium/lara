@@ -46,14 +46,11 @@ class Ability
     can :contact_us, Project
 
     can :access, Run do |run|
-      if user.admin?
-        true
-      elsif user.new_record?
-        # We're currently anonymous
-        run.user_id.nil?
-      else
-        run.user_id == user.id
-      end
+      admin_owner_or_anon_run(user, run)
+    end
+
+    can :access, SequenceRun do |sequence_run|
+      admin_owner_or_anon_run(user, sequence_run)
     end
 
     can [:show, :update], InteractiveRunState do |interactive_run_state|
@@ -64,6 +61,19 @@ class Ability
         allowed = run.collaboration_run.runs.where(activity_id: run.activity, user_id: user).length > 0
       end
       allowed
+    end
+  end
+
+  private
+
+  def admin_owner_or_anon_run(user, run)
+    if user.admin?
+      true
+    elsif user.new_record?
+      # We're currently anonymous
+      run.user_id.nil?
+    else
+      run.user_id == user.id
     end
   end
 end

@@ -5,7 +5,8 @@ class InteractivePage < ActiveRecord::Base
 
   serialize :additional_sections
 
-  belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true
+  belongs_to :lightweight_activity, :class_name => 'LightweightActivity', :touch => true,
+    :inverse_of => :pages
 
   acts_as_list :scope => :lightweight_activity
 

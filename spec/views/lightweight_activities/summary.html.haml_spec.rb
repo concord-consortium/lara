@@ -19,11 +19,11 @@ describe 'lightweight_activities/summary' do
 
   before(:each) do
     assign(:project, project)
-    assign(:session_key, UUIDTools::UUID.random_create.to_s)
+    assign(:run_key, UUIDTools::UUID.random_create.to_s)
     assign(:activity, activity)
     assign(:answers, [mc1, mc2, or1, mc3, or2, image_answer])
     assign(:project, project)
-    assign(:session_key, UUIDTools::UUID.random_create.to_s)
+    assign(:run_key, UUIDTools::UUID.random_create.to_s)
   end
 
   it 'shows the activity title' do

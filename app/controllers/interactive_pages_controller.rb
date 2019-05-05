@@ -2,7 +2,7 @@ require_dependency "application_controller"
 
 class InteractivePagesController < ApplicationController
   before_filter :set_page, :except => [:new, :create]
-  before_filter :set_run_key, :only => [:show, :preview]
+  before_filter :only => [:show, :preview] { set_run_key(portal_launchable: false) }
   before_filter :set_sequence, :only => [:show]
   before_filter :check_if_hidden, :only => [:show, :preview]
 
@@ -10,19 +10,16 @@ class InteractivePagesController < ApplicationController
 
   layout 'runtime', :only => [:show, :preview]
 
+  include PageHelper
+
   def show
     authorize! :read, @page
-    if !params[:response_key]
-      redirect_to page_with_response_path(@activity.id, @page.id, @session_key, request.query_parameters) and return
+    if !params[:run_key]
+      redirect_to_page_with_run_path(@sequence, @activity.id, @page.id, @run_key, request.query_parameters) and return
     end
 
-    begin
-      authorize! :access, @run
-    rescue
-      user_id_mismatch()
-      render 'runs/unauthorized_run'
-      return
-    end
+    setup_theme_and_project
+    raise_error_if_not_authorized_run(@run)
 
     setup_show
     respond_to do |format|
@@ -202,9 +199,13 @@ class InteractivePagesController < ApplicationController
     end
   end
 
-  def setup_show
+  def setup_theme_and_project
     current_theme
     current_project
+  end
+
+  def setup_show
+    setup_theme_and_project
     setup_global_interactive_state_data
     @all_pages = @activity.pages
     @run.set_last_page(@page)

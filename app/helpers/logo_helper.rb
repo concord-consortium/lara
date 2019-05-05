@@ -20,9 +20,12 @@ module LogoHelper
     sequence = @sequence
     return nil unless sequence
     logo = sequence.logo
-    my_params = request.query_parameters.merge({id: sequence.id, show_index: true})
-    my_params = my_params.merge({sequence_run: @sequence_run.id}) if @sequence_run
-    url = sequence_path(my_params)
+    my_params = request.query_parameters.merge({show_index: true})
+    if @sequence_run
+      url = sequence_with_sequence_run_key_path(sequence, @sequence_run.key, my_params)
+    else
+      url = sequence_path(sequence, my_params)
+    end
     buffer = ''.html_safe
     if logo.present?
       buffer << logo_tag(logo, sequence.display_title, url)
