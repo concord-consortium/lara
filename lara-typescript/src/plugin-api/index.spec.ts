@@ -7,5 +7,7 @@ describe("LARA API", () => {
     expect(LARA.addSidebar).toBeDefined();
     expect(LARA.addPopup).toBeDefined();
     expect(LARA.decorateContent).toBeDefined();
+    expect(LARA.log).toBeDefined();
+    expect(LARA.events).toBeDefined();
   });
 });
