@@ -49,12 +49,12 @@
   - else
     - click_to_play_id = nil
   :javascript
-    // Begin script for #{plugin.name}
-    var pluginStatePaths = {
-      savePath: `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`,
-      loadPath: `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
-    };
     $(document).ready( function() {
+      // Begin script for #{plugin.name}
+      var pluginStatePaths = {
+        savePath: `#{escape_javascript(api_v1_update_plugin_learner_state_path(plugin.id, @run.id))}`,
+        loadPath: `#{escape_javascript(api_v1_show_plugin_learner_state_path(plugin.id, @run.id))}`
+      };
       var getFirebaseJwtUrl = function(appName) {
         var laraJwtGettingUrl = '#{escape_javascript(firebase_jwt_url)}';
         return laraJwtGettingUrl.replace('_FIREBASE_APP_', appName);
