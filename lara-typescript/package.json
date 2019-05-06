@@ -28,7 +28,7 @@
   "author": "Concord Consortium",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/concord-consortium/lara-plugin-api/issues"
+    "url": "https://github.com/concord-consortium/lara/issues"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.ts",
@@ -51,7 +51,7 @@
       "node"
     ]
   },
-  "homepage": "https://github.com/concord-consortium/lara-plugin-api#readme",
+  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
   "devDependencies": {
     "@types/jest": "^23.3.14",
     "@types/jquery": "^3.3.29",
