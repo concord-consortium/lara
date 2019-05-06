@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 group :production do
-  gem "therubyracer", "~> 0.12"
   gem "unicorn"
 end
 
