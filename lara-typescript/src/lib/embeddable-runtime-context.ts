@@ -30,8 +30,6 @@ export interface IEmbeddableContext {
   laraJson: any;
   /** Interactive state URL, available only when plugin is wrapping an interactive. */
   interactiveStateUrl: string | null;
-  /** DOM id of click to play overlay if enabled. */
-  clickToPlayId: string | null;
 }
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
@@ -74,7 +72,6 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): I
     getInteractiveState: () => getInteractiveState(context.interactiveStateUrl),
     getReportingUrl: (getInteractiveStatePromise?: Promise<IInteractiveState>) =>
       getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise),
-    clickToPlayId: context.clickToPlayId,
     onClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => {
       // Add generic listener and filter events to limit them just to this given embeddable.
       onClickToPlayStarted((event: IClickToPlayStartedEvent) => {

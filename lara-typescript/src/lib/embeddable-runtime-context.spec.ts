@@ -15,15 +15,13 @@ describe("Embeddable runtime context helper", () => {
       type: "MwInteractive",
       ref_id: "86-MwInteractive"
     },
-    interactiveStateUrl: "http://interactive.state.url",
-    clickToPlayId: "#clickToPlayId"
+    interactiveStateUrl: "http://interactive.state.url"
   };
 
   it("should copy basic properties to runtime context", () => {
     const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
     expect(runtimeContext.container).toEqual(embeddableContext.container);
     expect(runtimeContext.laraJson).toEqual(embeddableContext.laraJson);
-    expect(runtimeContext.clickToPlayId).toEqual(embeddableContext.clickToPlayId);
   });
 
   describe("#getInteractiveState", () => {

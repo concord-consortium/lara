@@ -77,12 +77,6 @@ export interface IEmbeddableRuntimeContext {
    ****************************************************************************/
   getReportingUrl: (interactiveStatePromise?: Promise<IInteractiveState>) => Promise<string | null> | null;
   /****************************************************************************
-   DOM id of click to play overlay if enabled.
-   @deprecated This property will be removed soon and replaced with a better mechanism that lets the plugin monitor
-   interactive status, including click to play state.
-   ****************************************************************************/
-  clickToPlayId: string | null;
-  /****************************************************************************
    Function that subscribes provided handler to event that gets called when the interactive with click to play mode
    is started by the user. Note that it will work only if given embeddable is an interactive and it has click to play
    mode enabled by author.

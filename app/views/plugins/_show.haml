@@ -103,10 +103,6 @@
   - if wrapped_embedd && wrapped_embedd.respond_to?(:interactive_run_states)
     - irs = InteractiveRunState.by_run_and_interactive(@run, wrapped_embedd)
     - interactive_state_url = irs && irs.key ? api_v1_show_interactive_run_state_path({key: irs.key}) : ''
-  - if wrapped_embedd && wrapped_embedd.respond_to?(:click_to_play) && wrapped_embedd.click_to_play
-    - click_to_play_id = dom_id_for(wrapped_embedd, :click_to_play)
-  - else
-    - click_to_play_id = nil
   :javascript
     // Begin script for #{plugin.name}
     $(document).ready(function() {
@@ -115,8 +111,7 @@
       var embeddableContext = #{!wrapped_embedd ? 'null' : "{
         container: $('#{wrapped_selector}')[0],
         laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json},
-        interactiveStateUrl: #{interactive_state_url ? "'#{escape_javascript(interactive_state_url)}'" : 'null'},
-        clickToPlayId: #{click_to_play_id ? "'#{escape_javascript(click_to_play_id)}'" : 'null'}
+        interactiveStateUrl: #{interactive_state_url ? "'#{escape_javascript(interactive_state_url)}'" : 'null'}
       }"};
       // It's impossible to get type checking here, but object below MUST always implement IPluginContext interface
       // defined at lara-plugin-api/helpers/plugin-runtime-context.ts.

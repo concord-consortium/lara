@@ -15976,7 +15976,6 @@ exports.generateEmbeddableRuntimeContext = function (context) {
         getReportingUrl: function (getInteractiveStatePromise) {
             return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
         },
-        clickToPlayId: context.clickToPlayId,
         onClickToPlayStarted: function (handler) {
             // Add generic listener and filter events to limit them just to this given embeddable.
             events_1.onClickToPlayStarted(function (event) {
