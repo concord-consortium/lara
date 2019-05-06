@@ -27,7 +27,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [types.ts:124](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L124)*
+*Defined in [types.ts:124](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L124)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [types.ts:122](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L122)*
+*Defined in [types.ts:122](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L122)*
 
 ___
 <a id="offerings"></a>
@@ -45,7 +45,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
-*Defined in [types.ts:127](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L127)*
+*Defined in [types.ts:127](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L127)*
 
 ___
 <a id="students"></a>
@@ -54,7 +54,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
-*Defined in [types.ts:126](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L126)*
+*Defined in [types.ts:126](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L126)*
 
 ___
 <a id="teachers"></a>
@@ -63,7 +63,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
-*Defined in [types.ts:125](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L125)*
+*Defined in [types.ts:125](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L125)*
 
 ___
 <a id="uri"></a>
@@ -72,7 +72,7 @@ ___
 
 **● uri**: *`string`*
 
-*Defined in [types.ts:123](https://github.com/concord-consortium/lara/blob/90403de1/lara-typescript/src/plugin-api/types.ts#L123)*
+*Defined in [types.ts:123](https://github.com/concord-consortium/lara/blob/fb0ede37/lara-typescript/src/plugin-api/types.ts#L123)*
 
 ___
 
