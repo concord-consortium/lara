@@ -1,5 +1,6 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState } from "../plugin-api";
+import { emitClickToPlayStarted } from "./events";
 import * as fetch from "jest-fetch-mock";
 (window as any).fetch = fetch;
 
@@ -111,5 +112,19 @@ describe("Embeddable runtime context helper", () => {
         done();
       });
     });
+  });
+
+  describe("#onClickToPlayStarted", () => {
+    it("accepts handler and calls it when this particular interactive is actually started", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      const handler = jest.fn();
+      runtimeContext.onClickToPlayStarted(handler);
+      // Different container => different interactive. Handler should not be called.
+      emitClickToPlayStarted({ container: document.createElement("div") });
+      expect(handler).toHaveBeenCalledTimes(0);
+      const event = { container: embeddableContext.container };
+      emitClickToPlayStarted(event);
+      expect(handler).toHaveBeenCalledWith(event);
+    })
   });
 });
