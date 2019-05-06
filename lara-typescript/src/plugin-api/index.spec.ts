@@ -1,13 +1,12 @@
-import * as LARA from "./index";
+import * as PluginAPI from "./index";
 
-describe("LARA API", () => {
+describe("Plugin API", () => {
   it("should export all the API functions", () => {
-    expect(LARA).toBeDefined();
-    expect(LARA.registerPlugin).toBeDefined();
-    expect(LARA.addSidebar).toBeDefined();
-    expect(LARA.addPopup).toBeDefined();
-    expect(LARA.decorateContent).toBeDefined();
-    expect(LARA.log).toBeDefined();
-    expect(LARA.events).toBeDefined();
+    expect(PluginAPI.registerPlugin).toBeDefined();
+    expect(PluginAPI.addSidebar).toBeDefined();
+    expect(PluginAPI.addPopup).toBeDefined();
+    expect(PluginAPI.decorateContent).toBeDefined();
+    expect(PluginAPI.log).toBeDefined();
+    expect(PluginAPI.events).toBeDefined();
   });
 });

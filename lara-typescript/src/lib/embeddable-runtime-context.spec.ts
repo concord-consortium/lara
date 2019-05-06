@@ -125,6 +125,6 @@ describe("Embeddable runtime context helper", () => {
       const event = { container: embeddableContext.container };
       emitClickToPlayStarted(event);
       expect(handler).toHaveBeenCalledWith(event);
-    })
+    });
   });
 });
