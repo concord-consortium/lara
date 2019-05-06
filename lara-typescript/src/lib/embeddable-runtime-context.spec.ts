@@ -1,7 +1,7 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import { IInteractiveState } from "../api/types";
+import { IInteractiveState } from "../plugin-api";
+import { emitClickToPlayStarted } from "./events";
 import * as fetch from "jest-fetch-mock";
-import {run} from "tslint/lib/runner";
 (window as any).fetch = fetch;
 
 describe("Embeddable runtime context helper", () => {
@@ -16,15 +16,13 @@ describe("Embeddable runtime context helper", () => {
       type: "MwInteractive",
       ref_id: "86-MwInteractive"
     },
-    interactiveStateUrl: "http://interactive.state.url",
-    clickToPlayId: "#clickToPlayId"
+    interactiveStateUrl: "http://interactive.state.url"
   };
 
   it("should copy basic properties to runtime context", () => {
     const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
     expect(runtimeContext.container).toEqual(embeddableContext.container);
     expect(runtimeContext.laraJson).toEqual(embeddableContext.laraJson);
-    expect(runtimeContext.clickToPlayId).toEqual(embeddableContext.clickToPlayId);
   });
 
   describe("#getInteractiveState", () => {
@@ -113,6 +111,20 @@ describe("Embeddable runtime context helper", () => {
         expect(data).toEqual("reporting.url");
         done();
       });
+    });
+  });
+
+  describe("#onClickToPlayStarted", () => {
+    it("accepts handler and calls it when this particular interactive is actually started", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      const handler = jest.fn();
+      runtimeContext.onClickToPlayStarted(handler);
+      // Different container => different interactive. Handler should not be called.
+      emitClickToPlayStarted({ container: document.createElement("div") });
+      expect(handler).toHaveBeenCalledTimes(0);
+      const event = { container: embeddableContext.container };
+      emitClickToPlayStarted(event);
+      expect(handler).toHaveBeenCalledWith(event);
     });
   });
 });

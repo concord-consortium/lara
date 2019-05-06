@@ -202,7 +202,7 @@ ___
 
 ▸ **isTeacherEdition**(): `boolean`
 
-*Defined in [lara-plugin-api.ts:21](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/lara-plugin-api.ts#L21)*
+*Defined in [index.ts:21](https://github.com/concord-consortium/lara/blob/dda9bf8c/lara-plugin-api-V2/src/lara-plugin-api.ts#L21)*
 
 Find out if the page being displayed is being run in teacher-edition
 

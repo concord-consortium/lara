@@ -27,9 +27,10 @@ before_script:
 # uncomment this line if your project needs to run something other than `rake`:
 script:
   - bundle exec rake
-  - cd lara-plugin-api && npm i && npm run test
-  - cd -
-  # - bundle exec rake jasmine:ci
+  - cd lara-plugin-api-V2 && npm i && npm run test
+  - cd - && cd lara-typescript && npm i && npm run test
+  - cd - 
+#  - bundle exec rake jasmine:ci
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

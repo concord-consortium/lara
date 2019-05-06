@@ -9,6 +9,10 @@ LoggerUtils.instance = function(loggerConfig) {
   }));
 };
 
+LoggerUtils.prototype.log = function(data) {
+  this._logger.log(data);
+};
+
 LoggerUtils.submittedQuestionLogging = function(data,autoSave) {
   var loggerConfig = window.gon && window.gon.loggerConfig;
   if (!loggerConfig) {
@@ -102,7 +106,7 @@ LoggerUtils.prototype._submittedQuestionLogging = function(data,autoSave) {
   var data_object                = autoSave ? {event: 'answer saved'} : {event : 'submit answer'},
       question_type              = this._getQuestionType(data),
       question_id                = data.split('_').slice(-1)[0];
-      
+
   data_object[question_type] = question_id;
   this._logger.log(data_object);
 };
@@ -210,9 +214,7 @@ Logger.prototype.log = function(data) {
     data = {event: data};
   }
   data.time = Date.now(); // millisecons
-  if (( typeof ExternalScripts != "undefined") && ExternalScripts.handleLogEvent) {
-    ExternalScripts.handleLogEvent(data, this);
-  };
+  LARA.InternalAPI.events.emitLog(data); // defined in lara-typescript
   this._post(data);
 };
 
@@ -288,27 +290,27 @@ $(document).ready(function() {
     return;
   }
 
-  var logger_utils = LoggerUtils.instance(loggerConfig);
+  var loggerUtils = LoggerUtils.instance(loggerConfig);
 
   switch (loggerConfig.action) {
     case 'sequences#show':
-      logger_utils.sequenceIndexLogging();
+      loggerUtils.sequenceIndexLogging();
       break;
 
     case 'lightweight_activities#show':
     case 'lightweight_activities#preview':
-      logger_utils.activityIndexLogging();
+      loggerUtils.activityIndexLogging();
       break;
 
     case 'lightweight_activities#summary':
-      logger_utils.activitySummaryLogging();
+      loggerUtils.activitySummaryLogging();
       break;
 
     case 'interactive_pages#show':
     case 'interactive_pages#preview':
     case 'lightweight_activities#single_page':
-      logger_utils.interactivePageLogging();
+      loggerUtils.interactivePageLogging();
       break;
   }
-
+  window.loggerUtils = loggerUtils;
 });

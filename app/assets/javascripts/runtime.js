@@ -32,7 +32,7 @@
 //= require modals
 //= require modal-dialog
 //= require lara-plugin-api-V2
-//= require lara-plugin-api
+//= require lara-typescript
 //= require common
 //= require check-answer
 //= require scroll-interactive-mod

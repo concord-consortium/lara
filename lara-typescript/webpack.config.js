@@ -1,15 +1,18 @@
 'use strict';
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
   return {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
-    entry: './src/lara-plugin-api.ts',
+    entry: './src/index.ts',
     mode: 'development',
     output: {
-      filename: 'lara-plugin-api.js',
-      library: 'LARA_V3',
+      filename: 'lara-typescript.js',
+      // Temporarily disabled, as it conflicts with V2 definition. Instead, src/index.ts file exports library
+      // manually by extending LARA namespace. When lara-plugin-api-V2 is removed, this can be uncommented.
+      // library: 'LARA',
       libraryTarget: 'umd'
     },
     performance: { hints: false },
@@ -41,12 +44,16 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new ForkTsCheckerWebpackPlugin()
+      new ForkTsCheckerWebpackPlugin(),
+      new CopyPlugin([
+        { from: 'src/plugin-api/package.json', to: 'plugin-api' },
+        { from: 'src/plugin-api/README.md', to: 'plugin-api' },
+      ]),
     ],
     externals: {
       'jquery': 'jQuery',
       'jqueryui': 'jQuery.ui',
-      'react': 'react',
+      'react': 'React',
       'react-dom': 'ReactDOM'
     }
   };

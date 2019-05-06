@@ -139,10 +139,20 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
   // IPopupController implementation.
   return {
     open() {
-      $content.dialog("open");
+      if ($content.is(":ui-dialog")) {
+        $content.dialog("open");
+      } else {
+        const msg = "Dialog is not initialized. Probably it has been destroyed before. Check `removeOnClose` option.";
+        throw new Error(msg);
+      }
     },
     close() {
-      $content.dialog("close");
+      if ($content.is(":ui-dialog")) {
+        $content.dialog("close");
+      } else {
+        const msg = "Dialog is not initialized. Probably it has been destroyed before. Check `removeOnClose` option.";
+        throw new Error(msg);
+      }
     },
     remove
   };
