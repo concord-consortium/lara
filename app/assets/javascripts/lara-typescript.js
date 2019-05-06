@@ -15879,12 +15879,12 @@ process.umask = function() { return 0; };
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
-exports.PluginAPI = PluginAPI;
+exports.PluginAPI_V3 = PluginAPI;
 var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
 exports.InternalAPI = InternalAPI;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
-window.LARA.PluginAPI = PluginAPI;
+window.LARA.PluginAPI_V3 = PluginAPI;
 window.LARA.InternalAPI = InternalAPI;
 
 

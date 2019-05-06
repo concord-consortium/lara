@@ -27,7 +27,7 @@
 
 **● activity_name**: *`string`*
 
-*Defined in [types.ts:142](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L142)*
+*Defined in [types.ts:142](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L142)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [types.ts:137](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L137)*
+*Defined in [types.ts:137](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L137)*
 
 ___
 <a id="interactive_name"></a>
@@ -45,7 +45,7 @@ ___
 
 **● interactive_name**: *`string`*
 
-*Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L140)*
+*Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L140)*
 
 ___
 <a id="interactive_state_url"></a>
@@ -54,7 +54,7 @@ ___
 
 **● interactive_state_url**: *`string`*
 
-*Defined in [types.ts:141](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L141)*
+*Defined in [types.ts:141](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L141)*
 
 ___
 <a id="key"></a>
@@ -63,7 +63,7 @@ ___
 
 **● key**: *`string`*
 
-*Defined in [types.ts:138](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L138)*
+*Defined in [types.ts:138](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L138)*
 
 ___
 <a id="raw_data"></a>
@@ -72,7 +72,7 @@ ___
 
 **● raw_data**: *`string`*
 
-*Defined in [types.ts:139](https://github.com/concord-consortium/lara/blob/b852b771/lara-typescript/src/plugin-api/types.ts#L139)*
+*Defined in [types.ts:139](https://github.com/concord-consortium/lara/blob/491fdee4/lara-typescript/src/plugin-api/types.ts#L139)*
 
 ___
 
