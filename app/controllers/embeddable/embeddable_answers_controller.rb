@@ -11,11 +11,6 @@ class Embeddable::EmbeddableAnswersController < ApplicationController
   end
 
   def authorize_run_access
-    begin
-      authorize!(:access, @answer.run)
-    rescue
-      user_id_mismatch()
-      render(nothing: true, status: :unauthorized)
-    end
+    raise_error_if_not_authorized_run(@answer.run)
   end
 end

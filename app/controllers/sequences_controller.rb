@@ -8,6 +8,9 @@ class SequencesController < ApplicationController
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
 
+  # Adds append_white_list_params support
+  include ApplicationHelper
+
   # GET /sequences
   # GET /sequences.json
   def index
@@ -34,9 +37,16 @@ class SequencesController < ApplicationController
     current_project
     respond_to do |format|
       format.html do
-        if @sequence_run && @sequence_run.has_been_run
+        raise_error_if_not_authorized_run(@sequence_run)
+        if !params[:sequence_run_key]
+          redirect_to append_white_list_params sequence_with_sequence_run_key_path(@sequence, @sequence_run.key)
+          return
+        end
+        if @sequence_run.has_been_run
           unless params[:show_index]
-            redirect_to sequence_activity_path(@sequence, @sequence_run.most_recent_activity)
+            activity = @sequence_run.most_recent_activity
+            redirect_to sequence_activity_with_run_path(@sequence, activity,
+              @sequence_run.run_for_activity(activity), request.query_parameters)
             return
           end
         end
@@ -86,10 +96,16 @@ class SequencesController < ApplicationController
     authorize! :update, @sequence
     respond_to do |format|
       if @sequence.update_attributes(params[:sequence])
-        format.html { redirect_to @sequence, notice: 'Sequence was successfully updated.' }
+        format.html {
+          flash[:notice] = "Sequence was successfully updated."
+          redirect_to edit_sequence_path(@sequence)
+        }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html {
+          flash[:warning] = "There was a problem updating the sequence."
+          redirect_to edit_sequence_path(@sequence)
+        }
         format.json { render json: @sequence.errors, status: :unprocessable_entity }
       end
     end
@@ -179,14 +195,13 @@ class SequencesController < ApplicationController
   end
 
   def find_or_create_sequence_run
-    if sequence_run_id = params['sequence_run']
-      @sequence_run = SequenceRun.find(sequence_run_id)
-      return @sequence_run if @sequence_run
+    if sequence_run_key = params['sequence_run_key']
+      @sequence_run = SequenceRun.where(key: sequence_run_key).first!
+      return @sequence_run
     end
 
-    return nil unless current_user
-    # Special case when collaborators_data_url is provided (usually as a GET param).
     if params[:collaborators_data_url]
+      # Special case when collaborators_data_url is provided (usually as a GET param).
       cc = CreateCollaboration.new(params[:collaborators_data_url], current_user, @sequence)
       @sequence_run = cc.call
     else
@@ -194,7 +209,9 @@ class SequencesController < ApplicationController
       @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
       # If sequence is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
-      @sequence_run.disable_collaboration if portal.valid?
+      if portal.valid?
+        @sequence_run.disable_collaboration
+      end
     end
   end
 

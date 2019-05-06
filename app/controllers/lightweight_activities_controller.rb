@@ -2,9 +2,11 @@ require_dependency "application_controller"
 
 class LightweightActivitiesController < ApplicationController
 
-  # TODO: We use "run key", "session key" and "response key" for the same bit of data here. Refactor to fix.
   before_filter :set_activity, :except => [:index, :new, :create]
-  before_filter :set_run_key,  :only   => [:summary, :show, :preview, :resubmit_answers, :single_page]
+  before_filter :only => [:summary, :show, :preview, :resubmit_answers, :single_page] {
+    portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
+    set_run_key(portal_launchable: portal_launchable)
+  }
   before_filter :set_sequence, :only   => [:summary, :show, :single_page]
 
   before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
@@ -13,6 +15,9 @@ class LightweightActivitiesController < ApplicationController
 
   # Adds remote_duplicate handler (POST remote_duplicate)
   include RemoteDuplicateSupport
+
+  include PageHelper
+  include LightweightActivityHelper
 
   def index
     @filter  = CollectionFilter.new(current_user, LightweightActivity, params[:filter] || {})
@@ -31,20 +36,35 @@ class LightweightActivitiesController < ApplicationController
     end
 
     authorize! :read, @activity
+
+    setup_show
+    raise_error_if_not_authorized_run(@run)
+
     if params[:print]
-      redirect_to activity_single_page_with_response_path(@activity, @run.key, request.query_parameters) and return
+      # we pass all query_parameters through so the print param is passed too
+      # however, it might be better to just pass the print param explictly
+      redirect_to runnable_single_page_activity_path(@activity, request.query_parameters) and return
     end
 
-    if params[:response_key]
-      redirect_to sequence_activity_path(@run.sequence, @activity, request.query_parameters) and return if @run.sequence
-      redirect_to activity_path(@activity, request.query_parameters) and return
+    # redirect if this run has a sequence and sequences is not part of the path
+    if @run.sequence && !(request.url.include? "/sequences/")
+      redirect_to sequence_activity_with_run_path(@run.sequence, @activity, @run.key, request.query_parameters) and return
     end
-
-    @run.increment_run_count!
 
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
-      redirect_to activity_single_page_with_response_path(@activity, @run.key) and return
+      redirect_to runnable_single_page_activity_path(@activity) and return
     end
+
+    # this run count seems to be pretty useless it might be incremented mutliple times
+    # depending on redirects. It will also be incremented whenever the user returns to
+    # this show page. I suspect it was added to try to track how many times the activity
+    # has been access by a user. If we really wanted to get a more accurate count this
+    # probably needs to be moved into the client code. The client can store a
+    # sessionStorage variable which will be unique to the browser tab. On each page load
+    # the client can async send this to the server and the server can track the unique
+    # values. Perhaps there is a more simple way to do this.
+    @run.increment_run_count!
+
     if @run.last_page && !@run.last_page.is_hidden && !params[:show_index]
       # TODO: If the Page isn't in this activity... Then we need to log that as an error,
       # and do the best we can to get back to the right page...
@@ -53,10 +73,17 @@ class LightweightActivitiesController < ApplicationController
         Rails.logger.error("Page: #{@run.last_page.id}  wrong activity: #{@activity.id} right activity: #{@run.last_page.lightweight_activity.id}")
         @activity = @run.last_page.lightweight_activity
       end
-      redirect_to page_with_response_path(@activity.id, @run.last_page.id, @run.key, request.query_parameters) and return
+      redirect_to_page_with_run_path(@run.sequence, @activity.id, @run.last_page.id, @run.key) and return
     end
 
-    setup_show
+    # if we haven't done any other redirects and we don't have a run_key parameter,
+    # redirect back here with a run_key, this way the user sees a consistant URL.
+    # And if the user stays on this page and gets signed out we will know which run
+    # they were originally accessing
+    if params[:run_key].blank?
+      redirect_to runnable_activity_path(@activity) and return
+    end
+
   end
 
   def preview
@@ -75,22 +102,18 @@ class LightweightActivitiesController < ApplicationController
 
   def single_page
     authorize! :read, @activity
-    if !params[:response_key]
-      redirect_to activity_single_page_with_response_path(@activity, @session_key) and return
+    if !params[:run_key]
+      redirect_to runnable_single_page_activity_path(@activity) and return
     end
 
     setup_single_page_show
 
     # the authorization needs to be after the setup method so that at least the @theme instance variable
     # is set, so the theme of the unauthorized_run page remains the same.
-    begin
-      authorize! :access, @run
-    rescue
-      user_id_mismatch()
-      render 'runs/unauthorized_run'
-      return
-    end
+    raise_error_if_not_authorized_run(@run)
     @labbook_is_under_interactive = true
+
+    @run.increment_run_count!
   end
 
   def print_blank
@@ -103,8 +126,8 @@ class LightweightActivitiesController < ApplicationController
     authorize! :read, @activity
     current_theme
     current_project
-    if !params[:response_key]
-      redirect_to summary_with_response_path(@activity, @session_key) and return
+    if !params[:run_key]
+      raise ActiveRecord::RecordNotFound
     end
     @answers = @activity.answers(@run)
   end
@@ -265,9 +288,9 @@ class LightweightActivitiesController < ApplicationController
 
   def resubmit_answers
     authorize! :manage, :all
-    if !params[:response_key]
+    if !params[:run_key]
       # If we don't know the run, we can't do this.
-      redirect_to summary_with_response_path(@activity, @session_key) and return
+      redirect_to summary_with_run_path(@activity, @run_key) and return
     end
     answers = @activity.answers(@run)
     answers.each { |a| a.mark_dirty }

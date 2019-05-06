@@ -5,12 +5,20 @@ rvm:
 
 dist: precise
 
+env:
+  global:
+    - CC_TEST_REPORTER_ID=7729fca8695dd1ce5c6117fcd57680ee5a00726647ae7d4fe52c029de211449f
+    - COVERAGE_REPORT=true
+
 before_install:
   - gem update bundler
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - cp config/database.travis.yml config/database.yml
   - cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
   - mysql -e 'create database lara_test;'
@@ -21,7 +29,11 @@ script:
   - bundle exec rake
   - cd lara-plugin-api-V2 && npm i && npm run test
   - cd - && cd lara-typescript && npm i && npm run test
-  - cd - && bundle exec rake jasmine:ci
+  - cd - 
+#  - bundle exec rake jasmine:ci
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 cache: bundler
 

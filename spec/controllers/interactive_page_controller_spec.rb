@@ -4,7 +4,9 @@ describe InteractivePagesController do
   # TODO: This file is far too big, and contains a lot of view/request testing which should happen there and not here.
 
   render_views
-  let (:act) { FactoryGirl.create(:public_activity) }
+  let(:project) { FactoryGirl.create(:project) }
+  let(:theme) { FactoryGirl.create(:theme) }
+  let (:act) { FactoryGirl.create(:public_activity, project: project, theme: theme ) }
 
   let (:page1) do
     page1 = FactoryGirl.create(:page, :lightweight_activity => act)
@@ -19,10 +21,11 @@ describe InteractivePagesController do
   end
 
   let (:user) { FactoryGirl.create(:user) }
-  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => user.id) }
+  let (:ar) { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
 
   let (:interactive) { FactoryGirl.create(:mw_interactive) }
   let (:sequence) { FactoryGirl.create(:sequence, :lightweight_activities => [act]) }
+  let (:sequence_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
 
   describe 'routing' do
     it 'recognizes and generates #show' do
@@ -32,10 +35,6 @@ describe InteractivePagesController do
 
   describe 'show' do
 
-    before(:each) do
-      sign_in user
-    end
-
     it 'renders 404 when the activity does not exist' do
       begin
         get :show, :id => 34
@@ -43,22 +42,43 @@ describe InteractivePagesController do
       end
     end
 
-    it 'assigns a run key' do
-      get :show, :id => page1.id, :response_key => ar.key
-      expect(assigns(:run)).not_to be_nil
-    end
-
-    it 'assigns a project and theme' do
-      get :show, :id => page1.id, :response_key => ar.key
-      expect(assigns(:project)).not_to be_nil
-      expect(assigns(:theme)).not_to be_nil
+    it_behaves_like "runnable resource not launchable by the portal", Run do
+      let(:action) { :show }
+      let(:resource_template) { 'interactive_pages/show' }
+      let(:base_params) { {activity_id: act.id, id: page1.id } }
+      let(:base_factory_params) { {activity_id: act.id} }
+      let(:run_path_helper) { :page_with_run_path }
+      let(:run_key_param_name) { :run_key }
+      let(:run_variable_name) { :run }
     end
 
     it 'assigns a sequence if one is in the run' do
       ar.sequence = sequence
+      ar.sequence_run = sequence_run
       ar.save
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       expect(assigns(:sequence)).to eq(sequence)
+    end
+
+    describe 'when it is part of a sequence' do
+      let (:seq_run) { FactoryGirl.create(:sequence_run, :sequence_id => sequence.id, :user_id => nil) }
+
+      before(:each) do
+        # Add the activity to the sequence
+        act.sequences = [sequence]
+        act.save
+      end
+
+      it_behaves_like "runnable resource not launchable by the portal", Run do
+        let(:action) { :show }
+        let(:resource_template) { 'interactive_pages/show' }
+        let(:base_params) { {id: page1.id, activity_id: act.id, sequence_id: sequence.id} }
+        let(:base_factory_params) { {activity_id: act.id, sequence_id: sequence.id,
+          sequence_run: sequence_run} }
+        let(:run_path_helper) { :sequence_page_with_run_path }
+        let(:run_key_param_name) { :run_key }
+        let(:run_variable_name) { :run }
+      end
     end
 
     it 'renders the page if it exists' do
@@ -88,7 +108,7 @@ describe InteractivePagesController do
       page1.add_interactive(interactive)
 
       # get the rendering
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       # verify the page is as expected
       expect(response.body).to match /<iframe/m
@@ -108,7 +128,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}"[^>]*>[^<]*1[^<]*<\/a>/
       expect(response.body).to match /<a[^>]*href="\/activities\/#{act.id}\/pages\/#{act.pages[1].id}\/#{ar.key}"[^>]*>[^<]*2[^<]*<\/a>/
@@ -118,7 +138,7 @@ describe InteractivePagesController do
     it 'only renders the forward navigation link on the first page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev disabled'>/
       expect(response.body).to match /<a class='pagination-link'/
@@ -128,7 +148,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages[1].id, :response_key => ar.key
+      get :show, :id => act.pages[1].id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[0].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='next forward_nav' href='\/activities\/#{act.id}\/pages\/#{act.pages[2].id}\/#{ar.key}'>/
@@ -138,7 +158,7 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.last.id, :response_key => ar.key
+      get :show, :id => act.pages.last.id, :run_key => ar.key
 
       expect(response.body).to match /<a class='pagination-link prev' href='\/activities\/#{act.id}\/pages\/#{act.pages[act.pages.length-2].id}\/#{ar.key}'>/
       expect(response.body).to match /<a class='pagination-link next forward_nav disabled'>/
@@ -148,14 +168,14 @@ describe InteractivePagesController do
       page1
       page2
       page3
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).to match /<a href="\/activities\/#{act.id}\/pages\/#{act.pages.first.id}\/#{ar.key}" class="pagination-link selected">1<\/a>/
     end
 
     it 'renders pagination links if it is the only page' do
       page1
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       expect(response.body).not_to match /<a class='prev'>/
       expect(response.body).not_to match /<a class='next'>/
@@ -163,7 +183,7 @@ describe InteractivePagesController do
 
     it 'shows related content on the last page' do
       page1
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
 
       expect(response.body).to match /<div class='related-mod'>/
       expect(response.body).to match /href='\/activities\/#{act.id}\/summary\/#{ar.key}'/
@@ -172,18 +192,18 @@ describe InteractivePagesController do
     it 'does not show related content on pages other than the last page' do
       page1
       page2
-      get :show, :id => act.pages.first.id, :response_key => ar.key
+      get :show, :id => act.pages.first.id, :run_key => ar.key
 
       expect(response.body).not_to match /<div class='related-mod'>/
     end
 
     it 'calls LARA.addSidebar content on pages which have authored sidebar' do
-      get :show, :id => page1.id, :response_key => ar.key
+      get :show, :id => page1.id, :run_key => ar.key
       # Note that page factory creates a page with sidebar by default.
       expect(response.body).to match /LARA\.addSidebar\({/
       page2.show_sidebar = false
       page2.save
-      get :show, :id => page2.id, :response_key => ar.key
+      get :show, :id => page2.id, :run_key => ar.key
       expect(response.body).not_to match /LARA\.addSidebar\({/
     end
     # --- Ends section which should go to view spec ---
@@ -199,7 +219,7 @@ describe InteractivePagesController do
       it 'clears answers from the run' do
         page1
         expect(ar).to receive(:clear_answers)
-        expect(Run).to receive(:find).and_return(ar)
+        expect(Run).to receive(:lookup).and_return(ar)
         get :preview, :id => page1.id
       end
 

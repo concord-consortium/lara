@@ -201,22 +201,24 @@ module ApplicationHelper
     params['mode'] == 'teacher-edition'
   end
 
-  def pass_white_list_params(url_or_path, whitelist=default_param_whitelist)
+  def append_white_list_params(url_or_path, whitelist=default_param_whitelist)
     # Construct query string from the contents of a url and those parameters
-    # that are whitelisted, passing thruough the ones in the whitelist and
-    # stripping those that are not in the whitelist.
+    # that are whitelisted, passing through all the ones in the current url and
+    # those in the whitelist that are in the current params.
     #
     # eg:
-    #      url_or_path                   => url://localhost/activites/2/?foo=xx&bar=yy
+    #      url_or_path                   => url://localhost/activites/2/?foo=xx
     #      whitelist                     => [:foo, :bar])
-    #      params (from the fails route) => {foo:'xx', bar:'yy', activity:2}
+    #      params (from the fails route) => {foo:'xx', bar:'yy', bam:'zz', activity:2}
     #
     # yields:
-    #      `?foo=xx&bar=yy` (activity is missing)
-    q = params.select { |key| whitelist.include?(key) }.to_query
-    if q.length > 0
-      sep = url_or_path.match(/\?/) ? '&' : '?'
-      url_or_path + sep + q
+    #      `?foo=xx&bar=yy` (activity and bam are missing)
+    current_params = params.select { |key| whitelist.include?(key) }
+    if current_params.length > 0
+      parsed_url = URI.parse(url_or_path)
+      parsed_url_params = Rack::Utils.parse_nested_query(parsed_url.query || '')
+      parsed_url.query = current_params.merge(parsed_url_params).to_query
+      parsed_url.to_s
     else
       url_or_path
     end

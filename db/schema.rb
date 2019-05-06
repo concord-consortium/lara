@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20181105221848) do
+ActiveRecord::Schema.define(:version => 20190412144736) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -578,8 +578,10 @@ ActiveRecord::Schema.define(:version => 20181105221848) do
     t.string   "remote_endpoint"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.string   "key"
   end
 
+  add_index "sequence_runs", ["key"], :name => "sequence_runs_key_idx"
   add_index "sequence_runs", ["sequence_id"], :name => "index_sequence_runs_on_sequence_id"
   add_index "sequence_runs", ["user_id"], :name => "index_sequence_runs_on_user_id"
 

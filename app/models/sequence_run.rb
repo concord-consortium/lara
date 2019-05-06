@@ -1,27 +1,73 @@
 class SequenceRun < ActiveRecord::Base
-  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id
+  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id, :key
 
   has_many :runs
   belongs_to :sequence
   belongs_to :user
 
+  before_save :add_key_if_nil
+
+  def self.generate_key
+    SecureRandom.hex(20)
+  end
+
   def self.lookup_or_create(sequence, user, portal)
+    if portal.valid? && user.nil?
+      raise ActiveRecord::RecordNotFound.new(
+        "user must be logged in to access a SequenceRun via portal parameters"
+      )
+    end
 
     conditions = {
       remote_endpoint: portal.remote_endpoint,
       remote_id:       portal.remote_id,
-      user_id:         user.id,
+      user_id:         user ? user.id : nil,
       sequence_id:     sequence.id
       #TODO: add domain
     }
-    found = self.find(:first, :conditions => conditions)
-    found ||= self.create(conditions)
-    found.make_or_update_runs
-    found
+    seq_run = nil
+
+    # we only look for an existing sequence run if there is a user
+    # there will be multipe runs that match without a user and we won't know which one
+    # so without a user we always create one
+    if user
+      seq_run = self.find(:first, :conditions => conditions)
+    end
+
+    if seq_run.nil?
+      seq_run = self.create!(conditions)
+    end
+
+    seq_run.make_or_update_runs
+    seq_run
   end
 
   def run_for_activity(activity)
-    runs.find {|run| run.activity_id == activity.id}
+    run = runs.find {|run| run.activity_id == activity.id}
+    if run.nil?
+      if !sequence.lightweight_activities.exists?(activity.id)
+        # probably need a better exception here, technically it would be possible for an
+        # author to remove a activity just as the student loads the page so they might
+        # request an activity that is no longer part of the sequence
+        raise Exception.new("Activity is not part of this sequence")
+      end
+
+      # create the run, we use this form instead of runs.create to make testing
+      # easier
+      run = Run.create!({
+        remote_endpoint: remote_endpoint,
+        remote_id:       remote_id,
+        user_id:         user ? user.id : nil,
+        activity_id:     activity.id,
+        sequence_id:     sequence.id
+      })
+      runs << run
+    end
+    run
+  end
+
+  def to_param
+    key
   end
 
   def most_recent_run
@@ -47,19 +93,15 @@ class SequenceRun < ActiveRecord::Base
 
   def make_or_update_runs
     sequence.activities.each do |activity|
-      unless run_for_activity(activity)
-        runs.create!({
-          remote_endpoint: remote_endpoint,
-          remote_id:       remote_id,
-          user_id:         user.id,
-          activity_id:     activity.id,
-          sequence_id:     sequence.id
-          })
-      end
+      run_for_activity(activity)
     end
   end
 
   def completed?
     runs.count == sequence.activities.count && runs.all? { |r| r.completed? }
+  end
+
+  def add_key_if_nil
+    self.key = SequenceRun.generate_key if self.key.nil?
   end
 end

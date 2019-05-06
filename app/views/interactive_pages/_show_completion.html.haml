@@ -4,8 +4,6 @@
 
   is_sequence = @sequence
   completed_activity = @run && @run.completed?
-  # SequenceRuns do not correctly work with anonymous users. In the case of an anonymous user
-  #   @sequence_run will be nil but @sequence will be valid
   completed_sequence = @sequence_run && @sequence_run.completed?
   next_activity      = is_sequence && @sequence.next_activity(@page.lightweight_activity)
   last_activity      = is_sequence && !next_activity
@@ -69,17 +67,14 @@
     }
   end
 
-  report_path  = summary_with_response_path(@page.lightweight_activity, @session_key) if @session_key
+  report_path  = runnable_summary_path(@page.lightweight_activity)
   page_name    = @page.name || @activity.name + ":#{@page.position}"
 
   if @sequence_run
-    # if there is a sequence_run then we need to explicitly indicate it
-    exit_link = sequence_path(@sequence, :show_index => true, :sequence_run => @sequence_run.id)
-  elsif @sequence
-    # Anonymous users running a sequence will have a sequence but not a sequence run
-    exit_link = sequence_path(@sequence, :show_index => true)
+    # if there is a sequence_run exit to the sequence contents page
+    exit_link = sequence_with_sequence_run_key_path(@sequence, @sequence_run, :show_index => true)
   else
-    exit_link = activity_path(@activity, show_index: true)
+    exit_link = activity_with_run_path(@activity, @run, show_index: true)
   end
 
   exit_label_t = t("COMPLETION_PAGE.EXIT_LABEL")
