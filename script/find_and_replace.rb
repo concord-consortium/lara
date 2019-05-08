@@ -67,6 +67,12 @@ text_fields = {
   ]
 }
 
+interactive_url_field = {
+  "MwInteractive" => [
+    :url
+  ]
+}
+
 def find_text(model_class, field_name, text)
   model_class.constantize.where("#{field_name} like '%#{text}%'")
 end
@@ -142,3 +148,31 @@ def find_and_replace_all(text_fields, text, replacement)
   end
   puts "Total Found: #{total}"
 end
+
+# might not work, haven't tried this yet
+interactives = MwInteractive.where("url like '%http://%'"); nil
+
+interactives = find_text("MwInteractive", :url, "http://"); nil
+interactives = interactives.all.select{|i| i.interactive_page}; nil
+
+402 intearctives with http URLs
+391 of these have interactie_page objects and lightweight_activity objects
+
+def interactive_info(i)
+  info = [];
+  (2013..2017).each{|year|
+    info << i.interactive_page.lightweight_activity.runs.where(updated_at: Date.new(year)..Date.new(year+1)).count
+  }
+  info << i.interactive_page.lightweight_activity.runs.where(updated_at: Date.new(2018)..Date.today).count
+
+  info << i.interactive_page.lightweight_activity.runs.count
+  info << i.id
+  info << i.interactive_page.lightweight_activity.id
+  info << i.url
+  info
+end
+
+results = interactives.map{|i| interactive_info(i)}; nil
+results = interactives.map{|i| [i.interactive_page.lightweight_activity.runs.count, i.id, i.interactive_page.lightweight_activity.id, i.url]}
+
+puts results.inject([]) { |csv, row|  csv << CSV.generate_line(row) }.join(""); nil
