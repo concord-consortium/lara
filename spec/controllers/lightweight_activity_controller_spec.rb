@@ -562,6 +562,21 @@ describe LightweightActivitiesController do
       end
     end
 
+    describe '#export_for_portal' do
+      it "should be routed correctly" do
+        expect(get: "/activities/1/export_for_portal").to route_to(
+            controller: 'lightweight_activities', action: 'export_for_portal', id: '1'
+          )
+      end
+
+      it "should call 'export' on the activity" do
+        get :export_for_portal, { :id => act.id }
+        expect(response).to be_success
+        json_response = JSON.parse(response.body)
+        expect(json_response["student_report_enabled"]).to_not be_nil
+      end
+    end
+
     describe '#resubmit_answers' do
       context 'without a run key' do
         it 'redirects to summary' do
