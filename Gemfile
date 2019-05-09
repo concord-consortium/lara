@@ -97,7 +97,6 @@ gem "httparty", "~> 0.12"
 gem "exception_notification", "~> 4.0"
 gem 'newrelic_rpm', '~> 4.6', '>= 4.6.0.338'
 gem "rack-environmental", "~> 1.3"
-gem "sketchily", "~> 1.5", {:git=>"git://github.com/concord-consortium/sketchily.git", :branch=>"concord"}
 gem "sqlite3", "~> 1.3"
 gem "mysql2", "~> 0.3"
 gem "delayed_job_active_record", "~> 4.0"

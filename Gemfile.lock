@@ -15,16 +15,6 @@ GIT
       railties
 
 GIT
-  remote: git://github.com/concord-consortium/sketchily.git
-  revision: 29f0a66659692d606d8698038a4159217d635380
-  branch: concord
-  specs:
-    sketchily (1.5.0)
-      jquery-rails
-      nokogiri
-      rails (>= 3.1)
-
-GIT
   remote: git://github.com/lostapathy/yaml_db.git
   revision: 98e9a5dca43e3fedd3268c76a73af40d1bdf1dfd
   specs:
@@ -547,7 +537,6 @@ DEPENDENCIES
   sass-rails (~> 3.2)
   sextant (~> 0.2)
   simplecov
-  sketchily (~> 1.5)!
   spreadsheet (~> 1.0)
   spring (~> 1.2)
   spring-commands-rspec (~> 1.0)
