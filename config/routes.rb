@@ -40,6 +40,7 @@ LightweightStandalone::Application.routes.draw do
       get :publish
       get :duplicate
       get :export
+      get :export_for_portal
       get :show_status
       # TODO: dpeprecate this Dashboard route
       get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/sequences/%{id}")
@@ -80,6 +81,7 @@ LightweightStandalone::Application.routes.draw do
       post 'remote_duplicate'
       get 'preview'
       get 'export'
+      get 'export_for_portal'
       get 'show_status'
       # TODO: dpeprecate this Dashboard route
       get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/activities/%{id}")
