@@ -7,7 +7,7 @@ end
 group :assets do
   gem "sass-rails", "~> 3.2"
   gem "coffee-rails", "~> 3.2"
-  gem "compass-rails", "~> 2.0"
+  gem "compass-rails", "~> 3.0"
   gem "compass-blueprint", "~> 1.0"
   gem "uglifier", "~> 4.1"
   gem "turbo-sprockets-rails3", "~> 0.3"
@@ -109,6 +109,6 @@ gem "will_paginate", "~> 3.0"
 gem "useragent", "~> 0.10"
 gem "ribbons-rails", "~> 0.0", {:git=>"git://github.com/concord-consortium/ribbons-rails.git"}
 gem "spreadsheet", "~> 1.0"
-gem "nokogiri", "~> 1.6"
+gem "nokogiri", ">= 1.8.5"
 gem "rack-cors","~> 0.4.1", :require => 'rack/cors'
 gem "test-unit", "~> 3.0"
