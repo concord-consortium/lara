@@ -6,27 +6,61 @@
 This is a Rails application intended to provide a platform for authoring and using "Lightweight" activities.
 
 ## Getting started
-This example assumes that [rvm](https://rvm.io/) is installed. This
- could be a good idea because we use an older version of ruby.
 
-    git clone https://github.com/concord-consortium/lara.git
-    cd lara
-    bundle install
-    cp config/database.sample.yml config/database.yml (need to fix the mysql password and/or user)
-    cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
-    rake db:setup
+We use Docker for our local development. We also are currently using rails-lts which is a non-open source version of Rails that includes security backports for Rails 3.2. So your dockerhub user will need access to `concordconsortium/docker-rails-base-private` to do development.
 
-Run `rake secret` and copy result to `ENV['SECRET_TOKEN']` in `config/app_environment_variables.rb`.
+Log in to docker if you haven't already:
 
-    rails s
+    docker login
 
-Now open your browser to [http://localhost:3000](http://localhost:3000)
+To get started quickly, run:
 
-## Logging in through CC Portal (SSO)
+    docker-compose up
 
-If you work with [Portal](https://github.com/concord-consortium/rigse) take a look how to [integrate it with LARA](https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration).
+You can now access LARA at http://localhost:3000  
 
-If you use Docker to run Portal and LARA, this is not enough. Take a look at [docker/dev/docker-compose-portal-proxy.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-proxy.yml) and [docker/dev/docker-compose-portal-net.yml](https://github.com/concord-consortium/lara/blob/master/docker/dev/docker-compose-portal-net.yml) files.
+This will be very slow on OS X and not support a connection to the portal. So we use docker-compose override files to layer additional features onto the basic compose file. These overrides are specified in a `.env` file. To make the initial setup easier there is a `.env-osx-sample` file that contains the standard setup we use. So you can simply:
+
+    cp .env-osx-sample .env
+    docker-compose up
+
+**Note:** If you don't have Dinghy setup, you need to follow the directions in the [Dinghy section](#setup-dinghy-on-os-x) before continuing.
+
+Now open LARA at http://app.lara.docker
+
+Sign up a new user at: http://app.lara.docker/users/sign_up
+
+Make that user an admin
+
+    docker-compose exec app bundle exec rake lightweight:admin_last_user
+
+To use SSO with the portal you need to make sure your `PORTAL_HOST` is set correctly in `.env`. And you need to add a client to the Portal by running this command in the portal directory:
+
+    docker-compose exec app bundle exec rake sso:add_client
+
+| Param | Value |
+| --- | --- |
+| client_id: | localhost |
+| secret: | unsecure local secret |
+| site_url: | http://app.lara.docker |
+
+## Users and administration
+User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
+
+Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
+
+## Setup Dinghy on OS X
+
+You only need to do this once. And it can be used with all docker and docker-compose containers.
+
+Startup up a restartable proxying container with a DNS server:
+
+    docker run -d --restart=always -v /var/run/docker.sock:/tmp/docker.sock:ro -v ~/.dinghy/certs:/etc/nginx/certs -p 80:80 -p 443:443 -p 19322:19322/udp -e DNS_IP=127.0.0.1 -e CONTAINER_NAME=http-proxy --name http-proxy codekitchen/dinghy-http-proxy
+
+Create file /etc/resolver/docker with the following contents.
+
+    nameserver 127.0.0.1
+    port 19322
 
 ## Editing CSS
 
@@ -42,25 +76,23 @@ theme and the MW theme. You can look at `app/assets/stylesheets/cc-runtime-base.
 Theme stylesheets must be added to the config.assets.precompile list in `config/environments/production.rb`
 in order to function in production environments.
 
-
-## Users and administration
-User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form (e.g. at [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)) will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
-
-On a local development instance, you can make an admin user by registering a new user at the link above, then running `rake lightweight:admin_last_user` in your shell. That will make the most-recently-created user an administrator. Needless to say, this task *will not* run in the production environment.
-
-Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
-
 ## Running RSpec tests
 While developing, you might wish to run integration tests inside a
 Docker container.
 
-Run `docker-compose up`  followed by
-`docker-compose exec app docker/dev/run-ci.sh` from your local machine for a continuous test run.
+First make sure your normal containers are running with `docker-compose up`
 
-or
+For continuously running the tests with guard
 
-Run `docker-compose up`  followed by
-`docker-compose exec app docker/dev/run-spec.sh` from your local machine for single test run.
+    docker-compose exec app docker/dev/run-ci.sh
+
+For running the tests just once
+
+    docker-compose exec app docker/dev/run-spec.sh
+
+It can also be useful to start a bash shell in the container, setup the test environment and then manually run rspec from inside of that shell.  You start a bash shell with
+
+    docker-compose exec app /bin/bash
 
 ## Adding code coverage reports
 If you set the `COVERAGE_REPORT` environment variable to a non-falsy value a html code coverage report will be generated in the (git ignored) `coverage` directory.
@@ -70,41 +102,16 @@ To use this under Docker run `docker-compose up` followed by either
 - `docker-compose exec -e COVERAGE_REPORT=true app docker/dev/run-ci.sh`
 - `docker-compose exec -e COVERAGE_REPORT=true app docker/dev/run-spec.sh`
 
-### Older non-docker instructions:
-
-If you haven't run tests on this project before, you first need to initialize the test database.
-
-      RAILS_ENV=test rake db:setup
-      rake db:test:prepare
-
-Then, from the application root, run
-
-      RAILS_ENV=test bundle exec rspec spec
-
-To re-initialize the test database, should that be necessary:
-
-      RAILS_ENV=test rake db:drop db:setup
-      rake db:test:prepare
-
-The RSpec tests live in `spec/`. They use [PhantomJS](http://phantomjs.org/) via [Poltergeist](https://github.com/jonleighton/poltergeist) to run [Capybara](http://jnicklas.github.io/capybara/) tests, so you will need to have PhantomJS installed; it may be [downloaded](http://phantomjs.org/download.html) or installed with Homebrew:
-
-      brew update && brew install phantomjs
-
-If you wish to run tests continuously, Guard is configured; a simple `guard` should start it. Guard will skip some tests tagged "slow" in order to keep cycles short.
-
-If you want to run tests using guard, tests will fail unless you
-specify a sqlite adaptor (as per config/database.sample.yml) -- TODO:
-Clean up tests so they work fine with mysql without the db:test:prepare
-step above.
-
 ## Running Jasmine tests
-To run the jasmine tests in a browser, run the command below and open your browser to the URL printed on the console
 
-    rake jasmine
+    docker-compose run -p 8888:8888 --rm app bundle exec rake jasmine
 
-To run the jasmine tests with PhantomJS, run
+and open [http://localhost:8888](http://localhost:8888)
 
-    rake jasmine:ci
+*Running the tests with PhantomJS is not currently working*
+If it was working you could run
+
+    docker-compose run --rm app bundle exec rake jasmine:ci
 
 
 ## Adding Embeddable support
@@ -129,9 +136,6 @@ LARA's runtime is being rebuilt to support reporting student answers and progres
 * Legacy ExternalScript functionality is described in [external scripts doc](./docs/external-scripts-api.md)
 * Proposed API is defined in [LARA API Doc](./docs/lara-plugin-api.md)
 
-## Single Sign-On
-If you want to use a single sign-on provider, you will need to configure a client in the sign-on authority (e.g. the portal). You should also copy `config/app_environmental_variables.sample.rb` to  `config/app_environmental_variables.rb` and edit as appropriate.
-
 ## Delayed Job background job processing
 
 see the readme at the [github page](https://github.com/collectiveidea/delayed_job)
@@ -153,24 +157,13 @@ To enque a job simply add `handle_asynchronously :method_name` to your models. e
       handle_asynchronously :deliver
     end
 
-There are other methods for enqueing jobs, but this is probably the easiest.
-
-
-## Deploying with EC2 load balancing using capistrano-autoscaling:
-
-If you are going to deploy to a server with load balancing enabled (production), read deploy/production.rb
-
-  1. Uncomment the auto-scale callback in config/deply/(server).rb or add one like this:
-  `after "deploy:restart", "autoscaling:update"`
-  2. Read the documentation here: https://github.com/concord-consortium/capistrano-autoscaling/tree/concord
-  3. export your credentials using something like this:
-  `export AWS_ACCESS_KEY_ID='xxxx'` and
-  `export AWS_SECRET_ACCESS_KEY='xxxx'`
+There are other methods for enqueing jobs, but this is the easiest.
 
 
 ## Docker and docker-compose for developers:
 
-* See [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/docs/docker.md) for an overview of how to get your develepment environment configured with docker-compose.
+For more information about the docker setup look at [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/docs/docker.md).
+
 * There is [LARA specific docker documentation](https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md) in this repo.
 
 ## History
@@ -181,6 +174,22 @@ This application was developed as a standalone version of the original code deve
 ## LARA Interactive API
 
 The LARA Interactive API defines how the runtime javascript of LARA interacts with embedded iframe content. The [documentation can be found here](http://concord-consortium.github.io/lara-interactive-api/docs/)
+
+## Old Non Docker setup
+
+This example assumes that [rvm](https://rvm.io/) is installed. This
+ could be a good idea because we use an older version of ruby.
+
+    git clone https://github.com/concord-consortium/lara.git
+    cd lara
+    bundle install
+    cp config/database.sample.yml config/database.yml (need to fix the mysql password and/or user)
+    cp config/app_environment_variables.sample.rb config/app_environment_variables.rb
+    rake db:setup
+
+Run `rake secret` and copy result to `ENV['SECRET_TOKEN']` in `config/app_environment_variables.rb`.
+
+    rails s
 
 ## License
 
