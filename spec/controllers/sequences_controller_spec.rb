@@ -6,8 +6,10 @@ describe SequencesController do
   let(:sequence) { FactoryGirl.create(:sequence,
     publication_status: 'public',
     theme: theme,
-    project: project) }
+    project: project,
+    user: user) }
   let(:activity) { FactoryGirl.create(:public_activity) }
+  let(:user) { FactoryGirl.create(:user) }
 
   it_behaves_like "remote duplicate support" do
     let(:resource) { FactoryGirl.create(:sequence) }
@@ -154,6 +156,21 @@ describe SequencesController do
     it "should call 'export' on the sequence" do
       get :export, { :id => sequence.id }
       expect(response).to be_success
+    end
+  end
+
+  describe '#export for portal' do
+    it "should be routed correctly" do
+      expect(get: "/sequences/1/export_for_portal").to route_to(
+          controller: 'sequences', action: 'export_for_portal', id: '1'
+        )
+    end
+
+    it "should call 'export_for_portal' on the sequence" do
+      get :export_for_portal, { :id => sequence.id }
+      expect(response).to be_success
+      json_response = JSON.parse(response.body)
+      expect(json_response["source_type"]).to_not be_nil
     end
   end
 

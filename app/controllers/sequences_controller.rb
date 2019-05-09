@@ -189,6 +189,13 @@ class SequencesController < ApplicationController
     send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
   end
 
+  def export_for_portal
+    authorize! :export, @sequence
+    self_url = "#{request.protocol}#{request.host_with_port}"
+    sequence_json = @sequence.serialize_for_portal(self_url).to_json
+    send_data sequence_json, type: :json, disposition: "attachment", filename: "#{@sequence.name}_version_1.json"
+  end
+
   private
   def set_sequence
     @sequence = Sequence.find(params[:id])
