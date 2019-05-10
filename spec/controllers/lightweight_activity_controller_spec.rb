@@ -575,6 +575,12 @@ describe LightweightActivitiesController do
         json_response = JSON.parse(response.body)
         expect(json_response["student_report_enabled"]).to_not be_nil
       end
+
+      it "generates a validated JSON" do
+        get :export_for_portal, { :id => act.id }
+        expect(response).to be_success
+        expect(response.body).to match_response_schema("portal_publication")
+      end
     end
 
     describe '#resubmit_answers' do

@@ -1,0 +1,278 @@
+{
+  "required": [
+    "source_type"
+  ],
+  "optional": [
+    "type",
+    "name",
+    "description",
+    "url",
+    "create_url",
+    "author_url",
+    "print_url",
+    "external_report_url",
+    "student_report_enabled",
+    "thumbnail_url",
+    "author_email",
+    "is_locked",
+    "sections"
+    ],
+  "properties": {
+    "source_type": {
+      "description": "Name of the system publishing this resource, e.g. LARA.",
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "title": "The Type Schema",
+      "default": "",
+      "examples": [
+        "Activity"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "title": "The Name Schema",
+      "default": "",
+      "examples": [
+        "One Froggy Evening"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "title": "The Description Schema",
+      "default": "",
+      "examples": [
+        "<p>All about time corner stones.</p>"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "title": "The Url Schema",
+      "default": "",
+      "examples": [
+        "http://app.lara.docker/activities/1"
+      ]
+    },
+    "create_url": {
+      "type": "string",
+      "title": "The Create_url Schema",
+      "default": "",
+      "examples": [
+        "http://app.lara.docker/activities/1"
+      ]
+    },
+    "author_url": {
+      "type": "string",
+      "title": "The Author_url Schema",
+      "default": "",
+      "examples": [
+        "http://app.lara.docker/activities/1/edit"
+      ]
+    },
+    "print_url": {
+      "type": "string",
+      "title": "The Print_url Schema",
+      "default": "",
+      "examples": [
+        "http://app.lara.docker/activities/1/print_blank"
+      ]
+    },
+    "external_report_url": {
+      "type": "null",
+      "title": "The External_report_url Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "student_report_enabled": {
+      "type": "boolean",
+      "title": "The Student_report_enabled Schema",
+      "default": false,
+      "examples": [
+        true
+      ]
+    },
+    "thumbnail_url": {
+      "type": ["string", "null"],
+      "title": "The Thumbnail_url Schema",
+      "default": "",
+      "examples": [
+        ""
+      ]
+    },
+    "author_email": {
+      "type": "string",
+      "title": "The Author_email Schema",
+      "default": "",
+      "examples": [
+        "admin@concord.org"
+      ]
+    },
+    "is_locked": {
+      "type": "boolean",
+      "title": "The Is_locked Schema",
+      "default": false,
+      "examples": [
+        true
+      ]
+    },
+    "sections": {
+      "type": "array",
+      "title": "The Sections Schema",
+      "items": {
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "name",
+          "pages"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "The Name Schema",
+            "default": "",
+            "examples": [
+              "One Froggy Evening Section"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "pages": {
+            "type": "array",
+            "title": "The Pages Schema",
+            "items": {
+              "type": "object",
+              "title": "The Items Schema",
+              "required": [
+                "name",
+                "url",
+                "elements"
+              ],
+              "properties": {
+                "name": {
+                  "type": ["string", "null"],
+                  "title": "The Name Schema",
+                  "default": null,
+                  "examples": [
+                    null
+                  ]
+                },
+                "url": {
+                  "type": "string",
+                  "title": "The Url Schema",
+                  "default": "",
+                  "examples": [
+                    "http://app.lara.docker/pages/1"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "elements": {
+                  "type": "array",
+                  "title": "The Elements Schema",
+                  "items": {
+                    "type": "object",
+                    "title": "The Items Schema",
+                    "required": [
+                      "type",
+                      "id",
+                      "prompt",
+                      "choices",
+                      "is_required",
+                      "show_in_featured_question_report"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "title": "The Type Schema",
+                        "default": "",
+                        "examples": [
+                          "multiple_choice"
+                        ],
+                        "pattern": "^(.*)$"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "title": "The Id Schema",
+                        "default": 0,
+                        "examples": [
+                          2
+                        ]
+                      },
+                      "prompt": {
+                        "type": "string",
+                        "title": "The Prompt Schema",
+                        "default": "",
+                        "examples": [
+                          "<p>What style of music does Froggy perform?</p>"
+                        ],
+                        "pattern": "^(.*)$"
+                      },
+                      "choices": {
+                        "type": "array",
+                        "title": "The Choices Schema",
+                        "items": {
+                          "type": "object",
+                          "title": "The Items Schema",
+                          "required": [
+                            "id",
+                            "content",
+                            "correct"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "title": "The Id Schema",
+                              "default": 0,
+                              "examples": [
+                                5
+                              ]
+                            },
+                            "content": {
+                              "type": "string",
+                              "title": "The Content Schema",
+                              "default": "",
+                              "examples": [
+                                "Blues"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "correct": {
+                              "type": "boolean",
+                              "title": "The Correct Schema",
+                              "default": false,
+                              "examples": [
+                                false
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "is_required": {
+                        "type": "boolean",
+                        "title": "The Is_required Schema",
+                        "default": false,
+                        "examples": [
+                          false
+                        ]
+                      },
+                      "show_in_featured_question_report": {
+                        "type": "boolean",
+                        "title": "The Show_in_featured_question_report Schema",
+                        "default": false,
+                        "examples": [
+                          true
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
