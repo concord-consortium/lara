@@ -1,4 +1,5 @@
 import * as events from "./events";
+import { IInteractiveAvailableEvent } from "../plugin-api";
 
 describe("Events helper", () => {
   describe("Log event", () => {
@@ -14,15 +15,15 @@ describe("Events helper", () => {
     });
   });
 
-  describe("ClickToPlayStarted event", () => {
+  describe("InteractiveAvailable event", () => {
     it("provides working API for event handling", () => {
       const handler = jest.fn();
-      events.onClickToPlayStarted(handler);
-      const e = { container: document.createElement("div") };
-      events.emitClickToPlayStarted(e);
+      events.onInteractiveAvailable(handler);
+      const e: IInteractiveAvailableEvent = { container: document.createElement("div"), available: true };
+      events.emitInteractiveAvailable(e);
       expect(handler).toHaveBeenNthCalledWith(1, e);
-      events.offClickToPlayStarted(handler);
-      events.emitClickToPlayStarted(e);
+      events.offInteractiveAvailable(handler);
+      events.emitInteractiveAvailable(e);
       expect(handler).toHaveBeenNthCalledWith(1, e);
     });
   });

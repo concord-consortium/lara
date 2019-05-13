@@ -1,5 +1,5 @@
-import {onLog, offLog, onClickToPlayStarted, offClickToPlayStarted} from "../lib/events";
-import {IClickToPlayStartedEventHandler, ILogEventHandler} from "./types";
+import {onLog, offLog, onInteractiveAvailable, offInteractiveAvailable} from "../lib/events";
+import {IInteractiveAvailableEventHandler, ILogEventHandler} from "./types";
 
 /**
  * Functions related to event observing provided by LARA.
@@ -18,12 +18,12 @@ export const events = {
    */
   offLog: (handler: ILogEventHandler) => offLog(handler),
   /**
-   * Subscribes to ClickToPlayStarted events. Gets called when any interactive that has click to play mode enabled
-   * is started by the user.
+   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+   * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
    */
-  onClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => onClickToPlayStarted(handler),
+  onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => onInteractiveAvailable(handler),
   /**
-   * Removes ClickToPlayStarted event handler.
+   * Removes InteractiveAvailable event handler.
    */
-  offClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => offClickToPlayStarted(handler),
+  offInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => offInteractiveAvailable(handler),
 };

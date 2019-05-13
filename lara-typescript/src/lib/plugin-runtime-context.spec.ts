@@ -1,4 +1,4 @@
-import { generatePluginRuntimeContext } from "./plugin-runtime-context";
+import { generatePluginRuntimeContext, IEmbeddableContext } from "./plugin-runtime-context";
 import { IClassInfo } from "../plugin-api";
 import * as fetch from "jest-fetch-mock";
 import * as $ from "jquery";
@@ -142,7 +142,7 @@ describe("Plugin runtime context helper", () => {
     });
 
     it("is IEmbeddableRuntimeContext instance when initial context is provided", () => {
-      const wrappedEmbeddable = {
+      const wrappedEmbeddable: IEmbeddableContext = {
         container: document.createElement("div"),
         laraJson: {
           name: "Test Interactive",
@@ -150,7 +150,7 @@ describe("Plugin runtime context helper", () => {
           ref_id: "86-MwInteractive"
         },
         interactiveStateUrl: "http://interactive.state.url",
-        clickToPlayId: "#clickToPlayId"
+        interactiveAvailable: true
       };
       const runtimeContext = generatePluginRuntimeContext(Object.assign({}, pluginContext, { wrappedEmbeddable }));
       expect(runtimeContext.wrappedEmbeddable).not.toBeNull();

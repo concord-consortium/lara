@@ -59,8 +59,8 @@ export interface IEmbeddableContext {
   laraJson: any;
   /** Interactive state URL, available only when plugin is wrapping an interactive. */
   interactiveStateUrl: string | null;
-  /** DOM id of click to play overlay if enabled. */
-  clickToPlayId: string | null;
+  /** True if the interactive is immediately available for use */
+  interactiveAvailable: boolean;
 }
 
 export const saveLearnerPluginState = (learnerStateSaveUrl: string, state: string): Promise<string> => {
