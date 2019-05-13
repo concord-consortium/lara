@@ -66,6 +66,16 @@ const getReportingUrl = (
 };
 
 export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): IEmbeddableRuntimeContext => {
+  // Add listener to avoid the race condition of the click to play being clicked before the
+  // handler is added with onClickToPlayStarted()
+  let lastClickToPlayStartedEvent: IClickToPlayStartedEvent | null = null;
+  const lastClickToPlayStartedEventListener = (event: IClickToPlayStartedEvent) => {
+    if (event.container === context.container) {
+      lastClickToPlayStartedEvent = event;
+    }
+  };
+  onClickToPlayStarted(lastClickToPlayStartedEventListener);
+
   return {
     container: context.container,
     laraJson: context.laraJson,
@@ -73,6 +83,12 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): I
     getReportingUrl: (getInteractiveStatePromise?: Promise<IInteractiveState>) =>
       getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise),
     onClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => {
+      if (lastClickToPlayStartedEvent) {
+        handler(lastClickToPlayStartedEvent);
+      }
+      // NOTE: we don't remove the lastClickToPlayStartedEventListener in case onClickToPlayStarted()
+      // is called multiple times as we would want the most recent event in each case.
+
       // Add generic listener and filter events to limit them just to this given embeddable.
       onClickToPlayStarted((event: IClickToPlayStartedEvent) => {
         if (event.container === context.container) {

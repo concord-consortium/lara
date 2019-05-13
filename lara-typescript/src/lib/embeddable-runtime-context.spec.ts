@@ -126,5 +126,14 @@ describe("Embeddable runtime context helper", () => {
       emitClickToPlayStarted(event);
       expect(handler).toHaveBeenCalledWith(event);
     });
+
+    it("handles the last event before the handler is connected", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      const handler = jest.fn();
+      const event = { container: embeddableContext.container };
+      emitClickToPlayStarted(event);
+      runtimeContext.onClickToPlayStarted(handler);
+      expect(handler).toHaveBeenCalledWith(event);
+    });
   });
 });

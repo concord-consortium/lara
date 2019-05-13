@@ -15969,6 +15969,15 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
     });
 };
 exports.generateEmbeddableRuntimeContext = function (context) {
+    // Add listener to avoid the race condition of the click to play being clicked before the
+    // handler is added with onClickToPlayStarted()
+    var lastClickToPlayStartedEvent = null;
+    var lastClickToPlayStartedEventListener = function (event) {
+        if (event.container === context.container) {
+            lastClickToPlayStartedEvent = event;
+        }
+    };
+    events_1.onClickToPlayStarted(lastClickToPlayStartedEventListener);
     return {
         container: context.container,
         laraJson: context.laraJson,
@@ -15977,6 +15986,11 @@ exports.generateEmbeddableRuntimeContext = function (context) {
             return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
         },
         onClickToPlayStarted: function (handler) {
+            if (lastClickToPlayStartedEvent) {
+                handler(lastClickToPlayStartedEvent);
+            }
+            // NOTE: we don't remove the lastClickToPlayStartedEventListener in case onClickToPlayStarted()
+            // is called multiple times as we would want the most recent event in each case.
             // Add generic listener and filter events to limit them just to this given embeddable.
             events_1.onClickToPlayStarted(function (event) {
                 if (event.container === context.container) {
