@@ -15969,15 +15969,6 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
     });
 };
 exports.generateEmbeddableRuntimeContext = function (context) {
-    // Add listener to avoid the race condition of the click to play being clicked before the
-    // handler is added with onInteractiveAvailable()
-    var lastInteractiveAvailableEvent = null;
-    var lastInteractiveAvailableEventListener = function (event) {
-        if (event.container === context.container) {
-            lastInteractiveAvailableEvent = event;
-        }
-    };
-    events_1.onInteractiveAvailable(lastInteractiveAvailableEventListener);
     return {
         container: context.container,
         laraJson: context.laraJson,
@@ -15986,11 +15977,6 @@ exports.generateEmbeddableRuntimeContext = function (context) {
             return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
         },
         onInteractiveAvailable: function (handler) {
-            if (lastInteractiveAvailableEvent) {
-                handler(lastInteractiveAvailableEvent);
-            }
-            // NOTE: we don't remove the lastInteractiveAvailableEventListener in case onInteractiveAvailable()
-            // is called multiple times as we would want the most recent event in each case.
             // Add generic listener and filter events to limit them just to this given embeddable.
             events_1.onInteractiveAvailable(function (event) {
                 if (event.container === context.container) {
@@ -16104,7 +16090,27 @@ exports.generatePluginRuntimeContext = function (context) {
         saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(context.learnerStateSaveUrl, state); },
         getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
-        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
+        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
+        log: function (logData) {
+            var logger = window.loggerUtils;
+            var augmentedProperties;
+            if (logger) {
+                if (context.wrappedEmbeddable) {
+                    augmentedProperties = {
+                        plugin_id: context.pluginId,
+                        embeddable_type: context.wrappedEmbeddable.laraJson.type,
+                        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+                    };
+                }
+                else {
+                    augmentedProperties = {
+                        plugin_id: context.pluginId
+                    };
+                }
+                var pluginLogData = Object.assign(augmentedProperties, logData);
+                logger.log(pluginLogData);
+            }
+        }
     };
 };
 

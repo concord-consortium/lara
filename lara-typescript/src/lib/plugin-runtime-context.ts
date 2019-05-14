@@ -1,5 +1,5 @@
 import {
-  IPluginRuntimeContext, IJwtResponse, IClassInfo
+  IPluginRuntimeContext, IJwtResponse, IClassInfo, ILogData
 } from "../plugin-api";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import * as $ from "jquery";
@@ -116,6 +116,25 @@ export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRu
     saveLearnerPluginState: (state: string) => saveLearnerPluginState(context.learnerStateSaveUrl, state),
     getClassInfo: () => getClassInfo(context.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(context.firebaseJwtUrl, appName),
-    wrappedEmbeddable: context.wrappedEmbeddable ? generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
+    wrappedEmbeddable: context.wrappedEmbeddable ? generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
+    log: (logData: string | ILogData) => {
+      const logger = (window as any).loggerUtils;
+      let augmentedProperties;
+      if (logger) {
+        if (context.wrappedEmbeddable) {
+          augmentedProperties = {
+            plugin_id: context.pluginId,
+            embeddable_type: context.wrappedEmbeddable.laraJson.type,
+            embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+          };
+        } else {
+          augmentedProperties = {
+            plugin_id: context.pluginId
+          };
+        }
+        const pluginLogData = Object.assign(augmentedProperties, logData);
+        logger.log(pluginLogData);
+      }
+    }
   };
 };
