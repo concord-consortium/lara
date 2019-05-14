@@ -127,14 +127,5 @@ describe("Embeddable runtime context helper", () => {
       emitInteractiveAvailable(event);
       expect(handler).toHaveBeenCalledWith(event);
     });
-
-    it("handles the last event before the handler is connected", () => {
-      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
-      const handler = jest.fn();
-      const event = { container: embeddableContext.container, available: true };
-      emitInteractiveAvailable(event);
-      runtimeContext.onInteractiveAvailable(handler);
-      expect(handler).toHaveBeenCalledWith(event);
-    });
   });
 });
