@@ -68,16 +68,6 @@ const getReportingUrl = (
 };
 
 export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): IEmbeddableRuntimeContext => {
-  // Add listener to avoid the race condition of the click to play being clicked before the
-  // handler is added with onInteractiveAvailable()
-  let lastInteractiveAvailableEvent: IInteractiveAvailableEvent | null = null;
-  const lastInteractiveAvailableEventListener = (event: IInteractiveAvailableEvent) => {
-    if (event.container === context.container) {
-      lastInteractiveAvailableEvent = event;
-    }
-  };
-  onInteractiveAvailable(lastInteractiveAvailableEventListener);
-
   return {
     container: context.container,
     laraJson: context.laraJson,
@@ -85,12 +75,6 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContext): I
     getReportingUrl: (getInteractiveStatePromise?: Promise<IInteractiveState>) =>
       getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise),
     onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => {
-      if (lastInteractiveAvailableEvent) {
-        handler(lastInteractiveAvailableEvent);
-      }
-      // NOTE: we don't remove the lastInteractiveAvailableEventListener in case onInteractiveAvailable()
-      // is called multiple times as we would want the most recent event in each case.
-
       // Add generic listener and filter events to limit them just to this given embeddable.
       onInteractiveAvailable((event: IInteractiveAvailableEvent) => {
         if (event.container === context.container) {
