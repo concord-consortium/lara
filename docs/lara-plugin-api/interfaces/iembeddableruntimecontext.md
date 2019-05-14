@@ -13,8 +13,9 @@
 * [container](iembeddableruntimecontext.md#container)
 * [getInteractiveState](iembeddableruntimecontext.md#getinteractivestate)
 * [getReportingUrl](iembeddableruntimecontext.md#getreportingurl)
+* [interactiveAvailable](iembeddableruntimecontext.md#interactiveavailable)
 * [laraJson](iembeddableruntimecontext.md#larajson)
-* [onClickToPlayStarted](iembeddableruntimecontext.md#onclicktoplaystarted)
+* [onInteractiveAvailable](iembeddableruntimecontext.md#oninteractiveavailable)
 
 ---
 
@@ -26,7 +27,7 @@
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:47](https://github.com/concord-consortium/lara/blob/b01ee383/lara-typescript/src/plugin-api/types.ts#L47)*
+*Defined in [types.ts:47](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L47)*
 
 Embeddable container.
 
@@ -37,7 +38,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [types.ts:68](https://github.com/concord-consortium/lara/blob/b01ee383/lara-typescript/src/plugin-api/types.ts#L68)*
+*Defined in [types.ts:68](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L68)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -53,7 +54,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [types.ts:78](https://github.com/concord-consortium/lara/blob/b01ee383/lara-typescript/src/plugin-api/types.ts#L78)*
+*Defined in [types.ts:78](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L78)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -71,13 +72,24 @@ Function that returns reporting URL (Promise) or null if it's not an interactive
 **Returns:** `Promise`<`string` \| `null`> \| `null`
 
 ___
+<a id="interactiveavailable"></a>
+
+###  interactiveAvailable
+
+**● interactiveAvailable**: *`boolean`*
+
+*Defined in [types.ts:88](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L88)*
+
+True if the interactive is immediately available
+
+___
 <a id="larajson"></a>
 
 ###  laraJson
 
 **● laraJson**: *`any`*
 
-*Defined in [types.ts:66](https://github.com/concord-consortium/lara/blob/b01ee383/lara-typescript/src/plugin-api/types.ts#L66)*
+*Defined in [types.ts:66](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L66)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -97,26 +109,26 @@ ref_id: "86-MwInteractive"
 ```
 
 ___
-<a id="onclicktoplaystarted"></a>
+<a id="oninteractiveavailable"></a>
 
-###  onClickToPlayStarted
+###  onInteractiveAvailable
 
-**● onClickToPlayStarted**: *`function`*
+**● onInteractiveAvailable**: *`function`*
 
-*Defined in [types.ts:86](https://github.com/concord-consortium/lara/blob/b01ee383/lara-typescript/src/plugin-api/types.ts#L86)*
+*Defined in [types.ts:86](https://github.com/concord-consortium/lara/blob/b02dfc31/lara-typescript/src/plugin-api/types.ts#L86)*
 
-Function that subscribes provided handler to event that gets called when the interactive with click to play mode is started by the user. Note that it will work only if given embeddable is an interactive and it has click to play mode enabled by author.
+Function that subscribes provided handler to event that gets called when the interactive's availablity changes. Normally an interactive starts as available unless click to play is enabled. When click to play is enabled the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 
 *__param__*: Event handler function.
 
 #### Type declaration
-▸(handler: *[IClickToPlayStartedEventHandler](../#iclicktoplaystartedeventhandler)*): `void`
+▸(handler: *[IInteractiveAvailableEventHandler](../#iinteractiveavailableeventhandler)*): `void`
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| handler | [IClickToPlayStartedEventHandler](../#iclicktoplaystartedeventhandler) |
+| handler | [IInteractiveAvailableEventHandler](../#iinteractiveavailableeventhandler) |
 
 **Returns:** `void`
 

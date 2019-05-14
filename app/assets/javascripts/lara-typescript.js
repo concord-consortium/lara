@@ -15903,7 +15903,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
 exports.events = {
     emitLog: events_1.emitLog,
-    emitClickToPlayStarted: events_1.emitClickToPlayStarted
+    emitInteractiveAvailable: events_1.emitInteractiveAvailable
 };
 
 
@@ -15969,6 +15969,15 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
     });
 };
 exports.generateEmbeddableRuntimeContext = function (context) {
+    // Add listener to avoid the race condition of the click to play being clicked before the
+    // handler is added with onInteractiveAvailable()
+    var lastInteractiveAvailableEvent = null;
+    var lastInteractiveAvailableEventListener = function (event) {
+        if (event.container === context.container) {
+            lastInteractiveAvailableEvent = event;
+        }
+    };
+    events_1.onInteractiveAvailable(lastInteractiveAvailableEventListener);
     return {
         container: context.container,
         laraJson: context.laraJson,
@@ -15976,14 +15985,20 @@ exports.generateEmbeddableRuntimeContext = function (context) {
         getReportingUrl: function (getInteractiveStatePromise) {
             return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
         },
-        onClickToPlayStarted: function (handler) {
+        onInteractiveAvailable: function (handler) {
+            if (lastInteractiveAvailableEvent) {
+                handler(lastInteractiveAvailableEvent);
+            }
+            // NOTE: we don't remove the lastInteractiveAvailableEventListener in case onInteractiveAvailable()
+            // is called multiple times as we would want the most recent event in each case.
             // Add generic listener and filter events to limit them just to this given embeddable.
-            events_1.onClickToPlayStarted(function (event) {
+            events_1.onInteractiveAvailable(function (event) {
                 if (event.container === context.container) {
                     handler(event);
                 }
             });
-        }
+        },
+        interactiveAvailable: context.interactiveAvailable
     };
 };
 
@@ -16013,14 +16028,14 @@ exports.onLog = function (handler) {
 exports.offLog = function (handler) {
     emitter.off("log", handler);
 };
-exports.emitClickToPlayStarted = function (event) {
-    emitter.emit("clickToPlayStarted", event);
+exports.emitInteractiveAvailable = function (event) {
+    emitter.emit("interactiveAvailable", event);
 };
-exports.onClickToPlayStarted = function (handler) {
-    emitter.on("clickToPlayStarted", handler);
+exports.onInteractiveAvailable = function (handler) {
+    emitter.on("interactiveAvailable", handler);
 };
-exports.offClickToPlayStarted = function (handler) {
-    emitter.off("clickToPlayStarted", handler);
+exports.offInteractiveAvailable = function (handler) {
+    emitter.off("interactiveAvailable", handler);
 };
 
 
@@ -16231,14 +16246,14 @@ exports.events = {
      */
     offLog: function (handler) { return events_1.offLog(handler); },
     /**
-     * Subscribes to ClickToPlayStarted events. Gets called when any interactive that has click to play mode enabled
-     * is started by the user.
+     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+     * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
      */
-    onClickToPlayStarted: function (handler) { return events_1.onClickToPlayStarted(handler); },
+    onInteractiveAvailable: function (handler) { return events_1.onInteractiveAvailable(handler); },
     /**
-     * Removes ClickToPlayStarted event handler.
+     * Removes InteractiveAvailable event handler.
      */
-    offClickToPlayStarted: function (handler) { return events_1.offClickToPlayStarted(handler); },
+    offInteractiveAvailable: function (handler) { return events_1.offInteractiveAvailable(handler); },
 };
 
 

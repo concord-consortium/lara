@@ -67,8 +67,9 @@
       var $clickToPlay = $(clickToPlayElem);
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
       var $embeddableContainer = $clickToPlay.parents('.embeddable-container');
-      LARA.InternalAPI.events.emitClickToPlayStarted({
-        container: $embeddableContainer[0]
+      LARA.InternalAPI.events.emitInteractiveAvailable({
+        container: $embeddableContainer[0],
+        available: true
       });
       $clickToPlay.css('display', 'none');
       $clickToPlay.removeClass('shown');

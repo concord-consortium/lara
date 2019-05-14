@@ -77,13 +77,15 @@ export interface IEmbeddableRuntimeContext {
    ****************************************************************************/
   getReportingUrl: (interactiveStatePromise?: Promise<IInteractiveState>) => Promise<string | null> | null;
   /****************************************************************************
-   Function that subscribes provided handler to event that gets called when the interactive with click to play mode
-   is started by the user. Note that it will work only if given embeddable is an interactive and it has click to play
-   mode enabled by author.
+   Function that subscribes provided handler to event that gets called when the interactive's availablity changes.
+   Normally an interactive starts as available unless click to play is enabled.  When click to play is enabled
+   the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 
    @param handler Event handler function.
    ****************************************************************************/
-  onClickToPlayStarted: (handler: IClickToPlayStartedEventHandler) => void;
+  onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => void;
+  /** True if the interactive is immediately available */
+  interactiveAvailable: boolean;
 }
 
 export interface IPortalClaims {
@@ -153,16 +155,20 @@ export interface ILogData {
 export type ILogEventHandler = (event: ILogData) => void;
 
 /**
- * Data passed to ClickToPlayStarted event handlers.
+ * Data passed to InteractiveAvailable event handlers.
  */
-export interface IClickToPlayStartedEvent {
+export interface IInteractiveAvailableEvent {
   /**
    * Interactive container of the interactive that was just started.
    */
   container: HTMLElement;
+  /**
+   * Availablility of interactive
+   */
+  available: boolean;
 }
 
 /**
- * ClickToPlayStarted event handler.
+ * InteractiveAvailable event handler.
  */
-export type IClickToPlayStartedEventHandler = (event: IClickToPlayStartedEvent) => void;
+export type IInteractiveAvailableEventHandler = (event: IInteractiveAvailableEvent) => void;

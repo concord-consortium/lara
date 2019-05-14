@@ -1,6 +1,6 @@
-import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import { IInteractiveState } from "../plugin-api";
-import { emitClickToPlayStarted } from "./events";
+import { generateEmbeddableRuntimeContext, IEmbeddableContext } from "./embeddable-runtime-context";
+import { IInteractiveState, IEmbeddableRuntimeContext } from "../plugin-api";
+import { emitInteractiveAvailable } from "./events";
 import * as fetch from "jest-fetch-mock";
 (window as any).fetch = fetch;
 
@@ -9,14 +9,15 @@ describe("Embeddable runtime context helper", () => {
     fetch.resetMocks();
   });
 
-  const embeddableContext = {
+  const embeddableContext: IEmbeddableContext = {
     container: document.createElement("div"),
     laraJson: {
       name: "Test Interactive",
       type: "MwInteractive",
       ref_id: "86-MwInteractive"
     },
-    interactiveStateUrl: "http://interactive.state.url"
+    interactiveStateUrl: "http://interactive.state.url",
+    interactiveAvailable: true
   };
 
   it("should copy basic properties to runtime context", () => {
@@ -114,16 +115,16 @@ describe("Embeddable runtime context helper", () => {
     });
   });
 
-  describe("#onClickToPlayStarted", () => {
+  describe("#onInteractiveAvailable", () => {
     it("accepts handler and calls it when this particular interactive is actually started", () => {
       const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
       const handler = jest.fn();
-      runtimeContext.onClickToPlayStarted(handler);
+      runtimeContext.onInteractiveAvailable(handler);
       // Different container => different interactive. Handler should not be called.
-      emitClickToPlayStarted({ container: document.createElement("div") });
+      emitInteractiveAvailable({ container: document.createElement("div"), available: false });
       expect(handler).toHaveBeenCalledTimes(0);
-      const event = { container: embeddableContext.container };
-      emitClickToPlayStarted(event);
+      const event = { container: embeddableContext.container, available: true };
+      emitInteractiveAvailable(event);
       expect(handler).toHaveBeenCalledWith(event);
     });
   });

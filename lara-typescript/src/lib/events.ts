@@ -1,7 +1,7 @@
 import { EventEmitter2 } from "eventemitter2";
 // The reason why ILogEventHandler lives in plugin-api instead of here,
 // is because it needs to be documented in LARA Plugin API docs.
-import { ILogEventHandler, IClickToPlayStartedEvent, IClickToPlayStartedEventHandler } from "../plugin-api";
+import { ILogEventHandler, IInteractiveAvailableEvent, IInteractiveAvailableEventHandler } from "../plugin-api";
 
 const emitter = new EventEmitter2({
   maxListeners: Infinity
@@ -17,12 +17,12 @@ export const offLog = (handler: ILogEventHandler) => {
   emitter.off("log", handler);
 };
 
-export const emitClickToPlayStarted = (event: IClickToPlayStartedEvent) => {
-  emitter.emit("clickToPlayStarted", event);
+export const emitInteractiveAvailable = (event: IInteractiveAvailableEvent) => {
+  emitter.emit("interactiveAvailable", event);
 };
-export const onClickToPlayStarted = (handler: IClickToPlayStartedEventHandler) => {
-  emitter.on("clickToPlayStarted", handler);
+export const onInteractiveAvailable = (handler: IInteractiveAvailableEventHandler) => {
+  emitter.on("interactiveAvailable", handler);
 };
-export const offClickToPlayStarted = (handler: IClickToPlayStartedEventHandler) => {
-  emitter.off("clickToPlayStarted", handler);
+export const offInteractiveAvailable = (handler: IInteractiveAvailableEventHandler) => {
+  emitter.off("interactiveAvailable", handler);
 };
