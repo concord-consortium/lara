@@ -1,5 +1,8 @@
+// Space between window top border and the interactive container.
+window.SCROLL_INTERACTIVE_MOD_OFFSET = 75; // px
+
 $(window).ready(function () {
-  var offset = 75;
+  var offset = window.SCROLL_INTERACTIVE_MOD_OFFSET;
   var $sticky = $('.pinned');
   if ($sticky.length === 0) {
     return;
