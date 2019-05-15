@@ -102,6 +102,29 @@ const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null =
   return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
+const log = (context: IPluginContext, logData: string | ILogData): void => {
+  const logger = (window as any).loggerUtils;
+  let augmentedProperties;
+  if (logger) {
+    if (context.wrappedEmbeddable) {
+      augmentedProperties = {
+        plugin_id: context.pluginId,
+        embeddable_type: context.wrappedEmbeddable.laraJson.type,
+        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+      };
+    } else {
+      augmentedProperties = {
+        plugin_id: context.pluginId
+      };
+    }
+    if (typeof(logData) === "string") {
+      logData = {event: logData};
+    }
+    const pluginLogData = Object.assign(augmentedProperties, logData);
+    logger.log(pluginLogData);
+  }
+};
+
 export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRuntimeContext => {
   return {
     name: context.name,
@@ -117,24 +140,6 @@ export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRu
     getClassInfo: () => getClassInfo(context.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(context.firebaseJwtUrl, appName),
     wrappedEmbeddable: context.wrappedEmbeddable ? generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => {
-      const logger = (window as any).loggerUtils;
-      let augmentedProperties;
-      if (logger) {
-        if (context.wrappedEmbeddable) {
-          augmentedProperties = {
-            plugin_id: context.pluginId,
-            embeddable_type: context.wrappedEmbeddable.laraJson.type,
-            embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
-          };
-        } else {
-          augmentedProperties = {
-            plugin_id: context.pluginId
-          };
-        }
-        const pluginLogData = Object.assign(augmentedProperties, logData);
-        logger.log(pluginLogData);
-      }
-    }
+    log: (logData: string | ILogData) => log(context, logData)
   };
 };

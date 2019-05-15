@@ -16076,6 +16076,29 @@ var getClassInfo = function (classInfoUrl) {
     }
     return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
 };
+var log = function (context, logData) {
+    var logger = window.loggerUtils;
+    var augmentedProperties;
+    if (logger) {
+        if (context.wrappedEmbeddable) {
+            augmentedProperties = {
+                plugin_id: context.pluginId,
+                embeddable_type: context.wrappedEmbeddable.laraJson.type,
+                embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+            };
+        }
+        else {
+            augmentedProperties = {
+                plugin_id: context.pluginId
+            };
+        }
+        if (typeof (logData) === "string") {
+            logData = { event: logData };
+        }
+        var pluginLogData = Object.assign(augmentedProperties, logData);
+        logger.log(pluginLogData);
+    }
+};
 exports.generatePluginRuntimeContext = function (context) {
     return {
         name: context.name,
@@ -16091,26 +16114,7 @@ exports.generatePluginRuntimeContext = function (context) {
         getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
         wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
-        log: function (logData) {
-            var logger = window.loggerUtils;
-            var augmentedProperties;
-            if (logger) {
-                if (context.wrappedEmbeddable) {
-                    augmentedProperties = {
-                        plugin_id: context.pluginId,
-                        embeddable_type: context.wrappedEmbeddable.laraJson.type,
-                        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
-                    };
-                }
-                else {
-                    augmentedProperties = {
-                        plugin_id: context.pluginId
-                    };
-                }
-                var pluginLogData = Object.assign(augmentedProperties, logData);
-                logger.log(pluginLogData);
-            }
-        }
+        log: function (logData) { return log(context, logData); }
     };
 };
 
@@ -16283,39 +16287,6 @@ __export(__webpack_require__(/*! ./sidebar */ "./src/plugin-api/sidebar.ts"));
 __export(__webpack_require__(/*! ./popup */ "./src/plugin-api/popup.ts"));
 __export(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorate-content.ts"));
 __export(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"));
-__export(__webpack_require__(/*! ./log */ "./src/plugin-api/log.ts"));
-
-
-/***/ }),
-
-/***/ "./src/plugin-api/log.ts":
-/*!*******************************!*\
-  !*** ./src/plugin-api/log.ts ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
- * Either by setting URL param logging=true or by enabling logging in Portal.
- * ```
- * PluginAPI.log("testEvent");
- * PluginAPI.log({event: "testEvent", event_value: 123});
- * PluginAPI.log({event: "testEvent", someExtraParam: 123});
- * PluginAPI.log({event: "testEvent", params: { paramInParamsHash: 123 }});
- * ```
- * @param logData Data to log. Can be either event name or hash with at least `event` property.
- */
-exports.log = function (logData) {
-    // Check app/assets/javascripts/logger.js
-    var logger = window.loggerUtils;
-    if (logger) {
-        logger.log(logData);
-    }
-};
 
 
 /***/ }),

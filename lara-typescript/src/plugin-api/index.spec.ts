@@ -6,7 +6,6 @@ describe("Plugin API", () => {
     expect(PluginAPI.addSidebar).toBeDefined();
     expect(PluginAPI.addPopup).toBeDefined();
     expect(PluginAPI.decorateContent).toBeDefined();
-    expect(PluginAPI.log).toBeDefined();
     expect(PluginAPI.events).toBeDefined();
   });
 });

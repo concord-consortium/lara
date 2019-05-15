@@ -35,7 +35,7 @@
 
 **● authoredState**: *`string` \| `null`*
 
-*Defined in [types.ts:15](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L15)*
+*Defined in [types.ts:15](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L15)*
 
 The authored configuration for this instance (if available).
 
@@ -46,7 +46,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:19](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L19)*
+*Defined in [types.ts:19](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L19)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -57,7 +57,7 @@ ___
 
 **● getClassInfo**: *`function`*
 
-*Defined in [types.ts:38](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L38)*
+*Defined in [types.ts:38](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L38)*
 
 Function that returns class details (Promise) or null if class info is not available.
 
@@ -73,7 +73,7 @@ ___
 
 **● getFirebaseJwt**: *`function`*
 
-*Defined in [types.ts:40](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L40)*
+*Defined in [types.ts:40](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L40)*
 
 Function that returns JWT (Promise) for given app name.
 
@@ -95,7 +95,7 @@ ___
 
 **● learnerState**: *`string` \| `null`*
 
-*Defined in [types.ts:17](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L17)*
+*Defined in [types.ts:17](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L17)*
 
 The saved learner data for this instance (if available).
 
@@ -106,15 +106,15 @@ ___
 
 **● log**: *`function`*
 
-*Defined in [types.ts:56](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L56)*
+*Defined in [types.ts:56](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L56)*
 
 Logs event to the CC Log Server. Note that logging must be enabled for a given activity. Either by setting URL param logging=true or by enabling logging in Portal.
 
 ```
-PluginAPI.log("testEvent");
-PluginAPI.log({event: "testEvent", event_value: 123});
-PluginAPI.log({event: "testEvent", someExtraParam: 123});
-PluginAPI.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
+context.log("testEvent");
+context.log({event: "testEvent", event_value: 123});
+context.log({event: "testEvent", someExtraParam: 123});
+context.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
 ```
 
 This augments the logged data with plugin\_id, and optionally, embeddable\_type and embeddable\_id.
@@ -139,7 +139,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types.ts:9](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L9)*
+*Defined in [types.ts:9](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L9)*
 
 Name of the plugin
 
@@ -150,7 +150,7 @@ ___
 
 **● pluginId**: *`number`*
 
-*Defined in [types.ts:13](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L13)*
+*Defined in [types.ts:13](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L13)*
 
 Plugin instance ID.
 
@@ -161,7 +161,7 @@ ___
 
 **● remoteEndpoint**: *`string` \| `null`*
 
-*Defined in [types.ts:23](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L23)*
+*Defined in [types.ts:23](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L23)*
 
 The portal remote endpoint (if available).
 
@@ -172,7 +172,7 @@ ___
 
 **● runId**: *`number`*
 
-*Defined in [types.ts:21](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L21)*
+*Defined in [types.ts:21](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L21)*
 
 The run ID for the current LARA run.
 
@@ -183,7 +183,7 @@ ___
 
 **● saveLearnerPluginState**: *`function`*
 
-*Defined in [types.ts:36](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L36)*
+*Defined in [types.ts:36](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L36)*
 
 Function that saves the users state for the plugin. Note that plugins can have different scopes, e.g. activity or a single page. If the plugin instance is added to the activity, its state will be shared across all the pages. If multiple plugin instances are added to various pages, their state will be different on every page.
 
@@ -211,7 +211,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:11](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L11)*
+*Defined in [types.ts:11](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L11)*
 
 Url from which the plugin was loaded.
 
@@ -222,7 +222,7 @@ ___
 
 **● userEmail**: *`string` \| `null`*
 
-*Defined in [types.ts:25](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L25)*
+*Defined in [types.ts:25](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L25)*
 
 The current user email address (if available).
 
@@ -233,7 +233,7 @@ ___
 
 **● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-*Defined in [types.ts:42](https://github.com/concord-consortium/lara/blob/a5f2a518/lara-typescript/src/plugin-api/types.ts#L42)*
+*Defined in [types.ts:42](https://github.com/concord-consortium/lara/blob/c29432d2/lara-typescript/src/plugin-api/types.ts#L42)*
 
 Wrapped embeddable runtime context if plugin is wrapping some embeddable.
 

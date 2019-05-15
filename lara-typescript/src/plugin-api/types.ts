@@ -44,10 +44,10 @@ export interface IPluginRuntimeContext {
    * Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
    * Either by setting URL param logging=true or by enabling logging in Portal.
    * ```
-   * PluginAPI.log("testEvent");
-   * PluginAPI.log({event: "testEvent", event_value: 123});
-   * PluginAPI.log({event: "testEvent", someExtraParam: 123});
-   * PluginAPI.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
+   * context.log("testEvent");
+   * context.log({event: "testEvent", event_value: 123});
+   * context.log({event: "testEvent", someExtraParam: 123});
+   * context.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
    * ```
    * This augments the logged data with plugin_id, and optionally, embeddable_type
    * and embeddable_id.

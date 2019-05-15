@@ -4,4 +4,3 @@ export * from "./sidebar";
 export * from "./popup";
 export * from "./decorate-content";
 export * from "./events";
-export * from "./log";

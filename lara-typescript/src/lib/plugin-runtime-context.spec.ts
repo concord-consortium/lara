@@ -188,6 +188,13 @@ describe("Plugin runtime context helper", () => {
         expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedE);
       });
 
+      it("delegates log on a simply string log data", () => {
+        const logMsg = "What's your favorite log message?";
+        runtimeContext.log(logMsg);
+        const augmentedLogEvent = { event: logMsg, plugin_id: 123 };
+        expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedLogEvent);
+      });
+
       describe("when there is a wrapped embeddable", () => {
         it("delegates log call to loggerUtils", () => {
           const e = { event: "test" };
