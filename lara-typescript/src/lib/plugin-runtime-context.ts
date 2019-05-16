@@ -1,5 +1,5 @@
 import {
-  IPluginRuntimeContext, IJwtResponse, IClassInfo
+  IPluginRuntimeContext, IJwtResponse, IClassInfo, ILogData
 } from "../plugin-api";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import * as $ from "jquery";
@@ -102,6 +102,28 @@ const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null =
   return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
+const log = (context: IPluginContext, logData: string | ILogData): void => {
+  const logger = (window as any).loggerUtils;
+  if (logger) {
+    if (typeof(logData) === "string") {
+      logData = {event: logData};
+    }
+    const pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
+    logger.log(pluginLogData);
+  }
+};
+
+const fetchPluginEventLogData = (context: IPluginContext) => {
+  if (! context.wrappedEmbeddable) {
+    return { plugin_id: context.pluginId };
+  }
+  return {
+    plugin_id: context.pluginId,
+    embeddable_type: context.wrappedEmbeddable.laraJson.type,
+    embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+  };
+};
+
 export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRuntimeContext => {
   return {
     name: context.name,
@@ -116,6 +138,7 @@ export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRu
     saveLearnerPluginState: (state: string) => saveLearnerPluginState(context.learnerStateSaveUrl, state),
     getClassInfo: () => getClassInfo(context.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(context.firebaseJwtUrl, appName),
-    wrappedEmbeddable: context.wrappedEmbeddable ? generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null
+    wrappedEmbeddable: context.wrappedEmbeddable ? generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
+    log: (logData: string | ILogData) => log(context, logData)
   };
 };

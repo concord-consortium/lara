@@ -156,4 +156,72 @@ describe("Plugin runtime context helper", () => {
       expect(runtimeContext.wrappedEmbeddable).not.toBeNull();
     });
   });
+
+  describe("logging", () => {
+
+    const runtimeContext = generatePluginRuntimeContext(pluginContext);
+
+    const wrappedEmbeddable: IEmbeddableContext = {
+      container: document.createElement("div"),
+      laraJson: {
+        name: "Test Interactive",
+        type: "MwInteractive",
+        ref_id: "86-MwInteractive"
+      },
+      interactiveStateUrl: "http://interactive.state.url",
+      interactiveAvailable: true
+    };
+    const runtimeContextWithEmbeddable = generatePluginRuntimeContext(Object.assign({},
+      pluginContext, { wrappedEmbeddable }));
+
+    describe("when logger_utils are available", () => {
+      beforeEach(() => {
+        (window as any).loggerUtils = {
+          log: jest.fn()
+        };
+      });
+
+      it("delegates log call to loggerUtils", () => {
+        const e = { event: "test" };
+        runtimeContext.log(e);
+        const augmentedE = { event: "test", plugin_id: 123};
+        expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedE);
+      });
+
+      it("delegates log on a simply string log data", () => {
+        const logMsg = "What's your favorite log message?";
+        runtimeContext.log(logMsg);
+        const augmentedLogEvent = { event: logMsg, plugin_id: 123 };
+        expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedLogEvent);
+      });
+
+      describe("when there is a wrapped embeddable", () => {
+        it("delegates log call to loggerUtils", () => {
+          const e = { event: "test" };
+          runtimeContextWithEmbeddable.log(e);
+          const augmentedEvent = {
+            event: "test",
+            plugin_id: 123,
+            embeddable_type: "MwInteractive",
+            embeddable_id: "86-MwInteractive"
+          };
+          expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedEvent);
+        });
+      });
+
+    });
+
+    describe("when logger_utils are not available", () => {
+      beforeEach(() => {
+        (window as any).loggerUtils = undefined;
+      });
+
+      it("does not fail, just quietly ignore the call", () => {
+        const e = { event: "test" };
+        runtimeContext.log(e);
+      });
+    });
+
+  });
+
 });

@@ -40,6 +40,20 @@ export interface IPluginRuntimeContext {
   getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
   /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
+  /**
+   * Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
+   * Either by setting URL param logging=true or by enabling logging in Portal.
+   * ```
+   * context.log("testEvent");
+   * context.log({event: "testEvent", event_value: 123});
+   * context.log({event: "testEvent", someExtraParam: 123});
+   * context.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
+   * ```
+   * This augments the logged data with plugin_id, and optionally, embeddable_type
+   * and embeddable_id.
+   * @param logData Data to log. Can be either event name or hash with at least `event` property.
+   */
+  log: (logData: string | ILogData) => void;
 }
 
 export interface IEmbeddableRuntimeContext {
