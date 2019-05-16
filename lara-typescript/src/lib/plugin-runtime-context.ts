@@ -104,25 +104,24 @@ const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null =
 
 const log = (context: IPluginContext, logData: string | ILogData): void => {
   const logger = (window as any).loggerUtils;
-  let augmentedProperties;
   if (logger) {
-    if (context.wrappedEmbeddable) {
-      augmentedProperties = {
-        plugin_id: context.pluginId,
-        embeddable_type: context.wrappedEmbeddable.laraJson.type,
-        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
-      };
-    } else {
-      augmentedProperties = {
-        plugin_id: context.pluginId
-      };
-    }
     if (typeof(logData) === "string") {
       logData = {event: logData};
     }
-    const pluginLogData = Object.assign(augmentedProperties, logData);
+    const pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
     logger.log(pluginLogData);
   }
+};
+
+const fetchPluginEventLogData = (context: IPluginContext) => {
+  if (! context.wrappedEmbeddable) {
+    return { plugin_id: context.pluginId };
+  }
+  return {
+    plugin_id: context.pluginId,
+    embeddable_type: context.wrappedEmbeddable.laraJson.type,
+    embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+  };
 };
 
 export const generatePluginRuntimeContext = (context: IPluginContext): IPluginRuntimeContext => {

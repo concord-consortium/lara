@@ -16078,26 +16078,23 @@ var getClassInfo = function (classInfoUrl) {
 };
 var log = function (context, logData) {
     var logger = window.loggerUtils;
-    var augmentedProperties;
     if (logger) {
-        if (context.wrappedEmbeddable) {
-            augmentedProperties = {
-                plugin_id: context.pluginId,
-                embeddable_type: context.wrappedEmbeddable.laraJson.type,
-                embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
-            };
-        }
-        else {
-            augmentedProperties = {
-                plugin_id: context.pluginId
-            };
-        }
         if (typeof (logData) === "string") {
             logData = { event: logData };
         }
-        var pluginLogData = Object.assign(augmentedProperties, logData);
+        var pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
         logger.log(pluginLogData);
     }
+};
+var fetchPluginEventLogData = function (context) {
+    if (!context.wrappedEmbeddable) {
+        return { plugin_id: context.pluginId };
+    }
+    return {
+        plugin_id: context.pluginId,
+        embeddable_type: context.wrappedEmbeddable.laraJson.type,
+        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+    };
 };
 exports.generatePluginRuntimeContext = function (context) {
     return {
