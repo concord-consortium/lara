@@ -1,0 +1,270 @@
+.normalized-container {
+  /* make sure to set some focus styles for accessibility */
+  /* HTML5 display-role reset for older browsers */
+  /**
+   * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
+   */
+  /**
+   * Prevent modern browsers from displaying `audio` without controls.
+   * Remove excess height in iOS 5 devices.
+   */
+  /**
+   * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.
+   * Known issue: no IE 6 support.
+   */
+  /**
+   * Address `outline` inconsistency between Chrome and other browsers.
+   */
+  /**
+   * Improve readability when focused and also mouse hovered in all browsers.
+   */
+  /**
+   * 1. Remove border when inside `a` element in IE 6/7/8/9 and Firefox 3.
+   * 2. Improve image quality when scaled in IE 7.
+   */
+  /**
+   * Address margin not present in IE 6/7/8/9, Safari 5, and Opera 11.
+   */
+  /**
+   * Correct margin displayed oddly in IE 6/7.
+   */
+  /**
+   * Define consistent border, margin, and padding.
+   */
+  /**
+   * 1. Correct color not being inherited in IE 6/7/8/9.
+   * 2. Correct text not wrapping in Firefox 3.
+   * 3. Correct alignment displayed oddly in IE 6/7.
+   */
+  /**
+   * 1. Correct font size not being inherited in all browsers.
+   * 2. Address margins set differently in IE 6/7, Firefox 3+, Safari 5,
+   *    and Chrome.
+   * 3. Improve appearance and consistency in all browsers.
+   */
+  /**
+   * Address Firefox 3+ setting `line-height` on `input` using `!important` in
+   * the UA stylesheet.
+   */
+  /**
+   * Address inconsistent `text-transform` inheritance for `button` and `select`.
+   * All other form control elements do not inherit `text-transform` values.
+   * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.
+   * Correct `select` style inheritance in Firefox 4+ and Opera.
+   */
+  /**
+   * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+   *    and `video` controls.
+   * 2. Correct inability to style clickable `input` types in iOS.
+   * 3. Improve usability and consistency of cursor style between image-type
+   *    `input` and others.
+   * 4. Remove inner spacing in IE 7 without affecting normal text inputs.
+   *    Known issue: inner spacing remains in IE 6.
+   */
+  /**
+   * Re-set default cursor for disabled elements.
+   */
+  /**
+   * 1. Address box sizing set to content-box in IE 8/9.
+   * 2. Remove excess padding in IE 8/9.
+   * 3. Remove excess padding in IE 7.
+   *    Known issue: excess padding remains in IE 6.
+   */
+  /**
+   * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+   * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+   *    (include `-moz` to future-proof).
+   */
+  /**
+   * Remove inner padding and search cancel button in Safari 5 and Chrome
+   * on OS X.
+   */
+  /**
+   * Remove inner padding and border in Firefox 3+.
+   */
+  /**
+   * 1. Remove default vertical scrollbar in IE 6/7/8/9.
+   * 2. Improve readability and alignment in all browsers.
+   */
+  /**
+   * Remove most spacing between table cells.
+   */ }
+  .normalized-container div, .normalized-container span, .normalized-container applet, .normalized-container object, .normalized-container iframe,
+  .normalized-container h1, .normalized-container h2, .normalized-container h3, .normalized-container h4, .normalized-container h5, .normalized-container h6, .normalized-container p, .normalized-container blockquote, .normalized-container pre,
+  .normalized-container a, .normalized-container abbr, .normalized-container acronym, .normalized-container address, .normalized-container big, .normalized-container cite, .normalized-container code,
+  .normalized-container del, .normalized-container dfn, .normalized-container em, .normalized-container img, .normalized-container ins, .normalized-container kbd, .normalized-container q, .normalized-container s, .normalized-container samp,
+  .normalized-container small, .normalized-container strike, .normalized-container strong, .normalized-container sub, .normalized-container sup, .normalized-container tt, .normalized-container var,
+  .normalized-container b, .normalized-container u, .normalized-container i, .normalized-container center,
+  .normalized-container dl, .normalized-container dt, .normalized-container dd, .normalized-container ol, .normalized-container ul, .normalized-container li,
+  .normalized-container fieldset, .normalized-container form, .normalized-container label, .normalized-container legend,
+  .normalized-container table, .normalized-container caption, .normalized-container tbody, .normalized-container tfoot, .normalized-container thead, .normalized-container tr, .normalized-container th, .normalized-container td,
+  .normalized-container article, .normalized-container aside, .normalized-container canvas, .normalized-container details, .normalized-container embed,
+  .normalized-container figure, .normalized-container figcaption, .normalized-container footer, .normalized-container header, .normalized-container hgroup,
+  .normalized-container menu, .normalized-container nav, .normalized-container output, .normalized-container ruby, .normalized-container section, .normalized-container summary,
+  .normalized-container time, .normalized-container mark, .normalized-container audio, .normalized-container video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline; }
+  .normalized-container :focus {
+    outline: 0; }
+  .normalized-container article, .normalized-container aside, .normalized-container details, .normalized-container figcaption, .normalized-container figure,
+  .normalized-container footer, .normalized-container header, .normalized-container hgroup, .normalized-container menu, .normalized-container nav, .normalized-container section {
+    display: block; }
+  .normalized-container body {
+    line-height: 1; }
+  .normalized-container ol, .normalized-container ul {
+    list-style: circle; }
+  .normalized-container blockquote, .normalized-container q {
+    quotes: none; }
+  .normalized-container blockquote:before, .normalized-container blockquote:after,
+  .normalized-container q:before, .normalized-container q:after {
+    content: '';
+    content: none; }
+  .normalized-container table {
+    border-collapse: collapse;
+    border-spacing: 0; }
+  .normalized-container input[type=search]::-webkit-search-cancel-button,
+  .normalized-container input[type=search]::-webkit-search-decoration,
+  .normalized-container input[type=search]::-webkit-search-results-button,
+  .normalized-container input[type=search]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    -moz-appearance: none; }
+  .normalized-container input[type=search] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box; }
+  .normalized-container textarea {
+    overflow: auto;
+    vertical-align: top;
+    resize: vertical; }
+  .normalized-container audio,
+  .normalized-container canvas,
+  .normalized-container video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    max-width: 100%; }
+  .normalized-container audio:not([controls]) {
+    display: none;
+    height: 0; }
+  .normalized-container [hidden] {
+    display: none; }
+  .normalized-container a:focus {
+    outline: thin dotted; }
+  .normalized-container a:active,
+  .normalized-container a:hover {
+    outline: 0; }
+  .normalized-container img {
+    border: 0;
+    /* 1 */
+    -ms-interpolation-mode: bicubic;
+    /* 2 */ }
+  .normalized-container figure {
+    margin: 0; }
+  .normalized-container form {
+    margin: 0; }
+  .normalized-container fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em; }
+  .normalized-container legend {
+    border: 0;
+    /* 1 */
+    padding: 0;
+    white-space: normal;
+    /* 2 */
+    *margin-left: -7px;
+    /* 3 */ }
+  .normalized-container button,
+  .normalized-container input,
+  .normalized-container select,
+  .normalized-container textarea {
+    font-size: 100%;
+    /* 1 */
+    margin: 0;
+    /* 2 */
+    vertical-align: baseline;
+    /* 3 */
+    *vertical-align: middle;
+    /* 3 */ }
+  .normalized-container button,
+  .normalized-container input {
+    line-height: normal; }
+  .normalized-container button,
+  .normalized-container select {
+    text-transform: none; }
+  .normalized-container button,
+  .normalized-container input[type="button"],
+  .normalized-container input[type="reset"],
+  .normalized-container input[type="submit"] {
+    -webkit-appearance: button;
+    /* 2 */
+    cursor: pointer;
+    /* 3 */
+    *overflow: visible;
+    /* 4 */ }
+  .normalized-container button[disabled],
+  .normalized-container input[disabled] {
+    cursor: default; }
+  .normalized-container input[type="checkbox"],
+  .normalized-container input[type="radio"] {
+    box-sizing: border-box;
+    /* 1 */
+    padding: 0;
+    /* 2 */
+    *height: 13px;
+    /* 3 */
+    *width: 13px;
+    /* 3 */ }
+  .normalized-container input[type="search"] {
+    -webkit-appearance: textfield;
+    /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    /* 2 */
+    box-sizing: content-box; }
+  .normalized-container input[type="search"]::-webkit-search-cancel-button,
+  .normalized-container input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none; }
+  .normalized-container button::-moz-focus-inner,
+  .normalized-container input::-moz-focus-inner {
+    border: 0;
+    padding: 0; }
+  .normalized-container textarea {
+    overflow: auto;
+    /* 1 */
+    vertical-align: top;
+    /* 2 */ }
+  .normalized-container table {
+    border-collapse: collapse;
+    border-spacing: 0; }
+  .normalized-container button,
+  .normalized-container input,
+  .normalized-container select,
+  .normalized-container textarea {
+    color: #222; }
+  .normalized-container ::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none; }
+  .normalized-container ::selection {
+    background: #b3d4fc;
+    text-shadow: none; }
+  .normalized-container img {
+    vertical-align: middle; }
+  .normalized-container fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0; }
+  .normalized-container textarea {
+    resize: vertical; }
+  .normalized-container .chromeframe {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0; }
+

@@ -30,4 +30,5 @@
  *= require components/authoring
  *= require question-tracker
  *= require common
+ *= require lara-typescript
  */

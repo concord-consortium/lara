@@ -27,7 +27,7 @@
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:61](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L61)*
+*Defined in [types.ts:61](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L61)*
 
 Embeddable container.
 
@@ -38,7 +38,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [types.ts:82](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L82)*
+*Defined in [types.ts:82](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L82)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -54,7 +54,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L92)*
+*Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L92)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -78,7 +78,7 @@ ___
 
 **● interactiveAvailable**: *`boolean`*
 
-*Defined in [types.ts:102](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L102)*
+*Defined in [types.ts:102](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L102)*
 
 True if the interactive is immediately available
 
@@ -89,7 +89,7 @@ ___
 
 **● laraJson**: *`any`*
 
-*Defined in [types.ts:80](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L80)*
+*Defined in [types.ts:80](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L80)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -115,7 +115,7 @@ ___
 
 **● onInteractiveAvailable**: *`function`*
 
-*Defined in [types.ts:100](https://github.com/concord-consortium/lara/blob/75f8b467/lara-typescript/src/plugin-api/types.ts#L100)*
+*Defined in [types.ts:100](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L100)*
 
 Function that subscribes provided handler to event that gets called when the interactive's availablity changes. Normally an interactive starts as available unless click to play is enabled. When click to play is enabled the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 
