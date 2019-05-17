@@ -173,6 +173,27 @@ class Run < ActiveRecord::Base
     key
   end
 
+  def serialize_for_reports(host)
+    url = "#{host}#{Rails.application.routes.url_helpers.run_path(self)}"
+    {
+      url: url,
+      user_id: user_id,
+      run_count: run_count,
+      created_at: created_at,
+      updated_at: updated_at,
+      key: key,
+      activity_id: activity_id,
+      remote_id: remote_id,
+      page_id: page_id,
+      remote_endpoint: remote_endpoint,
+      sequence_id: sequence_id,
+      sequence_run_id: sequence_run_id,
+      is_dirty: is_dirty,
+      collaboration_run_id: collaboration_run_id,
+      class_info_url: class_info_url,
+    }
+  end
+
   def get_auth_provider
     self.remote_endpoint.blank? ? nil : Run.auth_provider(self.remote_endpoint)
   end
