@@ -34,15 +34,17 @@ Make that user an admin
 
     docker-compose exec app bundle exec rake lightweight:admin_last_user
 
-To use SSO with the portal you need to make sure your `PORTAL_HOST` is set correctly in `.env`. And you need to add a client to the Portal by running this command in the portal directory:
+### SSO with a local portal
+
+To use SSO with the portal you need to make sure your `PORTAL_HOST` is set correctly in your lara `.env` file. And you need to add a client to the Portal by running this command in the portal directory:
 
     docker-compose exec app bundle exec rake sso:add_client
 
-| Param | Value |
-| --- | --- |
-| client_id: | localhost |
-| secret: | unsecure local secret |
-| site_url: | http://app.lara.docker |
+| Param      | Value                  |
+| ---------- | ---------------------- |
+| client_id: | localhost              |
+| secret:    | unsecure local secret  |
+| site_url:  | http://app.lara.docker |
 
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
@@ -55,12 +57,14 @@ You only need to do this once. And it can be used with all docker and docker-com
 
 Startup up a restartable proxying container with a DNS server:
 
-    docker run -d --restart=always -v /var/run/docker.sock:/tmp/docker.sock:ro -v ~/.dinghy/certs:/etc/nginx/certs -p 80:80 -p 443:443 -p 19322:19322/udp -e DNS_IP=127.0.0.1 -e CONTAINER_NAME=http-proxy --name http-proxy codekitchen/dinghy-http-proxy
+    docker run -d --restart=always -v /var/run/docker.sock:/tmp/docker.sock:ro -v ~/.dinghy/certs:/etc/nginx/certs -p 80:80 -p 443:443 -p 19322:19322/udp -e CONTAINER_NAME=http-proxy --name http-proxy codekitchen/dinghy-http-proxy
 
 Create file /etc/resolver/docker with the following contents.
 
     nameserver 127.0.0.1
     port 19322
+
+If you have a local webserver running on localhost:80 you either need to move that to a different port, or change the port mapping used by dingy. You can do that by changing the argument `-p 80:80` to `-p [new port]:80`
 
 ## Editing CSS
 
