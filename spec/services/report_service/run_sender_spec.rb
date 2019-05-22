@@ -23,12 +23,13 @@ describe ReportService::RunSender do
   let(:answers) do
     1.upto(5).map do |index|
       url = "#{host}activities/#{index}"
-      portal_hash = {id: index, type: "mock-answer", url: url }
+      portal_hash = {question_id: index, type: "mock-answer", url: url }
       double("Answer", {
-        id: index,
-        type: "mock-answer",
+        question_id: index,
+        type: "mock_question",
         url: url,
-        portal_hash: portal_hash
+        portal_hash: portal_hash,
+        answer_id: 'mock_question_answer_10'
       })
     end
   end
@@ -85,6 +86,7 @@ describe ReportService::RunSender do
             expect(a["key"]).to match("app_lara_docker")
             expect(a["key"]).to match("mock-answer")
             expect(a["key"]).to match("#{index}")
+            expect(a["key"]).to match(/\d+/)
             expect(a["key"]).not_to match("/")
             expect(a["key"]).not_to match(/\./)
             expect(a).to include("url")

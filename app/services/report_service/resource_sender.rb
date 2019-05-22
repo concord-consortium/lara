@@ -17,14 +17,13 @@ module ReportService
 
     def send(url, token)
       puts "posting resource: #{@resource_payload[:type]} #{@resource_payload[:name]}"
-      result = HTTParty.post(
+      return HTTParty.post(
         "#{url}/import_structure",
         :body => self.to_json,
         :headers => {
           'Content-Type' => 'application/json',
           'Authorization' => "Bearer #{token}"
         })
-      puts "post result: #{result}"
     end
 
   end
