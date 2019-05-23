@@ -27,6 +27,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:132](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L132)*
 =======
 *Defined in [types.ts:132](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L132)*
@@ -37,6 +38,9 @@
 =======
 *Defined in [types.ts:132](lara-typescript/src/plugin-api/types.ts#L132)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:132](../../../lara-typescript/src/plugin-api/types.ts#L132)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="name"></a>
@@ -45,6 +49,7 @@ ___
 
 **● name**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -58,6 +63,9 @@ ___
 =======
 *Defined in [types.ts:133](lara-typescript/src/plugin-api/types.ts#L133)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:133](../../../lara-typescript/src/plugin-api/types.ts#L133)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="url"></a>
@@ -66,6 +74,7 @@ ___
 
 **● url**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -79,6 +88,9 @@ ___
 =======
 *Defined in [types.ts:134](lara-typescript/src/plugin-api/types.ts#L134)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:134](../../../lara-typescript/src/plugin-api/types.ts#L134)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

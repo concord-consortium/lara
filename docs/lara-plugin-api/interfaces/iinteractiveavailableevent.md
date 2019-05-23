@@ -28,6 +28,7 @@ Data passed to InteractiveAvailable event handlers.
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:182](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L182)*
 =======
 *Defined in [types.ts:182](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L182)*
@@ -38,6 +39,9 @@ Data passed to InteractiveAvailable event handlers.
 =======
 *Defined in [types.ts:182](lara-typescript/src/plugin-api/types.ts#L182)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:182](../../../lara-typescript/src/plugin-api/types.ts#L182)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Availablility of interactive
 
@@ -51,6 +55,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:178](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L178)*
 =======
 *Defined in [types.ts:178](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L178)*
@@ -61,6 +66,9 @@ ___
 =======
 *Defined in [types.ts:178](lara-typescript/src/plugin-api/types.ts#L178)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:178](../../../lara-typescript/src/plugin-api/types.ts#L178)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Interactive container of the interactive that was just started.
 

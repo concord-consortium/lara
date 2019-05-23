@@ -140,6 +140,7 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 =======
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
@@ -150,6 +151,9 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 =======
 *Defined in [decorate-content.ts:8](lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [decorate-content.ts:8](../../lara-typescript/src/plugin-api/decorate-content.ts#L8)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="iinteractiveavailableeventhandler"></a>
@@ -158,6 +162,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -171,6 +176,9 @@ ___
 =======
 *Defined in [types.ts:188](lara-typescript/src/plugin-api/types.ts#L188)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:188](../../lara-typescript/src/plugin-api/types.ts#L188)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 InteractiveAvailable event handler.
 
@@ -195,6 +203,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L169)*
 =======
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L169)*
@@ -205,6 +214,9 @@ ___
 =======
 *Defined in [types.ts:169](lara-typescript/src/plugin-api/types.ts#L169)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:169](../../lara-typescript/src/plugin-api/types.ts#L169)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Log event handler.
 
@@ -231,6 +243,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L5)*
 =======
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L5)*
@@ -241,6 +254,9 @@ ___
 =======
 *Defined in [types.ts:5](lara-typescript/src/plugin-api/types.ts#L5)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:5](../../lara-typescript/src/plugin-api/types.ts#L5)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 #### Type declaration
 
@@ -257,6 +273,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L86)*
 =======
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L86)*
@@ -267,6 +284,9 @@ ___
 =======
 *Defined in [popup.ts:86](lara-typescript/src/plugin-api/popup.ts#L86)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:86](../../lara-typescript/src/plugin-api/popup.ts#L86)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Ask LARA to add a new popup window.
 
@@ -292,6 +312,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L90)*
 =======
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L90)*
@@ -302,6 +323,9 @@ ___
 =======
 *Defined in [sidebar.ts:90](lara-typescript/src/plugin-api/sidebar.ts#L90)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:90](../../lara-typescript/src/plugin-api/sidebar.ts#L90)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Ask LARA to add a new sidebar.
 
@@ -332,6 +356,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 =======
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
@@ -342,6 +367,9 @@ ___
 =======
 *Defined in [decorate-content.ts:19](lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [decorate-content.ts:19](../../lara-typescript/src/plugin-api/decorate-content.ts#L19)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Ask LARA to decorate authored content (text / html).
 
@@ -366,6 +394,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/plugins.ts#L13)*
 =======
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/plugins.ts#L13)*
@@ -376,6 +405,9 @@ ___
 =======
 *Defined in [plugins.ts:13](lara-typescript/src/plugin-api/plugins.ts#L13)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [plugins.ts:13](../../lara-typescript/src/plugin-api/plugins.ts#L13)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -406,6 +438,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L48)*
 =======
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L48)*
@@ -416,6 +449,9 @@ ___
 =======
 *Defined in [popup.ts:48](lara-typescript/src/plugin-api/popup.ts#L48)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:48](../../lara-typescript/src/plugin-api/popup.ts#L48)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 <a id="add_popup_default_options.autoopen"></a>
 
@@ -423,6 +459,7 @@ ___
 
 **● autoOpen**: *`boolean`* = true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -436,6 +473,9 @@ ___
 =======
 *Defined in [popup.ts:50](lara-typescript/src/plugin-api/popup.ts#L50)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:50](../../lara-typescript/src/plugin-api/popup.ts#L50)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.backgroundcolor"></a>
@@ -444,6 +484,7 @@ ___
 
 **● backgroundColor**: *`string`* = ""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -457,6 +498,9 @@ ___
 =======
 *Defined in [popup.ts:65](lara-typescript/src/plugin-api/popup.ts#L65)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:65](../../lara-typescript/src/plugin-api/popup.ts#L65)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.closebutton"></a>
@@ -465,6 +509,7 @@ ___
 
 **● closeButton**: *`boolean`* = true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -478,6 +523,9 @@ ___
 =======
 *Defined in [popup.ts:51](lara-typescript/src/plugin-api/popup.ts#L51)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:51](../../lara-typescript/src/plugin-api/popup.ts#L51)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.closeonescape"></a>
@@ -486,6 +534,7 @@ ___
 
 **● closeOnEscape**: *`boolean`* = false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -499,6 +548,9 @@ ___
 =======
 *Defined in [popup.ts:52](lara-typescript/src/plugin-api/popup.ts#L52)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:52](../../lara-typescript/src/plugin-api/popup.ts#L52)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.dialogclass"></a>
@@ -507,6 +559,7 @@ ___
 
 **● dialogClass**: *`string`* = ""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -520,6 +573,9 @@ ___
 =======
 *Defined in [popup.ts:64](lara-typescript/src/plugin-api/popup.ts#L64)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:64](../../lara-typescript/src/plugin-api/popup.ts#L64)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
 
@@ -533,6 +589,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L55)*
 =======
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L55)*
@@ -543,6 +600,9 @@ ___
 =======
 *Defined in [popup.ts:55](lara-typescript/src/plugin-api/popup.ts#L55)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:55](../../lara-typescript/src/plugin-api/popup.ts#L55)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.height"></a>
@@ -551,6 +611,7 @@ ___
 
 **● height**: *`string`* = "auto"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -564,6 +625,9 @@ ___
 =======
 *Defined in [popup.ts:58](lara-typescript/src/plugin-api/popup.ts#L58)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:58](../../lara-typescript/src/plugin-api/popup.ts#L58)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.modal"></a>
@@ -572,6 +636,7 @@ ___
 
 **● modal**: *`boolean`* = false
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -585,6 +650,9 @@ ___
 =======
 *Defined in [popup.ts:54](lara-typescript/src/plugin-api/popup.ts#L54)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:54](../../lara-typescript/src/plugin-api/popup.ts#L54)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.onbeforeclose"></a>
@@ -593,6 +661,7 @@ ___
 
 **● onBeforeClose**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -606,6 +675,9 @@ ___
 =======
 *Defined in [popup.ts:69](lara-typescript/src/plugin-api/popup.ts#L69)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:69](../../lara-typescript/src/plugin-api/popup.ts#L69)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.ondragstart"></a>
@@ -614,6 +686,7 @@ ___
 
 **● onDragStart**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -627,6 +700,9 @@ ___
 =======
 *Defined in [popup.ts:71](lara-typescript/src/plugin-api/popup.ts#L71)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:71](../../lara-typescript/src/plugin-api/popup.ts#L71)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.ondragstop"></a>
@@ -635,6 +711,7 @@ ___
 
 **● onDragStop**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -648,6 +725,9 @@ ___
 =======
 *Defined in [popup.ts:72](lara-typescript/src/plugin-api/popup.ts#L72)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:72](../../lara-typescript/src/plugin-api/popup.ts#L72)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.onopen"></a>
@@ -656,6 +736,7 @@ ___
 
 **● onOpen**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -669,6 +750,9 @@ ___
 =======
 *Defined in [popup.ts:68](lara-typescript/src/plugin-api/popup.ts#L68)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:68](../../lara-typescript/src/plugin-api/popup.ts#L68)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.onresize"></a>
@@ -677,6 +761,7 @@ ___
 
 **● onResize**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -690,6 +775,9 @@ ___
 =======
 *Defined in [popup.ts:70](lara-typescript/src/plugin-api/popup.ts#L70)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:70](../../lara-typescript/src/plugin-api/popup.ts#L70)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.padding"></a>
@@ -698,6 +786,7 @@ ___
 
 **● padding**: *`number`* = 10
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -711,6 +800,9 @@ ___
 =======
 *Defined in [popup.ts:59](lara-typescript/src/plugin-api/popup.ts#L59)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:59](../../lara-typescript/src/plugin-api/popup.ts#L59)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.removeonclose"></a>
@@ -719,6 +811,7 @@ ___
 
 **● removeOnClose**: *`boolean`* = true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -732,6 +825,9 @@ ___
 =======
 *Defined in [popup.ts:53](lara-typescript/src/plugin-api/popup.ts#L53)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:53](../../lara-typescript/src/plugin-api/popup.ts#L53)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.resizable"></a>
@@ -740,6 +836,7 @@ ___
 
 **● resizable**: *`boolean`* = true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -753,6 +850,9 @@ ___
 =======
 *Defined in [popup.ts:56](lara-typescript/src/plugin-api/popup.ts#L56)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:56](../../lara-typescript/src/plugin-api/popup.ts#L56)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.title"></a>
@@ -761,6 +861,7 @@ ___
 
 **● title**: *`string`* = ""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -774,6 +875,9 @@ ___
 =======
 *Defined in [popup.ts:49](lara-typescript/src/plugin-api/popup.ts#L49)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:49](../../lara-typescript/src/plugin-api/popup.ts#L49)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.titlebarcolor"></a>
@@ -782,6 +886,7 @@ ___
 
 **● titlebarColor**: *`string`* = ""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -795,6 +900,9 @@ ___
 =======
 *Defined in [popup.ts:66](lara-typescript/src/plugin-api/popup.ts#L66)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:66](../../lara-typescript/src/plugin-api/popup.ts#L66)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.width"></a>
@@ -803,6 +911,7 @@ ___
 
 **● width**: *`number`* = 300
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -816,6 +925,9 @@ ___
 =======
 *Defined in [popup.ts:57](lara-typescript/src/plugin-api/popup.ts#L57)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:57](../../lara-typescript/src/plugin-api/popup.ts#L57)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.position"></a>
@@ -827,6 +939,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -837,6 +950,9 @@ ___
 =======
 *Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 <a id="add_popup_default_options.position.at"></a>
 
@@ -847,6 +963,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -857,6 +974,9 @@ ___
 =======
 *Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.position.my"></a>
@@ -868,6 +988,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -878,6 +999,9 @@ ___
 =======
 *Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_popup_default_options.position.of"></a>
@@ -889,6 +1013,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -899,6 +1024,9 @@ ___
 =======
 *Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 
@@ -914,6 +1042,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L30)*
 =======
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L30)*
@@ -924,6 +1053,9 @@ ___
 =======
 *Defined in [sidebar.ts:30](lara-typescript/src/plugin-api/sidebar.ts#L30)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:30](../../lara-typescript/src/plugin-api/sidebar.ts#L30)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 <a id="add_sidebar_default_options.handle"></a>
 
@@ -931,6 +1063,7 @@ ___
 
 **● handle**: *`string`* = ""
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -944,6 +1077,9 @@ ___
 =======
 *Defined in [sidebar.ts:33](lara-typescript/src/plugin-api/sidebar.ts#L33)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:33](../../lara-typescript/src/plugin-api/sidebar.ts#L33)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_sidebar_default_options.handlecolor"></a>
@@ -952,6 +1088,7 @@ ___
 
 **● handleColor**: *`string`* = "#aaa"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -965,6 +1102,9 @@ ___
 =======
 *Defined in [sidebar.ts:34](lara-typescript/src/plugin-api/sidebar.ts#L34)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:34](../../lara-typescript/src/plugin-api/sidebar.ts#L34)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_sidebar_default_options.icon"></a>
@@ -973,6 +1113,7 @@ ___
 
 **● icon**: *`string`* = "default"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -986,6 +1127,9 @@ ___
 =======
 *Defined in [sidebar.ts:32](lara-typescript/src/plugin-api/sidebar.ts#L32)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:32](../../lara-typescript/src/plugin-api/sidebar.ts#L32)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Arrow pointing left.
 
@@ -999,6 +1143,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L38)*
 =======
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L38)*
@@ -1009,6 +1154,9 @@ ___
 =======
 *Defined in [sidebar.ts:38](lara-typescript/src/plugin-api/sidebar.ts#L38)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:38](../../lara-typescript/src/plugin-api/sidebar.ts#L38)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_sidebar_default_options.titlebar"></a>
@@ -1017,6 +1165,7 @@ ___
 
 **● titleBar**: *`null`* =  null
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1030,6 +1179,9 @@ ___
 =======
 *Defined in [sidebar.ts:35](lara-typescript/src/plugin-api/sidebar.ts#L35)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:35](../../lara-typescript/src/plugin-api/sidebar.ts#L35)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_sidebar_default_options.titlebarcolor"></a>
@@ -1038,6 +1190,7 @@ ___
 
 **● titleBarColor**: *`string`* = "#bbb"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1051,6 +1204,9 @@ ___
 =======
 *Defined in [sidebar.ts:36](lara-typescript/src/plugin-api/sidebar.ts#L36)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:36](../../lara-typescript/src/plugin-api/sidebar.ts#L36)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="add_sidebar_default_options.width"></a>
@@ -1059,6 +1215,7 @@ ___
 
 **● width**: *`number`* = 500
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1072,6 +1229,9 @@ ___
 =======
 *Defined in [sidebar.ts:37](lara-typescript/src/plugin-api/sidebar.ts#L37)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [sidebar.ts:37](../../lara-typescript/src/plugin-api/sidebar.ts#L37)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 
@@ -1085,6 +1245,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L7)*
 =======
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L7)*
@@ -1095,6 +1256,9 @@ ___
 =======
 *Defined in [events.ts:7](lara-typescript/src/plugin-api/events.ts#L7)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [events.ts:7](../../lara-typescript/src/plugin-api/events.ts#L7)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Functions related to event observing provided by LARA.
 
@@ -1104,6 +1268,7 @@ Functions related to event observing provided by LARA.
 
 ▸ **offInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1117,6 +1282,9 @@ Functions related to event observing provided by LARA.
 =======
 *Defined in [events.ts:28](lara-typescript/src/plugin-api/events.ts#L28)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [events.ts:28](../../lara-typescript/src/plugin-api/events.ts#L28)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Removes InteractiveAvailable event handler.
 
@@ -1138,6 +1306,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L19)*
 =======
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L19)*
@@ -1148,6 +1317,9 @@ ___
 =======
 *Defined in [events.ts:19](lara-typescript/src/plugin-api/events.ts#L19)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [events.ts:19](../../lara-typescript/src/plugin-api/events.ts#L19)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Removes log event handler.
 
@@ -1169,6 +1341,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L24)*
 =======
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L24)*
@@ -1179,6 +1352,9 @@ ___
 =======
 *Defined in [events.ts:24](lara-typescript/src/plugin-api/events.ts#L24)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [events.ts:24](../../lara-typescript/src/plugin-api/events.ts#L24)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state. Currently uses when click to play mode is enabled and the click to play overlay is clicked.
 
@@ -1200,6 +1376,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L15)*
 =======
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L15)*
@@ -1210,6 +1387,9 @@ ___
 =======
 *Defined in [events.ts:15](lara-typescript/src/plugin-api/events.ts#L15)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [events.ts:15](../../lara-typescript/src/plugin-api/events.ts#L15)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
 

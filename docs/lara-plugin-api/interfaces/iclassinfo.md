@@ -30,6 +30,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L140)*
 =======
 *Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L140)*
@@ -40,6 +41,9 @@
 =======
 *Defined in [types.ts:140](lara-typescript/src/plugin-api/types.ts#L140)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:140](../../../lara-typescript/src/plugin-api/types.ts#L140)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="id"></a>
@@ -48,6 +52,7 @@ ___
 
 **● id**: *`number`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -61,6 +66,9 @@ ___
 =======
 *Defined in [types.ts:138](lara-typescript/src/plugin-api/types.ts#L138)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:138](../../../lara-typescript/src/plugin-api/types.ts#L138)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="offerings"></a>
@@ -69,6 +77,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -82,6 +91,9 @@ ___
 =======
 *Defined in [types.ts:143](lara-typescript/src/plugin-api/types.ts#L143)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:143](../../../lara-typescript/src/plugin-api/types.ts#L143)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="students"></a>
@@ -90,6 +102,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -103,6 +116,9 @@ ___
 =======
 *Defined in [types.ts:142](lara-typescript/src/plugin-api/types.ts#L142)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:142](../../../lara-typescript/src/plugin-api/types.ts#L142)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="teachers"></a>
@@ -111,6 +127,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -124,6 +141,9 @@ ___
 =======
 *Defined in [types.ts:141](lara-typescript/src/plugin-api/types.ts#L141)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:141](../../../lara-typescript/src/plugin-api/types.ts#L141)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="uri"></a>
@@ -132,6 +152,7 @@ ___
 
 **● uri**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -145,6 +166,9 @@ ___
 =======
 *Defined in [types.ts:139](lara-typescript/src/plugin-api/types.ts#L139)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:139](../../../lara-typescript/src/plugin-api/types.ts#L139)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

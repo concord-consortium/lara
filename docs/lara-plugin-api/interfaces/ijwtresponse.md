@@ -26,6 +26,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:122](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L122)*
 =======
 *Defined in [types.ts:122](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L122)*
@@ -36,6 +37,9 @@
 =======
 *Defined in [types.ts:122](lara-typescript/src/plugin-api/types.ts#L122)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:122](../../../lara-typescript/src/plugin-api/types.ts#L122)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="token"></a>
@@ -44,6 +48,7 @@ ___
 
 **● token**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,6 +62,9 @@ ___
 =======
 *Defined in [types.ts:121](lara-typescript/src/plugin-api/types.ts#L121)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:121](../../../lara-typescript/src/plugin-api/types.ts#L121)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

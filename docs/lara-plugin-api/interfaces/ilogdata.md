@@ -29,6 +29,7 @@ That's the minimal set of properties that needs to be provided. All the other pr
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:160](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L160)*
 =======
 *Defined in [types.ts:160](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L160)*
@@ -39,6 +40,9 @@ That's the minimal set of properties that needs to be provided. All the other pr
 =======
 *Defined in [types.ts:160](lara-typescript/src/plugin-api/types.ts#L160)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="event_value"></a>
@@ -47,6 +51,7 @@ ___
 
 **● event_value**: *`any`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -60,6 +65,9 @@ ___
 =======
 *Defined in [types.ts:161](lara-typescript/src/plugin-api/types.ts#L161)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="parameters"></a>
@@ -68,6 +76,7 @@ ___
 
 **● parameters**: *`any`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -81,6 +90,9 @@ ___
 =======
 *Defined in [types.ts:162](lara-typescript/src/plugin-api/types.ts#L162)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

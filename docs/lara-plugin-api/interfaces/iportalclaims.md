@@ -28,6 +28,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:108](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L108)*
 =======
 *Defined in [types.ts:108](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L108)*
@@ -38,6 +39,9 @@
 =======
 *Defined in [types.ts:108](lara-typescript/src/plugin-api/types.ts#L108)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:108](../../../lara-typescript/src/plugin-api/types.ts#L108)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="offering_id"></a>
@@ -46,6 +50,7 @@ ___
 
 **● offering_id**: *`number`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -59,6 +64,9 @@ ___
 =======
 *Defined in [types.ts:109](lara-typescript/src/plugin-api/types.ts#L109)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:109](../../../lara-typescript/src/plugin-api/types.ts#L109)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="user_id"></a>
@@ -67,6 +75,7 @@ ___
 
 **● user_id**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -80,6 +89,9 @@ ___
 =======
 *Defined in [types.ts:107](lara-typescript/src/plugin-api/types.ts#L107)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:107](../../../lara-typescript/src/plugin-api/types.ts#L107)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="user_type"></a>
@@ -88,6 +100,7 @@ ___
 
 **● user_type**: *"learner" \| "teacher"*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -101,6 +114,9 @@ ___
 =======
 *Defined in [types.ts:106](lara-typescript/src/plugin-api/types.ts#L106)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:106](../../../lara-typescript/src/plugin-api/types.ts#L106)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

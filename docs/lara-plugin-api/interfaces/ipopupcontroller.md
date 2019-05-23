@@ -27,6 +27,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:43](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L43)*
 =======
 *Defined in [popup.ts:43](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L43)*
@@ -37,6 +38,9 @@
 =======
 *Defined in [popup.ts:43](lara-typescript/src/plugin-api/popup.ts#L43)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:43](../../../lara-typescript/src/plugin-api/popup.ts#L43)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true.
 
@@ -55,6 +59,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:41](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L41)*
 =======
 *Defined in [popup.ts:41](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L41)*
@@ -65,6 +70,9 @@ ___
 =======
 *Defined in [popup.ts:41](lara-typescript/src/plugin-api/popup.ts#L41)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:41](../../../lara-typescript/src/plugin-api/popup.ts#L41)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Opens popup (makes sense only if autoOpen option is set to false during initialization).
 
@@ -83,6 +91,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:45](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L45)*
 =======
 *Defined in [popup.ts:45](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L45)*
@@ -93,6 +102,9 @@ ___
 =======
 *Defined in [popup.ts:45](lara-typescript/src/plugin-api/popup.ts#L45)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:45](../../../lara-typescript/src/plugin-api/popup.ts#L45)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Removes HTML element from DOM tree.
 

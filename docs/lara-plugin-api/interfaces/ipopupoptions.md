@@ -48,6 +48,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:7](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L7)*
 =======
 *Defined in [popup.ts:7](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L7)*
@@ -58,6 +59,9 @@
 =======
 *Defined in [popup.ts:7](lara-typescript/src/plugin-api/popup.ts#L7)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:7](../../../lara-typescript/src/plugin-api/popup.ts#L7)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="backgroundcolor"></a>
@@ -66,6 +70,7 @@ ___
 
 **● backgroundColor**: *`undefined` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -79,6 +84,9 @@ ___
 =======
 *Defined in [popup.ts:27](lara-typescript/src/plugin-api/popup.ts#L27)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:27](../../../lara-typescript/src/plugin-api/popup.ts#L27)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="closebutton"></a>
@@ -87,6 +95,7 @@ ___
 
 **● closeButton**: *`undefined` \| `false` \| `true`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -100,6 +109,9 @@ ___
 =======
 *Defined in [popup.ts:15](lara-typescript/src/plugin-api/popup.ts#L15)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:15](../../../lara-typescript/src/plugin-api/popup.ts#L15)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="closeonescape"></a>
@@ -108,6 +120,7 @@ ___
 
 **● closeOnEscape**: *`undefined` \| `false` \| `true`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -121,6 +134,9 @@ ___
 =======
 *Defined in [popup.ts:8](lara-typescript/src/plugin-api/popup.ts#L8)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:8](../../../lara-typescript/src/plugin-api/popup.ts#L8)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="color"></a>
@@ -129,6 +145,7 @@ ___
 
 **● color**: *`undefined` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -142,6 +159,9 @@ ___
 =======
 *Defined in [popup.ts:16](lara-typescript/src/plugin-api/popup.ts#L16)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:16](../../../lara-typescript/src/plugin-api/popup.ts#L16)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="content"></a>
@@ -150,6 +170,7 @@ ___
 
 **● content**: *`HTMLElement` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -163,6 +184,9 @@ ___
 =======
 *Defined in [popup.ts:6](lara-typescript/src/plugin-api/popup.ts#L6)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:6](../../../lara-typescript/src/plugin-api/popup.ts#L6)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="dialogclass"></a>
@@ -171,6 +195,7 @@ ___
 
 **● dialogClass**: *`undefined` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -184,6 +209,9 @@ ___
 =======
 *Defined in [popup.ts:18](lara-typescript/src/plugin-api/popup.ts#L18)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:18](../../../lara-typescript/src/plugin-api/popup.ts#L18)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="draggable"></a>
@@ -192,6 +220,7 @@ ___
 
 **● draggable**: *`undefined` \| `false` \| `true`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -205,6 +234,9 @@ ___
 =======
 *Defined in [popup.ts:19](lara-typescript/src/plugin-api/popup.ts#L19)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:19](../../../lara-typescript/src/plugin-api/popup.ts#L19)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="height"></a>
@@ -213,6 +245,7 @@ ___
 
 **● height**: *`number` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -226,6 +259,9 @@ ___
 =======
 *Defined in [popup.ts:25](lara-typescript/src/plugin-api/popup.ts#L25)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:25](../../../lara-typescript/src/plugin-api/popup.ts#L25)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Number in px or "auto"
 
@@ -239,6 +275,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:17](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L17)*
 =======
 *Defined in [popup.ts:17](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L17)*
@@ -249,6 +286,9 @@ ___
 =======
 *Defined in [popup.ts:17](lara-typescript/src/plugin-api/popup.ts#L17)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:17](../../../lara-typescript/src/plugin-api/popup.ts#L17)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="onbeforeclose"></a>
@@ -257,6 +297,7 @@ ___
 
 **● onBeforeClose**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -270,6 +311,9 @@ ___
 =======
 *Defined in [popup.ts:32](lara-typescript/src/plugin-api/popup.ts#L32)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:32](../../../lara-typescript/src/plugin-api/popup.ts#L32)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
 
@@ -283,6 +327,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:30](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L30)*
 =======
 *Defined in [popup.ts:30](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L30)*
@@ -293,6 +338,9 @@ ___
 =======
 *Defined in [popup.ts:30](lara-typescript/src/plugin-api/popup.ts#L30)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:30](../../../lara-typescript/src/plugin-api/popup.ts#L30)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="ondragstart"></a>
@@ -301,6 +349,7 @@ ___
 
 **● onDragStart**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -314,6 +363,9 @@ ___
 =======
 *Defined in [popup.ts:35](lara-typescript/src/plugin-api/popup.ts#L35)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:35](../../../lara-typescript/src/plugin-api/popup.ts#L35)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="ondragstop"></a>
@@ -322,6 +374,7 @@ ___
 
 **● onDragStop**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -335,6 +388,9 @@ ___
 =======
 *Defined in [popup.ts:36](lara-typescript/src/plugin-api/popup.ts#L36)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:36](../../../lara-typescript/src/plugin-api/popup.ts#L36)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="onopen"></a>
@@ -343,6 +399,7 @@ ___
 
 **● onOpen**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -356,6 +413,9 @@ ___
 =======
 *Defined in [popup.ts:29](lara-typescript/src/plugin-api/popup.ts#L29)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:29](../../../lara-typescript/src/plugin-api/popup.ts#L29)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="onremove"></a>
@@ -364,6 +424,7 @@ ___
 
 **● onRemove**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -377,6 +438,9 @@ ___
 =======
 *Defined in [popup.ts:33](lara-typescript/src/plugin-api/popup.ts#L33)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:33](../../../lara-typescript/src/plugin-api/popup.ts#L33)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="onresize"></a>
@@ -385,6 +449,7 @@ ___
 
 **● onResize**: *`undefined` \| `function`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -398,6 +463,9 @@ ___
 =======
 *Defined in [popup.ts:34](lara-typescript/src/plugin-api/popup.ts#L34)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:34](../../../lara-typescript/src/plugin-api/popup.ts#L34)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="padding"></a>
@@ -406,6 +474,7 @@ ___
 
 **● padding**: *`undefined` \| `number`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -419,6 +488,9 @@ ___
 =======
 *Defined in [popup.ts:26](lara-typescript/src/plugin-api/popup.ts#L26)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:26](../../../lara-typescript/src/plugin-api/popup.ts#L26)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="position"></a>
@@ -427,6 +499,7 @@ ___
 
 **● position**: *`undefined` \| `object`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -440,6 +513,9 @@ ___
 =======
 *Defined in [popup.ts:22](lara-typescript/src/plugin-api/popup.ts#L22)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:22](../../../lara-typescript/src/plugin-api/popup.ts#L22)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Please see: [https://api.jqueryui.com/dialog/#option-position](https://api.jqueryui.com/dialog/#option-position)
 
@@ -453,6 +529,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:13](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L13)*
 =======
 *Defined in [popup.ts:13](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L13)*
@@ -463,6 +540,9 @@ ___
 =======
 *Defined in [popup.ts:13](lara-typescript/src/plugin-api/popup.ts#L13)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:13](../../../lara-typescript/src/plugin-api/popup.ts#L13)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be reopened programmatically.
 
@@ -476,6 +556,7 @@ ___
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:20](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L20)*
 =======
 *Defined in [popup.ts:20](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L20)*
@@ -486,6 +567,9 @@ ___
 =======
 *Defined in [popup.ts:20](lara-typescript/src/plugin-api/popup.ts#L20)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:20](../../../lara-typescript/src/plugin-api/popup.ts#L20)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="title"></a>
@@ -494,6 +578,7 @@ ___
 
 **● title**: *`undefined` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -507,6 +592,9 @@ ___
 =======
 *Defined in [popup.ts:14](lara-typescript/src/plugin-api/popup.ts#L14)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:14](../../../lara-typescript/src/plugin-api/popup.ts#L14)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="titlebarcolor"></a>
@@ -515,6 +603,7 @@ ___
 
 **● titlebarColor**: *`undefined` \| `string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -528,6 +617,9 @@ ___
 =======
 *Defined in [popup.ts:28](lara-typescript/src/plugin-api/popup.ts#L28)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:28](../../../lara-typescript/src/plugin-api/popup.ts#L28)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="width"></a>
@@ -536,6 +628,7 @@ ___
 
 **● width**: *`undefined` \| `number`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -549,6 +642,9 @@ ___
 =======
 *Defined in [popup.ts:23](lara-typescript/src/plugin-api/popup.ts#L23)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [popup.ts:23](../../../lara-typescript/src/plugin-api/popup.ts#L23)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 

@@ -29,6 +29,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:117](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L117)*
 =======
 *Defined in [types.ts:117](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L117)*
@@ -39,6 +40,9 @@
 =======
 *Defined in [types.ts:117](lara-typescript/src/plugin-api/types.ts#L117)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:117](../../../lara-typescript/src/plugin-api/types.ts#L117)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="class_info_url"></a>
@@ -47,6 +51,7 @@ ___
 
 **● class_info_url**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -60,6 +65,9 @@ ___
 =======
 *Defined in [types.ts:116](lara-typescript/src/plugin-api/types.ts#L116)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:116](../../../lara-typescript/src/plugin-api/types.ts#L116)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="domain"></a>
@@ -68,6 +76,7 @@ ___
 
 **● domain**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -81,6 +90,9 @@ ___
 =======
 *Defined in [types.ts:113](lara-typescript/src/plugin-api/types.ts#L113)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:113](../../../lara-typescript/src/plugin-api/types.ts#L113)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="externalid"></a>
@@ -89,6 +101,7 @@ ___
 
 **● externalId**: *`number`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -102,6 +115,9 @@ ___
 =======
 *Defined in [types.ts:115](lara-typescript/src/plugin-api/types.ts#L115)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:115](../../../lara-typescript/src/plugin-api/types.ts#L115)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 <a id="returnurl"></a>
@@ -110,6 +126,7 @@ ___
 
 **● returnUrl**: *`string`*
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -123,6 +140,9 @@ ___
 =======
 *Defined in [types.ts:114](lara-typescript/src/plugin-api/types.ts#L114)*
 >>>>>>> Updated api doc replacement to use npm packages and relative paths
+=======
+*Defined in [types.ts:114](../../../lara-typescript/src/plugin-api/types.ts#L114)*
+>>>>>>> Change fix docs paths to use script to give correct relative paths
 
 ___
 
