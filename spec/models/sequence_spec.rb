@@ -152,6 +152,57 @@ describe Sequence do
 
   end
 
+  describe '#serialize_for_report_service' do
+    let(:act1) {
+      FactoryGirl.build(:activity_with_page)
+    }
+    let(:act2) {
+      FactoryGirl.build(:activity_with_page)
+    }
+    let(:sequence_with_activities) do
+      seq = FactoryGirl.build(:sequence)
+      seq.activities << act1
+      seq.activities << act2
+      seq.save!
+      # Reorder activities - move first one to the bottom.
+      seq.lightweight_activities_sequences.find { |as| as.lightweight_activity ==act1 }.move_to_bottom
+      seq.reload
+      seq
+    end
+
+    let(:simple_report_service_hash) do
+      {
+        id: sequence.id,
+        type: "sequence",
+        name: sequence.title,
+        url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}",
+        children: []
+      }
+    end
+
+    let(:complex_report_service_hash) do
+      {
+        id: sequence_with_activities.id,
+        type: "sequence",
+        name: sequence_with_activities.title,
+        url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}",
+        children: [
+          # Note that we reordered activities!
+          act2.serialize_for_report_service("http://test.host"),
+          act1.serialize_for_report_service("http://test.host")
+        ]
+      }
+    end
+
+    it 'returns a hash for a simple sequence that can be consumed by the report service' do
+      expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
+    end
+
+    it 'returns a hash for a sequence with activities that can be consumed by the report service' do
+      expect(sequence_with_activities.serialize_for_report_service("http://test.host")).to eq(complex_report_service_hash)
+    end
+  end
+
   describe '#to_hash' do
     let(:report_url)    { "https://foo.bar.report/" }
     let(:sequence_opts) { {external_report_url: report_url } }

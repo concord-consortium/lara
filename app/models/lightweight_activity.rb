@@ -254,6 +254,45 @@ class LightweightActivity < ActiveRecord::Base
     data
   end
 
+  def serialize_for_report_service(host)
+    activity_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
+    data = {
+      id: self.id,
+      type: "activity",
+      name: self.name,
+      url: activity_url
+    }
+
+    pages = []
+    visible_pages_with_embeddables.each do |page|
+      questions = []
+      page.reportable_items.each do |embeddable|
+        questions.push(embeddable.report_service_hash) if embeddable.respond_to?(:report_service_hash)
+        # Otherwise we don't support this embeddable type right now.
+      end
+      pages.push({
+        id: page.id,
+        type: "page",
+        name: page.name,
+        url: "#{host}#{Rails.application.routes.url_helpers.page_path(page)}",
+        children: questions
+      })
+    end
+
+    # Fake section to satisfy current report service requirement. Hopefully, it won't be necessary soon.
+    section = {
+      # There's only one, artificial section per activity, so it's fine to reuse activity ID.
+      id: self.id,
+      type: "section",
+      name: "#{self.name} Section",
+      url: activity_url,
+      children: pages
+    }
+
+    data[:children] = [ section ]
+    data
+  end
+
   def for_sequence(seq)
     lightweight_activities_sequences.detect { |a| a.sequence_id  == seq.id}
   end

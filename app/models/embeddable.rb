@@ -90,4 +90,9 @@ module Embeddable
   def embeddable_dom_id
     "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
+
+  def report_service_hash
+    # Once LARA doesn't publish to portal, we can just rename portal_hash to report_service_hash
+    respond_to?(:portal_hash) ? portal_hash : nil
+  end
 end

@@ -52,6 +52,19 @@ describe Embeddable::ImageQuestion do
     end
   end
 
+  describe "#report_service_hash" do
+    it 'returns properties supported by the report service' do
+      expect(image_question.report_service_hash).to eq(
+        type: "image_question",
+        id: image_question.id,
+        prompt: image_question.prompt,
+        drawing_prompt: image_question.drawing_prompt,
+        is_required: image_question.is_prediction,
+        show_in_featured_question_report: image_question.show_in_featured_question_report
+      )
+    end
+  end
+
   describe '#duplicate' do
     it 'returns a new instance with copied attributes' do
       expect(image_question.duplicate).to be_a_new(Embeddable::ImageQuestion).with( name: image_question.name, prompt: image_question.prompt, drawing_prompt: image_question.drawing_prompt, bg_source: image_question.bg_source, bg_url: image_question.bg_url )
@@ -82,7 +95,7 @@ describe Embeddable::ImageQuestion do
 
   describe "import" do
     let(:json_with_promt){ image_question.export.as_json.symbolize_keys }
-    let(:json_without_promt){ 
+    let(:json_without_promt){
       img_ques = image_question.export.as_json.symbolize_keys
       img_ques.except(:prompt)
     }

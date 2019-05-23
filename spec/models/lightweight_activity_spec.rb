@@ -472,6 +472,84 @@ describe LightweightActivity do
     end
   end
 
+  describe '#serialize_for_report_service' do
+    it 'returns a simple hash that can be consumed by the report service' do
+      url = "http://test.host/activities/#{activity.id}"
+      report_service_hash = {
+        id: activity.id,
+        type: "activity",
+        name: activity.name,
+        url: url,
+        children: [
+          {
+            id: activity.id,
+            type: "section",
+            name: "#{activity.name} Section",
+            url: url,
+            children: []
+          }
+        ]
+      }
+      expect(activity.serialize_for_report_service('http://test.host')).to eq(report_service_hash)
+    end
+
+    describe 'pages section' do
+      before(:each) do
+        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
+        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
+        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+        activity.reload
+      end
+
+      it 'returns only visible pages' do
+        pages = activity.serialize_for_report_service('http://test.host')[:children][0][:children]
+        expect(pages.length).to eql(2)
+        expect(pages[0][:type]).to eql('page')
+        expect(pages[0][:name]).to eql('page 1')
+        expect(pages[0][:url]).to match /http:\/\/test.host\/pages\/\d+/
+        expect(pages[1][:type]).to eql('page')
+        expect(pages[1][:name]).to eql('page 2')
+        expect(pages[1][:url]).to match /http:\/\/test.host\/pages\/\d+/
+      end
+    end
+
+    describe 'pages section with hidden embeddables & reportable interactives' do
+      let(:page1) { FactoryGirl.create(:interactive_page_with_or, name: 'page 1', position: 0) }
+      let(:page2) { FactoryGirl.create(:interactive_page_with_hidden_or, name: 'page 2', position: 1) }
+      let(:page3) { FactoryGirl.create(:interactive_page_with_or, name: 'page 3', position: 2) }
+      let(:page4) { FactoryGirl.create(:interactive_page_with_or, name: 'page 4', position: 3) }
+
+      let(:non_reportable_interactive) {
+        FactoryGirl.create(:mw_interactive, enable_learner_state: false, has_report_url: false)
+      }
+
+      let(:reportable_interactive) {
+        FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true)
+      }
+
+      before(:each) do
+        page3.add_interactive reportable_interactive
+        page4.add_interactive non_reportable_interactive
+        activity.pages << page1
+        activity.pages << page2
+        activity.pages << page3
+        activity.pages << page4
+        activity.reload
+      end
+
+      it 'returns only visible embeddables' do
+        pages = activity.serialize_for_report_service('http://test.host')[:children][0][:children]
+        expect(pages.length).to eql(4)
+        expect(pages[0][:name]).to eql('page 1')
+        expect(pages[0][:children].length).to eql(1)
+        expect(pages[1][:name]).to eql('page 2')
+        expect(pages[1][:children].length).to eql(0)
+        expect(pages[2][:children].length).to eql(2)
+        expect(pages[3][:children].length).to eql(1)
+      end
+    end
+  end
+
   describe "named scopes" do
     subject   { LightweightActivity }
     before(:each) do
