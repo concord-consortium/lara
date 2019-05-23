@@ -140,6 +140,18 @@ class Sequence < ActiveRecord::Base
     data
   end
 
+  def serialize_for_report_service(host)
+    local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
+    data = {
+      id: self.id,
+      type: 'sequence',
+      name: self.title,
+      url: local_url
+    }
+    data[:children] = self.activities.map { |a| a.serialize_for_report_service(host) }
+    data
+  end
+
   def self.extact_from_hash(sequence_json_object)
     {
       abstract: sequence_json_object[:abstract],
