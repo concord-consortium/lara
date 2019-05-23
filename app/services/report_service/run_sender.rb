@@ -4,24 +4,13 @@ module ReportService
     Version = "1"
     DefaultClassHash = "anonymous-run"
     DefaultUserName = "anonymous"
-    KeyRegex = /(\.|\/)+/
-    UrlRegex = /https?:\/\/([^\/]+)/
-    KeyReplacement = "_"
-    KeyJoiner = "-"
 
-    def make_key(*values)
-      key = values.join(KeyJoiner)
-      key.gsub(KeyRegex, KeyReplacement)
-    end
-
-    def make_source_key(url)
-      make_key(url.gsub(UrlRegex, '\1'))
-    end
+    extend ReportService::Base
 
     def question_key(answer_hash)
       question_type = answer_hash[:type] || answer_hash['type']
       question_id = answer_hash[:question_id] || answer_hash['question_id']
-      make_key(question_type, question_id)
+      RunSender.make_key(question_type, question_id)
     end
 
     def get_class_hash(run)
@@ -36,7 +25,7 @@ module ReportService
     def add_meta_data(run, record, host)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
-      record[:source_key] = make_source_key(host)
+      record[:source_key] = RunSender.make_source_key(host)
       record[:class_hash] = get_class_hash(run)
       record[:class_info_url] = run.class_info_url
       record[:user_id] = username_for_run(run)
