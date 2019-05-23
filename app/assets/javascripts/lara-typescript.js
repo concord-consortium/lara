@@ -15925,6 +15925,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
 exports.initPlugin = plugins_1.initPlugin;
+exports.setNextPluginLabel = plugins_1.setNextPluginLabel;
 __export(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"));
 
 
@@ -16142,6 +16143,15 @@ var pluginError = function (e, other) {
 };
 /** @hidden Note, we call these `classes` but any constructor function will do. */
 var pluginClasses = {};
+/**
+ * Called in plugins/_show.haml before each plugin is loaded.  The value is used by #registerPlugin
+ * to override the plugin's passed label.  This removes the previous need for the plugin's label to
+ * match the label in LARA's database.
+ */
+var nextPluginLabel = "";
+exports.setNextPluginLabel = function (override) {
+    nextPluginLabel = override;
+};
 /****************************************************************************
  Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
  This method is called to initialize the plugin.
@@ -16171,23 +16181,29 @@ exports.initPlugin = function (label, context) {
  ```
  registerPlugin('debugger', Dubugger)
  ```
- @param label The identifier of the script.
+ @param deprecratedLabel DEPRECATED: The identifier of the script.
  @param _class The Plugin class/constructor being associated with the identifier.
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
-exports.registerPlugin = function (label, _class) {
-    if (typeof _class !== "function") {
+exports.registerPlugin = function (deprecratedLabel, _class) {
+    if (nextPluginLabel === "") {
         // tslint:disable-next-line:no-console
-        console.error("Plugin did not provide constructor", label);
+        console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
         return false;
     }
-    if (pluginClasses[label]) {
+    if (typeof _class !== "function") {
         // tslint:disable-next-line:no-console
-        console.error("Duplicate Plugin for label", label);
+        console.error("Plugin did not provide constructor", nextPluginLabel);
+        return false;
+    }
+    if (pluginClasses[nextPluginLabel]) {
+        // tslint:disable-next-line:no-console
+        console.error("Duplicate Plugin for label", nextPluginLabel);
         return false;
     }
     else {
-        pluginClasses[label] = _class;
+        pluginClasses[nextPluginLabel] = _class;
+        nextPluginLabel = "";
         return true;
     }
 };

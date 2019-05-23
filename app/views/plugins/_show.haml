@@ -1,5 +1,8 @@
+- v3_plugin_label = "plugin#{plugin.id}"
 - unless plugin_loaded(plugin.url)
   = content_for :external_scripts do
+    :javascript
+      LARA.InternalAPI.setNextPluginLabel("#{v3_plugin_label}");
     %script{src:plugin.url}
 
 - if plugin.version < 2
@@ -132,6 +135,6 @@
         firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
         wrappedEmbeddable: embeddableContext
       }
-      console.log("Adding script #{plugin.label} with V3 LARA Plugin API")
-      LARA.InternalAPI.initPlugin('#{plugin.label}', pluginContext);
+      console.log("Adding #{plugin.name} plugin as #{v3_plugin_label} with V3 LARA Plugin API")
+      LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
     });
