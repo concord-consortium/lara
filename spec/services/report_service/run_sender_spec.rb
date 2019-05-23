@@ -56,8 +56,7 @@ describe ReportService::RunSender do
   let(:sender) { ReportService::RunSender.new(run, host)     }
 
   before(:each) do
-    # allow(HTTParty).to receive(:post).and_return post_results
-    Rails.application.routes.url_helpers.stub(:run_path).and_return("runs/12345")
+    allow(Rails.application.routes.url_helpers).to receive(:run_path).and_return("runs/12345")
     Timecop.freeze(Time.new(2016))
   end
 
@@ -74,39 +73,39 @@ describe ReportService::RunSender do
       it "should have a key fields" do
         expect(json).to include(
           "version", "created", "user_id",
-          "answers", "class_hash", "key"
+          "answers", "class_hash", "run_key"
         )
       end
 
       describe "the encoded answers" do
         it "should also include the run_key, user_id, class_hash " do
           answers = json["answers"]
-          answers.each do |a,index|
-            expect(a).to include("key")
-            expect(a["key"]).to match("app_lara_docker")
-            expect(a["key"]).to match("mock-answer")
-            expect(a["key"]).to match("#{index}")
-            expect(a["key"]).to match(/\d+/)
-            expect(a["key"]).not_to match("/")
-            expect(a["key"]).not_to match(/\./)
+          answers.each_with_index do |a,index|
+            expect(a).to include("question_key")
+            expect(a["source_key"]).to match("app_lara_docker")
+            expect(a["source_key"]).not_to match("/")
+            expect(a["source_key"]).not_to match(/\./)
+
+            expect(a["id"]).to match("mock_question_answer")
+            expect(a["id"]).not_to match("/")
+            expect(a["id"]).not_to match(/\./)
+
+            expect(a["question_key"]).to match("mock-answer")
+            expect(a["question_key"]).to match("#{index+1}")
+            expect(a["question_key"]).not_to match("/")
+            expect(a["question_key"]).not_to match(/\./)
+
+            expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
             expect(a).to include("user_id")
             expect(a).to include("class_hash")
-            expect(a).to include("created")
+            expect(a).to include("class_info_url")
             expect(a).to include("version")
           end
         end
       end
     end
-
-    end
-
-
-    describe "send" do
-      describe "version 1 of the sending protocol" do
-      end
-    end
-
+  end
 
 end
