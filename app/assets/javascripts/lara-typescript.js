@@ -15878,6 +15878,7 @@ process.umask = function() { return 0; };
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
 var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
@@ -16285,6 +16286,17 @@ __export(__webpack_require__(/*! ./popup */ "./src/plugin-api/popup.ts"));
 __export(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorate-content.ts"));
 __export(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"));
 
+
+/***/ }),
+
+/***/ "./src/plugin-api/normalize.scss":
+/*!***************************************!*\
+  !*** ./src/plugin-api/normalize.scss ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 

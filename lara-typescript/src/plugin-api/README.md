@@ -66,3 +66,33 @@ of the same plugin (e.g. if the activity author adds multiple plugin instances t
 
 Plugins can use all the functions documented below to modify LARA runtime or provide custom features. This documentation
 is generated automatically from TypeScript definitions and comments.
+
+
+#### Plugin styling
+
+Note that LARA Plugins will be executed in LARA context which includes a lot of different CSS styles and rules.
+Sometimes it might be okay for plugin to inherit these styles and overwrite when necessary. In other cases, 
+it might be useful for plugin to reset and normalize its containers, so it's less dependant on LARA styles.
+Also, LARA styles obviously casue plugin content to be rendered differently in LARA and in some external 
+demo or authoring pages provided by plugin.
+
+To avoid these inconsistencies, plugins can use CSS reset/normalize helpers provided by LARA.
+Reset CSS rules are simply applied to all the containers with `normalized-container` class name. 
+Plugins can use this case in its top-level container, e.g.:
+
+```javascript
+render() {
+  return (
+    <div className="normalized-container">
+      My plugin content
+    </div>
+  );
+}
+```
+
+Also, these reset styles are part of the NPM package, so plugins can include them in demo and authoring pages 
+to ensure that rendering is consistent:
+
+```javascript
+import "@concord-consortium/lara-plugin-api/normalize.css";
+```
