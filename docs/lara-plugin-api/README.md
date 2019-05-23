@@ -138,10 +138,14 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 **Ƭ IEventListeners**: *[IEventListener](interfaces/ieventlistener.md) \| [IEventListener](interfaces/ieventlistener.md)[]*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 =======
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="iinteractiveavailableeventhandler"></a>
@@ -151,10 +155,14 @@ ___
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L188)*
 =======
 *Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L188)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L188)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 InteractiveAvailable event handler.
 
@@ -177,10 +185,14 @@ ___
 **Ƭ ILogEventHandler**: *`function`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L169)*
 =======
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L169)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L169)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Log event handler.
 
@@ -205,10 +217,14 @@ ___
 **Ƭ IPluginConstructor**: *`object`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L5)*
 =======
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L5)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L5)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 #### Type declaration
 
@@ -223,10 +239,14 @@ ___
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L86)*
 =======
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L86)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L86)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Ask LARA to add a new popup window.
 
@@ -250,10 +270,14 @@ ___
 ▸ **addSidebar**(_options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L90)*
 =======
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L90)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L90)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Ask LARA to add a new sidebar.
 
@@ -282,10 +306,14 @@ ___
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *[IEventListeners](#ieventlisteners)*): `void`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 =======
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Ask LARA to decorate authored content (text / html).
 
@@ -308,10 +336,14 @@ ___
 ▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/plugins.ts#L13)*
 =======
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/plugins.ts#L13)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/plugins.ts#L13)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -340,10 +372,14 @@ ___
 **ADD_POPUP_DEFAULT_OPTIONS**: *`object`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L48)*
 =======
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L48)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L48)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 <a id="add_popup_default_options.autoopen"></a>
 
@@ -352,10 +388,14 @@ ___
 **● autoOpen**: *`boolean`* = true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L50)*
 =======
 *Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L50)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L50)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.backgroundcolor"></a>
@@ -365,10 +405,14 @@ ___
 **● backgroundColor**: *`string`* = ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L65)*
 =======
 *Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L65)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L65)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.closebutton"></a>
@@ -378,10 +422,14 @@ ___
 **● closeButton**: *`boolean`* = true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L51)*
 =======
 *Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L51)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L51)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.closeonescape"></a>
@@ -391,10 +439,14 @@ ___
 **● closeOnEscape**: *`boolean`* = false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L52)*
 =======
 *Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L52)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L52)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.dialogclass"></a>
@@ -404,10 +456,14 @@ ___
 **● dialogClass**: *`string`* = ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L64)*
 =======
 *Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L64)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L64)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
 
@@ -419,10 +475,14 @@ ___
 **● draggable**: *`boolean`* = true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L55)*
 =======
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L55)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L55)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.height"></a>
@@ -432,10 +492,14 @@ ___
 **● height**: *`string`* = "auto"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L58)*
 =======
 *Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L58)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L58)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.modal"></a>
@@ -445,10 +509,14 @@ ___
 **● modal**: *`boolean`* = false
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L54)*
 =======
 *Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L54)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L54)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.onbeforeclose"></a>
@@ -458,10 +526,14 @@ ___
 **● onBeforeClose**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L69)*
 =======
 *Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L69)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L69)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.ondragstart"></a>
@@ -471,10 +543,14 @@ ___
 **● onDragStart**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L71)*
 =======
 *Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L71)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L71)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.ondragstop"></a>
@@ -484,10 +560,14 @@ ___
 **● onDragStop**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L72)*
 =======
 *Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L72)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L72)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.onopen"></a>
@@ -497,10 +577,14 @@ ___
 **● onOpen**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L68)*
 =======
 *Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L68)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L68)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.onresize"></a>
@@ -510,10 +594,14 @@ ___
 **● onResize**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L70)*
 =======
 *Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L70)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L70)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.padding"></a>
@@ -523,10 +611,14 @@ ___
 **● padding**: *`number`* = 10
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L59)*
 =======
 *Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L59)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L59)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.removeonclose"></a>
@@ -536,10 +628,14 @@ ___
 **● removeOnClose**: *`boolean`* = true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L53)*
 =======
 *Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L53)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L53)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.resizable"></a>
@@ -549,10 +645,14 @@ ___
 **● resizable**: *`boolean`* = true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L56)*
 =======
 *Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L56)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L56)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.title"></a>
@@ -562,10 +662,14 @@ ___
 **● title**: *`string`* = ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L49)*
 =======
 *Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L49)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L49)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.titlebarcolor"></a>
@@ -575,10 +679,14 @@ ___
 **● titlebarColor**: *`string`* = ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L66)*
 =======
 *Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L66)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L66)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.width"></a>
@@ -588,10 +696,14 @@ ___
 **● width**: *`number`* = 300
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L57)*
 =======
 *Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L57)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L57)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.position"></a>
@@ -601,10 +713,14 @@ ___
 **position**: *`object`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 <a id="add_popup_default_options.position.at"></a>
 
@@ -613,10 +729,14 @@ ___
 **● at**: *`string`* = "center"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.position.my"></a>
@@ -626,10 +746,14 @@ ___
 **● my**: *`string`* = "center"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_popup_default_options.position.of"></a>
@@ -639,10 +763,14 @@ ___
 **● of**: *`Window`* =  window
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 
@@ -656,10 +784,14 @@ ___
 **ADD_SIDEBAR_DEFAULT_OPTIONS**: *`object`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L30)*
 =======
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L30)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L30)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 <a id="add_sidebar_default_options.handle"></a>
 
@@ -668,10 +800,14 @@ ___
 **● handle**: *`string`* = ""
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L33)*
 =======
 *Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L33)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L33)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_sidebar_default_options.handlecolor"></a>
@@ -681,10 +817,14 @@ ___
 **● handleColor**: *`string`* = "#aaa"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L34)*
 =======
 *Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L34)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L34)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_sidebar_default_options.icon"></a>
@@ -694,10 +834,14 @@ ___
 **● icon**: *`string`* = "default"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L32)*
 =======
 *Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L32)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L32)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Arrow pointing left.
 
@@ -709,10 +853,14 @@ ___
 **● padding**: *`number`* = 25
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L38)*
 =======
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L38)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L38)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_sidebar_default_options.titlebar"></a>
@@ -722,10 +870,14 @@ ___
 **● titleBar**: *`null`* =  null
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L35)*
 =======
 *Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L35)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L35)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_sidebar_default_options.titlebarcolor"></a>
@@ -735,10 +887,14 @@ ___
 **● titleBarColor**: *`string`* = "#bbb"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L36)*
 =======
 *Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L36)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L36)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="add_sidebar_default_options.width"></a>
@@ -748,10 +904,14 @@ ___
 **● width**: *`number`* = 500
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L37)*
 =======
 *Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L37)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L37)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 
@@ -763,10 +923,14 @@ ___
 **events**: *`object`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L7)*
 =======
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L7)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L7)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Functions related to event observing provided by LARA.
 
@@ -777,10 +941,14 @@ Functions related to event observing provided by LARA.
 ▸ **offInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L28)*
 =======
 *Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L28)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L28)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Removes InteractiveAvailable event handler.
 
@@ -800,10 +968,14 @@ ___
 ▸ **offLog**(handler: *[ILogEventHandler](#ilogeventhandler)*): `void`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L19)*
 =======
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L19)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L19)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Removes log event handler.
 
@@ -823,10 +995,14 @@ ___
 ▸ **onInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L24)*
 =======
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L24)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L24)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state. Currently uses when click to play mode is enabled and the click to play overlay is clicked.
 
@@ -846,10 +1022,14 @@ ___
 ▸ **onLog**(handler: *[ILogEventHandler](#ilogeventhandler)*): `void`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L15)*
 =======
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L15)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L15)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
 

@@ -28,10 +28,14 @@
 **● class_hash**: *`string`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L140)*
 =======
 *Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L140)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:140](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L140)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="id"></a>
@@ -41,10 +45,14 @@ ___
 **● id**: *`number`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:138](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L138)*
 =======
 *Defined in [types.ts:138](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L138)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:138](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L138)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="offerings"></a>
@@ -54,10 +62,14 @@ ___
 **● offerings**: *[IOffering](ioffering.md)[]*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:143](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L143)*
 =======
 *Defined in [types.ts:143](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L143)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:143](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L143)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="students"></a>
@@ -67,10 +79,14 @@ ___
 **● students**: *[IUser](iuser.md)[]*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:142](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L142)*
 =======
 *Defined in [types.ts:142](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L142)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:142](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L142)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="teachers"></a>
@@ -80,10 +96,14 @@ ___
 **● teachers**: *[IUser](iuser.md)[]*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:141](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L141)*
 =======
 *Defined in [types.ts:141](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L141)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:141](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L141)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 <a id="uri"></a>
@@ -93,10 +113,14 @@ ___
 **● uri**: *`string`*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:139](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L139)*
 =======
 *Defined in [types.ts:139](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L139)*
 >>>>>>> Added v3 plugin label override with internal label [#166193888]The plugin system now ignores the label provided by the plugin when itregisters and instead uses an internally generated label set before eachplugin is loaded.  This allows multiple copies of the same plugin to existon a page.
+=======
+*Defined in [types.ts:139](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L139)*
+>>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
 
 ___
 
