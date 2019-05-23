@@ -33,6 +33,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:10](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L10)*
 =======
 *Defined in [sidebar.ts:10](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L10)*
@@ -40,6 +41,9 @@
 =======
 *Defined in [sidebar.ts:10](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L10)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:10](lara-typescript/src/plugin-api/sidebar.ts#L10)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="handle"></a>
@@ -50,6 +54,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:14](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L14)*
 =======
 *Defined in [sidebar.ts:14](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L14)*
@@ -57,6 +62,9 @@ ___
 =======
 *Defined in [sidebar.ts:14](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L14)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:14](lara-typescript/src/plugin-api/sidebar.ts#L14)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Text displayed on the sidebar handle.
 
@@ -69,6 +77,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:15](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L15)*
 =======
 *Defined in [sidebar.ts:15](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L15)*
@@ -76,6 +85,9 @@ ___
 =======
 *Defined in [sidebar.ts:15](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L15)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:15](lara-typescript/src/plugin-api/sidebar.ts#L15)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="icon"></a>
@@ -86,6 +98,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:12](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L12)*
 =======
 *Defined in [sidebar.ts:12](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L12)*
@@ -93,6 +106,9 @@ ___
 =======
 *Defined in [sidebar.ts:12](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L12)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:12](lara-typescript/src/plugin-api/sidebar.ts#L12)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Icon can be 'default' (arrow) or an HTML element.
 
@@ -105,6 +121,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:22](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L22)*
 =======
 *Defined in [sidebar.ts:22](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L22)*
@@ -112,6 +129,9 @@ ___
 =======
 *Defined in [sidebar.ts:22](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L22)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:22](lara-typescript/src/plugin-api/sidebar.ts#L22)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="onopen"></a>
@@ -122,6 +142,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:21](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L21)*
 =======
 *Defined in [sidebar.ts:21](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L21)*
@@ -129,6 +150,9 @@ ___
 =======
 *Defined in [sidebar.ts:21](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L21)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:21](lara-typescript/src/plugin-api/sidebar.ts#L21)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="padding"></a>
@@ -139,6 +163,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:20](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L20)*
 =======
 *Defined in [sidebar.ts:20](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L20)*
@@ -146,6 +171,9 @@ ___
 =======
 *Defined in [sidebar.ts:20](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L20)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:20](lara-typescript/src/plugin-api/sidebar.ts#L20)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="titlebar"></a>
@@ -156,6 +184,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:17](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L17)*
 =======
 *Defined in [sidebar.ts:17](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L17)*
@@ -163,6 +192,9 @@ ___
 =======
 *Defined in [sidebar.ts:17](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L17)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:17](lara-typescript/src/plugin-api/sidebar.ts#L17)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
 
@@ -175,6 +207,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:18](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L18)*
 =======
 *Defined in [sidebar.ts:18](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L18)*
@@ -182,6 +215,9 @@ ___
 =======
 *Defined in [sidebar.ts:18](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L18)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:18](lara-typescript/src/plugin-api/sidebar.ts#L18)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="width"></a>
@@ -192,6 +228,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L19)*
 =======
 *Defined in [sidebar.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L19)*
@@ -199,6 +236,9 @@ ___
 =======
 *Defined in [sidebar.ts:19](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L19)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:19](lara-typescript/src/plugin-api/sidebar.ts#L19)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 

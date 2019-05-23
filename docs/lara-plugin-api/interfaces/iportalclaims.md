@@ -27,6 +27,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:108](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L108)*
 =======
 *Defined in [types.ts:108](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L108)*
@@ -34,6 +35,9 @@
 =======
 *Defined in [types.ts:108](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L108)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:108](lara-typescript/src/plugin-api/types.ts#L108)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="offering_id"></a>
@@ -44,6 +48,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:109](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L109)*
 =======
 *Defined in [types.ts:109](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L109)*
@@ -51,6 +56,9 @@ ___
 =======
 *Defined in [types.ts:109](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L109)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:109](lara-typescript/src/plugin-api/types.ts#L109)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="user_id"></a>
@@ -61,6 +69,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:107](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L107)*
 =======
 *Defined in [types.ts:107](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L107)*
@@ -68,6 +77,9 @@ ___
 =======
 *Defined in [types.ts:107](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L107)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:107](lara-typescript/src/plugin-api/types.ts#L107)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="user_type"></a>
@@ -78,6 +90,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:106](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L106)*
 =======
 *Defined in [types.ts:106](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L106)*
@@ -85,6 +98,9 @@ ___
 =======
 *Defined in [types.ts:106](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L106)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:106](lara-typescript/src/plugin-api/types.ts#L106)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 

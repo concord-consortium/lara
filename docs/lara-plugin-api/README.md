@@ -139,6 +139,7 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 =======
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
@@ -146,6 +147,9 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 =======
 *Defined in [decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L8)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [decorate-content.ts:8](lara-typescript/src/plugin-api/decorate-content.ts#L8)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="iinteractiveavailableeventhandler"></a>
@@ -156,6 +160,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L188)*
 =======
 *Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L188)*
@@ -163,6 +168,9 @@ ___
 =======
 *Defined in [types.ts:188](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L188)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:188](lara-typescript/src/plugin-api/types.ts#L188)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 InteractiveAvailable event handler.
 
@@ -186,6 +194,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L169)*
 =======
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L169)*
@@ -193,6 +202,9 @@ ___
 =======
 *Defined in [types.ts:169](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L169)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:169](lara-typescript/src/plugin-api/types.ts#L169)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Log event handler.
 
@@ -218,6 +230,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L5)*
 =======
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L5)*
@@ -225,6 +238,9 @@ ___
 =======
 *Defined in [types.ts:5](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L5)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:5](lara-typescript/src/plugin-api/types.ts#L5)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 #### Type declaration
 
@@ -240,6 +256,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L86)*
 =======
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L86)*
@@ -247,6 +264,9 @@ ___
 =======
 *Defined in [popup.ts:86](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L86)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:86](lara-typescript/src/plugin-api/popup.ts#L86)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Ask LARA to add a new popup window.
 
@@ -271,6 +291,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L90)*
 =======
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L90)*
@@ -278,6 +299,9 @@ ___
 =======
 *Defined in [sidebar.ts:90](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L90)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:90](lara-typescript/src/plugin-api/sidebar.ts#L90)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Ask LARA to add a new sidebar.
 
@@ -307,6 +331,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 =======
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
@@ -314,6 +339,9 @@ ___
 =======
 *Defined in [decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L19)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [decorate-content.ts:19](lara-typescript/src/plugin-api/decorate-content.ts#L19)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Ask LARA to decorate authored content (text / html).
 
@@ -337,6 +365,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/plugins.ts#L13)*
 =======
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/plugins.ts#L13)*
@@ -344,6 +373,9 @@ ___
 =======
 *Defined in [plugins.ts:13](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/plugins.ts#L13)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [plugins.ts:13](lara-typescript/src/plugin-api/plugins.ts#L13)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -373,6 +405,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L48)*
 =======
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L48)*
@@ -380,6 +413,9 @@ ___
 =======
 *Defined in [popup.ts:48](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L48)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:48](lara-typescript/src/plugin-api/popup.ts#L48)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 <a id="add_popup_default_options.autoopen"></a>
 
@@ -389,6 +425,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L50)*
 =======
 *Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L50)*
@@ -396,6 +433,9 @@ ___
 =======
 *Defined in [popup.ts:50](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L50)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:50](lara-typescript/src/plugin-api/popup.ts#L50)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.backgroundcolor"></a>
@@ -406,6 +446,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L65)*
 =======
 *Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L65)*
@@ -413,6 +454,9 @@ ___
 =======
 *Defined in [popup.ts:65](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L65)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:65](lara-typescript/src/plugin-api/popup.ts#L65)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.closebutton"></a>
@@ -423,6 +467,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L51)*
 =======
 *Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L51)*
@@ -430,6 +475,9 @@ ___
 =======
 *Defined in [popup.ts:51](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L51)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:51](lara-typescript/src/plugin-api/popup.ts#L51)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.closeonescape"></a>
@@ -440,6 +488,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L52)*
 =======
 *Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L52)*
@@ -447,6 +496,9 @@ ___
 =======
 *Defined in [popup.ts:52](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L52)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:52](lara-typescript/src/plugin-api/popup.ts#L52)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.dialogclass"></a>
@@ -457,6 +509,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L64)*
 =======
 *Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L64)*
@@ -464,6 +517,9 @@ ___
 =======
 *Defined in [popup.ts:64](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L64)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:64](lara-typescript/src/plugin-api/popup.ts#L64)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
 
@@ -476,6 +532,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L55)*
 =======
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L55)*
@@ -483,6 +540,9 @@ ___
 =======
 *Defined in [popup.ts:55](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L55)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:55](lara-typescript/src/plugin-api/popup.ts#L55)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.height"></a>
@@ -493,6 +553,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L58)*
 =======
 *Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L58)*
@@ -500,6 +561,9 @@ ___
 =======
 *Defined in [popup.ts:58](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L58)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:58](lara-typescript/src/plugin-api/popup.ts#L58)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.modal"></a>
@@ -510,6 +574,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L54)*
 =======
 *Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L54)*
@@ -517,6 +582,9 @@ ___
 =======
 *Defined in [popup.ts:54](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L54)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:54](lara-typescript/src/plugin-api/popup.ts#L54)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.onbeforeclose"></a>
@@ -527,6 +595,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L69)*
 =======
 *Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L69)*
@@ -534,6 +603,9 @@ ___
 =======
 *Defined in [popup.ts:69](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L69)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:69](lara-typescript/src/plugin-api/popup.ts#L69)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.ondragstart"></a>
@@ -544,6 +616,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L71)*
 =======
 *Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L71)*
@@ -551,6 +624,9 @@ ___
 =======
 *Defined in [popup.ts:71](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L71)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:71](lara-typescript/src/plugin-api/popup.ts#L71)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.ondragstop"></a>
@@ -561,6 +637,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L72)*
 =======
 *Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L72)*
@@ -568,6 +645,9 @@ ___
 =======
 *Defined in [popup.ts:72](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L72)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:72](lara-typescript/src/plugin-api/popup.ts#L72)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.onopen"></a>
@@ -578,6 +658,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L68)*
 =======
 *Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L68)*
@@ -585,6 +666,9 @@ ___
 =======
 *Defined in [popup.ts:68](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L68)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:68](lara-typescript/src/plugin-api/popup.ts#L68)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.onresize"></a>
@@ -595,6 +679,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L70)*
 =======
 *Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L70)*
@@ -602,6 +687,9 @@ ___
 =======
 *Defined in [popup.ts:70](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L70)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:70](lara-typescript/src/plugin-api/popup.ts#L70)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.padding"></a>
@@ -612,6 +700,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L59)*
 =======
 *Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L59)*
@@ -619,6 +708,9 @@ ___
 =======
 *Defined in [popup.ts:59](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L59)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:59](lara-typescript/src/plugin-api/popup.ts#L59)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.removeonclose"></a>
@@ -629,6 +721,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L53)*
 =======
 *Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L53)*
@@ -636,6 +729,9 @@ ___
 =======
 *Defined in [popup.ts:53](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L53)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:53](lara-typescript/src/plugin-api/popup.ts#L53)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.resizable"></a>
@@ -646,6 +742,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L56)*
 =======
 *Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L56)*
@@ -653,6 +750,9 @@ ___
 =======
 *Defined in [popup.ts:56](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L56)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:56](lara-typescript/src/plugin-api/popup.ts#L56)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.title"></a>
@@ -663,6 +763,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L49)*
 =======
 *Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L49)*
@@ -670,6 +771,9 @@ ___
 =======
 *Defined in [popup.ts:49](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L49)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:49](lara-typescript/src/plugin-api/popup.ts#L49)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.titlebarcolor"></a>
@@ -680,6 +784,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L66)*
 =======
 *Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L66)*
@@ -687,6 +792,9 @@ ___
 =======
 *Defined in [popup.ts:66](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L66)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:66](lara-typescript/src/plugin-api/popup.ts#L66)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.width"></a>
@@ -697,6 +805,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L57)*
 =======
 *Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L57)*
@@ -704,6 +813,9 @@ ___
 =======
 *Defined in [popup.ts:57](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L57)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:57](lara-typescript/src/plugin-api/popup.ts#L57)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.position"></a>
@@ -714,6 +826,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -721,6 +834,9 @@ ___
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 <a id="add_popup_default_options.position.at"></a>
 
@@ -730,6 +846,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -737,6 +854,9 @@ ___
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.position.my"></a>
@@ -747,6 +867,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -754,6 +875,9 @@ ___
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_popup_default_options.position.of"></a>
@@ -764,6 +888,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/popup.ts#L67)*
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/popup.ts#L67)*
@@ -771,6 +896,9 @@ ___
 =======
 *Defined in [popup.ts:67](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/popup.ts#L67)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [popup.ts:67](lara-typescript/src/plugin-api/popup.ts#L67)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 
@@ -785,6 +913,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L30)*
 =======
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L30)*
@@ -792,6 +921,9 @@ ___
 =======
 *Defined in [sidebar.ts:30](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L30)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:30](lara-typescript/src/plugin-api/sidebar.ts#L30)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 <a id="add_sidebar_default_options.handle"></a>
 
@@ -801,6 +933,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L33)*
 =======
 *Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L33)*
@@ -808,6 +941,9 @@ ___
 =======
 *Defined in [sidebar.ts:33](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L33)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:33](lara-typescript/src/plugin-api/sidebar.ts#L33)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_sidebar_default_options.handlecolor"></a>
@@ -818,6 +954,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L34)*
 =======
 *Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L34)*
@@ -825,6 +962,9 @@ ___
 =======
 *Defined in [sidebar.ts:34](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L34)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:34](lara-typescript/src/plugin-api/sidebar.ts#L34)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_sidebar_default_options.icon"></a>
@@ -835,6 +975,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L32)*
 =======
 *Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L32)*
@@ -842,6 +983,9 @@ ___
 =======
 *Defined in [sidebar.ts:32](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L32)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:32](lara-typescript/src/plugin-api/sidebar.ts#L32)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Arrow pointing left.
 
@@ -854,6 +998,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L38)*
 =======
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L38)*
@@ -861,6 +1006,9 @@ ___
 =======
 *Defined in [sidebar.ts:38](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L38)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:38](lara-typescript/src/plugin-api/sidebar.ts#L38)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_sidebar_default_options.titlebar"></a>
@@ -871,6 +1019,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L35)*
 =======
 *Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L35)*
@@ -878,6 +1027,9 @@ ___
 =======
 *Defined in [sidebar.ts:35](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L35)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:35](lara-typescript/src/plugin-api/sidebar.ts#L35)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_sidebar_default_options.titlebarcolor"></a>
@@ -888,6 +1040,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L36)*
 =======
 *Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L36)*
@@ -895,6 +1048,9 @@ ___
 =======
 *Defined in [sidebar.ts:36](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L36)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:36](lara-typescript/src/plugin-api/sidebar.ts#L36)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 <a id="add_sidebar_default_options.width"></a>
@@ -905,6 +1061,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/sidebar.ts#L37)*
 =======
 *Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/sidebar.ts#L37)*
@@ -912,6 +1069,9 @@ ___
 =======
 *Defined in [sidebar.ts:37](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/sidebar.ts#L37)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [sidebar.ts:37](lara-typescript/src/plugin-api/sidebar.ts#L37)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 
@@ -924,6 +1084,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L7)*
 =======
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L7)*
@@ -931,6 +1092,9 @@ ___
 =======
 *Defined in [events.ts:7](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L7)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [events.ts:7](lara-typescript/src/plugin-api/events.ts#L7)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Functions related to event observing provided by LARA.
 
@@ -942,6 +1106,7 @@ Functions related to event observing provided by LARA.
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L28)*
 =======
 *Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L28)*
@@ -949,6 +1114,9 @@ Functions related to event observing provided by LARA.
 =======
 *Defined in [events.ts:28](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L28)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [events.ts:28](lara-typescript/src/plugin-api/events.ts#L28)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Removes InteractiveAvailable event handler.
 
@@ -969,6 +1137,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L19)*
 =======
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L19)*
@@ -976,6 +1145,9 @@ ___
 =======
 *Defined in [events.ts:19](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L19)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [events.ts:19](lara-typescript/src/plugin-api/events.ts#L19)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Removes log event handler.
 
@@ -996,6 +1168,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L24)*
 =======
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L24)*
@@ -1003,6 +1176,9 @@ ___
 =======
 *Defined in [events.ts:24](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L24)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [events.ts:24](lara-typescript/src/plugin-api/events.ts#L24)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state. Currently uses when click to play mode is enabled and the click to play overlay is clicked.
 
@@ -1023,6 +1199,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/events.ts#L15)*
 =======
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/events.ts#L15)*
@@ -1030,6 +1207,9 @@ ___
 =======
 *Defined in [events.ts:15](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/events.ts#L15)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [events.ts:15](lara-typescript/src/plugin-api/events.ts#L15)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
 

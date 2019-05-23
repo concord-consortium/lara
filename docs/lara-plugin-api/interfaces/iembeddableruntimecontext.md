@@ -29,6 +29,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:61](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L61)*
 =======
 *Defined in [types.ts:61](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L61)*
@@ -36,6 +37,9 @@
 =======
 *Defined in [types.ts:61](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L61)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:61](lara-typescript/src/plugin-api/types.ts#L61)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Embeddable container.
 
@@ -48,6 +52,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:82](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L82)*
 =======
 *Defined in [types.ts:82](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L82)*
@@ -55,6 +60,9 @@ ___
 =======
 *Defined in [types.ts:82](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L82)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:82](lara-typescript/src/plugin-api/types.ts#L82)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -72,6 +80,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L92)*
 =======
 *Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L92)*
@@ -79,6 +88,9 @@ ___
 =======
 *Defined in [types.ts:92](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L92)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:92](lara-typescript/src/plugin-api/types.ts#L92)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -104,6 +116,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:102](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L102)*
 =======
 *Defined in [types.ts:102](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L102)*
@@ -111,6 +124,9 @@ ___
 =======
 *Defined in [types.ts:102](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L102)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:102](lara-typescript/src/plugin-api/types.ts#L102)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 True if the interactive is immediately available
 
@@ -123,6 +139,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:80](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L80)*
 =======
 *Defined in [types.ts:80](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L80)*
@@ -130,6 +147,9 @@ ___
 =======
 *Defined in [types.ts:80](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L80)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:80](lara-typescript/src/plugin-api/types.ts#L80)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -157,6 +177,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [types.ts:100](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/types.ts#L100)*
 =======
 *Defined in [types.ts:100](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/types.ts#L100)*
@@ -164,6 +185,9 @@ ___
 =======
 *Defined in [types.ts:100](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/types.ts#L100)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [types.ts:100](lara-typescript/src/plugin-api/types.ts#L100)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 Function that subscribes provided handler to event that gets called when the interactive's availablity changes. Normally an interactive starts as available unless click to play is enabled. When click to play is enabled the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 

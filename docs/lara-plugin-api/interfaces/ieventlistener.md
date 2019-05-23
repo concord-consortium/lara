@@ -25,6 +25,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:5](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L5)*
 =======
 *Defined in [decorate-content.ts:5](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L5)*
@@ -32,6 +33,9 @@
 =======
 *Defined in [decorate-content.ts:5](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L5)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [decorate-content.ts:5](lara-typescript/src/plugin-api/decorate-content.ts#L5)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 #### Type declaration
 ▸(evt: *`Event`*): `void`
@@ -53,6 +57,7 @@ ___
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 *Defined in [decorate-content.ts:4](https://github.com/concord-consortium/lara/blob/7771e1f1/lara-typescript/src/plugin-api/decorate-content.ts#L4)*
 =======
 *Defined in [decorate-content.ts:4](https://github.com/concord-consortium/lara/blob/5ed958f8/lara-typescript/src/plugin-api/decorate-content.ts#L4)*
@@ -60,6 +65,9 @@ ___
 =======
 *Defined in [decorate-content.ts:4](https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/plugin-api/decorate-content.ts#L4)*
 >>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
+=======
+*Defined in [decorate-content.ts:4](lara-typescript/src/plugin-api/decorate-content.ts#L4)*
+>>>>>>> Updated api doc replacement to use npm packages and relative paths
 
 ___
 
