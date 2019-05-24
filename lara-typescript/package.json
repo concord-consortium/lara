@@ -5,26 +5,11 @@
   "scripts": {
     "publish:plugin-api": "npm run build && cd dist/plugin-api && npm publish --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
-<<<<<<< HEAD
     "build:webpack": "webpack --devtool false && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
-    "build:docs": "npm-run-all build:docs:plugin-api",
-    "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api && cp -R ./docs/lara-plugin-api ../docs/lara-plugin-api/",
-=======
-    "build:webpack": "webpack --devtool false && cp ./dist/*.js ../app/assets/javascripts/",
     "build:docs": "npm-run-all build:docs:plugin-api build:docs:fix-doc-paths build:docs:copy-files",
     "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "build:docs:fix-defined-in": "find ./docs/lara-plugin-api -type f -name \"*.md\" -print0 | xargs -0 sed -E -i 's/blob\\/[0-9a-f]+/blob\\/master/i'",
-    "build:docs:copy-files": "cp -R ./docs/lara-plugin-api ../docs/lara-plugin-api/",
->>>>>>> Added lara-typescript api doc build step to rewrite blob to master in docs
-=======
-    "build:docs:fix-defined-in": "replace 'https://github.com/concord-consortium/lara/blob/([0-9a-f]+)/' '' ./docs/lara-plugin-api/* --recursive --quiet",
-=======
     "build:docs:fix-doc-paths": "./fix-doc-paths.js",
->>>>>>> Change fix docs paths to use script to give correct relative paths
     "build:docs:copy-files": "cpx './docs/lara-plugin-api/**/*.*' ../docs/lara-plugin-api/",
->>>>>>> Updated api doc replacement to use npm packages and relative paths
     "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
@@ -76,11 +61,8 @@
     "@types/react": "^16.8.13",
     "babel-core": "^6.26.3",
     "copy-webpack-plugin": "^5.0.3",
-<<<<<<< HEAD
-    "css-loader": "^2.1.1",
-=======
     "cpx": "^1.5.0",
->>>>>>> Updated api doc replacement to use npm packages and relative paths
+    "css-loader": "^2.1.1",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "jest": "^23.6.0",
     "jest-fetch-mock": "^1.7.5",
@@ -91,15 +73,8 @@
     "npm-run-all": "^4.1.5",
     "raw-loader": "^1.0.0",
     "react": "^16.8.6",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-=======
-    "replace": "^1.1.0",
->>>>>>> Updated api doc replacement to use npm packages and relative paths
-=======
->>>>>>> Change fix docs paths to use script to give correct relative paths
     "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.3",
     "ts-node": "^8.0.3",
