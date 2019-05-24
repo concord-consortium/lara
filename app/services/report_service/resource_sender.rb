@@ -1,14 +1,19 @@
 module ReportService
 
   class ResourceSender
+    extend ReportService::Base
     Version = "1"
 
     def initialize(resource, host)
       version = ResourceSender::Version
       created = Time.now.utc.to_s
-      @resource_payload = resource.serialize_for_portal(host)
+      @resource_payload = resource.serialize_for_report_service(host)
+      type = @resource_payload[:type]
+      id = @resource_payload[:id]
       @resource_payload[:created] = created
       @resource_payload[:version] = version
+      @resource_payload[:source_key] = ResourceSender.make_source_key(host)
+      @resource_payload[:id] = ResourceSender.make_key(type, id)
     end
 
     def to_json()
