@@ -57,6 +57,7 @@ describe Embeddable::ImageQuestion do
       expect(image_question.report_service_hash).to eq(
         type: "image_question",
         id: image_question.id,
+        key: "image_question-" + image_question.id.to_s,
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
         is_required: image_question.is_prediction,

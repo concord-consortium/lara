@@ -1,7 +1,5 @@
 module ReportService
-
   class ResourceSender
-    extend ReportService::Base
     Version = "1"
 
     def initialize(resource, host)
@@ -12,8 +10,8 @@ module ReportService
       id = @resource_payload[:id]
       @resource_payload[:created] = created
       @resource_payload[:version] = version
-      @resource_payload[:source_key] = ResourceSender.make_source_key(host)
-      @resource_payload[:id] = ResourceSender.make_key(type, id)
+      @resource_payload[:source_key] = ReportService::make_source_key(host)
+      @resource_payload[:id] = ReportService::make_key(type, id)
     end
 
     def to_json()
@@ -30,6 +28,5 @@ module ReportService
           'Authorization' => "Bearer #{token}"
         })
     end
-
   end
 end

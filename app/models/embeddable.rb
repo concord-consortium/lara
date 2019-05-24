@@ -93,6 +93,9 @@ module Embeddable
 
   def report_service_hash
     # Once LARA doesn't publish to portal, we can just rename portal_hash to report_service_hash
-    respond_to?(:portal_hash) ? portal_hash : nil
+    return nill unless respond_to?(:portal_hash)
+    result = portal_hash
+    result[:key] = ReportService::make_key(result[:type], result[:id])
+    result
   end
 end

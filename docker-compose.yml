@@ -15,6 +15,9 @@ services:
       C_RATER_FAKE:
       LARA_VERSION: Local Docker
       GOOGLE_ANALYTICS_ACCOUNT:
+      REPORT_SERVICE_TOKEN:
+      REPORT_SERVICE_URL:
+      REPORT_SERVICE_SELF_URL:
     # no ports are published, see below for details
     depends_on:
       - db
