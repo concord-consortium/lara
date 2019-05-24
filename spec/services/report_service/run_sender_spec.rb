@@ -25,11 +25,8 @@ describe ReportService::RunSender do
       url = "#{host}activities/#{index}"
       portal_hash = {question_id: index, type: "mock-answer", url: url }
       double("Answer", {
-        question_id: index,
-        type: "mock_question",
-        url: url,
         portal_hash: portal_hash,
-        answer_id: 'mock_question_answer_10'
+        answer_id: "mock_question_answer_#{index}"
       })
     end
   end
@@ -104,6 +101,26 @@ describe ReportService::RunSender do
             expect(a).to include("version")
           end
         end
+
+        # Ensure that broken answers won't kill the run_sender
+        describe "With broken or non-conforming answers" do
+          let(:boom) { "boom" }
+          let(:not_an_answer) { "not even an answer" }
+          let(:exploding_answer) do
+            answer = double("Answer")
+            allow(answer).to receive(:portal_hash).and_raise(boom)
+            answer
+          end
+          it "The JSON should include the good answers, and log bad ones" do
+            expect(Rails.logger).to receive(:error).with(/#{boom}/)
+            expect(Rails.logger).to receive(:error).with(/#{not_an_answer}/)
+            answers << exploding_answer << not_an_answer
+            accepted_answers = json["answers"]
+            # bad answers wont appear in the JSON
+            expect(answers.length).to be > accepted_answers.length
+          end
+        end
+
       end
     end
   end

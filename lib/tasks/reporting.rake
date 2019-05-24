@@ -13,86 +13,65 @@ namespace :reporting do
     ENV["REPORT_SERVICE_SELF_URL"] ||= cli.ask("URL for this host: ")
   end
 
-  desc "Publish All activity structures to FireStore report serivce"
-  task :publish_structures => :environment do
+  def send_resource(resource, sender_class)
     get_repport_options()
     self_host = ENV["REPORT_SERVICE_SELF_URL"]
     service_url = ENV["REPORT_SERVICE_URL"]
     service_token = ENV["REPORT_SERVICE_TOKEN"]
+    begin
+      payload = sender_class.new(resource, self_host)
+      result = payload.send(service_url, service_token)
+      if (result && result["success"])
+        return true
+      end
+    rescue => e
+      Rails.logger.error "Error: #{e}"
+    end
+    return false
+  end
+
+  def send_all_resources(resource_class, sender_class)
     index = 0
     error_count = 0
-    successes = 0
+    success_count = 0
     sart_time = Time.now
-
-    # Send activities
-    LightweightActivity
+    num_runs = Run.count
+    count = resource_class.count
+    puts "==> Sending #{count} #{resource_class.name}s: ..."
+    puts ""
+    resource_class
       .find_in_batches(batch_size: 20) do |group|
-        group.each do |act|
-          puts "starting #{act.name}"
-          payload = ReportService::ResourceSender.new(act, self_host)
-          result = payload.send(service_url, service_token)
-          if (result && result["success"])
-            successes = successes + 1
+        group.each do |item|
+          if send_resource(item, sender_class)
+            success_count = success_count + 1
+            putc "."
           else
             error_count = error_count + 1
-            puts "Error: Activity #{act.id}"
+            putc "✖"
           end
           index = index + 1
         end
+        puts "\n✖ #{error_count}  |  ✔ #{success_count}"
       end
+    elapsed = Time.now - sart_time
+    puts ""
+    puts "        ERROR ✖: #{error_count}/#{index}"
+    puts "           OK ✔: #{success_count}/#{index}"
+    puts "Elapsed seconds: #{elapsed.round(1)}"
+    puts ""
+  end
+
+  desc "Publish All activity structures to FireStore report serivce"
+  task :publish_structures => :environment do
+    # Send activities
+    send_all_resources(LightweightActivity, ReportService::ResourceSender)
 
     # Send squences:
-    Sequence
-      .find_in_batches(batch_size: 20) do |group|
-        group.each do |seq|
-          puts "starting #{seq.name}"
-          payload = ReportService::ResourceSender.new(seq, self_host)
-          result = payload.send(service_url,service_token)
-          if (result && result["success"])
-            successes = successes + 1
-          else
-            error_count = error_count + 1
-            puts "Error: Sequence: #{seq.id}"
-          end
-          index = index + 1
-        end
-      end
-
-      puts "ERROR: #{error_count}/#{index}"
-      puts "OK: #{successes}/#{index}"
-      elapsed = Time.now - sart_time
-      puts "Elapsed seconds: #{elapsed.round()}"
+    send_all_resources(Sequence, ReportService::ResourceSender)
   end
 
   desc "publish runs to report service"
   task :publish_runs => :environment do
-    get_repport_options()
-    self_host = ENV["REPORT_SERVICE_SELF_URL"]
-    service_url = ENV["REPORT_SERVICE_URL"]
-    service_token = ENV["REPORT_SERVICE_TOKEN"]
-    index = 0
-    error_count = 0
-    successes = 0
-    sart_time = Time.now
-    num_runs = Run.count
-    Run
-      .find_in_batches(batch_size: 20) do |group|
-        group.each do |run|
-          puts "posting #{index + 1} of #{num_runs}"
-          payload = ReportService::RunSender.new(run, self_host)
-          result = payload.send(service_url,service_token)
-          if (result && result["success"])
-            successes = successes + 1
-          else
-            error_count = error_count + 1
-            puts "error: #{run.key}"
-          end
-          index = index + 1
-        end
-      end
-    puts "ERROR: #{error_count}/#{index}"
-    puts "OK: #{successes}/#{index}"
-    elapsed = Time.now - sart_time
-    puts "Elapsed seconds: #{elapsed.round()}"
+    send_all_resources(Run, ReportService::RunSender)
   end
 end
