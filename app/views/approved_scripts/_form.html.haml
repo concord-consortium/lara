@@ -10,6 +10,11 @@
             %li= msg
 
     .field{style: "margin: 1em 0px;"}
+      = f.label :json_url
+      %br
+      = f.text_field :json_url
+      = f.button "Load JSON Manifest", :id => "approved_script_load_json", :onclick => "loadPluginJSON();"
+    .field{style: "margin: 1em 0px;"}
       = f.label :name
       %br
       = f.text_field :name
@@ -31,3 +36,40 @@
       = f.text_area :description
     .actions{style: "margin: 1em 0px;"}
       = f.submit
+
+:javascript
+  function loadPluginJSON() {
+    var baseUrl;
+    Promise.resolve(document.getElementById("approved_script_json_url"))
+      .then(function (jsonUrl) {
+        var url = jsonUrl ? jsonUrl.value.trim() : "";
+        if (url.length == 0) {
+          throw new Error("Please enter an url to the JSON file");
+        }
+        if (!/https?:/.test(url)) {
+          throw new Error("Please enter a valid url to the JSON file");
+        }
+        var a = document.createElement("A");
+        a.href = url;
+        baseUrl = a.origin + "/";
+        return fetch(url);
+      })
+      .then(function(resp) {
+        return resp.json();
+      })
+      .then(function(json) {
+        ["name", "label", "url", "version", "description"].forEach(function (field) {
+          var value = json[field];
+          if (value) {
+            // allow urls to be relative to the json base url
+            if ((field === "url") && value && !/https?:/.test(value)) {
+              value = baseUrl + value;
+            }
+            document.getElementById("approved_script_" + field).value = value;
+          }
+        })
+      })
+      .catch(function (e) {
+        alert("Unable to load JSON: " + e.toString());
+      });
+  }

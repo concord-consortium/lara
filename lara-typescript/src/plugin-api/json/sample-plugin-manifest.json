@@ -1,0 +1,7 @@
+{
+  "name": "Test LARA Sharing Plugin",
+  "label": "TestLARASharingPlugin",
+  "url": "test-plugin.js",
+  "version": 2,
+  "description": "Test Description"
+}

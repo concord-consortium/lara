@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190412144736) do
+ActiveRecord::Schema.define(:version => 20190523183238) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20190412144736) do
     t.datetime "updated_at",                                                :null => false
     t.string   "label"
     t.decimal  "version",     :precision => 10, :scale => 0, :default => 1
+    t.string   "json_url"
   end
 
   create_table "authentications", :force => true do |t|
