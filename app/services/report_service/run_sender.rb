@@ -42,6 +42,19 @@ module ReportService
       answer_hash
     end
 
+    def serlialized_answers(run, host)
+      run.answers
+      .map do |ans|
+        begin
+          serialized_answer(ans, run, host)
+        rescue => e
+          Rails.logger.error "Failed to serialize answer: #{e}"
+          nil
+        end
+      end
+      .compact
+    end
+
     def initialize(run, host)
       url = "#{host}#{Rails.application.routes.url_helpers.run_path(run)}"
       @run_payload = {
@@ -56,7 +69,7 @@ module ReportService
         sequence_id: run.sequence_id,
         sequence_run_id: run.sequence_run_id,
         collaboration_run_id: run.collaboration_run_id,
-        answers: run.answers.map {|ans| serialized_answer(ans, run, host)}
+        answers: serlialized_answers(run, host)
       }
       add_meta_data(run, @run_payload, host)
     end
