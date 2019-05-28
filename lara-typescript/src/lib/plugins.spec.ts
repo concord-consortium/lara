@@ -1,5 +1,5 @@
 import { generatePluginRuntimeContext } from "./plugin-runtime-context";
-import { initPlugin, registerPlugin } from "./plugins";
+import { initPlugin, registerPlugin, setNextPluginLabel } from "./plugins";
 import * as $ from "jquery";
 
 describe("Plugins", () => {
@@ -19,8 +19,10 @@ describe("Plugins", () => {
   describe("registerPlugin", () => {
     it ("should let plugin to register itself only once", () => {
       const pluginConstructor = jest.fn();
-      expect(registerPlugin("test", pluginConstructor)).toEqual(true);
-      expect(registerPlugin("test", pluginConstructor)).toEqual(false);
+      setNextPluginLabel("test");
+      expect(registerPlugin("*DEPRECATED*", pluginConstructor)).toEqual(true);
+      setNextPluginLabel("test");
+      expect(registerPlugin("*DEPRECATED*", pluginConstructor)).toEqual(false);
       // @ts-ignore
       expect(registerPlugin("anotherTest")).toEqual(false); // missing constructor
       // tslint:disable-next-line:no-console
@@ -49,7 +51,8 @@ describe("Plugins", () => {
     it("should call the plugins constructor with the config", () => {
       const pluginConstructor = jest.fn();
       // Implicit test of registerPlugin
-      registerPlugin("testPlugin1", pluginConstructor);
+      setNextPluginLabel("testPlugin1");
+      registerPlugin("*DEPRECATED*", pluginConstructor);
       initPlugin("testPlugin1", context);
       expect(pluginConstructor).toHaveBeenCalledTimes(1);
       // Why keys? Some functions are dynamically generated and we cannot compare them.
@@ -66,7 +69,8 @@ describe("Plugins", () => {
           throw new Error("Random error");
         }
       }
-      registerPlugin("testPlugin2", BrokenPlugin);
+      setNextPluginLabel("testPlugin2");
+      registerPlugin("*DEPRECATED*", BrokenPlugin);
       initPlugin("testPlugin2", context);
       expect(constructorFunc).toHaveBeenCalledTimes(1);
       // tslint:disable-next-line:no-console

@@ -6,7 +6,7 @@ LARA Plugin API
 
 #### Setup and webpack configuration
 
-LARA API will be available under `window.LARA.PluginAPI_V3` object / namespace once the plugin is initialized by LARA.
+LARA API will be available under `window.LARA` object / namespace once the plugin is initialized by LARA.
 
 However, if the plugin is implemented using TypeScript, the best way to get type checking and hints in your IDE is to install [LARA Plugin API NPM package](https://www.npmjs.com/package/@concord-consortium/lara-plugin-api):
 
@@ -14,14 +14,14 @@ However, if the plugin is implemented using TypeScript, the best way to get type
 npm i --save-dev @concord-consortium/lara-plugin-api
 ```
 
-Then, you need to configure [webpack externals](https://webpack.js.org/configuration/externals/), so webpack does not bundle Plugin API code but looks for global `window.LARA.PluginAPI_V3` object instead (and do the same for React if the plugin uses it).
+Then, you need to configure [webpack externals](https://webpack.js.org/configuration/externals/), so webpack does not bundle Plugin API code but looks for global `window.LARA` object instead (and do the same for React if the plugin uses it).
 
 Example of **webpack.config.js**:
 
 ```
   externals: {
-    // LARA Plugin API implementation is exported to the window.LARA.PluginAPI_V3 namespace.
-    '@concord-consortium/lara-plugin-api': 'LARA.PluginAPI_V3',
+    // LARA Plugin API implementation is exported to the window.LARA namespace.
+    '@concord-consortium/lara-plugin-api': 'LARA',
     // Use React and ReactDOM provided by LARA, do not bundle an own copy.  
     'react': 'React',
     'react-dom': 'ReactDOM',
@@ -45,13 +45,13 @@ LARA Plugin is a regular JavaScript class (or constructor). There are no special
 
 The first thing that should be done by plugin script is call to [registerPlugin](#registerplugin).
 
-The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
+The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IRuntimeContext](interfaces/iruntimecontext.md) instance as the only argument.
 
 Example:
 
 ```typescript
 class TestPlugin {
-  constructor(context: IPluginRuntimeContext) {
+  constructor(context: IRuntimeContext) {
     console.log("Plugin initialized, id:", context.pluginId);
   }
 }  
@@ -63,55 +63,23 @@ LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
 
 Plugins can use all the functions documented below to modify LARA runtime or provide custom features. This documentation is generated automatically from TypeScript definitions and comments.
 
-#### Plugin styling
-
-Note that LARA Plugins will be executed in LARA context which includes a lot of different CSS styles and rules. Sometimes it might be okay for plugin to inherit these styles and overwrite when necessary. In other cases, it might be useful for plugin to reset and normalize its containers, so it's less dependant on LARA styles. Also, LARA styles obviously casue plugin content to be rendered differently in LARA and in some external demo or authoring pages provided by plugin.
-
-To avoid these inconsistencies, plugins can use CSS reset/normalize helpers provided by LARA. Reset CSS rules are simply applied to all the containers with `normalized-container` class name. Plugins can use this case in its top-level container, e.g.:
-
-```javascript
-render() {
-  return (
-    <div className="normalized-container">
-      My plugin content
-    </div>
-  );
-}
-```
-
-Also, these reset styles are part of the NPM package, so plugins can include them in demo and authoring pages to ensure that rendering is consistent:
-
-```javascript
-import "@concord-consortium/lara-plugin-api/normalize.css";
-```
-
 ## Index
 
 ### Interfaces
 
-* [IClassInfo](interfaces/iclassinfo.md)
-* [IEmbeddableRuntimeContext](interfaces/iembeddableruntimecontext.md)
 * [IEventListener](interfaces/ieventlistener.md)
-* [IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md)
-* [IInteractiveState](interfaces/iinteractivestate.md)
-* [IJwtClaims](interfaces/ijwtclaims.md)
-* [IJwtResponse](interfaces/ijwtresponse.md)
-* [ILogData](interfaces/ilogdata.md)
-* [IOffering](interfaces/ioffering.md)
 * [IPlugin](interfaces/iplugin.md)
-* [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md)
+* [IPluginStatePath](interfaces/ipluginstatepath.md)
 * [IPopupController](interfaces/ipopupcontroller.md)
 * [IPopupOptions](interfaces/ipopupoptions.md)
-* [IPortalClaims](interfaces/iportalclaims.md)
+* [IRuntimeContext](interfaces/iruntimecontext.md)
+* [IRuntimeContextExperimentalFeatures](interfaces/iruntimecontextexperimentalfeatures.md)
 * [ISidebarController](interfaces/isidebarcontroller.md)
 * [ISidebarOptions](interfaces/isidebaroptions.md)
-* [IUser](interfaces/iuser.md)
 
 ### Type aliases
 
 * [IEventListeners](#ieventlisteners)
-* [IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)
-* [ILogEventHandler](#ilogeventhandler)
 * [IPluginConstructor](#ipluginconstructor)
 
 ### Functions
@@ -119,13 +87,14 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 * [addPopup](#addpopup)
 * [addSidebar](#addsidebar)
 * [decorateContent](#decoratecontent)
+* [isTeacherEdition](#isteacheredition)
 * [registerPlugin](#registerplugin)
+* [saveLearnerPluginState](#savelearnerpluginstate)
 
 ### Object literals
 
 * [ADD_POPUP_DEFAULT_OPTIONS](#add_popup_default_options)
 * [ADD_SIDEBAR_DEFAULT_OPTIONS](#add_sidebar_default_options)
-* [events](#events)
 
 ---
 
@@ -137,53 +106,7 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 
 **Ƭ IEventListeners**: *[IEventListener](interfaces/ieventlistener.md) \| [IEventListener](interfaces/ieventlistener.md)[]*
 
-*Defined in [decorate-content.ts:8](../../lara-typescript/src/plugin-api/decorate-content.ts#L8)*
-
-___
-<a id="iinteractiveavailableeventhandler"></a>
-
-###  IInteractiveAvailableEventHandler
-
-**Ƭ IInteractiveAvailableEventHandler**: *`function`*
-
-*Defined in [types.ts:188](../../lara-typescript/src/plugin-api/types.ts#L188)*
-
-InteractiveAvailable event handler.
-
-#### Type declaration
-▸(event: *[IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md)*): `void`
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| event | [IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md) |
-
-**Returns:** `void`
-
-___
-<a id="ilogeventhandler"></a>
-
-###  ILogEventHandler
-
-**Ƭ ILogEventHandler**: *`function`*
-
-*Defined in [types.ts:169](../../lara-typescript/src/plugin-api/types.ts#L169)*
-
-Log event handler.
-
-*__param__*: Data logged by the code.
-
-#### Type declaration
-▸(event: *[ILogData](interfaces/ilogdata.md)*): `void`
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| event | [ILogData](interfaces/ilogdata.md) |
-
-**Returns:** `void`
+*Defined in [api/decorate-content.ts:8](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/decorate-content.ts#L8)*
 
 ___
 <a id="ipluginconstructor"></a>
@@ -192,7 +115,7 @@ ___
 
 **Ƭ IPluginConstructor**: *`object`*
 
-*Defined in [types.ts:5](../../lara-typescript/src/plugin-api/types.ts#L5)*
+*Defined in [api/plugins.ts:7](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/plugins.ts#L7)*
 
 #### Type declaration
 
@@ -206,7 +129,7 @@ ___
 
 ▸ **addPopup**(_options: *[IPopupOptions](interfaces/ipopupoptions.md)*): [IPopupController](interfaces/ipopupcontroller.md)
 
-*Defined in [popup.ts:86](../../lara-typescript/src/plugin-api/popup.ts#L86)*
+*Defined in [api/popup.ts:86](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L86)*
 
 Ask LARA to add a new popup window.
 
@@ -229,7 +152,7 @@ ___
 
 ▸ **addSidebar**(_options: *[ISidebarOptions](interfaces/isidebaroptions.md)*): [ISidebarController](interfaces/isidebarcontroller.md)
 
-*Defined in [sidebar.ts:90](../../lara-typescript/src/plugin-api/sidebar.ts#L90)*
+*Defined in [api/sidebar.ts:90](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L90)*
 
 Ask LARA to add a new sidebar.
 
@@ -257,7 +180,7 @@ ___
 
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *[IEventListeners](#ieventlisteners)*): `void`
 
-*Defined in [decorate-content.ts:19](../../lara-typescript/src/plugin-api/decorate-content.ts#L19)*
+*Defined in [api/decorate-content.ts:19](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/decorate-content.ts#L19)*
 
 Ask LARA to decorate authored content (text / html).
 
@@ -273,13 +196,27 @@ Ask LARA to decorate authored content (text / html).
 **Returns:** `void`
 
 ___
+<a id="isteacheredition"></a>
+
+### `<Const>` isTeacherEdition
+
+▸ **isTeacherEdition**(): `boolean`
+
+*Defined in [lara-plugin-api.ts:21](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/lara-plugin-api.ts#L21)*
+
+Find out if the page being displayed is being run in teacher-edition
+
+**Returns:** `boolean`
+`true` if lara is running in teacher-edition.
+
+___
 <a id="registerplugin"></a>
 
 ### `<Const>` registerPlugin
 
 ▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
 
-*Defined in [plugins.ts:13](../../lara-typescript/src/plugin-api/plugins.ts#L13)*
+*Defined in [api/plugins.ts:163](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/plugins.ts#L163)*
 
 Register a new external script as `label` with `_class`, e.g.:
 
@@ -298,6 +235,30 @@ registerPlugin('debugger', Dubugger)
 `true` if plugin was registered correctly.
 
 ___
+<a id="savelearnerpluginstate"></a>
+
+### `<Const>` saveLearnerPluginState
+
+▸ **saveLearnerPluginState**(pluginId: *`string`*, state: *`any`*): `Promise`<`string`>
+
+*Defined in [api/plugins.ts:131](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/plugins.ts#L131)*
+
+Ask LARA to save the users state for the plugin.
+
+```
+LARA.saveLearnerPluginState(pluginId, '{"one": 1}').then((data) => console.log(data))
+```
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| pluginId | `string` |  ID of the plugin trying to save data, initially passed to plugin constructor in the context. |
+| state | `any` |  A JSON string representing serialized plugin state. |
+
+**Returns:** `Promise`<`string`>
+
+___
 
 ## Object literals
 
@@ -307,7 +268,7 @@ ___
 
 **ADD_POPUP_DEFAULT_OPTIONS**: *`object`*
 
-*Defined in [popup.ts:48](../../lara-typescript/src/plugin-api/popup.ts#L48)*
+*Defined in [api/popup.ts:48](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L48)*
 
 <a id="add_popup_default_options.autoopen"></a>
 
@@ -315,7 +276,7 @@ ___
 
 **● autoOpen**: *`boolean`* = true
 
-*Defined in [popup.ts:50](../../lara-typescript/src/plugin-api/popup.ts#L50)*
+*Defined in [api/popup.ts:50](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L50)*
 
 ___
 <a id="add_popup_default_options.backgroundcolor"></a>
@@ -324,7 +285,7 @@ ___
 
 **● backgroundColor**: *`string`* = ""
 
-*Defined in [popup.ts:65](../../lara-typescript/src/plugin-api/popup.ts#L65)*
+*Defined in [api/popup.ts:65](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L65)*
 
 ___
 <a id="add_popup_default_options.closebutton"></a>
@@ -333,7 +294,7 @@ ___
 
 **● closeButton**: *`boolean`* = true
 
-*Defined in [popup.ts:51](../../lara-typescript/src/plugin-api/popup.ts#L51)*
+*Defined in [api/popup.ts:51](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L51)*
 
 ___
 <a id="add_popup_default_options.closeonescape"></a>
@@ -342,7 +303,7 @@ ___
 
 **● closeOnEscape**: *`boolean`* = false
 
-*Defined in [popup.ts:52](../../lara-typescript/src/plugin-api/popup.ts#L52)*
+*Defined in [api/popup.ts:52](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L52)*
 
 ___
 <a id="add_popup_default_options.dialogclass"></a>
@@ -351,7 +312,7 @@ ___
 
 **● dialogClass**: *`string`* = ""
 
-*Defined in [popup.ts:64](../../lara-typescript/src/plugin-api/popup.ts#L64)*
+*Defined in [api/popup.ts:64](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L64)*
 
 Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
 
@@ -362,7 +323,7 @@ ___
 
 **● draggable**: *`boolean`* = true
 
-*Defined in [popup.ts:55](../../lara-typescript/src/plugin-api/popup.ts#L55)*
+*Defined in [api/popup.ts:55](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L55)*
 
 ___
 <a id="add_popup_default_options.height"></a>
@@ -371,7 +332,7 @@ ___
 
 **● height**: *`string`* = "auto"
 
-*Defined in [popup.ts:58](../../lara-typescript/src/plugin-api/popup.ts#L58)*
+*Defined in [api/popup.ts:58](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L58)*
 
 ___
 <a id="add_popup_default_options.modal"></a>
@@ -380,7 +341,7 @@ ___
 
 **● modal**: *`boolean`* = false
 
-*Defined in [popup.ts:54](../../lara-typescript/src/plugin-api/popup.ts#L54)*
+*Defined in [api/popup.ts:54](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L54)*
 
 ___
 <a id="add_popup_default_options.onbeforeclose"></a>
@@ -389,7 +350,7 @@ ___
 
 **● onBeforeClose**: *`null`* =  null
 
-*Defined in [popup.ts:69](../../lara-typescript/src/plugin-api/popup.ts#L69)*
+*Defined in [api/popup.ts:69](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L69)*
 
 ___
 <a id="add_popup_default_options.ondragstart"></a>
@@ -398,7 +359,7 @@ ___
 
 **● onDragStart**: *`null`* =  null
 
-*Defined in [popup.ts:71](../../lara-typescript/src/plugin-api/popup.ts#L71)*
+*Defined in [api/popup.ts:71](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L71)*
 
 ___
 <a id="add_popup_default_options.ondragstop"></a>
@@ -407,7 +368,7 @@ ___
 
 **● onDragStop**: *`null`* =  null
 
-*Defined in [popup.ts:72](../../lara-typescript/src/plugin-api/popup.ts#L72)*
+*Defined in [api/popup.ts:72](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L72)*
 
 ___
 <a id="add_popup_default_options.onopen"></a>
@@ -416,7 +377,7 @@ ___
 
 **● onOpen**: *`null`* =  null
 
-*Defined in [popup.ts:68](../../lara-typescript/src/plugin-api/popup.ts#L68)*
+*Defined in [api/popup.ts:68](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L68)*
 
 ___
 <a id="add_popup_default_options.onresize"></a>
@@ -425,7 +386,7 @@ ___
 
 **● onResize**: *`null`* =  null
 
-*Defined in [popup.ts:70](../../lara-typescript/src/plugin-api/popup.ts#L70)*
+*Defined in [api/popup.ts:70](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L70)*
 
 ___
 <a id="add_popup_default_options.padding"></a>
@@ -434,7 +395,7 @@ ___
 
 **● padding**: *`number`* = 10
 
-*Defined in [popup.ts:59](../../lara-typescript/src/plugin-api/popup.ts#L59)*
+*Defined in [api/popup.ts:59](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L59)*
 
 ___
 <a id="add_popup_default_options.removeonclose"></a>
@@ -443,7 +404,7 @@ ___
 
 **● removeOnClose**: *`boolean`* = true
 
-*Defined in [popup.ts:53](../../lara-typescript/src/plugin-api/popup.ts#L53)*
+*Defined in [api/popup.ts:53](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L53)*
 
 ___
 <a id="add_popup_default_options.resizable"></a>
@@ -452,7 +413,7 @@ ___
 
 **● resizable**: *`boolean`* = true
 
-*Defined in [popup.ts:56](../../lara-typescript/src/plugin-api/popup.ts#L56)*
+*Defined in [api/popup.ts:56](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L56)*
 
 ___
 <a id="add_popup_default_options.title"></a>
@@ -461,7 +422,7 @@ ___
 
 **● title**: *`string`* = ""
 
-*Defined in [popup.ts:49](../../lara-typescript/src/plugin-api/popup.ts#L49)*
+*Defined in [api/popup.ts:49](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L49)*
 
 ___
 <a id="add_popup_default_options.titlebarcolor"></a>
@@ -470,7 +431,7 @@ ___
 
 **● titlebarColor**: *`string`* = ""
 
-*Defined in [popup.ts:66](../../lara-typescript/src/plugin-api/popup.ts#L66)*
+*Defined in [api/popup.ts:66](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L66)*
 
 ___
 <a id="add_popup_default_options.width"></a>
@@ -479,7 +440,7 @@ ___
 
 **● width**: *`number`* = 300
 
-*Defined in [popup.ts:57](../../lara-typescript/src/plugin-api/popup.ts#L57)*
+*Defined in [api/popup.ts:57](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L57)*
 
 ___
 <a id="add_popup_default_options.position"></a>
@@ -488,7 +449,7 @@ ___
 
 **position**: *`object`*
 
-*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+*Defined in [api/popup.ts:67](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L67)*
 
 <a id="add_popup_default_options.position.at"></a>
 
@@ -496,7 +457,7 @@ ___
 
 **● at**: *`string`* = "center"
 
-*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+*Defined in [api/popup.ts:67](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L67)*
 
 ___
 <a id="add_popup_default_options.position.my"></a>
@@ -505,7 +466,7 @@ ___
 
 **● my**: *`string`* = "center"
 
-*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+*Defined in [api/popup.ts:67](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L67)*
 
 ___
 <a id="add_popup_default_options.position.of"></a>
@@ -514,7 +475,7 @@ ___
 
 **● of**: *`Window`* =  window
 
-*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
+*Defined in [api/popup.ts:67](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/popup.ts#L67)*
 
 ___
 
@@ -527,7 +488,7 @@ ___
 
 **ADD_SIDEBAR_DEFAULT_OPTIONS**: *`object`*
 
-*Defined in [sidebar.ts:30](../../lara-typescript/src/plugin-api/sidebar.ts#L30)*
+*Defined in [api/sidebar.ts:30](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L30)*
 
 <a id="add_sidebar_default_options.handle"></a>
 
@@ -535,7 +496,7 @@ ___
 
 **● handle**: *`string`* = ""
 
-*Defined in [sidebar.ts:33](../../lara-typescript/src/plugin-api/sidebar.ts#L33)*
+*Defined in [api/sidebar.ts:33](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L33)*
 
 ___
 <a id="add_sidebar_default_options.handlecolor"></a>
@@ -544,7 +505,7 @@ ___
 
 **● handleColor**: *`string`* = "#aaa"
 
-*Defined in [sidebar.ts:34](../../lara-typescript/src/plugin-api/sidebar.ts#L34)*
+*Defined in [api/sidebar.ts:34](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L34)*
 
 ___
 <a id="add_sidebar_default_options.icon"></a>
@@ -553,7 +514,7 @@ ___
 
 **● icon**: *`string`* = "default"
 
-*Defined in [sidebar.ts:32](../../lara-typescript/src/plugin-api/sidebar.ts#L32)*
+*Defined in [api/sidebar.ts:32](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L32)*
 
 Arrow pointing left.
 
@@ -564,7 +525,7 @@ ___
 
 **● padding**: *`number`* = 25
 
-*Defined in [sidebar.ts:38](../../lara-typescript/src/plugin-api/sidebar.ts#L38)*
+*Defined in [api/sidebar.ts:38](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L38)*
 
 ___
 <a id="add_sidebar_default_options.titlebar"></a>
@@ -573,7 +534,7 @@ ___
 
 **● titleBar**: *`null`* =  null
 
-*Defined in [sidebar.ts:35](../../lara-typescript/src/plugin-api/sidebar.ts#L35)*
+*Defined in [api/sidebar.ts:35](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L35)*
 
 ___
 <a id="add_sidebar_default_options.titlebarcolor"></a>
@@ -582,7 +543,7 @@ ___
 
 **● titleBarColor**: *`string`* = "#bbb"
 
-*Defined in [sidebar.ts:36](../../lara-typescript/src/plugin-api/sidebar.ts#L36)*
+*Defined in [api/sidebar.ts:36](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L36)*
 
 ___
 <a id="add_sidebar_default_options.width"></a>
@@ -591,95 +552,7 @@ ___
 
 **● width**: *`number`* = 500
 
-*Defined in [sidebar.ts:37](../../lara-typescript/src/plugin-api/sidebar.ts#L37)*
-
-___
-
-___
-<a id="events"></a>
-
-### `<Const>` events
-
-**events**: *`object`*
-
-*Defined in [events.ts:7](../../lara-typescript/src/plugin-api/events.ts#L7)*
-
-Functions related to event observing provided by LARA.
-
-<a id="events.offinteractiveavailable"></a>
-
-####  offInteractiveAvailable
-
-▸ **offInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
-
-*Defined in [events.ts:28](../../lara-typescript/src/plugin-api/events.ts#L28)*
-
-Removes InteractiveAvailable event handler.
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| handler | [IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler) |
-
-**Returns:** `void`
-
-___
-<a id="events.offlog"></a>
-
-####  offLog
-
-▸ **offLog**(handler: *[ILogEventHandler](#ilogeventhandler)*): `void`
-
-*Defined in [events.ts:19](../../lara-typescript/src/plugin-api/events.ts#L19)*
-
-Removes log event handler.
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| handler | [ILogEventHandler](#ilogeventhandler) |
-
-**Returns:** `void`
-
-___
-<a id="events.oninteractiveavailable"></a>
-
-####  onInteractiveAvailable
-
-▸ **onInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
-
-*Defined in [events.ts:24](../../lara-typescript/src/plugin-api/events.ts#L24)*
-
-Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state. Currently uses when click to play mode is enabled and the click to play overlay is clicked.
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| handler | [IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler) |
-
-**Returns:** `void`
-
-___
-<a id="events.onlog"></a>
-
-####  onLog
-
-▸ **onLog**(handler: *[ILogEventHandler](#ilogeventhandler)*): `void`
-
-*Defined in [events.ts:15](../../lara-typescript/src/plugin-api/events.ts#L15)*
-
-Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| handler | [ILogEventHandler](#ilogeventhandler) |
-
-**Returns:** `void`
+*Defined in [api/sidebar.ts:37](https://github.com/concord-consortium/lara/blob/5741bf58/lara-plugin-api-V2/src/api/sidebar.ts#L37)*
 
 ___
 

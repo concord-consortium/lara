@@ -58,7 +58,7 @@ describe "plugins/_show.html.haml" do
       /remoteEndpoint: null/,
       /container:/,
       /wrappedEmbeddable:/,
-      /LARA\.InternalAPI\.initPlugin\('plugin-label', pluginContext\)/,
+      /LARA\.InternalAPI\.initPlugin\('plugin123', pluginContext\)/,
     ].each do |expected_string|
       expect(rendered).to match(expected_string)
     end
