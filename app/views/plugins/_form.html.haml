@@ -4,9 +4,10 @@
   = form_for plugin, remote: true do |f|
     = f.error_messages
     %div{style: "display: flex; flex-direction: column;"}
-      %div{style: "margin-top: 0.5em; display: flex; justify-content: space-between;"}
-        = f.label t("PLUGIN.APPROVED_SCRIPT")
-        = f.collection_select(:approved_script_id, ApprovedScript.all, :id, :name)
+      - if !edit
+        %div{style: "margin-top: 0.5em; display: flex; justify-content: space-between;"}
+          = f.label t("PLUGIN.APPROVED_SCRIPT")
+          = f.select :approved_script_id, plugin_options("activity")
       %div{style: "margin-top: 0.5em; display: flex; justify-content: space-between;"}
         = f.label t("PLUGIN.GLOBAL_ID")
         = f.text_field :shared_learner_state_key
@@ -16,5 +17,14 @@
       %div{style: "margin-top: 0.5em; flex-direction: column; align-items: stretch;"}
         = f.label t("PLUGIN.AUTHORING_DATA")
         = f.text_area :author_data
+    = f.hidden_field :component_label
     = f.submit t("CANCEL"), :class => 'close'
     = f.submit t("SAVE"), :class => 'embeddable-save'
+
+:javascript
+  $(function() {
+    $('#plugin_approved_script_id').on('change', function() {
+      var selected = $(this).find(':selected');
+      $('#plugin_component_label').val(selected.data('component-label') || "")
+    })
+  });

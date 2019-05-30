@@ -6,8 +6,8 @@ class PluginsController < ApplicationController
     render_to_string('_list_plugins', layout: false, locals: {plugins: all_plugins})
   end
 
-  def _form(plugin)
-    render_to_string('_form', layout: false, locals: { plugin: @plugin })
+  def _form(plugin, edit)
+    render_to_string('_form', layout: false, locals: { plugin: @plugin, edit: edit })
   end
 
   public
@@ -17,7 +17,7 @@ class PluginsController < ApplicationController
     respond_to do |format|
       format.js {
         render :json => {
-          html: _form(@plugin)
+          html: _form(@plugin, true)
         }
       }
     end
@@ -30,7 +30,7 @@ class PluginsController < ApplicationController
     respond_to do |format|
       format.js {
         render :json => {
-          html: _form(@plugin)
+          html: _form(@plugin, false)
         }
       }
     end

@@ -1,12 +1,11 @@
 
 class Plugin < ActiveRecord::Base
 
-  attr_accessible :description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key
+  attr_accessible :description, :author_data, :approved_script_id, :approved_script, :shared_learner_state_key, :component_label
 
   belongs_to :approved_script
   belongs_to :plugin_scope, polymorphic: true
 
-  delegate :name,  to: :approved_script, allow_nil: true
   delegate :label, to: :approved_script, allow_nil: true
   delegate :url,   to: :approved_script, allow_nil: true
   delegate :version, to: :approved_script, allow_nil: true
@@ -46,4 +45,11 @@ class Plugin < ActiveRecord::Base
     Plugin.import(serialized)
   end
 
+  def component
+    approved_script.component(component_label) if component_label && approved_script
+  end
+
+  def name
+    (component && component.name) || (approved_script && approved_script.name) || nil
+  end
 end

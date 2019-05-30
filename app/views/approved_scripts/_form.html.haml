@@ -34,6 +34,7 @@
       = f.label :description
       %br
       = f.text_area :description
+    = f.hidden_field :authoring_metadata
     .actions{style: "margin: 1em 0px;"}
       = f.submit
 
@@ -58,12 +59,15 @@
         return resp.json();
       })
       .then(function(json) {
-        ["name", "label", "url", "version", "description"].forEach(function (field) {
+        ["name", "label", "url", "version", "description", "authoring_metadata"].forEach(function (field) {
           var value = json[field];
           if (value) {
             // allow urls to be relative to the json base url
             if ((field === "url") && value && !/https?:/.test(value)) {
               value = baseUrl + value;
+            }
+            if (field === "authoring_metadata") {
+              value = JSON.stringify(value);
             }
             document.getElementById("approved_script_" + field).value = value;
           }

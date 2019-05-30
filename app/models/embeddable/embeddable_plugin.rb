@@ -8,7 +8,7 @@ module Embeddable
     end
 
     attr_accessible :plugin, :approved_script_id, :description, :author_data,
-    :is_full_width, :is_hidden
+    :is_full_width, :is_hidden, :component_label
 
     belongs_to :plugin, autosave: true
 
@@ -27,6 +27,9 @@ module Embeddable
     delegate :name,  to: :plugin, allow_nil: true
     delegate :label, to: :plugin, allow_nil: true
     delegate :url, to: :plugin, allow_nil: true
+    delegate :component_label, to: :plugin
+    delegate :component_label=, to: :plugin
+    delegate :component, to: :plugin, allow_nil: true
 
     before_create do |embeddable|
       unless(embeddable.plugin)

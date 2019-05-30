@@ -7,7 +7,6 @@ module Embeddable
     Embeddable::Labbook        => "Labbook",
     QuestionTracker            => "Tracked Question",
     Embeddable::ExternalScript => "External Script",
-    Embeddable::EmbeddablePlugin => "Plugin"
   }
 
   InteractiveTypes = {
@@ -34,7 +33,7 @@ module Embeddable
   end
 
   def self.valid_type(class_string)
-    return Types.detect{|k,v| k.to_s == class_string }
+    return class_string == Embeddable::EmbeddablePlugin.to_s || Types.detect{|k,v| k.to_s == class_string }
   end
 
   def self.create_for_string(class_string)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190528192812) do
+ActiveRecord::Schema.define(:version => 20190530130347) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -24,11 +24,12 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.string   "name"
     t.string   "url"
     t.text     "description"
-    t.datetime "created_at",                                                :null => false
-    t.datetime "updated_at",                                                :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
     t.string   "label"
-    t.decimal  "version",     :precision => 10, :scale => 0, :default => 1
+    t.decimal  "version",            :precision => 10, :scale => 0, :default => 1
     t.string   "json_url"
+    t.text     "authoring_metadata"
   end
 
   create_table "authentications", :force => true do |t|
@@ -504,6 +505,7 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
     t.string   "shared_learner_state_key"
+    t.string   "component_label"
   end
 
   add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], :name => "plugin_scopes"
