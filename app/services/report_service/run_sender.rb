@@ -16,10 +16,10 @@ module ReportService
     end
 
     def get_resource_url(run, host)
-      if run.sequence
-        "#{host}#{Rails.application.routes.url_helpers.sequence_path(run.sequence)}"
+      if run.sequence_id
+        "#{host}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
       else
-        "#{host}#{Rails.application.routes.url_helpers.activity_path(run.activity)}"
+        "#{host}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
       end
     end
 
