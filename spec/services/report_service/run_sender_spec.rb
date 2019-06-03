@@ -69,13 +69,13 @@ describe ReportService::RunSender do
       let(:json) { JSON.parse(sender.to_json())}
       it "should have a key fields" do
         expect(json).to include(
-          "version", "created", "user_id",
+          "version", "created", "user_email",
           "answers", "class_hash", "run_key"
         )
       end
 
       describe "the encoded answers" do
-        it "should also include the run_key, user_id, class_hash " do
+        it "should also include the run_key, user_email, class_hash " do
           answers = json["answers"]
           answers.each_with_index do |a,index|
             expect(a).to include("question_key")
@@ -92,10 +92,12 @@ describe ReportService::RunSender do
             expect(a["question_key"]).not_to match("/")
             expect(a["question_key"]).not_to match(/\./)
 
+            expect(a["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
+
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
-            expect(a).to include("user_id")
+            expect(a).to include("user_email")
             expect(a).to include("class_hash")
             expect(a).to include("class_info_url")
             expect(a).to include("version")
@@ -118,6 +120,19 @@ describe ReportService::RunSender do
             accepted_answers = json["answers"]
             # bad answers wont appear in the JSON
             expect(answers.length).to be > accepted_answers.length
+          end
+        end
+
+        describe "when run is part of the sequence" do
+          it "the resource_url should be sequence url" do
+            expect(json["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
+          end
+        end
+
+        describe "when run isn't part of the sequence" do
+          let(:sequence_id) { nil }
+          it "the resource_url should be activity url" do
+            expect(json["resource_url"]).to match("#{host}/activities/#{sequence_id}")
           end
         end
 
