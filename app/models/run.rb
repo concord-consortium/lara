@@ -55,6 +55,9 @@ class Run < ActiveRecord::Base
     :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
     :length => { :is => 36 }
 
+  # /app/models/with_class_info.rb for #update_class_info
+  include WithClassInfo
+  
   def check_key
     unless key.present?
       self.key = session_guid

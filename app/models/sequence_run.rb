@@ -8,6 +8,9 @@ class SequenceRun < ActiveRecord::Base
 
   before_save :add_key_if_nil
 
+  # /app/models/with_class_info.rb for #update_class_info
+  include WithClassInfo
+
   def self.generate_key
     SecureRandom.hex(20)
   end
@@ -104,5 +107,13 @@ class SequenceRun < ActiveRecord::Base
 
   def add_key_if_nil
     self.key = SequenceRun.generate_key if self.key.nil?
+  end
+
+  # see /app/models/with_class_info.rb#update_class_info
+  def update_class_info(url_params)
+    updates = super(url_params)
+    if (updates)
+      self.runs.each { |r| r.update_class_info(url_params) }
+    end
   end
 end
