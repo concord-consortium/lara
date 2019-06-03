@@ -284,10 +284,10 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.integer  "plugin_id"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
-    t.integer  "embeddable_id"
-    t.string   "embeddable_type"
     t.boolean  "is_hidden",       :default => false
     t.boolean  "is_full_width",   :default => false
+    t.integer  "embeddable_id"
+    t.string   "embeddable_type"
   end
 
   add_index "embeddable_plugins", ["plugin_id"], :name => "index_embeddable_plugins_on_plugin_id"

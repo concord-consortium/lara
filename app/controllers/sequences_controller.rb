@@ -219,6 +219,8 @@ class SequencesController < ApplicationController
       if portal.valid?
         @sequence_run.disable_collaboration
       end
+      # If we have new class_info_url or class_hash update it
+      @sequence_run.update_class_info(params)
     end
   end
 

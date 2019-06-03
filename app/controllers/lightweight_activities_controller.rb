@@ -28,13 +28,11 @@ class LightweightActivitiesController < ApplicationController
   end
 
   # These are the runtime (student-facing) actions, show and summary
-
   def show # show index
-    if params[:class_info_url]
-      @run.class_info_url = params[:class_info_url]
-      @run.save!
-    end
 
+    # If there are launch parameters, set class info on run,
+    # See /app/models/with_class_info.rb #update_class_info
+    @run.update_class_info(params)
     authorize! :read, @activity
 
     setup_show
