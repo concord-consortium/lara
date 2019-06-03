@@ -31,6 +31,7 @@
 //= require page-unload-warning
 //= require modals
 //= require modal-dialog
+//= require logger
 //= require lara-plugin-api-V2
 //= require lara-typescript
 //= require common
@@ -50,7 +51,6 @@
 //= require activity-box-click
 //= require wait-message
 //= require external-scripts
-//= require logger
 //= require labbook
 //= require c_rater
 //= require global-iframe-saver

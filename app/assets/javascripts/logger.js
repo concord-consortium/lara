@@ -2,11 +2,15 @@ function LoggerUtils(logger) {
   this._logger = logger;
 };
 
+LoggerUtils.instances = {};
+
 LoggerUtils.instance = function(loggerConfig) {
-  return new LoggerUtils(new Logger({
+  var key = JSON.stringify(loggerConfig);
+  LoggerUtils.instances[key] = LoggerUtils.instances[key] || new LoggerUtils(new Logger({
     server     : loggerConfig.server,
     defaultData: loggerConfig.data
   }));
+  return LoggerUtils.instances[key];
 };
 
 LoggerUtils.prototype.log = function(data) {
@@ -206,6 +210,7 @@ LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
 function Logger(options) {
   this._server = options.server;
   this._defaultData = options.defaultData;
+  this._eventQueue = [];
 }
 
 
@@ -214,9 +219,44 @@ Logger.prototype.log = function(data) {
     data = {event: data};
   }
   data.time = Date.now(); // millisecons
-  LARA.InternalAPI.events.emitLog(data); // defined in lara-typescript
+  this._emitEvent(data);
   this._post(data);
 };
+
+Logger.prototype._emitEvent = function(data) {
+  if (this._canEmitEvent()) {
+    this._drainEventQueue();
+    window.LARA.InternalAPI.events.emitLog(data);
+  }
+  else {
+    // if it is not yet available, queue the data until it is available
+    this._eventQueue.push(data);
+    this._waitToDrainEventQueue();
+  }
+}
+
+Logger.prototype._canEmitEvent = function() {
+   // window.LARA.InternalAPI.events.emitLog is defined in lara-typescript and may not be available yet
+   return !!(window.LARA && window.LARA.InternalAPI && window.LARA.InternalAPI.events && window.LARA.InternalAPI.events.emitLog);
+}
+
+Logger.prototype._waitToDrainEventQueue = function () {
+  if (this._canEmitEvent()) {
+    this._drainEventQueue();
+  }
+  else {
+    setTimeout(this._waitToDrainEventQueue.bind(this), 1);
+  }
+}
+
+Logger.prototype._drainEventQueue = function () {
+  if (this._eventQueue.length > 0) {
+    this._eventQueue.forEach(function (item) {
+      window.LARA.InternalAPI.events.emitLog(item);
+    })
+    this._eventQueue = [];
+  }
+}
 
 Logger.prototype._post = function(data) {
   var processedData = this._processData(data);
@@ -280,16 +320,10 @@ EmbeddableQuestionsLogging.prototype.bind_logger = function() {
   });
 };
 
-
-$(document).ready(function() {
-  // Logger configuration and metadata is provided in Rails controller through Gon gem.
-  // See: https://github.com/gazay/gon
-  var loggerConfig = window.gon && window.gon.loggerConfig;
-  if (!loggerConfig) {
-    // Exit if logger configuration isn't provided.
-    return;
-  }
-
+// Logger configuration and metadata is provided in Rails controller through Gon gem.
+// See: https://github.com/gazay/gon
+var loggerConfig = window.gon && window.gon.loggerConfig;
+if (loggerConfig) {
   var loggerUtils = LoggerUtils.instance(loggerConfig);
 
   switch (loggerConfig.action) {
@@ -313,4 +347,4 @@ $(document).ready(function() {
       break;
   }
   window.loggerUtils = loggerUtils;
-});
+}
