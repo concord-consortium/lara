@@ -1,5 +1,6 @@
 class SequenceRun < ActiveRecord::Base
-  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id, :key
+  attr_accessible :remote_endpoint, :remote_id, :user_id, :sequence_id, :key,
+  :class_info_url, :class_hash
 
   has_many :runs
   belongs_to :sequence

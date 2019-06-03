@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190523183238) do
+ActiveRecord::Schema.define(:version => 20190528192812) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -560,6 +560,7 @@ ActiveRecord::Schema.define(:version => 20190523183238) do
     t.boolean  "is_dirty",             :default => false
     t.integer  "collaboration_run_id"
     t.text     "class_info_url"
+    t.string   "class_hash"
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
@@ -580,6 +581,8 @@ ActiveRecord::Schema.define(:version => 20190523183238) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.string   "key"
+    t.string   "class_hash"
+    t.string   "class_info_url"
   end
 
   add_index "sequence_runs", ["key"], :name => "sequence_runs_key_idx"
