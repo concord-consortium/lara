@@ -2,7 +2,7 @@ module ReportService
   class RunSender
     Version = "1"
     DefaultClassHash = "anonymous-run"
-    DefaultUserName = "anonymous"
+    DefaultUserEmail = "anonymous"
 
     def question_key(answer_hash)
       question_type = answer_hash[:type] || answer_hash['type']
@@ -15,17 +15,22 @@ module ReportService
       run.class_info_url || DefaultClassHash
     end
 
-    def username_for_run(run)
-      run.user ? run.user.email : DefaultUserName
+    def get_resource_url(run, host)
+      if run.sequence_id
+        "#{host}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
+      else
+        "#{host}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
+      end
     end
 
     def add_meta_data(run, record, host)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
       record[:source_key] = ReportService::make_source_key(host)
+      record[:resource_url] = get_resource_url(run, host)
       record[:class_hash] = get_class_hash(run)
       record[:class_info_url] = run.class_info_url
-      record[:user_id] = username_for_run(run)
+      record[:user_email] = run.user ? run.user.email : DefaultUserEmail
       record[:remote_endpoint] = run.remote_endpoint
       record[:run_key] = run.key
     end
