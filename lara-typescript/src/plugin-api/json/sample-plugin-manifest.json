@@ -1,6 +1,6 @@
 {
-  "name": "Test LARA Sharing Plugin",
-  "label": "TestLARASharingPlugin",
+  "name": "Test Plugin",
+  "label": "TestPlugin",
   "url": "test-plugin.js",
   "version": 3,
   "description": "Test Description",
@@ -8,33 +8,41 @@
     "components": [
       {
         "label": "test-plugin:activity1",
-        "name": "Test: Activity Plugin 1",
+        "name": "Activity Plugin 1",
         "scope": "activity"
       },
       {
         "label": "test-plugin:activity2",
-        "name": "Test: Activity Plugin 2",
+        "name": "Activity Plugin 2",
         "scope": "activity"
       },
       {
         "label": "test-plugin:embeddable1",
-        "name": "Test: Embeddable Plugin 1",
+        "name": "Embeddable Plugin 1",
         "scope": "embeddable"
       },
       {
         "label": "test-plugin:embeddable2",
-        "name": "Test: Embeddable Plugin 2",
+        "name": "Embeddable Plugin 2",
         "scope": "embeddable"
       },
       {
         "label": "test-plugin:embeddable-decoration1",
-        "name": "Test: Embeddable Decoration Plugin 1",
-        "scope": "embeddable-decoration"
+        "name": "Decoration Plugin 1",
+        "scope": "embeddable-decoration",
+        "decorates": [
+          "Embeddable::ImageQuestion",
+          "Embeddable::MultipleChoice"
+        ]
       },
       {
         "label": "test-plugin:embeddable-decoration2",
-        "name": "Test: Embeddable Decoration Plugin 2",
-        "scope": "embeddable-decoration"
+        "name": "Decoration Plugin 2",
+        "scope": "embeddable-decoration",
+        "decorates": [
+          "Embeddable::ImageQuestion",
+          "Embeddable::OpenResponse"
+        ]
       }
     ]
   }

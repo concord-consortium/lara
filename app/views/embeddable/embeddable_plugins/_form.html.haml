@@ -5,10 +5,6 @@
   = f.error_messages
   %div{style: "display: grid; grid-template-columns: 100px auto;grid-row-gap: 2em;"}
     %div
-      = f.label "Wrapped Embeddable:"
-    %div
-      = f.select :embeddable_select_value, @embeddable.embeddables_for_select, {}, class: :select_embeddable
-    %div
       = f.label "Author Data:"
     %div
       = f.text_area :author_data, {id:'jsonConfigText'}

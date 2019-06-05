@@ -11,18 +11,25 @@ class ApprovedScript < ActiveRecord::Base
   }
   belongs_to :appoved_script
 
-  def self.authoring_menu_items(scope)
+  def self.authoring_menu_items(scope, embeddable=nil)
+    embeddable_class = embeddable ? embeddable.class.name : nil
     menu_items = []
     ApprovedScript.all.each do |as|
       as.components_for_authoring_scope(scope).each do |c|
-        menu_items.push(OpenStruct.new({
-          approved_script_id: as[:id],
-          component_label: c[:label],
-          component_name: c[:name]
-        }))
+        if !embeddable_class || (c.has_key?(:decorates) && c[:decorates].include?(embeddable_class))
+          menu_items.push(OpenStruct.new({
+            approved_script_id: as[:id],
+            component_label: c[:label],
+            component_name: c[:name],
+            name: "#{as[:name]}: #{c[:name]}"
+          }))
+        end
       end
     end
     menu_items
+  end
+
+  def self.available_plugins_for_embeddable(embeddable)
   end
 
   def components

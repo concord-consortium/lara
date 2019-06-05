@@ -25,7 +25,8 @@ describe Embeddable::EmbeddablePlugin do
         plugin: {
           description: plugin.description,
           author_data: plugin.author_data,
-          approved_script_label: plugin.approved_script.label
+          approved_script_label: plugin.approved_script.label,
+          component_label: plugin.component_label
         },
         is_hidden: true,
         is_full_width: true

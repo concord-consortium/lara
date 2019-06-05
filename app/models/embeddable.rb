@@ -75,6 +75,10 @@ module Embeddable
     true
   end
 
+  def show_in_edit?
+    true
+  end
+
   # This should not take into account the hidden attribute. The caller should combine
   # is_hidden with reportable? to know what to show in a report
   def reportable?

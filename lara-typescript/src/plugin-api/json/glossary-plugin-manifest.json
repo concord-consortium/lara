@@ -1,0 +1,16 @@
+{
+  "name": "Glossary",
+  "label": "glossary",
+  "url": "https://glossary-plugin.concord.org/version/3.0.1/plugin.js",
+  "version": 3,
+  "description": "This plugin provides the glossary activity plugin",
+  "authoring_metadata": {
+    "components": [
+      {
+        "label": "glossary",
+        "name": "Activity",
+        "scope": "activity"
+      }
+    ]
+  }
+}

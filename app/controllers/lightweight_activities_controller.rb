@@ -305,6 +305,19 @@ class LightweightActivitiesController < ApplicationController
     redirect_to :back
   end
 
+  def add_plugin
+    authorize! :update, @activity
+    @activity.plugins.create({
+      approved_script_id: params[:approved_script_id],
+      component_label: params[:component_label]
+    })
+    if request.xhr?
+      respond_with_nothing
+    else
+      redirect_to edit_activity_path(@activity)
+    end
+  end
+
   private
   def set_activity
     if params[:activity_id]

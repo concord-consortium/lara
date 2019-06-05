@@ -20,7 +20,8 @@ class Plugin < ActiveRecord::Base
     {
       description: description,
       author_data: author_data,
-      approved_script_label: approved_script && approved_script.label
+      approved_script_label: approved_script && approved_script.label,
+      component_label: component_label
     }
   end
 
@@ -50,6 +51,14 @@ class Plugin < ActiveRecord::Base
   end
 
   def name
-    (component && component.name) || (approved_script && approved_script.name) || nil
+    if approved_script && component
+      "#{approved_script.name}: #{component.name}"
+    elsif approved_script
+      approved_script.name
+    elsif component
+      component.name
+    else
+      nil
+    end
   end
 end

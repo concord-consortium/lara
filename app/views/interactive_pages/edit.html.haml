@@ -93,10 +93,11 @@
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
           .embeddables_list.sortable_embeddables
             - @page.section_embeddables(nil).each do |e|
-              - tracked = e.respond_to?(:tracked_question) && e.tracked_question
-              - tracked_class = tracked ? 'tracked' : ''
-              .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-                = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+              - if e.show_in_edit?
+                - tracked = e.respond_to?(:tracked_question) && e.tracked_question
+                - tracked_class = tracked ? 'tracked' : ''
+                .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
@@ -142,5 +143,14 @@
       var selected = $(this).find(':selected');
       $('#approved_script_id').val(selected.data('approved-script-id') || "")
       $('#component_label').val(selected.data('component-label') || "")
+    })
+
+    // set the hidden plugin fields when wrapped embeddable plugins are selected
+    $('.wrapped-embeddable-type').on('change', function() {
+      var $this = $(this);
+      var selected = $this.find(':selected');
+      var form = $this.closest("form");
+      form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
+      form.find('[name=component_label]').val(selected.data('component-label') || "")
     })
   });

@@ -95,5 +95,9 @@ module Embeddable
       # It is if it's attached to some other embeddable.
       attached_to_embeddable
     end
+
+    def show_in_edit?
+      !component || component[:scope] != "embeddable-decoration"
+    end
   end
 end
