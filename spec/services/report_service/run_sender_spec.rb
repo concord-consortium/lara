@@ -23,10 +23,9 @@ describe ReportService::RunSender do
   let(:answers) do
     1.upto(5).map do |index|
       url = "#{host}activities/#{index}"
-      portal_hash = {question_id: index, type: "mock-answer", url: url }
+      report_service_hash = { question_id: index, type: "mock-answer", url: url }
       double("Answer", {
-        portal_hash: portal_hash,
-        answer_id: "mock_question_answer_#{index}"
+        report_service_hash: report_service_hash
       })
     end
   end
@@ -75,25 +74,13 @@ describe ReportService::RunSender do
       end
 
       describe "the encoded answers" do
-        it "should also include the run_key, user_email, class_hash " do
+        it "should also include metadata" do
           answers = json["answers"]
-          answers.each_with_index do |a,index|
-            expect(a).to include("question_key")
+          answers.each_with_index do |a|
             expect(a["source_key"]).to match("app_lara_docker")
             expect(a["source_key"]).not_to match("/")
             expect(a["source_key"]).not_to match(/\./)
-
-            expect(a["id"]).to match("mock_question_answer")
-            expect(a["id"]).not_to match("/")
-            expect(a["id"]).not_to match(/\./)
-
-            expect(a["question_key"]).to match("mock-answer")
-            expect(a["question_key"]).to match("#{index+1}")
-            expect(a["question_key"]).not_to match("/")
-            expect(a["question_key"]).not_to match(/\./)
-
             expect(a["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
-
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
@@ -110,7 +97,7 @@ describe ReportService::RunSender do
           let(:not_an_answer) { "not even an answer" }
           let(:exploding_answer) do
             answer = double("Answer")
-            allow(answer).to receive(:portal_hash).and_raise(boom)
+            allow(answer).to receive(:report_service_hash).and_raise(boom)
             answer
           end
           it "The JSON should include the good answers, and log bad ones" do
