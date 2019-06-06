@@ -7,7 +7,7 @@ module Embeddable
     LAYOUT_VERTICAL = "vertical"
     LAYOUT_HORIZONTAL = "horizontal"
     LAYOUT_LIKERT = "likert"
-    
+
 
     has_many :choices,
       :class_name => 'Embeddable::MultipleChoiceChoice',
@@ -118,6 +118,21 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        type: 'multiple_choice',
+        id: embeddable_id,
+        prompt: prompt,
+        choices: choices.map { |choice| {
+          id: choice.id,
+          content: choice.choice,
+          correct: choice.is_correct
+        }},
+        show_in_featured_question_report: show_in_featured_question_report,
+        question_number: index_in_activity
+      }
+    end
+
     def duplicate
       mc = Embeddable::MultipleChoice.new(self.to_hash)
       self.choices.each do |choice|
@@ -125,7 +140,7 @@ module Embeddable
       end
       return mc
     end
-    
+
     def export
       mc_export = as_json(only:[:name,
                                 :prompt,
@@ -143,15 +158,15 @@ module Embeddable
                                 :hint])
 
       mc_export[:choices] = []
-      
+
       self.choices.each do |choice|
         mc_export[:choices] << choice.export
       end
-      
-      return mc_export                          
-                  
+
+      return mc_export
+
     end
-    
+
     def is_likert
       layout == "likert"
     end

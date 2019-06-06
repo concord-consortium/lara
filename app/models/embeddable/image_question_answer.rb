@@ -53,6 +53,19 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        id: answer_id,
+        type: 'image_question_answer',
+        question_id: question.embeddable_id,
+        question_type: 'image_question',
+        answer: {
+          image_url: annotated_image_url,
+          text: answer_text
+        }
+      }
+    end
+
     def answered?
       annotated_image_url.present?
     end

@@ -45,6 +45,16 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        type: 'open_response',
+        id: embeddable_id,
+        prompt: prompt,
+        show_in_featured_question_report: show_in_featured_question_report,
+        question_number: index_in_activity
+      }
+    end
+
     def duplicate
       return Embeddable::OpenResponse.new(self.to_hash)
     end
