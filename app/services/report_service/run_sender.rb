@@ -31,9 +31,9 @@ module ReportService
     end
 
     def serlialized_answers(run, host)
-      age_threashold_seconds = 0.25
+      age_threshold_seconds = 0.25
       modified_answers = run.answers.select do
-        |a| a.updated_at - a.created_at > age_threashold_seconds
+        |a| a.updated_at - a.created_at > age_threshold_seconds
       end
       modified_answers.map do |ans|
         begin
