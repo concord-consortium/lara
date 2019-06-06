@@ -19,6 +19,7 @@ describe ReportService::RunSender do
   let(:remote_id)            { 'remote-id' }
   let(:remote_endpoint)      { "https://mock.data.com/spec/offering/1" }
   let(:class_info_url)       { "https://mock.data.com/spec/class/2" }
+  let(:class_hash)           { "15291405-6B03-4E50-B49F-ACBC99D6255F" }
   let(:answers) do
     1.upto(5).map do |index|
       url = "#{host}activities/#{index}"
@@ -47,6 +48,7 @@ describe ReportService::RunSender do
       sequence_run_id: sequence_run_id,
       collaboration_run_id: collaboration_run_id,
       class_info_url: class_info_url,
+      class_hash: class_hash,
       answers: answers
     })
   end
