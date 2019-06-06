@@ -1,0 +1,41 @@
+- if plugin.version == 3
+  - v3_plugin_label = "plugin#{plugin.id}"
+  - output_id = "plugin_authoring_output"
+  %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+    = @embeddable.name
+
+  = form_for @embeddable do |f|
+    = f.error_messages
+    %div{style: "display: grid; grid-template-columns: 100px auto;grid-row-gap: 2em;"}
+      .plugin-output{id: output_id}
+      %div
+        = render :partial => 'shared/edit_full_width', :locals => { :f => f }
+    = f.submit "Cancel", :class => 'close'
+    = f.submit "Save", :class => 'embeddable-save'
+
+  - runtime_div_selector = "##{output_id}"
+  :javascript
+    // Begin script for #{plugin.name}
+    $(document).ready(function() {
+      LARA.InternalAPI.setNextPluginLabel("#{v3_plugin_label}");
+      var script = document.createElement("script");
+      script.onload = function() {
+        // It's impossible to get type checking here, but object below MUST always implement IPluginAuthoringContext interface
+        var pluginContext = {
+          type: 'authoring',
+          name: '#{plugin.name}',
+          url: '#{plugin.url}',
+          pluginId: #{plugin.id},
+          authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
+          container: $('#{runtime_div_selector}')[0],
+          wrappedEmbeddable: null
+        }
+        console.log("Adding #{plugin.name} plugin as #{v3_plugin_label} with V3 LARA Plugin API")
+        LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
+      };
+      script.onerror = function () {
+        alert("Unable to load plugin script: #{plugin.url}");
+      };
+      script.src = '#{plugin.url}';
+      document.head.append(script);
+    });
