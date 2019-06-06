@@ -89,8 +89,8 @@ describe ReportService::RunSender do
             expect(a).to include("url")
             expect(a).to include("run_key")
             expect(a).to include("user_email")
-            expect(a).to include("class_hash")
-            expect(a).to include("class_info_url")
+            expect(a).to include("class_hash" => class_hash)
+            expect(a).to include("class_info_url" => class_info_url)
             expect(a).to include("version")
           end
         end
