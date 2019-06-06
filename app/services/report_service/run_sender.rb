@@ -36,8 +36,11 @@ module ReportService
     end
 
     def serlialized_answers(run, host)
-      run.answers
-      .map do |ans|
+      age_threashold_seconds = 0.25
+      modified_answers = run.answers.select do
+        |a| a.updated_at - a.created_at > age_threashold_seconds
+      end
+      modified_answers.map do |ans|
         begin
           serialized_answer(ans, run, host)
         rescue => e
