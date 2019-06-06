@@ -90,6 +90,27 @@ class InteractiveRunState < ActiveRecord::Base
     end
   end
 
+  def report_service_hash
+    result = {
+      id: answer_id,
+      question_type: "iframe_interactive",
+      question_id: interactive.embeddable_id
+    }
+    # There are two options how interactive can be saved in report service:
+    # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
+    #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
+    # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
+    #   and sent to the interactive using LARA Interactive API.
+    if interactive.has_report_url
+      result[:type] = "external_link"
+      result[:answer] = reporting_url
+    else
+      result[:type] = "interactive_state"
+      result[:answer] = report_state.to_json
+    end
+    result
+  end
+
   def maybe_send_to_portal
     if interactive.has_report_url
       send_to_portal if reporting_url.present?

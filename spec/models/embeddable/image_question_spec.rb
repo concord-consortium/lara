@@ -56,12 +56,11 @@ describe Embeddable::ImageQuestion do
     it 'returns properties supported by the report service' do
       expect(image_question.report_service_hash).to eq(
         type: "image_question",
-        id: image_question.id,
-        key: "image_question-" + image_question.id.to_s,
+        id: "image_question_" + image_question.id.to_s,
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
-        is_required: image_question.is_prediction,
-        show_in_featured_question_report: image_question.show_in_featured_question_report
+        show_in_featured_question_report: image_question.show_in_featured_question_report,
+        question_number: nil
       )
     end
   end

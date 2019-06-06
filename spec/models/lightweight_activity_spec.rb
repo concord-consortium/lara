@@ -476,13 +476,13 @@ describe LightweightActivity do
     it 'returns a simple hash that can be consumed by the report service' do
       url = "http://test.host/activities/#{activity.id}"
       report_service_hash = {
-        id: activity.id,
+        id: "activity_#{activity.id}",
         type: "activity",
         name: activity.name,
         url: url,
         children: [
           {
-            id: activity.id,
+            id: "section_#{activity.id}",
             type: "section",
             name: "#{activity.name} Section",
             url: url,

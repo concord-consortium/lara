@@ -257,7 +257,7 @@ class LightweightActivity < ActiveRecord::Base
   def serialize_for_report_service(host)
     activity_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
     data = {
-      id: self.id,
+      id: "activity_" + self.id.to_s,
       type: "activity",
       name: self.name,
       url: activity_url
@@ -271,7 +271,7 @@ class LightweightActivity < ActiveRecord::Base
         # Otherwise we don't support this embeddable type right now.
       end
       pages.push({
-        id: page.id,
+        id: "page_" + page.id.to_s,
         type: "page",
         name: page.name,
         url: "#{host}#{Rails.application.routes.url_helpers.page_path(page)}",
@@ -282,7 +282,7 @@ class LightweightActivity < ActiveRecord::Base
     # Fake section to satisfy current report service requirement. Hopefully, it won't be necessary soon.
     section = {
       # There's only one, artificial section per activity, so it's fine to reuse activity ID.
-      id: self.id,
+      id: "section_" + self.id.to_s,
       type: "section",
       name: "#{self.name} Section",
       url: activity_url,

@@ -48,6 +48,17 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
     }
   end
 
+  def report_service_hash
+    {
+      type: 'image_question',
+      id: embeddable_id,
+      prompt: prompt,
+      drawing_prompt: drawing_prompt,
+      show_in_featured_question_report: show_in_featured_question_report,
+      question_number: index_in_activity
+    }
+  end
+
   def duplicate
     return Embeddable::ImageQuestion.new(self.to_hash)
   end

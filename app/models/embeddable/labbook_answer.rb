@@ -79,6 +79,16 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        id: answer_id,
+        type: 'external_link',
+        question_id: question.embeddable_id,
+        question_type: 'iframe_interactive',
+        answer: report_url
+      }
+    end
+
     def answered?
       # Labbook is an external service, we don't really know its content. However, there is an assumption that once
       # Labbook is opened, `update_at` timestamp is updated and the album link is sent to Portal. So, if `created_at`

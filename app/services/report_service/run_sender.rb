@@ -4,12 +4,6 @@ module ReportService
     DefaultClassHash = "anonymous-run"
     DefaultUserEmail = "anonymous"
 
-    def question_key(answer_hash)
-      question_type = answer_hash[:type] || answer_hash['type']
-      question_id = answer_hash[:question_id] || answer_hash['question_id']
-      ReportService::make_key(question_type, question_id)
-    end
-
     def get_class_hash(run)
       # TODO: Maybe we look this up?
       run.class_info_url || DefaultClassHash
@@ -36,14 +30,8 @@ module ReportService
     end
 
     def serialized_answer(ans, run, host)
-      answer_hash = ans.portal_hash
-      answer_hash[:id] = ans.answer_id
-      answer_hash[:question_key] = question_key(answer_hash)
+      answer_hash = ans.report_service_hash
       add_meta_data(run, answer_hash, host)
-      if answer_hash[:url].blank?
-        answer_hash[:url] = ""
-        answer_hash[:has_url] = false
-      end
       answer_hash
     end
 

@@ -78,6 +78,18 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        id: answer_id,
+        type: 'multiple_choice_answer',
+        question_id: question.embeddable_id,
+        question_type: 'multiple_choice',
+        answer: {
+          choice_ids: answers.map { |a| a.id }
+        }
+      }
+    end
+
     # Expects a parameters hash. Normalizes to allow update_attributes.
     def update_from_form_params(params)
       if params && params[:answers].kind_of?(Array)

@@ -172,7 +172,7 @@ describe Sequence do
 
     let(:simple_report_service_hash) do
       {
-        id: sequence.id,
+        id: "sequence_#{sequence.id}",
         type: "sequence",
         name: sequence.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}",
@@ -182,7 +182,7 @@ describe Sequence do
 
     let(:complex_report_service_hash) do
       {
-        id: sequence_with_activities.id,
+        id: "sequence_#{sequence_with_activities.id}",
         type: "sequence",
         name: sequence_with_activities.title,
         url: "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence_with_activities)}",

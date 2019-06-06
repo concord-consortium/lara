@@ -143,7 +143,7 @@ class Sequence < ActiveRecord::Base
   def serialize_for_report_service(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
     data = {
-      id: self.id,
+      id: 'sequence_' + self.id.to_s,
       type: 'sequence',
       name: self.title,
       url: local_url

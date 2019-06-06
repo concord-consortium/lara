@@ -63,6 +63,19 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        type: 'iframe_interactive',
+        id: embeddable_id,
+        name: name,
+        show_in_featured_question_report: show_in_featured_question_report,
+        display_in_iframe: true,
+        width: 600,
+        height: 500,
+        question_number: index_in_activity
+      }
+    end
+
     def to_hash
       {
         action_type: action_type,

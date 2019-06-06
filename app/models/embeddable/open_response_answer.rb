@@ -35,6 +35,16 @@ module Embeddable
       }
     end
 
+    def report_service_hash
+      {
+        id: answer_id,
+        type: 'open_response_answer',
+        question_id: question.embeddable_id,
+        question_type: 'open_response',
+        answer: answer_text
+      }
+    end
+
     def answered?
       self.answer_text.present?
     end

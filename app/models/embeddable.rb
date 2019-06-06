@@ -83,7 +83,11 @@ module Embeddable
   end
 
   def index_in_activity(act = nil)
-    (act ? act : self.activity).reportable_items.index(self) + 1
+    if !act && !self.activity
+      nil
+    else
+      (act ? act : self.activity).reportable_items.index(self) + 1
+    end
   end
 
   # ID which is unique among all the embeddable types.
@@ -91,14 +95,8 @@ module Embeddable
     "embeddable-#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 
-  def report_service_hash
-    # Once LARA doesn't publish to portal, we can just rename portal_hash to report_service_hash
-    return nill unless respond_to?(:portal_hash)
-    result = portal_hash
-    result[:key] = ReportService::make_key(result[:type], result[:id])
-    if activity
-      result[:question_number] = index_in_activity(activity)
-    end
-    result
+  # ID which is unique among all the embeddable types.
+  def embeddable_id
+    "#{self.class.to_s.demodulize.underscore}_#{self.id}"
   end
 end
