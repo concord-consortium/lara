@@ -4,11 +4,6 @@ module ReportService
     DefaultClassHash = "anonymous-run"
     DefaultUserEmail = "anonymous"
 
-    def get_class_hash(run)
-      # TODO: Maybe we look this up?
-      run.class_info_url || DefaultClassHash
-    end
-
     def get_resource_url(run, host)
       if run.sequence_id
         "#{host}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
@@ -22,7 +17,7 @@ module ReportService
       record[:created] = Time.now.utc.to_s
       record[:source_key] = ReportService::make_source_key(host)
       record[:resource_url] = get_resource_url(run, host)
-      record[:class_hash] = get_class_hash(run)
+      record[:class_hash] = run.class_hash
       record[:class_info_url] = run.class_info_url
       record[:user_email] = run.user ? run.user.email : DefaultUserEmail
       record[:remote_endpoint] = run.remote_endpoint
@@ -36,8 +31,11 @@ module ReportService
     end
 
     def serlialized_answers(run, host)
-      run.answers
-      .map do |ans|
+      age_threshold_seconds = 0.25
+      modified_answers = run.answers.select do
+        |a| a.updated_at - a.created_at > age_threshold_seconds
+      end
+      modified_answers.map do |ans|
         begin
           serialized_answer(ans, run, host)
         rescue => e
