@@ -7,17 +7,17 @@
   "authoring_metadata": {
     "components": [
       {
-        "label": "window-shades",
+        "label": "windowShade",
         "name": "Window Shades",
         "scope": "embeddable"
       },
       {
-        "label": "side-tips",
+        "label": "sideTip",
         "name": "Side Tips",
         "scope": "embeddable"
       },
       {
-        "label": "question-wrapper",
+        "label": "questionWrapper",
         "name": "Question Wrapper",
         "scope": "embeddable-decoration",
         "decorates": [
