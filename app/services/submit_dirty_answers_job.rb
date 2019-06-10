@@ -9,6 +9,17 @@ class SubmitDirtyAnswersJob < Struct.new(:run_id, :start_time)
     da = run.dirty_answers
     return if da.empty?
     if run.send_to_portal(da, start_time)
+      # if there is a report service configured send run data there too:
+      if ReportService::configured?
+        begin
+          force = false
+          sender = ReportService::RunSender.new(run, force)
+          sender.send()
+        rescue => e
+          Rail.logger.error("Couldn't send run to report service:")
+          Rail.logger.error(e)
+        end
+      end
       run.set_answers_clean(da) # We're only cleaning the same set we sent to the portal
       run.reload
       if run.dirty_answers.empty?
