@@ -5,12 +5,17 @@ describe ReportService::ResourceSender do
   let(:id)        { "resource-id"}
 
   let(:resource) { FactoryGirl.create(:activity_with_page_and_or) }
-  let(:sender)   { ReportService::ResourceSender.new(resource, host) }
+  let(:sender)   { ReportService::ResourceSender.new(resource) }
+
+  before(:each) do
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(host)
+  end
 
   describe "to_json" do
     it "should be a string with a length" do
       expect(sender.to_json().length).to be > 1
     end
+
     it "should parse" do
       expect { JSON.parse(sender.to_json()) }.not_to raise_error
     end

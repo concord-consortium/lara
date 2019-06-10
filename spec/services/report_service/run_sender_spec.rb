@@ -52,10 +52,12 @@ describe ReportService::RunSender do
       answers: answers
     })
   end
-  let(:sender) { ReportService::RunSender.new(run, host)     }
+  let(:send_all_answers) { true }
+  let(:sender) { ReportService::RunSender.new(run, send_all_answers)     }
 
   before(:each) do
     allow(Rails.application.routes.url_helpers).to receive(:run_path).and_return("runs/12345")
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(host)
     Timecop.freeze(Time.new(2016))
   end
 
