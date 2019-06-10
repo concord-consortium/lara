@@ -28,9 +28,10 @@
           pluginId: #{plugin.id},
           authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
           container: $('#{runtime_div_selector}')[0],
-          wrappedEmbeddable: null
+          wrappedEmbeddable: null,
+          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data(plugin.id))}`,
         }
-        console.log("Adding #{plugin.name} plugin as #{v3_plugin_label} with V3 LARA Plugin API")
+        console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
       };
       script.onerror = function () {
