@@ -6,6 +6,7 @@ Cypress.Commands.add("requestWithToken", (options) => {
       newOptions.headers = {}
     }
     newOptions.headers['X-CSRF-Token'] = token.attr('content');
+    newOptions.headers['content-type'] = "application/json"
     return cy.request(newOptions)
   })
 })
@@ -16,6 +17,34 @@ Cypress.Commands.add("login", (username = Cypress.config("username"), password =
   cy.get('#user_email').type(username)
   cy.get('#user_password').type(password)
   cy.get('input[name="commit"]').click()
+})
+
+Cypress.Commands.add("exportActivity", (activityID, activityData) => {
+  var exportPath = "/activities/" + activityID + "/export"
+  cy.requestWithToken({
+    url: exportPath,
+    method: "GET",
+    dataType: "json"
+  })
+})
+
+Cypress.Commands.add("migrateMaterialToStaging", fixturePath => {
+  return cy.fixture(fixturePath).then(materialJSON => {
+    const name = materialJSON.name || materialJSON.title
+    cy.log(materialJSON)
+    expect(name, "Wrong material name - no [Cypress] prefix").to.match(/^\[Cypress]/)
+    return cy.requestWithToken({
+      url: `https://authoring.staging.concord.org/api/v1/import`,
+      method: "POST",
+      body: { "import": materialJSON }
+    }).then(response => {
+      const body = response.body
+      if (!body.success) {
+        throw Error("Import has failed " + response.body.error)
+      }
+      return body.url
+    })
+  })
 })
 
 // By default it uses credentials specified in config/user-config.json
@@ -33,7 +62,7 @@ Cypress.Commands.add("importMaterial", fixturePath => {
     return cy.requestWithToken({
       url: `${Cypress.config("baseUrl")}/api/v1/import`,
       method: "POST",
-      body: {"import": materialJSON}
+      body: { "import": materialJSON }
     }).then(response => {
       const body = response.body
       if (!body.success) {
@@ -52,7 +81,7 @@ Cypress.Commands.add("deleteMaterial", materialUrl => {
     type = "sequences"
   }
   // E.g. "https://authoring.concord.org/activities/123 => ["https://authoring.concord.org", "123"]
-  const [ baseUrl, id ] = materialUrl.split(`/${type}/`)
+  const [baseUrl, id] = materialUrl.split(`/${type}/`)
   // This visit does not seem to be necessary. However, it seems that on some pages CSRF token can't be found.
   // Do it for safety, as we don't want to leave test materials around.
   cy.visit("/")
