@@ -62,7 +62,8 @@ module Embeddable
         answer: {
           image_url: annotated_image_url,
           text: answer_text
-        }
+        },
+        submitted: is_final
       }
     end
 

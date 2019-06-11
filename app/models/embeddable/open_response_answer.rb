@@ -41,7 +41,8 @@ module Embeddable
         type: 'open_response_answer',
         question_id: question.embeddable_id,
         question_type: 'open_response',
-        answer: answer_text
+        answer: answer_text,
+        submitted: is_final
       }
     end
 

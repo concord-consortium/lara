@@ -86,7 +86,8 @@ module Embeddable
         question_type: 'multiple_choice',
         answer: {
           choice_ids: answers.map { |a| a.id }
-        }
+        },
+        submitted: is_final
       }
     end
 
