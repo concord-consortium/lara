@@ -26,7 +26,7 @@ class Api::V1::PluginsController < ApplicationController
 
 
   def get_plugin
-    plugin_id = params[:id]
+    plugin_id = params[:plugin_id]
     begin
       plugin = Plugin.find(plugin_id)
     rescue CanCan::AccessDenied => err
@@ -34,7 +34,7 @@ class Api::V1::PluginsController < ApplicationController
     rescue => err
       fail(
         STATUS_NOT_FOUND,
-        "No plugin for id: #{id}",
+        "No plugin for id: #{plugin_id}",
         err
       )
     end
