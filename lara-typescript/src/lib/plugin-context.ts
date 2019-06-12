@@ -99,8 +99,8 @@ export const saveLearnerPluginState = (learnerStateSaveUrl: string, state: strin
   return ajaxPromise(learnerStateSaveUrl, { state });
 };
 
-export const saveAuthoredPluginState = (authoringSaveStateUrl: string, state: string): Promise<string> => {
-  return ajaxPromise(authoringSaveStateUrl, { state });
+export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorData: string): Promise<string> => {
+  return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
 };
 
 const getFirebaseJwt = (firebaseJwtUrl: string, appName: string): Promise<IJwtResponse> => {
