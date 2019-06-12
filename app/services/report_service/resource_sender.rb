@@ -1,10 +1,11 @@
 module ReportService
   class ResourceSender
+    include Sender
     Version = "1"
 
     def initialize(resource)
-      @self_url = ENV['REPORT_SERVICE_SELF_URL']
-      version = ResourceSender::Version
+      getParamsFromEnv
+      version = Version
       created = Time.now.utc.to_s
       @resource_payload = resource.serialize_for_report_service(@self_url)
       type = @resource_payload[:type]
@@ -20,16 +21,7 @@ module ReportService
     end
 
     def send()
-      url = ENV['REPORT_SERVICE_URL']
-      token = ENV['REPORT_SERVICE_TOKEN']
-      puts "posting resource: #{@resource_payload[:type]} #{@resource_payload[:name]}"
-      return HTTParty.post(
-        "#{url}/import_structure",
-        :body => self.to_json,
-        :headers => {
-          'Content-Type' => 'application/json',
-          'Authorization' => "Bearer #{token}"
-        })
+      super.send('import_structure')
     end
   end
 end

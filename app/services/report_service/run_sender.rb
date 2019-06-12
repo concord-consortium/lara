@@ -1,8 +1,9 @@
 module ReportService
 
   class RunSender
+    include Sender
+
     Version = "1"
-    DefaultClassHash = "anonymous-run"
     DefaultUserEmail = "anonymous"
 
     def get_resource_url(run)
@@ -54,10 +55,10 @@ module ReportService
     end
 
     def initialize(run, send_all_answers=false)
-      @self_url = ENV['REPORT_SERVICE_SELF_URL']
+      self.getParamsFromEnv
       @send_all_answers = send_all_answers
       url = "#{@self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
-      @run_payload = {
+      @payload = {
         id: run.key,
         url: url,
         run_count: run.run_count,
@@ -71,24 +72,11 @@ module ReportService
         collaboration_run_id: run.collaboration_run_id,
         answers: serlialized_answers(run)
       }
-      add_meta_data(run, @run_payload)
-    end
-
-    def to_json()
-      @run_payload.to_json
+      add_meta_data(run, @payload)
     end
 
     def send()
-      url = ENV['REPORT_SERVICE_URL']
-      token = ENV['REPORT_SERVICE_TOKEN']
-      HTTParty.post(
-        "#{url}/import_run",
-        :body => self.to_json,
-        :headers => {
-          'Content-Type' => 'application/json',
-          'Authorization' => "Bearer #{token}"
-        }
-      )
+      super.send("/import_run")
     end
   end
 end

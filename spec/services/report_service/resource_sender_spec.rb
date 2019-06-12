@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe ReportService::ResourceSender do
-  let(:host)      { "app.lara.docker" }
+  let(:self_host)            { "app.lara.docker" }
+  let(:report_service_url)   { "fake-report-service.foo" }
+  let(:report_service_token) { "secret-token-ssh" }
   let(:id)        { "resource-id"}
 
   let(:resource) { FactoryGirl.create(:activity_with_page_and_or) }
   let(:sender)   { ReportService::ResourceSender.new(resource) }
 
   before(:each) do
-    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(host)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
   end
 
   describe "to_json" do
@@ -37,6 +41,13 @@ describe ReportService::ResourceSender do
 
       it "Should have a children[] array" do
         expect(json['children']).not_to be_nil
+      end
+    end
+
+    describe "when the service is not configured"  do
+      let(:report_service_token) { nil }
+      it "should raise an excpeption" do
+        expect {sender}.to raise_error(ReportService::NotConfigured)
       end
     end
   end
