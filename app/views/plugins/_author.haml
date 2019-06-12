@@ -6,7 +6,7 @@
 
   = form_for @embeddable do |f|
     = f.error_messages
-    %div{style: "display: grid; grid-template-columns: 100px auto;grid-row-gap: 2em;"}
+    %div{style: ""}
       .plugin-output{id: output_id}
       %div
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
