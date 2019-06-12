@@ -26,6 +26,7 @@
           name: '#{plugin.name}',
           url: '#{plugin.url}',
           pluginId: #{plugin.id},
+          componentLabel: '#{plugin.component.label}',
           authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
           container: $('#{runtime_div_selector}')[0],
           wrappedEmbeddable: null,
