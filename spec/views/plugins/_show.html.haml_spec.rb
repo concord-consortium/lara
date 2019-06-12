@@ -8,6 +8,7 @@ describe "plugins/_show.html.haml" do
   let(:user_id)  { 123 }
   let(:run_id)   { 123 }
   let(:run_remote_endpoint) { nil }
+  let(:approved_script_id){ 447 }
   let(:plugin_id){ 123 }
   let(:plugin_name){ 'plugin-name' }
   let(:plugin_label) {'plugin-label'}
@@ -37,7 +38,10 @@ describe "plugins/_show.html.haml" do
         url: plugin_url,
         version: version,
         author_data: plugin_author_data,
-        shared_learner_state_key: shared_learner_state_key
+        shared_learner_state_key: shared_learner_state_key,
+        approved_script: double({
+          id: approved_script_id
+        })
       })
     }
   end
@@ -58,7 +62,7 @@ describe "plugins/_show.html.haml" do
       /remoteEndpoint: null/,
       /container:/,
       /wrappedEmbeddable:/,
-      /LARA\.InternalAPI\.initPlugin\('plugin123', pluginContext\)/,
+      /LARA\.InternalAPI\.initPlugin\('plugin#{approved_script_id}', pluginContext\)/,
     ].each do |expected_string|
       expect(rendered).to match(expected_string)
     end
