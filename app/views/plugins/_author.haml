@@ -29,7 +29,7 @@
           authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
           container: $('#{runtime_div_selector}')[0],
           wrappedEmbeddable: null,
-          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data(plugin.id))}`,
+          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`,
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
