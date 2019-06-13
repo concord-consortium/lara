@@ -8,16 +8,16 @@ module ReportService
 
     def get_resource_url(run)
       if run.sequence_id
-        "#{@self_url}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
+        "#{self_url}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
       else
-        "#{@self_url}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
+        "#{self_url}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
       end
     end
 
     def add_meta_data(run, record)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
-      record[:source_key] = ReportService::make_source_key(@self_url)
+      record[:source_key] = ReportService::make_source_key(self_url)
       record[:resource_url] = get_resource_url(run)
       record[:class_hash] = run.class_hash
       record[:class_info_url] = run.class_info_url
@@ -54,10 +54,13 @@ module ReportService
       .compact
     end
 
+    def api_method
+      "import_run"
+    end
+
     def initialize(run, send_all_answers=false)
-      self.getParamsFromEnv
       @send_all_answers = send_all_answers
-      url = "#{@self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
+      url = "#{self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
       @payload = {
         id: run.key,
         url: url,
@@ -75,8 +78,9 @@ module ReportService
       add_meta_data(run, @payload)
     end
 
-    def send()
-      super.send("/import_run")
+    def to_json
+      @payload.to_json
     end
+
   end
 end

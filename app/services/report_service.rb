@@ -31,27 +31,37 @@ module ReportService
 
 
   module Sender
-    def to_json()
-      @payload.to_json
+
+    def self_url
+      raise ReportService::NotConfigured.new unless ReportService::configured?
+      ENV['REPORT_SERVICE_SELF_URL']
     end
 
-    def send(endpoint)
+    def report_service_url
+      raise ReportService::NotConfigured.new unless ReportService::configured?
+      ENV['REPORT_SERVICE_URL']
+    end
+
+    def report_service_token
+      raise ReportService::NotConfigured.new unless ReportService::configured?
+      ENV['REPORT_SERVICE_TOKEN']
+    end
+
+    def api_endpoint
+      "#{report_service_url}/#{api_method}"
+    end
+
+    def send()
       HTTParty.post(
-        "#{@report_service_url}/#{endpoint}",
-        :body => self.to_json,
+        api_endpoint,
+        :body => to_json,
         :headers => {
           'Content-Type' => 'application/json',
-          'Authorization' => "Bearer #{@report_service_token}"
+          'Authorization' => "Bearer #{report_service_token}"
         }
       )
     end
 
-    def getParamsFromEnv
-      raise ReportService::NotConfigured.new unless ReportService::configured?
-      @self_url = ENV['REPORT_SERVICE_SELF_URL']
-      @report_service_url = ENV['REPORT_SERVICE_URL']
-      @report_service_token = ENV['REPORT_SERVICE_TOKEN']
-    end
   end
 
 end
