@@ -16,10 +16,15 @@
   position: absolute;
   width: 450px;
   left: 50%;
-  margin-left: (-350px - 40px) / 2;
+  transform: translate(-50%, 0);
   padding: 20px;
   background: #fff;
   border: 5px solid #eee;
+
+  &.allow-full-width {
+    width: unset;
+    min-width: 450px;
+  }
 
   & > .close {
     position: absolute;
