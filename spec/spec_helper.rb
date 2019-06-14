@@ -114,6 +114,7 @@ RSpec.configure do |config|
   end
   config.before(:each) do
     stub_temporary_protocol_routes
+    clean_env_vars
   end
 
   # include the Haml helper module
@@ -147,4 +148,12 @@ def stub_temporary_protocol_routes
   # This code will be removed when versioned learner data is widely deployed to portals.
   stub_request(:any, /.*\/#{PortalSender::Protocol::VersionRoutePrefix}\/.*/)
   .to_return(:status => [500, "Internal Server Error"])
+end
+
+# some ENV vars set on dev machines should be ignored for tests:
+def  clean_env_vars
+  envs = %w(
+    REPORT_SERVICE_SELF_URL REPORT_SERVICE_URL REPORT_SERVICE_TOKEN
+  )
+  envs.each { |e| ENV.delete(e) }
 end

@@ -1,22 +1,24 @@
 module ReportService
+
   class RunSender
+    include Sender
+
     Version = "1"
-    DefaultClassHash = "anonymous-run"
     DefaultUserEmail = "anonymous"
 
-    def get_resource_url(run, host)
+    def get_resource_url(run)
       if run.sequence_id
-        "#{host}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
+        "#{self_url}#{Rails.application.routes.url_helpers.sequence_path(run.sequence_id)}"
       else
-        "#{host}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
+        "#{self_url}#{Rails.application.routes.url_helpers.activity_path(run.activity_id)}"
       end
     end
 
-    def add_meta_data(run, record, host)
+    def add_meta_data(run, record)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
-      record[:source_key] = ReportService::make_source_key(host)
-      record[:resource_url] = get_resource_url(run, host)
+      record[:source_key] = ReportService::make_source_key(self_url)
+      record[:resource_url] = get_resource_url(run)
       record[:class_hash] = run.class_hash
       record[:class_info_url] = run.class_info_url
       record[:user_email] = run.user ? run.user.email : DefaultUserEmail
@@ -24,20 +26,26 @@ module ReportService
       record[:run_key] = run.key
     end
 
-    def serialized_answer(ans, run, host)
+    def serialized_answer(ans, run)
       answer_hash = ans.report_service_hash
-      add_meta_data(run, answer_hash, host)
+      add_meta_data(run, answer_hash)
       answer_hash
     end
 
-    def serlialized_answers(run, host)
+    def serlialized_answers(run)
       age_threshold_seconds = 0.25
-      modified_answers = run.answers.select do
-        |a| a.updated_at - a.created_at > age_threshold_seconds
+      modified_answers = run.answers.select do |a|
+        a.updated_at - a.created_at > age_threshold_seconds
+      end
+      # Send only the dirty answers, onless forced to send them all.
+      unless @send_all_answers
+        modified_answers.select! do |a|
+          a.dirty?
+        end
       end
       modified_answers.map do |ans|
         begin
-          serialized_answer(ans, run, host)
+          serialized_answer(ans, run)
         rescue => e
           Rails.logger.error "Failed to serialize answer: #{e}"
           nil
@@ -46,9 +54,14 @@ module ReportService
       .compact
     end
 
-    def initialize(run, host)
-      url = "#{host}#{Rails.application.routes.url_helpers.run_path(run)}"
-      @run_payload = {
+    def api_method
+      "import_run"
+    end
+
+    def initialize(run, send_all_answers=false)
+      @send_all_answers = send_all_answers
+      url = "#{self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
+      @payload = {
         id: run.key,
         url: url,
         run_count: run.run_count,
@@ -60,24 +73,14 @@ module ReportService
         sequence_id: run.sequence_id,
         sequence_run_id: run.sequence_run_id,
         collaboration_run_id: run.collaboration_run_id,
-        answers: serlialized_answers(run, host)
+        answers: serlialized_answers(run)
       }
-      add_meta_data(run, @run_payload, host)
+      add_meta_data(run, @payload)
     end
 
-    def to_json()
-      @run_payload.to_json
+    def to_json
+      @payload.to_json
     end
 
-    def send(url, token)
-      HTTParty.post(
-        "#{url}/import_run",
-        :body => self.to_json,
-        :headers => {
-          'Content-Type' => 'application/json',
-          'Authorization' => "Bearer #{token}"
-        }
-      )
-    end
   end
 end
