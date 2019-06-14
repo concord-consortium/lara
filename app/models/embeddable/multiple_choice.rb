@@ -129,7 +129,8 @@ module Embeddable
           correct: choice.is_correct
         }},
         show_in_featured_question_report: show_in_featured_question_report,
-        question_number: index_in_activity
+        question_number: index_in_activity,
+        required: is_prediction
       }
     end
 

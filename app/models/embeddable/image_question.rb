@@ -55,7 +55,8 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
       prompt: prompt,
       drawing_prompt: drawing_prompt,
       show_in_featured_question_report: show_in_featured_question_report,
-      question_number: index_in_activity
+      question_number: index_in_activity,
+      required: is_prediction
     }
   end
 
