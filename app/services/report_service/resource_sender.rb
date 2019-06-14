@@ -11,6 +11,7 @@ module ReportService
       @resource_payload[:created] = created
       @resource_payload[:version] = version
       @resource_payload[:source_key] = ReportService::make_source_key(host)
+      @resource_payload[:tool_id] = URI.parse(host).host
       @resource_payload[:id] = ReportService::make_key(type, id)
     end
 

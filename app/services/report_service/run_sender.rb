@@ -16,10 +16,14 @@ module ReportService
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
       record[:source_key] = ReportService::make_source_key(host)
+      record[:tool_id] = URI.parse(host).host
+      record[:tool_user_id] = run.user_id
+      record[:platform_id] = run.platform_id
+      record[:platform_user_id] = run.platform_user_id
+      record[:resource_link_id] = run.resource_link_id
+      record[:context_id] = run.context_id
       record[:resource_url] = get_resource_url(run, host)
-      record[:class_hash] = run.class_hash
       record[:class_info_url] = run.class_info_url
-      record[:user_email] = run.user ? run.user.email : DefaultUserEmail
       record[:remote_endpoint] = run.remote_endpoint
       record[:run_key] = run.key
     end

@@ -18,14 +18,14 @@ describe ReportService::ResourceSender do
     describe "the encoded values" do
       let(:json) { JSON.parse(sender.to_json())}
       it "should have required resource key fields" do
-        required_fields = ["version", "created", "source_key"]
+        required_fields = ["version", "created", "tool_id"]
         expect(json).to include(*required_fields)
       end
 
       it "The source key should contain host name info" do
-        expect(json['source_key']).to match('app')
-        expect(json['source_key']).to match('lara')
-        expect(json['source_key']).to match('docker')
+        expect(json['tool_id']).to match('app')
+        expect(json['tool_id']).to match('lara')
+        expect(json['tool_id']).to match('docker')
         expect(json['id']).to match('activity')
         expect(json['id']).to match("#{resource.id}")
       end

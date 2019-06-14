@@ -20,6 +20,9 @@ describe ReportService::RunSender do
   let(:remote_endpoint)      { "https://mock.data.com/spec/offering/1" }
   let(:class_info_url)       { "https://mock.data.com/spec/class/2" }
   let(:class_hash)           { "15291405-6B03-4E50-B49F-ACBC99D6255F" }
+  let(:platform_id)          { "test.portal.com" }
+  let(:platform_user_id)     { 123 }
+  let(:resource_link_id)     { 321 }
   let(:answers) do
     1.upto(5).map do |index|
       url = "#{host}activities/#{index}"
@@ -48,7 +51,10 @@ describe ReportService::RunSender do
       sequence_run_id: sequence_run_id,
       collaboration_run_id: collaboration_run_id,
       class_info_url: class_info_url,
-      class_hash: class_hash,
+      platform_id: platform_id,
+      platform_user_id: platform_user_id,
+      context_id: class_hash,
+      resource_link_id: resource_link_id,
       answers: answers
     })
   end
@@ -72,7 +78,7 @@ describe ReportService::RunSender do
       it "should have a key fields" do
         expect(json).to include(
           "version", "created", "user_email",
-          "answers", "class_hash", "run_key"
+          "answers", "context_id", "run_key"
         )
       end
 
@@ -81,15 +87,15 @@ describe ReportService::RunSender do
           answers = json["answers"]
           expect(answers.length).to be 5
           answers.each_with_index do |a|
-            expect(a["source_key"]).to match("app_lara_docker")
-            expect(a["source_key"]).not_to match("/")
-            expect(a["source_key"]).not_to match(/\./)
+            expect(a["tool_id"]).to match("app_lara_docker")
+            expect(a["tool_id"]).not_to match("/")
+            expect(a["tool_id"]).not_to match(/\./)
             expect(a["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
             expect(a).to include("user_email")
-            expect(a).to include("class_hash" => class_hash)
+            expect(a).to include("context_id" => class_hash)
             expect(a).to include("class_info_url" => class_info_url)
             expect(a).to include("version")
           end

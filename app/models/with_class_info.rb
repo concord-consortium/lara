@@ -10,19 +10,19 @@ module WithClassInfo
     new_class_hash = params['class_hash']
     update_attributes = {}
     changed = false
-    if new_class_info_url && (self.class_info_url.blank?)
+    if new_class_info_url && self.class_info_url.blank?
       update_attributes[:class_info_url] = new_class_info_url
       changed = true
     end
-    if new_class_hash && (self.class_hash.blank?)
-      update_attributes[:class_hash] = new_class_hash
+    # Note that LARA's context_id is a class_id / class_hash in Portal terminology.
+    if new_class_hash && self.context_id.blank?
+      update_attributes[:context_id] = new_class_hash
       changed = true
     end
-    if (changed)
+    if changed
       self.update_attributes(update_attributes)
       return update_attributes
     end
-    return false
+    false
   end
-
 end

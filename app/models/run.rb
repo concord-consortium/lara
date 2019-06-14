@@ -5,8 +5,8 @@ class Run < ActiveRecord::Base
   class InvalidJobState < StandardError; end
 
   attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
-  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :class_hash,
-  :class_info_url
+  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
+  :class_info_url, :platform_id, :platform_user_id, :resource_link_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -57,7 +57,7 @@ class Run < ActiveRecord::Base
 
   # /app/models/with_class_info.rb for #update_class_info
   include WithClassInfo
-  
+
   def check_key
     unless key.present?
       self.key = session_guid

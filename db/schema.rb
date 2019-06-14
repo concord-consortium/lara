@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190528192812) do
+ActiveRecord::Schema.define(:version => 20190614110454) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -284,10 +284,10 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.integer  "plugin_id"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
-    t.boolean  "is_hidden",       :default => false
-    t.boolean  "is_full_width",   :default => false
     t.integer  "embeddable_id"
     t.string   "embeddable_type"
+    t.boolean  "is_hidden",       :default => false
+    t.boolean  "is_full_width",   :default => false
   end
 
   add_index "embeddable_plugins", ["plugin_id"], :name => "index_embeddable_plugins_on_plugin_id"
@@ -560,7 +560,10 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.boolean  "is_dirty",             :default => false
     t.integer  "collaboration_run_id"
     t.text     "class_info_url"
-    t.string   "class_hash"
+    t.string   "context_id"
+    t.string   "platform_id"
+    t.string   "platform_user_id"
+    t.string   "resource_link_id"
   end
 
   add_index "runs", ["activity_id"], :name => "index_runs_on_activity_id"
@@ -578,11 +581,14 @@ ActiveRecord::Schema.define(:version => 20190528192812) do
     t.integer  "sequence_id"
     t.string   "remote_id"
     t.string   "remote_endpoint"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "key"
-    t.string   "class_hash"
+    t.string   "context_id"
     t.string   "class_info_url"
+    t.string   "platform_id"
+    t.string   "platform_user_id"
+    t.string   "resource_link_id"
   end
 
   add_index "sequence_runs", ["key"], :name => "sequence_runs_key_idx"
