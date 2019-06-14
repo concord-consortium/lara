@@ -76,7 +76,7 @@ source 'https://gems.railslts.com' do
   gem 'railslts-version', :require => false
 end
 gem 'rake', '< 11'
-gem "jquery-rails", "~> 3.0"
+gem "jquery-rails", "~> 3.1.3"
 gem "jquery-ui-rails", "~> 4.1"
 gem "haml", "~> 4.0"
 gem "dynamic_form", "~> 1.1"
@@ -86,7 +86,7 @@ gem "gon", "~> 5.2"
 gem "multi_json", "~> 1.11"
 gem "devise", "~> 3.0"
 gem "cancancan", "~> 1.10"
-gem "omniauth", "~> 1.1"
+gem "omniauth", "~> 1.3.2"
 gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oauth2.git"}
 gem "default_value_for", "~> 2.0"
 gem "tinymce-rails", "~> 4.7"

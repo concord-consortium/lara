@@ -1,7 +1,7 @@
 .embeddable_tools
   .drag_handle
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'mc', :allow_hide => allow_hide }
-.embeddable_options  
+.embeddable_options
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
   - if embeddable.show_as_menu
     = select embeddable, :answers, options_from_collection_for_select(embeddable.choices, 'id', 'choice', embeddable.answers.last), { :include_blank => "Pick one" }
@@ -17,3 +17,4 @@
         = choice.choice
   - if embeddable.enable_check_answer
     %button= "Check answer"
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }

@@ -1,7 +1,10 @@
 require 'spec_helper'
 
 describe ReportService::RunSender do
-  let(:host)      { "app.lara.docker" }
+  let(:report_service_url)   { 'http://fake-report-service.fake' }
+  let(:report_service_token) { 'very-secret-token' }
+  let(:self_host)            { 'app.lara.docker' }
+
   let(:key)       { "run-key "}
 
   let(:user)      { double("User", {email: "anon@concord.org", id: 34}) }
@@ -22,7 +25,7 @@ describe ReportService::RunSender do
   let(:class_hash)           { "15291405-6B03-4E50-B49F-ACBC99D6255F" }
   let(:answers) do
     1.upto(5).map do |index|
-      url = "#{host}activities/#{index}"
+      url = "#{self_host}activities/#{index}"
       report_service_hash = { question_id: index, type: "mock-answer", url: url }
       double("Answer", {
         report_service_hash: report_service_hash,
@@ -52,14 +55,26 @@ describe ReportService::RunSender do
       answers: answers
     })
   end
-  let(:sender) { ReportService::RunSender.new(run, host)     }
+
+  let(:send_all_answers) { true }
+  let(:sender) { ReportService::RunSender.new(run, send_all_answers)     }
 
   before(:each) do
     allow(Rails.application.routes.url_helpers).to receive(:run_path).and_return("runs/12345")
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
     Timecop.freeze(Time.new(2016))
   end
 
   describe "to_json" do
+    describe "when the service is not configured"  do
+      let(:report_service_token) { nil }
+      it "should raise an excpeption" do
+        expect {sender}.to raise_error(ReportService::NotConfigured)
+      end
+    end
+
     it "should be a string with a length" do
       expect(sender.to_json().length).to be > 1
     end
@@ -84,7 +99,7 @@ describe ReportService::RunSender do
             expect(a["source_key"]).to match("app_lara_docker")
             expect(a["source_key"]).not_to match("/")
             expect(a["source_key"]).not_to match(/\./)
-            expect(a["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
+            expect(a["resource_url"]).to match("#{self_host}/sequences/#{sequence_id}")
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
@@ -135,14 +150,14 @@ describe ReportService::RunSender do
 
         describe "when run is part of the sequence" do
           it "the resource_url should be sequence url" do
-            expect(json["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
+            expect(json["resource_url"]).to match("#{self_host}/sequences/#{sequence_id}")
           end
         end
 
         describe "when run isn't part of the sequence" do
           let(:sequence_id) { nil }
           it "the resource_url should be activity url" do
-            expect(json["resource_url"]).to match("#{host}/activities/#{sequence_id}")
+            expect(json["resource_url"]).to match("#{self_host}/activities/#{sequence_id}")
           end
         end
 

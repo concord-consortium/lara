@@ -1,0 +1,21 @@
+- available_plugins = available_wrapped_embeddable_plugins(embeddable)
+- if available_plugins.length > 0
+  .available_plugins
+    - first_plugin = available_plugins[0]
+    - dom_id = embeddable.embeddable_dom_id
+    = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddable-plugin-form' do
+      = wrapped_embeddable_selector(embeddable)
+      = hidden_field_tag :approved_script_id, first_plugin.approved_script_id, {id: "approved_script_id_#{dom_id}"}
+      = hidden_field_tag :component_label, first_plugin.component_label, {id: "component_label_#{dom_id}"}
+      = hidden_field_tag :embeddable_select_value, "#{embeddable.id}-#{embeddable.class.name}", {id: "embeddable_select_value_#{dom_id}"}
+      = submit_tag 'Add', {id: 'add_embeddable_plugin_button'}
+
+- defined_plugins = wrapped_embeddable_plugins(embeddable)
+- if defined_plugins.length > 0
+  .wrapped_plugins
+    .plugin_list
+      - defined_plugins.each do |plugin|
+        .item
+          #{plugin.name}
+        .edit= link_to t("PLUGIN.EDIT"), edit_embeddable_embeddable_plugin_path(plugin), :remote => true
+        .delete= link_to t("PLUGIN.DELETE"), page_remove_embeddable_path(@page, plugin), method: :post, data: { confirm: t("PLUGIN.DELETE_WARNING") }

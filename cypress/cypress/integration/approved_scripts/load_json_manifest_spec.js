@@ -35,8 +35,42 @@ context('New approved scripts', function () {
       "name": "Test LARA Sharing Plugin",
       "label": "TestLARASharingPlugin",
       "url": fullUrl,
-      "version": "2",
-      "description": "Test Description"
+      "version": "3",
+      "description": "Test Description",
+      "authoring_metadata": {
+        "components": [
+          {
+            "label": "test-plugin:activity1",
+            "name": "Test: Activity Plugin 1",
+            "scope": "activity"
+          },
+          {
+            "label": "test-plugin:activity2",
+            "name": "Test: Activity Plugin 2",
+            "scope": "activity"
+          },
+          {
+            "label": "test-plugin:embeddable1",
+            "name": "Test: Embeddable Plugin 1",
+            "scope": "embeddable"
+          },
+          {
+            "label": "test-plugin:embeddable2",
+            "name": "Test: Embeddable Plugin 2",
+            "scope": "embeddable"
+          },
+          {
+            "label": "test-plugin:embeddable-decoration1",
+            "name": "Test: Embeddable Decoration Plugin 1",
+            "scope": "embeddable-decoration"
+          },
+          {
+            "label": "test-plugin:embeddable-decoration2",
+            "name": "Test: Embeddable Decoration Plugin 2",
+            "scope": "embeddable-decoration"
+          }
+        ]
+      }
     }
 
     beforeEach(() => {
@@ -67,6 +101,7 @@ context('New approved scripts', function () {
         shouldHaveValue("url", pluginManifest.url)
         shouldHaveValue("version", pluginManifest.version)
         shouldHaveValue("description", pluginManifest.description)
+        shouldHaveValue("authoring_metadata", JSON.stringify(pluginManifest.authoring_metadata))
       })
     })
 

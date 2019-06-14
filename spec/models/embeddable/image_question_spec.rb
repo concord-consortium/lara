@@ -60,7 +60,8 @@ describe Embeddable::ImageQuestion do
         prompt: image_question.prompt,
         drawing_prompt: image_question.drawing_prompt,
         show_in_featured_question_report: image_question.show_in_featured_question_report,
-        question_number: nil
+        question_number: nil,
+        required: image_question.is_prediction
       )
     end
   end
