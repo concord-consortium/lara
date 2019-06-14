@@ -14,22 +14,22 @@ describe "WithPlatformInfo" do
       update_attributes(props)
     end
     def update_attributes(new_attrs)
-      self.class_info_url = new_attrs[:class_info_url]
-      self.context_id     = new_attrs[:class_hash]
-      self.platform_id    = new_attrs[:platform_id]
-      self.platform_user_id = new_attrs[:platform_user_id]
-      self.resource_link_id = new_attrs[:resource_link_id]
+      self.class_info_url = new_attrs[:class_info_url] if new_attrs[:class_info_url]
+      self.context_id     = new_attrs[:context_id] if new_attrs[:context_id]
+      self.platform_id    = new_attrs[:platform_id] if new_attrs[:platform_id]
+      self.platform_user_id = new_attrs[:platform_user_id] if new_attrs[:platform_user_id]
+      self.resource_link_id = new_attrs[:resource_link_id] if new_attrs[:resource_link_id]
     end
   end
 
   describe HasPlatformInfo do
     let(:params) do
       {
-        'class_info_url' => "class_info_url",
-        'context_id' => "class_hash",
-        'platform_id' => "test_portal",
-        'platform_user_id' => "user-id-123",
-        'resource_link_id' => "resource_link_id-321",
+        class_info_url: "class_info_url",
+        context_id: "class_hash",
+        platform_id: "test_portal",
+        platform_user_id: "user-id-123",
+        resource_link_id: "resource_link_id-321",
       }
     end
     let(:props) { {} }
@@ -52,7 +52,15 @@ describe "WithPlatformInfo" do
       end
     end
     describe "with existing platform info" do
-      let(:props){ {class_info_url: "old_class_info", class_hash: "old_class_hash"} }
+      let(:props) do
+        {
+          class_info_url: "old_class_info",
+          context_id: "old_class_hash",
+          platform_id: "old_test_portal",
+          platform_user_id: "old_user-id-123",
+          resource_link_id: "old_resource_link_id-321",
+        }
+      end
       it 'has the attributes' do
         expect(my_run.class_info_url).to eql("old_class_info")
         expect(my_run.context_id).to eql("old_class_hash")

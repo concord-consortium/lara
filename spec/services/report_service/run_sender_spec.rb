@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReportService::RunSender do
-  let(:host)      { "app.lara.docker" }
+  let(:host)      { "http://app.lara.docker" }
   let(:key)       { "run-key "}
 
   let(:user)      { double("User", {email: "anon@concord.org", id: 34}) }
@@ -40,6 +40,7 @@ describe ReportService::RunSender do
       key: key,
       run_id: run_id,
       user: user,
+      user_id: user.id,
       run_count: run_count,
       created_at: created_at,
       updated_at: updated_at,
@@ -77,8 +78,7 @@ describe ReportService::RunSender do
       let(:json) { JSON.parse(sender.to_json())}
       it "should have a key fields" do
         expect(json).to include(
-          "version", "created", "user_email",
-          "answers", "context_id", "run_key"
+          "version", "created", "answers", "context_id", "run_key", "platform_id", "platform_user_id", "resource_link_id"
         )
       end
 
@@ -87,14 +87,12 @@ describe ReportService::RunSender do
           answers = json["answers"]
           expect(answers.length).to be 5
           answers.each_with_index do |a|
-            expect(a["tool_id"]).to match("app_lara_docker")
-            expect(a["tool_id"]).not_to match("/")
-            expect(a["tool_id"]).not_to match(/\./)
+            expect(a["tool_id"]).to eql("http://app.lara.docker")
+            expect(a["source_key"]).to eql("app.lara.docker")
             expect(a["resource_url"]).to match("#{host}/sequences/#{sequence_id}")
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
-            expect(a).to include("user_email")
             expect(a).to include("context_id" => class_hash)
             expect(a).to include("class_info_url" => class_info_url)
             expect(a).to include("version")

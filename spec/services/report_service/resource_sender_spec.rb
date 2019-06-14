@@ -23,6 +23,9 @@ describe ReportService::ResourceSender do
       end
 
       it "The source key should contain host name info" do
+        expect(json['source_key']).to match('app')
+        expect(json['source_key']).to match('lara')
+        expect(json['source_key']).to match('docker')
         expect(json['tool_id']).to match('app')
         expect(json['tool_id']).to match('lara')
         expect(json['tool_id']).to match('docker')

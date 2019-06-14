@@ -10,6 +10,6 @@ module ReportService
   end
 
   def self.make_source_key(url)
-    make_key(url.gsub(UrlRegex, '\1'))
+    url.gsub(UrlRegex, '\1')
   end
 end
