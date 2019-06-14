@@ -220,7 +220,7 @@ class SequencesController < ApplicationController
         @sequence_run.disable_collaboration
       end
       # If we have new class_info_url or class_hash update it
-      @sequence_run.update_class_info(params)
+      @sequence_run.update_platform_info(params)
     end
   end
 
