@@ -1,7 +1,27 @@
 %h2=t("PLUGIN.ACTIVITY_LIST_TITLE")
 
-#plugin_list
-  =render partial: 'plugins/list_plugins', locals: {plugins: activity.plugins}
+- available_plugins = ApprovedScript.authoring_menu_items("activity")
+- if available_plugins.length > 0
+  .available_plugins
+    - first_plugin = available_plugins[0]
+    = form_tag add_plugin_activity_path(@activity), :class => 'plugin-form' do
+      = select_tag :approved_script_id, plugin_options("activity")
+      = hidden_field_tag :component_label, first_plugin.component_label, {id: "component_label"}
+      = submit_tag 'Add', {id: 'add_plugin_button'}
 
-#add_plugin= link_to t("PLUGIN.ADD"), new_plugin_path(params: {activity_id: activity.id}), remote: true, :"data-replace" => '#plugin_form'
-#plugin_form
+- if activity.plugins.length > 0
+  .wrapped_plugins
+    .plugin_list
+      - activity.plugins.each do |plugin|
+        .item
+          #{plugin.name}
+        .edit= link_to t("PLUGIN.EDIT"), edit_plugin_path(plugin), remote: true
+        .delete= link_to t("PLUGIN.DELETE"), plugin_path(plugin), remote: true, method: :delete, data: { confirm: t("PLUGIN.DELETE_WARNING") }
+
+:javascript
+  $(function() {
+    $('#approved_script_id').on('change', function() {
+      var selected = $(this).find(':selected');
+      $('#component_label').val(selected.data('component-label') || "")
+    })
+  })

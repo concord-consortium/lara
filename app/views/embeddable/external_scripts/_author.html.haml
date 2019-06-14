@@ -8,3 +8,4 @@
     Name: #{embeddable.name.html_safe unless embeddable.name.blank?}
   .url{name: "questions[embeddable__#{embeddable.class.to_s.demodulize.underscore}_#{embeddable.id}]"}
     URL: #{(embeddable.url or "")}
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }

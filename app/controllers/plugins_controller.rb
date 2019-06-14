@@ -1,13 +1,8 @@
 class PluginsController < ApplicationController
 
   private
-  def _list_plugins(plugin)
-    all_plugins = plugin.plugin_scope.reload.plugins
-    render_to_string('_list_plugins', layout: false, locals: {plugins: all_plugins})
-  end
-
-  def _form(plugin)
-    render_to_string('_form', layout: false, locals: { plugin: @plugin })
+  def _form(plugin, edit)
+    render_to_string('_form', layout: false, locals: { plugin: @plugin, edit: edit })
   end
 
   public
@@ -17,8 +12,8 @@ class PluginsController < ApplicationController
     respond_to do |format|
       format.js {
         render :json => {
-          html: _form(@plugin)
-        }
+          html: _form(@plugin, true)
+        }, :content_type => 'text/json'
       }
     end
   end
@@ -30,7 +25,7 @@ class PluginsController < ApplicationController
     respond_to do |format|
       format.js {
         render :json => {
-          html: _form(@plugin)
+          html: _form(@plugin, false)
         }
       }
     end
@@ -47,7 +42,6 @@ class PluginsController < ApplicationController
       @plugin.reload
     end
 
-    @plugin_list = _list_plugins(@plugin)
     respond_to do |format|
       format.js do
         # will render update.js.erb
@@ -60,7 +54,6 @@ class PluginsController < ApplicationController
     @plugin = Plugin.find(params[:id])
     authorize! :manage, @plugin
     @plugin.destroy
-    @plugin_list = _list_plugins(@plugin)
     respond_to do |format|
       format.js do
         # will render destroy.js.erb

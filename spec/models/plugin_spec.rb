@@ -14,12 +14,14 @@ describe Plugin do
   let(:approved_script) { FactoryGirl.create(:approved_script, approved_script_opts) }
   let(:description)     { "description" }
   let(:author_data)     { "authored_data" }
+  let(:component_label) { "component_label" }
   let(:plugin_opts) do
     {
       shared_learner_state_key: shared_learner_state_key,
       description: description,
       author_data: author_data,
-      approved_script: approved_script
+      approved_script: approved_script,
+      component_label: component_label
     }
   end
 
@@ -45,7 +47,8 @@ describe Plugin do
         {
           description: description,
           author_data: author_data,
-          approved_script_label: approved_script.label
+          approved_script_label: approved_script.label,
+          component_label: component_label
         }
       )
     end

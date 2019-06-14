@@ -633,6 +633,39 @@ form.new_lightweight_activity {
     }
   }
 }
+.available_plugins {
+  .embeddable-plugin-form {
+    margin: 1em 0.5em 0.5em 0.5em;
+  }
+  input[type=submit] {
+    float: right;
+  }
+}
+.wrapped_plugins {
+  .plugin_list {
+    grid-template-columns: 3fr 1fr 1fr;
+    display: grid;
+    div {
+      margin: 0.5em;
+    }
+    .edit a {
+      background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+      text-decoration: none;
+    }
+    .delete a {
+      background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
+      background-size: 14px;
+      color: #333;
+      height: 14px;
+      padding-left: 18px;
+      text-decoration: none;
+    }
+  }
+}
 ul#new {
    margin-top: 1em;
   li#add a {
@@ -1067,3 +1100,22 @@ form {
   }
 }
 
+.edit_approved_script {
+  input[type=text] {
+    width: 60%;
+  }
+  th {
+    font-weight: bold;
+    text-align: left;
+    padding: 5px;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+  td {
+    padding: 5px;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}

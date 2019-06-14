@@ -1,7 +1,49 @@
 {
-  "name": "Test LARA Sharing Plugin",
-  "label": "TestLARASharingPlugin",
+  "name": "Test Plugin",
+  "label": "TestPlugin",
   "url": "test-plugin.js",
-  "version": 2,
-  "description": "Test Description"
+  "version": 3,
+  "description": "Test Description",
+  "authoring_metadata": {
+    "components": [
+      {
+        "label": "test-plugin:activity1",
+        "name": "Activity Plugin 1",
+        "scope": "activity"
+      },
+      {
+        "label": "test-plugin:activity2",
+        "name": "Activity Plugin 2",
+        "scope": "activity"
+      },
+      {
+        "label": "test-plugin:embeddable1",
+        "name": "Embeddable Plugin 1",
+        "scope": "embeddable"
+      },
+      {
+        "label": "test-plugin:embeddable2",
+        "name": "Embeddable Plugin 2",
+        "scope": "embeddable"
+      },
+      {
+        "label": "test-plugin:embeddable-decoration1",
+        "name": "Decoration Plugin 1",
+        "scope": "embeddable-decoration",
+        "decorates": [
+          "Embeddable::ImageQuestion",
+          "Embeddable::MultipleChoice"
+        ]
+      },
+      {
+        "label": "test-plugin:embeddable-decoration2",
+        "name": "Decoration Plugin 2",
+        "scope": "embeddable-decoration",
+        "decorates": [
+          "Embeddable::ImageQuestion",
+          "Embeddable::OpenResponse"
+        ]
+      }
+    ]
+  }
 }

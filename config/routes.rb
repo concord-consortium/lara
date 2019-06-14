@@ -83,6 +83,7 @@ LightweightStandalone::Application.routes.draw do
       get 'export'
       get 'export_for_portal'
       get 'show_status'
+      post 'add_plugin'
       # TODO: dpeprecate this Dashboard route
       get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/activities/%{id}")
     end
