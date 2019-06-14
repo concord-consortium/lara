@@ -6,6 +6,7 @@
   .model-edit
     .interactive-content
       %div{:id => "authorable-interactive-#{embeddable.id}"}
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 
 :javascript
   (function() {
