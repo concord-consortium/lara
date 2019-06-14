@@ -1,4 +1,4 @@
-import { IPluginRuntimeConstructor, IPluginAuthoringConstructor } from "../plugin-api";
+import { IPluginRuntimeConstructor, IPluginAuthoringConstructor, IRegisterPluginOptions } from "../plugin-api";
 import { IPluginContextOptions,
          IPluginRuntimeContextOptions,
          IPluginAuthoringContextOptions,
@@ -76,11 +76,6 @@ const initAuthoringPlugin = (label: string, context: IPluginAuthoringContextOpti
     console.error("No plugin registered for label:", label);
   }
 };
-
-export interface IRegisterPluginOptions {
-  runtimeClass: IPluginRuntimeConstructor;
-  authoringClass: IPluginAuthoringConstructor;
-}
 
 /****************************************************************************
  Register a new external script

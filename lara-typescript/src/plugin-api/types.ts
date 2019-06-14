@@ -2,6 +2,11 @@ export interface IPlugin {
   /** No special requirements for plugin class */
 }
 
+export interface IRegisterPluginOptions {
+  runtimeClass: IPluginRuntimeConstructor;
+  authoringClass: IPluginAuthoringConstructor;
+}
+
 export type IPluginRuntimeConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
 export type IPluginAuthoringConstructor = new(runtimeContext: IPluginAuthoringContext) => IPlugin;
 

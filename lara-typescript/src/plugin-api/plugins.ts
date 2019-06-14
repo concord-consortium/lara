@@ -1,4 +1,5 @@
-import { registerPlugin as _registerPlugin, IRegisterPluginOptions } from "../lib/plugins";
+import { registerPlugin as _registerPlugin } from "../lib/plugins";
+import { IRegisterPluginOptions } from "./types";
 
 /****************************************************************************
  Register a new external script
