@@ -62,6 +62,10 @@ module ReportService
       )
     end
 
+    def payload_hash
+      Digest::SHA1.hexdigest(to_json)
+    end
+
   end
 
 end
