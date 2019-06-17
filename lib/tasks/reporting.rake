@@ -77,18 +77,11 @@ namespace :reporting do
     send_all_resources(runs, ReportService::RunSender, opts)
   end
 
+  # Given a CSV file exported from the portal, import `class_hash` value
+  # Line Format =  "<clazz_id>, <class_hash>, <learner_id>, <learner_secret_key>"
+  # See ClassInfoImportHelper
   desc "import clazz info"
   task :import_clazz_info => :environment do
-
-    def remote_endpoint_path(learner_key)
-      portal_url = ENV["IMPORT_PORTAL_URL"]
-      "#{portal_url}/dataservice/external_activity_data/#{learner_key}"
-    end
-
-    def class_info_url_path(class_id)
-      portal_url = ENV["IMPORT_PORTAL_URL"]
-      "#{portal_url}/api/v1/classes/#{class_id}"
-    end
 
     def env_value(var_name, prompt, default)
       cli = HighLine.new
@@ -99,56 +92,24 @@ namespace :reporting do
     import_filename = env_value "CLASS_IMPORT_FILENAME", "Import file", "clazz-learners.csv"
 
     start_time = Time.now
-    line_count = 1
-    updated_srun_count = 0
+    line_count = 0
     updated_run_count = 0
     num_lines = File.foreach(import_filename).inject(0) {|c, line| c+1}
     line_interval = (num_lines / 100.0).ceil
 
     import_file  = File.open(import_filename, 'r')
     import_file.each_line do |import_line|
+      new_updates = ClassInfoImportHelper.update_runs_from_csv_line(import_line)
+      line_count = line_count + 1
+      updated_run_count = updated_run_count + new_updates
       if line_count == 1 || line_count % line_interval == 0
         puts "Processing line: #{line_count} of #{num_lines}"
-        puts "    Updated #{updated_srun_count} SequenceRuns"
         puts "    Updated #{updated_run_count} Runs"
       end
-      clazz_id, class_hash, learner_id, learner_key = import_line.strip.split(",")
-      learner_key = learner_key.present? ? learner_key : learner_id
-      remote_endpoint = remote_endpoint_path(learner_key)
-      info_url = class_info_url_path(clazz_id)
-      SequenceRun
-        .where(remote_endpoint: remote_endpoint)
-        .each do |srun|
-          srun.update_attributes({
-            class_info_url: info_url,
-            class_hash: class_hash
-          })
-          updated_srun_count = updated_srun_count + 1
-          # Child runs:
-          srun.runs.each do |run|
-            run.update_attributes({
-              class_info_url: info_url,
-              class_hash: class_hash
-            })
-            updated_run_count = updated_run_count + 1
-          end
-      end
-
-      Run
-        .where(remote_endpoint: remote_endpoint)
-        .each do |run|
-          run.update_attributes({
-            class_info_url: info_url,
-            class_hash: class_hash
-          })
-          updated_run_count = updated_run_count + 1
-        end
-      line_count = line_count + 1
     end
     elapsed = (Time.now - start_time).round(2)
     puts "=============================================="
     puts "Elapsed time: #{elapsed} seconds"
-    puts "Updated #{updated_srun_count} SequenceRuns"
     puts "Updated #{updated_run_count} Runs"
   end
 end
