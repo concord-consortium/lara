@@ -19,7 +19,7 @@ module ReportService
       record[:created] = Time.now.utc.to_s
       record[:source_key] = ReportService::make_source_key(self_url)
       record[:tool_id] = self_url
-      record[:tool_user_id] = run.user_id
+      record[:tool_user_id] = run.user_id.to_s
       record[:platform_id] = run.platform_id
       record[:platform_user_id] = run.platform_user_id
       record[:resource_link_id] = run.resource_link_id
