@@ -1,5 +1,16 @@
 require 'spec_helper'
 
+def make_answer(index, dirty)
+  url = "#{self_host}activities/#{index}"
+  report_service_hash = { question_id: index, type: "mock-answer", url: url }
+  double("Answer", {
+    report_service_hash: report_service_hash,
+    created_at: created_at,
+    updated_at: updated_at,
+    dirty?: dirty
+  })
+end
+
 describe ReportService::RunSender do
   let(:report_service_url)   { 'http://fake-report-service.fake' }
   let(:report_service_token) { 'very-secret-token' }
@@ -24,15 +35,7 @@ describe ReportService::RunSender do
   let(:class_info_url)       { "https://mock.data.com/spec/class/2" }
   let(:class_hash)           { "15291405-6B03-4E50-B49F-ACBC99D6255F" }
   let(:answers) do
-    1.upto(5).map do |index|
-      url = "#{self_host}activities/#{index}"
-      report_service_hash = { question_id: index, type: "mock-answer", url: url }
-      double("Answer", {
-        report_service_hash: report_service_hash,
-        created_at: created_at,
-        updated_at: updated_at
-      })
-    end
+    1.upto(5).map { |index| make_answer(index, true) }
   end
 
   let(:run) do
@@ -56,8 +59,9 @@ describe ReportService::RunSender do
     })
   end
 
-  let(:send_all_answers) { true }
-  let(:sender) { ReportService::RunSender.new(run, send_all_answers)     }
+  let(:send_all_answers) { false }
+  let(:send_opts) { {send_all_answers: send_all_answers} }
+  let(:sender)    { ReportService::RunSender.new(run, send_opts) }
 
   before(:each) do
     allow(Rails.application.routes.url_helpers).to receive(:run_path).and_return("runs/12345")
@@ -110,7 +114,7 @@ describe ReportService::RunSender do
           end
         end
 
-        describe "with one answer that hasn't changed" do
+        describe "One answer that has never been started" do
           let(:report_service_hash) do
             { question_id: "fake_answer_1", type: "mock-answer", url: "url" }
           end
@@ -118,13 +122,36 @@ describe ReportService::RunSender do
             double("Answer", {
               report_service_hash: report_service_hash,
               created_at: created_at,
-              updated_at: created_at # Not changed since created
+              updated_at: created_at, # Not changed since created
+              dirty?: true
             })
           end
-          it "The answers json should not include the unchanged answer" do
+          it "The answers json should not include the unanswered answer" do
             answers << unchanged_answer
-            expect(answers.length).to be  6
-            expect(json["answers"].length).to be 5
+            expect(answers.length).to eql 6
+            expect(json["answers"].length).to eql 5
+          end
+        end
+
+        describe "When some answers aren't dirty" do
+          before(:each) do
+            5.times do |count|
+              answers << make_answer(count, false)
+            end
+          end
+
+          describe "When configured to force_send all answers" do
+            let(:send_all_answers) { true }
+            it "should send all 10 answers" do
+              expect(json["answers"].length).to eql 10
+            end
+          end
+
+          describe "When configured not to force_send all answers" do
+            let(:send_all_answers) { false }
+            it "should send ony first five dirty answers" do
+              expect(json["answers"].length).to eql 5
+            end
           end
         end
 
@@ -134,7 +161,8 @@ describe ReportService::RunSender do
           let(:exploding_answer) do
             answer = double("Answer", {
               created_at: created_at,
-              updated_at: updated_at
+              updated_at: updated_at,
+              dirty?: true
             })
             allow(answer).to receive(:report_service_hash).and_raise(boom)
             answer

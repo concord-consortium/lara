@@ -13,13 +13,13 @@ namespace :reporting do
     ENV["REPORT_SERVICE_SELF_URL"] ||= cli.ask("URL for this host: ")
   end
 
-  def send_resource(resource, sender_class)
+  def send_resource(resource, sender_class, opts={})
     get_repport_options()
     self_host = ENV["REPORT_SERVICE_SELF_URL"]
     service_url = ENV["REPORT_SERVICE_URL"]
     service_token = ENV["REPORT_SERVICE_TOKEN"]
     begin
-      payload = sender_class.new(resource)
+      payload = sender_class.new(resource, opts)
       result = payload.send()
       if (result && result["success"])
         return true
@@ -30,19 +30,18 @@ namespace :reporting do
     return false
   end
 
-  def send_all_resources(resource_class, sender_class)
+  def send_all_resources(resource_class, sender_class, opts={})
     index = 0
     error_count = 0
     success_count = 0
     sart_time = Time.now
-    num_runs = Run.count
     count = resource_class.count
     puts "==> Sending #{count} #{resource_class.name}s: ..."
     puts ""
     resource_class
       .find_in_batches(batch_size: 20) do |group|
         group.each do |item|
-          if send_resource(item, sender_class)
+          if send_resource(item, sender_class, opts)
             success_count = success_count + 1
             putc "."
           else
@@ -73,7 +72,9 @@ namespace :reporting do
   desc "publish runs to report service"
   task :publish_runs => :environment do
     # limit this to portal runs for now
-    send_all_resources(Run.where('remote_endpoint is not null'), ReportService::RunSender)
+    runs = Run.where('remote_endpoint is not null')
+    opts = { send_all_answers: true }
+    send_all_resources(runs, ReportService::RunSender, opts)
   end
 
   desc "import clazz info"

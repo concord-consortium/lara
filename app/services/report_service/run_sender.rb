@@ -58,8 +58,11 @@ module ReportService
       "import_run"
     end
 
-    def initialize(run, send_all_answers=false)
-      @send_all_answers = send_all_answers
+    # Params:
+    # +run+:: run to send to report service
+    # +opts+:: _send_all_answers_ by default only send changed answers.
+    def initialize(run, opts={ send_all_answers: false} )
+      @send_all_answers = opts[:send_all_answers]
       url = "#{self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
       @payload = {
         id: run.key,
