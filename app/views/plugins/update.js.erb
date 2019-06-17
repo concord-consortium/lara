@@ -1,10 +1,2 @@
-
-$('#plugin_list').html('<%= j @plugin_list.html_safe %>')
-
-$('#plugin_list [data-remote][data-replace]')
-  .data('type', 'html')
-  .on('ajax:success', function (event, data) {
-      var $this = $(this);
-      $($this.data('replace')).html(JSON.parse(data).html);
-  });
-$('#plugin_form').html('')
+// reload the activity edit page
+window.location.reload();

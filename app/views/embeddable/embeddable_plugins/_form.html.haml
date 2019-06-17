@@ -1,21 +1,9 @@
 %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
-  Embeddable Plugin
+  = @embeddable.name
 
 = form_for @embeddable do |f|
   = f.error_messages
   %div{style: "display: grid; grid-template-columns: 100px auto;grid-row-gap: 2em;"}
-    %div
-      = f.label "Plugin:"
-    %div
-      = f.collection_select(:approved_script_id, ApprovedScript.all, :id, :name)
-    %div
-      = f.label "Description:"
-    %div
-      = f.text_field :description
-    %div
-      = f.label "Wrapped Embeddable:"
-    %div
-      = f.select :embeddable_select_value, @embeddable.embeddables_for_select, {}, class: :select_embeddable
     %div
       = f.label "Author Data:"
     %div

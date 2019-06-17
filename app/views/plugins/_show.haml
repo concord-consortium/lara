@@ -1,4 +1,4 @@
-- v3_plugin_label = "plugin#{plugin.id}"
+- v3_plugin_label = "plugin#{plugin.approved_script.id}"
 - unless plugin_loaded(plugin.url)
   = content_for :external_scripts do
     :javascript

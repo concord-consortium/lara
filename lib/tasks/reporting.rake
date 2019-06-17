@@ -19,8 +19,8 @@ namespace :reporting do
     service_url = ENV["REPORT_SERVICE_URL"]
     service_token = ENV["REPORT_SERVICE_TOKEN"]
     begin
-      payload = sender_class.new(resource, self_host)
-      result = payload.send(service_url, service_token)
+      payload = sender_class.new(resource)
+      result = payload.send()
       if (result && result["success"])
         return true
       end

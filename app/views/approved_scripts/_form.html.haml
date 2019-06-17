@@ -1,5 +1,5 @@
 = form_for(@approved_script) do |f|
-  %div{style: "margin: 0em 5em; display: flex; flex-direction: column; width: 300px;"}
+  %div{style: "margin: 0em 5em; display: flex; flex-direction: column;"}
     - if @approved_script.errors.any?
       #error_explanation
         %h2
@@ -34,10 +34,28 @@
       = f.label :description
       %br
       = f.text_area :description
+    #component_display.field{style: "margin: 1em 0px;"}
+    = f.hidden_field :authoring_metadata
     .actions{style: "margin: 1em 0px;"}
       = f.submit
 
 :javascript
+  function showAuthoringMetadata() {
+    var metadata = JSON.parse(document.getElementById("approved_script_authoring_metadata").value || "{}");
+    var rows = [];
+    (metadata.components || []).forEach(function (component) {
+      var decorates = component.decorates ? component.decorates.map(function (d) { return d.replace("Embeddable::", "")}).join(", ") : "<i>n/a</i>";
+      rows.push("<tr><td>" + component.name + "</td><td>" + component.scope + "<td>" + decorates + "</td></tr>")
+    });
+    var el = document.getElementById("component_display");
+    if (rows.length > 0) {
+      el.innerHTML = "<table><thead><tr><th>Component</th><th>Scope</th><th>Decorates</th></thead><tbody>" + rows.join("") + "</tbody></table>";
+    }
+    else {
+      el.innerHTML = "No authoring metadata found.";
+    }
+  }
+
   function loadPluginJSON() {
     var baseUrl;
     Promise.resolve(document.getElementById("approved_script_json_url"))
@@ -58,14 +76,19 @@
         return resp.json();
       })
       .then(function(json) {
-        ["name", "label", "url", "version", "description"].forEach(function (field) {
+        // document.getElementById("json").innerHTML = JSON.stringify(json.authoring_metadata || {});
+        ["name", "label", "url", "version", "description", "authoring_metadata"].forEach(function (field) {
           var value = json[field];
           if (value) {
             // allow urls to be relative to the json base url
             if ((field === "url") && value && !/https?:/.test(value)) {
               value = baseUrl + value;
             }
+            if (field === "authoring_metadata") {
+              value = JSON.stringify(value);
+            }
             document.getElementById("approved_script_" + field).value = value;
+            showAuthoringMetadata();
           }
         })
       })
@@ -73,3 +96,5 @@
         alert("Unable to load JSON: " + e.toString());
       });
   }
+
+  showAuthoringMetadata();

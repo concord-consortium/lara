@@ -21,3 +21,4 @@
     %button.image_question.button{:type => 'submit', :id => 'image_upload_button'}
       %i.fa.fa-upload
       Upload image
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }

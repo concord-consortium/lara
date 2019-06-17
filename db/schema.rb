@@ -24,11 +24,12 @@ ActiveRecord::Schema.define(:version => 20190614110454) do
     t.string   "name"
     t.string   "url"
     t.text     "description"
-    t.datetime "created_at",                                                :null => false
-    t.datetime "updated_at",                                                :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
     t.string   "label"
-    t.decimal  "version",     :precision => 10, :scale => 0, :default => 1
+    t.decimal  "version",            :precision => 10, :scale => 0, :default => 1
     t.string   "json_url"
+    t.text     "authoring_metadata"
   end
 
   create_table "authentications", :force => true do |t|
@@ -504,6 +505,7 @@ ActiveRecord::Schema.define(:version => 20190614110454) do
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
     t.string   "shared_learner_state_key"
+    t.string   "component_label"
   end
 
   add_index "plugins", ["plugin_scope_id", "plugin_scope_type"], :name => "plugin_scopes"

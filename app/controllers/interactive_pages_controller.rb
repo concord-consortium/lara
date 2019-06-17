@@ -113,6 +113,12 @@ class InteractivePagesController < ApplicationController
     authorize! :update, @page
     update_activity_changed_by
     e = Embeddable.create_for_string(params[:embeddable_type])
+    if (params[:embeddable_type] == Embeddable::EmbeddablePlugin.to_s)
+      e.approved_script_id = params[:approved_script_id] if !params[:approved_script_id].blank?
+      e.component_label = params[:component_label] if !params[:component_label].blank?
+      e.embeddable_select_value = params[:embeddable_select_value] if !params[:embeddable_select_value].blank?
+      e.save!
+    end
     @page.add_embeddable(e, nil, params[:section])
     # The call below supposed to open edit dialog, but it doesn't seem to work anymore.
     edit_embeddable_redirect(e)
