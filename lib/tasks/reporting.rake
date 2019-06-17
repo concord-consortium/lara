@@ -72,7 +72,8 @@ namespace :reporting do
 
   desc "publish runs to report service"
   task :publish_runs => :environment do
-    send_all_resources(Run, ReportService::RunSender)
+    # limit this to portal runs for now
+    send_all_resources(Run.where('remote_endpoint is not null'), ReportService::RunSender)
   end
 
   desc "import clazz info"
