@@ -113,6 +113,7 @@ namespace :reporting do
         puts "    Updated #{updated_run_count} Runs"
       end
       clazz_id, class_hash, learner_id, learner_key = import_line.strip.split(",")
+      learner_key = learner_key.present? ? learner_key : learner_id
       remote_endpoint = remote_endpoint_path(learner_key)
       info_url = class_info_url_path(clazz_id)
       SequenceRun
