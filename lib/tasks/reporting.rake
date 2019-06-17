@@ -112,7 +112,7 @@ namespace :reporting do
       clazz_id, class_hash, user_id, learner_key, resource_link_id = import_line.strip.split(",")
       remote_endpoint = remote_endpoint_path(learner_key)
       info_url = class_info_url_path(clazz_id)
-      platform_id = URI.parse(ENV["IMPORT_PORTAL_URL"]).host
+      platform_id = ENV["IMPORT_PORTAL_URL"]
       attrs = {
         class_info_url: info_url,
         context_id: class_hash,
