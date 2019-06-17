@@ -1,15 +1,25 @@
 - if plugin.version == 3
   - v3_plugin_label = "plugin#{plugin.approved_script_id}"
   - output_id = "plugin_authoring_output"
-  %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
-    = @embeddable.name
 
-  = form_for @embeddable do |f|
-    = f.error_messages
-    %div{style: ""}
-      .plugin-output{id: output_id}
-      %div
-        = render :partial => 'shared/edit_full_width', :locals => { :f => f }
+  - if @embeddable
+    %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+      = @embeddable.name
+
+    = form_for @embeddable do |f|
+      = f.error_messages
+      %div{style: ""}
+        .plugin-output{id: output_id}
+        %div
+          = render :partial => 'shared/edit_full_width', :locals => { :f => f }
+  - else
+    %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+      = plugin.name
+
+    = form_for plugin do |f|
+      = f.error_messages
+      %div{style: ""}
+        .plugin-output{id: output_id}
 
   - runtime_div_selector = "##{output_id}"
   :javascript
