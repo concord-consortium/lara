@@ -1,4 +1,4 @@
-- if @plugin.version == 3
+- if @plugin.version == 3 && (@plugin.component && @plugin.component.guiAuthoring)
   = render :partial => 'plugins/author',locals: {plugin: @plugin}
 - else
   = render :partial => 'form',locals: {plugin: @plugin}
