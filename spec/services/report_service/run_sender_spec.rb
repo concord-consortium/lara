@@ -1,12 +1,11 @@
 require 'spec_helper'
 
-def make_answer(index, dirty)
+def make_answer(index, dirty, answered=true)
   url = "#{self_host}activities/#{index}"
   report_service_hash = { question_id: index, type: "mock-answer", url: url }
   double("Answer", {
     report_service_hash: report_service_hash,
-    created_at: created_at,
-    updated_at: updated_at,
+    answered?: answered,
     dirty?: dirty
   })
 end
@@ -46,6 +45,7 @@ describe ReportService::RunSender do
       run_count: run_count,
       created_at: created_at,
       updated_at: updated_at,
+      answered?: true,
       activity_id: activity_id,
       remote_id: remote_id,
       page_id: page_id,
@@ -121,8 +121,7 @@ describe ReportService::RunSender do
           let(:unchanged_answer) do
             double("Answer", {
               report_service_hash: report_service_hash,
-              created_at: created_at,
-              updated_at: created_at, # Not changed since created
+              answered?: false,
               dirty?: true
             })
           end
@@ -160,8 +159,7 @@ describe ReportService::RunSender do
           let(:boom) { "boom" }
           let(:exploding_answer) do
             answer = double("Answer", {
-              created_at: created_at,
-              updated_at: updated_at,
+              answered?: true,
               dirty?: true
             })
             allow(answer).to receive(:report_service_hash).and_raise(boom)

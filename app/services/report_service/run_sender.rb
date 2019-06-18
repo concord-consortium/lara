@@ -33,10 +33,7 @@ module ReportService
     end
 
     def serlialized_answers(run)
-      age_threshold_seconds = 0.25
-      modified_answers = run.answers.select do |a|
-        a.updated_at - a.created_at > age_threshold_seconds
-      end
+      modified_answers = run.answers.select { |a| a.answered? }
       # Send only the dirty answers, onless forced to send them all.
       unless @send_all_answers
         modified_answers.select! do |a|
