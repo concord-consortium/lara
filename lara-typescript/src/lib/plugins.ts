@@ -62,7 +62,7 @@ const initRuntimePlugin = (label: string, context: IPluginRuntimeContextOptions)
 };
 
 const initAuthoringPlugin = (label: string, context: IPluginAuthoringContextOptions) => {
-  const Constructor: IPluginAuthoringConstructor = pluginClasses[label].authoringClass;
+  const Constructor = pluginClasses[label].authoringClass;
   if (typeof Constructor === "function") {
     try {
       const plugin = new Constructor(generateAuthoringPluginContext(context));
@@ -80,7 +80,7 @@ const initAuthoringPlugin = (label: string, context: IPluginAuthoringContextOpti
 /****************************************************************************
  Register a new external script
  ```
- registerPlugin({runtimeClass: DebuggerRuntime, authoringClass: DebuggerAuthoring})
+ registerPlugin({runtimeClass: DebuggerRuntime, authoringClass?: DebuggerAuthoring})
  ```
  @param options The registration options
  @returns `true` if plugin was registered correctly.
@@ -99,9 +99,9 @@ export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
   }
   if (typeof authoringClass !== "function") {
     // tslint:disable-next-line:no-console
-    console.error("Plugin did not provide an authoring constructor", nextPluginLabel);
-    return false;
-  }
+    console.warn(`Plugin did not provide an authoring constructor. This is ok if "guiAuthoring"
+                  is not set for this component.`, nextPluginLabel);
+}
   if (pluginClasses[nextPluginLabel]) {
     // tslint:disable-next-line:no-console
     console.error("Duplicate Plugin for label", nextPluginLabel);

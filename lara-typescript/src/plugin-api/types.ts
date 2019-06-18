@@ -4,7 +4,7 @@ export interface IPlugin {
 
 export interface IRegisterPluginOptions {
   runtimeClass: IPluginRuntimeConstructor;
-  authoringClass: IPluginAuthoringConstructor;
+  authoringClass?: IPluginAuthoringConstructor;
 }
 
 export type IPluginRuntimeConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
