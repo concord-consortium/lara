@@ -11,6 +11,7 @@ describe("Plugins", () => {
     (window as any).console = {
       log: jest.fn(),
       error: jest.fn(),
+      warn: jest.fn(),
       info: jest.fn(),
       group: jest.fn(),
       groupEnd: jest.fn(),
@@ -30,6 +31,19 @@ describe("Plugins", () => {
       expect(registerPlugin("anotherTest")).toEqual(false); // missing constructor
       // tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
+    });
+
+    it ("should not let plugin register itself without runtime class", () => {
+      const authoringClass = jest.fn();
+      setNextPluginLabel("testWithoutRuntime");
+      // @ts-ignore
+      expect(registerPlugin({authoringClass})).toEqual(false);
+    });
+
+    it ("should let plugin register itself without authoring class", () => {
+      const runtimeClass = jest.fn();
+      setNextPluginLabel("testWithoutAuthoring");
+      expect(registerPlugin({runtimeClass})).toEqual(true);
     });
   });
 
