@@ -26,7 +26,7 @@
 
 **● claims**: *[IPortalClaims](iportalclaims.md)*
 
-*Defined in [types.ts:117](../../../lara-typescript/src/plugin-api/types.ts#L117)*
+*Defined in [types.ts:146](../../../lara-typescript/src/plugin-api/types.ts#L146)*
 
 ___
 <a id="class_info_url"></a>
@@ -35,7 +35,7 @@ ___
 
 **● class_info_url**: *`string`*
 
-*Defined in [types.ts:116](../../../lara-typescript/src/plugin-api/types.ts#L116)*
+*Defined in [types.ts:145](../../../lara-typescript/src/plugin-api/types.ts#L145)*
 
 ___
 <a id="domain"></a>
@@ -44,7 +44,7 @@ ___
 
 **● domain**: *`string`*
 
-*Defined in [types.ts:113](../../../lara-typescript/src/plugin-api/types.ts#L113)*
+*Defined in [types.ts:142](../../../lara-typescript/src/plugin-api/types.ts#L142)*
 
 ___
 <a id="externalid"></a>
@@ -53,7 +53,7 @@ ___
 
 **● externalId**: *`number`*
 
-*Defined in [types.ts:115](../../../lara-typescript/src/plugin-api/types.ts#L115)*
+*Defined in [types.ts:144](../../../lara-typescript/src/plugin-api/types.ts#L144)*
 
 ___
 <a id="returnurl"></a>
@@ -62,7 +62,7 @@ ___
 
 **● returnUrl**: *`string`*
 
-*Defined in [types.ts:114](../../../lara-typescript/src/plugin-api/types.ts#L114)*
+*Defined in [types.ts:143](../../../lara-typescript/src/plugin-api/types.ts#L143)*
 
 ___
 

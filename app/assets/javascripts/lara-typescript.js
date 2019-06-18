@@ -16029,10 +16029,10 @@ exports.offInteractiveAvailable = function (handler) {
 
 /***/ }),
 
-/***/ "./src/lib/plugin-runtime-context.ts":
-/*!*******************************************!*\
-  !*** ./src/lib/plugin-runtime-context.ts ***!
-  \*******************************************/
+/***/ "./src/lib/plugin-context.ts":
+/*!***********************************!*\
+  !*** ./src/lib/plugin-context.ts ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16041,20 +16041,26 @@ exports.offInteractiveAvailable = function (handler) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/lib/embeddable-runtime-context.ts");
 var $ = __webpack_require__(/*! jquery */ "jquery");
-exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+var ajaxPromise = function (url, data) {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            url: learnerStateSaveUrl,
+            url: url,
             type: "PUT",
-            data: { state: state },
-            success: function (data) {
-                resolve(data);
+            data: data,
+            success: function (result) {
+                resolve(result);
             },
             error: function (jqXHR, errText, err) {
                 reject(err);
             }
         });
     });
+};
+exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+    return ajaxPromise(learnerStateSaveUrl, { state: state });
+};
+exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
+    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
 };
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
@@ -16098,22 +16104,33 @@ var fetchPluginEventLogData = function (context) {
         embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
     };
 };
-exports.generatePluginRuntimeContext = function (context) {
+exports.generateRuntimePluginContext = function (options) {
     return {
-        name: context.name,
-        url: context.url,
-        pluginId: context.pluginId,
-        authoredState: context.authoredState,
-        learnerState: context.learnerState,
-        container: context.container,
-        runId: context.runId,
-        remoteEndpoint: context.remoteEndpoint,
-        userEmail: context.userEmail,
-        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(context.learnerStateSaveUrl, state); },
-        getClassInfo: function () { return getClassInfo(context.classInfoUrl); },
-        getFirebaseJwt: function (appName) { return getFirebaseJwt(context.firebaseJwtUrl, appName); },
-        wrappedEmbeddable: context.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(context.wrappedEmbeddable) : null,
-        log: function (logData) { return log(context, logData); }
+        name: options.name,
+        url: options.url,
+        pluginId: options.pluginId,
+        authoredState: options.authoredState,
+        learnerState: options.learnerState,
+        container: options.container,
+        runId: options.runId,
+        remoteEndpoint: options.remoteEndpoint,
+        userEmail: options.userEmail,
+        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(options.learnerStateSaveUrl, state); },
+        getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
+        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
+        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
+        log: function (logData) { return log(options, logData); }
+    };
+};
+exports.generateAuthoringPluginContext = function (options) {
+    return {
+        name: options.name,
+        url: options.url,
+        pluginId: options.pluginId,
+        authoredState: options.authoredState,
+        container: options.container,
+        componentLabel: options.componentLabel,
+        saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); }
     };
 };
 
@@ -16130,7 +16147,7 @@ exports.generatePluginRuntimeContext = function (context) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var plugin_runtime_context_1 = __webpack_require__(/*! ./plugin-runtime-context */ "./src/lib/plugin-runtime-context.ts");
+var plugin_context_1 = __webpack_require__(/*! ./plugin-context */ "./src/lib/plugin-context.ts");
 var pluginError = function (e, other) {
     // tslint:disable-next-line:no-console
     console.group("LARA Plugin Error");
@@ -16157,13 +16174,38 @@ exports.setNextPluginLabel = function (override) {
  This method is called to initialize the plugin.
  Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
  @param label The the script identifier.
- @param context Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
+ @param options Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
  ****************************************************************************/
-exports.initPlugin = function (label, context) {
-    var Constructor = pluginClasses[label];
+exports.initPlugin = function (label, options) {
+    if (options.type === "authoring") {
+        initAuthoringPlugin(label, options);
+    }
+    else {
+        initRuntimePlugin(label, options);
+    }
+};
+var initRuntimePlugin = function (label, context) {
+    var Constructor = pluginClasses[label].runtimeClass;
     if (typeof Constructor === "function") {
         try {
-            var plugin = new Constructor(plugin_runtime_context_1.generatePluginRuntimeContext(context));
+            var plugin = new Constructor(plugin_context_1.generateRuntimePluginContext(context));
+        }
+        catch (e) {
+            pluginError(e, context);
+        }
+        // tslint:disable-next-line:no-console
+        console.info("Plugin", label, "is now registered");
+    }
+    else {
+        // tslint:disable-next-line:no-console
+        console.error("No plugin registered for label:", label);
+    }
+};
+var initAuthoringPlugin = function (label, context) {
+    var Constructor = pluginClasses[label].authoringClass;
+    if (typeof Constructor === "function") {
+        try {
+            var plugin = new Constructor(plugin_context_1.generateAuthoringPluginContext(context));
         }
         catch (e) {
             pluginError(e, context);
@@ -16177,24 +16219,28 @@ exports.initPlugin = function (label, context) {
     }
 };
 /****************************************************************************
- Register a new external script as `label` with `_class `, e.g.:
+ Register a new external script
  ```
- registerPlugin('debugger', Dubugger)
+ registerPlugin({runtimeClass: DebuggerRuntime, authoringClass?: DebuggerAuthoring})
  ```
- @param deprecratedLabel DEPRECATED: The identifier of the script.
- @param _class The Plugin class/constructor being associated with the identifier.
+ @param options The registration options
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
-exports.registerPlugin = function (deprecratedLabel, _class) {
+exports.registerPlugin = function (options) {
     if (nextPluginLabel === "") {
         // tslint:disable-next-line:no-console
         console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
         return false;
     }
-    if (typeof _class !== "function") {
+    var runtimeClass = options.runtimeClass, authoringClass = options.authoringClass;
+    if (typeof runtimeClass !== "function") {
         // tslint:disable-next-line:no-console
-        console.error("Plugin did not provide constructor", nextPluginLabel);
+        console.error("Plugin did not provide a runtime constructor", nextPluginLabel);
         return false;
+    }
+    if (typeof authoringClass !== "function") {
+        // tslint:disable-next-line:no-console
+        console.warn("Plugin did not provide an authoring constructor. This is ok if \"guiAuthoring\"\n                  is not set for this component.", nextPluginLabel);
     }
     if (pluginClasses[nextPluginLabel]) {
         // tslint:disable-next-line:no-console
@@ -16202,7 +16248,7 @@ exports.registerPlugin = function (deprecratedLabel, _class) {
         return false;
     }
     else {
-        pluginClasses[nextPluginLabel] = _class;
+        pluginClasses[nextPluginLabel] = options;
         nextPluginLabel = "";
         return true;
     }
@@ -16328,16 +16374,15 @@ __export(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"));
 Object.defineProperty(exports, "__esModule", { value: true });
 var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
 /****************************************************************************
- Register a new external script as `label` with `_class `, e.g.:
+ Register a new external script
  ```
- registerPlugin('debugger', Dubugger)
+ registerPlugin({runtimeClass: DebuggerRuntime, authoringClass: DebuggerAuthoring})
  ```
- @param label The identifier of the script.
- @param _class The Plugin class/constructor being associated with the identifier.
+ @param options The registration options
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
-exports.registerPlugin = function (label, _class) {
-    return plugins_1.registerPlugin(label, _class);
+exports.registerPlugin = function (options) {
+    return plugins_1.registerPlugin(options);
 };
 
 

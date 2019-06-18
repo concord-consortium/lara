@@ -23,7 +23,7 @@
 
 **● claims**: *[IJwtClaims](ijwtclaims.md) \| `__type`*
 
-*Defined in [types.ts:122](../../../lara-typescript/src/plugin-api/types.ts#L122)*
+*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
 
 ___
 <a id="token"></a>
@@ -32,7 +32,7 @@ ___
 
 **● token**: *`string`*
 
-*Defined in [types.ts:121](../../../lara-typescript/src/plugin-api/types.ts#L121)*
+*Defined in [types.ts:150](../../../lara-typescript/src/plugin-api/types.ts#L150)*
 
 ___
 

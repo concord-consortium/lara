@@ -99,10 +99,12 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 * [ILogData](interfaces/ilogdata.md)
 * [IOffering](interfaces/ioffering.md)
 * [IPlugin](interfaces/iplugin.md)
+* [IPluginAuthoringContext](interfaces/ipluginauthoringcontext.md)
 * [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md)
 * [IPopupController](interfaces/ipopupcontroller.md)
 * [IPopupOptions](interfaces/ipopupoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
+* [IRegisterPluginOptions](interfaces/iregisterpluginoptions.md)
 * [ISidebarController](interfaces/isidebarcontroller.md)
 * [ISidebarOptions](interfaces/isidebaroptions.md)
 * [IUser](interfaces/iuser.md)
@@ -112,7 +114,8 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 * [IEventListeners](#ieventlisteners)
 * [IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)
 * [ILogEventHandler](#ilogeventhandler)
-* [IPluginConstructor](#ipluginconstructor)
+* [IPluginAuthoringConstructor](#ipluginauthoringconstructor)
+* [IPluginRuntimeConstructor](#ipluginruntimeconstructor)
 
 ### Functions
 
@@ -146,7 +149,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
-*Defined in [types.ts:188](../../lara-typescript/src/plugin-api/types.ts#L188)*
+*Defined in [types.ts:217](../../lara-typescript/src/plugin-api/types.ts#L217)*
 
 InteractiveAvailable event handler.
 
@@ -168,7 +171,7 @@ ___
 
 **Ƭ ILogEventHandler**: *`function`*
 
-*Defined in [types.ts:169](../../lara-typescript/src/plugin-api/types.ts#L169)*
+*Defined in [types.ts:198](../../lara-typescript/src/plugin-api/types.ts#L198)*
 
 Log event handler.
 
@@ -186,13 +189,24 @@ Log event handler.
 **Returns:** `void`
 
 ___
-<a id="ipluginconstructor"></a>
+<a id="ipluginauthoringconstructor"></a>
 
-###  IPluginConstructor
+###  IPluginAuthoringConstructor
 
-**Ƭ IPluginConstructor**: *`object`*
+**Ƭ IPluginAuthoringConstructor**: *`object`*
 
-*Defined in [types.ts:5](../../lara-typescript/src/plugin-api/types.ts#L5)*
+*Defined in [types.ts:11](../../lara-typescript/src/plugin-api/types.ts#L11)*
+
+#### Type declaration
+
+___
+<a id="ipluginruntimeconstructor"></a>
+
+###  IPluginRuntimeConstructor
+
+**Ƭ IPluginRuntimeConstructor**: *`object`*
+
+*Defined in [types.ts:10](../../lara-typescript/src/plugin-api/types.ts#L10)*
 
 #### Type declaration
 
@@ -277,22 +291,21 @@ ___
 
 ### `<Const>` registerPlugin
 
-▸ **registerPlugin**(label: *`string`*, _class: *[IPluginConstructor](#ipluginconstructor)*): `boolean`
+▸ **registerPlugin**(options: *[IRegisterPluginOptions](interfaces/iregisterpluginoptions.md)*): `boolean`
 
-*Defined in [plugins.ts:13](../../lara-typescript/src/plugin-api/plugins.ts#L13)*
+*Defined in [plugins.ts:12](../../lara-typescript/src/plugin-api/plugins.ts#L12)*
 
-Register a new external script as `label` with `_class`, e.g.:
+Register a new external script
 
 ```
-registerPlugin('debugger', Dubugger)
+registerPlugin({runtimeClass: DebuggerRuntime, authoringClass: DebuggerAuthoring})
 ```
 
 **Parameters:**
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| label | `string` |  The identifier of the script. |
-| _class | [IPluginConstructor](#ipluginconstructor) |  The Plugin class/constructor being associated with the identifier. |
+| options | [IRegisterPluginOptions](interfaces/iregisterpluginoptions.md) |  The registration options |
 
 **Returns:** `boolean`
 `true` if plugin was registered correctly.
