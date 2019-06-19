@@ -46,7 +46,6 @@ module ClassInfoImportHelper
         run.update_attributes(attrs)
         updated_run_count = updated_run_count + 1
       end
-    line_count = line_count + 1
     
     return updated_run_count
   end
