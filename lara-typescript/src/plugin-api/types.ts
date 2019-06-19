@@ -8,7 +8,7 @@ export interface IRegisterPluginOptions {
 }
 
 export type IPluginRuntimeConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
-export type IPluginAuthoringConstructor = new(runtimeContext: IPluginAuthoringContext) => IPlugin;
+export type IPluginAuthoringConstructor = new(authoringContext: IPluginAuthoringContext) => IPlugin;
 
 export interface IPluginRuntimeContext {
   /** Name of the plugin */

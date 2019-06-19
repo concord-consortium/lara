@@ -1,7 +1,8 @@
-import { generateEmbeddableRuntimeContext, IEmbeddableContext } from "./embeddable-runtime-context";
+import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState, IEmbeddableRuntimeContext } from "../plugin-api";
 import { emitInteractiveAvailable } from "./events";
 import * as fetch from "jest-fetch-mock";
+import { IEmbeddableContextOptions } from "./plugin-context";
 (window as any).fetch = fetch;
 
 describe("Embeddable runtime context helper", () => {
@@ -9,7 +10,7 @@ describe("Embeddable runtime context helper", () => {
     fetch.resetMocks();
   });
 
-  const embeddableContext: IEmbeddableContext = {
+  const embeddableContext: IEmbeddableContextOptions = {
     container: document.createElement("div"),
     laraJson: {
       name: "Test Interactive",
