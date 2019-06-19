@@ -19,6 +19,7 @@ module ReportService
       @payload[:created] = created
       @payload[:version] = version
       @payload[:source_key] = ReportService::make_source_key(self_url)
+      @payload[:tool_id] = self_url
       @payload[:id] = ReportService::make_key(type, id)
     end
 

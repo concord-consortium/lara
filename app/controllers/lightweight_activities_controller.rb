@@ -31,8 +31,8 @@ class LightweightActivitiesController < ApplicationController
   def show # show index
 
     # If there are launch parameters, set class info on run,
-    # See /app/models/with_class_info.rb #update_class_info
-    @run.update_class_info(params)
+    # See /app/models/with_class_info.rb #update_platform_info
+    @run.update_platform_info(params)
     authorize! :read, @activity
 
     setup_show

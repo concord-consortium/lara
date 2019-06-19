@@ -5,8 +5,8 @@ class Run < ActiveRecord::Base
   class InvalidJobState < StandardError; end
 
   attr_accessible :run_count, :user_id, :key, :activity, :user, :page_id,
-  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :class_hash,
-  :class_info_url
+  :remote_id, :remote_endpoint, :activity_id, :sequence_id, :context_id,
+  :class_info_url, :platform_id, :platform_user_id, :resource_link_id
 
   belongs_to :activity, :class_name => LightweightActivity
 
@@ -55,9 +55,9 @@ class Run < ActiveRecord::Base
     :format => { :with => /\A[a-zA-Z0-9\-]*\z/ },
     :length => { :is => 36 }
 
-  # /app/models/with_class_info.rb for #update_class_info
-  include WithClassInfo
-  
+  # /app/models/with_class_info.rb for #update_platform_info
+  include WithPlatformInfo
+
   def check_key
     unless key.present?
       self.key = session_guid

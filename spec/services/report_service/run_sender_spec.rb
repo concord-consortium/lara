@@ -13,7 +13,7 @@ end
 describe ReportService::RunSender do
   let(:report_service_url)   { 'http://fake-report-service.fake' }
   let(:report_service_token) { 'very-secret-token' }
-  let(:self_host)            { 'app.lara.docker' }
+  let(:self_host)            { 'http://app.lara.docker' }
 
   let(:key)       { "run-key "}
 
@@ -33,6 +33,9 @@ describe ReportService::RunSender do
   let(:remote_endpoint)      { "https://mock.data.com/spec/offering/1" }
   let(:class_info_url)       { "https://mock.data.com/spec/class/2" }
   let(:class_hash)           { "15291405-6B03-4E50-B49F-ACBC99D6255F" }
+  let(:platform_id)          { "test.portal.com" }
+  let(:platform_user_id)     { 123 }
+  let(:resource_link_id)     { 321 }
   let(:answers) do
     1.upto(5).map { |index| make_answer(index, true) }
   end
@@ -42,6 +45,7 @@ describe ReportService::RunSender do
       key: key,
       run_id: run_id,
       user: user,
+      user_id: user.id,
       run_count: run_count,
       created_at: created_at,
       updated_at: updated_at,
@@ -54,7 +58,10 @@ describe ReportService::RunSender do
       sequence_run_id: sequence_run_id,
       collaboration_run_id: collaboration_run_id,
       class_info_url: class_info_url,
-      class_hash: class_hash,
+      platform_id: platform_id,
+      platform_user_id: platform_user_id,
+      context_id: class_hash,
+      resource_link_id: resource_link_id,
       answers: answers
     })
   end
@@ -90,8 +97,7 @@ describe ReportService::RunSender do
       let(:json) { JSON.parse(sender.to_json())}
       it "should have a key fields" do
         expect(json).to include(
-          "version", "created", "user_email",
-          "answers", "class_hash", "run_key"
+          "version", "created", "answers", "context_id", "run_key", "platform_id", "platform_user_id", "resource_link_id"
         )
       end
 
@@ -100,15 +106,14 @@ describe ReportService::RunSender do
           answers = json["answers"]
           expect(answers.length).to be 5
           answers.each_with_index do |a|
-            expect(a["source_key"]).to match("app_lara_docker")
-            expect(a["source_key"]).not_to match("/")
-            expect(a["source_key"]).not_to match(/\./)
+            expect(a["tool_id"]).to eql("http://app.lara.docker")
+            expect(a["source_key"]).to eql("app.lara.docker")
             expect(a["resource_url"]).to match("#{self_host}/sequences/#{sequence_id}")
+
             expect(a).to include("created")
             expect(a).to include("url")
             expect(a).to include("run_key")
-            expect(a).to include("user_email")
-            expect(a).to include("class_hash" => class_hash)
+            expect(a).to include("context_id" => class_hash)
             expect(a).to include("class_info_url" => class_info_url)
             expect(a).to include("version")
           end
