@@ -7,7 +7,10 @@ module ReportService
       "import_structure"
     end
 
-    def initialize(resource)
+    # Params:
+    # +resource+:: Sequence LightweightActivity to send structure of
+    # +opts+:: _ignored at the moment_
+    def initialize(resource, opts={})
       version = Version
       created = Time.now.utc.to_s
       @payload = resource.serialize_for_report_service(self_url)

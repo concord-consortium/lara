@@ -14,9 +14,9 @@ ApprovedScript.where({version: 3}).each do |as|
         nil
       end
     end
-  elsif (as.url =~ /lara-sharing-plugin/) || (as.url =~ /glossary-plugin/)
+  elsif (as.url =~ /lara-sharing-plugin/) || (as.url =~ /glossary-plugin/) || (as.url =~ /model-feedback/)
     metadata = JSON.parse(as.authoring_metadata, :symbolize_names => true)
-    # lara sharing and glossary only have 1 component
+    # lara sharing, glossary and model-feedback only have 1 component
     component_label = metadata[:components][0][:label]
     Plugin.where({approved_script_id: as.id}).each do |p|
       if p.component_label.blank?

@@ -6,8 +6,7 @@ class SubmitDirtyAnswersJob < Struct.new(:run_id, :start_time)
   def send_to_report_service(run)
     begin
       # only send answers which are 'dirty':
-      force = false
-      sender = ReportService::RunSender.new(run, force)
+      sender = ReportService::RunSender.new(run, {send_all_answers: false})
       sender.send()
     rescue => e
       Rails.logger.error("Couldn't send run #{run.key} to report service:")

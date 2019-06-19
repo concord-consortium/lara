@@ -37,10 +37,7 @@ module ReportService
     end
 
     def serlialized_answers(run)
-      age_threshold_seconds = 0.25
-      modified_answers = run.answers.select do |a|
-        a.updated_at - a.created_at > age_threshold_seconds
-      end
+      modified_answers = run.answers.select { |a| a.answered? }
       # Send only the dirty answers, onless forced to send them all.
       unless @send_all_answers
         modified_answers.select! do |a|
@@ -62,8 +59,11 @@ module ReportService
       "import_run"
     end
 
-    def initialize(run, send_all_answers=false)
-      @send_all_answers = send_all_answers
+    # Params:
+    # +run+:: run to send to report service
+    # +opts+:: _send_all_answers_ by default only send changed answers.
+    def initialize(run, opts={ send_all_answers: false} )
+      @send_all_answers = opts[:send_all_answers]
       url = "#{self_url}#{Rails.application.routes.url_helpers.run_path(run)}"
       @payload = {
         id: run.key,
