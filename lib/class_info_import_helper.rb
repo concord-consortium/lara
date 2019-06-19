@@ -33,7 +33,6 @@ module ClassInfoImportHelper
       .where(remote_endpoint: remote_endpoint)
       .each do |srun|
         srun.update_attributes(attrs)
-        updated_srun_count = updated_srun_count + 1
         # Child runs:
         srun.runs.each do |run|
           run.update_attributes(attrs)
