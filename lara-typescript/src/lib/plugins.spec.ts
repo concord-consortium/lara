@@ -73,7 +73,6 @@ describe("Plugins", () => {
       url: "http://google.com/",
       authoredState: '{"configured": true }',
       container: $('<div class="myplugin" />')[0],
-      wrappedEmbeddable: null,
       componentLabel: "test",
       authorDataSaveUrl: "http://authoring.save"
     };

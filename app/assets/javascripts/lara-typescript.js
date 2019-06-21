@@ -16095,7 +16095,7 @@ var log = function (context, logData) {
     }
 };
 var fetchPluginEventLogData = function (context) {
-    if (!context.wrappedEmbeddable) {
+    if ((context.type !== "runtime") || !context.wrappedEmbeddable) {
         return { plugin_id: context.pluginId };
     }
     return {

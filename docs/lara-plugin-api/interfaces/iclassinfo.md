@@ -27,7 +27,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [types.ts:169](../../../lara-typescript/src/plugin-api/types.ts#L169)*
+*Defined in [types.ts:171](../../../lara-typescript/src/plugin-api/types.ts#L171)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [types.ts:167](../../../lara-typescript/src/plugin-api/types.ts#L167)*
+*Defined in [types.ts:169](../../../lara-typescript/src/plugin-api/types.ts#L169)*
 
 ___
 <a id="offerings"></a>
@@ -45,7 +45,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
-*Defined in [types.ts:172](../../../lara-typescript/src/plugin-api/types.ts#L172)*
+*Defined in [types.ts:174](../../../lara-typescript/src/plugin-api/types.ts#L174)*
 
 ___
 <a id="students"></a>
@@ -54,7 +54,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
-*Defined in [types.ts:171](../../../lara-typescript/src/plugin-api/types.ts#L171)*
+*Defined in [types.ts:173](../../../lara-typescript/src/plugin-api/types.ts#L173)*
 
 ___
 <a id="teachers"></a>
@@ -63,7 +63,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
-*Defined in [types.ts:170](../../../lara-typescript/src/plugin-api/types.ts#L170)*
+*Defined in [types.ts:172](../../../lara-typescript/src/plugin-api/types.ts#L172)*
 
 ___
 <a id="uri"></a>
@@ -72,7 +72,7 @@ ___
 
 **● uri**: *`string`*
 
-*Defined in [types.ts:168](../../../lara-typescript/src/plugin-api/types.ts#L168)*
+*Defined in [types.ts:170](../../../lara-typescript/src/plugin-api/types.ts#L170)*
 
 ___
 

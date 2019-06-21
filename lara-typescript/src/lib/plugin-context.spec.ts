@@ -244,7 +244,6 @@ describe("Plugin authoring context helper", () => {
     pluginId: 123,
     authoredState: "{authoredState: 123}",
     container: document.createElement("div"),
-    wrappedEmbeddable: null,
     componentLabel: "test",
     authorDataSaveUrl: "http://author-data.save.url",
   };

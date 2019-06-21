@@ -17,8 +17,6 @@ interface IPluginCommonOptions {
   authoredState: string | null;
   /** Reserved HTMLElement for the plugin output. */
   container: HTMLElement;
-  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
-  wrappedEmbeddable: IEmbeddableContextOptions | null;
   /** Name of plugin component */
   componentLabel: string;
 }
@@ -41,6 +39,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   classInfoUrl: string | null;
   /** URL to fetch a JWT. Includes generic `_FIREBASE_APP_` that should be replaced with app name. */
   firebaseJwtUrl: string;
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  wrappedEmbeddable: IEmbeddableContextOptions | null;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -138,7 +138,7 @@ const log = (context: IPluginContextOptions, logData: string | ILogData): void =
 };
 
 const fetchPluginEventLogData = (context: IPluginContextOptions) => {
-  if (! context.wrappedEmbeddable) {
+  if ((context.type !== "runtime") || !context.wrappedEmbeddable) {
     return { plugin_id: context.pluginId };
   }
   return {

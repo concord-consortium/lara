@@ -149,7 +149,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
-*Defined in [types.ts:217](../../lara-typescript/src/plugin-api/types.ts#L217)*
+*Defined in [types.ts:219](../../lara-typescript/src/plugin-api/types.ts#L219)*
 
 InteractiveAvailable event handler.
 
@@ -171,7 +171,7 @@ ___
 
 **Ƭ ILogEventHandler**: *`function`*
 
-*Defined in [types.ts:198](../../lara-typescript/src/plugin-api/types.ts#L198)*
+*Defined in [types.ts:200](../../lara-typescript/src/plugin-api/types.ts#L200)*
 
 Log event handler.
 
@@ -195,7 +195,9 @@ ___
 
 **Ƭ IPluginAuthoringConstructor**: *`object`*
 
-*Defined in [types.ts:11](../../lara-typescript/src/plugin-api/types.ts#L11)*
+*Defined in [types.ts:13](../../lara-typescript/src/plugin-api/types.ts#L13)*
+
+Constructs a plugin given a IPluginAuthoringContext
 
 #### Type declaration
 
@@ -206,7 +208,9 @@ ___
 
 **Ƭ IPluginRuntimeConstructor**: *`object`*
 
-*Defined in [types.ts:10](../../lara-typescript/src/plugin-api/types.ts#L10)*
+*Defined in [types.ts:11](../../lara-typescript/src/plugin-api/types.ts#L11)*
+
+Constructs a plugin given a IPluginRuntimeContext
 
 #### Type declaration
 
