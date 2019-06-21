@@ -2,7 +2,15 @@ export interface IPlugin {
   /** No special requirements for plugin class */
 }
 
-export type IPluginConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
+export interface IRegisterPluginOptions {
+  runtimeClass: IPluginRuntimeConstructor;
+  authoringClass?: IPluginAuthoringConstructor;
+}
+
+/** Constructs a plugin given a IPluginRuntimeContext */
+export type IPluginRuntimeConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
+/** Constructs a plugin given a IPluginAuthoringContext */
+export type IPluginAuthoringConstructor = new(authoringContext: IPluginAuthoringContext) => IPlugin;
 
 export interface IPluginRuntimeContext {
   /** Name of the plugin */
@@ -15,7 +23,7 @@ export interface IPluginRuntimeContext {
   authoredState: string | null;
   /** The saved learner data for this instance (if available). */
   learnerState: string | null;
-  /** Reserved HTMLElement for the plugin output. */
+  /** HTMLElement created by LARA for the plugin to render its output. */
   container: HTMLElement;
   /** The run ID for the current LARA run. */
   runId: number;
@@ -100,6 +108,29 @@ export interface IEmbeddableRuntimeContext {
   onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => void;
   /** True if the interactive is immediately available */
   interactiveAvailable: boolean;
+}
+
+export interface IPluginAuthoringContext {
+  /** Name of the plugin */
+  name: string;
+  /** Url from which the plugin was loaded. */
+  url: string;
+  /** Plugin instance ID. */
+  pluginId: number;
+  /** The authored configuration for this instance (if available). */
+  authoredState: string | null;
+  /** Reserved HTMLElement for the plugin output. */
+  container: HTMLElement;
+  /** The label of the plugin component. */
+  componentLabel: string;
+   /****************************************************************************
+   Function that saves the authoring state for the plugin.
+   ```
+   context.saveAuthoredPluginState('{"one": 1}').then((data) => console.log(data))
+   ```
+   @param state A string representing serialized author data; if it's JSON, remember to stringify it first.
+   ****************************************************************************/
+  saveAuthoredPluginState: (state: string) => Promise<string>;
 }
 
 export interface IPortalClaims {

@@ -4,3 +4,4 @@
 .embeddable_options
   .interactive-content
     = render :partial => 'video_interactives/show', :locals => { :interactive => embeddable }
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }

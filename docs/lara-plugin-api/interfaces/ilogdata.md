@@ -26,7 +26,7 @@ That's the minimal set of properties that needs to be provided. All the other pr
 
 **● event**: *`string`*
 
-*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
+*Defined in [types.ts:191](../../../lara-typescript/src/plugin-api/types.ts#L191)*
 
 ___
 <a id="event_value"></a>
@@ -35,7 +35,7 @@ ___
 
 **● event_value**: *`any`*
 
-*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
+*Defined in [types.ts:192](../../../lara-typescript/src/plugin-api/types.ts#L192)*
 
 ___
 <a id="parameters"></a>
@@ -44,7 +44,7 @@ ___
 
 **● parameters**: *`any`*
 
-*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
+*Defined in [types.ts:193](../../../lara-typescript/src/plugin-api/types.ts#L193)*
 
 ___
 

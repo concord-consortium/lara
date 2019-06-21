@@ -1,4 +1,6 @@
-import { generatePluginRuntimeContext } from "./plugin-runtime-context";
+import { generateRuntimePluginContext,
+         IPluginRuntimeContextOptions,
+         IPluginAuthoringContextOptions } from "./plugin-context";
 import { initPlugin, registerPlugin, setNextPluginLabel } from "./plugins";
 import * as $ from "jquery";
 
@@ -9,6 +11,7 @@ describe("Plugins", () => {
     (window as any).console = {
       log: jest.fn(),
       error: jest.fn(),
+      warn: jest.fn(),
       info: jest.fn(),
       group: jest.fn(),
       groupEnd: jest.fn(),
@@ -18,21 +21,36 @@ describe("Plugins", () => {
 
   describe("registerPlugin", () => {
     it ("should let plugin to register itself only once", () => {
-      const pluginConstructor = jest.fn();
+      const runtimeClass = jest.fn();
+      const authoringClass = jest.fn();
       setNextPluginLabel("test");
-      expect(registerPlugin("*DEPRECATED*", pluginConstructor)).toEqual(true);
+      expect(registerPlugin({runtimeClass, authoringClass})).toEqual(true);
       setNextPluginLabel("test");
-      expect(registerPlugin("*DEPRECATED*", pluginConstructor)).toEqual(false);
+      expect(registerPlugin({runtimeClass, authoringClass})).toEqual(false);
       // @ts-ignore
       expect(registerPlugin("anotherTest")).toEqual(false); // missing constructor
       // tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
     });
+
+    it ("should not let plugin register itself without runtime class", () => {
+      const authoringClass = jest.fn();
+      setNextPluginLabel("testWithoutRuntime");
+      // @ts-ignore
+      expect(registerPlugin({authoringClass})).toEqual(false);
+    });
+
+    it ("should let plugin register itself without authoring class", () => {
+      const runtimeClass = jest.fn();
+      setNextPluginLabel("testWithoutAuthoring");
+      expect(registerPlugin({runtimeClass})).toEqual(true);
+    });
   });
 
   describe("initPlugin", () => {
     const pluginId = 123;
-    const context = {
+    const runtimeContext: IPluginRuntimeContextOptions = {
+      type: "runtime",
       name: "testPlugin",
       pluginId,
       url: "http://google.com/",
@@ -45,36 +63,59 @@ describe("Plugins", () => {
       classInfoUrl: null,
       remoteEndpoint: null,
       firebaseJwtUrl: "http://fake.jwt",
-      wrappedEmbeddable: null
+      wrappedEmbeddable: null,
+      componentLabel: "test"
+    };
+    const authoringContext: IPluginAuthoringContextOptions = {
+      type: "authoring",
+      name: "testPlugin",
+      pluginId,
+      url: "http://google.com/",
+      authoredState: '{"configured": true }',
+      container: $('<div class="myplugin" />')[0],
+      componentLabel: "test",
+      authorDataSaveUrl: "http://authoring.save"
     };
 
     it("should call the plugins constructor with the config", () => {
-      const pluginConstructor = jest.fn();
+      const runtimeClass = jest.fn();
+      const authoringClass = jest.fn();
       // Implicit test of registerPlugin
       setNextPluginLabel("testPlugin1");
-      registerPlugin("*DEPRECATED*", pluginConstructor);
-      initPlugin("testPlugin1", context);
-      expect(pluginConstructor).toHaveBeenCalledTimes(1);
+      registerPlugin({runtimeClass, authoringClass});
+      initPlugin("testPlugin1", runtimeContext);
+      initPlugin("testPlugin1", authoringContext);
+      expect(runtimeClass).toHaveBeenCalledTimes(1);
+      expect(authoringClass).toHaveBeenCalledTimes(1);
       // Why keys? Some functions are dynamically generated and we cannot compare them.
-      expect(Object.keys(pluginConstructor.mock.calls[0][0])).toEqual(
-        Object.keys(generatePluginRuntimeContext(context))
+      expect(Object.keys(runtimeClass.mock.calls[0][0])).toEqual(
+        Object.keys(generateRuntimePluginContext(runtimeContext))
       );
     });
 
     it("should gracefully handle plugin constructor error (not to break the whole JS page execution)", () => {
-      const constructorFunc = jest.fn();
-      class BrokenPlugin {
+      const runtimeConstructor = jest.fn();
+      const authoringConstructor = jest.fn();
+      class BrokenRuntimePlugin {
         constructor() {
-          constructorFunc();
+          runtimeConstructor();
+          throw new Error("Random error");
+        }
+      }
+      class BrokenAuthoringPlugin {
+        constructor() {
+          authoringConstructor();
           throw new Error("Random error");
         }
       }
       setNextPluginLabel("testPlugin2");
-      registerPlugin("*DEPRECATED*", BrokenPlugin);
-      initPlugin("testPlugin2", context);
-      expect(constructorFunc).toHaveBeenCalledTimes(1);
+      registerPlugin({runtimeClass: BrokenRuntimePlugin, authoringClass: BrokenAuthoringPlugin});
+      initPlugin("testPlugin2", runtimeContext);
+      initPlugin("testPlugin2", authoringContext);
+      expect(runtimeConstructor).toHaveBeenCalledTimes(1);
+      expect(authoringConstructor).toHaveBeenCalledTimes(1);
       // tslint:disable-next-line:no-console
-      expect(console.error).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledTimes(2);
     });
   });
 });

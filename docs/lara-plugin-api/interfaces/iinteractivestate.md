@@ -27,7 +27,7 @@
 
 **● activity_name**: *`string`*
 
-*Defined in [types.ts:152](../../../lara-typescript/src/plugin-api/types.ts#L152)*
+*Defined in [types.ts:183](../../../lara-typescript/src/plugin-api/types.ts#L183)*
 
 ___
 <a id="id"></a>
@@ -36,7 +36,7 @@ ___
 
 **● id**: *`number`*
 
-*Defined in [types.ts:147](../../../lara-typescript/src/plugin-api/types.ts#L147)*
+*Defined in [types.ts:178](../../../lara-typescript/src/plugin-api/types.ts#L178)*
 
 ___
 <a id="interactive_name"></a>
@@ -45,7 +45,7 @@ ___
 
 **● interactive_name**: *`string`*
 
-*Defined in [types.ts:150](../../../lara-typescript/src/plugin-api/types.ts#L150)*
+*Defined in [types.ts:181](../../../lara-typescript/src/plugin-api/types.ts#L181)*
 
 ___
 <a id="interactive_state_url"></a>
@@ -54,7 +54,7 @@ ___
 
 **● interactive_state_url**: *`string`*
 
-*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
+*Defined in [types.ts:182](../../../lara-typescript/src/plugin-api/types.ts#L182)*
 
 ___
 <a id="key"></a>
@@ -63,7 +63,7 @@ ___
 
 **● key**: *`string`*
 
-*Defined in [types.ts:148](../../../lara-typescript/src/plugin-api/types.ts#L148)*
+*Defined in [types.ts:179](../../../lara-typescript/src/plugin-api/types.ts#L179)*
 
 ___
 <a id="raw_data"></a>
@@ -72,7 +72,7 @@ ___
 
 **● raw_data**: *`string`*
 
-*Defined in [types.ts:149](../../../lara-typescript/src/plugin-api/types.ts#L149)*
+*Defined in [types.ts:180](../../../lara-typescript/src/plugin-api/types.ts#L180)*
 
 ___
 

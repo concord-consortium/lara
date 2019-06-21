@@ -1,4 +1,8 @@
-import { generatePluginRuntimeContext, IEmbeddableContext } from "./plugin-runtime-context";
+import { generateRuntimePluginContext,
+         IEmbeddableContextOptions,
+         IPluginRuntimeContextOptions,
+         IPluginAuthoringContextOptions,
+         generateAuthoringPluginContext} from "./plugin-context";
 import { IClassInfo } from "../plugin-api";
 import * as fetch from "jest-fetch-mock";
 import * as $ from "jquery";
@@ -9,7 +13,8 @@ describe("Plugin runtime context helper", () => {
     fetch.resetMocks();
   });
 
-  const pluginContext = {
+  const pluginContext: IPluginRuntimeContextOptions = {
+    type: "runtime",
     name: "test",
     url: "http://plugin.url",
     pluginId: 123,
@@ -22,11 +27,12 @@ describe("Plugin runtime context helper", () => {
     userEmail: "user@email.com",
     classInfoUrl: "http://portal.class.info.url",
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
-    wrappedEmbeddable: null
+    wrappedEmbeddable: null,
+    componentLabel: "test"
   };
 
   it("should copy basic properties to runtime context", () => {
-    const runtimeContext = generatePluginRuntimeContext(pluginContext);
+    const runtimeContext = generateRuntimePluginContext(pluginContext);
     expect(runtimeContext.name).toEqual(pluginContext.name);
     expect(runtimeContext.url).toEqual(pluginContext.url);
     expect(runtimeContext.pluginId).toEqual(pluginContext.pluginId);
@@ -39,7 +45,7 @@ describe("Plugin runtime context helper", () => {
   });
 
   describe("#saveLearnerPluginState", () => {
-    const runtimeContext = generatePluginRuntimeContext(pluginContext);
+    const runtimeContext = generateRuntimePluginContext(pluginContext);
     const state = '{"new": "state"}';
     let ajax = jest.fn();
     beforeEach(() => {
@@ -74,13 +80,13 @@ describe("Plugin runtime context helper", () => {
 
   describe("#getClassInfo", () => {
     it("returns null when classInfoUrl is not available", () => {
-      const runtimeContext = generatePluginRuntimeContext(Object.assign({}, pluginContext, {classInfoUrl: null}));
+      const runtimeContext = generateRuntimePluginContext(Object.assign({}, pluginContext, {classInfoUrl: null}));
       const resp = runtimeContext.getClassInfo();
       expect(resp).toBeNull();
     });
 
     it("provides class information when classInfoUrl is available", done => {
-      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       const classInfo: IClassInfo = {id: 123} as IClassInfo;
       fetch.mockResponse(JSON.stringify(classInfo));
       const resp = runtimeContext.getClassInfo();
@@ -93,7 +99,7 @@ describe("Plugin runtime context helper", () => {
     });
 
     it("returns error when LARA response is malformed", done => {
-      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       fetch.mockResponse("{malformedJSON:");
       const resp = runtimeContext.getClassInfo();
       expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
@@ -106,7 +112,7 @@ describe("Plugin runtime context helper", () => {
 
   describe("#getFirebaseJwt", () => {
     it("provides token when LARA response is valid", done => {
-      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       const jwtResp = { token: `jwtToken.${btoa(JSON.stringify({claimsJson: true}))}`};
       fetch.mockResponse(JSON.stringify(jwtResp));
       const resp = runtimeContext.getFirebaseJwt("testAppName");
@@ -122,7 +128,7 @@ describe("Plugin runtime context helper", () => {
     });
 
     it("returns error when LARA response is malformed", done => {
-      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       const jwtResp = { token: `bad.jwtToken`};
       fetch.mockResponse(JSON.stringify(jwtResp));
       const resp = runtimeContext.getFirebaseJwt("testAppName");
@@ -137,12 +143,12 @@ describe("Plugin runtime context helper", () => {
 
   describe("#wrappedEmbeddable", () => {
     it("is null when context is not provided", () => {
-      const runtimeContext = generatePluginRuntimeContext(pluginContext);
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       expect(runtimeContext.wrappedEmbeddable).toBeNull();
     });
 
     it("is IEmbeddableRuntimeContext instance when initial context is provided", () => {
-      const wrappedEmbeddable: IEmbeddableContext = {
+      const wrappedEmbeddable: IEmbeddableContextOptions = {
         container: document.createElement("div"),
         laraJson: {
           name: "Test Interactive",
@@ -152,16 +158,16 @@ describe("Plugin runtime context helper", () => {
         interactiveStateUrl: "http://interactive.state.url",
         interactiveAvailable: true
       };
-      const runtimeContext = generatePluginRuntimeContext(Object.assign({}, pluginContext, { wrappedEmbeddable }));
+      const runtimeContext = generateRuntimePluginContext(Object.assign({}, pluginContext, { wrappedEmbeddable }));
       expect(runtimeContext.wrappedEmbeddable).not.toBeNull();
     });
   });
 
   describe("logging", () => {
 
-    const runtimeContext = generatePluginRuntimeContext(pluginContext);
+    const runtimeContext = generateRuntimePluginContext(pluginContext);
 
-    const wrappedEmbeddable: IEmbeddableContext = {
+    const wrappedEmbeddable: IEmbeddableContextOptions = {
       container: document.createElement("div"),
       laraJson: {
         name: "Test Interactive",
@@ -171,7 +177,7 @@ describe("Plugin runtime context helper", () => {
       interactiveStateUrl: "http://interactive.state.url",
       interactiveAvailable: true
     };
-    const runtimeContextWithEmbeddable = generatePluginRuntimeContext(Object.assign({},
+    const runtimeContextWithEmbeddable = generateRuntimePluginContext(Object.assign({},
       pluginContext, { wrappedEmbeddable }));
 
     describe("when logger_utils are available", () => {
@@ -222,6 +228,67 @@ describe("Plugin runtime context helper", () => {
       });
     });
 
+  });
+
+});
+
+describe("Plugin authoring context helper", () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
+  const pluginContext: IPluginAuthoringContextOptions = {
+    type: "authoring",
+    name: "test",
+    url: "http://plugin.url",
+    pluginId: 123,
+    authoredState: "{authoredState: 123}",
+    container: document.createElement("div"),
+    componentLabel: "test",
+    authorDataSaveUrl: "http://author-data.save.url",
+  };
+
+  it("should copy basic properties to runtime context", () => {
+    const authoringContext = generateAuthoringPluginContext(pluginContext);
+    expect(authoringContext.name).toEqual(pluginContext.name);
+    expect(authoringContext.url).toEqual(pluginContext.url);
+    expect(authoringContext.pluginId).toEqual(pluginContext.pluginId);
+    expect(authoringContext.authoredState).toEqual(pluginContext.authoredState);
+    expect(authoringContext.container).toEqual(pluginContext.container);
+  });
+
+  describe("#saveAuthorData", () => {
+    const authoringContext = generateAuthoringPluginContext(pluginContext);
+    const authorData = '{"new": "data"}';
+    let ajax = jest.fn();
+    beforeEach(() => {
+      ajax = jest.fn((opts) => {
+        opts.success(authorData);
+      });
+      jest.spyOn($, "ajax").mockImplementation(ajax);
+    });
+
+    describe("when save succeeds", () => {
+      it("should save data", () => {
+        expect.assertions(1);
+        return authoringContext.saveAuthoredPluginState(authorData)
+          .then((d) => expect(d).toEqual(authorData));
+      });
+    });
+
+    describe("when save fails", () => {
+      beforeEach(() => {
+        ajax = jest.fn((opts) => {
+          opts.error("jqXHR", "error", "boom");
+        });
+        jest.spyOn($, "ajax").mockImplementation(ajax);
+      });
+      it("should save data", () => {
+        expect.assertions(1);
+        return authoringContext.saveAuthoredPluginState(authorData)
+          .catch((e) => expect(e).toEqual("boom"));
+      });
+    });
   });
 
 });

@@ -1,0 +1,51 @@
+- if plugin.version == 3
+  - v3_plugin_label = "plugin#{plugin.approved_script_id}"
+  - output_id = "plugin_authoring_output"
+
+  - if @embeddable
+    %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+      = @embeddable.name
+
+    = form_for @embeddable do |f|
+      = f.error_messages
+      %div{style: ""}
+        .plugin-output{id: output_id}
+        %div
+          = render :partial => 'shared/edit_full_width', :locals => { :f => f }
+  - else
+    %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
+      = plugin.name
+
+    = form_for plugin do |f|
+      = f.error_messages
+      %div{style: ""}
+        .plugin-output{id: output_id}
+
+  - runtime_div_selector = "##{output_id}"
+  :javascript
+    // Begin script for #{plugin.name}
+    $(document).ready(function() {
+      LARA.InternalAPI.setNextPluginLabel("#{v3_plugin_label}");
+      var script = document.createElement("script");
+      script.onload = function() {
+        // It's impossible to get type checking here, but object below MUST always implement IPluginAuthoringContext interface
+        var pluginContext = {
+          type: 'authoring',
+          name: '#{plugin.name}',
+          url: '#{plugin.url}',
+          pluginId: #{plugin.id},
+          componentLabel: '#{plugin.component.label}',
+          authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
+          container: $('#{runtime_div_selector}')[0],
+          wrappedEmbeddable: null,
+          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`,
+        }
+        console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
+        LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
+      };
+      script.onerror = function () {
+        alert("Unable to load plugin script: #{plugin.url}");
+      };
+      script.src = '#{plugin.url}';
+      document.head.append(script);
+    });

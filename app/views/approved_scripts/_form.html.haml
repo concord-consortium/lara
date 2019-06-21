@@ -45,11 +45,11 @@
     var rows = [];
     (metadata.components || []).forEach(function (component) {
       var decorates = component.decorates ? component.decorates.map(function (d) { return d.replace("Embeddable::", "")}).join(", ") : "<i>n/a</i>";
-      rows.push("<tr><td>" + component.name + "</td><td>" + component.scope + "<td>" + decorates + "</td></tr>")
+      rows.push("<tr><td>" + component.name + "</td><td>" + component.scope + "</td><td>" + (component.guiAuthoring ? "Yes" : "No") + "</td><td>" + decorates + "</td></tr>")
     });
     var el = document.getElementById("component_display");
     if (rows.length > 0) {
-      el.innerHTML = "<table><thead><tr><th>Component</th><th>Scope</th><th>Decorates</th></thead><tbody>" + rows.join("") + "</tbody></table>";
+      el.innerHTML = "<table><thead><tr><th>Component</th><th>Scope</th><th>GUI Authoring?</th><th>Decorates</th></thead><tbody>" + rows.join("") + "</tbody></table>";
     }
     else {
       el.innerHTML = "No authoring metadata found.";
