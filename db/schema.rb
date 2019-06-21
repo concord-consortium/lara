@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190621151921) do
+ActiveRecord::Schema.define(:version => 20190621195718) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -653,6 +653,7 @@ ActiveRecord::Schema.define(:version => 20190621151921) do
     t.boolean  "is_admin",               :default => false
     t.boolean  "is_author",              :default => false
     t.text     "api_key"
+    t.boolean  "can_export",             :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

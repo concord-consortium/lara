@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   has_many :imports
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
+  attr_accessible :email, :password, :password_confirmation, :remember_me,
+    :is_admin, :is_author, :can_export,
     :provider, :uid, :authentication_token, :api_key, :has_api_key
   # attr_accessible :title, :body
 

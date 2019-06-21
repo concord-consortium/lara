@@ -34,6 +34,10 @@ class Ability
       cannot :export, LightweightActivity
       cannot :export, Sequence
     end
+    if user.can_export?
+      can :export, LightweightActivity
+      can :export, Sequence
+    end
     # Everyone (author and regular user) can read public, hidden and archived sequences or activities.
     ['public', 'hidden', 'archive'].each do |allowed_status|
       can :read, Sequence, :publication_status => allowed_status

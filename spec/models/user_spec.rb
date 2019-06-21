@@ -64,6 +64,13 @@ describe User do
       it { is_expected.not_to be_able_to(:duplicate, locked_activity) }
     end
 
+    context 'when the user can export activities' do
+      let(:user) { FactoryGirl.build(:can_export) }
+      let(:self_activity) { stub_model(LightweightActivity, :user_id => user.id) }
+      it { is_expected.to be_able_to(:export, Sequence) }
+      it { is_expected.to be_able_to(:export, LightweightActivity) }
+    end
+
     context 'when is a user' do
       # pending 'currently same as anonymous'
     end
