@@ -185,4 +185,59 @@ describe User do
     end
   end
 
+  describe "#has_api_key" do
+    let(:existing_api_key) { nil }
+    let(:opts) { { api_key: existing_api_key } }
+    let(:user) { FactoryGirl.build(:user, opts) }
+
+    it "by default users do not have an api_key" do
+      expect(user.api_key).to be_nil
+      expect(user.has_api_key).to be false
+    end
+
+    describe "Enabling the API key for the user" do
+
+      describe "when the user doesn't already have an api_key" do
+        let(:existing_api_key) { nil }
+        it "should give them a new api_key" do
+          expect(user.api_key).to be_nil
+          user.has_api_key = "1"
+          expect(user.api_key).not_to be_nil
+        end
+      end
+
+      describe "when the user already has an api_key" do
+        let(:existing_api_key) { "fake_key"}
+        it "the api_key for the user should not be changed" do
+          expect(user.api_key).to eql "fake_key"
+          user.has_api_key = "1"
+          expect(user.api_key).to eql "fake_key"
+        end
+      end
+
+      describe "Disabling the API key for the user" do
+
+        describe "when the user doesn't have an api_key" do
+          let(:existing_api_key) { nil }
+          it "none should be generated" do
+            expect(user.api_key).to be_nil
+            user.has_api_key = "0"
+            expect(user.api_key).to be_nil
+          end
+        end
+  
+        describe "when the user has an api_key" do
+          let(:existing_api_key) { "fake_key"}
+          it "the api_key should be deleted" do
+            expect(user.api_key).to eql "fake_key"
+            user.has_api_key = "0"
+            expect(user.api_key).to be_nil
+          end
+        end
+      end
+
+    end
+
+  end
+
 end
