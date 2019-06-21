@@ -188,6 +188,9 @@ LightweightStandalone::Application.routes.draw do
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
       match 'plugin_plugin_learner_state/:plugin_id/:run_id' =>
         'plugin_learner_states#save', as: 'update_plugin_learner_state', via: 'put'
+
+      match 'plugins/:plugin_id/author_data' => 'plugins#load_author_data', as: 'show_plugin_author_data', via: 'get'
+      match 'plugins/:plugin_id/author_data' => 'plugins#save_author_data', as: 'update_plugin_author_data', via: 'put'
     end
   end
 

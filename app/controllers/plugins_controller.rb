@@ -8,14 +8,7 @@ class PluginsController < ApplicationController
   public
   def edit
     @plugin = Plugin.find(params[:id])
-    authorize! :manage, @plugin
-    respond_to do |format|
-      format.js {
-        render :json => {
-          html: _form(@plugin, true)
-        }, :content_type => 'text/json'
-      }
-    end
+    respond_with_edit_form("allow-full-width")
   end
 
   def new
@@ -39,14 +32,9 @@ class PluginsController < ApplicationController
     authorize! :manage, @plugin
     if !cancel
       @plugin.update_attributes(params['plugin'])
-      @plugin.reload
     end
 
-    respond_to do |format|
-      format.js do
-        # will render update.js.erb
-      end
-    end
+    redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, ''))
   end
 
   # DELETE /plugins/1
