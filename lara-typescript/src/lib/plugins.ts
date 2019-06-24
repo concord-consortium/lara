@@ -45,13 +45,13 @@ export const initPlugin = (label: string, options: IPluginContextOptions) => {
   }
 };
 
-const initRuntimePlugin = (label: string, context: IPluginRuntimeContextOptions) => {
+const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions) => {
   const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {
-      const plugin = new Constructor(generateRuntimePluginContext(context));
+      const plugin = new Constructor(generateRuntimePluginContext(options));
     } catch (e) {
-      pluginError(e, context);
+      pluginError(e, options);
     }
     // tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");
@@ -61,13 +61,13 @@ const initRuntimePlugin = (label: string, context: IPluginRuntimeContextOptions)
   }
 };
 
-const initAuthoringPlugin = (label: string, context: IPluginAuthoringContextOptions) => {
+const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOptions) => {
   const Constructor = pluginClasses[label].authoringClass;
   if (typeof Constructor === "function") {
     try {
-      const plugin = new Constructor(generateAuthoringPluginContext(context));
+      const plugin = new Constructor(generateAuthoringPluginContext(options));
     } catch (e) {
-      pluginError(e, context);
+      pluginError(e, options);
     }
     // tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");

@@ -154,7 +154,7 @@ const fetchPluginEventLogData = (context: IPluginRuntimeContextOptions) => {
 };
 
 export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptions): IPluginRuntimeContext => {
-  return {
+  const context = {
     name: options.name,
     url: options.url,
     pluginId: options.pluginId,
@@ -170,6 +170,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
     log: (logData: string | ILogData) => log(options, logData)
   };
+  return context;
 };
 
 export const generateAuthoringPluginContext = (options: IPluginAuthoringContextOptions): IPluginAuthoringContext => {
