@@ -9,6 +9,17 @@ shared_examples "remote duplicate support" do
         post :remote_duplicate, { :id => resource.id }
         expect(response.status).to be(403)
       end
+      describe "Even when the admin has an API token (also uses `Bearer` auth headers)" do
+        let(:api_key) { "D7EF1172-2172-47B1-9F50-6C2ED1430DBD"}
+        let(:headers) { { 'Authorization' => "Bearer #{api_key}" } }
+        before(:each) do
+          user.update_attribute(:api_key, api_key)
+        end
+        it "should return 403 unauthorized" do
+          post :remote_duplicate, { :id => resource.id }, headers
+          expect(response.status).to be(403)
+        end
+      end
     end
 
     describe "when request is coming from peer (trusted Portal)" do
