@@ -1,26 +1,33 @@
 'use strict'
 
 context('Production Activity Data Migration', () => {
-    
+
     const activityFixturePath = "../../lara/cypress/cypress/fixtures/activities/"
     const stagingUrl = "https://authoring.staging.concord.org/users/sign_in"
 
-    const stagingUsername = "ksantos+ksantosadmin@concord.org"
-    const stagingPassword = "password"
+    //Enter username and password for admin staging user.
+    const stagingAdminUsername = ""
+    const stagingAdminPassword = ""
+    //Enter activity ID for migrating from production to staging
+    let activityID = ""
 
-    const usernameTextBox = '#user_email'
-    const passwordTextBox = '#user_password'
-    const submitButton = 'input[name="commit"]'
+    const getUsernameTextBox = function () {
+        return cy.get('#user_email')
+    }
 
-    //Enter LARA Production Activity ID# For Migration
-    //Get an activity for each plugin to figure out what is breaking it
-    let activityID = '9384'
+    const getPasswordTextBox = function () {
+        return cy.get('#user_password')
+    }
+
+    const getSubmitButton = function () {
+        return cy.get('input[name="commit"]')
+    }
 
     function stagingLogin(stagingUrl, username, password) {
         cy.visit(stagingUrl)
-        cy.get(usernameTextBox).type(username)
-        cy.get(passwordTextBox).type(password)
-        cy.get(submitButton).click()
+        getUsernameTextBox().type(username)
+        getPasswordTextBox().type(password)
+        getSubmitButton().click()
     }
 
     String.prototype.escapeSpecialChars = function () {
@@ -36,7 +43,7 @@ context('Production Activity Data Migration', () => {
 
     }
 
-    it('exports the defined activity', () => {
+    it('Migrates the defined activity to staging', () => {
 
         const pathToActivity = "activities/" + activityID + ".json"
 
@@ -46,21 +53,29 @@ context('Production Activity Data Migration', () => {
         let newJsonObject
 
         cy.login()
-        cy.exportActivity(activityID)
-            .then((response) => {
-                response.body.name = "[Cypress] " + response.body.name
-                jsonObject = response.body
-                jsonString = JSON.stringify(jsonObject);
-                escapedJSONString = jsonString.escapeSpecialChars();
-                cy.log(escapedJSONString)
-                newJsonObject = JSON.parse(escapedJSONString)
-                cy.log(newJsonObject)
-                cy.writeFile(activityFixturePath + activityID + ".json", newJsonObject);
 
-            })
+        if (activityID === "") {
+            cy.log('Please enter valid LARA Activity ID Number')
+        } else {
+            cy.exportActivity(activityID)
+                .then((response) => {
+                    response.body.name = "[Cypress] " + response.body.name
+                    jsonObject = response.body
+                    jsonString = JSON.stringify(jsonObject);
+                    escapedJSONString = jsonString.escapeSpecialChars();
+                    cy.log(escapedJSONString)
+                    newJsonObject = JSON.parse(escapedJSONString)
+                    cy.log(newJsonObject)
+                    cy.writeFile(activityFixturePath + activityID + ".json", newJsonObject);
 
-        stagingLogin(stagingUrl, stagingUsername, stagingPassword)
-        cy.migrateMaterialToStaging(pathToActivity)
+                })
+        }
 
+        if (stagingAdminUsername === "" || !stagingAdminPassword === "") {
+            cy.log('Please enter staging admin username and password for migrating to staging')
+        } else {
+            stagingLogin(stagingUrl, stagingAdminUsername, stagingAdminPassword)
+            cy.migrateMaterialToStaging(pathToActivity)
+        }
     })
 })
