@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :timeoutable
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
+         :token_authenticatable, :bearer_token_authenticatable
   devise :omniauthable, :omniauth_providers => Concord::AuthPortal.all_strategy_names
 
   has_many :activities, :class_name => LightweightActivity
@@ -12,11 +13,19 @@ class User < ActiveRecord::Base
   has_many :imports
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_admin, :is_author,
-    :provider, :uid, :authentication_token
+  attr_accessible :email, :password, :password_confirmation, :remember_me,
+    :is_admin, :is_author, :can_export,
+    :provider, :uid, :authentication_token, :api_key, :has_api_key
   # attr_accessible :title, :body
 
   has_many :authentications, :dependent => :delete_all
+
+  self.token_authentication_key = "api_key"
+
+  def self.find_for_token_authentication(condition)
+    self.where(condition).first
+  end
+
 
   # access cancan outside of current_user
   # see https://github.com/ryanb/cancan/wiki/ability-for-other-users
@@ -115,4 +124,19 @@ class User < ActiveRecord::Base
    rack_session.delete "portal_domain"
    rack_session.delete "user_return_to"
   end
+
+  def has_api_key
+    return api_key.present?
+  end
+
+  def has_api_key=(newvalue)
+    if newvalue == "1"
+      if api_key.blank?
+        update_attribute(:api_key, UUIDTools::UUID.random_create.to_s)
+      end
+    else
+      update_attribute(:api_key, nil)
+    end
+  end
+
 end
