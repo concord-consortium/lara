@@ -64,12 +64,11 @@
         if (url.length == 0) {
           throw new Error("Please enter an url to the JSON file");
         }
-        if (!/https?:/.test(url)) {
-          throw new Error("Please enter a valid url to the JSON file");
+        var matches = url.match(/(https?:.+\/)[^/]+\.json$/);
+        if (!matches) {
+          throw new Error("Please enter a valid url to the JSON manifest file");
         }
-        var a = document.createElement("A");
-        a.href = url;
-        baseUrl = a.origin + "/";
+        baseUrl = matches[1];
         return fetch(url);
       })
       .then(function(resp) {
