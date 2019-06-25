@@ -78,6 +78,10 @@ describe SequencesController do
         get :show, id: sequence.id, sequence_run_key: sequence_run.key
         expect(response).to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
       end
+      it "does not redirect to the most recent activity if the show_index parameter is present" do
+        get :show, id: sequence.id, sequence_run_key: sequence_run.key, show_index: true
+        expect(response).not_to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
+      end
     end
 
   end

@@ -194,7 +194,12 @@ module ApplicationHelper
   # when the functionality is extended, the white-list could be located in
   # a more reasonable location in the code-base.
   def default_param_whitelist
-      ["mode"]
+    ["mode"]
+  end
+
+  # adds "show_index" to the default whitelisted parameters for sequences
+  def sequence_param_whitelist
+    default_param_whitelist << "show_index"
   end
 
   def teacher_content
