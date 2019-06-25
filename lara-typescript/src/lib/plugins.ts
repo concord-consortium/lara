@@ -1,4 +1,4 @@
-import { IPluginRuntimeConstructor, IPluginAuthoringConstructor, IRegisterPluginOptions } from "../plugin-api";
+import { IRegisterPluginOptions } from "../plugin-api";
 import { IPluginContextOptions,
          IPluginRuntimeContextOptions,
          IPluginAuthoringContextOptions,
@@ -46,7 +46,7 @@ export const initPlugin = (label: string, options: IPluginContextOptions) => {
 };
 
 const initRuntimePlugin = (label: string, context: IPluginRuntimeContextOptions) => {
-  const Constructor: IPluginRuntimeConstructor = pluginClasses[label].runtimeClass;
+  const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {
       const plugin = new Constructor(generateRuntimePluginContext(context));

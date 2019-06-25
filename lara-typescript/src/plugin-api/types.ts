@@ -3,14 +3,9 @@ export interface IPlugin {
 }
 
 export interface IRegisterPluginOptions {
-  runtimeClass: IPluginRuntimeConstructor;
-  authoringClass?: IPluginAuthoringConstructor;
+  runtimeClass: new(runtimeContext: IPluginRuntimeContext) => IPlugin;
+  authoringClass?: new(authoringContext: IPluginAuthoringContext) => IPlugin;
 }
-
-/** Constructs a plugin given a IPluginRuntimeContext */
-export type IPluginRuntimeConstructor = new(runtimeContext: IPluginRuntimeContext) => IPlugin;
-/** Constructs a plugin given a IPluginAuthoringContext */
-export type IPluginAuthoringConstructor = new(authoringContext: IPluginAuthoringContext) => IPlugin;
 
 export interface IPluginRuntimeContext {
   /** Name of the plugin */
@@ -23,7 +18,7 @@ export interface IPluginRuntimeContext {
   authoredState: string | null;
   /** The saved learner data for this instance (if available). */
   learnerState: string | null;
-  /** HTMLElement created by LARA for the plugin to render its output. */
+  /** HTMLElement created by LARA for the plugin to use to render both its runtime and authoring output. */
   container: HTMLElement;
   /** The run ID for the current LARA run. */
   runId: number;

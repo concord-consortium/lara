@@ -15,7 +15,7 @@ interface IPluginCommonOptions {
   pluginId: number;
   /** The authored configuration for this instance (if available). */
   authoredState: string | null;
-  /** Reserved HTMLElement for the plugin output. */
+  /** HTMLElement created by LARA for the plugin to use to render both its runtime and authoring output. */
   container: HTMLElement;
   /** Name of plugin component */
   componentLabel: string;
