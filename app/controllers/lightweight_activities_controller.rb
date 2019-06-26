@@ -85,9 +85,10 @@ class LightweightActivitiesController < ApplicationController
   end
 
   def preview
-    # This is "show" but it clears answers first
+    # This is "show" but it clears answers first and sets the preview mode flag
     authorize! :update, @activity # Authors only
     @run.clear_answers
+    @preview_mode = true
     if @activity.layout == LightweightActivity::LAYOUT_SINGLE_PAGE
       setup_single_page_show
       @labbook_is_under_interactive = true

@@ -16108,7 +16108,7 @@ var fetchPluginEventLogData = function (context) {
     return logData;
 };
 exports.generateRuntimePluginContext = function (options) {
-    return {
+    var context = {
         name: options.name,
         url: options.url,
         pluginId: options.pluginId,
@@ -16122,8 +16122,10 @@ exports.generateRuntimePluginContext = function (options) {
         getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
         wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        log: function (logData) { return log(options, logData); }
+        log: function (logData) { return log(context, logData); },
+        previewMode: options.previewMode
     };
+    return context;
 };
 exports.generateAuthoringPluginContext = function (options) {
     return {
@@ -16187,14 +16189,14 @@ exports.initPlugin = function (label, options) {
         initRuntimePlugin(label, options);
     }
 };
-var initRuntimePlugin = function (label, context) {
+var initRuntimePlugin = function (label, options) {
     var Constructor = pluginClasses[label].runtimeClass;
     if (typeof Constructor === "function") {
         try {
-            var plugin = new Constructor(plugin_context_1.generateRuntimePluginContext(context));
+            var plugin = new Constructor(plugin_context_1.generateRuntimePluginContext(options));
         }
         catch (e) {
-            pluginError(e, context);
+            pluginError(e, options);
         }
         // tslint:disable-next-line:no-console
         console.info("Plugin", label, "is now registered");
@@ -16204,14 +16206,14 @@ var initRuntimePlugin = function (label, context) {
         console.error("No plugin registered for label:", label);
     }
 };
-var initAuthoringPlugin = function (label, context) {
+var initAuthoringPlugin = function (label, options) {
     var Constructor = pluginClasses[label].authoringClass;
     if (typeof Constructor === "function") {
         try {
-            var plugin = new Constructor(plugin_context_1.generateAuthoringPluginContext(context));
+            var plugin = new Constructor(plugin_context_1.generateAuthoringPluginContext(options));
         }
         catch (e) {
-            pluginError(e, context);
+            pluginError(e, options);
         }
         // tslint:disable-next-line:no-console
         console.info("Plugin", label, "is now registered");

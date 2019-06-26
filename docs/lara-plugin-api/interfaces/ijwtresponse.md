@@ -23,7 +23,11 @@
 
 **● claims**: *[IJwtClaims](ijwtclaims.md) \| `__type`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:148](../../../lara-typescript/src/plugin-api/types.ts#L148)*
+=======
+*Defined in [types.ts:155](../../../lara-typescript/src/plugin-api/types.ts#L155)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="token"></a>
@@ -32,7 +36,11 @@ ___
 
 **● token**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:147](../../../lara-typescript/src/plugin-api/types.ts#L147)*
+=======
+*Defined in [types.ts:154](../../../lara-typescript/src/plugin-api/types.ts#L154)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 

@@ -25,7 +25,11 @@
 
 **● class_hash**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:134](../../../lara-typescript/src/plugin-api/types.ts#L134)*
+=======
+*Defined in [types.ts:141](../../../lara-typescript/src/plugin-api/types.ts#L141)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="offering_id"></a>
@@ -34,7 +38,11 @@ ___
 
 **● offering_id**: *`number`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:135](../../../lara-typescript/src/plugin-api/types.ts#L135)*
+=======
+*Defined in [types.ts:142](../../../lara-typescript/src/plugin-api/types.ts#L142)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="user_id"></a>
@@ -43,7 +51,11 @@ ___
 
 **● user_id**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:133](../../../lara-typescript/src/plugin-api/types.ts#L133)*
+=======
+*Defined in [types.ts:140](../../../lara-typescript/src/plugin-api/types.ts#L140)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="user_type"></a>
@@ -52,7 +64,11 @@ ___
 
 **● user_type**: *"learner" \| "teacher"*
 
+<<<<<<< HEAD
 *Defined in [types.ts:132](../../../lara-typescript/src/plugin-api/types.ts#L132)*
+=======
+*Defined in [types.ts:139](../../../lara-typescript/src/plugin-api/types.ts#L139)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 

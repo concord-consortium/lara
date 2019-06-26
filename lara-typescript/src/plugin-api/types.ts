@@ -57,6 +57,8 @@ export interface IPluginRuntimeContext {
    * @param logData Data to log. Can be either event name or hash with at least `event` property.
    */
   log: (logData: string | ILogData) => void;
+  /** True if plugin is being loaded in preview mode */
+  previewMode: boolean;
 }
 
 export interface IEmbeddableRuntimeContext {

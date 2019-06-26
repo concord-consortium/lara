@@ -65,7 +65,8 @@ describe("Plugins", () => {
       firebaseJwtUrl: "http://fake.jwt",
       embeddablePluginId: null,
       wrappedEmbeddable: null,
-      componentLabel: "test"
+      componentLabel: "test",
+      previewMode: false
     };
     const authoringContextOptions: IPluginAuthoringContextOptions = {
       type: "authoring",

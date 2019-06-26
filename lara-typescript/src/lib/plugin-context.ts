@@ -43,6 +43,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   embeddablePluginId: number | null;
   /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
   wrappedEmbeddable: IEmbeddableContextOptions | null;
+  /** True if plugin is being loaded in preview mode */
+  previewMode: boolean;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -168,7 +170,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData)
+    log: (logData: string | ILogData) => log(options, logData),
+    previewMode: options.previewMode
   };
   return context;
 };

@@ -26,7 +26,11 @@
 
 **● claims**: *[IPortalClaims](iportalclaims.md)*
 
+<<<<<<< HEAD
 *Defined in [types.ts:143](../../../lara-typescript/src/plugin-api/types.ts#L143)*
+=======
+*Defined in [types.ts:150](../../../lara-typescript/src/plugin-api/types.ts#L150)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="class_info_url"></a>
@@ -35,7 +39,11 @@ ___
 
 **● class_info_url**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:142](../../../lara-typescript/src/plugin-api/types.ts#L142)*
+=======
+*Defined in [types.ts:149](../../../lara-typescript/src/plugin-api/types.ts#L149)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="domain"></a>
@@ -44,7 +52,11 @@ ___
 
 **● domain**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:139](../../../lara-typescript/src/plugin-api/types.ts#L139)*
+=======
+*Defined in [types.ts:146](../../../lara-typescript/src/plugin-api/types.ts#L146)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="externalid"></a>
@@ -53,7 +65,11 @@ ___
 
 **● externalId**: *`number`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:141](../../../lara-typescript/src/plugin-api/types.ts#L141)*
+=======
+*Defined in [types.ts:148](../../../lara-typescript/src/plugin-api/types.ts#L148)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 <a id="returnurl"></a>
@@ -62,7 +78,11 @@ ___
 
 **● returnUrl**: *`string`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:140](../../../lara-typescript/src/plugin-api/types.ts#L140)*
+=======
+*Defined in [types.ts:147](../../../lara-typescript/src/plugin-api/types.ts#L147)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 ___
 

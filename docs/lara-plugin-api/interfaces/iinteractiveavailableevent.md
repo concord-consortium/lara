@@ -25,7 +25,11 @@ Data passed to InteractiveAvailable event handlers.
 
 **● available**: *`boolean`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:208](../../../lara-typescript/src/plugin-api/types.ts#L208)*
+=======
+*Defined in [types.ts:215](../../../lara-typescript/src/plugin-api/types.ts#L215)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 Availablility of interactive
 
@@ -36,7 +40,11 @@ ___
 
 **● container**: *`HTMLElement`*
 
+<<<<<<< HEAD
 *Defined in [types.ts:204](../../../lara-typescript/src/plugin-api/types.ts#L204)*
+=======
+*Defined in [types.ts:211](../../../lara-typescript/src/plugin-api/types.ts#L211)*
+>>>>>>> Added previewMode flag to plugin runtime context
 
 Interactive container of the interactive that was just started.
 
