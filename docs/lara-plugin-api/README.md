@@ -204,11 +204,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:214](../../lara-typescript/src/plugin-api/types.ts#L214)*
-=======
-*Defined in [types.ts:221](../../lara-typescript/src/plugin-api/types.ts#L221)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:218](../../lara-typescript/src/plugin-api/types.ts#L218)*
 
 InteractiveAvailable event handler.
 
@@ -230,11 +226,7 @@ ___
 
 **Ƭ ILogEventHandler**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:195](../../lara-typescript/src/plugin-api/types.ts#L195)*
-=======
-*Defined in [types.ts:202](../../lara-typescript/src/plugin-api/types.ts#L202)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:199](../../lara-typescript/src/plugin-api/types.ts#L199)*
 
 Log event handler.
 

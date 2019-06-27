@@ -16122,7 +16122,7 @@ exports.generateRuntimePluginContext = function (options) {
         getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
         wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        log: function (logData) { return log(context, logData); },
+        log: function (logData) { return log(options, logData); },
         previewMode: options.previewMode
     };
     return context;
@@ -16135,7 +16135,8 @@ exports.generateAuthoringPluginContext = function (options) {
         authoredState: options.authoredState,
         container: options.container,
         componentLabel: options.componentLabel,
-        saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); }
+        saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); },
+        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
     };
 };
 

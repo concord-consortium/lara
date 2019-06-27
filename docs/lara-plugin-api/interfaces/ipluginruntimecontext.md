@@ -162,7 +162,7 @@ ___
 
 **● previewMode**: *`boolean`*
 
-*Defined in [types.ts:66](../../../lara-typescript/src/plugin-api/types.ts#L66)*
+*Defined in [types.ts:61](../../../lara-typescript/src/plugin-api/types.ts#L61)*
 
 True if plugin is being loaded in preview mode
 

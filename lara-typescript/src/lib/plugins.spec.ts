@@ -76,7 +76,8 @@ describe("Plugins", () => {
       authoredState: '{"configured": true }',
       container: $('<div class="myplugin" />')[0],
       componentLabel: "test",
-      authorDataSaveUrl: "http://authoring.save"
+      authorDataSaveUrl: "http://authoring.save",
+      wrappedEmbeddable: null
     };
 
     it("should call the plugins constructor with the config", () => {

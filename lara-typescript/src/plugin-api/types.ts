@@ -128,6 +128,8 @@ export interface IPluginAuthoringContext {
    @param state A string representing serialized author data; if it's JSON, remember to stringify it first.
    ****************************************************************************/
   saveAuthoredPluginState: (state: string) => Promise<string>;
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  wrappedEmbeddable: IEmbeddableRuntimeContext | null;
 }
 
 export interface IPortalClaims {

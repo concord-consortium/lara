@@ -27,11 +27,7 @@
 
 **● class_hash**: *`string`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:166](../../../lara-typescript/src/plugin-api/types.ts#L166)*
-=======
-*Defined in [types.ts:173](../../../lara-typescript/src/plugin-api/types.ts#L173)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:170](../../../lara-typescript/src/plugin-api/types.ts#L170)*
 
 ___
 <a id="id"></a>
@@ -40,11 +36,7 @@ ___
 
 **● id**: *`number`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:164](../../../lara-typescript/src/plugin-api/types.ts#L164)*
-=======
-*Defined in [types.ts:171](../../../lara-typescript/src/plugin-api/types.ts#L171)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:168](../../../lara-typescript/src/plugin-api/types.ts#L168)*
 
 ___
 <a id="offerings"></a>
@@ -53,11 +45,7 @@ ___
 
 **● offerings**: *[IOffering](ioffering.md)[]*
 
-<<<<<<< HEAD
-*Defined in [types.ts:169](../../../lara-typescript/src/plugin-api/types.ts#L169)*
-=======
-*Defined in [types.ts:176](../../../lara-typescript/src/plugin-api/types.ts#L176)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:173](../../../lara-typescript/src/plugin-api/types.ts#L173)*
 
 ___
 <a id="students"></a>
@@ -66,11 +54,7 @@ ___
 
 **● students**: *[IUser](iuser.md)[]*
 
-<<<<<<< HEAD
-*Defined in [types.ts:168](../../../lara-typescript/src/plugin-api/types.ts#L168)*
-=======
-*Defined in [types.ts:175](../../../lara-typescript/src/plugin-api/types.ts#L175)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:172](../../../lara-typescript/src/plugin-api/types.ts#L172)*
 
 ___
 <a id="teachers"></a>
@@ -79,11 +63,7 @@ ___
 
 **● teachers**: *[IUser](iuser.md)[]*
 
-<<<<<<< HEAD
-*Defined in [types.ts:167](../../../lara-typescript/src/plugin-api/types.ts#L167)*
-=======
-*Defined in [types.ts:174](../../../lara-typescript/src/plugin-api/types.ts#L174)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:171](../../../lara-typescript/src/plugin-api/types.ts#L171)*
 
 ___
 <a id="uri"></a>
@@ -92,11 +72,7 @@ ___
 
 **● uri**: *`string`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:165](../../../lara-typescript/src/plugin-api/types.ts#L165)*
-=======
-*Defined in [types.ts:172](../../../lara-typescript/src/plugin-api/types.ts#L172)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:169](../../../lara-typescript/src/plugin-api/types.ts#L169)*
 
 ___
 

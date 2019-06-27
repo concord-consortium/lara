@@ -249,6 +249,7 @@ describe("Plugin authoring context helper", () => {
     container: document.createElement("div"),
     componentLabel: "test",
     authorDataSaveUrl: "http://author-data.save.url",
+    wrappedEmbeddable: null
   };
 
   it("should copy basic properties to runtime context", () => {

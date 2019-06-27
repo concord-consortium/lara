@@ -78,6 +78,14 @@ module InteractivePageHelper
     end
   end
 
+  def question_css_class(embeddable)
+    is_likert = embeddable.is_a?(Embeddable::MultipleChoiceAnswer) && embeddable.is_likert
+    css_class = embeddable.is_a?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : ""
+    css_class += embeddable.respond_to?(:is_full_width) && embeddable.is_full_width ? " full-width-item" : ""
+    css_class += is_wrapping_plugin?(embeddable) ? " hidden" : ""
+    css_class
+  end
+
   protected
   def run_for_activity(activity, run)
     return nil unless run

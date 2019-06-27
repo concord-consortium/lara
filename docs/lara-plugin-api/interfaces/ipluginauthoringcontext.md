@@ -17,6 +17,7 @@
 * [pluginId](ipluginauthoringcontext.md#pluginid)
 * [saveAuthoredPluginState](ipluginauthoringcontext.md#saveauthoredpluginstate)
 * [url](ipluginauthoringcontext.md#url)
+* [wrappedEmbeddable](ipluginauthoringcontext.md#wrappedembeddable)
 
 ---
 
@@ -28,11 +29,7 @@
 
 **● authoredState**: *`string` \| `null`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:116](../../../lara-typescript/src/plugin-api/types.ts#L116)*
-=======
-*Defined in [types.ts:123](../../../lara-typescript/src/plugin-api/types.ts#L123)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:118](../../../lara-typescript/src/plugin-api/types.ts#L118)*
 
 The authored configuration for this instance (if available).
 
@@ -43,11 +40,7 @@ ___
 
 **● componentLabel**: *`string`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:120](../../../lara-typescript/src/plugin-api/types.ts#L120)*
-=======
-*Defined in [types.ts:127](../../../lara-typescript/src/plugin-api/types.ts#L127)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:122](../../../lara-typescript/src/plugin-api/types.ts#L122)*
 
 The label of the plugin component.
 
@@ -58,11 +51,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:118](../../../lara-typescript/src/plugin-api/types.ts#L118)*
-=======
-*Defined in [types.ts:125](../../../lara-typescript/src/plugin-api/types.ts#L125)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:120](../../../lara-typescript/src/plugin-api/types.ts#L120)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -73,11 +62,7 @@ ___
 
 **● name**: *`string`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:110](../../../lara-typescript/src/plugin-api/types.ts#L110)*
-=======
-*Defined in [types.ts:117](../../../lara-typescript/src/plugin-api/types.ts#L117)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:112](../../../lara-typescript/src/plugin-api/types.ts#L112)*
 
 Name of the plugin
 
@@ -88,11 +73,7 @@ ___
 
 **● pluginId**: *`number`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:114](../../../lara-typescript/src/plugin-api/types.ts#L114)*
-=======
-*Defined in [types.ts:121](../../../lara-typescript/src/plugin-api/types.ts#L121)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:116](../../../lara-typescript/src/plugin-api/types.ts#L116)*
 
 Plugin instance ID.
 
@@ -103,11 +84,7 @@ ___
 
 **● saveAuthoredPluginState**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:128](../../../lara-typescript/src/plugin-api/types.ts#L128)*
-=======
-*Defined in [types.ts:135](../../../lara-typescript/src/plugin-api/types.ts#L135)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:130](../../../lara-typescript/src/plugin-api/types.ts#L130)*
 
 Function that saves the authoring state for the plugin.
 
@@ -135,13 +112,20 @@ ___
 
 **● url**: *`string`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:112](../../../lara-typescript/src/plugin-api/types.ts#L112)*
-=======
-*Defined in [types.ts:119](../../../lara-typescript/src/plugin-api/types.ts#L119)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:114](../../../lara-typescript/src/plugin-api/types.ts#L114)*
 
 Url from which the plugin was loaded.
+
+___
+<a id="wrappedembeddable"></a>
+
+###  wrappedEmbeddable
+
+**● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
+
+*Defined in [types.ts:132](../../../lara-typescript/src/plugin-api/types.ts#L132)*
+
+Wrapped embeddable runtime context if plugin is wrapping some embeddable.
 
 ___
 

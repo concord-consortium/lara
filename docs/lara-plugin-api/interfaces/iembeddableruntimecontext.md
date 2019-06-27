@@ -27,11 +27,7 @@
 
 **● container**: *`HTMLElement`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:64](../../../lara-typescript/src/plugin-api/types.ts#L64)*
-=======
-*Defined in [types.ts:71](../../../lara-typescript/src/plugin-api/types.ts#L71)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:66](../../../lara-typescript/src/plugin-api/types.ts#L66)*
 
 Embeddable container.
 
@@ -42,11 +38,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:85](../../../lara-typescript/src/plugin-api/types.ts#L85)*
-=======
-*Defined in [types.ts:92](../../../lara-typescript/src/plugin-api/types.ts#L92)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:87](../../../lara-typescript/src/plugin-api/types.ts#L87)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -62,11 +54,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:95](../../../lara-typescript/src/plugin-api/types.ts#L95)*
-=======
-*Defined in [types.ts:102](../../../lara-typescript/src/plugin-api/types.ts#L102)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:97](../../../lara-typescript/src/plugin-api/types.ts#L97)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -90,11 +78,7 @@ ___
 
 **● interactiveAvailable**: *`boolean`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:105](../../../lara-typescript/src/plugin-api/types.ts#L105)*
-=======
-*Defined in [types.ts:112](../../../lara-typescript/src/plugin-api/types.ts#L112)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:107](../../../lara-typescript/src/plugin-api/types.ts#L107)*
 
 True if the interactive is immediately available
 
@@ -105,11 +89,7 @@ ___
 
 **● laraJson**: *`any`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:83](../../../lara-typescript/src/plugin-api/types.ts#L83)*
-=======
-*Defined in [types.ts:90](../../../lara-typescript/src/plugin-api/types.ts#L90)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:85](../../../lara-typescript/src/plugin-api/types.ts#L85)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -135,11 +115,7 @@ ___
 
 **● onInteractiveAvailable**: *`function`*
 
-<<<<<<< HEAD
-*Defined in [types.ts:103](../../../lara-typescript/src/plugin-api/types.ts#L103)*
-=======
-*Defined in [types.ts:110](../../../lara-typescript/src/plugin-api/types.ts#L110)*
->>>>>>> Added previewMode flag to plugin runtime context
+*Defined in [types.ts:105](../../../lara-typescript/src/plugin-api/types.ts#L105)*
 
 Function that subscribes provided handler to event that gets called when the interactive's availablity changes. Normally an interactive starts as available unless click to play is enabled. When click to play is enabled the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 

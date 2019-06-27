@@ -1,6 +1,21 @@
 - if plugin.version == 3
   - v3_plugin_label = "plugin#{plugin.approved_script_id}"
   - output_id = "plugin_authoring_output"
+  - wrapped_id = "wrapped_embeddable"
+  - show_wrapped_embeddable = @embeddable && (plugin.component.scope == "embeddable-decoration") && plugin.component.guiPreview
+  - wrapped_embeddable = show_wrapped_embeddable && @embeddable.embeddable
+  - wrapped_embeddable_lara_json = wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json : 'null'
+  - if wrapped_embeddable && wrapped_embeddable.respond_to?(:answers)
+    - wrapped_embeddable = wrapped_embeddable.answers[0]
+  - click_to_play = !!(wrapped_embeddable && wrapped_embeddable.respond_to?(:click_to_play) && wrapped_embeddable.click_to_play)
+
+
+  -# load runtime theme for preview of wrapped embeddable
+  - if show_wrapped_embeddable
+    - if @theme && @theme.css_file
+      = stylesheet_link_tag @theme.css_file, :media => 'all'
+    - else
+      = stylesheet_link_tag Theme::DEFAULT_CSS_FILE, :media => 'all'
 
   - if @embeddable
     %h1{style: "font-size: 1.5em; font-weight: bold; margin-bottom: 1em;"}
@@ -9,7 +24,20 @@
     = form_for @embeddable do |f|
       = f.error_messages
       %div{style: ""}
-        .plugin-output{id: output_id}
+        - if show_wrapped_embeddable
+          .wrapped-embeddable{id: wrapped_id}
+            .question{ class: question_css_class(wrapped_embeddable) }
+              -#This CSS class is important, as it might be referenced by plugins and passed to a plugin instance.
+              .embeddable-container
+                - if Embeddable::is_interactive?(wrapped_embeddable)
+                  = render_interactive(wrapped_embeddable)
+                - else
+                  - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
+                  = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
+          -# reload-on-close is used so that the css loaded for the preview is not seen
+          .plugin-output.reload-on-close{id: output_id}
+        - else
+          .plugin-output{id: output_id}
         %div
           = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   - else
@@ -22,6 +50,8 @@
         .plugin-output{id: output_id}
 
   - runtime_div_selector = "##{output_id}"
+  - wrapped_div_selector = "##{wrapped_id}"
+
   :javascript
     // Begin script for #{plugin.name}
     $(document).ready(function() {
@@ -37,8 +67,13 @@
           componentLabel: '#{plugin.component.label}',
           authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
           container: $('#{runtime_div_selector}')[0],
-          wrappedEmbeddable: null,
-          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`,
+          wrappedEmbeddable: #{!wrapped_embeddable ? 'null' : "{
+            container: $('#{wrapped_div_selector}')[0],
+            laraJson: #{wrapped_embeddable_lara_json},
+            interactiveStateUrl: null,
+            interactiveAvailable: #{!click_to_play}
+          }"},
+          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
