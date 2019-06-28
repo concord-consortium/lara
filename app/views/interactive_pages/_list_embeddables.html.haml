@@ -7,7 +7,7 @@
         - is_likert = e.is_a?(Embeddable::MultipleChoiceAnswer) && e.is_likert
         - css_class = e.is_a?(Embeddable::Xhtml) ? 'challenge' : is_likert ? "likert" : ""
         - css_class += e.respond_to?(:is_full_width) && e.is_full_width ? " full-width-item" : ""
-        - css_class += e.respond_to?(:wrapping_plugin?) && e.wrapping_plugin? ? " hidden" : ""
+        - css_class += is_wrapping_plugin?(e) ? " hidden" : ""
         - if e.show_in_runtime?
           -# e variable is actually either embeddable (for interactives, plugins, etc.) or embeddable answer
           -# (open response, multiple choice and all the question types). If the latter, get a real question object.
