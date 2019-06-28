@@ -26,6 +26,14 @@ module InteractivePageHelper
     return link_to name, runnable_activity_page_path(activity,page), opts
   end
 
+  def is_wrapping_plugin?(e)
+    e.respond_to?(:wrapping_plugin?) && e.wrapping_plugin?
+  end
+
+  def main_section_wrapping_plugins(page, run)
+    page.main_visible_embeddables.select { |e| is_wrapping_plugin?(e) }
+  end
+
   def main_section_visible_embeddables(page, run)
     finder = Embeddable::AnswerFinder.new(run)
     # Limit visible embeddables to ones that do not belong to any section.

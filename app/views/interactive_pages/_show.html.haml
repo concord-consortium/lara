@@ -12,8 +12,10 @@
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}
 
   .questions-mod.ui-block-2{ :class => page.embeddable_display_mode == 'carousel' ? 'jcarousel' : '' }
+    -# Wrapping plugins don't necessarily wrap items in the assessment block, so they need to be rendered separately.
+    = render partial: 'interactive_pages/list_wrapping_plugins', locals: {wrapping_plugins: main_section_wrapping_plugins(page, @run)}
     - if page.show_info_assessment
-      = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: main_section_visible_embeddables(page, @run)}
+      = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: main_section_visible_embeddables(page, @run).select {|e| !is_wrapping_plugin?(e) }}
 
     .buttons
       - if page.embeddable_display_mode == 'carousel' && page.visible_embeddables.length > 1
