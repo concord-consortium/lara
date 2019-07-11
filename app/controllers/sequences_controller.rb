@@ -39,7 +39,7 @@ class SequencesController < ApplicationController
       format.html do
         raise_error_if_not_authorized_run(@sequence_run)
         if !params[:sequence_run_key]
-          redirect_to append_white_list_params sequence_with_sequence_run_key_path(@sequence, @sequence_run.key)
+          redirect_to append_white_list_params(sequence_with_sequence_run_key_path(@sequence, @sequence_run.key), sequence_param_whitelist)
           return
         end
         if @sequence_run.has_been_run
