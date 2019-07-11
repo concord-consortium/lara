@@ -18,6 +18,7 @@ describe("Plugin runtime context helper", () => {
     name: "test",
     url: "http://plugin.url",
     pluginId: 123,
+    embeddablePluginId: 42,
     authoredState: "{authoredState: 123}",
     learnerState: "{learnerState: 321}",
     learnerStateSaveUrl: "http://state.save.url",
@@ -190,14 +191,14 @@ describe("Plugin runtime context helper", () => {
       it("delegates log call to loggerUtils", () => {
         const e = { event: "test" };
         runtimeContext.log(e);
-        const augmentedE = { event: "test", plugin_id: 123};
+        const augmentedE = { event: "test", plugin_id: 123, embeddable_plugin_id: 42};
         expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedE);
       });
 
       it("delegates log on a simply string log data", () => {
         const logMsg = "What's your favorite log message?";
         runtimeContext.log(logMsg);
-        const augmentedLogEvent = { event: logMsg, plugin_id: 123 };
+        const augmentedLogEvent = { event: logMsg, plugin_id: 123, embeddable_plugin_id: 42};
         expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedLogEvent);
       });
 
@@ -208,8 +209,9 @@ describe("Plugin runtime context helper", () => {
           const augmentedEvent = {
             event: "test",
             plugin_id: 123,
-            embeddable_type: "MwInteractive",
-            embeddable_id: "86-MwInteractive"
+            embeddable_plugin_id: 42,
+            wrapped_embeddable_type: "MwInteractive",
+            wrapped_embeddable_id: "86-MwInteractive"
           };
           expect((window as any).loggerUtils.log).toHaveBeenCalledWith(augmentedEvent);
         });

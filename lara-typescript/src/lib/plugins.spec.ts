@@ -63,6 +63,7 @@ describe("Plugins", () => {
       classInfoUrl: null,
       remoteEndpoint: null,
       firebaseJwtUrl: "http://fake.jwt",
+      embeddablePluginId: null,
       wrappedEmbeddable: null,
       componentLabel: "test"
     };

@@ -89,6 +89,9 @@
   -# Version 3
   - plugin_learner_state = PluginLearnerState.find_or_create(plugin, @run)
   - learner_state = plugin_learner_state.state
+  -# embeddable template variable will be undefined when the activity level plugins are rendered
+  - embeddable_defined = defined?(embeddable) && embeddable.present?
+
   -# wrapped_embeddable template variable might be undefined when the activity level plugins are rendered
   - wrapped_embedd = defined?(wrapped_embeddable) && wrapped_embeddable
   - if wrapped_embedd
@@ -124,6 +127,7 @@
         name: '#{plugin.name}',
         url: '#{plugin.url}',
         pluginId: #{plugin.id},
+        embeddablePluginId: #{embeddable_defined ? embeddable.id : 'null'},
         authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
         learnerState: #{learner_state ? "'#{ escape_javascript(learner_state) }'" : 'null'},
         learnerStateSaveUrl: `#{escape_javascript(api_v1_update_plugin_learner_state_url(plugin.id, @run.id))}`,

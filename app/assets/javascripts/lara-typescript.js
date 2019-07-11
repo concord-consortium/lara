@@ -16095,14 +16095,17 @@ var log = function (context, logData) {
     }
 };
 var fetchPluginEventLogData = function (context) {
-    if ((context.type !== "runtime") || !context.wrappedEmbeddable) {
-        return { plugin_id: context.pluginId };
-    }
-    return {
-        plugin_id: context.pluginId,
-        embeddable_type: context.wrappedEmbeddable.laraJson.type,
-        embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+    var logData = {
+        plugin_id: context.pluginId
     };
+    if (context.embeddablePluginId) {
+        logData.embeddable_plugin_id = context.embeddablePluginId;
+    }
+    if (context.wrappedEmbeddable) {
+        logData.wrapped_embeddable_type = context.wrappedEmbeddable.laraJson.type;
+        logData.wrapped_embeddable_id = context.wrappedEmbeddable.laraJson.ref_id;
+    }
+    return logData;
 };
 exports.generateRuntimePluginContext = function (options) {
     return {

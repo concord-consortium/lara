@@ -1,2 +1,5 @@
 - unless !embeddable.plugin.version
-  = render :partial => 'plugins/show',locals: {plugin: embeddable.plugin, wrapped_embeddable: embeddable.embeddable }
+  = render :partial => 'plugins/show',
+    locals: {plugin: embeddable.plugin,
+             embeddable: embeddable,
+             wrapped_embeddable: embeddable.embeddable }
