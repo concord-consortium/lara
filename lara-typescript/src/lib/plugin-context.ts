@@ -39,6 +39,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   classInfoUrl: string | null;
   /** URL to fetch a JWT. Includes generic `_FIREBASE_APP_` that should be replaced with app name. */
   firebaseJwtUrl: string;
+  /** The ID of the Embeddable that has been added to page, this embeddable refers to the plugin instance */
+  embeddablePluginId: number | null;
   /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
   wrappedEmbeddable: IEmbeddableContextOptions | null;
 }
@@ -126,7 +128,7 @@ const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null =
   return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
-const log = (context: IPluginContextOptions, logData: string | ILogData): void => {
+const log = (context: IPluginRuntimeContextOptions, logData: string | ILogData): void => {
   const logger = (window as any).loggerUtils;
   if (logger) {
     if (typeof(logData) === "string") {
@@ -137,15 +139,18 @@ const log = (context: IPluginContextOptions, logData: string | ILogData): void =
   }
 };
 
-const fetchPluginEventLogData = (context: IPluginContextOptions) => {
-  if ((context.type !== "runtime") || !context.wrappedEmbeddable) {
-    return { plugin_id: context.pluginId };
-  }
-  return {
-    plugin_id: context.pluginId,
-    embeddable_type: context.wrappedEmbeddable.laraJson.type,
-    embeddable_id: context.wrappedEmbeddable.laraJson.ref_id
+const fetchPluginEventLogData = (context: IPluginRuntimeContextOptions) => {
+  const logData: any = {
+    plugin_id: context.pluginId
   };
+  if (context.embeddablePluginId) {
+    logData.embeddable_plugin_id = context.embeddablePluginId;
+  }
+  if (context.wrappedEmbeddable) {
+    logData.wrapped_embeddable_type = context.wrappedEmbeddable.laraJson.type;
+    logData.wrapped_embeddable_id = context.wrappedEmbeddable.laraJson.ref_id;
+  }
+  return logData;
 };
 
 export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptions): IPluginRuntimeContext => {

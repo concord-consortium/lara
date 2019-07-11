@@ -14,6 +14,11 @@ describe "plugins/_show.html.haml" do
   let(:plugin_label) {'plugin-label'}
   let(:plugin_url) { 'http://plugin.com/plugin.js' }
   let(:plugin_author_data){ "{'name': 'plugin-name'}" }
+  let(:embeddable_local) do
+    double(
+      id: 42
+    )
+  end
   let(:user) do
     double({
       email: email,
@@ -28,30 +33,27 @@ describe "plugins/_show.html.haml" do
       remote_endpoint: run_remote_endpoint
     })
   end
+  let(:plugin_local) do
+    double( "Fake Plugin",
+      name: plugin_name,
+      label: plugin_label,
+      id: plugin_id,
+      url: plugin_url,
+      version: version,
+      author_data: plugin_author_data,
+      shared_learner_state_key: shared_learner_state_key,
+      approved_script: double(
+        id: approved_script_id
+      )
+    )
+  end
   let(:_locals) do
     {
-      # plugins: double(),
-      plugin: double({
-        name: plugin_name,
-        label: plugin_label,
-        id: plugin_id,
-        url: plugin_url,
-        version: version,
-        author_data: plugin_author_data,
-        shared_learner_state_key: shared_learner_state_key,
-        approved_script: double({
-          id: approved_script_id
-        })
-      })
+      plugin: plugin_local,
     }
   end
 
-  before(:each) do
-    @run = run
-    render partial: "plugins/show", locals: _locals
-  end
-
-  it "should render a javascript to call Plugins.initPlugin with values" do
+  let(:common_plugin_code) do
     [
       /name: '#{plugin_name}'/,
       /url: '#{plugin_url}'/,
@@ -61,10 +63,70 @@ describe "plugins/_show.html.haml" do
       /classInfoUrl: '#{class_info_url}'/,
       /remoteEndpoint: null/,
       /container:/,
-      /wrappedEmbeddable:/,
+      /wrappedEmbeddable: embeddableContext/,
       /LARA\.InternalAPI\.initPlugin\('plugin#{approved_script_id}', pluginContext\)/,
-    ].each do |expected_string|
-      expect(rendered).to match(expected_string)
+    ]
+  end
+
+  before(:each) do
+    @run = run
+    render partial: "plugins/show", locals: _locals
+  end
+
+  context "when rendered from as an activity level plugin" do
+    it "should render a javascript to call Plugins.initPlugin with correct values" do
+      activity_level_code = common_plugin_code + [
+        /embeddableContext = null/,
+        /embeddablePluginId: null/
+      ]
+
+      activity_level_code.each do |expected_string|
+        expect(rendered).to match(expected_string)
+      end
     end
   end
+
+  context "when rendered as a page level plugin that is not wrapping an embeddable" do
+    let (:_locals) do
+      {
+        plugin: plugin_local,
+        embeddable: embeddable_local
+      }
+    end
+
+    it "should render a javascript to call Plugins.initPlugin with correct values" do
+      page_level_code = common_plugin_code + [
+        /embeddableContext = null/,
+        /embeddablePluginId: 42/
+      ]
+      page_level_code.each do |expected_string|
+        expect(rendered).to match(expected_string)
+      end
+    end
+  end
+
+  context "when rendered as a page level plugin that is wrapping an embeddable" do
+    let (:_locals) do
+      {
+        plugin: plugin_local,
+        embeddable: embeddable_local,
+        wrapped_embeddable: double( "Fake wrapped embeddable",
+          id: 78,
+          embeddable_dom_id: 123,
+          export: {}
+        )
+      }
+    end
+
+    it "should render a javascript to call Plugins.initPlugin with correct values" do
+      page_level_code = common_plugin_code + [
+        /embeddableContext = {/,
+        /embeddablePluginId: 42/
+      ]
+      page_level_code.each do |expected_string|
+        expect(rendered).to match(expected_string)
+      end
+    end
+  end
+
 end
