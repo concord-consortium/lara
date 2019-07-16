@@ -2,10 +2,9 @@
 
 function interactiveSizing () {
   function setInteractiveWidth($iframe, width) {
-    $iframe.css('width', width);
-    var $header = $iframe.parents(".embeddable-container").find(".question-hdr")
-    if ($header.length > 0) {
-      $header.css('width', width);
+    var $container = $iframe.parents(".embeddable-container")
+    if ($container.length > 0) {
+      $container.css('width', width);
     }
   }
 
