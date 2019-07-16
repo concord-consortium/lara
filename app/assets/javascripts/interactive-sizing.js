@@ -56,9 +56,16 @@ function interactiveSizing () {
     }
     else /* (resizeMethod === 'DEFAULT') */ {
       $iframe.css('height', $iframe.width() / aspectRatio);
-      // PJ [7/16/2019]: Why is the height limited only in the DEFAULT mode, but not in MANUAL?
-      // I don't find this intuitive, but it has been implemented because of some issues described
-      // in this story: https://www.pivotaltracker.com/n/projects/736901/stories/161458506
+      // Q: Why is the height limited only in the DEFAULT mode, but not in MANUAL?
+      // A: Some interactives are not responsive, so the author needs a way to force the size of the interactive.
+      //    When the interactive height is limited and the browser window is short, the bottom part of a
+      //    non responsive interactive will be cut off.
+      //    In these cases the author can use the resizeMethod MANUAL.
+      //    More info can be found in this story: https://www.pivotaltracker.com/n/projects/736901/stories/161458506
+      //    An annoying aspect is that the author needs to figure out what aspectRatio is needed to get the height
+      //    they want, and that means the author needs to take into account the page layout (60/40, 70/30).
+      //    Also this approach doesn't work well for responsive layout since the width of the interactive is variable,
+      //    so the author cannot provide an aspect ratio that guarantees a specific height.
       limitInteractiveHeight($iframe, maxHeight);
     }
   }
