@@ -27,7 +27,7 @@
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:69](../../../lara-typescript/src/plugin-api/types.ts#L69)*
+*Defined in [types.ts:64](../../../lara-typescript/src/plugin-api/types.ts#L64)*
 
 Embeddable container.
 
@@ -38,7 +38,7 @@ ___
 
 **● getInteractiveState**: *`function`*
 
-*Defined in [types.ts:90](../../../lara-typescript/src/plugin-api/types.ts#L90)*
+*Defined in [types.ts:85](../../../lara-typescript/src/plugin-api/types.ts#L85)*
 
 Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
@@ -54,7 +54,7 @@ ___
 
 **● getReportingUrl**: *`function`*
 
-*Defined in [types.ts:100](../../../lara-typescript/src/plugin-api/types.ts#L100)*
+*Defined in [types.ts:95](../../../lara-typescript/src/plugin-api/types.ts#L95)*
 
 Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined. Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method). If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument to this method to limit number of network requests.
 
@@ -78,7 +78,7 @@ ___
 
 **● interactiveAvailable**: *`boolean`*
 
-*Defined in [types.ts:110](../../../lara-typescript/src/plugin-api/types.ts#L110)*
+*Defined in [types.ts:105](../../../lara-typescript/src/plugin-api/types.ts#L105)*
 
 True if the interactive is immediately available
 
@@ -89,7 +89,7 @@ ___
 
 **● laraJson**: *`any`*
 
-*Defined in [types.ts:88](../../../lara-typescript/src/plugin-api/types.ts#L88)*
+*Defined in [types.ts:83](../../../lara-typescript/src/plugin-api/types.ts#L83)*
 
 Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here. Example (interactive):
 
@@ -115,7 +115,7 @@ ___
 
 **● onInteractiveAvailable**: *`function`*
 
-*Defined in [types.ts:108](../../../lara-typescript/src/plugin-api/types.ts#L108)*
+*Defined in [types.ts:103](../../../lara-typescript/src/plugin-api/types.ts#L103)*
 
 Function that subscribes provided handler to event that gets called when the interactive's availablity changes. Normally an interactive starts as available unless click to play is enabled. When click to play is enabled the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 

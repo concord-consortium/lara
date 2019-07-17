@@ -28,7 +28,7 @@
 
 **● authoredState**: *`string` \| `null`*
 
-*Defined in [types.ts:121](../../../lara-typescript/src/plugin-api/types.ts#L121)*
+*Defined in [types.ts:116](../../../lara-typescript/src/plugin-api/types.ts#L116)*
 
 The authored configuration for this instance (if available).
 
@@ -39,7 +39,7 @@ ___
 
 **● componentLabel**: *`string`*
 
-*Defined in [types.ts:125](../../../lara-typescript/src/plugin-api/types.ts#L125)*
+*Defined in [types.ts:120](../../../lara-typescript/src/plugin-api/types.ts#L120)*
 
 The label of the plugin component.
 
@@ -50,7 +50,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:123](../../../lara-typescript/src/plugin-api/types.ts#L123)*
+*Defined in [types.ts:118](../../../lara-typescript/src/plugin-api/types.ts#L118)*
 
 Reserved HTMLElement for the plugin output.
 
@@ -61,7 +61,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types.ts:115](../../../lara-typescript/src/plugin-api/types.ts#L115)*
+*Defined in [types.ts:110](../../../lara-typescript/src/plugin-api/types.ts#L110)*
 
 Name of the plugin
 
@@ -72,7 +72,7 @@ ___
 
 **● pluginId**: *`number`*
 
-*Defined in [types.ts:119](../../../lara-typescript/src/plugin-api/types.ts#L119)*
+*Defined in [types.ts:114](../../../lara-typescript/src/plugin-api/types.ts#L114)*
 
 Plugin instance ID.
 
@@ -83,7 +83,7 @@ ___
 
 **● saveAuthoredPluginState**: *`function`*
 
-*Defined in [types.ts:133](../../../lara-typescript/src/plugin-api/types.ts#L133)*
+*Defined in [types.ts:128](../../../lara-typescript/src/plugin-api/types.ts#L128)*
 
 Function that saves the authoring state for the plugin.
 
@@ -111,7 +111,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:117](../../../lara-typescript/src/plugin-api/types.ts#L117)*
+*Defined in [types.ts:112](../../../lara-typescript/src/plugin-api/types.ts#L112)*
 
 Url from which the plugin was loaded.
 

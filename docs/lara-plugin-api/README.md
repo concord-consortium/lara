@@ -22,7 +22,7 @@ Example of **webpack.config.js**:
   externals: {
     // LARA Plugin API implementation is exported to the window.LARA.PluginAPI_V3 namespace.
     '@concord-consortium/lara-plugin-api': 'LARA.PluginAPI_V3',
-    // Use React and ReactDOM provided by LARA, do not bundle an own copy.  
+    // Use React and ReactDOM provided by LARA, do not bundle an own copy.
     'react': 'React',
     'react-dom': 'ReactDOM',
   }
@@ -33,30 +33,87 @@ Finally, you can import LARA Plugin API anywhere in your code and benefit from a
 ```typescript
 import * as LARAPluginAPI from "@concord-consortium/lara-plugin-api";
 // (...)
-LARAPluginAPI.registerPlugin("test", Test);
+LARAPluginAPI.registerPlugin({ runtimeClass: TestPlugin, authoringClass: TestAuthoringPlugin });
 // (...)
 LARAPluginAPI.addSidebar({ content: "test sidebar" });
 // etc.
 ```
 
+If you do not wish to implement gui authoring mode you can omit the authoringClass in the `registerPlugin` call:
+
+```typescript
+LARAPluginAPI.registerPlugin({ runtimeClass: TestPlugin });
+```
+
+and then set `"guiAuthoring": false` in the manifest.json for each component of the plugin. Currently only the [model feedback](https://github.com/concord-consortium/model-feedback) plugin is the only V3 plugin that does not support gui authoring.
+
+#### Plugin manifests
+
+To limit the information need to install a plugin in LARA and to support a flexible and extensible plugin authoring system plugins use a file named `manifest.json` to expose their behavior and settings. The `manifest` part of the filename is a convention, but it must end in `.json`. The approved scripts CRUD interface in Lara reads these manifest files to automatically set the form fields and to store the `authoring_metadata` as a serialized json string. The `authoring_metadata` is then used at authoring time by Lara to determine where to place the plugin, either at the activity, embeddable or embeddable-decoration level.
+
+The `url` field can either be a fully qualified url or a relative one. Lara automatically converts relative urls to full qualified urls using the path to the manifest file as the start of the relative path.
+
+```json
+{
+  "name": "Test Plugin",
+  "label": "testPlugin",
+  "url": "plugin.js",
+  "version": 3,
+  "description": "This plugin provides an example manifest.json",
+  "authoring_metadata": {
+    "components": [
+      {
+        "label": "activity-component",
+        "name": "Activity Level",
+        "scope": "activity",
+        "guiAuthoring": true
+      },
+      {
+        "label": "embeddable-component",
+        "name": "Embeddable Level",
+        "scope": "embeddable",
+        "guiAuthoring": true
+      },
+      {
+        "label": "embeddable-decoration-component",
+        "name": "Embeddable Decoration Level",
+        "scope": "embeddable-decoration",
+        "decorates": [
+          "Embeddable::MultipleChoice",
+          "Embeddable::OpenResponse",
+          "MwInteractive",
+          "ImageInteractive",
+          "VideoInteractive"
+        ],
+        "guiAuthoring": true
+      }
+    ]
+  }
+}
+```
+
 #### Plugin implementation
 
-LARA Plugin is a regular JavaScript class (or constructor). There are no special requirements regarding its interface at the moment, but it's a subject to change. Always check [IPlugin](interfaces/iplugin.md) interface first.
+The LARA Plugin is divided into two regular JavaScript classes (or constructors), the runtime and authoring classes. There are no special requirements regarding their interfaces at the moment, but it's a subject to change. Always check the [IPlugin](interfaces/iplugin.md) interface first.
 
-The first thing that should be done by plugin script is call to [registerPlugin](#registerplugin).
-
-The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
+Once the two JavaScript classes are defined the plugin script should call [registerPlugin](#registerplugin) to register the classes with LARA. The plugin will be initialized by LARA automatically when needed once it is registered. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
 
 Example:
 
 ```typescript
 class TestPlugin {
   constructor(context: IPluginRuntimeContext) {
-    console.log("Plugin initialized, id:", context.pluginId);
+    console.log("Test Runtime Plugin initialized, id:", context.pluginId);
   }
-}  
+}
 
-LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
+class TestAuthoringPlugin {
+  constructor(context: IPluginAuthoringContext) {
+    console.log("Test Authoring Plugin initialized, id:", context.pluginId);
+  }
+}
+
+LARAPluginAPI.registerPlugin({runtimeClass: TestPlugin, authoringClass: TestAuthoringPlugin});
 ```
 
 [registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin (e.g. if the activity author adds multiple plugin instances to a page).
@@ -114,8 +171,6 @@ import "@concord-consortium/lara-plugin-api/normalize.css";
 * [IEventListeners](#ieventlisteners)
 * [IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)
 * [ILogEventHandler](#ilogeventhandler)
-* [IPluginAuthoringConstructor](#ipluginauthoringconstructor)
-* [IPluginRuntimeConstructor](#ipluginruntimeconstructor)
 
 ### Functions
 
@@ -149,7 +204,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
-*Defined in [types.ts:219](../../lara-typescript/src/plugin-api/types.ts#L219)*
+*Defined in [types.ts:214](../../lara-typescript/src/plugin-api/types.ts#L214)*
 
 InteractiveAvailable event handler.
 
@@ -171,7 +226,7 @@ ___
 
 **Ƭ ILogEventHandler**: *`function`*
 
-*Defined in [types.ts:200](../../lara-typescript/src/plugin-api/types.ts#L200)*
+*Defined in [types.ts:195](../../lara-typescript/src/plugin-api/types.ts#L195)*
 
 Log event handler.
 
@@ -187,32 +242,6 @@ Log event handler.
 | event | [ILogData](interfaces/ilogdata.md) |
 
 **Returns:** `void`
-
-___
-<a id="ipluginauthoringconstructor"></a>
-
-###  IPluginAuthoringConstructor
-
-**Ƭ IPluginAuthoringConstructor**: *`object`*
-
-*Defined in [types.ts:13](../../lara-typescript/src/plugin-api/types.ts#L13)*
-
-Constructs a plugin given a IPluginAuthoringContext
-
-#### Type declaration
-
-___
-<a id="ipluginruntimeconstructor"></a>
-
-###  IPluginRuntimeConstructor
-
-**Ƭ IPluginRuntimeConstructor**: *`object`*
-
-*Defined in [types.ts:11](../../lara-typescript/src/plugin-api/types.ts#L11)*
-
-Constructs a plugin given a IPluginRuntimeContext
-
-#### Type declaration
 
 ___
 
