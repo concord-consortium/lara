@@ -96,47 +96,29 @@ The `url` field can either be a fully qualified url or a relative one. Lara auto
 
 The LARA Plugin is divided into two regular JavaScript classes (or constructors), the runtime and authoring classes. There are no special requirements regarding their interfaces at the moment, but it's a subject to change. Always check the [IPlugin](interfaces/iplugin.md) interface first.
 
-##### Runtime implementation
-
-The first thing that should be done by the runtime class of the plugin script is call to [registerPlugin](#registerplugin).
-
-The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
+Once the two JavaScript classes are defined the plugin script should call [registerPlugin](#registerplugin) to register the classes with LARA. The plugin will be initialized by LARA automatically when needed once it is registered. LARA calls its constructor and provides the runtime context object. The plugin constructor should expect [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
 
 Example:
 
 ```typescript
 class TestPlugin {
   constructor(context: IPluginRuntimeContext) {
-    console.log("Plugin initialized, id:", context.pluginId);
+    console.log("Test Runtime Plugin initialized, id:", context.pluginId);
   }
 }
 
-LARAPluginAPI.registerPlugin("testPlugin", TestPlugin);
+class TestAuthoringPlugin {
+  constructor(context: IPluginAuthoringContext) {
+    console.log("Test Authoring Plugin initialized, id:", context.pluginId);
+  }
+}
+
+LARAPluginAPI.registerPlugin({runtimeClass: TestPlugin, authoringClass: TestAuthoringPlugin});
 ```
 
 [registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin (e.g. if the activity author adds multiple plugin instances to a page).
 
 Plugins can use all the functions documented below to modify LARA runtime or provide custom features. This documentation is generated automatically from TypeScript definitions and comments.
-
-##### Authoring implementation
-
-The first thing that should be done by the authoring class of the plugin script is call to [registerPlugin](#registerplugin).
-
-The Plugin will be initialized by LARA automatically. LARA calls its constructor and provides the authoring context object. The plugin constructor should expect [IPluginAuthoringContext](interfaces/ipluginruntimecontext.md) instance as the only argument.
-
-Example:
-
-```typescript
-class TestAuthoringPlugin {
-  constructor(context: IPluginAuthoringContext) {
-    console.log("Plugin initialized, id:", context.pluginId);
-  }
-}
-
-LARAPluginAPI.registerPlugin("testPlugin", TestAuthoringPlugin);
-```
-
-[registerPlugin](#registerplugin) should be called only once, but note that LARA might instantiate multiple instances of the same plugin (e.g. if the activity author adds multiple plugin instances to a page).
 
 #### Plugin styling
 
