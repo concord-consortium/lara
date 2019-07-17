@@ -56,18 +56,7 @@ describe "SendToReportServiceJob" do
       end
     end
 
-    describe "when the published item has been modified afeter enqueing" do
-      let(:queuetime) { 1.hour.ago }
-      it "the job should not throw an exception" do
-        expect { job.perform }.not_to raise_error
-      end
-      it "the job should not make a requst to the report server" do
-        expect(sender).not_to receive(:send)
-        job.perform
-      end
-    end
-
-    describe "when the published item has been modified afeter enqueing" do
+    describe "when the published item has been modified afrer enqueuing" do
       let(:queuetime) { 1.hour.ago }
       it "the job should not throw an exception" do
         expect { job.perform }.not_to raise_error
@@ -83,7 +72,7 @@ describe "SendToReportServiceJob" do
       it "the job should not throw an exception" do
         expect { job.perform }.not_to raise_error
       end
-      it "the job should not make a requst to the report server" do
+      it "the job should not make a request to the report server" do
         expect(sender).not_to receive(:send)
         job.perform
       end
