@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
     rescue
       # We don't want to return a server error if this update fails; it's not important
       # enough to derail the user.
-      logger.debug "changed_by update for Activity #{@activity.id} failed."
+      logger.debug "changed_by update for Activity #{activity.id} failed."
     end
   end
 

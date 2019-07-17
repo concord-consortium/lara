@@ -137,7 +137,7 @@ module Publishable
       has_many :portal_publications, :as => :publishable, :order => :updated_at
 
       # all changes will be queued for auto publishing
-      after_update :queue_auto_publish_to_portal
+      after_update :queue_auto_publish_to_portal, :queue_publish_to_report_service
 
       def auto_publish_delay
         return 5
@@ -178,6 +178,15 @@ module Publishable
         # changes to activities should trigger auto publishing of their associated sequences
         if self.respond_to?(:sequences)
           self.sequences.each { |sequence| sequence.queue_auto_publish_to_portal() }
+        end
+      end
+
+      def queue_publish_to_report_service
+        if ReportService.configured?
+          publishable_type = self.class.name
+          publishable_id = self.id
+          job = SendToReportServiceJob.new(publishable_type, publishable_id, Time.now)
+          Delayed::Job.enqueue(job, 0, 5.seconds.from_now)
         end
       end
     end
