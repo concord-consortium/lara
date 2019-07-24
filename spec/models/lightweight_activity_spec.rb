@@ -3,8 +3,7 @@ require 'spec_helper'
 describe LightweightActivity do
   let(:thumbnail_url) { "http://fake.url.com/image" }
   let(:author)        { FactoryGirl.create(:author) }
-  let(:report_url)    { nil }
-  let(:act_opts)      { {thumbnail_url: thumbnail_url, external_report_url: report_url } }
+  let(:act_opts)      { {thumbnail_url: thumbnail_url} }
   let(:activity)      {
     activity = FactoryGirl.create(:activity, act_opts)
     activity.user = author
@@ -174,7 +173,6 @@ describe LightweightActivity do
         name: activity.name,
         related: activity.related,
         publication_status: activity.publication_status,
-        external_report_url: nil,
         student_report_enabled: true,
         description: activity.description,
         time_to_complete: activity.time_to_complete,
@@ -189,10 +187,6 @@ describe LightweightActivity do
   end
 
   describe '#export' do
-    let(:report_url) { "https://reports.concord.org/" }
-    before(:each) do
-      activity.external_report_url = report_url
-    end
     let(:export) { activity.export }
     describe "the activity json" do
       it 'includes the activity pages' do
@@ -201,9 +195,6 @@ describe LightweightActivity do
       it 'includes the plugins' do
         expect(export[:plugins].length).to eq(activity.plugins.count)
       end
-      it 'includes the report url' do
-        expect(export['external_report_url']).to eq(report_url)
-      end
     end
   end
 
@@ -211,7 +202,6 @@ describe LightweightActivity do
     let(:owner)     { FactoryGirl.create(:user) }
     let(:edit_mode) { LightweightActivity::STANDARD_EDITOR_MODE }
     let(:layout)    { LightweightActivity::LAYOUT_MULTI_PAGE    }
-    let(:report_url) { "https://reports.concord.org/" }
 
     let(:approved_script) { FactoryGirl.create(:approved_script) }
     let(:plugins) do
@@ -220,7 +210,6 @@ describe LightweightActivity do
     before :each do
       activity.layout = layout
       activity.editor_mode = edit_mode
-      activity.external_report_url = report_url
       plugins.each { |p| activity.plugins.push(p) }
     end
 
@@ -234,7 +223,6 @@ describe LightweightActivity do
       expect(dup.layout).to eq(activity.layout)
       expect(dup.editor_mode).to eq(activity.editor_mode)
       expect(dup.name).to match /^Copy of #{activity.name[0..30]}/
-      expect(dup.external_report_url).to eq(report_url)
     end
 
     describe 'describe copying the activities plugins' do
@@ -379,18 +367,15 @@ describe LightweightActivity do
     it 'should return an activity' do
       json = JSON.parse(File.read(Rails.root + 'spec/import_examples/valid_lightweight_activity_import.json'), :symbolize_names => true)
       imported_activity_url = "http://foo.com/"
-      external_report_url = "https://reports.concord.org/"
       act = LightweightActivity.import(json,new_owner,imported_activity_url)
       expect(act.user).to be new_owner
       expect(act.related).to eq(json[:related])
       expect(act.imported_activity_url).to eq(imported_activity_url)
-      expect(act.external_report_url).to eq(external_report_url)
       expect(act.pages.count).to eq(json[:pages].length)
     end
   end
 
   describe '#serialize_for_portal' do
-    let(:report_url) { "http://reports.concord.org/" }
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
       author_url = "#{url}/edit"
@@ -406,7 +391,6 @@ describe LightweightActivity do
         "print_url"     => print_url,
         "thumbnail_url"       => thumbnail_url,
         "author_email"        => activity.user.email,
-        "external_report_url" => activity.external_report_url,
         "student_report_enabled" => activity.student_report_enabled,
         "is_locked"           => false,
         "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]

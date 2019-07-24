@@ -1,7 +1,7 @@
 class Sequence < ActiveRecord::Base
   attr_accessible :description, :title, :theme_id, :project_id,
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :external_report_url
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash
+
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
   has_many :lightweight_activities_sequences, :order => :position, :dependent => :destroy
@@ -52,8 +52,7 @@ class Sequence < ActiveRecord::Base
       project_id: project_id,
       logo: logo,
       display_title: display_title,
-      thumbnail_url: thumbnail_url,
-      external_report_url: external_report_url
+      thumbnail_url: thumbnail_url
     }
   end
 
@@ -97,8 +96,7 @@ class Sequence < ActiveRecord::Base
                                         :project_id,
                                         :logo,
                                         :display_title,
-                                        :thumbnail_url,
-                                        :external_report_url
+                                        :thumbnail_url
     ])
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
@@ -132,7 +130,6 @@ class Sequence < ActiveRecord::Base
       "create_url" => local_url,
       "author_url" => author_url,
       "print_url"  => print_url,
-      "external_report_url" => external_report_url,
       "thumbnail_url" => thumbnail_url,
       "author_email" => self.user.email
     }
@@ -161,8 +158,7 @@ class Sequence < ActiveRecord::Base
       project_id: sequence_json_object[:project_id],
       theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
-      title: sequence_json_object[:title],
-      external_report_url: sequence_json_object[:external_report_url]
+      title: sequence_json_object[:title]
     }
 
   end

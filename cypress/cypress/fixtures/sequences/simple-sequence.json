@@ -2,7 +2,6 @@
   "abstract": "",
   "description": "",
   "display_title": "",
-  "external_report_url": "",
   "logo": "",
   "project_id": null,
   "theme_id": null,
@@ -12,7 +11,6 @@
     {
       "description": "",
       "editor_mode": 0,
-      "external_report_url": null,
       "layout": 0,
       "name": "[Cypress] Open Response Simple",
       "notes": "",
@@ -66,7 +64,6 @@
     {
       "description": "",
       "editor_mode": 0,
-      "external_report_url": null,
       "layout": 0,
       "name": "[Cypress] Multiple Choice Simple",
       "notes": "",
