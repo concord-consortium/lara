@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190621195718) do
+ActiveRecord::Schema.define(:version => 20190724171834) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -405,7 +405,6 @@ ActiveRecord::Schema.define(:version => 20190621195718) do
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
     t.integer  "copied_from_id"
-    t.text     "external_report_url"
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
   end
@@ -614,7 +613,6 @@ ActiveRecord::Schema.define(:version => 20190621195718) do
     t.text     "abstract"
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
-    t.text     "external_report_url"
     t.text     "last_report_service_hash"
   end
 
