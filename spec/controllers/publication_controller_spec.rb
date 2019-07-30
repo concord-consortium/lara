@@ -52,7 +52,6 @@ describe PublicationsController do
         "create_url"    =>"http://test.host/activities/#{act_one.id}",
         "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
         "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
-        "external_report_url"  => act_one.external_report_url,
         "student_report_enabled" => act_one.student_report_enabled,
         "thumbnail_url" =>"thumbnail",
         "author_email"  => @user.email,

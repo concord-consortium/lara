@@ -5,7 +5,6 @@
 var activity = {
   "description": "An activity to test printing interactives in various ways.",
   "editor_mode": 0,
-  "external_report_url": null,
   "layout": 0,
   "name": "Interactive Print Test",
   "notes": "",

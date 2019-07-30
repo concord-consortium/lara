@@ -73,8 +73,6 @@ describe Sequence do
 
   describe '#serialize_for_portal' do
     let(:user) { FactoryGirl.create(:user) }
-    let(:report_url)    { "https://foo.bar.report/" }
-    let(:sequence_opts) { {external_report_url: report_url } }
     let(:act1) {
       activity = FactoryGirl.build(:activity_with_page)
       activity.user = user
@@ -114,8 +112,7 @@ describe Sequence do
         "print_url"     => print_url,
         "thumbnail_url" => nil, # our simple sequence doesn't have one
         "author_email" => sequence.user.email,
-        "activities"=>[],
-        "external_report_url" => report_url
+        "activities"=>[]
       }
     end
 
@@ -137,8 +134,7 @@ describe Sequence do
           # Note that we reordered activities!
           act2.serialize_for_portal("http://test.host"),
           act1.serialize_for_portal("http://test.host")
-        ],
-        "external_report_url" => report_url
+        ]
       }
     end
 
@@ -204,8 +200,7 @@ describe Sequence do
   end
 
   describe '#to_hash' do
-    let(:report_url)    { "https://foo.bar.report/" }
-    let(:sequence_opts) { {external_report_url: report_url } }
+    let(:sequence_opts) { {} }
     it 'returns a hash with relevant values for sequence duplication' do
       expected = {
         title: sequence.title,
@@ -216,42 +211,36 @@ describe Sequence do
         project_id: sequence.project_id,
         logo: sequence.logo,
         display_title: sequence.display_title,
-        thumbnail_url: sequence.thumbnail_url,
-        external_report_url: report_url
+        thumbnail_url: sequence.thumbnail_url
       }
       expect(sequence.to_hash).to eq(expected)
     end
   end
 
   describe '#export' do
-    let(:report_url) { "https://reports.concord.org/" }
-    let(:sequence_opts) { {external_report_url: report_url} }
+    let(:sequence_opts) { {} }
     it 'returns json of a sequence' do
       sequence_json = JSON.parse(sequence.export)
       expect(sequence_json['activities'].length).to eq(sequence.activities.count)
-      expect(sequence_json['external_report_url']).to eq(report_url)
     end
   end
 
   describe '#import' do
-    let(:report_url)    { "https://reports.concord.org/" }
     let(:logo)          { "https://concord.org/logo.jpg" }
     let(:thumbnail_url) { "https://concord.org/sunflower.jpg" }
     let(:title)         { "title" }
-    let(:sequence_opts) { {external_report_url: report_url, logo: logo, thumbnail_url: thumbnail_url, title: title} }
+    let(:sequence_opts) { {logo: logo, thumbnail_url: thumbnail_url, title: title} }
     let(:owner)         { FactoryGirl.create(:user) }
 
     it 'returns json of a sequence' do
       data = JSON.parse(sequence.export, :symbolize_names => true)
       imported = Sequence.import(data, owner)
-      expect(imported.external_report_url).to eq(report_url)
       expect(imported.thumbnail_url).to eq(thumbnail_url)
       expect(imported.logo).to eq(logo)
     end
   end
   describe '#duplicate' do
-    let(:report_url)    { "https://reports.concord.org/" }
-    let(:sequence_opts) { { external_report_url: report_url} }
+    let(:sequence_opts) { {} }
     let(:owner)         { FactoryGirl.create(:user) }
     let(:act1) {
       activity = FactoryGirl.build(:activity_with_page)
@@ -295,7 +284,6 @@ describe Sequence do
       expect(dup.display_title).to eq(sequence.display_title)
       expect(dup.thumbnail_url).to eq(sequence.thumbnail_url)
       expect(dup.activities.length).to eq(sequence.activities.length)
-      expect(dup.external_report_url).to eq(report_url)
     end
 
     it 'performs deep copy of all activities included in a given sequence' do
