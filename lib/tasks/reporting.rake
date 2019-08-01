@@ -88,7 +88,7 @@ namespace :reporting do
       ENV[var_name] ||= cli.ask("#{prompt}: ") { |q| q.default = default}
     end
 
-    env_value "IMPORT_PORTAL_URL", "Portal URL", "http://app.portal.docker/"
+    env_value "IMPORT_PORTAL_URL", "Portal URL", "http://app.portal.docker"
     import_filename = env_value "CLASS_IMPORT_FILENAME", "Import file", "clazz-learners.csv"
 
     start_time = Time.now
