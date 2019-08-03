@@ -99,5 +99,11 @@ module Embeddable
     def show_in_edit?
       !component || component[:scope] != "embeddable-decoration"
     end
+
+    # embeddable_plugins are one type of plugin_scope used by plugins
+    # the authorization expects the plugin_scope to have a user_id
+    def user_id
+      activity && activity.user_id
+    end
   end
 end
