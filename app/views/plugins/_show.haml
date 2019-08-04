@@ -11,6 +11,7 @@
   - update_plugin_learner_state_path = api_v1_update_plugin_learner_state_path(plugin.id, @run.id)
   - show_plugin_learner_state_path = api_v1_show_plugin_learner_state_path(plugin.id, @run.id)
 - else
+  -# when this partial is used with print_blank the run.id is nil
   - firebase_jwt_url = nil
   - update_plugin_learner_state_url = nil
   - update_plugin_learner_state_path = nil
