@@ -84,6 +84,17 @@ describe "plugins/_show.html.haml" do
         expect(rendered).to match(expected_string)
       end
     end
+
+    context "when the run doesn't have an id like during a 'print_blank' route" do
+      let(:run_id) { nil }
+
+      it "should render the javascript" do
+        common_plugin_code.each do |expected_string|
+          expect(rendered).to match(expected_string)
+        end
+      end 
+    end
+
   end
 
   context "when rendered as a page level plugin that is not wrapping an embeddable" do
@@ -128,5 +139,6 @@ describe "plugins/_show.html.haml" do
       end
     end
   end
+
 
 end
