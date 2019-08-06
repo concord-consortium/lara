@@ -56,6 +56,35 @@ describe Embeddable::EmbeddablePlugin do
         is_hidden: is_hidden
       })
     end
+    it "the new instance's plugin is setup correctly" do
+      duplicate = embeddable_plugin.duplicate
+
+      # this the page level duplicate fuction calls save like this
+      duplicate.save!(validate: false)
+      duplicate.reload
+      expect(duplicate.plugin.plugin_scope).to eq(duplicate)
+    end
+
   end
 
+  describe '#import' do
+    let(:example_json_file) { 'activity_with_arg_block_section' }
+    let(:activity_json) do
+      JSON.parse(File.read(
+        Rails.root +
+        "spec/import_examples/#{example_json_file}.json"),
+        :symbolize_names => true)
+    end
+
+    let(:test_page_index) { 0 }
+    let(:page_json) { activity_json[:pages][test_page_index] }
+    let(:page) { InteractivePage.import(page_json)}
+
+    it 'sets the plugin_scope of the associated plugin' do
+      embeddable = page.embeddables.find{|e| e.is_a? Embeddable::EmbeddablePlugin}
+      expect(embeddable).to_not be_nil
+      expect(embeddable.plugin.plugin_scope).to eq(embeddable)
+    end
+
+  end
 end
