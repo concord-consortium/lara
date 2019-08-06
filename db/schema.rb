@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190724171834) do
+ActiveRecord::Schema.define(:version => 20190806191648) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -282,7 +282,6 @@ ActiveRecord::Schema.define(:version => 20190724171834) do
   end
 
   create_table "embeddable_plugins", :force => true do |t|
-    t.integer  "plugin_id"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.integer  "embeddable_id"
@@ -290,8 +289,6 @@ ActiveRecord::Schema.define(:version => 20190724171834) do
     t.boolean  "is_hidden",       :default => false
     t.boolean  "is_full_width",   :default => false
   end
-
-  add_index "embeddable_plugins", ["plugin_id"], :name => "index_embeddable_plugins_on_plugin_id"
 
   create_table "embeddable_xhtmls", :force => true do |t|
     t.string   "name"
