@@ -10,7 +10,7 @@ module Embeddable
     attr_accessible :plugin, :approved_script_id, :description, :author_data,
     :is_full_width, :is_hidden, :component_label
 
-    belongs_to :plugin, autosave: true
+    has_one :plugin, as: :plugin_scope
 
     has_many :page_items, :as => :embeddable, :dependent => :destroy
     has_many :interactive_pages, :through => :page_items
@@ -31,11 +31,17 @@ module Embeddable
     delegate :component_label=, to: :plugin
     delegate :component, to: :plugin, allow_nil: true
 
-    before_create do |embeddable|
+    # make sure the embeddable always has a plugin object
+    after_initialize do |embeddable|
       unless(embeddable.plugin)
-        embeddable.plugin = Plugin.create({})
+        # Building the plugin seems safer than creating the plugin so when we do a simple
+        # EmbeddablePlugin.new that doesn't trigger the creation of a Plugin object in the
+        # database.
+        # when the embeddable is saved, the plugin will be saved too becaue of the
+        # has_one relationship. Documentation reference:
+        # https://guides.rubyonrails.org/v3.2.13/association_basics.html#has_one-when_are_objects_saved
+        embeddable.build_plugin
       end
-      embeddable.plugin.plugin_scope = embeddable
     end
 
     def self.name_as_param
@@ -101,7 +107,7 @@ module Embeddable
     end
 
     # embeddable_plugins are one type of plugin_scope used by plugins
-    # the authorization expects the plugin_scope to have a user_id
+    # the authorization code expects the plugin_scope to have a user_id
     def user_id
       activity && activity.user_id
     end
