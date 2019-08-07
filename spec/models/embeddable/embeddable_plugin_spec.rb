@@ -87,4 +87,14 @@ describe Embeddable::EmbeddablePlugin do
     end
 
   end
+
+  describe 'delegated to plugin methods' do
+    it 'should save value after a simple create, set, save, reload' do
+      embeddable = Embeddable::EmbeddablePlugin.create!
+      embeddable.approved_script_id = "123"
+      embeddable.save!
+      embeddable.reload
+      expect(embeddable.approved_script_id).to eq("123")
+    end
+  end
 end
