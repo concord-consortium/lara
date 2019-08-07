@@ -3,9 +3,10 @@ class RemoveDuplicatePluginId < ActiveRecord::Migration
   def up
     # need to go through all EmbeddablePlugins and make sure each of their
     # plugins correctly sets the plugin_scope field on the plugin
-    # we cannot easily use the polymorphic support of rails because we are also using
+    # we cannot easily use the polymorphic support of rails because we would also be using
     # temporary model classes, so plugin_scope_type added by the polymorphic code would
     # end up being:  RemoveDuplicatePluginId::Embeddable::EmbeddablePlugin
+    # plus the raw sql will run faster
     execute <<-SQL
       UPDATE plugins
       INNER JOIN embeddable_plugins
@@ -22,8 +23,7 @@ class RemoveDuplicatePluginId < ActiveRecord::Migration
     add_column :embeddable_plugins, :plugin_id, :integer
     add_index :embeddable_plugins, [:plugin_id], uniq: true
 
-    # go through all EmbeddablePlugins and make sure for each plugin that the plugin_id
-    # is set correctly on the EmbeddablePlugin
+    # go through all EmbeddablePlugins and set a plugin_id for each associated Plugin
     execute <<-SQL
       UPDATE embeddable_plugins
       INNER JOIN plugins
