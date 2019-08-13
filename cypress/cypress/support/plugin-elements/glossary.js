@@ -36,6 +36,10 @@ class Glossary {
         return cy.get('sidebar-content')
     }
 
+    getPageButton() {
+        return cy.get('.pagination-item')
+    }
+
     ///////////////////
     // Authoring UI  //
     ///////////////////
