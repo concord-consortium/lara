@@ -8,8 +8,8 @@ context('Glossary default test', function () {
   {
     "glossaryName" : "TestGlossary",
     "glossaryUsername" : "demo-glossary",
-    "awsAccessKey" : "AKIAJ7HS3OMGHOEUWVOA",
-    "awsSecretKey" : "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"
+    "awsAccessKey" : "",
+    "awsSecretKey" : ""
   }
 
   const word1 =
@@ -31,10 +31,6 @@ context('Glossary default test', function () {
   })
 
   describe('Authoring the glossary (Enabled Student Definitions', () => {
-
-    it('Publishes the activity', () => {
-      cy.visit(activityUrl+'/edit')
-    })
 
     it('Instantiates glossary plugin and adds AWS credentials', () => {
       cy.visit(activityUrl+'/edit')
@@ -67,7 +63,7 @@ context('Glossary default test', function () {
 
     //Checks that the sidebar opens and closes correctly
     it('Verifies that the sidebar opens and closes correctly', () => {
-      cy.visit(activityUrl+'/edit')
+      cy.visit(activityUrl)
     })
   })
 })
