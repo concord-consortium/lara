@@ -1,40 +1,53 @@
-context('Glossary Definitions Test', function(){
-//Prior to any of the test cases, visit the activity 'Testing - Glossary'
-  before(function() {
-    cy.visit('https://authoring.staging.concord.org/activities/20001/pages/304604/')
-	})
+import activityUrl from './glossary_setup_spec'
+import Glossary from '../../support/plugin-elements/glossary';
 
-//Enters a definition as a student, clicks submit button. Then closes the
-//window. Finds the same word elsewhere on the page to check if definition carried
-//over.
-  it('Verifies that a student submits definition(1)', () => {
-    cy.get('.plugin-app--ccGlossaryWord--1GiEL8kF').first().click();
-    cy.get('.ui-dialog').find('textarea').type('This is my first definition');
+context('Glossary Definitions Test', function(){
+
+  let stagingActivityUrlPath = '/activities/20001/pages/304617/'
+
+  before(function() {
+    cy.visit(activityUrl+stagingActivityUrlPath)
+  })
+  
+  let glossary = new Glossary()
+
+  let studentDefs =
+    {
+      "def1":"definition 1",
+      "def2":"definition 2",
+      "def3":"definition 3",
+      "def4":"definition 4"
+    }
+
+  it('Verifies glossary word is identified and does not show correct def yet', () => {
+    glossary.getHighlightedWord().first().should('exist').and('be.visible').click()
+    glossary.getGlossaryDialogContent().should('not.contain', 'test definition 1')
+    glossary.getGlossaryDialog().find('textarea').type(studentDefs.def1);
     cy.get('[data-cy=submit]').click()
-    cy.get('.ui-dialog').contains('Close').click()
+    glossary.getGlossaryDialog.contains('Close').click()
   })
-//Checks the same highlighted word after submitting definitions
-  it('Verifies that definition(1) persists (intro)', () => {
-    cy.get('.plugin-app--ccGlossaryWord--1GiEL8kF').first().click();
-    cy.get('.ui-dialog-content').contains('This is my first definition')
-    cy.get('.ui-dialog').contains('Close').click()
+
+  it('Verifies that definition 1 persists', () => {
+    glossary.getHighlightedWord().first().click();
+    glossary.getGlossaryDialogContent().contains('This is my first definition')
+    glossary.getGlossaryDialog().contains('Close').click()
   })
-//Check if word persists in a new highlighted word on the same pages
+
   it('Verifies that definition(1) persists (MC-Q)', () => {
-    cy.get('.plugin-app--ccGlossaryWord--1GiEL8kF').eq(2).click();
-    cy.get('.ui-dialog-content').contains('This is my first definition')
-    cy.get('.ui-dialog').contains('Close').click()
+    glossary.getHighlightedWord().eq(2).click();
+    glossary.getGlossaryDialogContent().contains('This is my first definition')
+    glossary.getGlossaryDialog().contains('Close').click()
   })
 //Check if word persists in a new highlighted word on the same pages
-  it("Verifies that definition(1) doesn't persists (MC-A)", () => {
+  it("Verifies that glossary word is not highlighted in question answers", () => {
     cy.get('.choice').eq(0).should('not.have.class', 'plugin-app--ccGlossaryWord--1GiEL8kF');
   })
 //Check if word persists in a long answer question on same page
   it('Verifies that definition(1) persists (LA-Q)', () => {
     cy.contains('Next').click()
-    cy.get('.plugin-app--ccGlossaryWord--1GiEL8kF').eq(3).click();
-    cy.get('.ui-dialog-content').contains('This is my first definition')
-    cy.get('.ui-dialog').contains('Close').click()
+    glossary.getHighlightedWord().eq(3).click();
+    glossary.getGlossaryDialogContent().contains('This is my first definition')
+    glossary.getGlossaryDialog().contains('Close').click()
   })
 //Try the previous 3 steps with another word
   it('Verifies that a student submits definition(2)', () => {

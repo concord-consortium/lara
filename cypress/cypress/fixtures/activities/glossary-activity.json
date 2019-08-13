@@ -1,0 +1,135 @@
+{
+    "description": "",
+    "editor_mode": 0,
+    "external_report_url": null,
+    "layout": 0,
+    "name": "[Cypress] Glossary Cypress Test Activity",
+    "notes": "",
+    "project_id": null,
+    "related": "",
+    "student_report_enabled": true,
+    "thumbnail_url": "",
+    "time_to_complete": null,
+    "version": 1,
+    "theme_name": null,
+    "pages": [
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-6040",
+            "name": null,
+            "position": 1,
+            "show_info_assessment": true,
+            "show_interactive": true,
+            "show_introduction": true,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": "\u003Cp\u003EactivityACTIVITY activity ACTIVITY testtest TestActivity Test.Activity\u003C/p\u003E",
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "custom": false,
+                        "enable_check_answer": true,
+                        "give_prediction_feedback": false,
+                        "hint": "\u003Cp\u003ETest Activity\u003C/p\u003E",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": false,
+                        "layout": "vertical",
+                        "multi_answer": false,
+                        "name": "Multiple Choice Question element",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003ETest Activity\u003C/p\u003E",
+                        "show_as_menu": false,
+                        "show_in_featured_question_report": true,
+                        "choices": [
+                            {
+                                "choice": "a",
+                                "is_correct": false,
+                                "prompt": ""
+                            },
+                            {
+                                "choice": "b",
+                                "is_correct": false,
+                                "prompt": ""
+                            },
+                            {
+                                "choice": "c",
+                                "is_correct": false,
+                                "prompt": ""
+                            }
+                        ],
+                        "type": "Embeddable::MultipleChoice",
+                        "ref_id": "12233-Embeddable::MultipleChoice"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": true,
+                        "click_to_play_prompt": "Activity",
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "https://picsum.photos/200/300",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "Activity",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": true,
+                        "url": "https://connected-bio-spaces.concord.org/",
+                        "type": "MwInteractive",
+                        "ref_id": "209311-MwInteractive"
+                    },
+                    "section": "interactive_box"
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-6040",
+            "name": null,
+            "position": 2,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": true,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": "\u003Cp\u003ESecond page of the activity.\u003C/p\u003E",
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": false,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EActivity\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445022-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                }
+            ]
+        }
+    ],
+    "plugins": [],
+    "type": "LightweightActivity",
+    "export_site": "Lightweight Activities Runtime and Authoring"
+}
