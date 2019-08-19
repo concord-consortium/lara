@@ -19,7 +19,9 @@ interface IPluginCommonOptions {
   container: HTMLElement;
   /** Name of plugin component */
   componentLabel: string;
-  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the
+   * guiPreview option set to true within its manifest.
+   */
   wrappedEmbeddable: IEmbeddableContextOptions | null;
 }
 

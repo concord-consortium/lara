@@ -53,6 +53,8 @@ To limit the information need to install a plugin in LARA and to support a flexi
 
 The `url` field can either be a fully qualified url or a relative one.  Lara automatically converts relative urls to full qualified urls using the path to the manifest file as the start of the relative path.
 
+The `guiPreview` field is used by Lara to enable preview of the decorated embeddable when authoring embeddable-decoration plugins.
+
 ```json
 {
   "name": "Test Plugin",
@@ -85,7 +87,8 @@ The `url` field can either be a fully qualified url or a relative one.  Lara aut
           "ImageInteractive",
           "VideoInteractive"
         ],
-        "guiAuthoring": true
+        "guiAuthoring": true,
+        "guiPreview": true
       }
     ]
   }
