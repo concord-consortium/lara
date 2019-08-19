@@ -29,8 +29,7 @@ describe("Plugin runtime context helper", () => {
     classInfoUrl: "http://portal.class.info.url",
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
     wrappedEmbeddable: null,
-    componentLabel: "test",
-    previewMode: false
+    componentLabel: "test"
   };
 
   it("should copy basic properties to runtime context", () => {

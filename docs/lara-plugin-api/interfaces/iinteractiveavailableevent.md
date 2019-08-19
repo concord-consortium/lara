@@ -25,7 +25,7 @@ Data passed to InteractiveAvailable event handlers.
 
 **● available**: *`boolean`*
 
-*Defined in [types.ts:212](../../../lara-typescript/src/plugin-api/types.ts#L212)*
+*Defined in [types.ts:210](../../../lara-typescript/src/plugin-api/types.ts#L210)*
 
 Availablility of interactive
 
@@ -36,7 +36,7 @@ ___
 
 **● container**: *`HTMLElement`*
 
-*Defined in [types.ts:208](../../../lara-typescript/src/plugin-api/types.ts#L208)*
+*Defined in [types.ts:206](../../../lara-typescript/src/plugin-api/types.ts#L206)*
 
 Interactive container of the interactive that was just started.
 

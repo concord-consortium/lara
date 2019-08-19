@@ -25,7 +25,7 @@
 
 **● class_hash**: *`string`*
 
-*Defined in [types.ts:138](../../../lara-typescript/src/plugin-api/types.ts#L138)*
+*Defined in [types.ts:136](../../../lara-typescript/src/plugin-api/types.ts#L136)*
 
 ___
 <a id="offering_id"></a>
@@ -34,7 +34,7 @@ ___
 
 **● offering_id**: *`number`*
 
-*Defined in [types.ts:139](../../../lara-typescript/src/plugin-api/types.ts#L139)*
+*Defined in [types.ts:137](../../../lara-typescript/src/plugin-api/types.ts#L137)*
 
 ___
 <a id="user_id"></a>
@@ -43,7 +43,7 @@ ___
 
 **● user_id**: *`string`*
 
-*Defined in [types.ts:137](../../../lara-typescript/src/plugin-api/types.ts#L137)*
+*Defined in [types.ts:135](../../../lara-typescript/src/plugin-api/types.ts#L135)*
 
 ___
 <a id="user_type"></a>
@@ -52,7 +52,7 @@ ___
 
 **● user_type**: *"learner" \| "teacher"*
 
-*Defined in [types.ts:136](../../../lara-typescript/src/plugin-api/types.ts#L136)*
+*Defined in [types.ts:134](../../../lara-typescript/src/plugin-api/types.ts#L134)*
 
 ___
 

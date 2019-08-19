@@ -16122,8 +16122,7 @@ exports.generateRuntimePluginContext = function (options) {
         getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
         wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        log: function (logData) { return log(options, logData); },
-        previewMode: options.previewMode
+        log: function (logData) { return log(options, logData); }
     };
     return context;
 };

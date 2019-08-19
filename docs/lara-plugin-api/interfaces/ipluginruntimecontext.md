@@ -18,7 +18,6 @@
 * [log](ipluginruntimecontext.md#log)
 * [name](ipluginruntimecontext.md#name)
 * [pluginId](ipluginruntimecontext.md#pluginid)
-* [previewMode](ipluginruntimecontext.md#previewmode)
 * [remoteEndpoint](ipluginruntimecontext.md#remoteendpoint)
 * [runId](ipluginruntimecontext.md#runid)
 * [saveLearnerPluginState](ipluginruntimecontext.md#savelearnerpluginstate)
@@ -154,17 +153,6 @@ ___
 *Defined in [types.ts:16](../../../lara-typescript/src/plugin-api/types.ts#L16)*
 
 Plugin instance ID.
-
-___
-<a id="previewmode"></a>
-
-###  previewMode
-
-**● previewMode**: *`boolean`*
-
-*Defined in [types.ts:61](../../../lara-typescript/src/plugin-api/types.ts#L61)*
-
-True if plugin is being loaded in preview mode
 
 ___
 <a id="remoteendpoint"></a>

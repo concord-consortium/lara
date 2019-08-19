@@ -43,8 +43,6 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   firebaseJwtUrl: string;
   /** The ID of the Embeddable that has been added to page, this embeddable refers to the plugin instance */
   embeddablePluginId: number | null;
-  /** True if plugin is being loaded in preview mode */
-  previewMode: boolean;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -170,8 +168,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData),
-    previewMode: options.previewMode
+    log: (logData: string | ILogData) => log(options, logData)
   };
   return context;
 };

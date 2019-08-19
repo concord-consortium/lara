@@ -147,8 +147,7 @@
         userEmail: #{@run.user && @run.user.email ? "'#{escape_javascript(@run.user.email)}'" : 'null'},
         classInfoUrl: #{@run.class_info_url ? "'#{escape_javascript(@run.class_info_url)}'" : 'null'},
         firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
-        wrappedEmbeddable: embeddableContext,
-        previewMode: #{@preview_mode || false}
+        wrappedEmbeddable: embeddableContext
       }
       console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API")
       LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
