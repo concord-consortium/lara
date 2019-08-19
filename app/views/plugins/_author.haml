@@ -5,8 +5,9 @@
   - show_wrapped_embeddable = @embeddable && (plugin.component.scope == "embeddable-decoration") && plugin.component.guiPreview
   - wrapped_embeddable = show_wrapped_embeddable && @embeddable.embeddable
   - wrapped_embeddable_lara_json = wrapped_embeddable ? (LaraSerializationHelper.new).export(wrapped_embeddable).to_json : 'null'
-  - if wrapped_embeddable && wrapped_embeddable.respond_to?(:answers)
-    - wrapped_embeddable = wrapped_embeddable.answers[0]
+  - if wrapped_embeddable
+    - finder = Embeddable::AnswerFinder.new(Run.new())
+    - wrapped_embeddable = Embeddable::is_interactive?(wrapped_embeddable) ? wrapped_embeddable : finder.find_answer(wrapped_embeddable)
   - click_to_play = !!(wrapped_embeddable && wrapped_embeddable.respond_to?(:click_to_play) && wrapped_embeddable.click_to_play)
 
 
