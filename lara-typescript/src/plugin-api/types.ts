@@ -41,7 +41,9 @@ export interface IPluginRuntimeContext {
   getClassInfo: () => Promise<IClassInfo> | null;
   /** Function that returns JWT (Promise) for given app name. */
   getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
-  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the
+   * guiPreview option set to true within its manifest.
+   */
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
   /**
    * Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
@@ -126,7 +128,9 @@ export interface IPluginAuthoringContext {
    @param state A string representing serialized author data; if it's JSON, remember to stringify it first.
    ****************************************************************************/
   saveAuthoredPluginState: (state: string) => Promise<string>;
-  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable. */
+  /** Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the
+   * guiPreview option set to true within its manifest.
+   */
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
 }
 
