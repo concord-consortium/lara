@@ -26,7 +26,7 @@
       = f.error_messages
       %div{style: ""}
         - if show_wrapped_embeddable
-          .wrapped-embeddable{id: wrapped_id}
+          .wrapped-embeddable.questions-mod{id: wrapped_id}
             .question{ class: question_css_class(wrapped_embeddable) }
               -#This CSS class is important, as it might be referenced by plugins and passed to a plugin instance.
               .embeddable-container
@@ -36,7 +36,7 @@
                   - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
                   = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
           -# reload-on-close is used so that the css loaded for the preview is not seen
-          .plugin-output.reload-on-close{id: output_id}
+          .plugin-output.content-mod.reload-on-close{id: output_id}
         - else
           .plugin-output{id: output_id}
         %div
