@@ -40,6 +40,9 @@
 .plugin-output {
   fieldset {
     margin: 0;
+    /* the authoring styles sets 'position: relative' which breaks multi choice checkbox
+       positioning by the teacher-edition-tips plugin */
+    position: static;
   }
   .question, .questions-mod {
     margin: 0;
