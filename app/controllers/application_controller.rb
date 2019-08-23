@@ -276,9 +276,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def respond_with_edit_form(css_class = nil)
+  def respond_with_edit_form(css_class = nil, container_class = nil)
     respond_to do |format|
-      format.js { render :json => { :html => render_to_string('edit'), :css_class => css_class}, :content_type => 'text/json' }
+      format.js { render :json => { :html => render_to_string('edit'), :css_class => css_class, :container_class => container_class}, :content_type => 'text/json' }
       format.html
     end
   end

@@ -106,7 +106,7 @@ ___
 
 **● log**: *`function`*
 
-*Defined in [types.ts:59](../../../lara-typescript/src/plugin-api/types.ts#L59)*
+*Defined in [types.ts:61](../../../lara-typescript/src/plugin-api/types.ts#L61)*
 
 Logs event to the CC Log Server. Note that logging must be enabled for a given activity. Either by setting URL param logging=true or by enabling logging in Portal.
 
@@ -233,9 +233,9 @@ ___
 
 **● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-*Defined in [types.ts:45](../../../lara-typescript/src/plugin-api/types.ts#L45)*
+*Defined in [types.ts:47](../../../lara-typescript/src/plugin-api/types.ts#L47)*
 
-Wrapped embeddable runtime context if plugin is wrapping some embeddable.
+Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the guiPreview option set to true within its manifest.
 
 ___
 

@@ -2,7 +2,9 @@ class Embeddable::EmbeddablePluginsController < Embeddable::EmbeddablesControlle
   before_filter :set_embeddable
 
   def edit
-    respond_with_edit_form("allow-full-width")
+    # set theme for plugin preview
+    current_theme
+    respond_with_edit_form("allow-full-width", "opaque-background")
   end
 
   private

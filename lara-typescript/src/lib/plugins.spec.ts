@@ -49,7 +49,7 @@ describe("Plugins", () => {
 
   describe("initPlugin", () => {
     const pluginId = 123;
-    const runtimeContext: IPluginRuntimeContextOptions = {
+    const runtimeContextOptions: IPluginRuntimeContextOptions = {
       type: "runtime",
       name: "testPlugin",
       pluginId,
@@ -67,7 +67,7 @@ describe("Plugins", () => {
       wrappedEmbeddable: null,
       componentLabel: "test"
     };
-    const authoringContext: IPluginAuthoringContextOptions = {
+    const authoringContextOptions: IPluginAuthoringContextOptions = {
       type: "authoring",
       name: "testPlugin",
       pluginId,
@@ -75,7 +75,8 @@ describe("Plugins", () => {
       authoredState: '{"configured": true }',
       container: $('<div class="myplugin" />')[0],
       componentLabel: "test",
-      authorDataSaveUrl: "http://authoring.save"
+      authorDataSaveUrl: "http://authoring.save",
+      wrappedEmbeddable: null
     };
 
     it("should call the plugins constructor with the config", () => {
@@ -84,13 +85,13 @@ describe("Plugins", () => {
       // Implicit test of registerPlugin
       setNextPluginLabel("testPlugin1");
       registerPlugin({runtimeClass, authoringClass});
-      initPlugin("testPlugin1", runtimeContext);
-      initPlugin("testPlugin1", authoringContext);
+      initPlugin("testPlugin1", runtimeContextOptions);
+      initPlugin("testPlugin1", authoringContextOptions);
       expect(runtimeClass).toHaveBeenCalledTimes(1);
       expect(authoringClass).toHaveBeenCalledTimes(1);
       // Why keys? Some functions are dynamically generated and we cannot compare them.
       expect(Object.keys(runtimeClass.mock.calls[0][0])).toEqual(
-        Object.keys(generateRuntimePluginContext(runtimeContext))
+        Object.keys(generateRuntimePluginContext(runtimeContextOptions))
       );
     });
 
@@ -111,8 +112,8 @@ describe("Plugins", () => {
       }
       setNextPluginLabel("testPlugin2");
       registerPlugin({runtimeClass: BrokenRuntimePlugin, authoringClass: BrokenAuthoringPlugin});
-      initPlugin("testPlugin2", runtimeContext);
-      initPlugin("testPlugin2", authoringContext);
+      initPlugin("testPlugin2", runtimeContextOptions);
+      initPlugin("testPlugin2", authoringContextOptions);
       expect(runtimeConstructor).toHaveBeenCalledTimes(1);
       expect(authoringConstructor).toHaveBeenCalledTimes(1);
       // tslint:disable-next-line:no-console
