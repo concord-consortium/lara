@@ -248,6 +248,7 @@ describe("Plugin authoring context helper", () => {
     container: document.createElement("div"),
     componentLabel: "test",
     authorDataSaveUrl: "http://author-data.save.url",
+    firebaseJwtUrl: "http://firebase.jwt.url",
     wrappedEmbeddable: null
   };
 

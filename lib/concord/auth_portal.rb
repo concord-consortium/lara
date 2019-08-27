@@ -47,7 +47,7 @@ module Concord
           portal_host = URI.parse(portal.url).host.downcase.strip
           portal_port = URI.parse(portal.url).port || 80
         rescue URI::InvalidURIError
-          puts "portal.url is not valud URL : #{portal.url}"
+          puts "portal.url is not valid URL : #{portal.url}"
         end
         return portal if portal_host == host.downcase.strip && portal_port == port
         # return portal if url == portal.url || (trimmed_url && trimmed_url == portal.url)
