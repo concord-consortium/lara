@@ -9,7 +9,7 @@
     - finder = Embeddable::AnswerFinder.new(Run.new())
     - wrapped_embeddable = Embeddable::is_interactive?(wrapped_embeddable) ? wrapped_embeddable : finder.find_answer(wrapped_embeddable)
   - click_to_play = !!(wrapped_embeddable && wrapped_embeddable.respond_to?(:click_to_play) && wrapped_embeddable.click_to_play)
-
+  - firebase_jwt_url = api_v1_get_firebase_jwt_url({firebase_app: '_FIREBASE_APP_'})
 
   -# load runtime theme for preview of wrapped embeddable
   - if show_wrapped_embeddable
@@ -74,7 +74,8 @@
             interactiveStateUrl: null,
             interactiveAvailable: #{!click_to_play}
           }"},
-          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`
+          authorDataSaveUrl: `#{escape_javascript(api_v1_update_plugin_author_data_url(plugin.id))}`,
+          firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}'
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);

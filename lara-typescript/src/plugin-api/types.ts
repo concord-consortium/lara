@@ -132,6 +132,8 @@ export interface IPluginAuthoringContext {
    * guiPreview option set to true within its manifest.
    */
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
+  /** Function that returns JWT (Promise) for given app name. */
+  getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
 }
 
 export interface IPortalClaims {

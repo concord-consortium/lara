@@ -76,6 +76,7 @@ describe("Plugins", () => {
       container: $('<div class="myplugin" />')[0],
       componentLabel: "test",
       authorDataSaveUrl: "http://authoring.save",
+      firebaseJwtUrl: "http://firebase.jwt",
       wrappedEmbeddable: null
     };
 

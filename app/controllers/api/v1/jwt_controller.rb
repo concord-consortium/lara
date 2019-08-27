@@ -4,25 +4,39 @@ class Api::V1::JwtController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:get_firebase_jwt]
 
   def get_firebase_jwt
-    run = Run.find_by_id(params[:run_id])
-    return error(404, "Run not found: #{params[:run_id]}") unless run
-    return error(500, "Run has no remote_endpoint") unless run.remote_endpoint && !run.remote_endpoint.empty?
-    return error(500, "Anonymous runs cannot request a JWT") unless current_user
-    return error(500, "You are not the owner of the run or an admin") unless (run.user_id == current_user.id) || current_user.is_admin
+    if params[:run_id]
+      run = Run.find_by_id(params[:run_id])
+      return error(404, "Run not found: #{params[:run_id]}") unless run
+      return error(500, "Run has no remote_endpoint") unless run.remote_endpoint && !run.remote_endpoint.empty?
+      return error(500, "Anonymous runs cannot request a JWT") unless current_user
+      return error(500, "You are not the owner of the run or an admin") unless (run.user_id == current_user.id) || current_user.is_admin
+      remote_url = run.remote_endpoint
+    elsif session[:portal_domain] && session[:portal_user_id]
+      run = nil
+      portal_for_url = Concord::AuthPortal.portal_for_url(session[:portal_domain])
+      return error(500, "No portal found for portal_domain (#{session[:portal_domain]}) in session") unless portal_for_url
+      remote_url = portal_for_url.url
+    else
+      return error(500, "Session has no portal_domain and portal_user_id")
+    end
 
     begin
-      auth_token = Concord::AuthPortal.auth_token_for_url(run.remote_endpoint)
+      auth_token = Concord::AuthPortal.auth_token_for_url(remote_url)
     rescue Exception => e
       return error(500, e.message)
     end
 
-    uri = URI.parse(run.remote_endpoint)
-    learner_id_or_key = uri.path.split("/").pop()
-    portal_url = "#{uri.scheme}://#{uri.host}:#{uri.port}/api/v1/jwt/firebase"
-
     body = params.except(:action, :controller, :run_id).dup()
-    body[:learner_id_or_key] = learner_id_or_key
 
+    uri = URI.parse(remote_url)
+    if run
+      learner_id_or_key = uri.path.split("/").pop()
+      body[:learner_id_or_key] = learner_id_or_key
+    else
+      body[:user_id] = session[:portal_user_id]
+    end
+
+    portal_url = "#{uri.scheme}://#{uri.host}:#{uri.port}/api/v1/jwt/firebase"
     response = HTTParty.post(portal_url, {
       body: body,
       headers: {

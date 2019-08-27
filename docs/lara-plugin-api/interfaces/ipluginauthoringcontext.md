@@ -13,6 +13,7 @@
 * [authoredState](ipluginauthoringcontext.md#authoredstate)
 * [componentLabel](ipluginauthoringcontext.md#componentlabel)
 * [container](ipluginauthoringcontext.md#container)
+* [getFirebaseJwt](ipluginauthoringcontext.md#getfirebasejwt)
 * [name](ipluginauthoringcontext.md#name)
 * [pluginId](ipluginauthoringcontext.md#pluginid)
 * [saveAuthoredPluginState](ipluginauthoringcontext.md#saveauthoredpluginstate)
@@ -54,6 +55,28 @@ ___
 *Defined in [types.ts:120](../../../lara-typescript/src/plugin-api/types.ts#L120)*
 
 Reserved HTMLElement for the plugin output.
+
+___
+<a id="getfirebasejwt"></a>
+
+###  getFirebaseJwt
+
+**● getFirebaseJwt**: *`function`*
+
+*Defined in [types.ts:136](../../../lara-typescript/src/plugin-api/types.ts#L136)*
+
+Function that returns JWT (Promise) for given app name.
+
+#### Type declaration
+▸(appName: *`string`*): `Promise`<[IJwtResponse](ijwtresponse.md)>
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| appName | `string` |
+
+**Returns:** `Promise`<[IJwtResponse](ijwtresponse.md)>
 
 ___
 <a id="name"></a>

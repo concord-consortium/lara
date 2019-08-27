@@ -207,7 +207,7 @@ ___
 
 **Ƭ IInteractiveAvailableEventHandler**: *`function`*
 
-*Defined in [types.ts:220](../../lara-typescript/src/plugin-api/types.ts#L220)*
+*Defined in [types.ts:222](../../lara-typescript/src/plugin-api/types.ts#L222)*
 
 InteractiveAvailable event handler.
 
@@ -229,7 +229,7 @@ ___
 
 **Ƭ ILogEventHandler**: *`function`*
 
-*Defined in [types.ts:201](../../lara-typescript/src/plugin-api/types.ts#L201)*
+*Defined in [types.ts:203](../../lara-typescript/src/plugin-api/types.ts#L203)*
 
 Log event handler.
 

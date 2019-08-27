@@ -16067,6 +16067,9 @@ var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     return fetch(appSpecificUrl, { method: "POST" })
         .then(function (response) { return response.json(); })
         .then(function (data) {
+        if (data.response_type === "ERROR") {
+            throw { message: data.message };
+        }
         try {
             var token = data.token.split(".")[1];
             var claimsJson = atob(token);
@@ -16136,6 +16139,7 @@ exports.generateAuthoringPluginContext = function (options) {
         componentLabel: options.componentLabel,
         saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); },
         wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
+        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); }
     };
 };
 
