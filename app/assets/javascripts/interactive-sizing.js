@@ -18,6 +18,7 @@ function interactiveSizing () {
 
   function setSize () {
     var $iframe = $(this);
+    var height = $iframe.data('height');
     var aspectRatio = $iframe.data('aspect-ratio');
     var resizeMethod = $iframe.data('aspect-ratio-method');
     var maxHeight = window.innerHeight;
@@ -28,6 +29,13 @@ function interactiveSizing () {
 
     // Reset dimensions.
     setInteractiveWidth($iframe, '100%');
+
+    // if the interactive specifies a height then use that instead of calculating the height
+    // using the aspect ratio
+    if (height) {
+      $iframe.css('height', height);
+      return;
+    }
 
     if (isPinned && multipleInteractives) {
       // This case is treated in a basic way for now. MAX setting doesn't make much sense.

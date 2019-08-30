@@ -80,6 +80,9 @@ class IFrameSaver
       if @user_email?
         authInfo.email = @user_email
       @iframePhone.post('authInfo', authInfo)
+    @iframePhone.addListener 'height', (height) =>
+      @$iframe.data('height', height)
+      @$iframe.trigger('sizeUpdate')
     @iframePhone.addListener 'supportedFeatures', (info) =>
       if info.features?.aspectRatio?
         # If the author specifies the aspect-ratio-method as "DEFAULT"

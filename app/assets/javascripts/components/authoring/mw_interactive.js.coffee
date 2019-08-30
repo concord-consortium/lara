@@ -39,6 +39,10 @@ modulejs.define 'components/authoring/mw_interactive',
     handleAuthoredStateChange: (authoredState) ->
       @setState {authoredState, modified: true}
 
+    handleHeightChange: (height) ->
+      iframe = ReactDOM.findDOMNode(@interactive.current)
+      iframe.style.height = height + 'px'
+
     handleSupportedFeatures: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
       if (info.features.aspectRatio?)
@@ -101,6 +105,7 @@ modulejs.define 'components/authoring/mw_interactive',
             authoredState: authoredState
           }
           onAuthoredStateChange: @handleAuthoredStateChange
-          onSupportedFeaturesUpdate: @handleSupportedFeatures
+          onSupportedFeaturesUpdate: @handleSupportedFeatures,
+          onHeightUpdate: @handleHeightChange
         )
       )
