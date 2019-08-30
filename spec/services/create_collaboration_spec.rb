@@ -9,13 +9,23 @@ describe CreateCollaboration do
         name: "Foo Bar",
         email: user.email,
         learner_id: 101,
-        endpoint_url: "http://portal.concord.org/dataservice/101"
+        endpoint_url: "http://portal.concord.org/dataservice/101",
+        platform_id: "http://portal.concord.org",
+        platform_user_id: "123",
+        resource_link_id: "202",
+        context_id: "class_hash_123",
+        class_info_url: "http://portal.concord.org/class/1"
       },
       {
         name: "Bar Foo",
         email: "barfoo@bar.foo",
         learner_id: 202,
-        endpoint_url: "http://portal.concord.org/dataservice/202"
+        endpoint_url: "http://portal.concord.org/dataservice/202",
+        platform_id: "http://portal.concord.org",
+        platform_user_id: "321",
+        resource_link_id: "202",
+        context_id: "class_hash_123",
+        class_info_url: "http://portal.concord.org/class/1"
       }
     ]
   end
@@ -66,6 +76,19 @@ describe CreateCollaboration do
         cr = CollaborationRun.first
         expect(cr.runs.count).to eq(2)
       end
+
+      it "should save platform info for each run" do
+        create_collaboration.call
+        cr = CollaborationRun.first
+        expect(cr.runs[0].platform_user_id).to eq("123")
+        expect(cr.runs[1].platform_user_id).to eq("321")
+        cr.runs.each do |run|
+          expect(run.platform_id).to eq("http://portal.concord.org")
+          expect(run.resource_link_id).to eq("202")
+          expect(run.context_id).to eq("class_hash_123")
+          expect(run.class_info_url).to eq("http://portal.concord.org/class/1")
+        end
+      end
     end
 
     describe "when a sequence is provided as a material" do
@@ -81,6 +104,24 @@ describe CreateCollaboration do
         cr = CollaborationRun.first
         # 2 users x 3 activities
         expect(cr.runs.count).to eq(6)
+      end
+
+      it "should save platform info for each run" do
+        create_collaboration.call
+        cr = CollaborationRun.first
+        # 2 users x 3 activities
+        expect(cr.runs[0].platform_user_id).to eq("123")
+        expect(cr.runs[1].platform_user_id).to eq("123")
+        expect(cr.runs[2].platform_user_id).to eq("123")
+        expect(cr.runs[3].platform_user_id).to eq("321")
+        expect(cr.runs[4].platform_user_id).to eq("321")
+        expect(cr.runs[5].platform_user_id).to eq("321")
+        cr.runs.each do |run|
+          expect(run.platform_id).to eq("http://portal.concord.org")
+          expect(run.resource_link_id).to eq("202")
+          expect(run.context_id).to eq("class_hash_123")
+          expect(run.class_info_url).to eq("http://portal.concord.org/class/1")
+        end
       end
     end
 
