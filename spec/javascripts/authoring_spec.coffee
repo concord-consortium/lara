@@ -51,7 +51,7 @@ describe "Authoring components", () ->
       expect(props.onSupportedFeaturesUpdate).toHaveBeenCalledWith({test: 321})
 
       iframePhone.postMessageFrom(iframe, {type: "height", content: {1000}})
-      expect(props.onHeightChange).toHaveBeenCalledWith(100)
+      expect(props.onHeightChange).toHaveBeenCalledWith(1000)
 
   describe "mw_interactive", ->
     it "loads interactive using InteractiveIframe component", ->
