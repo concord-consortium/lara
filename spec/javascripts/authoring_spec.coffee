@@ -35,8 +35,10 @@ describe "Authoring components", () ->
       props =
         onAuthoredStateChange: ->
         onSupportedFeaturesUpdate: ->
+        onHeightChange: ->
       spyOn(props, 'onAuthoredStateChange')
       spyOn(props, 'onSupportedFeaturesUpdate')
+      spyOn(props, 'onHeightChange')
 
       interactive = jasmine.react.renderComponent "common/interactive_iframe", props
       iframePhone.connect()
@@ -48,6 +50,8 @@ describe "Authoring components", () ->
       iframePhone.postMessageFrom(iframe, {type: "supportedFeatures", content: {test: 321}})
       expect(props.onSupportedFeaturesUpdate).toHaveBeenCalledWith({test: 321})
 
+      iframePhone.postMessageFrom(iframe, {type: "height", content: {1000}})
+      expect(props.onHeightChange).toHaveBeenCalledWith(100)
 
   describe "mw_interactive", ->
     it "loads interactive using InteractiveIframe component", ->

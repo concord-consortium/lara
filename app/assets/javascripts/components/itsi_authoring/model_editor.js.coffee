@@ -76,12 +76,13 @@ modulejs.define 'components/itsi_authoring/model_editor',
         # Reload iframe to apply "null" initial state.
         @iframe.current.reload()
 
+    handleHeightChange: (height) ->
+      container = @iframeContainer.current
+      container.style.height = height + 'px'
+
     handleSupportedFeaturesUpdate: (info) ->
       @setState {authoringSupported: !!info.features.authoredState}
-      if (info.features.height?)
-        container = @iframeContainer.current
-        container.style.height = info.features.height + 'px'
-      else if (info.features.aspectRatio?)
+      if (info.features.aspectRatio?)
         container = @iframeContainer.current
         container.style.height = Math.round(container.offsetWidth / info.features.aspectRatio) + 'px'
 
@@ -148,6 +149,7 @@ modulejs.define 'components/itsi_authoring/model_editor',
                   }
                   onAuthoredStateChange: @onAuthoredStateChange
                   onSupportedFeaturesUpdate: @handleSupportedFeaturesUpdate
+                  onHeightChange: @handleHeightChange
                 )
                 unless authorable
                  (div {className: 'ia-interactive-overlay'})

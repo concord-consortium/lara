@@ -15,6 +15,7 @@ modulejs.define 'components/common/interactive_iframe', [], () ->
       initialAuthoredState: null
       onAuthoredStateChange: (authoredState) ->
       onSupportedFeaturesUpdate: (info) ->
+      onHeightChange: (height) ->
 
     componentDidMount: ->
       @connect()
@@ -40,6 +41,8 @@ modulejs.define 'components/common/interactive_iframe', [], () ->
         @props.onAuthoredStateChange(authoredState)
       @iframePhone.addListener 'supportedFeatures', (info) =>
         @props.onSupportedFeaturesUpdate(info)
+      @iframePhone.addListener 'height', (info) =>
+        @props.onHeightChange(info)
 
     disconnect: ->
       @iframePhone.disconnect()

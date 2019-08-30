@@ -35,6 +35,7 @@ EmbeddableCarousel.prototype.setCarouselSize = function () {
   this.calculateWidth()
   this.setWidth(this.bestWidth)
   // Make sure that interactives have correct height.
+  $('[data-height]').trigger('sizeUpdate')
   $('[data-aspect-ratio]').trigger('sizeUpdate')
   // Set the carousel to those values and reload it
   this.calculateHeight()
