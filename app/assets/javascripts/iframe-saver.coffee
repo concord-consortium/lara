@@ -81,7 +81,10 @@ class IFrameSaver
         authInfo.email = @user_email
       @iframePhone.post('authInfo', authInfo)
     @iframePhone.addListener 'supportedFeatures', (info) =>
-      if info.features?.aspectRatio?
+      if info.features?.height?
+        @$iframe.data('height', info.features.height)
+        @$iframe.trigger('sizeUpdate')
+      else if info.features?.aspectRatio?
         # If the author specifies the aspect-ratio-method as "DEFAULT"
         # then the Interactive can provide suggested aspect-ratio.
         if(@$iframe.data('aspect-ratio-method') == "DEFAULT")
