@@ -55,9 +55,8 @@ describe SubmitDirtyAnswersJob do
             .to receive(:send)
             .and_raise("bang")
         end
-        it "should report an error without halting" do
-          expect(Rails.logger).to receive(:error).at_least(:once)
-          expect { job.perform }.not_to raise_error
+        it "should raise error to re-run job" do
+          expect { job.perform }.to raise_error
         end
       end
     end
