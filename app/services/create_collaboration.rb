@@ -62,21 +62,23 @@ class CreateCollaboration
         returnUrl: c['endpoint_url'],
         externalId: c['learner_id']
       )
-      add_activity_run(user, portal_endpoint) if @activity
-      add_sequence_runs(user, portal_endpoint) if @sequence
+      add_activity_run(user, portal_endpoint, c) if @activity
+      add_sequence_runs(user, portal_endpoint, c) if @sequence
     end
   end
 
-  def add_activity_run(user, portal_endpoint)
+  def add_activity_run(user, portal_endpoint, collaborator_data)
     # for_user_and_portal is in fact lookup_or_create
     run = Run.for_user_and_portal(user, @activity, portal_endpoint)
+    run.update_platform_info(collaborator_data)
     @collaboration_run.runs.push(run)
     # Save run that belongs to the collaboration owner.
     @owners_run = run if user == @owner
   end
 
-  def add_sequence_runs(user, portal_endpoint)
+  def add_sequence_runs(user, portal_endpoint, collaborator_data)
     sequence_run = SequenceRun.lookup_or_create(@sequence, user, portal_endpoint)
+    sequence_run.update_platform_info(collaborator_data)
     @collaboration_run.runs.push(*sequence_run.runs)
     # Save sequence run that belongs to the collaboration owner.
     @owners_sequence_run = sequence_run if user == @owner
