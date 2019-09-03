@@ -1,37 +1,47 @@
 require 'spec_helper'
 
-
 describe SubmitDirtyAnswersJob do
-
-  let(:answers) do
-    5.times.map { |i| double("Asnwer", {}) }
+  let(:self_host) { "app.lara.docker" }
+  let(:report_service_url) { 'http://fake-report-service.fake' }
+  let(:report_service_token) { 'very-secret-token' }
+  let(:run) do
+    FactoryGirl.create(:run, { open_response_answers: [ FactoryGirl.create(:or_answer) ], is_dirty: true })
   end
-
-  let(:run_stubs) do
+  let(:submit_time) { Time.now }
+  let(:report_service_configured) { true}
+  let(:report_service_response) do
     {
-      key: "run-key",
-      dirty_answers: answers,
-      id: run_id,
-      send_to_portal: true,
-      set_answers_clean: true,
-      reload: true,
-      abort_job_and_requeue: true
+      success?: true,
+      code: 200,
+      message: "OK",
+      body: "{ success: true }"
     }
   end
 
-  let(:run_id) { 7 }
-
-  let(:run) { double("Run", run_stubs) }
-  let(:report_service_configured) { false}
-  let(:submit_time) { Time.now }
-  let(:job) { SubmitDirtyAnswersJob.new(run_id, submit_time) }
+  let(:job) { SubmitDirtyAnswersJob.new(run.id, submit_time) }
 
   before(:each) do
     allow(ReportService)
       .to receive(:configured?)
       .and_return report_service_configured
 
-    allow(Run).to receive(:find).with(run_id).and_return(run)
+    allow(HTTParty)
+      .to receive(:post)
+      .and_return double("Response", report_service_response)
+
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
+  end
+
+  describe "#perform" do
+    it "mark run clean after successful upload to Portal and report service" do
+      expect(run.dirty_answers.count).to eq(1)
+      expect { job.perform }.not_to raise_error
+      run.reload
+      expect(run.dirty_answers.count).to eq(0)
+      expect(run.is_dirty).to eq(false)
+    end
   end
 
   describe "#send_to_report_service" do
@@ -44,20 +54,34 @@ describe SubmitDirtyAnswersJob do
     end
 
     describe "When the report service is configured" do
-      let(:report_service_configured) { true }
       it "should send data to the report service" do
         expect(job).to receive(:send_to_report_service).with(run)
         expect { job.perform }.not_to raise_error
       end
-      describe "When something goes wrong while sending" do
+
+      describe "When something goes wrong while sending (exception)" do
         before(:each) do
           allow_any_instance_of(ReportService::RunSender)
             .to receive(:send)
             .and_raise("bang")
         end
-        it "should report an error without halting" do
-          expect(Rails.logger).to receive(:error).at_least(:once)
-          expect { job.perform }.not_to raise_error
+        it "shouldn't catch this exception to re-run job" do
+          expect { job.perform }.to raise_error("bang")
+        end
+      end
+
+      describe "When something goes wrong while sending (report service response)" do
+        let(:report_service_response) do
+          {
+            success?: false,
+            code: 500,
+            message: "ERROR",
+            body: "{ success: false }"
+          }
+        end
+
+        it "should raise error to re-run job" do
+          expect { job.perform }.to raise_error(Run::PortalUpdateIncomplete)
         end
       end
     end
