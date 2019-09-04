@@ -11,13 +11,13 @@ class Api::V1::JwtController < ApplicationController
       return error(500, "Anonymous runs cannot request a JWT") unless current_user
       return error(500, "You are not the owner of the run or an admin") unless (run.user_id == current_user.id) || current_user.is_admin
       remote_url = run.remote_endpoint
-    elsif session[:portal_domain] && session[:portal_user_id]
+    elsif session[:auth_id] && session[:portal_user_id]
       run = nil
-      portal_for_url = Concord::AuthPortal.portal_for_url(session[:portal_domain])
-      return error(500, "No portal found for portal_domain (#{session[:portal_domain]}) in session") unless portal_for_url
-      remote_url = portal_for_url.url
+      portal_for_auth_id = Concord::AuthPortal.portal_for_auth_id(session[:auth_id])
+      return error(500, "No portal found for auth_id (#{session[:auth_id]}) in session") unless portal_for_auth_id
+      remote_url = portal_for_auth_id.url
     else
-      return error(500, "Session has no portal_domain and portal_user_id")
+      return error(500, "Session has no auth_id and portal_user_id")
     end
 
     begin
