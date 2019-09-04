@@ -68,6 +68,15 @@
       .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
+      .field{:class => ("disabled" unless @activity.layout == 1)}
+        = f.label :show_submit_button, 'Show Submit Button'
+        = f.check_box :show_submit_button, :disabled => (@activity.layout != 1 ? true : false)
+        %br
+          .hint
+            Show a submit button at the bottom of a
+            %em
+              single page
+            activity. (This button won't do anything except help assure people their work has been saved -- which happens automatically.)
       - if current_user.is_admin
         .field
           = f.label :editor_mode, "Authoring Mode"
@@ -105,3 +114,18 @@
         %li#add= link_to "Add Page", new_activity_page_path(@activity)
     #plugins
       =render partial: 'plugins/list', locals: {activity: @activity}
+
+:javascript
+  $(function() {
+    // toggle access to submit button for single page layouts
+    $('#lightweight_activity_layout').on('change', function() {
+      var $this = $(this);
+      var selected = $this.find('option:selected').val();
+      console.log(selected);
+      if (selected === '1') {
+        $('#lightweight_activity_show_submit_button').removeAttr('disabled').parent().removeClass('disabled');
+      } else {
+        $('#lightweight_activity_show_submit_button').attr('disabled', true).parent().addClass('disabled');
+      }
+    })
+  });

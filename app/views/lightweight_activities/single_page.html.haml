@@ -11,9 +11,10 @@
 - @activity.visible_pages.each do |p|
   -# Enforce full-width layout for each page rendering.
   = render partial: "interactive_pages/show", locals: {page: p, layout: 'l-full-width'}
-.submit
-  %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
-    %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
+- if @activity.show_submit_button
+  .submit
+    %a.sp-submit{ :href => "javascript:void(0);", :class => 'forward_nav', "data-trigger-save" => "false" }
+      %input{ :class => 'button forward_nav', :type => 'submit', :value => "Submit"}
 
 -# Set Google Analytics content group based on the project. Note that project might be undefined
 -# for activity, but defined for sequence. Always try to use sequence data first.
