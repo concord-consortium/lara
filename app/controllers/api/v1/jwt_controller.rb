@@ -13,9 +13,9 @@ class Api::V1::JwtController < ApplicationController
       remote_url = run.remote_endpoint
     elsif session[:portal_domain] && session[:portal_user_id]
       run = nil
-      portal_for_url = Concord::AuthPortal.portal_for_url(session[:portal_domain])
-      return error(500, "No portal found for portal_domain (#{session[:portal_domain]}) in session") unless portal_for_url
-      remote_url = portal_for_url.url
+      portal_for_domain = get_portal_for_domain(session[:portal_domain])
+      return error(500, "No portal found for portal_domain (#{session[:portal_domain]}) in session") unless portal_for_domain
+      remote_url = portal_for_domain.url
     else
       return error(500, "Session has no portal_domain and portal_user_id")
     end
@@ -50,5 +50,10 @@ class Api::V1::JwtController < ApplicationController
 
   def error(status, message)
     render :json => {:response_type => "ERROR", :error => message}, :status => status
+  end
+
+  # the session only has the domain so we need to add the protocol to the lookup
+  def get_portal_for_domain(domain)
+    Concord::AuthPortal.portal_for_url("https://#{domain}") || Concord::AuthPortal.portal_for_url("http://#{domain}")
   end
 end
