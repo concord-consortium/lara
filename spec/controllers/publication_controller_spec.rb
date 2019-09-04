@@ -53,6 +53,7 @@ describe PublicationsController do
         "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
         "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
         "student_report_enabled" => act_one.student_report_enabled,
+        "show_submit_button" => true,
         "thumbnail_url" =>"thumbnail",
         "author_email"  => @user.email,
         "is_locked"     =>false,
