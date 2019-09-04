@@ -68,6 +68,12 @@
       .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
+      .field
+        = f.label :show_submit_button, 'Show Submit Button'
+        = f.check_box :show_submit_button
+        %br
+          .hint
+            Show a submit button at the bottom of a single page activity. (This button doesn't actually do anything except help assure people their work has been saved -- which it already has been automatically.)
       - if current_user.is_admin
         .field
           = f.label :editor_mode, "Authoring Mode"
