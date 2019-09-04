@@ -55,6 +55,11 @@ module Concord
       return nil # we couldn't find one.
     end
 
+    def self.portal_for_auth_id(auth_id)
+      authentication = Authentication.find_by_id(auth_id)
+      authentication ? self.portal_for_strategy_name(authentication.provider) : nil
+    end
+
     def self.portal_for_publishing_url(url)
       self.all.values.detect { |v| v.publishing_url == url }
     end
@@ -85,8 +90,13 @@ module Concord
       return ExistingPortals[name] || self.make_for_name(name)
     end
 
+    def self.portal_for_strategy_name(name)
+      self.all.values.detect{|v| v.strategy_name == name} rescue nil
+    end
+
     def self.url_for_strategy_name(name)
-      self.all.values.detect{|v| v.strategy_name == name}.url rescue nil
+      portal = self.portal_for_strategy_name(name)
+      portal ? portal.url : nil
     end
 
     def self.default
@@ -202,6 +212,7 @@ module Concord
                 session[:portal_domain]   = extra.domain
               end
               @user = User.find_for_concord_portal_oauth(omniauth, current_user)
+              session[:auth_id] = @user.most_recent_authentication.id
               sign_in_and_redirect @user, :event => :authentication
             end
           CONTROLLER_ACTION

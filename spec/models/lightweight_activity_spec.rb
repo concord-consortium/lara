@@ -174,6 +174,7 @@ describe LightweightActivity do
         related: activity.related,
         publication_status: activity.publication_status,
         student_report_enabled: true,
+        show_submit_button: true,
         description: activity.description,
         time_to_complete: activity.time_to_complete,
         project_id: activity.project_id,
@@ -392,6 +393,7 @@ describe LightweightActivity do
         "thumbnail_url"       => thumbnail_url,
         "author_email"        => activity.user.email,
         "student_report_enabled" => activity.student_report_enabled,
+        "show_submit_button" => true,
         "is_locked"           => false,
         "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
