@@ -103,7 +103,7 @@ describe Api::V1::JwtController do
 
     describe "without a run" do
       describe "without portal info" do
-        let(:error) { 'Session has no portal_domain and portal_user_id' }
+        let(:error) { 'Session has no auth_id and portal_user_id' }
         it "should fail with 500 if there is no portal info in the session" do
           post :get_firebase_jwt
           expect(response.status).to eq(500)
@@ -112,8 +112,8 @@ describe Api::V1::JwtController do
           expect(json_response["error"]).to eq(error)
         end
 
-        it "should fail with 500 if there is only a portal_domain in the session" do
-          post :get_firebase_jwt, {portal_domain: "foo"}
+        it "should fail with 500 if there is only a auth_id in the session" do
+          post :get_firebase_jwt, {auth_id: 1}
           expect(response.status).to eq(500)
           json_response = JSON.parse(response.body)
           expect(json_response["response_type"]).to eq('ERROR')
@@ -129,18 +129,18 @@ describe Api::V1::JwtController do
         end
       end
 
-      it "should fail with 500 if the portal domain is unknown" do
-        allow(Concord::AuthPortal).to receive(:portal_for_url).and_return(nil)
-        post :get_firebase_jwt, {}, {portal_domain: "foo", portal_user_id: "bar"}
+      it "should fail with 500 if the auth id is unknown" do
+        allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(nil)
+        post :get_firebase_jwt, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(500)
         json_response = JSON.parse(response.body)
         expect(json_response["response_type"]).to eq('ERROR')
-        expect(json_response["error"]).to eq('No portal found for portal_domain (foo) in session')
+        expect(json_response["error"]).to eq('No portal found for auth_id (1) in session')
       end
 
-      it "should succeed with a known portal domain and portal user id" do
-        allow(Concord::AuthPortal).to receive(:portal_for_url).and_return(OpenStruct.new({ url: "http://fake.portal.com" }))
-        post :get_firebase_jwt, {}, {portal_domain: "foo", portal_user_id: "bar"}
+      it "should succeed with a known auth id and portal user id" do
+        allow(Concord::AuthPortal).to receive(:portal_for_auth_id).and_return(OpenStruct.new({ url: "http://fake.portal.com" }))
+        post :get_firebase_jwt, {}, {auth_id: 1, portal_user_id: "bar"}
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
         expect(json_response["token"]).to eq('fake-token')
