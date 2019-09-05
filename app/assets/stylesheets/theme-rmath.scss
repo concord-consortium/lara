@@ -1,31 +1,10 @@
 @import "cc-runtime";
 
 $theme-params: (
-  bgColorOrUrl: #f3f3f3,
+  bgColorOrUrl: #f1f1f1,
   theme-color-a: #0592af,
   theme-color-b: #ea6d2f,
   activity-menu-display: none
 );
 
 @include theme($theme-params...);
-
-/*
-input[type="button"],
-input[type="submit"],
-button[type="button"],
-.bottom-buttons .next-page input[type="submit"],
-.bottom-buttons .prev input[type="submit"] {
-  background: #ea6d2f;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  text-shadow: none;
-}
-
-input[type="button"]:hover,
-input[type="submit"]:hover,
-button[type="button"]:hover,
-.bottom-buttons .next-page input[type="submit"]:hover,
-.bottom-buttons .prev input[type="submit"]:hover {
-  background: #ffc320;
-} */
