@@ -97,4 +97,14 @@ describe Embeddable::EmbeddablePlugin do
       expect(embeddable.approved_script_id).to eq("123")
     end
   end
+
+  describe '#show_in_edit?' do
+    it 'returns true by default' do
+      expect(embeddable_plugin.show_in_edit?).to eq(true)
+    end
+    it 'returns false if a embeddable is wrapped' do
+      embeddable_plugin.embeddable = FactoryGirl.create(:open_response)
+      expect(embeddable_plugin.show_in_edit?).to eq(false)
+    end
+  end
 end
