@@ -8,3 +8,5 @@ $theme-params: (
 );
 
 @include theme($theme-params...);
+
+footer { color: #444; }
