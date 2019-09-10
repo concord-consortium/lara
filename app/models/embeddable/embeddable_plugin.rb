@@ -103,7 +103,13 @@ module Embeddable
     end
 
     def show_in_edit?
-      !component || component[:scope] != "embeddable-decoration"
+      # if this plugin component is intended to wrap an embeddable (embeddable-decoration),
+      # but the embeddable has been deleted, wrapping_plugin? will return false.
+      # So the plugin will show up in authoring.
+      # Currently if a LARA author tries to edit a plugin in this state an error is shown
+      # in the console but no error is shown to the author.
+      # But at least with this approach the author can delete this misconfigured plugin.
+      !wrapping_plugin?
     end
 
     # embeddable_plugins are one type of plugin_scope used by plugins
