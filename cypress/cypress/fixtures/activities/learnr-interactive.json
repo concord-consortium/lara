@@ -1,0 +1,429 @@
+{
+    "description": "",
+    "editor_mode": 0,
+    "layout": 0,
+    "name": "[Cypress] Driving for Gas (assessment)",
+    "notes": "",
+    "project_id": null,
+    "related": "",
+    "student_report_enabled": true,
+    "thumbnail_url": "https://cc-project-resources.s3.amazonaws.com/CodeR4MATH/images/car-filling-station-fuel-pump-9796.jpg",
+    "time_to_complete": 50,
+    "version": 1,
+    "theme_name": "HAS National Geographic",
+    "pages": [
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "The Challenge",
+            "position": 1,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": true,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": "\u003Cp\u003EYour colleagues have been working on a modeling problem described below:\u003C/p\u003E\n\u003Cp style=\"padding-left: 30px;\"\u003E\u003Cem\u003EGas prices change on a nearly daily basis, and not every gas station offers the same price for a gallon of gas. The gas station selling the cheapest gas may be across town from where you are driving. Is it worth the drive across town for less expensive gas? Create a mathematical model that can be used to help understand under what conditions it is worth the drive.\u003C/em\u003E\u003C/p\u003E\n\u003Cp\u003EThe R code below is the model your colleagues created. Read the code and run it and answer the questions in the following page.\u003C/p\u003E",
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": false,
+                        "url": "https://rstudio-connect.concord.org/content/16/",
+                        "type": "MwInteractive",
+                        "ref_id": "209526-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "\"Worth the drive\"",
+            "position": 2,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": false,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": null,
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "\u003Cp\u003ERecall that.......\u003C/p\u003E",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EHow did your colleagues define the phrase \u0026ldquo;worth the drive\u0026rdquo; in the problem statement?\u0026nbsp;\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445295-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": false,
+                        "url": "https://rstudio-connect.concord.org/content/16/",
+                        "type": "MwInteractive",
+                        "ref_id": "209527-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "Main factor",
+            "position": 3,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": false,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": null,
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EWhat is the main factor that affects which station will be recommended by the model? Explain why the factor is important to include in the model.\u0026nbsp;\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445296-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": true,
+                        "url": "https://rstudio-connect.concord.org/content/16/",
+                        "type": "MwInteractive",
+                        "ref_id": "209528-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "Assumptions",
+            "position": 4,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": false,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": null,
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "content": "\u003Cp\u003EBelow are some assumptions your colleagues made in order to create the model. Comment on each of them whether they are relevant and reasonable and why you think so.\u003C/p\u003E",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "name": "",
+                        "type": "Embeddable::Xhtml",
+                        "ref_id": "3910-Embeddable::Xhtml"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EAssumption 1: The driver will buy the same amount of gas at either station.\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445297-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EAssumption 2:\u0026nbsp;The driver recently renewed his or her driver\u0026rsquo;s license.\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445298-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EAssumption 3:\u0026nbsp;The cost of driver\u0026rsquo;s time is negligible.\u0026nbsp;\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445299-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EBased on the model, identify one more assumption you colleagues might have made and comment on its relevance and the reasoning behind it.\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445300-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": true,
+                        "url": "https://rstudio-connect.concord.org/content/16/",
+                        "type": "MwInteractive",
+                        "ref_id": "209529-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "Summarize \u0026 Evaluate",
+            "position": 5,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": false,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": null,
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003ERun the model and summarize the model's results\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445301-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "default_text": "",
+                        "give_prediction_feedback": false,
+                        "hint": "",
+                        "is_full_width": false,
+                        "is_hidden": false,
+                        "is_prediction": true,
+                        "name": "",
+                        "prediction_feedback": "",
+                        "prompt": "\u003Cp\u003EDo you think the results make sense in reality? Which of the definitions and assumptions that your colleagues made were problematic? Describe how you would address the issue.\u0026nbsp;\u003C/p\u003E",
+                        "show_in_featured_question_report": true,
+                        "type": "Embeddable::OpenResponse",
+                        "ref_id": "445303-Embeddable::OpenResponse"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": false,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": true,
+                        "url": "https://rstudio-connect.concord.org/content/16/",
+                        "type": "MwInteractive",
+                        "ref_id": "209530-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        },
+        {
+            "additional_sections": {},
+            "embeddable_display_mode": "stacked",
+            "is_completion": false,
+            "is_hidden": false,
+            "layout": "l-full-width",
+            "name": "Improve It",
+            "position": 6,
+            "show_info_assessment": true,
+            "show_interactive": false,
+            "show_introduction": false,
+            "show_sidebar": false,
+            "sidebar": null,
+            "sidebar_title": "Did you know?",
+            "text": null,
+            "embeddables": [
+                {
+                    "embeddable": {
+                        "content": "\u003Cp\u003EModify the R code to make your model generate more realistic recommendations. Feel free to add new variables and expressions and ask the teacher for coding help.\u003C/p\u003E",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "name": "",
+                        "type": "Embeddable::Xhtml",
+                        "ref_id": "3911-Embeddable::Xhtml"
+                    },
+                    "section": null
+                },
+                {
+                    "embeddable": {
+                        "aspect_ratio_method": "DEFAULT",
+                        "authored_state": null,
+                        "click_to_play": false,
+                        "click_to_play_prompt": null,
+                        "enable_learner_state": true,
+                        "full_window": false,
+                        "has_report_url": false,
+                        "image_url": "",
+                        "is_full_width": true,
+                        "is_hidden": false,
+                        "model_library_url": null,
+                        "name": "",
+                        "native_height": 435,
+                        "native_width": 576,
+                        "show_delete_data_button": false,
+                        "show_in_featured_question_report": true,
+                        "url": "https://rstudio-connect.concord.org/content/14/",
+                        "type": "MwInteractive",
+                        "ref_id": "209531-MwInteractive"
+                    },
+                    "section": null
+                }
+            ]
+        }
+    ],
+    "plugins": [],
+    "type": "LightweightActivity",
+    "export_site": "Lightweight Activities Runtime and Authoring"
+}
