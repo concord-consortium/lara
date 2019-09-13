@@ -83,12 +83,12 @@ h3 {
     }
   }
   .logo-r {
-    background: url(/assets/waters/students.jpg) no-repeat;
-    background-size: cover;
+    background: url(/assets/waters/students.jpg) no-repeat 0 -28px;
+    background-size: 100%;
     height: 150px;
     margin-top: 0;
     position: relative;
-    width: 40%;
+    width: 30%;
 
     img {
       display: none;
