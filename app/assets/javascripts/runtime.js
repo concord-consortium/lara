@@ -12,8 +12,8 @@
 //
 //= require core-js-3.0.0-beta.3
 //= require modulejs
-//= require react-16.4.2
-//= require react-dom-16.4.2
+//= require react-16.9.0
+//= require react-dom-16.9.0
 //= require create-react-class-15.6.3
 //= require react-factories
 //= require jquery-ajax-csrf
