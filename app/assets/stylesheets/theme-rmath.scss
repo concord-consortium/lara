@@ -13,4 +13,5 @@ $theme-params: (
 
 @include theme($theme-params...);
 
+.interactive-container.full-window .full-window-overlay { background: $col-lightgray; }
 footer { color: #444; }
