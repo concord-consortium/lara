@@ -1,9 +1,13 @@
 @import "cc-runtime";
 
+$col-lightgray: #f1f1f1;
+$col-blue: #459ace;
+$col-orange: #ea6d2f;
+
 $theme-params: (
-  bgColorOrUrl: #f1f1f1,
-  theme-color-a: #459ace,
-  theme-color-b: #ea6d2f,
+  bgColorOrUrl: $col-lightgray,
+  theme-color-a: $col-blue,
+  theme-color-b: $col-orange,
   activity-menu-display: none
 );
 
