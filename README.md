@@ -38,13 +38,11 @@ Make that user an admin
 
 To use SSO with the portal you need to make sure your `PORTAL_HOST` is set correctly in your lara `.env` file. And you need to add a client to the Portal by running this command in the portal directory:
 
-    docker-compose exec app bundle exec rake sso:add_client
+    docker-compose exec app bundle exec rake sso:add_dev_client
 
-| Param      | Value                  |
-| ---------- | ---------------------- |
-| client_id: | localhost              |
-| secret:    | unsecure local secret  |
-| site_url:  | http://app.lara.docker |
+The rake task above assumes your local lara instance is running at http://app.lara.docker
+If it is running somewhere else, then you can log into the portal as an admin and edit
+the Auth Client created by the rake task. 
 
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
