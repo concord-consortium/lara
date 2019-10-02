@@ -17,8 +17,8 @@ module ReportService
     def add_meta_data(run, record)
       record[:version] = RunSender::Version
       record[:created] = Time.now.utc.to_s
-      record[:source_key] = ReportService::make_source_key(self_url)
-      record[:tool_id] = self_url
+      record[:source_key] = source_key
+      record[:tool_id] = tool_id
       record[:tool_user_id] = run.user_id.to_s
       record[:platform_id] = run.platform_id
       record[:platform_user_id] = run.platform_user_id

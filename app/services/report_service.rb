@@ -47,6 +47,18 @@ module ReportService
       ENV['REPORT_SERVICE_TOKEN']
     end
 
+    def tool_id
+      if ENV['REPORT_SERVICE_TOOL_ID'].present?
+        ENV['REPORT_SERVICE_TOOL_ID']
+      else
+        self_url
+      end
+    end
+
+    def source_key
+      ReportService::make_source_key(tool_id)
+    end
+
     def api_endpoint
       "#{report_service_url}/#{api_method}"
     end
