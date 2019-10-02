@@ -75,6 +75,7 @@ describe ReportService::RunSender do
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return(nil)
     Timecop.freeze(Time.new(2016))
   end
 
@@ -118,6 +119,7 @@ describe ReportService::RunSender do
             expect(a).to include("version")
           end
         end
+
 
         describe "One answer that has never been started" do
           let(:report_service_hash) do
@@ -189,6 +191,25 @@ describe ReportService::RunSender do
           let(:sequence_id) { nil }
           it "the resource_url should be activity url" do
             expect(json["resource_url"]).to match("#{self_host}/activities/#{sequence_id}")
+          end
+        end
+
+        context "when a developer overrides the tool id" do
+          before(:each) do
+            allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return("http://local.dev.test")
+          end
+
+          it "The tool id should match what the developer set" do
+            expect(json['tool_id']).to match('http://local.dev.test')
+          end
+
+          it "The source key should contain host name info from the tool_id" do
+            expect(json['source_key']).to match('local.dev.test')
+            # should check the resourceId continues to match the self_url
+          end
+
+          it "The resourceUrl should still start with the self_url" do
+            expect(json['resource_url']).to start_with(self_host)
           end
         end
 

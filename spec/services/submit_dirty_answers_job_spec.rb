@@ -32,6 +32,7 @@ describe SubmitDirtyAnswersJob do
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return(nil)
   end
 
   describe "#perform" do
