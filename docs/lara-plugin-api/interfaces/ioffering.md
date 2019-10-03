@@ -24,7 +24,7 @@
 
 **● id**: *`number`*
 
-*Defined in [types.ts:177](../../../lara-typescript/src/plugin-api/types.ts#L177)*
+*Defined in [types.ts:179](../../../lara-typescript/src/plugin-api/types.ts#L179)*
 
 ___
 <a id="name"></a>
@@ -33,7 +33,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types.ts:178](../../../lara-typescript/src/plugin-api/types.ts#L178)*
+*Defined in [types.ts:180](../../../lara-typescript/src/plugin-api/types.ts#L180)*
 
 ___
 <a id="url"></a>
@@ -42,7 +42,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:179](../../../lara-typescript/src/plugin-api/types.ts#L179)*
+*Defined in [types.ts:181](../../../lara-typescript/src/plugin-api/types.ts#L181)*
 
 ___
 

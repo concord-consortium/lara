@@ -65,7 +65,8 @@ describe("Plugins", () => {
       firebaseJwtUrl: "http://fake.jwt",
       embeddablePluginId: null,
       wrappedEmbeddable: null,
-      componentLabel: "test"
+      componentLabel: "test",
+      resourceUrl: "http://lara.activity.com/123"
     };
     const authoringContextOptions: IPluginAuthoringContextOptions = {
       type: "authoring",

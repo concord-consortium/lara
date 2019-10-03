@@ -29,7 +29,8 @@ describe("Plugin runtime context helper", () => {
     classInfoUrl: "http://portal.class.info.url",
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
     wrappedEmbeddable: null,
-    componentLabel: "test"
+    componentLabel: "test",
+    resourceUrl: "http://lara.activity.com/123"
   };
 
   it("should copy basic properties to runtime context", () => {
@@ -43,6 +44,7 @@ describe("Plugin runtime context helper", () => {
     expect(runtimeContext.runId).toEqual(pluginContext.runId);
     expect(runtimeContext.remoteEndpoint).toEqual(pluginContext.remoteEndpoint);
     expect(runtimeContext.userEmail).toEqual(pluginContext.userEmail);
+    expect(runtimeContext.resourceUrl).toEqual(pluginContext.resourceUrl);
   });
 
   describe("#saveLearnerPluginState", () => {
