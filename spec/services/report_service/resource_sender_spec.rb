@@ -58,7 +58,7 @@ describe ReportService::ResourceSender do
         end
 
         it "The resourceUrl should still start with the self_url" do
-          expect(json['resource_url']).to start_with(self_host)
+          expect(json['url']).to start_with(self_host)
         end
       end
     end
