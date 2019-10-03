@@ -26,6 +26,8 @@ export interface IPluginRuntimeContext {
   remoteEndpoint: string | null;
   /** The current user email address (if available). */
   userEmail: string | null;
+  /** URL of the resource associated with the current run (sequence URL or activity URL) */
+  resourceUrl: string;
   /****************************************************************************
    Function that saves the users state for the plugin.
    Note that plugins can have different scopes, e.g. activity or a single page.

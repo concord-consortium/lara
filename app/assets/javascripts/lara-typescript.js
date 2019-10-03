@@ -16121,6 +16121,7 @@ exports.generateRuntimePluginContext = function (options) {
         runId: options.runId,
         remoteEndpoint: options.remoteEndpoint,
         userEmail: options.userEmail,
+        resourceUrl: options.resourceUrl,
         saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(options.learnerStateSaveUrl, state); },
         getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },

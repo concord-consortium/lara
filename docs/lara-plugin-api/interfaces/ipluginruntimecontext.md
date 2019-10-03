@@ -19,6 +19,7 @@
 * [name](ipluginruntimecontext.md#name)
 * [pluginId](ipluginruntimecontext.md#pluginid)
 * [remoteEndpoint](ipluginruntimecontext.md#remoteendpoint)
+* [resourceUrl](ipluginruntimecontext.md#resourceurl)
 * [runId](ipluginruntimecontext.md#runid)
 * [saveLearnerPluginState](ipluginruntimecontext.md#savelearnerpluginstate)
 * [url](ipluginruntimecontext.md#url)
@@ -57,7 +58,7 @@ ___
 
 **● getClassInfo**: *`function`*
 
-*Defined in [types.ts:41](../../../lara-typescript/src/plugin-api/types.ts#L41)*
+*Defined in [types.ts:43](../../../lara-typescript/src/plugin-api/types.ts#L43)*
 
 Function that returns class details (Promise) or null if class info is not available.
 
@@ -73,7 +74,7 @@ ___
 
 **● getFirebaseJwt**: *`function`*
 
-*Defined in [types.ts:43](../../../lara-typescript/src/plugin-api/types.ts#L43)*
+*Defined in [types.ts:45](../../../lara-typescript/src/plugin-api/types.ts#L45)*
 
 Function that returns JWT (Promise) for given app name.
 
@@ -106,7 +107,7 @@ ___
 
 **● log**: *`function`*
 
-*Defined in [types.ts:61](../../../lara-typescript/src/plugin-api/types.ts#L61)*
+*Defined in [types.ts:63](../../../lara-typescript/src/plugin-api/types.ts#L63)*
 
 Logs event to the CC Log Server. Note that logging must be enabled for a given activity. Either by setting URL param logging=true or by enabling logging in Portal.
 
@@ -166,6 +167,17 @@ ___
 The portal remote endpoint (if available).
 
 ___
+<a id="resourceurl"></a>
+
+###  resourceUrl
+
+**● resourceUrl**: *`string`*
+
+*Defined in [types.ts:30](../../../lara-typescript/src/plugin-api/types.ts#L30)*
+
+URL of the resource associated with the current run (sequence URL or activity URL)
+
+___
 <a id="runid"></a>
 
 ###  runId
@@ -183,7 +195,7 @@ ___
 
 **● saveLearnerPluginState**: *`function`*
 
-*Defined in [types.ts:39](../../../lara-typescript/src/plugin-api/types.ts#L39)*
+*Defined in [types.ts:41](../../../lara-typescript/src/plugin-api/types.ts#L41)*
 
 Function that saves the users state for the plugin. Note that plugins can have different scopes, e.g. activity or a single page. If the plugin instance is added to the activity, its state will be shared across all the pages. If multiple plugin instances are added to various pages, their state will be different on every page.
 
@@ -233,7 +245,7 @@ ___
 
 **● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-*Defined in [types.ts:47](../../../lara-typescript/src/plugin-api/types.ts#L47)*
+*Defined in [types.ts:49](../../../lara-typescript/src/plugin-api/types.ts#L49)*
 
 Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the guiPreview option set to true within its manifest.
 

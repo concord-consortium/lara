@@ -30,7 +30,8 @@ describe "plugins/_show.html.haml" do
       user: user,
       id: run_id,
       class_info_url: class_info_url,
-      remote_endpoint: run_remote_endpoint
+      remote_endpoint: run_remote_endpoint,
+      activity: FactoryGirl.create(:activity)
     })
   end
   let(:plugin_local) do
@@ -92,7 +93,7 @@ describe "plugins/_show.html.haml" do
         common_plugin_code.each do |expected_string|
           expect(rendered).to match(expected_string)
         end
-      end 
+      end
     end
 
   end

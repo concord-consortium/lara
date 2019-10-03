@@ -45,6 +45,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   classInfoUrl: string | null;
   /** The ID of the Embeddable that has been added to page, this embeddable refers to the plugin instance */
   embeddablePluginId: number | null;
+  /** URL of the resource associated with the current run (sequence URL or activity URL) */
+  resourceUrl: string;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -169,6 +171,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     runId: options.runId,
     remoteEndpoint: options.remoteEndpoint,
     userEmail: options.userEmail,
+    resourceUrl: options.resourceUrl,
     saveLearnerPluginState: (state: string) => saveLearnerPluginState(options.learnerStateSaveUrl, state),
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),

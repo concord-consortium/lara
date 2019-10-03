@@ -35,7 +35,7 @@
 
 **● alg**: *`string`*
 
-*Defined in [types.ts:149](../../../lara-typescript/src/plugin-api/types.ts#L149)*
+*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
 
 ___
 <a id="aud"></a>
@@ -44,7 +44,7 @@ ___
 
 **● aud**: *`string`*
 
-*Defined in [types.ts:150](../../../lara-typescript/src/plugin-api/types.ts#L150)*
+*Defined in [types.ts:152](../../../lara-typescript/src/plugin-api/types.ts#L152)*
 
 ___
 <a id="claims"></a>
@@ -53,7 +53,7 @@ ___
 
 **● claims**: *[IPortalClaims](iportalclaims.md)*
 
-*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
+*Defined in [types.ts:164](../../../lara-typescript/src/plugin-api/types.ts#L164)*
 
 ___
 <a id="class_info_url"></a>
@@ -62,7 +62,7 @@ ___
 
 **● class_info_url**: *`string`*
 
-*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
+*Defined in [types.ts:153](../../../lara-typescript/src/plugin-api/types.ts#L153)*
 
 ___
 <a id="domain"></a>
@@ -71,7 +71,7 @@ ___
 
 **● domain**: *`string`*
 
-*Defined in [types.ts:152](../../../lara-typescript/src/plugin-api/types.ts#L152)*
+*Defined in [types.ts:154](../../../lara-typescript/src/plugin-api/types.ts#L154)*
 
 ___
 <a id="domain_uid"></a>
@@ -80,7 +80,7 @@ ___
 
 **● domain_uid**: *`number`*
 
-*Defined in [types.ts:153](../../../lara-typescript/src/plugin-api/types.ts#L153)*
+*Defined in [types.ts:155](../../../lara-typescript/src/plugin-api/types.ts#L155)*
 
 ___
 <a id="exp"></a>
@@ -89,7 +89,7 @@ ___
 
 **● exp**: *`number`*
 
-*Defined in [types.ts:154](../../../lara-typescript/src/plugin-api/types.ts#L154)*
+*Defined in [types.ts:156](../../../lara-typescript/src/plugin-api/types.ts#L156)*
 
 ___
 <a id="externalid"></a>
@@ -98,7 +98,7 @@ ___
 
 **● externalId**: *`number`*
 
-*Defined in [types.ts:155](../../../lara-typescript/src/plugin-api/types.ts#L155)*
+*Defined in [types.ts:157](../../../lara-typescript/src/plugin-api/types.ts#L157)*
 
 ___
 <a id="iat"></a>
@@ -107,7 +107,7 @@ ___
 
 **● iat**: *`number`*
 
-*Defined in [types.ts:156](../../../lara-typescript/src/plugin-api/types.ts#L156)*
+*Defined in [types.ts:158](../../../lara-typescript/src/plugin-api/types.ts#L158)*
 
 ___
 <a id="iss"></a>
@@ -116,7 +116,7 @@ ___
 
 **● iss**: *`string`*
 
-*Defined in [types.ts:157](../../../lara-typescript/src/plugin-api/types.ts#L157)*
+*Defined in [types.ts:159](../../../lara-typescript/src/plugin-api/types.ts#L159)*
 
 ___
 <a id="logging"></a>
@@ -125,7 +125,7 @@ ___
 
 **● logging**: *`boolean`*
 
-*Defined in [types.ts:158](../../../lara-typescript/src/plugin-api/types.ts#L158)*
+*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
 
 ___
 <a id="returnurl"></a>
@@ -134,7 +134,7 @@ ___
 
 **● returnUrl**: *`string`*
 
-*Defined in [types.ts:159](../../../lara-typescript/src/plugin-api/types.ts#L159)*
+*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
 
 ___
 <a id="sub"></a>
@@ -143,7 +143,7 @@ ___
 
 **● sub**: *`string`*
 
-*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
+*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
 
 ___
 <a id="uid"></a>
@@ -152,7 +152,7 @@ ___
 
 **● uid**: *`string`*
 
-*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
+*Defined in [types.ts:163](../../../lara-typescript/src/plugin-api/types.ts#L163)*
 
 ___
 
