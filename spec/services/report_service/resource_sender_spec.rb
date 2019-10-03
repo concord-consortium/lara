@@ -13,6 +13,7 @@ describe ReportService::ResourceSender do
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_SELF_URL").and_return(self_host)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_URL").and_return(report_service_url)
     allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOKEN").and_return(report_service_token)
+    allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return(nil)
   end
 
   describe "to_json" do
@@ -32,18 +33,33 @@ describe ReportService::ResourceSender do
       end
 
       it "The source key should contain host name info" do
-        expect(json['source_key']).to match('app')
-        expect(json['source_key']).to match('lara')
-        expect(json['source_key']).to match('docker')
-        expect(json['tool_id']).to match('app')
-        expect(json['tool_id']).to match('lara')
-        expect(json['tool_id']).to match('docker')
+        expect(json['source_key']).to match('app.lara.docker')
+        expect(json['tool_id']).to match('app.lara.docker')
         expect(json['id']).to match('activity')
         expect(json['id']).to match("#{resource.id}")
       end
 
       it "Should have a children[] array" do
         expect(json['children']).not_to be_nil
+      end
+
+      context "when a developer overrides the tool id" do
+        before(:each) do
+          allow(ENV).to receive(:[]).with("REPORT_SERVICE_TOOL_ID").and_return("http://local.dev.test")
+        end
+
+        it "The tool id should match what the developer set" do
+          expect(json['tool_id']).to match('http://local.dev.test')
+        end
+
+        it "The source key should contain host name info from the tool_id" do
+          expect(json['source_key']).to match('local.dev.test')
+          # should check the resourceId continues to match the self_url
+        end
+
+        it "The resourceUrl should still start with the self_url" do
+          expect(json['url']).to start_with(self_host)
+        end
       end
     end
 
@@ -53,6 +69,7 @@ describe ReportService::ResourceSender do
         expect {sender}.to raise_error(ReportService::NotConfigured)
       end
     end
+
   end
 
 end

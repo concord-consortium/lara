@@ -18,6 +18,7 @@ services:
       REPORT_SERVICE_TOKEN:
       REPORT_SERVICE_URL:
       REPORT_SERVICE_SELF_URL:
+      REPORT_SERVICE_TOOL_ID:
     # no ports are published, see below for details
     depends_on:
       - db
