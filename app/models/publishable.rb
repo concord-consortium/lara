@@ -137,10 +137,20 @@ module Publishable
       has_many :portal_publications, :as => :publishable, :order => :updated_at
 
       # all changes will be queued for auto publishing
-      after_update :queue_auto_publish_to_portal, :queue_publish_to_report_service
+      after_update :queue_publish
 
       def auto_publish_delay
         return 5
+      end
+
+      def queue_publish
+        queue_auto_publish_to_portal
+        queue_publish_to_report_service
+
+        # changes to activities should trigger auto publishing of their associated sequences
+        if self.respond_to?(:sequences)
+          self.sequences.each { |sequence| sequence.queue_publish }
+        end
       end
 
       def queue_auto_publish_to_portal(auto_publish_url=nil, backoff=1)
@@ -173,11 +183,6 @@ module Publishable
             # if it is on MySQL then we can simplify this a bit
             raise e unless (e.is_a? ActiveRecord::RecordNotUnique) or /Duplicate entry/.match(e.to_s)
           end
-        end
-
-        # changes to activities should trigger auto publishing of their associated sequences
-        if self.respond_to?(:sequences)
-          self.sequences.each { |sequence| sequence.queue_auto_publish_to_portal() }
         end
       end
 

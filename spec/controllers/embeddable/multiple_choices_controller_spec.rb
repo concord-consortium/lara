@@ -2,7 +2,8 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::MultipleChoicesController do
 
-  # it_should_behave_like 'an embeddable controller'
+  it_should_behave_like 'an embeddable controller', :mc_embeddable
+  
   describe '#check' do
     let (:multiple) { FactoryGirl.create(:mc_embeddable, :custom => true ) }
     let (:correct) { FactoryGirl.create(:mcc_embeddable, :choice => 'This is correct', :is_correct => true, :multiple_choice => multiple) }
@@ -18,7 +19,7 @@ describe Embeddable::MultipleChoicesController do
         expect(response).to redirect_to(interactive_page_path(page))
       end
     end
-    
+
     context 'the choice has no owning page' do
       it 'generates a 500 error for HTML requests' do
         correct

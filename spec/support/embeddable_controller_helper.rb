@@ -1,26 +1,45 @@
 require 'factory_girl'
 
-shared_examples_for 'an embeddable controller' do
-  render_views
+shared_examples 'an embeddable controller' do |model_factory|
 
-  controller_class_lambda = lambda { self.send(:described_class) }
-  model_class_lambda      = lambda { controller_class_lambda.call.name[/(.*)Controller/, 1].singularize.constantize }
-  model_ivar_name_lambda  = lambda { model_class_lambda.call.name.delete_module.underscore_module }
+  describe "#update" do
+    let(:sequence)  { FactoryGirl.create(:sequence) }
+    let(:activity)  { FactoryGirl.create(:activity) }
+    let(:page)      { FactoryGirl.create(:interactive_page, name: "page 1", position: 0) }
+    let(:model)     { FactoryGirl.create(model_factory, name:"xzzy") }
 
-  def create_new(model_name)
-    method_name = "create_new_#{model_name}".to_sym
-    if self.respond_to?(method_name)
-      return self.send(method_name)
-    else
-      return FactoryGirl.create(model_name)
+    before(:each) {
+      page.add_embeddable(model)
+      activity.pages << page
+      sequence.activities << activity
+    }
+
+    subject {
+      request.env['HTTP_REFERER'] = 'http://example.com'
+
+      post :update, {:id => model.id, model.class.name_as_param => {
+        :name => "updated name"
+      } }
+    }
+
+    it "causes the activity to be republished to the portal" do
+      expect_any_instance_of(LightweightActivity).to receive(:queue_auto_publish_to_portal)
+      subject
     end
-  end
 
-  before(:each) do
-    @model_class = model_class_lambda.call
-    @model_ivar_name = model_ivar_name_lambda.call
-    unless instance_variable_defined?("@#{@model_ivar_name}".to_sym)
-      @model_ivar = instance_variable_set("@#{@model_ivar_name}", create_new(@model_ivar_name))
+    it "causes the activity to be republished to the report service" do
+      expect_any_instance_of(LightweightActivity).to receive(:queue_publish_to_report_service)
+      subject
+    end
+
+    it "causes the sequence to be republished to the portal" do
+      expect_any_instance_of(Sequence).to receive(:queue_auto_publish_to_portal)
+      subject
+    end
+
+    it "causes the sequence to be republished to the report service" do
+      expect_any_instance_of(Sequence).to receive(:queue_publish_to_report_service)
+      subject
     end
   end
 
