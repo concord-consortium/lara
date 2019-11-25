@@ -2,10 +2,10 @@ window.TinyMCEConfig = {
   menubar: false,
   statusbar: false,
   toolbar_items_size: 'small',
-  toolbar: "undo redo | bold italic strikethrough underline | " +
-           "aligncenter alignjustify alignleft alignright indent outdent | " +
+  toolbar: "undo redo | bold italic underline | " +
+           "aligncenter alignleft alignright indent outdent | " +
            "subscript superscript | numlist bullist | link unlink | hr image | code",
-  plugins: 'paste link hr image autoresize code',
+  plugins: 'paste link hr image autoresize code lists',
   paste_as_text: true,
   image_class_list: [
     {title: 'None', value: ''},
@@ -17,7 +17,7 @@ window.TinyMCEConfig = {
 };
 
 window.TinyMCEConfigMinimal = $.extend({}, window.TinyMCEConfig, {
-  toolbar: "bold italic strikethrough underline indent outdent " +
+  toolbar: "bold italic underline aligncenter indent outdent " +
            "subscript superscript numlist bullist link unlink hr image code"
 });
 
