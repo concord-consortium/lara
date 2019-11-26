@@ -42,7 +42,7 @@
           = f.hidden_field 'answer_text'
         = prediction_button(embeddable, f)
 
-.image-question-dialog{:id => "image_question_dialog_#{embeddable.id}", :style => "display: none"}
+.image-question-dialog.content-mod{:id => "image_question_dialog_#{embeddable.id}", :style => "display: none"}
   .drawing-area
     %div{:id => "drawing-tool-container_for_#{embeddable.id}"}
   .question-area
