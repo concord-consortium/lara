@@ -3,6 +3,8 @@
   %script{src:embeddable.url}
 .question-bd{style: "display:none;"}
   .question-txt
+    -# This class should contain ONLY text. It might be decorated by plugins, what means
+    -# that all the event handlers can be lost. So, buttons and forms shouldn't be placed there.
     != embeddable.url
   .output{id:runtimeDiv}
 
