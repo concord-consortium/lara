@@ -2,6 +2,8 @@
 = render :partial => 'shared/question_header', :locals => { :embeddable => embeddable }
 .question-bd{ :id => embeddable.answer_id }
   .question-txt
+    -# This class should contain ONLY text. It might be decorated by plugins, what means
+    -# that all the event handlers can be lost. So, buttons and forms shouldn't be placed there.
     != embeddable.prompt
   = form_for embeddable,
     :remote => true,
