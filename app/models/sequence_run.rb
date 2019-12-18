@@ -56,6 +56,21 @@ class SequenceRun < ActiveRecord::Base
         raise Exception.new("Activity is not part of this sequence")
       end
 
+      # FIXME: If an activity is added to a sequence after the student has already started
+      # the sequence, this code path will be triggered. If the sequence run has
+      # platform info then this new activity run should be setup with the same
+      # platform info. This will probably overlap with what is already happen through
+      # SequenceController#update_platform_info that is called by SequenceController#find_or_create_sequence_run
+      # Before SequenceController#find_or_create_sequence_run calls update_platform_info,
+      # it calls SequenceController.lookup_or_create which calls
+      # SequenceController#make_or_update_runs which calls this method (run_for_activity).
+      #
+      # So if this method (run_for_activity) sets the platform_info for the activity
+      # run, then SequenceController#update_platform_info should not need to do it too.
+      # I think there are tests that newly created sequence runs have the the platform info
+      # set on their child runs, but if not that test should be added before changing the
+      # the code.
+
       # create the run, we use this form instead of runs.create to make testing
       # easier
       run = Run.create!({
