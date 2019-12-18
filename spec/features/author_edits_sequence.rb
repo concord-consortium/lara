@@ -45,4 +45,11 @@ feature "Author edits a sequence while it is being used" do
     first_sequence_run.reload
     expect(first_sequence_run.runs.count).to be 3
   end
+
+  # TODO add an additional scenario to confirm that the platform params are correctly
+  # copied to the new activity run when it is created when revisiting the page after
+  # the activity was added.
+  # it might be necessary to browse to an activity in the sequence first before adding
+  # the new activity. I suspect the code which redirects to the current activity doesn't
+  # trigger the setting of the platform info
 end
