@@ -2,7 +2,7 @@ module LogoHelper
 
   # TODO: This is weird, in this helper we assume @projec & @theme.
 
-  def logo_tag(png="cc-logo-25.png",title="The Concord Consortium", url="http://concord.org/")
+  def logo_tag(png="cc-logo.png",title="The Concord Consortium", url="http://concord.org/")
     id    = png.gsub("-logo","")
     img   = image_tag(png, :alt => title, :id => id)
     link_to(img, url, :title => title)
