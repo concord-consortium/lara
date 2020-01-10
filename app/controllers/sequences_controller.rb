@@ -204,8 +204,6 @@ class SequencesController < ApplicationController
   def find_or_create_sequence_run
     if sequence_run_key = params['sequence_run_key']
       @sequence_run = SequenceRun.where(key: sequence_run_key).first!
-      # FIXME: If a new activity has been added to the sequence then this new activity won't
-      # get its platform info added like what happens at the end of this function
       return @sequence_run
     end
 
@@ -222,8 +220,6 @@ class SequencesController < ApplicationController
         @sequence_run.disable_collaboration
       end
     end
-    # If we have new class_info_url or class_hash update it
-    @sequence_run.update_platform_info(params)
   end
 
 end
