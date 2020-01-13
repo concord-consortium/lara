@@ -563,6 +563,10 @@ div.intra-page-nav {
   position: relative;
 }
 
+.colorbox {
+  cursor: zoom-in;
+}
+
 .under-image {
   .fullscreen {
     float: right;
@@ -575,8 +579,9 @@ div.intra-page-nav {
       -o-user-select: none;
     }
     img {
-      height: 35px;
-      width: 35px;
+      height: 32px;
+      width: 32px;
+      padding: 4px;
     }
   }
   .caption {
