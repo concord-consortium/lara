@@ -204,6 +204,8 @@ class SequencesController < ApplicationController
   def find_or_create_sequence_run
     if sequence_run_key = params['sequence_run_key']
       @sequence_run = SequenceRun.where(key: sequence_run_key).first!
+      @sequence_run.make_or_update_runs
+      @sequence_run.update_platform_info(params)
       return @sequence_run
     end
 
@@ -220,6 +222,8 @@ class SequencesController < ApplicationController
         @sequence_run.disable_collaboration
       end
     end
+    # Update platform info in case sequence run has been just created or new activities have been added.
+    @sequence_run.update_platform_info(params)
   end
 
 end

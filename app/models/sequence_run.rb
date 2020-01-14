@@ -55,14 +55,6 @@ class SequenceRun < ActiveRecord::Base
         # request an activity that is no longer part of the sequence
         raise Exception.new("Activity is not part of this sequence")
       end
-
-      #
-      # So if this method (run_for_activity) sets the platform_info for the activity
-      # run, then SequenceController#update_platform_info should not need to do it too.
-      # I think there are tests that newly created sequence runs have the the platform info
-      # set on their child runs, but if not that test should be added before changing the
-      # the code.
-
       # create the run, we use this form instead of runs.create to make testing
       # easier
       run = Run.create!({
@@ -72,11 +64,6 @@ class SequenceRun < ActiveRecord::Base
         activity_id:     activity.id,
         sequence_id:     sequence.id,
       })
-      # If an activity is added to a sequence after the student has already started
-      # the sequence, this code path will be triggered. If the sequence run has
-      # platform info then this new activity run should be setup with the same
-      # platform info.
-      run.update_platform_info(self.attributes)
       runs << run
     end
     run
@@ -123,9 +110,7 @@ class SequenceRun < ActiveRecord::Base
 
   # see /app/models/with_class_info.rb#update_platform_info
   def update_platform_info(url_params)
-    updates = super(url_params)
-    if (updates)
-      self.runs.each { |r| r.update_platform_info(url_params) }
-    end
+    super(url_params)
+    runs.each { |r| r.update_platform_info(url_params) }
   end
 end

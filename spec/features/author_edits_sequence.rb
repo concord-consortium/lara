@@ -6,7 +6,8 @@ feature "Author edits a sequence while it is being used" do
   # any assertions that use the teacher edition regex pattern....
   let(:teacher_edition_regex)  { /teacher edition/i }
 
-  let(:author)         { FactoryGirl.create(:author) }
+  let(:author)       { FactoryGirl.create(:author) }
+  let(:user)         { FactoryGirl.create(:user) }
   let(:page1)        { FactoryGirl.create(:page) }
   let(:page2)        { FactoryGirl.create(:page) }
   let(:page3)        { FactoryGirl.create(:page) }
@@ -46,10 +47,41 @@ feature "Author edits a sequence while it is being used" do
     expect(first_sequence_run.runs.count).to be 3
   end
 
-  # TODO add an additional scenario to confirm that the platform params are correctly
-  # copied to the new activity run when it is created when revisiting the page after
-  # the activity was added.
-  # it might be necessary to browse to an activity in the sequence first before adding
-  # the new activity. I suspect the code which redirects to the current activity doesn't
-  # trigger the setting of the platform info
+  scenario "student runs sequence from Portal, then author adds a new activity, student continues running sequence" do
+    # Ensure that a new activity run is created and platform info is passed down to the new run.
+
+    # Note that platform_id is a "platform_info" that we care about. externalId and returnUrl are necessary for
+    # sequence run lookup.
+    portal_params = "?platform_id=test_platform&externalId=123&returnUrl=http://return.url"
+
+    login_as user, :scope => :user
+
+    expect(SequenceRun.count).to eq 0
+    visit sequence_path(sequence) + portal_params
+    expect(SequenceRun.count).to eq 1
+
+    first_sequence_run = current_sequence_run
+    expect(first_sequence_run.platform_id).to eq "test_platform"
+    expect(first_sequence_run.runs.count).to eq 2
+    expect(first_sequence_run.runs[0].platform_id).to eq "test_platform"
+    expect(first_sequence_run.runs[1].platform_id).to eq "test_platform"
+
+    sequence.lightweight_activities << activity3
+
+    expect(first_sequence_run.runs.count).to eq 2
+
+    visit sequence_path(sequence) + portal_params
+    expect(SequenceRun.count).to eq 1
+
+    # make sure the revisiting the url doesn't cause some kind of strange re-creation of
+    # the sequence run key
+    expect(current_sequence_run).to eq(first_sequence_run)
+
+    # might need to reload this object here
+    first_sequence_run.reload
+    expect(first_sequence_run.runs.count).to eq 3
+    expect(first_sequence_run.runs[0].platform_id).to eq "test_platform"
+    expect(first_sequence_run.runs[1].platform_id).to eq "test_platform"
+    expect(first_sequence_run.runs[2].platform_id).to eq "test_platform"
+  end
 end
