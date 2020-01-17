@@ -213,7 +213,7 @@ class SequencesController < ApplicationController
       @sequence_run = cc.call
     else
       portal = RemotePortal.new(params)
-      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal, params)
+      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
       # If sequence is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
       if portal.valid?

@@ -15,7 +15,7 @@ class SequenceRun < ActiveRecord::Base
     SecureRandom.hex(20)
   end
 
-  def self.lookup_or_create(sequence, user, portal, platform_info = nil)
+  def self.lookup_or_create(sequence, user, portal)
     if portal.valid? && user.nil?
       raise ActiveRecord::RecordNotFound.new(
         "user must be logged in to access a SequenceRun via portal parameters"
@@ -42,9 +42,7 @@ class SequenceRun < ActiveRecord::Base
       seq_run = self.create!(conditions)
     end
 
-    if platform_info
-      seq_run.update_platform_info(platform_info)
-    end
+    seq_run.update_platform_info(portal.platform_info)
     seq_run.make_or_update_runs
     seq_run
   end

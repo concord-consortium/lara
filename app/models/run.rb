@@ -77,11 +77,12 @@ class Run < ActiveRecord::Base
       #TODO: add domain
     }
     conditions[:activity_id]     = activity.id if activity
-    found = self.where(conditions).first
-    if found
-      return found
+    run = self.where(conditions).first
+    unless run
+      run = self.create!(conditions)
     end
-    return self.create!(conditions)
+    run.update_platform_info(portal.platform_info)
+    run
   end
 
   def self.for_user_activity_and_sequence(user,activity,seq_id)
@@ -107,7 +108,7 @@ class Run < ActiveRecord::Base
 
     # if no run has been found and there is a seq_id, create a sequence run too
     if seq_id
-      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}), {})
+      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}))
       return seq_run.run_for_activity(activity)
     else
       return self.create!(conditions)

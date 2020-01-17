@@ -13,6 +13,7 @@ describe SequenceRun do
     double("portal",
       :remote_endpoint => remote_endpoint,
       :remote_id       => remote_id,
+      :platform_info   => {},
       :valid?          => true)
   end
 
@@ -57,6 +58,7 @@ describe SequenceRun do
           double("portal",
             :remote_id       => "something_else",
             :remote_endpoint => remote_endpoint,
+            :platform_info   => {},
             :valid?          => true) }
         it "should make a new run" do
           expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
@@ -64,11 +66,16 @@ describe SequenceRun do
       end
 
       describe "when platform info is provided" do
+        let(:portal) {
+          double("portal",
+            :remote_endpoint => remote_endpoint,
+            :remote_id       => remote_id,
+            :platform_info => { platform_id: "test_platform" },
+            :valid?        => true
+          )
+        }
         it "should save it" do
-          portal_info = {
-            platform_id: "test_platform"
-          }
-          expect(subject.lookup_or_create(sequence, user, portal, portal_info).platform_id).to eq("test_platform")
+          expect(subject.lookup_or_create(sequence, user, portal).platform_id).to eq("test_platform")
         end
       end
     end
