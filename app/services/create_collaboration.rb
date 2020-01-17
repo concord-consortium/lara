@@ -77,8 +77,7 @@ class CreateCollaboration
   end
 
   def add_sequence_runs(user, portal_endpoint, collaborator_data)
-    sequence_run = SequenceRun.lookup_or_create(@sequence, user, portal_endpoint)
-    sequence_run.update_platform_info(collaborator_data)
+    sequence_run = SequenceRun.lookup_or_create(@sequence, user, portal_endpoint, collaborator_data)
     @collaboration_run.runs.push(*sequence_run.runs)
     # Save sequence run that belongs to the collaboration owner.
     @owners_sequence_run = sequence_run if user == @owner

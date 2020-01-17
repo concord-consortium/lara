@@ -62,6 +62,15 @@ describe SequenceRun do
           expect(subject.lookup_or_create(sequence, user, other_portal)).not_to eq(existing_seq_run)
         end
       end
+
+      describe "when platform info is provided" do
+        it "should save it" do
+          portal_info = {
+            platform_id: "test_platform"
+          }
+          expect(subject.lookup_or_create(sequence, user, portal, portal_info).platform_id).to eq("test_platform")
+        end
+      end
     end
   end
 

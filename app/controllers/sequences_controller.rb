@@ -204,8 +204,6 @@ class SequencesController < ApplicationController
   def find_or_create_sequence_run
     if sequence_run_key = params['sequence_run_key']
       @sequence_run = SequenceRun.where(key: sequence_run_key).first!
-      @sequence_run.make_or_update_runs
-      @sequence_run.update_platform_info(params)
       return @sequence_run
     end
 
@@ -215,15 +213,13 @@ class SequencesController < ApplicationController
       @sequence_run = cc.call
     else
       portal = RemotePortal.new(params)
-      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal)
+      @sequence_run = SequenceRun.lookup_or_create(@sequence, current_user, portal, params)
       # If sequence is ran with "portal" params, it means that user wants to run it individually.
       # Note that "portal" refers to individual student data endpoint, this name should be updated.
       if portal.valid?
         @sequence_run.disable_collaboration
       end
     end
-    # Update platform info in case sequence run has been just created or new activities have been added.
-    @sequence_run.update_platform_info(params)
   end
 
 end

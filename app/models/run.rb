@@ -107,7 +107,7 @@ class Run < ActiveRecord::Base
 
     # if no run has been found and there is a seq_id, create a sequence run too
     if seq_id
-      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}))
+      seq_run = SequenceRun.lookup_or_create(Sequence.find(seq_id), user, RemotePortal.new({}), {})
       return seq_run.run_for_activity(activity)
     else
       return self.create!(conditions)

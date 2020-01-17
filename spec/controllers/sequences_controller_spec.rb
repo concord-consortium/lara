@@ -82,14 +82,15 @@ describe SequencesController do
       end
 
       describe "when platform info is provided and sequence run exists" do
-        let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: nil, sequence: sequence) }
+        let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: user.id, sequence: sequence) }
         before :each do
           sequence_run
+          sign_in user
         end
         it "creates activity runs with platform info" do
           expect(SequenceRun.count).to eq(1)
           expect(Run.count).to eq(0)
-          get :show, id: sequence.id, sequence_run_key: sequence_run.key, platform_id: "test_platform"
+          get :show, id: sequence.id, platform_id: "test_platform"
           expect(SequenceRun.count).to eq(1)
           expect(Run.count).to eq(1)
           expect(SequenceRun.last.platform_id).to eq("test_platform")

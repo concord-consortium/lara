@@ -15,7 +15,7 @@ class SequenceRun < ActiveRecord::Base
     SecureRandom.hex(20)
   end
 
-  def self.lookup_or_create(sequence, user, portal)
+  def self.lookup_or_create(sequence, user, portal, platform_info = nil)
     if portal.valid? && user.nil?
       raise ActiveRecord::RecordNotFound.new(
         "user must be logged in to access a SequenceRun via portal parameters"
@@ -42,6 +42,9 @@ class SequenceRun < ActiveRecord::Base
       seq_run = self.create!(conditions)
     end
 
+    if platform_info
+      seq_run.update_platform_info(platform_info)
+    end
     seq_run.make_or_update_runs
     seq_run
   end
@@ -64,6 +67,8 @@ class SequenceRun < ActiveRecord::Base
         activity_id:     activity.id,
         sequence_id:     sequence.id,
       })
+      # Copy platform info to newly created activity run.
+      run.update_platform_info(self.attributes)
       runs << run
     end
     run
@@ -106,11 +111,5 @@ class SequenceRun < ActiveRecord::Base
 
   def add_key_if_nil
     self.key = SequenceRun.generate_key if self.key.nil?
-  end
-
-  # see /app/models/with_class_info.rb#update_platform_info
-  def update_platform_info(url_params)
-    super(url_params)
-    runs.each { |r| r.update_platform_info(url_params) }
   end
 end
