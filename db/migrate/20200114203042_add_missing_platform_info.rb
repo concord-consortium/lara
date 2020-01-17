@@ -5,6 +5,16 @@ class AddMissingPlatformInfo < ActiveRecord::Migration
     runs.each do |run_id|
       run = Run.find(run_id)
       run.update_platform_info(run.sequence_run.attributes)
+      # Sending run to firestore
+      # check that the local environment has
+      # ENV["REPORT_SERVICE_SELF_URL"]
+      # ENV["REPORT_SERVICE_URL"]
+      # ENV["REPORT_SERVICE_TOKEN"]
+      sender = ReportService::RunSender.new(run, { send_all_answers: true })
+      result = sender.send
+      if !result || !result["success"]
+        puts "Failed to send Sequence Run: #{run.id}"
+      end
     end
   end
 
