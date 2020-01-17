@@ -60,25 +60,29 @@ class CreateCollaboration
       # Well, RemotePortal is a single endpoint in fact. Naming isn't consistent at all.
       portal_endpoint = RemotePortal.new(
         returnUrl: c['endpoint_url'],
-        externalId: c['learner_id']
+        externalId: c['learner_id'],
+        # Platform info
+        platform_id: c['platform_id'],
+        platform_user_id: c['platform_user_id'],
+        resource_link_id: c['resource_link_id'],
+        context_id: c['context_id'],
+        class_info_url: c['class_info_url']
       )
-      add_activity_run(user, portal_endpoint, c) if @activity
-      add_sequence_runs(user, portal_endpoint, c) if @sequence
+      add_activity_run(user, portal_endpoint) if @activity
+      add_sequence_runs(user, portal_endpoint) if @sequence
     end
   end
 
-  def add_activity_run(user, portal_endpoint, collaborator_data)
+  def add_activity_run(user, portal_endpoint)
     # for_user_and_portal is in fact lookup_or_create
     run = Run.for_user_and_portal(user, @activity, portal_endpoint)
-    run.update_platform_info(collaborator_data)
     @collaboration_run.runs.push(run)
     # Save run that belongs to the collaboration owner.
     @owners_run = run if user == @owner
   end
 
-  def add_sequence_runs(user, portal_endpoint, collaborator_data)
+  def add_sequence_runs(user, portal_endpoint)
     sequence_run = SequenceRun.lookup_or_create(@sequence, user, portal_endpoint)
-    sequence_run.update_platform_info(collaborator_data)
     @collaboration_run.runs.push(*sequence_run.runs)
     # Save sequence run that belongs to the collaboration owner.
     @owners_sequence_run = sequence_run if user == @owner

@@ -42,6 +42,7 @@ class SequenceRun < ActiveRecord::Base
       seq_run = self.create!(conditions)
     end
 
+    seq_run.update_platform_info(portal.platform_info)
     seq_run.make_or_update_runs
     seq_run
   end
@@ -55,7 +56,6 @@ class SequenceRun < ActiveRecord::Base
         # request an activity that is no longer part of the sequence
         raise Exception.new("Activity is not part of this sequence")
       end
-
       # create the run, we use this form instead of runs.create to make testing
       # easier
       run = Run.create!({
@@ -63,8 +63,10 @@ class SequenceRun < ActiveRecord::Base
         remote_id:       remote_id,
         user_id:         user ? user.id : nil,
         activity_id:     activity.id,
-        sequence_id:     sequence.id
+        sequence_id:     sequence.id,
       })
+      # Copy platform info to newly created activity run.
+      run.update_platform_info(self.attributes)
       runs << run
     end
     run
@@ -107,13 +109,5 @@ class SequenceRun < ActiveRecord::Base
 
   def add_key_if_nil
     self.key = SequenceRun.generate_key if self.key.nil?
-  end
-
-  # see /app/models/with_class_info.rb#update_platform_info
-  def update_platform_info(url_params)
-    updates = super(url_params)
-    if (updates)
-      self.runs.each { |r| r.update_platform_info(url_params) }
-    end
   end
 end

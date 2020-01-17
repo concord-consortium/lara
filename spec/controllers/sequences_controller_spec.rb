@@ -63,8 +63,44 @@ describe SequencesController do
       let(:run_variable_name) { :sequence_run }
     end
 
+    describe "when sequence has some activities" do
+      before :each do
+        sequence.activities << activity
+        sequence.save!
+      end
+
+      describe "when platform info is provided and sequence run doesn't exist" do
+        it "creates sequence and activity runs with platform info" do
+          expect(SequenceRun.count).to eq(0)
+          expect(Run.count).to eq(0)
+          get :show, {:id => sequence.id, platform_id: "test_platform"}
+          expect(SequenceRun.count).to eq(1)
+          expect(Run.count).to eq(1)
+          expect(SequenceRun.last.platform_id).to eq("test_platform")
+          expect(Run.last.platform_id).to eq("test_platform")
+        end
+      end
+
+      describe "when platform info is provided and sequence run exists" do
+        let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: user.id, sequence: sequence) }
+        before :each do
+          sequence_run
+          sign_in user
+        end
+        it "creates activity runs with platform info" do
+          expect(SequenceRun.count).to eq(1)
+          expect(Run.count).to eq(0)
+          get :show, id: sequence.id, platform_id: "test_platform"
+          expect(SequenceRun.count).to eq(1)
+          expect(Run.count).to eq(1)
+          expect(SequenceRun.last.platform_id).to eq("test_platform")
+          expect(Run.last.platform_id).to eq("test_platform")
+        end
+      end
+    end
+
     describe "when there is a sequence run that has been run before" do
-      let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: nil) }
+      let(:sequence_run) { FactoryGirl.create(:sequence_run, user_id: nil, sequence: sequence) }
       let(:run) { FactoryGirl.create(:run,
         sequence: sequence,
         sequence_run: sequence_run,
@@ -83,7 +119,6 @@ describe SequencesController do
         expect(response).not_to redirect_to(sequence_activity_with_run_path(sequence.id, activity.id, run))
       end
     end
-
   end
 
 
