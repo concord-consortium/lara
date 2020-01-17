@@ -13,7 +13,7 @@ class AddMissingPlatformInfo < ActiveRecord::Migration
       sender = ReportService::RunSender.new(run, { send_all_answers: true })
       result = sender.send
       if !result || !result["success"]
-        puts "Failed to send Sequence Run: #{run.id}"
+        puts "Failed to send Run: #{run.id}"
       end
     end
   end
