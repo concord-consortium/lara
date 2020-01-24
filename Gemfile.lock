@@ -16,10 +16,11 @@ GIT
 
 GIT
   remote: git://github.com/concord-consortium/secure-samesite-cookies
-  revision: 60281f44c6a6c74d6a9c04d18ed86e3a6cedb35f
+  revision: 31fb96a6891789e99ea559953119b6b35deb1256
+  tag: v1.0
   specs:
     rack-secure_samesite_cookies (0.1.0)
-      rack (~> 1.4.7)
+      rack (>= 1.4.7)
 
 GIT
   remote: git://github.com/lostapathy/yaml_db.git
