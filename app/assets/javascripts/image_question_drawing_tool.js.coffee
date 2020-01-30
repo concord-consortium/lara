@@ -169,7 +169,7 @@ class ImageQuestionDrawingTool
 
     Shutterbug.snapshot
       selector: @interactive_sel
-      server: SHUTTERBUG_URI # defined in api-urls.js.erb
+      server: gon.shutterbugURI
       done: (image_src) =>
         @set_image_source(image_src)
         stopWaiting()
@@ -183,7 +183,7 @@ class ImageQuestionDrawingTool
   take_drawing_tool_snapshot: ->
     Shutterbug.snapshot
       selector: "#{@drawing_tool_sel} canvas.lower-canvas"
-      server: SHUTTERBUG_URI # defined in api-urls.js.erb
+      server: gon.shutterbugURI
       done: (image_src) =>
         @copy_to_form_and_save(image_src)
         stopWaiting()

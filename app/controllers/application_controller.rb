@@ -41,6 +41,7 @@ class ApplicationController < ActionController::Base
   before_filter :reject_old_browsers, :except => [:bad_browser]
   before_filter :set_locale
   before_filter :store_auto_publish_url # to enable auto publishing to build an url from the request object
+  before_filter :set_api_urls
   after_filter :log_session_after
 
   # Try to set local from the request headers
@@ -337,6 +338,10 @@ class ApplicationController < ActionController::Base
 
   def store_auto_publish_url
     Thread.current[:auto_publish_url] = "#{request.protocol}#{request.host_with_port}"
+  end
+
+  def set_api_urls
+    gon.shutterbugURI = ENV['SHUTTERBUG_URI']
   end
 
   def unauthorized_response_data(action, resource)
