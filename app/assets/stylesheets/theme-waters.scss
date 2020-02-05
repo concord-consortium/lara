@@ -55,6 +55,42 @@ h3 {
   .h2 { color: $col-orange; }
 }
 
+body.l-responsive-wrapper {
+
+  .site-width {
+    width: 100%;
+  }
+  #container {
+    header:first-child {
+      margin-top: 0;
+      width: 100%;
+    }
+    #main {
+      .activity-nav-mod + .site-width {
+        width: 100%;
+      }
+    }
+  }
+  .activity-nav-mod {
+    margin: 0;
+
+    #nav-activity-menu-container {
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 915px) {
+    #container {
+      .logo-l {
+        width: 300px;
+      }
+      .logo-r {
+        background-position: 0 0;
+      }
+    }
+  }
+
+}
+
 #container {
   background: $col-lightgray;
 
@@ -83,7 +119,7 @@ h3 {
   }
   .logo-r {
     background: url(/assets/waters/students.jpg) no-repeat 0 -28px;
-    background-size: 100%;
+    background-size: cover;
     height: 150px;
     margin-top: 0;
     position: relative;
