@@ -16,10 +16,10 @@ GIT
 
 GIT
   remote: git://github.com/concord-consortium/secure-samesite-cookies
-  revision: 31fb96a6891789e99ea559953119b6b35deb1256
-  tag: v1.0
+  revision: c4a27ce22c31273d6f78f32d48a6f8677e7fe281
+  tag: v1.0.1
   specs:
-    rack-secure_samesite_cookies (0.1.0)
+    rack-secure_samesite_cookies (1.0.1)
       rack (>= 1.4.7)
 
 GIT
