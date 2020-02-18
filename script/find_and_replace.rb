@@ -77,9 +77,15 @@ def find_text(model_class, field_name, text)
   model_class.constantize.where("#{field_name} like '%#{text}%'")
 end
 
-def replace_text(model, field_name, text, replacement)
+def replace_text(model, field_name, text, replacement, dry_run=false)
   old_text = model.send(field_name.to_s)
   new_text = old_text.gsub(text, replacement)
+  if dry_run
+    puts "+ would replace text of #{model.class.name}(#{model.id})##{field_name}"
+    puts "  old #{old_text}"
+    puts "  new #{new_text}"
+    return
+  end
   model.send("#{field_name}=".to_s, new_text)
   puts "+ replacing text of #{model.class.name}(#{model.id})##{field_name}"
   begin
@@ -132,8 +138,10 @@ def find_all_unqiue_matches(text_fields, text, ending_character)
   matches.uniq.sort
 end
 
-# https://s3.amazonaws.com/itsi-production/images-2009
-# find_and_replace_all(text_fields, "http://itsi.portal.concord.org/system/images", "https://s3.amazonaws.com/itsi-production/images-2009")
+# Replace text in all the specificed text fields
+# There is a `text_fields` global defined above that specifies the fields of each model
+# So this an example usage:
+#   find_and_replace_all(text_fields, "http://itsi.portal.concord.org/system/images", "https://s3.amazonaws.com/itsi-production/images-2009")
 def find_and_replace_all(text_fields, text, replacement)
   total = 0
   text_fields.each do |model_class, fields|
@@ -149,21 +157,21 @@ def find_and_replace_all(text_fields, text, replacement)
   puts "Total Found: #{total}"
 end
 
-# might not work, haven't tried this yet
+# 2 ways to find http interactives
 interactives = MwInteractive.where("url like '%http://%'"); nil
-
 interactives = find_text("MwInteractive", :url, "http://"); nil
+
+# Filter out interactives that don't have pages or don't have activities
 interactives = interactives.all.select{|i| i.interactive_page}; nil
+interactives = interactives.all.select{|i| i.interactive_page.lightweight_activity}; nil
 
-402 intearctives with http URLs
-391 of these have interactie_page objects and lightweight_activity objects
-
+# create an array of interactive info
 def interactive_info(i)
   info = [];
-  (2013..2017).each{|year|
+  (2013..2019).each{|year|
     info << i.interactive_page.lightweight_activity.runs.where(updated_at: Date.new(year)..Date.new(year+1)).count
   }
-  info << i.interactive_page.lightweight_activity.runs.where(updated_at: Date.new(2018)..Date.today).count
+  info << i.interactive_page.lightweight_activity.runs.where(updated_at: Date.new(2020)..Date.today).count
 
   info << i.interactive_page.lightweight_activity.runs.count
   info << i.id
@@ -172,7 +180,47 @@ def interactive_info(i)
   info
 end
 
-results = interactives.map{|i| interactive_info(i)}; nil
-results = interactives.map{|i| [i.interactive_page.lightweight_activity.runs.count, i.id, i.interactive_page.lightweight_activity.id, i.url]}
+def print_interactives_csv(interactives)
+  results = interactives.map{|i| interactive_info(i)}; nil
 
-puts results.inject([]) { |csv, row|  csv << CSV.generate_line(row) }.join(""); nil
+  # add header
+  headers = Array(2013..2019) + ['2020 on', 'total runs count', 'id', 'activity id', 'url']
+  results.unshift(headers); nil
+
+  require 'csv'
+  puts results.inject([]) { |csv, row|  csv << CSV.generate_line(row) }.join(""); nil
+end
+
+# replacing the http with https (note this will also replace these within the URL if it has them as a parameter
+interactives.each{|i| replace_text(i, :url, 'http://', 'https://')}; nil
+
+# replace interactive with a button interactive that opens it in a new window
+def replace_with_button(interactive)
+  old_url = interactive.url
+  interactive.url = "https://concord-consortium.github.io/button-interactive/"
+  interactive.authored_state = {
+    version: "1.0",
+    description: "This component no longer works embedded in the page. Use the button below to open it in a new window.",
+    url: old_url,
+    label: "Open ➚"
+  }.to_json
+  interactive.save!
+end
+
+# to get the unicode arrow in the button text above, the following variables
+# need to be set first before running the rails console
+LANG="C.UTF-8"
+LC_COLLATE="C.UTF-8"
+LC_CTYPE="C.UTF-8"
+LC_MESSAGES="C.UTF-8"
+LC_MONETARY="C.UTF-8"
+LC_NUMERIC="C.UTF-8"
+LC_TIME="C.UTF-8"
+LC_ALL="C.UTF-8"
+export LANG LC_COLLATE LC_CTYPE LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LC_ALL
+
+# print interactives and highlight any escaped http urls
+print_results(interactives, :url, 'http%3A')
+
+# replace esacped http urls
+interactives.each{|i| replace_text(i, :url, 'http%3A', 'https%3A')}
