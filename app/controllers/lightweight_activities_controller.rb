@@ -118,6 +118,7 @@ class LightweightActivitiesController < ApplicationController
   def print_blank
     authorize! :read, @activity
     @run = Run.new()
+    @run.activity = @activity
     setup_show
   end
 
