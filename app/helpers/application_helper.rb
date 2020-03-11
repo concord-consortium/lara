@@ -92,7 +92,7 @@ module ApplicationHelper
     <<-EOF
       <p class="footer-txt">
         Copyright © #{Date.today.year} <a href="https://concord.org/" title="The Concord Consortium">The Concord Consortium</a>.
-        All rights reserved. This activity is licensed under a
+        All rights reserved. This material is licensed under a
         <a href="http://creativecommons.org/licenses/by/3.0/">
           Creative Commons Attribution 3.0 Unported License
         </a>.
