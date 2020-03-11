@@ -91,7 +91,7 @@ module ApplicationHelper
   def default_footer
     <<-EOF
       <p class="footer-txt">
-        Copyright © #{Date.today.year} <a href="http://concord.org/">The Concord Consortium</a>.
+        Copyright © #{Date.today.year} <a href="https://concord.org/" title="The Concord Consortium">The Concord Consortium</a>.
         All rights reserved. This activity is licensed under a
         <a href="http://creativecommons.org/licenses/by/3.0/">
           Creative Commons Attribution 3.0 Unported License

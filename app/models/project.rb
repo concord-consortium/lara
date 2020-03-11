@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 
   protected
   def self.create_default
-    self.create(:title => DefaultName, :logo => '', :url => 'http://concord.org/')
+    self.create(:title => DefaultName, :logo => '', :url => 'https://concord.org/')
   end
 
   public

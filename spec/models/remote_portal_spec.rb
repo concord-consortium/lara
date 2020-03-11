@@ -4,7 +4,7 @@ describe RemotePortal do
   let(:params) do
     { :domain => "concord.org",
       :externalId => "23",
-      :returnUrl => "http://concord.org/foo",
+      :returnUrl => "https://concord.org/foo",
       :platform_id => "platform",
       :platform_user_id => "123",
       :resource_link_id => "link_1",
