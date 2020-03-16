@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200114203042) do
+ActiveRecord::Schema.define(:version => 20200316192232) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -405,6 +405,7 @@ ActiveRecord::Schema.define(:version => 20200114203042) do
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
     t.boolean  "show_submit_button",                     :default => true
+    t.boolean  "footer_nav",                             :default => false
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"

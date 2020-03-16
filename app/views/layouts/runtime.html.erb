@@ -92,11 +92,13 @@
       </div>
       <!-- end site-width -->
       <% unless @hide_navigation %>
-        <div class="activity-nav-mod">
+        <% if @activity.footer_nav %>
+          <div class="activity-nav-mod">
 
-          <%= render :partial => 'shared/activity_nav' %>
+            <%= render :partial => 'shared/activity_nav' %>
 
-        </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
     <!-- end activity-mod -->
