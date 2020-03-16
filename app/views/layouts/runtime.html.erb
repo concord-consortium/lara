@@ -91,7 +91,13 @@
         <%= yield %>
       </div>
       <!-- end site-width -->
+      <% unless @hide_navigation %>
+        <div class="activity-nav-mod">
 
+          <%= render :partial => 'shared/activity_nav' %>
+
+        </div>
+      <% end %>
     </div>
     <!-- end activity-mod -->
 
