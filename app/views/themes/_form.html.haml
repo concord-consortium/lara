@@ -16,5 +16,11 @@
     = f.label :css_file
     %br
     = f.text_field :css_file
+  .field
+    = f.label :footer_nav, "Footer navigation"
+    = f.check_box :footer_nav
+    %br
+      .hint
+        Show activity navigation links at the bottom of activity pages
   .actions
     = f.submit

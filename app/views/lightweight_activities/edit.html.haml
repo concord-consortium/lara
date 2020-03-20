@@ -68,12 +68,6 @@
       .field
         = f.label :layout, "Activity layout"
         = f.select :layout, options_for_select(LightweightActivity::LAYOUT_OPTIONS, @activity.layout)
-      .field
-        = f.label :footer_nav, "Footer navigation"
-        = f.check_box :footer_nav
-        %br
-          .hint
-            Show activity navigation links at the bottom of activity pages
       .field{:class => ("disabled" unless @activity.layout == 1)}
         = f.label :show_submit_button, 'Show Submit Button'
         = f.check_box :show_submit_button, :disabled => (@activity.layout != 1 ? true : false)
