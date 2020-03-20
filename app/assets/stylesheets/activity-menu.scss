@@ -16,6 +16,11 @@
 }
 
 .activity-nav-mod {
+  &.footer-nav {
+    .ui-block-2 {
+      width: 769px;
+    }
+  }
   .sticky-wrapper {
     margin-bottom: 0px;
     position: fixed;
