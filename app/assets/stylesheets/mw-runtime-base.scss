@@ -179,6 +179,12 @@ footer {
     padding: 10px 6px;
     z-index: 9999;
   }
+
+  &.footer-nav {
+    .l-nav {
+      border-bottom: solid 15px #fff;
+    }
+  }
 }
 
 .activity-nav-logo {

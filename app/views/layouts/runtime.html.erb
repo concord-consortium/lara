@@ -92,11 +92,16 @@
       </div>
       <!-- end site-width -->
       <% unless @hide_navigation %>
-        <% if @activity.footer_nav %>
-          <div class="activity-nav-mod">
-
-            <%= render :partial => 'shared/activity_nav' %>
-
+        <% if @theme && @theme.footer_nav %>
+          <div class="activity-nav-mod footer-nav">
+            <% # This table is a copy of the table in the activity_nav partial with the first cell removed. %>
+            <table class="l-nav site-width">
+              <tr>
+                <td class="activity-nav ui-block-2">
+                  <%= render :partial => 'shared/activity_nav_pages' %>
+                </td>
+              </tr>
+            </table>
           </div>
         <% end %>
       <% end %>
