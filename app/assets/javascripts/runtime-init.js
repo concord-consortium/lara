@@ -15,13 +15,13 @@ $(document).ready(function () {
     // Activity nav fixing, if there is one
     if (headerTop) {
       if (windowTop >= headerTop / 2) {
-        $('.activity-nav-mod').addClass('fixed');
+        $('.activity-nav-mod.header-nav').addClass('fixed');
         $('.content-hdr').addClass('extra-pad');
         $('.activity-nav-mod.fixed .activity-nav-logo .h2').addClass('visible');
       } else {
-        $('.activity-nav-mod').removeClass('fixed');
+        $('.activity-nav-mod.header-nav').removeClass('fixed');
         $('.content-hdr').removeClass('extra-pad');
-        $('.activity-nav-mod .activity-nav-logo .h2').removeClass('visible');
+        $('.activity-nav-mod.header-nav .activity-nav-logo .h2').removeClass('visible');
       }
     }
   });
