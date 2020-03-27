@@ -18,7 +18,7 @@
 .activity-nav-mod {
   &.footer-nav {
     .ui-block-2 {
-      width: 769px;
+      width: 769px; /* This helps default and WATERS themes and doesn't seem to affect wider layouts. */
     }
   }
   .sticky-wrapper {
