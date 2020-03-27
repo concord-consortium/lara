@@ -23,7 +23,7 @@ describe Embeddable::AnswerFinder do
       context 'when the question is an ImageQuestion with an author-defined background' do
         it 'copies the bg_url of the question as the image_url of the answer' do
           image.bg_source = 'Drawing'
-          image.bg_url = 'http://concord.org/sites/default/files/images/news/2013/bright-ideas-06262013t.jpg'
+          image.bg_url = 'https://concord.org/sites/default/files/images/news/2013/bright-ideas-06262013t.jpg'
           finder = Embeddable::AnswerFinder.new(run)
           answer = finder.find_answer(image)
           expect(answer.image_url).to eq(image.bg_url)
