@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200114203042) do
+ActiveRecord::Schema.define(:version => 20200320002802) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -624,6 +624,7 @@ ActiveRecord::Schema.define(:version => 20200114203042) do
     t.string   "css_file"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "footer_nav", :default => false
   end
 
   create_table "tracked_questions", :force => true do |t|
