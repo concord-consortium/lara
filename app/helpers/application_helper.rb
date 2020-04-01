@@ -93,8 +93,8 @@ module ApplicationHelper
       <p class="footer-txt">
         Copyright © #{Date.today.year} <a href="https://concord.org/" title="The Concord Consortium">The Concord Consortium</a>.
         All rights reserved. This material is licensed under a
-        <a href="http://creativecommons.org/licenses/by/3.0/">
-          Creative Commons Attribution 3.0 Unported License
+        <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License
         </a>.
         The software is licensed under
         <a href="http://opensource.org/licenses/BSD-2-Clause">
