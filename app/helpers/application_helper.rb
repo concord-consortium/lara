@@ -104,13 +104,6 @@ module ApplicationHelper
         licenses. Please provide attribution to the Concord Consortium and
         the URL <a href="http://concord.org">http://concord.org</a>.
      </p>
-      <p class="footer-txt">
-        This Next-Generation Molecular Workbench activity was developed with a grant from
-        <a href="http://www.google.org/">Google.org</a>.
-        The original <a href="http://mw.concord.org/modeler/">Classic Molecular Workbench</a>
-        was supported by a series of grants from the
-        <a href="http://nsf.gov/">National Science Foundation</a>.
-      </p>
     EOF
   end
 
