@@ -93,8 +93,8 @@ module ApplicationHelper
       <p class="footer-txt">
         Copyright © #{Date.today.year} <a href="https://concord.org/" title="The Concord Consortium">The Concord Consortium</a>.
         All rights reserved. This material is licensed under a
-        <a href="http://creativecommons.org/licenses/by/3.0/">
-          Creative Commons Attribution 3.0 Unported License
+        <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License
         </a>.
         The software is licensed under
         <a href="http://opensource.org/licenses/BSD-2-Clause">
@@ -104,13 +104,6 @@ module ApplicationHelper
         licenses. Please provide attribution to the Concord Consortium and
         the URL <a href="http://concord.org">http://concord.org</a>.
      </p>
-      <p class="footer-txt">
-        This Next-Generation Molecular Workbench activity was developed with a grant from
-        <a href="http://www.google.org/">Google.org</a>.
-        The original <a href="http://mw.concord.org/modeler/">Classic Molecular Workbench</a>
-        was supported by a series of grants from the
-        <a href="http://nsf.gov/">National Science Foundation</a>.
-      </p>
     EOF
   end
 
