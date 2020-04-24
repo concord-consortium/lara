@@ -55,4 +55,5 @@
 //= require global-iframe-saver
 //= require interactive-manager
 //= require components
+//= require question-slider.js
 //= require runtime-init
