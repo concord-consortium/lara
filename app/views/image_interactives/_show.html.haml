@@ -1,7 +1,8 @@
-- image_title = "#{interactive.caption} #{interactive.credit_with_link}"
+- if interactive.caption != ''
+  - image_title = "#{interactive.caption} #{interactive.credit}"
 - if interactive.show_lightbox
   %a{ :href => interactive.url,
-      :title => image_title,
+      :title => (image_title ? image_title : nil),
       :class => 'colorbox'}
     = render :partial => 'image_interactives/image', :locals => { :interactive => interactive }
 - else
