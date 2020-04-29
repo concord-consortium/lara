@@ -11,6 +11,8 @@ module.exports = (env, argv) => {
       'lara-typescript': './src/index.ts',
       // Build normalize.css separately so it can be used by plugins directly.
       'plugin-api/normalize': './src/plugin-api/normalize.scss',
+      // build the admin separately to make it cleaner to load
+      'interactive-library-admin': './src/interactive-library-admin/index.ts',
     },
     mode: 'development',
     output: {

@@ -244,4 +244,6 @@ LightweightStandalone::Application.routes.draw do
   match "/dev/test_mail" => 'dev#test_mail', :as => 'test_mail'
   match "/dev/test_exception" => 'dev#test_error', :as => 'test_exception'
   match "/dev/test_error" => 'dev#test_error', :as => 'test_error'
+
+  get "/interactive_library_admin" => "home#interactive_library_admin"
 end

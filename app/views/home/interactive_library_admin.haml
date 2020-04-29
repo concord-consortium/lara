@@ -1,0 +1,14 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  Interactive Library Admin
+
+#render_root
+  %p Loading...
+
+- content_for :extra_javascript do
+  :javascript
+    $(document).ready( function() {
+      LARA.InteractiveLibraryAdmin.render(document.getElementById("render_root"));
+    } );

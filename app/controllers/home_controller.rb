@@ -20,4 +20,10 @@ class HomeController < ApplicationController
     # only show the capitalized keys which are the actual headers
     render text: lines.select{|line| line =~ /^[A-Z]/}.join("\n")
   end
+
+  def interactive_library_admin
+    # only allow admins access, see app/models/ability.rb
+    # TODO: change to LibraryInteractive when created
+    authorize! :manage, :all
+  end
 end
