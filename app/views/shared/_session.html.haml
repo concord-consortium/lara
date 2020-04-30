@@ -23,6 +23,9 @@
   -if can? :manage, CRater::ScoreMapping
     |
     = link_to "Score Mappings", c_rater_score_mappings_path
+  -if can? :manage, LibraryInteractive
+    |
+    = link_to "Library Interactives", library_interactives_path
 - else
   -#= link_to "Log In", user_omniauth_authorize_path(Concord::AuthPortal.default.strategy_name)
   - if Concord::AuthPortal.configured_portal_names.size > 1 # Note that this means no Twitter/GitHub/other at this point - easy to fix when needed

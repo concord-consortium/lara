@@ -1,7 +1,8 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :approved_scripts
+  resources :library_interactives, :except => [:show]
 
+  resources :approved_scripts
 
   resources :projects do
     member do

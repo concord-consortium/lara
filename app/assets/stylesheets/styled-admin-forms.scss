@@ -1,0 +1,36 @@
+.styled-admin-form {
+
+  fieldset {
+    margin-top: 20px;
+  }
+
+  legend {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  input[type=text],
+  textarea,
+  select {
+    padding: 5px;
+    margin: 0;
+  }
+
+  input[type=text],
+  textarea {
+    width: 98%;
+  }
+
+  #aspect_ratio {
+    label {
+      margin: 8px 5px 0 10px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+  }
+
+}

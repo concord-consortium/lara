@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200427212533) do
+ActiveRecord::Schema.define(:version => 20200430094758) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -368,16 +368,37 @@ ActiveRecord::Schema.define(:version => 20200427212533) do
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.integer  "run_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
     t.text     "raw_data",         :limit => 16777215
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.text     "learner_url"
-    t.boolean  "is_dirty",         :default => false
+    t.boolean  "is_dirty",                             :default => false
     t.string   "key"
   end
 
   add_index "interactive_run_states", ["key"], :name => "interactive_run_states_key_idx"
   add_index "interactive_run_states", ["run_id"], :name => "interactive_run_states_run_id_idx"
+
+  create_table "library_interactives", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "authoring_guidance"
+    t.text     "base_url"
+    t.string   "thumbnail_url"
+    t.string   "image_url"
+    t.string   "click_to_play_prompt"
+    t.boolean  "click_to_play",           :default => false
+    t.boolean  "no_snapshots",            :default => false
+    t.boolean  "enable_learner_state",    :default => false
+    t.boolean  "has_report_url",          :default => false
+    t.boolean  "show_delete_data_button", :default => true
+    t.boolean  "full_window",             :default => false
+    t.string   "aspect_ratio_method",     :default => "DEFAULT"
+    t.integer  "native_width"
+    t.integer  "native_height"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+  end
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -622,8 +643,8 @@ ActiveRecord::Schema.define(:version => 20200427212533) do
   create_table "themes", :force => true do |t|
     t.string   "name"
     t.string   "css_file"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.boolean  "footer_nav", :default => false
   end
 
