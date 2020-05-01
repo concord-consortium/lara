@@ -850,13 +850,7 @@ fieldset {
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
     }
     .embeddables-form {
-      position: absolute;
-      top: 3px;
-      right: 5px;
-      text-align: right;
-      form {
-        display: inline-block;
-      }
+      margin: 10px 0;
     }
     .embeddable_tools {
       text-align: right;
