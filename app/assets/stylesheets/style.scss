@@ -256,11 +256,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
 .questions .embeddable, .authorable {
-  background: #eee;
-  margin-bottom: 1em;
-  padding: 3%;
-  width: 94%;
-  border-radius: 13px;
+  background: hsl(0, 0%, 90%);
+  margin: 0;
+  padding: 0;
 }
 
 .questions {
@@ -820,7 +818,7 @@ fieldset {
     right: 5px;
     margin: 0;
     background: 0;
-    color: #126eac;
+    color: #0592af;
   }
 }
 /* Page editing */
@@ -835,42 +833,36 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #6fc5d8;
+    border: 1px solid #555;
     margin-bottom: 15px;
     padding: 5px;
     position: relative;
     h2 {
-      width: 100%;
-      background-color: hsl(192, 64%, 82%);
-      color: #126eac !important;
-      text-align: left;
-      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
-      padding: 5px; /* Gives the head itself some padding */
+      background-color: #555;
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
+      color: #fff !important;
+      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
+      padding: 10px; /* Gives the head itself some padding */
+      text-align: left;
     }
     .embeddables-form {
       margin: 10px 0;
     }
     .embeddable_tools {
       text-align: right;
-      font-weight: bold;
       color:  hsl(192, 64%, 42%);
       a:link {
         color:  hsl(192, 64%, 42%);
-        padding-left: 1em;
-      }
-      .drag_handle {
-        float: left;
+        padding: 0 0 0 1em;
+        text-decoration: none;
+        text-transform: uppercase;
       }
     }
     .embeddables_list > div {
       .embeddable_tools {
-        background-color: hsl(192, 64%, 82%);
-        padding: 5px;
-        margin: -5px -5px 5px;
+        padding: 10px 0;
+        margin: 5px 0 10px;
       }
-      padding: 5px;
-      border: 1px solid #6fc5d8;
       &.tracked {
         .embeddable_options {
           opacity: 0.4;
@@ -885,8 +877,39 @@ fieldset {
           }
         }
       }
-      margin-bottom: 1em;
-      border-radius: 0;
+    }
+    .ui-accordion {
+      .ui-accordion-header {
+        background: #ccc;
+        border-color: #ccc;
+        border-radius: 0;
+        color: #333;
+
+        &:hover {
+          background: #777;
+          border-color: #777;
+          color: #fff;
+
+          .ui-accordion-header-icon {
+            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+          }
+        }
+      }
+      .ui-accordion-header-active {
+        background: #777;
+        border-color: #777;
+        color: #fff;
+      }
+      .ui-accordion-header-icon {
+      }
+      .ui-accordion-content {
+        border-color: #777;
+        border-radius: 0;
+        padding: 0 10px 10px;
+      }
+      .ui-accordion-content-active {
+
+      }
     }
   }
   /* Interactives block */
