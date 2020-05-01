@@ -20,7 +20,7 @@ module Embeddable
     end
 
     def self.human_description
-      "External Script"
+      "External script"
     end
 
     def self.import(import_hash)

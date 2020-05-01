@@ -51,7 +51,7 @@ module Embeddable
     end
 
     def self.human_description
-      "XHTML block"
+      "Text block"
     end
   end
 end

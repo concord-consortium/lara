@@ -207,4 +207,8 @@ class MwInteractive < ActiveRecord::Base
     end
     return nil
   end
+
+  def self.human_description
+    "Iframe"
+  end
 end

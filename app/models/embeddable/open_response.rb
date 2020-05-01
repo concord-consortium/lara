@@ -78,7 +78,7 @@ module Embeddable
     end
 
     def self.human_description
-      "Multiple choice question"
+      "Open response question"
     end
 
     def export
