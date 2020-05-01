@@ -1,5 +1,4 @@
 .embeddable_tools
-  .drag_handle
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'or', :allow_hide => allow_hide }
 .embeddable_options
   .prompt= embeddable.prompt.html_safe unless embeddable.prompt.blank?
