@@ -20,7 +20,13 @@ $(document).ready(function () {
     // Set up sortable lists:
     // TODO: Refactor this into an object
     // Embeddables in page edit
-    $('.sortable_embeddables').sortable({ handle: '.drag_handle',
+    $('.accordion_embeddables').accordion({ active: false,
+      collapsible: true,
+      header: 'h3',
+      heightStyle: 'content'
+    });
+    $('.sortable_embeddables').sortable({ handle: 'h3',
+        items: '.authorable',
         opacity: 0.8,
         tolerance: 'pointer',
         update: function (event, ui) {

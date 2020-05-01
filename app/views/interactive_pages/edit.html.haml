@@ -91,13 +91,16 @@
             = hidden_field_tag :approved_script_id
             = hidden_field_tag :component_label
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
-          .embeddables_list.sortable_embeddables
+          .embeddables_list.sortable_embeddables.accordion_embeddables
             - @page.section_embeddables(nil).each do |e|
               - if e.show_in_edit?
                 - tracked = e.respond_to?(:tracked_question) && e.tracked_question
                 - tracked_class = tracked ? 'tracked' : ''
                 .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+                  %h3
+                    Name
+                  %div
+                    = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
