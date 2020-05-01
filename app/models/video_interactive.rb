@@ -100,4 +100,8 @@ class VideoInteractive < ActiveRecord::Base
     end
     import_video_interactive
   end
+
+  def self.human_description
+    "Video"
+  end
 end
