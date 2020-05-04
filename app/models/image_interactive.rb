@@ -57,4 +57,8 @@ class ImageInteractive < ActiveRecord::Base
   def self.import(import_hash)
     return self.new(import_hash)
   end
+
+  def self.human_description
+    "Image interactive"
+  end
 end
