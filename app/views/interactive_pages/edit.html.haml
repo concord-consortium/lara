@@ -98,7 +98,13 @@
                 - tracked_class = tracked ? 'tracked' : ''
                 .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
                   %h3
-                    #{e.class.human_description.titleize}
+                    - if e.respond_to? :name
+                      - if !e.name.nil?
+                        #{e.name}
+                      - else
+                        #{e.class.human_description.titleize}
+                    - else
+                      #{e.class.human_description.titleize}
                   %div
                     = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => false }
       -# Additional sections are dynamically loaded, based on .visible_sections value:
