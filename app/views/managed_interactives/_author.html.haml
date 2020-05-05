@@ -1,0 +1,22 @@
+.embeddable_tools
+  .drag_handle
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'managed_int', :allow_hide => allow_hide }
+.embeddable_options
+  Managed interactive
+  .model-edit
+    .interactive-content
+      %div{:id => "authorable-interactive-#{embeddable.id}"}
+= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
+
+-# REVIEW: is this needed?
+:javascript
+  (function() {
+    var props = {
+      interactive: #{embeddable.to_json},
+      updateUrl: "#{page_managed_interactive_path(page, embeddable)}"
+    };
+    if (props.interactive.url) {
+      InteractiveAuthoring = React.createElement(modulejs.require('components/authoring/mw_interactive'), props);
+      ReactDOM.render(InteractiveAuthoring, $("#authorable-interactive-#{embeddable.id}")[0]);
+    }
+  }());

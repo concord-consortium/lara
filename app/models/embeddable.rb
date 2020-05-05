@@ -10,9 +10,10 @@ module Embeddable
   }
 
   InteractiveTypes = {
-    MwInteractive    => "Iframe Interactive",
-    ImageInteractive => "Image",
-    VideoInteractive => "Video"
+    MwInteractive      => "Iframe Interactive",
+    ManagedInteractive => "Managed Interactive",
+    ImageInteractive   => "Image",
+    VideoInteractive   => "Video"
   }
 
   # Types is just sum of question and interactives.
