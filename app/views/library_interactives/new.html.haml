@@ -1,0 +1,17 @@
+= content_for :session do
+  #session
+    = render :partial => 'shared/session'
+= content_for :title do
+  New Library Interactive
+= content_for :nav do
+  .breadcrumbs
+    %ul
+      %li= link_to "Home", root_path
+      %li
+        \/
+        = link_to 'All Library Interactives', library_interactives_path
+      %li / New Library Interactive
+
+%h1.title New Library Interactive
+
+=render :partial => 'form'
