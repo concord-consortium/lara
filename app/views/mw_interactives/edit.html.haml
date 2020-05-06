@@ -25,12 +25,12 @@
   %br
   = f.label :click_to_play_prompt, :id => "click_to_play_prompt_label_#{@interactive.id}", :text => 'Click to play prompt'
   = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@interactive.id}", :placeholder => MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
-  %div{:style => "margin-bottom:5px;"}
+  %div{:style => "margin-bottom:5px;", :id => "image_url_warning_#{@interactive.id}"}
     %em Warning:
     Please provide an image_url to use click to play.
   .image_url
-    = f.label :image_url, 'Image_url'
-    = f.text_field :image_url
+    = f.label :image_url, :id => "image_url_label_#{@interactive.id}", :text => 'Image URL'
+    = f.text_field :image_url, :id => "image_url_#{@interactive.id}"
   = f.label :is_full_width, t(:IS_FULL_WIDTH_ASSESMENT_ITEM)
   = f.check_box :is_full_width
   %br
@@ -64,68 +64,6 @@
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
-  function click_to_play(){
-    if ($("#click_to_play_#{@interactive.id}").prop('checked')) {
-        $("#mw_interactive_image_url").attr("required", true);
-        $("#full_window_#{@interactive.id}").removeAttr("disabled");
-        $('#full_window_label_#{@interactive.id}').css("opacity", 1);
-        $("#click_to_play_prompt_#{@interactive.id}").removeAttr("disabled");
-        $('#click_to_play_prompt_label_#{@interactive.id}').css("opacity", 1);
-      } else {
-        $("#mw_interactive_image_url").removeAttr("required");
-        $("#full_window_#{@interactive.id}").attr("disabled", true);
-        $('#full_window_label_#{@interactive.id}').css("opacity", 0.3);
-        $("#click_to_play_prompt_#{@interactive.id}").attr("disabled", true);
-        $('#click_to_play_prompt_label_#{@interactive.id}').css("opacity", 0.3);
-      }
-  }
-
   $(document).ready(function() {
-    click_to_play();
-    $('#enable_learner_state_#{@interactive.id}').click(function() {
-      $('#has_report_url_#{@interactive.id}').prop('checked', false);
-      if ($(this).prop('checked')) {
-        // ungrey
-        $('#has_report_url_#{@interactive.id}').removeAttr("disabled");
-        $('#show_delete_data_button_#{@interactive.id}').removeAttr("disabled");
-        $('#parent_id_#{@interactive.id}').removeAttr("disabled");
-        $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 1);
-      } else {
-        // grey
-        $('#has_report_url_#{@interactive.id}').attr("disabled", true);
-        $('#show_delete_data_button_#{@interactive.id}').attr("disabled", true);
-        $('#parent_id_#{@interactive.id}').attr("disabled", true);
-        $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 0.3);
-      }
-    });
-
-    if (! #{@interactive.enable_learner_state}) {
-          // uncheck and grey out the 'has report url' section
-          $('#has_report_url_#{@interactive.id}').prop('checked', false);
-          $('#has_report_url_#{@interactive.id}').attr("disabled", true);
-          $('#show_delete_data_button_#{@interactive.id}').attr("disabled", true);
-          $('#parent_id_#{@interactive.id}').attr("disabled", true);
-          $('#enable_learner_state_indent_#{@interactive.id}').css("opacity", 0.3);
-    }
-
-    $("#click_to_play_#{@interactive.id}").click(click_to_play);
-
-    var available_ratios = #{@interactive.available_aspect_ratios.to_json}
-    var props = {
-      initialState: {
-        width: "#{@interactive.native_width}",
-        height: "#{@interactive.native_height}",
-        mode: "#{@interactive.aspect_ratio_method}"
-      },
-      availableAspectRatios: available_ratios,
-      updateValues: function(aspect_ratio_values) {
-        $('#width').val( aspect_ratio_values.width);
-        $('#height').val(aspect_ratio_values.height);
-        $('#method').val(aspect_ratio_values.mode);
-      }
-    };
-
-    Chooser = React.createElement(modulejs.require('components/common/aspect_ratio_chooser'), props);
-    ReactDOM.render(Chooser, $("#aspect_ratio")[0]);
-
+    interactive_form_helper(#{ @interactive.to_json })
   });
