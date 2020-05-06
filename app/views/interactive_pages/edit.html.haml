@@ -100,7 +100,7 @@
                 .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
                   %h3
                     - if e.respond_to? :name
-                      - if !e.name.nil?
+                      - if !e.name.nil? && !e.name.empty?
                         #{e.name}
                       - else
                         #{e.class.human_description.titleize}
