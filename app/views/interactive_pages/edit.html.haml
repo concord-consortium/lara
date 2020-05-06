@@ -87,7 +87,8 @@
         .questions
           %h2 Info/Assess
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-            = embeddable_selector
+            .select_container
+              = embeddable_selector
             = hidden_field_tag :approved_script_id
             = hidden_field_tag :component_label
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
@@ -105,6 +106,7 @@
                         #{e.class.human_description.titleize}
                     - else
                       #{e.class.human_description.titleize}
+                    %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                   %div
                     = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => false }
       -# Additional sections are dynamically loaded, based on .visible_sections value:

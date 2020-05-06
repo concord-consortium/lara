@@ -59,20 +59,33 @@ body {
 button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close {
   background: #6fc5d8;
   border: none;
+  border-radius: 20px;
   color: #fff;
   cursor: pointer;
+  display: inline-block;
   font-size: .9em;
   margin-top: 20px;
   padding: 5px 10px;
   text-align: center;
-  border-radius: 20px;
   text-decoration: none;
-  display: inline-block;
 }
 
 button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #ccc !important;
 }
+
+.select_container {
+  display: inline-block;
+  position: relative;
+
+  select {
+    font-size: 14px;
+    margin: 0 8px 0 0;
+    max-width: 191px;
+    padding: 9px 25px 9px 10px;
+  }
+}
+
 #container {
 }
 #header {
@@ -257,7 +270,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
 .questions .embeddable, .authorable {
-  background: hsl(0, 0%, 90%);
+  background: #b4e3ee;
   margin: 0;
   padding: 0;
 }
@@ -834,15 +847,15 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #555;
+    border: 1px solid #6fc5d8;
     margin-bottom: 15px;
-    padding: 5px;
+    padding: 10px;
     position: relative;
     h2 {
-      background-color: #555;
+      background-color: #b4e3ee;
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
-      color: #fff !important;
-      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
+      color: #126eac !important;
+      margin: -10px -10px 10px; /* Undoes padding from div on top, left, & right for background */
       padding: 10px; /* Gives the head itself some padding */
       text-align: left;
     }
@@ -851,13 +864,18 @@ fieldset {
     }
     .embeddable_tools {
       text-align: right;
-      color:  hsl(192, 64%, 42%);
-      a:link {
-        color:  hsl(192, 64%, 42%);
+      color: #007c8b;
+      a {
+        color:  #007c8b;
         padding: 0 0 0 1em;
         text-decoration: none;
         text-transform: uppercase;
+        transition: .3s;
+        &.active, &:hover {
+          color: #ea6d2f;
+        }
       }
+
     }
     .embeddables_list > div {
       .embeddable_tools {
@@ -880,33 +898,55 @@ fieldset {
       }
     }
     .ui-accordion {
+      counter-reset: assessItem;
       .ui-accordion-header {
-        background: #ccc;
-        border-color: #ccc;
+        background: #b4e3ee;
+        border-color: #b4e3ee;
         border-radius: 0;
-        color: #333;
+        color: #126eac;
 
+        &:before {
+          counter-increment: assessItem;
+          content: counter(assessItem) '. ';
+        }
         &:hover {
-          background: #777;
-          border-color: #777;
+          background: #126eac;
+          border-color: #126eac;
           color: #fff;
 
           .ui-accordion-header-icon {
             background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
           }
+          .sortable-icon {
+            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+            display: block;
+            float: right;
+          }
+        }
+
+        .sortable-icon {
+          display: none;
         }
       }
       .ui-accordion-header-active {
-        background: #777;
-        border-color: #777;
+        background: #126eac;
+        border-color: #126eac;
         color: #fff;
+
+        .ui-accordion-header-icon {
+          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+        }
       }
       .ui-accordion-header-icon {
       }
       .ui-accordion-content {
-        border-color: #777;
+        border-color: #126eac;
         border-radius: 0;
         padding: 0 10px 10px;
+
+        select {
+          max-width: 260px;
+        }
       }
       .ui-accordion-content-active {
 
