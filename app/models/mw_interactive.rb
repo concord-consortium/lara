@@ -101,4 +101,32 @@ class MwInteractive < ActiveRecord::Base
     # indicated if the interactive should be reported on in an iframe or not
     !has_report_url
   end
+
+  # This approach is temporary, it is specific for ITSI style authoring.
+  # It allows authors to select a special interactive, and then the labbook automatically becomes an
+  # uploading labbook
+  # If we keep the data modeling for this, then this code should be moved to the ITSI style authoring
+  # javascript code.
+  # Better yet would be to find another way to model and/or author this.
+  #
+  # NOTE: this is not supported in the new ManagedInteractives
+  #
+  def update_labbook_options
+    if labbook
+      upload_only_model_urls = (ENV['UPLOAD_ONLY_MODEL_URLS'] or '').split('|').map { |url| url.squish }
+      if upload_only_model_urls.include? url
+        labbook.action_type = Embeddable::Labbook::UPLOAD_ACTION
+        labbook.custom_action_label = "Take a Snapshot"
+        labbook.prompt = I18n.t 'LABBOOK.ITSI.UPLOAD_PROMPT'
+        labbook.save!
+      else
+        if upload_only_model_urls.include? url_was
+          labbook.action_type = Embeddable::Labbook::SNAPSHOT_ACTION
+          labbook.custom_action_label = nil
+          labbook.prompt = I18n.t 'LABBOOK.ITSI.SNAPSHOT_PROMPT'
+          labbook.save!
+        end
+      end
+    end
+  end
 end

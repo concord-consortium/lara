@@ -33,17 +33,9 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
-  # REVIEW TODO: is update_labbook_options needed?
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
   belongs_to :linked_interactive, :class_name => 'ManagedInteractive'
-
-  # REVIEW TODO: is update_labbook_options needed?
-  after_update :update_labbook_options
-
-  def self.table_name
-    'managed_interactives'
-  end
 
   # getter for constructed url
   def url
