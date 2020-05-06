@@ -10,7 +10,9 @@ describe ManagedInteractive do
                                                  :click_to_play => true,
                                                  :full_window => true,
                                                  :click_to_play_prompt => "base click_to_play_prompt",
-                                                 :image_url => "http://base.url/image"
+                                                 :image_url => "http://base.url/image",
+                                                 :enable_learner_state => true,
+                                                 :show_delete_data_button => true
                                                 )}
 
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
@@ -122,6 +124,38 @@ describe ManagedInteractive do
     end
   end
 
+  describe "#import" do
+    it 'imports what is exported' do
+      exported = managed_interactive.export()
+      imported = ManagedInteractive.import(exported)
+      expect(imported.export()).to eq exported
+
+      # tests if the existing library interactive is loaded
+      expect(imported.library_interactive_id).not_to be_nil
+      expect(imported.library_interactive_id).to be managed_interactive.library_interactive_id
+    end
+
+    it 'creates a new library interactive if export_hash not found' do
+      exported_parsed = JSON.parse(managed_interactive.export())
+      exported_parsed["library_interactive"]["hash"] = "DOES NOT EXIST"
+      exported = exported_parsed.to_json
+      imported = ManagedInteractive.import(exported)
+      expect(imported.export()).to eq managed_interactive.export()
+
+      # tests if a new library interactive is created
+      expect(imported.library_interactive_id).to be_nil
+      imported.save
+      expect(imported.library_interactive_id).not_to be managed_interactive.library_interactive_id
+      expect(imported.library_interactive_id).to be > managed_interactive.library_interactive_id
+    end
+  end
+
+  describe "portal_type" do
+    it "returns iframe interactive like mw_interactive does" do
+      expect(ManagedInteractive.portal_type).to eq "iframe interactive"
+    end
+  end
+
   describe "validation" do
 
     it "ensures name is present" do
@@ -214,6 +248,22 @@ describe ManagedInteractive do
       expect(managed_interactive.image_url).to eq library_interactive.image_url
       managed_interactive.inherit_image_url = false
       expect(managed_interactive.image_url).to eq "custom image_url"
+    end
+
+    it "returns enable_learner_state" do
+      expect(library_interactive.enable_learner_state).to be true
+      expect(managed_interactive.enable_learner_state).to eq library_interactive.enable_learner_state
+      # without a library interactive it defaults to false
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.enable_learner_state).to be false
+    end
+
+    it "returns show_delete_data_button" do
+      expect(library_interactive.show_delete_data_button).to be true
+      expect(managed_interactive.show_delete_data_button).to eq library_interactive.show_delete_data_button
+      # without a library interactive it defaults to false
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.show_delete_data_button).to be false
     end
   end
 end

@@ -9,10 +9,11 @@ class ManagedInteractivesController < InteractiveController
     set_page
   end
 
-  def create_interactive
-    @interactive = ManagedInteractive.create!()
-    @params = { edit_managed_int: @interactive.id }
-  end
+  # REVIEW: this was copied from the MWInteractivesController but it doesn't look to be used anywere
+  # def create_interactive
+  #   @interactive = ManagedInteractive.create!()
+  #   @params = { edit_managed_int: @interactive.id }
+  # end
 
   def get_interactive_params
     @input_params = params[:managed_interactive]

@@ -164,48 +164,30 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def export
-    json = self.as_json(only:[:name,
-      :url_fragment,
-      :authored_state,
-      :is_hidden,
-      :is_full_width,
-      :show_in_featured_question_report,
-      :inherit_aspect_ratio_method,
-      :custom_aspect_ratio_method,
-      :inherit_native_width,
-      :custom_native_width,
-      :inherit_native_height,
-      :custom_native_height,
-      :inherit_click_to_play,
-      :custom_click_to_play,
-      :inherit_full_window,
-      :custom_full_window,
-      :inherit_click_to_play_prompt,
-      :custom_click_to_play_prompt,
-      :inherit_image_url,
-      :custom_image_url
-    ])
-    if library_interactive
-      json["library_interactive"] = {
-        hash: library_interactive.generate_export_hash(),
-        data: library_interactive.export()
-      }.to_json()
-    end
+    hash = to_hash()
+    hash.delete(:library_interactive_id)
+    hash[:library_interactive] = {
+      hash: library_interactive.generate_export_hash(),
+      data: library_interactive.to_hash()
+    }
+    hash.to_json()
   end
 
   def self.import(import_hash)
     # save off the imported library interactive to hydrate it after the instance is created
-    imported_library_interactive = import_hash[:library_interactive]
-    import_hash.delete(:library_interactive)
-    managed_interactive = self.new(import_hash)
+    parsed = JSON.parse(import_hash)
+    imported_library_interactive = parsed["library_interactive"]
+    parsed.delete("library_interactive")
+
+    managed_interactive = self.new(parsed)
 
     # find the existing matching library interactive or create a new one
     if imported_library_interactive
-      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive[:hash])
+      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive["hash"])
       if library_interactive
-        self.library_interactive = library_interactive
+        managed_interactive.library_interactive = library_interactive
       else
-        self.library_interactive = LibraryInteractive.import(imported_library_interactive[:data])
+        managed_interactive.library_interactive = LibraryInteractive.import(imported_library_interactive["data"])
 
         # REVIEW QUESTION: should we call #save here - if we don't and the user imports an activity
         # that uses the same library interactive more than once it won't find the newly created
