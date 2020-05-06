@@ -391,6 +391,48 @@ describe InteractivePagesController do
         expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
       end
 
+      it 'creates an external script embeddable and adds it to the page' do
+        external_script_count = Embeddable::ExternalScript.count()
+        embeddable_count = page1.embeddables.length
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
+
+        page1.reload
+
+        expect(page1.embeddables.count).to eq(embeddable_count + 1)
+        expect(Embeddable::ExternalScript.count()).to eq(external_script_count + 1)
+      end
+
+      it 'redirects to the edit page' do
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
+
+        embeddable_id = page1.embeddables.last.id
+        act.reload
+        expect(act.changed_by).to eq(@user)
+
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_es => embeddable_id }))
+      end
+
+      it 'creates an plugin embeddable and adds it to the page' do
+        plugin_count = Embeddable::EmbeddablePlugin.count()
+        embeddable_count = page1.embeddables.length
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::EmbeddablePlugin'
+
+        page1.reload
+
+        expect(page1.embeddables.count).to eq(embeddable_count + 1)
+        expect(Embeddable::EmbeddablePlugin.count()).to eq(plugin_count + 1)
+      end
+
+      it 'redirects to the edit page' do
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
+
+        embeddable_id = page1.embeddables.last.id
+        act.reload
+        expect(act.changed_by).to eq(@user)
+
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_es => embeddable_id }))
+      end
+
       it 'raises an error on invalid embeddable_type' do
         begin
           post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus'
