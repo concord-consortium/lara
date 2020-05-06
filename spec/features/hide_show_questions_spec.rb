@@ -31,4 +31,12 @@ feature "Activity page", :js => true do
     first('.ui-accordion-header').click
     expect(page).to have_css '.embeddable_options'
   end
+
+  scenario "is edited and question is shown and then hidden" do
+    visit activity_page_url
+
+    first('.ui-accordion-header').click
+    first('.ui-accordion-header').click
+    expect(page).to have_no_css '.embeddable_options'
+  end
 end
