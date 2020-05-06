@@ -3,8 +3,6 @@ require 'digest'
 class LibraryInteractive < ActiveRecord::Base
   include HasAspectRatio
 
-  DEFAULT_CLICK_TO_PLAY_PROMPT = "Click here to start the interactive."
-
   attr_accessible :aspect_ratio_method, :authoring_guidance, :base_url, :click_to_play, :click_to_play_prompt, :description,
                   :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
                   :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash

@@ -158,20 +158,6 @@ describe ManagedInteractive do
 
   describe "validation" do
 
-    it "ensures name is present" do
-      managed_interactive.name = "Name"
-      expect(managed_interactive).to be_valid
-      managed_interactive.name = ""
-      expect(managed_interactive).not_to be_valid
-    end
-
-    it "ensures url_fragment is present and valid" do
-      managed_interactive.url_fragment = "/foo"
-      expect(managed_interactive).to be_valid
-      managed_interactive.url_fragment = ""
-      expect(managed_interactive).not_to be_valid
-    end
-
     it "ensures custom_native_width is valid" do
       managed_interactive.custom_native_width = 100
       expect(managed_interactive).to be_valid
