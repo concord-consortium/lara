@@ -1,14 +1,19 @@
 .embeddable_tools
   .drag_handle
-  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'managed_int', :allow_hide => allow_hide }
+  = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'managed_int', :allow_hide => allow_hide, :disallow_edit => true }
 .embeddable_options
   Managed interactive
   .model-edit
     .interactive-content
+      %div{:id => "admin-interactive-#{embeddable.id}"}
       %div{:id => "authorable-interactive-#{embeddable.id}"}
 = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 
 :javascript
+  $(document).ready( function() {
+    LARA.PageItemAdmin.renderManagedInteractiveAdmin(document.getElementById("admin-interactive-#{embeddable.id}"));
+  });
+
   (function() {
     var props = {
       interactive: #{embeddable.to_interactive_json},
