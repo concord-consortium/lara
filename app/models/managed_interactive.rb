@@ -47,45 +47,46 @@ class ManagedInteractive < ActiveRecord::Base
 
   # getter for constructed url
   def url
+    return nil unless library_interactive
     # BONUS: parse library_interactive.base_url query parameters and merge them with url_fragment query parameters
     "#{library_interactive.base_url}#{url_fragment}"
   end
 
   # getters for inherited attributes
   def aspect_ratio_method
-    inherit_aspect_ratio_method ? library_interactive.aspect_ratio_method : custom_aspect_ratio_method
+    inherit_aspect_ratio_method && library_interactive ? library_interactive.aspect_ratio_method : custom_aspect_ratio_method
   end
 
   def native_width
-    inherit_native_width ? library_interactive.native_width : custom_native_width
+    inherit_native_width && library_interactive ? library_interactive.native_width : custom_native_width
   end
 
   def native_height
-    inherit_native_height ? library_interactive.native_height : custom_native_height
+    inherit_native_height && library_interactive ? library_interactive.native_height : custom_native_height
   end
 
   def click_to_play
-    inherit_click_to_play ? library_interactive.click_to_play : custom_click_to_play
+    inherit_click_to_play && library_interactive ? library_interactive.click_to_play : custom_click_to_play
   end
 
   def full_window
-    inherit_full_window ? library_interactive.full_window : custom_full_window
+    inherit_full_window && library_interactive ? library_interactive.full_window : custom_full_window
   end
 
   def click_to_play_prompt
-    inherit_click_to_play_prompt ? library_interactive.click_to_play_prompt : custom_click_to_play_prompt
+    inherit_click_to_play_prompt && library_interactive ? library_interactive.click_to_play_prompt : custom_click_to_play_prompt
   end
 
   def image_url
-    inherit_image_url ? library_interactive.image_url : custom_image_url
+    inherit_image_url && library_interactive ? library_interactive.image_url : custom_image_url
   end
 
   def enable_learner_state
-    library_interactive ? library_interactive.enable_learner_state : false
+    library_interactive && library_interactive ? library_interactive.enable_learner_state : false
   end
 
   def show_delete_data_button
-    library_interactive ? library_interactive.show_delete_data_button : false
+    library_interactive && library_interactive ? library_interactive.show_delete_data_button : false
   end
 
   def self.string_name

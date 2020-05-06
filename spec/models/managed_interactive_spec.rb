@@ -174,10 +174,12 @@ describe ManagedInteractive do
   end
 
   describe "inheritance methods" do
-    # NOTE: all the inherit_* attributes default to true and are tested for that
+    # NOTE: all the inherit_* attributes default to true and are tested for that along with testing if the library_interactive is nil
 
     it "concats the url" do
       expect(managed_interactive.url).to eq 'http://concord.org/test'
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.url).to eq nil
     end
 
     it "returns aspect_ratio_method" do
@@ -185,6 +187,10 @@ describe ManagedInteractive do
       managed_interactive.custom_aspect_ratio_method = "custom aspect_ratio_method"
       expect(managed_interactive.aspect_ratio_method).to eq library_interactive.aspect_ratio_method
       managed_interactive.inherit_aspect_ratio_method = false
+      expect(managed_interactive.aspect_ratio_method).to eq "custom aspect_ratio_method"
+      managed_interactive.inherit_aspect_ratio_method = true
+      expect(managed_interactive.aspect_ratio_method).to eq library_interactive.aspect_ratio_method
+      managed_interactive.library_interactive = nil
       expect(managed_interactive.aspect_ratio_method).to eq "custom aspect_ratio_method"
     end
 
@@ -194,6 +200,10 @@ describe ManagedInteractive do
       expect(managed_interactive.native_width).to eq library_interactive.native_width
       managed_interactive.inherit_native_width = false
       expect(managed_interactive.native_width).to eq library_interactive.native_width * 2
+      managed_interactive.inherit_native_width = true
+      expect(managed_interactive.native_width).to eq library_interactive.native_width
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.native_width).to eq library_interactive.native_width * 2
     end
 
     it "returns native_height" do
@@ -201,6 +211,10 @@ describe ManagedInteractive do
       managed_interactive.custom_native_height = library_interactive.native_height * 2
       expect(managed_interactive.native_height).to eq library_interactive.native_height
       managed_interactive.inherit_native_height = false
+      expect(managed_interactive.native_height).to eq library_interactive.native_height * 2
+      managed_interactive.inherit_native_height = true
+      expect(managed_interactive.native_height).to eq library_interactive.native_height
+      managed_interactive.library_interactive = nil
       expect(managed_interactive.native_height).to eq library_interactive.native_height * 2
     end
 
@@ -210,6 +224,10 @@ describe ManagedInteractive do
       expect(managed_interactive.click_to_play).to eq library_interactive.click_to_play
       managed_interactive.inherit_click_to_play = false
       expect(managed_interactive.click_to_play).to eq !library_interactive.click_to_play
+      managed_interactive.inherit_click_to_play = true
+      expect(managed_interactive.click_to_play).to eq library_interactive.click_to_play
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.click_to_play).to eq !library_interactive.click_to_play
     end
 
     it "returns full_window" do
@@ -217,6 +235,10 @@ describe ManagedInteractive do
       managed_interactive.custom_full_window = !library_interactive.full_window
       expect(managed_interactive.full_window).to eq library_interactive.full_window
       managed_interactive.inherit_full_window = false
+      expect(managed_interactive.full_window).to eq !library_interactive.full_window
+      managed_interactive.inherit_full_window = true
+      expect(managed_interactive.full_window).to eq library_interactive.full_window
+      managed_interactive.library_interactive = nil
       expect(managed_interactive.full_window).to eq !library_interactive.full_window
     end
 
@@ -226,6 +248,10 @@ describe ManagedInteractive do
       expect(managed_interactive.click_to_play_prompt).to eq library_interactive.click_to_play_prompt
       managed_interactive.inherit_click_to_play_prompt = false
       expect(managed_interactive.click_to_play_prompt).to eq "custom click_to_play_prompt"
+      managed_interactive.inherit_click_to_play_prompt = true
+      expect(managed_interactive.click_to_play_prompt).to eq library_interactive.click_to_play_prompt
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.click_to_play_prompt).to eq "custom click_to_play_prompt"
     end
 
     it "returns image_url" do
@@ -233,6 +259,10 @@ describe ManagedInteractive do
       managed_interactive.custom_image_url = "custom image_url"
       expect(managed_interactive.image_url).to eq library_interactive.image_url
       managed_interactive.inherit_image_url = false
+      expect(managed_interactive.image_url).to eq "custom image_url"
+      managed_interactive.inherit_image_url = true
+      expect(managed_interactive.image_url).to eq library_interactive.image_url
+      managed_interactive.library_interactive = nil
       expect(managed_interactive.image_url).to eq "custom image_url"
     end
 
