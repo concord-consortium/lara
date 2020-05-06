@@ -26,6 +26,10 @@ describe VideoInteractive do
     expect(source.video_interactive_id).to be(video_interactive.id)
   end
 
+  it "has a description that's understandable to humans" do
+    expect(VideoInteractive.human_description).to eq('Video')
+  end
+
   describe '#aspect_ratio' do
     it 'returns a ratio of width to height' do
       # Default values
