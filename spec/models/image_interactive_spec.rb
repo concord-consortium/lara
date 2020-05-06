@@ -17,6 +17,10 @@ describe ImageInteractive do
     expect(image_interactive.interactive_page).to eq(page)
   end
 
+  it "has a description that's understandable to humans" do
+    expect(ImageInteractive.human_description).to eq('Image interactive')
+  end
+
   describe '#to_hash' do
     it 'has useful values' do
       expected = {
