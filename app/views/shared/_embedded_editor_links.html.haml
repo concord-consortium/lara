@@ -61,7 +61,7 @@
   = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
 
 = link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => confirm_delete }
-- if params["edit_embed_#{type}".to_sym].to_i == dash_id
+- if params["edit_#{type}".to_sym].to_i == embeddable.id
   :javascript
     $("a[id^=edit-embed-#{dash_id}]").click()
 
