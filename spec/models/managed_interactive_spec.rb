@@ -126,6 +126,34 @@ describe ManagedInteractive do
     end
   end
 
+  describe "#to_interactive_json" do
+    it 'has useful values' do
+      expect(JSON.parse(managed_interactive.to_interactive_json)).to eq(JSON.parse({
+        "id": managed_interactive.id,
+        "name": managed_interactive.name,
+        "url": managed_interactive.url,
+        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
+        "authored_state": managed_interactive.authored_state,
+        "click_to_play": managed_interactive.click_to_play,
+        "click_to_play_prompt": managed_interactive.click_to_play_prompt,
+        "enable_learner_state": managed_interactive.enable_learner_state,
+        "full_window": managed_interactive.full_window,
+        "has_report_url": managed_interactive.has_report_url,
+        "image_url": managed_interactive.image_url,
+        "is_full_width": managed_interactive.is_full_width,
+        "is_hidden": managed_interactive.is_hidden,
+        "linked_interactive_id": managed_interactive.linked_interactive_id,
+        "native_height": managed_interactive.native_height,
+        "native_width": managed_interactive.native_width,
+        "no_snapshots": managed_interactive.no_snapshots,
+        "show_delete_data_button": managed_interactive.show_delete_data_button,
+        "show_in_featured_question_report": managed_interactive.show_in_featured_question_report,
+        "updated_at": managed_interactive.updated_at,
+        "created_at": managed_interactive.created_at
+      }.to_json))
+    end
+  end
+
   describe "#import" do
     it 'imports what is exported' do
       exported = managed_interactive.export()
