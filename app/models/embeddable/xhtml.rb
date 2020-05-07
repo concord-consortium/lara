@@ -49,9 +49,5 @@ module Embeddable
     def self.display_partial
       :xhtml
     end
-
-    def self.human_description
-      "XHTML block"
-    end
   end
 end

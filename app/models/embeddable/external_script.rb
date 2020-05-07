@@ -19,10 +19,6 @@ module Embeddable
       :external_script
     end
 
-    def self.human_description
-      "External Script"
-    end
-
     def self.import(import_hash)
       return self.new(import_hash)
     end
