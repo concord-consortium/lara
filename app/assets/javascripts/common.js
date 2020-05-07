@@ -61,9 +61,4 @@ $(document).ready(function () {
             });
         }
     });
-
-    // If an Info/Assess block was just added, open that item in the accordion
-    if (window.location.search.match('edit_')) {
-      $('.accordion_embeddables').accordion('option', 'active', -1);
-    }
 });
