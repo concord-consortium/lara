@@ -52,9 +52,6 @@ module Embeddable
       :plugin
     end
 
-    def self.human_description
-      "Plugin"
-    end
     def to_hash
       {
         plugin: self.plugin.to_hash,
