@@ -11,7 +11,7 @@
 :javascript
   (function() {
     var props = {
-      interactive: #{embeddable.to_json},
+      interactive: #{embeddable.to_interactive_json},
       updateUrl: "#{page_managed_interactive_path(page, embeddable)}"
     };
     if (props.interactive.url) {

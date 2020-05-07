@@ -127,6 +127,34 @@ class ManagedInteractive < ActiveRecord::Base
     }
   end
 
+  # returns same json as mw_interactive
+  def to_interactive_json
+    # NOTE: model_library_url is missing as there is no analog
+    {
+      id: id,
+      name: name,
+      url: url,
+      aspect_ratio_method: aspect_ratio_method,
+      authored_state: authored_state,
+      click_to_play: click_to_play,
+      click_to_play_prompt: click_to_play_prompt,
+      enable_learner_state: enable_learner_state,
+      full_window: full_window,
+      has_report_url: has_report_url,
+      image_url: image_url,
+      is_full_width: is_full_width,
+      is_hidden: is_hidden,
+      linked_interactive_id: linked_interactive_id,
+      native_height: native_height,
+      native_width: native_width,
+      no_snapshots: no_snapshots,
+      show_delete_data_button: show_delete_data_button,
+      show_in_featured_question_report: show_in_featured_question_report,
+      updated_at: updated_at,
+      created_at: created_at
+    }.to_json
+  end
+
   def duplicate
     # Generate a new object with those values
     ManagedInteractive.new(self.to_hash)
