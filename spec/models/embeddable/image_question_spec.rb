@@ -10,6 +10,10 @@ describe Embeddable::ImageQuestion do
     expect(image_question).to be_valid
   end
 
+  it "has a description that's understandable to humans" do
+    expect(Embeddable::ImageQuestion.human_description).to eq('Image question')
+  end
+
   describe '#to_hash' do
     it 'has interesting attributes' do
       expected = {

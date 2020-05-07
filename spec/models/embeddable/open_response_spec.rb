@@ -9,6 +9,10 @@ describe Embeddable::OpenResponse do
     expect(open_response).to be_valid
   end
 
+  it "has a description that's understandable to humans" do
+    expect(Embeddable::OpenResponse.human_description).to eq('Open response question')
+  end
+
   describe '#to_hash' do
     it 'has interesting attributes' do
       expected = {

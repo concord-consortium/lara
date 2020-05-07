@@ -3,6 +3,10 @@ require File.expand_path('../../../spec_helper', __FILE__)
 describe Embeddable::Xhtml do
   let (:xhtml) { FactoryGirl.create(:xhtml) }
 
+  it "has a description that's understandable to humans" do
+    expect(Embeddable::Xhtml.human_description).to eq('Text block')
+  end
+
   describe 'HTML validation' do
     it 'rejects invalid HTML' do
       xhtml.content = '<p>This is invalid but parseable HTML.<p>Tag soup, ugh!</p>'
