@@ -16,7 +16,7 @@ class Embeddable::EmbeddablesController < ApplicationController
         if request.xhr?
           format.xml { render :partial => 'show', :locals => { @embeddable.class.display_partial => @embeddable } }
         else
-          flash[:notice] = "#{@embeddable.class.human_description} was successfully updated."
+          flash[:notice] = "#{@embeddable.class.model_name.human} was successfully updated."
           format.html { redirect_to(request.env['HTTP_REFERER'].sub(/\?.+/, '')) } # Strip the edit-me param
           format.xml  { head :ok }
         end

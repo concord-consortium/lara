@@ -77,10 +77,6 @@ module Embeddable
       :open_response
     end
 
-    def self.human_description
-      "Open response question"
-    end
-
     def export
       return self.as_json(only:[:name,
                                 :prompt,

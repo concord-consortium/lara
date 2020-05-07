@@ -199,8 +199,5 @@ module Embeddable
       :multiple_choice
     end
 
-    def self.human_description
-      "Multiple choice question"
-    end
   end
 end

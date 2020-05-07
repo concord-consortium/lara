@@ -19,10 +19,6 @@ describe MwInteractive do
     expect(interactive.interactive_page).to eq(page)
   end
 
-  it "has a description that's understandable to humans" do
-    expect(MwInteractive.human_description).to eq('Iframe')
-  end
-
   describe '#to_hash' do
     it 'has useful values' do
       expected = {

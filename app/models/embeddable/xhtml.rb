@@ -49,9 +49,5 @@ module Embeddable
     def self.display_partial
       :xhtml
     end
-
-    def self.human_description
-      "Text block"
-    end
   end
 end

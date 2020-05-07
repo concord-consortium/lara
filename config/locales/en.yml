@@ -168,3 +168,13 @@ en:
       DEFAULT: 'Default aspect ratio, or set by interactive.'
       MANUAL: 'Manually set the aspect ratio.'
       MAX: 'Use all available space.'
+  activerecord:
+    models:
+      "embeddable/external_script": "External script"
+      "image_interactive": "Image interactive"
+      "embeddable/image_question": "Image question"
+      "embeddable/multiple_choice": "Multiple choice question"
+      "mw_interactive": "Iframe interactive"
+      "embeddable/open_response": "Open response question"
+      "video_interactive": "Video"
+      "embeddable/xhtml": "Text block"

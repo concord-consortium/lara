@@ -19,10 +19,6 @@ describe Embeddable::MultipleChoice do
 
   let(:first_mc_choice_id) { multichoice.choices.first.id }
 
-  it "has a description that's understandable to humans" do
-    expect(Embeddable::MultipleChoice.human_description).to eq('Multiple choice question')
-  end
-
   describe "a newly created MutipleChoiceQuestion" do
     it "belongs to a page" do
       expect(page.embeddables).to include(multichoice)

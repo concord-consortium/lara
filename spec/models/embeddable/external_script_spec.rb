@@ -8,10 +8,6 @@ describe Embeddable::ExternalScript do
     p = FactoryGirl.create(:interactive_page)
   end
 
-  it "has a description that's understandable to humans" do
-    expect(Embeddable::ExternalScript.human_description).to eq('External script')
-  end
-
   # address bug:  undefined method `is_hidden?'
   describe '#is_hidden?' do
     it "should be a method returning false" do
