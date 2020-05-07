@@ -25,7 +25,7 @@
     = f.label :full_window, :id => "full_window_label_#{@library_interactive.id}", :text => 'Full window mode'
     %br
     = f.label :click_to_play_prompt, :id => "click_to_play_prompt_label_#{@library_interactive.id}", :text => 'Click to play prompt'
-    = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@library_interactive.id}", :placeholder => LibraryInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
+    = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@library_interactive.id}", :placeholder => MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
     %div{:style => "margin-bottom:5px;", :id => "image_url_warning_#{@library_interactive.id}"}
       %em Warning:
       Please provide an image URL to use click to play.

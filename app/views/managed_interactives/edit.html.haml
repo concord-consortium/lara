@@ -1,0 +1,18 @@
+- form_url = defined?(@page) ? page_managed_interactive_path(@page, @interactive) : managed_interactive_path(@interactive)
+.managed-interactive-edit-id
+  Interactive ID:
+  %span.managed-interactve-id=@interactive.id
+= form_for @interactive, :url => form_url do |f|
+  = f.error_messages
+  %p  This is a placeholder for the future React-based admin.  It only has a library interactive selector...
+
+  = field_set_tag 'Library Interactive' do
+    = f.select :library_interactive_id, options_from_collection_for_select(LibraryInteractive.all, 'id', 'name', @interactive.library_interactive_id), { :include_blank => false }
+
+  = field_set_tag 'Name' do
+    = f.text_field :name
+  = field_set_tag 'URL Fragment' do
+    = f.text_area :url_fragment, size: "45x4"
+
+  = f.button "Cancel", :class => 'close', :type => 'button'
+  = f.submit "Save", :class => 'embeddable-save', :default => 'default'

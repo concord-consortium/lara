@@ -181,6 +181,8 @@ class InteractivePagesController < ApplicationController
         param = { :edit_embed_xhtml => embeddable.id }
       when MwInteractive
         param = { :edit_mw_int => embeddable.id }
+      when ManagedInteractive
+        param = { :edit_managed_int => embeddable.id }
       when ImageInteractive
         param = { :edit_img_int => embeddable.id }
       when VideoInteractive
