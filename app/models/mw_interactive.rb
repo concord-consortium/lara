@@ -140,8 +140,4 @@ class MwInteractive < ActiveRecord::Base
   def prompt
     name
   end
-
-  def self.human_description
-    "Iframe"
-  end
 end

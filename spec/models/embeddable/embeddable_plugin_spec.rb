@@ -19,10 +19,6 @@ describe Embeddable::EmbeddablePlugin do
     expect(embeddable_plugin).to be_valid
   end
 
-  it "has a description that's understandable to humans" do
-    expect(Embeddable::EmbeddablePlugin.human_description).to eq('Plugin')
-  end
-
   describe '#to_hash' do
     it 'has saves interesting attributes' do
       expected = {

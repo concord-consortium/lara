@@ -103,9 +103,9 @@
                       - if !e.name.nil? && !e.name.empty?
                         #{e.name}
                       - else
-                        #{e.class.human_description.titleize}
+                        #{e.class.model_name.human.titleize}
                     - else
-                      #{e.class.human_description.titleize}
+                      #{e.class.model_name.human.titleize}
                     %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                   %div
                     = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => false }

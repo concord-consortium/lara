@@ -6,10 +6,6 @@ describe Embeddable::Labbook do
 
   let(:labbook) { Embeddable::Labbook.new }
 
-  it "has a description that's understandable to humans" do
-    expect(Embeddable::Labbook.human_description).to eq('Labbook album')
-  end
-
   describe '#to_hash' do
     it 'is implemented' do
       expect(labbook).to respond_to(:to_hash)
