@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200430094758) do
+ActiveRecord::Schema.define(:version => 20200501133912) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -398,7 +398,10 @@ ActiveRecord::Schema.define(:version => 20200430094758) do
     t.integer  "native_height"
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
+    t.string   "export_hash"
   end
+
+  add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -445,6 +448,33 @@ ActiveRecord::Schema.define(:version => 20200430094758) do
 
   add_index "lightweight_activities_sequences", ["lightweight_activity_id"], :name => "index_activities_sequence_join_by_activity"
   add_index "lightweight_activities_sequences", ["sequence_id"], :name => "index_activities_sequence_join_by_sequence"
+
+  create_table "managed_interactives", :force => true do |t|
+    t.integer  "library_interactive_id"
+    t.string   "name"
+    t.text     "url_fragment"
+    t.text     "authored_state"
+    t.boolean  "is_hidden",                        :default => false
+    t.boolean  "inherit_aspect_ratio_method",      :default => true
+    t.string   "custom_aspect_ratio_method"
+    t.boolean  "inherit_native_width",             :default => true
+    t.integer  "custom_native_width"
+    t.boolean  "inherit_native_height",            :default => true
+    t.integer  "custom_native_height"
+    t.boolean  "inherit_click_to_play",            :default => true
+    t.boolean  "custom_click_to_play",             :default => false
+    t.boolean  "inherit_full_window",              :default => true
+    t.boolean  "custom_full_window",               :default => false
+    t.boolean  "inherit_click_to_play_prompt",     :default => true
+    t.string   "custom_click_to_play_prompt"
+    t.boolean  "inherit_image_url",                :default => true
+    t.string   "custom_image_url"
+    t.integer  "linked_interactive_id"
+    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "show_in_featured_question_report", :default => true
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+  end
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"

@@ -3,6 +3,51 @@ require 'spec_helper'
 describe LibraryInteractive do
   let(:library_interactive) { FactoryGirl.create(:library_interactive) }
 
+  describe '#to_hash' do
+    it 'has useful values' do
+      expected = {
+        aspect_ratio_method: library_interactive.aspect_ratio_method,
+        authoring_guidance: library_interactive.authoring_guidance,
+        base_url: library_interactive.base_url,
+        click_to_play: library_interactive.click_to_play,
+        click_to_play_prompt: library_interactive.click_to_play_prompt,
+        description: library_interactive.description,
+        enable_learner_state: library_interactive.enable_learner_state,
+        full_window: library_interactive.full_window,
+        has_report_url: library_interactive.has_report_url,
+        image_url: library_interactive.image_url,
+        name: library_interactive.name,
+        native_height: library_interactive.native_height,
+        native_width: library_interactive.native_width,
+        no_snapshots: library_interactive.no_snapshots,
+        show_delete_data_button: library_interactive.show_delete_data_button,
+        thumbnail_url: library_interactive.thumbnail_url
+       }
+      expect(library_interactive.to_hash).to eq(expected)
+    end
+  end
+
+  describe "#import" do
+    it 'imports what is exported' do
+      exported = library_interactive.export()
+      imported = LibraryInteractive.import(exported)
+      expect(imported.export()).to eq exported
+    end
+  end
+
+  describe "export_hash" do
+    let(:library_interactive_via_build) { FactoryGirl.build(:library_interactive) }
+
+    it "is set on create" do
+      expect(library_interactive.export_hash).not_to be_nil
+      expect(library_interactive.export_hash).to eq(library_interactive.generate_export_hash())
+    end
+
+    it "is empty on build" do
+      expect(library_interactive_via_build.export_hash).to be_nil
+    end
+  end
+
   describe "validation" do
 
     it "ensures name is present" do

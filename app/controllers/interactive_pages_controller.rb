@@ -170,25 +170,27 @@ class InteractivePagesController < ApplicationController
         unless embeddable.choices.length > 0
           embeddable.create_default_choices
         end
-        param = { :edit_embed_mc => embeddable.id }
+        param = { :edit_mc => embeddable.id }
       when Embeddable::OpenResponse
-        param = { :edit_embed_or => embeddable.id }
+        param = { :edit_or => embeddable.id }
       when Embeddable::ImageQuestion
-        param = { :edit_embed_iq => embeddable.id }
+        param = { :edit_iq => embeddable.id }
       when Embeddable::Labbook
-        param = { :edit_embed_lb => embeddable.id }
+        param = { :edit_lb => embeddable.id }
       when Embeddable::Xhtml
-        param = { :edit_embed_xhtml => embeddable.id }
+        param = { :edit_xhtml => embeddable.id }
       when Embeddable::ExternalScript
-        param = { :edit_embed_es => embeddable.id }
+        param = { :edit_external_script => embeddable.id }
+      when Embeddable::EmbeddablePlugin
+        param = { :edit_embeddable_plugin => embeddable.id }
       when MwInteractive
         param = { :edit_mw_int => embeddable.id }
+      when ManagedInteractive
+        param = { :edit_managed_int => embeddable.id }
       when ImageInteractive
-        param = { :edit_img_int => embeddable.id }
+        param = { :edit_image => embeddable.id }
       when VideoInteractive
-        param = { :edit_vid_int => embeddable.id }
-      when Embeddable::EmbeddablePlugin
-        param = { :edit_embed_plugin => embeddable.id }
+        param = { :edit_video => embeddable.id }
     end
     # Add parameter to open new embeddable modal
     redirect_to edit_activity_page_path(@activity, @page, param)

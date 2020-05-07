@@ -381,58 +381,6 @@ describe InteractivePagesController do
         expect(Embeddable::Xhtml.count()).to eq(xhtml_count + 1)
       end
 
-      it 'redirects to the edit page' do
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Xhtml'
-
-        embeddable_id = page1.embeddables.last.id
-        act.reload
-        expect(act.changed_by).to eq(@user)
-
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_xhtml => embeddable_id }))
-      end
-
-      it 'creates an external script embeddable and adds it to the page' do
-        external_script_count = Embeddable::ExternalScript.count()
-        embeddable_count = page1.embeddables.length
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
-
-        page1.reload
-
-        expect(page1.embeddables.count).to eq(embeddable_count + 1)
-        expect(Embeddable::ExternalScript.count()).to eq(external_script_count + 1)
-      end
-
-      it 'redirects to the edit page' do
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
-
-        embeddable_id = page1.embeddables.last.id
-        act.reload
-        expect(act.changed_by).to eq(@user)
-
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_es => embeddable_id }))
-      end
-
-      it 'creates an plugin embeddable and adds it to the page' do
-        plugin_count = Embeddable::EmbeddablePlugin.count()
-        embeddable_count = page1.embeddables.length
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::EmbeddablePlugin'
-
-        page1.reload
-
-        expect(page1.embeddables.count).to eq(embeddable_count + 1)
-        expect(Embeddable::EmbeddablePlugin.count()).to eq(plugin_count + 1)
-      end
-
-      it 'redirects to the edit page' do
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::ExternalScript'
-
-        embeddable_id = page1.embeddables.last.id
-        act.reload
-        expect(act.changed_by).to eq(@user)
-
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_embed_es => embeddable_id }))
-      end
-
       it 'raises an error on invalid embeddable_type' do
         begin
           post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'Embeddable::Bogus'
@@ -451,13 +399,29 @@ describe InteractivePagesController do
         expect(page1.interactives.count).to eq(interactives_count + 1)
         expect(ImageInteractive.count()).to eq(images_count + 1)
       end
+    end
 
-      it 'redirects to the edit page' do
-        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => 'ImageInteractive'
-        interactive_id = page1.interactives.last.id
+    it 'add_embeddable redirects to the edit page' do
+      embeddable_types = {
+        Embeddable::MultipleChoice => :edit_mc,
+        Embeddable::OpenResponse => :edit_or,
+        Embeddable::ImageQuestion => :edit_iq,
+        Embeddable::Labbook => :edit_lb,
+        Embeddable::Xhtml => :edit_xhtml,
+        Embeddable::ExternalScript => :edit_external_script,
+        Embeddable::EmbeddablePlugin => :edit_embeddable_plugin,
+        MwInteractive => :edit_mw_int,
+        ImageInteractive => :edit_image,
+        VideoInteractive => :edit_video
+      }
+      embeddable_types.each do |clazz, edit_slug|
+        post :add_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => clazz.name
         act.reload
         expect(act.changed_by).to eq(@user)
-        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, { :edit_img_int => interactive_id }))
+        id = clazz.last.id
+        params = {}
+        params[edit_slug] = id
+        expect(response).to redirect_to(edit_activity_page_path(act.id, page1.id, params))
       end
     end
 

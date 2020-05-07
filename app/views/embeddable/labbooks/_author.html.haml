@@ -12,7 +12,7 @@
     %i.fa.fa-camera
     = embeddable.action_label
 
-  - if params[:edit_embed_lb].to_i == embeddable.id
+  - if params[:edit_lb].to_i == embeddable.id
     :javascript
       $("a[id^=edit-embed-lb-#{embeddable.id}]").click()
 = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
