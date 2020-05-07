@@ -12,7 +12,9 @@ describe ManagedInteractive do
                                                  :click_to_play_prompt => "base click_to_play_prompt",
                                                  :image_url => "http://base.url/image",
                                                  :enable_learner_state => true,
-                                                 :show_delete_data_button => true
+                                                 :show_delete_data_button => false,
+                                                 :has_report_url => true,
+                                                 :no_snapshots => true
                                                 )}
 
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
@@ -136,10 +138,8 @@ describe ManagedInteractive do
     end
 
     it 'creates a new library interactive if export_hash not found' do
-      exported_parsed = JSON.parse(managed_interactive.export())
-      exported_parsed["library_interactive"]["hash"] = "DOES NOT EXIST"
-      exported = exported_parsed.to_json
-      imported = ManagedInteractive.import(exported)
+      managed_interactive.library_interactive.name = "This doesn't exist in the database"
+      imported = ManagedInteractive.import(managed_interactive.export())
       expect(imported.export()).to eq managed_interactive.export()
 
       # tests if a new library interactive is created
@@ -147,6 +147,23 @@ describe ManagedInteractive do
       imported.save
       expect(imported.library_interactive_id).not_to be managed_interactive.library_interactive_id
       expect(imported.library_interactive_id).to be > managed_interactive.library_interactive_id
+    end
+
+    it 'does not create duplicate new library interactives if export_hash not found' do
+      managed_interactive.library_interactive.name = "This doesn't exist in the database"
+      exported = managed_interactive.export()
+      imported1 = ManagedInteractive.import(exported)
+      imported2 = ManagedInteractive.import(exported)
+      expect(imported1.export()).to eq managed_interactive.export()
+      expect(imported2.export()).to eq managed_interactive.export()
+
+      # tests if a new library interactive is created
+      expect(imported1.library_interactive_id).to be_nil
+      expect(imported2.library_interactive_id).not_to be_nil  # the import saves the library interactive
+      imported1.save
+      expect(imported1.library_interactive_id).to be imported2.library_interactive_id
+      expect(imported1.library_interactive_id).not_to be managed_interactive.library_interactive_id
+      expect(imported1.library_interactive_id).to be > managed_interactive.library_interactive_id
     end
   end
 
@@ -265,7 +282,9 @@ describe ManagedInteractive do
       managed_interactive.library_interactive = nil
       expect(managed_interactive.image_url).to eq "custom image_url"
     end
+  end
 
+  describe "proxied methods" do
     it "returns enable_learner_state" do
       expect(library_interactive.enable_learner_state).to be true
       expect(managed_interactive.enable_learner_state).to eq library_interactive.enable_learner_state
@@ -275,11 +294,27 @@ describe ManagedInteractive do
     end
 
     it "returns show_delete_data_button" do
-      expect(library_interactive.show_delete_data_button).to be true
+      expect(library_interactive.show_delete_data_button).to be false
       expect(managed_interactive.show_delete_data_button).to eq library_interactive.show_delete_data_button
+      # without a library interactive it defaults to true
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.show_delete_data_button).to be true
+    end
+
+    it "returns has_report_url" do
+      expect(library_interactive.has_report_url).to be true
+      expect(managed_interactive.has_report_url).to eq library_interactive.has_report_url
       # without a library interactive it defaults to false
       managed_interactive.library_interactive = nil
-      expect(managed_interactive.show_delete_data_button).to be false
+      expect(managed_interactive.has_report_url).to be false
+    end
+
+    it "returns no_snapshots" do
+      expect(library_interactive.no_snapshots).to be true
+      expect(managed_interactive.no_snapshots).to eq library_interactive.no_snapshots
+      # without a library interactive it defaults to false
+      managed_interactive.library_interactive = nil
+      expect(managed_interactive.no_snapshots).to be false
     end
   end
 end

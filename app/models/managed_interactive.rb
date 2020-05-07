@@ -39,6 +39,8 @@ class ManagedInteractive < ActiveRecord::Base
 
   # getter for constructed url
   def url
+    # BONUS: instead of returnng nil return a placeholder url that shows a "No interative selecte yet" message
+    # in both authoring and runtime
     return nil unless library_interactive
     # BONUS: parse library_interactive.base_url query parameters and merge them with url_fragment query parameters
     "#{library_interactive.base_url}#{url_fragment}"
@@ -73,12 +75,21 @@ class ManagedInteractive < ActiveRecord::Base
     inherit_image_url && library_interactive ? library_interactive.image_url : custom_image_url
   end
 
+  # getters for proxied attributes
   def enable_learner_state
-    library_interactive && library_interactive ? library_interactive.enable_learner_state : false
+    library_interactive  ? library_interactive.enable_learner_state : false
   end
 
   def show_delete_data_button
-    library_interactive && library_interactive ? library_interactive.show_delete_data_button : false
+    library_interactive ? library_interactive.show_delete_data_button : true
+  end
+
+  def has_report_url
+    library_interactive ? library_interactive.has_report_url : false
+  end
+
+  def no_snapshots
+    library_interactive ? library_interactive.no_snapshots : false
   end
 
   def self.string_name
@@ -146,11 +157,12 @@ class ManagedInteractive < ActiveRecord::Base
       if library_interactive
         managed_interactive.library_interactive = library_interactive
       else
-        managed_interactive.library_interactive = LibraryInteractive.import(imported_library_interactive["data"])
+        library_interactive = LibraryInteractive.import(imported_library_interactive["data"])
+        managed_interactive.library_interactive = library_interactive
 
-        # REVIEW QUESTION: should we call #save here - if we don't and the user imports an activity
-        # that uses the same library interactive more than once it won't find the newly created
-        # library interactive
+        # save is called here in case an imported activity uses the same library interactive more than once
+        # if save wasn't called then multiple copies of the same library interactive would be created
+        library_interactive.save
       end
     end
 
@@ -163,9 +175,7 @@ class ManagedInteractive < ActiveRecord::Base
     enable_learner_state
   end
 
-  # REVIEW: should this be like mw_interactive? (!has_report_url)
   def reportable_in_iframe?
-    true
+    !has_report_url
   end
-
 end
