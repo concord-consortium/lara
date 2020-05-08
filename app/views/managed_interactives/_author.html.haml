@@ -5,15 +5,10 @@
   Managed interactive
   .model-edit
     .interactive-content
-      %div{:id => "admin-interactive-#{embeddable.id}"}
       %div{:id => "authorable-interactive-#{embeddable.id}"}
 = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 
 :javascript
-  $(document).ready( function() {
-    LARA.PageItemAdmin.renderManagedInteractiveAdmin(document.getElementById("admin-interactive-#{embeddable.id}"));
-  });
-
   (function() {
     var props = {
       interactive: #{embeddable.to_interactive_json},
