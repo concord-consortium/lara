@@ -898,17 +898,13 @@ fieldset {
       }
     }
     .ui-accordion {
-      counter-reset: assessItem;
+
       .ui-accordion-header {
         background: #b4e3ee;
         border-color: #b4e3ee;
         border-radius: 0;
         color: #126eac;
 
-        &:before {
-          counter-increment: assessItem;
-          content: counter(assessItem) '. ';
-        }
         &:hover {
           background: #126eac;
           border-color: #126eac;
