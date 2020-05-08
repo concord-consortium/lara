@@ -38,9 +38,9 @@ shared_examples "attached to interactive" do
     let(:interactive_b)         { FactoryGirl.create(:mw_interactive) }
 
     let(:expected_identifier_1) { AttachedToInteractive::NO_INTERACTIVE_SELECT }
-    let(:expected_identifier_2) { ["Mw interactive (1)", "#{interactive_a.id}-MwInteractive"]}
-    let(:expected_identifier_3) { ["Mw interactive (2)", "#{interactive_b.id}-MwInteractive"]}
-    let(:expected_identifier_4) { ["Mw interactive (hidden)(3)", "#{hidden_mw_interactive.id}-MwInteractive"]}
+    let(:expected_identifier_2) { ["Iframe interactive (1)", "#{interactive_a.id}-MwInteractive"]}
+    let(:expected_identifier_3) { ["Iframe interactive (2)", "#{interactive_b.id}-MwInteractive"]}
+    let(:expected_identifier_4) { ["Iframe interactive (hidden)(3)", "#{hidden_mw_interactive.id}-MwInteractive"]}
 
     let(:interactives) { [interactive_a, interactive_b, hidden_mw_interactive] }
     it "should have good options" do

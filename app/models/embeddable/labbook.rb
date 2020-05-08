@@ -30,10 +30,6 @@ module Embeddable
       :embeddable_labbook
     end
 
-    def self.human_description
-      "Labbook album"
-    end
-
     def self.portal_type
       # Note that the same type is also used by MwInteractive.
       'iframe interactive'

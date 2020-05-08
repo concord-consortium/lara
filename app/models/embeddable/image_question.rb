@@ -119,8 +119,4 @@ class Embeddable::ImageQuestion < ActiveRecord::Base
   def self.display_partial
     :image_question
   end
-
-  def self.human_description
-    "Image question"
-  end
 end
