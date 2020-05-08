@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/page-item-admin/index.tsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/page-item-authoring/index.tsx");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -8125,10 +8125,10 @@ function isMobileDevice() {
 
 /***/ }),
 
-/***/ "./src/page-item-admin/index.tsx":
-/*!***************************************!*\
-  !*** ./src/page-item-admin/index.tsx ***!
-  \***************************************/
+/***/ "./src/page-item-authoring/index.tsx":
+/*!*******************************************!*\
+  !*** ./src/page-item-authoring/index.tsx ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8137,10 +8137,10 @@ function isMobileDevice() {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
-var managed_interactives_admin_1 = __webpack_require__(/*! ./managed-interactives-admin */ "./src/page-item-admin/managed-interactives-admin.tsx");
-exports.ManagedInteractiveAdmin = managed_interactives_admin_1.ManagedInteractiveAdmin;
+var managed_interactives_authoring_1 = __webpack_require__(/*! ./managed-interactives-authoring */ "./src/page-item-authoring/managed-interactives-authoring.tsx");
+exports.ManagedInteractiveAdmin = managed_interactives_authoring_1.ManagedInteractiveAdmin;
 var renderManagedInteractiveAdmin = function (root, props) {
-    return ReactDOM.render(React.createElement(managed_interactives_admin_1.ManagedInteractiveAdmin, { selectLegend: props ? props.selectLegend : undefined, selectId: props ? props.selectId : undefined, selectName: props ? props.selectName : undefined, libraryInteractive: props ? props.libraryInteractive : undefined }), root);
+    return ReactDOM.render(React.createElement(managed_interactives_authoring_1.ManagedInteractiveAdmin, { selectLegend: props ? props.selectLegend : undefined, selectId: props ? props.selectId : undefined, selectName: props ? props.selectName : undefined, libraryInteractive: props ? props.libraryInteractive : undefined }), root);
 };
 exports.renderManagedInteractiveAdmin = renderManagedInteractiveAdmin;
 window.LARA.PageItemAdmin = {
@@ -8150,10 +8150,10 @@ window.LARA.PageItemAdmin = {
 
 /***/ }),
 
-/***/ "./src/page-item-admin/managed-interactives-admin.tsx":
-/*!************************************************************!*\
-  !*** ./src/page-item-admin/managed-interactives-admin.tsx ***!
-  \************************************************************/
+/***/ "./src/page-item-authoring/managed-interactives-authoring.tsx":
+/*!********************************************************************!*\
+  !*** ./src/page-item-authoring/managed-interactives-authoring.tsx ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8244,4 +8244,4 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=page-item-admin.js.map
+//# sourceMappingURL=page-item-authoring.js.map

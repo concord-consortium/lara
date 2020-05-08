@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { ManagedInteractiveAdmin, ILibraryInteractive } from "./managed-interactives-admin";
+import { ManagedInteractiveAdmin, ILibraryInteractive } from "./managed-interactives-authoring";
 
 // by default it is set to render within the managed interactive popup but this can be changed by
 // specifing a different id and name that matches the form that it is enclosed within
