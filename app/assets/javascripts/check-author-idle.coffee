@@ -13,8 +13,8 @@ $ ->
 
     blockerHTML = $ [
       '<div id="', blockerId, '" >',
-        '<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #000; opacity: 0.25"></div>',
-        '<div style="position: absolute; top: 25%; left: 25%; right: 25%; background-color: #fff; text-align: center; font-size: 24px; line-height: 2em; padding: 30px;">',
+        '<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #000; opacity: 0.25"></div>',
+        '<div style="position: fixed; top: 25%; left: 25%; right: 25%; background-color: #fff; text-align: center; font-size: 24px; line-height: 2em; padding: 30px;">',
           'Your login session has timed out.  Reload this page to log back in and continue editing.'
         '</div>',
       '</div>'
