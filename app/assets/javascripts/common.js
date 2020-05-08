@@ -20,7 +20,7 @@ $(document).ready(function () {
     // Set up sortable lists:
     // TODO: Refactor this into an object
     // Embeddables in page edit
-    $('.accordion_embeddables').accordion({ active: false,
+    $('.accordion_embeddable').accordion({ active: false,
       collapsible: true,
       header: 'h3',
       heightStyle: 'content'

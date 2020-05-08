@@ -92,12 +92,12 @@
             = hidden_field_tag :approved_script_id
             = hidden_field_tag :component_label
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
-          .embeddables_list.sortable_embeddables.accordion_embeddables
+          .embeddables_list.sortable_embeddables
             - @page.section_embeddables(nil).each do |e|
               - if e.show_in_edit?
                 - tracked = e.respond_to?(:tracked_question) && e.tracked_question
                 - tracked_class = tracked ? 'tracked' : ''
-                .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+                .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
                   %h3
                     - if e.respond_to? :name
                       - if !e.name.nil? && !e.name.empty?
