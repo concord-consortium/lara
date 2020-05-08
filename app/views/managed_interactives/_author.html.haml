@@ -12,6 +12,7 @@
   (function() {
     var props = {
       interactive: #{embeddable.to_interactive_json},
+      interactiveType: "managed_interactive",
       updateUrl: "#{page_managed_interactive_path(page, embeddable)}"
     };
     if (props.interactive.url) {

@@ -51,10 +51,11 @@ modulejs.define 'components/authoring/mw_interactive',
           iframe.style.height = Math.round(iframe.offsetWidth / info.features.aspectRatio) + 'px'
 
     save: ->
+      interactive_type = @props.interactiveType or "mw_interactive"
       data = {
         # Rails-specific approach to PUT requests.
         '_method': 'PUT',
-        'mw_interactive[authored_state]': JSON.stringify(@state.authoredState)
+        "#{interactive_type}[authored_state]": JSON.stringify(@state.authoredState)
       }
       @notify 'Saving...', true
       $.ajax
