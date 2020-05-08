@@ -49,12 +49,12 @@ interface ILoadedState {
   libraryInteractives: ILibraryInteractive[];
   selectedOption?: ISelectOption;
 }
-type ManagedInteractiveAdminState = ILoadingState | IErrorState | ILoadedState;
+type ManagedInteractiveAuthoringState = ILoadingState | IErrorState | ILoadedState;
 
-export const ManagedInteractiveAdmin: React.FC<Props> = (props) => {
+export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const { libraryInteractive } = props;
   let { selectLegend, selectId, selectName } = props;
-  const [state, setState] = useState<ManagedInteractiveAdminState>({current: "loading"});
+  const [state, setState] = useState<ManagedInteractiveAuthoringState>({current: "loading"});
   const hiddenRef = useRef<HTMLInputElement|null>(null);
 
   // load the list of interactives once at load time - this json is readable by admins and authors

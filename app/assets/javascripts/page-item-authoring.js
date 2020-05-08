@@ -8138,13 +8138,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
 var managed_interactives_authoring_1 = __webpack_require__(/*! ./managed-interactives-authoring */ "./src/page-item-authoring/managed-interactives-authoring.tsx");
-exports.ManagedInteractiveAdmin = managed_interactives_authoring_1.ManagedInteractiveAdmin;
-var renderManagedInteractiveAdmin = function (root, props) {
-    return ReactDOM.render(React.createElement(managed_interactives_authoring_1.ManagedInteractiveAdmin, { selectLegend: props ? props.selectLegend : undefined, selectId: props ? props.selectId : undefined, selectName: props ? props.selectName : undefined, libraryInteractive: props ? props.libraryInteractive : undefined }), root);
+exports.ManagedInteractiveAuthoring = managed_interactives_authoring_1.ManagedInteractiveAuthoring;
+var renderManagedInteractiveAuthoring = function (root, props) {
+    return ReactDOM.render(React.createElement(managed_interactives_authoring_1.ManagedInteractiveAuthoring, { selectLegend: props ? props.selectLegend : undefined, selectId: props ? props.selectId : undefined, selectName: props ? props.selectName : undefined, libraryInteractive: props ? props.libraryInteractive : undefined }), root);
 };
-exports.renderManagedInteractiveAdmin = renderManagedInteractiveAdmin;
-window.LARA.PageItemAdmin = {
-    renderManagedInteractiveAdmin: renderManagedInteractiveAdmin
+exports.renderManagedInteractiveAuthoring = renderManagedInteractiveAuthoring;
+window.LARA.PageItemAuthoring = {
+    renderManagedInteractiveAuthoring: renderManagedInteractiveAuthoring
 };
 
 
@@ -8174,7 +8174,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var react_select_1 = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
-exports.ManagedInteractiveAdmin = function (props) {
+exports.ManagedInteractiveAuthoring = function (props) {
     var libraryInteractive = props.libraryInteractive;
     var selectLegend = props.selectLegend, selectId = props.selectId, selectName = props.selectName;
     var _a = react_1.useState({ current: "loading" }), state = _a[0], setState = _a[1];
@@ -8244,4 +8244,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=page-item-authoring.js.map

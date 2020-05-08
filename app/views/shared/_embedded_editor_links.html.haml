@@ -43,7 +43,7 @@
   end
 
 - if tracked
-  - if can?(:manage, QuestionTracker)
+  - if can? :manage, QuestionTracker
     %span= t("TRACKED_QUESTION.CAN_EDIT")
     = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
   - else

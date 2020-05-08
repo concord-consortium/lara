@@ -1,19 +1,19 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { ManagedInteractiveAdmin, ILibraryInteractive } from "./managed-interactives-authoring";
+import { ManagedInteractiveAuthoring, ILibraryInteractive } from "./managed-interactives-authoring";
 
 // by default it is set to render within the managed interactive popup but this can be changed by
 // specifing a different id and name that matches the form that it is enclosed within
-interface IRenderManagedInteractiveProps {
+interface IRenderManagedInteractiveAuthoringProps {
   selectLegend?: string;
   selectId?: string;
   selectName?: string;
   libraryInteractive?: ILibraryInteractive;
 }
-const renderManagedInteractiveAdmin = (root: HTMLElement, props?: IRenderManagedInteractiveProps) => {
+const renderManagedInteractiveAuthoring = (root: HTMLElement, props?: IRenderManagedInteractiveAuthoringProps) => {
   return ReactDOM.render(
-    <ManagedInteractiveAdmin
+    <ManagedInteractiveAuthoring
       selectLegend={props ? props.selectLegend : undefined}
       selectId={props ? props.selectId : undefined}
       selectName={props ? props.selectName : undefined}
@@ -22,10 +22,10 @@ const renderManagedInteractiveAdmin = (root: HTMLElement, props?: IRenderManaged
 };
 
 export {
-  ManagedInteractiveAdmin,
-  renderManagedInteractiveAdmin,
+  ManagedInteractiveAuthoring,
+  renderManagedInteractiveAuthoring,
 };
 
-(window as any).LARA.PageItemAdmin = {
-  renderManagedInteractiveAdmin
+(window as any).LARA.PageItemAuthoring = {
+  renderManagedInteractiveAuthoring
 };

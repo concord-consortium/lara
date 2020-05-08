@@ -12,7 +12,7 @@
 
 :javascript
   $(document).ready( function() {
-    LARA.PageItemAdmin.renderManagedInteractiveAdmin(document.getElementById("admin-interactive-#{@interactive.id}"), {
+    LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
       libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"}
     });
   });
