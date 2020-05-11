@@ -4,15 +4,15 @@
   %span.managed-interactve-id=@interactive.id
 = form_for @interactive, :url => form_url do |f|
   = f.error_messages
-  %p  This is a placeholder for the future React-based admin.  It only has a library interactive selector...
 
-  = field_set_tag 'Library Interactive' do
-    = f.select :library_interactive_id, options_from_collection_for_select(LibraryInteractive.all, 'id', 'name', @interactive.library_interactive_id), { :include_blank => false }
-
-  = field_set_tag 'Name' do
-    = f.text_field :name
-  = field_set_tag 'URL Fragment' do
-    = f.text_area :url_fragment, size: "45x4"
+  %div{:id => "admin-interactive-#{@interactive.id}"}
 
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
+
+:javascript
+  $(document).ready( function() {
+    LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
+      libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"}
+    });
+  });
