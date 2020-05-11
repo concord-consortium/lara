@@ -21,22 +21,28 @@ feature "Activity page", :js => true do
 
   scenario "is edited" do
     visit activity_page_url
-    expect(page).to have_css('.ui-accordion-header')
-    expect(page).to have_no_css '.embeddable_options'
-  end
-
-  scenario "is edited and question is shown" do
-    visit activity_page_url
-
-    first('.ui-accordion-header').click
+    expect(page).to have_link 'hide', :href => hideshow_url
+    expect(page).not_to have_link 'show', :href => hideshow_url
     expect(page).to have_css '.embeddable_options'
   end
 
-  scenario "is edited and question is shown and then hidden" do
+  scenario "is edited and question is hidden" do
     visit activity_page_url
 
-    first('.ui-accordion-header').click
-    first('.ui-accordion-header').click
-    expect(page).to have_no_css '.embeddable_options'
+    click_link 'hide', :href => hideshow_url
+    expect(page).to have_link 'show', :href => hideshow_url
+    expect(page).not_to have_link 'hide', :href => hideshow_url
+    expect(page).to have_selector('.embeddable_options', visible: false)
+  end
+
+  scenario "is edited and question is hidden and then shown" do
+    visit activity_page_url
+
+    click_link 'hide', :href => hideshow_url
+    click_link 'show', :href => hideshow_url
+
+    expect(page).to have_link 'hide', :href => hideshow_url
+    expect(page).not_to have_link 'show', :href => hideshow_url
+    expect(page).to have_css '.embeddable_options'
   end
 end
