@@ -273,9 +273,34 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #b4e3ee;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 .questions {
+  position: relative;
+
+  .show-hide-toggle {
+    background: none;
+    border: none;
+    color: #126eac;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    &:focus { outline: 0; }
+  }
+  h3 {
+    color: #126eac;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 5px;
+    width: 50%;
+
+    span.embeddable_title { display: inline-block; }
+  }
   label {
     display: block;
     margin-bottom: 1em;
@@ -862,14 +887,22 @@ fieldset {
     .embeddables-form {
       margin: 10px 0;
     }
+    .embeddable-container {
+      background: #eee;
+    }
     .embeddable_tools {
-      text-align: right;
+      margin: 0;
       color: #007c8b;
+      position: absolute;
+      padding: 0;
+      right: 5px;
+      text-align: right;
+      top: 5px;
+      width: 30%;
       a {
         color:  #007c8b;
         padding: 0 0 0 1em;
         text-decoration: none;
-        text-transform: uppercase;
         transition: .3s;
         &.active, &:hover {
           color: #ea6d2f;
@@ -878,9 +911,15 @@ fieldset {
 
     }
     .embeddables_list > div {
-      .embeddable_tools {
-        padding: 10px 0;
-        margin: 5px 0 10px;
+      padding: 0;
+      border: 1px solid #6fc5d8;
+      margin-bottom: 1em;
+      border-radius: 0;
+
+      .embeddable_options {
+        background: #eee;
+        padding: 5px;
+        margin: 0;
       }
       &.tracked {
         .embeddable_options {
@@ -898,17 +937,30 @@ fieldset {
       }
     }
     .ui-accordion {
+      border: none !important;
+      margin-bottom: 2px !important;
+
+      .embeddable_tools {
+        padding: 0 25px 0 0;
+        top: 6px;
+        a {
+          color: #126eac;
+          font-size: 12px;
+        }
+      }
 
       .ui-accordion-header {
         background: #b4e3ee;
         border-color: #b4e3ee;
         border-radius: 0;
         color: #126eac;
+        margin: 0;
+        width: 89% !important;
 
         &:hover {
-          background: #126eac;
-          border-color: #126eac;
-          color: #fff;
+          background: #a4d3de;
+          border-color: #a4d3de;
+          color: #126eac;
 
           .ui-accordion-header-icon {
             background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
@@ -920,8 +972,17 @@ fieldset {
           }
         }
 
-        .sortable-icon {
+        span.embeddable_title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 180px;
+        }
+        span.ui-icon { display: block; }
+        span.ui-icon.sortable-icon {
+          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
           display: none;
+          float: right;
         }
       }
       .ui-accordion-header-active {
@@ -932,8 +993,20 @@ fieldset {
         .ui-accordion-header-icon {
           background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
         }
+
+        span.sortable-icon {
+          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+          display: block !important;
+          float: right;
+        }
+      }
+      .ui-accordion-header-active ~ .embeddable_tools a {
+        color: #fff;
       }
       .ui-accordion-header-icon {
+      }
+      .embeddable-container {
+        background: #fff !important;
       }
       .ui-accordion-content {
         border-color: #126eac;
@@ -942,6 +1015,9 @@ fieldset {
 
         select {
           max-width: 260px;
+        }
+        .embeddable_options {
+          background: #fff !important;
         }
       }
       .ui-accordion-content-active {
