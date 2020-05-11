@@ -25,7 +25,8 @@ $(document).ready(function () {
         $('.accordion_embeddable').accordion({ active: false,
           collapsible: true,
           header: 'h3',
-          heightStyle: 'content'
+          heightStyle: 'content',
+          activate: function( event, ui ) { $(this).toggleClass('ui-active'); }
         });
         $(this).text('Open All');
       } else {
@@ -33,6 +34,7 @@ $(document).ready(function () {
         $(this).text('Close All');
       }
     });
+
     $('.sortable_embeddables').sortable({ handle: 'h3',
         items: '.authorable',
         opacity: 0.8,

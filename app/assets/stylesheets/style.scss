@@ -296,10 +296,24 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     color: #126eac;
     font-size: 14px;
     font-weight: normal;
-    padding: 5px;
+    padding: .5em .5em .5em .7em;
 
-    span.embeddable_title { display: inline-block; }
+    span.embeddable_title {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 140px;
+    }
     span.ui-icon { display: none; }
+
+    &:hover {
+      span.ui-icon.sortable-icon {
+        background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
+        display: block;
+        float: right;
+      }
+    }
   }
   label {
     display: block;
@@ -892,15 +906,15 @@ fieldset {
     }
     .embeddable_tools {
       margin: 0;
-      color: #007c8b;
+      color: #126eac;
       position: absolute;
-      padding: 0;
+      padding: 0 25px 0 0;
       right: 5px;
       text-align: right;
-      top: 5px;
+      top: 6px;
       width: 145px;
       a {
-        color:  #007c8b;
+        color:  #126eac;
         padding: 0 0 0 1em;
         text-decoration: none;
         &.active, &:hover {
@@ -919,6 +933,44 @@ fieldset {
         background: #eee;
         padding: 5px;
         margin: 0;
+      }
+      &.hidden-in-runtime {
+        opacity: .6;
+        position: relative;
+
+        &:after {
+          background: #ccc;
+          bottom: 0;
+          color: #555;
+          content: 'hidden from students';
+          display: block;
+          font-size: 12px;
+          height: 16px;
+          padding: 5px 0;
+          position: absolute;
+          text-align: center;
+          width: 100%;
+          z-index: 2;
+        }
+        .embeddable-container {
+          height: 25px;
+          overflow: hidden;
+        }
+
+        &.ui-accordion {
+          &.ui-active {
+            &:after {
+              bottom: 1px;
+              display: block;
+              height: 25px;
+              left: 1px;
+              width: 340px;
+            }
+          }
+          &:after {
+            display: none;
+          }
+        }
       }
       &.tracked {
         .embeddable_options {
@@ -940,8 +992,6 @@ fieldset {
       margin-bottom: 2px !important;
 
       .embeddable_tools {
-        padding: 0 25px 0 0;
-        top: 6px;
         a {
           color: #126eac;
           font-size: 12px;
@@ -954,7 +1004,7 @@ fieldset {
         border-radius: 0;
         color: #126eac;
         margin: 0;
-        width: 89% !important;
+        width: 303px !important;
 
         &:hover {
           background: #a4d3de;
@@ -962,24 +1012,18 @@ fieldset {
           color: #126eac;
 
           .ui-accordion-header-icon {
-            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+            background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
           }
           .sortable-icon {
-            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
-            display: block;
+            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_888888_256x240.png);
+            display: block !important;
             float: right;
           }
         }
 
-        span.embeddable_title {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 180px;
-        }
-        span.ui-icon { display: block; }
-        span.ui-icon.sortable-icon {
-          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+        .ui-icon { display: block; }
+        .sortable-icon {
+          background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_888888_256x240.png);
           display: none;
           float: right;
         }
@@ -997,6 +1041,19 @@ fieldset {
           background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
           display: block !important;
           float: right;
+        }
+        &:hover {
+          background: #227ebc;
+          border-color: #227ebc;
+          color: #fff;
+
+          .ui-accordion-header-icon {
+            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+          }
+
+          .sortable-icon {
+            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_white_256x240.png);
+          }
         }
       }
       .ui-accordion-header-active ~ .embeddable_tools a {
