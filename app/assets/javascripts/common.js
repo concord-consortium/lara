@@ -20,10 +20,18 @@ $(document).ready(function () {
     // Set up sortable lists:
     // TODO: Refactor this into an object
     // Embeddables in page edit
-    $('.accordion_embeddable').accordion({ active: false,
-      collapsible: true,
-      header: 'h3',
-      heightStyle: 'content'
+    $('.show-hide-toggle').click(function() {
+      if ($(this).text().match('Close All')) {
+        $('.accordion_embeddable').accordion({ active: false,
+          collapsible: true,
+          header: 'h3',
+          heightStyle: 'content'
+        });
+        $(this).text('Open All');
+      } else {
+        $('.accordion_embeddable').accordion('destroy');
+        $(this).text('Close All');
+      }
     });
     $('.sortable_embeddables').sortable({ handle: 'h3',
         items: '.authorable',
