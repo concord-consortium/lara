@@ -1,7 +1,7 @@
 # Common code for the controllers for the different kinds of Interactive models
 class InteractiveController < ApplicationController
   def edit
-    respond_with_edit_form
+    respond_with_edit_form("allow-full-width")
   end
 
   def update

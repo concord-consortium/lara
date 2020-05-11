@@ -43,6 +43,8 @@ class ManagedInteractive < ActiveRecord::Base
     # in both authoring and runtime
     return nil unless library_interactive
     # BONUS: parse library_interactive.base_url query parameters and merge them with url_fragment query parameters
+    # NOTE: the url is also constructed in the react form editor, any changes here should also be done in
+    # managed-interactives-authoring.tsx
     "#{library_interactive.base_url}#{url_fragment}"
   end
 
