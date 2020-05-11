@@ -297,9 +297,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     font-size: 14px;
     font-weight: normal;
     padding: 5px;
-    width: 50%;
 
     span.embeddable_title { display: inline-block; }
+    span.ui-icon { display: none; }
   }
   label {
     display: block;
@@ -898,12 +898,11 @@ fieldset {
       right: 5px;
       text-align: right;
       top: 5px;
-      width: 30%;
+      width: 145px;
       a {
         color:  #007c8b;
         padding: 0 0 0 1em;
         text-decoration: none;
-        transition: .3s;
         &.active, &:hover {
           color: #ea6d2f;
         }

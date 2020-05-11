@@ -77,7 +77,7 @@
     function update_view_#{under_id}() {
       var $showLink = $("a[id^=show-#{dash_id}]"),
           $hideLink = $("a[id^=hide-#{dash_id}]"),
-          $options = $showLink.closest(".embeddable_tools").next(".embeddable_options");
+          $options = $showLink.closest(".embeddable_tools").prev(".embeddable-container");
 
       if (hidden_#{under_id}) {
         $showLink.show();

@@ -110,7 +110,7 @@
                       - else
                         #{e.class.model_name.human.titleize}
                     %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
-                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => false }
+                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
