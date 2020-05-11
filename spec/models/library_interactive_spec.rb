@@ -21,7 +21,9 @@ describe LibraryInteractive do
         native_width: library_interactive.native_width,
         no_snapshots: library_interactive.no_snapshots,
         show_delete_data_button: library_interactive.show_delete_data_button,
-        thumbnail_url: library_interactive.thumbnail_url
+        thumbnail_url: library_interactive.thumbnail_url,
+        customizable: library_interactive.customizable,
+        authorable: library_interactive.authorable
        }
       expect(library_interactive.to_hash).to eq(expected)
     end
