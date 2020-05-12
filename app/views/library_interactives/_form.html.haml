@@ -10,6 +10,13 @@
     = f.text_area :base_url, size: "100x2"
   = field_set_tag 'Thumbnail URL' do
     = f.text_area :thumbnail_url, size: "100x2"
+  = field_set_tag 'Customization Options' do
+    = f.check_box :customizable
+    = f.label :customizable, 'Customizable in Managed Interactives'
+    %br
+    = f.check_box :authorable
+    = f.label :authorable, 'Authorable in Managed Interactives'
+
 
   = field_set_tag 'Aspect Ratio' do
     %div{id:"aspect_ratio"}
