@@ -11,49 +11,65 @@
   = field_set_tag 'Thumbnail URL' do
     = f.text_area :thumbnail_url, size: "100x2"
 
-  = field_set_tag 'Aspect Ratio' do
-    %div{id:"aspect_ratio"}
-    = f.hidden_field :native_width,  :id => 'width'
-    = f.hidden_field :native_height, :id => 'height'
-    = f.hidden_field :aspect_ratio_method, :id => 'method'
-    .clear
-  = field_set_tag 'Click To Play Options' do
-    = f.check_box :click_to_play, :id => "click_to_play_#{@library_interactive.id}"
-    = f.label :click_to_play, 'Click to play'
-    %br
-    = f.check_box :full_window, :id => "full_window_#{@library_interactive.id}"
-    = f.label :full_window, :id => "full_window_label_#{@library_interactive.id}", :text => 'Full window mode'
-    %br
-    = f.label :click_to_play_prompt, :id => "click_to_play_prompt_label_#{@library_interactive.id}", :text => 'Click to play prompt'
-    = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@library_interactive.id}", :placeholder => MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
-    %div{:style => "margin-bottom:5px;", :id => "image_url_warning_#{@library_interactive.id}"}
-      %em Warning:
-      Please provide an image URL to use click to play.
-    .image_url
-      = f.label :image_url, :id => "image_url_label_#{@library_interactive.id}", :text => 'Image URL'
-      = f.text_field :image_url, :id => "image_url_#{@library_interactive.id}"
-
-  %p
   = field_set_tag 'Save Interactive State Options' do
-    = f.check_box :enable_learner_state, :id => "enable_learner_state_#{@library_interactive.id}"
-    = f.label :enable_learner_state, 'Save Interactive State'
-    .clear
-    %em Warning:
-    Please do not select this unless your interactive contains a serializable data set.
-    .clear
-    .indent{:id => "enable_learner_state_indent_#{@library_interactive.id}"}
-      = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@library_interactive.id}"
-      = f.label :show_delete_data_button, 'Show "Undo all my work" button'
-      %br
-      = f.check_box :has_report_url, :id => "has_report_url_#{@library_interactive.id}"
-      = f.label :has_report_url, 'This interactive has a report URL'
-      .clear
-      %em Warning:
-      Please do not select this unless your interactive includes a report url in its saved state.
+    %div{:class => "option_group"}
+      = f.check_box :enable_learner_state, :id => "enable_learner_state_#{@library_interactive.id}"
+      = f.label :enable_learner_state, 'Save Interactive State'
+      %div{:class => "checkbox_note"}
+        %em Warning:
+        Please do not select this unless your interactive contains a serializable data set.
+      .indent{:id => "enable_learner_state_indent_#{@library_interactive.id}"}
+        = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@library_interactive.id}"
+        = f.label :show_delete_data_button, 'Show "Undo all my work" button'
+        %br
+        = f.check_box :has_report_url, :id => "has_report_url_#{@library_interactive.id}"
+        = f.label :has_report_url, 'This interactive has a report URL'
+        %div{:class => "checkbox_note"}
+          %em Warning:
+          Please do not select this unless your interactive includes a report url in its saved state.
 
-  %p
-  = f.check_box :no_snapshots
-  = f.label :no_snapshots, 'Snapshots Not Supported'
+  = field_set_tag 'Snapshot Support' do
+    %div{:class => "option_group"}
+      = f.check_box :no_snapshots
+      = f.label :no_snapshots, 'Snapshots Not Supported'
+
+  = field_set_tag 'Authoring Support' do
+    %div{:class => "option_group"}
+      = f.check_box :authorable
+      = f.label :authorable, 'Interactive authorable in the Managed Interactive edit form'
+      %div{:class => "checkbox_note"}
+        %em Note:
+        Only set this if you know the interactive renders an authorable interface.
+
+  = field_set_tag 'Customization Options' do
+    %div{:class => "option_group"}
+      = f.check_box :customizable
+      = f.label :customizable, 'Interactive customizable in the Managed Interactive edit form'
+      %div{:class => "checkbox_note"}
+        %em Note:
+        Only set this if you want to allow authors to customize any of the following fields.
+
+      = field_set_tag 'Aspect Ratio' do
+        %div{id:"aspect_ratio"}
+        = f.hidden_field :native_width,  :id => 'width'
+        = f.hidden_field :native_height, :id => 'height'
+        = f.hidden_field :aspect_ratio_method, :id => 'method'
+        .clear
+      = field_set_tag 'Click To Play Options' do
+        = f.check_box :click_to_play, :id => "click_to_play_#{@library_interactive.id}"
+        = f.label :click_to_play, 'Click to play'
+        %div{:style => "margin-top: 3px"}
+          = f.check_box :full_window, :id => "full_window_#{@library_interactive.id}"
+          = f.label :full_window, :id => "full_window_label_#{@library_interactive.id}", :text => 'Full window mode'
+        %br
+        = f.label :click_to_play_prompt, :id => "click_to_play_prompt_label_#{@library_interactive.id}", :text => 'Click to play prompt'
+        = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@library_interactive.id}", :placeholder => MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
+        %div{:style => "margin: 5px 0;", :id => "image_url_warning_#{@library_interactive.id}"}
+          %em Warning:
+          Please provide an image URL to use click to play.
+        %div{:class => "image_url", :style => "margin-top: 10px"}
+          = f.label :image_url, :id => "image_url_label_#{@library_interactive.id}", :text => 'Image URL'
+          = f.text_field :image_url, :id => "image_url_#{@library_interactive.id}"
 
   %p
     .actions

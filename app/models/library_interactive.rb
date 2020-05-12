@@ -5,7 +5,7 @@ class LibraryInteractive < ActiveRecord::Base
 
   attr_accessible :aspect_ratio_method, :authoring_guidance, :base_url, :click_to_play, :click_to_play_prompt, :description,
                   :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
-                  :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash
+                  :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -50,7 +50,9 @@ class LibraryInteractive < ActiveRecord::Base
       native_width: native_width,
       no_snapshots: no_snapshots,
       show_delete_data_button: show_delete_data_button,
-      thumbnail_url: thumbnail_url
+      thumbnail_url: thumbnail_url,
+      customizable: customizable,
+      authorable: authorable
     }
   end
 
@@ -71,7 +73,9 @@ class LibraryInteractive < ActiveRecord::Base
       :native_width,
       :no_snapshots,
       :show_delete_data_button,
-      :thumbnail_url
+      :thumbnail_url,
+      :customizable,
+      :authorable
     ])
   end
 

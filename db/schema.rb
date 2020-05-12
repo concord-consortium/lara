@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200501133912) do
+ActiveRecord::Schema.define(:version => 20200511125959) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -399,6 +399,8 @@ ActiveRecord::Schema.define(:version => 20200501133912) do
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.string   "export_hash"
+    t.boolean  "customizable",            :default => false
+    t.boolean  "authorable",              :default => false
   end
 
   add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
