@@ -168,24 +168,25 @@ class ManagedInteractive < ActiveRecord::Base
       hash: library_interactive.generate_export_hash(),
       data: library_interactive.to_hash()
     }
-    hash.to_json()
+    hash
   end
 
   def self.import(import_hash)
+    # make a shallow copy of the import_hash because we are going to modify it
+    import_hash = import_hash.clone
     # save off the imported library interactive to hydrate it after the instance is created
-    parsed = JSON.parse(import_hash)
-    imported_library_interactive = parsed["library_interactive"]
-    parsed.delete("library_interactive")
+    imported_library_interactive = import_hash[:library_interactive]
+    import_hash.delete(:library_interactive)
 
-    managed_interactive = self.new(parsed)
+    managed_interactive = self.new(import_hash)
 
     # find the existing matching library interactive or create a new one
     if imported_library_interactive
-      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive["hash"])
+      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive[:hash])
       if library_interactive
         managed_interactive.library_interactive = library_interactive
       else
-        library_interactive = LibraryInteractive.import(imported_library_interactive["data"])
+        library_interactive = LibraryInteractive.import(imported_library_interactive[:data])
         managed_interactive.library_interactive = library_interactive
 
         # save is called here in case an imported activity uses the same library interactive more than once
