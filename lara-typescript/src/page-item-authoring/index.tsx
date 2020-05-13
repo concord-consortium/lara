@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
+import { MWInteractiveAuthoring, IMWInteractive } from "./mw-interactives";
 
 interface IRenderManagedInteractiveAuthoringProps {
   managedInteractive: IManagedInteractive;
@@ -18,11 +19,27 @@ const renderManagedInteractiveAuthoring = (root: HTMLElement, props: IRenderMana
     />, root);
 };
 
+interface IRenderMWInteractiveAuthoringProps {
+  interactive: IMWInteractive;
+  defaultClickToPlayPrompt: string;
+}
+const renderMWInteractiveAuthoring = (root: HTMLElement, props: IRenderMWInteractiveAuthoringProps) => {
+  return ReactDOM.render(
+    <MWInteractiveAuthoring
+      interactive={props.interactive}
+      defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
+    />, root);
+};
+
 export {
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
+
+  MWInteractiveAuthoring,
+  renderMWInteractiveAuthoring
 };
 
 (window as any).LARA.PageItemAuthoring = {
-  renderManagedInteractiveAuthoring
+  renderManagedInteractiveAuthoring,
+  renderMWInteractiveAuthoring
 };

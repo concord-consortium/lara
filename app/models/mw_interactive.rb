@@ -54,7 +54,9 @@ class MwInteractive < ActiveRecord::Base
       show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
       authored_state: authored_state,
-      aspect_ratio_method: aspect_ratio_method
+      aspect_ratio_method: aspect_ratio_method,
+      no_snapshots: no_snapshots,
+      linked_interactive_id: linked_interactive_id
     }
   end
 
@@ -81,7 +83,9 @@ class MwInteractive < ActiveRecord::Base
                               :is_full_width,
                               :model_library_url,
                               :authored_state,
-                              :aspect_ratio_method])
+                              :aspect_ratio_method,
+                              :no_snapshots,
+                              :linked_interactive_id])
   end
 
   def self.import(import_hash)
