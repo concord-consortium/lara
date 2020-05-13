@@ -6,6 +6,16 @@ getAuthoredState = ($dataDiv) ->
     authoredState = JSON.parse(authoredState)
   authoredState
 
+#FIXME: this was added quickly to test out preloading state
+getRuntimeState = ($dataDiv) ->
+  authoredState = $dataDiv.data('runtime-state')
+  if !authoredState? || authoredState == ''
+    authoredState = null
+  if typeof authoredState == 'string'
+    authoredState = JSON.parse(authoredState)
+  authoredState
+
+
 interactiveStateProps = (data) ->
   interactiveState: if data?.raw_data then JSON.parse(data.raw_data) else null
   hasLinkedInteractive: data?.has_linked_interactive
@@ -54,6 +64,9 @@ class IFrameSaver
 
     @saved_state = null
     @autosave_interval_id = null
+
+    # FIXME: this is just a quick hack to test this out
+    @runtimeState = getRuntimeState($data_div)
 
     if @learner_state_saving_enabled()
       IFrameSaver.instances.push @
@@ -180,6 +193,24 @@ class IFrameSaver
   load_interactive: (callback) ->
     unless @learner_state_saving_enabled()
       @init_interactive()
+      callback()
+      return
+
+    # FIXME: this is just a quick hack to test this out
+    if @runtimeState
+      response = @runtimeState
+      if response['raw_data']
+        interactive = JSON.parse(response['raw_data'])
+        if interactive
+          @saved_state = interactive
+          # DEPRECATED: the initInteractive message includes the interactive state so
+          # interactives should use the initInteractive method instead
+          @iframePhone.post({type: 'loadInteractive', content: interactive})
+          # Lab logging needs to be re-enabled after interactive is (re)loaded.
+          LoggerUtils.enableLabLogging @$iframe[0]
+          # State is available. Show "Undo all my work" button.
+          @$delete_button.show()
+      @init_interactive null, response
       callback()
       return
 

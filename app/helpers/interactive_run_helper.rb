@@ -1,37 +1,18 @@
 module InteractiveRunHelper
 
-
-  def save_interactive_button_tag(interactive,run)
-    opts = {
-      'data-interactive-id' => interactive.id,
-      'id' =>"save_interactive",
-      'data-interactive-run-state-url' => interactive_run_state_url(interactive,run)
-    }
-    button_tag "save",  opts
-  end
-
-  def revert_interactive_button_tag(interactive,run)
-    opts = {
-      'data-interactive-id' => interactive.id,
-      'id' =>"revert_interactive",
-      'data-interactive-run-state-url' => interactive_run_state_url(interactive,run)
-    }
-    button_tag "revert",  opts
-  end
-
-  def interactive_run_state_url(interactive,run)
-    interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
+  def interactive_run_state_url(interactive_run)
     api_v1_show_interactive_run_state_url(:key => interactive_run.key)
   end
 
   def interactive_data_div(interactive,run)
     data = {}
     if (run)
-      data['interactive-run-state-url'] = interactive_run_state_url(interactive,run)
+      interactive_run = InteractiveRunState.by_run_and_interactive(run,interactive)
+      data['interactive-run-state-url'] = interactive_run_state_url(interactive_run)
       if run.collaboration_run
         collaborator_urls = []
         run.collaboration_run.collaborators_runs(run.activity, run.user).each do |collaborator_run|
-          collaborator_urls.push(interactive_run_state_url(interactive,collaborator_run))
+          collaborator_urls.push(interactive_run_state_url(interactive_run))
         end
         data['collaborator-urls'] = collaborator_urls.join(';')
       end
@@ -45,6 +26,7 @@ module InteractiveRunHelper
     end
     data['enable-learner-state'] = interactive.enable_learner_state.to_s
     data['authored-state'] = interactive.authored_state
+    data['runtime-state'] = interactive_run.to_runtime_json(request.protocol, request.host_with_port)
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
 
