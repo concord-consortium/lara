@@ -34,6 +34,10 @@ Make that user an admin
 
     docker-compose exec app bundle exec rake lightweight:admin_last_user
 
+If you see a warning about a confict with a built-in method `OmniAuth`, it can be ignored.
+
+Finally, sign out and sign back in again using http://app.lara.docker/users/sign_in
+
 ### SSO with a local portal
 
 To use SSO with the portal you need to make sure your `PORTAL_HOST` is set correctly in your lara `.env` file. And you need to add a client to the Portal by running this command in the portal directory:
