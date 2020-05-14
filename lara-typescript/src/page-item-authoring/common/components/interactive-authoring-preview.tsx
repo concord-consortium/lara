@@ -7,7 +7,7 @@ export interface IPreviewInteractive {
   url: string;
   aspect_ratio_method: string;
   authored_state: string | object;
-};
+}
 
 interface Props {
   interactive: IPreviewInteractive;
@@ -49,7 +49,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
   return (
     <div className="authoring-interactive-preview">
       <InteractiveIframe
-        src={interactive.url}
+        src={interactive.url || ""}
         width="100%"
         height="100%"
         initialAuthoredState={authoredState}

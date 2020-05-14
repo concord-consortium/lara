@@ -15,7 +15,7 @@ interface Props {
 
 export interface IMWInteractive {
   name: string;
-  url: string;
+  url: string | null;
   native_width: number;
   native_height: number;
   enable_learner_state: boolean;
@@ -63,7 +63,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
         <textarea
           id={formField("url").id}
           name={formField("url").name}
-          defaultValue={url}
+          defaultValue={url || ""}
           onBlur={handleUrlBlur}
         />
       </fieldset>
@@ -97,10 +97,12 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
     };
 
     const authoredInteractive = {
-      url: authoringUrl,
+      url: authoringUrl || "",
       aspect_ratio_method: interactive.aspect_ratio_method,
       authored_state: interactive.authored_state
     };
+
+    const hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
 
     return (
       <Tabs>
@@ -109,7 +111,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
           <Tab>Advanced Options</Tab>
         </TabList>
         <TabPanel forceRender={true}>
-          {authoringUrl.trim().length > 0
+          {hasAuthoringUrl
             ?
               <InteractiveAuthoring
                 interactive={authoredInteractive}

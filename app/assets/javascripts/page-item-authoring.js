@@ -9360,7 +9360,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
-;
 exports.InteractiveAuthoringPreview = function (_a) {
     var interactive = _a.interactive;
     var iframe = react_1.useRef(null);
@@ -9389,7 +9388,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         authoredState: authoredState
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
@@ -10064,7 +10063,7 @@ exports.MWInteractiveAuthoring = function (props) {
                 React.createElement("input", { type: "text", id: formField("name").id, name: formField("name").name, defaultValue: name })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "URL"),
-                React.createElement("textarea", { id: formField("url").id, name: formField("url").name, defaultValue: url, onBlur: handleUrlBlur })),
+                React.createElement("textarea", { id: formField("url").id, name: formField("url").name, defaultValue: url || "", onBlur: handleUrlBlur })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
                 React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
@@ -10082,15 +10081,16 @@ exports.MWInteractiveAuthoring = function (props) {
             }
         };
         var authoredInteractive = {
-            url: authoringUrl,
+            url: authoringUrl || "",
             aspect_ratio_method: interactive.aspect_ratio_method,
             authored_state: interactive.authored_state
         };
+        var hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
         return (React.createElement(react_tabs_1.Tabs, null,
             React.createElement(react_tabs_1.TabList, null,
                 React.createElement(react_tabs_1.Tab, null, "Authoring"),
                 React.createElement(react_tabs_1.Tab, null, "Advanced Options")),
-            React.createElement(react_tabs_1.TabPanel, { forceRender: true }, authoringUrl.trim().length > 0
+            React.createElement(react_tabs_1.TabPanel, { forceRender: true }, hasAuthoringUrl
                 ?
                     React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: authoredInteractive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
                 : React.createElement("div", null, "Please enter an url above and then move the focus out of the url field.")),
