@@ -29,6 +29,8 @@ export interface IManagedInteractive {
   authored_state: string;
   is_hidden: boolean;
   is_full_width: boolean;
+  enable_learner_state: boolean;
+  linked_interactive_id: number;
   show_in_featured_question_report: boolean;
   inherit_aspect_ratio_method: boolean;
   custom_aspect_ratio_method: string;
@@ -82,6 +84,8 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       return undefined;
     }
 
+    const { name, is_full_width, show_in_featured_question_report, linked_interactive_id } = managedInteractive;
+
     return <>
       <fieldset>
         <legend>Name</legend>
@@ -89,9 +93,24 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
           type="text"
           id={formField("name").id}
           name={formField("name").name}
-          defaultValue={managedInteractive.name}
+          defaultValue={name}
         />
       </fieldset>
+
+      {libraryInteractive.enable_learner_state ?
+      <fieldset>
+        <legend>Link Saved Work From</legend>
+        <input
+          type="text"
+          name={formField("linked_interactive_id").name}
+          defaultValue={`${linked_interactive_id || ""}`}
+        />
+        <div className="warning">
+          <em>Warning</em>: Please do not link to another interactive
+          unless the interactive knows how to load prior work.
+        </div>
+      </fieldset>
+      : undefined}
 
       <fieldset>
         <legend>Options</legend>
@@ -99,7 +118,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
           type="checkbox"
           id={formField("is_full_width").id}
           name={formField("is_full_width").name}
-          defaultChecked={managedInteractive.is_full_width}
+          defaultChecked={is_full_width}
         /> Full width? (Full width layout only)
         <br />
         {libraryInteractive.enable_learner_state ?
@@ -107,7 +126,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
             type="checkbox"
             id={formField("show_in_featured_question_report").id}
             name={formField("show_in_featured_question_report").name}
-            defaultChecked={managedInteractive.show_in_featured_question_report}
+            defaultChecked={show_in_featured_question_report}
           /> Show in featured question report?</>
           : undefined}
       </fieldset>

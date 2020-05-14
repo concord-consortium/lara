@@ -9863,18 +9863,27 @@ exports.ManagedInteractiveAuthoring = function (props) {
         if (!libraryInteractive) {
             return undefined;
         }
+        var name = managedInteractive.name, is_full_width = managedInteractive.is_full_width, show_in_featured_question_report = managedInteractive.show_in_featured_question_report, linked_interactive_id = managedInteractive.linked_interactive_id;
         return React.createElement(React.Fragment, null,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Name"),
-                React.createElement("input", { type: "text", id: formField("name").id, name: formField("name").name, defaultValue: managedInteractive.name })),
+                React.createElement("input", { type: "text", id: formField("name").id, name: formField("name").name, defaultValue: name })),
+            libraryInteractive.enable_learner_state ?
+                React.createElement("fieldset", null,
+                    React.createElement("legend", null, "Link Saved Work From"),
+                    React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
+                    React.createElement("div", { className: "warning" },
+                        React.createElement("em", null, "Warning"),
+                        ": Please do not link to another interactive unless the interactive knows how to load prior work."))
+                : undefined,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: managedInteractive.is_full_width }),
+                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
                 " Full width? (Full width layout only)",
                 React.createElement("br", null),
                 libraryInteractive.enable_learner_state ?
                     React.createElement(React.Fragment, null,
-                        React.createElement("input", { type: "checkbox", id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: managedInteractive.show_in_featured_question_report }),
+                        React.createElement("input", { type: "checkbox", id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report }),
                         " Show in featured question report?")
                     : undefined));
     };
@@ -9938,16 +9947,6 @@ var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
-/*
-        {interactive.enable_learner_state ?
-           <><input
-            type="checkbox"
-            id={formField("show_in_featured_question_report").id}
-            name={formField("show_in_featured_question_report").name}
-            defaultChecked={interactive.show_in_featured_question_report}
-          /> Show in featured question report?</>
-          : undefined}
-*/
 exports.CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
     var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id;

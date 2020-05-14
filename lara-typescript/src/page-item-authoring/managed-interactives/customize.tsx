@@ -300,6 +300,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
           : undefined}
       </div>
     </fieldset>
+
     <fieldset>
       <legend>Click to Play Options</legend>
       <div className="option_group">

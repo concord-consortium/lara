@@ -16,17 +16,6 @@ interface Props {
 
 const formField = RailsFormField<IMWInteractive>("mw_interactive");
 
-/*
-        {interactive.enable_learner_state ?
-           <><input
-            type="checkbox"
-            id={formField("show_in_featured_question_report").id}
-            name={formField("show_in_featured_question_report").name}
-            defaultChecked={interactive.show_in_featured_question_report}
-          /> Show in featured question report?</>
-          : undefined}
-*/
-
 export const CustomizeMWInteractive: React.FC<Props> = (props) => {
   const { interactive, defaultClickToPlayPrompt } = props;
   const {
