@@ -9347,6 +9347,54 @@ exports.AspectRatioChooser = function (props) {
 
 /***/ }),
 
+/***/ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx":
+/*!*************************************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/interactive-authoring-preview.tsx ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
+var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
+;
+exports.InteractiveAuthoringPreview = function (_a) {
+    var interactive = _a.interactive;
+    var iframe = react_1.useRef(null);
+    var _b = react_1.useState(typeof interactive.authored_state === "string"
+        ? JSON.parse(interactive.authored_state || "{}")
+        : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    var handleHeightChange = function (newHeight) {
+        if (iframe.current) {
+            iframe.current.style.height = newHeight + "px";
+        }
+    };
+    var handleSupportedFeatures = function (info) {
+        if (info.features.aspectRatio) {
+            if (interactive.aspect_ratio_method === "DEFAULT") {
+                if (iframe.current) {
+                    iframe.current.style.height = Math.round(iframe.current.offsetWidth / info.features.aspectRatio) + "px";
+                }
+            }
+        }
+    };
+    var handleSetIframeRef = function (current) { return iframe.current = current; };
+    var initMsg = {
+        version: 1,
+        error: null,
+        mode: "runtime",
+        authoredState: authoredState
+    };
+    return (React.createElement("div", { className: "authoring-interactive-preview" },
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+};
+
+
+/***/ }),
+
 /***/ "./src/page-item-authoring/common/components/interactive-authoring.tsx":
 /*!*****************************************************************************!*\
   !*** ./src/page-item-authoring/common/components/interactive-authoring.tsx ***!
@@ -9429,11 +9477,14 @@ exports.InteractiveIframe = function (props) {
     var _a = react_1.useState(0), iframeId = _a[0], setIFrameId = _a[1];
     var phone;
     var connect = function () {
-        console.log("connect");
         phone = new window.iframePhone.ParentEndpoint(iframe.current, function () {
             phone.post("initInteractive", initMsg);
         });
-        phone.addListener("authoredState", function (authoredState) { return onAuthoredStateChange(authoredState); });
+        phone.addListener("authoredState", function (authoredState) {
+            if (onAuthoredStateChange) {
+                onAuthoredStateChange(authoredState);
+            }
+        });
         phone.addListener("supportedFeatures", function (info) { return onSupportedFeaturesUpdate(info); });
         phone.addListener("height", function (newHeight) { return onHeightChange(newHeight); });
     };
@@ -9447,12 +9498,10 @@ exports.InteractiveIframe = function (props) {
     };
     react_1.useEffect(function () {
         return function () {
-            console.log("useEffect disconnect");
             disconnect();
         };
     }, []);
     react_1.useEffect(function () {
-        console.log("src/resetCount useEffect");
         if (iframe.current) {
             disconnect();
             setIFrameId(iframeId + 1);
@@ -9562,6 +9611,8 @@ var managed_interactives_1 = __webpack_require__(/*! ./managed-interactives */ "
 exports.ManagedInteractiveAuthoring = managed_interactives_1.ManagedInteractiveAuthoring;
 var mw_interactives_1 = __webpack_require__(/*! ./mw-interactives */ "./src/page-item-authoring/mw-interactives/index.tsx");
 exports.MWInteractiveAuthoring = mw_interactives_1.MWInteractiveAuthoring;
+var interactive_authoring_preview_1 = __webpack_require__(/*! ./common/components/interactive-authoring-preview */ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx");
+exports.InteractiveAuthoringPreview = interactive_authoring_preview_1.InteractiveAuthoringPreview;
 var renderManagedInteractiveAuthoring = function (root, props) {
     return ReactDOM.render(React.createElement(managed_interactives_1.ManagedInteractiveAuthoring, { managedInteractive: props.managedInteractive, libraryInteractive: props.libraryInteractive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt }), root);
 };
@@ -9570,9 +9621,14 @@ var renderMWInteractiveAuthoring = function (root, props) {
     return ReactDOM.render(React.createElement(mw_interactives_1.MWInteractiveAuthoring, { interactive: props.interactive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt }), root);
 };
 exports.renderMWInteractiveAuthoring = renderMWInteractiveAuthoring;
+var renderInteractiveAuthoringPreview = function (root, props) {
+    return ReactDOM.render(React.createElement(interactive_authoring_preview_1.InteractiveAuthoringPreview, { interactive: props.interactive }), root);
+};
+exports.renderInteractiveAuthoringPreview = renderInteractiveAuthoringPreview;
 window.LARA.PageItemAuthoring = {
     renderManagedInteractiveAuthoring: renderManagedInteractiveAuthoring,
-    renderMWInteractiveAuthoring: renderMWInteractiveAuthoring
+    renderMWInteractiveAuthoring: renderMWInteractiveAuthoring,
+    renderInteractiveAuthoringPreview: renderInteractiveAuthoringPreview
 };
 
 
@@ -10037,7 +10093,7 @@ exports.MWInteractiveAuthoring = function (props) {
             React.createElement(react_tabs_1.TabPanel, { forceRender: true }, authoringUrl.trim().length > 0
                 ?
                     React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: authoredInteractive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
-                : React.createElement("div", null, "Please enter an url above and move the focus out of the url field.")),
+                : React.createElement("div", null, "Please enter an url above and then move the focus out of the url field.")),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true },
                 React.createElement(customize_1.CustomizeMWInteractive, { interactive: interactive, defaultClickToPlayPrompt: defaultClickToPlayPrompt }))));
     };

@@ -6,4 +6,14 @@
   .model-edit
     .interactive-content
       %div{:id => "authorable-interactive-#{embeddable.id}"}
+
+%div{:id => "interactive-preview-#{embeddable.id}"}
+
 = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
+
+:javascript
+  $(document).ready( function() {
+    LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.id}"), {
+      interactive: #{embeddable.to_interactive_json}
+    });
+  });
