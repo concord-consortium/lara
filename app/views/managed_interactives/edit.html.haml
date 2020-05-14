@@ -2,7 +2,7 @@
 .managed-interactive-edit-id
   Interactive ID:
   %span.managed-interactve-id=@interactive.id
-= form_for @interactive, :url => form_url do |f|
+= form_for @interactive, :url => form_url, :html => {:class => "styled-admin-form"} do |f|
   = f.error_messages
 
   %div{:id => "admin-interactive-#{@interactive.id}"}
@@ -13,6 +13,9 @@
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
-      libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"}
+      interactive: #{@interactive.to_interactive_json},
+      managedInteractive: #{@interactive.to_json},
+      libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"},
+      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
     });
   });

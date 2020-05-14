@@ -43,4 +43,23 @@
     margin: 5px 0 5px 20px;
   }
 
+  .react-tabs {
+    margin-top: 15px;
+  }
+
+  .customizable-label {
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+  }
+
+  .customizable-option {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  .radio-label {
+    margin: 0 5px;
+  }
+
 }
