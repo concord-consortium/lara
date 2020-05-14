@@ -13,7 +13,7 @@
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderMWInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
-      interactive: #{@interactive.to_json},
+      interactive: #{@interactive.to_json({add_linked_interactive_id: true})},
       defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
     });
   });
