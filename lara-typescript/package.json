@@ -10,6 +10,7 @@
     "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api",
     "build:docs:fix-doc-paths": "./fix-doc-paths.js",
     "build:docs:copy-files": "cpx './docs/lara-plugin-api/**/*.*' ../docs/lara-plugin-api/",
+    "build:dev:lara-typescript": "webpack && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
     "build:dev:page-item-authoring": "webpack && cp ./dist/page-item-authoring.js ../app/assets/javascripts/ && cp ./dist/page-item-authoring.css ../app/assets/stylesheets/",
     "clean": "rimraf dist docs ../docs/lara-plugin-api",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
@@ -95,6 +96,7 @@
   "dependencies": {
     "@concord-consortium/text-decorator": "^1.0.2",
     "eventemitter2": "^5.0.1",
+    "iframe-phone": "^1.2.1",
     "react-select": "^3.1.0",
     "react-tabs": "^3.1.0"
   }
