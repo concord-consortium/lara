@@ -127,9 +127,12 @@ class ManagedInteractive < ActiveRecord::Base
       inherit_image_url: inherit_image_url,
       custom_image_url: custom_image_url
     }
-    # this option is used to export a hash used in the React based authoring
+    # these options are used to export a hash used in the React based authoring
     if options[:add_linked_interactive_id]
       hash[:linked_interactive_id] = linked_interactive_id
+    end
+    if options[:add_aspect_ratio]
+      hash[:aspect_ratio] = aspect_ratio
     end
     hash
   end

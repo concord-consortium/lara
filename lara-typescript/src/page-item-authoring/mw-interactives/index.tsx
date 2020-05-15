@@ -30,6 +30,7 @@ export interface IMWInteractive {
   is_full_width: boolean;
   model_library_url: string;
   authored_state: string;
+  aspect_ratio: number;
   aspect_ratio_method: string;
   no_snapshots: boolean;
   linked_interactive_id: number;
@@ -98,6 +99,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
 
     const authoredInteractive = {
       url: authoringUrl || "",
+      aspect_ratio: interactive.aspect_ratio,
       aspect_ratio_method: interactive.aspect_ratio_method,
       authored_state: interactive.authored_state
     };

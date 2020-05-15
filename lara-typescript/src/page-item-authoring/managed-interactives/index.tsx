@@ -29,6 +29,7 @@ export interface IManagedInteractive {
   authored_state: string;
   is_hidden: boolean;
   is_full_width: boolean;
+  aspect_ratio: number;
   enable_learner_state: boolean;
   linked_interactive_id: number;
   show_in_featured_question_report: boolean;
@@ -140,6 +141,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
     const interactive = {
       url: `${libraryInteractive.base_url}${urlFragment || ""}`,
+      aspect_ratio: managedInteractive.aspect_ratio,
       aspect_ratio_method: managedInteractive.inherit_aspect_ratio_method
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,

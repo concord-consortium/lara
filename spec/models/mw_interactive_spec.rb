@@ -66,11 +66,13 @@ describe MwInteractive do
         show_in_featured_question_report: interactive.show_in_featured_question_report,
         aspect_ratio_method: interactive.aspect_ratio_method,
         no_snapshots: interactive.no_snapshots,
-        linked_interactive_id: interactive.linked_interactive_id
+        linked_interactive_id: interactive.linked_interactive_id,
+        aspect_ratio: interactive.aspect_ratio
       }
-      hash = interactive.to_hash({:add_linked_interactive_id => true})
+      hash = interactive.to_hash({:add_linked_interactive_id => true, add_aspect_ratio: true})
       expect(hash).to eq(expected)
       expect(hash[:linked_interactive_id]).to eq interactive.linked_interactive_id
+      expect(hash[:aspect_ratio]).to eq interactive.aspect_ratio
     end
   end
 

@@ -14,7 +14,7 @@
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
       interactive: #{@interactive.to_interactive_json},
-      managedInteractive: #{@interactive.to_json({add_linked_interactive_id: true})},
+      managedInteractive: #{@interactive.to_json({add_linked_interactive_id: true, add_aspect_ratio: true})},
       libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"},
       defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
     });

@@ -9388,7 +9388,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         authoredState: authoredState
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
@@ -9451,7 +9451,7 @@ exports.InteractiveAuthoring = function (_a) {
                 ? React.createElement("input", { type: "button", className: "reset-btn", value: "Reset authored state", onClick: handleReset })
                 : undefined)
             : undefined,
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
@@ -9470,7 +9470,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.InteractiveIframe = function (props) {
-    var src = props.src, width = props.width, height = props.height, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, onHeightChange = props.onHeightChange, onSetIFrameRef = props.onSetIFrameRef;
+    var src = props.src, width = props.width, height = props.height, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, onHeightChange = props.onHeightChange, onSetIFrameRef = props.onSetIFrameRef, aspectRatio = props.aspectRatio, aspectRatioMethod = props.aspectRatioMethod;
     var iframe = react_1.useRef(null);
     onSetIFrameRef(iframe.current);
     var _a = react_1.useState(0), iframeId = _a[0], setIFrameId = _a[1];
@@ -9506,7 +9506,7 @@ exports.InteractiveIframe = function (props) {
             setIFrameId(iframeId + 1);
         }
     }, [src, resetCount]);
-    return (React.createElement("iframe", { ref: iframe, src: src, width: width, height: height, key: iframeId, frameBorder: "no", allowFullScreen: true, onLoad: handleIframeLoaded }));
+    return (React.createElement("iframe", { ref: iframe, src: src, width: width, height: height, key: iframeId, frameBorder: "no", scrolling: "no", allowFullScreen: true, allow: "geolocation *; microphone *; camera *", "data-aspect_ratio": aspectRatio, "data-aspect_ratio_method": aspectRatioMethod, "data-iframe_mouseover": "false", onLoad: handleIframeLoaded }));
 };
 
 
@@ -9893,6 +9893,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
         }
         var interactive = {
             url: "" + libraryInteractive.base_url + (urlFragment || ""),
+            aspect_ratio: managedInteractive.aspect_ratio,
             aspect_ratio_method: managedInteractive.inherit_aspect_ratio_method
                 ? libraryInteractive.aspect_ratio_method
                 : managedInteractive.custom_aspect_ratio_method,
@@ -10081,6 +10082,7 @@ exports.MWInteractiveAuthoring = function (props) {
         };
         var authoredInteractive = {
             url: authoringUrl || "",
+            aspect_ratio: interactive.aspect_ratio,
             aspect_ratio_method: interactive.aspect_ratio_method,
             authored_state: interactive.authored_state
         };
@@ -10132,4 +10134,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=page-item-authoring.js.map

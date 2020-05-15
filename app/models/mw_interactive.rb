@@ -57,9 +57,12 @@ class MwInteractive < ActiveRecord::Base
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots
     }
-    # this option is used to export a hash used in the React based authoring
+    # these options are used to export a hash used in the React based authoring
     if options[:add_linked_interactive_id]
       hash[:linked_interactive_id] = linked_interactive_id
+    end
+    if options[:add_aspect_ratio]
+      hash[:aspect_ratio] = aspect_ratio
     end
     hash
   end

@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 interface Props {
   src: string;
   width: string | number;
-  height: string | number;
+  height?: string | number;
   initialAuthoredState: object | null;
   initMsg: any;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
+  aspectRatio: number;
+  aspectRatioMethod: string;
   onSupportedFeaturesUpdate: (info: any) => void;
   onHeightChange: (height: number | string) => void;
   onSetIFrameRef: (iframeRef: HTMLIFrameElement | null) => void;
@@ -23,7 +25,8 @@ interface IFramePhoneParentEndpoint {
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
     src, width, height, initMsg, onAuthoredStateChange, resetCount,
-    onSupportedFeaturesUpdate, onHeightChange, onSetIFrameRef
+    onSupportedFeaturesUpdate, onHeightChange, onSetIFrameRef,
+    aspectRatio, aspectRatioMethod
   } = props;
 
   const iframe = useRef<HTMLIFrameElement|null>(null);
@@ -75,7 +78,12 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       height={height}
       key={iframeId}
       frameBorder="no"
+      scrolling="no"
       allowFullScreen={true}
+      allow="geolocation *; microphone *; camera *"
+      data-aspect_ratio={aspectRatio}
+      data-aspect_ratio_method={aspectRatioMethod}
+      data-iframe_mouseover="false"
       onLoad={handleIframeLoaded}
     />
   );

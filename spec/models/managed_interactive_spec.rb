@@ -89,11 +89,13 @@ describe ManagedInteractive do
         custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
         inherit_image_url: managed_interactive.inherit_image_url,
         custom_image_url: managed_interactive.custom_image_url,
-        linked_interactive_id: managed_interactive.linked_interactive_id
+        linked_interactive_id: managed_interactive.linked_interactive_id,
+        aspect_ratio: managed_interactive.aspect_ratio
       }
-      hash = managed_interactive.to_hash({add_linked_interactive_id: true})
+      hash = managed_interactive.to_hash({add_linked_interactive_id: true, add_aspect_ratio: true})
       expect(hash).to eq(expected)
       expect(hash[:linked_interactive_id]).to eq managed_interactive.linked_interactive_id
+      expect(hash[:aspect_ratio]).to eq managed_interactive.aspect_ratio
     end
 
   end
