@@ -19,7 +19,8 @@ describe ManagedInteractive do
 
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
                                                  :library_interactive => library_interactive,
-                                                 :url_fragment => "test"
+                                                 :url_fragment => "test",
+                                                 :linked_interactive_id => 1
                                                 )}
   let (:page) { FactoryGirl.create(:page) }
 
@@ -37,7 +38,7 @@ describe ManagedInteractive do
   end
 
   describe '#to_hash' do
-    it 'has useful values' do
+    it 'has useful values with no options' do
       expected = {
         library_interactive_id: managed_interactive.library_interactive_id,
         name: managed_interactive.name,
@@ -62,7 +63,39 @@ describe ManagedInteractive do
         custom_image_url: managed_interactive.custom_image_url
        }
       expect(managed_interactive.to_hash).to eq(expected)
+      expect(managed_interactive.to_hash[:linked_interactive_id]).to be_nil
     end
+
+    it 'has useful values with options' do
+      expected = {
+        library_interactive_id: managed_interactive.library_interactive_id,
+        name: managed_interactive.name,
+        url_fragment: managed_interactive.url_fragment,
+        authored_state: managed_interactive.authored_state,
+        is_hidden: managed_interactive.is_hidden,
+        is_full_width: managed_interactive.is_full_width,
+        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
+        inherit_aspect_ratio_method: managed_interactive.inherit_aspect_ratio_method,
+        custom_aspect_ratio_method: managed_interactive.custom_aspect_ratio_method,
+        inherit_native_width: managed_interactive.inherit_native_width,
+        custom_native_width: managed_interactive.custom_native_width,
+        inherit_native_height: managed_interactive.inherit_native_height,
+        custom_native_height: managed_interactive.custom_native_height,
+        inherit_click_to_play: managed_interactive.inherit_click_to_play,
+        custom_click_to_play: managed_interactive.custom_click_to_play,
+        inherit_full_window: managed_interactive.inherit_full_window,
+        custom_full_window: managed_interactive.custom_full_window,
+        inherit_click_to_play_prompt: managed_interactive.inherit_click_to_play_prompt,
+        custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
+        inherit_image_url: managed_interactive.inherit_image_url,
+        custom_image_url: managed_interactive.custom_image_url,
+        linked_interactive_id: managed_interactive.linked_interactive_id
+      }
+      hash = managed_interactive.to_hash({add_linked_interactive_id: true})
+      expect(hash).to eq(expected)
+      expect(hash[:linked_interactive_id]).to eq managed_interactive.linked_interactive_id
+    end
+
   end
 
   describe '#duplicate' do

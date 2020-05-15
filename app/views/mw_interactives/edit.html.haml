@@ -2,68 +2,18 @@
 .mw-interactive-edit-id
   Interactive ID:
   %span.mw-interactve-id=@interactive.id
-= form_for @interactive, :url => form_url do |f|
+= form_for @interactive, :url => form_url, :html => {:class => "styled-admin-form"} do |f|
   = f.error_messages
-  =# f.hidden_field 'investigation_id', :value =>@activity.investigation.id # LightweightActivities currently don't belong_to Investigations
-  = field_set_tag 'Name' do
-    = f.text_field :name
-  = field_set_tag 'URL' do
-    = f.text_area :url, size: "45x4"
 
-  = field_set_tag 'Aspect Ratio' do
-    %div{id:"aspect_ratio"}
-    = f.hidden_field :native_width,  :id => 'width'
-    = f.hidden_field :native_height, :id => 'height'
-    = f.hidden_field :aspect_ratio_method, :id => 'method'
-    .clear
-  %br
-  = f.label :click_to_play, 'Click to play'
-  = f.check_box :click_to_play, :id => "click_to_play_#{@interactive.id}"
-  %br
-  = f.label :full_window, :id => "full_window_label_#{@interactive.id}", :text => 'Full window mode'
-  = f.check_box :full_window, :id => "full_window_#{@interactive.id}"
-  %br
-  = f.label :click_to_play_prompt, :id => "click_to_play_prompt_label_#{@interactive.id}", :text => 'Click to play prompt'
-  = f.text_field :click_to_play_prompt, :id => "click_to_play_prompt_#{@interactive.id}", :placeholder => MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT
-  %div{:style => "margin-bottom:5px;", :id => "image_url_warning_#{@interactive.id}"}
-    %em Warning:
-    Please provide an image_url to use click to play.
-  .image_url
-    = f.label :image_url, :id => "image_url_label_#{@interactive.id}", :text => 'Image URL'
-    = f.text_field :image_url, :id => "image_url_#{@interactive.id}"
-  = f.label :is_full_width, t(:IS_FULL_WIDTH_ASSESMENT_ITEM)
-  = f.check_box :is_full_width
-  %br
-  = f.label :no_snapshots, 'Snapshots Not Supported'
-  = f.check_box :no_snapshots
-  %br
-  = field_set_tag 'Save Interactive state' do
-    = f.label :enable_learner_state, 'Save State'
-    = f.check_box :enable_learner_state, :id => "enable_learner_state_#{@interactive.id}"
-    .clear
-    %em Warning:
-    Please do not select this unless your interactive contains a serializable data set.
-    .clear
-    .indent{:id => "enable_learner_state_indent_#{@interactive.id}"}
-      = f.label :show_delete_data_button, 'Show "Undo all my work" button'
-      = f.check_box :show_delete_data_button, :id => "show_delete_data_button_#{@interactive.id}"
-      %br
-      = f.label :has_report_url, 'This interactive has a report URL'
-      = f.check_box :has_report_url, :id => "has_report_url_#{@interactive.id}"
-      .clear
-      %em Warning:
-      Please do not select this unless your interactive includes a report url in its saved state.
-      .clear
-      = f.label :linked_interactive_id, 'Link saved work from '
-      = f.text_field :linked_interactive_id, :id => "linked_interactive_id_#{@interactive.id}"
-      .clear
-      %em Warning:
-      Please do not link to another interactive unless the interactive knows how to load prior work.
-      = render :partial => 'shared/edit_featured', :locals => { :f => f }
+  %div{:id => "admin-interactive-#{@interactive.id}"}
+
   = f.button "Cancel", :class => 'close', :type => 'button'
   = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
-  $(document).ready(function() {
-    interactive_form_helper(#{ @interactive.to_json })
+  $(document).ready( function() {
+    LARA.PageItemAuthoring.renderMWInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
+      interactive: #{@interactive.to_json({add_linked_interactive_id: true})},
+      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
+    });
   });

@@ -102,9 +102,9 @@ class ManagedInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
-  def to_hash
+  def to_hash(options = {})
     # Deliberately ignoring user (will be set in duplicate)
-    {
+    hash = {
       library_interactive_id: library_interactive_id,
       name: name,
       url_fragment: url_fragment,
@@ -127,6 +127,11 @@ class ManagedInteractive < ActiveRecord::Base
       inherit_image_url: inherit_image_url,
       custom_image_url: custom_image_url
     }
+    # this option is used to export a hash used in the React based authoring
+    if options[:add_linked_interactive_id]
+      hash[:linked_interactive_id] = linked_interactive_id
+    end
+    hash
   end
 
   # returns same json as mw_interactive

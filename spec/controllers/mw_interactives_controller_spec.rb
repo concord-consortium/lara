@@ -26,16 +26,9 @@ describe MwInteractivesController do
     # Authorization is tested in spec/models/user_spec.rb
     context 'when editing an existing MW Interactive' do
       describe 'edit' do
-        it 'shows a form with values of the MW Interactive filled in' do
+        it 'shows a form which renders the React-based MW Interactive editor' do
           get :edit, :id => int.id
-
-          expect(response.body).to match /<form[^>]+action="\/mw_interactives\/#{int.id}"[^<]+method="post"[^<]*>/
-          expect(response.body).to match /<input[^<]+name="_method"[^<]+type="hidden"[^<]+value="put"[^<]+\/>/
-
-          expect(response.body).to match /<input[^<]+id="mw_interactive_name"[^<]+name="mw_interactive\[name\]"[^<]+type="text"[^>]+value="#{int.name}"[^<]*\/>/
-          expect(response.body).to match /<textarea[^<]+id="mw_interactive_url"[^<]+name="mw_interactive\[url\]"[^<]*>[^<]*#{int.url}[^<]*<\/textarea>/
-          expect(response.body).to match /<input[^<]+id="width"[^<]+name="mw_interactive\[native_width\]"[^<]+type="hidden"[^<]+value="#{int.native_width}"[^<]*\/>/
-          expect(response.body).to match /<input[^<]+id="height"[^<]+name="mw_interactive\[native_height\]"[^<]+type="hidden"[^<]+value="#{int.native_height}"[^<]*\/>/
+          expect(response.body).to match /LARA.PageItemAuthoring.renderMWInteractiveAuthoring/
         end
 
         it 'responds to js-format requests with JSON' do

@@ -3,6 +3,8 @@ import * as ReactDOM from "react-dom";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
+import { MWInteractiveAuthoring, IMWInteractive } from "./mw-interactives";
+import { InteractiveAuthoringPreview, IPreviewInteractive } from "./common/components/interactive-authoring-preview";
 
 interface IRenderManagedInteractiveAuthoringProps {
   managedInteractive: IManagedInteractive;
@@ -18,11 +20,41 @@ const renderManagedInteractiveAuthoring = (root: HTMLElement, props: IRenderMana
     />, root);
 };
 
+interface IRenderMWInteractiveAuthoringProps {
+  interactive: IMWInteractive;
+  defaultClickToPlayPrompt: string;
+}
+const renderMWInteractiveAuthoring = (root: HTMLElement, props: IRenderMWInteractiveAuthoringProps) => {
+  return ReactDOM.render(
+    <MWInteractiveAuthoring
+      interactive={props.interactive}
+      defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
+    />, root);
+};
+
+interface IInteractiveAuthoringPreviewProps {
+  interactive: IPreviewInteractive;
+}
+const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiveAuthoringPreviewProps) => {
+  return ReactDOM.render(
+    <InteractiveAuthoringPreview
+      interactive={props.interactive}
+    />, root);
+};
+
 export {
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
+
+  MWInteractiveAuthoring,
+  renderMWInteractiveAuthoring,
+
+  InteractiveAuthoringPreview,
+  renderInteractiveAuthoringPreview
 };
 
 (window as any).LARA.PageItemAuthoring = {
-  renderManagedInteractiveAuthoring
+  renderManagedInteractiveAuthoring,
+  renderMWInteractiveAuthoring,
+  renderInteractiveAuthoringPreview
 };

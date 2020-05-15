@@ -7,8 +7,8 @@ interface Props {
   height: string | number;
   initialAuthoredState: object | null;
   initMsg: any;
-  resetCount: number;
-  onAuthoredStateChange: (authoredState: string | object) => void;
+  resetCount?: number;
+  onAuthoredStateChange?: (authoredState: string | object) => void;
   onSupportedFeaturesUpdate: (info: any) => void;
   onHeightChange: (height: number | string) => void;
   onSetIFrameRef: (iframeRef: HTMLIFrameElement | null) => void;
@@ -33,11 +33,14 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   let phone: IFramePhoneParentEndpoint;
 
   const connect = () => {
-    console.log("connect");
     phone = new (window as any).iframePhone.ParentEndpoint(iframe.current, () => {
       phone.post("initInteractive", initMsg);
     });
-    phone.addListener("authoredState", (authoredState: any) => onAuthoredStateChange(authoredState));
+    phone.addListener("authoredState", (authoredState: any) => {
+      if (onAuthoredStateChange) {
+        onAuthoredStateChange(authoredState);
+      }
+    });
     phone.addListener("supportedFeatures", (info: any) => onSupportedFeaturesUpdate(info));
     phone.addListener("height", (newHeight: number | string) => onHeightChange(newHeight));
   };
@@ -53,13 +56,11 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
 
   useEffect(() => {
     return () => {
-      console.log("useEffect disconnect");
       disconnect();
     };
   }, []);
 
   useEffect(() => {
-    console.log("src/resetCount useEffect");
     if (iframe.current) {
       disconnect();
       setIFrameId(iframeId + 1);
