@@ -102,9 +102,9 @@ class ManagedInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
-  def to_hash(options = {})
+  def to_hash
     # Deliberately ignoring user (will be set in duplicate)
-    hash = {
+    {
       library_interactive_id: library_interactive_id,
       name: name,
       url_fragment: url_fragment,
@@ -127,41 +127,41 @@ class ManagedInteractive < ActiveRecord::Base
       inherit_image_url: inherit_image_url,
       custom_image_url: custom_image_url
     }
-    # these options are used to export a hash used in the React based authoring
-    if options[:add_linked_interactive_id]
-      hash[:linked_interactive_id] = linked_interactive_id
-    end
-    if options[:add_aspect_ratio]
-      hash[:aspect_ratio] = aspect_ratio
-    end
+  end
+
+  # used for react-based authoring
+  def to_authoring_hash
+    hash = to_hash
+    hash[:id] = id
+    hash[:linked_interactive_id] = linked_interactive_id
+    hash[:aspect_ratio] = aspect_ratio
     hash
   end
 
-  # returns same json as mw_interactive
+  # returns same json as mw_interactive, used for react-based authoring
   def to_interactive_json
     # NOTE: model_library_url is missing as there is no analog
     {
       id: id,
       name: name,
       url: url,
-      aspect_ratio_method: aspect_ratio_method,
-      authored_state: authored_state,
+      native_width: native_width,
+      native_height: native_height,
+      enable_learner_state: enable_learner_state,
+      show_delete_data_button: show_delete_data_button,
+      has_report_url: has_report_url,
       click_to_play: click_to_play,
       click_to_play_prompt: click_to_play_prompt,
-      enable_learner_state: enable_learner_state,
       full_window: full_window,
-      has_report_url: has_report_url,
       image_url: image_url,
-      is_full_width: is_full_width,
       is_hidden: is_hidden,
-      linked_interactive_id: linked_interactive_id,
-      native_height: native_height,
-      native_width: native_width,
-      no_snapshots: no_snapshots,
-      show_delete_data_button: show_delete_data_button,
+      is_full_width: is_full_width,
       show_in_featured_question_report: show_in_featured_question_report,
-      updated_at: updated_at,
-      created_at: created_at
+      authored_state: authored_state,
+      aspect_ratio: aspect_ratio,
+      aspect_ratio_method: aspect_ratio_method,
+      no_snapshots: no_snapshots,
+      linked_interactive_id: linked_interactive_id
     }.to_json
   end
 

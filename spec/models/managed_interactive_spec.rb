@@ -38,7 +38,7 @@ describe ManagedInteractive do
   end
 
   describe '#to_hash' do
-    it 'has useful values with no options' do
+    it 'has useful values' do
       expected = {
         library_interactive_id: managed_interactive.library_interactive_id,
         name: managed_interactive.name,
@@ -63,41 +63,17 @@ describe ManagedInteractive do
         custom_image_url: managed_interactive.custom_image_url
        }
       expect(managed_interactive.to_hash).to eq(expected)
-      expect(managed_interactive.to_hash[:linked_interactive_id]).to be_nil
     end
+  end
 
-    it 'has useful values with options' do
-      expected = {
-        library_interactive_id: managed_interactive.library_interactive_id,
-        name: managed_interactive.name,
-        url_fragment: managed_interactive.url_fragment,
-        authored_state: managed_interactive.authored_state,
-        is_hidden: managed_interactive.is_hidden,
-        is_full_width: managed_interactive.is_full_width,
-        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
-        inherit_aspect_ratio_method: managed_interactive.inherit_aspect_ratio_method,
-        custom_aspect_ratio_method: managed_interactive.custom_aspect_ratio_method,
-        inherit_native_width: managed_interactive.inherit_native_width,
-        custom_native_width: managed_interactive.custom_native_width,
-        inherit_native_height: managed_interactive.inherit_native_height,
-        custom_native_height: managed_interactive.custom_native_height,
-        inherit_click_to_play: managed_interactive.inherit_click_to_play,
-        custom_click_to_play: managed_interactive.custom_click_to_play,
-        inherit_full_window: managed_interactive.inherit_full_window,
-        custom_full_window: managed_interactive.custom_full_window,
-        inherit_click_to_play_prompt: managed_interactive.inherit_click_to_play_prompt,
-        custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
-        inherit_image_url: managed_interactive.inherit_image_url,
-        custom_image_url: managed_interactive.custom_image_url,
-        linked_interactive_id: managed_interactive.linked_interactive_id,
-        aspect_ratio: managed_interactive.aspect_ratio
-      }
-      hash = managed_interactive.to_hash({add_linked_interactive_id: true, add_aspect_ratio: true})
-      expect(hash).to eq(expected)
-      expect(hash[:linked_interactive_id]).to eq managed_interactive.linked_interactive_id
-      expect(hash[:aspect_ratio]).to eq managed_interactive.aspect_ratio
+  describe '#to_authoring_hash' do
+    it 'has useful values' do
+      expected = managed_interactive.to_hash
+      expected[:id] = managed_interactive.id
+      expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
+      expected[:aspect_ratio] = managed_interactive.aspect_ratio
+      expect(managed_interactive.to_authoring_hash).to eq(expected)
     end
-
   end
 
   describe '#duplicate' do
@@ -167,24 +143,23 @@ describe ManagedInteractive do
         "id": managed_interactive.id,
         "name": managed_interactive.name,
         "url": managed_interactive.url,
-        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
-        "authored_state": managed_interactive.authored_state,
+        "native_width": managed_interactive.native_width,
+        "native_height": managed_interactive.native_height,
+        "enable_learner_state": managed_interactive.enable_learner_state,
+        "show_delete_data_button": managed_interactive.show_delete_data_button,
+        "has_report_url": managed_interactive.has_report_url,
         "click_to_play": managed_interactive.click_to_play,
         "click_to_play_prompt": managed_interactive.click_to_play_prompt,
-        "enable_learner_state": managed_interactive.enable_learner_state,
         "full_window": managed_interactive.full_window,
-        "has_report_url": managed_interactive.has_report_url,
         "image_url": managed_interactive.image_url,
-        "is_full_width": managed_interactive.is_full_width,
         "is_hidden": managed_interactive.is_hidden,
-        "linked_interactive_id": managed_interactive.linked_interactive_id,
-        "native_height": managed_interactive.native_height,
-        "native_width": managed_interactive.native_width,
-        "no_snapshots": managed_interactive.no_snapshots,
-        "show_delete_data_button": managed_interactive.show_delete_data_button,
+        "is_full_width": managed_interactive.is_full_width,
         "show_in_featured_question_report": managed_interactive.show_in_featured_question_report,
-        "updated_at": managed_interactive.updated_at,
-        "created_at": managed_interactive.created_at
+        "authored_state": managed_interactive.authored_state,
+        "aspect_ratio": managed_interactive.aspect_ratio,
+        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
+        "no_snapshots": managed_interactive.no_snapshots,
+        "linked_interactive_id": managed_interactive.linked_interactive_id,
       }.to_json))
     end
   end
