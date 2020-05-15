@@ -14,6 +14,6 @@
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.id}"), {
-      interactive: #{embeddable.to_json}
+      interactive: #{embeddable.to_authoring_hash().to_json}
     });
   });

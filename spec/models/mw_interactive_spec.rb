@@ -20,7 +20,7 @@ describe MwInteractive do
   end
 
   describe '#to_hash' do
-    it 'has useful values without options' do
+    it 'has useful values' do
       expected = {
         name: interactive.name,
         url: interactive.url,
@@ -45,32 +45,15 @@ describe MwInteractive do
       expect(hash).to eq(expected)
       expect(hash[:linked_interactive_id]).to be_nil
     end
+  end
 
-    it 'has useful values with add_linked_interactive_id option' do
-      expected = {
-        name: interactive.name,
-        url: interactive.url,
-        native_width: interactive.native_width,
-        native_height: interactive.native_height,
-        enable_learner_state: interactive.enable_learner_state,
-        show_delete_data_button: interactive.show_delete_data_button,
-        has_report_url: interactive.has_report_url,
-        click_to_play: interactive.click_to_play,
-        click_to_play_prompt: interactive.click_to_play_prompt,
-        full_window: interactive.full_window,
-        model_library_url: interactive.model_library_url,
-        image_url: interactive.image_url,
-        is_hidden: interactive.is_hidden,
-        is_full_width: interactive.is_full_width,
-        authored_state: interactive.authored_state,
-        show_in_featured_question_report: interactive.show_in_featured_question_report,
-        aspect_ratio_method: interactive.aspect_ratio_method,
-        no_snapshots: interactive.no_snapshots,
-        linked_interactive_id: interactive.linked_interactive_id
-      }
-      hash = interactive.to_hash({:add_linked_interactive_id => true})
-      expect(hash).to eq(expected)
-      expect(hash[:linked_interactive_id]).to eq interactive.linked_interactive_id
+  describe '#to_authoring_hash' do
+    it 'has useful values' do
+      expected = interactive.to_hash
+      expected[:id] = interactive.id
+      expected[:linked_interactive_id] = interactive.linked_interactive_id
+      expected[:aspect_ratio] = interactive.aspect_ratio
+      expect(interactive.to_authoring_hash).to eq(expected)
     end
   end
 

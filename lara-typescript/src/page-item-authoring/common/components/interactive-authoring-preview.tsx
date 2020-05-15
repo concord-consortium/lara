@@ -5,6 +5,7 @@ import { InteractiveIframe } from "./interactive-iframe";
 
 export interface IPreviewInteractive {
   url: string;
+  aspect_ratio: number;
   aspect_ratio_method: string;
   authored_state: string | object;
 }
@@ -51,9 +52,10 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
       <InteractiveIframe
         src={interactive.url || ""}
         width="100%"
-        height="100%"
         initialAuthoredState={authoredState}
         initMsg={initMsg}
+        aspectRatio={interactive.aspect_ratio}
+        aspectRatioMethod={interactive.aspect_ratio_method}
         onSupportedFeaturesUpdate={handleSupportedFeatures}
         onHeightChange={handleHeightChange}
         onSetIFrameRef={handleSetIframeRef}

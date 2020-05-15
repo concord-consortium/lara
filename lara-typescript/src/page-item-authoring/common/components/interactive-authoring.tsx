@@ -6,6 +6,7 @@ import { InteractiveIframe } from "./interactive-iframe";
 interface Props {
   interactive: {
     url: string;
+    aspect_ratio: number;
     aspect_ratio_method: string;
     authored_state: string | object;
   };
@@ -77,6 +78,8 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
         initialAuthoredState={authoredState}
         initMsg={initMsg}
         resetCount={resetCount}
+        aspectRatio={interactive.aspect_ratio}
+        aspectRatioMethod={interactive.aspect_ratio_method}
         onAuthoredStateChange={handleAuthoredStateChange}
         onSupportedFeaturesUpdate={handleSupportedFeatures}
         onHeightChange={handleHeightChange}

@@ -35,9 +35,9 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
-  def to_hash(options = {})
+  def to_hash
     # Deliberately ignoring user (will be set in duplicate)
-    hash = {
+    {
       name: name,
       url: url,
       native_width: native_width,
@@ -57,10 +57,14 @@ class MwInteractive < ActiveRecord::Base
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots
     }
-    # this option is used to export a hash used in the React based authoring
-    if options[:add_linked_interactive_id]
-      hash[:linked_interactive_id] = linked_interactive_id
-    end
+  end
+
+  # used for react-based authoring
+  def to_authoring_hash()
+    hash = to_hash
+    hash[:id] = id
+    hash[:linked_interactive_id] = linked_interactive_id
+    hash[:aspect_ratio] = aspect_ratio
     hash
   end
 
