@@ -43,6 +43,8 @@ class ManagedInteractive < ActiveRecord::Base
     # in both authoring and runtime
     return nil unless library_interactive
     # BONUS: parse library_interactive.base_url query parameters and merge them with url_fragment query parameters
+    # NOTE: the url is also constructed in the react form editor, any changes here should also be done in
+    # managed-interactives-authoring.tsx
     "#{library_interactive.base_url}#{url_fragment}"
   end
 
@@ -127,31 +129,39 @@ class ManagedInteractive < ActiveRecord::Base
     }
   end
 
-  # returns same json as mw_interactive
+  # used for react-based authoring
+  def to_authoring_hash
+    hash = to_hash
+    hash[:id] = id
+    hash[:linked_interactive_id] = linked_interactive_id
+    hash[:aspect_ratio] = aspect_ratio
+    hash
+  end
+
+  # returns same json as mw_interactive, used for react-based authoring
   def to_interactive_json
     # NOTE: model_library_url is missing as there is no analog
     {
       id: id,
       name: name,
       url: url,
-      aspect_ratio_method: aspect_ratio_method,
-      authored_state: authored_state,
+      native_width: native_width,
+      native_height: native_height,
+      enable_learner_state: enable_learner_state,
+      show_delete_data_button: show_delete_data_button,
+      has_report_url: has_report_url,
       click_to_play: click_to_play,
       click_to_play_prompt: click_to_play_prompt,
-      enable_learner_state: enable_learner_state,
       full_window: full_window,
-      has_report_url: has_report_url,
       image_url: image_url,
-      is_full_width: is_full_width,
       is_hidden: is_hidden,
-      linked_interactive_id: linked_interactive_id,
-      native_height: native_height,
-      native_width: native_width,
-      no_snapshots: no_snapshots,
-      show_delete_data_button: show_delete_data_button,
+      is_full_width: is_full_width,
       show_in_featured_question_report: show_in_featured_question_report,
-      updated_at: updated_at,
-      created_at: created_at
+      authored_state: authored_state,
+      aspect_ratio: aspect_ratio,
+      aspect_ratio_method: aspect_ratio_method,
+      no_snapshots: no_snapshots,
+      linked_interactive_id: linked_interactive_id
     }.to_json
   end
 
@@ -168,24 +178,25 @@ class ManagedInteractive < ActiveRecord::Base
       hash: library_interactive.generate_export_hash(),
       data: library_interactive.to_hash()
     }
-    hash.to_json()
+    hash
   end
 
   def self.import(import_hash)
+    # make a shallow copy of the import_hash because we are going to modify it
+    import_hash = import_hash.clone
     # save off the imported library interactive to hydrate it after the instance is created
-    parsed = JSON.parse(import_hash)
-    imported_library_interactive = parsed["library_interactive"]
-    parsed.delete("library_interactive")
+    imported_library_interactive = import_hash[:library_interactive]
+    import_hash.delete(:library_interactive)
 
-    managed_interactive = self.new(parsed)
+    managed_interactive = self.new(import_hash)
 
     # find the existing matching library interactive or create a new one
     if imported_library_interactive
-      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive["hash"])
+      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive[:hash])
       if library_interactive
         managed_interactive.library_interactive = library_interactive
       else
-        library_interactive = LibraryInteractive.import(imported_library_interactive["data"])
+        library_interactive = LibraryInteractive.import(imported_library_interactive[:data])
         managed_interactive.library_interactive = library_interactive
 
         # save is called here in case an imported activity uses the same library interactive more than once

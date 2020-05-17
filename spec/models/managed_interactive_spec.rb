@@ -19,7 +19,8 @@ describe ManagedInteractive do
 
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
                                                  :library_interactive => library_interactive,
-                                                 :url_fragment => "test"
+                                                 :url_fragment => "test",
+                                                 :linked_interactive_id => 1
                                                 )}
   let (:page) { FactoryGirl.create(:page) }
 
@@ -62,6 +63,16 @@ describe ManagedInteractive do
         custom_image_url: managed_interactive.custom_image_url
        }
       expect(managed_interactive.to_hash).to eq(expected)
+    end
+  end
+
+  describe '#to_authoring_hash' do
+    it 'has useful values' do
+      expected = managed_interactive.to_hash
+      expected[:id] = managed_interactive.id
+      expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
+      expected[:aspect_ratio] = managed_interactive.aspect_ratio
+      expect(managed_interactive.to_authoring_hash).to eq(expected)
     end
   end
 
@@ -132,24 +143,23 @@ describe ManagedInteractive do
         "id": managed_interactive.id,
         "name": managed_interactive.name,
         "url": managed_interactive.url,
-        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
-        "authored_state": managed_interactive.authored_state,
+        "native_width": managed_interactive.native_width,
+        "native_height": managed_interactive.native_height,
+        "enable_learner_state": managed_interactive.enable_learner_state,
+        "show_delete_data_button": managed_interactive.show_delete_data_button,
+        "has_report_url": managed_interactive.has_report_url,
         "click_to_play": managed_interactive.click_to_play,
         "click_to_play_prompt": managed_interactive.click_to_play_prompt,
-        "enable_learner_state": managed_interactive.enable_learner_state,
         "full_window": managed_interactive.full_window,
-        "has_report_url": managed_interactive.has_report_url,
         "image_url": managed_interactive.image_url,
-        "is_full_width": managed_interactive.is_full_width,
         "is_hidden": managed_interactive.is_hidden,
-        "linked_interactive_id": managed_interactive.linked_interactive_id,
-        "native_height": managed_interactive.native_height,
-        "native_width": managed_interactive.native_width,
-        "no_snapshots": managed_interactive.no_snapshots,
-        "show_delete_data_button": managed_interactive.show_delete_data_button,
+        "is_full_width": managed_interactive.is_full_width,
         "show_in_featured_question_report": managed_interactive.show_in_featured_question_report,
-        "updated_at": managed_interactive.updated_at,
-        "created_at": managed_interactive.created_at
+        "authored_state": managed_interactive.authored_state,
+        "aspect_ratio": managed_interactive.aspect_ratio,
+        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
+        "no_snapshots": managed_interactive.no_snapshots,
+        "linked_interactive_id": managed_interactive.linked_interactive_id,
       }.to_json))
     end
   end

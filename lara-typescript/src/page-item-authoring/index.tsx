@@ -1,31 +1,60 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { ManagedInteractiveAuthoring, ILibraryInteractive } from "./managed-interactives-authoring";
+import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
+import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
+import { MWInteractiveAuthoring, IMWInteractive } from "./mw-interactives";
+import { InteractiveAuthoringPreview, IPreviewInteractive } from "./common/components/interactive-authoring-preview";
 
-// by default it is set to render within the managed interactive popup but this can be changed by
-// specifing a different id and name that matches the form that it is enclosed within
 interface IRenderManagedInteractiveAuthoringProps {
-  selectLegend?: string;
-  selectId?: string;
-  selectName?: string;
+  managedInteractive: IManagedInteractive;
   libraryInteractive?: ILibraryInteractive;
+  defaultClickToPlayPrompt: string;
 }
-const renderManagedInteractiveAuthoring = (root: HTMLElement, props?: IRenderManagedInteractiveAuthoringProps) => {
+const renderManagedInteractiveAuthoring = (root: HTMLElement, props: IRenderManagedInteractiveAuthoringProps) => {
   return ReactDOM.render(
     <ManagedInteractiveAuthoring
-      selectLegend={props ? props.selectLegend : undefined}
-      selectId={props ? props.selectId : undefined}
-      selectName={props ? props.selectName : undefined}
-      libraryInteractive={props ? props.libraryInteractive : undefined}
+      managedInteractive={props.managedInteractive}
+      libraryInteractive={props.libraryInteractive}
+      defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
+    />, root);
+};
+
+interface IRenderMWInteractiveAuthoringProps {
+  interactive: IMWInteractive;
+  defaultClickToPlayPrompt: string;
+}
+const renderMWInteractiveAuthoring = (root: HTMLElement, props: IRenderMWInteractiveAuthoringProps) => {
+  return ReactDOM.render(
+    <MWInteractiveAuthoring
+      interactive={props.interactive}
+      defaultClickToPlayPrompt={props.defaultClickToPlayPrompt}
+    />, root);
+};
+
+interface IInteractiveAuthoringPreviewProps {
+  interactive: IPreviewInteractive;
+}
+const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiveAuthoringPreviewProps) => {
+  return ReactDOM.render(
+    <InteractiveAuthoringPreview
+      interactive={props.interactive}
     />, root);
 };
 
 export {
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
+
+  MWInteractiveAuthoring,
+  renderMWInteractiveAuthoring,
+
+  InteractiveAuthoringPreview,
+  renderInteractiveAuthoringPreview
 };
 
 (window as any).LARA.PageItemAuthoring = {
-  renderManagedInteractiveAuthoring
+  renderManagedInteractiveAuthoring,
+  renderMWInteractiveAuthoring,
+  renderInteractiveAuthoringPreview
 };

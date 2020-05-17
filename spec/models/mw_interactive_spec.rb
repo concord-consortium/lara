@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MwInteractive do
-  let (:interactive_options) { {} }
+  let (:interactive_options) { {linked_interactive_id: 1} }
   let (:interactive) { FactoryGirl.create(:mw_interactive, interactive_options) }
   let (:page) { FactoryGirl.create(:page) }
 
@@ -38,9 +38,22 @@ describe MwInteractive do
         is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state,
         show_in_featured_question_report: interactive.show_in_featured_question_report,
-        aspect_ratio_method: interactive.aspect_ratio_method
-       }
-      expect(interactive.to_hash).to eq(expected)
+        aspect_ratio_method: interactive.aspect_ratio_method,
+        no_snapshots: interactive.no_snapshots,
+      }
+      hash = interactive.to_hash
+      expect(hash).to eq(expected)
+      expect(hash[:linked_interactive_id]).to be_nil
+    end
+  end
+
+  describe '#to_authoring_hash' do
+    it 'has useful values' do
+      expected = interactive.to_hash
+      expected[:id] = interactive.id
+      expected[:linked_interactive_id] = interactive.linked_interactive_id
+      expected[:aspect_ratio] = interactive.aspect_ratio
+      expect(interactive.to_authoring_hash).to eq(expected)
     end
   end
 

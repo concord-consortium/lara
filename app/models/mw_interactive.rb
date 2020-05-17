@@ -54,8 +54,18 @@ class MwInteractive < ActiveRecord::Base
       show_in_featured_question_report: show_in_featured_question_report,
       model_library_url: model_library_url,
       authored_state: authored_state,
-      aspect_ratio_method: aspect_ratio_method
+      aspect_ratio_method: aspect_ratio_method,
+      no_snapshots: no_snapshots
     }
+  end
+
+  # used for react-based authoring
+  def to_authoring_hash()
+    hash = to_hash
+    hash[:id] = id
+    hash[:linked_interactive_id] = linked_interactive_id
+    hash[:aspect_ratio] = aspect_ratio
+    hash
   end
 
   def duplicate
@@ -81,7 +91,8 @@ class MwInteractive < ActiveRecord::Base
                               :is_full_width,
                               :model_library_url,
                               :authored_state,
-                              :aspect_ratio_method])
+                              :aspect_ratio_method,
+                              :no_snapshots])
   end
 
   def self.import(import_hash)
