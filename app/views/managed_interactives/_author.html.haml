@@ -4,6 +4,7 @@
     .model-edit
       .interactive-content
         %div{:id => "authorable-interactive-#{embeddable.id}"}
+  %div{:id => "interactive-preview-#{embeddable.id}"}
   = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 .embeddable_tools
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'managed_int', :allow_hide => allow_hide }
