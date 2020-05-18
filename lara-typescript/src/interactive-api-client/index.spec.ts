@@ -1,7 +1,7 @@
-import { LaraInteractiveApiClient } from "./index";
+import { LaraInteractiveApi } from "./index";
 
 describe("LaraInteractiveApiClient", () => {
   it("should export the LaraInteractiveApiClient class", () => {
-    expect(LaraInteractiveApiClient).toBeDefined();
+    expect(LaraInteractiveApi.Client).toBeDefined();
   });
 });

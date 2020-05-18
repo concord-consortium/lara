@@ -1,8 +1,6 @@
 
 import { ParentEndpoint } from "iframe-phone";
-import { ILaraInteractiveApiInitInteractive, ILaraInteractiveApiSupportedFeatures,
-         ILaraInteractiveGetFirebaseJwtOptions, LaraInteractiveApiServerMessage
-      } from "../interactive-api-client/types";
+import { LaraInteractiveApi } from "../interactive-api-client/";
 import { IframePhoneManager } from "./iframe-phone-manager";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
@@ -140,15 +138,15 @@ export class IFrameSaver {
     }
     this.alreadySetup = true;
 
-    this.iframePhone.addListener("setLearnerUrl", (learnerUrl: string) => {
+    this.addListener("setLearnerUrl", (learnerUrl: string) => {
       this.saveLearnerUrl(learnerUrl);
     });
 
-    this.iframePhone.addListener("interactiveState", (interactiveJson: string | object | null) => {
+    this.addListener("interactiveState", (interactiveJson: string | object | null) => {
       this.saveLearnerState(interactiveJson);
     });
 
-    this.iframePhone.addListener("getAuthInfo", () => {
+    this.addListener("getAuthInfo", () => {
       const authInfo: {provider: string; loggedIn: boolean; email?: string} = {
         provider: this.authProvider,
         loggedIn: this.loggedIn
@@ -159,12 +157,12 @@ export class IFrameSaver {
       this.post("authInfo", authInfo);
     });
 
-    this.iframePhone.addListener("height", (height: number | string) => {
+    this.addListener("height", (height: number | string) => {
       this.$iframe.data("height", height);
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.iframePhone.addListener("supportedFeatures", (info: ILaraInteractiveApiSupportedFeatures) => {
+    this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeatures) => {
       if ((info.features != null ? info.features.aspectRatio : undefined) != null) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.
@@ -175,7 +173,7 @@ export class IFrameSaver {
       }
     });
 
-    this.iframePhone.addListener("navigation", (opts: any) => {
+    this.addListener("navigation", (opts: any) => {
       if (opts == null) { opts = {}; }
       if (opts.hasOwnProperty("enableForwardNav")) {
         if (opts.enableForwardNav) {
@@ -186,7 +184,7 @@ export class IFrameSaver {
       }
     });
 
-    this.iframePhone.addListener("getFirebaseJWT", (opts: ILaraInteractiveGetFirebaseJwtOptions) => {
+    this.addListener("getFirebaseJWT", (opts: LaraInteractiveApi.IGetFirebaseJwtOptions) => {
       if (opts == null) { opts = {}; }
       return this.getFirebaseJwt(opts);
     });
@@ -332,7 +330,7 @@ export class IFrameSaver {
     const  globalInteractiveState = (typeof globalIframeSaver !== "undefined" && globalIframeSaver !== null)
       ? globalIframeSaver.globalState
       : null;
-    const initInteractiveMsg: ILaraInteractiveApiInitInteractive = {
+    const initInteractiveMsg: LaraInteractiveApi.IInitInteractive = {
       version: 1,
       error: err,
       mode: "runtime",
@@ -356,7 +354,7 @@ export class IFrameSaver {
     // it directly into general init message. However, multiple interactives are already using this format
     // and it doesn't seem to be worth changing at this point.
     $.extend(true, initInteractiveMsg, interactiveStateProps(response));
-    this.iframePhone.post("initInteractive", initInteractiveMsg);
+    this.post("initInteractive", initInteractiveMsg);
   }
 
   private setAutoSaveEnabled(enabled: boolean) {
@@ -384,7 +382,7 @@ export class IFrameSaver {
     }
   }
 
-  private getFirebaseJwt(opts: ILaraInteractiveGetFirebaseJwtOptions) {
+  private getFirebaseJwt(opts: LaraInteractiveApi.IGetFirebaseJwtOptions) {
     return $.ajax({
       type: "POST",
       url: this.getFirebaseJWTUrl,
@@ -397,7 +395,11 @@ export class IFrameSaver {
       }});
   }
 
-  private post(message: LaraInteractiveApiServerMessage, content?: object | string | number | null) {
+  private post(message: LaraInteractiveApi.ServerMessage, content?: object | string | number | null) {
     this.iframePhone.post(message, content);
+  }
+
+  private addListener(message: LaraInteractiveApi.ClientMessage, listener: (content: any) => void) {
+    this.iframePhone.addListener(message, listener);
   }
 }
