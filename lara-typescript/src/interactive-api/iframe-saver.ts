@@ -1,6 +1,8 @@
 
 import { ParentEndpoint } from "iframe-phone";
-import { IInitRuntimeInteractive } from "./types";
+import { ILaraInteractiveApiInitInteractive, ILaraInteractiveApiSupportedFeatures,
+         ILaraInteractiveGetFirebaseJwtOptions, LaraInteractiveApiServerMessage
+      } from "../interactive-api-client/types";
 import { IframePhoneManager } from "./iframe-phone-manager";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
@@ -69,16 +71,6 @@ const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInte
 });
 
 type SuccessCallback = () => void;
-
-interface IGetFirebaseJwtOptions {
-  firebase_app?: string;
-}
-
-interface ISupportedFeatures {
-  features: {
-    aspectRatio: string;
-  };
-}
 
 export class IFrameSaver {
 
@@ -164,7 +156,7 @@ export class IFrameSaver {
       if (this.userEmail != null) {
         authInfo.email = this.userEmail;
       }
-      this.iframePhone.post("authInfo", authInfo);
+      this.post("authInfo", authInfo);
     });
 
     this.iframePhone.addListener("height", (height: number | string) => {
@@ -172,7 +164,7 @@ export class IFrameSaver {
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.iframePhone.addListener("supportedFeatures", (info: ISupportedFeatures) => {
+    this.iframePhone.addListener("supportedFeatures", (info: ILaraInteractiveApiSupportedFeatures) => {
       if ((info.features != null ? info.features.aspectRatio : undefined) != null) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.
@@ -194,13 +186,13 @@ export class IFrameSaver {
       }
     });
 
-    this.iframePhone.addListener("getFirebaseJWT", (opts: IGetFirebaseJwtOptions) => {
+    this.iframePhone.addListener("getFirebaseJWT", (opts: ILaraInteractiveGetFirebaseJwtOptions) => {
       if (opts == null) { opts = {}; }
       return this.getFirebaseJwt(opts);
     });
 
     if (this.learnerStateSavingEnabled()) {
-      this.iframePhone.post("getLearnerUrl");
+      this.post("getLearnerUrl");
     }
 
     // Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
@@ -221,7 +213,7 @@ export class IFrameSaver {
   private save(successCallback: SuccessCallback | null = null) {
     this.successCallback = successCallback;
     // will call back into "@save_learner_state)
-    return this.iframePhone.post({type: "getInteractiveState"});
+    return this.post("getInteractiveState");
   }
 
   private confirmDelete(callback: () => void) {
@@ -308,14 +300,14 @@ export class IFrameSaver {
 
     return $.ajax({
       url: this.interactiveRunStateUrl,
-      success: response => {
+      success: (response: IInteractiveRunStateResponse) => {
         if (response.raw_data) {
           const interactive = JSON.parse(response.raw_data);
           if (interactive) {
             this.savedState = interactive;
             // DEPRECATED: the initInteractive message includes the interactive state so
             // interactives should use the initInteractive method instead
-            this.iframePhone.post({type: "loadInteractive", content: interactive});
+            this.post("loadInteractive", interactive);
             // Lab logging needs to be re-enabled after interactive is (re)loaded.
             LoggerUtils.enableLabLogging(this.$iframe[0]);
             // State is available. Show "Undo all my work" button.
@@ -336,11 +328,11 @@ export class IFrameSaver {
 
   // this is the newer method of initializing an interactive
   // it returns the current state and linked state
-  private initInteractive(err: string | null = null, response = null) {
+  private initInteractive(err: string | null = null, response: IInteractiveRunStateResponse | null = null) {
     const  globalInteractiveState = (typeof globalIframeSaver !== "undefined" && globalIframeSaver !== null)
       ? globalIframeSaver.globalState
       : null;
-    const initInteractiveMsg: IInitRuntimeInteractive = {
+    const initInteractiveMsg: ILaraInteractiveApiInitInteractive = {
       version: 1,
       error: err,
       mode: "runtime",
@@ -392,16 +384,20 @@ export class IFrameSaver {
     }
   }
 
-  private getFirebaseJwt(opts: IGetFirebaseJwtOptions) {
+  private getFirebaseJwt(opts: ILaraInteractiveGetFirebaseJwtOptions) {
     return $.ajax({
       type: "POST",
       url: this.getFirebaseJWTUrl,
       data: opts,
       success: response => {
-        this.iframePhone.post("firebaseJWT", response);
+        this.post("firebaseJWT", response);
       },
       error: (jqxhr, status, error) => {
-        this.iframePhone.post("firebaseJWT", {response_type: "ERROR", message: error});
+        this.post("firebaseJWT", {response_type: "ERROR", message: error});
       }});
+  }
+
+  private post(message: LaraInteractiveApiServerMessage, content?: object | string | number | null) {
+    this.iframePhone.post(message, content);
   }
 }

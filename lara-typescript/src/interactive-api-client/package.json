@@ -1,7 +1,8 @@
 {
-  "name": "@concord-consortium/lara-interactive-api",
+  "name": "@concord-consortium/lara-interactive-api-client",
   "version": "1.0.0",
-  "description": "LARA Interactive API",
+  "description": "LARA Interactive API Client",
+  "main": "./index.js",
   "types": "./index.d.ts",
   "repository": {
     "type": "git",
@@ -12,8 +13,5 @@
   "bugs": {
     "url": "https://github.com/concord-consortium/lara/issues"
   },
-  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api#readme",
-  "devDependencies": {
-    "iframe-phone": "^1.2.1"
-  }
+  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme"
 }
