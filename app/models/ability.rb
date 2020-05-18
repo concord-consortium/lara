@@ -15,6 +15,7 @@ class Ability
       can :manage, QuestionTracker
       can :report, QuestionTracker
       can :manage, ApprovedScript
+      can :manage, LibraryInteractive
     elsif user.author?
       # Authors can create new items and manage those they created
       can :create, Sequence

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200320002802) do
+ActiveRecord::Schema.define(:version => 20200511125959) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -368,16 +368,42 @@ ActiveRecord::Schema.define(:version => 20200320002802) do
     t.integer  "interactive_id"
     t.string   "interactive_type"
     t.integer  "run_id"
-    t.text     "raw_data"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.text     "raw_data",         :limit => 16777215
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.text     "learner_url"
-    t.boolean  "is_dirty",         :default => false
+    t.boolean  "is_dirty",                             :default => false
     t.string   "key"
   end
 
   add_index "interactive_run_states", ["key"], :name => "interactive_run_states_key_idx"
   add_index "interactive_run_states", ["run_id"], :name => "interactive_run_states_run_id_idx"
+
+  create_table "library_interactives", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "authoring_guidance"
+    t.text     "base_url"
+    t.string   "thumbnail_url"
+    t.string   "image_url"
+    t.string   "click_to_play_prompt"
+    t.boolean  "click_to_play",           :default => false
+    t.boolean  "no_snapshots",            :default => false
+    t.boolean  "enable_learner_state",    :default => false
+    t.boolean  "has_report_url",          :default => false
+    t.boolean  "show_delete_data_button", :default => true
+    t.boolean  "full_window",             :default => false
+    t.string   "aspect_ratio_method",     :default => "DEFAULT"
+    t.integer  "native_width"
+    t.integer  "native_height"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.string   "export_hash"
+    t.boolean  "customizable",            :default => false
+    t.boolean  "authorable",              :default => false
+  end
+
+  add_index "library_interactives", ["export_hash"], :name => "library_interactives_export_hash_idx"
 
   create_table "lightweight_activities", :force => true do |t|
     t.string   "name"
@@ -424,6 +450,33 @@ ActiveRecord::Schema.define(:version => 20200320002802) do
 
   add_index "lightweight_activities_sequences", ["lightweight_activity_id"], :name => "index_activities_sequence_join_by_activity"
   add_index "lightweight_activities_sequences", ["sequence_id"], :name => "index_activities_sequence_join_by_sequence"
+
+  create_table "managed_interactives", :force => true do |t|
+    t.integer  "library_interactive_id"
+    t.string   "name"
+    t.text     "url_fragment"
+    t.text     "authored_state"
+    t.boolean  "is_hidden",                        :default => false
+    t.boolean  "inherit_aspect_ratio_method",      :default => true
+    t.string   "custom_aspect_ratio_method"
+    t.boolean  "inherit_native_width",             :default => true
+    t.integer  "custom_native_width"
+    t.boolean  "inherit_native_height",            :default => true
+    t.integer  "custom_native_height"
+    t.boolean  "inherit_click_to_play",            :default => true
+    t.boolean  "custom_click_to_play",             :default => false
+    t.boolean  "inherit_full_window",              :default => true
+    t.boolean  "custom_full_window",               :default => false
+    t.boolean  "inherit_click_to_play_prompt",     :default => true
+    t.string   "custom_click_to_play_prompt"
+    t.boolean  "inherit_image_url",                :default => true
+    t.string   "custom_image_url"
+    t.integer  "linked_interactive_id"
+    t.boolean  "is_full_width",                    :default => true
+    t.boolean  "show_in_featured_question_report", :default => true
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+  end
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
     t.integer "answer_id"
@@ -622,8 +675,8 @@ ActiveRecord::Schema.define(:version => 20200320002802) do
   create_table "themes", :force => true do |t|
     t.string   "name"
     t.string   "css_file"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.boolean  "footer_nav", :default => false
   end
 

@@ -28,6 +28,7 @@
 //= require check-answer
 //= require lara-plugin-api-V2
 //= require lara-typescript
+//= require page-item-authoring
 //= require ./common.js
 //= require edit_sequence
 //= require login_menu
@@ -43,3 +44,4 @@
 //= require idle
 //= require check-author-idle
 //= require application-init
+//= require interactive-form-helper

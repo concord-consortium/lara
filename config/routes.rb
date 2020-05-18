@@ -1,7 +1,8 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :approved_scripts
+  resources :library_interactives, :except => [:show]
 
+  resources :approved_scripts
 
   resources :projects do
     member do
@@ -110,6 +111,7 @@ LightweightStandalone::Application.routes.draw do
   # These don't need index or show pages - though there might be something to be said for an
   # index .xml file as a feed for select menus - but they need create-update-delete.
   resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show
+  resources :managed_interactives, :controller => 'managed_interactives', :constraints => { :id => /\d+/ }, :except => :show
   resources :image_interactives, :constraints => { :id => /\d+/ }, :except => :show
   resources :video_interactives, :constraints => { :id => /\d+/ }, :except => :show do
     member do
@@ -119,6 +121,11 @@ LightweightStandalone::Application.routes.draw do
 
   resources :pages, :controller => 'interactive_pages', :constraints => { :id => /\d+/ }, :except => :create do
     resources :mw_interactives, :controller => 'mw_interactives', :constraints => { :id => /\d+/ }, :except => :show do
+      member do
+        post 'toggle_visibility'
+      end
+    end
+    resources :managed_interactives, :controller => 'managed_interactives', :constraints => { :id => /\d+/ }, :except => :show do
       member do
         post 'toggle_visibility'
       end

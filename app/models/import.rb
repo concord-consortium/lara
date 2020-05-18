@@ -4,6 +4,9 @@ class Import < ActiveRecord::Base
   belongs_to :user
   belongs_to :import_item, polymorphic: true
 
+  # NOTE: the library interactive import saves itself during the import process so that duplicate
+  # library interactives are not created if the library interactive is reused in the imported activity
+
   def self.import(json_object, user, imported_activity_url = nil)
     begin
       if json_object.instance_of?(String)

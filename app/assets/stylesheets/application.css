@@ -31,4 +31,6 @@
  *= require question-tracker
  *= require common
  *= require lara-typescript
+ *= require page-item-authoring.css
+ *= require styled-admin-forms
  */
