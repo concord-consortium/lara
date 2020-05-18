@@ -10,4 +10,5 @@
   .embeddables_list
     - arg_block_authorables(page).each do |e|
       - e_type = e.class.name.underscore
-      = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => page, :allow_hide => false }
+      .authorable
+        = render :partial => "#{e_type.pluralize}/author", :locals => { :embeddable => e, :page => page, :allow_hide => false }
