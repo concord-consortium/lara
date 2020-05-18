@@ -79,10 +79,8 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   position: relative;
 
   select {
-    font-size: 14px;
     margin: 0 8px 0 0;
-    max-width: 191px;
-    padding: 9px 25px 9px 10px;
+    max-width: 170px;
   }
 }
 
@@ -282,8 +280,8 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   .show-hide-toggle {
     background: none;
     border: none;
-    color: #126eac;
-    font-size: 14px;
+    color: #fff;
+    font-size: 12px;
     margin: 0;
     padding: 0;
     position: absolute;
@@ -876,7 +874,7 @@ fieldset {
 }
 /* Page editing */
 .editing {
-  fieldset .edit_trigger { line-height: 2;; }
+  fieldset .edit_trigger { line-height: 2; }
   /* Title */
   .editable[data-name="interactive_page[name]"] form {
     display: inline;
@@ -886,20 +884,23 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #6fc5d8;
+    border: 1px solid #555;
     margin-bottom: 15px;
     padding: 10px;
     position: relative;
     h2 {
-      background-color: #b4e3ee;
+      background-color: #555;
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
-      color: #126eac !important;
+      color: #fff !important;
       margin: -10px -10px 10px; /* Undoes padding from div on top, left, & right for background */
       padding: 10px; /* Gives the head itself some padding */
       text-align: left;
     }
     .embeddables-form {
-      margin: 10px 0;
+      background: #555;
+      margin: -10px -10px 10px;
+      padding: 0 10px 10px;
+      text-align: right;
     }
     .embeddable-container {
       background: #eee;
@@ -911,7 +912,7 @@ fieldset {
       padding: 0 25px 0 0;
       right: 5px;
       text-align: right;
-      top: 6px;
+      top: 7px;
       width: 145px;
       a {
         color:  #126eac;
@@ -992,6 +993,8 @@ fieldset {
       margin-bottom: 2px !important;
 
       .embeddable_tools {
+        top: 11px;
+
         a {
           color: #126eac;
           font-size: 12px;
@@ -1004,6 +1007,7 @@ fieldset {
         border-radius: 0;
         color: #126eac;
         margin: 0;
+        padding-top: .8em;
         width: 303px !important;
 
         &:hover {
@@ -1233,7 +1237,7 @@ ul#new-menu {
     .close_link{
       text-align: right;
       float: right;
-      color: #444;
+      color: #555;
       padding-bottom: 5px;
       &:hover, &:active {
         text-decoration: underline;
