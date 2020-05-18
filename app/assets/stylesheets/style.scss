@@ -277,6 +277,17 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .questions {
   position: relative;
 
+  &.arg-block {
+
+    .embeddables-form {
+      overflow: hidden;
+    }
+    .button_to {
+      float: right;
+      margin-left: 5px;
+    }
+  }
+
   .show-hide-toggle {
     background: none;
     border: none;
