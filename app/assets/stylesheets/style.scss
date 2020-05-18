@@ -279,6 +279,9 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 
   &.arg-block {
 
+    .authorable {
+      padding-top: 33px !important;
+    }
     .embeddables-form {
       overflow: hidden;
     }
