@@ -29,24 +29,8 @@ interface IInteractiveRunStateResponse {
   activity_name: string;
 }
 
-interface IInteractiveStateProps {
-  interactiveState: object | null;
-  hasLinkedInteractive?: boolean;
-  linkedState?: object;
-  allLinkedStates?: IInteractiveStateProps[];
-  createdAt?: string;
-  updatedAt?: string;
-  interactiveStateUrl?: string;
-  interactive: {
-    id?: number;
-    name?: string;
-  };
-  pageNumber?: number;
-  pageName?: string;
-  activityName?: string;
-}
-
-const interactiveStateProps = (data: IInteractiveRunStateResponse | null): IInteractiveStateProps => ({
+// tslint:disable-next-line:max-line-length
+const interactiveStateProps = (data: IInteractiveRunStateResponse | null): LaraInteractiveApi.IInteractiveStateProps => ({
   interactiveState: (data != null ? JSON.parse(data.raw_data) : undefined),
   hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
   linkedState: (data != null ? JSON.parse(data.linked_state) : undefined),
@@ -163,7 +147,7 @@ export class IFrameSaver {
     });
 
     this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeatures) => {
-      if ((info.features != null ? info.features.aspectRatio : undefined) != null) {
+      if (info.features && info.features.aspectRatio) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.
         if (this.$iframe.data("aspect-ratio-method") === "DEFAULT") {
@@ -173,7 +157,7 @@ export class IFrameSaver {
       }
     });
 
-    this.addListener("navigation", (opts: any) => {
+    this.addListener("navigation", (opts: LaraInteractiveApi.INavigationOptions) => {
       if (opts == null) { opts = {}; }
       if (opts.hasOwnProperty("enableForwardNav")) {
         if (opts.enableForwardNav) {
@@ -335,6 +319,7 @@ export class IFrameSaver {
       error: err,
       mode: "runtime",
       authoredState: this.authoredState,
+      interactiveState: null,  // set in interactiveStateProps()
       globalInteractiveState,
       interactiveStateUrl: this.interactiveRunStateUrl,
       collaboratorUrls: (this.collaboratorUrls != null) ? this.collaboratorUrls.split(";") : null,

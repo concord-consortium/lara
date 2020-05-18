@@ -20,12 +20,30 @@ export namespace LaraInteractiveApi {
     }
   })();
 
-  interface IRuntimeInitInteractive {
+  export interface IInteractiveStateProps<InteractiveState = {}> {
+    interactiveState: InteractiveState | null;
+    hasLinkedInteractive?: boolean;
+    linkedState?: object;
+    allLinkedStates?: IInteractiveStateProps[];
+    createdAt?: string;
+    updatedAt?: string;
+    interactiveStateUrl?: string;
+    interactive: {
+      id?: number;
+      name?: string;
+    };
+    pageNumber?: number;
+    pageName?: string;
+    activityName?: string;
+  }
+
+  // tslint:disable-next-line:max-line-length
+  interface IRuntimeInitInteractive<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> extends IInteractiveStateProps<InteractiveState> {
     version: 1;
     error: any;
     mode: "runtime";
-    authoredState: object | null;
-    globalInteractiveState: object | null;
+    authoredState: AuthoredState | null;
+    globalInteractiveState: GlobalInteractiveState | null;
     interactiveStateUrl: string;
     collaboratorUrls: string[] | null;
     classInfoUrl: string;
@@ -40,7 +58,24 @@ export namespace LaraInteractiveApi {
     };
   }
 
-  export type IInitInteractive = IRuntimeInitInteractive;
+  interface IAuthoringInitInteractive<AuthoredState = {}> {
+    version: 1;
+    error: null;
+    mode: "authoring";
+    authoredState: AuthoredState | null;
+  }
+
+  interface IReportInitInteractive<AuthoredState = {}, InteractiveState = {}> {
+    version: 1;
+    mode: "report";
+    authoredState: AuthoredState;
+    interactiveState: InteractiveState;
+  }
+
+  export type IInitInteractive<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> =
+    IRuntimeInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState> |
+    IAuthoringInitInteractive<AuthoredState> |
+    IReportInitInteractive<AuthoredState, InteractiveState>;
 
   export interface IAuthInfo {
     provider: string;
@@ -49,19 +84,23 @@ export namespace LaraInteractiveApi {
   }
 
   export type ClientMessage = "setLearnerUrl" | "interactiveState" | "height" | "getAuthInfo" |
-                              "supportedFeatures" | "navigation" | "getFirebaseJWT";
+                              "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState";
 
-  export type ServerMessage = "authInfo" | "getLearnerUrl" | "getInteractiveState" | "loadInteractive" |
+  export type ServerMessage = "hello" | // hello is from base iframe-phone
+                              "authInfo" | "getLearnerUrl" | "getInteractiveState" | "loadInteractive" |
                               "initInteractive" | "firebaseJWT";
 
   export interface ISupportedFeatures {
+    apiVersion: 1;
     features: {
-      aspectRatio: string;
+      aspectRatio?: string;
+      authoredState?: boolean;
     };
   }
 
   export interface INavigationOptions {
     enableForwardNav?: boolean;
+    message?: string;
   }
 
   export interface IGetFirebaseJwtOptions {
@@ -74,17 +113,22 @@ export namespace LaraInteractiveApi {
     token?: string;
   }
 
-  export interface IClientOptions {
+  export interface IClientOptions<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> {
     name: string;
     verbosity?: VerbosityLevel;
     startDisconnected?: boolean;
-    onLoadInteractive?: (interactiveState: object | null) => void;
-    onInitInteractive?: (initMessage: IInitInteractive) => void;
+    supportedFeatures?: ISupportedFeatures;
+    onHello?: () => void;
+    onLoadInteractive?: (interactiveState: InteractiveState | null) => void;
+    // tslint:disable-next-line:max-line-length
+    onInitInteractive?: (initMessage: IInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState>) => void;
     onGetLearnerUrl?: () => string | null;
-    onGetInteractiveState?: () => object | string | null;
+    onGetInteractiveState?: () => InteractiveState | string | null;
   }
 
-  export class Client {
+  export const InIframe = inIframe;
+
+  export class Client<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> {
 
     public static GetLocalVerbosityLevel(name: string) {
       const level =
@@ -94,9 +138,9 @@ export namespace LaraInteractiveApi {
     }
 
     private phone: iframePhone.IFrameEndpoint | undefined;
-    private options: IClientOptions;
+    private options: IClientOptions<AuthoredState, InteractiveState, GlobalInteractiveState>;
 
-    constructor(options: IClientOptions) {
+    constructor(options: IClientOptions<AuthoredState, InteractiveState, GlobalInteractiveState>) {
       options.verbosity = Client.GetLocalVerbosityLevel(options.name) || options.verbosity;
       this.options = options;
       this.log("debug", "constructor: verbosity level is", options.verbosity);
@@ -118,6 +162,19 @@ export namespace LaraInteractiveApi {
           this.log("debug", "#connect: connecting");
           this.phone = iframePhone.getIFrameEndpoint();
 
+          this.addListener("hello", () => {
+            if (this.options.onHello) {
+              this.log("debug", "onHello listener called, calling client callback");
+              this.options.onHello();
+            } else {
+              this.log("debug", "onHello listener called, no client callback found");
+            }
+
+            if (this.options.supportedFeatures) {
+              this.setSupportedFeatures(this.options.supportedFeatures);
+            }
+          });
+
           this.addListener("getLearnerUrl", () => {
             if (this.options.onGetLearnerUrl) {
               const learnerUrl = this.options.onGetLearnerUrl();
@@ -138,16 +195,18 @@ export namespace LaraInteractiveApi {
             }
           });
 
-          this.addListener("initInteractive", (initMessage: LaraInteractiveApi.IInitInteractive) => {
-            if (this.options.onInitInteractive) {
-              this.log("debug", "initInteractive listener called, calling client callback");
-              this.options.onInitInteractive(initMessage);
-            } else {
-              this.log("debug", "initInteractive listener called, no client callback found");
-            }
+          this.addListener("initInteractive",
+            // tslint:disable-next-line:max-line-length
+            (initMessage: LaraInteractiveApi.IInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState>) => {
+              if (this.options.onInitInteractive) {
+                this.log("debug", "initInteractive listener called, calling client callback");
+                this.options.onInitInteractive(initMessage);
+              } else {
+                this.log("debug", "initInteractive listener called, no client callback found");
+              }
           });
 
-          this.addListener("loadInteractive", (interactiveState: object | null) => {
+          this.addListener("loadInteractive", (interactiveState: InteractiveState | null) => {
             if (this.options.onLoadInteractive) {
               this.log("debug", "loadInteractive listener called, calling client callback");
               this.options.onLoadInteractive(interactiveState);
@@ -155,6 +214,8 @@ export namespace LaraInteractiveApi {
               this.log("debug", "loadInteractive listener called, no client callback found");
             }
           });
+
+          this.phone.initialize();
         } else {
           this.log("info", "#connect: this.phone already connected");
         }
@@ -187,7 +248,7 @@ export namespace LaraInteractiveApi {
       return this.post("setLearnerUrl", url);
     }
 
-    public setInteractiveState(interactiveState: string | object | null) {
+    public setInteractiveState(interactiveState: InteractiveState | string | null) {
       return this.post("interactiveState", interactiveState);
     }
 
@@ -201,6 +262,10 @@ export namespace LaraInteractiveApi {
 
     public setNavigation(options: INavigationOptions) {
       return this.post("navigation", options);
+    }
+
+    public setAuthoredState(authoredState: AuthoredState) {
+      return this.post("authoredState", authoredState);
     }
 
     public getAuthInfo(): Promise<IAuthInfo> {
@@ -237,17 +302,17 @@ export namespace LaraInteractiveApi {
       });
     }
 
-    private post(message: ClientMessage, content?: object | string | number | null) {
+    public post(message: ClientMessage, content?: InteractiveState | AuthoredState | object | string | number | null) {
       if (this.phone) {
         this.log("debug", "#post: calling this.phone.post() with", message, content);
-        this.phone.post(message, content);
+        this.phone.post(message, content as any);
         return true;
       }
       this.log("debug", "#post: this.phone undefined for", message, content);
       return false;
     }
 
-    private addListener(message: ServerMessage, listener: (content: any) => void) {
+    public addListener(message: ServerMessage, listener: (content: any) => void) {
       if (this.phone) {
         this.log("debug", "#addListener: calling this.phone.addListener() for", message);
         this.phone.addListener(message, listener);
@@ -257,7 +322,7 @@ export namespace LaraInteractiveApi {
       return false;
     }
 
-    private removeListener(message: ServerMessage) {
+    public removeListener(message: ServerMessage) {
       if (this.phone) {
         this.log("debug", "#removeListener: calling this.phone.removeListener() for", message);
         this.phone.removeListener(message);

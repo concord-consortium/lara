@@ -16441,6 +16441,7 @@ var LaraInteractiveApi;
             return true;
         }
     })();
+    LaraInteractiveApi.InIframe = inIframe;
     var Client = /** @class */ (function () {
         function Client(options) {
             options.verbosity = Client.GetLocalVerbosityLevel(options.name) || options.verbosity;
@@ -16468,6 +16469,18 @@ var LaraInteractiveApi;
                 if (!this.phone) {
                     this.log("debug", "#connect: connecting");
                     this.phone = iframePhone.getIFrameEndpoint();
+                    this.addListener("hello", function () {
+                        if (_this.options.onHello) {
+                            _this.log("debug", "onHello listener called, calling client callback");
+                            _this.options.onHello();
+                        }
+                        else {
+                            _this.log("debug", "onHello listener called, no client callback found");
+                        }
+                        if (_this.options.supportedFeatures) {
+                            _this.setSupportedFeatures(_this.options.supportedFeatures);
+                        }
+                    });
                     this.addListener("getLearnerUrl", function () {
                         if (_this.options.onGetLearnerUrl) {
                             var learnerUrl = _this.options.onGetLearnerUrl();
@@ -16488,7 +16501,9 @@ var LaraInteractiveApi;
                             _this.log("debug", "getInteractiveState listener called, no client callback found");
                         }
                     });
-                    this.addListener("initInteractive", function (initMessage) {
+                    this.addListener("initInteractive", 
+                    // tslint:disable-next-line:max-line-length
+                    function (initMessage) {
                         if (_this.options.onInitInteractive) {
                             _this.log("debug", "initInteractive listener called, calling client callback");
                             _this.options.onInitInteractive(initMessage);
@@ -16506,6 +16521,7 @@ var LaraInteractiveApi;
                             _this.log("debug", "loadInteractive listener called, no client callback found");
                         }
                     });
+                    this.phone.initialize();
                 }
                 else {
                     this.log("info", "#connect: this.phone already connected");
@@ -16551,6 +16567,9 @@ var LaraInteractiveApi;
         };
         Client.prototype.setNavigation = function (options) {
             return this.post("navigation", options);
+        };
+        Client.prototype.setAuthoredState = function (authoredState) {
+            return this.post("authoredState", authoredState);
         };
         Client.prototype.getAuthInfo = function () {
             var _this = this;
@@ -16816,6 +16835,7 @@ var getAuthoredState = function ($dataDiv) {
     }
     return authoredState;
 };
+// tslint:disable-next-line:max-line-length
 var interactiveStateProps = function (data) { return ({
     interactiveState: (data != null ? JSON.parse(data.raw_data) : undefined),
     hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
@@ -16894,7 +16914,7 @@ var IFrameSaver = /** @class */ (function () {
             _this.$iframe.trigger("sizeUpdate");
         });
         this.addListener("supportedFeatures", function (info) {
-            if ((info.features != null ? info.features.aspectRatio : undefined) != null) {
+            if (info.features && info.features.aspectRatio) {
                 // If the author specifies the aspect-ratio-method as "DEFAULT"
                 // then the Interactive can provide suggested aspect-ratio.
                 if (_this.$iframe.data("aspect-ratio-method") === "DEFAULT") {
@@ -17065,6 +17085,7 @@ var IFrameSaver = /** @class */ (function () {
             error: err,
             mode: "runtime",
             authoredState: this.authoredState,
+            interactiveState: null,
             globalInteractiveState: globalInteractiveState,
             interactiveStateUrl: this.interactiveRunStateUrl,
             collaboratorUrls: (this.collaboratorUrls != null) ? this.collaboratorUrls.split(";") : null,
