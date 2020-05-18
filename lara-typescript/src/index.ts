@@ -3,6 +3,7 @@ import "./plugin-api/normalize.scss";
 import * as PluginAPI from "./plugin-api";
 import * as InternalAPI from "./internal-api";
 import * as InteractiveAPI from "./interactive-api";
+import * as PageItemAuthoring from "./page-item-authoring";
 
 export {
   PluginAPI as PluginAPI_V3,
@@ -15,3 +16,4 @@ export {
 (window as any).LARA.PluginAPI_V3 = PluginAPI;
 (window as any).LARA.InternalAPI = InternalAPI;
 (window as any).LARA.InteractiveAPI = InteractiveAPI;
+(window as any).LARA.PageItemAuthoring = PageItemAuthoring;
