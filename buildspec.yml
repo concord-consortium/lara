@@ -25,6 +25,9 @@ phases:
       - echo Writing image definitions file...
       # TODO: This is only setup for the App task definition, we'll need to
       #   figure how to also update the Worker task definition
-      - printf '[{"name":"App","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"App","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > app-imagedefinitions.json
+      - printf '[{"name":"Worker","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > worker-imagedefinitions.json
 artifacts:
-  files: imagedefinitions.json
+  files:
+    - app-imagedefinitions.json
+    - worker-imagedefinitions.json
