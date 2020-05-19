@@ -27,10 +27,14 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
   // by the setSize method in interactives-sizing.js
   // That code can't be used here, because the jQuery changes to the iframe
   // conflict with the React management of the iframe element.
-  // We could duplicate the sizing code here, or abstract it so it can be
-  // shared by both the runtime and authoring.
-  // The best solution would be to move the runtime iframe rendering into React
-  // so both authoring and runtime use the interactiveIframe component
+  // We could:
+  // - duplicate the sizing code here
+  // - abstract it so it can be shared by both the runtime and authoring.
+  // - move the runtime iframe rendering into React, so both authoring and
+  //   runtime use the interactiveIframe component
+  // The last option is the best for maintainability, but it will slow down the
+  // page load since the iframes won't start loading until the javascript is loaded
+  // So probably the best option is to abstract that code.
   const [height, setHeight] = useState<number|string>(300);
 
   const handleHeightChange = (newHeight: number | string) => {
