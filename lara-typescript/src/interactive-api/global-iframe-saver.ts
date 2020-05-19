@@ -1,5 +1,6 @@
 import { ParentEndpoint } from "iframe-phone";
 import { IframePhoneManager } from "./iframe-phone-manager";
+import { GlobalIFrameSaverClientMessage, GlobalIFrameSaverServerMessage } from "../interactive-api-client/types";
 
 export interface IGlobalIframeSaverConfig {
   save_url: string;
@@ -31,7 +32,8 @@ export class GlobalIframeSaver {
   }
 
   private setupPhoneListeners(phone: ParentEndpoint) {
-    phone.addListener("interactiveStateGlobal", (state: object) => {
+    const clientMessage: GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
+    phone.addListener(clientMessage, (state: object) => {
       this.globalState = state;
       this.saveGlobalState();
       this.broadcastGlobalState(phone);
@@ -39,7 +41,8 @@ export class GlobalIframeSaver {
   }
 
   private loadGlobalState(phone: ParentEndpoint) {
-    phone.post("loadInteractiveGlobal", this.globalState);
+    const serverMessage: GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
+    phone.post(serverMessage, this.globalState);
   }
 
   private broadcastGlobalState(sender: ParentEndpoint) {

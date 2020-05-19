@@ -1,7 +1,8 @@
 import * as iframePhone from "iframe-phone";
 
-import { IClientOptions, IInitInteractive, ISupportedFeatures, INavigationOptions,
-         IAuthInfo, IGetFirebaseJwtOptions, IFirebaseJwt, ClientMessage, ServerMessage
+import { IClientOptions, IInitInteractive, ISupportedFeaturesRequest, INavigationOptions,
+         IAuthInfo, IGetFirebaseJwtOptions, IFirebaseJwt, ClientMessage, ServerMessage,
+         ISupportedFeatures
         } from "./types";
 import { InIframe } from "./in-frame";
 
@@ -107,8 +108,12 @@ export class Client<AuthoredState = {}, InteractiveState = {}, GlobalInteractive
     return this.post("height", height);
   }
 
-  public setSupportedFeatures(supportedFeatures: ISupportedFeatures) {
-    return this.post("supportedFeatures", supportedFeatures);
+  public setSupportedFeatures(features: ISupportedFeatures) {
+    const request: ISupportedFeaturesRequest = {
+      apiVersion: 1,
+      features
+    };
+    return this.post("supportedFeatures", request);
   }
 
   public setNavigation(options: INavigationOptions) {

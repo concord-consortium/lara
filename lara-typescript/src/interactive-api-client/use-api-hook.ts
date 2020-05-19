@@ -67,9 +67,10 @@ export function useLaraInteractiveApi<AuthoredState = {}, InteractiveState = {},
   };
 
   const handleSetAspectRatio = (aspectRatio: number) => {
-    const supportedFeatures = hookOptions.supportedFeatures || {apiVersion: 1, features: {}};
-    supportedFeatures.features.aspectRatio = aspectRatio;
     if (client.current) {
+      const existingFeatures = hookOptions.supportedFeatures || {};
+      const aspectRatioFeature = { aspectRatio };
+      const supportedFeatures = {...existingFeatures, ...aspectRatioFeature};
       client.current.setSupportedFeatures(supportedFeatures);
     }
   };

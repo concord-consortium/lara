@@ -147,7 +147,7 @@ export class IFrameSaver {
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeatures) => {
+    this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
       if (info.features && info.features.aspectRatio) {
         // If the author specifies the aspect-ratio-method as "DEFAULT"
         // then the Interactive can provide suggested aspect-ratio.

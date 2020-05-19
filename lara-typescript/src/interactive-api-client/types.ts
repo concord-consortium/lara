@@ -1,5 +1,5 @@
 // the iframesaver messages are 1 per line to reduce merge conflicts as new ones are added
-type IFrameSaverClientMessage = "interactiveState" |
+export type IFrameSaverClientMessage = "interactiveState" |
                                 "height" |
                                 "getAuthInfo" |
                                 "supportedFeatures" |
@@ -7,18 +7,18 @@ type IFrameSaverClientMessage = "interactiveState" |
                                 "getFirebaseJWT" |
                                 "authoredState";
 
-type IframeSaverServerMessage = "authInfo" |
+export type IframeSaverServerMessage = "authInfo" |
                                 "getInteractiveState" |
                                 "initInteractive" |
                                 "firebaseJWT";
 
-type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
-type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
+export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
+export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
 
-type IframePhoneServerMessage = "hello";
+export type IframePhoneServerMessage = "hello";
 
-type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
-type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteractive";
+export type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
+export type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteractive";
 
 export type ClientMessage = DeprecatedIFrameSaverClientMessage |
                             IFrameSaverClientMessage |
@@ -89,12 +89,14 @@ export type IInitInteractive<AuthoredState = {}, InteractiveState = {}, GlobalIn
 export type InitInteractiveMode = "runtime" | "authoring" | "report";
 
 export interface ISupportedFeatures {
+  aspectRatio?: number;
+  authoredState?: boolean;
+  interactiveState?: boolean;
+}
+
+export interface ISupportedFeaturesRequest {
   apiVersion: 1;
-  features: {
-    aspectRatio?: number;
-    authoredState?: boolean;
-    interactiveState?: boolean;
-  };
+  features: ISupportedFeatures;
 }
 
 export interface INavigationOptions {
