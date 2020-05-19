@@ -9366,16 +9366,29 @@ exports.InteractiveAuthoringPreview = function (_a) {
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    // FIXME: The default height here should be based on the aspect ratio setting
+    // and the width of the iframe. That computation at runtime is currently handled
+    // by the setSize method in interactives-sizing.js
+    // That code can't be used here, because the jQuery changes to the iframe
+    // conflict with the React management of the iframe element.
+    // We could:
+    // - duplicate the sizing code here
+    // - abstract it so it can be shared by both the runtime and authoring.
+    // - move the runtime iframe rendering into React, so both authoring and
+    //   runtime use the interactiveIframe component
+    // The last option is the best for maintainability, but it will slow down the
+    // page load since the iframes won't start loading until the javascript is loaded
+    // So probably the best option is to abstract that code.
+    var _c = react_1.useState(300), height = _c[0], setHeight = _c[1];
     var handleHeightChange = function (newHeight) {
-        if (iframe.current) {
-            iframe.current.style.height = newHeight + "px";
-        }
+        setHeight(newHeight);
     };
     var handleSupportedFeatures = function (info) {
         if (info.features.aspectRatio) {
             if (interactive.aspect_ratio_method === "DEFAULT") {
                 if (iframe.current) {
-                    iframe.current.style.height = Math.round(iframe.current.offsetWidth / info.features.aspectRatio) + "px";
+                    var newHeight = Math.round(iframe.current.offsetWidth / info.features.aspectRatio);
+                    setHeight(newHeight);
                 }
             }
         }
@@ -9388,7 +9401,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         authoredState: authoredState
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: height, initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
