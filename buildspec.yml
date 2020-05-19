@@ -10,6 +10,7 @@ phases:
       # - echo Logging in to Amazon ECR...
       # - aws --version
       # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - REPOSITORY_URI=concord-consortium/lara-railslts
       # need to login to docker hub
       # and set the repository URI or get it from secrets
