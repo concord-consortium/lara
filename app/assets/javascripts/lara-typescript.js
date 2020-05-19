@@ -16441,14 +16441,16 @@ var GlobalIframeSaver = /** @class */ (function () {
     };
     GlobalIframeSaver.prototype.setupPhoneListeners = function (phone) {
         var _this = this;
-        phone.addListener("interactiveStateGlobal", function (state) {
+        var clientMessage = "interactiveStateGlobal";
+        phone.addListener(clientMessage, function (state) {
             _this.globalState = state;
             _this.saveGlobalState();
             _this.broadcastGlobalState(phone);
         });
     };
     GlobalIframeSaver.prototype.loadGlobalState = function (phone) {
-        phone.post("loadInteractiveGlobal", this.globalState);
+        var serverMessage = "loadInteractiveGlobal";
+        phone.post(serverMessage, this.globalState);
     };
     GlobalIframeSaver.prototype.broadcastGlobalState = function (sender) {
         var _this = this;

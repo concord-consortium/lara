@@ -13,5 +13,9 @@
   "bugs": {
     "url": "https://github.com/concord-consortium/lara/issues"
   },
-  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme"
+  "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript/src/interactive-api-client#readme",
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
 }
