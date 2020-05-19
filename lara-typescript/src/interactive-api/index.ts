@@ -1,6 +1,5 @@
 import { GlobalIframeSaver } from "./global-iframe-saver";
 
-export * from "../interactive-api-client";
 export * from "./iframe-phone-manager";
 export * from "./global-iframe-saver";
 export * from "./iframe-saver";

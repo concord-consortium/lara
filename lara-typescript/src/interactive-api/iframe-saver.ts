@@ -1,7 +1,8 @@
 
 import { ParentEndpoint } from "iframe-phone";
-import { LaraInteractiveApi } from "../interactive-api-client/";
+import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
+import { IAuthInfo } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -131,7 +132,7 @@ export class IFrameSaver {
     });
 
     this.addListener("getAuthInfo", () => {
-      const authInfo: {provider: string; loggedIn: boolean; email?: string} = {
+      const authInfo: IAuthInfo = {
         provider: this.authProvider,
         loggedIn: this.loggedIn
       };
