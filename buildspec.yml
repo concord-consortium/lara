@@ -9,7 +9,7 @@ phases:
     commands:
       - echo Logging in to Docker Hub...
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - REPOSITORY_URI=concord-consortium/lara-railslts
+      - REPOSITORY_URI=concordconsortium/lara-railslts
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
