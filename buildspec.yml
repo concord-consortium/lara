@@ -10,7 +10,7 @@ phases:
       # - echo Logging in to Amazon ECR...
       # - aws --version
       # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      # - REPOSITORY_URI=012345678910.dkr.ecr.us-west-2.amazonaws.com/hello-world
+      - REPOSITORY_URI=concord-consortium/lara-railslts
       # need to login to docker hub
       # and set the repository URI or get it from secrets
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
