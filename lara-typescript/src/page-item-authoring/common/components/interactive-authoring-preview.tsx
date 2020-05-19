@@ -21,18 +21,18 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
       ? JSON.parse(interactive.authored_state || "{}")
       : interactive.authored_state
   );
+  const [height, setHeight] = useState<undefined|number|string>();
 
   const handleHeightChange = (newHeight: number | string) => {
-    if (iframe.current) {
-      iframe.current.style.height = `${newHeight}px`;
-    }
+    setHeight(newHeight);
   };
 
   const handleSupportedFeatures = (info: any) => {
     if (info.features.aspectRatio) {
       if (interactive.aspect_ratio_method === "DEFAULT") {
         if (iframe.current) {
-          iframe.current.style.height = `${Math.round(iframe.current.offsetWidth / info.features.aspectRatio)}px`;
+          const newHeight = Math.round(iframe.current.offsetWidth / info.features.aspectRatio);
+          setHeight(newHeight);
         }
       }
     }
@@ -52,6 +52,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
       <InteractiveIframe
         src={interactive.url || ""}
         width="100%"
+        height={height}
         initialAuthoredState={authoredState}
         initMsg={initMsg}
         aspectRatio={interactive.aspect_ratio}

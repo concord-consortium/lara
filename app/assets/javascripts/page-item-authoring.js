@@ -9366,16 +9366,16 @@ exports.InteractiveAuthoringPreview = function (_a) {
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    var _c = react_1.useState(), height = _c[0], setHeight = _c[1];
     var handleHeightChange = function (newHeight) {
-        if (iframe.current) {
-            iframe.current.style.height = newHeight + "px";
-        }
+        setHeight(newHeight);
     };
     var handleSupportedFeatures = function (info) {
         if (info.features.aspectRatio) {
             if (interactive.aspect_ratio_method === "DEFAULT") {
                 if (iframe.current) {
-                    iframe.current.style.height = Math.round(iframe.current.offsetWidth / info.features.aspectRatio) + "px";
+                    var newHeight = Math.round(iframe.current.offsetWidth / info.features.aspectRatio);
+                    setHeight(newHeight);
                 }
             }
         }
@@ -9388,7 +9388,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         authoredState: authoredState
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: height, initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
