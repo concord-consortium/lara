@@ -21,7 +21,17 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
       ? JSON.parse(interactive.authored_state || "{}")
       : interactive.authored_state
   );
-  const [height, setHeight] = useState<undefined|number|string>();
+
+  // FIXME: The default height here should be based on the aspect ratio setting
+  // and the width of the iframe. That computation at runtime is currently handled
+  // by the setSize method in interactives-sizing.js
+  // That code can't be used here, because the jQuery changes to the iframe
+  // conflict with the React management of the iframe element.
+  // We could duplicate the sizing code here, or abstract it so it can be
+  // shared by both the runtime and authoring.
+  // The best solution would be to move the runtime iframe rendering into React
+  // so both authoring and runtime use the interactiveIframe component
+  const [height, setHeight] = useState<number|string>(300);
 
   const handleHeightChange = (newHeight: number | string) => {
     setHeight(newHeight);
