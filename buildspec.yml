@@ -7,13 +7,9 @@ phases:
       docker: 18
   pre_build:
     commands:
-      # - echo Logging in to Amazon ECR...
-      # - aws --version
-      # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - echo Logging in to Docker Hub...
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - REPOSITORY_URI=concord-consortium/lara-railslts
-      # need to login to docker hub
-      # and set the repository URI or get it from secrets
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
@@ -24,10 +20,11 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      # - echo Pushing the Docker images...
-      # - docker push $REPOSITORY_URI:latest
-      # - docker push $REPOSITORY_URI:$IMAGE_TAG
-      # - echo Writing image definitions file...
-      # - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-# artifacts:
-#     files: imagedefinitions.json
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      # TODO: This is only setup for the App task definition, we'll need to
+      #   figure how to also update the Worker task definition
+      - printf '[{"name":"App","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
