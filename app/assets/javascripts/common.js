@@ -35,7 +35,7 @@ $(document).ready(function () {
       }
     });
 
-    $('.sortable_embeddables').sortable({ handle: 'h3',
+    $('.sortable_embeddables').sortable({ handle: 'h3.embeddable_heading',
         items: '.authorable',
         opacity: 0.8,
         tolerance: 'pointer',
