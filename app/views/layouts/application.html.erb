@@ -49,7 +49,7 @@
       </p>
     <% end %>
     <p style="margin-top:10px">
-      Version: <%= ENV['LARA_VERSION'] %>
+      Version: <%= ENV['LARA_IMAGE_VERSION'].present? ? ENV['LARA_IMAGE_VERSION'] : ENV['LARA_VERSION'] %>
     </p>
   </div>
 </div>
