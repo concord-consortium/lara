@@ -150,6 +150,7 @@ $margin-r: 5% !default;
 .ui-block.second.closed,
 .ui-block-2.closed,
 .ui-block.second.closed {
+	flex-basis: 2.7% !important;
 	height: 400px;
 	overflow: hidden;
 	padding: 0;
