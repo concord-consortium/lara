@@ -239,6 +239,33 @@ $margin-r: 5% !default;
 	}
 }
 
+.r-4060, .r-3070 {
+	.question-tab {
+
+		&:before {
+			content: '\00BB';
+			left: 110px;
+			right: auto;
+		}
+		span {
+			left: -2px;
+			right: auto;
+		}
+	}
+
+	.ui-block-2.closed,
+	.ui-block.second.closed,
+	.ui-block-2.closed,
+	.ui-block.second.closed {
+		.question-tab {
+
+		  &:before {
+			  content: '\00AB';
+		  }
+		}
+	}
+}
+
 /* Grid-3 vars */
 
 $width3-1: 33.333333% !default;
