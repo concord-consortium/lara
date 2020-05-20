@@ -7,7 +7,3 @@ function toggleQuestions() {
     jQuery('.question-tab span').text('Hide Questions');
   }
 }
-
-jQuery(document).ready(function() {
-  jQuery('.questions-mod').prepend('<div class="question-tab" onclick="toggleQuestions(); return false;"><span>Hide Questions</span></div>');
-});
