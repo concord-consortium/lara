@@ -318,13 +318,10 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
       width: 140px;
     }
     span.ui-icon { display: none; }
-
-    &:hover {
-      span.ui-icon.sortable-icon {
-        background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
-        display: block;
-        float: right;
-      }
+    span.ui-icon.sortable-icon {
+      background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
+      display: block;
+      float: right;
     }
   }
   label {
@@ -920,10 +917,10 @@ fieldset {
       background: #eee;
     }
     .embeddable_tools {
-      margin: 0;
+      margin: 0 25px 0 0;
       color: #126eac;
       position: absolute;
-      padding: 0 25px 0 0;
+      padding: 0;
       right: 5px;
       text-align: right;
       top: 7px;
@@ -1032,17 +1029,12 @@ fieldset {
           .ui-accordion-header-icon {
             background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
           }
-          .sortable-icon {
-            background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_888888_256x240.png);
-            display: block !important;
-            float: right;
-          }
         }
 
         .ui-icon { display: block; }
         .sortable-icon {
           background-image: url(http://download.jqueryui.com/themeroller/images/ui-icons_888888_256x240.png);
-          display: none;
+          display: block;
           float: right;
         }
       }
