@@ -12,7 +12,12 @@ phases:
       - REPOSITORY_URI=concordconsortium/lara-railslts
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
-      - LARA_VERSION=${CODEBUILD_SOURCE_VERSION}-${COMMIT_HASH}
+      # The BRANCH_NAME is set in the build step of the CodePipline from the
+      # SourceVariables.BranchName
+      # If this build is run directly in CODEBUILD branch name will be empty
+      # but in that case the CODEBUILD_SOURCE_VERSION should point to the branch
+      # name
+      - LARA_VERSION=${BRANCH_NAME}-${COMMIT_HASH}
   build:
     commands:
       - echo Build started on `date`
