@@ -100,7 +100,7 @@
                 - tracked = e.respond_to?(:tracked_question) && e.tracked_question
                 - tracked_class = tracked ? 'tracked' : ''
                 .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-                  %h3
+                  %h3.embeddable_heading
                     %span.embeddable_title
                       - if e.respond_to? :name
                         - if !e.name.nil? && !e.name.empty?
