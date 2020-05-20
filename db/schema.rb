@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200511125959) do
+ActiveRecord::Schema.define(:version => 20200519211013) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -353,6 +353,7 @@ ActiveRecord::Schema.define(:version => 20200511125959) do
     t.boolean  "show_sidebar",            :default => false
     t.boolean  "show_interactive",        :default => false
     t.boolean  "show_info_assessment",    :default => false
+    t.boolean  "toggle_info_assessment",  :default => false
     t.string   "workflow_state"
     t.string   "layout",                  :default => "l-6040"
     t.string   "embeddable_display_mode", :default => "stacked"
