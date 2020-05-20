@@ -30,12 +30,21 @@ interface IInteractiveRunStateResponse {
   activity_name: string;
 }
 
+const safeJSONParse = (obj: any) => {
+  try {
+    return JSON.parse(obj);
+  } catch (e) {
+    return undefined;
+  }
+};
+
 // tslint:disable-next-line:max-line-length
 const interactiveStateProps = (data: IInteractiveRunStateResponse | null): LaraInteractiveApi.IInteractiveStateProps => ({
-  interactiveState: (data != null ? JSON.parse(data.raw_data) : undefined),
+  interactiveState: (data != null ? safeJSONParse(data.raw_data) : undefined),
   hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
-  linkedState: (data != null ? JSON.parse(data.linked_state) : undefined),
-  allLinkedStates: (data != null ? data.all_linked_states.map(interactiveStateProps) : undefined),
+  linkedState: (data != null ? safeJSONParse(data.linked_state) : undefined),
+  // tslint:disable-next-line:max-line-length
+  allLinkedStates: (data != null && data.all_linked_states ? data.all_linked_states.map(interactiveStateProps) : undefined),
   createdAt: (data != null ? data.created_at : undefined),
   updatedAt: (data != null ? data.updated_at : undefined),
   interactiveStateUrl: (data != null ? data.interactive_state_url : undefined),
@@ -64,10 +73,12 @@ export class IFrameSaver {
     console.log("saved");
   }
 
+  public saveIndicator: SaveIndicator;
+  public interactiveRunStateUrl: string;
+
   private $iframe: JQuery;
   private $deleteButton: JQuery;
   private enableLearnerState: boolean;
-  private interactiveRunStateUrl: string;
   private collaboratorUrls: string;
   private authProvider: string;
   private userEmail: string;
@@ -77,12 +88,11 @@ export class IFrameSaver {
   private interactiveId: number;
   private interactiveName: string;
   private getFirebaseJWTUrl: string;
-  private saveIndicator: SaveIndicator;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
   private alreadySetup: boolean;
   private iframePhone: ParentEndpoint;
-  private successCallback: SuccessCallback | null;
+  private successCallback: SuccessCallback | null | undefined;
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;
@@ -113,6 +123,52 @@ export class IFrameSaver {
     this.alreadySetup = false;
 
     this.iframePhone = IframePhoneManager.getPhone($iframe[0] as HTMLIFrameElement, () => this.phoneAnswered());
+  }
+
+  public save(successCallback?: SuccessCallback | null) {
+    this.successCallback = successCallback;
+    // will call back into "@save_learner_state)
+    return this.post("getInteractiveState");
+  }
+
+  public saveLearnerState(interactiveJson: string | object | null) {
+    if (!this.learnerStateSavingEnabled()) { return; }
+
+    const runSuccess = () => {
+      this.savedState = interactiveJson;
+      if (this.successCallback) {
+        return this.successCallback();
+      } else {
+        return IFrameSaver.defaultSuccess();
+      }
+    };
+
+    // Do not send the same state to server over and over again.
+    // "nochange" is a special type of response.
+    // "touch" is an another special type of response which will triger timestamp update only.
+    if ((interactiveJson !== "touch") &&
+        ((interactiveJson === "nochange") || (JSON.stringify(interactiveJson) === JSON.stringify(this.savedState)))) {
+      runSuccess();
+      return;
+    }
+
+    this.saveIndicator.showSaving();
+    const data = interactiveJson === "touch" ? {} : { raw_data: JSON.stringify(interactiveJson) };
+    $.ajax({
+      type: "PUT",
+      dataType: "json",
+      url: this.interactiveRunStateUrl,
+      data,
+      success: response => {
+        runSuccess();
+        // State has been saved. Show "Undo all my work" button.
+        this.$deleteButton.show();
+        this.saveIndicator.showSaved("Saved Interactive");
+      },
+      error: () => {
+        this.error("couldn't save interactive");
+      }
+    });
   }
 
   private phoneAnswered() {
@@ -193,12 +249,6 @@ export class IFrameSaver {
     return this.enableLearnerState && this.interactiveRunStateUrl;
   }
 
-  private save(successCallback: SuccessCallback | null = null) {
-    this.successCallback = successCallback;
-    // will call back into "@save_learner_state)
-    return this.post("getInteractiveState");
-  }
-
   private confirmDelete(callback: () => void) {
     if (window.confirm("Are you sure you want to restart your work in this model?")) {
       return callback();
@@ -216,46 +266,6 @@ export class IFrameSaver {
     this.confirmDelete(() => {
       this.saveLearnerState(null);
       this.saveLearnerUrl("");
-    });
-  }
-
-  private saveLearnerState(interactiveJson: string | object | null) {
-    if (!this.learnerStateSavingEnabled()) { return; }
-
-    const runSuccess = () => {
-      this.savedState = interactiveJson;
-      if (this.successCallback) {
-        return this.successCallback();
-      } else {
-        return IFrameSaver.defaultSuccess();
-      }
-    };
-
-    // Do not send the same state to server over and over again.
-    // "nochange" is a special type of response.
-    // "touch" is an another special type of response which will triger timestamp update only.
-    if ((interactiveJson !== "touch") &&
-        ((interactiveJson === "nochange") || (JSON.stringify(interactiveJson) === JSON.stringify(this.savedState)))) {
-      runSuccess();
-      return;
-    }
-
-    this.saveIndicator.showSaving();
-    const data = interactiveJson === "touch" ? {} : { raw_data: JSON.stringify(interactiveJson) };
-    $.ajax({
-      type: "PUT",
-      dataType: "json",
-      url: this.interactiveRunStateUrl,
-      data,
-      success: response => {
-        runSuccess();
-        // State has been saved. Show "Undo all my work" button.
-        this.$deleteButton.show();
-        this.saveIndicator.showSaved("Saved Interactive");
-      },
-      error: () => {
-        this.error("couldn't save interactive");
-      }
     });
   }
 
