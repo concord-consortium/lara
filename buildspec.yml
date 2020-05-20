@@ -12,11 +12,12 @@ phases:
       - REPOSITORY_URI=concordconsortium/lara-railslts
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - LARA_VERSION=${CODEBUILD_SOURCE_VERSION}-${COMMIT_HASH}
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG --build-arg LARA_VERSION=$LARA_VERSION .
   post_build:
     commands:
       - echo Build completed on `date`
