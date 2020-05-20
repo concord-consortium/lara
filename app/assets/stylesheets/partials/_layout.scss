@@ -157,6 +157,10 @@ $margin-r: 5% !default;
 	transition: .1s;
 	width: 4.4% !important;
 
+	.buttons, .embeddables, .question {
+		display: none;
+	}
+
 	.question-tab {
 		animation: pulse-question-toggle;
 		animation-duration: 6s;
@@ -264,6 +268,26 @@ $margin-r: 5% !default;
 			  content: '\00AB';
 		  }
 		}
+	}
+}
+
+.l-responsive {
+	.ui-block-2.jcarousel.closed {
+		flex-basis: 3.7% !important;
+	  margin-right: 0 !important;
+	  min-width: 40px !important;
+  }
+}
+
+.questions-mod.ui-block-2.jcarousel,
+.questions-mod.ui-block.second.jcarousel {
+	.question-tab {
+		margin: 0;
+		padding: 0;
+		position: absolute;
+	}
+	.question-tab ~ .embeddables {
+		top: 40px !important;
 	}
 }
 
