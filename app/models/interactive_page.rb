@@ -32,6 +32,10 @@ class InteractivePage < ActiveRecord::Base
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
 
+  def toggle_info_assessment
+    self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
+  end
+
   # Interactive page can register additional page sections:
   #
   #  InteractivePage.register_page_section({name: 'FooBar', dir: 'foo_bar', label: 'Foo Bar'})
