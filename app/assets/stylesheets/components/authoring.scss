@@ -27,8 +27,9 @@
 }
 
 .authoring-text-editor {
-  border: 1px solid #6fc5d8;
-  padding: 5px;
+  border: 1px solid #555;
+  margin-bottom: 10px;
+  padding: 10px;
 
   .authoring-text-content {
     // Make content similar to what will be rendered in the runtime mode.
@@ -40,13 +41,12 @@
   }
 
   h2 {
-    width: 100%;
-    background-color: hsl(192, 64%, 82%);
-    color: #126eac;
-    text-align: left;
+    background-color: #555;
+    color: #fff;
     font-size: 1.3em;
-    margin: -5px -5px 5px;
-    padding: 5px;
+    margin: -10px -10px 0;
+    padding: 10px;
+    text-align: left;
   }
 
   .header-edit input {
