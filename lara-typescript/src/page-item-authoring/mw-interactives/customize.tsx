@@ -2,12 +2,12 @@ import * as React from "react";
 import { useState, useRef } from "react";
 import { IMWInteractive } from "./index";
 import { RailsFormField } from "../common/utils/rails-form-field";
-import { ReadOnlyFormField } from "../common/components/read-only-form-field";
 import { AspectRatioChooser,
          AspectRatioMode,
          IAspectRatioChooserValues,
          availableAspectRatios
        } from "../common/components/aspect-ratio-chooser";
+import { Checkbox } from "../common/components/checkbox";
 
 interface Props {
   interactive: IMWInteractive;
@@ -41,27 +41,14 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
   const [clickToPlay, setClickToPlay] = useState(click_to_play);
   const [enableLearnerState, setEnableLearnerState] = useState(enable_learner_state);
 
-  const handleBooleanOption = (setter: (value: boolean) => void) => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = !!(e.target.checked && (e.target.value === "true"));
-      setter(value);
-    };
-  };
-
-  const handleAspectRatioChange = (values: IAspectRatioChooserValues) => setAspectRatioValues(values);
-
-  const handleChangeClickToPlay = handleBooleanOption(setClickToPlay);
-  const handleChangeEnableLearnerState = handleBooleanOption(setEnableLearnerState);
-
   const renderClickToPlayOptions = () => {
     return <>
       <div>
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("full_window").name}
-          value="true"
           defaultChecked={full_window}
-        /> Full window
+          label="Full window"
+        />
       </div>
 
       <fieldset>
@@ -91,33 +78,28 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
   const renderInteractiveStateOptions = () => {
     return <>
       <div>
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("show_delete_data_button").name}
-          value="true"
           defaultChecked={show_delete_data_button}
-        /> Show "Undo all my work" button
+          label={`Show "Undo all my work" button`}
+        />
       </div>
 
       <div>
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("has_report_url").name}
-          value="true"
           defaultChecked={has_report_url}
-        /> This interactive has a report URL
-        <div className="warning">
-          <em>Warning</em>: Please do not select this unless your interactive includes a report url in its saved state.
-        </div>
+          label="This interactive has a report URL"
+          warning="Please do not select this unless your interactive includes a report url in its saved state."
+        />
       </div>
 
       <div>
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("show_in_featured_question_report").name}
-          value="true"
           defaultChecked={show_in_featured_question_report}
-        /> Show in featured question report
+          label="Show in featured question report"
+        />
       </div>
 
       <fieldset>
@@ -158,20 +140,19 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
         width={aspectRatioValues.width}
         height={aspectRatioValues.height}
         mode={aspectRatioValues.mode}
-        onChange={handleAspectRatioChange}
+        onChange={setAspectRatioValues}
       />
     </fieldset>
 
     <fieldset>
       <legend>Click to Play Options</legend>
       <div className="option_group">
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("click_to_play").name}
-          value="true"
           checked={clickToPlay}
-          onChange={handleChangeClickToPlay}
-        /> Enable click to play
+          onChange={setClickToPlay}
+          label="Enable click to play"
+        />
         {clickToPlay ? renderClickToPlayOptions() : undefined}
       </div>
     </fieldset>
@@ -179,16 +160,13 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     <fieldset>
       <legend>Interactive State Options</legend>
       <div className="option_group">
-        <input
-          type="checkbox"
+        <Checkbox
           name={formField("enable_learner_state").name}
-          value="true"
           checked={enableLearnerState}
-          onChange={handleChangeEnableLearnerState}
-        /> Enable save state
-        <div className="warning">
-          <em>Warning</em>: Please do not select this unless your interactive contains a serializable data set.
-        </div>
+          onChange={setEnableLearnerState}
+          label="Enable save state"
+          warning="Please do not select this unless your interactive contains a serializable data set"
+        />
         {enableLearnerState ? renderInteractiveStateOptions() : undefined}
       </div>
     </fieldset>
