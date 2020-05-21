@@ -46,6 +46,10 @@ ENV RAILS_ENV=production
 # otherwise somewhere in the initializers it tries to connect to the database which will fail
 RUN bundle exec rake assets:precompile
 
+# pass in a version while building with --build-arg LARA_VERSION=x.y.z
+ARG LARA_VERSION
+ENV LARA_IMAGE_VERSION=$LARA_VERSION
+
 EXPOSE 80
 
 CMD ./docker/prod/run.sh
