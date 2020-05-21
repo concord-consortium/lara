@@ -39,6 +39,7 @@
 //= require iframed_site_manager
 //= require tinymce-config
 //= require tinymce-jquery
+//= require iframe-phone
 //= require idle
 //= require check-author-idle
 //= require application-init

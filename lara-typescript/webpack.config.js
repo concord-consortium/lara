@@ -84,7 +84,10 @@ module.exports = (env, argv) => {
       'react': 'React',
       'react-dom': 'ReactDOM'
     }
-  }, {
+  },
+
+  // need separate config as the externals are handled differently in the external library
+  {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
     entry: {
@@ -93,6 +96,7 @@ module.exports = (env, argv) => {
     mode: 'development',
     output: {
       filename: '[name]/index.js',
+      libraryTarget: 'umd'
     },
     performance: { hints: false },
     module: {
@@ -128,6 +132,9 @@ module.exports = (env, argv) => {
         { from: 'src/interactive-api-client/package.json', to: 'interactive-api-client' },
         { from: 'src/interactive-api-client/README.md', to: 'interactive-api-client' }
       ])
-    ]
+    ],
+    externals: {
+      'react': 'commonjs2 react'   // allows interactives to use their own react instead of bundling it in this library
+    }
   }];
 };
