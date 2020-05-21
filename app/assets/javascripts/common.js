@@ -17,8 +17,7 @@ $(document).ready(function () {
     // check if accordion state was set and recreate state accordingly
     if (sessionStorage) {
       var accordionState = JSON.parse(sessionStorage.getItem("accordion_state"));
-      console.log(accordionState);
-      if (accordionState.activated) {
+      if (accordionState && accordionState.activated && accordionState.url === window.location.href) {
         $('.accordion_embeddable').accordion({ active: false,
           collapsible: true,
           header: 'h3',
@@ -61,7 +60,8 @@ $(document).ready(function () {
         if (sessionStorage) {
           var accordionState = {
             "activated": true,
-            "container": $(this).parent()
+            "container": $(this).parent(),
+            "url": window.location.href
           };
           saveAccordionState(accordionState);
         }
@@ -72,7 +72,8 @@ $(document).ready(function () {
         if (sessionStorage) {
           var accordionState = {
             "activated": false,
-            "container": $(this).parent()
+            "container": $(this).parent(),
+            "url": window.location.href
           };
           saveAccordionState(accordionState);
         }
@@ -128,6 +129,7 @@ function saveAccordionState(accordionState) {
     JSON.stringify({
       "activated": accordionState.activated,
       "container": accordionState.container,
+      "url": accordionState.url,
       "open_items": openItems
     })
   );
