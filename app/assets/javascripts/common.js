@@ -14,6 +14,28 @@ $(function () {
 
 // Everything to run at page load time
 $(document).ready(function () {
+    // check if accordion state was set and recreate state accordingly
+    if (sessionStorage) {
+      var accordionState = JSON.parse(sessionStorage.getItem("accordion_state"));
+      console.log(accordionState);
+      if (accordionState.activated) {
+        $('.accordion_embeddable').accordion({ active: false,
+          collapsible: true,
+          header: 'h3',
+          heightStyle: 'content',
+          activate: function( event, ui ) {
+            $(this).toggleClass('ui-active');
+            saveAccordionState(accordionState);
+          }
+        });
+        for (var i = 0; i < accordionState.open_items.length; i++) {
+          var childNum = accordionState.open_items[i] + 1;
+          $('.accordion_embeddable:nth-child(' + childNum + ') .ui-accordion-header').click();
+        }
+        $('.show-hide-toggle').text('Open All');
+      }
+    }
+
     // *** add event listeners: ***
     // NOTE that there are other event listeners set up in other .js files
 
@@ -26,12 +48,34 @@ $(document).ready(function () {
           collapsible: true,
           header: 'h3',
           heightStyle: 'content',
-          activate: function( event, ui ) { $(this).toggleClass('ui-active'); }
+          activate: function( event, ui ) {
+            $(this).toggleClass('ui-active');
+            if (sessionStorage) {
+              var accordionState = JSON.parse(sessionStorage.getItem("accordion_state"));
+              saveAccordionState(accordionState);
+            }
+          }
         });
         $(this).text('Open All');
+        // save accordion state for page reload
+        if (sessionStorage) {
+          var accordionState = {
+            "activated": true,
+            "container": $(this).parent()
+          };
+          saveAccordionState(accordionState);
+        }
       } else {
         $('.accordion_embeddable').accordion('destroy');
         $(this).text('Close All');
+        // save accordion state for page reload
+        if (sessionStorage) {
+          var accordionState = {
+            "activated": false,
+            "container": $(this).parent()
+          };
+          saveAccordionState(accordionState);
+        }
       }
     });
 
@@ -72,3 +116,19 @@ $(document).ready(function () {
         }
     });
 });
+
+function saveAccordionState(accordionState) {
+  var openItems = [];
+  $('.accordion_embeddable').each(function(index) {
+    if ($(this).hasClass('ui-active')) {
+      openItems.push(index);
+    }
+  });
+  sessionStorage.setItem("accordion_state",
+    JSON.stringify({
+      "activated": accordionState.activated,
+      "container": accordionState.container,
+      "open_items": openItems
+    })
+  );
+}
