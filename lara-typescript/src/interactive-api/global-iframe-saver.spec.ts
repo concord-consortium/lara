@@ -114,7 +114,6 @@ describe("GlobalIFrameSaver", () => {
     it("should send state to LARA server", () => {
       expect(ajaxParams.url).toBe(saveUrl);
       expect(ajaxParams.type).toBe("POST");
-      // No idea why raw data needs to be wrapped in array - caused by jQuery or MockAjax?
       expect(ajaxParams.data).toEqual({raw_data: JSON.stringify(globalState)});
     });
   });

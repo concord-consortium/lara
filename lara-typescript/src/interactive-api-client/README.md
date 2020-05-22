@@ -3,6 +3,9 @@
 A TypeScript-based client for the LARA Interactive API.  This also includes all the types for the API which are shared with the server-side Typescript files
 that implement the LARA-side of the API.
 
+NOTE: this file (in /docs) is auto-generated as part of the `lara-typescript` build using [TypeDoc](https://typedoc.org/) by combining the API client's readme
+file with auto-generated output.  If you wish to edit this document please edit `lara-typescript/src/interactive-api-client/README.md`.
+
 ## Installation
 
 First install the package:
