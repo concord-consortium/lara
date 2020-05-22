@@ -787,10 +787,12 @@ div.block-empty {
 }
 /* These are unique to the edit view */
 #page-section-controls, .page-section-controls {
+  box-sizing: border-box;
   display: inline-block;
   margin-top: 15px;
-  background-color:#dcf1f5;
-  padding: 1px 2px 2px 2px;
+  background-color: #eee;
+  padding: 10px;
+  width: 100%;
 
   input {
     position: relative;
@@ -832,7 +834,7 @@ fieldset {
     display: inline;
   }
   div.edit_interactive_page{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
   /* Info/assessment block */
   div.questions {
