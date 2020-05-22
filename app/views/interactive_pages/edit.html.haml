@@ -88,6 +88,11 @@
           %h2 Info/Assess
           %button.show-hide-toggle
             Close All
+          = form_for @page do |f|
+            - if @page.has_attribute?('toggle_info_assessment')
+              %label
+                = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
+                Allow toggling of column
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
             .select_container
               = embeddable_selector

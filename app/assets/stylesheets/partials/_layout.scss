@@ -1,6 +1,6 @@
 /* !============================================= */
 
-/* ! Universal						   			  */ 
+/* ! Universal						   			  */
 
 /* !============================================= */
 
@@ -16,7 +16,7 @@
 
 /* !============================================= */
 
-/* ! Media Grid							   			  */ 
+/* ! Media Grid							   			  */
 
 /* !============================================= */
 
@@ -60,16 +60,16 @@
 
 /* !============================================= */
 
-/* ! Grids							   			  */ 
+/* ! Grids							   			  */
 
 /* !============================================= */
 
 
 /* Grid-2 vars */
 
-$width-1: 50% !default; 
-$width-2: 50% !default; 
-$margin-r: 5% !default; 
+$width-1: 50% !default;
+$width-2: 50% !default;
+$margin-r: 5% !default;
 
 @mixin ui-grid-2($width-1,$width-2,$margin-r) {
 	@include pie-clearfix;
@@ -81,7 +81,7 @@ $margin-r: 5% !default;
 		margin-right: $margin-r;
 	}
 
-	> .ui-block-2,	
+	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
 		@include float-left;
@@ -92,12 +92,12 @@ $margin-r: 5% !default;
 @mixin ui-grid-rl($width-1,$width-2,$margin-r) {
 	@include pie-clearfix;
 
-	> .ui-block-1,	
+	> .ui-block-1,
 	> .ui-block.first {
 		width: $width-1 - ($margin-r/2);
 		@include float-right;
 	}
-	
+
 	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
@@ -109,13 +109,13 @@ $margin-r: 5% !default;
 @mixin ui-grid-lr($width-1,$width-2,$margin-r) {
 	@include pie-clearfix;
 
-	> .ui-block-1,	
+	> .ui-block-1,
 	> .ui-block.first {
 		width: $width-1 - ($margin-r/2);
 		@include float-left;
 	}
 
-	> .ui-block-2,	
+	> .ui-block-2,
 	> .ui-block.second {
 		width: $width-2 - ($margin-r/2);
 		@include float-right;
@@ -123,13 +123,181 @@ $margin-r: 5% !default;
 	}
 }
 
+.question.hidden { margin-bottom: 0 !important; }
+.question-bd {
+	padding: 25px 0 !important;
+}
+.ui-block-1,
+.ui-block.first,
+.ui-block-2,
+.ui-block.second, {
+	transition: .1s;
+}
+.questions-mod.ui-block-2,
+.questions-mod.ui-block.second, {
+	background: #eee;
+	padding: 10px;
+}
+.ui-block-1.open,
+.ui-block.first.open,
+.ui-block-1.open,
+.ui-block.first.open {
+	transition: .1s;
+	width: 95.6% !important;
+}
+
+.ui-block-2.closed,
+.ui-block.second.closed,
+.ui-block-2.closed,
+.ui-block.second.closed {
+	flex-basis: 2.7% !important;
+	height: 400px;
+	overflow: hidden;
+	padding: 0;
+	transition: .1s;
+	width: 4.4% !important;
+
+	.buttons, .embeddables, .question {
+		display: none;
+	}
+
+	.question-tab {
+		animation: pulse-question-toggle;
+		animation-duration: 6s;
+		animation-iteration-count: infinite;
+		height: 100%;
+		margin: 0;
+		opacity: 1;
+		right: 0;
+		top: 0;
+
+		&:before {
+			content: '\00BB';
+			left: 16px;
+		}
+		span {
+			left: -32px;
+			top: 70px;
+			transform: rotate(-90deg);
+		}
+	}
+
+}
+
+@keyframes pulse-question-toggle {
+	25% { opacity: .6; }
+	50% { opacity: 1; }
+	75% { opacity: .6; }
+	100% { opacity: 1; }
+}
+
+.question-tab {
+	background: #333;
+	box-sizing: content-box;
+	color: #eee;
+	cursor: pointer;
+	font-size: 24px;
+	height: 35px;
+	margin: -10px -10px 10px;
+	opacity: .9;
+	padding: 0 10px;
+	position: -webkit-sticky;
+	position: sticky;
+	right: 0;
+	text-align: center;
+	top: 0;
+	transition: .1s;
+	width: 100%;
+	z-index: 10;
+
+	&:hover {
+		background: #222;
+		color: #fff;
+		opacity: 1;
+	}
+
+	&:before {
+		content: '\00AB';
+		display: inline-block;
+		font-size: 26px;
+		left: auto;
+		right: 110px;
+		line-height: 0;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 15px;
+	}
+
+	span {
+		color: #eee;
+		display: inline-block;
+		font-size: 14px;
+		height: 35px;
+		left: auto;
+		right: -2px;
+		position: absolute;
+		top: 9px;
+		transform: rotate(0deg);
+		width: 120px;
+		white-space: nowrap;
+	}
+}
+
+.r-4060, .r-3070 {
+	.question-tab {
+
+		&:before {
+			content: '\00BB';
+			left: 110px;
+			right: auto;
+		}
+		span {
+			left: -2px;
+			right: auto;
+		}
+	}
+
+	.ui-block-2.closed,
+	.ui-block.second.closed,
+	.ui-block-2.closed,
+	.ui-block.second.closed {
+		.question-tab {
+
+		  &:before {
+			  content: '\00AB';
+		  }
+		}
+	}
+}
+
+.l-responsive {
+	.ui-block-2.jcarousel.closed {
+		flex-basis: 3.7% !important;
+	  margin-right: 0 !important;
+	  min-width: 40px !important;
+  }
+}
+
+.questions-mod.ui-block-2.jcarousel,
+.questions-mod.ui-block.second.jcarousel {
+	.question-tab {
+		margin: 0;
+		padding: 0;
+		position: absolute;
+	}
+	.question-tab ~ .embeddables {
+		top: 40px !important;
+	}
+}
+
 /* Grid-3 vars */
 
-$width3-1: 33.333333% !default; 
-$width3-2: 33.333333% !default; 
-$width3-3: 33.333333% !default; 
-$margin3-r: 3.5% !default; 
-	
+$width3-1: 33.333333% !default;
+$width3-2: 33.333333% !default;
+$width3-3: 33.333333% !default;
+$margin3-r: 3.5% !default;
+
 @mixin ui-grid-3($width3-1,$width3-2,$width3-3,$margin3-r)  {
 	@include pie-clearfix;
 
@@ -138,25 +306,27 @@ $margin3-r: 3.5% !default;
 		width: $width3-1 - ($margin3-r/3);
 		@include float-left;
 		margin-right: $margin3-r/2;
+		transition: .3;
 	}
 
-	> .ui-block-2,	
+	> .ui-block-2,
 	> .ui-block.second {
 		width: $width3-2 - ($margin3-r/3);
 		@include float-left;
 		margin-right: $margin3-r/2;
+		transition: .3;
 	}
 
 	> .ui-block-3,
 	> .ui-block.last {
 		width: $width3-3 - ($margin3-r/3);
 		@include float-left;
-		margin-right: 0;		
+		margin-right: 0;
 	}
 }
 
 /* Grid-3-rrl vars */
-	
+
 @mixin ui-grid-rrl($width3-1,$width3-2,$width3-3,$margin3-r)  {
 	@include pie-clearfix;
 
@@ -178,18 +348,18 @@ $margin3-r: 3.5% !default;
 	> .ui-block.last {
 		width: $width3-3 - ($margin3-r/3);
 		@include float-left;
-		margin-right: $margin3-r/2;		
+		margin-right: $margin3-r/2;
 	}
 }
 
 
 /* Grid-4 vars */
 
-$width4-1: 25% !default; 
-$width4-2: 25% !default; 
-$width4-3: 25% !default; 
-$width4-4: 25% !default; 
-$margin4-r: 8% !default; 
+$width4-1: 25% !default;
+$width4-2: 25% !default;
+$width4-3: 25% !default;
+$width4-4: 25% !default;
+$margin4-r: 8% !default;
 
 @mixin ui-grid-4($width4-1,$width4-2,$width4-3,$width4-4,$margin5-r) {
 
@@ -202,7 +372,7 @@ $margin4-r: 8% !default;
 		margin-right: $margin4-r/3;
 	}
 
-	> .ui-block-2,	
+	> .ui-block-2,
 	> .ui-block.second {
 		width: $width4-2 - ($margin4-r/4);
 		@include float-left;
@@ -220,19 +390,19 @@ $margin4-r: 8% !default;
 	> .ui-block.last {
 		width: $width4-4 - ($margin4-r/4);
 		@include float-left;
-		margin-right: 0;	
+		margin-right: 0;
 	}
 }
 
 
 /* Grid-5 vars */
 
-$width5-1: 20% !default; 
-$width5-2: 20% !default; 
-$width5-3: 20% !default; 
-$width5-4: 20% !default; 
-$width5-5: 20% !default; 
-$margin5-r: 8% !default; 
+$width5-1: 20% !default;
+$width5-2: 20% !default;
+$width5-3: 20% !default;
+$width5-4: 20% !default;
+$width5-5: 20% !default;
+$margin5-r: 8% !default;
 
 @mixin ui-grid-5($width5-1,$width5-2,$width5-3,$width5-4,$width5-5,$margin5-r) {
 
@@ -245,7 +415,7 @@ $margin5-r: 8% !default;
 		margin-right: $margin5-r/4;
 	}
 
-	> .ui-block-2,	
+	> .ui-block-2,
 	> .ui-block.second {
 		width: $width5-2 - ($margin5-r/5);
 		@include float-left;
@@ -270,7 +440,7 @@ $margin5-r: 8% !default;
 	> .ui-block.last {
 		width: $width5-5 - ($margin5-r/5);
 		@include float-left;
-		margin-right: 0;	
+		margin-right: 0;
 	}
 }
 
@@ -278,14 +448,14 @@ $margin5-r: 8% !default;
 
 /* !============================================= */
 
-/* ! Micro Layouts						   		  */ 
+/* ! Micro Layouts						   		  */
 
 /* !============================================= */
 
 
 // Art & Text Pairs
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-// FOR: Harmoniously placing art and text next to each other. 
+// FOR: Harmoniously placing art and text next to each other.
 // Good for thumbnails/text and many other art/text situations
 // WHY: It's a common pattern. It's easier to write this way.
 
@@ -297,13 +467,13 @@ $margin5-r: 8% !default;
 //	<div class="txt-block">
 //		<h1>Headline</h1>
 //		<p>Paragraph paragraph paragraph paragraph</p>
-//	</div> <!-- /txt-block --> 
+//	</div> <!-- /txt-block -->
 // </article> <!-- /l-pair -->
 
 // USE: @include pair(100px, 30px);
 
 @mixin pair($art-width: 50px, $art-margin: 20px, $v-align: middle, $direction: left) {
-	$gutter: $art-width + $art-margin; 
+	$gutter: $art-width + $art-margin;
 	@include pie-clearfix;
 
 	@if $v-align == middle {
@@ -363,15 +533,15 @@ $margin5-r: 8% !default;
 			} else {
 				margin-left: $gutter;
 			}
-		}		
+		}
 	}
 
-} //pair	
+} //pair
 
-	
+
 /* !============================================= */
 
-/* ! Spacers						   			  */ 
+/* ! Spacers						   			  */
 
 /* !============================================= */
 
@@ -409,11 +579,11 @@ $spacer-bottom: inherit !default;
 .spacer-large {
 	margin-bottom: $spacer-large;
 }
-	
-	
+
+
 /* !============================================= */
 
-/* ! Image Blocks						   		  */ 
+/* ! Image Blocks						   		  */
 
 /* !============================================= */
 
@@ -423,7 +593,7 @@ $spacer-bottom: inherit !default;
 
 .imageblock-image {
 	float: left;
-	margin: 0 10px 0 0;	
+	margin: 0 10px 0 0;
 }
 
 .imageblock-image-right {
@@ -436,7 +606,7 @@ $spacer-bottom: inherit !default;
 	vertical-align: top;
 	width: 1000em;
 }
-	
+
 .ie6 .imageblock-content,
 .ie7 .imageblock-content {
 	display: block;

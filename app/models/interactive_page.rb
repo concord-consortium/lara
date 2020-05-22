@@ -1,7 +1,7 @@
 class InteractivePage < ActiveRecord::Base
   attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
-                  :show_interactive, :show_info_assessment, :embeddable_display_mode, :sidebar_title, :is_hidden,
-                  :additional_sections, :is_completion
+                  :show_interactive, :show_info_assessment, :toggle_info_assessment, :embeddable_display_mode,
+                  :sidebar_title, :is_hidden, :additional_sections, :is_completion
 
   serialize :additional_sections
 
@@ -31,6 +31,10 @@ class InteractivePage < ActiveRecord::Base
 
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
+
+  def toggle_info_assessment
+    self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
+  end
 
   # Interactive page can register additional page sections:
   #
@@ -178,6 +182,7 @@ class InteractivePage < ActiveRecord::Base
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
       show_info_assessment: show_info_assessment,
+      toggle_info_assessment: toggle_info_assessment,
       embeddable_display_mode: embeddable_display_mode,
       additional_sections: additional_sections,
       is_completion: is_completion
@@ -238,6 +243,7 @@ class InteractivePage < ActiveRecord::Base
                                     :show_sidebar,
                                     :show_interactive,
                                     :show_info_assessment,
+                                    :toggle_info_assessment,
                                     :embeddable_display_mode,
                                     :additional_sections,
                                     :is_completion])
@@ -265,6 +271,7 @@ class InteractivePage < ActiveRecord::Base
       :show_sidebar,
       :show_interactive,
       :show_info_assessment,
+      :toggle_info_assessment,
       :embeddable_display_mode
     ]
 
