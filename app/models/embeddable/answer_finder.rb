@@ -24,6 +24,8 @@ module Embeddable
         return "lb_#{question.id}"
       when MwInteractive
         return "if_#{question.id}"
+      when ManagedInteractive
+        return "if_#{question.id}"
       when InteractiveRunState::QuestionStandin
         # It is not clear but I beleive this bit of hackyness is here for this reason:
         # When a InteractiveRunState is asked for its
@@ -55,14 +57,14 @@ module Embeddable
     def find_answer(question)
       type = answer_type(question)
       return question if type.nil?
-      answer =  self.answer_map[self.question_key(question)] 
+      answer =  self.answer_map[self.question_key(question)]
       if answer.nil?
         conditions = { :run => self.run, :question => question }
         # If this is an ImageQuestion with an author-defined background image, we want to copy that into the answer.
         if type == Embeddable::ImageQuestionAnswer and !question.is_shutterbug? and !question.bg_url.blank?
           conditions[:image_url] = question.bg_url
         end
-        answer = type.default_answer(conditions) 
+        answer = type.default_answer(conditions)
         self.add_answer(answer)
       end
       return answer
@@ -80,6 +82,8 @@ module Embeddable
       when Embeddable::Labbook
         return Embeddable::LabbookAnswer
       when MwInteractive
+        return InteractiveRunState
+      when ManagedInteractive
         return InteractiveRunState
       end
       return nil
