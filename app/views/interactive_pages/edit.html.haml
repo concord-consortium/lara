@@ -88,17 +88,18 @@
           %h2 Info/Assess
           %button.show-hide-toggle
             Close All
-          = form_for @page do |f|
-            - if @page.has_attribute?('toggle_info_assessment')
-              %label
-                = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
-                Allow toggling of column
-          = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-            .select_container
-              = embeddable_selector
-            = hidden_field_tag :approved_script_id
-            = hidden_field_tag :component_label
-            = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
+          .column-controls
+            = form_for @page do |f|
+              - if @page.has_attribute?('toggle_info_assessment')
+                %label
+                  = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
+                  Collapsible
+            = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+              .select_container
+                = embeddable_selector
+              = hidden_field_tag :approved_script_id
+              = hidden_field_tag :component_label
+              = submit_tag 'Add', {id: 'add_embeddable_button'}
           .embeddables_list.sortable_embeddables
             - @page.section_embeddables(nil).each do |e|
               - if e.show_in_edit?
@@ -123,10 +124,11 @@
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
         .questions
           %h2 Interactive Box
-          = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-            = embeddable_interactives_selector
-            = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
-            = submit_tag 'Add Interactive'
+          .column-controls
+            = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+              = embeddable_interactives_selector
+              = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
+              = submit_tag 'Add'
           .embeddables_list.sortable_embeddables
             - @page.interactive_box_visible_embeddables.each do |interactive|
               .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
