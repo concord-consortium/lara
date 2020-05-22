@@ -3,7 +3,7 @@ import { IHookOptions, InitInteractiveMode, INavigationOptions, IAuthInfo, IGetF
 import { Client } from "./client";
 
 // tslint:disable-next-line:max-line-length
-export function useLaraInteractiveApi<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}>(hookOptions: IHookOptions) {
+export function useLaraInteractiveApi<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>(hookOptions: IHookOptions) {
   const client = useRef<Client>();
   const [ mode, setMode ] = useState<InitInteractiveMode>();
   const [ authoredState, setAuthoredState ] = useState<AuthoredState|null>(null);
@@ -11,7 +11,7 @@ export function useLaraInteractiveApi<AuthoredState = {}, InteractiveState = {},
   const [ globalInteractiveState, setGlobalInteractiveState ] = useState<GlobalInteractiveState|null>(null);
 
   useEffect(() => {
-    client.current = new Client<AuthoredState, InteractiveState, GlobalInteractiveState>({
+    client.current = new Client<InteractiveState, AuthoredState, GlobalInteractiveState>({
       startDisconnected: false,
       supportedFeatures: hookOptions.supportedFeatures,
 

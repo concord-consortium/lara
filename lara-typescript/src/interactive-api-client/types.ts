@@ -47,7 +47,7 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
 }
 
 // tslint:disable-next-line:max-line-length
-export interface IRuntimeInitInteractive<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> extends IInteractiveStateProps<InteractiveState> {
+export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> extends IInteractiveStateProps<InteractiveState> {
   version: 1;
   error: any;
   mode: "runtime";
@@ -74,17 +74,17 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   authoredState: AuthoredState | null;
 }
 
-export interface IReportInitInteractive<AuthoredState = {}, InteractiveState = {}> {
+export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
 }
 
-export type IInitInteractive<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> =
-  IRuntimeInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState> |
+export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
+  IRuntimeInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> |
   IAuthoringInitInteractive<AuthoredState> |
-  IReportInitInteractive<AuthoredState, InteractiveState>;
+  IReportInitInteractive<InteractiveState, AuthoredState>;
 
 export type InitInteractiveMode = "runtime" | "authoring" | "report";
 
@@ -120,12 +120,12 @@ export interface IFirebaseJwt {
   token?: string;
 }
 
-export interface IClientOptions<AuthoredState = {}, InteractiveState = {}, GlobalInteractiveState = {}> {
+export interface IClientOptions<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> {
   startDisconnected?: boolean;
   supportedFeatures?: ISupportedFeatures;
   onHello?: () => void;
   // tslint:disable-next-line:max-line-length
-  onInitInteractive?: (initMessage: IInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState>) => void;
+  onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => void;
   onGetInteractiveState?: () => InteractiveState | string | null;
   onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;
 }

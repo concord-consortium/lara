@@ -3,8 +3,8 @@
 # Interface: IReportInitInteractive
 
 ## Type parameters
-#### AuthoredState 
 #### InteractiveState 
+#### AuthoredState 
 ## Hierarchy
 
 **IReportInitInteractive**

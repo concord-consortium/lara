@@ -3,8 +3,8 @@
 # Class: Client
 
 ## Type parameters
-#### AuthoredState 
 #### InteractiveState 
+#### AuthoredState 
 #### GlobalInteractiveState 
 ## Hierarchy
 
@@ -44,7 +44,7 @@
 
 ###  constructor
 
-⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`AuthoredState`, `InteractiveState`, `GlobalInteractiveState`>*): [Client](client.md)
+⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`>*): [Client](client.md)
 
 *Defined in [client.ts:25](../../../lara-typescript/src/interactive-api-client/client.ts#L25)*
 
@@ -52,7 +52,7 @@
 
 | Name | Type |
 | ------ | ------ |
-| options | [IClientOptions](../interfaces/iclientoptions.md)<`AuthoredState`, `InteractiveState`, `GlobalInteractiveState`> |
+| options | [IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> |
 
 **Returns:** [Client](client.md)
 

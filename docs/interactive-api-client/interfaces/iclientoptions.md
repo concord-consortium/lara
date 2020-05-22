@@ -3,8 +3,8 @@
 # Interface: IClientOptions
 
 ## Type parameters
-#### AuthoredState 
 #### InteractiveState 
+#### AuthoredState 
 #### GlobalInteractiveState 
 ## Hierarchy
 

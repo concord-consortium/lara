@@ -70,16 +70,16 @@ const handleButtonClick = () => this.setState({ clicks: this.state.clicks + 1 })
 <button onClick={handleButtonClick}>{this.state.clicks}</button>
 ```
 
-Note: the order of the type variables is important, it is `AuthoredState`, `InteractiveState`, and `IGlobalInteractiveState`.  If you do wish to skip a
+Note: the order of the type variables is important, it is `InteractiveState`, `AuthoredState`, and `IGlobalInteractiveState`.  If you do wish to skip a
 type variable just use `{}` in its place and any type variable left off on the end defaults to `{}`, eg:
 
-`const client = new LaraInteractiveApi.Client<{}, IInteractiveState>({ ...`
+`const client = new LaraInteractiveApi.Client<IInteractiveState, {}, IGlobalInteractiveState>({ ...`
 
 Along with the required `supportedFeatures` option there are a few optional options:
 
 1. `startDisconnected?: boolean;` - if `true` the client does not automatically connect to Lara.
 2. `onHello?: () => void;` - a callback called when the underlying `hello` message in `iframe-phone` is received.
-3. `onInitInteractive?: (initMessage: IInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState>) => void;` - a callback called when
+3. `onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => void;` - a callback called when
     the `initInteractive` message is received from Lara.  You can use this to store the initial states of the interactive.
 4. `onGetInteractiveState?: () => InteractiveState | string | null;` - a callback called when Lara asks for the interactive state.  Note: this callback
     is called many times during the lifetime of the interactive as Lara polls for state changes.

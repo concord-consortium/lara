@@ -4,6 +4,8 @@ LARA Interactive API Client
 
 A TypeScript-based client for the LARA Interactive API. This also includes all the types for the API which are shared with the server-side Typescript files that implement the LARA-side of the API.
 
+NOTE: this file (in /docs) is auto-generated as part of the `lara-typescript` build using [TypeDoc](https://typedoc.org/) by combining the API client's readme file with auto-generated output. If you wish to edit this document please edit `lara-typescript/src/interactive-api-client/README.md`.
+
 Installation
 ------------
 
@@ -68,15 +70,15 @@ const handleButtonClick = () => this.setState({ clicks: this.state.clicks + 1 })
 <button onClick={handleButtonClick}>{this.state.clicks}</button>
 ```
 
-Note: the order of the type variables is important, it is `AuthoredState`, `InteractiveState`, and `IGlobalInteractiveState`. If you do wish to skip a type variable just use `{}` in its place and any type variable left off on the end defaults to `{}`, eg:
+Note: the order of the type variables is important, it is `InteractiveState`, `AuthoredState`, and `IGlobalInteractiveState`. If you do wish to skip a type variable just use `{}` in its place and any type variable left off on the end defaults to `{}`, eg:
 
-`const client = new LaraInteractiveApi.Client<{}, IInteractiveState>({ ...`
+`const client = new LaraInteractiveApi.Client<IInteractiveState, {}, IGlobalInteractiveState>({ ...`
 
 Along with the required `supportedFeatures` option there are a few optional options:
 
 1.  `startDisconnected?: boolean;` - if `true` the client does not automatically connect to Lara.
 2.  `onHello?: () => void;` - a callback called when the underlying `hello` message in `iframe-phone` is received.
-3.  `onInitInteractive?: (initMessage: IInitInteractive<AuthoredState, InteractiveState, GlobalInteractiveState>) => void;` - a callback called when the `initInteractive` message is received from Lara. You can use this to store the initial states of the interactive.
+3.  `onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => void;` - a callback called when the `initInteractive` message is received from Lara. You can use this to store the initial states of the interactive.
 4.  `onGetInteractiveState?: () => InteractiveState \| string \| null;` - a callback called when Lara asks for the interactive state. Note: this callback is called many times during the lifetime of the interactive as Lara polls for state changes.
 5.  `onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;` - a callback called when another interactive changes the global interactive state. Note: by design Lara does not invoke this on the interactive that invokes the change.
 
@@ -235,7 +237,7 @@ ___
 
 ###  IInitInteractive
 
-**Ƭ IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)<`AuthoredState`, `InteractiveState`, `GlobalInteractiveState`> \| [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)<`AuthoredState`> \| [IReportInitInteractive](interfaces/ireportinitinteractive.md)<`AuthoredState`, `InteractiveState`>*
+**Ƭ IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> \| [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)<`AuthoredState`> \| [IReportInitInteractive](interfaces/ireportinitinteractive.md)<`InteractiveState`, `AuthoredState`>*
 
 *Defined in [types.ts:84](../../lara-typescript/src/interactive-api-client/types.ts#L84)*
 
@@ -295,14 +297,14 @@ ___
 
 ###  useLaraInteractiveApi
 
-▸ **useLaraInteractiveApi**<`AuthoredState`,`InteractiveState`,`GlobalInteractiveState`>(hookOptions: *[IHookOptions](interfaces/ihookoptions.md)*): `object`
+▸ **useLaraInteractiveApi**<`InteractiveState`,`AuthoredState`,`GlobalInteractiveState`>(hookOptions: *[IHookOptions](interfaces/ihookoptions.md)*): `object`
 
 *Defined in [use-api-hook.ts:6](../../lara-typescript/src/interactive-api-client/use-api-hook.ts#L6)*
 
 **Type parameters:**
 
-#### AuthoredState 
 #### InteractiveState 
+#### AuthoredState 
 #### GlobalInteractiveState 
 **Parameters:**
 

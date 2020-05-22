@@ -3,8 +3,8 @@
 # Interface: IRuntimeInitInteractive
 
 ## Type parameters
-#### AuthoredState 
 #### InteractiveState 
+#### AuthoredState 
 #### GlobalInteractiveState 
 ## Hierarchy
 
