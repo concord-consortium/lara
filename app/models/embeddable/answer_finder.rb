@@ -23,17 +23,9 @@ module Embeddable
       when Embeddable::Labbook
         return "lb_#{question.id}"
       when MwInteractive
-        return "if_#{question.id}"
+        return "mw_#{question.id}"
       when ManagedInteractive
-        return "if_#{question.id}"
-      when InteractiveRunState::QuestionStandin
-        # It is not clear but I beleive this bit of hackyness is here for this reason:
-        # When a InteractiveRunState is asked for its
-        # question, it returns an InteractiveRunState::QuestionStandin instead of MwInteractive
-        # (I'm not sure why). And then that question is sometimes used later in the process
-        # to try to find the answer again. So that is why it is OK for the same key to be used
-        # in that case. I haven't found where this happens.
-        return question.interactive ? "if_#{question.interactive.id}" : nil
+        return "mi_#{question.id}"
       end
       return nil
     end
