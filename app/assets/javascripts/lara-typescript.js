@@ -16715,11 +16715,16 @@ var IFrameSaver = /** @class */ (function () {
         this.addListener("interactiveState", function (interactiveJson) {
             _this.saveLearnerState(interactiveJson);
         });
-        this.addListener("getAuthInfo", function () {
+        this.addListener("getAuthInfo", function (request) {
             var authInfo = {
+                requestId: request.requestId,
                 provider: _this.authProvider,
                 loggedIn: _this.loggedIn
             };
+            // requestId may be undefined for interactives that don't use the client
+            if (request.requestId) {
+                authInfo.requestId = request.requestId;
+            }
             if (_this.userEmail != null) {
                 authInfo.email = _this.userEmail;
             }
@@ -16752,11 +16757,8 @@ var IFrameSaver = /** @class */ (function () {
                 }
             }
         });
-        this.addListener("getFirebaseJWT", function (opts) {
-            if (opts == null) {
-                opts = {};
-            }
-            return _this.getFirebaseJwt(opts);
+        this.addListener("getFirebaseJWT", function (request) {
+            return _this.getFirebaseJwt(request);
         });
         if (this.learnerStateSavingEnabled()) {
             this.post("getLearnerUrl");
@@ -16900,17 +16902,29 @@ var IFrameSaver = /** @class */ (function () {
             return this.$iframe.off(mouseoutNamespace);
         }
     };
-    IFrameSaver.prototype.getFirebaseJwt = function (opts) {
+    IFrameSaver.prototype.getFirebaseJwt = function (request) {
         var _this = this;
+        var requestId = request ? request.requestId : undefined;
+        var opts = request || {};
+        if (opts.requestId) {
+            delete opts.requestId;
+        }
+        var createResponse = function (baseResponse) {
+            if (requestId) {
+                baseResponse.requestId = requestId;
+            }
+            return baseResponse;
+        };
+        // TODO: after typescript upgrade remove `requestId: requestId!, `
         return $.ajax({
             type: "POST",
             url: this.getFirebaseJWTUrl,
             data: opts,
-            success: function (response) {
-                _this.post("firebaseJWT", response);
+            success: function (data) {
+                _this.post("firebaseJWT", createResponse({ requestId: requestId, token: data.token }));
             },
             error: function (jqxhr, status, error) {
-                _this.post("firebaseJWT", { response_type: "ERROR", message: error });
+                _this.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
             }
         });
     };

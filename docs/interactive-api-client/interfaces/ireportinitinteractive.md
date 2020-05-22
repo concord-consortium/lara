@@ -28,7 +28,7 @@
 
 **● authoredState**: *`AuthoredState`*
 
-*Defined in [types.ts:80](../../../lara-typescript/src/interactive-api-client/types.ts#L80)*
+*Defined in [types.ts:49](../../../lara-typescript/src/interactive-api-client/types.ts#L49)*
 
 ___
 <a id="interactivestate"></a>
@@ -37,7 +37,7 @@ ___
 
 **● interactiveState**: *`InteractiveState`*
 
-*Defined in [types.ts:81](../../../lara-typescript/src/interactive-api-client/types.ts#L81)*
+*Defined in [types.ts:50](../../../lara-typescript/src/interactive-api-client/types.ts#L50)*
 
 ___
 <a id="mode"></a>
@@ -46,7 +46,7 @@ ___
 
 **● mode**: *"report"*
 
-*Defined in [types.ts:79](../../../lara-typescript/src/interactive-api-client/types.ts#L79)*
+*Defined in [types.ts:48](../../../lara-typescript/src/interactive-api-client/types.ts#L48)*
 
 ___
 <a id="version"></a>
@@ -55,7 +55,7 @@ ___
 
 **● version**: *`1`*
 
-*Defined in [types.ts:78](../../../lara-typescript/src/interactive-api-client/types.ts#L78)*
+*Defined in [types.ts:47](../../../lara-typescript/src/interactive-api-client/types.ts#L47)*
 
 ___
 

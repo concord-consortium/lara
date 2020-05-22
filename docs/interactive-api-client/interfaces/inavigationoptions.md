@@ -23,7 +23,7 @@
 
 **● enableForwardNav**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:103](../../../lara-typescript/src/interactive-api-client/types.ts#L103)*
+*Defined in [types.ts:125](../../../lara-typescript/src/interactive-api-client/types.ts#L125)*
 
 ___
 <a id="message"></a>
@@ -32,7 +32,7 @@ ___
 
 **● message**: *`undefined` \| `string`*
 
-*Defined in [types.ts:104](../../../lara-typescript/src/interactive-api-client/types.ts#L104)*
+*Defined in [types.ts:126](../../../lara-typescript/src/interactive-api-client/types.ts#L126)*
 
 ___
 

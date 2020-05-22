@@ -18,17 +18,15 @@
 
 ### Accessors
 
-* [inIFrame](client.md#iniframe)
+* [InIFrame](client.md#iniframe)
+* [iframePhone](client.md#iframephone)
 
 ### Methods
 
-* [addListener](client.md#addlistener)
 * [connect](client.md#connect)
 * [disconnect](client.md#disconnect)
 * [getAuthInfo](client.md#getauthinfo)
 * [getFirebaseJWT](client.md#getfirebasejwt)
-* [post](client.md#post)
-* [removeListener](client.md#removelistener)
 * [setAuthoredState](client.md#setauthoredstate)
 * [setGlobalInteractiveState](client.md#setglobalinteractivestate)
 * [setHeight](client.md#setheight)
@@ -46,7 +44,7 @@
 
 ⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`>*): [Client](client.md)
 
-*Defined in [client.ts:25](../../../lara-typescript/src/interactive-api-client/client.ts#L25)*
+*Defined in [client.ts:27](../../../lara-typescript/src/interactive-api-client/client.ts#L27)*
 
 **Parameters:**
 
@@ -62,44 +60,36 @@ ___
 
 <a id="iniframe"></a>
 
-###  inIFrame
+###  InIFrame
 
-**get inIFrame**(): `boolean`
+**get InIFrame**(): `boolean`
 
-*Defined in [client.ts:99](../../../lara-typescript/src/interactive-api-client/client.ts#L99)*
+*Defined in [client.ts:106](../../../lara-typescript/src/interactive-api-client/client.ts#L106)*
 
 **Returns:** `boolean`
+
+___
+<a id="iframephone"></a>
+
+###  iframePhone
+
+**get iframePhone**(): `undefined` \| `IFrameEndpoint`
+
+*Defined in [client.ts:40](../../../lara-typescript/src/interactive-api-client/client.ts#L40)*
+
+**Returns:** `undefined` \| `IFrameEndpoint`
 
 ___
 
 ## Methods
 
-<a id="addlistener"></a>
-
-###  addListener
-
-▸ **addListener**(message: *[ServerMessage](../#servermessage)*, callback: *`iframePhone.ListenerCallback`*, requestId?: *`undefined` \| `number`*): `boolean`
-
-*Defined in [client.ts:170](../../../lara-typescript/src/interactive-api-client/client.ts#L170)*
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| message | [ServerMessage](../#servermessage) |
-| callback | `iframePhone.ListenerCallback` |
-| `Optional` requestId | `undefined` \| `number` |
-
-**Returns:** `boolean`
-
-___
 <a id="connect"></a>
 
 ###  connect
 
 ▸ **connect**(): `boolean`
 
-*Defined in [client.ts:37](../../../lara-typescript/src/interactive-api-client/client.ts#L37)*
+*Defined in [client.ts:44](../../../lara-typescript/src/interactive-api-client/client.ts#L44)*
 
 **Returns:** `boolean`
 
@@ -110,7 +100,7 @@ ___
 
 ▸ **disconnect**(): `boolean`
 
-*Defined in [client.ts:83](../../../lara-typescript/src/interactive-api-client/client.ts#L83)*
+*Defined in [client.ts:90](../../../lara-typescript/src/interactive-api-client/client.ts#L90)*
 
 **Returns:** `boolean`
 
@@ -121,7 +111,7 @@ ___
 
 ▸ **getAuthInfo**(): `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
-*Defined in [client.ts:131](../../../lara-typescript/src/interactive-api-client/client.ts#L131)*
+*Defined in [client.ts:138](../../../lara-typescript/src/interactive-api-client/client.ts#L138)*
 
 **Returns:** `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
@@ -132,7 +122,7 @@ ___
 
 ▸ **getFirebaseJWT**(options: *[IGetFirebaseJwtOptions](../interfaces/igetfirebasejwtoptions.md)*): `Promise`<`string`>
 
-*Defined in [client.ts:144](../../../lara-typescript/src/interactive-api-client/client.ts#L144)*
+*Defined in [client.ts:155](../../../lara-typescript/src/interactive-api-client/client.ts#L155)*
 
 **Parameters:**
 
@@ -143,49 +133,13 @@ ___
 **Returns:** `Promise`<`string`>
 
 ___
-<a id="post"></a>
-
-###  post
-
-▸ **post**(message: *[ClientMessage](../#clientmessage)*, content?: *`InteractiveState` \| `AuthoredState` \| `GlobalInteractiveState` \| `object` \| `string` \| `number` \| `null`*): `boolean`
-
-*Defined in [client.ts:162](../../../lara-typescript/src/interactive-api-client/client.ts#L162)*
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| message | [ClientMessage](../#clientmessage) |
-| `Optional` content | `InteractiveState` \| `AuthoredState` \| `GlobalInteractiveState` \| `object` \| `string` \| `number` \| `null` |
-
-**Returns:** `boolean`
-
-___
-<a id="removelistener"></a>
-
-###  removeListener
-
-▸ **removeListener**(message: *[ServerMessage](../#servermessage)*, requestId?: *`undefined` \| `number`*): `boolean`
-
-*Defined in [client.ts:200](../../../lara-typescript/src/interactive-api-client/client.ts#L200)*
-
-**Parameters:**
-
-| Name | Type |
-| ------ | ------ |
-| message | [ServerMessage](../#servermessage) |
-| `Optional` requestId | `undefined` \| `number` |
-
-**Returns:** `boolean`
-
-___
 <a id="setauthoredstate"></a>
 
 ###  setAuthoredState
 
 ▸ **setAuthoredState**(authoredState: *`AuthoredState`*): `boolean`
 
-*Defined in [client.ts:123](../../../lara-typescript/src/interactive-api-client/client.ts#L123)*
+*Defined in [client.ts:130](../../../lara-typescript/src/interactive-api-client/client.ts#L130)*
 
 **Parameters:**
 
@@ -202,7 +156,7 @@ ___
 
 ▸ **setGlobalInteractiveState**(globalState: *`GlobalInteractiveState`*): `boolean`
 
-*Defined in [client.ts:127](../../../lara-typescript/src/interactive-api-client/client.ts#L127)*
+*Defined in [client.ts:134](../../../lara-typescript/src/interactive-api-client/client.ts#L134)*
 
 **Parameters:**
 
@@ -219,7 +173,7 @@ ___
 
 ▸ **setHeight**(height: *`number` \| `string`*): `boolean`
 
-*Defined in [client.ts:107](../../../lara-typescript/src/interactive-api-client/client.ts#L107)*
+*Defined in [client.ts:114](../../../lara-typescript/src/interactive-api-client/client.ts#L114)*
 
 **Parameters:**
 
@@ -236,7 +190,7 @@ ___
 
 ▸ **setInteractiveState**(interactiveState: *`InteractiveState` \| `string` \| `null`*): `boolean`
 
-*Defined in [client.ts:103](../../../lara-typescript/src/interactive-api-client/client.ts#L103)*
+*Defined in [client.ts:110](../../../lara-typescript/src/interactive-api-client/client.ts#L110)*
 
 **Parameters:**
 
@@ -253,7 +207,7 @@ ___
 
 ▸ **setNavigation**(options: *[INavigationOptions](../interfaces/inavigationoptions.md)*): `boolean`
 
-*Defined in [client.ts:119](../../../lara-typescript/src/interactive-api-client/client.ts#L119)*
+*Defined in [client.ts:126](../../../lara-typescript/src/interactive-api-client/client.ts#L126)*
 
 **Parameters:**
 
@@ -270,7 +224,7 @@ ___
 
 ▸ **setSupportedFeatures**(features: *[ISupportedFeatures](../interfaces/isupportedfeatures.md)*): `boolean`
 
-*Defined in [client.ts:111](../../../lara-typescript/src/interactive-api-client/client.ts#L111)*
+*Defined in [client.ts:118](../../../lara-typescript/src/interactive-api-client/client.ts#L118)*
 
 **Parameters:**
 

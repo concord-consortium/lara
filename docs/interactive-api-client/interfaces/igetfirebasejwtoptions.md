@@ -6,6 +6,8 @@
 
 **IGetFirebaseJwtOptions**
 
+↳  [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
+
 ## Index
 
 ### Properties
@@ -22,7 +24,7 @@
 
 **● firebase_app**: *`undefined` \| `string`*
 
-*Defined in [types.ts:114](../../../lara-typescript/src/interactive-api-client/types.ts#L114)*
+*Defined in [types.ts:151](../../../lara-typescript/src/interactive-api-client/types.ts#L151)*
 
 ___
 

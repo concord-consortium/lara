@@ -24,7 +24,7 @@
 
 **● aspectRatio**: *`undefined` \| `number`*
 
-*Defined in [types.ts:92](../../../lara-typescript/src/interactive-api-client/types.ts#L92)*
+*Defined in [types.ts:114](../../../lara-typescript/src/interactive-api-client/types.ts#L114)*
 
 ___
 <a id="authoredstate"></a>
@@ -33,7 +33,7 @@ ___
 
 **● authoredState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:93](../../../lara-typescript/src/interactive-api-client/types.ts#L93)*
+*Defined in [types.ts:115](../../../lara-typescript/src/interactive-api-client/types.ts#L115)*
 
 ___
 <a id="interactivestate"></a>
@@ -42,7 +42,7 @@ ___
 
 **● interactiveState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:94](../../../lara-typescript/src/interactive-api-client/types.ts#L94)*
+*Defined in [types.ts:116](../../../lara-typescript/src/interactive-api-client/types.ts#L116)*
 
 ___
 

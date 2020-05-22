@@ -23,7 +23,7 @@
 
 **● apiVersion**: *`1`*
 
-*Defined in [types.ts:98](../../../lara-typescript/src/interactive-api-client/types.ts#L98)*
+*Defined in [types.ts:120](../../../lara-typescript/src/interactive-api-client/types.ts#L120)*
 
 ___
 <a id="features"></a>
@@ -32,7 +32,7 @@ ___
 
 **● features**: *[ISupportedFeatures](isupportedfeatures.md)*
 
-*Defined in [types.ts:99](../../../lara-typescript/src/interactive-api-client/types.ts#L99)*
+*Defined in [types.ts:121](../../../lara-typescript/src/interactive-api-client/types.ts#L121)*
 
 ___
 

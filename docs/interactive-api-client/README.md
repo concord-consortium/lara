@@ -143,8 +143,11 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 * [IAuthInfo](interfaces/iauthinfo.md)
 * [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)
 * [IClientOptions](interfaces/iclientoptions.md)
-* [IFirebaseJwt](interfaces/ifirebasejwt.md)
+* [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
+* [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
 * [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)
+* [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
+* [IGetFirebaseJwtResponse](interfaces/igetfirebasejwtresponse.md)
 * [IHookOptions](interfaces/ihookoptions.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
@@ -167,12 +170,10 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 * [InitInteractiveMode](#initinteractivemode)
 * [ServerMessage](#servermessage)
 
-### Variables
-
-* [InIframe](#iniframe)
-
 ### Functions
 
+* [inIframe](#iniframe)
+* [setInIframe](#setiniframe)
 * [useLaraInteractiveApi](#uselarainteractiveapi)
 
 ---
@@ -185,7 +186,7 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 
 **Ƭ ClientMessage**: *[DeprecatedIFrameSaverClientMessage](#deprecatediframesaverclientmessage) \| [IFrameSaverClientMessage](#iframesaverclientmessage) \| [GlobalIFrameSaverClientMessage](#globaliframesaverclientmessage)*
 
-*Defined in [types.ts:23](../../lara-typescript/src/interactive-api-client/types.ts#L23)*
+*Defined in [types.ts:100](../../lara-typescript/src/interactive-api-client/types.ts#L100)*
 
 ___
 <a id="deprecatediframesaverclientmessage"></a>
@@ -194,7 +195,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverClientMessage**: *"setLearnerUrl"*
 
-*Defined in [types.ts:20](../../lara-typescript/src/interactive-api-client/types.ts#L20)*
+*Defined in [types.ts:97](../../lara-typescript/src/interactive-api-client/types.ts#L97)*
 
 ___
 <a id="deprecatediframesaverservermessage"></a>
@@ -203,7 +204,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverServerMessage**: *"getLearnerUrl" \| "loadInteractive"*
 
-*Defined in [types.ts:21](../../lara-typescript/src/interactive-api-client/types.ts#L21)*
+*Defined in [types.ts:98](../../lara-typescript/src/interactive-api-client/types.ts#L98)*
 
 ___
 <a id="globaliframesaverclientmessage"></a>
@@ -212,7 +213,7 @@ ___
 
 **Ƭ GlobalIFrameSaverClientMessage**: *"interactiveStateGlobal"*
 
-*Defined in [types.ts:15](../../lara-typescript/src/interactive-api-client/types.ts#L15)*
+*Defined in [types.ts:92](../../lara-typescript/src/interactive-api-client/types.ts#L92)*
 
 ___
 <a id="globaliframesaverservermessage"></a>
@@ -221,7 +222,7 @@ ___
 
 **Ƭ GlobalIFrameSaverServerMessage**: *"loadInteractiveGlobal"*
 
-*Defined in [types.ts:16](../../lara-typescript/src/interactive-api-client/types.ts#L16)*
+*Defined in [types.ts:93](../../lara-typescript/src/interactive-api-client/types.ts#L93)*
 
 ___
 <a id="iframesaverclientmessage"></a>
@@ -230,7 +231,7 @@ ___
 
 **Ƭ IFrameSaverClientMessage**: *"interactiveState" \| "height" \| "getAuthInfo" \| "supportedFeatures" \| "navigation" \| "getFirebaseJWT" \| "authoredState"*
 
-*Defined in [types.ts:2](../../lara-typescript/src/interactive-api-client/types.ts#L2)*
+*Defined in [types.ts:79](../../lara-typescript/src/interactive-api-client/types.ts#L79)*
 
 ___
 <a id="iinitinteractive"></a>
@@ -239,7 +240,7 @@ ___
 
 **Ƭ IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> \| [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)<`AuthoredState`> \| [IReportInitInteractive](interfaces/ireportinitinteractive.md)<`InteractiveState`, `AuthoredState`>*
 
-*Defined in [types.ts:84](../../lara-typescript/src/interactive-api-client/types.ts#L84)*
+*Defined in [types.ts:53](../../lara-typescript/src/interactive-api-client/types.ts#L53)*
 
 ___
 <a id="iframephoneservermessage"></a>
@@ -248,7 +249,7 @@ ___
 
 **Ƭ IframePhoneServerMessage**: *"hello"*
 
-*Defined in [types.ts:18](../../lara-typescript/src/interactive-api-client/types.ts#L18)*
+*Defined in [types.ts:95](../../lara-typescript/src/interactive-api-client/types.ts#L95)*
 
 ___
 <a id="iframesaverservermessage"></a>
@@ -257,7 +258,7 @@ ___
 
 **Ƭ IframeSaverServerMessage**: *"authInfo" \| "getInteractiveState" \| "initInteractive" \| "firebaseJWT"*
 
-*Defined in [types.ts:10](../../lara-typescript/src/interactive-api-client/types.ts#L10)*
+*Defined in [types.ts:87](../../lara-typescript/src/interactive-api-client/types.ts#L87)*
 
 ___
 <a id="initinteractivemode"></a>
@@ -266,7 +267,7 @@ ___
 
 **Ƭ InitInteractiveMode**: *"runtime" \| "authoring" \| "report"*
 
-*Defined in [types.ts:89](../../lara-typescript/src/interactive-api-client/types.ts#L89)*
+*Defined in [types.ts:58](../../lara-typescript/src/interactive-api-client/types.ts#L58)*
 
 ___
 <a id="servermessage"></a>
@@ -275,24 +276,40 @@ ___
 
 **Ƭ ServerMessage**: *[IframePhoneServerMessage](#iframephoneservermessage) \| [DeprecatedIFrameSaverServerMessage](#deprecatediframesaverservermessage) \| [IframeSaverServerMessage](#iframesaverservermessage) \| [GlobalIFrameSaverServerMessage](#globaliframesaverservermessage)*
 
-*Defined in [types.ts:27](../../lara-typescript/src/interactive-api-client/types.ts#L27)*
-
-___
-
-## Variables
-
-<a id="iniframe"></a>
-
-### `<Const>` InIframe
-
-**● InIframe**: *`boolean`* =  inIframe
-
-*Defined in [in-frame.ts:10](../../lara-typescript/src/interactive-api-client/in-frame.ts#L10)*
+*Defined in [types.ts:104](../../lara-typescript/src/interactive-api-client/types.ts#L104)*
 
 ___
 
 ## Functions
 
+<a id="iniframe"></a>
+
+### `<Const>` inIframe
+
+▸ **inIframe**(): `boolean`
+
+*Defined in [in-frame.ts:14](../../lara-typescript/src/interactive-api-client/in-frame.ts#L14)*
+
+**Returns:** `boolean`
+
+___
+<a id="setiniframe"></a>
+
+### `<Const>` setInIframe
+
+▸ **setInIframe**(value: *`boolean`*): `void`
+
+*Defined in [in-frame.ts:10](../../lara-typescript/src/interactive-api-client/in-frame.ts#L10)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| value | `boolean` |
+
+**Returns:** `void`
+
+___
 <a id="uselarainteractiveapi"></a>
 
 ###  useLaraInteractiveApi

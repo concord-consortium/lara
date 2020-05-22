@@ -27,7 +27,7 @@
 
 **● authoredState**: *`AuthoredState` \| `null`*
 
-*Defined in [types.ts:74](../../../lara-typescript/src/interactive-api-client/types.ts#L74)*
+*Defined in [types.ts:43](../../../lara-typescript/src/interactive-api-client/types.ts#L43)*
 
 ___
 <a id="error"></a>
@@ -36,7 +36,7 @@ ___
 
 **● error**: *`null`*
 
-*Defined in [types.ts:72](../../../lara-typescript/src/interactive-api-client/types.ts#L72)*
+*Defined in [types.ts:41](../../../lara-typescript/src/interactive-api-client/types.ts#L41)*
 
 ___
 <a id="mode"></a>
@@ -45,7 +45,7 @@ ___
 
 **● mode**: *"authoring"*
 
-*Defined in [types.ts:73](../../../lara-typescript/src/interactive-api-client/types.ts#L73)*
+*Defined in [types.ts:42](../../../lara-typescript/src/interactive-api-client/types.ts#L42)*
 
 ___
 <a id="version"></a>
@@ -54,7 +54,7 @@ ___
 
 **● version**: *`1`*
 
-*Defined in [types.ts:71](../../../lara-typescript/src/interactive-api-client/types.ts#L71)*
+*Defined in [types.ts:40](../../../lara-typescript/src/interactive-api-client/types.ts#L40)*
 
 ___
 

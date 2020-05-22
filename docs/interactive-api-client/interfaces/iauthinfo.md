@@ -6,6 +6,8 @@
 
 **IAuthInfo**
 
+↳  [IGetAuthInfoResponse](igetauthinforesponse.md)
+
 ## Index
 
 ### Properties
@@ -24,7 +26,7 @@
 
 **● email**: *`undefined` \| `string`*
 
-*Defined in [types.ts:110](../../../lara-typescript/src/interactive-api-client/types.ts#L110)*
+*Defined in [types.ts:140](../../../lara-typescript/src/interactive-api-client/types.ts#L140)*
 
 ___
 <a id="loggedin"></a>
@@ -33,7 +35,7 @@ ___
 
 **● loggedIn**: *`boolean`*
 
-*Defined in [types.ts:109](../../../lara-typescript/src/interactive-api-client/types.ts#L109)*
+*Defined in [types.ts:139](../../../lara-typescript/src/interactive-api-client/types.ts#L139)*
 
 ___
 <a id="provider"></a>
@@ -42,7 +44,7 @@ ___
 
 **● provider**: *`string`*
 
-*Defined in [types.ts:108](../../../lara-typescript/src/interactive-api-client/types.ts#L108)*
+*Defined in [types.ts:138](../../../lara-typescript/src/interactive-api-client/types.ts#L138)*
 
 ___
 

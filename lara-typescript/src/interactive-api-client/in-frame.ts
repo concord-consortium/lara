@@ -1,4 +1,4 @@
-const inIframe = (() => {
+let _inIframe = (() => {
   try {
     return window.self !== window.top;
   }
@@ -7,4 +7,8 @@ const inIframe = (() => {
   }
 })();
 
-export const InIframe = inIframe;
+export const setInIframe = (value: boolean) => {
+  _inIframe = value;
+};
+
+export const inIframe = () => _inIframe;

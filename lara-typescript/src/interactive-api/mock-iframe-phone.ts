@@ -119,9 +119,15 @@ type Listener = (content?: any) => void;
 type TargetOriginFn = () => void;
 type AfterConnectedCallback = () => void | TargetOriginFn;
 
+interface IMessage {
+  type: string;
+  content?: any;
+}
+
 export class MockPhone {
 
-  private listeners: {[key: string]: Listener | null} = {};
+  public listeners: {[key: string]: Listener | null} = {};
+  public messages: IMessage[] = [];
   private targetElement: Window | HTMLIFrameElement;
   private _targetOrigin: string | TargetOriginFn | undefined;
   private afterConnectedCallback: AfterConnectedCallback | null | undefined;
@@ -142,6 +148,14 @@ export class MockPhone {
     this.listeners = {};
 
     MockedIframePhoneManager._registerPhone(targetElement, this);
+  }
+
+  public get numListeners() {
+    return Object.keys(this.listeners).length;
+  }
+
+  public get listenerMessages() {
+    return Object.keys(this.listeners);
   }
 
   // Mock-specific function, initializes fake connection.
@@ -165,6 +179,7 @@ export class MockPhone {
         content
       };
     }
+    this.messages.push(message as IMessage);
     MockedIframePhoneManager.messages._add({source: window, target: this.targetElement, message});
   }
 
@@ -173,7 +188,7 @@ export class MockPhone {
   }
 
   public removeListener(type: string) {
-    this.listeners[type] = null;
+    delete this.listeners[type];
   }
 
   public removeAllListeners() {
@@ -200,7 +215,16 @@ export class MockPhone {
     // noop
   }
 
-  private _handleMessage(message: {type: string, content: any}) {
+  public reset() {
+    this.listeners = {};
+    this.messages = [];
+  }
+
+  public fakeServerMessage(message: {type: string, content?: any}) {
+    this._handleMessage(message);
+  }
+
+  private _handleMessage(message: {type: string, content?: any}) {
     if (this.listeners[message.type]) {
       this.listeners[message.type]!(message.content);
     }

@@ -1,34 +1,3 @@
-// the iframesaver messages are 1 per line to reduce merge conflicts as new ones are added
-export type IFrameSaverClientMessage = "interactiveState" |
-                                "height" |
-                                "getAuthInfo" |
-                                "supportedFeatures" |
-                                "navigation" |
-                                "getFirebaseJWT" |
-                                "authoredState";
-
-export type IframeSaverServerMessage = "authInfo" |
-                                "getInteractiveState" |
-                                "initInteractive" |
-                                "firebaseJWT";
-
-export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
-export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
-
-export type IframePhoneServerMessage = "hello";
-
-export type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
-export type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteractive";
-
-export type ClientMessage = DeprecatedIFrameSaverClientMessage |
-                            IFrameSaverClientMessage |
-                            GlobalIFrameSaverClientMessage;
-
-export type ServerMessage = IframePhoneServerMessage |
-                            DeprecatedIFrameSaverServerMessage |
-                            IframeSaverServerMessage |
-                            GlobalIFrameSaverServerMessage;
-
 export interface IInteractiveStateProps<InteractiveState = {}> {
   interactiveState: InteractiveState | null;
   hasLinkedInteractive?: boolean;
@@ -88,6 +57,59 @@ export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalIn
 
 export type InitInteractiveMode = "runtime" | "authoring" | "report";
 
+export interface IClientOptions<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> {
+  startDisconnected?: boolean;
+  supportedFeatures?: ISupportedFeatures;
+  onHello?: () => void;
+  // tslint:disable-next-line:max-line-length
+  onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => void;
+  onGetInteractiveState?: () => InteractiveState | string | null;
+  onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;
+}
+
+export interface IHookOptions {
+  supportedFeatures?: ISupportedFeatures;
+}
+
+//
+// client/lara request messages
+//
+
+// the iframesaver messages are 1 per line to reduce merge conflicts as new ones are added
+export type IFrameSaverClientMessage = "interactiveState" |
+                                "height" |
+                                "getAuthInfo" |
+                                "supportedFeatures" |
+                                "navigation" |
+                                "getFirebaseJWT" |
+                                "authoredState";
+
+export type IframeSaverServerMessage = "authInfo" |
+                                "getInteractiveState" |
+                                "initInteractive" |
+                                "firebaseJWT";
+
+export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
+export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
+
+export type IframePhoneServerMessage = "hello";
+
+export type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
+export type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteractive";
+
+export type ClientMessage = DeprecatedIFrameSaverClientMessage |
+                            IFrameSaverClientMessage |
+                            GlobalIFrameSaverClientMessage;
+
+export type ServerMessage = IframePhoneServerMessage |
+                            DeprecatedIFrameSaverServerMessage |
+                            IframeSaverServerMessage |
+                            GlobalIFrameSaverServerMessage;
+
+//
+// client requests only (no responses from lara)
+//
+
 export interface ISupportedFeatures {
   aspectRatio?: number;
   authoredState?: boolean;
@@ -104,32 +126,37 @@ export interface INavigationOptions {
   message?: string;
 }
 
+//
+// client requests with responses
+//
+
+interface IBaseRequestResponse {
+  requestId: number;
+}
+
 export interface IAuthInfo {
   provider: string;
   loggedIn: boolean;
   email?: string;
 }
 
+export interface IGetAuthInfoRequest extends IBaseRequestResponse {
+  // no extra options, just the requestId
+}
+export interface IGetAuthInfoResponse extends IBaseRequestResponse, IAuthInfo {
+  // no extra options, just the requestId and the auth info
+}
+
 export interface IGetFirebaseJwtOptions {
   firebase_app?: string;
 }
 
-export interface IFirebaseJwt {
+export interface IGetFirebaseJwtRequest extends IBaseRequestResponse, IGetFirebaseJwtOptions {
+  // no extra options, just the requestId and the jwt options
+}
+
+export interface IGetFirebaseJwtResponse extends IBaseRequestResponse {
   response_type?: "ERROR";
   message?: string;
   token?: string;
-}
-
-export interface IClientOptions<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> {
-  startDisconnected?: boolean;
-  supportedFeatures?: ISupportedFeatures;
-  onHello?: () => void;
-  // tslint:disable-next-line:max-line-length
-  onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => void;
-  onGetInteractiveState?: () => InteractiveState | string | null;
-  onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;
-}
-
-export interface IHookOptions {
-  supportedFeatures?: ISupportedFeatures;
 }

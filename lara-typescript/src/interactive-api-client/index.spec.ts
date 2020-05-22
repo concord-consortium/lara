@@ -6,9 +6,10 @@ describe("LaraInteractiveApi", () => {
     expect(LaraInteractiveApi.Client).toBeDefined();
   });
 
-  it("should export the InIFrame constant", () => {
-    expect(LaraInteractiveApi.InIframe).toBeDefined();
-    expect(LaraInteractiveApi.InIframe).toBe(false);
+  it("should export the inIFrame function", () => {
+    expect(LaraInteractiveApi.inIframe).toBeDefined();
+    expect(typeof LaraInteractiveApi.inIframe).toBe("function");
+    expect(LaraInteractiveApi.inIframe()).toBe(false);
   });
 
   it("should export the useLaraInteractiveApi function", () => {

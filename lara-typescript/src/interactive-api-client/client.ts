@@ -1,10 +1,10 @@
 import * as iframePhone from "iframe-phone";
 
 import { IClientOptions, IInitInteractive, ISupportedFeaturesRequest, INavigationOptions,
-         IAuthInfo, IGetFirebaseJwtOptions, IFirebaseJwt, ClientMessage, ServerMessage,
-         ISupportedFeatures
+         IAuthInfo, IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, ClientMessage, ServerMessage,
+         ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest
         } from "./types";
-import { InIframe } from "./in-frame";
+import { inIframe } from "./in-frame";
 
 // iframe phone uses 1 listener per message type so we multipex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
@@ -27,15 +27,20 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
   constructor(options: IClientOptions<InteractiveState, AuthoredState, GlobalInteractiveState>) {
     this.options = options;
 
-    if (InIframe) {
+    if (this.InIFrame) {
       if (!options.startDisconnected) {
         this.connect();
       }
     }
   }
 
+  // this should only be used by the spec tests - all phone messages should go through the helpers
+  public get iframePhone() {
+    return this.phone;
+  }
+
   public connect() {
-    if (InIframe) {
+    if (this.InIFrame) {
       if (!this.phone) {
         this.phone = iframePhone.getIFrameEndpoint();
 
@@ -81,7 +86,7 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
   // TODO: add listener and sender for global state changes
 
   public disconnect() {
-    if (InIframe) {
+    if (this.InIFrame) {
       const phone = this.phone;
       if (phone) {
         Object.keys(this.listeners).forEach(message => phone.removeListener(message));
@@ -96,8 +101,8 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
     return false;
   }
 
-  public get inIFrame() {
-    return InIframe;
+  public get InIFrame() {
+    return inIframe();
   }
 
   public setInteractiveState(interactiveState: InteractiveState | string | null) {
@@ -136,8 +141,12 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
       const listener = (authInfo: IAuthInfo) => {
         resolve(authInfo);
       };
-      this.addListener("authInfo", listener, this.getNextRequestId());
-      this.post("getAuthInfo");
+      const requestId = this.getNextRequestId();
+      const request: IGetAuthInfoRequest = {
+        requestId
+      };
+      this.addListener("authInfo", listener, requestId);
+      this.post("getAuthInfo", request);
     });
   }
 
@@ -146,20 +155,25 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
       if (!this.phone) {
         return reject("Not in iframe");
       }
-      const listener = (response: IFirebaseJwt) => {
+      const listener = (response: IGetFirebaseJwtResponse) => {
         if (response.response_type === "ERROR") {
           reject(response.message || "Error getting Firebase JWT");
         } else {
           resolve(response.token);
         }
       };
-      this.addListener("firebaseJWT", listener, this.getNextRequestId());
-      this.post("getFirebaseJWT", options);
+      const requestId = this.getNextRequestId();
+      const request: IGetFirebaseJwtRequest = {
+        requestId,
+        ...options
+      };
+      this.addListener("firebaseJWT", listener, requestId);
+      this.post("getFirebaseJWT", request);
     });
   }
 
   // tslint:disable-next-line:max-line-length
-  public post(message: ClientMessage, content?: InteractiveState | AuthoredState | GlobalInteractiveState | object | string | number | null) {
+  private post(message: ClientMessage, content?: InteractiveState | AuthoredState | GlobalInteractiveState | object | string | number | null) {
     if (this.phone) {
       this.phone.post(message, content as any);
       return true;
@@ -167,7 +181,7 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
     return false;
   }
 
-  public addListener(message: ServerMessage, callback: iframePhone.ListenerCallback, requestId?: number) {
+  private addListener(message: ServerMessage, callback: iframePhone.ListenerCallback, requestId?: number) {
     if (this.phone) {
       // add either a generic message listener (no requestId) or an auto-removing request listener
       // note: we may have multiple listeners on the same generic message
@@ -177,17 +191,25 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
 
       // iframe-phone only handles 1 listener per message so add the listener if we haven't already
       if (noExistingListener) {
-        this.phone.addListener(message, (content: any) => {
+        this.phone.addListener(message, (content?: any) => {
+          // strip requestId from the response so callbacks don't see it
+          const contentRequestId = content ? content.requestId : undefined;
+          if (content) {
+            delete content.requestId;
+          }
+
           this.listeners[message].forEach(listener => {
-            // note: requestId can be undefined for generic listeners
-            if (listener.requestId === requestId) {
+            // note: requestId can be undefined for listeners to Lara messages
+            // that aren't responses to one-time requests
+            if (listener.requestId === contentRequestId) {
               listener.callback(content);
             }
           });
 
-          // if a request id was given auto-remove it from the listeners
-          if (requestId) {
-            this.removeListener(message, requestId);
+          // if a request id was returned by lara auto-remove it from the listeners as it is a
+          // response to a one-time request
+          if (contentRequestId) {
+            this.removeListener(message, contentRequestId);
           }
         });
       }
@@ -197,7 +219,7 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
     return false;
   }
 
-  public removeListener(message: ServerMessage, requestId?: number) {
+  private removeListener(message: ServerMessage, requestId?: number) {
     if (this.phone && this.listeners[message]) {
       // note: requestId can be undefined when using it as a generic listener
       const newListeners = this.listeners[message].filter(l => l.requestId !== requestId);

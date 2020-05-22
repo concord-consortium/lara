@@ -2,7 +2,6 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
-import { IAuthInfo } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -63,6 +62,19 @@ const interactiveStateProps = (data: IInteractiveRunStateResponse | null): LaraI
 });
 
 type SuccessCallback = () => void;
+
+// the api client sends requestIds to route back to the correct callback but existing interactives do not
+// these types allow for the requestId to be set in the client but be optional here
+// TODO: AFTER TYPESCRIPT UPGRADE REPLACE WITH OPTIONAL TYPES (Omit not avaiable in current version)
+// type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+// type IGetAuthInfoRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoRequest, "requestId">;
+// type IGetAuthInfoResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetAuthInfoResponse, "requestId">;
+// type IGetFirebaseJwtRequestOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtRequest, "requestId">;
+// type IGetFirebaseJwtResponseOptionalRequestId = Optional<LaraInteractiveApi.IGetFirebaseJwtResponse, "requestId">;
+type IGetAuthInfoRequestOptionalRequestId = LaraInteractiveApi.IGetAuthInfoRequest;
+type IGetAuthInfoResponseOptionalRequestId = LaraInteractiveApi.IGetAuthInfoResponse;
+type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
+type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
 
 export class IFrameSaver {
 
@@ -187,11 +199,16 @@ export class IFrameSaver {
       this.saveLearnerState(interactiveJson);
     });
 
-    this.addListener("getAuthInfo", () => {
-      const authInfo: IAuthInfo = {
+    this.addListener("getAuthInfo", (request: IGetAuthInfoRequestOptionalRequestId) => {
+      const authInfo: IGetAuthInfoResponseOptionalRequestId = {
+        requestId: request.requestId,  // TODO: after typescript upgrade remove this line!
         provider: this.authProvider,
         loggedIn: this.loggedIn
       };
+      // requestId may be undefined for interactives that don't use the client
+      if (request.requestId) {
+        authInfo.requestId = request.requestId;
+      }
       if (this.userEmail != null) {
         authInfo.email = this.userEmail;
       }
@@ -225,9 +242,8 @@ export class IFrameSaver {
       }
     });
 
-    this.addListener("getFirebaseJWT", (opts: LaraInteractiveApi.IGetFirebaseJwtOptions) => {
-      if (opts == null) { opts = {}; }
-      return this.getFirebaseJwt(opts);
+    this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
+      return this.getFirebaseJwt(request);
     });
 
     if (this.learnerStateSavingEnabled()) {
@@ -378,16 +394,30 @@ export class IFrameSaver {
     }
   }
 
-  private getFirebaseJwt(opts: LaraInteractiveApi.IGetFirebaseJwtOptions) {
+  private getFirebaseJwt(request?: IGetFirebaseJwtRequestOptionalRequestId) {
+    const requestId = request ? request.requestId : undefined;
+    const opts: any = request || {};
+    if (opts.requestId) {
+      delete opts.requestId;
+    }
+
+    const createResponse = (baseResponse: IGetFirebaseJwtResponseOptionalRequestId) => {
+      if (requestId) {
+        baseResponse.requestId = requestId;
+      }
+      return baseResponse;
+    };
+
+    // TODO: after typescript upgrade remove `requestId: requestId!, `
     return $.ajax({
       type: "POST",
       url: this.getFirebaseJWTUrl,
       data: opts,
-      success: response => {
-        this.post("firebaseJWT", response);
+      success: (data: {token: string}) => {
+        this.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
       },
       error: (jqxhr, status, error) => {
-        this.post("firebaseJWT", {response_type: "ERROR", message: error});
+        this.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
       }});
   }
 
