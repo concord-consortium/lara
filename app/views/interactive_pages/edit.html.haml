@@ -84,7 +84,7 @@
       = text_editor @page, :text, { header: 'Introduction' }
     .text
       - if @page.show_info_assessment
-        .questions
+        #info_assess_block.questions
           %h2 Info/Assess
           %button.show-hide-toggle
             Close All
@@ -116,15 +116,17 @@
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
     - if @page.show_interactive
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
-        .questions
+        #interactive_box.questions
           %h2 Interactive Box
+          %button.show-hide-toggle
+            Close All
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
             = embeddable_interactives_selector
             = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
             = submit_tag 'Add Interactive'
           .embeddables_list.sortable_embeddables
             - @page.interactive_box_visible_embeddables.each do |interactive|
-              .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+              .authorable.accordion_embeddable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
                 %h3.embeddable_heading
                   %span.embeddable_title
                     - if interactive.respond_to? :name

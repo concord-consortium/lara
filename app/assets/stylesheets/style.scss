@@ -1022,10 +1022,11 @@ fieldset {
         background: #b4e3ee;
         border-color: #b4e3ee;
         border-radius: 0;
+        box-sizing: border-box;
         color: #126eac;
         margin: 0;
         padding-top: .8em;
-        width: 303px !important;
+        width: 100% !important;
 
         &:hover {
           background: #a4d3de;
