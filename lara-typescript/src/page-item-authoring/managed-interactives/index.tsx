@@ -9,6 +9,7 @@ import { InteractiveAuthoring } from "../common/components/interactive-authoring
 import "react-tabs/style/react-tabs.css";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeManagedInteractive } from "./customize";
+import { Checkbox } from "../common/components/checkbox";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -115,20 +116,20 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
       <fieldset>
         <legend>Options</legend>
-        <input
-          type="checkbox"
+        <Checkbox
           id={formField("is_full_width").id}
           name={formField("is_full_width").name}
           defaultChecked={is_full_width}
-        /> Full width? (Full width layout only)
+          label="Full width? (Full width layout only)"
+        />
         <br />
-        {libraryInteractive.enable_learner_state ?
-           <><input
-            type="checkbox"
-            id={formField("show_in_featured_question_report").id}
-            name={formField("show_in_featured_question_report").name}
-            defaultChecked={show_in_featured_question_report}
-          /> Show in featured question report?</>
+        {libraryInteractive.enable_learner_state
+          ? <Checkbox
+              id={formField("show_in_featured_question_report").id}
+              name={formField("show_in_featured_question_report").name}
+              defaultChecked={show_in_featured_question_report}
+              label="Show in featured question report?"
+            />
           : undefined}
       </fieldset>
     </>;
