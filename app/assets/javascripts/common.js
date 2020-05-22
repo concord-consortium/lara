@@ -16,22 +16,13 @@ $(function () {
 $(document).ready(function () {
     // check if accordion state was set and recreate state accordingly
     if (sessionStorage) {
-      var accordionState = JSON.parse(sessionStorage.getItem("accordion_state"));
-      if (accordionState && accordionState.activated && accordionState.url === window.location.href) {
-        $('.accordion_embeddable').accordion({ active: false,
-          collapsible: true,
-          header: 'h3',
-          heightStyle: 'content',
-          activate: function( event, ui ) {
-            $(this).toggleClass('ui-active');
-            saveAccordionState(accordionState);
-          }
-        });
-        for (var i = 0; i < accordionState.open_items.length; i++) {
-          var childNum = accordionState.open_items[i] + 1;
-          $('.accordion_embeddable:nth-child(' + childNum + ') .ui-accordion-header').click();
-        }
-        $('.show-hide-toggle').text('Open All');
+      var infoAssessAccordionState = JSON.parse(sessionStorage.getItem("info_assess_block_accordion_state"));
+      if (infoAssessAccordionState && infoAssessAccordionState.activated && infoAssessAccordionState.url === window.location.href) {
+        rebuildAccordionState("info_assess_block", infoAssessAccordionState);
+      }
+      var interactiveAccordionState = JSON.parse(sessionStorage.getItem("interactive_box_accordion_state"));
+      if (interactiveAccordionState && interactiveAccordionState.activated && interactiveAccordionState.url === window.location.href) {
+        rebuildAccordionState("interactive_box", interactiveAccordionState);
       }
     }
 
@@ -42,40 +33,43 @@ $(document).ready(function () {
     // TODO: Refactor this into an object
     // Embeddables in page edit
     $('.show-hide-toggle').click(function() {
+      var containerId = $(this).parent().attr('id');
+      var accordionState = {};
+      console.log('containerId: ' + containerId);
       if ($(this).text().match('Close All')) {
-        $('.accordion_embeddable').accordion({ active: false,
+        $('#' + containerId + ' .accordion_embeddable').accordion({ active: false,
           collapsible: true,
           header: 'h3',
           heightStyle: 'content',
           activate: function( event, ui ) {
             $(this).toggleClass('ui-active');
             if (sessionStorage) {
-              var accordionState = JSON.parse(sessionStorage.getItem("accordion_state"));
-              saveAccordionState(accordionState);
+              var accordionState = JSON.parse(sessionStorage.getItem(containerId + "_accordion_state"));
+              saveAccordionState(containerId, accordionState);
             }
           }
         });
         $(this).text('Open All');
         // save accordion state for page reload
         if (sessionStorage) {
-          var accordionState = {
+          accordionState = {
             "activated": true,
-            "container": $(this).parent(),
-            "url": window.location.href
+            "url": window.location.href,
+            "open_items": []
           };
-          saveAccordionState(accordionState);
+          saveAccordionState(containerId, accordionState);
         }
       } else {
-        $('.accordion_embeddable').accordion('destroy');
+        $('#' + containerId + ' .accordion_embeddable').accordion('destroy');
         $(this).text('Close All');
         // save accordion state for page reload
         if (sessionStorage) {
-          var accordionState = {
+          accordionState = {
             "activated": false,
-            "container": $(this).parent(),
-            "url": window.location.href
+            "url": window.location.href,
+            "open_items": []
           };
-          saveAccordionState(accordionState);
+          saveAccordionState(containerId, accordionState);
         }
       }
     });
@@ -118,17 +112,33 @@ $(document).ready(function () {
     });
 });
 
-function saveAccordionState(accordionState) {
+function rebuildAccordionState(accordionContainerId, accordionState) {
+  $('#' + accordionContainerId + ' .accordion_embeddable').accordion({ active: false,
+    collapsible: true,
+    header: 'h3',
+    heightStyle: 'content',
+    activate: function( event, ui ) {
+      $(this).toggleClass('ui-active');
+      saveAccordionState(accordionContainerId, accordionState);
+    }
+  });
+  for (var i = 0; i < accordionState.open_items.length; i++) {
+    var childNum = accordionState.open_items[i] + 1;
+    $('#' + accordionContainerId + ' .accordion_embeddable:nth-child(' + childNum + ') .ui-accordion-header').click();
+  }
+  $('#' + accordionContainerId + ' .show-hide-toggle').text('Open All');
+}
+
+function saveAccordionState(accordionContainerId, accordionState) {
   var openItems = [];
-  $('.accordion_embeddable').each(function(index) {
+  $('#' + accordionContainerId + ' .accordion_embeddable').each(function(index) {
     if ($(this).hasClass('ui-active')) {
       openItems.push(index);
     }
   });
-  sessionStorage.setItem("accordion_state",
+  sessionStorage.setItem(accordionContainerId + "_accordion_state",
     JSON.stringify({
       "activated": accordionState.activated,
-      "container": accordionState.container,
       "url": accordionState.url,
       "open_items": openItems
     })
