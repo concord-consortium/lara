@@ -125,6 +125,16 @@
           .embeddables_list.sortable_embeddables
             - @page.interactive_box_visible_embeddables.each do |interactive|
               .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+                %h3.embeddable_heading
+                  %span.embeddable_title
+                    - if interactive.respond_to? :name
+                      - if !interactive.name.nil? && !interactive.name.empty?
+                        #{interactive.name}
+                      - else
+                        #{interactive.class.model_name.human.titleize}
+                    - else
+                      #{interactive.class.model_name.human.titleize}
+                  %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                 = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:embeddable => interactive, :page => @page, :allow_hide => false}
     - if @page.show_sidebar
       %div{style: 'clear: both;'}
