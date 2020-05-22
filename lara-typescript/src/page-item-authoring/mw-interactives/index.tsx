@@ -7,6 +7,7 @@ import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeMWInteractive } from "./customize";
 
 import "react-tabs/style/react-tabs.css";
+import { Checkbox } from "../common/components/checkbox";
 
 interface Props {
   interactive: IMWInteractive;
@@ -71,19 +72,19 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
 
       <fieldset>
         <legend>Options</legend>
-        <input
-          type="checkbox"
+        <Checkbox
           id={formField("is_full_width").id}
           name={formField("is_full_width").name}
           defaultChecked={is_full_width}
-        /> Full width? (Full width layout only)
+          label="Full width? (Full width layout only)"
+        />
         <br />
-        <input
-          type="checkbox"
+        <Checkbox
           id={formField("no_snapshots").id}
           name={formField("no_snapshots").name}
           defaultChecked={no_snapshots}
-        /> Snapshots not supported
+          label="Snapshots not supported"
+        />
       </fieldset>
     </>;
   };

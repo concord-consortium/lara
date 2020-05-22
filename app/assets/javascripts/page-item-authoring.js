@@ -9347,6 +9347,77 @@ exports.AspectRatioChooser = function (props) {
 
 /***/ }),
 
+/***/ "./src/page-item-authoring/common/components/checkbox.tsx":
+/*!****************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/checkbox.tsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.Checkbox = function (props) {
+    var id = props.id, name = props.name, checked = props.checked, defaultChecked = props.defaultChecked, label = props.label, warning = props.warning, onChange = props.onChange;
+    var handleChange = function (e) {
+        if (onChange) {
+            onChange(e.target.checked);
+        }
+    };
+    var renderWarning = function () {
+        if (warning !== undefined) {
+            return (React.createElement("div", { className: "warning" },
+                React.createElement("em", null, "Warning"),
+                ": ",
+                warning));
+        }
+    };
+    // note: the hidden 0 is to save the checkbox as unchecked
+    // as the unchecked checkbox input is not sent in the form data.
+    return (React.createElement(React.Fragment, null,
+        React.createElement("input", { type: "hidden", name: name, value: "0" }),
+        React.createElement("input", { type: "checkbox", id: id, name: name, value: "1", checked: checked, defaultChecked: defaultChecked, onChange: handleChange }),
+        " ",
+        label,
+        renderWarning()));
+};
+
+
+/***/ }),
+
+/***/ "./src/page-item-authoring/common/components/customizable-option.tsx":
+/*!***************************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/customizable-option.tsx ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.CustomizableOption = function (props) {
+    var label = props.label, inheritName = props.inheritName, customName = props.customName, inherit = props.inherit, defaultLabel = props.defaultLabel, onChange = props.onChange, children = props.children;
+    var handleChange = function (e) {
+        onChange(!!(e.target.checked && (e.target.value === "1")));
+    };
+    return (React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "customizable-label" }, label),
+        React.createElement("div", { className: "customizable-option" },
+            React.createElement("input", { type: "radio", name: inheritName, value: "1", checked: inherit, onChange: handleChange }),
+            React.createElement("span", { className: "radio-label" },
+                "Use default: ",
+                React.createElement("strong", null, defaultLabel))),
+        React.createElement("div", { className: "customizable-option" },
+            React.createElement("input", { type: "radio", name: inheritName, value: "0", checked: !inherit, onChange: handleChange }),
+            React.createElement("span", { className: "radio-label" }, "Customize"),
+            !inherit ? children : undefined)));
+};
+
+
+/***/ }),
+
 /***/ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx":
 /*!*************************************************************************************!*\
   !*** ./src/page-item-authoring/common/components/interactive-authoring-preview.tsx ***!
@@ -9661,6 +9732,8 @@ var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var read_only_form_field_1 = __webpack_require__(/*! ../common/components/read-only-form-field */ "./src/page-item-authoring/common/components/read-only-form-field.tsx");
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
+var customizable_option_1 = __webpack_require__(/*! ../common/components/customizable-option */ "./src/page-item-authoring/common/components/customizable-option.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -9694,11 +9767,7 @@ exports.CustomizeManagedInteractive = function (props) {
     var handleChangeCustomizeAspectRatio = handleBooleanOption(setInheritAspectRatio);
     var handleChangeClickToPlay = handleBooleanOption(setInheritClickToPlay);
     var handleChangeCustomClickToPlay = handleBooleanOption(setCustomClickToPlay);
-    var handleChangeClickToPlayPrompt = handleBooleanOption(setInheritClickToPlayPrompt);
     var handleChangeCustomClickToPlayPrompt = handleStringOption(setCustomClickToPlayPrompt);
-    var handleChangeFullWindow = handleBooleanOption(setInheritFullWindow);
-    var handleChangeCustomFullWindow = handleBooleanOption(setCustomFullWindow);
-    var handleChangeImageUrl = handleBooleanOption(setInheritImageUrl);
     var handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
     var clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
         (!inheritClickToPlay && customClickToPlay);
@@ -9735,50 +9804,12 @@ exports.CustomizeManagedInteractive = function (props) {
     var renderClickToPlayOptions = function () {
         var defaultPrompt = libraryInteractive.click_to_play_prompt || defaultClickToPlayPrompt;
         return React.createElement(React.Fragment, null,
-            React.createElement("div", { className: "customizable-label" }, "Click To Play Prompt"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_click_to_play_prompt").name, value: "true", checked: inheritClickToPlayPrompt, onChange: handleChangeClickToPlayPrompt }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null,
-                        "\"",
-                        defaultPrompt,
-                        "\""))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_click_to_play_prompt").name, value: "false", checked: !inheritClickToPlayPrompt, onChange: handleChangeClickToPlayPrompt }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritClickToPlayPrompt
-                    ? React.createElement("input", { type: "text", name: formField("custom_click_to_play_prompt").name, value: customClickToPlayPrompt, onChange: handleChangeCustomClickToPlayPrompt })
-                    : undefined),
-            React.createElement("div", { className: "customizable-label" }, "Full Window"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_full_window").name, value: "true", checked: inheritFullWindow, onChange: handleChangeFullWindow }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null, libraryInteractive.click_to_play ? "Enabled" : "Disabled"))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_full_window").name, value: "false", checked: !inheritFullWindow, onChange: handleChangeFullWindow }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritFullWindow
-                    ? React.createElement(React.Fragment, null,
-                        React.createElement("input", { type: "checkbox", name: formField("custom_full_window").name, value: "true", checked: customFullWindow, onChange: handleChangeCustomFullWindow }),
-                        " Enabled")
-                    : undefined),
-            React.createElement("div", { className: "customizable-label" }, "Image Url"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_image_url").name, value: "true", checked: inheritImageUrl, onChange: handleChangeImageUrl }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null,
-                        "\"",
-                        defaultPrompt,
-                        "\""))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_image_url").name, value: "false", checked: !inheritImageUrl, onChange: handleChangeImageUrl }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritImageUrl
-                    ? React.createElement("input", { type: "text", name: formField("custom_image_url").name, value: customImageUrl, onChange: handleChangeCustomImageUrl })
-                    : undefined));
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Click To Play Prompt", inheritName: formField("inherit_click_to_play_prompt").name, customName: formField("custom_click_to_play_prompt").name, inherit: inheritClickToPlayPrompt, defaultLabel: "\"" + defaultPrompt + "\"", onChange: setInheritClickToPlayPrompt },
+                React.createElement("input", { type: "text", name: formField("custom_click_to_play_prompt").name, value: customClickToPlayPrompt, onChange: handleChangeCustomClickToPlayPrompt })),
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Full Window", inheritName: formField("inherit_full_window").name, customName: formField("custom_full_window").name, inherit: inheritFullWindow, defaultLabel: libraryInteractive.full_window ? "Enabled" : "Disabled", onChange: setInheritFullWindow },
+                React.createElement(checkbox_1.Checkbox, { name: formField("custom_full_window").name, checked: customFullWindow, onChange: setCustomFullWindow, label: "Enabled" })),
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Image Url", inheritName: formField("inherit_image_url").name, customName: formField("custom_image_url").name, inherit: inheritImageUrl, defaultLabel: libraryInteractive.image_url ? libraryInteractive.image_url : "No default image url", onChange: setInheritImageUrl },
+                React.createElement("input", { type: "text", name: formField("custom_image_url").name, value: customImageUrl, onChange: handleChangeCustomImageUrl })));
     };
     // this generates a form element that renders inside the rails popup form
     return React.createElement(React.Fragment, null,
@@ -9847,6 +9878,7 @@ var interactive_authoring_1 = __webpack_require__(/*! ../common/components/inter
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/managed-interactives/customize.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.ManagedInteractiveAuthoring = function (props) {
     var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -9891,13 +9923,10 @@ exports.ManagedInteractiveAuthoring = function (props) {
                 : undefined,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
-                " Full width? (Full width layout only)",
+                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" }),
                 React.createElement("br", null),
-                libraryInteractive.enable_learner_state ?
-                    React.createElement(React.Fragment, null,
-                        React.createElement("input", { type: "checkbox", id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report }),
-                        " Show in featured question report?")
+                libraryInteractive.enable_learner_state
+                    ? React.createElement(checkbox_1.Checkbox, { id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report?" })
                     : undefined));
     };
     var renderTabs = function () {
@@ -9960,6 +9989,7 @@ var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -9971,20 +10001,10 @@ exports.CustomizeMWInteractive = function (props) {
     }), aspectRatioValues = _a[0], setAspectRatioValues = _a[1];
     var _b = react_1.useState(click_to_play), clickToPlay = _b[0], setClickToPlay = _b[1];
     var _c = react_1.useState(enable_learner_state), enableLearnerState = _c[0], setEnableLearnerState = _c[1];
-    var handleBooleanOption = function (setter) {
-        return function (e) {
-            var value = !!(e.target.checked && (e.target.value === "true"));
-            setter(value);
-        };
-    };
-    var handleAspectRatioChange = function (values) { return setAspectRatioValues(values); };
-    var handleChangeClickToPlay = handleBooleanOption(setClickToPlay);
-    var handleChangeEnableLearnerState = handleBooleanOption(setEnableLearnerState);
     var renderClickToPlayOptions = function () {
         return React.createElement(React.Fragment, null,
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("full_window").name, value: "true", defaultChecked: full_window }),
-                " Full window"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("full_window").name, defaultChecked: full_window, label: "Full window" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Click To Play Prompt"),
                 React.createElement("input", { type: "text", name: formField("click_to_play_prompt").name, defaultValue: click_to_play_prompt || defaultClickToPlayPrompt })),
@@ -9999,17 +10019,11 @@ exports.CustomizeMWInteractive = function (props) {
     var renderInteractiveStateOptions = function () {
         return React.createElement(React.Fragment, null,
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("show_delete_data_button").name, value: "true", defaultChecked: show_delete_data_button }),
-                " Show \"Undo all my work\" button"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("show_delete_data_button").name, defaultChecked: show_delete_data_button, label: "Show \"Undo all my work\" button" })),
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("has_report_url").name, value: "true", defaultChecked: has_report_url }),
-                " This interactive has a report URL",
-                React.createElement("div", { className: "warning" },
-                    React.createElement("em", null, "Warning"),
-                    ": Please do not select this unless your interactive includes a report url in its saved state.")),
+                React.createElement(checkbox_1.Checkbox, { name: formField("has_report_url").name, defaultChecked: has_report_url, label: "This interactive has a report URL", warning: "Please do not select this unless your interactive includes a report url in its saved state." })),
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("show_in_featured_question_report").name, value: "true", defaultChecked: show_in_featured_question_report }),
-                " Show in featured question report"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Link Saved Work From"),
                 React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
@@ -10024,21 +10038,16 @@ exports.CustomizeMWInteractive = function (props) {
             React.createElement("input", { type: "hidden", name: formField("aspect_ratio_method").name, value: aspectRatioValues.mode }),
             React.createElement("input", { type: "hidden", name: formField("native_width").name, value: aspectRatioValues.width }),
             React.createElement("input", { type: "hidden", name: formField("native_height").name, value: aspectRatioValues.height }),
-            React.createElement(aspect_ratio_chooser_1.AspectRatioChooser, { width: aspectRatioValues.width, height: aspectRatioValues.height, mode: aspectRatioValues.mode, onChange: handleAspectRatioChange })),
+            React.createElement(aspect_ratio_chooser_1.AspectRatioChooser, { width: aspectRatioValues.width, height: aspectRatioValues.height, mode: aspectRatioValues.mode, onChange: setAspectRatioValues })),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Click to Play Options"),
             React.createElement("div", { className: "option_group" },
-                React.createElement("input", { type: "checkbox", name: formField("click_to_play").name, value: "true", checked: clickToPlay, onChange: handleChangeClickToPlay }),
-                " Enable click to play",
+                React.createElement(checkbox_1.Checkbox, { name: formField("click_to_play").name, checked: clickToPlay, onChange: setClickToPlay, label: "Enable click to play" }),
                 clickToPlay ? renderClickToPlayOptions() : undefined)),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Interactive State Options"),
             React.createElement("div", { className: "option_group" },
-                React.createElement("input", { type: "checkbox", name: formField("enable_learner_state").name, value: "true", checked: enableLearnerState, onChange: handleChangeEnableLearnerState }),
-                " Enable save state",
-                React.createElement("div", { className: "warning" },
-                    React.createElement("em", null, "Warning"),
-                    ": Please do not select this unless your interactive contains a serializable data set."),
+                React.createElement(checkbox_1.Checkbox, { name: formField("enable_learner_state").name, checked: enableLearnerState, onChange: setEnableLearnerState, label: "Enable save state", warning: "Please do not select this unless your interactive contains a serializable data set" }),
                 enableLearnerState ? renderInteractiveStateOptions() : undefined)));
 };
 
@@ -10062,6 +10071,7 @@ var interactive_authoring_1 = __webpack_require__(/*! ../common/components/inter
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/mw-interactives/customize.tsx");
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.MWInteractiveAuthoring = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -10079,11 +10089,9 @@ exports.MWInteractiveAuthoring = function (props) {
                 React.createElement("textarea", { id: formField("url").id, name: formField("url").name, defaultValue: url || "", onBlur: handleUrlBlur })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
-                " Full width? (Full width layout only)",
+                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" }),
                 React.createElement("br", null),
-                React.createElement("input", { type: "checkbox", id: formField("no_snapshots").id, name: formField("no_snapshots").name, defaultChecked: no_snapshots }),
-                " Snapshots not supported"));
+                React.createElement(checkbox_1.Checkbox, { id: formField("no_snapshots").id, name: formField("no_snapshots").name, defaultChecked: no_snapshots, label: "Snapshots not supported" })));
     };
     var renderTabs = function () {
         var handleAuthoredStateChange = function (newAuthoredState) {
