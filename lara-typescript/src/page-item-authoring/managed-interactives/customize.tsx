@@ -9,6 +9,8 @@ import { AspectRatioChooser,
          IAspectRatioChooserValues,
          availableAspectRatios
        } from "../common/components/aspect-ratio-chooser";
+import { CustomizableOption } from "../common/components/customizable-option";
+import { Checkbox } from "../common/components/checkbox";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -69,11 +71,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const handleChangeCustomizeAspectRatio = handleBooleanOption(setInheritAspectRatio);
   const handleChangeClickToPlay = handleBooleanOption(setInheritClickToPlay);
   const handleChangeCustomClickToPlay = handleBooleanOption(setCustomClickToPlay);
-  const handleChangeClickToPlayPrompt = handleBooleanOption(setInheritClickToPlayPrompt);
   const handleChangeCustomClickToPlayPrompt = handleStringOption(setCustomClickToPlayPrompt);
-  const handleChangeFullWindow = handleBooleanOption(setInheritFullWindow);
-  const handleChangeCustomFullWindow = handleBooleanOption(setCustomFullWindow);
-  const handleChangeImageUrl = handleBooleanOption(setInheritImageUrl);
   const handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
 
   const clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
@@ -123,108 +121,53 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const renderClickToPlayOptions = () => {
     const defaultPrompt = libraryInteractive.click_to_play_prompt || defaultClickToPlayPrompt;
     return <>
-      <div className="customizable-label">Click To Play Prompt</div>
-      <div className="customizable-option">
+      <CustomizableOption
+        label="Click To Play Prompt"
+        inheritName={formField("inherit_click_to_play_prompt").name}
+        customName={formField("custom_click_to_play_prompt").name}
+        inherit={inheritClickToPlayPrompt}
+        defaultLabel={`"${defaultPrompt}"`}
+        onChange={setInheritClickToPlayPrompt}
+      >
         <input
-          type="radio"
-          name={formField("inherit_click_to_play_prompt").name}
-          value="true"
-          checked={inheritClickToPlayPrompt}
-          onChange={handleChangeClickToPlayPrompt}
+          type="text"
+          name={formField("custom_click_to_play_prompt").name}
+          value={customClickToPlayPrompt}
+          onChange={handleChangeCustomClickToPlayPrompt}
         />
-        <span className="radio-label">
-          Use default: <strong>"{defaultPrompt}"</strong>
-        </span>
-      </div>
-      <div className="customizable-option">
-        <input
-          type="radio"
-          name={formField("inherit_click_to_play_prompt").name}
-          value="false"
-          checked={!inheritClickToPlayPrompt}
-          onChange={handleChangeClickToPlayPrompt}
-        />
-        <span className="radio-label">
-          Customize
-        </span>
-        {!inheritClickToPlayPrompt
-          ? <input
-              type="text"
-              name={formField("custom_click_to_play_prompt").name}
-              value={customClickToPlayPrompt}
-              onChange={handleChangeCustomClickToPlayPrompt}
-            />
-          : undefined}
-      </div>
+      </CustomizableOption>
 
-      <div className="customizable-label">Full Window</div>
-      <div className="customizable-option">
-        <input
-          type="radio"
-          name={formField("inherit_full_window").name}
-          value="true"
-          checked={inheritFullWindow}
-          onChange={handleChangeFullWindow}
+      <CustomizableOption
+        label="Full Window"
+        inheritName={formField("inherit_full_window").name}
+        customName={formField("custom_full_window").name}
+        inherit={inheritFullWindow}
+        defaultLabel={libraryInteractive.full_window ? "Enabled" : "Disabled"}
+        onChange={setInheritFullWindow}
+      >
+        <Checkbox
+          name={formField("custom_full_window").name}
+          checked={customFullWindow}
+          onChange={setCustomFullWindow}
+          label="Enabled"
         />
-        <span className="radio-label">
-          Use default: <strong>{libraryInteractive.click_to_play ? "Enabled" : "Disabled"}</strong>
-        </span>
-      </div>
-      <div className="customizable-option">
-        <input
-          type="radio"
-          name={formField("inherit_full_window").name}
-          value="false"
-          checked={!inheritFullWindow}
-          onChange={handleChangeFullWindow}
-        />
-        <span className="radio-label">Customize</span>
-        {!inheritFullWindow
-          ? <>
-              <input
-                type="checkbox"
-                name={formField("custom_full_window").name}
-                value="true"
-                checked={customFullWindow}
-                onChange={handleChangeCustomFullWindow}
-              /> Enabled
-            </>
-          : undefined}
-      </div>
+      </CustomizableOption>
 
-      <div className="customizable-label">Image Url</div>
-      <div className="customizable-option">
+      <CustomizableOption
+        label="Image Url"
+        inheritName={formField("inherit_image_url").name}
+        customName={formField("custom_image_url").name}
+        inherit={inheritImageUrl}
+        defaultLabel={libraryInteractive.image_url ? libraryInteractive.image_url : "No default image url"}
+        onChange={setInheritImageUrl}
+      >
         <input
-          type="radio"
-          name={formField("inherit_image_url").name}
-          value="true"
-          checked={inheritImageUrl}
-          onChange={handleChangeImageUrl}
+          type="text"
+          name={formField("custom_image_url").name}
+          value={customImageUrl}
+          onChange={handleChangeCustomImageUrl}
         />
-        <span className="radio-label">
-          Use default: <strong>"{defaultPrompt}"</strong>
-        </span>
-      </div>
-      <div className="customizable-option">
-        <input
-          type="radio"
-          name={formField("inherit_image_url").name}
-          value="false"
-          checked={!inheritImageUrl}
-          onChange={handleChangeImageUrl}
-        />
-        <span className="radio-label">
-          Customize
-        </span>
-        {!inheritImageUrl
-          ? <input
-              type="text"
-              name={formField("custom_image_url").name}
-              value={customImageUrl}
-              onChange={handleChangeCustomImageUrl}
-            />
-          : undefined}
-      </div>
+      </CustomizableOption>
     </>;
   };
 

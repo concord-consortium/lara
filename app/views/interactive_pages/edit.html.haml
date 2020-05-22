@@ -84,7 +84,7 @@
       = text_editor @page, :text, { header: 'Introduction' }
     .text
       - if @page.show_info_assessment
-        .questions
+        #info_assess_block.questions
           %h2 Info/Assess
           %button.show-hide-toggle
             Close All
@@ -122,8 +122,10 @@
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
     - if @page.show_interactive
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
-        .questions
+        #interactive_box.questions
           %h2 Interactive Box
+          %button.show-hide-toggle
+            Close All
           .column-controls
             = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
               = embeddable_interactives_selector
@@ -131,7 +133,17 @@
               = submit_tag 'Add'
           .embeddables_list.sortable_embeddables
             - @page.interactive_box_visible_embeddables.each do |interactive|
-              .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+              .authorable.accordion_embeddable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+                %h3.embeddable_heading
+                  %span.embeddable_title
+                    - if interactive.respond_to? :name
+                      - if !interactive.name.nil? && !interactive.name.empty?
+                        #{interactive.name}
+                      - else
+                        #{interactive.class.model_name.human.titleize}
+                    - else
+                      #{interactive.class.model_name.human.titleize}
+                  %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                 = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:embeddable => interactive, :page => @page, :allow_hide => false}
     - if @page.show_sidebar
       %div{style: 'clear: both;'}
