@@ -63,7 +63,7 @@ LoggerUtils.logInteractiveEvents = function(iframe){
 LoggerUtils.enableLabLogging = function(iframeEl) {
   // WARNING: old logging format, not necessary in Lab >= 1.9.0
   // TODO: remove when Lab 1.9.0 is released
-  var labRpc = IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
+  var labRpc = LARA.InteractiveAPI.IframePhoneManager.getRpcEndpoint(iframeEl, 'lara-logging');
   labRpc.call({message: 'lara-logging-present'});
 };
 
@@ -189,13 +189,13 @@ LoggerUtils.prototype._logInteractiveEventsRPCFormat = function(iframe) {
   }.bind(this);
 
   // Setup handler for incoming logs.
-  IframePhoneManager.getRpcEndpoint(iframe, 'lara-logging').handler = handler;
+  LARA.InteractiveAPI.IframePhoneManager.getRpcEndpoint(iframe, 'lara-logging').handler = handler;
   // Notify Lab that logging is supported.
   LoggerUtils.enableLabLogging(iframe);
 };
 
 LoggerUtils.prototype._logInteractiveEvents = function(iframe) {
-  var phone = IframePhoneManager.getPhone(iframe);
+  var phone = LARA.InteractiveAPI.IframePhoneManager.getPhone(iframe);
   phone.addListener('log', function (content) {
     this._logger.log({
       event: content.action,
