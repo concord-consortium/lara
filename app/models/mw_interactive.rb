@@ -140,4 +140,8 @@ class MwInteractive < ActiveRecord::Base
       end
     end
   end
+
+  def prompt
+    name
+  end
 end
