@@ -186,7 +186,7 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 
 **Ƭ ClientMessage**: *[DeprecatedIFrameSaverClientMessage](#deprecatediframesaverclientmessage) \| [IFrameSaverClientMessage](#iframesaverclientmessage) \| [GlobalIFrameSaverClientMessage](#globaliframesaverclientmessage)*
 
-*Defined in [types.ts:100](../../lara-typescript/src/interactive-api-client/types.ts#L100)*
+*Defined in [types.ts:101](../../lara-typescript/src/interactive-api-client/types.ts#L101)*
 
 ___
 <a id="deprecatediframesaverclientmessage"></a>
@@ -195,7 +195,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverClientMessage**: *"setLearnerUrl"*
 
-*Defined in [types.ts:97](../../lara-typescript/src/interactive-api-client/types.ts#L97)*
+*Defined in [types.ts:98](../../lara-typescript/src/interactive-api-client/types.ts#L98)*
 
 ___
 <a id="deprecatediframesaverservermessage"></a>
@@ -204,7 +204,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverServerMessage**: *"getLearnerUrl" \| "loadInteractive"*
 
-*Defined in [types.ts:98](../../lara-typescript/src/interactive-api-client/types.ts#L98)*
+*Defined in [types.ts:99](../../lara-typescript/src/interactive-api-client/types.ts#L99)*
 
 ___
 <a id="globaliframesaverclientmessage"></a>
@@ -213,7 +213,7 @@ ___
 
 **Ƭ GlobalIFrameSaverClientMessage**: *"interactiveStateGlobal"*
 
-*Defined in [types.ts:92](../../lara-typescript/src/interactive-api-client/types.ts#L92)*
+*Defined in [types.ts:93](../../lara-typescript/src/interactive-api-client/types.ts#L93)*
 
 ___
 <a id="globaliframesaverservermessage"></a>
@@ -222,14 +222,14 @@ ___
 
 **Ƭ GlobalIFrameSaverServerMessage**: *"loadInteractiveGlobal"*
 
-*Defined in [types.ts:93](../../lara-typescript/src/interactive-api-client/types.ts#L93)*
+*Defined in [types.ts:94](../../lara-typescript/src/interactive-api-client/types.ts#L94)*
 
 ___
 <a id="iframesaverclientmessage"></a>
 
 ###  IFrameSaverClientMessage
 
-**Ƭ IFrameSaverClientMessage**: *"interactiveState" \| "height" \| "getAuthInfo" \| "supportedFeatures" \| "navigation" \| "getFirebaseJWT" \| "authoredState"*
+**Ƭ IFrameSaverClientMessage**: *"interactiveState" \| "height" \| "hint" \| "getAuthInfo" \| "supportedFeatures" \| "navigation" \| "getFirebaseJWT" \| "authoredState"*
 
 *Defined in [types.ts:79](../../lara-typescript/src/interactive-api-client/types.ts#L79)*
 
@@ -249,7 +249,7 @@ ___
 
 **Ƭ IframePhoneServerMessage**: *"hello"*
 
-*Defined in [types.ts:95](../../lara-typescript/src/interactive-api-client/types.ts#L95)*
+*Defined in [types.ts:96](../../lara-typescript/src/interactive-api-client/types.ts#L96)*
 
 ___
 <a id="iframesaverservermessage"></a>
@@ -258,7 +258,7 @@ ___
 
 **Ƭ IframeSaverServerMessage**: *"authInfo" \| "getInteractiveState" \| "initInteractive" \| "firebaseJWT"*
 
-*Defined in [types.ts:87](../../lara-typescript/src/interactive-api-client/types.ts#L87)*
+*Defined in [types.ts:88](../../lara-typescript/src/interactive-api-client/types.ts#L88)*
 
 ___
 <a id="initinteractivemode"></a>
@@ -276,7 +276,7 @@ ___
 
 **Ƭ ServerMessage**: *[IframePhoneServerMessage](#iframephoneservermessage) \| [DeprecatedIFrameSaverServerMessage](#deprecatediframesaverservermessage) \| [IframeSaverServerMessage](#iframesaverservermessage) \| [GlobalIFrameSaverServerMessage](#globaliframesaverservermessage)*
 
-*Defined in [types.ts:104](../../lara-typescript/src/interactive-api-client/types.ts#L104)*
+*Defined in [types.ts:105](../../lara-typescript/src/interactive-api-client/types.ts#L105)*
 
 ___
 

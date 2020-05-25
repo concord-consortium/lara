@@ -1,4 +1,3 @@
-
 import { ParentEndpoint } from "iframe-phone";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
@@ -218,6 +217,17 @@ export class IFrameSaver {
     this.addListener("height", (height: number | string) => {
       this.$iframe.data("height", height);
       this.$iframe.trigger("sizeUpdate");
+    });
+
+    this.addListener("hint", (hint: string | null) => {
+      const $container = this.$iframe.closest(".embeddable-container");
+      const $helpIcon = $container.find(".help-icon");
+      if (hint) {
+        $helpIcon.removeClass("hidden");
+      } else {
+        $container.find(".help-icon").addClass("hidden");
+      }
+      $container.find(".help-content .text").text(hint || "");
     });
 
     this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
