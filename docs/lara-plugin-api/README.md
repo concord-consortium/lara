@@ -436,7 +436,7 @@ ___
 
 ####  onBeforeClose
 
-**● onBeforeClose**: *`null`* =  null
+**● onBeforeClose**: *`undefined`* =  undefined
 
 *Defined in [popup.ts:69](../../lara-typescript/src/plugin-api/popup.ts#L69)*
 
@@ -445,7 +445,7 @@ ___
 
 ####  onDragStart
 
-**● onDragStart**: *`null`* =  null
+**● onDragStart**: *`undefined`* =  undefined
 
 *Defined in [popup.ts:71](../../lara-typescript/src/plugin-api/popup.ts#L71)*
 
@@ -454,7 +454,7 @@ ___
 
 ####  onDragStop
 
-**● onDragStop**: *`null`* =  null
+**● onDragStop**: *`undefined`* =  undefined
 
 *Defined in [popup.ts:72](../../lara-typescript/src/plugin-api/popup.ts#L72)*
 
@@ -463,7 +463,7 @@ ___
 
 ####  onOpen
 
-**● onOpen**: *`null`* =  null
+**● onOpen**: *`undefined`* =  undefined
 
 *Defined in [popup.ts:68](../../lara-typescript/src/plugin-api/popup.ts#L68)*
 
@@ -472,7 +472,7 @@ ___
 
 ####  onResize
 
-**● onResize**: *`null`* =  null
+**● onResize**: *`undefined`* =  undefined
 
 *Defined in [popup.ts:70](../../lara-typescript/src/plugin-api/popup.ts#L70)*
 
@@ -620,7 +620,7 @@ ___
 
 ####  titleBar
 
-**● titleBar**: *`null`* =  null
+**● titleBar**: *`undefined`* =  undefined
 
 *Defined in [sidebar.ts:35](../../lara-typescript/src/plugin-api/sidebar.ts#L35)*
 

@@ -25584,6 +25584,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InteractiveAPI = exports.InternalAPI = exports.PluginAPI_V3 = void 0;
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
@@ -25612,6 +25613,7 @@ window.LARA.PageItemAuthoring = PageItemAuthoring;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GlobalIframeSaver = void 0;
 var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
 var GlobalIframeSaver = /** @class */ (function () {
     function GlobalIframeSaver(config) {
@@ -25692,6 +25694,7 @@ exports.GlobalIframeSaver = GlobalIframeSaver;
 // Manager of the iframe phone instances.
 // Do not use iframePhone module directly, use this class instead.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IframePhoneManager = void 0;
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var IframePhoneManager = /** @class */ (function () {
     function IframePhoneManager() {
@@ -25775,6 +25778,7 @@ exports.IframePhoneManager = IframePhoneManager;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IFrameSaver = void 0;
 var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
 var getAuthoredState = function ($dataDiv) {
     var authoredState = $dataDiv.data("authored-state");
@@ -26140,14 +26144,21 @@ exports.IFrameSaver = IFrameSaver;
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts");
-__export(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts"));
-__export(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts"));
-__export(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api/iframe-saver.ts"));
+__exportStar(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts"), exports);
+__exportStar(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts"), exports);
+__exportStar(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api/iframe-saver.ts"), exports);
 $(document).ready(function () {
     if (gon.globalInteractiveState != null) {
         window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
@@ -26167,6 +26178,7 @@ $(document).ready(function () {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.events = void 0;
 var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
 exports.events = {
     emitLog: events_1.emitLog,
@@ -26185,14 +26197,21 @@ exports.events = {
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
-exports.initPlugin = plugins_1.initPlugin;
-exports.setNextPluginLabel = plugins_1.setNextPluginLabel;
-__export(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"));
+Object.defineProperty(exports, "initPlugin", { enumerable: true, get: function () { return plugins_1.initPlugin; } });
+Object.defineProperty(exports, "setNextPluginLabel", { enumerable: true, get: function () { return plugins_1.setNextPluginLabel; } });
+__exportStar(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"), exports);
 
 
 /***/ }),
@@ -26207,6 +26226,7 @@ __export(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"));
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateEmbeddableRuntimeContext = void 0;
 var events_1 = __webpack_require__(/*! ./events */ "./src/lib/events.ts");
 var getInteractiveState = function (interactiveStateUrl) {
     if (!interactiveStateUrl) {
@@ -26269,6 +26289,7 @@ exports.generateEmbeddableRuntimeContext = function (context) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
 var emitter = new eventemitter2_1.EventEmitter2({
     maxListeners: Infinity
@@ -26305,6 +26326,7 @@ exports.offInteractiveAvailable = function (handler) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateAuthoringPluginContext = exports.generateRuntimePluginContext = exports.saveAuthoredPluginState = exports.saveLearnerPluginState = void 0;
 var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/lib/embeddable-runtime-context.ts");
 var $ = __webpack_require__(/*! jquery */ "jquery");
 var ajaxPromise = function (url, data) {
@@ -26423,6 +26445,7 @@ exports.generateAuthoringPluginContext = function (options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerPlugin = exports.initPlugin = exports.setNextPluginLabel = void 0;
 var plugin_context_1 = __webpack_require__(/*! ./plugin-context */ "./src/lib/plugin-context.ts");
 var pluginError = function (e, other) {
     // tslint:disable-next-line:no-console
@@ -26543,6 +26566,7 @@ exports.registerPlugin = function (options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AspectRatioChooser = exports.availableAspectRatios = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.availableAspectRatios = {
@@ -26607,6 +26631,7 @@ exports.AspectRatioChooser = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Checkbox = void 0;
 var React = __webpack_require__(/*! react */ "react");
 exports.Checkbox = function (props) {
     var id = props.id, name = props.name, checked = props.checked, defaultChecked = props.defaultChecked, label = props.label, warning = props.warning, onChange = props.onChange;
@@ -26646,6 +26671,7 @@ exports.Checkbox = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomizableOption = void 0;
 var React = __webpack_require__(/*! react */ "react");
 exports.CustomizableOption = function (props) {
     var label = props.label, inheritName = props.inheritName, customName = props.customName, inherit = props.inherit, defaultLabel = props.defaultLabel, onChange = props.onChange, children = props.children;
@@ -26678,6 +26704,7 @@ exports.CustomizableOption = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InteractiveAuthoringPreview = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
@@ -26738,6 +26765,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
@@ -26801,6 +26829,7 @@ exports.InteractiveAuthoring = function (_a) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InteractiveIframe = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
@@ -26857,6 +26886,7 @@ exports.InteractiveIframe = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReadOnlyFormField = void 0;
 var React = __webpack_require__(/*! react */ "react");
 exports.ReadOnlyFormField = function (_a) {
     var legend = _a.legend, value = _a.value, inherit = _a.inherit, inherited = _a.inherited, inheritedValue = _a.inheritedValue, children = _a.children;
@@ -26889,6 +26919,7 @@ exports.ReadOnlyFormField = function (_a) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.useLibraryInteractives = void 0;
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.useLibraryInteractives = function () {
     var _a = react_1.useState({ state: "loading" }), state = _a[0], setState = _a[1];
@@ -26918,6 +26949,7 @@ exports.useLibraryInteractives = function () {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RailsFormField = void 0;
 // returns a type-safe form id/name generator
 exports.RailsFormField = function (name) {
     return function (field) { return ({
@@ -26939,14 +26971,15 @@ exports.RailsFormField = function (name) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.renderInteractiveAuthoringPreview = exports.InteractiveAuthoringPreview = exports.renderMWInteractiveAuthoring = exports.MWInteractiveAuthoring = exports.renderManagedInteractiveAuthoring = exports.ManagedInteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
 var managed_interactives_1 = __webpack_require__(/*! ./managed-interactives */ "./src/page-item-authoring/managed-interactives/index.tsx");
-exports.ManagedInteractiveAuthoring = managed_interactives_1.ManagedInteractiveAuthoring;
+Object.defineProperty(exports, "ManagedInteractiveAuthoring", { enumerable: true, get: function () { return managed_interactives_1.ManagedInteractiveAuthoring; } });
 var mw_interactives_1 = __webpack_require__(/*! ./mw-interactives */ "./src/page-item-authoring/mw-interactives/index.tsx");
-exports.MWInteractiveAuthoring = mw_interactives_1.MWInteractiveAuthoring;
+Object.defineProperty(exports, "MWInteractiveAuthoring", { enumerable: true, get: function () { return mw_interactives_1.MWInteractiveAuthoring; } });
 var interactive_authoring_preview_1 = __webpack_require__(/*! ./common/components/interactive-authoring-preview */ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx");
-exports.InteractiveAuthoringPreview = interactive_authoring_preview_1.InteractiveAuthoringPreview;
+Object.defineProperty(exports, "InteractiveAuthoringPreview", { enumerable: true, get: function () { return interactive_authoring_preview_1.InteractiveAuthoringPreview; } });
 var renderManagedInteractiveAuthoring = function (root, props) {
     return ReactDOM.render(React.createElement(managed_interactives_1.ManagedInteractiveAuthoring, { managedInteractive: props.managedInteractive, libraryInteractive: props.libraryInteractive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt }), root);
 };
@@ -26973,6 +27006,7 @@ exports.renderInteractiveAuthoringPreview = renderInteractiveAuthoringPreview;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomizeManagedInteractive = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
@@ -27115,6 +27149,7 @@ exports.CustomizeManagedInteractive = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ManagedInteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var react_select_1 = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
@@ -27231,6 +27266,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomizeMWInteractive = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
@@ -27310,6 +27346,7 @@ exports.CustomizeMWInteractive = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MWInteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var react_tabs_1 = __webpack_require__(/*! react-tabs */ "./node_modules/react-tabs/esm/index.js");
@@ -27387,6 +27424,7 @@ exports.MWInteractiveAuthoring = function (props) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.decorateContent = void 0;
 var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 /****************************************************************************
  Ask LARA to decorate authored content (text / html).
@@ -27419,6 +27457,7 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.events = void 0;
 var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
 /**
  * Functions related to event observing provided by LARA.
@@ -27458,15 +27497,23 @@ exports.events = {
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(/*! ./plugins */ "./src/plugin-api/plugins.ts"));
-__export(__webpack_require__(/*! ./sidebar */ "./src/plugin-api/sidebar.ts"));
-__export(__webpack_require__(/*! ./popup */ "./src/plugin-api/popup.ts"));
-__export(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorate-content.ts"));
-__export(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"));
+__exportStar(__webpack_require__(/*! ./types */ "./src/plugin-api/types.ts"), exports);
+__exportStar(__webpack_require__(/*! ./plugins */ "./src/plugin-api/plugins.ts"), exports);
+__exportStar(__webpack_require__(/*! ./sidebar */ "./src/plugin-api/sidebar.ts"), exports);
+__exportStar(__webpack_require__(/*! ./popup */ "./src/plugin-api/popup.ts"), exports);
+__exportStar(__webpack_require__(/*! ./decorate-content */ "./src/plugin-api/decorate-content.ts"), exports);
+__exportStar(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"), exports);
 
 
 /***/ }),
@@ -27492,6 +27539,7 @@ __export(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"));
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerPlugin = void 0;
 var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
 /****************************************************************************
  Register a new external script
@@ -27518,6 +27566,7 @@ exports.registerPlugin = function (options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addPopup = exports.ADD_POPUP_DEFAULT_OPTIONS = void 0;
 var $ = __webpack_require__(/*! jquery */ "jquery");
 __webpack_require__(/*! jquery-ui/ui/widgets/button */ "./node_modules/jquery-ui/ui/widgets/button.js");
 __webpack_require__(/*! jquery-ui/ui/widgets/dialog */ "./node_modules/jquery-ui/ui/widgets/dialog.js");
@@ -27541,11 +27590,11 @@ exports.ADD_POPUP_DEFAULT_OPTIONS = {
     backgroundColor: "",
     titlebarColor: "",
     position: { my: "center", at: "center", of: window },
-    onOpen: null,
-    onBeforeClose: null,
-    onResize: null,
-    onDragStart: null,
-    onDragStop: null
+    onOpen: undefined,
+    onBeforeClose: undefined,
+    onResize: undefined,
+    onDragStart: undefined,
+    onDragStop: undefined
 };
 /****************************************************************************
  Ask LARA to add a new popup window.
@@ -27648,6 +27697,7 @@ exports.addPopup = function (_options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addSidebar = exports.ADD_SIDEBAR_DEFAULT_OPTIONS = void 0;
 var $ = __webpack_require__(/*! jquery */ "jquery");
 __webpack_require__(/*! jquery-ui/ui/widgets/button */ "./node_modules/jquery-ui/ui/widgets/button.js");
 // Distance between sidebar handles (in pixels).
@@ -27659,7 +27709,7 @@ exports.ADD_SIDEBAR_DEFAULT_OPTIONS = {
     icon: "default",
     handle: "",
     handleColor: "#aaa",
-    titleBar: null,
+    titleBar: undefined,
     titleBarColor: "#bbb",
     width: 500,
     padding: 25
@@ -27760,10 +27810,11 @@ exports.addSidebar = function (_options) {
     // Apply options.
     $handleText.text(options.handle);
     $contentContainer.append(options.content);
-    if (options.titleBar) {
+    var titleBar = options.titleBar || "";
+    if (titleBar.length > 0) {
         var $titleBar = $('<div class="title-bar">');
         $body.prepend($titleBar);
-        $titleBar.text(options.titleBar);
+        $titleBar.text(titleBar);
         $titleBar.css("background", options.titleBarColor);
     }
     $handle.css("background-color", options.handleColor);
@@ -27788,6 +27839,20 @@ exports.addSidebar = function (_options) {
     // Return controller.
     return controller;
 };
+
+
+/***/ }),
+
+/***/ "./src/plugin-api/types.ts":
+/*!*********************************!*\
+  !*** ./src/plugin-api/types.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 
 
 /***/ }),
