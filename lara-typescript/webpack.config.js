@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
-  return {
+  return [{
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
     entry: {
@@ -84,5 +84,57 @@ module.exports = (env, argv) => {
       'react': 'React',
       'react-dom': 'ReactDOM'
     }
-  };
+  },
+
+  // need separate config as the externals are handled differently in the external library
+  {
+    context: __dirname, // to automatically find tsconfig.json
+    devtool: 'source-map',
+    entry: {
+      'interactive-api-client': './src/interactive-api-client/index.ts',
+    },
+    mode: 'development',
+    output: {
+      filename: '[name]/index.js',
+      libraryTarget: 'umd'
+    },
+    performance: { hints: false },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader',
+              options: {}
+            }
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          options: {
+          }
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.ts', '.tsx', '.js' ]
+    },
+    stats: {
+      // suppress "export not found" warnings about re-exported types
+      warningsFilter: /export .* was not found in/
+    },
+    plugins: [
+      new ForkTsCheckerWebpackPlugin(),
+      new CopyPlugin([
+        { from: 'src/interactive-api-client/package.json', to: 'interactive-api-client' },
+        { from: 'src/interactive-api-client/README.md', to: 'interactive-api-client' }
+      ])
+    ],
+    externals: {
+      'react': 'commonjs2 react'   // allows interactives to use their own react instead of bundling it in this library
+    }
+  }];
 };

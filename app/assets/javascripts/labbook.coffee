@@ -144,7 +144,7 @@ class LabbookController
       @$iframe.fadeIn()
 
   setupPhone: ->
-    @phone = IframePhoneManager.getPhone @$iframe[0], =>
+    @phone = LARA.InteractiveAPI.IframePhoneManager.getPhone @$iframe[0], =>
     @phone.addListener 'close', =>
       @canClose = true
       @popup.close()

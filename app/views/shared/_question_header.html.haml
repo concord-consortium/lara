@@ -13,13 +13,13 @@
 .question-hdr
   %h5.h5
     = header_text
-  - if has_hint
-    .help-icon.screen-only{id: icon_id} ?
+  .help-icon.screen-only{id: icon_id, class: has_hint ? "" : "hidden"} ?
 
-- if has_hint
-  .help-content.screen-only{id: content_id}
-    = embeddable.hint.html_safe
-    .close{id: close_id} hide this
+.help-content.screen-only{id: content_id}
+  .text
+    - if has_hint
+      = embeddable.hint.html_safe
+  .close{id: close_id} hide this
 
   :javascript
     jQuery("##{icon_id}").on("click", function () {

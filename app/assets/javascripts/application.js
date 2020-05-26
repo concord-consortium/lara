@@ -40,7 +40,6 @@
 //= require tinymce-config
 //= require tinymce-jquery
 //= require iframe-phone
-//= require iframe-phone-manager
 //= require idle
 //= require check-author-idle
 //= require application-init

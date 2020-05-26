@@ -42,5 +42,4 @@ class SaveIndicator
     @$elem.css({'opacity': '0.5'})
     @$elem.animate({'opacity': '1.0'}, 'fast')
 
-$(document).ready ->
-  window.SaveIndicator = SaveIndicator
+window.SaveIndicator = SaveIndicator

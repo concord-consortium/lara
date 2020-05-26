@@ -23,7 +23,7 @@ class InteractiveManager
     if $iframe.length != 0
       # IFrameSaver does a lot more than only saving.
       # It also initializes interactive and provides LARA Interactive API.
-      new IFrameSaver($iframe, $data, $delete_button)
+      new LARA.InteractiveAPI.IFrameSaver($iframe, $data, $delete_button)
 
       if globalIframeSaver
         globalIframeSaver.addNewInteractive $iframe
