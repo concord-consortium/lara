@@ -20,7 +20,6 @@
 //= require fabric
 //= require hammerjs
 //= require eventemitter2
-//= require iframe-phone-manager
 //= require drawing-tool
 //= require jquery_ujs
 //= require jquery.placeholder
@@ -44,15 +43,12 @@
 //= require image_question_drawing_tool
 //= require nav_menu
 //= require profile
-//= require iframe-phone
-//= require iframe-saver
 //= require prediction
 //= require activity-box-click
 //= require wait-message
 //= require external-scripts
 //= require labbook
 //= require c_rater
-//= require global-iframe-saver
 //= require interactive-manager
 //= require components
 //= require runtime-init

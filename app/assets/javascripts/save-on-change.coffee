@@ -283,14 +283,14 @@ class @SaveOnChangePage
   force_save_dirty: (callback)->
     for item, value of @dirty_forms
       value.saveNow()
-    if (typeof IFrameSaver == "undefined")
+    if (typeof LARA.InteractiveAPI.IFrameSaver == "undefined")
       @navigate_away(callback)
       return
 
-    waiting_on = IFrameSaver.instances.length
+    waiting_on = LARA.InteractiveAPI.IFrameSaver.instances.length
     found      = 0
     if waiting_on > 0
-      for count, saver of IFrameSaver.instances
+      for count, saver of LARA.InteractiveAPI.IFrameSaver.instances
         saver.save =>
           found = found + 1
           if (found + 1 ) >= waiting_on

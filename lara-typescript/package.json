@@ -4,14 +4,19 @@
   "description": "LARA TypeScript code",
   "scripts": {
     "publish:plugin-api": "npm run build && cd dist/plugin-api && npm publish --access public",
+    "publish:interactive-api-client": "npm run build && cd dist/interactive-api-client && npm publish --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/ && cp ./dist/page-item-authoring.js ../app/assets/javascripts/ && cp ./dist/page-item-authoring.css ../app/assets/stylesheets/",
-    "build:docs": "npm-run-all build:docs:plugin-api build:docs:fix-doc-paths build:docs:copy-files",
+    "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client build:docs:fix-doc-paths build:docs:copy-files",
     "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api",
+    "build:docs:interactive-api-client": "typedoc --theme markdown --readme src/interactive-api-client/README.md --ignoreCompilerErrors --name 'LARA Interactive API Client' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/interactive-api-client src/interactive-api-client",
     "build:docs:fix-doc-paths": "./fix-doc-paths.js",
-    "build:docs:copy-files": "cpx './docs/lara-plugin-api/**/*.*' ../docs/lara-plugin-api/",
+    "build:docs:copy-files": "npm-run-all build:docs:copy-files:plugin-api build:docs:copy-files:interactive-api-client",
+    "build:docs:copy-files:plugin-api": "cpx './docs/lara-plugin-api/**/*.*' ../docs/lara-plugin-api/",
+    "build:docs:copy-files:interactive-api-client": "cpx './docs/interactive-api-client/**/*.*' ../docs/interactive-api-client/",
+    "build:dev:lara-typescript": "webpack && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
     "build:dev:page-item-authoring": "webpack && cp ./dist/page-item-authoring.js ../app/assets/javascripts/ && cp ./dist/page-item-authoring.css ../app/assets/stylesheets/",
-    "clean": "rimraf dist docs ../docs/lara-plugin-api",
+    "clean": "rimraf dist docs ../docs/lara-plugin-api ../docs/interactive-api-client",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
     "lint:fix": "tslint -c tslint-build.json --fix 'src/**/*.{ts,tsx}'",
@@ -95,6 +100,7 @@
   "dependencies": {
     "@concord-consortium/text-decorator": "^1.0.2",
     "eventemitter2": "^5.0.1",
+    "iframe-phone": "^1.3.1",
     "react-select": "^3.1.0",
     "react-tabs": "^3.1.0"
   }

@@ -12,6 +12,10 @@
   top: .5em;
   width: 1.25em;
   float: right;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .help-content {
