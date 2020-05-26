@@ -30,6 +30,7 @@
 * [setAuthoredState](client.md#setauthoredstate)
 * [setGlobalInteractiveState](client.md#setglobalinteractivestate)
 * [setHeight](client.md#setheight)
+* [setHint](client.md#sethint)
 * [setInteractiveState](client.md#setinteractivestate)
 * [setNavigation](client.md#setnavigation)
 * [setSupportedFeatures](client.md#setsupportedfeatures)
@@ -44,7 +45,7 @@
 
 ⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`>*): [Client](client.md)
 
-*Defined in [client.ts:27](../../../lara-typescript/src/interactive-api-client/client.ts#L27)*
+*Defined in [client.ts:25](../../../lara-typescript/src/interactive-api-client/client.ts#L25)*
 
 **Parameters:**
 
@@ -64,7 +65,7 @@ ___
 
 **get InIFrame**(): `boolean`
 
-*Defined in [client.ts:106](../../../lara-typescript/src/interactive-api-client/client.ts#L106)*
+*Defined in [client.ts:104](../../../lara-typescript/src/interactive-api-client/client.ts#L104)*
 
 **Returns:** `boolean`
 
@@ -75,7 +76,7 @@ ___
 
 **get iframePhone**(): `undefined` \| `IFrameEndpoint`
 
-*Defined in [client.ts:40](../../../lara-typescript/src/interactive-api-client/client.ts#L40)*
+*Defined in [client.ts:38](../../../lara-typescript/src/interactive-api-client/client.ts#L38)*
 
 **Returns:** `undefined` \| `IFrameEndpoint`
 
@@ -89,7 +90,7 @@ ___
 
 ▸ **connect**(): `boolean`
 
-*Defined in [client.ts:44](../../../lara-typescript/src/interactive-api-client/client.ts#L44)*
+*Defined in [client.ts:42](../../../lara-typescript/src/interactive-api-client/client.ts#L42)*
 
 **Returns:** `boolean`
 
@@ -100,7 +101,7 @@ ___
 
 ▸ **disconnect**(): `boolean`
 
-*Defined in [client.ts:90](../../../lara-typescript/src/interactive-api-client/client.ts#L90)*
+*Defined in [client.ts:88](../../../lara-typescript/src/interactive-api-client/client.ts#L88)*
 
 **Returns:** `boolean`
 
@@ -111,7 +112,7 @@ ___
 
 ▸ **getAuthInfo**(): `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
-*Defined in [client.ts:138](../../../lara-typescript/src/interactive-api-client/client.ts#L138)*
+*Defined in [client.ts:140](../../../lara-typescript/src/interactive-api-client/client.ts#L140)*
 
 **Returns:** `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
@@ -122,7 +123,7 @@ ___
 
 ▸ **getFirebaseJWT**(options: *[IGetFirebaseJwtOptions](../interfaces/igetfirebasejwtoptions.md)*): `Promise`<`string`>
 
-*Defined in [client.ts:155](../../../lara-typescript/src/interactive-api-client/client.ts#L155)*
+*Defined in [client.ts:157](../../../lara-typescript/src/interactive-api-client/client.ts#L157)*
 
 **Parameters:**
 
@@ -139,7 +140,7 @@ ___
 
 ▸ **setAuthoredState**(authoredState: *`AuthoredState`*): `boolean`
 
-*Defined in [client.ts:130](../../../lara-typescript/src/interactive-api-client/client.ts#L130)*
+*Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
 
 **Parameters:**
 
@@ -156,7 +157,7 @@ ___
 
 ▸ **setGlobalInteractiveState**(globalState: *`GlobalInteractiveState`*): `boolean`
 
-*Defined in [client.ts:134](../../../lara-typescript/src/interactive-api-client/client.ts#L134)*
+*Defined in [client.ts:136](../../../lara-typescript/src/interactive-api-client/client.ts#L136)*
 
 **Parameters:**
 
@@ -173,7 +174,7 @@ ___
 
 ▸ **setHeight**(height: *`number` \| `string`*): `boolean`
 
-*Defined in [client.ts:114](../../../lara-typescript/src/interactive-api-client/client.ts#L114)*
+*Defined in [client.ts:112](../../../lara-typescript/src/interactive-api-client/client.ts#L112)*
 
 **Parameters:**
 
@@ -184,13 +185,30 @@ ___
 **Returns:** `boolean`
 
 ___
+<a id="sethint"></a>
+
+###  setHint
+
+▸ **setHint**(hint: *`string`*): `boolean`
+
+*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| hint | `string` |
+
+**Returns:** `boolean`
+
+___
 <a id="setinteractivestate"></a>
 
 ###  setInteractiveState
 
 ▸ **setInteractiveState**(interactiveState: *`InteractiveState` \| `string` \| `null`*): `boolean`
 
-*Defined in [client.ts:110](../../../lara-typescript/src/interactive-api-client/client.ts#L110)*
+*Defined in [client.ts:108](../../../lara-typescript/src/interactive-api-client/client.ts#L108)*
 
 **Parameters:**
 
@@ -207,7 +225,7 @@ ___
 
 ▸ **setNavigation**(options: *[INavigationOptions](../interfaces/inavigationoptions.md)*): `boolean`
 
-*Defined in [client.ts:126](../../../lara-typescript/src/interactive-api-client/client.ts#L126)*
+*Defined in [client.ts:128](../../../lara-typescript/src/interactive-api-client/client.ts#L128)*
 
 **Parameters:**
 
@@ -224,7 +242,7 @@ ___
 
 ▸ **setSupportedFeatures**(features: *[ISupportedFeatures](../interfaces/isupportedfeatures.md)*): `boolean`
 
-*Defined in [client.ts:118](../../../lara-typescript/src/interactive-api-client/client.ts#L118)*
+*Defined in [client.ts:120](../../../lara-typescript/src/interactive-api-client/client.ts#L120)*
 
 **Parameters:**
 

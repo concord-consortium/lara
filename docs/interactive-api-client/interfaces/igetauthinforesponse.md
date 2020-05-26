@@ -31,7 +31,7 @@
 
 *Inherited from [IAuthInfo](iauthinfo.md).[email](iauthinfo.md#email)*
 
-*Defined in [types.ts:140](../../../lara-typescript/src/interactive-api-client/types.ts#L140)*
+*Defined in [types.ts:141](../../../lara-typescript/src/interactive-api-client/types.ts#L141)*
 
 ___
 <a id="loggedin"></a>
@@ -42,7 +42,7 @@ ___
 
 *Inherited from [IAuthInfo](iauthinfo.md).[loggedIn](iauthinfo.md#loggedin)*
 
-*Defined in [types.ts:139](../../../lara-typescript/src/interactive-api-client/types.ts#L139)*
+*Defined in [types.ts:140](../../../lara-typescript/src/interactive-api-client/types.ts#L140)*
 
 ___
 <a id="provider"></a>
@@ -53,7 +53,7 @@ ___
 
 *Inherited from [IAuthInfo](iauthinfo.md).[provider](iauthinfo.md#provider)*
 
-*Defined in [types.ts:138](../../../lara-typescript/src/interactive-api-client/types.ts#L138)*
+*Defined in [types.ts:139](../../../lara-typescript/src/interactive-api-client/types.ts#L139)*
 
 ___
 <a id="requestid"></a>
@@ -64,7 +64,7 @@ ___
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:134](../../../lara-typescript/src/interactive-api-client/types.ts#L134)*
+*Defined in [types.ts:135](../../../lara-typescript/src/interactive-api-client/types.ts#L135)*
 
 ___
 
