@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as iframePhone from "iframe-phone";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -36,7 +37,7 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   let phone: IFramePhoneParentEndpoint;
 
   const connect = () => {
-    phone = new (window as any).iframePhone.ParentEndpoint(iframe.current, () => {
+    phone = new iframePhone.ParentEndpoint(iframe.current!, () => {
       phone.post("initInteractive", initMsg);
     });
     phone.addListener("authoredState", (authoredState: any) => {

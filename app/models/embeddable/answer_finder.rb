@@ -23,15 +23,9 @@ module Embeddable
       when Embeddable::Labbook
         return "lb_#{question.id}"
       when MwInteractive
-        return "if_#{question.id}"
-      when InteractiveRunState::QuestionStandin
-        # It is not clear but I beleive this bit of hackyness is here for this reason:
-        # When a InteractiveRunState is asked for its
-        # question, it returns an InteractiveRunState::QuestionStandin instead of MwInteractive
-        # (I'm not sure why). And then that question is sometimes used later in the process
-        # to try to find the answer again. So that is why it is OK for the same key to be used
-        # in that case. I haven't found where this happens.
-        return question.interactive ? "if_#{question.interactive.id}" : nil
+        return "mw_#{question.id}"
+      when ManagedInteractive
+        return "mi_#{question.id}"
       end
       return nil
     end
@@ -55,14 +49,14 @@ module Embeddable
     def find_answer(question)
       type = answer_type(question)
       return question if type.nil?
-      answer =  self.answer_map[self.question_key(question)] 
+      answer =  self.answer_map[self.question_key(question)]
       if answer.nil?
         conditions = { :run => self.run, :question => question }
         # If this is an ImageQuestion with an author-defined background image, we want to copy that into the answer.
         if type == Embeddable::ImageQuestionAnswer and !question.is_shutterbug? and !question.bg_url.blank?
           conditions[:image_url] = question.bg_url
         end
-        answer = type.default_answer(conditions) 
+        answer = type.default_answer(conditions)
         self.add_answer(answer)
       end
       return answer
@@ -80,6 +74,8 @@ module Embeddable
       when Embeddable::Labbook
         return Embeddable::LabbookAnswer
       when MwInteractive
+        return InteractiveRunState
+      when ManagedInteractive
         return InteractiveRunState
       end
       return nil

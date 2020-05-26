@@ -335,12 +335,8 @@ class Run < ActiveRecord::Base
     # it, then there will still be an answer this hidden item.
     # But the hidden item won't be in the reportable_items list
 
-    # FIXME it would be much easier if interactive_run_states just returned the iteractive as
-    # the answer, to change this we need to track down all the places where answer.question is
-    # called to see what expectations the code has about the result.
     answered_items = q_answers.select do |a|
       question = a.question
-      question = question.interactive if question.is_a? InteractiveRunState::QuestionStandin
       reportable_items.include?(question)
     end
     answered_items.size

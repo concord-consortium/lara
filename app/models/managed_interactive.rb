@@ -217,4 +217,8 @@ class ManagedInteractive < ActiveRecord::Base
   def reportable_in_iframe?
     !has_report_url
   end
+
+  def prompt
+    name
+  end
 end

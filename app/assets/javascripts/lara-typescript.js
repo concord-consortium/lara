@@ -8945,6 +8945,525 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 
 /***/ }),
 
+/***/ "./node_modules/iframe-phone/lib/iframe-endpoint.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/iframe-endpoint.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
+var HELLO_INTERVAL_LENGTH = 200;
+var HELLO_TIMEOUT_LENGTH = 60000;
+
+function IFrameEndpoint() {
+  var listeners = {};
+  var isInitialized = false;
+  var connected = false;
+  var postMessageQueue = [];
+  var helloInterval;
+
+  function postToParent(message) {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (structuredClone.supported()) {
+      window.parent.postMessage(message, '*');
+    } else {
+      window.parent.postMessage(JSON.stringify(message), '*');
+    }
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      postToParent(message);
+    } else {
+      postMessageQueue.push(message);
+    }
+  }
+
+  function postHello() {
+    postToParent({
+      type: 'hello'
+    });
+  }
+
+  function addListener(type, fn) {
+    listeners[type] = fn;
+  }
+
+  function removeListener(type) {
+    delete listeners[type];
+  }
+
+  function removeAllListeners() {
+    listeners = {};
+  }
+
+  function getListenerNames() {
+    return Object.keys(listeners);
+  }
+
+  function messageListener(message) {
+    // Anyone can send us a message. Only pay attention to messages from parent.
+    if (message.source !== window.parent) return;
+    var messageData = message.data;
+    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
+
+    if (!connected && messageData.type === 'hello') {
+      connected = true;
+      stopPostingHello();
+      while (postMessageQueue.length > 0) {
+        post(postMessageQueue.shift());
+      }
+    }
+
+    if (connected && listeners[messageData.type]) {
+      listeners[messageData.type](messageData.content);
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    stopPostingHello();
+    removeAllListeners();
+    window.removeEventListener('message', messageListener);
+  }
+
+  /**
+    Initialize communication with the parent frame. This should not be called until the app's custom
+    listeners are registered (via our 'addListener' public method) because, once we open the
+    communication, the parent window may send any messages it may have queued. Messages for which
+    we don't have handlers will be silently ignored.
+  */
+  function initialize() {
+    if (isInitialized) {
+      return;
+    }
+    isInitialized = true;
+    if (window.parent === window) return;
+
+    // We kick off communication with the parent window by sending a "hello" message. Then we wait
+    // for a handshake (another "hello" message) from the parent window.
+    startPostingHello();
+    window.addEventListener('message', messageListener, false);
+  }
+
+  function startPostingHello() {
+    if (helloInterval) {
+      stopPostingHello();
+    }
+    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
+    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
+    // Post the first msg immediately.
+    postHello();
+  }
+
+  function stopPostingHello() {
+    window.clearInterval(helloInterval);
+    helloInterval = null;
+  }
+
+  // Public API.
+  return {
+    initialize: initialize,
+    getListenerNames: getListenerNames,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    post: post
+  };
+}
+
+var instance = null;
+
+// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+module.exports = function getIFrameEndpoint() {
+  if (!instance) {
+    instance = new IFrameEndpoint();
+  }
+  return instance;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js");
+var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js");
+
+// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
+// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
+function getPseudoUUID() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var len = chars.length;
+  var ret = [];
+
+  for (var i = 0; i < 10; i++) {
+    ret.push(chars[Math.floor(Math.random() * len)]);
+  }
+  return ret.join('');
+}
+
+module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
+  var pendingCallbacks = Object.create({});
+
+  // if it's a non-null object, rather than a function, 'handler' is really an options object
+  if (handler && typeof handler === 'object') {
+    namespace = handler.namespace;
+    targetWindow = handler.targetWindow;
+    targetOrigin = handler.targetOrigin;
+    phone = handler.phone;
+    handler = handler.handler;
+  }
+
+  if (!phone) {
+    if (targetWindow === window.parent) {
+      phone = getIFrameEndpoint();
+      phone.initialize();
+    } else {
+      phone = new ParentEndpoint(targetWindow, targetOrigin);
+    }
+  }
+
+  phone.addListener(namespace, function (message) {
+    var callbackObj;
+
+    if (message.messageType === 'call' && typeof this.handler === 'function') {
+      this.handler.call(undefined, message.value, function (returnValue) {
+        phone.post(namespace, {
+          messageType: 'returnValue',
+          uuid: message.uuid,
+          value: returnValue
+        });
+      });
+    } else if (message.messageType === 'returnValue') {
+      callbackObj = pendingCallbacks[message.uuid];
+
+      if (callbackObj) {
+        window.clearTimeout(callbackObj.timeout);
+        if (callbackObj.callback) {
+          callbackObj.callback.call(undefined, message.value);
+        }
+        pendingCallbacks[message.uuid] = null;
+      }
+    }
+  }.bind(this));
+
+  function call(message, callback) {
+    var uuid = getPseudoUUID();
+
+    pendingCallbacks[uuid] = {
+      callback: callback,
+      timeout: window.setTimeout(function () {
+        if (callback) {
+          callback(undefined, new Error("IframePhone timed out waiting for reply"));
+        }
+      }, 2000)
+    };
+
+    phone.post(namespace, {
+      messageType: 'call',
+      uuid: uuid,
+      value: message
+    });
+  }
+
+  function disconnect() {
+    phone.disconnect();
+  }
+
+  this.handler = handler;
+  this.call = call.bind(this);
+  this.disconnect = disconnect.bind(this);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/parent-endpoint.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/parent-endpoint.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
+
+/**
+  Call as:
+    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
+      targetWindow is a WindowProxy object. (Messages will be sent to it)
+
+      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
+
+      afterConnectedCallback is an optional callback function to be called when the connection is
+        established.
+
+  OR (less secure):
+    new ParentEndpoint(targetIframe, afterConnectedCallback)
+
+      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
+
+      afterConnectedCallback is an optional callback function
+
+    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
+    provided DOM object at the time of the constructor invocation. This is less secure because the
+    iframe might have been navigated to an unexpected domain before constructor invocation.
+
+  Note that it is important to specify the expected origin of the iframe's content to safeguard
+  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
+  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
+  form of the constructor) does not protect against sending a message to the wrong domain. The
+  window object is actualy a WindowProxy which transparently proxies the Window object of the
+  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
+  completely differeent Window object, possibly controlled by a hostile domain.
+
+  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
+  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
+*/
+
+module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
+  var postMessageQueue = [];
+  var connected = false;
+  var handlers = {};
+  var targetWindowIsIframeElement;
+
+  function getIframeOrigin(iframe) {
+    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      var tWindow = getTargetWindow();
+      // if we are laready connected ... send the message
+      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+      //     https://github.com/Modernizr/Modernizr/issues/388
+      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+      if (structuredClone.supported()) {
+        tWindow.postMessage(message, targetOrigin);
+      } else {
+        tWindow.postMessage(JSON.stringify(message), targetOrigin);
+      }
+    } else {
+      // else queue up the messages to send after connection complete.
+      postMessageQueue.push(message);
+    }
+  }
+
+  function addListener(messageName, func) {
+    handlers[messageName] = func;
+  }
+
+  function removeListener(messageName) {
+    delete handlers[messageName];
+  }
+
+  function removeAllListeners() {
+    handlers = {};
+  }
+
+  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
+  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
+  // only listens for an incoming 'hello' message and the first time we call this function
+  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
+  // It would become important when we decide to refactor the way how communication is initialized.
+  function getTargetWindow() {
+    if (targetWindowIsIframeElement) {
+      var tWindow = targetWindowOrIframeEl.contentWindow;
+      if (!tWindow) {
+        throw "IFrame element needs to be added to DOM before communication " +
+              "can be started (.contentWindow is not available)";
+      }
+      return tWindow;
+    }
+    return targetWindowOrIframeEl;
+  }
+
+  function receiveMessage(message) {
+    var messageData;
+    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
+      messageData = message.data;
+      if (typeof messageData === 'string') {
+        messageData = JSON.parse(messageData);
+      }
+      if (handlers[messageData.type]) {
+        handlers[messageData.type](messageData.content);
+      } else {
+        console.log("cant handle type: " + messageData.type);
+      }
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    removeAllListeners();
+    window.removeEventListener('message', receiveMessage);
+  }
+
+  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
+  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
+  // we also don't need to do anything
+  try {
+    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
+  } catch (e) {
+    targetWindowIsIframeElement = false;
+  }
+
+  if (targetWindowIsIframeElement) {
+    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
+    // argument is empty or is actually a callback (meaning it is supposed to be the
+    // afterConnectionCallback)
+    if (!targetOrigin || targetOrigin.constructor === Function) {
+      afterConnectedCallback = targetOrigin;
+      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
+    }
+  }
+
+  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
+  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
+  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
+  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
+  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
+  // So, using '*' seems like the only possible solution.
+  if (targetOrigin === 'file://') {
+    targetOrigin = '*';
+  }
+
+  // when we receive 'hello':
+  addListener('hello', function () {
+    connected = true;
+
+    // send hello response
+    post({
+      type: 'hello',
+      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
+      // backward compatible with old IframeEndpoint versions (< v1.2.0).
+      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+    });
+
+    // give the user a chance to do things now that we are connected
+    // note that is will happen before any queued messages
+    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
+      afterConnectedCallback();
+    }
+
+    // Now send any messages that have been queued up ...
+    while (postMessageQueue.length > 0) {
+      post(postMessageQueue.shift());
+    }
+  });
+
+  window.addEventListener('message', receiveMessage, false);
+
+  // Public API.
+  return {
+    post: post,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    getTargetWindow: getTargetWindow,
+    targetOrigin: targetOrigin
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/structured-clone.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/structured-clone.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var featureSupported = {
+  'structuredClones': 0
+};
+
+(function () {
+  var result = 0;
+
+  if (!!window.postMessage) {
+    try {
+      // Spec states you can't transmit DOM nodes and it will throw an error
+      // postMessage implementations that support cloned data will throw.
+      window.postMessage(document.createElement("a"), "*");
+    } catch (e) {
+      // BBOS6 throws but doesn't pass through the correct exception
+      // so check error message
+      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
+      featureSupported = {
+        'structuredClones': result
+      };
+    }
+  }
+}());
+
+exports.supported = function supported() {
+  return featureSupported && featureSupported.structuredClones > 0;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/main.js":
+/*!*******************************************!*\
+  !*** ./node_modules/iframe-phone/main.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  /**
+   * Allows to communicate with an iframe.
+   */
+  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js"),
+  /**
+   * Allows to communicate with a parent page.
+   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+   */
+  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js"),
+  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js"),
+
+  // TODO: May be misnamed
+  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
+
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/jquery-ui/ui/data.js":
 /*!*******************************************!*\
   !*** ./node_modules/jquery-ui/ui/data.js ***!
@@ -15883,10 +16402,579 @@ var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.
 exports.PluginAPI_V3 = PluginAPI;
 var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
 exports.InternalAPI = InternalAPI;
+var InteractiveAPI = __webpack_require__(/*! ./interactive-api */ "./src/interactive-api/index.ts");
+exports.InteractiveAPI = InteractiveAPI;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
 window.LARA.PluginAPI_V3 = PluginAPI;
 window.LARA.InternalAPI = InternalAPI;
+window.LARA.InteractiveAPI = InteractiveAPI;
+
+
+/***/ }),
+
+/***/ "./src/interactive-api/global-iframe-saver.ts":
+/*!****************************************************!*\
+  !*** ./src/interactive-api/global-iframe-saver.ts ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
+var GlobalIframeSaver = /** @class */ (function () {
+    function GlobalIframeSaver(config) {
+        this.saveUrl = config.save_url;
+        this.globalState = config.raw_data ? JSON.parse(config.raw_data) : null;
+        this.saveIndicator = SaveIndicator.instance();
+        this.iframePhones = [];
+    }
+    GlobalIframeSaver.prototype.addNewInteractive = function (iframeEl) {
+        var phone = iframe_phone_manager_1.IframePhoneManager.getPhone($(iframeEl)[0]);
+        this.iframePhones.push(phone);
+        this.setupPhoneListeners(phone);
+        if (this.globalState) {
+            this.loadGlobalState(phone);
+        }
+    };
+    GlobalIframeSaver.prototype.setupPhoneListeners = function (phone) {
+        var _this = this;
+        var clientMessage = "interactiveStateGlobal";
+        phone.addListener(clientMessage, function (state) {
+            _this.globalState = state;
+            _this.saveGlobalState();
+            _this.broadcastGlobalState(phone);
+        });
+    };
+    GlobalIframeSaver.prototype.loadGlobalState = function (phone) {
+        var serverMessage = "loadInteractiveGlobal";
+        phone.post(serverMessage, this.globalState);
+    };
+    GlobalIframeSaver.prototype.broadcastGlobalState = function (sender) {
+        var _this = this;
+        this.iframePhones.forEach(function (phone) {
+            // Do not send state again to the same iframe that posted global state.
+            if (phone !== sender) {
+                _this.loadGlobalState(phone);
+            }
+        });
+    };
+    GlobalIframeSaver.prototype.saveGlobalState = function () {
+        var _this = this;
+        this.saveIndicator.showSaving();
+        return $.ajax({
+            type: "POST",
+            url: this.saveUrl,
+            data: {
+                raw_data: JSON.stringify(this.globalState)
+            },
+            success: function () {
+                _this.saveIndicator.showSaved();
+            },
+            error: function (jqxhr) {
+                if (jqxhr.status === 401) {
+                    _this.saveIndicator.showUnauthorized();
+                    $(document).trigger("unauthorized");
+                }
+                else {
+                    _this.saveIndicator.showSaveFailed();
+                }
+            }
+        });
+    };
+    return GlobalIframeSaver;
+}());
+exports.GlobalIframeSaver = GlobalIframeSaver;
+
+
+/***/ }),
+
+/***/ "./src/interactive-api/iframe-phone-manager.ts":
+/*!*****************************************************!*\
+  !*** ./src/interactive-api/iframe-phone-manager.ts ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Manager of the iframe phone instances.
+// Do not use iframePhone module directly, use this class instead.
+Object.defineProperty(exports, "__esModule", { value: true });
+var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
+var IframePhoneManager = /** @class */ (function () {
+    function IframePhoneManager() {
+        this.iframeCount = 0;
+        this.phoneData = {};
+    }
+    IframePhoneManager.getPhone = function (iframeEl, afterConnectedCallback) {
+        return this.getInstance().getPhone(iframeEl, afterConnectedCallback);
+    };
+    IframePhoneManager.getRpcEndpoint = function (iframeEl, namespace) {
+        return this.getInstance().getRpcEndpoint(iframeEl, namespace);
+    };
+    IframePhoneManager.getInstance = function () {
+        if (!this.instance) {
+            this.instance = new IframePhoneManager();
+        }
+        return this.instance;
+    };
+    IframePhoneManager.prototype.getPhone = function (iframeEl, afterConnectedCallback) {
+        var data = this.iframePhoneData(iframeEl);
+        if (afterConnectedCallback) {
+            if (data.phoneAnswered) {
+                // Ensure that callback is *always* executed in an async way.
+                setTimeout((function () { return afterConnectedCallback(); }), 1);
+            }
+            else {
+                data.phoneAnsweredCallbacks.push(afterConnectedCallback);
+            }
+        }
+        return data.phone;
+    };
+    IframePhoneManager.prototype.getRpcEndpoint = function (iframeEl, namespace) {
+        var data = this.iframePhoneData(iframeEl);
+        if (!data.rpcEndpoints[namespace]) {
+            data.rpcEndpoints[namespace] = new iframePhone.IframePhoneRpcEndpoint({ phone: data.phone, namespace: namespace });
+        }
+        return data.rpcEndpoints[namespace];
+    };
+    IframePhoneManager.prototype.iframePhoneData = function (iframeEl) {
+        var phoneId = $(iframeEl).data("iframe-phone-id");
+        if (phoneId === undefined) {
+            phoneId = this.setupPhoneForIframe(iframeEl);
+        }
+        // phone is always set by setupPhoneForIframe()
+        return this.phoneData[phoneId];
+    };
+    IframePhoneManager.prototype.setupPhoneForIframe = function (iframeEl) {
+        var _this = this;
+        var phoneId = this.iframeCount++;
+        $(iframeEl).data("iframe-phone-id", phoneId);
+        this.phoneData[phoneId] = {
+            phoneAnswered: false,
+            phoneAnsweredCallbacks: [],
+            rpcEndpoints: {}
+        };
+        // Make sure that phone data is created before we create phone itself. It lets us support case when
+        // afterConnectedCallback is executed synchronously right away in constructor (useful for tests).
+        this.phoneData[phoneId].phone = new iframePhone.ParentEndpoint(iframeEl, function () { return _this.phoneAnswered(iframeEl); });
+        return phoneId;
+    };
+    IframePhoneManager.prototype.phoneAnswered = function (iframeEl) {
+        var data = this.iframePhoneData(iframeEl);
+        data.phoneAnswered = true;
+        data.phoneAnsweredCallbacks.forEach(function (callback) { return callback(); });
+    };
+    IframePhoneManager.instance = null;
+    return IframePhoneManager;
+}());
+exports.IframePhoneManager = IframePhoneManager;
+
+
+/***/ }),
+
+/***/ "./src/interactive-api/iframe-saver.ts":
+/*!*********************************************!*\
+  !*** ./src/interactive-api/iframe-saver.ts ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
+var getAuthoredState = function ($dataDiv) {
+    var authoredState = $dataDiv.data("authored-state");
+    if ((authoredState == null) || (authoredState === "")) {
+        authoredState = null;
+    }
+    if (typeof authoredState === "string") {
+        authoredState = JSON.parse(authoredState);
+    }
+    return authoredState;
+};
+var safeJSONParse = function (obj) {
+    try {
+        return JSON.parse(obj);
+    }
+    catch (e) {
+        return undefined;
+    }
+};
+// tslint:disable-next-line:max-line-length
+var interactiveStateProps = function (data) { return ({
+    interactiveState: (data != null ? safeJSONParse(data.raw_data) : undefined),
+    hasLinkedInteractive: (data != null ? data.has_linked_interactive : undefined),
+    linkedState: (data != null ? safeJSONParse(data.linked_state) : undefined),
+    // tslint:disable-next-line:max-line-length
+    allLinkedStates: (data != null && data.all_linked_states ? data.all_linked_states.map(interactiveStateProps) : undefined),
+    createdAt: (data != null ? data.created_at : undefined),
+    updatedAt: (data != null ? data.updated_at : undefined),
+    interactiveStateUrl: (data != null ? data.interactive_state_url : undefined),
+    interactive: {
+        // Keep default values `undefined` (data?.something returns undefined if data is not available),
+        // as they might be obtained the other way. See "init_interactive" function which extends basic data using object
+        // returned from this one. `undefined` ensures that we won"t overwrite a valid value.
+        id: (data != null ? data.interactive_id : undefined),
+        name: (data != null ? data.interactive_name : undefined)
+    },
+    pageNumber: (data != null ? data.page_number : undefined),
+    pageName: (data != null ? data.page_name : undefined),
+    activityName: (data != null ? data.activity_name : undefined)
+}); };
+var IFrameSaver = /** @class */ (function () {
+    function IFrameSaver($iframe, $dataDiv, $deleteButton) {
+        var _this = this;
+        this.$iframe = $iframe;
+        this.$deleteButton = $deleteButton;
+        this.enableLearnerState = $dataDiv.data("enable-learner-state");
+        this.interactiveRunStateUrl = $dataDiv.data("interactive-run-state-url"); // get and put our data here.
+        this.collaboratorUrls = $dataDiv.data("collaborator-urls");
+        this.authProvider = $dataDiv.data("authprovider"); // through which provider did the current user log in
+        this.userEmail = $dataDiv.data("user-email");
+        this.loggedIn = $dataDiv.data("loggedin"); // true/false - is the current session associated with a user
+        this.authoredState = getAuthoredState($dataDiv); // state / configuration provided during authoring
+        this.classInfoUrl = $dataDiv.data("class-info-url");
+        this.interactiveId = $dataDiv.data("interactive-id");
+        this.interactiveName = $dataDiv.data("interactive-name");
+        this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+        this.saveIndicator = SaveIndicator.instance();
+        this.$deleteButton.click(function () { return _this.deleteData(); });
+        this.savedState = null;
+        this.autoSaveIntervalId = null;
+        if (this.learnerStateSavingEnabled()) {
+            IFrameSaver.instances.push(this);
+        }
+        this.alreadySetup = false;
+        this.iframePhone = iframe_phone_manager_1.IframePhoneManager.getPhone($iframe[0], function () { return _this.phoneAnswered(); });
+    }
+    IFrameSaver.defaultSuccess = function () {
+        // tslint:disable-next-line:no-console
+        console.log("saved");
+    };
+    IFrameSaver.prototype.save = function (successCallback) {
+        this.successCallback = successCallback;
+        // will call back into "@save_learner_state)
+        return this.post("getInteractiveState");
+    };
+    IFrameSaver.prototype.saveLearnerState = function (interactiveJson) {
+        var _this = this;
+        if (!this.learnerStateSavingEnabled()) {
+            return;
+        }
+        var runSuccess = function () {
+            _this.savedState = interactiveJson;
+            if (_this.successCallback) {
+                return _this.successCallback();
+            }
+            else {
+                return IFrameSaver.defaultSuccess();
+            }
+        };
+        // Do not send the same state to server over and over again.
+        // "nochange" is a special type of response.
+        // "touch" is an another special type of response which will triger timestamp update only.
+        if ((interactiveJson !== "touch") &&
+            ((interactiveJson === "nochange") || (JSON.stringify(interactiveJson) === JSON.stringify(this.savedState)))) {
+            runSuccess();
+            return;
+        }
+        this.saveIndicator.showSaving();
+        var data = interactiveJson === "touch" ? {} : { raw_data: JSON.stringify(interactiveJson) };
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: this.interactiveRunStateUrl,
+            data: data,
+            success: function (response) {
+                runSuccess();
+                // State has been saved. Show "Undo all my work" button.
+                _this.$deleteButton.show();
+                _this.saveIndicator.showSaved("Saved Interactive");
+            },
+            error: function () {
+                _this.error("couldn't save interactive");
+            }
+        });
+    };
+    IFrameSaver.prototype.phoneAnswered = function () {
+        var _this = this;
+        // Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
+        // https://www.pivotaltracker.com/story/show/89602814
+        if (this.alreadySetup) {
+            return;
+        }
+        this.alreadySetup = true;
+        this.addListener("setLearnerUrl", function (learnerUrl) {
+            _this.saveLearnerUrl(learnerUrl);
+        });
+        this.addListener("interactiveState", function (interactiveJson) {
+            _this.saveLearnerState(interactiveJson);
+        });
+        this.addListener("getAuthInfo", function (request) {
+            var authInfo = {
+                requestId: request.requestId,
+                provider: _this.authProvider,
+                loggedIn: _this.loggedIn
+            };
+            // requestId may be undefined for interactives that don't use the client
+            if (request.requestId) {
+                authInfo.requestId = request.requestId;
+            }
+            if (_this.userEmail != null) {
+                authInfo.email = _this.userEmail;
+            }
+            _this.post("authInfo", authInfo);
+        });
+        this.addListener("height", function (height) {
+            _this.$iframe.data("height", height);
+            _this.$iframe.trigger("sizeUpdate");
+        });
+        this.addListener("hint", function (hint) {
+            var $container = _this.$iframe.closest(".embeddable-container");
+            var $helpIcon = $container.find(".help-icon");
+            if (hint) {
+                $helpIcon.removeClass("hidden");
+            }
+            else {
+                $container.find(".help-icon").addClass("hidden");
+            }
+            $container.find(".help-content .text").text(hint || "");
+        });
+        this.addListener("supportedFeatures", function (info) {
+            if (info.features && info.features.aspectRatio) {
+                // If the author specifies the aspect-ratio-method as "DEFAULT"
+                // then the Interactive can provide suggested aspect-ratio.
+                if (_this.$iframe.data("aspect-ratio-method") === "DEFAULT") {
+                    _this.$iframe.data("aspect-ratio", info.features.aspectRatio);
+                    _this.$iframe.trigger("sizeUpdate");
+                }
+            }
+        });
+        this.addListener("navigation", function (opts) {
+            if (opts == null) {
+                opts = {};
+            }
+            if (opts.hasOwnProperty("enableForwardNav")) {
+                if (opts.enableForwardNav) {
+                    return ForwardBlocker.instance.enable_forward_navigation_for(_this.$iframe[0]);
+                }
+                else {
+                    return ForwardBlocker.instance.prevent_forward_navigation_for(_this.$iframe[0], opts.message);
+                }
+            }
+        });
+        this.addListener("getFirebaseJWT", function (request) {
+            return _this.getFirebaseJwt(request);
+        });
+        if (this.learnerStateSavingEnabled()) {
+            this.post("getLearnerUrl");
+        }
+        // Enable autosave after model is loaded. Theoretically we could save empty model before it's loaded,
+        // so its state would be lost.
+        return this.loadInteractive(function () {
+            return _this.setAutoSaveEnabled(true);
+        });
+    };
+    IFrameSaver.prototype.error = function (msg) {
+        return this.saveIndicator.showSaveFailed(msg);
+    };
+    IFrameSaver.prototype.learnerStateSavingEnabled = function () {
+        return this.enableLearnerState && this.interactiveRunStateUrl;
+    };
+    IFrameSaver.prototype.confirmDelete = function (callback) {
+        if (window.confirm("Are you sure you want to restart your work in this model?")) {
+            return callback();
+        }
+    };
+    IFrameSaver.prototype.deleteData = function () {
+        var _this = this;
+        // Disable autosave, as it's possible that autosave will be triggered *after* we send to server "null" state
+        // (delete it). Actually it used to happen quite often.
+        this.setAutoSaveEnabled(false);
+        this.successCallback = function () {
+            window.location.reload();
+        };
+        this.confirmDelete(function () {
+            _this.saveLearnerState(null);
+            _this.saveLearnerUrl("");
+        });
+    };
+    IFrameSaver.prototype.saveLearnerUrl = function (learnerUrl) {
+        var _this = this;
+        if (!this.learnerStateSavingEnabled()) {
+            return;
+        }
+        return $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: this.interactiveRunStateUrl,
+            data: {
+                learner_url: learnerUrl
+            },
+            error: function () {
+                _this.error("couldn't save learner url");
+            }
+        });
+    };
+    IFrameSaver.prototype.loadInteractive = function (callback) {
+        var _this = this;
+        if (!this.learnerStateSavingEnabled()) {
+            this.initInteractive();
+            callback();
+            return;
+        }
+        return $.ajax({
+            url: this.interactiveRunStateUrl,
+            success: function (response) {
+                if (response.raw_data) {
+                    var interactive = JSON.parse(response.raw_data);
+                    if (interactive) {
+                        _this.savedState = interactive;
+                        // DEPRECATED: the initInteractive message includes the interactive state so
+                        // interactives should use the initInteractive method instead
+                        _this.post("loadInteractive", interactive);
+                        // Lab logging needs to be re-enabled after interactive is (re)loaded.
+                        LoggerUtils.enableLabLogging(_this.$iframe[0]);
+                        // State is available. Show "Undo all my work" button.
+                        _this.$deleteButton.show();
+                    }
+                }
+                _this.initInteractive(null, response);
+            },
+            error: function () {
+                _this.initInteractive("couldn't load interactive");
+                _this.error("couldn't load interactive");
+            },
+            complete: function () {
+                callback();
+            }
+        });
+    };
+    // this is the newer method of initializing an interactive
+    // it returns the current state and linked state
+    IFrameSaver.prototype.initInteractive = function (err, response) {
+        if (err === void 0) { err = null; }
+        if (response === void 0) { response = null; }
+        var globalInteractiveState = (typeof globalIframeSaver !== "undefined" && globalIframeSaver !== null)
+            ? globalIframeSaver.globalState
+            : null;
+        var initInteractiveMsg = {
+            version: 1,
+            error: err,
+            mode: "runtime",
+            authoredState: this.authoredState,
+            interactiveState: null,
+            globalInteractiveState: globalInteractiveState,
+            interactiveStateUrl: this.interactiveRunStateUrl,
+            collaboratorUrls: (this.collaboratorUrls != null) ? this.collaboratorUrls.split(";") : null,
+            classInfoUrl: this.classInfoUrl,
+            interactive: {
+                id: this.interactiveId,
+                name: this.interactiveName
+            },
+            authInfo: {
+                provider: this.authProvider,
+                loggedIn: this.loggedIn,
+                email: this.userEmail
+            }
+        };
+        // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing
+        // it directly into general init message. However, multiple interactives are already using this format
+        // and it doesn't seem to be worth changing at this point.
+        $.extend(true, initInteractiveMsg, interactiveStateProps(response));
+        this.post("initInteractive", initInteractiveMsg);
+    };
+    IFrameSaver.prototype.setAutoSaveEnabled = function (enabled) {
+        var _this = this;
+        if (!this.learnerStateSavingEnabled()) {
+            return;
+        }
+        // Save interactive every 5 seconds, on window focus and iframe mouseout just to be safe.
+        // Focus event is attached to the window, so it has to have unique namespace. Mouseout is attached to the iframe
+        // itself, but other code can use that event too (e.g. logging).
+        var namespace = "focus.iframe_saver_" + this.$iframe.data("id");
+        var focusNamespace = "focus." + namespace;
+        var mouseoutNamespace = "mouseout." + namespace;
+        if (enabled) {
+            this.autoSaveIntervalId = setInterval((function () { return _this.save(); }), 5 * 1000);
+            $(window).on(focusNamespace, function () { return _this.save(); });
+            return this.$iframe.on(mouseoutNamespace, function () { return _this.save(); });
+        }
+        else {
+            if (this.autoSaveIntervalId) {
+                clearInterval(this.autoSaveIntervalId);
+            }
+            $(window).off(focusNamespace);
+            return this.$iframe.off(mouseoutNamespace);
+        }
+    };
+    IFrameSaver.prototype.getFirebaseJwt = function (request) {
+        var _this = this;
+        var requestId = request ? request.requestId : undefined;
+        var opts = request || {};
+        if (opts.requestId) {
+            delete opts.requestId;
+        }
+        var createResponse = function (baseResponse) {
+            if (requestId) {
+                baseResponse.requestId = requestId;
+            }
+            return baseResponse;
+        };
+        // TODO: after typescript upgrade remove `requestId: requestId!, `
+        return $.ajax({
+            type: "POST",
+            url: this.getFirebaseJWTUrl,
+            data: opts,
+            success: function (data) {
+                _this.post("firebaseJWT", createResponse({ requestId: requestId, token: data.token }));
+            },
+            error: function (jqxhr, status, error) {
+                _this.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
+            }
+        });
+    };
+    IFrameSaver.prototype.post = function (message, content) {
+        this.iframePhone.post(message, content);
+    };
+    IFrameSaver.prototype.addListener = function (message, listener) {
+        this.iframePhone.addListener(message, listener);
+    };
+    IFrameSaver.instances = [];
+    return IFrameSaver;
+}());
+exports.IFrameSaver = IFrameSaver;
+
+
+/***/ }),
+
+/***/ "./src/interactive-api/index.ts":
+/*!**************************************!*\
+  !*** ./src/interactive-api/index.ts ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts");
+__export(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts"));
+__export(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts"));
+__export(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api/iframe-saver.ts"));
+$(document).ready(function () {
+    if (gon.globalInteractiveState != null) {
+        window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
+    }
+});
 
 
 /***/ }),
