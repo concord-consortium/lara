@@ -113,6 +113,10 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
     return this.post("height", height);
   }
 
+  public setHint(hint: string) {
+    return this.post("hint", hint);
+  }
+
   public setSupportedFeatures(features: ISupportedFeatures) {
     const request: ISupportedFeaturesRequest = {
       apiVersion: 1,

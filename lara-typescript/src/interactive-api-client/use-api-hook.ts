@@ -66,6 +66,12 @@ export function useLaraInteractiveApi<InteractiveState = {}, AuthoredState = {},
     }
   };
 
+  const handleSetHint = (hint: string) => {
+    if (client.current) {
+      client.current.setHint(hint);
+    }
+  };
+
   const handleSetAspectRatio = (aspectRatio: number) => {
     if (client.current) {
       const existingFeatures = hookOptions.supportedFeatures || {};
@@ -111,6 +117,7 @@ export function useLaraInteractiveApi<InteractiveState = {}, AuthoredState = {},
     setGlobalInteractiveState: handleSetGlobalInteractiveState,
     setHeight: handleSetHeight,
     setAspectRatio: handleSetAspectRatio,
+    setHint: handleSetHint,
     setNavigation: handleSetNavigation,
     getAuthInfo: handleGetAuthInfo,
     getFirebaseJWT: handleGetFirebaseJWT
