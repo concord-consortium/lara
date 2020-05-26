@@ -8181,816 +8181,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-<<<<<<< HEAD
-/* WEBPACK VAR INJECTION */(function(process) {var __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * EventEmitter2
- * https://github.com/hij1nx/EventEmitter2
- *
- * Copyright (c) 2013 hij1nx
- * Licensed under the MIT license.
- */
-;!function(undefined) {
-
-  var isArray = Array.isArray ? Array.isArray : function _isArray(obj) {
-    return Object.prototype.toString.call(obj) === "[object Array]";
-  };
-  var defaultMaxListeners = 10;
-
-  function init() {
-    this._events = {};
-    if (this._conf) {
-      configure.call(this, this._conf);
-    }
-  }
-
-  function configure(conf) {
-    if (conf) {
-      this._conf = conf;
-
-      conf.delimiter && (this.delimiter = conf.delimiter);
-      this._maxListeners = conf.maxListeners !== undefined ? conf.maxListeners : defaultMaxListeners;
-
-      conf.wildcard && (this.wildcard = conf.wildcard);
-      conf.newListener && (this._newListener = conf.newListener);
-      conf.removeListener && (this._removeListener = conf.removeListener);
-      conf.verboseMemoryLeak && (this.verboseMemoryLeak = conf.verboseMemoryLeak);
-
-      if (this.wildcard) {
-        this.listenerTree = {};
-      }
-    } else {
-      this._maxListeners = defaultMaxListeners;
-    }
-  }
-
-  function logPossibleMemoryLeak(count, eventName) {
-    var errorMsg = '(node) warning: possible EventEmitter memory ' +
-        'leak detected. ' + count + ' listeners added. ' +
-        'Use emitter.setMaxListeners() to increase limit.';
-
-    if(this.verboseMemoryLeak){
-      errorMsg += ' Event name: ' + eventName + '.';
-    }
-
-    if(typeof process !== 'undefined' && process.emitWarning){
-      var e = new Error(errorMsg);
-      e.name = 'MaxListenersExceededWarning';
-      e.emitter = this;
-      e.count = count;
-      process.emitWarning(e);
-    } else {
-      console.error(errorMsg);
-
-      if (console.trace){
-        console.trace();
-      }
-    }
-  }
-
-  function EventEmitter(conf) {
-    this._events = {};
-    this._newListener = false;
-    this._removeListener = false;
-    this.verboseMemoryLeak = false;
-    configure.call(this, conf);
-  }
-  EventEmitter.EventEmitter2 = EventEmitter; // backwards compatibility for exporting EventEmitter property
-
-  //
-  // Attention, function return type now is array, always !
-  // It has zero elements if no any matches found and one or more
-  // elements (leafs) if there are matches
-  //
-  function searchListenerTree(handlers, type, tree, i) {
-    if (!tree) {
-      return [];
-    }
-    var listeners=[], leaf, len, branch, xTree, xxTree, isolatedBranch, endReached,
-        typeLength = type.length, currentType = type[i], nextType = type[i+1];
-    if (i === typeLength && tree._listeners) {
-      //
-      // If at the end of the event(s) list and the tree has listeners
-      // invoke those listeners.
-      //
-      if (typeof tree._listeners === 'function') {
-        handlers && handlers.push(tree._listeners);
-        return [tree];
-      } else {
-        for (leaf = 0, len = tree._listeners.length; leaf < len; leaf++) {
-          handlers && handlers.push(tree._listeners[leaf]);
-        }
-        return [tree];
-      }
-    }
-
-    if ((currentType === '*' || currentType === '**') || tree[currentType]) {
-      //
-      // If the event emitted is '*' at this part
-      // or there is a concrete match at this patch
-      //
-      if (currentType === '*') {
-        for (branch in tree) {
-          if (branch !== '_listeners' && tree.hasOwnProperty(branch)) {
-            listeners = listeners.concat(searchListenerTree(handlers, type, tree[branch], i+1));
-          }
-        }
-        return listeners;
-      } else if(currentType === '**') {
-        endReached = (i+1 === typeLength || (i+2 === typeLength && nextType === '*'));
-        if(endReached && tree._listeners) {
-          // The next element has a _listeners, add it to the handlers.
-          listeners = listeners.concat(searchListenerTree(handlers, type, tree, typeLength));
-        }
-
-        for (branch in tree) {
-          if (branch !== '_listeners' && tree.hasOwnProperty(branch)) {
-            if(branch === '*' || branch === '**') {
-              if(tree[branch]._listeners && !endReached) {
-                listeners = listeners.concat(searchListenerTree(handlers, type, tree[branch], typeLength));
-              }
-              listeners = listeners.concat(searchListenerTree(handlers, type, tree[branch], i));
-            } else if(branch === nextType) {
-              listeners = listeners.concat(searchListenerTree(handlers, type, tree[branch], i+2));
-            } else {
-              // No match on this one, shift into the tree but not in the type array.
-              listeners = listeners.concat(searchListenerTree(handlers, type, tree[branch], i));
-            }
-          }
-        }
-        return listeners;
-      }
-
-      listeners = listeners.concat(searchListenerTree(handlers, type, tree[currentType], i+1));
-    }
-
-    xTree = tree['*'];
-    if (xTree) {
-      //
-      // If the listener tree will allow any match for this part,
-      // then recursively explore all branches of the tree
-      //
-      searchListenerTree(handlers, type, xTree, i+1);
-    }
-
-    xxTree = tree['**'];
-    if(xxTree) {
-      if(i < typeLength) {
-        if(xxTree._listeners) {
-          // If we have a listener on a '**', it will catch all, so add its handler.
-          searchListenerTree(handlers, type, xxTree, typeLength);
-        }
-
-        // Build arrays of matching next branches and others.
-        for(branch in xxTree) {
-          if(branch !== '_listeners' && xxTree.hasOwnProperty(branch)) {
-            if(branch === nextType) {
-              // We know the next element will match, so jump twice.
-              searchListenerTree(handlers, type, xxTree[branch], i+2);
-            } else if(branch === currentType) {
-              // Current node matches, move into the tree.
-              searchListenerTree(handlers, type, xxTree[branch], i+1);
-            } else {
-              isolatedBranch = {};
-              isolatedBranch[branch] = xxTree[branch];
-              searchListenerTree(handlers, type, { '**': isolatedBranch }, i+1);
-            }
-          }
-        }
-      } else if(xxTree._listeners) {
-        // We have reached the end and still on a '**'
-        searchListenerTree(handlers, type, xxTree, typeLength);
-      } else if(xxTree['*'] && xxTree['*']._listeners) {
-        searchListenerTree(handlers, type, xxTree['*'], typeLength);
-      }
-    }
-
-    return listeners;
-  }
-
-  function growListenerTree(type, listener) {
-
-    type = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-
-    //
-    // Looks for two consecutive '**', if so, don't add the event at all.
-    //
-    for(var i = 0, len = type.length; i+1 < len; i++) {
-      if(type[i] === '**' && type[i+1] === '**') {
-        return;
-      }
-    }
-
-    var tree = this.listenerTree;
-    var name = type.shift();
-
-    while (name !== undefined) {
-
-      if (!tree[name]) {
-        tree[name] = {};
-      }
-
-      tree = tree[name];
-
-      if (type.length === 0) {
-
-        if (!tree._listeners) {
-          tree._listeners = listener;
-        }
-        else {
-          if (typeof tree._listeners === 'function') {
-            tree._listeners = [tree._listeners];
-          }
-
-          tree._listeners.push(listener);
-
-          if (
-            !tree._listeners.warned &&
-            this._maxListeners > 0 &&
-            tree._listeners.length > this._maxListeners
-          ) {
-            tree._listeners.warned = true;
-            logPossibleMemoryLeak.call(this, tree._listeners.length, name);
-          }
-        }
-        return true;
-      }
-      name = type.shift();
-    }
-    return true;
-  }
-
-  // By default EventEmitters will print a warning if more than
-  // 10 listeners are added to it. This is a useful default which
-  // helps finding memory leaks.
-  //
-  // Obviously not all Emitters should be limited to 10. This function allows
-  // that to be increased. Set to zero for unlimited.
-
-  EventEmitter.prototype.delimiter = '.';
-
-  EventEmitter.prototype.setMaxListeners = function(n) {
-    if (n !== undefined) {
-      this._maxListeners = n;
-      if (!this._conf) this._conf = {};
-      this._conf.maxListeners = n;
-    }
-  };
-
-  EventEmitter.prototype.event = '';
-
-
-  EventEmitter.prototype.once = function(event, fn) {
-    return this._once(event, fn, false);
-  };
-
-  EventEmitter.prototype.prependOnceListener = function(event, fn) {
-    return this._once(event, fn, true);
-  };
-
-  EventEmitter.prototype._once = function(event, fn, prepend) {
-    this._many(event, 1, fn, prepend);
-    return this;
-  };
-
-  EventEmitter.prototype.many = function(event, ttl, fn) {
-    return this._many(event, ttl, fn, false);
-  }
-
-  EventEmitter.prototype.prependMany = function(event, ttl, fn) {
-    return this._many(event, ttl, fn, true);
-  }
-
-  EventEmitter.prototype._many = function(event, ttl, fn, prepend) {
-    var self = this;
-
-    if (typeof fn !== 'function') {
-      throw new Error('many only accepts instances of Function');
-    }
-
-    function listener() {
-      if (--ttl === 0) {
-        self.off(event, listener);
-      }
-      return fn.apply(this, arguments);
-    }
-
-    listener._origin = fn;
-
-    this._on(event, listener, prepend);
-
-    return self;
-  };
-
-  EventEmitter.prototype.emit = function() {
-
-    this._events || init.call(this);
-
-    var type = arguments[0];
-
-    if (type === 'newListener' && !this._newListener) {
-      if (!this._events.newListener) {
-        return false;
-      }
-    }
-
-    var al = arguments.length;
-    var args,l,i,j;
-    var handler;
-
-    if (this._all && this._all.length) {
-      handler = this._all.slice();
-      if (al > 3) {
-        args = new Array(al);
-        for (j = 0; j < al; j++) args[j] = arguments[j];
-      }
-
-      for (i = 0, l = handler.length; i < l; i++) {
-        this.event = type;
-        switch (al) {
-        case 1:
-          handler[i].call(this, type);
-          break;
-        case 2:
-          handler[i].call(this, type, arguments[1]);
-          break;
-        case 3:
-          handler[i].call(this, type, arguments[1], arguments[2]);
-          break;
-        default:
-          handler[i].apply(this, args);
-        }
-      }
-    }
-
-    if (this.wildcard) {
-      handler = [];
-      var ns = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-      searchListenerTree.call(this, handler, ns, this.listenerTree, 0);
-    } else {
-      handler = this._events[type];
-      if (typeof handler === 'function') {
-        this.event = type;
-        switch (al) {
-        case 1:
-          handler.call(this);
-          break;
-        case 2:
-          handler.call(this, arguments[1]);
-          break;
-        case 3:
-          handler.call(this, arguments[1], arguments[2]);
-          break;
-        default:
-          args = new Array(al - 1);
-          for (j = 1; j < al; j++) args[j - 1] = arguments[j];
-          handler.apply(this, args);
-        }
-        return true;
-      } else if (handler) {
-        // need to make copy of handlers because list can change in the middle
-        // of emit call
-        handler = handler.slice();
-      }
-    }
-
-    if (handler && handler.length) {
-      if (al > 3) {
-        args = new Array(al - 1);
-        for (j = 1; j < al; j++) args[j - 1] = arguments[j];
-      }
-      for (i = 0, l = handler.length; i < l; i++) {
-        this.event = type;
-        switch (al) {
-        case 1:
-          handler[i].call(this);
-          break;
-        case 2:
-          handler[i].call(this, arguments[1]);
-          break;
-        case 3:
-          handler[i].call(this, arguments[1], arguments[2]);
-          break;
-        default:
-          handler[i].apply(this, args);
-        }
-      }
-      return true;
-    } else if (!this._all && type === 'error') {
-      if (arguments[1] instanceof Error) {
-        throw arguments[1]; // Unhandled 'error' event
-      } else {
-        throw new Error("Uncaught, unspecified 'error' event.");
-      }
-      return false;
-    }
-
-    return !!this._all;
-  };
-
-  EventEmitter.prototype.emitAsync = function() {
-
-    this._events || init.call(this);
-
-    var type = arguments[0];
-
-    if (type === 'newListener' && !this._newListener) {
-        if (!this._events.newListener) { return Promise.resolve([false]); }
-    }
-
-    var promises= [];
-
-    var al = arguments.length;
-    var args,l,i,j;
-    var handler;
-
-    if (this._all) {
-      if (al > 3) {
-        args = new Array(al);
-        for (j = 1; j < al; j++) args[j] = arguments[j];
-      }
-      for (i = 0, l = this._all.length; i < l; i++) {
-        this.event = type;
-        switch (al) {
-        case 1:
-          promises.push(this._all[i].call(this, type));
-          break;
-        case 2:
-          promises.push(this._all[i].call(this, type, arguments[1]));
-          break;
-        case 3:
-          promises.push(this._all[i].call(this, type, arguments[1], arguments[2]));
-          break;
-        default:
-          promises.push(this._all[i].apply(this, args));
-        }
-      }
-    }
-
-    if (this.wildcard) {
-      handler = [];
-      var ns = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-      searchListenerTree.call(this, handler, ns, this.listenerTree, 0);
-    } else {
-      handler = this._events[type];
-    }
-
-    if (typeof handler === 'function') {
-      this.event = type;
-      switch (al) {
-      case 1:
-        promises.push(handler.call(this));
-        break;
-      case 2:
-        promises.push(handler.call(this, arguments[1]));
-        break;
-      case 3:
-        promises.push(handler.call(this, arguments[1], arguments[2]));
-        break;
-      default:
-        args = new Array(al - 1);
-        for (j = 1; j < al; j++) args[j - 1] = arguments[j];
-        promises.push(handler.apply(this, args));
-      }
-    } else if (handler && handler.length) {
-      handler = handler.slice();
-      if (al > 3) {
-        args = new Array(al - 1);
-        for (j = 1; j < al; j++) args[j - 1] = arguments[j];
-      }
-      for (i = 0, l = handler.length; i < l; i++) {
-        this.event = type;
-        switch (al) {
-        case 1:
-          promises.push(handler[i].call(this));
-          break;
-        case 2:
-          promises.push(handler[i].call(this, arguments[1]));
-          break;
-        case 3:
-          promises.push(handler[i].call(this, arguments[1], arguments[2]));
-          break;
-        default:
-          promises.push(handler[i].apply(this, args));
-        }
-      }
-    } else if (!this._all && type === 'error') {
-      if (arguments[1] instanceof Error) {
-        return Promise.reject(arguments[1]); // Unhandled 'error' event
-      } else {
-        return Promise.reject("Uncaught, unspecified 'error' event.");
-      }
-    }
-
-    return Promise.all(promises);
-  };
-
-  EventEmitter.prototype.on = function(type, listener) {
-    return this._on(type, listener, false);
-  };
-
-  EventEmitter.prototype.prependListener = function(type, listener) {
-    return this._on(type, listener, true);
-  };
-
-  EventEmitter.prototype.onAny = function(fn) {
-    return this._onAny(fn, false);
-  };
-
-  EventEmitter.prototype.prependAny = function(fn) {
-    return this._onAny(fn, true);
-  };
-
-  EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-
-  EventEmitter.prototype._onAny = function(fn, prepend){
-    if (typeof fn !== 'function') {
-      throw new Error('onAny only accepts instances of Function');
-    }
-
-    if (!this._all) {
-      this._all = [];
-    }
-
-    // Add the function to the event listener collection.
-    if(prepend){
-      this._all.unshift(fn);
-    }else{
-      this._all.push(fn);
-    }
-
-    return this;
-  }
-
-  EventEmitter.prototype._on = function(type, listener, prepend) {
-    if (typeof type === 'function') {
-      this._onAny(type, listener);
-      return this;
-    }
-
-    if (typeof listener !== 'function') {
-      throw new Error('on only accepts instances of Function');
-    }
-    this._events || init.call(this);
-
-    // To avoid recursion in the case that type == "newListeners"! Before
-    // adding it to the listeners, first emit "newListeners".
-    if (this._newListener)
-       this.emit('newListener', type, listener);
-
-    if (this.wildcard) {
-      growListenerTree.call(this, type, listener);
-      return this;
-    }
-
-    if (!this._events[type]) {
-      // Optimize the case of one listener. Don't need the extra array object.
-      this._events[type] = listener;
-    }
-    else {
-      if (typeof this._events[type] === 'function') {
-        // Change to array.
-        this._events[type] = [this._events[type]];
-      }
-
-      // If we've already got an array, just add
-      if(prepend){
-        this._events[type].unshift(listener);
-      }else{
-        this._events[type].push(listener);
-      }
-
-      // Check for listener leak
-      if (
-        !this._events[type].warned &&
-        this._maxListeners > 0 &&
-        this._events[type].length > this._maxListeners
-      ) {
-        this._events[type].warned = true;
-        logPossibleMemoryLeak.call(this, this._events[type].length, type);
-      }
-    }
-
-    return this;
-  }
-
-  EventEmitter.prototype.off = function(type, listener) {
-    if (typeof listener !== 'function') {
-      throw new Error('removeListener only takes instances of Function');
-    }
-
-    var handlers,leafs=[];
-
-    if(this.wildcard) {
-      var ns = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-      leafs = searchListenerTree.call(this, null, ns, this.listenerTree, 0);
-    }
-    else {
-      // does not use listeners(), so no side effect of creating _events[type]
-      if (!this._events[type]) return this;
-      handlers = this._events[type];
-      leafs.push({_listeners:handlers});
-    }
-
-    for (var iLeaf=0; iLeaf<leafs.length; iLeaf++) {
-      var leaf = leafs[iLeaf];
-      handlers = leaf._listeners;
-      if (isArray(handlers)) {
-
-        var position = -1;
-
-        for (var i = 0, length = handlers.length; i < length; i++) {
-          if (handlers[i] === listener ||
-            (handlers[i].listener && handlers[i].listener === listener) ||
-            (handlers[i]._origin && handlers[i]._origin === listener)) {
-            position = i;
-            break;
-          }
-        }
-
-        if (position < 0) {
-          continue;
-        }
-
-        if(this.wildcard) {
-          leaf._listeners.splice(position, 1);
-        }
-        else {
-          this._events[type].splice(position, 1);
-        }
-
-        if (handlers.length === 0) {
-          if(this.wildcard) {
-            delete leaf._listeners;
-          }
-          else {
-            delete this._events[type];
-          }
-        }
-        if (this._removeListener)
-          this.emit("removeListener", type, listener);
-
-        return this;
-      }
-      else if (handlers === listener ||
-        (handlers.listener && handlers.listener === listener) ||
-        (handlers._origin && handlers._origin === listener)) {
-        if(this.wildcard) {
-          delete leaf._listeners;
-        }
-        else {
-          delete this._events[type];
-        }
-        if (this._removeListener)
-          this.emit("removeListener", type, listener);
-      }
-    }
-
-    function recursivelyGarbageCollect(root) {
-      if (root === undefined) {
-        return;
-      }
-      var keys = Object.keys(root);
-      for (var i in keys) {
-        var key = keys[i];
-        var obj = root[key];
-        if ((obj instanceof Function) || (typeof obj !== "object") || (obj === null))
-          continue;
-        if (Object.keys(obj).length > 0) {
-          recursivelyGarbageCollect(root[key]);
-        }
-        if (Object.keys(obj).length === 0) {
-          delete root[key];
-        }
-      }
-    }
-    recursivelyGarbageCollect(this.listenerTree);
-
-    return this;
-  };
-
-  EventEmitter.prototype.offAny = function(fn) {
-    var i = 0, l = 0, fns;
-    if (fn && this._all && this._all.length > 0) {
-      fns = this._all;
-      for(i = 0, l = fns.length; i < l; i++) {
-        if(fn === fns[i]) {
-          fns.splice(i, 1);
-          if (this._removeListener)
-            this.emit("removeListenerAny", fn);
-          return this;
-        }
-      }
-    } else {
-      fns = this._all;
-      if (this._removeListener) {
-        for(i = 0, l = fns.length; i < l; i++)
-          this.emit("removeListenerAny", fns[i]);
-      }
-      this._all = [];
-    }
-    return this;
-  };
-
-  EventEmitter.prototype.removeListener = EventEmitter.prototype.off;
-
-  EventEmitter.prototype.removeAllListeners = function(type) {
-    if (type === undefined) {
-      !this._events || init.call(this);
-      return this;
-    }
-
-    if (this.wildcard) {
-      var ns = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-      var leafs = searchListenerTree.call(this, null, ns, this.listenerTree, 0);
-
-      for (var iLeaf=0; iLeaf<leafs.length; iLeaf++) {
-        var leaf = leafs[iLeaf];
-        leaf._listeners = null;
-      }
-    }
-    else if (this._events) {
-      this._events[type] = null;
-    }
-    return this;
-  };
-
-  EventEmitter.prototype.listeners = function(type) {
-    if (this.wildcard) {
-      var handlers = [];
-      var ns = typeof type === 'string' ? type.split(this.delimiter) : type.slice();
-      searchListenerTree.call(this, handlers, ns, this.listenerTree, 0);
-      return handlers;
-    }
-
-    this._events || init.call(this);
-
-    if (!this._events[type]) this._events[type] = [];
-    if (!isArray(this._events[type])) {
-      this._events[type] = [this._events[type]];
-    }
-    return this._events[type];
-  };
-
-  EventEmitter.prototype.eventNames = function(){
-    return Object.keys(this._events);
-  }
-
-  EventEmitter.prototype.listenerCount = function(type) {
-    return this.listeners(type).length;
-  };
-
-  EventEmitter.prototype.listenersAny = function() {
-
-    if(this._all) {
-      return this._all;
-    }
-    else {
-      return [];
-    }
-
-  };
-
-  if (true) {
-     // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
-      return EventEmitter;
-    }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-}();
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/iframe-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-var HELLO_INTERVAL_LENGTH = 200;
-var HELLO_TIMEOUT_LENGTH = 60000;
-
-function IFrameEndpoint() {
-  var listeners = {};
-  var isInitialized = false;
-  var connected = false;
-  var postMessageQueue = [];
-  var helloInterval;
-
-  function postToParent(message) {
-    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-    //     https://github.com/Modernizr/Modernizr/issues/388
-    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-    if (structuredClone.supported()) {
-      window.parent.postMessage(message, '*');
-    } else {
-      window.parent.postMessage(JSON.stringify(message), '*');
-    }
-=======
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _emotion_sheet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/sheet */ "./node_modules/@emotion/sheet/dist/sheet.browser.esm.js");
@@ -9072,131 +8262,9 @@ var ruleSheet = function ruleSheet(context, content, selectors, parents, line, c
       {
         content.split(needle).forEach(toSheet);
       }
->>>>>>> Removed separate page-item-authoring js/css files [#172887832]
   }
 };
 
-<<<<<<< HEAD
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      postToParent(message);
-    } else {
-      postMessageQueue.push(message);
-    }
-  }
-
-  function postHello() {
-    postToParent({
-      type: 'hello'
-    });
-  }
-
-  function addListener(type, fn) {
-    listeners[type] = fn;
-  }
-
-  function removeListener(type) {
-    delete listeners[type];
-  }
-
-  function removeAllListeners() {
-    listeners = {};
-  }
-
-  function getListenerNames() {
-    return Object.keys(listeners);
-  }
-
-  function messageListener(message) {
-    // Anyone can send us a message. Only pay attention to messages from parent.
-    if (message.source !== window.parent) return;
-    var messageData = message.data;
-    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
-
-    if (!connected && messageData.type === 'hello') {
-      connected = true;
-      stopPostingHello();
-      while (postMessageQueue.length > 0) {
-        post(postMessageQueue.shift());
-      }
-    }
-
-    if (connected && listeners[messageData.type]) {
-      listeners[messageData.type](messageData.content);
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    stopPostingHello();
-    removeAllListeners();
-    window.removeEventListener('message', messageListener);
-  }
-
-  /**
-    Initialize communication with the parent frame. This should not be called until the app's custom
-    listeners are registered (via our 'addListener' public method) because, once we open the
-    communication, the parent window may send any messages it may have queued. Messages for which
-    we don't have handlers will be silently ignored.
-  */
-  function initialize() {
-    if (isInitialized) {
-      return;
-    }
-    isInitialized = true;
-    if (window.parent === window) return;
-
-    // We kick off communication with the parent window by sending a "hello" message. Then we wait
-    // for a handshake (another "hello" message) from the parent window.
-    startPostingHello();
-    window.addEventListener('message', messageListener, false);
-  }
-
-  function startPostingHello() {
-    if (helloInterval) {
-      stopPostingHello();
-    }
-    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
-    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
-    // Post the first msg immediately.
-    postHello();
-  }
-
-  function stopPostingHello() {
-    window.clearInterval(helloInterval);
-    helloInterval = null;
-  }
-
-  // Public API.
-  return {
-    initialize: initialize,
-    getListenerNames: getListenerNames,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    post: post
-  };
-}
-
-var instance = null;
-
-// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-module.exports = function getIFrameEndpoint() {
-  if (!instance) {
-    instance = new IFrameEndpoint();
-=======
 var createCache = function createCache(options) {
   if (options === undefined) options = {};
   var key = options.key || 'css';
@@ -9416,377 +8484,8 @@ var render = function render(cache, props, theme, ref) {
     className = Object(_emotion_utils__WEBPACK_IMPORTED_MODULE_3__["getRegisteredStyles"])(cache.registered, registeredStyles, props.className);
   } else if (props.className != null) {
     className = props.className + " ";
->>>>>>> Removed separate page-item-authoring js/css files [#172887832]
-  }
-  return instance;
-};
-
-<<<<<<< HEAD
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js");
-var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js");
-
-// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
-// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
-function getPseudoUUID() {
-  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  var len = chars.length;
-  var ret = [];
-
-  for (var i = 0; i < 10; i++) {
-    ret.push(chars[Math.floor(Math.random() * len)]);
-  }
-  return ret.join('');
-}
-
-module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
-  var pendingCallbacks = Object.create({});
-
-  // if it's a non-null object, rather than a function, 'handler' is really an options object
-  if (handler && typeof handler === 'object') {
-    namespace = handler.namespace;
-    targetWindow = handler.targetWindow;
-    targetOrigin = handler.targetOrigin;
-    phone = handler.phone;
-    handler = handler.handler;
   }
 
-  if (!phone) {
-    if (targetWindow === window.parent) {
-      phone = getIFrameEndpoint();
-      phone.initialize();
-    } else {
-      phone = new ParentEndpoint(targetWindow, targetOrigin);
-    }
-  }
-
-  phone.addListener(namespace, function (message) {
-    var callbackObj;
-
-    if (message.messageType === 'call' && typeof this.handler === 'function') {
-      this.handler.call(undefined, message.value, function (returnValue) {
-        phone.post(namespace, {
-          messageType: 'returnValue',
-          uuid: message.uuid,
-          value: returnValue
-        });
-      });
-    } else if (message.messageType === 'returnValue') {
-      callbackObj = pendingCallbacks[message.uuid];
-
-      if (callbackObj) {
-        window.clearTimeout(callbackObj.timeout);
-        if (callbackObj.callback) {
-          callbackObj.callback.call(undefined, message.value);
-        }
-        pendingCallbacks[message.uuid] = null;
-      }
-    }
-  }.bind(this));
-
-  function call(message, callback) {
-    var uuid = getPseudoUUID();
-
-    pendingCallbacks[uuid] = {
-      callback: callback,
-      timeout: window.setTimeout(function () {
-        if (callback) {
-          callback(undefined, new Error("IframePhone timed out waiting for reply"));
-        }
-      }, 2000)
-    };
-
-    phone.post(namespace, {
-      messageType: 'call',
-      uuid: uuid,
-      value: message
-    });
-  }
-
-  function disconnect() {
-    phone.disconnect();
-  }
-
-  this.handler = handler;
-  this.call = call.bind(this);
-  this.disconnect = disconnect.bind(this);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/parent-endpoint.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/parent-endpoint.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
-
-/**
-  Call as:
-    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
-      targetWindow is a WindowProxy object. (Messages will be sent to it)
-
-      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
-
-      afterConnectedCallback is an optional callback function to be called when the connection is
-        established.
-
-  OR (less secure):
-    new ParentEndpoint(targetIframe, afterConnectedCallback)
-
-      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
-
-      afterConnectedCallback is an optional callback function
-
-    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
-    provided DOM object at the time of the constructor invocation. This is less secure because the
-    iframe might have been navigated to an unexpected domain before constructor invocation.
-
-  Note that it is important to specify the expected origin of the iframe's content to safeguard
-  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
-  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
-  form of the constructor) does not protect against sending a message to the wrong domain. The
-  window object is actualy a WindowProxy which transparently proxies the Window object of the
-  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
-  completely differeent Window object, possibly controlled by a hostile domain.
-
-  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
-  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
-*/
-
-module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
-  var postMessageQueue = [];
-  var connected = false;
-  var handlers = {};
-  var targetWindowIsIframeElement;
-
-  function getIframeOrigin(iframe) {
-    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
-  }
-
-  function post(type, content) {
-    var message;
-    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
-    // as the first argument.
-    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content
-      };
-    }
-    if (connected) {
-      var tWindow = getTargetWindow();
-      // if we are laready connected ... send the message
-      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-      //     https://github.com/Modernizr/Modernizr/issues/388
-      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-      if (structuredClone.supported()) {
-        tWindow.postMessage(message, targetOrigin);
-      } else {
-        tWindow.postMessage(JSON.stringify(message), targetOrigin);
-      }
-    } else {
-      // else queue up the messages to send after connection complete.
-      postMessageQueue.push(message);
-    }
-  }
-
-  function addListener(messageName, func) {
-    handlers[messageName] = func;
-  }
-
-  function removeListener(messageName) {
-    delete handlers[messageName];
-  }
-
-  function removeAllListeners() {
-    handlers = {};
-  }
-
-  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
-  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
-  // only listens for an incoming 'hello' message and the first time we call this function
-  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
-  // It would become important when we decide to refactor the way how communication is initialized.
-  function getTargetWindow() {
-    if (targetWindowIsIframeElement) {
-      var tWindow = targetWindowOrIframeEl.contentWindow;
-      if (!tWindow) {
-        throw "IFrame element needs to be added to DOM before communication " +
-              "can be started (.contentWindow is not available)";
-      }
-      return tWindow;
-    }
-    return targetWindowOrIframeEl;
-  }
-
-  function receiveMessage(message) {
-    var messageData;
-    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
-      messageData = message.data;
-      if (typeof messageData === 'string') {
-        messageData = JSON.parse(messageData);
-      }
-      if (handlers[messageData.type]) {
-        handlers[messageData.type](messageData.content);
-      } else {
-        console.log("cant handle type: " + messageData.type);
-      }
-    }
-  }
-
-  function disconnect() {
-    connected = false;
-    removeAllListeners();
-    window.removeEventListener('message', receiveMessage);
-  }
-
-  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
-  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
-  // we also don't need to do anything
-  try {
-    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
-  } catch (e) {
-    targetWindowIsIframeElement = false;
-  }
-
-  if (targetWindowIsIframeElement) {
-    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
-    // argument is empty or is actually a callback (meaning it is supposed to be the
-    // afterConnectionCallback)
-    if (!targetOrigin || targetOrigin.constructor === Function) {
-      afterConnectedCallback = targetOrigin;
-      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
-    }
-  }
-
-  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
-  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
-  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
-  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
-  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
-  // So, using '*' seems like the only possible solution.
-  if (targetOrigin === 'file://') {
-    targetOrigin = '*';
-  }
-
-  // when we receive 'hello':
-  addListener('hello', function () {
-    connected = true;
-
-    // send hello response
-    post({
-      type: 'hello',
-      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
-      // backward compatible with old IframeEndpoint versions (< v1.2.0).
-      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
-
-    // give the user a chance to do things now that we are connected
-    // note that is will happen before any queued messages
-    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
-      afterConnectedCallback();
-    }
-
-    // Now send any messages that have been queued up ...
-    while (postMessageQueue.length > 0) {
-      post(postMessageQueue.shift());
-    }
-  });
-
-  window.addEventListener('message', receiveMessage, false);
-
-  // Public API.
-  return {
-    post: post,
-    addListener: addListener,
-    removeListener: removeListener,
-    removeAllListeners: removeAllListeners,
-    disconnect: disconnect,
-    getTargetWindow: getTargetWindow,
-    targetOrigin: targetOrigin
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/lib/structured-clone.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/iframe-phone/lib/structured-clone.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var featureSupported = {
-  'structuredClones': 0
-};
-
-(function () {
-  var result = 0;
-
-  if (!!window.postMessage) {
-    try {
-      // Spec states you can't transmit DOM nodes and it will throw an error
-      // postMessage implementations that support cloned data will throw.
-      window.postMessage(document.createElement("a"), "*");
-    } catch (e) {
-      // BBOS6 throws but doesn't pass through the correct exception
-      // so check error message
-      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
-      featureSupported = {
-        'structuredClones': result
-      };
-    }
-  }
-}());
-
-exports.supported = function supported() {
-  return featureSupported && featureSupported.structuredClones > 0;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/iframe-phone/main.js":
-/*!*******************************************!*\
-  !*** ./node_modules/iframe-phone/main.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  /**
-   * Allows to communicate with an iframe.
-   */
-  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js"),
-  /**
-   * Allows to communicate with a parent page.
-   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
-   */
-  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js"),
-  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js"),
-
-  // TODO: May be misnamed
-  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
-
-};
-
-=======
   var serialized = Object(_emotion_serialize__WEBPACK_IMPORTED_MODULE_4__["serializeStyles"])(registeredStyles);
 
   if ( true && serialized.name.indexOf('-') === -1) {
@@ -10140,7 +8839,6 @@ function css() {
   \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
->>>>>>> Removed separate page-item-authoring js/css files [#172887832]
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -12335,6 +11033,525 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 }();
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/iframe-endpoint.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/iframe-endpoint.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
+var HELLO_INTERVAL_LENGTH = 200;
+var HELLO_TIMEOUT_LENGTH = 60000;
+
+function IFrameEndpoint() {
+  var listeners = {};
+  var isInitialized = false;
+  var connected = false;
+  var postMessageQueue = [];
+  var helloInterval;
+
+  function postToParent(message) {
+    // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+    //     https://github.com/Modernizr/Modernizr/issues/388
+    //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+    if (structuredClone.supported()) {
+      window.parent.postMessage(message, '*');
+    } else {
+      window.parent.postMessage(JSON.stringify(message), '*');
+    }
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      postToParent(message);
+    } else {
+      postMessageQueue.push(message);
+    }
+  }
+
+  function postHello() {
+    postToParent({
+      type: 'hello'
+    });
+  }
+
+  function addListener(type, fn) {
+    listeners[type] = fn;
+  }
+
+  function removeListener(type) {
+    delete listeners[type];
+  }
+
+  function removeAllListeners() {
+    listeners = {};
+  }
+
+  function getListenerNames() {
+    return Object.keys(listeners);
+  }
+
+  function messageListener(message) {
+    // Anyone can send us a message. Only pay attention to messages from parent.
+    if (message.source !== window.parent) return;
+    var messageData = message.data;
+    if (typeof messageData === 'string') messageData = JSON.parse(messageData);
+
+    if (!connected && messageData.type === 'hello') {
+      connected = true;
+      stopPostingHello();
+      while (postMessageQueue.length > 0) {
+        post(postMessageQueue.shift());
+      }
+    }
+
+    if (connected && listeners[messageData.type]) {
+      listeners[messageData.type](messageData.content);
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    stopPostingHello();
+    removeAllListeners();
+    window.removeEventListener('message', messageListener);
+  }
+
+  /**
+    Initialize communication with the parent frame. This should not be called until the app's custom
+    listeners are registered (via our 'addListener' public method) because, once we open the
+    communication, the parent window may send any messages it may have queued. Messages for which
+    we don't have handlers will be silently ignored.
+  */
+  function initialize() {
+    if (isInitialized) {
+      return;
+    }
+    isInitialized = true;
+    if (window.parent === window) return;
+
+    // We kick off communication with the parent window by sending a "hello" message. Then we wait
+    // for a handshake (another "hello" message) from the parent window.
+    startPostingHello();
+    window.addEventListener('message', messageListener, false);
+  }
+
+  function startPostingHello() {
+    if (helloInterval) {
+      stopPostingHello();
+    }
+    helloInterval = window.setInterval(postHello, HELLO_INTERVAL_LENGTH);
+    window.setTimeout(stopPostingHello, HELLO_TIMEOUT_LENGTH);
+    // Post the first msg immediately.
+    postHello();
+  }
+
+  function stopPostingHello() {
+    window.clearInterval(helloInterval);
+    helloInterval = null;
+  }
+
+  // Public API.
+  return {
+    initialize: initialize,
+    getListenerNames: getListenerNames,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    post: post
+  };
+}
+
+var instance = null;
+
+// IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+module.exports = function getIFrameEndpoint() {
+  if (!instance) {
+    instance = new IFrameEndpoint();
+  }
+  return instance;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var ParentEndpoint = __webpack_require__(/*! ./parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js");
+var getIFrameEndpoint = __webpack_require__(/*! ./iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js");
+
+// Not a real UUID as there's an RFC for that (needed for proper distributed computing).
+// But in this fairly parochial situation, we just need to be fairly sure to avoid repeats.
+function getPseudoUUID() {
+  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  var len = chars.length;
+  var ret = [];
+
+  for (var i = 0; i < 10; i++) {
+    ret.push(chars[Math.floor(Math.random() * len)]);
+  }
+  return ret.join('');
+}
+
+module.exports = function IframePhoneRpcEndpoint(handler, namespace, targetWindow, targetOrigin, phone) {
+  var pendingCallbacks = Object.create({});
+
+  // if it's a non-null object, rather than a function, 'handler' is really an options object
+  if (handler && typeof handler === 'object') {
+    namespace = handler.namespace;
+    targetWindow = handler.targetWindow;
+    targetOrigin = handler.targetOrigin;
+    phone = handler.phone;
+    handler = handler.handler;
+  }
+
+  if (!phone) {
+    if (targetWindow === window.parent) {
+      phone = getIFrameEndpoint();
+      phone.initialize();
+    } else {
+      phone = new ParentEndpoint(targetWindow, targetOrigin);
+    }
+  }
+
+  phone.addListener(namespace, function (message) {
+    var callbackObj;
+
+    if (message.messageType === 'call' && typeof this.handler === 'function') {
+      this.handler.call(undefined, message.value, function (returnValue) {
+        phone.post(namespace, {
+          messageType: 'returnValue',
+          uuid: message.uuid,
+          value: returnValue
+        });
+      });
+    } else if (message.messageType === 'returnValue') {
+      callbackObj = pendingCallbacks[message.uuid];
+
+      if (callbackObj) {
+        window.clearTimeout(callbackObj.timeout);
+        if (callbackObj.callback) {
+          callbackObj.callback.call(undefined, message.value);
+        }
+        pendingCallbacks[message.uuid] = null;
+      }
+    }
+  }.bind(this));
+
+  function call(message, callback) {
+    var uuid = getPseudoUUID();
+
+    pendingCallbacks[uuid] = {
+      callback: callback,
+      timeout: window.setTimeout(function () {
+        if (callback) {
+          callback(undefined, new Error("IframePhone timed out waiting for reply"));
+        }
+      }, 2000)
+    };
+
+    phone.post(namespace, {
+      messageType: 'call',
+      uuid: uuid,
+      value: message
+    });
+  }
+
+  function disconnect() {
+    phone.disconnect();
+  }
+
+  this.handler = handler;
+  this.call = call.bind(this);
+  this.disconnect = disconnect.bind(this);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/parent-endpoint.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/parent-endpoint.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var structuredClone = __webpack_require__(/*! ./structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js");
+
+/**
+  Call as:
+    new ParentEndpoint(targetWindow, targetOrigin, afterConnectedCallback)
+      targetWindow is a WindowProxy object. (Messages will be sent to it)
+
+      targetOrigin is the origin of the targetWindow. (Messages will be restricted to this origin)
+
+      afterConnectedCallback is an optional callback function to be called when the connection is
+        established.
+
+  OR (less secure):
+    new ParentEndpoint(targetIframe, afterConnectedCallback)
+
+      targetIframe is a DOM object (HTMLIframeElement); messages will be sent to its contentWindow.
+
+      afterConnectedCallback is an optional callback function
+
+    In this latter case, targetOrigin will be inferred from the value of the src attribute of the
+    provided DOM object at the time of the constructor invocation. This is less secure because the
+    iframe might have been navigated to an unexpected domain before constructor invocation.
+
+  Note that it is important to specify the expected origin of the iframe's content to safeguard
+  against sending messages to an unexpected domain. This might happen if our iframe is navigated to
+  a third-party URL unexpectedly. Furthermore, having a reference to Window object (as in the first
+  form of the constructor) does not protect against sending a message to the wrong domain. The
+  window object is actualy a WindowProxy which transparently proxies the Window object of the
+  underlying iframe, so that when the iframe is navigated, the "same" WindowProxy now references a
+  completely differeent Window object, possibly controlled by a hostile domain.
+
+  See http://www.esdiscuss.org/topic/a-dom-use-case-that-can-t-be-emulated-with-direct-proxies for
+  more about this weird behavior of WindowProxies (the type returned by <iframe>.contentWindow).
+*/
+
+module.exports = function ParentEndpoint(targetWindowOrIframeEl, targetOrigin, afterConnectedCallback) {
+  var postMessageQueue = [];
+  var connected = false;
+  var handlers = {};
+  var targetWindowIsIframeElement;
+
+  function getIframeOrigin(iframe) {
+    return iframe.src.match(/(.*?\/\/.*?)\//)[1];
+  }
+
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      var tWindow = getTargetWindow();
+      // if we are laready connected ... send the message
+      // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+      //     https://github.com/Modernizr/Modernizr/issues/388
+      //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+      if (structuredClone.supported()) {
+        tWindow.postMessage(message, targetOrigin);
+      } else {
+        tWindow.postMessage(JSON.stringify(message), targetOrigin);
+      }
+    } else {
+      // else queue up the messages to send after connection complete.
+      postMessageQueue.push(message);
+    }
+  }
+
+  function addListener(messageName, func) {
+    handlers[messageName] = func;
+  }
+
+  function removeListener(messageName) {
+    delete handlers[messageName];
+  }
+
+  function removeAllListeners() {
+    handlers = {};
+  }
+
+  // Note that this function can't be used when IFrame element hasn't been added to DOM yet
+  // (.contentWindow would be null). At the moment risk is purely theoretical, as the parent endpoint
+  // only listens for an incoming 'hello' message and the first time we call this function
+  // is in #receiveMessage handler (so iframe had to be initialized before, as it could send 'hello').
+  // It would become important when we decide to refactor the way how communication is initialized.
+  function getTargetWindow() {
+    if (targetWindowIsIframeElement) {
+      var tWindow = targetWindowOrIframeEl.contentWindow;
+      if (!tWindow) {
+        throw "IFrame element needs to be added to DOM before communication " +
+              "can be started (.contentWindow is not available)";
+      }
+      return tWindow;
+    }
+    return targetWindowOrIframeEl;
+  }
+
+  function receiveMessage(message) {
+    var messageData;
+    if (message.source === getTargetWindow() && (targetOrigin === '*' || message.origin === targetOrigin)) {
+      messageData = message.data;
+      if (typeof messageData === 'string') {
+        messageData = JSON.parse(messageData);
+      }
+      if (handlers[messageData.type]) {
+        handlers[messageData.type](messageData.content);
+      } else {
+        console.log("cant handle type: " + messageData.type);
+      }
+    }
+  }
+
+  function disconnect() {
+    connected = false;
+    removeAllListeners();
+    window.removeEventListener('message', receiveMessage);
+  }
+
+  // handle the case that targetWindowOrIframeEl is actually an <iframe> rather than a Window(Proxy) object
+  // Note that if it *is* a WindowProxy, this probe will throw a SecurityException, but in that case
+  // we also don't need to do anything
+  try {
+    targetWindowIsIframeElement = targetWindowOrIframeEl.constructor === HTMLIFrameElement;
+  } catch (e) {
+    targetWindowIsIframeElement = false;
+  }
+
+  if (targetWindowIsIframeElement) {
+    // Infer the origin ONLY if the user did not supply an explicit origin, i.e., if the second
+    // argument is empty or is actually a callback (meaning it is supposed to be the
+    // afterConnectionCallback)
+    if (!targetOrigin || targetOrigin.constructor === Function) {
+      afterConnectedCallback = targetOrigin;
+      targetOrigin = getIframeOrigin(targetWindowOrIframeEl);
+    }
+  }
+
+  // Handle pages served through file:// protocol. Behaviour varies in different browsers. Safari sets origin
+  // to 'file://' and everything works fine, but Chrome and Safari set message.origin to null.
+  // Also, https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage says:
+  //  > Lastly, posting a message to a page at a file: URL currently requires that the targetOrigin argument be "*".
+  //  > file:// cannot be used as a security restriction; this restriction may be modified in the future.
+  // So, using '*' seems like the only possible solution.
+  if (targetOrigin === 'file://') {
+    targetOrigin = '*';
+  }
+
+  // when we receive 'hello':
+  addListener('hello', function () {
+    connected = true;
+
+    // send hello response
+    post({
+      type: 'hello',
+      // `origin` property isn't used by IframeEndpoint anymore (>= 1.2.0), but it's being sent to be
+      // backward compatible with old IframeEndpoint versions (< v1.2.0).
+      origin: window.location.href.match(/(.*?\/\/.*?)\//)[1]
+    });
+
+    // give the user a chance to do things now that we are connected
+    // note that is will happen before any queued messages
+    if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
+      afterConnectedCallback();
+    }
+
+    // Now send any messages that have been queued up ...
+    while (postMessageQueue.length > 0) {
+      post(postMessageQueue.shift());
+    }
+  });
+
+  window.addEventListener('message', receiveMessage, false);
+
+  // Public API.
+  return {
+    post: post,
+    addListener: addListener,
+    removeListener: removeListener,
+    removeAllListeners: removeAllListeners,
+    disconnect: disconnect,
+    getTargetWindow: getTargetWindow,
+    targetOrigin: targetOrigin
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/lib/structured-clone.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/iframe-phone/lib/structured-clone.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var featureSupported = {
+  'structuredClones': 0
+};
+
+(function () {
+  var result = 0;
+
+  if (!!window.postMessage) {
+    try {
+      // Spec states you can't transmit DOM nodes and it will throw an error
+      // postMessage implementations that support cloned data will throw.
+      window.postMessage(document.createElement("a"), "*");
+    } catch (e) {
+      // BBOS6 throws but doesn't pass through the correct exception
+      // so check error message
+      result = (e.DATA_CLONE_ERR || e.message === "Cannot post cyclic structures.") ? 1 : 0;
+      featureSupported = {
+        'structuredClones': result
+      };
+    }
+  }
+}());
+
+exports.supported = function supported() {
+  return featureSupported && featureSupported.structuredClones > 0;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/iframe-phone/main.js":
+/*!*******************************************!*\
+  !*** ./node_modules/iframe-phone/main.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  /**
+   * Allows to communicate with an iframe.
+   */
+  ParentEndpoint:  __webpack_require__(/*! ./lib/parent-endpoint */ "./node_modules/iframe-phone/lib/parent-endpoint.js"),
+  /**
+   * Allows to communicate with a parent page.
+   * IFrameEndpoint is a singleton, as iframe can't have multiple parents anyway.
+   */
+  getIFrameEndpoint: __webpack_require__(/*! ./lib/iframe-endpoint */ "./node_modules/iframe-phone/lib/iframe-endpoint.js"),
+  structuredClone: __webpack_require__(/*! ./lib/structured-clone */ "./node_modules/iframe-phone/lib/structured-clone.js"),
+
+  // TODO: May be misnamed
+  IframePhoneRpcEndpoint: __webpack_require__(/*! ./lib/iframe-phone-rpc-endpoint */ "./node_modules/iframe-phone/lib/iframe-phone-rpc-endpoint.js")
+
+};
+
 
 /***/ }),
 
@@ -26372,18 +25589,15 @@ var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.
 exports.PluginAPI_V3 = PluginAPI;
 var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
 exports.InternalAPI = InternalAPI;
-<<<<<<< HEAD
 var InteractiveAPI = __webpack_require__(/*! ./interactive-api */ "./src/interactive-api/index.ts");
 exports.InteractiveAPI = InteractiveAPI;
-=======
 var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/page-item-authoring/index.tsx");
->>>>>>> Removed separate page-item-authoring js/css files [#172887832]
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
 window.LARA.PluginAPI_V3 = PluginAPI;
 window.LARA.InternalAPI = InternalAPI;
-<<<<<<< HEAD
 window.LARA.InteractiveAPI = InteractiveAPI;
+window.LARA.PageItemAuthoring = PageItemAuthoring;
 
 
 /***/ }),
@@ -26939,9 +26153,6 @@ $(document).ready(function () {
         window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
     }
 });
-=======
-window.LARA.PageItemAuthoring = PageItemAuthoring;
->>>>>>> Removed separate page-item-authoring js/css files [#172887832]
 
 
 /***/ }),
@@ -27386,6 +26597,77 @@ exports.AspectRatioChooser = function (props) {
 
 /***/ }),
 
+/***/ "./src/page-item-authoring/common/components/checkbox.tsx":
+/*!****************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/checkbox.tsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.Checkbox = function (props) {
+    var id = props.id, name = props.name, checked = props.checked, defaultChecked = props.defaultChecked, label = props.label, warning = props.warning, onChange = props.onChange;
+    var handleChange = function (e) {
+        if (onChange) {
+            onChange(e.target.checked);
+        }
+    };
+    var renderWarning = function () {
+        if (warning !== undefined) {
+            return (React.createElement("div", { className: "warning" },
+                React.createElement("em", null, "Warning"),
+                ": ",
+                warning));
+        }
+    };
+    // note: the hidden 0 is to save the checkbox as unchecked
+    // as the unchecked checkbox input is not sent in the form data.
+    return (React.createElement(React.Fragment, null,
+        React.createElement("input", { type: "hidden", name: name, value: "0" }),
+        React.createElement("input", { type: "checkbox", id: id, name: name, value: "1", checked: checked, defaultChecked: defaultChecked, onChange: handleChange }),
+        " ",
+        label,
+        renderWarning()));
+};
+
+
+/***/ }),
+
+/***/ "./src/page-item-authoring/common/components/customizable-option.tsx":
+/*!***************************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/customizable-option.tsx ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "react");
+exports.CustomizableOption = function (props) {
+    var label = props.label, inheritName = props.inheritName, customName = props.customName, inherit = props.inherit, defaultLabel = props.defaultLabel, onChange = props.onChange, children = props.children;
+    var handleChange = function (e) {
+        onChange(!!(e.target.checked && (e.target.value === "1")));
+    };
+    return (React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "customizable-label" }, label),
+        React.createElement("div", { className: "customizable-option" },
+            React.createElement("input", { type: "radio", name: inheritName, value: "1", checked: inherit, onChange: handleChange }),
+            React.createElement("span", { className: "radio-label" },
+                "Use default: ",
+                React.createElement("strong", null, defaultLabel))),
+        React.createElement("div", { className: "customizable-option" },
+            React.createElement("input", { type: "radio", name: inheritName, value: "0", checked: !inherit, onChange: handleChange }),
+            React.createElement("span", { className: "radio-label" }, "Customize"),
+            !inherit ? children : undefined)));
+};
+
+
+/***/ }),
+
 /***/ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx":
 /*!*************************************************************************************!*\
   !*** ./src/page-item-authoring/common/components/interactive-authoring-preview.tsx ***!
@@ -27405,16 +26687,29 @@ exports.InteractiveAuthoringPreview = function (_a) {
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    // FIXME: The default height here should be based on the aspect ratio setting
+    // and the width of the iframe. That computation at runtime is currently handled
+    // by the setSize method in interactives-sizing.js
+    // That code can't be used here, because the jQuery changes to the iframe
+    // conflict with the React management of the iframe element.
+    // We could:
+    // - duplicate the sizing code here
+    // - abstract it so it can be shared by both the runtime and authoring.
+    // - move the runtime iframe rendering into React, so both authoring and
+    //   runtime use the interactiveIframe component
+    // The last option is the best for maintainability, but it will slow down the
+    // page load since the iframes won't start loading until the javascript is loaded
+    // So probably the best option is to abstract that code.
+    var _c = react_1.useState(300), height = _c[0], setHeight = _c[1];
     var handleHeightChange = function (newHeight) {
-        if (iframe.current) {
-            iframe.current.style.height = newHeight + "px";
-        }
+        setHeight(newHeight);
     };
     var handleSupportedFeatures = function (info) {
         if (info.features.aspectRatio) {
             if (interactive.aspect_ratio_method === "DEFAULT") {
                 if (iframe.current) {
-                    iframe.current.style.height = Math.round(iframe.current.offsetWidth / info.features.aspectRatio) + "px";
+                    var newHeight = Math.round(iframe.current.offsetWidth / info.features.aspectRatio);
+                    setHeight(newHeight);
                 }
             }
         }
@@ -27427,7 +26722,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         authoredState: authoredState
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: height, initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
 };
 
 
@@ -27507,6 +26802,7 @@ exports.InteractiveAuthoring = function (_a) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(/*! react */ "react");
+var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.InteractiveIframe = function (props) {
     var src = props.src, width = props.width, height = props.height, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, onHeightChange = props.onHeightChange, onSetIFrameRef = props.onSetIFrameRef, aspectRatio = props.aspectRatio, aspectRatioMethod = props.aspectRatioMethod;
@@ -27515,7 +26811,7 @@ exports.InteractiveIframe = function (props) {
     var _a = react_1.useState(0), iframeId = _a[0], setIFrameId = _a[1];
     var phone;
     var connect = function () {
-        phone = new window.iframePhone.ParentEndpoint(iframe.current, function () {
+        phone = new iframePhone.ParentEndpoint(iframe.current, function () {
             phone.post("initInteractive", initMsg);
         });
         phone.addListener("authoredState", function (authoredState) {
@@ -27682,6 +26978,8 @@ var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var read_only_form_field_1 = __webpack_require__(/*! ../common/components/read-only-form-field */ "./src/page-item-authoring/common/components/read-only-form-field.tsx");
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
+var customizable_option_1 = __webpack_require__(/*! ../common/components/customizable-option */ "./src/page-item-authoring/common/components/customizable-option.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -27715,11 +27013,7 @@ exports.CustomizeManagedInteractive = function (props) {
     var handleChangeCustomizeAspectRatio = handleBooleanOption(setInheritAspectRatio);
     var handleChangeClickToPlay = handleBooleanOption(setInheritClickToPlay);
     var handleChangeCustomClickToPlay = handleBooleanOption(setCustomClickToPlay);
-    var handleChangeClickToPlayPrompt = handleBooleanOption(setInheritClickToPlayPrompt);
     var handleChangeCustomClickToPlayPrompt = handleStringOption(setCustomClickToPlayPrompt);
-    var handleChangeFullWindow = handleBooleanOption(setInheritFullWindow);
-    var handleChangeCustomFullWindow = handleBooleanOption(setCustomFullWindow);
-    var handleChangeImageUrl = handleBooleanOption(setInheritImageUrl);
     var handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
     var clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
         (!inheritClickToPlay && customClickToPlay);
@@ -27756,50 +27050,12 @@ exports.CustomizeManagedInteractive = function (props) {
     var renderClickToPlayOptions = function () {
         var defaultPrompt = libraryInteractive.click_to_play_prompt || defaultClickToPlayPrompt;
         return React.createElement(React.Fragment, null,
-            React.createElement("div", { className: "customizable-label" }, "Click To Play Prompt"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_click_to_play_prompt").name, value: "true", checked: inheritClickToPlayPrompt, onChange: handleChangeClickToPlayPrompt }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null,
-                        "\"",
-                        defaultPrompt,
-                        "\""))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_click_to_play_prompt").name, value: "false", checked: !inheritClickToPlayPrompt, onChange: handleChangeClickToPlayPrompt }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritClickToPlayPrompt
-                    ? React.createElement("input", { type: "text", name: formField("custom_click_to_play_prompt").name, value: customClickToPlayPrompt, onChange: handleChangeCustomClickToPlayPrompt })
-                    : undefined),
-            React.createElement("div", { className: "customizable-label" }, "Full Window"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_full_window").name, value: "true", checked: inheritFullWindow, onChange: handleChangeFullWindow }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null, libraryInteractive.click_to_play ? "Enabled" : "Disabled"))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_full_window").name, value: "false", checked: !inheritFullWindow, onChange: handleChangeFullWindow }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritFullWindow
-                    ? React.createElement(React.Fragment, null,
-                        React.createElement("input", { type: "checkbox", name: formField("custom_full_window").name, value: "true", checked: customFullWindow, onChange: handleChangeCustomFullWindow }),
-                        " Enabled")
-                    : undefined),
-            React.createElement("div", { className: "customizable-label" }, "Image Url"),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_image_url").name, value: "true", checked: inheritImageUrl, onChange: handleChangeImageUrl }),
-                React.createElement("span", { className: "radio-label" },
-                    "Use default: ",
-                    React.createElement("strong", null,
-                        "\"",
-                        defaultPrompt,
-                        "\""))),
-            React.createElement("div", { className: "customizable-option" },
-                React.createElement("input", { type: "radio", name: formField("inherit_image_url").name, value: "false", checked: !inheritImageUrl, onChange: handleChangeImageUrl }),
-                React.createElement("span", { className: "radio-label" }, "Customize"),
-                !inheritImageUrl
-                    ? React.createElement("input", { type: "text", name: formField("custom_image_url").name, value: customImageUrl, onChange: handleChangeCustomImageUrl })
-                    : undefined));
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Click To Play Prompt", inheritName: formField("inherit_click_to_play_prompt").name, customName: formField("custom_click_to_play_prompt").name, inherit: inheritClickToPlayPrompt, defaultLabel: "\"" + defaultPrompt + "\"", onChange: setInheritClickToPlayPrompt },
+                React.createElement("input", { type: "text", name: formField("custom_click_to_play_prompt").name, value: customClickToPlayPrompt, onChange: handleChangeCustomClickToPlayPrompt })),
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Full Window", inheritName: formField("inherit_full_window").name, customName: formField("custom_full_window").name, inherit: inheritFullWindow, defaultLabel: libraryInteractive.full_window ? "Enabled" : "Disabled", onChange: setInheritFullWindow },
+                React.createElement(checkbox_1.Checkbox, { name: formField("custom_full_window").name, checked: customFullWindow, onChange: setCustomFullWindow, label: "Enabled" })),
+            React.createElement(customizable_option_1.CustomizableOption, { label: "Image Url", inheritName: formField("inherit_image_url").name, customName: formField("custom_image_url").name, inherit: inheritImageUrl, defaultLabel: libraryInteractive.image_url ? libraryInteractive.image_url : "No default image url", onChange: setInheritImageUrl },
+                React.createElement("input", { type: "text", name: formField("custom_image_url").name, value: customImageUrl, onChange: handleChangeCustomImageUrl })));
     };
     // this generates a form element that renders inside the rails popup form
     return React.createElement(React.Fragment, null,
@@ -27868,6 +27124,7 @@ var interactive_authoring_1 = __webpack_require__(/*! ../common/components/inter
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/managed-interactives/customize.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.ManagedInteractiveAuthoring = function (props) {
     var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -27912,13 +27169,10 @@ exports.ManagedInteractiveAuthoring = function (props) {
                 : undefined,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
-                " Full width? (Full width layout only)",
+                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" }),
                 React.createElement("br", null),
-                libraryInteractive.enable_learner_state ?
-                    React.createElement(React.Fragment, null,
-                        React.createElement("input", { type: "checkbox", id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report }),
-                        " Show in featured question report?")
+                libraryInteractive.enable_learner_state
+                    ? React.createElement(checkbox_1.Checkbox, { id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report?" })
                     : undefined));
     };
     var renderTabs = function () {
@@ -27981,6 +27235,7 @@ var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -27992,20 +27247,10 @@ exports.CustomizeMWInteractive = function (props) {
     }), aspectRatioValues = _a[0], setAspectRatioValues = _a[1];
     var _b = react_1.useState(click_to_play), clickToPlay = _b[0], setClickToPlay = _b[1];
     var _c = react_1.useState(enable_learner_state), enableLearnerState = _c[0], setEnableLearnerState = _c[1];
-    var handleBooleanOption = function (setter) {
-        return function (e) {
-            var value = !!(e.target.checked && (e.target.value === "true"));
-            setter(value);
-        };
-    };
-    var handleAspectRatioChange = function (values) { return setAspectRatioValues(values); };
-    var handleChangeClickToPlay = handleBooleanOption(setClickToPlay);
-    var handleChangeEnableLearnerState = handleBooleanOption(setEnableLearnerState);
     var renderClickToPlayOptions = function () {
         return React.createElement(React.Fragment, null,
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("full_window").name, value: "true", defaultChecked: full_window }),
-                " Full window"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("full_window").name, defaultChecked: full_window, label: "Full window" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Click To Play Prompt"),
                 React.createElement("input", { type: "text", name: formField("click_to_play_prompt").name, defaultValue: click_to_play_prompt || defaultClickToPlayPrompt })),
@@ -28020,17 +27265,11 @@ exports.CustomizeMWInteractive = function (props) {
     var renderInteractiveStateOptions = function () {
         return React.createElement(React.Fragment, null,
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("show_delete_data_button").name, value: "true", defaultChecked: show_delete_data_button }),
-                " Show \"Undo all my work\" button"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("show_delete_data_button").name, defaultChecked: show_delete_data_button, label: "Show \"Undo all my work\" button" })),
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("has_report_url").name, value: "true", defaultChecked: has_report_url }),
-                " This interactive has a report URL",
-                React.createElement("div", { className: "warning" },
-                    React.createElement("em", null, "Warning"),
-                    ": Please do not select this unless your interactive includes a report url in its saved state.")),
+                React.createElement(checkbox_1.Checkbox, { name: formField("has_report_url").name, defaultChecked: has_report_url, label: "This interactive has a report URL", warning: "Please do not select this unless your interactive includes a report url in its saved state." })),
             React.createElement("div", null,
-                React.createElement("input", { type: "checkbox", name: formField("show_in_featured_question_report").name, value: "true", defaultChecked: show_in_featured_question_report }),
-                " Show in featured question report"),
+                React.createElement(checkbox_1.Checkbox, { name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Link Saved Work From"),
                 React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
@@ -28045,21 +27284,16 @@ exports.CustomizeMWInteractive = function (props) {
             React.createElement("input", { type: "hidden", name: formField("aspect_ratio_method").name, value: aspectRatioValues.mode }),
             React.createElement("input", { type: "hidden", name: formField("native_width").name, value: aspectRatioValues.width }),
             React.createElement("input", { type: "hidden", name: formField("native_height").name, value: aspectRatioValues.height }),
-            React.createElement(aspect_ratio_chooser_1.AspectRatioChooser, { width: aspectRatioValues.width, height: aspectRatioValues.height, mode: aspectRatioValues.mode, onChange: handleAspectRatioChange })),
+            React.createElement(aspect_ratio_chooser_1.AspectRatioChooser, { width: aspectRatioValues.width, height: aspectRatioValues.height, mode: aspectRatioValues.mode, onChange: setAspectRatioValues })),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Click to Play Options"),
             React.createElement("div", { className: "option_group" },
-                React.createElement("input", { type: "checkbox", name: formField("click_to_play").name, value: "true", checked: clickToPlay, onChange: handleChangeClickToPlay }),
-                " Enable click to play",
+                React.createElement(checkbox_1.Checkbox, { name: formField("click_to_play").name, checked: clickToPlay, onChange: setClickToPlay, label: "Enable click to play" }),
                 clickToPlay ? renderClickToPlayOptions() : undefined)),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Interactive State Options"),
             React.createElement("div", { className: "option_group" },
-                React.createElement("input", { type: "checkbox", name: formField("enable_learner_state").name, value: "true", checked: enableLearnerState, onChange: handleChangeEnableLearnerState }),
-                " Enable save state",
-                React.createElement("div", { className: "warning" },
-                    React.createElement("em", null, "Warning"),
-                    ": Please do not select this unless your interactive contains a serializable data set."),
+                React.createElement(checkbox_1.Checkbox, { name: formField("enable_learner_state").name, checked: enableLearnerState, onChange: setEnableLearnerState, label: "Enable save state", warning: "Please do not select this unless your interactive contains a serializable data set" }),
                 enableLearnerState ? renderInteractiveStateOptions() : undefined)));
 };
 
@@ -28083,6 +27317,7 @@ var interactive_authoring_1 = __webpack_require__(/*! ../common/components/inter
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/mw-interactives/customize.tsx");
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
+var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.MWInteractiveAuthoring = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -28100,11 +27335,9 @@ exports.MWInteractiveAuthoring = function (props) {
                 React.createElement("textarea", { id: formField("url").id, name: formField("url").name, defaultValue: url || "", onBlur: handleUrlBlur })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement("input", { type: "checkbox", id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width }),
-                " Full width? (Full width layout only)",
+                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" }),
                 React.createElement("br", null),
-                React.createElement("input", { type: "checkbox", id: formField("no_snapshots").id, name: formField("no_snapshots").name, defaultChecked: no_snapshots }),
-                " Snapshots not supported"));
+                React.createElement(checkbox_1.Checkbox, { id: formField("no_snapshots").id, name: formField("no_snapshots").name, defaultChecked: no_snapshots, label: "Snapshots not supported" })));
     };
     var renderTabs = function () {
         var handleAuthoredStateChange = function (newAuthoredState) {
