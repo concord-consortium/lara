@@ -1,0 +1,3 @@
+{
+  "typescript.tsdk": "./lara-typescript/node_modules/typescript/lib"
+}

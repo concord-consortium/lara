@@ -97,7 +97,7 @@
     "tslint-react": "^4.0.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.27",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.9.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },
