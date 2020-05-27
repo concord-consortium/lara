@@ -46,7 +46,7 @@ To use SSO with the portal you need to make sure your `PORTAL_HOST` is set corre
 
 The rake task above assumes your local lara instance is running at http://app.lara.docker
 If it is running somewhere else, then you can log into the portal as an admin and edit
-the Auth Client created by the rake task. 
+the Auth Client created by the rake task.
 
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
@@ -130,7 +130,8 @@ To support new Embeddables:
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)
-* Add the Embeddable's name as a string to the the `Embeddable::Types` constant in `app/models/embeddable.rb`.
+* Add the Embeddable to the the `Embeddable::Types` constant in `app/models/embeddable.rb`.
+* Add a human name for the embeddable to the activerecord.models section in config/locales/en.yml
 * There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
 ## Current work: reporting

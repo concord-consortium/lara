@@ -1,3 +1,6 @@
+# In the UI the ManagedInteractive model is called Library Interactive
+# There is also a LibraryInteractive model which are the items in the
+# interactive library
 class ManagedInteractive < ActiveRecord::Base
   include BaseInteractive
   include Embeddable

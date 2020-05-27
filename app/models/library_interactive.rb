@@ -1,5 +1,6 @@
 require 'digest'
 
+# In the UI the Managed Interactive model also called a Library Interactive
 class LibraryInteractive < ActiveRecord::Base
   include HasAspectRatio
 

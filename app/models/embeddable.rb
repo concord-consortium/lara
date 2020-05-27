@@ -1,32 +1,33 @@
 module Embeddable
-  QuestionTypes = {
-    Embeddable::ImageQuestion  => "Image question",
-    Embeddable::MultipleChoice => "Multiple choice",
-    Embeddable::OpenResponse   => "Open response",
-    Embeddable::Xhtml          => "Text box",
-    Embeddable::Labbook        => "Labbook",
-    QuestionTracker            => "Tracked Question",
-    Embeddable::ExternalScript => "External Script",
-  }
+  # The Order here determins the order in the authoring selection menu
+  QuestionTypes = [
+    Embeddable::OpenResponse,
+    Embeddable::MultipleChoice,
+    Embeddable::Xhtml,
+    Embeddable::ImageQuestion,
+    Embeddable::Labbook,
+    QuestionTracker,
+    Embeddable::ExternalScript,
+  ]
 
-  InteractiveTypes = {
-    MwInteractive      => "Iframe Interactive",
-    ManagedInteractive => "Managed Interactive",
-    ImageInteractive   => "Image",
-    VideoInteractive   => "Video"
-  }
+  InteractiveTypes = [
+    MwInteractive,
+    ManagedInteractive,
+    ImageInteractive,
+    VideoInteractive,
+  ]
 
   # Types is just sum of question and interactives.
-  Types = QuestionTypes.merge(InteractiveTypes)
+  Types = QuestionTypes + InteractiveTypes
 
   def self.is_question?(e)
     # Support both instance and class.
-    QuestionTypes.keys.include?(e.class) || QuestionTypes.keys.include?(e)
+    QuestionTypes.include?(e.class) || QuestionTypes.include?(e)
   end
 
   def self.is_interactive?(e)
     # Support both instance and class.
-    InteractiveTypes.keys.include?(e.class) || InteractiveTypes.keys.include?(e)
+    InteractiveTypes.include?(e.class) || InteractiveTypes.include?(e)
   end
 
   def self.table_name_prefix
@@ -34,7 +35,7 @@ module Embeddable
   end
 
   def self.valid_type(class_string)
-    return class_string == Embeddable::EmbeddablePlugin.to_s || Types.detect{|k,v| k.to_s == class_string }
+    return class_string == Embeddable::EmbeddablePlugin.to_s || Types.detect{|type| type.to_s == class_string }
   end
 
   def self.create_for_string(class_string)
