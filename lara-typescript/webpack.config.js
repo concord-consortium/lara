@@ -10,9 +10,7 @@ module.exports = (env, argv) => {
     entry: {
       'lara-typescript': './src/index.ts',
       // Build normalize.css separately so it can be used by plugins directly.
-      'plugin-api/normalize': './src/plugin-api/normalize.scss',
-      // build the authoring separately to make it cleaner to load
-      'page-item-authoring': './src/page-item-authoring/index.tsx',
+      'plugin-api/normalize': './src/plugin-api/normalize.scss'
     },
     mode: 'development',
     output: {
