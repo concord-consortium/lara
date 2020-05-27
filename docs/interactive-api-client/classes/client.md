@@ -30,6 +30,7 @@
 * [setAuthoredState](client.md#setauthoredstate)
 * [setGlobalInteractiveState](client.md#setglobalinteractivestate)
 * [setHeight](client.md#setheight)
+* [setHint](client.md#sethint)
 * [setInteractiveState](client.md#setinteractivestate)
 * [setNavigation](client.md#setnavigation)
 * [setSupportedFeatures](client.md#setsupportedfeatures)
@@ -180,6 +181,23 @@ ___
 | Name | Type |
 | ------ | ------ |
 | height | `number` \| `string` |
+
+**Returns:** `boolean`
+
+___
+<a id="sethint"></a>
+
+###  setHint
+
+▸ **setHint**(hint: *`string`*): `boolean`
+
+*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| hint | `string` |
 
 **Returns:** `boolean`
 

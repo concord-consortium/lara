@@ -25927,6 +25927,17 @@ var IFrameSaver = /** @class */ (function () {
             _this.$iframe.data("height", height);
             _this.$iframe.trigger("sizeUpdate");
         });
+        this.addListener("hint", function (hint) {
+            var $container = _this.$iframe.closest(".embeddable-container");
+            var $helpIcon = $container.find(".help-icon");
+            if (hint) {
+                $helpIcon.removeClass("hidden");
+            }
+            else {
+                $container.find(".help-icon").addClass("hidden");
+            }
+            $container.find(".help-content .text").text(hint || "");
+        });
         this.addListener("supportedFeatures", function (info) {
             if (info.features && info.features.aspectRatio) {
                 // If the author specifies the aspect-ratio-method as "DEFAULT"

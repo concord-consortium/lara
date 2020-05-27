@@ -190,6 +190,11 @@ describe("Client", () => {
         expect(mockedPhone().messages).toEqual([{type: "height", content: 100}]);
       });
 
+      it("supports setHint", () => {
+        expect(client.setHint("test hint")).toBe(true);
+        expect(mockedPhone().messages).toEqual([{type: "hint", content: "test hint"}]);
+      });
+
       it("supports setSupportedFeatures", () => {
         expect(client.setSupportedFeatures({interactiveState: true, authoredState: true, aspectRatio: 1})).toBe(true);
         expect(mockedPhone().messages).toEqual([{type: "supportedFeatures", content: {

@@ -78,6 +78,7 @@ export interface IHookOptions {
 // the iframesaver messages are 1 per line to reduce merge conflicts as new ones are added
 export type IFrameSaverClientMessage = "interactiveState" |
                                 "height" |
+                                "hint" |
                                 "getAuthInfo" |
                                 "supportedFeatures" |
                                 "navigation" |

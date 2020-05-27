@@ -33,21 +33,26 @@ describe("IFrameSaver", () => {
     MockedIframePhoneManager.install();
     setAutoConnect(false);
     $(document.body).html(`
-      <iframe src="" id="interactive" frameborder="0"></iframe>
-      <div id="under_iframe">
-        <div id="interactive_data_div"
-            data-enable-learner-state="true"
-            data-interactive-run-state-url="foo/42"
-            data-authored-state='{"test": 123}'
-            data-class-info-url=null
-            data-interactive-id=1
-            data-interactive-name="test"
-            data-authprovider="fakeprovider"
-            data-user-email="user@example.com"
-            data-loggedin="true"
-        >
+      <div class="embeddable-container">
+        <div class="help-icon hidden"/>
+        <div class="help-content"><div class="text">Test hint</div></div>
+
+        <iframe src="" id="interactive" frameborder="0"></iframe>
+        <div id="under_iframe">
+          <div id="interactive_data_div"
+              data-enable-learner-state="true"
+              data-interactive-run-state-url="foo/42"
+              data-authored-state='{"test": 123}'
+              data-class-info-url=null
+              data-interactive-id=1
+              data-interactive-name="test"
+              data-authprovider="fakeprovider"
+              data-user-email="user@example.com"
+              data-loggedin="true"
+          >
+          </div>
+          <button class="delete_interactive_data">Undo all my work</button>
         </div>
-        <button class="delete_interactive_data">Undo all my work</button>
       </div>
 
       <!-- save indicator -->
@@ -185,6 +190,25 @@ describe("IFrameSaver", () => {
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
         });
       });
+    });
+  });
+
+  describe("hint iframe-phone message", () => {
+    beforeEach(() => {
+      saver = getSaver();
+      MockedIframePhoneManager.connect();
+    });
+
+    it("should enable hint", () => {
+      const $helpIcon = $(".help-icon");
+      expect($helpIcon.hasClass("hidden")).toEqual(true);
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: "new hint" });
+      expect($helpIcon.hasClass("hidden")).toEqual(false);
+      expect($(".help-content .text").text()).toEqual("new hint");
+
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: "" });
+      expect($helpIcon.hasClass("hidden")).toEqual(true);
+      expect($(".help-content .text").text()).toEqual("");
     });
   });
 });
