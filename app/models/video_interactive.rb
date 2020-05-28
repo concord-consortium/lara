@@ -17,10 +17,6 @@ class VideoInteractive < ActiveRecord::Base
 
   validates_numericality_of :height, :width
 
-  def self.string_name
-    "video interactive"
-  end
-
   def self.portal_type
     "unsupported"
   end

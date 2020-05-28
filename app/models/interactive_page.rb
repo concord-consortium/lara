@@ -93,10 +93,6 @@ class InteractivePage < ActiveRecord::Base
     section_embeddables(nil)
   end
 
-  def main_questions
-    section_embeddables(nil).select{ |e| Embeddable::is_question?(e) }
-  end
-
   def visible_embeddables
     embeddables.select{ |e| !e.is_hidden }
   end

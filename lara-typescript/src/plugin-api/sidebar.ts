@@ -32,7 +32,7 @@ export const ADD_SIDEBAR_DEFAULT_OPTIONS = {
   icon: "default",
   handle: "",
   handleColor: "#aaa",
-  titleBar: null,
+  titleBar: undefined,
   titleBarColor: "#bbb",
   width: 500,
   padding: 25
@@ -139,10 +139,11 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   // Apply options.
   $handleText.text(options.handle);
   $contentContainer.append(options.content);
-  if (options.titleBar) {
+  const titleBar = options.titleBar || "";
+  if (titleBar.length > 0) {
     const $titleBar = $('<div class="title-bar">');
     $body.prepend($titleBar);
-    $titleBar.text(options.titleBar);
+    $titleBar.text(titleBar);
     $titleBar.css("background", options.titleBarColor);
   }
   $handle.css("background-color", options.handleColor);

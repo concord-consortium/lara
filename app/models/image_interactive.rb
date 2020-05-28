@@ -8,10 +8,6 @@ class ImageInteractive < ActiveRecord::Base
   has_one :interactive_page, :through => :page_item
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
-  def self.string_name
-    "image interactive"
-  end
-
   def self.portal_type
     "unsupported"
   end

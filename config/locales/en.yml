@@ -170,11 +170,16 @@ en:
       MAX: 'Use all available space.'
   activerecord:
     models:
+      # Question Types
       "embeddable/external_script": "External script"
-      "image_interactive": "Image interactive"
       "embeddable/image_question": "Image question"
-      "embeddable/multiple_choice": "Multiple choice question"
-      "mw_interactive": "Iframe interactive"
-      "embeddable/open_response": "Open response question"
-      "video_interactive": "Video"
+      "embeddable/labbook": "Labbook"
+      "embeddable/multiple_choice": "Multiple choice"
+      "embeddable/open_response": "Open response"
       "embeddable/xhtml": "Text block"
+      "question_tracker": "Tracked Question"
+      # Interactive types
+      "image_interactive": "Image"
+      "managed_interactive": "Library Interactive"
+      "mw_interactive": "Iframe Interactive"
+      "video_interactive": "Video"

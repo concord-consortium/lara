@@ -43,7 +43,7 @@ class QuestionTracker < ActiveRecord::Base
   end
 
   def type
-    Embeddable::Types[master_question.class]
+    master_question.class.model_name.human
   end
 
   def use_count

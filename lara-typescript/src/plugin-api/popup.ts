@@ -65,11 +65,11 @@ export const ADD_POPUP_DEFAULT_OPTIONS = {
   backgroundColor: "",
   titlebarColor: "",
   position: { my: "center", at: "center", of: window },
-  onOpen: null,
-  onBeforeClose: null,
-  onResize: null,
-  onDragStart: null,
-  onDragStop: null
+  onOpen: undefined,
+  onBeforeClose: undefined,
+  onResize: undefined,
+  onDragStart: undefined,
+  onDragStop: undefined
 };
 
 /****************************************************************************

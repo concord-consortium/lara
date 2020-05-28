@@ -56,7 +56,7 @@ describe ImageInteractivesController do
           new_values_hash = { :caption => 'I made this up', :url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
           post :update, :id => int.id, :page_id => page.id, :image_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:notice]).to eq('Your image interactive was updated.')
+          expect(flash[:notice]).to eq('Your image was updated.')
         end
 
         # it 'returns to the edit page with an error on failure' do
