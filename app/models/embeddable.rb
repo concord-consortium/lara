@@ -20,11 +20,6 @@ module Embeddable
   # Types is just sum of question and interactives.
   Types = QuestionTypes + InteractiveTypes
 
-  def self.is_question?(e)
-    # Support both instance and class.
-    QuestionTypes.include?(e.class) || QuestionTypes.include?(e)
-  end
-
   def self.is_interactive?(e)
     # Support both instance and class.
     InteractiveTypes.include?(e.class) || InteractiveTypes.include?(e)
