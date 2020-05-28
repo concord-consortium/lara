@@ -6,7 +6,7 @@
     "publish:plugin-api": "npm run build && cd dist/plugin-api && npm publish --access public",
     "publish:interactive-api-client": "npm run build && cd dist/interactive-api-client && npm publish --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
-    "build:webpack": "webpack --devtool false && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/ && cp ./dist/page-item-authoring.js ../app/assets/javascripts/ && cp ./dist/page-item-authoring.css ../app/assets/stylesheets/",
+    "build:webpack": "webpack --devtool false && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
     "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client build:docs:fix-doc-paths build:docs:copy-files",
     "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api",
     "build:docs:interactive-api-client": "typedoc --theme markdown --readme src/interactive-api-client/README.md --ignoreCompilerErrors --name 'LARA Interactive API Client' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/interactive-api-client src/interactive-api-client",
@@ -57,7 +57,10 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|sass)$": "identity-obj-proxy"
+    }
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
   "devDependencies": {
@@ -73,6 +76,7 @@
     "cpx": "^1.5.0",
     "css-loader": "^2.1.1",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "jest-fetch-mock": "^1.7.5",
     "jquery": "^3.5.0",
@@ -93,7 +97,7 @@
     "tslint-react": "^4.0.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.27",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.9.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   },

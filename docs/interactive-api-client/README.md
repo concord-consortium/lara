@@ -51,7 +51,7 @@ interface IGlobalInteractiveState {
   backgroundColor: string;
 }
 
-const client = new LaraInteractiveApi.Client<IAuthoredState, IInteractiveState, IGlobalInteractiveState>({
+const client = new LaraInteractiveApi.Client<IInteractiveState, IAuthoredState IGlobalInteractiveState>({
   supportedFeatures: {
     authoredState: true,
     interactiveState: true,
@@ -113,7 +113,7 @@ useEffect(() => {
 and there is maximal example of a hook that supports all types of state (using the same interfaces as the client example above):
 
 ```
-const { interactiveState, setInteractiveState } = useLaraInteractiveApi<IAuthoredState, IInteractiveState, IGlobalInteractiveState>({
+const { interactiveState, setInteractiveState } = useLaraInteractiveApi<IInteractiveState, IAuthoredState IGlobalInteractiveState>({
   supportedFeatures: {
     authoredState: true,
     interactiveState: true,
@@ -320,9 +320,9 @@ ___
 
 **Type parameters:**
 
-#### InteractiveState 
-#### AuthoredState 
-#### GlobalInteractiveState 
+#### InteractiveState
+#### AuthoredState
+#### GlobalInteractiveState
 **Parameters:**
 
 | Name | Type |

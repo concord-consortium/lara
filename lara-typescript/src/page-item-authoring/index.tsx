@@ -52,9 +52,3 @@ export {
   InteractiveAuthoringPreview,
   renderInteractiveAuthoringPreview
 };
-
-(window as any).LARA.PageItemAuthoring = {
-  renderManagedInteractiveAuthoring,
-  renderMWInteractiveAuthoring,
-  renderInteractiveAuthoringPreview
-};

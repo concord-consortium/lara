@@ -27,10 +27,6 @@ class MwInteractive < ActiveRecord::Base
 
   after_update :update_labbook_options
 
-  def self.string_name
-    "iframe interactive"
-  end
-
   def self.portal_type
     "iframe interactive"
   end
