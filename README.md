@@ -130,7 +130,7 @@ To support new Embeddables:
 * Add a view directory at `app/views/embeddable/<embeddable_name>`
 * Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
 * Provide a `_author.html.haml` partial as well (for editing the Embeddable)
-* Add the Embeddable to the the `Embeddable::Types` constant in `app/models/embeddable.rb`.
+* Add the Embeddable to the `Embeddable::Types` constant in `app/models/embeddable.rb`.
 * Add a human name for the embeddable to the activerecord.models section in config/locales/en.yml
 * There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
