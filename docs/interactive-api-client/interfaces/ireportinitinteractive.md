@@ -16,6 +16,7 @@
 * [authoredState](ireportinitinteractive.md#authoredstate)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
 * [mode](ireportinitinteractive.md#mode)
+* [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
 
 ---
@@ -28,7 +29,7 @@
 
 **● authoredState**: *`AuthoredState`*
 
-*Defined in [types.ts:49](../../../lara-typescript/src/interactive-api-client/types.ts#L49)*
+*Defined in [types.ts:75](../../../lara-typescript/src/interactive-api-client/types.ts#L75)*
 
 ___
 <a id="interactivestate"></a>
@@ -37,7 +38,7 @@ ___
 
 **● interactiveState**: *`InteractiveState`*
 
-*Defined in [types.ts:50](../../../lara-typescript/src/interactive-api-client/types.ts#L50)*
+*Defined in [types.ts:76](../../../lara-typescript/src/interactive-api-client/types.ts#L76)*
 
 ___
 <a id="mode"></a>
@@ -46,7 +47,16 @@ ___
 
 **● mode**: *"report"*
 
-*Defined in [types.ts:48](../../../lara-typescript/src/interactive-api-client/types.ts#L48)*
+*Defined in [types.ts:74](../../../lara-typescript/src/interactive-api-client/types.ts#L74)*
+
+___
+<a id="themeinfo"></a>
+
+###  themeInfo
+
+**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
+
+*Defined in [types.ts:77](../../../lara-typescript/src/interactive-api-client/types.ts#L77)*
 
 ___
 <a id="version"></a>
@@ -55,7 +65,7 @@ ___
 
 **● version**: *`1`*
 
-*Defined in [types.ts:47](../../../lara-typescript/src/interactive-api-client/types.ts#L47)*
+*Defined in [types.ts:73](../../../lara-typescript/src/interactive-api-client/types.ts#L73)*
 
 ___
 

@@ -15,6 +15,7 @@
 * [authoredState](iauthoringinitinteractive.md#authoredstate)
 * [error](iauthoringinitinteractive.md#error)
 * [mode](iauthoringinitinteractive.md#mode)
+* [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
 
 ---
@@ -27,7 +28,7 @@
 
 **● authoredState**: *`AuthoredState` \| `null`*
 
-*Defined in [types.ts:43](../../../lara-typescript/src/interactive-api-client/types.ts#L43)*
+*Defined in [types.ts:68](../../../lara-typescript/src/interactive-api-client/types.ts#L68)*
 
 ___
 <a id="error"></a>
@@ -36,7 +37,7 @@ ___
 
 **● error**: *`null`*
 
-*Defined in [types.ts:41](../../../lara-typescript/src/interactive-api-client/types.ts#L41)*
+*Defined in [types.ts:66](../../../lara-typescript/src/interactive-api-client/types.ts#L66)*
 
 ___
 <a id="mode"></a>
@@ -45,7 +46,16 @@ ___
 
 **● mode**: *"authoring"*
 
-*Defined in [types.ts:42](../../../lara-typescript/src/interactive-api-client/types.ts#L42)*
+*Defined in [types.ts:67](../../../lara-typescript/src/interactive-api-client/types.ts#L67)*
+
+___
+<a id="themeinfo"></a>
+
+###  themeInfo
+
+**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
+
+*Defined in [types.ts:69](../../../lara-typescript/src/interactive-api-client/types.ts#L69)*
 
 ___
 <a id="version"></a>
@@ -54,7 +64,7 @@ ___
 
 **● version**: *`1`*
 
-*Defined in [types.ts:40](../../../lara-typescript/src/interactive-api-client/types.ts#L40)*
+*Defined in [types.ts:65](../../../lara-typescript/src/interactive-api-client/types.ts#L65)*
 
 ___
 

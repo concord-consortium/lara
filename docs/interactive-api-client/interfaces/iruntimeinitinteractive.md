@@ -29,10 +29,12 @@
 * [interactive](iruntimeinitinteractive.md#interactive)
 * [interactiveState](iruntimeinitinteractive.md#interactivestate)
 * [interactiveStateUrl](iruntimeinitinteractive.md#interactivestateurl)
+* [linkedInteractives](iruntimeinitinteractive.md#linkedinteractives)
 * [linkedState](iruntimeinitinteractive.md#linkedstate)
 * [mode](iruntimeinitinteractive.md#mode)
 * [pageName](iruntimeinitinteractive.md#pagename)
 * [pageNumber](iruntimeinitinteractive.md#pagenumber)
+* [themeInfo](iruntimeinitinteractive.md#themeinfo)
 * [updatedAt](iruntimeinitinteractive.md#updatedat)
 * [version](iruntimeinitinteractive.md#version)
 
@@ -175,6 +177,15 @@ ___
 *Defined in [types.ts:25](../../../lara-typescript/src/interactive-api-client/types.ts#L25)*
 
 ___
+<a id="linkedinteractives"></a>
+
+###  linkedInteractives
+
+**● linkedInteractives**: *[ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)[]*
+
+*Defined in [types.ts:37](../../../lara-typescript/src/interactive-api-client/types.ts#L37)*
+
+___
 <a id="linkedstate"></a>
 
 ### `<Optional>` linkedState
@@ -215,6 +226,15 @@ ___
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageNumber](iinteractivestateprops.md#pagenumber)*
 
 *Defined in [types.ts:13](../../../lara-typescript/src/interactive-api-client/types.ts#L13)*
+
+___
+<a id="themeinfo"></a>
+
+###  themeInfo
+
+**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
+
+*Defined in [types.ts:38](../../../lara-typescript/src/interactive-api-client/types.ts#L38)*
 
 ___
 <a id="updatedat"></a>

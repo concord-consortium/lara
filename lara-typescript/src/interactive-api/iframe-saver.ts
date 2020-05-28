@@ -369,6 +369,13 @@ export class IFrameSaver {
         provider: this.authProvider,
         loggedIn: this.loggedIn,
         email: this.userEmail
+      },
+      linkedInteractives: [], // TODO: add linked interactives (future story)
+      themeInfo: {            // TODO: add theme colors (future story)
+        colors: {
+          colorA: "red",
+          colorB: "green"
+        }
       }
     };
 

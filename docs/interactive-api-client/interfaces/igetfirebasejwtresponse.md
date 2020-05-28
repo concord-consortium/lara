@@ -27,7 +27,7 @@
 
 **● message**: *`undefined` \| `string`*
 
-*Defined in [types.ts:161](../../../lara-typescript/src/interactive-api-client/types.ts#L161)*
+*Defined in [types.ts:348](../../../lara-typescript/src/interactive-api-client/types.ts#L348)*
 
 ___
 <a id="requestid"></a>
@@ -38,7 +38,7 @@ ___
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:135](../../../lara-typescript/src/interactive-api-client/types.ts#L135)*
+*Defined in [types.ts:322](../../../lara-typescript/src/interactive-api-client/types.ts#L322)*
 
 ___
 <a id="response_type"></a>
@@ -47,7 +47,7 @@ ___
 
 **● response_type**: *`undefined` \| "ERROR"*
 
-*Defined in [types.ts:160](../../../lara-typescript/src/interactive-api-client/types.ts#L160)*
+*Defined in [types.ts:347](../../../lara-typescript/src/interactive-api-client/types.ts#L347)*
 
 ___
 <a id="token"></a>
@@ -56,7 +56,7 @@ ___
 
 **● token**: *`undefined` \| `string`*
 
-*Defined in [types.ts:162](../../../lara-typescript/src/interactive-api-client/types.ts#L162)*
+*Defined in [types.ts:349](../../../lara-typescript/src/interactive-api-client/types.ts#L349)*
 
 ___
 

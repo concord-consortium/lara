@@ -5,6 +5,7 @@
 ## Type parameters
 #### InteractiveState 
 #### AuthoredState 
+#### DialogState 
 #### GlobalInteractiveState 
 ## Hierarchy
 
@@ -31,7 +32,7 @@
 
 **● onGetInteractiveState**: *`undefined` \| `function`*
 
-*Defined in [types.ts:66](../../../lara-typescript/src/interactive-api-client/types.ts#L66)*
+*Defined in [types.ts:110](../../../lara-typescript/src/interactive-api-client/types.ts#L110)*
 
 ___
 <a id="onglobalinteractivestateupdated"></a>
@@ -40,7 +41,7 @@ ___
 
 **● onGlobalInteractiveStateUpdated**: *`undefined` \| `function`*
 
-*Defined in [types.ts:67](../../../lara-typescript/src/interactive-api-client/types.ts#L67)*
+*Defined in [types.ts:111](../../../lara-typescript/src/interactive-api-client/types.ts#L111)*
 
 ___
 <a id="onhello"></a>
@@ -49,7 +50,7 @@ ___
 
 **● onHello**: *`undefined` \| `function`*
 
-*Defined in [types.ts:63](../../../lara-typescript/src/interactive-api-client/types.ts#L63)*
+*Defined in [types.ts:107](../../../lara-typescript/src/interactive-api-client/types.ts#L107)*
 
 ___
 <a id="oninitinteractive"></a>
@@ -58,7 +59,7 @@ ___
 
 **● onInitInteractive**: *`undefined` \| `function`*
 
-*Defined in [types.ts:65](../../../lara-typescript/src/interactive-api-client/types.ts#L65)*
+*Defined in [types.ts:109](../../../lara-typescript/src/interactive-api-client/types.ts#L109)*
 
 ___
 <a id="startdisconnected"></a>
@@ -67,7 +68,7 @@ ___
 
 **● startDisconnected**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:61](../../../lara-typescript/src/interactive-api-client/types.ts#L61)*
+*Defined in [types.ts:105](../../../lara-typescript/src/interactive-api-client/types.ts#L105)*
 
 ___
 <a id="supportedfeatures"></a>
@@ -76,7 +77,7 @@ ___
 
 **● supportedFeatures**: *[ISupportedFeatures](isupportedfeatures.md)*
 
-*Defined in [types.ts:62](../../../lara-typescript/src/interactive-api-client/types.ts#L62)*
+*Defined in [types.ts:106](../../../lara-typescript/src/interactive-api-client/types.ts#L106)*
 
 ___
 

@@ -17,14 +17,14 @@ interface IListenerMap {
   [key: string]: IRequestCallback[];
 }
 
-export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> {
+export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}> {
 
   private phone: iframePhone.IFrameEndpoint | undefined;
-  private options: IClientOptions<InteractiveState, AuthoredState, GlobalInteractiveState>;
+  private options: IClientOptions<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>;
   private requestId: number = 1;
   private listeners: IListenerMap = {};
 
-  constructor(options: IClientOptions<InteractiveState, AuthoredState, GlobalInteractiveState>) {
+  constructor(options: IClientOptions<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) {
     this.options = options;
 
     if (this.InIFrame) {
@@ -62,7 +62,7 @@ export class Client<InteractiveState = {}, AuthoredState = {}, GlobalInteractive
 
         this.addListener("initInteractive",
           // tslint:disable-next-line:max-line-length
-          (initMessage: IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>) => {
+          (initMessage: IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) => {
             if (this.options.onInitInteractive) {
               this.options.onInitInteractive(initMessage);
             }

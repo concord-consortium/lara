@@ -163,7 +163,14 @@ describe("IFrameSaver", () => {
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"},
           pageNumber: 2,
           pageName: "test page",
-          activityName: "test act"
+          activityName: "test act",
+          linkedInteractives: [],
+          themeInfo: {
+            colors: {
+              colorA: "red",
+              colorB: "green"
+            }
+          }
         });
       });
     });
@@ -187,7 +194,14 @@ describe("IFrameSaver", () => {
           collaboratorUrls: null,
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
-          authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"}
+          authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"},
+          linkedInteractives: [],
+          themeInfo: {
+            colors: {
+              colorA: "red",
+              colorB: "green"
+            }
+          }
         });
       });
     });
