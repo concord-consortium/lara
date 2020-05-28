@@ -55,13 +55,10 @@ context('Test Learn R Interactive Embedded In LARA', () => {
         })
     })
 
-    context.only('Verify save-state in LARA', () => {
+    context('Verify save-state in LARA', () => {
 
         let DEFAULT_TEXT = '# See the data set with the historical prices of the disposable utensils:'
-        // assert authored state is loaded into code editor
-        // Enter some code and leave page
-        // Server disconnect?
-        // Restart student data, assure default code is in textbox
+        let TEST_CODE_1 = ['5+5','10']
 
         it('verifies default r interactive state loads in code editor', () => {
             cy.visit('https://authoring.concord.org/activities/10482/pages/133077/')
@@ -74,36 +71,12 @@ context('Test Learn R Interactive Embedded In LARA', () => {
 
         it('verifies addition of student code and submission', () => {
             getIframeBody().find('div.pageContent').within(() => {
-                rinteractive.getTextArea().type('plot(x^2) {enter}')
+                rinteractive.getTextArea().clear({force:true})
+                rinteractive.getTextArea().type(TEST_CODE_1[0], {force:true})
                 rinteractive.getRunCodeButton().click({force:true})
+                rinteractive.getCodeOutput().should('contain', TEST_CODE_1[1])
             })
         })
-
-
-        //     const baseHref = "" // Get from baseHref of interactive
-        //     const url = 'https://concord.shinyapps.io/reus_histogram'
-        //     let someJSON = {
-        //         "version": 1,
-        //         "exercises": {
-        //             "view-reusable": {
-        //                 "current": "Somethingg",
-        //                 "submitted": ""
-        //             }
-        //         },
-        //         "lara_options": {
-        //             "reporting_url": "https://concord.shinyapps.io/reus_trays/"
-        //         }
-        //     }
-        //     const payload = {
-        //         contents: "1 + 2 =",
-        //         label: "qplot-histogram"
-        //     }
-        //     it('Adds code to r interactive code editor', () => {
-        //         cy.requestWithToken('PUT', url, payload)
-        //             .then((response) => {
-        //                 cy.log(response)
-        //             })
-        //     })
     })
 })
 
