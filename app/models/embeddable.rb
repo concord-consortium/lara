@@ -1,5 +1,5 @@
 module Embeddable
-  # The Order here determins the order in the authoring selection menu
+  # The Order here determines the order in the authoring selection menu
   QuestionTypes = [
     Embeddable::OpenResponse,
     Embeddable::MultipleChoice,
