@@ -59,9 +59,9 @@ shared_examples "attached to embeddable" do
 
     let(:expected_identifier_1) { AttachedToEmbeddable::NO_EMBEDDABLE_SELECT }
     let(:expected_identifier_2) { AttachedToEmbeddable::NEXT_EMBEDDABLE_SELECT }
-    let(:expected_identifier_3) { ["Open response question (1)", "#{embeddable_a.id}-Embeddable::OpenResponse"]}
-    let(:expected_identifier_4) { ["Open response question (2)", "#{embeddable_b.id}-Embeddable::OpenResponse"]}
-    let(:expected_identifier_5) { ["Open response question (hidden)(3)", "#{hidden_open_response_embeddable.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_3) { ["Open response (1)", "#{embeddable_a.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_4) { ["Open response (2)", "#{embeddable_b.id}-Embeddable::OpenResponse"]}
+    let(:expected_identifier_5) { ["Open response (hidden)(3)", "#{hidden_open_response_embeddable.id}-Embeddable::OpenResponse"]}
 
     let(:embeddables) { [embeddable_a, embeddable_b, hidden_open_response_embeddable] }
     it "should have good options" do
