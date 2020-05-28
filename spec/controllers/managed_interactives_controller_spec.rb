@@ -19,6 +19,7 @@ describe ManagedInteractivesController do
 
   context 'when the logged-in user is an author' do
     # Authorization is tested in spec/models/user_spec.rb
+    # In the UI a Managed interactive is called a Library Interactive
     context 'when editing an existing Managed Interactive' do
       describe 'edit' do
         it 'shows a form with values of the Managed Interactive filled in' do
@@ -50,14 +51,16 @@ describe ManagedInteractivesController do
           new_values_hash = { :name => 'Edited name', :url_fragment => '/foo' }
           post :update, :id => int.id, :page_id => page.id, :managed_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:notice]).to eq('Your managed interactive was updated.')
+          # In the UI a Managed interactive is called a Library Interactive
+          expect(flash[:notice]).to eq('Your library interactive was updated.')
         end
 
         it 'returns to the edit page with an error on failure' do
           new_values_hash = { :custom_native_width => 'Ha!' }
           post :update, :id => int.id, :page_id => page.id, :managed_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:warning]).to eq('There was a problem updating your managed interactive.')
+          # In the UI a Managed interactive is called a Library Interactive
+          expect(flash[:warning]).to eq('There was a problem updating your library interactive.')
         end
       end
     end

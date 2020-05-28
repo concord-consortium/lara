@@ -6,11 +6,12 @@ class InteractiveController < ApplicationController
 
   def update
     set_page
+    interactive_type_name = @interactive.class.model_name.human.downcase
     if (@interactive.update_attributes(get_interactive_params))
       # respond success
-      flash[:notice] = "Your #{@interactive.class.string_name} was updated."
+      flash[:notice] = "Your #{interactive_type_name} was updated."
     else
-      flash[:warning] = "There was a problem updating your #{@interactive.class.string_name}."
+      flash[:warning] = "There was a problem updating your #{interactive_type_name}."
     end
     respond_to do |format|
       if @page
