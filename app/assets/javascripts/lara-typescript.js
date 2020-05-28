@@ -26074,6 +26074,13 @@ var IFrameSaver = /** @class */ (function () {
                 provider: this.authProvider,
                 loggedIn: this.loggedIn,
                 email: this.userEmail
+            },
+            linkedInteractives: [],
+            themeInfo: {
+                colors: {
+                    colorA: "red",
+                    colorB: "green"
+                }
             }
         };
         // Perhaps it would be nicer to keep `interactiveStateProps` in some separate property instead of mixing

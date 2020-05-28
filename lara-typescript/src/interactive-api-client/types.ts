@@ -199,8 +199,8 @@ export interface ISupportedFeatures {
   aspectRatio?: number;
   authoredState?: boolean;
   interactiveState?: boolean;
-  customMessages: {
-    handles: string[];
+  customMessages?: {
+    handles?: string[];
     // TODO: extend later to allow for sending custom messages from interactive
   };
 }

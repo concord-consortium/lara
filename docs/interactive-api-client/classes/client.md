@@ -5,6 +5,7 @@
 ## Type parameters
 #### InteractiveState 
 #### AuthoredState 
+#### DialogState 
 #### GlobalInteractiveState 
 ## Hierarchy
 
@@ -43,7 +44,7 @@
 
 ###  constructor
 
-⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`>*): [Client](client.md)
+⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `DialogState`, `GlobalInteractiveState`>*): [Client](client.md)
 
 *Defined in [client.ts:25](../../../lara-typescript/src/interactive-api-client/client.ts#L25)*
 
@@ -51,7 +52,7 @@
 
 | Name | Type |
 | ------ | ------ |
-| options | [IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> |
+| options | [IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `DialogState`, `GlobalInteractiveState`> |
 
 **Returns:** [Client](client.md)
 
@@ -112,7 +113,7 @@ ___
 
 ▸ **getAuthInfo**(): `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
-*Defined in [client.ts:136](../../../lara-typescript/src/interactive-api-client/client.ts#L136)*
+*Defined in [client.ts:140](../../../lara-typescript/src/interactive-api-client/client.ts#L140)*
 
 **Returns:** `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
@@ -123,7 +124,7 @@ ___
 
 ▸ **getFirebaseJWT**(options: *[IGetFirebaseJwtOptions](../interfaces/igetfirebasejwtoptions.md)*): `Promise`<`string`>
 
-*Defined in [client.ts:153](../../../lara-typescript/src/interactive-api-client/client.ts#L153)*
+*Defined in [client.ts:157](../../../lara-typescript/src/interactive-api-client/client.ts#L157)*
 
 **Parameters:**
 
@@ -140,7 +141,7 @@ ___
 
 ▸ **setAuthoredState**(authoredState: *`AuthoredState`*): `boolean`
 
-*Defined in [client.ts:128](../../../lara-typescript/src/interactive-api-client/client.ts#L128)*
+*Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
 
 **Parameters:**
 
@@ -157,7 +158,7 @@ ___
 
 ▸ **setGlobalInteractiveState**(globalState: *`GlobalInteractiveState`*): `boolean`
 
-*Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
+*Defined in [client.ts:136](../../../lara-typescript/src/interactive-api-client/client.ts#L136)*
 
 **Parameters:**
 
@@ -225,7 +226,7 @@ ___
 
 ▸ **setNavigation**(options: *[INavigationOptions](../interfaces/inavigationoptions.md)*): `boolean`
 
-*Defined in [client.ts:124](../../../lara-typescript/src/interactive-api-client/client.ts#L124)*
+*Defined in [client.ts:128](../../../lara-typescript/src/interactive-api-client/client.ts#L128)*
 
 **Parameters:**
 
@@ -242,7 +243,7 @@ ___
 
 ▸ **setSupportedFeatures**(features: *[ISupportedFeatures](../interfaces/isupportedfeatures.md)*): `boolean`
 
-*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
+*Defined in [client.ts:120](../../../lara-typescript/src/interactive-api-client/client.ts#L120)*
 
 **Parameters:**
 

@@ -22,7 +22,7 @@
 
 **● supportedFeatures**: *[ISupportedFeatures](isupportedfeatures.md)*
 
-*Defined in [types.ts:71](../../../lara-typescript/src/interactive-api-client/types.ts#L71)*
+*Defined in [types.ts:115](../../../lara-typescript/src/interactive-api-client/types.ts#L115)*
 
 ___
 
