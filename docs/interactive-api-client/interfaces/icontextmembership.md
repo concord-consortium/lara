@@ -22,7 +22,7 @@
 
 **● members**: *[IContextMember](icontextmember.md)[]*
 
-*Defined in [types.ts:191](../../../lara-typescript/src/interactive-api-client/types.ts#L191)*
+*Defined in [types.ts:189](../../../lara-typescript/src/interactive-api-client/types.ts#L189)*
 
 ___
 

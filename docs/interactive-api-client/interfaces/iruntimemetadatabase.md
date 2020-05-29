@@ -27,7 +27,7 @@
 
 **● answerText**: *`string`*
 
-*Defined in [types.ts:248](../../../lara-typescript/src/interactive-api-client/types.ts#L248)*
+*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
 
 ___
 <a id="issubmitted"></a>
@@ -36,7 +36,7 @@ ___
 
 **● isSubmitted**: *`boolean`*
 
-*Defined in [types.ts:247](../../../lara-typescript/src/interactive-api-client/types.ts#L247)*
+*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*
 
 ___
 

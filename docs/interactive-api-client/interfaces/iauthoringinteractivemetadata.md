@@ -29,7 +29,7 @@
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
-*Defined in [types.ts:224](../../../lara-typescript/src/interactive-api-client/types.ts#L224)*
+*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
 
 ___
 <a id="prompt"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[prompt](iauthoringmetadatabase.md#prompt)*
 
-*Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
+*Defined in [types.ts:223](../../../lara-typescript/src/interactive-api-client/types.ts#L223)*
 
 ___
 <a id="secondarytypefornow"></a>
@@ -51,7 +51,7 @@ ___
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
 
-*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
+*Defined in [types.ts:220](../../../lara-typescript/src/interactive-api-client/types.ts#L220)*
 
 ___
 <a id="type"></a>
@@ -60,7 +60,7 @@ ___
 
 **● type**: *"interactive"*
 
-*Defined in [types.ts:231](../../../lara-typescript/src/interactive-api-client/types.ts#L231)*
+*Defined in [types.ts:229](../../../lara-typescript/src/interactive-api-client/types.ts#L229)*
 
 ___
 

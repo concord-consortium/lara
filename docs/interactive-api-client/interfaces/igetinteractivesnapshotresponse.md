@@ -27,7 +27,7 @@
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:322](../../../lara-typescript/src/interactive-api-client/types.ts#L322)*
+*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
 
 ___
 <a id="snapshoturl"></a>
@@ -36,7 +36,7 @@ ___
 
 **● snapshotUrl**: *`string`*
 
-*Defined in [types.ts:395](../../../lara-typescript/src/interactive-api-client/types.ts#L395)*
+*Defined in [types.ts:393](../../../lara-typescript/src/interactive-api-client/types.ts#L393)*
 
 ___
 

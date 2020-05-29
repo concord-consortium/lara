@@ -25,7 +25,7 @@
 
 **● libraryInteractives**: *[ILibraryInteractiveListResponseItem](ilibraryinteractivelistresponseitem.md)[]*
 
-*Defined in [types.ts:384](../../../lara-typescript/src/interactive-api-client/types.ts#L384)*
+*Defined in [types.ts:382](../../../lara-typescript/src/interactive-api-client/types.ts#L382)*
 
 ___
 <a id="requestid"></a>
@@ -36,7 +36,7 @@ ___
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:322](../../../lara-typescript/src/interactive-api-client/types.ts#L322)*
+*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
 
 ___
 

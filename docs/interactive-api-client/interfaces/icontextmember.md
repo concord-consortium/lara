@@ -24,7 +24,7 @@
 
 **● firstName**: *`string`*
 
-*Defined in [types.ts:187](../../../lara-typescript/src/interactive-api-client/types.ts#L187)*
+*Defined in [types.ts:185](../../../lara-typescript/src/interactive-api-client/types.ts#L185)*
 
 ___
 <a id="lastname"></a>
@@ -33,7 +33,7 @@ ___
 
 **● lastName**: *`string`*
 
-*Defined in [types.ts:188](../../../lara-typescript/src/interactive-api-client/types.ts#L188)*
+*Defined in [types.ts:186](../../../lara-typescript/src/interactive-api-client/types.ts#L186)*
 
 ___
 <a id="userid"></a>
@@ -42,7 +42,7 @@ ___
 
 **● userId**: *`string`*
 
-*Defined in [types.ts:186](../../../lara-typescript/src/interactive-api-client/types.ts#L186)*
+*Defined in [types.ts:184](../../../lara-typescript/src/interactive-api-client/types.ts#L184)*
 
 ___
 

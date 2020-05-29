@@ -138,7 +138,6 @@ export type IFrameSaverClientMessage = "interactiveState" |
                                        "getFirebaseJWT" |
                                        "authoredState" |
                                        "authoringMetadata" |
-                                       // TODO: add client code for the following...
                                        "runtimeMetadata" |
                                        "authoringCustomReportFields" |
                                        "runtimeCustomReportValues" |
@@ -154,7 +153,6 @@ export type IframeSaverServerMessage = "authInfo" |
                                        "getInteractiveState" |
                                        "initInteractive" |
                                        "firebaseJWT" |
-                                       // TODO: add client code for the following...
                                        "closedModal" |
                                        "customMessage" |
                                        "interactiveList" |

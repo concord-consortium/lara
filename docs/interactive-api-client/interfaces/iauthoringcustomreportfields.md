@@ -22,7 +22,7 @@
 
 **● fields**: *[IAuthoringCustomReportField](iauthoringcustomreportfield.md)[]*
 
-*Defined in [types.ts:265](../../../lara-typescript/src/interactive-api-client/types.ts#L265)*
+*Defined in [types.ts:263](../../../lara-typescript/src/interactive-api-client/types.ts#L263)*
 
 ___
 

@@ -29,7 +29,7 @@
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:322](../../../lara-typescript/src/interactive-api-client/types.ts#L322)*
+*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
 
 ___
 <a id="supportssnapshots"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from [IGetInteractiveListOptions](igetinteractivelistoptions.md).[supportsSnapshots](igetinteractivelistoptions.md#supportssnapshots)*
 
-*Defined in [types.ts:353](../../../lara-typescript/src/interactive-api-client/types.ts#L353)*
+*Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*
 
 ___
 
