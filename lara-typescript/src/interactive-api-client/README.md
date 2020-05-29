@@ -51,11 +51,14 @@ interface IGlobalInteractiveState {
   backgroundColor: string;
 }
 
-const client = new LaraInteractiveApi.Client<IInteractiveState, IAuthoredState, IGlobalInteractiveState>({
+const client = new LaraInteractiveApi.Client<IInteractiveState, IAuthoredState, IDialogState, IGlobalInteractiveState>({
   supportedFeatures: {
     authoredState: true,
     interactiveState: true,
-    aspectRatio: 1
+    aspectRatio: 1,
+    customMessages: {
+      handles: ["plugin:teacher-edition-tips:showThing"];
+    }
   },
 
   onGetInteractiveState: () => ({ numButtonPresses: this.state.clicks })
@@ -70,10 +73,10 @@ const handleButtonClick = () => this.setState({ clicks: this.state.clicks + 1 })
 <button onClick={handleButtonClick}>{this.state.clicks}</button>
 ```
 
-Note: the order of the type variables is important, it is `InteractiveState`, `AuthoredState`, and `IGlobalInteractiveState`.  If you do wish to skip a
+Note: the order of the type variables is important, it is `InteractiveState`, `AuthoredState`, `DialogState`, and `IGlobalInteractiveState`.  If you do wish to skip a
 type variable just use `{}` in its place and any type variable left off on the end defaults to `{}`, eg:
 
-`const client = new LaraInteractiveApi.Client<IInteractiveState, {}, IGlobalInteractiveState>({ ...`
+`const client = new LaraInteractiveApi.Client<IInteractiveState, {}, {}, IGlobalInteractiveState>({ ...`
 
 Along with the required `supportedFeatures` option there are a few optional options:
 

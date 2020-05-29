@@ -12,6 +12,7 @@
 
 * [aspectRatio](isupportedfeatures.md#aspectratio)
 * [authoredState](isupportedfeatures.md#authoredstate)
+* [customMessages](isupportedfeatures.md#custommessages)
 * [interactiveState](isupportedfeatures.md#interactivestate)
 
 ---
@@ -24,7 +25,7 @@
 
 **● aspectRatio**: *`undefined` \| `number`*
 
-*Defined in [types.ts:115](../../../lara-typescript/src/interactive-api-client/types.ts#L115)*
+*Defined in [types.ts:197](../../../lara-typescript/src/interactive-api-client/types.ts#L197)*
 
 ___
 <a id="authoredstate"></a>
@@ -33,7 +34,16 @@ ___
 
 **● authoredState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:116](../../../lara-typescript/src/interactive-api-client/types.ts#L116)*
+*Defined in [types.ts:198](../../../lara-typescript/src/interactive-api-client/types.ts#L198)*
+
+___
+<a id="custommessages"></a>
+
+### `<Optional>` customMessages
+
+**● customMessages**: *`undefined` \| `object`*
+
+*Defined in [types.ts:200](../../../lara-typescript/src/interactive-api-client/types.ts#L200)*
 
 ___
 <a id="interactivestate"></a>
@@ -42,7 +52,7 @@ ___
 
 **● interactiveState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:117](../../../lara-typescript/src/interactive-api-client/types.ts#L117)*
+*Defined in [types.ts:199](../../../lara-typescript/src/interactive-api-client/types.ts#L199)*
 
 ___
 
