@@ -218,7 +218,7 @@ export type ChoiceId = string | number;
 // TODO: look at portal reports to get values or enum
 export interface IAuthoringMetadataBase {
   secondaryTypeForNow: any;  // TODO: this would come from the portal report
-                             // codebase for the icons showing in the column settings
+                             // codebase for the icons showing in the column headings
   isRequired: boolean;
   prompt?: string;
 }
