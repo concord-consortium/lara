@@ -19,6 +19,7 @@ services:
       REPORT_SERVICE_SELF_URL:
       REPORT_SERVICE_TOOL_ID:
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+      SHUTTERBUG_URI:
     # no ports are published, see below for details
     depends_on:
       - db
