@@ -2,7 +2,11 @@ import * as iframePhone from "iframe-phone";
 
 import { IClientOptions, IInitInteractive, ISupportedFeaturesRequest, INavigationOptions,
          IAuthInfo, IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, ClientMessage, ServerMessage,
-         ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest
+         ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest, IAuthoringMetadata,
+         IRuntimeMetadata, IAuthoringCustomReportFields, IRuntimeCustomReportValues, IShowModal,
+         ICloseModal, ISetLinkedInteractives, IGetInteractiveListRequest, IGetLibraryInteractiveListRequest,
+         IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, IGetLibraryInteractiveListResponse,
+         IGetInteractiveListResponse
         } from "./types";
 import { inIframe } from "./in-frame";
 
@@ -72,6 +76,30 @@ export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {},
           if (this.options.onGlobalInteractiveStateUpdated) {
             this.options.onGlobalInteractiveStateUpdated(globalState);
           }
+        });
+
+        this.addListener("closedModal", (/* todo maybe need typed response? */) => {
+          this.THROW_NOT_IMPLEMENTED_YET("closedModal listener");
+        });
+
+        this.addListener("customMessage", (/* todo maybe need typed response? */) => {
+          this.THROW_NOT_IMPLEMENTED_YET("customMessage listener");
+        });
+
+        this.addListener("interactiveList", (response: IGetInteractiveListResponse) => {
+          this.THROW_NOT_IMPLEMENTED_YET("interactiveList listener");
+        });
+
+        this.addListener("libraryInteractiveList", (response: IGetLibraryInteractiveListResponse) => {
+          this.THROW_NOT_IMPLEMENTED_YET("libraryInteractiveList listener");
+        });
+
+        this.addListener("interactiveSnapshot", (response: IGetInteractiveSnapshotResponse) => {
+          this.THROW_NOT_IMPLEMENTED_YET("interactiveSnapshot listener");
+        });
+
+        this.addListener("contextMembership", (/* todo maybe need typed response? */) => {
+          this.THROW_NOT_IMPLEMENTED_YET("contextMembership listener");
         });
 
         this.phone.initialize();
@@ -174,6 +202,80 @@ export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {},
       this.addListener("firebaseJWT", listener, requestId);
       this.post("getFirebaseJWT", request);
     });
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public setAuthoringMetadata(metadata: IAuthoringMetadata) {
+    this.THROW_NOT_IMPLEMENTED_YET("setAuthoringMetadata");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public setRuntimeMetadata(metadata: IRuntimeMetadata) {
+    this.THROW_NOT_IMPLEMENTED_YET("setRuntimeMetadata");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public setAuthoringCustomReportFields(fields: IAuthoringCustomReportFields) {
+    this.THROW_NOT_IMPLEMENTED_YET("setAuthoringCustomReportFields");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public setRuntimeCustomReportValues(values: IRuntimeCustomReportValues) {
+    this.THROW_NOT_IMPLEMENTED_YET("setRuntimeCustomReportValues");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public showModal(options: IShowModal) {
+    this.THROW_NOT_IMPLEMENTED_YET("showModal");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public closeModal(options: ICloseModal) {
+    this.THROW_NOT_IMPLEMENTED_YET("closeModal");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public getInteractiveList(options: IGetInteractiveListRequest) {
+    this.THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public setLinkedInteractives(options: ISetLinkedInteractives) {
+    this.THROW_NOT_IMPLEMENTED_YET("setLinkedInteractives");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public getLibraryInteractiveList(options: IGetLibraryInteractiveListRequest) {
+    this.THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
+  }
+
+  /**
+   * @todo Implement this function.
+   */
+  public getInteractiveSnapshot(options: IGetInteractiveSnapshotRequest) {
+    this.THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
+  }
+
+  private THROW_NOT_IMPLEMENTED_YET(method: string) {
+    throw new Error(`${method} is not yet implemented in the client!`);
   }
 
   // tslint:disable-next-line:max-line-length

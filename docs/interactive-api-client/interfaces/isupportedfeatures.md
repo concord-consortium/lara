@@ -25,7 +25,7 @@
 
 **● aspectRatio**: *`undefined` \| `number`*
 
-*Defined in [types.ts:199](../../../lara-typescript/src/interactive-api-client/types.ts#L199)*
+*Defined in [types.ts:197](../../../lara-typescript/src/interactive-api-client/types.ts#L197)*
 
 ___
 <a id="authoredstate"></a>
@@ -34,7 +34,7 @@ ___
 
 **● authoredState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:200](../../../lara-typescript/src/interactive-api-client/types.ts#L200)*
+*Defined in [types.ts:198](../../../lara-typescript/src/interactive-api-client/types.ts#L198)*
 
 ___
 <a id="custommessages"></a>
@@ -43,7 +43,7 @@ ___
 
 **● customMessages**: *`undefined` \| `object`*
 
-*Defined in [types.ts:202](../../../lara-typescript/src/interactive-api-client/types.ts#L202)*
+*Defined in [types.ts:200](../../../lara-typescript/src/interactive-api-client/types.ts#L200)*
 
 ___
 <a id="interactivestate"></a>
@@ -52,7 +52,7 @@ ___
 
 **● interactiveState**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:201](../../../lara-typescript/src/interactive-api-client/types.ts#L201)*
+*Defined in [types.ts:199](../../../lara-typescript/src/interactive-api-client/types.ts#L199)*
 
 ___
 

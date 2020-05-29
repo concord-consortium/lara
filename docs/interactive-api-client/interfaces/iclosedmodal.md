@@ -22,7 +22,7 @@
 
 **● uuid**: *`string`*
 
-*Defined in [types.ts:305](../../../lara-typescript/src/interactive-api-client/types.ts#L305)*
+*Defined in [types.ts:303](../../../lara-typescript/src/interactive-api-client/types.ts#L303)*
 
 ___
 

@@ -22,7 +22,7 @@
 
 **● values**: *`object`*
 
-*Defined in [types.ts:269](../../../lara-typescript/src/interactive-api-client/types.ts#L269)*
+*Defined in [types.ts:267](../../../lara-typescript/src/interactive-api-client/types.ts#L267)*
 
 #### Type declaration
 

@@ -24,7 +24,7 @@
 
 **● interactiveRuntimeId**: *[InteractiveRuntimeId](../#interactiveruntimeid)*
 
-*Defined in [types.ts:388](../../../lara-typescript/src/interactive-api-client/types.ts#L388)*
+*Defined in [types.ts:386](../../../lara-typescript/src/interactive-api-client/types.ts#L386)*
 
 ___
 

@@ -25,7 +25,7 @@
 
 **● description**: *`string`*
 
-*Defined in [types.ts:380](../../../lara-typescript/src/interactive-api-client/types.ts#L380)*
+*Defined in [types.ts:378](../../../lara-typescript/src/interactive-api-client/types.ts#L378)*
 
 ___
 <a id="id"></a>
@@ -34,7 +34,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [types.ts:378](../../../lara-typescript/src/interactive-api-client/types.ts#L378)*
+*Defined in [types.ts:376](../../../lara-typescript/src/interactive-api-client/types.ts#L376)*
 
 ___
 <a id="name"></a>
@@ -43,7 +43,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types.ts:379](../../../lara-typescript/src/interactive-api-client/types.ts#L379)*
+*Defined in [types.ts:377](../../../lara-typescript/src/interactive-api-client/types.ts#L377)*
 
 ___
 <a id="thumbnailurl"></a>
@@ -52,7 +52,7 @@ ___
 
 **● thumbnailUrl**: *`string`*
 
-*Defined in [types.ts:381](../../../lara-typescript/src/interactive-api-client/types.ts#L381)*
+*Defined in [types.ts:379](../../../lara-typescript/src/interactive-api-client/types.ts#L379)*
 
 ___
 

@@ -232,7 +232,7 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 
 **Ƭ ChoiceId**: *`string` \| `number`*
 
-*Defined in [types.ts:218](../../lara-typescript/src/interactive-api-client/types.ts#L218)*
+*Defined in [types.ts:216](../../lara-typescript/src/interactive-api-client/types.ts#L216)*
 
 ___
 <a id="clientmessage"></a>
@@ -241,7 +241,7 @@ ___
 
 **Ƭ ClientMessage**: *[DeprecatedIFrameSaverClientMessage](#deprecatediframesaverclientmessage) \| [IFrameSaverClientMessage](#iframesaverclientmessage) \| [GlobalIFrameSaverClientMessage](#globaliframesaverclientmessage)*
 
-*Defined in [types.ts:174](../../lara-typescript/src/interactive-api-client/types.ts#L174)*
+*Defined in [types.ts:172](../../lara-typescript/src/interactive-api-client/types.ts#L172)*
 
 ___
 <a id="deprecatediframesaverclientmessage"></a>
@@ -250,7 +250,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverClientMessage**: *"setLearnerUrl"*
 
-*Defined in [types.ts:171](../../lara-typescript/src/interactive-api-client/types.ts#L171)*
+*Defined in [types.ts:169](../../lara-typescript/src/interactive-api-client/types.ts#L169)*
 
 ___
 <a id="deprecatediframesaverservermessage"></a>
@@ -259,7 +259,7 @@ ___
 
 **Ƭ DeprecatedIFrameSaverServerMessage**: *"getLearnerUrl" \| "loadInteractive"*
 
-*Defined in [types.ts:172](../../lara-typescript/src/interactive-api-client/types.ts#L172)*
+*Defined in [types.ts:170](../../lara-typescript/src/interactive-api-client/types.ts#L170)*
 
 ___
 <a id="globaliframesaverclientmessage"></a>
@@ -268,7 +268,7 @@ ___
 
 **Ƭ GlobalIFrameSaverClientMessage**: *"interactiveStateGlobal"*
 
-*Defined in [types.ts:166](../../lara-typescript/src/interactive-api-client/types.ts#L166)*
+*Defined in [types.ts:164](../../lara-typescript/src/interactive-api-client/types.ts#L164)*
 
 ___
 <a id="globaliframesaverservermessage"></a>
@@ -277,7 +277,7 @@ ___
 
 **Ƭ GlobalIFrameSaverServerMessage**: *"loadInteractiveGlobal"*
 
-*Defined in [types.ts:167](../../lara-typescript/src/interactive-api-client/types.ts#L167)*
+*Defined in [types.ts:165](../../lara-typescript/src/interactive-api-client/types.ts#L165)*
 
 ___
 <a id="iauthoringmetadata"></a>
@@ -286,7 +286,7 @@ ___
 
 **Ƭ IAuthoringMetadata**: *[IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) \| [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) \| [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
 
-*Defined in [types.ts:242](../../lara-typescript/src/interactive-api-client/types.ts#L242)*
+*Defined in [types.ts:240](../../lara-typescript/src/interactive-api-client/types.ts#L240)*
 
 ___
 <a id="iframesaverclientmessage"></a>
@@ -313,7 +313,7 @@ ___
 
 **Ƭ IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) \| [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
 
-*Defined in [types.ts:257](../../lara-typescript/src/interactive-api-client/types.ts#L257)*
+*Defined in [types.ts:255](../../lara-typescript/src/interactive-api-client/types.ts#L255)*
 
 ___
 <a id="ishowmodal"></a>
@@ -322,7 +322,7 @@ ___
 
 **Ƭ IShowModal**: *[IShowAlert](interfaces/ishowalert.md) \| [IShowLightbox](interfaces/ishowlightbox.md) \| [IShowDialog](interfaces/ishowdialog.md)*
 
-*Defined in [types.ts:298](../../lara-typescript/src/interactive-api-client/types.ts#L298)*
+*Defined in [types.ts:296](../../lara-typescript/src/interactive-api-client/types.ts#L296)*
 
 ___
 <a id="iframephoneservermessage"></a>
@@ -331,7 +331,7 @@ ___
 
 **Ƭ IframePhoneServerMessage**: *"hello"*
 
-*Defined in [types.ts:169](../../lara-typescript/src/interactive-api-client/types.ts#L169)*
+*Defined in [types.ts:167](../../lara-typescript/src/interactive-api-client/types.ts#L167)*
 
 ___
 <a id="iframesaverservermessage"></a>
@@ -340,7 +340,7 @@ ___
 
 **Ƭ IframeSaverServerMessage**: *"authInfo" \| "getInteractiveState" \| "initInteractive" \| "firebaseJWT" \| "closedModal" \| "customMessage" \| "interactiveList" \| "libraryInteractiveList" \| "interactiveSnapshot" \| "contextMembership"*
 
-*Defined in [types.ts:153](../../lara-typescript/src/interactive-api-client/types.ts#L153)*
+*Defined in [types.ts:152](../../lara-typescript/src/interactive-api-client/types.ts#L152)*
 
 ___
 <a id="initinteractivemode"></a>
@@ -376,7 +376,7 @@ ___
 
 **Ƭ ServerMessage**: *[IframePhoneServerMessage](#iframephoneservermessage) \| [DeprecatedIFrameSaverServerMessage](#deprecatediframesaverservermessage) \| [IframeSaverServerMessage](#iframesaverservermessage) \| [GlobalIFrameSaverServerMessage](#globaliframesaverservermessage)*
 
-*Defined in [types.ts:178](../../lara-typescript/src/interactive-api-client/types.ts#L178)*
+*Defined in [types.ts:176](../../lara-typescript/src/interactive-api-client/types.ts#L176)*
 
 ___
 

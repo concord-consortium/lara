@@ -24,7 +24,7 @@
 
 **● firebase_app**: *`undefined` \| `string`*
 
-*Defined in [types.ts:339](../../../lara-typescript/src/interactive-api-client/types.ts#L339)*
+*Defined in [types.ts:337](../../../lara-typescript/src/interactive-api-client/types.ts#L337)*
 
 ___
 

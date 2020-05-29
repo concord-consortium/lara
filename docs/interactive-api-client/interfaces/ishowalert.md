@@ -28,7 +28,7 @@
 
 **● headerText**: *`undefined` \| `string`*
 
-*Defined in [types.ts:283](../../../lara-typescript/src/interactive-api-client/types.ts#L283)*
+*Defined in [types.ts:281](../../../lara-typescript/src/interactive-api-client/types.ts#L281)*
 
 ___
 <a id="style"></a>
@@ -37,7 +37,7 @@ ___
 
 **● style**: *"info" \| "warning" \| "error"*
 
-*Defined in [types.ts:282](../../../lara-typescript/src/interactive-api-client/types.ts#L282)*
+*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
 
 ___
 <a id="text"></a>
@@ -46,7 +46,7 @@ ___
 
 **● text**: *`string`*
 
-*Defined in [types.ts:284](../../../lara-typescript/src/interactive-api-client/types.ts#L284)*
+*Defined in [types.ts:282](../../../lara-typescript/src/interactive-api-client/types.ts#L282)*
 
 ___
 <a id="type"></a>
@@ -55,7 +55,7 @@ ___
 
 **● type**: *"alert"*
 
-*Defined in [types.ts:281](../../../lara-typescript/src/interactive-api-client/types.ts#L281)*
+*Defined in [types.ts:279](../../../lara-typescript/src/interactive-api-client/types.ts#L279)*
 
 ___
 <a id="uuid"></a>
@@ -66,7 +66,7 @@ ___
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
-*Defined in [types.ts:277](../../../lara-typescript/src/interactive-api-client/types.ts#L277)*
+*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*
 
 ___
 
