@@ -5,12 +5,6 @@ context('Test Learn R Interactive Embedded In LARA', () => {
     let testUrl = "https://authoring.staging.concord.org/activities/20624/pages/307325/"
     let rinteractive = new RInteractive();
 
-    const getIframeBody = () => {
-        return cy.get('iframe')
-            .its('0.contentDocument.body').should('not.be.empty')
-            .then(cy.wrap)
-    }
-
     before(() => {
         cy.visit(testUrl)
     })
@@ -23,7 +17,7 @@ context('Test Learn R Interactive Embedded In LARA', () => {
 
         it('Verify Use and Explore Mode', () => {
 
-            getIframeBody().find('div.pageContent').within(() => {
+            cy.getInteractiveIframe(0).find('div.pageContent').within(() => {
                 rinteractive.getStartOverButton().should('be.visible')
                 rinteractive.getRunCodeButton().should('be.visible')
                 rinteractive.getRHelpButton().should('be.visible')
@@ -31,7 +25,7 @@ context('Test Learn R Interactive Embedded In LARA', () => {
         })
 
         it('Verify Assessment Mode', () => {
-            getIframeBody().find('div.pageContent').within(() => {
+            cy.getInteractiveIframe(0).find('div.pageContent').within(() => {
                 rinteractive.getStartOverButton().should('be.visible')
                 rinteractive.getRunCodeButton().should('be.visible')
                 rinteractive.getRHelpButton().should('be.visible')
@@ -45,7 +39,7 @@ context('Test Learn R Interactive Embedded In LARA', () => {
 
             cy.visit('https://authoring.concord.org/activities/10482/pages/133077/')
 
-            getIframeBody().find('div.pageContent').within(() => {
+            cy.getInteractiveIframe(0).find('div.pageContent').within(() => {
                 rinteractive.getStartOverButton().should('be.visible')
                 rinteractive.getHintsButton().should('be.visible')
                 rinteractive.getRunCodeButton().should('be.visible')
@@ -62,7 +56,7 @@ context('Test Learn R Interactive Embedded In LARA', () => {
 
         it('verifies default r interactive state loads in code editor', () => {
             cy.visit('https://authoring.concord.org/activities/10482/pages/133077/')
-            getIframeBody().find('div.pageContent').within(() => {
+            cy.getInteractiveIframe(0).find('div.pageContent').within(() => {
                 rinteractive.getCodeEditor().should('contain', DEFAULT_TEXT)
                 rinteractive.getTextArea().clear({force:true})
                 rinteractive.getCodeEditor().should('not.contain', DEFAULT_TEXT)
@@ -70,7 +64,7 @@ context('Test Learn R Interactive Embedded In LARA', () => {
         })
 
         it('verifies addition of student code and submission', () => {
-            getIframeBody().find('div.pageContent').within(() => {
+            cy.getInteractiveIframe(0).find('div.pageContent').within(() => {
                 rinteractive.getTextArea().clear({force:true})
                 rinteractive.getTextArea().type(TEST_CODE_1[0], {force:true})
                 rinteractive.getRunCodeButton().click({force:true})

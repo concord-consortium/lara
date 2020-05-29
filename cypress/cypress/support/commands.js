@@ -70,7 +70,8 @@ Cypress.Commands.add("visitActivityPage", (activityUrl, page) => {
 
 Cypress.Commands.add("getInteractiveIframe", (pos=0) => {
   return cy.get('.interactive-container').eq(pos).within(() => {
-    cy.get("iframe")
+    cy.get("iframe").its('0.contentDocument.body').should('not.be.empty')
+    .then(cy.wrap)
   })
 });
 
