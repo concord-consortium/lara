@@ -24,7 +24,7 @@
 
 **● supportsSnapshots**: *`undefined` \| `false` \| `true`*
 
-*Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*
+*Defined in [types.ts:356](../../../lara-typescript/src/interactive-api-client/types.ts#L356)*
 
 ___
 

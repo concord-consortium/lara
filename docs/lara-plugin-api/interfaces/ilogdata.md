@@ -2,8 +2,6 @@
 
 # Interface: ILogData
 
-That's the minimal set of properties that needs to be provided. All the other properties provides go to the `extra` hash.
-
 ## Hierarchy
 
 **ILogData**

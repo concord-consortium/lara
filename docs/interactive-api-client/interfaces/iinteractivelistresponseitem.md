@@ -26,7 +26,7 @@
 
 **● id**: *[InteractiveAuthoredId](../#interactiveauthoredid)*
 
-*Defined in [types.ts:358](../../../lara-typescript/src/interactive-api-client/types.ts#L358)*
+*Defined in [types.ts:363](../../../lara-typescript/src/interactive-api-client/types.ts#L363)*
 
 ___
 <a id="name"></a>
@@ -35,7 +35,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [types.ts:359](../../../lara-typescript/src/interactive-api-client/types.ts#L359)*
+*Defined in [types.ts:364](../../../lara-typescript/src/interactive-api-client/types.ts#L364)*
 
 ___
 <a id="pagelocation"></a>
@@ -44,7 +44,7 @@ ___
 
 **● pageLocation**: *"assessment list" \| "interactive box" \| "introduction"*
 
-*Defined in [types.ts:360](../../../lara-typescript/src/interactive-api-client/types.ts#L360)*
+*Defined in [types.ts:365](../../../lara-typescript/src/interactive-api-client/types.ts#L365)*
 
 ___
 <a id="thumbnailurl"></a>
@@ -53,7 +53,7 @@ ___
 
 **● thumbnailUrl**: *`undefined` \| `string`*
 
-*Defined in [types.ts:362](../../../lara-typescript/src/interactive-api-client/types.ts#L362)*
+*Defined in [types.ts:367](../../../lara-typescript/src/interactive-api-client/types.ts#L367)*
 
 ___
 <a id="url"></a>
@@ -62,7 +62,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:361](../../../lara-typescript/src/interactive-api-client/types.ts#L361)*
+*Defined in [types.ts:366](../../../lara-typescript/src/interactive-api-client/types.ts#L366)*
 
 ___
 

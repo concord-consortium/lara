@@ -19,6 +19,7 @@
     "ordered-imports": false,
     "trailing-comma": false,
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"],
-    "no-namespace": false
+    "no-namespace": false,
+    "max-line-length": false
   }
 }

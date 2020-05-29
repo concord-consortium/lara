@@ -29,7 +29,7 @@
 
 **● dialogState**: *`DialogState`*
 
-*Defined in [types.ts:293](../../../lara-typescript/src/interactive-api-client/types.ts#L293)*
+*Defined in [types.ts:298](../../../lara-typescript/src/interactive-api-client/types.ts#L298)*
 
 ___
 <a id="type"></a>
@@ -38,7 +38,7 @@ ___
 
 **● type**: *"dialog"*
 
-*Defined in [types.ts:291](../../../lara-typescript/src/interactive-api-client/types.ts#L291)*
+*Defined in [types.ts:296](../../../lara-typescript/src/interactive-api-client/types.ts#L296)*
 
 ___
 <a id="url"></a>
@@ -47,7 +47,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:292](../../../lara-typescript/src/interactive-api-client/types.ts#L292)*
+*Defined in [types.ts:297](../../../lara-typescript/src/interactive-api-client/types.ts#L297)*
 
 ___
 <a id="uuid"></a>
@@ -58,7 +58,7 @@ ___
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
-*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*
+*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
 
 ___
 

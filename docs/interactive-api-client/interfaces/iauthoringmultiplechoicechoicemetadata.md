@@ -24,7 +24,7 @@
 
 **● content**: *`string`*
 
-*Defined in [types.ts:233](../../../lara-typescript/src/interactive-api-client/types.ts#L233)*
+*Defined in [types.ts:238](../../../lara-typescript/src/interactive-api-client/types.ts#L238)*
 
 ___
 <a id="id"></a>
@@ -33,7 +33,7 @@ ___
 
 **● id**: *[ChoiceId](../#choiceid)*
 
-*Defined in [types.ts:232](../../../lara-typescript/src/interactive-api-client/types.ts#L232)*
+*Defined in [types.ts:237](../../../lara-typescript/src/interactive-api-client/types.ts#L237)*
 
 ___
 <a id="iscorrect"></a>
@@ -42,7 +42,7 @@ ___
 
 **● isCorrect**: *`boolean`*
 
-*Defined in [types.ts:234](../../../lara-typescript/src/interactive-api-client/types.ts#L234)*
+*Defined in [types.ts:239](../../../lara-typescript/src/interactive-api-client/types.ts#L239)*
 
 ___
 
