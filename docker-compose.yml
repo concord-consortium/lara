@@ -8,17 +8,18 @@ services:
     environment:
       # Look at the docker/dev/docker-compose-*.yml files for configuratio of
       # additional variables.
+      C_RATER_FAKE:
       DB_HOST: db
       DB_USER: root
       DB_PASSWORD: xyzzy
-      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
-      C_RATER_FAKE:
-      LARA_VERSION: Local Docker
       GOOGLE_ANALYTICS_ACCOUNT:
+      LARA_VERSION: Local Docker
       REPORT_SERVICE_TOKEN:
       REPORT_SERVICE_URL:
       REPORT_SERVICE_SELF_URL:
       REPORT_SERVICE_TOOL_ID:
+      SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
+      SHUTTERBUG_URI:
     # no ports are published, see below for details
     depends_on:
       - db
