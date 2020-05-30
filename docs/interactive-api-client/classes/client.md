@@ -74,22 +74,18 @@ ___
 
 ###  InIFrame
 
-**get InIFrame**(): `boolean`
+**InIFrame**: 
 
 *Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
-
-**Returns:** `boolean`
 
 ___
 <a id="iframephone"></a>
 
 ###  iframePhone
 
-**get iframePhone**(): `undefined` \| `IFrameEndpoint`
+**iframePhone**: 
 
 *Defined in [client.ts:42](../../../lara-typescript/src/interactive-api-client/client.ts#L42)*
-
-**Returns:** `undefined` \| `IFrameEndpoint`
 
 ___
 
@@ -102,8 +98,6 @@ ___
 ▸ **closeModal**(options: *[ICloseModal](../interfaces/iclosemodal.md)*): `void`
 
 *Defined in [client.ts:245](../../../lara-typescript/src/interactive-api-client/client.ts#L245)*
-
-*__todo__*: Implement this function.
 
 **Parameters:**
 
@@ -172,8 +166,6 @@ ___
 
 *Defined in [client.ts:252](../../../lara-typescript/src/interactive-api-client/client.ts#L252)*
 
-*__todo__*: Implement this function.
-
 **Parameters:**
 
 | Name | Type |
@@ -191,8 +183,6 @@ ___
 
 *Defined in [client.ts:273](../../../lara-typescript/src/interactive-api-client/client.ts#L273)*
 
-*__todo__*: Implement this function.
-
 **Parameters:**
 
 | Name | Type |
@@ -209,8 +199,6 @@ ___
 ▸ **getLibraryInteractiveList**(options: *[IGetLibraryInteractiveListRequest](../interfaces/igetlibraryinteractivelistrequest.md)*): `void`
 
 *Defined in [client.ts:266](../../../lara-typescript/src/interactive-api-client/client.ts#L266)*
-
-*__todo__*: Implement this function.
 
 **Parameters:**
 
@@ -246,8 +234,6 @@ ___
 
 *Defined in [client.ts:224](../../../lara-typescript/src/interactive-api-client/client.ts#L224)*
 
-*__todo__*: Implement this function.
-
 **Parameters:**
 
 | Name | Type |
@@ -264,8 +250,6 @@ ___
 ▸ **setAuthoringMetadata**(metadata: *[IAuthoringMetadata](../#iauthoringmetadata)*): `void`
 
 *Defined in [client.ts:210](../../../lara-typescript/src/interactive-api-client/client.ts#L210)*
-
-*__todo__*: Implement this function.
 
 **Parameters:**
 
@@ -352,8 +336,6 @@ ___
 
 *Defined in [client.ts:259](../../../lara-typescript/src/interactive-api-client/client.ts#L259)*
 
-*__todo__*: Implement this function.
-
 **Parameters:**
 
 | Name | Type |
@@ -388,8 +370,6 @@ ___
 
 *Defined in [client.ts:231](../../../lara-typescript/src/interactive-api-client/client.ts#L231)*
 
-*__todo__*: Implement this function.
-
 **Parameters:**
 
 | Name | Type |
@@ -406,8 +386,6 @@ ___
 ▸ **setRuntimeMetadata**(metadata: *[IRuntimeMetadata](../#iruntimemetadata)*): `void`
 
 *Defined in [client.ts:217](../../../lara-typescript/src/interactive-api-client/client.ts#L217)*
-
-*__todo__*: Implement this function.
 
 **Parameters:**
 
@@ -442,8 +420,6 @@ ___
 ▸ **showModal**(options: *[IShowModal](../#ishowmodal)*): `void`
 
 *Defined in [client.ts:238](../../../lara-typescript/src/interactive-api-client/client.ts#L238)*
-
-*__todo__*: Implement this function.
 
 **Parameters:**
 
