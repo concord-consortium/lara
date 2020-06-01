@@ -8,6 +8,7 @@ export const getInitInteractiveMessage =
   <InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}>():
   Promise<IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState> | null> => {
   const client = getClient();
+  // tslint:disable-next-line:max-line-length
   return new Promise<IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState> | null>(resolve => {
     if (client.managedState.initMessage) {
       resolve(client.managedState.initMessage);

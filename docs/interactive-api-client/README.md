@@ -417,7 +417,7 @@ ___
 
 ▸ **addAuthoredStateListener**<`AuthoredState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:115](../../lara-typescript/src/interactive-api-client/api.ts#L115)*
+*Defined in [api.ts:116](../../lara-typescript/src/interactive-api-client/api.ts#L116)*
 
 **Type parameters:**
 
@@ -437,7 +437,7 @@ ___
 
 ▸ **addGlobalInteractiveStateListener**<`GlobalInteractiveState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:124](../../lara-typescript/src/interactive-api-client/api.ts#L124)*
+*Defined in [api.ts:125](../../lara-typescript/src/interactive-api-client/api.ts#L125)*
 
 **Type parameters:**
 
@@ -457,7 +457,7 @@ ___
 
 ▸ **addInteractiveStateListener**<`InteractiveState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:106](../../lara-typescript/src/interactive-api-client/api.ts#L106)*
+*Defined in [api.ts:107](../../lara-typescript/src/interactive-api-client/api.ts#L107)*
 
 **Type parameters:**
 
@@ -477,7 +477,7 @@ ___
 
 ▸ **getAuthInfo**(): `Promise`<[IAuthInfo](interfaces/iauthinfo.md)>
 
-*Defined in [api.ts:70](../../lara-typescript/src/interactive-api-client/api.ts#L70)*
+*Defined in [api.ts:71](../../lara-typescript/src/interactive-api-client/api.ts#L71)*
 
 **Returns:** `Promise`<[IAuthInfo](interfaces/iauthinfo.md)>
 
@@ -488,7 +488,7 @@ ___
 
 ▸ **getAuthoredState**<`AuthoredState`>(): `AuthoredState` \| `null`
 
-*Defined in [api.ts:30](../../lara-typescript/src/interactive-api-client/api.ts#L30)*
+*Defined in [api.ts:31](../../lara-typescript/src/interactive-api-client/api.ts#L31)*
 
 **Type parameters:**
 
@@ -514,7 +514,7 @@ ___
 
 ▸ **getFirebaseJWT**(options: *[IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)*): `Promise`<`string`>
 
-*Defined in [api.ts:85](../../lara-typescript/src/interactive-api-client/api.ts#L85)*
+*Defined in [api.ts:86](../../lara-typescript/src/interactive-api-client/api.ts#L86)*
 
 **Parameters:**
 
@@ -531,7 +531,7 @@ ___
 
 ▸ **getGlobalInteractiveState**<`GlobalInteractiveState`>(): `GlobalInteractiveState` \| `null`
 
-*Defined in [api.ts:40](../../lara-typescript/src/interactive-api-client/api.ts#L40)*
+*Defined in [api.ts:41](../../lara-typescript/src/interactive-api-client/api.ts#L41)*
 
 **Type parameters:**
 
@@ -564,7 +564,7 @@ ___
 
 ▸ **getInteractiveState**<`InteractiveState`>(): `InteractiveState` \| `null`
 
-*Defined in [api.ts:20](../../lara-typescript/src/interactive-api-client/api.ts#L20)*
+*Defined in [api.ts:21](../../lara-typescript/src/interactive-api-client/api.ts#L21)*
 
 **Type parameters:**
 
@@ -590,7 +590,7 @@ ___
 
 ▸ **removeAuthoredStateListener**<`AuthoredState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:119](../../lara-typescript/src/interactive-api-client/api.ts#L119)*
+*Defined in [api.ts:120](../../lara-typescript/src/interactive-api-client/api.ts#L120)*
 
 **Type parameters:**
 
@@ -610,7 +610,7 @@ ___
 
 ▸ **removeGlobalInteractiveStateListener**<`GlobalInteractiveState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:129](../../lara-typescript/src/interactive-api-client/api.ts#L129)*
+*Defined in [api.ts:130](../../lara-typescript/src/interactive-api-client/api.ts#L130)*
 
 **Type parameters:**
 
@@ -630,7 +630,7 @@ ___
 
 ▸ **removeInteractiveStateListener**<`InteractiveState`>(listener: *`function`*): `void`
 
-*Defined in [api.ts:111](../../lara-typescript/src/interactive-api-client/api.ts#L111)*
+*Defined in [api.ts:112](../../lara-typescript/src/interactive-api-client/api.ts#L112)*
 
 **Type parameters:**
 
@@ -650,7 +650,7 @@ ___
 
 ▸ **setAuthoredState**<`AuthoredState`>(newAuthoredState: *`AuthoredState`*): `void`
 
-*Defined in [api.ts:34](../../lara-typescript/src/interactive-api-client/api.ts#L34)*
+*Defined in [api.ts:35](../../lara-typescript/src/interactive-api-client/api.ts#L35)*
 
 **Type parameters:**
 
@@ -670,7 +670,7 @@ ___
 
 ▸ **setGlobalInteractiveState**<`GlobalInteractiveState`>(newGlobalState: *`GlobalInteractiveState`*): `void`
 
-*Defined in [api.ts:44](../../lara-typescript/src/interactive-api-client/api.ts#L44)*
+*Defined in [api.ts:45](../../lara-typescript/src/interactive-api-client/api.ts#L45)*
 
 **Type parameters:**
 
@@ -690,7 +690,7 @@ ___
 
 ▸ **setHeight**(height: *`number` \| `string`*): `void`
 
-*Defined in [api.ts:58](../../lara-typescript/src/interactive-api-client/api.ts#L58)*
+*Defined in [api.ts:59](../../lara-typescript/src/interactive-api-client/api.ts#L59)*
 
 **Parameters:**
 
@@ -707,7 +707,7 @@ ___
 
 ▸ **setHint**(height: *`string`*): `void`
 
-*Defined in [api.ts:62](../../lara-typescript/src/interactive-api-client/api.ts#L62)*
+*Defined in [api.ts:63](../../lara-typescript/src/interactive-api-client/api.ts#L63)*
 
 **Parameters:**
 
@@ -741,7 +741,7 @@ ___
 
 ▸ **setInteractiveState**<`InteractiveState`>(newInteractiveState: *`InteractiveState` \| `null`*): `void`
 
-*Defined in [api.ts:24](../../lara-typescript/src/interactive-api-client/api.ts#L24)*
+*Defined in [api.ts:25](../../lara-typescript/src/interactive-api-client/api.ts#L25)*
 
 **Type parameters:**
 
@@ -761,7 +761,7 @@ ___
 
 ▸ **setNavigation**(options: *[INavigationOptions](interfaces/inavigationoptions.md)*): `void`
 
-*Defined in [api.ts:66](../../lara-typescript/src/interactive-api-client/api.ts#L66)*
+*Defined in [api.ts:67](../../lara-typescript/src/interactive-api-client/api.ts#L67)*
 
 **Parameters:**
 
@@ -778,7 +778,7 @@ ___
 
 ▸ **setSupportedFeatures**(features: *[ISupportedFeatures](interfaces/isupportedfeatures.md)*): `void`
 
-*Defined in [api.ts:50](../../lara-typescript/src/interactive-api-client/api.ts#L50)*
+*Defined in [api.ts:51](../../lara-typescript/src/interactive-api-client/api.ts#L51)*
 
 **Parameters:**
 
@@ -795,7 +795,7 @@ ___
 
 ▸ **useAuthoredState**<`AuthoredState`>(): `object`
 
-*Defined in [hooks.ts:28](../../lara-typescript/src/interactive-api-client/hooks.ts#L28)*
+*Defined in [hooks.ts:30](../../lara-typescript/src/interactive-api-client/hooks.ts#L30)*
 
 **Type parameters:**
 
@@ -810,7 +810,7 @@ ___
 
 ▸ **useGlobalInteractiveState**<`GlobalInteractiveState`>(): `object`
 
-*Defined in [hooks.ts:51](../../lara-typescript/src/interactive-api-client/hooks.ts#L51)*
+*Defined in [hooks.ts:53](../../lara-typescript/src/interactive-api-client/hooks.ts#L53)*
 
 **Type parameters:**
 
@@ -825,7 +825,7 @@ ___
 
 ▸ **useInitMessage**<`InteractiveState`,`AuthoredState`,`DialogState`,`GlobalInteractiveState`>(): `null` \| [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> \| [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)<`AuthoredState`> \| [IReportInitInteractive](interfaces/ireportinitinteractive.md)<`InteractiveState`, `AuthoredState`> \| [IDialogInitInteractive](interfaces/idialoginitinteractive.md)<`InteractiveState`, `AuthoredState`, `DialogState`>
 
-*Defined in [hooks.ts:74](../../lara-typescript/src/interactive-api-client/hooks.ts#L74)*
+*Defined in [hooks.ts:79](../../lara-typescript/src/interactive-api-client/hooks.ts#L79)*
 
 **Type parameters:**
 

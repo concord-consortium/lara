@@ -3,7 +3,9 @@ import { IInitInteractive } from "./types";
 import * as client from "./api";
 
 export const useInteractiveState = <InteractiveState>() => {
-  const [ interactiveState, setInteractiveState ] = useState<InteractiveState | null>(client.getInteractiveState<InteractiveState>());
+  const [ interactiveState, setInteractiveState ] = useState<InteractiveState | null>(
+    client.getInteractiveState<InteractiveState>()
+  );
 
   useEffect(() => {
     // Setup client event listeners. They will ensure that another instance of this hook (or anything else
@@ -49,7 +51,9 @@ export const useAuthoredState = <AuthoredState>() => {
 };
 
 export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
-  const [ globalInteractiveState, setGlobalInteractiveState ] = useState<GlobalInteractiveState | null>(client.getGlobalInteractiveState<GlobalInteractiveState>());
+  const [ globalInteractiveState, setGlobalInteractiveState ] = useState<GlobalInteractiveState | null>(
+    client.getGlobalInteractiveState<GlobalInteractiveState>()
+  );
 
   useEffect(() => {
     // Setup client event listeners. They will ensure that another instance of this hook (or anything else
@@ -71,6 +75,7 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
   return { globalInteractiveState, setGlobalInteractiveState: handleSetGlobalInteractiveState };
 };
 
+// tslint:disable-next-line:max-line-length
 export const useInitMessage = <InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}>() => {
   type InitMessage = IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>;
   const [ initMessage, setInitMessage ] = useState<InitMessage | null>(null);
