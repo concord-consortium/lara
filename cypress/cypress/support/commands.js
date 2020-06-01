@@ -68,3 +68,90 @@ Cypress.Commands.add("visitActivityPage", (activityUrl, page) => {
   cy.get(".page-index li").eq(page).find("a").click()
 })
 
+Cypress.Commands.add("getInteractiveIframe", (pos=0) => {
+  return cy.get('.interactive-container').eq(pos).within(() => {
+    cy.get("iframe").its('0.contentDocument.body').should('not.be.empty')
+    .then(cy.wrap)
+  })
+});
+
+Cypress.Commands.add("iframe", { prevSubject: "element" }, $iframe => {
+  Cypress.log({
+      name: "iframe",
+      consoleProps() {
+          return {
+              iframe: $iframe,
+          };
+      },
+  });
+  return new Cypress.Promise(resolve => {
+      onIframeReady(
+          $iframe,
+          () => {
+              resolve($iframe.contents().find("body"));
+          },
+          () => {
+              $iframe.on("load", () => {
+                  resolve($iframe.contents().find("body"));
+              });
+          }
+      );
+  });
+});
+
+function onIframeReady($iframe, successFn, errorFn) {
+  try {
+      const iCon = $iframe.first()[0].contentWindow,
+          bl = "about:blank",
+          compl = "complete";
+      const callCallback = () => {
+          try {
+              const $con = $iframe.contents();
+              if ($con.length === 0) {
+                  // https://git.io/vV8yU
+                  throw new Error("iframe inaccessible");
+              }
+              successFn($con);
+          } catch (e) {
+              // accessing contents failed
+              errorFn();
+          }
+      };
+      const observeOnload = () => {
+          $iframe.on("load.jqueryMark", () => {
+              try {
+                  const src = $iframe.attr("src").trim(),
+                      href = iCon.location.href;
+                  if (href !== bl || src === bl || src === "") {
+                      $iframe.off("load.jqueryMark");
+                      callCallback();
+                  }
+              } catch (e) {
+                  errorFn();
+              }
+          });
+      };
+      if (iCon.document.readyState === compl) {
+          const src = $iframe.attr("src").trim(),
+              href = iCon.location.href;
+          if (href === bl && src !== bl && src !== "") {
+              observeOnload();
+          } else {
+              callCallback();
+          }
+      } else {
+          observeOnload();
+      }
+  } catch (e) {
+      // accessing contentWindow failed
+      errorFn();
+  }
+}
+
+// Trying new iFrame grabber method
+
+// Cypress.Commands.add("getIframeBody", () => {
+//   return cy.get('iframe').eq(0)
+//     .its('0.contentDocument').should('not.be.empty')
+//     .then(cy.wrap)
+// })
