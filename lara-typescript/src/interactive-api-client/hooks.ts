@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { IInitInteractive } from "./types";
 import * as client from "./api";
 
+type UpdateFunc<S> = (prevState: S | null) => S;
+const handleUpdate = <S>(newStateOrUpdateFunc: S | UpdateFunc<S>, prevState: S | null) => {
+  if (typeof newStateOrUpdateFunc === "function") {
+    return (newStateOrUpdateFunc as UpdateFunc<S>)(prevState);
+  } else {
+    return newStateOrUpdateFunc;
+  }
+};
+
 export const useInteractiveState = <InteractiveState>() => {
   const [ interactiveState, setInteractiveState ] = useState<InteractiveState | null>(
     client.getInteractiveState<InteractiveState>()
@@ -19,9 +28,10 @@ export const useInteractiveState = <InteractiveState>() => {
     };
   }, []);
 
-  const handleSetInteractiveState = (state: InteractiveState) => {
-    setInteractiveState(state);
-    client.setInteractiveState<InteractiveState>(state);
+  const handleSetInteractiveState = (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState>) => {
+    const newState = handleUpdate<InteractiveState>(stateOrUpdateFunc, interactiveState);
+    setInteractiveState(newState);
+    client.setInteractiveState<InteractiveState>(newState);
   };
 
   return { interactiveState, setInteractiveState: handleSetInteractiveState };
@@ -42,9 +52,10 @@ export const useAuthoredState = <AuthoredState>() => {
     };
   }, []);
 
-  const handleSetAuthoredState = (state: AuthoredState) => {
-    setAuthoredState(state);
-    client.setAuthoredState<AuthoredState>(state);
+  const handleSetAuthoredState = (stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState>) => {
+    const newState = handleUpdate<AuthoredState>(stateOrUpdateFunc, authoredState);
+    setAuthoredState(newState);
+    client.setAuthoredState<AuthoredState>(newState);
   };
 
   return { authoredState, setAuthoredState: handleSetAuthoredState };
@@ -67,9 +78,11 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
     };
   }, []);
 
-  const handleSetGlobalInteractiveState = (state: GlobalInteractiveState) => {
-    setGlobalInteractiveState(state);
-    client.setGlobalInteractiveState<GlobalInteractiveState>(state);
+  // tslint:disable-next-line:max-line-length
+  const handleSetGlobalInteractiveState = (stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState>) => {
+    const newState = handleUpdate<GlobalInteractiveState>(stateOrUpdateFunc, globalInteractiveState);
+    setGlobalInteractiveState(newState);
+    client.setGlobalInteractiveState<GlobalInteractiveState>(newState);
   };
 
   return { globalInteractiveState, setGlobalInteractiveState: handleSetGlobalInteractiveState };
