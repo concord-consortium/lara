@@ -30,7 +30,7 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
  * ```
  * setInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
  * // or
- * setInteractiveState({...previousState, {someProperty: "a new value"}});
+ * setInteractiveState({...previousState, someProperty: "a new value"});
  * ```
  *
  * Bad:
@@ -57,7 +57,7 @@ export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
  * ```
  * setAuthoredState(Object.assign({}, previousState, {someProperty: "a new value"}));
  * // or
- * setAuthoredState({...previousState, {someProperty: "a new value"}});
+ * setAuthoredState({...previousState, someProperty: "a new value"});
  * ```
  *
  * Bad:
@@ -84,7 +84,7 @@ export const getGlobalInteractiveState = <GlobalInteractiveState>(): GlobalInter
  * ```
  * setGlobalInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
  * // or
- * setGlobalInteractiveState({...previousState, {someProperty: "a new value"}});
+ * setGlobalInteractiveState({...previousState, someProperty: "a new value"});
  * ```
  *
  * Bad:
