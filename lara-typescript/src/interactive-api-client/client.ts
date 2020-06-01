@@ -2,7 +2,7 @@
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given
 import * as iframePhone from "iframe-phone";
-import { ClientEvents, ClientMessage, IInitInteractive, ServerMessage } from "./types";
+import { ClientEvent, ClientMessage, IInitInteractive, ServerMessage } from "./types";
 import { EventEmitter2 } from "eventemitter2";
 import { inIframe } from "./in-frame";
 
@@ -179,19 +179,19 @@ class ManagedState {
     this.emit("globalInteractiveStateUpdated", value);
   }
 
-  public emit(event: ClientEvents, content?: any) {
+  public emit(event: ClientEvent, content?: any) {
     this.emitter.emit(event, content);
   }
 
-  public on(event: ClientEvents, handler: any) {
+  public on(event: ClientEvent, handler: any) {
     this.emitter.on(event, handler);
   }
 
-  public off(event: ClientEvents, handler: any) {
+  public off(event: ClientEvent, handler: any) {
     this.emitter.off(event, handler);
   }
 
-  public once(event: ClientEvents, handler: any) {
+  public once(event: ClientEvent, handler: any) {
     this.emitter.once(event, handler);
   }
 }

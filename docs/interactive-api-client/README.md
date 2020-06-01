@@ -195,7 +195,7 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 ### Type aliases
 
 * [ChoiceId](#choiceid)
-* [ClientEvents](#clientevents)
+* [ClientEvent](#clientevent)
 * [ClientMessage](#clientmessage)
 * [DeprecatedIFrameSaverClientMessage](#deprecatediframesaverclientmessage)
 * [DeprecatedIFrameSaverServerMessage](#deprecatediframesaverservermessage)
@@ -255,11 +255,11 @@ Calling the `setAuthoredState`, `setInteractiveState` and `setGlobalInteractiveS
 *Defined in [types.ts:221](../../lara-typescript/src/interactive-api-client/types.ts#L221)*
 
 ___
-<a id="clientevents"></a>
+<a id="clientevent"></a>
 
-###  ClientEvents
+###  ClientEvent
 
-**Ƭ ClientEvents**: *"interactiveStateUpdated" \| "globalInteractiveStateUpdated" \| "authoredStateUpdated" \| "initInteractive"*
+**Ƭ ClientEvent**: *"interactiveStateUpdated" \| "globalInteractiveStateUpdated" \| "authoredStateUpdated" \| "initInteractive"*
 
 *Defined in [types.ts:176](../../lara-typescript/src/interactive-api-client/types.ts#L176)*
 
