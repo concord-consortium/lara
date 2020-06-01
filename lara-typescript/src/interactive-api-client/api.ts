@@ -22,6 +22,23 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
   return getClient().managedState.interactiveState;
 };
 
+/**
+ * Note that state will become frozen and should never be mutated.
+ * Each time you update state, make sure that a new object is passed.
+ *
+ * Good:
+ * ```
+ * setInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
+ * // or
+ * setInteractiveState({...previousState, {someProperty: "a new value"}});
+ * ```
+ *
+ * Bad:
+ * ```
+ * previousState.someProperty = "a new value";
+ * setInteractiveState(previousState);
+ * ```
+ */
 export const setInteractiveState = <InteractiveState>(newInteractiveState: InteractiveState | null) => {
   const client = getClient();
   client.managedState.interactiveState = newInteractiveState;
@@ -32,6 +49,23 @@ export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
   return getClient().managedState.authoredState;
 };
 
+/**
+ * Note that state will become frozen and should never be mutated.
+ * Each time you update state, make sure that a new object is passed.
+ *
+ * Good:
+ * ```
+ * setAuthoredState(Object.assign({}, previousState, {someProperty: "a new value"}));
+ * // or
+ * setAuthoredState({...previousState, {someProperty: "a new value"}});
+ * ```
+ *
+ * Bad:
+ * ```
+ * previousState.someProperty = "a new value";
+ * setAuthoredState(previousState);
+ * ```
+ */
 export const setAuthoredState = <AuthoredState>(newAuthoredState: AuthoredState) => {
   const client = getClient();
   client.managedState.authoredState = newAuthoredState;
@@ -42,6 +76,23 @@ export const getGlobalInteractiveState = <GlobalInteractiveState>(): GlobalInter
   return getClient().managedState.globalInteractiveState;
 };
 
+/**
+ * Note that state will become frozen and should never be mutated.
+ * Each time you update state, make sure that a new object is passed.
+ *
+ * Good:
+ * ```
+ * setGlobalInteractiveState(Object.assign({}, previousState, {someProperty: "a new value"}));
+ * // or
+ * setGlobalInteractiveState({...previousState, {someProperty: "a new value"}});
+ * ```
+ *
+ * Bad:
+ * ```
+ * previousState.someProperty = "a new value";
+ * setGlobalInteractiveState(previousState);
+ * ```
+ */
 export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState: GlobalInteractiveState) => {
   const client = getClient();
   client.managedState.globalInteractiveState = newGlobalState;
