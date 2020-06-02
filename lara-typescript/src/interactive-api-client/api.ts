@@ -66,7 +66,7 @@ export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
  * setAuthoredState(previousState);
  * ```
  */
-export const setAuthoredState = <AuthoredState>(newAuthoredState: AuthoredState) => {
+export const setAuthoredState = <AuthoredState>(newAuthoredState: AuthoredState | null) => {
   const client = getClient();
   client.managedState.authoredState = newAuthoredState;
   client.post("authoredState", newAuthoredState);
@@ -93,7 +93,7 @@ export const getGlobalInteractiveState = <GlobalInteractiveState>(): GlobalInter
  * setGlobalInteractiveState(previousState);
  * ```
  */
-export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState: GlobalInteractiveState) => {
+export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState: GlobalInteractiveState | null) => {
   const client = getClient();
   client.managedState.globalInteractiveState = newGlobalState;
   client.post("interactiveStateGlobal", newGlobalState);

@@ -648,7 +648,7 @@ ___
 
 ### `<Const>` setAuthoredState
 
-▸ **setAuthoredState**<`AuthoredState`>(newAuthoredState: *`AuthoredState`*): `void`
+▸ **setAuthoredState**<`AuthoredState`>(newAuthoredState: *`AuthoredState` \| `null`*): `void`
 
 *Defined in [api.ts:69](../../lara-typescript/src/interactive-api-client/api.ts#L69)*
 
@@ -659,7 +659,7 @@ ___
 
 | Name | Type |
 | ------ | ------ |
-| newAuthoredState | `AuthoredState` |
+| newAuthoredState | `AuthoredState` \| `null` |
 
 **Returns:** `void`
 
@@ -668,7 +668,7 @@ ___
 
 ### `<Const>` setGlobalInteractiveState
 
-▸ **setGlobalInteractiveState**<`GlobalInteractiveState`>(newGlobalState: *`GlobalInteractiveState`*): `void`
+▸ **setGlobalInteractiveState**<`GlobalInteractiveState`>(newGlobalState: *`GlobalInteractiveState` \| `null`*): `void`
 
 *Defined in [api.ts:96](../../lara-typescript/src/interactive-api-client/api.ts#L96)*
 
@@ -679,7 +679,7 @@ ___
 
 | Name | Type |
 | ------ | ------ |
-| newGlobalState | `GlobalInteractiveState` |
+| newGlobalState | `GlobalInteractiveState` \| `null` |
 
 **Returns:** `void`
 
@@ -795,7 +795,7 @@ ___
 
 ▸ **useAuthoredState**<`AuthoredState`>(): `object`
 
-*Defined in [hooks.ts:40](../../lara-typescript/src/interactive-api-client/hooks.ts#L40)*
+*Defined in [hooks.ts:41](../../lara-typescript/src/interactive-api-client/hooks.ts#L41)*
 
 **Type parameters:**
 
@@ -810,7 +810,7 @@ ___
 
 ▸ **useGlobalInteractiveState**<`GlobalInteractiveState`>(): `object`
 
-*Defined in [hooks.ts:64](../../lara-typescript/src/interactive-api-client/hooks.ts#L64)*
+*Defined in [hooks.ts:66](../../lara-typescript/src/interactive-api-client/hooks.ts#L66)*
 
 **Type parameters:**
 
@@ -825,7 +825,7 @@ ___
 
 ▸ **useInitMessage**<`InteractiveState`,`AuthoredState`,`DialogState`,`GlobalInteractiveState`>(): `null` \| [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> \| [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)<`AuthoredState`> \| [IReportInitInteractive](interfaces/ireportinitinteractive.md)<`InteractiveState`, `AuthoredState`> \| [IDialogInitInteractive](interfaces/idialoginitinteractive.md)<`InteractiveState`, `AuthoredState`, `DialogState`>
 
-*Defined in [hooks.ts:92](../../lara-typescript/src/interactive-api-client/hooks.ts#L92)*
+*Defined in [hooks.ts:97](../../lara-typescript/src/interactive-api-client/hooks.ts#L97)*
 
 **Type parameters:**
 

@@ -3,7 +3,7 @@ import { IInitInteractive } from "./types";
 import * as client from "./api";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
-const handleUpdate = <S>(newStateOrUpdateFunc: S | UpdateFunc<S>, prevState: S | null) => {
+const handleUpdate = <S>(newStateOrUpdateFunc: S | null | UpdateFunc<S>, prevState: S | null) => {
   if (typeof newStateOrUpdateFunc === "function") {
     return (newStateOrUpdateFunc as UpdateFunc<S>)(prevState);
   } else {
@@ -28,7 +28,7 @@ export const useInteractiveState = <InteractiveState>() => {
     };
   }, []);
 
-  const handleSetInteractiveState = (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState>) => {
+  const handleSetInteractiveState = (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState> | null) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<InteractiveState>(stateOrUpdateFunc, client.getInteractiveState<InteractiveState>());
     setInteractiveState(newState);
@@ -53,7 +53,7 @@ export const useAuthoredState = <AuthoredState>() => {
     };
   }, []);
 
-  const handleSetAuthoredState = (stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState>) => {
+  const handleSetAuthoredState = (stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState> | null) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<AuthoredState>(stateOrUpdateFunc, client.getAuthoredState<AuthoredState>());
     setAuthoredState(newState);
@@ -81,7 +81,7 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
   }, []);
 
   // tslint:disable-next-line:max-line-length
-  const handleSetGlobalInteractiveState = (stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState>) => {
+  const handleSetGlobalInteractiveState = (stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState> | null ) => {
     // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
     const newState = handleUpdate<GlobalInteractiveState>(
       stateOrUpdateFunc, client.getGlobalInteractiveState<GlobalInteractiveState>()
