@@ -2,10 +2,9 @@
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given
 import * as iframePhone from "iframe-phone";
-import { ClientEvent, ClientMessage, IInitInteractive, ServerMessage } from "./types";
-import { EventEmitter2 } from "eventemitter2";
+import { ClientMessage, IInitInteractive, ServerMessage } from "./types";
 import { inIframe } from "./in-frame";
-import deepFreeze from "deep-freeze";
+import { ManagedState } from "./managed-state";
 
 interface IRequestCallback {
   requestId?: number;
@@ -15,32 +14,32 @@ interface IListenerMap {
   [key: string]: IRequestCallback[];
 }
 
+const phoneInitialized = () => iframePhone.getIFrameEndpoint().getListenerNames().length > 0;
+
 let clientInstance: Client;
 export const getClient = () => {
-  if (!clientInstance) {
+  // !phoneInitialized() part isn't really necessary. But it's fine in web browser and it helps in testing environment.
+  // Tests can reset mock iframe phone and get new Client instance.
+  if (!clientInstance || !phoneInitialized()) {
     clientInstance = new Client();
   }
   return clientInstance;
 };
 
-let instancesCount = 0;
-
-class Client {
+export class Client {
   public phone: iframePhone.IFrameEndpoint = iframePhone.getIFrameEndpoint();
-  public listeners: IListenerMap = {};
-
   public managedState = new ManagedState();
 
+  private  listeners: IListenerMap = {};
   private requestId = 1;
 
   constructor() {
     if (!inIframe()) {
       throw new Error("Interactive API is meant to be used in iframe");
     }
-    if (instancesCount > 0) {
-      throw new Error("Only once Client instance is allowed");
+    if (phoneInitialized()) {
+      throw new Error("IframePhone has been initialized previously. Only once Client instance is allowed.");
     }
-    instancesCount += 1;
     this.connect();
   }
 
@@ -129,74 +128,5 @@ class Client {
     });
 
     this.phone.initialize();
-  }
-}
-
-class ManagedState {
-  public _initMessage: Readonly<IInitInteractive<any, any, any, any>> | null = null;
-  // State variables are kept separately from initMessage, as they might get updated. For client user convenience,
-  // this state is kept here and all the updates emit appropriate event.
-  private _interactiveState: Readonly<any> | null = null;
-  private _authoredState: Readonly<any> | null = null;
-  private _globalInteractiveState: Readonly<any> | null = null;
-
-  private emitter = new EventEmitter2({
-    maxListeners: Infinity
-  });
-
-  public get initMessage() {
-    return this._initMessage;
-  }
-
-  public set initMessage(value: any) {
-    value = deepFreeze(value);
-    this._initMessage = value;
-    this.emit("initInteractive", value);
-  }
-
-  public get interactiveState() {
-    return this._interactiveState;
-  }
-
-  public set interactiveState(value: any) {
-    value = deepFreeze(value);
-    this._interactiveState = value;
-    this.emit("interactiveStateUpdated", value);
-  }
-
-  public get authoredState() {
-    return this._authoredState;
-  }
-
-  public set authoredState(value: any) {
-    value = deepFreeze(value);
-    this._authoredState = value;
-    this.emit("authoredStateUpdated", value);
-  }
-
-  public get globalInteractiveState() {
-    return this._globalInteractiveState;
-  }
-
-  public set globalInteractiveState(value: any) {
-    value = deepFreeze(value);
-    this._globalInteractiveState = value;
-    this.emit("globalInteractiveStateUpdated", value);
-  }
-
-  public emit(event: ClientEvent, content?: any) {
-    this.emitter.emit(event, content);
-  }
-
-  public on(event: ClientEvent, handler: any) {
-    this.emitter.on(event, handler);
-  }
-
-  public off(event: ClientEvent, handler: any) {
-    this.emitter.off(event, handler);
-  }
-
-  public once(event: ClientEvent, handler: any) {
-    this.emitter.once(event, handler);
   }
 }
