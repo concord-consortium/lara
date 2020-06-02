@@ -51,13 +51,13 @@ describe("IframePhoneManager", () => {
     it("returns the same RPC endpoint even if called multiple times", () => {
       const rpc1 = IframePhoneManager.getRpcEndpoint(iframeEl, "test-namespace");
       const rpc2 = IframePhoneManager.getRpcEndpoint(iframeEl, "test-namespace");
-      return expect(rpc1).toBe(rpc2);
+      expect(rpc1).toBe(rpc2);
     });
 
-    return it("returns different RPC endpoint for different namespaces", () => {
+    it("returns different RPC endpoint for different namespaces", () => {
       const rpc1 = IframePhoneManager.getRpcEndpoint(iframeEl, "test-namespace-1");
       const rpc2 = IframePhoneManager.getRpcEndpoint(iframeEl, "test-namespace-2");
-      return expect(rpc1).not.toBe(rpc2);
+      expect(rpc1).not.toBe(rpc2);
     });
   });
 });
