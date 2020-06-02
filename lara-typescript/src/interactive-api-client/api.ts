@@ -1,8 +1,14 @@
 import {
   IInitInteractive, ISupportedFeaturesRequest, INavigationOptions, IAuthInfo, IGetFirebaseJwtOptions,
-  IGetFirebaseJwtResponse, ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest
+  IGetFirebaseJwtResponse, ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest, IAuthoringMetadata,
+  IRuntimeMetadata, IAuthoringCustomReportFields, IRuntimeCustomReportValues, IShowModal, ICloseModal,
+  IGetInteractiveListRequest, ISetLinkedInteractives, IGetLibraryInteractiveListRequest, IGetInteractiveSnapshotRequest
 } from "./types";
 import { getClient } from "./client";
+
+const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
+  throw new Error(`${method} is not yet implemented in the client!`);
+};
 
 export const getInitInteractiveMessage =
   <InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}>():
@@ -111,8 +117,8 @@ export const setHeight = (height: number | string) => {
   getClient().post("height", height);
 };
 
-export const setHint = (height: string) => {
-  getClient().post("hint", height);
+export const setHint = (hint: string) => {
+  getClient().post("hint", hint);
 };
 
 export const setNavigation = (options: INavigationOptions) => {
@@ -180,4 +186,74 @@ export const addGlobalInteractiveStateListener = <GlobalInteractiveState>(listen
 // tslint:disable-next-line:max-line-length
 export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(listener: (globalInteractiveState: GlobalInteractiveState) => void) => {
   getClient().managedState.off("globalInteractiveStateUpdated", listener);
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const setAuthoringMetadata = (metadata: IAuthoringMetadata) => {
+  THROW_NOT_IMPLEMENTED_YET("setAuthoringMetadata");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const setRuntimeMetadata = (metadata: IRuntimeMetadata) => {
+  THROW_NOT_IMPLEMENTED_YET("setRuntimeMetadata");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const setAuthoringCustomReportFields = (fields: IAuthoringCustomReportFields) => {
+  THROW_NOT_IMPLEMENTED_YET("setAuthoringCustomReportFields");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const setRuntimeCustomReportValues = (values: IRuntimeCustomReportValues) => {
+  THROW_NOT_IMPLEMENTED_YET("setRuntimeCustomReportValues");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const showModal = (options: IShowModal) => {
+  THROW_NOT_IMPLEMENTED_YET("showModal");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const closeModal = (options: ICloseModal) => {
+  THROW_NOT_IMPLEMENTED_YET("closeModal");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const getInteractiveList = (options: IGetInteractiveListRequest) => {
+  THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const setLinkedInteractives = (options: ISetLinkedInteractives) => {
+  THROW_NOT_IMPLEMENTED_YET("setLinkedInteractives");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListRequest) => {
+  THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
+};
+
+/**
+ * @todo Implement this function.
+ */
+export const getInteractiveSnapshot = (options: IGetInteractiveSnapshotRequest) => {
+  THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
 };
