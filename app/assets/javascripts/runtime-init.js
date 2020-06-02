@@ -23,6 +23,9 @@ $(document).ready(function () {
         $('.content-hdr').removeClass('extra-pad');
         $('.activity-nav-mod.header-nav .activity-nav-logo .h2').removeClass('visible');
       }
+      if ($('.activity-nav-mod.header-nav').css('position') === 'fixed') {
+        $('.question-tab').css({'top': '70px'});
+      }
     }
   });
 

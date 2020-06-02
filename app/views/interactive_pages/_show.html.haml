@@ -57,3 +57,10 @@
   :javascript
     // Initialize responsive layout when page is loaded.
     $(function() { responsiveLayout(); });
+
+- if page.toggle_info_assessment && page.layout != 'l-full-width'
+  :javascript
+    // add question column toggle option
+    $(document).ready(function() {
+      $('.questions-mod').prepend('<div class="question-tab" onclick="toggleQuestions(); return false;"><span>Hide Questions</span></div>');
+    });
