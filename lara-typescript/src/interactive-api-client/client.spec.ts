@@ -95,9 +95,11 @@ describe("Client", () => {
       it("can manually connect and disconnect", () => {
         expect(client.connect()).toBe(true);
         expect(mockedPhone()).toBeDefined();
-        expect(mockedPhone().numListeners).toBe(4);
+        expect(mockedPhone().numListeners).toBe(10);
         expect(mockedPhone().listenerMessages).toEqual([
-          "hello", "getInteractiveState", "initInteractive", "loadInteractiveGlobal"
+          "hello", "getInteractiveState", "initInteractive", "loadInteractiveGlobal",
+          "closedModal", "customMessage", "interactiveList", "libraryInteractiveList", "interactiveSnapshot",
+          "contextMembership",
         ]);
 
         expect(client.disconnect()).toBe(true);
@@ -270,6 +272,72 @@ describe("Client", () => {
         expect(promise).rejects.toEqual("it's broke!");
       });
 
+      it("does not yet implement setAuthoringMetadata", () => {
+        expect(() => client.setAuthoringMetadata({
+          type: "interactive",
+          secondaryTypeForNow: "foo",
+          isRequired: true,
+          prompt: "bar"
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement setRuntimeMetadata", () => {
+        expect(() => client.setRuntimeMetadata({
+          type: "interactive",
+          isSubmitted: true,
+          answerText: "foo"
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement setAuthoringCustomReportFields", () => {
+        expect(() => client.setAuthoringCustomReportFields({
+          fields: [
+            {id: "foo", columnHeading: "Foo"}
+          ]
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement setRuntimeCustomReportValues", () => {
+        expect(() => client.setRuntimeCustomReportValues({
+          values: {foo: "bar"}
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement showModal", () => {
+        expect(() => client.showModal({
+          uuid: "foo",
+          type: "alert",
+          style: "info",
+          headerText: "Did you know?",
+          text: "That is is an alert"
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement closeModal", () => {
+        expect(() => client.closeModal({
+          uuid: "foo"
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement getInteractiveList", () => {
+        expect(() => client.getInteractiveList({
+          requestId: 1,
+          supportsSnapshots: true
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement setLinkedInteractives", () => {
+        expect(() => client.setLinkedInteractives({
+          linkedInteractives: []
+        })).toThrow(/not yet implemented/);
+      });
+
+      it("does not yet implement getInteractiveSnapshot", () => {
+        expect(() => client.getInteractiveSnapshot({
+          requestId: 1,
+          interactiveRuntimeId: "foo"
+        })).toThrow(/not yet implemented/);
+      });
     });
 
   });

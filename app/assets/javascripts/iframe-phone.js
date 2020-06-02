@@ -56,6 +56,10 @@
       listeners[type] = fn;
     }
 
+    function removeListener(type) {
+      delete listeners[type];
+    }
+
     function removeAllListeners() {
       listeners = {};
     }
@@ -86,6 +90,7 @@
     function disconnect() {
       connected = false;
       stopPostingHello();
+      removeAllListeners();
       window.removeEventListener('message', messageListener);
     }
 
@@ -128,6 +133,7 @@
       initialize: initialize,
       getListenerNames: getListenerNames,
       addListener: addListener,
+      removeListener: removeListener,
       removeAllListeners: removeAllListeners,
       disconnect: disconnect,
       post: post
@@ -314,7 +320,11 @@
     }
 
     function removeListener(messageName) {
-      handlers[messageName] = null;
+      delete handlers[messageName];
+    }
+
+    function removeAllListeners() {
+      handlers = {};
     }
 
     // Note that this function can't be used when IFrame element hasn't been added to DOM yet
@@ -351,6 +361,7 @@
 
     function disconnect() {
       connected = false;
+      removeAllListeners();
       window.removeEventListener('message', receiveMessage);
     }
 
@@ -414,6 +425,7 @@
       post: post,
       addListener: addListener,
       removeListener: removeListener,
+      removeAllListeners: removeAllListeners,
       disconnect: disconnect,
       getTargetWindow: getTargetWindow,
       targetOrigin: targetOrigin

@@ -43,6 +43,7 @@
 //= require image_question_drawing_tool
 //= require nav_menu
 //= require profile
+//= require iframe-phone
 //= require prediction
 //= require activity-box-click
 //= require wait-message

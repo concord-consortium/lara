@@ -59,20 +59,31 @@ body {
 button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close {
   background: #6fc5d8;
   border: none;
+  border-radius: 20px;
   color: #fff;
   cursor: pointer;
+  display: inline-block;
   font-size: .9em;
   margin-top: 20px;
   padding: 5px 10px;
   text-align: center;
-  border-radius: 20px;
   text-decoration: none;
-  display: inline-block;
 }
 
 button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   background: #ccc !important;
 }
+
+.select_container {
+  display: inline-block;
+  position: relative;
+
+  select {
+    margin: 0 8px 0 0;
+    max-width: 170px;
+  }
+}
+
 #container {
 }
 #header {
@@ -257,14 +268,68 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   font: 500 1.5em 'Lato', georgia, 'times new roman', serif;
 }
 .questions .embeddable, .authorable {
-  background: #eee;
-  margin-bottom: 1em;
-  padding: 3%;
-  width: 94%;
-  border-radius: 13px;
+  background: #b4e3ee;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
 .questions {
+  position: relative;
+
+  &.arg-block {
+
+    .authorable {
+      padding-top: 33px !important;
+    }
+    .embeddables-form {
+      overflow: hidden;
+    }
+    .button_to {
+      float: right;
+      margin-left: 5px;
+    }
+  }
+
+  .show-hide-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    &:focus { outline: 0; }
+  }
+  h3 {
+    color: #126eac;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: normal;
+    padding: .5em .5em .5em .7em;
+
+    span.embeddable_title {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 140px;
+    }
+    span.ui-icon { display: none; }
+    span.ui-icon.sortable-icon {
+      background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
+      display: block;
+      float: right;
+    }
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: normal;
+    padding: .5em .5em .5em .7em;
+  }
   label {
     display: block;
     margin-bottom: 1em;
@@ -823,12 +888,12 @@ fieldset {
     right: 5px;
     margin: 0;
     background: 0;
-    color: #126eac;
+    color: #0592af;
   }
 }
 /* Page editing */
 .editing {
-  fieldset .edit_trigger { line-height: 2;; }
+  fieldset .edit_trigger { line-height: 2; }
   /* Title */
   .editable[data-name="interactive_page[name]"] form {
     display: inline;
@@ -838,48 +903,95 @@ fieldset {
   }
   /* Info/assessment block */
   div.questions {
-    border: 1px solid #6fc5d8;
+    border: 1px solid #555;
     margin-bottom: 15px;
-    padding: 5px;
+    padding: 10px;
     position: relative;
     h2 {
-      width: 100%;
-      background-color: hsl(192, 64%, 82%);
-      color: #126eac !important;
-      text-align: left;
-      margin: -5px -5px 5px; /* Undoes padding from div on top, left, & right for background */
-      padding: 5px; /* Gives the head itself some padding */
+      background-color: #555;
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
+      color: #fff !important;
+      margin: -10px -10px 10px; /* Undoes padding from div on top, left, & right for background */
+      padding: 10px; /* Gives the head itself some padding */
+      text-align: left;
     }
     .embeddables-form {
-      position: absolute;
-      top: 3px;
-      right: 5px;
+      background: #555;
+      margin: -10px -10px 10px;
+      padding: 0 10px 10px;
       text-align: right;
-      form {
-        display: inline-block;
-      }
+    }
+    .embeddable-container {
+      background: #eee;
     }
     .embeddable_tools {
+      margin: 0 25px 0 0;
+      color: #126eac;
+      position: absolute;
+      padding: 0;
+      right: 5px;
       text-align: right;
-      font-weight: bold;
-      color:  hsl(192, 64%, 42%);
-      a:link {
-        color:  hsl(192, 64%, 42%);
-        padding-left: 1em;
+      top: 7px;
+      width: 145px;
+      a {
+        color:  #126eac;
+        padding: 0 0 0 1em;
+        text-decoration: none;
+        &.active, &:hover {
+          color: #ea6d2f;
+        }
       }
-      .drag_handle {
-        float: left;
-      }
+
     }
     .embeddables_list > div {
-      .embeddable_tools {
-        background-color: hsl(192, 64%, 82%);
-        padding: 5px;
-        margin: -5px -5px 5px;
-      }
-      padding: 5px;
+      padding: 0;
       border: 1px solid #6fc5d8;
+      margin-bottom: 1em;
+      border-radius: 0;
+
+      .embeddable_options {
+        background: #eee;
+        padding: 5px;
+        margin: 0;
+      }
+      &.hidden-in-runtime {
+        opacity: .6;
+        position: relative;
+
+        &:after {
+          background: #ccc;
+          bottom: 0;
+          color: #555;
+          content: 'hidden from students';
+          display: block;
+          font-size: 12px;
+          height: 16px;
+          padding: 5px 0;
+          position: absolute;
+          text-align: center;
+          width: 100%;
+          z-index: 2;
+        }
+        .embeddable-container {
+          height: 25px;
+          overflow: hidden;
+        }
+
+        &.ui-accordion {
+          &.ui-active {
+            &:after {
+              bottom: 1px;
+              display: block;
+              height: 25px;
+              left: 1px;
+              width: 340px;
+            }
+          }
+          &:after {
+            display: none;
+          }
+        }
+      }
       &.tracked {
         .embeddable_options {
           opacity: 0.4;
@@ -894,8 +1006,98 @@ fieldset {
           }
         }
       }
-      margin-bottom: 1em;
-      border-radius: 0;
+    }
+    .ui-accordion {
+      border: none !important;
+      margin-bottom: 2px !important;
+
+      .embeddable_tools {
+        top: 11px;
+
+        a {
+          color: #126eac;
+          font-size: 12px;
+        }
+      }
+
+      .ui-accordion-header {
+        background: #b4e3ee;
+        border-color: #b4e3ee;
+        border-radius: 0;
+        box-sizing: border-box;
+        color: #126eac;
+        margin: 0;
+        padding-top: .8em;
+        width: 100% !important;
+
+        &:hover {
+          background: #a4d3de;
+          border-color: #a4d3de;
+          color: #126eac;
+
+          .ui-accordion-header-icon {
+            background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
+          }
+        }
+
+        .ui-icon { display: block; }
+        .sortable-icon {
+          background-image: url(/assets/jquery-ui/ui-icons_888888_256x240.png);
+          display: block;
+          float: right;
+        }
+      }
+      .ui-accordion-header-active {
+        background: #126eac;
+        border-color: #126eac;
+        color: #fff;
+
+        .ui-accordion-header-icon {
+          background-image: url(/assets/jquery-ui/ui-icons_ffffff_256x240.png);
+        }
+
+        span.sortable-icon {
+          background-image: url(/assets/jquery-ui/ui-icons_ffffff_256x240.png);
+          display: block !important;
+          float: right;
+        }
+        &:hover {
+          background: #227ebc;
+          border-color: #227ebc;
+          color: #fff;
+
+          .ui-accordion-header-icon {
+            background-image: url(/assets/jquery-ui/ui-icons_ffffff_256x240.png);
+          }
+
+          .sortable-icon {
+            background-image: url(/assets/jquery-ui/ui-icons_ffffff_256x240.png);
+          }
+        }
+      }
+      .ui-accordion-header-active ~ .embeddable_tools a {
+        color: #fff;
+      }
+      .ui-accordion-header-icon {
+      }
+      .embeddable-container {
+        background: #fff !important;
+      }
+      .ui-accordion-content {
+        border-color: #126eac;
+        border-radius: 0;
+        padding: 0 10px 10px;
+
+        select {
+          max-width: 260px;
+        }
+        .embeddable_options {
+          background: #fff !important;
+        }
+      }
+      .ui-accordion-content-active {
+
+      }
     }
   }
   /* Interactives block */
@@ -1050,7 +1252,7 @@ ul#new-menu {
     .close_link{
       text-align: right;
       float: right;
-      color: #444;
+      color: #555;
       padding-bottom: 5px;
       &:hover, &:active {
         text-decoration: underline;

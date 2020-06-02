@@ -97,10 +97,6 @@ class ManagedInteractive < ActiveRecord::Base
     library_interactive ? library_interactive.no_snapshots : false
   end
 
-  def self.string_name
-    "managed interactive"
-  end
-
   def self.portal_type
     "iframe interactive"
   end

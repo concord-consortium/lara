@@ -36,18 +36,20 @@
   = field_set_tag 'Authoring Support' do
     %div{:class => "option_group"}
       = f.check_box :authorable
-      = f.label :authorable, 'Interactive authorable in the Managed Interactive edit form'
+      = f.label :authorable, 'Interactive provides an authoring UI.'
       %div{:class => "checkbox_note"}
         %em Note:
         Only set this if you know the interactive renders an authorable interface.
+        This authorable interface will be shown in the interactive edit form.
 
-  = field_set_tag 'Customization Options' do
+  = field_set_tag 'Possibly Authorable Options' do
     %div{:class => "option_group"}
       = f.check_box :customizable
-      = f.label :customizable, 'Interactive customizable in the Managed Interactive edit form'
+      = f.label :customizable, 'Allow author to change the following options'
       %div{:class => "checkbox_note"}
         %em Note:
-        Only set this if you want to allow authors to customize any of the following fields.
+        If this is set, then the author can change the following options
+        when this interactive is added to the page.
 
       = field_set_tag 'Aspect Ratio' do
         %div{id:"aspect_ratio"}

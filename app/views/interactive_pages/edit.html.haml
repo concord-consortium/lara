@@ -84,15 +84,18 @@
       = text_editor @page, :text, { header: 'Introduction' }
     .text
       - if @page.show_info_assessment
-        .questions
+        #info_assess_block.questions
           %h2 Info/Assess
           = form_for @page do |f|
             - if @page.has_attribute?('toggle_info_assessment')
               %label
                 = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
                 Allow toggling of column
+          %button.show-hide-toggle
+            Close All
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-            = embeddable_selector
+            .select_container
+              = embeddable_selector
             = hidden_field_tag :approved_script_id
             = hidden_field_tag :component_label
             = submit_tag 'Add Embeddable', {id: 'add_embeddable_button'}
@@ -101,22 +104,44 @@
               - if e.show_in_edit?
                 - tracked = e.respond_to?(:tracked_question) && e.tracked_question
                 - tracked_class = tracked ? 'tracked' : ''
-                .authorable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+                .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+                  %h3.embeddable_heading
+                    %span.embeddable_title
+                      - if e.respond_to? :name
+                        - if !e.name.nil? && !e.name.empty?
+                          #{e.name}
+                        - else
+                          #{e.class.model_name.human.titleize}
+                      - else
+                        #{e.class.model_name.human.titleize}
+                    %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                   = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
     - if @page.show_interactive
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
-        .questions
+        #interactive_box.questions
           %h2 Interactive Box
+          %button.show-hide-toggle
+            Close All
           = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
             = embeddable_interactives_selector
             = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
             = submit_tag 'Add Interactive'
           .embeddables_list.sortable_embeddables
             - @page.interactive_box_visible_embeddables.each do |interactive|
-              .authorable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+              .authorable.accordion_embeddable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
+                %h3.embeddable_heading
+                  %span.embeddable_title
+                    - if interactive.respond_to? :name
+                      - if !interactive.name.nil? && !interactive.name.empty?
+                        #{interactive.name}
+                      - else
+                        #{interactive.class.model_name.human.titleize}
+                    - else
+                      #{interactive.class.model_name.human.titleize}
+                  %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
                 = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:embeddable => interactive, :page => @page, :allow_hide => false}
     - if @page.show_sidebar
       %div{style: 'clear: both;'}

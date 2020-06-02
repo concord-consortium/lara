@@ -5,6 +5,7 @@
 ## Type parameters
 #### InteractiveState 
 #### AuthoredState 
+#### DialogState 
 #### GlobalInteractiveState 
 ## Hierarchy
 
@@ -23,17 +24,27 @@
 
 ### Methods
 
+* [closeModal](client.md#closemodal)
 * [connect](client.md#connect)
 * [disconnect](client.md#disconnect)
 * [getAuthInfo](client.md#getauthinfo)
 * [getFirebaseJWT](client.md#getfirebasejwt)
+* [getInteractiveList](client.md#getinteractivelist)
+* [getInteractiveSnapshot](client.md#getinteractivesnapshot)
+* [getLibraryInteractiveList](client.md#getlibraryinteractivelist)
 * [setAuthoredState](client.md#setauthoredstate)
+* [setAuthoringCustomReportFields](client.md#setauthoringcustomreportfields)
+* [setAuthoringMetadata](client.md#setauthoringmetadata)
 * [setGlobalInteractiveState](client.md#setglobalinteractivestate)
 * [setHeight](client.md#setheight)
 * [setHint](client.md#sethint)
 * [setInteractiveState](client.md#setinteractivestate)
+* [setLinkedInteractives](client.md#setlinkedinteractives)
 * [setNavigation](client.md#setnavigation)
+* [setRuntimeCustomReportValues](client.md#setruntimecustomreportvalues)
+* [setRuntimeMetadata](client.md#setruntimemetadata)
 * [setSupportedFeatures](client.md#setsupportedfeatures)
+* [showModal](client.md#showmodal)
 
 ---
 
@@ -43,15 +54,15 @@
 
 ###  constructor
 
-⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`>*): [Client](client.md)
+⊕ **new Client**(options: *[IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `DialogState`, `GlobalInteractiveState`>*): [Client](client.md)
 
-*Defined in [client.ts:25](../../../lara-typescript/src/interactive-api-client/client.ts#L25)*
+*Defined in [client.ts:29](../../../lara-typescript/src/interactive-api-client/client.ts#L29)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| options | [IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `GlobalInteractiveState`> |
+| options | [IClientOptions](../interfaces/iclientoptions.md)<`InteractiveState`, `AuthoredState`, `DialogState`, `GlobalInteractiveState`> |
 
 **Returns:** [Client](client.md)
 
@@ -65,7 +76,7 @@ ___
 
 **get InIFrame**(): `boolean`
 
-*Defined in [client.ts:104](../../../lara-typescript/src/interactive-api-client/client.ts#L104)*
+*Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
 
 **Returns:** `boolean`
 
@@ -76,7 +87,7 @@ ___
 
 **get iframePhone**(): `undefined` \| `IFrameEndpoint`
 
-*Defined in [client.ts:38](../../../lara-typescript/src/interactive-api-client/client.ts#L38)*
+*Defined in [client.ts:42](../../../lara-typescript/src/interactive-api-client/client.ts#L42)*
 
 **Returns:** `undefined` \| `IFrameEndpoint`
 
@@ -84,13 +95,32 @@ ___
 
 ## Methods
 
+<a id="closemodal"></a>
+
+###  closeModal
+
+▸ **closeModal**(options: *[ICloseModal](../interfaces/iclosemodal.md)*): `void`
+
+*Defined in [client.ts:245](../../../lara-typescript/src/interactive-api-client/client.ts#L245)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [ICloseModal](../interfaces/iclosemodal.md) |
+
+**Returns:** `void`
+
+___
 <a id="connect"></a>
 
 ###  connect
 
 ▸ **connect**(): `boolean`
 
-*Defined in [client.ts:42](../../../lara-typescript/src/interactive-api-client/client.ts#L42)*
+*Defined in [client.ts:46](../../../lara-typescript/src/interactive-api-client/client.ts#L46)*
 
 **Returns:** `boolean`
 
@@ -101,7 +131,7 @@ ___
 
 ▸ **disconnect**(): `boolean`
 
-*Defined in [client.ts:88](../../../lara-typescript/src/interactive-api-client/client.ts#L88)*
+*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
 
 **Returns:** `boolean`
 
@@ -112,7 +142,7 @@ ___
 
 ▸ **getAuthInfo**(): `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
-*Defined in [client.ts:136](../../../lara-typescript/src/interactive-api-client/client.ts#L136)*
+*Defined in [client.ts:168](../../../lara-typescript/src/interactive-api-client/client.ts#L168)*
 
 **Returns:** `Promise`<[IAuthInfo](../interfaces/iauthinfo.md)>
 
@@ -123,7 +153,7 @@ ___
 
 ▸ **getFirebaseJWT**(options: *[IGetFirebaseJwtOptions](../interfaces/igetfirebasejwtoptions.md)*): `Promise`<`string`>
 
-*Defined in [client.ts:153](../../../lara-typescript/src/interactive-api-client/client.ts#L153)*
+*Defined in [client.ts:185](../../../lara-typescript/src/interactive-api-client/client.ts#L185)*
 
 **Parameters:**
 
@@ -134,13 +164,70 @@ ___
 **Returns:** `Promise`<`string`>
 
 ___
+<a id="getinteractivelist"></a>
+
+###  getInteractiveList
+
+▸ **getInteractiveList**(options: *[IGetInteractiveListRequest](../interfaces/igetinteractivelistrequest.md)*): `void`
+
+*Defined in [client.ts:252](../../../lara-typescript/src/interactive-api-client/client.ts#L252)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [IGetInteractiveListRequest](../interfaces/igetinteractivelistrequest.md) |
+
+**Returns:** `void`
+
+___
+<a id="getinteractivesnapshot"></a>
+
+###  getInteractiveSnapshot
+
+▸ **getInteractiveSnapshot**(options: *[IGetInteractiveSnapshotRequest](../interfaces/igetinteractivesnapshotrequest.md)*): `void`
+
+*Defined in [client.ts:273](../../../lara-typescript/src/interactive-api-client/client.ts#L273)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [IGetInteractiveSnapshotRequest](../interfaces/igetinteractivesnapshotrequest.md) |
+
+**Returns:** `void`
+
+___
+<a id="getlibraryinteractivelist"></a>
+
+###  getLibraryInteractiveList
+
+▸ **getLibraryInteractiveList**(options: *[IGetLibraryInteractiveListRequest](../interfaces/igetlibraryinteractivelistrequest.md)*): `void`
+
+*Defined in [client.ts:266](../../../lara-typescript/src/interactive-api-client/client.ts#L266)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [IGetLibraryInteractiveListRequest](../interfaces/igetlibraryinteractivelistrequest.md) |
+
+**Returns:** `void`
+
+___
 <a id="setauthoredstate"></a>
 
 ###  setAuthoredState
 
 ▸ **setAuthoredState**(authoredState: *`AuthoredState`*): `boolean`
 
-*Defined in [client.ts:128](../../../lara-typescript/src/interactive-api-client/client.ts#L128)*
+*Defined in [client.ts:160](../../../lara-typescript/src/interactive-api-client/client.ts#L160)*
 
 **Parameters:**
 
@@ -151,13 +238,51 @@ ___
 **Returns:** `boolean`
 
 ___
+<a id="setauthoringcustomreportfields"></a>
+
+###  setAuthoringCustomReportFields
+
+▸ **setAuthoringCustomReportFields**(fields: *[IAuthoringCustomReportFields](../interfaces/iauthoringcustomreportfields.md)*): `void`
+
+*Defined in [client.ts:224](../../../lara-typescript/src/interactive-api-client/client.ts#L224)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| fields | [IAuthoringCustomReportFields](../interfaces/iauthoringcustomreportfields.md) |
+
+**Returns:** `void`
+
+___
+<a id="setauthoringmetadata"></a>
+
+###  setAuthoringMetadata
+
+▸ **setAuthoringMetadata**(metadata: *[IAuthoringMetadata](../#iauthoringmetadata)*): `void`
+
+*Defined in [client.ts:210](../../../lara-typescript/src/interactive-api-client/client.ts#L210)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| metadata | [IAuthoringMetadata](../#iauthoringmetadata) |
+
+**Returns:** `void`
+
+___
 <a id="setglobalinteractivestate"></a>
 
 ###  setGlobalInteractiveState
 
 ▸ **setGlobalInteractiveState**(globalState: *`GlobalInteractiveState`*): `boolean`
 
-*Defined in [client.ts:132](../../../lara-typescript/src/interactive-api-client/client.ts#L132)*
+*Defined in [client.ts:164](../../../lara-typescript/src/interactive-api-client/client.ts#L164)*
 
 **Parameters:**
 
@@ -174,7 +299,7 @@ ___
 
 ▸ **setHeight**(height: *`number` \| `string`*): `boolean`
 
-*Defined in [client.ts:112](../../../lara-typescript/src/interactive-api-client/client.ts#L112)*
+*Defined in [client.ts:140](../../../lara-typescript/src/interactive-api-client/client.ts#L140)*
 
 **Parameters:**
 
@@ -191,7 +316,7 @@ ___
 
 ▸ **setHint**(hint: *`string`*): `boolean`
 
-*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
+*Defined in [client.ts:144](../../../lara-typescript/src/interactive-api-client/client.ts#L144)*
 
 **Parameters:**
 
@@ -208,7 +333,7 @@ ___
 
 ▸ **setInteractiveState**(interactiveState: *`InteractiveState` \| `string` \| `null`*): `boolean`
 
-*Defined in [client.ts:108](../../../lara-typescript/src/interactive-api-client/client.ts#L108)*
+*Defined in [client.ts:136](../../../lara-typescript/src/interactive-api-client/client.ts#L136)*
 
 **Parameters:**
 
@@ -219,13 +344,32 @@ ___
 **Returns:** `boolean`
 
 ___
+<a id="setlinkedinteractives"></a>
+
+###  setLinkedInteractives
+
+▸ **setLinkedInteractives**(options: *[ISetLinkedInteractives](../interfaces/isetlinkedinteractives.md)*): `void`
+
+*Defined in [client.ts:259](../../../lara-typescript/src/interactive-api-client/client.ts#L259)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [ISetLinkedInteractives](../interfaces/isetlinkedinteractives.md) |
+
+**Returns:** `void`
+
+___
 <a id="setnavigation"></a>
 
 ###  setNavigation
 
 ▸ **setNavigation**(options: *[INavigationOptions](../interfaces/inavigationoptions.md)*): `boolean`
 
-*Defined in [client.ts:124](../../../lara-typescript/src/interactive-api-client/client.ts#L124)*
+*Defined in [client.ts:156](../../../lara-typescript/src/interactive-api-client/client.ts#L156)*
 
 **Parameters:**
 
@@ -236,13 +380,51 @@ ___
 **Returns:** `boolean`
 
 ___
+<a id="setruntimecustomreportvalues"></a>
+
+###  setRuntimeCustomReportValues
+
+▸ **setRuntimeCustomReportValues**(values: *[IRuntimeCustomReportValues](../interfaces/iruntimecustomreportvalues.md)*): `void`
+
+*Defined in [client.ts:231](../../../lara-typescript/src/interactive-api-client/client.ts#L231)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| values | [IRuntimeCustomReportValues](../interfaces/iruntimecustomreportvalues.md) |
+
+**Returns:** `void`
+
+___
+<a id="setruntimemetadata"></a>
+
+###  setRuntimeMetadata
+
+▸ **setRuntimeMetadata**(metadata: *[IRuntimeMetadata](../#iruntimemetadata)*): `void`
+
+*Defined in [client.ts:217](../../../lara-typescript/src/interactive-api-client/client.ts#L217)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| metadata | [IRuntimeMetadata](../#iruntimemetadata) |
+
+**Returns:** `void`
+
+___
 <a id="setsupportedfeatures"></a>
 
 ###  setSupportedFeatures
 
 ▸ **setSupportedFeatures**(features: *[ISupportedFeatures](../interfaces/isupportedfeatures.md)*): `boolean`
 
-*Defined in [client.ts:116](../../../lara-typescript/src/interactive-api-client/client.ts#L116)*
+*Defined in [client.ts:148](../../../lara-typescript/src/interactive-api-client/client.ts#L148)*
 
 **Parameters:**
 
@@ -251,6 +433,25 @@ ___
 | features | [ISupportedFeatures](../interfaces/isupportedfeatures.md) |
 
 **Returns:** `boolean`
+
+___
+<a id="showmodal"></a>
+
+###  showModal
+
+▸ **showModal**(options: *[IShowModal](../#ishowmodal)*): `void`
+
+*Defined in [client.ts:238](../../../lara-typescript/src/interactive-api-client/client.ts#L238)*
+
+*__todo__*: Implement this function.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| options | [IShowModal](../#ishowmodal) |
+
+**Returns:** `void`
 
 ___
 

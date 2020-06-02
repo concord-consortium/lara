@@ -1,7 +1,7 @@
+%div.embeddable-container
+  .embeddable_options
+    .interactive-content
+      = render :partial => 'image_interactives/show', :locals => { :interactive => embeddable }
+  = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 .embeddable_tools
-  .drag_handle
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'image', :allow_hide => allow_hide }
-.embeddable_options
-  .interactive-content
-    = render :partial => 'image_interactives/show', :locals => { :interactive => embeddable }
-= render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }

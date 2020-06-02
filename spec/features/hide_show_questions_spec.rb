@@ -32,7 +32,7 @@ feature "Activity page", :js => true do
     click_link 'hide', :href => hideshow_url
     expect(page).to have_link 'show', :href => hideshow_url
     expect(page).not_to have_link 'hide', :href => hideshow_url
-    expect(page).to have_no_css '.embeddable_options'
+    expect(page).to have_selector('.embeddable_options', visible: false)
   end
 
   scenario "is edited and question is hidden and then shown" do
