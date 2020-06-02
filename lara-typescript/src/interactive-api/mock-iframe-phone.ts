@@ -128,6 +128,10 @@ export class MockPhone {
 
   public listeners: {[key: string]: Listener | null} = {};
   public messages: IMessage[] = [];
+
+  public initialize = jest.fn();
+  public disconnect = jest.fn();
+
   private targetElement: Window | HTMLIFrameElement;
   private _targetOrigin: string | TargetOriginFn | undefined;
   private afterConnectedCallback: AfterConnectedCallback | null | undefined;
@@ -207,17 +211,11 @@ export class MockPhone {
     return this._targetOrigin;
   }
 
-  public initialize() {
-    // noop
-  }
-
-  public disconnect() {
-    // noop
-  }
-
   public reset() {
     this.listeners = {};
     this.messages = [];
+    this.initialize.mockReset();
+    this.disconnect.mockClear();
   }
 
   public fakeServerMessage(message: {type: string, content?: any}) {

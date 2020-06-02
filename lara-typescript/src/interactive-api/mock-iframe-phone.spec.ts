@@ -50,7 +50,7 @@ describe("MockIframePhone", () => {
       expect(iframeListener).toHaveBeenCalledTimes(1);
     });
 
-    return it("should be recorded", () => {
+    it("should be recorded", () => {
       expect(MockedIframePhoneManager.messages.count()).toEqual(2);
       expect(MockedIframePhoneManager.messages.at(0)).toEqual({
         source: iframeEl,
@@ -77,7 +77,7 @@ describe("MockIframePhone", () => {
       iframeEndpoint.post("testMsgFromIframeEndpoint", {param: "test"});
     });
 
-    return it("it should be recorded", () => {
+    it("it should be recorded", () => {
       expect(MockedIframePhoneManager.messages.count()).toEqual(2);
       expect(MockedIframePhoneManager.messages.at(0)).toEqual({
         source: window,
@@ -86,7 +86,7 @@ describe("MockIframePhone", () => {
           type: "testMsgFromParentEndpoint",
           content: {key: "value"}
         }});
-      return expect(MockedIframePhoneManager.messages.at(1)).toEqual({
+      expect(MockedIframePhoneManager.messages.at(1)).toEqual({
         source: window,
         target: parentEl,
         message: {
@@ -117,7 +117,7 @@ describe("MockIframePhone", () => {
         }
       });
       expect(MockedIframePhoneManager.messages.at(1)).toEqual(MockedIframePhoneManager.messages.all()[1]);
-      return expect(MockedIframePhoneManager.messages.at(1)).toEqual({
+      expect(MockedIframePhoneManager.messages.at(1)).toEqual({
         source: iframeEl,
         target: window,
         message: {
@@ -127,9 +127,9 @@ describe("MockIframePhone", () => {
       });
     });
 
-    return it("should allow to reset recorded messages", () => {
+    it("should allow to reset recorded messages", () => {
       MockedIframePhoneManager.messages.reset();
-      return expect(MockedIframePhoneManager.messages.count()).toEqual(0);
+      expect(MockedIframePhoneManager.messages.count()).toEqual(0);
     });
   });
 
@@ -151,7 +151,7 @@ describe("MockIframePhone", () => {
     describe("when autoConnect is set to false", () => {
       beforeEach(() => setAutoConnect(false));
 
-      return it("(fake) connection needs to be manually initialized", () => {
+      it("(fake) connection needs to be manually initialized", () => {
         const afterConnectedCallback = jest.fn();
         parentEndpoint = new mockedIFramePhone.ParentEndpoint(iframeEl, afterConnectedCallback);
         expect(afterConnectedCallback).not.toHaveBeenCalled();
@@ -169,7 +169,7 @@ describe("MockIframePhone", () => {
     });
   });
 
-  return describe("MockPhone#targetOrigin", () => {
+  describe("MockPhone#targetOrigin", () => {
     describe("of parent endpoint", () => {
       it("should return origin of an iframe", () => {
         expect(parentEndpoint.targetOrigin()).toEqual(""); // no src defined for the default iframe
