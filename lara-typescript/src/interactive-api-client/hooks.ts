@@ -29,7 +29,8 @@ export const useInteractiveState = <InteractiveState>() => {
   }, []);
 
   const handleSetInteractiveState = (stateOrUpdateFunc: InteractiveState | UpdateFunc<InteractiveState>) => {
-    const newState = handleUpdate<InteractiveState>(stateOrUpdateFunc, interactiveState);
+    // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
+    const newState = handleUpdate<InteractiveState>(stateOrUpdateFunc, client.getInteractiveState<InteractiveState>());
     setInteractiveState(newState);
     client.setInteractiveState<InteractiveState>(newState);
   };
@@ -53,7 +54,8 @@ export const useAuthoredState = <AuthoredState>() => {
   }, []);
 
   const handleSetAuthoredState = (stateOrUpdateFunc: AuthoredState | UpdateFunc<AuthoredState>) => {
-    const newState = handleUpdate<AuthoredState>(stateOrUpdateFunc, authoredState);
+    // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
+    const newState = handleUpdate<AuthoredState>(stateOrUpdateFunc, client.getAuthoredState<AuthoredState>());
     setAuthoredState(newState);
     client.setAuthoredState<AuthoredState>(newState);
   };
@@ -80,7 +82,10 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
 
   // tslint:disable-next-line:max-line-length
   const handleSetGlobalInteractiveState = (stateOrUpdateFunc: GlobalInteractiveState | UpdateFunc<GlobalInteractiveState>) => {
-    const newState = handleUpdate<GlobalInteractiveState>(stateOrUpdateFunc, globalInteractiveState);
+    // Use client-managed state, as it should be up to date. React-managed state might not be the most recent version.
+    const newState = handleUpdate<GlobalInteractiveState>(
+      stateOrUpdateFunc, client.getGlobalInteractiveState<GlobalInteractiveState>()
+    );
     setGlobalInteractiveState(newState);
     client.setGlobalInteractiveState<GlobalInteractiveState>(newState);
   };
