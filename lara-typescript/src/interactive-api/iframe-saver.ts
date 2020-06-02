@@ -399,7 +399,7 @@ export class IFrameSaver {
     const mouseoutNamespace = `mouseout.${namespace}`;
 
     if (enabled) {
-      this.autoSaveIntervalId = setInterval((() => this.save()), 5 * 1000);
+      this.autoSaveIntervalId = window.setInterval((() => this.save()), 5 * 1000);
       $(window).on(focusNamespace, () => this.save());
       return this.$iframe.on(mouseoutNamespace, () => this.save());
     } else {
