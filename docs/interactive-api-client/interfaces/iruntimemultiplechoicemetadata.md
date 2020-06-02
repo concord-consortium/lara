@@ -29,7 +29,7 @@
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
 
-*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
+*Defined in [types.ts:251](../../../lara-typescript/src/interactive-api-client/types.ts#L251)*
 
 ___
 <a id="choiceids"></a>
@@ -38,7 +38,7 @@ ___
 
 **● choiceIds**: *[ChoiceId](../#choiceid)[]*
 
-*Defined in [types.ts:253](../../../lara-typescript/src/interactive-api-client/types.ts#L253)*
+*Defined in [types.ts:258](../../../lara-typescript/src/interactive-api-client/types.ts#L258)*
 
 ___
 <a id="issubmitted"></a>
@@ -49,7 +49,7 @@ ___
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
 
-*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*
+*Defined in [types.ts:250](../../../lara-typescript/src/interactive-api-client/types.ts#L250)*
 
 ___
 <a id="type"></a>
@@ -58,7 +58,7 @@ ___
 
 **● type**: *"multiple choice"*
 
-*Defined in [types.ts:252](../../../lara-typescript/src/interactive-api-client/types.ts#L252)*
+*Defined in [types.ts:257](../../../lara-typescript/src/interactive-api-client/types.ts#L257)*
 
 ___
 

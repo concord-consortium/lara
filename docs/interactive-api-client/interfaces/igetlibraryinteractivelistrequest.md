@@ -28,7 +28,7 @@
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
 

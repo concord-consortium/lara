@@ -209,8 +209,6 @@ ___
 
 *Defined in [types.ts:235](../../lara-typescript/src/plugin-api/types.ts#L235)*
 
-InteractiveAvailable event handler.
-
 #### Type declaration
 ▸(event: *[IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md)*): `void`
 
@@ -230,10 +228,6 @@ ___
 **Ƭ ILogEventHandler**: *`function`*
 
 *Defined in [types.ts:216](../../lara-typescript/src/plugin-api/types.ts#L216)*
-
-Log event handler.
-
-*__param__*: Data logged by the code.
 
 #### Type declaration
 ▸(event: *[ILogData](interfaces/ilogdata.md)*): `void`
@@ -258,12 +252,6 @@ ___
 
 *Defined in [popup.ts:86](../../lara-typescript/src/plugin-api/popup.ts#L86)*
 
-Ask LARA to add a new popup window.
-
-Note that many options closely resemble jQuery UI dialog options which is used under the hood. You can refer to jQuery UI API docs in many cases: [https://api.jqueryui.com/dialog](https://api.jqueryui.com/dialog) Only `content` is required. Other options have reasonable default values (subject to change, so if you expect particular behaviour, provide necessary options explicitly).
-
-React warning: if you use React to render content, remember to call `ReactDOM.unmountComponentAtNode(content)` in `onRemove` handler.
-
 **Parameters:**
 
 | Name | Type |
@@ -281,17 +269,6 @@ ___
 
 *Defined in [sidebar.ts:90](../../lara-typescript/src/plugin-api/sidebar.ts#L90)*
 
-Ask LARA to add a new sidebar.
-
-Sidebar will be added to the edge of the interactive page window. When multiple sidebars are added, there's no way to specify their positions, so no assumptions should be made about current display - it might change.
-
-Sidebar height cannot be specified. It's done on purpose to prevent issues on very short screens. It's based on the provided content HTML element, but it's limited to following range:
-
-*   100px is the min-height
-*   max-height is calculated dynamically and ensures that sidebar won't go off the screen If the provided content is taller than the max-height of the sidebar, a sidebar content container will scroll.
-
-It returns a simple controller that can be used to open or close sidebar.
-
 **Parameters:**
 
 | Name | Type |
@@ -308,8 +285,6 @@ ___
 ▸ **decorateContent**(words: *`string`[]*, replace: *`string`*, wordClass: *`string`*, listeners: *[IEventListeners](#ieventlisteners)*): `void`
 
 *Defined in [decorate-content.ts:19](../../lara-typescript/src/plugin-api/decorate-content.ts#L19)*
-
-Ask LARA to decorate authored content (text / html).
 
 **Parameters:**
 
@@ -330,12 +305,6 @@ ___
 ▸ **registerPlugin**(options: *[IRegisterPluginOptions](interfaces/iregisterpluginoptions.md)*): `boolean`
 
 *Defined in [plugins.ts:12](../../lara-typescript/src/plugin-api/plugins.ts#L12)*
-
-Register a new external script
-
-```
-registerPlugin({runtimeClass: DebuggerRuntime, authoringClass: DebuggerAuthoring})
-```
 
 **Parameters:**
 
@@ -401,8 +370,6 @@ ___
 **● dialogClass**: *`string`* = ""
 
 *Defined in [popup.ts:64](../../lara-typescript/src/plugin-api/popup.ts#L64)*
-
-Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
 
 ___
 <a id="add_popup_default_options.draggable"></a>
@@ -604,8 +571,6 @@ ___
 
 *Defined in [sidebar.ts:32](../../lara-typescript/src/plugin-api/sidebar.ts#L32)*
 
-Arrow pointing left.
-
 ___
 <a id="add_sidebar_default_options.padding"></a>
 
@@ -653,8 +618,6 @@ ___
 
 *Defined in [events.ts:7](../../lara-typescript/src/plugin-api/events.ts#L7)*
 
-Functions related to event observing provided by LARA.
-
 <a id="events.offinteractiveavailable"></a>
 
 ####  offInteractiveAvailable
@@ -662,8 +625,6 @@ Functions related to event observing provided by LARA.
 ▸ **offInteractiveAvailable**(handler: *[IInteractiveAvailableEventHandler](#iinteractiveavailableeventhandler)*): `void`
 
 *Defined in [events.ts:28](../../lara-typescript/src/plugin-api/events.ts#L28)*
-
-Removes InteractiveAvailable event handler.
 
 **Parameters:**
 
@@ -682,8 +643,6 @@ ___
 
 *Defined in [events.ts:19](../../lara-typescript/src/plugin-api/events.ts#L19)*
 
-Removes log event handler.
-
 **Parameters:**
 
 | Name | Type |
@@ -701,8 +660,6 @@ ___
 
 *Defined in [events.ts:24](../../lara-typescript/src/plugin-api/events.ts#L24)*
 
-Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state. Currently uses when click to play mode is enabled and the click to play overlay is clicked.
-
 **Parameters:**
 
 | Name | Type |
@@ -719,8 +676,6 @@ ___
 ▸ **onLog**(handler: *[ILogEventHandler](#ilogeventhandler)*): `void`
 
 *Defined in [events.ts:15](../../lara-typescript/src/plugin-api/events.ts#L15)*
-
-Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
 
 **Parameters:**
 

@@ -29,7 +29,7 @@
 
 *Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#firebase_app)*
 
-*Defined in [types.ts:337](../../../lara-typescript/src/interactive-api-client/types.ts#L337)*
+*Defined in [types.ts:342](../../../lara-typescript/src/interactive-api-client/types.ts#L342)*
 
 ___
 <a id="requestid"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
 

@@ -1,4 +1,4 @@
 export * from "./types";
 export * from "./in-frame";
-export * from "./client";
-export * from "./use-api-hook";
+export * from "./api";
+export * from "./hooks";
