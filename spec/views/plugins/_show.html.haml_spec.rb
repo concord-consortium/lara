@@ -65,7 +65,7 @@ describe "plugins/_show.html.haml" do
       /remoteEndpoint: null/,
       /container:/,
       /wrappedEmbeddable: embeddableContext/,
-      /LARA\.InternalAPI\.initPlugin\('plugin#{approved_script_id}', pluginContext\)/,
+      /LARA\.Plugins\.initPlugin\('plugin#{approved_script_id}', pluginContext\)/,
     ]
   end
 

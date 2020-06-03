@@ -1,6 +1,6 @@
 import React from "react";
 import { act, renderHook } from "@testing-library/react-hooks";
-import { mockIFramePhone, MockPhone } from "../interactive-api/mock-iframe-phone";
+import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-iframe-phone";
 import * as hooks from "./hooks";
 import * as iframePhone from "iframe-phone";
 import { getClient } from "./client";

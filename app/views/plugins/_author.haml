@@ -56,7 +56,7 @@
   :javascript
     // Begin script for #{plugin.name}
     $(document).ready(function() {
-      LARA.InternalAPI.setNextPluginLabel("#{v3_plugin_label}");
+      LARA.Plugins.setNextPluginLabel("#{v3_plugin_label}");
       var script = document.createElement("script");
       script.onload = function() {
         // It's impossible to get type checking here, but object below MUST always implement IPluginAuthoringContext interface
@@ -78,7 +78,7 @@
           firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}'
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
-        LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
+        LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
       };
       script.onerror = function () {
         alert("Unable to load plugin script: #{plugin.url}");
