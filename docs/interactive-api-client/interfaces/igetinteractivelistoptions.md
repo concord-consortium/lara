@@ -1,30 +1,21 @@
-[LARA Interactive API Client](../README.md) > [IGetInteractiveListOptions](../interfaces/igetinteractivelistoptions.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetInteractiveListOptions](igetinteractivelistoptions.md)
 
 # Interface: IGetInteractiveListOptions
 
 ## Hierarchy
 
-**IGetInteractiveListOptions**
+* **IGetInteractiveListOptions**
 
-↳  [IGetInteractiveListRequest](igetinteractivelistrequest.md)
+  ↳ [IGetInteractiveListRequest](igetinteractivelistrequest.md)
 
 ## Index
 
 ### Properties
 
-* [supportsSnapshots](igetinteractivelistoptions.md#supportssnapshots)
-
----
+* [supportsSnapshots](igetinteractivelistoptions.md#optional-supportssnapshots)
 
 ## Properties
 
-<a id="supportssnapshots"></a>
+### `Optional` supportsSnapshots
 
-### `<Optional>` supportsSnapshots
-
-**● supportsSnapshots**: *`undefined` \| `false` \| `true`*
-
-*Defined in [types.ts:356](../../../lara-typescript/src/interactive-api-client/types.ts#L356)*
-
-___
-
+• **supportsSnapshots**? : *undefined | false | true*

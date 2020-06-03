@@ -1,72 +1,51 @@
-[LARA Interactive API Client](../README.md) > [IShowAlert](../interfaces/ishowalert.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IShowAlert](ishowalert.md)
 
 # Interface: IShowAlert
 
 ## Hierarchy
 
- [IBaseShowModal](ibaseshowmodal.md)
+* [IBaseShowModal](ibaseshowmodal.md)
 
-**↳ IShowAlert**
+  ↳ **IShowAlert**
 
 ## Index
 
 ### Properties
 
-* [headerText](ishowalert.md#headertext)
+* [headerText](ishowalert.md#optional-headertext)
 * [style](ishowalert.md#style)
 * [text](ishowalert.md#text)
 * [type](ishowalert.md#type)
 * [uuid](ishowalert.md#uuid)
 
----
-
 ## Properties
 
-<a id="headertext"></a>
+### `Optional` headerText
 
-### `<Optional>` headerText
-
-**● headerText**: *`undefined` \| `string`*
-
-*Defined in [types.ts:286](../../../lara-typescript/src/interactive-api-client/types.ts#L286)*
+• **headerText**? : *undefined | string*
 
 ___
-<a id="style"></a>
 
 ###  style
 
-**● style**: *"info" \| "warning" \| "error"*
-
-*Defined in [types.ts:285](../../../lara-typescript/src/interactive-api-client/types.ts#L285)*
+• **style**: *"info" | "warning" | "error"*
 
 ___
-<a id="text"></a>
 
 ###  text
 
-**● text**: *`string`*
-
-*Defined in [types.ts:287](../../../lara-typescript/src/interactive-api-client/types.ts#L287)*
+• **text**: *string*
 
 ___
-<a id="type"></a>
 
 ###  type
 
-**● type**: *"alert"*
-
-*Defined in [types.ts:284](../../../lara-typescript/src/interactive-api-client/types.ts#L284)*
+• **type**: *"alert"*
 
 ___
-<a id="uuid"></a>
 
 ###  uuid
 
-**● uuid**: *`string`*
+• **uuid**: *string*
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
-
-*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
-
-___
-

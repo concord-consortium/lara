@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [IRuntimeCustomReportValues](../interfaces/iruntimecustomreportvalues.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IRuntimeCustomReportValues](iruntimecustomreportvalues.md)
 
 # Interface: IRuntimeCustomReportValues
 
 ## Hierarchy
 
-**IRuntimeCustomReportValues**
+* **IRuntimeCustomReportValues**
 
 ## Index
 
@@ -12,21 +12,12 @@
 
 * [values](iruntimecustomreportvalues.md#values)
 
----
-
 ## Properties
-
-<a id="values"></a>
 
 ###  values
 
-**● values**: *`object`*
+• **values**: *object*
 
-*Defined in [types.ts:272](../../../lara-typescript/src/interactive-api-client/types.ts#L272)*
+#### Type declaration:
 
-#### Type declaration
-
-[key: `string`]: `any`
-
-___
-
+* \[ **key**: *string*\]: any

@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IJwtClaims](../interfaces/ijwtclaims.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IJwtClaims](ijwtclaims.md)
 
 # Interface: IJwtClaims
 
 ## Hierarchy
 
-**IJwtClaims**
+* **IJwtClaims**
 
 ## Index
 
@@ -25,134 +25,86 @@
 * [sub](ijwtclaims.md#sub)
 * [uid](ijwtclaims.md#uid)
 
----
-
 ## Properties
-
-<a id="alg"></a>
 
 ###  alg
 
-**● alg**: *`string`*
-
-*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
+• **alg**: *string*
 
 ___
-<a id="aud"></a>
 
 ###  aud
 
-**● aud**: *`string`*
-
-*Defined in [types.ts:152](../../../lara-typescript/src/plugin-api/types.ts#L152)*
+• **aud**: *string*
 
 ___
-<a id="claims"></a>
 
 ###  claims
 
-**● claims**: *[IPortalClaims](iportalclaims.md)*
-
-*Defined in [types.ts:164](../../../lara-typescript/src/plugin-api/types.ts#L164)*
+• **claims**: *[IPortalClaims](iportalclaims.md)*
 
 ___
-<a id="class_info_url"></a>
 
 ###  class_info_url
 
-**● class_info_url**: *`string`*
-
-*Defined in [types.ts:153](../../../lara-typescript/src/plugin-api/types.ts#L153)*
+• **class_info_url**: *string*
 
 ___
-<a id="domain"></a>
 
 ###  domain
 
-**● domain**: *`string`*
-
-*Defined in [types.ts:154](../../../lara-typescript/src/plugin-api/types.ts#L154)*
+• **domain**: *string*
 
 ___
-<a id="domain_uid"></a>
 
 ###  domain_uid
 
-**● domain_uid**: *`number`*
-
-*Defined in [types.ts:155](../../../lara-typescript/src/plugin-api/types.ts#L155)*
+• **domain_uid**: *number*
 
 ___
-<a id="exp"></a>
 
 ###  exp
 
-**● exp**: *`number`*
-
-*Defined in [types.ts:156](../../../lara-typescript/src/plugin-api/types.ts#L156)*
+• **exp**: *number*
 
 ___
-<a id="externalid"></a>
 
 ###  externalId
 
-**● externalId**: *`number`*
-
-*Defined in [types.ts:157](../../../lara-typescript/src/plugin-api/types.ts#L157)*
+• **externalId**: *number*
 
 ___
-<a id="iat"></a>
 
 ###  iat
 
-**● iat**: *`number`*
-
-*Defined in [types.ts:158](../../../lara-typescript/src/plugin-api/types.ts#L158)*
+• **iat**: *number*
 
 ___
-<a id="iss"></a>
 
 ###  iss
 
-**● iss**: *`string`*
-
-*Defined in [types.ts:159](../../../lara-typescript/src/plugin-api/types.ts#L159)*
+• **iss**: *string*
 
 ___
-<a id="logging"></a>
 
 ###  logging
 
-**● logging**: *`boolean`*
-
-*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
+• **logging**: *boolean*
 
 ___
-<a id="returnurl"></a>
 
 ###  returnUrl
 
-**● returnUrl**: *`string`*
-
-*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
+• **returnUrl**: *string*
 
 ___
-<a id="sub"></a>
 
 ###  sub
 
-**● sub**: *`string`*
-
-*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
+• **sub**: *string*
 
 ___
-<a id="uid"></a>
 
 ###  uid
 
-**● uid**: *`string`*
-
-*Defined in [types.ts:163](../../../lara-typescript/src/plugin-api/types.ts#L163)*
-
-___
-
+• **uid**: *string*

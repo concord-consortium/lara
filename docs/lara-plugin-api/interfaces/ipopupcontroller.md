@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IPopupController](../interfaces/ipopupcontroller.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IPopupController](ipopupcontroller.md)
 
 # Interface: IPopupController
 
 ## Hierarchy
 
-**IPopupController**
+* **IPopupController**
 
 ## Index
 
@@ -14,50 +14,38 @@
 * [open](ipopupcontroller.md#open)
 * [remove](ipopupcontroller.md#remove)
 
----
-
 ## Properties
-
-<a id="close"></a>
 
 ###  close
 
-**● close**: *`function`*
+• **close**: *function*
 
-*Defined in [popup.ts:43](../../../lara-typescript/src/plugin-api/popup.ts#L43)*
+Closes popup (display: none). Also removes HTML element from DOM tree if `removeOnClose` is equal to true.
 
-#### Type declaration
-▸(): `void`
+#### Type declaration:
 
-**Returns:** `void`
+▸ (): *void*
 
 ___
-<a id="open"></a>
 
 ###  open
 
-**● open**: *`function`*
+• **open**: *function*
 
-*Defined in [popup.ts:41](../../../lara-typescript/src/plugin-api/popup.ts#L41)*
+Opens popup (makes sense only if autoOpen option is set to false during initialization).
 
-#### Type declaration
-▸(): `void`
+#### Type declaration:
 
-**Returns:** `void`
+▸ (): *void*
 
 ___
-<a id="remove"></a>
 
 ###  remove
 
-**● remove**: *`function`*
+• **remove**: *function*
 
-*Defined in [popup.ts:45](../../../lara-typescript/src/plugin-api/popup.ts#L45)*
+Removes HTML element from DOM tree.
 
-#### Type declaration
-▸(): `void`
+#### Type declaration:
 
-**Returns:** `void`
-
-___
-
+▸ (): *void*

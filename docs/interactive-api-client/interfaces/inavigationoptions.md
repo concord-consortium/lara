@@ -1,38 +1,26 @@
-[LARA Interactive API Client](../README.md) > [INavigationOptions](../interfaces/inavigationoptions.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [INavigationOptions](inavigationoptions.md)
 
 # Interface: INavigationOptions
 
 ## Hierarchy
 
-**INavigationOptions**
+* **INavigationOptions**
 
 ## Index
 
 ### Properties
 
-* [enableForwardNav](inavigationoptions.md#enableforwardnav)
-* [message](inavigationoptions.md#message)
-
----
+* [enableForwardNav](inavigationoptions.md#optional-enableforwardnav)
+* [message](inavigationoptions.md#optional-message)
 
 ## Properties
 
-<a id="enableforwardnav"></a>
+### `Optional` enableForwardNav
 
-### `<Optional>` enableForwardNav
-
-**● enableForwardNav**: *`undefined` \| `false` \| `true`*
-
-*Defined in [types.ts:217](../../../lara-typescript/src/interactive-api-client/types.ts#L217)*
-
-___
-<a id="message"></a>
-
-### `<Optional>` message
-
-**● message**: *`undefined` \| `string`*
-
-*Defined in [types.ts:218](../../../lara-typescript/src/interactive-api-client/types.ts#L218)*
+• **enableForwardNav**? : *undefined | false | true*
 
 ___
 
+### `Optional` message
+
+• **message**? : *undefined | string*

@@ -1,58 +1,40 @@
-[LARA Interactive API Client](../README.md) > [ISupportedFeatures](../interfaces/isupportedfeatures.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [ISupportedFeatures](isupportedfeatures.md)
 
 # Interface: ISupportedFeatures
 
 ## Hierarchy
 
-**ISupportedFeatures**
+* **ISupportedFeatures**
 
 ## Index
 
 ### Properties
 
-* [aspectRatio](isupportedfeatures.md#aspectratio)
-* [authoredState](isupportedfeatures.md#authoredstate)
-* [customMessages](isupportedfeatures.md#custommessages)
-* [interactiveState](isupportedfeatures.md#interactivestate)
-
----
+* [aspectRatio](isupportedfeatures.md#optional-aspectratio)
+* [authoredState](isupportedfeatures.md#optional-authoredstate)
+* [customMessages](isupportedfeatures.md#optional-custommessages)
+* [interactiveState](isupportedfeatures.md#optional-interactivestate)
 
 ## Properties
 
-<a id="aspectratio"></a>
+### `Optional` aspectRatio
 
-### `<Optional>` aspectRatio
-
-**● aspectRatio**: *`undefined` \| `number`*
-
-*Defined in [types.ts:202](../../../lara-typescript/src/interactive-api-client/types.ts#L202)*
-
-___
-<a id="authoredstate"></a>
-
-### `<Optional>` authoredState
-
-**● authoredState**: *`undefined` \| `false` \| `true`*
-
-*Defined in [types.ts:203](../../../lara-typescript/src/interactive-api-client/types.ts#L203)*
-
-___
-<a id="custommessages"></a>
-
-### `<Optional>` customMessages
-
-**● customMessages**: *`undefined` \| `object`*
-
-*Defined in [types.ts:205](../../../lara-typescript/src/interactive-api-client/types.ts#L205)*
-
-___
-<a id="interactivestate"></a>
-
-### `<Optional>` interactiveState
-
-**● interactiveState**: *`undefined` \| `false` \| `true`*
-
-*Defined in [types.ts:204](../../../lara-typescript/src/interactive-api-client/types.ts#L204)*
+• **aspectRatio**? : *undefined | number*
 
 ___
 
+### `Optional` authoredState
+
+• **authoredState**? : *undefined | false | true*
+
+___
+
+### `Optional` customMessages
+
+• **customMessages**? : *undefined | object*
+
+___
+
+### `Optional` interactiveState
+
+• **interactiveState**? : *undefined | false | true*
