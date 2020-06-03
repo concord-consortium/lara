@@ -2,6 +2,8 @@
 
 # @concord-consortium/lara-interactive-api - v0.4.0-pre.4
 
+##[API documentation](globals.md)
+
 A TypeScript-based API for the LARA Interactive API. This also includes all the types for the API which are shared 
 with the server-side Typescript files that implement the LARA-side of the API.
 
@@ -64,7 +66,8 @@ const handleButtonClick = () => {
 ```
 
 Calling the `setInteractiveState` method returned by the hook will both update the state held inside the hook and 
-also send the message to Lara. This allows you to use the update the interactive state and use it in your render result. 
+also send the message to LARA. This means that calling `setInteractiveState` will trigger a new React render of your 
+components that use the `useInteractiveState` hook. 
 
 The same applies to other state-based hooks and their setters: 
 - `useAuthoredState`

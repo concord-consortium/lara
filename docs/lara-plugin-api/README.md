@@ -2,6 +2,8 @@
 
 # @concord-consortium/lara-plugin-api - v3.1.2
 
+##[API documentation](globals.md)
+
 ### This documentation is meant to be used by LARA Plugin developers.
 
 #### Setup and webpack configuration
