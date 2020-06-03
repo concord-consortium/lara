@@ -60,7 +60,8 @@ const handleButtonClick = () => {
 ```
 
 Calling the `setInteractiveState` method returned by the hook will both update the state held inside the hook and 
-also send the message to Lara. This allows you to use the update the interactive state and use it in your render result. 
+also send the message to LARA. This means that calling `setInteractiveState` will trigger a new React render of your 
+components that use the `useInteractiveState` hook. 
 
 The same applies to other state-based hooks and their setters: 
 - `useAuthoredState`
