@@ -101,7 +101,9 @@ export const useInitMessage = <InteractiveState = {}, AuthoredState = {}, Dialog
   useEffect(() => {
     // useEffect callback can't be async.
     (async () => {
-      setInitMessage(await client.getInitInteractiveMessage());
+      const initMsg =
+        await client.getInitInteractiveMessage<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>();
+      setInitMessage(initMsg);
     })();
   }, []);
 
