@@ -40,7 +40,7 @@ describe("useInitMessage", () => {
 
 describe("useInteractiveState", () => {
   it("returns current interactive state", async () => {
-    const { result, waitForNextUpdate } = renderHook(() => hooks.useInteractiveState());
+    const { result, waitForNextUpdate } = renderHook(() => hooks.useInteractiveState<any>());
 
     expect(result.current.interactiveState).toEqual(null);
 
@@ -62,7 +62,7 @@ describe("useInteractiveState", () => {
   });
 
   it("lets client app update interactive state", async () => {
-    const { result } = renderHook(() => hooks.useInteractiveState());
+    const { result } = renderHook(() => hooks.useInteractiveState<any>());
 
     expect(result.current.interactiveState).toEqual(null);
 
@@ -76,8 +76,8 @@ describe("useInteractiveState", () => {
     act(() => {
       // Note that `b` property will be lost! State updates are asynchronous, so they might overwrite each other.
       // This is normal, as that's how React's useState works too. Check lines below how to do such update correctly.
-      result.current.setInteractiveState(Object.assign({}, result.current.interactiveState, {b: 2 }));
-      result.current.setInteractiveState(Object.assign({}, result.current.interactiveState, {c: 3 }));
+      result.current.setInteractiveState({...result.current.interactiveState, b: 2 });
+      result.current.setInteractiveState({...result.current.interactiveState, c: 3 });
     });
 
     expect(result.current.interactiveState).toEqual({a: 1, c: 3});
@@ -85,8 +85,8 @@ describe("useInteractiveState", () => {
 
     act(() => {
       // If state is updated incrementally, functional update should be used. No property will be lost here.
-      result.current.setInteractiveState((prevState: any) => Object.assign({}, prevState, {d: 4 }));
-      result.current.setInteractiveState((prevState: any) => Object.assign({}, prevState, {e: 5 }));
+      result.current.setInteractiveState((prevState: any) => ({...prevState, d: 4 }));
+      result.current.setInteractiveState((prevState: any) => ({...prevState, e: 5 }));
     });
 
     expect(result.current.interactiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
@@ -96,7 +96,7 @@ describe("useInteractiveState", () => {
 
 describe("useAuthoredState", () => {
   it("returns current authored state", async () => {
-    const { result, waitForNextUpdate } = renderHook(() => hooks.useAuthoredState());
+    const { result, waitForNextUpdate } = renderHook(() => hooks.useAuthoredState<any>());
 
     expect(result.current.authoredState).toEqual(null);
 
@@ -118,7 +118,7 @@ describe("useAuthoredState", () => {
   });
 
   it("lets client app update interactive state", async () => {
-    const { result } = renderHook(() => hooks.useAuthoredState());
+    const { result } = renderHook(() => hooks.useAuthoredState<any>());
 
     expect(result.current.authoredState).toEqual(null);
 
@@ -132,8 +132,8 @@ describe("useAuthoredState", () => {
     act(() => {
       // Note that `b` property will be lost! State updates are asynchronous, so they might overwrite each other.
       // This is normal, as that's how React's useState works too. Check lines below how to do such update correctly.
-      result.current.setAuthoredState(Object.assign({}, result.current.authoredState, {b: 2 }));
-      result.current.setAuthoredState(Object.assign({}, result.current.authoredState, {c: 3 }));
+      result.current.setAuthoredState({...result.current.authoredState, b: 2 });
+      result.current.setAuthoredState({...result.current.authoredState, c: 3 });
     });
 
     expect(result.current.authoredState).toEqual({a: 1, c: 3});
@@ -141,8 +141,8 @@ describe("useAuthoredState", () => {
 
     act(() => {
       // If state is updated incrementally, functional update should be used. No property will be lost here.
-      result.current.setAuthoredState((prevState: any) => Object.assign({}, prevState, {d: 4 }));
-      result.current.setAuthoredState((prevState: any) => Object.assign({}, prevState, {e: 5 }));
+      result.current.setAuthoredState((prevState: any) => ({...prevState, d: 4 }));
+      result.current.setAuthoredState((prevState: any) => ({...prevState, e: 5 }));
     });
 
     expect(result.current.authoredState).toEqual({a: 1, c: 3, d: 4, e: 5});
@@ -152,7 +152,7 @@ describe("useAuthoredState", () => {
 
 describe("useGlobalInteractiveState", () => {
   it("returns current global interactive state", async () => {
-    const { result, waitForNextUpdate } = renderHook(() => hooks.useGlobalInteractiveState());
+    const { result, waitForNextUpdate } = renderHook(() => hooks.useGlobalInteractiveState<any>());
 
     expect(result.current.globalInteractiveState).toEqual(null);
 
@@ -174,7 +174,7 @@ describe("useGlobalInteractiveState", () => {
   });
 
   it("lets client app update interactive state", async () => {
-    const { result } = renderHook(() => hooks.useGlobalInteractiveState());
+    const { result } = renderHook(() => hooks.useGlobalInteractiveState<any>());
 
     expect(result.current.globalInteractiveState).toEqual(null);
 
@@ -188,8 +188,8 @@ describe("useGlobalInteractiveState", () => {
     act(() => {
       // Note that `b` property will be lost! State updates are asynchronous, so they might overwrite each other.
       // This is normal, as that's how React's useState works too. Check lines below how to do such update correctly.
-      result.current.setGlobalInteractiveState(Object.assign({}, result.current.globalInteractiveState, {b: 2 }));
-      result.current.setGlobalInteractiveState(Object.assign({}, result.current.globalInteractiveState, {c: 3 }));
+      result.current.setGlobalInteractiveState({...result.current.globalInteractiveState, b: 2 });
+      result.current.setGlobalInteractiveState({...result.current.globalInteractiveState, c: 3 });
     });
 
     expect(result.current.globalInteractiveState).toEqual({a: 1, c: 3});
@@ -197,8 +197,8 @@ describe("useGlobalInteractiveState", () => {
 
     act(() => {
       // If state is updated incrementally, functional update should be used. No property will be lost here.
-      result.current.setGlobalInteractiveState((prevState: any) => Object.assign({}, prevState, {d: 4 }));
-      result.current.setGlobalInteractiveState((prevState: any) => Object.assign({}, prevState, {e: 5 }));
+      result.current.setGlobalInteractiveState((prevState: any) => ({...prevState, d: 4 }));
+      result.current.setGlobalInteractiveState((prevState: any) => ({...prevState, e: 5 }));
     });
 
     expect(result.current.globalInteractiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
