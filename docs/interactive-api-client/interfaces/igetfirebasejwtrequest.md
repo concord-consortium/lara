@@ -1,46 +1,38 @@
-[LARA Interactive API Client](../README.md) > [IGetFirebaseJwtRequest](../interfaces/igetfirebasejwtrequest.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
 
 # Interface: IGetFirebaseJwtRequest
 
 ## Hierarchy
 
- `IBaseRequestResponse`
+* [IBaseRequestResponse](ibaserequestresponse.md)
 
- [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md)
+* [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md)
 
-**↳ IGetFirebaseJwtRequest**
+  ↳ **IGetFirebaseJwtRequest**
 
 ## Index
 
 ### Properties
 
-* [firebase_app](igetfirebasejwtrequest.md#firebase_app)
+* [firebase_app](igetfirebasejwtrequest.md#optional-firebase_app)
 * [requestId](igetfirebasejwtrequest.md#requestid)
-
----
 
 ## Properties
 
-<a id="firebase_app"></a>
+### `Optional` firebase_app
 
-### `<Optional>` firebase_app
+• **firebase_app**? : *undefined | string*
 
-**● firebase_app**: *`undefined` \| `string`*
-
-*Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#firebase_app)*
+*Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#optional-firebase_app)*
 
 *Defined in [types.ts:342](../../../lara-typescript/src/interactive-api-client/types.ts#L342)*
 
 ___
-<a id="requestid"></a>
 
 ###  requestId
 
-**● requestId**: *`number`*
+• **requestId**: *number*
 
-*Inherited from IBaseRequestResponse.requestId*
+*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
 
 *Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
-
-___
-

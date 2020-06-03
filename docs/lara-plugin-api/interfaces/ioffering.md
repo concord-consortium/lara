@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IOffering](../interfaces/ioffering.md)
+[LARA Plugin API](../README.md) › [Globals](../globals.md) › [IOffering](ioffering.md)
 
 # Interface: IOffering
 
 ## Hierarchy
 
-**IOffering**
+* **IOffering**
 
 ## Index
 
@@ -14,35 +14,26 @@
 * [name](ioffering.md#name)
 * [url](ioffering.md#url)
 
----
-
 ## Properties
-
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
+• **id**: *number*
 
 *Defined in [types.ts:179](../../../lara-typescript/src/plugin-api/types.ts#L179)*
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
+• **name**: *string*
 
 *Defined in [types.ts:180](../../../lara-typescript/src/plugin-api/types.ts#L180)*
 
 ___
-<a id="url"></a>
 
 ###  url
 
-**● url**: *`string`*
+• **url**: *string*
 
 *Defined in [types.ts:181](../../../lara-typescript/src/plugin-api/types.ts#L181)*
-
-___
-

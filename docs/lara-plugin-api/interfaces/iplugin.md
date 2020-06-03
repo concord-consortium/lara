@@ -1,12 +1,7 @@
-[LARA Plugin API](../README.md) > [IPlugin](../interfaces/iplugin.md)
+[LARA Plugin API](../README.md) › [Globals](../globals.md) › [IPlugin](iplugin.md)
 
 # Interface: IPlugin
 
 ## Hierarchy
 
-**IPlugin**
-
-## Index
-
----
-
+* **IPlugin**

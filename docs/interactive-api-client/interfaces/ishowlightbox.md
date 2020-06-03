@@ -1,12 +1,12 @@
-[LARA Interactive API Client](../README.md) > [IShowLightbox](../interfaces/ishowlightbox.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IShowLightbox](ishowlightbox.md)
 
 # Interface: IShowLightbox
 
 ## Hierarchy
 
- [IBaseShowModal](ibaseshowmodal.md)
+* [IBaseShowModal](ibaseshowmodal.md)
 
-**↳ IShowLightbox**
+  ↳ **IShowLightbox**
 
 ## Index
 
@@ -16,37 +16,28 @@
 * [url](ishowlightbox.md#url)
 * [uuid](ishowlightbox.md#uuid)
 
----
-
 ## Properties
-
-<a id="type"></a>
 
 ###  type
 
-**● type**: *"lightbox"*
+• **type**: *"lightbox"*
 
 *Defined in [types.ts:291](../../../lara-typescript/src/interactive-api-client/types.ts#L291)*
 
 ___
-<a id="url"></a>
 
 ###  url
 
-**● url**: *`string`*
+• **url**: *string*
 
 *Defined in [types.ts:292](../../../lara-typescript/src/interactive-api-client/types.ts#L292)*
 
 ___
-<a id="uuid"></a>
 
 ###  uuid
 
-**● uuid**: *`string`*
+• **uuid**: *string*
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
 *Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
-
-___
-

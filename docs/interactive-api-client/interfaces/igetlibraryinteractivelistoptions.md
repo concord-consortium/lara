@@ -1,14 +1,9 @@
-[LARA Interactive API Client](../README.md) > [IGetLibraryInteractiveListOptions](../interfaces/igetlibraryinteractivelistoptions.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetLibraryInteractiveListOptions](igetlibraryinteractivelistoptions.md)
 
 # Interface: IGetLibraryInteractiveListOptions
 
 ## Hierarchy
 
-**IGetLibraryInteractiveListOptions**
+* **IGetLibraryInteractiveListOptions**
 
-↳  [IGetLibraryInteractiveListRequest](igetlibraryinteractivelistrequest.md)
-
-## Index
-
----
-
+  ↳ [IGetLibraryInteractiveListRequest](igetlibraryinteractivelistrequest.md)

@@ -1,62 +1,52 @@
-[LARA Interactive API Client](../README.md) > [IGetFirebaseJwtResponse](../interfaces/igetfirebasejwtresponse.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtResponse](igetfirebasejwtresponse.md)
 
 # Interface: IGetFirebaseJwtResponse
 
 ## Hierarchy
 
- `IBaseRequestResponse`
+* [IBaseRequestResponse](ibaserequestresponse.md)
 
-**↳ IGetFirebaseJwtResponse**
+  ↳ **IGetFirebaseJwtResponse**
 
 ## Index
 
 ### Properties
 
-* [message](igetfirebasejwtresponse.md#message)
+* [message](igetfirebasejwtresponse.md#optional-message)
 * [requestId](igetfirebasejwtresponse.md#requestid)
-* [response_type](igetfirebasejwtresponse.md#response_type)
-* [token](igetfirebasejwtresponse.md#token)
-
----
+* [response_type](igetfirebasejwtresponse.md#optional-response_type)
+* [token](igetfirebasejwtresponse.md#optional-token)
 
 ## Properties
 
-<a id="message"></a>
+### `Optional` message
 
-### `<Optional>` message
-
-**● message**: *`undefined` \| `string`*
+• **message**? : *undefined | string*
 
 *Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*
 
 ___
-<a id="requestid"></a>
 
 ###  requestId
 
-**● requestId**: *`number`*
+• **requestId**: *number*
 
-*Inherited from IBaseRequestResponse.requestId*
+*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
 
 *Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
-<a id="response_type"></a>
 
-### `<Optional>` response_type
+### `Optional` response_type
 
-**● response_type**: *`undefined` \| "ERROR"*
+• **response_type**? : *undefined | "ERROR"*
 
 *Defined in [types.ts:350](../../../lara-typescript/src/interactive-api-client/types.ts#L350)*
 
 ___
-<a id="token"></a>
 
-### `<Optional>` token
+### `Optional` token
 
-**● token**: *`undefined` \| `string`*
+• **token**? : *undefined | string*
 
 *Defined in [types.ts:352](../../../lara-typescript/src/interactive-api-client/types.ts#L352)*
-
-___
-

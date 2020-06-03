@@ -1,13 +1,16 @@
-[LARA Interactive API Client](../README.md) > [IReportInitInteractive](../interfaces/ireportinitinteractive.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IReportInitInteractive](ireportinitinteractive.md)
 
-# Interface: IReportInitInteractive
+# Interface: IReportInitInteractive ‹**InteractiveState, AuthoredState**›
 
 ## Type parameters
-#### InteractiveState 
-#### AuthoredState 
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
+
 ## Hierarchy
 
-**IReportInitInteractive**
+* **IReportInitInteractive**
 
 ## Index
 
@@ -19,53 +22,42 @@
 * [themeInfo](ireportinitinteractive.md#themeinfo)
 * [version](ireportinitinteractive.md#version)
 
----
-
 ## Properties
-
-<a id="authoredstate"></a>
 
 ###  authoredState
 
-**● authoredState**: *`AuthoredState`*
+• **authoredState**: *AuthoredState*
 
 *Defined in [types.ts:75](../../../lara-typescript/src/interactive-api-client/types.ts#L75)*
 
 ___
-<a id="interactivestate"></a>
 
 ###  interactiveState
 
-**● interactiveState**: *`InteractiveState`*
+• **interactiveState**: *InteractiveState*
 
 *Defined in [types.ts:76](../../../lara-typescript/src/interactive-api-client/types.ts#L76)*
 
 ___
-<a id="mode"></a>
 
 ###  mode
 
-**● mode**: *"report"*
+• **mode**: *"report"*
 
 *Defined in [types.ts:74](../../../lara-typescript/src/interactive-api-client/types.ts#L74)*
 
 ___
-<a id="themeinfo"></a>
 
 ###  themeInfo
 
-**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
+• **themeInfo**: *[IThemeInfo](ithemeinfo.md)*
 
 *Defined in [types.ts:77](../../../lara-typescript/src/interactive-api-client/types.ts#L77)*
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`1`*
+• **version**: *1*
 
 *Defined in [types.ts:73](../../../lara-typescript/src/interactive-api-client/types.ts#L73)*
-
-___
-

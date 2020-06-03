@@ -1,28 +1,21 @@
-[LARA Interactive API Client](../README.md) > [IHookOptions](../interfaces/ihookoptions.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IHookOptions](ihookoptions.md)
 
 # Interface: IHookOptions
 
 ## Hierarchy
 
-**IHookOptions**
+* **IHookOptions**
 
 ## Index
 
 ### Properties
 
-* [supportedFeatures](ihookoptions.md#supportedfeatures)
-
----
+* [supportedFeatures](ihookoptions.md#optional-supportedfeatures)
 
 ## Properties
 
-<a id="supportedfeatures"></a>
+### `Optional` supportedFeatures
 
-### `<Optional>` supportedFeatures
-
-**● supportedFeatures**: *[ISupportedFeatures](isupportedfeatures.md)*
+• **supportedFeatures**? : *[ISupportedFeatures](isupportedfeatures.md)*
 
 *Defined in [types.ts:115](../../../lara-typescript/src/interactive-api-client/types.ts#L115)*
-
-___
-

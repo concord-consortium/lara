@@ -1,12 +1,12 @@
-[LARA Interactive API Client](../README.md) > [IGetInteractiveSnapshotResponse](../interfaces/igetinteractivesnapshotresponse.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotResponse](igetinteractivesnapshotresponse.md)
 
 # Interface: IGetInteractiveSnapshotResponse
 
 ## Hierarchy
 
- `IBaseRequestResponse`
+* [IBaseRequestResponse](ibaserequestresponse.md)
 
-**↳ IGetInteractiveSnapshotResponse**
+  ↳ **IGetInteractiveSnapshotResponse**
 
 ## Index
 
@@ -15,28 +15,20 @@
 * [requestId](igetinteractivesnapshotresponse.md#requestid)
 * [snapshotUrl](igetinteractivesnapshotresponse.md#snapshoturl)
 
----
-
 ## Properties
-
-<a id="requestid"></a>
 
 ###  requestId
 
-**● requestId**: *`number`*
+• **requestId**: *number*
 
-*Inherited from IBaseRequestResponse.requestId*
+*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
 
 *Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
-<a id="snapshoturl"></a>
 
 ###  snapshotUrl
 
-**● snapshotUrl**: *`string`*
+• **snapshotUrl**: *string*
 
 *Defined in [types.ts:398](../../../lara-typescript/src/interactive-api-client/types.ts#L398)*
-
-___
-

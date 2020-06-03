@@ -1,12 +1,12 @@
-[LARA Interactive API Client](../README.md) > [IAuthoringMultipleChoiceMetadata](../interfaces/iauthoringmultiplechoicemetadata.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceMetadata
 
 ## Hierarchy
 
- [IAuthoringMetadataBase](iauthoringmetadatabase.md)
+* [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
-**↳ IAuthoringMultipleChoiceMetadata**
+  ↳ **IAuthoringMultipleChoiceMetadata**
 
 ## Index
 
@@ -14,63 +14,52 @@
 
 * [choices](iauthoringmultiplechoicemetadata.md#choices)
 * [isRequired](iauthoringmultiplechoicemetadata.md#isrequired)
-* [prompt](iauthoringmultiplechoicemetadata.md#prompt)
+* [prompt](iauthoringmultiplechoicemetadata.md#optional-prompt)
 * [secondaryTypeForNow](iauthoringmultiplechoicemetadata.md#secondarytypefornow)
 * [type](iauthoringmultiplechoicemetadata.md#type)
 
----
-
 ## Properties
-
-<a id="choices"></a>
 
 ###  choices
 
-**● choices**: *[IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)[]*
+• **choices**: *[IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)[]*
 
 *Defined in [types.ts:243](../../../lara-typescript/src/interactive-api-client/types.ts#L243)*
 
 ___
-<a id="isrequired"></a>
 
 ###  isRequired
 
-**● isRequired**: *`boolean`*
+• **isRequired**: *boolean*
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
 *Defined in [types.ts:227](../../../lara-typescript/src/interactive-api-client/types.ts#L227)*
 
 ___
-<a id="prompt"></a>
 
-### `<Optional>` prompt
+### `Optional` prompt
 
-**● prompt**: *`undefined` \| `string`*
+• **prompt**? : *undefined | string*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[prompt](iauthoringmetadatabase.md#prompt)*
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[prompt](iauthoringmetadatabase.md#optional-prompt)*
 
 *Defined in [types.ts:228](../../../lara-typescript/src/interactive-api-client/types.ts#L228)*
 
 ___
-<a id="secondarytypefornow"></a>
 
 ###  secondaryTypeForNow
 
-**● secondaryTypeForNow**: *`any`*
+• **secondaryTypeForNow**: *any*
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
 
 *Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
 
 ___
-<a id="type"></a>
 
 ###  type
 
-**● type**: *"multiple choice"*
+• **type**: *"multiple choice"*
 
 *Defined in [types.ts:242](../../../lara-typescript/src/interactive-api-client/types.ts#L242)*
-
-___
-

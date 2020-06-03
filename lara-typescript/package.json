@@ -101,8 +101,8 @@
     "tslint-loader": "^3.5.4",
     "tslint-react": "^4.0.0",
     "tslint-react-hooks": "^2.2.2",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^1.1.27",
+    "typedoc": "^0.17.7",
+    "typedoc-plugin-markdown": "^2.3.0",
     "typescript": "^3.9.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"

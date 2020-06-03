@@ -1,12 +1,12 @@
-[LARA Interactive API Client](../README.md) > [IGetLibraryInteractiveListResponse](../interfaces/igetlibraryinteractivelistresponse.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetLibraryInteractiveListResponse](igetlibraryinteractivelistresponse.md)
 
 # Interface: IGetLibraryInteractiveListResponse
 
 ## Hierarchy
 
- `IBaseRequestResponse`
+* [IBaseRequestResponse](ibaserequestresponse.md)
 
-**↳ IGetLibraryInteractiveListResponse**
+  ↳ **IGetLibraryInteractiveListResponse**
 
 ## Index
 
@@ -15,28 +15,20 @@
 * [libraryInteractives](igetlibraryinteractivelistresponse.md#libraryinteractives)
 * [requestId](igetlibraryinteractivelistresponse.md#requestid)
 
----
-
 ## Properties
-
-<a id="libraryinteractives"></a>
 
 ###  libraryInteractives
 
-**● libraryInteractives**: *[ILibraryInteractiveListResponseItem](ilibraryinteractivelistresponseitem.md)[]*
+• **libraryInteractives**: *[ILibraryInteractiveListResponseItem](ilibraryinteractivelistresponseitem.md)[]*
 
 *Defined in [types.ts:387](../../../lara-typescript/src/interactive-api-client/types.ts#L387)*
 
 ___
-<a id="requestid"></a>
 
 ###  requestId
 
-**● requestId**: *`number`*
+• **requestId**: *number*
 
-*Inherited from IBaseRequestResponse.requestId*
+*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
 
 *Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
-
-___
-

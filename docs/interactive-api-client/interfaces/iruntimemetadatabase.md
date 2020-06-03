@@ -1,14 +1,14 @@
-[LARA Interactive API Client](../README.md) > [IRuntimeMetadataBase](../interfaces/iruntimemetadatabase.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
 # Interface: IRuntimeMetadataBase
 
 ## Hierarchy
 
-**IRuntimeMetadataBase**
+* **IRuntimeMetadataBase**
 
-↳  [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
+  ↳ [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
 
-↳  [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
+  ↳ [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
 
 ## Index
 
@@ -17,26 +17,18 @@
 * [answerText](iruntimemetadatabase.md#answertext)
 * [isSubmitted](iruntimemetadatabase.md#issubmitted)
 
----
-
 ## Properties
-
-<a id="answertext"></a>
 
 ###  answerText
 
-**● answerText**: *`string`*
+• **answerText**: *string*
 
 *Defined in [types.ts:251](../../../lara-typescript/src/interactive-api-client/types.ts#L251)*
 
 ___
-<a id="issubmitted"></a>
 
 ###  isSubmitted
 
-**● isSubmitted**: *`boolean`*
+• **isSubmitted**: *boolean*
 
 *Defined in [types.ts:250](../../../lara-typescript/src/interactive-api-client/types.ts#L250)*
-
-___
-

@@ -1,5 +1,3 @@
-# LARA Interactive API Client
-
 A TypeScript-based client for the LARA Interactive API.  This also includes all the types for the API which are shared with the server-side Typescript files
 that implement the LARA-side of the API.
 

@@ -1,83 +1,76 @@
-[LARA Interactive API Client](../README.md) > [IClientOptions](../interfaces/iclientoptions.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IClientOptions](iclientoptions.md)
 
-# Interface: IClientOptions
+# Interface: IClientOptions ‹**InteractiveState, AuthoredState, DialogState, GlobalInteractiveState**›
 
 ## Type parameters
-#### InteractiveState 
-#### AuthoredState 
-#### DialogState 
-#### GlobalInteractiveState 
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
+
+▪ **DialogState**
+
+▪ **GlobalInteractiveState**
+
 ## Hierarchy
 
-**IClientOptions**
+* **IClientOptions**
 
 ## Index
 
 ### Properties
 
-* [onGetInteractiveState](iclientoptions.md#ongetinteractivestate)
-* [onGlobalInteractiveStateUpdated](iclientoptions.md#onglobalinteractivestateupdated)
-* [onHello](iclientoptions.md#onhello)
-* [onInitInteractive](iclientoptions.md#oninitinteractive)
-* [startDisconnected](iclientoptions.md#startdisconnected)
-* [supportedFeatures](iclientoptions.md#supportedfeatures)
-
----
+* [onGetInteractiveState](iclientoptions.md#optional-ongetinteractivestate)
+* [onGlobalInteractiveStateUpdated](iclientoptions.md#optional-onglobalinteractivestateupdated)
+* [onHello](iclientoptions.md#optional-onhello)
+* [onInitInteractive](iclientoptions.md#optional-oninitinteractive)
+* [startDisconnected](iclientoptions.md#optional-startdisconnected)
+* [supportedFeatures](iclientoptions.md#optional-supportedfeatures)
 
 ## Properties
 
-<a id="ongetinteractivestate"></a>
+### `Optional` onGetInteractiveState
 
-### `<Optional>` onGetInteractiveState
-
-**● onGetInteractiveState**: *`undefined` \| `function`*
+• **onGetInteractiveState**? : *undefined | function*
 
 *Defined in [types.ts:110](../../../lara-typescript/src/interactive-api-client/types.ts#L110)*
 
 ___
-<a id="onglobalinteractivestateupdated"></a>
 
-### `<Optional>` onGlobalInteractiveStateUpdated
+### `Optional` onGlobalInteractiveStateUpdated
 
-**● onGlobalInteractiveStateUpdated**: *`undefined` \| `function`*
+• **onGlobalInteractiveStateUpdated**? : *undefined | function*
 
 *Defined in [types.ts:111](../../../lara-typescript/src/interactive-api-client/types.ts#L111)*
 
 ___
-<a id="onhello"></a>
 
-### `<Optional>` onHello
+### `Optional` onHello
 
-**● onHello**: *`undefined` \| `function`*
+• **onHello**? : *undefined | function*
 
 *Defined in [types.ts:107](../../../lara-typescript/src/interactive-api-client/types.ts#L107)*
 
 ___
-<a id="oninitinteractive"></a>
 
-### `<Optional>` onInitInteractive
+### `Optional` onInitInteractive
 
-**● onInitInteractive**: *`undefined` \| `function`*
+• **onInitInteractive**? : *undefined | function*
 
 *Defined in [types.ts:109](../../../lara-typescript/src/interactive-api-client/types.ts#L109)*
 
 ___
-<a id="startdisconnected"></a>
 
-### `<Optional>` startDisconnected
+### `Optional` startDisconnected
 
-**● startDisconnected**: *`undefined` \| `false` \| `true`*
+• **startDisconnected**? : *undefined | false | true*
 
 *Defined in [types.ts:105](../../../lara-typescript/src/interactive-api-client/types.ts#L105)*
 
 ___
-<a id="supportedfeatures"></a>
 
-### `<Optional>` supportedFeatures
+### `Optional` supportedFeatures
 
-**● supportedFeatures**: *[ISupportedFeatures](isupportedfeatures.md)*
+• **supportedFeatures**? : *[ISupportedFeatures](isupportedfeatures.md)*
 
 *Defined in [types.ts:106](../../../lara-typescript/src/interactive-api-client/types.ts#L106)*
-
-___
-

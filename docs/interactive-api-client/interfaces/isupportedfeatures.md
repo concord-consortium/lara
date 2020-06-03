@@ -1,58 +1,48 @@
-[LARA Interactive API Client](../README.md) > [ISupportedFeatures](../interfaces/isupportedfeatures.md)
+[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ISupportedFeatures](isupportedfeatures.md)
 
 # Interface: ISupportedFeatures
 
 ## Hierarchy
 
-**ISupportedFeatures**
+* **ISupportedFeatures**
 
 ## Index
 
 ### Properties
 
-* [aspectRatio](isupportedfeatures.md#aspectratio)
-* [authoredState](isupportedfeatures.md#authoredstate)
-* [customMessages](isupportedfeatures.md#custommessages)
-* [interactiveState](isupportedfeatures.md#interactivestate)
-
----
+* [aspectRatio](isupportedfeatures.md#optional-aspectratio)
+* [authoredState](isupportedfeatures.md#optional-authoredstate)
+* [customMessages](isupportedfeatures.md#optional-custommessages)
+* [interactiveState](isupportedfeatures.md#optional-interactivestate)
 
 ## Properties
 
-<a id="aspectratio"></a>
+### `Optional` aspectRatio
 
-### `<Optional>` aspectRatio
-
-**● aspectRatio**: *`undefined` \| `number`*
+• **aspectRatio**? : *undefined | number*
 
 *Defined in [types.ts:202](../../../lara-typescript/src/interactive-api-client/types.ts#L202)*
 
 ___
-<a id="authoredstate"></a>
 
-### `<Optional>` authoredState
+### `Optional` authoredState
 
-**● authoredState**: *`undefined` \| `false` \| `true`*
+• **authoredState**? : *undefined | false | true*
 
 *Defined in [types.ts:203](../../../lara-typescript/src/interactive-api-client/types.ts#L203)*
 
 ___
-<a id="custommessages"></a>
 
-### `<Optional>` customMessages
+### `Optional` customMessages
 
-**● customMessages**: *`undefined` \| `object`*
+• **customMessages**? : *undefined | object*
 
 *Defined in [types.ts:205](../../../lara-typescript/src/interactive-api-client/types.ts#L205)*
 
 ___
-<a id="interactivestate"></a>
 
-### `<Optional>` interactiveState
+### `Optional` interactiveState
 
-**● interactiveState**: *`undefined` \| `false` \| `true`*
+• **interactiveState**? : *undefined | false | true*
 
 *Defined in [types.ts:204](../../../lara-typescript/src/interactive-api-client/types.ts#L204)*
-
-___
-
