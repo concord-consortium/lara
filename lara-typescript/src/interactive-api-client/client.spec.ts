@@ -2,10 +2,8 @@ import { mockIFramePhone, MockPhone } from "../interactive-api/mock-iframe-phone
 import { Client } from "./client";
 import * as iframePhone from "iframe-phone";
 
-let parentEl: HTMLIFrameElement;
 jest.mock("iframe-phone", () => {
-  parentEl = document.createElement("iframe");
-  return mockIFramePhone(parentEl);
+  return mockIFramePhone();
 });
 
 let inIframe = false;
