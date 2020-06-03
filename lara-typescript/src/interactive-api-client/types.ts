@@ -173,11 +173,6 @@ export type ClientMessage = DeprecatedIFrameSaverClientMessage |
                             IFrameSaverClientMessage |
                             GlobalIFrameSaverClientMessage;
 
-export type ClientEvent = "interactiveStateUpdated" |
-                          "globalInteractiveStateUpdated" |
-                          "authoredStateUpdated" |
-                          "initInteractive";
-
 export type ServerMessage = IframePhoneServerMessage |
                             DeprecatedIFrameSaverServerMessage |
                             IframeSaverServerMessage |

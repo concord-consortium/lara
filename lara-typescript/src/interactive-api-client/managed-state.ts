@@ -1,6 +1,12 @@
-import { ClientEvent, IInitInteractive } from "./types";
+import { IInitInteractive } from "./types";
 import { EventEmitter2 } from "eventemitter2";
 import * as deepFreeze from "deep-freeze";
+
+type ManagedStateEvent =
+  "interactiveStateUpdated" |
+  "globalInteractiveStateUpdated" |
+  "authoredStateUpdated" |
+  "initInteractive";
 
 export class ManagedState {
   private _initMessage: Readonly<IInitInteractive<any, any, any, any>> | null = null;
@@ -60,19 +66,19 @@ export class ManagedState {
     this.emit("globalInteractiveStateUpdated", value);
   }
 
-  public emit(event: ClientEvent, content?: any) {
+  public emit(event: ManagedStateEvent, content?: any) {
     this.emitter.emit(event, content);
   }
 
-  public on(event: ClientEvent, handler: any) {
+  public on(event: ManagedStateEvent, handler: any) {
     this.emitter.on(event, handler);
   }
 
-  public off(event: ClientEvent, handler: any) {
+  public off(event: ManagedStateEvent, handler: any) {
     this.emitter.off(event, handler);
   }
 
-  public once(event: ClientEvent, handler: any) {
+  public once(event: ManagedStateEvent, handler: any) {
     this.emitter.once(event, handler);
   }
 }
