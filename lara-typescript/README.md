@@ -35,15 +35,6 @@ This codebase uses TypeScript and [TypeDoc](https://typedoc.org/). Please follow
 new features using TypeDoc format. Note that that the final documentation is meant to be used by LARA plugin developers,
 not LARA Plugin API developers. So, it should cover only publicly accessible functions available externally.
 
-If you take a look at package.json `script/build:doc`, you'll notice that documentation is generated only for
-`src/plugin-api/*` files, and only for exported variables. So, everything that is meant to be used by LARA plugin
-developers should be placed in these directories.
-
-If you need to some private helpers that are used by other parts of the API, they could be placed e.g. in `src/helpers`
-or any other directory. That way, they won't be included in the documentation, but they can be used by the API
-internally. Or, if the helper is used only by one module, it can be implemented there,
-but just not exported - generated documentation skips non-exported properties and functions.
-
 #### Publishing LARA Plugin API typings package to NPM
 
 Note that typings generated from this code can be used by LARA plugins to provide type checking.
@@ -78,9 +69,14 @@ cd [the plugin you want to test]
 npm unlink @concord-consortium/lara-plugin-api
 ```
 
-### LARA Internal API
+### LARA Interactive API
 
-Other code that is meant to be used by LARA itself is exposed as Internal API. It's available under global
-namespace `LARA.InternalAPI` and implemented in `src/internal-api`.
+LARA Interactive API lives in `interactive-api` directory. This API is exposed to interactive developers.
+Code organization and documentation is similar in many ways to LARA Plugin API. It's also published to NPM.
 
-Old-style LARA code can reference `LARA.InternalAPI` functions directly.
+### Code that is used by LARA internals
+
+Other API that is meant to be used by LARA itself is exposed to global/window object under `LARA` namespace. 
+
+Old-style LARA code (usually HAML pages or some CoffeeScript files) can reference `LARA.InternalAPI`, 
+`LARA.InteractiveAPI` and `LARA.PageItemAuthoring` functions directly.

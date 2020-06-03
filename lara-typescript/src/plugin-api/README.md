@@ -95,7 +95,9 @@ The `guiPreview` field is used by Lara to enable preview of the decorated embedd
 
 #### Plugin implementation
 
-The LARA Plugin is divided into two regular JavaScript classes (or constructors), the runtime and authoring classes.  There are no special requirements regarding their interfaces at the moment, but it's a subject to change. Always check the [IPlugin](interfaces/iplugin.md) interface first.
+The LARA Plugin is divided into two regular JavaScript classes (or constructors), the runtime and authoring classes.
+There are no special requirements regarding their interfaces at the moment, but it's a subject to change.
+Always check the [IPlugin](interfaces/iplugin.md) interface first.
 
 Once the two JavaScript classes are defined the plugin script should call [registerPlugin](#registerplugin) to register the classes with LARA.
 The plugin will be initialized by LARA automatically when needed once it is registered. LARA calls its constructor and provides the runtime context
