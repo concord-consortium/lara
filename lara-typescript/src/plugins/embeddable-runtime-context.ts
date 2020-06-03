@@ -1,9 +1,5 @@
-import {
-  IInteractiveAvailableEvent,
-  IInteractiveAvailableEventHandler,
-  IEmbeddableRuntimeContext, IInteractiveState
-} from "../plugin-api";
-import { onInteractiveAvailable } from "./events";
+import { IEmbeddableRuntimeContext, IInteractiveState } from "../plugin-api";
+import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailableEventHandler } from "../events";
 import { IEmbeddableContextOptions } from "./plugin-context";
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {

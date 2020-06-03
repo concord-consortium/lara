@@ -1,5 +1,8 @@
-import {onLog, offLog, onInteractiveAvailable, offInteractiveAvailable} from "../lib/events";
-import {IInteractiveAvailableEventHandler, ILogEventHandler} from "./types";
+import {
+  onLog, offLog, onInteractiveAvailable, offInteractiveAvailable, IInteractiveAvailableEventHandler, ILogEventHandler
+} from "../events";
+// Export event types as a part of Plugin API.
+export { ILogEventHandler, IInteractiveAvailableEventHandler, ILogData, IInteractiveAvailableEvent } from "../events";
 
 /**
  * Functions related to event observing provided by LARA.

@@ -1,5 +1,5 @@
-import * as events from "./events";
-import { IInteractiveAvailableEvent } from "../plugin-api";
+import * as events from "./index";
+import { IInteractiveAvailableEvent } from "./index";
 
 describe("Events helper", () => {
   describe("Log event", () => {

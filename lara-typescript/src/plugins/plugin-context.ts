@@ -1,6 +1,5 @@
-import {
-  IPluginRuntimeContext, IJwtResponse, IClassInfo, ILogData, IPluginAuthoringContext
-} from "../plugin-api";
+import { IPluginRuntimeContext, IJwtResponse, IClassInfo, IPluginAuthoringContext } from "../plugin-api";
+import { ILogData } from "../events";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import * as $ from "jquery";
 

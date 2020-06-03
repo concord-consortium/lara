@@ -2,7 +2,7 @@
 - unless plugin_loaded(plugin.url)
   = content_for :external_scripts do
     :javascript
-      LARA.InternalAPI.setNextPluginLabel("#{v3_plugin_label}");
+      LARA.Plugins.setNextPluginLabel("#{v3_plugin_label}");
     %script{src:plugin.url}
 
 - if @run.id
@@ -151,5 +151,5 @@
         resourceUrl: '#{escape_javascript(@sequence_run ? sequence_url(@sequence_run.sequence) : activity_url(@run.activity))}'
       }
       console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API")
-      LARA.InternalAPI.initPlugin('#{v3_plugin_label}', pluginContext);
+      LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
     });

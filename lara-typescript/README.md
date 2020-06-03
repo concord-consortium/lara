@@ -78,5 +78,6 @@ Code organization and documentation is similar in many ways to LARA Plugin API. 
 
 Other API that is meant to be used by LARA itself is exposed to global/window object under `LARA` namespace. 
 
-Old-style LARA code (usually HAML pages or some CoffeeScript files) can reference `LARA.InternalAPI`, 
-`LARA.InteractiveAPI` and `LARA.PageItemAuthoring` functions directly.
+Old-style LARA code (usually HAML pages or some CoffeeScript files) can reference `LARA.Plugins`, `LARA.Events`,
+`LARA.InteractiveAPI` and `LARA.PageItemAuthoring` functions directly. Note that every diretory in lara-typescript has
+its own `index.ts` file. These are functions that are exported to `LARA.Plugins/Events/InteractiveAPI/etc` modules. 

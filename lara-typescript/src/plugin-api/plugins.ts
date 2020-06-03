@@ -1,4 +1,4 @@
-import { registerPlugin as _registerPlugin } from "../lib/plugins";
+import { registerPlugin as _registerPlugin } from "../plugins/plugins";
 import { IRegisterPluginOptions } from "./types";
 
 /****************************************************************************

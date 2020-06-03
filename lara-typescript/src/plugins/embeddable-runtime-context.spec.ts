@@ -1,6 +1,6 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import { IInteractiveState, IEmbeddableRuntimeContext } from "../plugin-api";
-import { emitInteractiveAvailable } from "./events";
+import { IInteractiveState } from "../plugin-api";
+import { emitInteractiveAvailable } from "../events";
 import * as fetch from "jest-fetch-mock";
 import { IEmbeddableContextOptions } from "./plugin-context";
 (window as any).fetch = fetch;
