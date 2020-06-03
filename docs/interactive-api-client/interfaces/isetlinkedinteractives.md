@@ -22,7 +22,7 @@
 
 **● linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*
 
-*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*
+*Defined in [types.ts:317](../../../lara-typescript/src/interactive-api-client/types.ts#L317)*
 
 ___
 

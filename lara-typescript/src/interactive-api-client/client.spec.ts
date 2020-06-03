@@ -1,7 +1,6 @@
 import { mockIFramePhone, MockPhone } from "../interactive-api/mock-iframe-phone";
-import { ISupportedFeatures, IGetFirebaseJwtResponse, IGetFirebaseJwtOptions } from "./types";
 import { Client } from "./client";
-import { setInIframe } from "./in-frame";
+import * as iframePhone from "iframe-phone";
 
 let parentEl: HTMLIFrameElement;
 jest.mock("iframe-phone", () => {
@@ -9,379 +8,120 @@ jest.mock("iframe-phone", () => {
   return mockIFramePhone(parentEl);
 });
 
-interface InteractiveState {
-  foo: boolean;
-}
+let inIframe = false;
+jest.mock("./in-frame", () => ({
+  inIframe: () => inIframe
+}));
 
-interface AuthoredState {
-  bar: boolean;
-}
-
-interface GlobalInteractiveState {
-  baz: boolean;
-}
-
-const supportedFeatures: ISupportedFeatures = {
-  interactiveState: true,
-  authoredState: true,
-  aspectRatio: 1
-};
-
-let client: Client<InteractiveState, AuthoredState, GlobalInteractiveState>;
-
-const mockedPhone = () => client.iframePhone as unknown as MockPhone;
+const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
 
 describe("Client", () => {
   afterEach(() => {
-    const mockPhone = client.iframePhone as unknown as MockPhone;
-    if (mockedPhone()) {
-      mockedPhone().reset();
-    }
+    mockedPhone.reset();
   });
 
   describe("outside of an iframe", () => {
     beforeEach(() => {
-      setInIframe(false);
-      client = new Client<InteractiveState, AuthoredState, GlobalInteractiveState>({
-        supportedFeatures
-      });
+      inIframe = false;
     });
 
-    it("reports it is inside of an iframe", () => {
-      expect(client.InIFrame).toBe(false);
+    it("throws an error", () => {
+      expect(() => {
+        new Client();
+      }).toThrowError();
     });
-
-    it("does not auto connect", () => {
-      expect(mockedPhone()).toBeUndefined();
-    });
-
-    it("returns false/reject on all methods", () => {
-      expect(client.connect()).toBe(false);
-      expect(mockedPhone()).toBeUndefined();
-      expect(client.disconnect()).toBe(false);
-      expect(client.setInteractiveState({foo: true})).toBe(false);
-      expect(client.setHeight(100)).toBe(false);
-      expect(client.setSupportedFeatures({})).toBe(false);
-      expect(client.setNavigation({})).toBe(false);
-      expect(client.setAuthoredState({bar: true})).toBe(false);
-      expect(client.setGlobalInteractiveState({baz: true})).toBe(false);
-      expect(client.getAuthInfo()).rejects.toEqual("Not in iframe");
-      expect(client.getFirebaseJWT({})).rejects.toEqual("Not in iframe");
-    });
-
   });
 
   describe("inside of an iframe", () => {
     beforeEach(() => {
-      setInIframe(true);
+      inIframe = true;
     });
 
-    describe("starting disconnected", () => {
-      beforeEach(() => {
-        client = new Client<InteractiveState, AuthoredState, GlobalInteractiveState>({
-          startDisconnected: true,
-          supportedFeatures
-        });
-      });
-
-      it("reports it is inside of an iframe", () => {
-        expect(client.InIFrame).toBe(true);
-      });
-
-      it("does not auto connect", () => {
-        expect(mockedPhone()).toBeUndefined();
-      });
-
-      it("can manually connect and disconnect", () => {
-        expect(client.connect()).toBe(true);
-        expect(mockedPhone()).toBeDefined();
-        expect(mockedPhone().numListeners).toBe(10);
-        expect(mockedPhone().listenerMessages).toEqual([
-          "hello", "getInteractiveState", "initInteractive", "loadInteractiveGlobal",
-          "closedModal", "customMessage", "interactiveList", "libraryInteractiveList", "interactiveSnapshot",
-          "contextMembership",
-        ]);
-
-        expect(client.disconnect()).toBe(true);
-        expect(mockedPhone()).toBeUndefined();
-      });
+    it("throws an error when second Client instance is created", () => {
+      expect(() => {
+        new Client();
+      }).not.toThrowError();
+      expect(() => {
+        new Client();
+      }).toThrowError();
     });
 
-    describe("starting normally", () => {
-      beforeEach(() => {
-        client = new Client<InteractiveState, AuthoredState, GlobalInteractiveState>({
-          supportedFeatures
-        });
-      });
-
-      it("auto connects and manually disconnects", () => {
-        expect(mockedPhone()).toBeDefined();
-        expect(client.disconnect()).toBe(true);
-        expect(mockedPhone()).toBeUndefined();
-      });
+    it("automatically connects to parent window using iframe-phone", () => {
+      expect(() => {
+        new Client();
+      }).not.toThrowError();
+      expect(mockedPhone).toBeDefined();
+      expect(mockedPhone.listenerMessages).toEqual([
+        "initInteractive", "getInteractiveState", "loadInteractiveGlobal"
+      ]);
+      expect(mockedPhone.initialize).toHaveBeenCalled();
     });
 
-    describe("with callbacks", () => {
-      let onHello: jest.Mock<any>;
-      let onInitInteractive: jest.Mock<any>;
-      let onGetInteractiveState: jest.Mock<any>;
-      let onGlobalInteractiveStateUpdated: jest.Mock<any>;
-
-      beforeEach(() => {
-        onHello = jest.fn();
-        onInitInteractive = jest.fn();
-        onGetInteractiveState = jest.fn();
-        onGlobalInteractiveStateUpdated = jest.fn();
-
-        client = new Client<InteractiveState, AuthoredState, GlobalInteractiveState>({
-          supportedFeatures,
-          onHello,
-          onInitInteractive,
-          onGetInteractiveState,
-          onGlobalInteractiveStateUpdated
-        });
+    it("handles init message and saves interactive, authored and global interactive states", () => {
+      const client = new Client();
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: {
+          mode: "runtime",
+          interactiveState: { interactiveState: true },
+          authoredState: { authoredState: true },
+          globalInteractiveState: { globalState: true }
+        }
       });
-
-      it("supports the onHello callback", () => {
-        expect(onHello).not.toHaveBeenCalled();
-        mockedPhone().fakeServerMessage({type: "hello"});
-        expect(onHello).toHaveBeenCalledWith(); // no parameters
-
-        // hello message automatically sends supported features
-        expect(mockedPhone().messages).toEqual([{type: "supportedFeatures", content: {
-          apiVersion: 1,
-          features: { interactiveState: true, authoredState: true, aspectRatio: 1 }
-        }}]);
-      });
-
-      it("supports the onGetInteractiveState callback", () => {
-        expect(onGetInteractiveState).not.toHaveBeenCalled();
-        mockedPhone().fakeServerMessage({type: "getInteractiveState"});
-        expect(onGetInteractiveState).toHaveBeenCalledWith(); // no parameters
-      });
-
-      it("supports the onGlobalInteractiveStateUpdated callback", () => {
-        expect(onGlobalInteractiveStateUpdated).not.toHaveBeenCalled();
-        mockedPhone().fakeServerMessage({type: "loadInteractiveGlobal", content: {test: true}});
-        expect(onGlobalInteractiveStateUpdated).toHaveBeenCalledWith({test: true});
-      });
-
-      it("supports the onInitInteractive callback", () => {
-        expect(onInitInteractive).not.toHaveBeenCalled();
-        mockedPhone().fakeServerMessage({type: "initInteractive", content: {test: true}});
-        expect(onInitInteractive).toHaveBeenCalledWith({test: true});
-      });
-
-      it("supports setInteractiveState", () => {
-        expect(client.setInteractiveState({foo: true})).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
-      });
-
-      it("supports setAuthoredState", () => {
-        expect(client.setAuthoredState({bar: true})).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "authoredState", content: {bar: true}}]);
-      });
-
-      it("supports setGlobalInteractiveState", () => {
-        expect(client.setGlobalInteractiveState({baz: true})).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "interactiveStateGlobal", content: {baz: true}}]);
-      });
-
-      it("supports setHeight", () => {
-        expect(client.setHeight(100)).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "height", content: 100}]);
-      });
-
-      it("supports setHint", () => {
-        expect(client.setHint("test hint")).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "hint", content: "test hint"}]);
-      });
-
-      it("supports setSupportedFeatures", () => {
-        expect(client.setSupportedFeatures({interactiveState: true, authoredState: true, aspectRatio: 1})).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "supportedFeatures", content: {
-          apiVersion: 1,
-          features: { interactiveState: true, authoredState: true, aspectRatio: 1 }
-        }}]);
-      });
-
-      it("supports setNavigation", () => {
-        expect(client.setNavigation({ enableForwardNav: true, message: "foo" })).toBe(true);
-        expect(mockedPhone().messages).toEqual([{type: "navigation", content: {
-          enableForwardNav: true,
-          message: "foo"
-        }}]);
-      });
-
-      it("supports getAuthInfo called multiple times", () => {
-        const requestContent = [
-          {},
-          {},
-          {}
-        ];
-        testRequestResponse(client, {
-          method: client.getAuthInfo,
-          requestType: "getAuthInfo",
-          requestContent,
-          responseType: "authInfo",
-          responseContent: [
-            {user: "foo"},
-            {user: "bar"},
-            {user: "baz"}
-          ],
-          resolvesTo: [
-            {user: "foo"},
-            {user: "bar"},
-            {user: "baz"}
-          ]
-        });
-      });
-
-      it("supports getFirebaseJWT called multiple times", () => {
-        const requestContent: IGetFirebaseJwtOptions[] = [
-          { firebase_app: "foo" },
-          { firebase_app: "bar" },
-          { firebase_app: "baz" }
-        ];
-        testRequestResponse(client, {
-          method: client.getFirebaseJWT,
-          requestType: "getFirebaseJWT",
-          requestContent,
-          responseType: "firebaseJWT",
-          responseContent: [
-            {token: "FOO"},
-            {token: "BAR"},
-            {token: "BAZ"}
-          ],
-          resolvesTo: [
-            "FOO",
-            "BAR",
-            "BAZ"
-          ]
-        });
-      });
-
-      it("supports errors from getFirebaseJWT", () => {
-        const promise = client.getFirebaseJWT({firebase_app: "foo"});
-        const content: IGetFirebaseJwtResponse = {
-          requestId: 1,
-          response_type: "ERROR",
-          message: "it's broke!"
-        };
-        mockedPhone().fakeServerMessage({type: "firebaseJWT", content});
-        expect(promise).rejects.toEqual("it's broke!");
-      });
-
-      it("does not yet implement setAuthoringMetadata", () => {
-        expect(() => client.setAuthoringMetadata({
-          type: "interactive",
-          secondaryTypeForNow: "foo",
-          isRequired: true,
-          prompt: "bar"
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement setRuntimeMetadata", () => {
-        expect(() => client.setRuntimeMetadata({
-          type: "interactive",
-          isSubmitted: true,
-          answerText: "foo"
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement setAuthoringCustomReportFields", () => {
-        expect(() => client.setAuthoringCustomReportFields({
-          fields: [
-            {id: "foo", columnHeading: "Foo"}
-          ]
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement setRuntimeCustomReportValues", () => {
-        expect(() => client.setRuntimeCustomReportValues({
-          values: {foo: "bar"}
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement showModal", () => {
-        expect(() => client.showModal({
-          uuid: "foo",
-          type: "alert",
-          style: "info",
-          headerText: "Did you know?",
-          text: "That is is an alert"
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement closeModal", () => {
-        expect(() => client.closeModal({
-          uuid: "foo"
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement getInteractiveList", () => {
-        expect(() => client.getInteractiveList({
-          requestId: 1,
-          supportsSnapshots: true
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement setLinkedInteractives", () => {
-        expect(() => client.setLinkedInteractives({
-          linkedInteractives: []
-        })).toThrow(/not yet implemented/);
-      });
-
-      it("does not yet implement getInteractiveSnapshot", () => {
-        expect(() => client.getInteractiveSnapshot({
-          requestId: 1,
-          interactiveRuntimeId: "foo"
-        })).toThrow(/not yet implemented/);
-      });
+      expect(client.managedState.interactiveState).toEqual({ interactiveState: true });
+      expect(client.managedState.authoredState).toEqual({ authoredState: true });
+      expect(client.managedState.globalInteractiveState).toEqual({ globalState: true });
     });
 
+    it("automatically supports the getInteractiveState message", () => {
+      const client = new Client();
+      client.managedState.interactiveState = {test: 123};
+      mockedPhone.fakeServerMessage({type: "getInteractiveState"});
+      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {test: 123}}]);
+    });
+
+    it("automatically supports the loadInteractiveGlobal message", () => {
+      const client = new Client();
+      client.managedState.interactiveState = {test: 123};
+      mockedPhone.fakeServerMessage({type: "loadInteractiveGlobal", content: {test: 123}});
+      expect(client.managedState.globalInteractiveState).toEqual({ test: 123 });
+    });
+
+    it("lets you add and remove custom message listener", () => {
+      const client = new Client();
+      const listener = jest.fn();
+      client.addListener("authInfo", listener);
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 123}});
+      expect(listener).toHaveBeenCalledWith({test: 123});
+      expect(listener).toHaveBeenCalledTimes(1);
+
+      client.removeListener("authInfo");
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("lets you add custom message listener with requestId", () => {
+      const client = new Client();
+      const listener = jest.fn();
+      const requestId = 123;
+      client.addListener("authInfo", listener, requestId);
+
+      // no request ID
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 123}});
+      expect(listener).toHaveBeenCalledTimes(0);
+
+      // wrong request ID
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 123, requestId: 999}});
+      expect(listener).toHaveBeenCalledTimes(0);
+
+      // correct request ID
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 123, requestId: 123}});
+      expect(listener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledWith({test: 123});
+
+      // listener should be removed now
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
   });
-
 });
-
-// helpers
-
-interface IRequestResponseOptions {
-  method: (options: any) => Promise<any>;
-  requestType: string;
-  requestContent: any[];
-  responseType: string;
-  responseContent: any[];
-  resolvesTo: any[];
-}
-
-const testRequestResponse = async (_client: Client, options: IRequestResponseOptions) => {
-  const startListeners = mockedPhone().numListeners;
-  const requestIds: number[] = [];
-  const promises: Array<Promise<any>> = [];
-  const mockedMessages: any[] = [];
-
-  options.requestContent.forEach((rc, index) => {
-    const requestId = index + 1;
-    requestIds.push(requestId);
-    const content = {requestId, ...options.requestContent[index]};
-    mockedMessages.push({type: options.requestType, content});
-    promises.push(options.method.call(_client, options.requestContent[index]));
-  });
-
-  // fake out of order responses to ensure requests are routed correctly
-  requestIds.sort(() => Math.random() - 0.5);
-  // in case you want to see the order...
-  // console.log(`${options.responseType} random response order: ${requestIds.join(",")}`);
-  requestIds.forEach(requestId => {
-    const content = { requestId, ...options.responseContent[requestId - 1] };
-    mockedPhone().fakeServerMessage({type: options.responseType, content});
-  });
-
-  promises.forEach((promise, index) => {
-    expect(promise).resolves.toEqual(options.resolvesTo[index]);
-  });
-
-  // it removes the listener
-  expect(mockedPhone().numListeners).toEqual(startListeners);
-};

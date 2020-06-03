@@ -26,7 +26,7 @@
 
 **● email**: *`undefined` \| `string`*
 
-*Defined in [types.ts:326](../../../lara-typescript/src/interactive-api-client/types.ts#L326)*
+*Defined in [types.ts:331](../../../lara-typescript/src/interactive-api-client/types.ts#L331)*
 
 ___
 <a id="loggedin"></a>
@@ -35,7 +35,7 @@ ___
 
 **● loggedIn**: *`boolean`*
 
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+*Defined in [types.ts:330](../../../lara-typescript/src/interactive-api-client/types.ts#L330)*
 
 ___
 <a id="provider"></a>
@@ -44,7 +44,7 @@ ___
 
 **● provider**: *`string`*
 
-*Defined in [types.ts:324](../../../lara-typescript/src/interactive-api-client/types.ts#L324)*
+*Defined in [types.ts:329](../../../lara-typescript/src/interactive-api-client/types.ts#L329)*
 
 ___
 

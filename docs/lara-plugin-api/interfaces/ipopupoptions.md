@@ -119,8 +119,6 @@ ___
 
 *Defined in [popup.ts:25](../../../lara-typescript/src/plugin-api/popup.ts#L25)*
 
-Number in px or "auto"
-
 ___
 <a id="modal"></a>
 
@@ -138,8 +136,6 @@ ___
 **● onBeforeClose**: *`undefined` \| `function`*
 
 *Defined in [popup.ts:32](../../../lara-typescript/src/plugin-api/popup.ts#L32)*
-
-Triggered when a dialog is about to close. If canceled (by returning false), the dialog will not close.
 
 ___
 <a id="onclose"></a>
@@ -213,8 +209,6 @@ ___
 
 *Defined in [popup.ts:22](../../../lara-typescript/src/plugin-api/popup.ts#L22)*
 
-Please see: [https://api.jqueryui.com/dialog/#option-position](https://api.jqueryui.com/dialog/#option-position)
-
 ___
 <a id="removeonclose"></a>
 
@@ -223,8 +217,6 @@ ___
 **● removeOnClose**: *`undefined` \| `false` \| `true`*
 
 *Defined in [popup.ts:13](../../../lara-typescript/src/plugin-api/popup.ts#L13)*
-
-Removes popup HTMLElement when it is closed by the user. Otherwise, it will stay hidden and might be reopened programmatically.
 
 ___
 <a id="resizable"></a>

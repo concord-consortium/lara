@@ -23,7 +23,7 @@
 
 **● columnHeading**: *`string`*
 
-*Defined in [types.ts:260](../../../lara-typescript/src/interactive-api-client/types.ts#L260)*
+*Defined in [types.ts:265](../../../lara-typescript/src/interactive-api-client/types.ts#L265)*
 
 ___
 <a id="id"></a>
@@ -32,7 +32,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [types.ts:259](../../../lara-typescript/src/interactive-api-client/types.ts#L259)*
+*Defined in [types.ts:264](../../../lara-typescript/src/interactive-api-client/types.ts#L264)*
 
 ___
 

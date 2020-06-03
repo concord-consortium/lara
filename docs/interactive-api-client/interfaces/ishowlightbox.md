@@ -26,7 +26,7 @@
 
 **● type**: *"lightbox"*
 
-*Defined in [types.ts:286](../../../lara-typescript/src/interactive-api-client/types.ts#L286)*
+*Defined in [types.ts:291](../../../lara-typescript/src/interactive-api-client/types.ts#L291)*
 
 ___
 <a id="url"></a>
@@ -35,7 +35,7 @@ ___
 
 **● url**: *`string`*
 
-*Defined in [types.ts:287](../../../lara-typescript/src/interactive-api-client/types.ts#L287)*
+*Defined in [types.ts:292](../../../lara-typescript/src/interactive-api-client/types.ts#L292)*
 
 ___
 <a id="uuid"></a>
@@ -46,7 +46,7 @@ ___
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
-*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*
+*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
 
 ___
 

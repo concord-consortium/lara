@@ -29,7 +29,7 @@
 
 *Inherited from [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md).[interactiveRuntimeId](igetinteractivesnapshotoptions.md#interactiveruntimeid)*
 
-*Defined in [types.ts:386](../../../lara-typescript/src/interactive-api-client/types.ts#L386)*
+*Defined in [types.ts:391](../../../lara-typescript/src/interactive-api-client/types.ts#L391)*
 
 ___
 <a id="requestid"></a>
@@ -40,7 +40,7 @@ ___
 
 *Inherited from IBaseRequestResponse.requestId*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
 

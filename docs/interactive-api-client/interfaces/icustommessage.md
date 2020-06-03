@@ -23,7 +23,7 @@
 
 **● content**: *`object`*
 
-*Defined in [types.ts:308](../../../lara-typescript/src/interactive-api-client/types.ts#L308)*
+*Defined in [types.ts:313](../../../lara-typescript/src/interactive-api-client/types.ts#L313)*
 
 ___
 <a id="type"></a>
@@ -32,7 +32,7 @@ ___
 
 **● type**: *`string`*
 
-*Defined in [types.ts:307](../../../lara-typescript/src/interactive-api-client/types.ts#L307)*
+*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*
 
 ___
 

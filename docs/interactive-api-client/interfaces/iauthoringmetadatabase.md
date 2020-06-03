@@ -30,7 +30,7 @@
 
 **● isRequired**: *`boolean`*
 
-*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
+*Defined in [types.ts:227](../../../lara-typescript/src/interactive-api-client/types.ts#L227)*
 
 ___
 <a id="prompt"></a>
@@ -39,7 +39,7 @@ ___
 
 **● prompt**: *`undefined` \| `string`*
 
-*Defined in [types.ts:223](../../../lara-typescript/src/interactive-api-client/types.ts#L223)*
+*Defined in [types.ts:228](../../../lara-typescript/src/interactive-api-client/types.ts#L228)*
 
 ___
 <a id="secondarytypefornow"></a>
@@ -48,7 +48,7 @@ ___
 
 **● secondaryTypeForNow**: *`any`*
 
-*Defined in [types.ts:220](../../../lara-typescript/src/interactive-api-client/types.ts#L220)*
+*Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
 
 ___
 

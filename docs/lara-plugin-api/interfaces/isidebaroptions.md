@@ -42,8 +42,6 @@ ___
 
 *Defined in [sidebar.ts:14](../../../lara-typescript/src/plugin-api/sidebar.ts#L14)*
 
-Text displayed on the sidebar handle.
-
 ___
 <a id="handlecolor"></a>
 
@@ -61,8 +59,6 @@ ___
 **● icon**: *`string` \| `HTMLElement`*
 
 *Defined in [sidebar.ts:12](../../../lara-typescript/src/plugin-api/sidebar.ts#L12)*
-
-Icon can be 'default' (arrow) or an HTML element.
 
 ___
 <a id="onclose"></a>
@@ -99,8 +95,6 @@ ___
 **● titleBar**: *`undefined` \| `string`*
 
 *Defined in [sidebar.ts:17](../../../lara-typescript/src/plugin-api/sidebar.ts#L17)*
-
-Title visible after sidebar is opened by user. If it's not provided, it won't be displayed at all.
 
 ___
 <a id="titlebarcolor"></a>

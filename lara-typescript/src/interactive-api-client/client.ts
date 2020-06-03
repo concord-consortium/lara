@@ -1,18 +1,11 @@
-import * as iframePhone from "iframe-phone";
-
-import { IClientOptions, IInitInteractive, ISupportedFeaturesRequest, INavigationOptions,
-         IAuthInfo, IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, ClientMessage, ServerMessage,
-         ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest, IAuthoringMetadata,
-         IRuntimeMetadata, IAuthoringCustomReportFields, IRuntimeCustomReportValues, IShowModal,
-         ICloseModal, ISetLinkedInteractives, IGetInteractiveListRequest, IGetLibraryInteractiveListRequest,
-         IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, IGetLibraryInteractiveListResponse,
-         IGetInteractiveListResponse
-        } from "./types";
-import { inIframe } from "./in-frame";
-
 // iframe phone uses 1 listener per message type so we multipex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given
+import * as iframePhone from "iframe-phone";
+import { ClientMessage, IInitInteractive, ServerMessage } from "./types";
+import { inIframe } from "./in-frame";
+import { ManagedState } from "./managed-state";
+
 interface IRequestCallback {
   requestId?: number;
   callback: iframePhone.ListenerCallback;
@@ -21,273 +14,44 @@ interface IListenerMap {
   [key: string]: IRequestCallback[];
 }
 
-export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}> {
+const phoneInitialized = () => iframePhone.getIFrameEndpoint().getListenerNames().length > 0;
 
-  private phone: iframePhone.IFrameEndpoint | undefined;
-  private options: IClientOptions<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>;
-  private requestId: number = 1;
-  private listeners: IListenerMap = {};
+let clientInstance: Client;
+export const getClient = () => {
+  // !phoneInitialized() part isn't really necessary. But it's fine in web browser and it helps in testing environment.
+  // Tests can reset mock iframe phone and get new Client instance.
+  if (!clientInstance || !phoneInitialized()) {
+    clientInstance = new Client();
+  }
+  return clientInstance;
+};
 
-  constructor(options: IClientOptions<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) {
-    this.options = options;
+export class Client {
+  public phone: iframePhone.IFrameEndpoint = iframePhone.getIFrameEndpoint();
+  public managedState = new ManagedState();
 
-    if (this.InIFrame) {
-      if (!options.startDisconnected) {
-        this.connect();
-      }
+  private  listeners: IListenerMap = {};
+  private requestId = 1;
+
+  constructor() {
+    if (!inIframe()) {
+      throw new Error("Interactive API is meant to be used in iframe");
     }
-  }
-
-  // this should only be used by the spec tests - all phone messages should go through the helpers
-  public get iframePhone() {
-    return this.phone;
-  }
-
-  public connect() {
-    if (this.InIFrame) {
-      if (!this.phone) {
-        this.phone = iframePhone.getIFrameEndpoint();
-
-        this.addListener("hello", () => {
-          if (this.options.onHello) {
-            this.options.onHello();
-          }
-          if (this.options.supportedFeatures) {
-            this.setSupportedFeatures(this.options.supportedFeatures);
-          }
-        });
-
-        this.addListener("getInteractiveState", () => {
-          if (this.options.onGetInteractiveState) {
-            const interactiveState = this.options.onGetInteractiveState();
-            this.setInteractiveState(interactiveState);
-          }
-        });
-
-        this.addListener("initInteractive",
-          // tslint:disable-next-line:max-line-length
-          (initMessage: IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) => {
-            if (this.options.onInitInteractive) {
-              this.options.onInitInteractive(initMessage);
-            }
-        });
-
-        this.addListener("loadInteractiveGlobal", (globalState: GlobalInteractiveState) => {
-          if (this.options.onGlobalInteractiveStateUpdated) {
-            this.options.onGlobalInteractiveStateUpdated(globalState);
-          }
-        });
-
-        this.addListener("closedModal", (/* todo maybe need typed response? */) => {
-          this.THROW_NOT_IMPLEMENTED_YET("closedModal listener");
-        });
-
-        this.addListener("customMessage", (/* todo maybe need typed response? */) => {
-          this.THROW_NOT_IMPLEMENTED_YET("customMessage listener");
-        });
-
-        this.addListener("interactiveList", (response: IGetInteractiveListResponse) => {
-          this.THROW_NOT_IMPLEMENTED_YET("interactiveList listener");
-        });
-
-        this.addListener("libraryInteractiveList", (response: IGetLibraryInteractiveListResponse) => {
-          this.THROW_NOT_IMPLEMENTED_YET("libraryInteractiveList listener");
-        });
-
-        this.addListener("interactiveSnapshot", (response: IGetInteractiveSnapshotResponse) => {
-          this.THROW_NOT_IMPLEMENTED_YET("interactiveSnapshot listener");
-        });
-
-        this.addListener("contextMembership", (/* todo maybe need typed response? */) => {
-          this.THROW_NOT_IMPLEMENTED_YET("contextMembership listener");
-        });
-
-        this.phone.initialize();
-      }
-
-      return true;
+    if (phoneInitialized()) {
+      throw new Error("IframePhone has been initialized previously. Only once Client instance is allowed.");
     }
-
-    return false;
+    this.connect();
   }
 
-  // TODO: add listener and sender for global state changes
-
-  public disconnect() {
-    if (this.InIFrame) {
-      const phone = this.phone;
-      if (phone) {
-        Object.keys(this.listeners).forEach(message => phone.removeListener(message));
-        this.listeners = {};
-        phone.disconnect();
-        this.phone = undefined;
-      }
-
-      return true;
-    }
-
-    return false;
+  public getNextRequestId() {
+    return this.requestId++;
   }
 
-  public get InIFrame() {
-    return inIframe();
+  public post(message: ClientMessage, content?: any) {
+    this.phone.post(message, content);
   }
 
-  public setInteractiveState(interactiveState: InteractiveState | string | null) {
-    return this.post("interactiveState", interactiveState);
-  }
-
-  public setHeight(height: number | string) {
-    return this.post("height", height);
-  }
-
-  public setHint(hint: string) {
-    return this.post("hint", hint);
-  }
-
-  public setSupportedFeatures(features: ISupportedFeatures) {
-    const request: ISupportedFeaturesRequest = {
-      apiVersion: 1,
-      features
-    };
-    return this.post("supportedFeatures", request);
-  }
-
-  public setNavigation(options: INavigationOptions) {
-    return this.post("navigation", options);
-  }
-
-  public setAuthoredState(authoredState: AuthoredState) {
-    return this.post("authoredState", authoredState);
-  }
-
-  public setGlobalInteractiveState(globalState: GlobalInteractiveState) {
-    return this.post("interactiveStateGlobal", globalState);
-  }
-
-  public getAuthInfo(): Promise<IAuthInfo> {
-    return new Promise<IAuthInfo>((resolve, reject) => {
-      if (!this.phone) {
-        return reject("Not in iframe");
-      }
-      const listener = (authInfo: IAuthInfo) => {
-        resolve(authInfo);
-      };
-      const requestId = this.getNextRequestId();
-      const request: IGetAuthInfoRequest = {
-        requestId
-      };
-      this.addListener("authInfo", listener, requestId);
-      this.post("getAuthInfo", request);
-    });
-  }
-
-  public getFirebaseJWT(options: IGetFirebaseJwtOptions): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      if (!this.phone) {
-        return reject("Not in iframe");
-      }
-      const listener = (response: IGetFirebaseJwtResponse) => {
-        if (response.response_type === "ERROR") {
-          reject(response.message || "Error getting Firebase JWT");
-        } else {
-          resolve(response.token);
-        }
-      };
-      const requestId = this.getNextRequestId();
-      const request: IGetFirebaseJwtRequest = {
-        requestId,
-        ...options
-      };
-      this.addListener("firebaseJWT", listener, requestId);
-      this.post("getFirebaseJWT", request);
-    });
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public setAuthoringMetadata(metadata: IAuthoringMetadata) {
-    this.THROW_NOT_IMPLEMENTED_YET("setAuthoringMetadata");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public setRuntimeMetadata(metadata: IRuntimeMetadata) {
-    this.THROW_NOT_IMPLEMENTED_YET("setRuntimeMetadata");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public setAuthoringCustomReportFields(fields: IAuthoringCustomReportFields) {
-    this.THROW_NOT_IMPLEMENTED_YET("setAuthoringCustomReportFields");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public setRuntimeCustomReportValues(values: IRuntimeCustomReportValues) {
-    this.THROW_NOT_IMPLEMENTED_YET("setRuntimeCustomReportValues");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public showModal(options: IShowModal) {
-    this.THROW_NOT_IMPLEMENTED_YET("showModal");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public closeModal(options: ICloseModal) {
-    this.THROW_NOT_IMPLEMENTED_YET("closeModal");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public getInteractiveList(options: IGetInteractiveListRequest) {
-    this.THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public setLinkedInteractives(options: ISetLinkedInteractives) {
-    this.THROW_NOT_IMPLEMENTED_YET("setLinkedInteractives");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public getLibraryInteractiveList(options: IGetLibraryInteractiveListRequest) {
-    this.THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
-  }
-
-  /**
-   * @todo Implement this function.
-   */
-  public getInteractiveSnapshot(options: IGetInteractiveSnapshotRequest) {
-    this.THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
-  }
-
-  private THROW_NOT_IMPLEMENTED_YET(method: string) {
-    throw new Error(`${method} is not yet implemented in the client!`);
-  }
-
-  // tslint:disable-next-line:max-line-length
-  private post(message: ClientMessage, content?: InteractiveState | AuthoredState | GlobalInteractiveState | object | string | number | null) {
-    if (this.phone) {
-      this.phone.post(message, content as any);
-      return true;
-    }
-    return false;
-  }
-
-  private addListener(message: ServerMessage, callback: iframePhone.ListenerCallback, requestId?: number) {
+  public addListener(message: ServerMessage, callback: iframePhone.ListenerCallback, requestId?: number) {
     if (this.phone) {
       // add either a generic message listener (no requestId) or an auto-removing request listener
       // note: we may have multiple listeners on the same generic message
@@ -321,12 +85,11 @@ export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {},
       }
       return true;
     }
-
     return false;
   }
 
-  private removeListener(message: ServerMessage, requestId?: number) {
-    if (this.phone && this.listeners[message]) {
+  public removeListener(message: ServerMessage, requestId?: number) {
+    if (this.listeners[message]) {
       // note: requestId can be undefined when using it as a generic listener
       const newListeners = this.listeners[message].filter(l => l.requestId !== requestId);
       this.listeners[message] = newListeners;
@@ -341,7 +104,29 @@ export class Client<InteractiveState = {}, AuthoredState = {}, DialogState = {},
     return false;
   }
 
-  private getNextRequestId() {
-    return this.requestId++;
+  private connect() {
+    this.phone = iframePhone.getIFrameEndpoint();
+
+    this.addListener("initInteractive", (newInitMessage: IInitInteractive<any, any, any, any>) => {
+      this.managedState.initMessage = newInitMessage;
+
+      this.managedState.authoredState = newInitMessage.authoredState;
+      if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
+        this.managedState.interactiveState = newInitMessage.interactiveState;
+      }
+      if (newInitMessage.mode === "runtime") {
+        this.managedState.globalInteractiveState = newInitMessage.globalInteractiveState;
+      }
+    });
+
+    this.addListener("getInteractiveState", () => {
+      this.post("interactiveState", this.managedState.interactiveState);
+    });
+
+    this.addListener("loadInteractiveGlobal", (globalState: any) => {
+      this.managedState.globalInteractiveState = globalState;
+    });
+
+    this.phone.initialize();
   }
 }
