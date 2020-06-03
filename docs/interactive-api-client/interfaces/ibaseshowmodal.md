@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IBaseShowModal](ibaseshowmodal.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IBaseShowModal](ibaseshowmodal.md)
 
 # Interface: IBaseShowModal
 
@@ -24,4 +24,4 @@
 
 • **uuid**: *string*
 
-*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
+*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*

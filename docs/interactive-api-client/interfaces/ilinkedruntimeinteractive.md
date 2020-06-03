@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)
 
 # Interface: ILinkedRuntimeInteractive
 

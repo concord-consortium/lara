@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceChoiceMetadata
 
@@ -20,7 +20,7 @@
 
 • **content**: *string*
 
-*Defined in [types.ts:238](../../../lara-typescript/src/interactive-api-client/types.ts#L238)*
+*Defined in [types.ts:233](../../../lara-typescript/src/interactive-api-client/types.ts#L233)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **id**: *[ChoiceId](../globals.md#choiceid)*
 
-*Defined in [types.ts:237](../../../lara-typescript/src/interactive-api-client/types.ts#L237)*
+*Defined in [types.ts:232](../../../lara-typescript/src/interactive-api-client/types.ts#L232)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **isCorrect**: *boolean*
 
-*Defined in [types.ts:239](../../../lara-typescript/src/interactive-api-client/types.ts#L239)*
+*Defined in [types.ts:234](../../../lara-typescript/src/interactive-api-client/types.ts#L234)*

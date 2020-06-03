@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IContextMember](icontextmember.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IContextMember](icontextmember.md)
 
 # Interface: IContextMember
 
@@ -20,7 +20,7 @@
 
 • **firstName**: *string*
 
-*Defined in [types.ts:190](../../../lara-typescript/src/interactive-api-client/types.ts#L190)*
+*Defined in [types.ts:185](../../../lara-typescript/src/interactive-api-client/types.ts#L185)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **lastName**: *string*
 
-*Defined in [types.ts:191](../../../lara-typescript/src/interactive-api-client/types.ts#L191)*
+*Defined in [types.ts:186](../../../lara-typescript/src/interactive-api-client/types.ts#L186)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **userId**: *string*
 
-*Defined in [types.ts:189](../../../lara-typescript/src/interactive-api-client/types.ts#L189)*
+*Defined in [types.ts:184](../../../lara-typescript/src/interactive-api-client/types.ts#L184)*

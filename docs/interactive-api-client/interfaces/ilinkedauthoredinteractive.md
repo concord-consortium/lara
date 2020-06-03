@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)
 
 # Interface: ILinkedAuthoredInteractive
 

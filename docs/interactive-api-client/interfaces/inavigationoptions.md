@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [INavigationOptions](inavigationoptions.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [INavigationOptions](inavigationoptions.md)
 
 # Interface: INavigationOptions
 
@@ -19,7 +19,7 @@
 
 • **enableForwardNav**? : *undefined | false | true*
 
-*Defined in [types.ts:217](../../../lara-typescript/src/interactive-api-client/types.ts#L217)*
+*Defined in [types.ts:212](../../../lara-typescript/src/interactive-api-client/types.ts#L212)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **message**? : *undefined | string*
 
-*Defined in [types.ts:218](../../../lara-typescript/src/interactive-api-client/types.ts#L218)*
+*Defined in [types.ts:213](../../../lara-typescript/src/interactive-api-client/types.ts#L213)*

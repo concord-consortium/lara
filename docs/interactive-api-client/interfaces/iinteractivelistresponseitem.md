@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
 
 # Interface: IInteractiveListResponseItem
 
@@ -22,7 +22,7 @@
 
 • **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
 
-*Defined in [types.ts:363](../../../lara-typescript/src/interactive-api-client/types.ts#L363)*
+*Defined in [types.ts:358](../../../lara-typescript/src/interactive-api-client/types.ts#L358)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **name**: *string*
 
-*Defined in [types.ts:364](../../../lara-typescript/src/interactive-api-client/types.ts#L364)*
+*Defined in [types.ts:359](../../../lara-typescript/src/interactive-api-client/types.ts#L359)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **pageLocation**: *"assessment list" | "interactive box" | "introduction"*
 
-*Defined in [types.ts:365](../../../lara-typescript/src/interactive-api-client/types.ts#L365)*
+*Defined in [types.ts:360](../../../lara-typescript/src/interactive-api-client/types.ts#L360)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **thumbnailUrl**? : *undefined | string*
 
-*Defined in [types.ts:367](../../../lara-typescript/src/interactive-api-client/types.ts#L367)*
+*Defined in [types.ts:362](../../../lara-typescript/src/interactive-api-client/types.ts#L362)*
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 • **url**: *string*
 
-*Defined in [types.ts:366](../../../lara-typescript/src/interactive-api-client/types.ts#L366)*
+*Defined in [types.ts:361](../../../lara-typescript/src/interactive-api-client/types.ts#L361)*

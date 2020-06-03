@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetInteractiveListOptions](igetinteractivelistoptions.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IGetInteractiveListOptions](igetinteractivelistoptions.md)
 
 # Interface: IGetInteractiveListOptions
 
@@ -20,4 +20,4 @@
 
 • **supportsSnapshots**? : *undefined | false | true*
 
-*Defined in [types.ts:356](../../../lara-typescript/src/interactive-api-client/types.ts#L356)*
+*Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*

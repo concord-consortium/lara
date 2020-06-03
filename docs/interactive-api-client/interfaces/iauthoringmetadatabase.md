@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
 # Interface: IAuthoringMetadataBase
 
@@ -26,7 +26,7 @@
 
 • **isRequired**: *boolean*
 
-*Defined in [types.ts:227](../../../lara-typescript/src/interactive-api-client/types.ts#L227)*
+*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **prompt**? : *undefined | string*
 
-*Defined in [types.ts:228](../../../lara-typescript/src/interactive-api-client/types.ts#L228)*
+*Defined in [types.ts:223](../../../lara-typescript/src/interactive-api-client/types.ts#L223)*
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 • **secondaryTypeForNow**: *any*
 
-*Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
+*Defined in [types.ts:220](../../../lara-typescript/src/interactive-api-client/types.ts#L220)*

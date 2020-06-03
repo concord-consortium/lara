@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IContextMembership](icontextmembership.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IContextMembership](icontextmembership.md)
 
 # Interface: IContextMembership
 
@@ -18,4 +18,4 @@
 
 • **members**: *[IContextMember](icontextmember.md)[]*
 
-*Defined in [types.ts:194](../../../lara-typescript/src/interactive-api-client/types.ts#L194)*
+*Defined in [types.ts:189](../../../lara-typescript/src/interactive-api-client/types.ts#L189)*

@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
 # Interface: IAuthoringOpenResponseMetadata
 
@@ -25,7 +25,7 @@
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
-*Defined in [types.ts:227](../../../lara-typescript/src/interactive-api-client/types.ts#L227)*
+*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[prompt](iauthoringmetadatabase.md#optional-prompt)*
 
-*Defined in [types.ts:228](../../../lara-typescript/src/interactive-api-client/types.ts#L228)*
+*Defined in [types.ts:223](../../../lara-typescript/src/interactive-api-client/types.ts#L223)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
 
-*Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
+*Defined in [types.ts:220](../../../lara-typescript/src/interactive-api-client/types.ts#L220)*
 
 ___
 
@@ -53,4 +53,4 @@ ___
 
 • **type**: *"open response"*
 
-*Defined in [types.ts:231](../../../lara-typescript/src/interactive-api-client/types.ts#L231)*
+*Defined in [types.ts:226](../../../lara-typescript/src/interactive-api-client/types.ts#L226)*

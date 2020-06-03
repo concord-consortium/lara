@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IRuntimeCustomReportValues](iruntimecustomreportvalues.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IRuntimeCustomReportValues](iruntimecustomreportvalues.md)
 
 # Interface: IRuntimeCustomReportValues
 
@@ -18,7 +18,7 @@
 
 • **values**: *object*
 
-*Defined in [types.ts:272](../../../lara-typescript/src/interactive-api-client/types.ts#L272)*
+*Defined in [types.ts:267](../../../lara-typescript/src/interactive-api-client/types.ts#L267)*
 
 #### Type declaration:
 

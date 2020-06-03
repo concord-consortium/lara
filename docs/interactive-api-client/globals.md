@@ -1,13 +1,8 @@
-[LARA Interactive API Client](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](README.md) › [Globals](globals.md)
 
-# LARA Interactive API Client
+# @concord-consortium/lara-interactive-api - v0.4.0-pre.3
 
 ## Index
-
-### Classes
-
-* [Client](classes/client.md)
-* [ManagedState](classes/managedstate.md)
 
 ### Interfaces
 
@@ -21,7 +16,6 @@
 * [IAuthoringMultipleChoiceChoiceMetadata](interfaces/iauthoringmultiplechoicechoicemetadata.md)
 * [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
-* [IBaseRequestResponse](interfaces/ibaserequestresponse.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
 * [IClientOptions](interfaces/iclientoptions.md)
 * [ICloseModal](interfaces/iclosemodal.md)
@@ -50,11 +44,8 @@
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedAuthoredInteractive](interfaces/ilinkedauthoredinteractive.md)
 * [ILinkedRuntimeInteractive](interfaces/ilinkedruntimeinteractive.md)
-* [IListenerMap](interfaces/ilistenermap.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
-* [IRequestCallback](interfaces/irequestcallback.md)
-* [IRequestResponseOptions](interfaces/irequestresponseoptions.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md)
@@ -71,7 +62,6 @@
 ### Type aliases
 
 * [ChoiceId](globals.md#choiceid)
-* [ClientEvent](globals.md#clientevent)
 * [ClientMessage](globals.md#clientmessage)
 * [DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage)
 * [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage)
@@ -88,24 +78,15 @@
 * [InteractiveAuthoredId](globals.md#interactiveauthoredid)
 * [InteractiveRuntimeId](globals.md#interactiveruntimeid)
 * [ServerMessage](globals.md#servermessage)
-* [UpdateFunc](globals.md#updatefunc)
-
-### Variables
-
-* [_inIframe](globals.md#const-_iniframe)
-* [clientInstance](globals.md#let-clientinstance)
-* [mockedPhone](globals.md#const-mockedphone)
 
 ### Functions
 
-* [THROW_NOT_IMPLEMENTED_YET](globals.md#const-throw_not_implemented_yet)
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
-* [getClient](globals.md#const-getclient)
 * [getFirebaseJWT](globals.md#const-getfirebasejwt)
 * [getGlobalInteractiveState](globals.md#const-getglobalinteractivestate)
 * [getInitInteractiveMessage](globals.md#const-getinitinteractivemessage)
@@ -113,9 +94,7 @@
 * [getInteractiveSnapshot](globals.md#const-getinteractivesnapshot)
 * [getInteractiveState](globals.md#const-getinteractivestate)
 * [getLibraryInteractiveList](globals.md#const-getlibraryinteractivelist)
-* [handleUpdate](globals.md#const-handleupdate)
-* [inIframe](globals.md#let-iniframe)
-* [phoneInitialized](globals.md#const-phoneinitialized)
+* [inIframe](globals.md#const-iniframe)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
@@ -132,7 +111,6 @@
 * [setRuntimeMetadata](globals.md#const-setruntimemetadata)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
-* [testRequestResponse](globals.md#const-testrequestresponse)
 * [useAuthoredState](globals.md#const-useauthoredstate)
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
@@ -144,15 +122,7 @@
 
 Ƭ **ChoiceId**: *string | number*
 
-*Defined in [types.ts:221](../../lara-typescript/src/interactive-api-client/types.ts#L221)*
-
-___
-
-###  ClientEvent
-
-Ƭ **ClientEvent**: *"interactiveStateUpdated" | "globalInteractiveStateUpdated" | "authoredStateUpdated" | "initInteractive"*
-
-*Defined in [types.ts:176](../../lara-typescript/src/interactive-api-client/types.ts#L176)*
+*Defined in [types.ts:216](../../lara-typescript/src/interactive-api-client/types.ts#L216)*
 
 ___
 
@@ -200,7 +170,7 @@ ___
 
 Ƭ **IAuthoringMetadata**: *[IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
 
-*Defined in [types.ts:245](../../lara-typescript/src/interactive-api-client/types.ts#L245)*
+*Defined in [types.ts:240](../../lara-typescript/src/interactive-api-client/types.ts#L240)*
 
 ___
 
@@ -224,7 +194,7 @@ ___
 
 Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
 
-*Defined in [types.ts:260](../../lara-typescript/src/interactive-api-client/types.ts#L260)*
+*Defined in [types.ts:255](../../lara-typescript/src/interactive-api-client/types.ts#L255)*
 
 ___
 
@@ -232,7 +202,7 @@ ___
 
 Ƭ **IShowModal**: *[IShowAlert](interfaces/ishowalert.md) | [IShowLightbox](interfaces/ishowlightbox.md) | [IShowDialog](interfaces/ishowdialog.md)*
 
-*Defined in [types.ts:301](../../lara-typescript/src/interactive-api-client/types.ts#L301)*
+*Defined in [types.ts:296](../../lara-typescript/src/interactive-api-client/types.ts#L296)*
 
 ___
 
@@ -280,78 +250,9 @@ ___
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage) | [IframeSaverServerMessage](globals.md#iframesaverservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
 
-*Defined in [types.ts:181](../../lara-typescript/src/interactive-api-client/types.ts#L181)*
-
-___
-
-###  UpdateFunc
-
-Ƭ **UpdateFunc**: *function*
-
-*Defined in [hooks.ts:5](../../lara-typescript/src/interactive-api-client/hooks.ts#L5)*
-
-#### Type declaration:
-
-▸ (`prevState`: S | null): *S*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`prevState` | S &#124; null |
-
-## Variables
-
-### `Const` _inIframe
-
-• **_inIframe**: *boolean* = (() => {
-  try {
-    return window.self !== window.top;
-  }
-  catch (e) {
-    return true;
-  }
-})()
-
-*Defined in [in-frame.ts:1](../../lara-typescript/src/interactive-api-client/in-frame.ts#L1)*
-
-___
-
-### `Let` clientInstance
-
-• **clientInstance**: *[Client](classes/client.md)*
-
-*Defined in [client.ts:19](../../lara-typescript/src/interactive-api-client/client.ts#L19)*
-
-___
-
-### `Const` mockedPhone
-
-• **mockedPhone**: *MockPhone‹›* = iframePhone.getIFrameEndpoint() as unknown as MockPhone
-
-*Defined in [api.spec.ts:15](../../lara-typescript/src/interactive-api-client/api.spec.ts#L15)*
-
-*Defined in [client.spec.ts:14](../../lara-typescript/src/interactive-api-client/client.spec.ts#L14)*
-
-*Defined in [hooks.spec.ts:16](../../lara-typescript/src/interactive-api-client/hooks.spec.ts#L16)*
+*Defined in [types.ts:176](../../lara-typescript/src/interactive-api-client/types.ts#L176)*
 
 ## Functions
-
-### `Const` THROW_NOT_IMPLEMENTED_YET
-
-▸ **THROW_NOT_IMPLEMENTED_YET**(`method`: string): *never*
-
-*Defined in [api.ts:9](../../lara-typescript/src/interactive-api-client/api.ts#L9)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`method` | string |
-
-**Returns:** *never*
-
-___
 
 ### `Const` addAuthoredStateListener
 
@@ -437,8 +338,6 @@ ___
 
 *Defined in [api.ts:229](../../lara-typescript/src/interactive-api-client/api.ts#L229)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -470,16 +369,6 @@ ___
 ▪ **AuthoredState**
 
 **Returns:** *AuthoredState | null*
-
-___
-
-### `Const` getClient
-
-▸ **getClient**(): *[Client](classes/client.md)‹›*
-
-*Defined in [client.ts:20](../../lara-typescript/src/interactive-api-client/client.ts#L20)*
-
-**Returns:** *[Client](classes/client.md)‹›*
 
 ___
 
@@ -539,8 +428,6 @@ ___
 
 *Defined in [api.ts:236](../../lara-typescript/src/interactive-api-client/api.ts#L236)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -556,8 +443,6 @@ ___
 ▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)): *void*
 
 *Defined in [api.ts:257](../../lara-typescript/src/interactive-api-client/api.ts#L257)*
-
-**`todo`** Implement this function.
 
 **Parameters:**
 
@@ -589,8 +474,6 @@ ___
 
 *Defined in [api.ts:250](../../lara-typescript/src/interactive-api-client/api.ts#L250)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -601,42 +484,11 @@ Name | Type |
 
 ___
 
-### `Const` handleUpdate
-
-▸ **handleUpdate**‹**S**›(`newStateOrUpdateFunc`: S | null | [UpdateFunc](globals.md#updatefunc)‹S›, `prevState`: S | null): *null | S*
-
-*Defined in [hooks.ts:6](../../lara-typescript/src/interactive-api-client/hooks.ts#L6)*
-
-**Type parameters:**
-
-▪ **S**
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`newStateOrUpdateFunc` | S &#124; null &#124; [UpdateFunc](globals.md#updatefunc)‹S› |
-`prevState` | S &#124; null |
-
-**Returns:** *null | S*
-
-___
-
-### `Let` inIframe
+### `Const` inIframe
 
 ▸ **inIframe**(): *boolean*
 
 *Defined in [in-frame.ts:10](../../lara-typescript/src/interactive-api-client/in-frame.ts#L10)*
-
-**Returns:** *boolean*
-
-___
-
-### `Const` phoneInitialized
-
-▸ **phoneInitialized**(): *boolean*
-
-*Defined in [client.ts:17](../../lara-typescript/src/interactive-api-client/client.ts#L17)*
 
 **Returns:** *boolean*
 
@@ -762,8 +614,6 @@ ___
 
 *Defined in [api.ts:208](../../lara-typescript/src/interactive-api-client/api.ts#L208)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -779,8 +629,6 @@ ___
 ▸ **setAuthoringMetadata**(`metadata`: [IAuthoringMetadata](globals.md#iauthoringmetadata)): *void*
 
 *Defined in [api.ts:194](../../lara-typescript/src/interactive-api-client/api.ts#L194)*
-
-**`todo`** Implement this function.
 
 **Parameters:**
 
@@ -902,8 +750,6 @@ ___
 
 *Defined in [api.ts:243](../../lara-typescript/src/interactive-api-client/api.ts#L243)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -936,8 +782,6 @@ ___
 
 *Defined in [api.ts:215](../../lara-typescript/src/interactive-api-client/api.ts#L215)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -953,8 +797,6 @@ ___
 ▸ **setRuntimeMetadata**(`metadata`: [IRuntimeMetadata](globals.md#iruntimemetadata)): *void*
 
 *Defined in [api.ts:201](../../lara-typescript/src/interactive-api-client/api.ts#L201)*
-
-**`todo`** Implement this function.
 
 **Parameters:**
 
@@ -988,8 +830,6 @@ ___
 
 *Defined in [api.ts:222](../../lara-typescript/src/interactive-api-client/api.ts#L222)*
 
-**`todo`** Implement this function.
-
 **Parameters:**
 
 Name | Type |
@@ -997,22 +837,6 @@ Name | Type |
 `options` | [IShowModal](globals.md#ishowmodal) |
 
 **Returns:** *void*
-
-___
-
-### `Const` testRequestResponse
-
-▸ **testRequestResponse**(`options`: [IRequestResponseOptions](interfaces/irequestresponseoptions.md)): *Promise‹void›*
-
-*Defined in [api.spec.ts:258](../../lara-typescript/src/interactive-api-client/api.spec.ts#L258)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`options` | [IRequestResponseOptions](interfaces/irequestresponseoptions.md) |
-
-**Returns:** *Promise‹void›*
 
 ___
 

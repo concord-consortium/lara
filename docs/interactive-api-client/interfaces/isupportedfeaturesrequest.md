@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ISupportedFeaturesRequest](isupportedfeaturesrequest.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ISupportedFeaturesRequest](isupportedfeaturesrequest.md)
 
 # Interface: ISupportedFeaturesRequest
 
@@ -19,7 +19,7 @@
 
 • **apiVersion**: *1*
 
-*Defined in [types.ts:212](../../../lara-typescript/src/interactive-api-client/types.ts#L212)*
+*Defined in [types.ts:207](../../../lara-typescript/src/interactive-api-client/types.ts#L207)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **features**: *[ISupportedFeatures](isupportedfeatures.md)*
 
-*Defined in [types.ts:213](../../../lara-typescript/src/interactive-api-client/types.ts#L213)*
+*Defined in [types.ts:208](../../../lara-typescript/src/interactive-api-client/types.ts#L208)*

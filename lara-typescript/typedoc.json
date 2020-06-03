@@ -1,0 +1,10 @@
+{
+  "mode": "library",
+  "theme": "markdown",
+  "ignoreCompilerErrors": true,
+  "excludeExternals": true,
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "includeVersion": true
+}

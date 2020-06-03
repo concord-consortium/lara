@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IShowDialog](ishowdialog.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IShowDialog](ishowdialog.md)
 
 # Interface: IShowDialog ‹**DialogState**›
 
@@ -27,7 +27,7 @@
 
 • **dialogState**: *DialogState*
 
-*Defined in [types.ts:298](../../../lara-typescript/src/interactive-api-client/types.ts#L298)*
+*Defined in [types.ts:293](../../../lara-typescript/src/interactive-api-client/types.ts#L293)*
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 • **type**: *"dialog"*
 
-*Defined in [types.ts:296](../../../lara-typescript/src/interactive-api-client/types.ts#L296)*
+*Defined in [types.ts:291](../../../lara-typescript/src/interactive-api-client/types.ts#L291)*
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 • **url**: *string*
 
-*Defined in [types.ts:297](../../../lara-typescript/src/interactive-api-client/types.ts#L297)*
+*Defined in [types.ts:292](../../../lara-typescript/src/interactive-api-client/types.ts#L292)*
 
 ___
 
@@ -53,4 +53,4 @@ ___
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
-*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
+*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*

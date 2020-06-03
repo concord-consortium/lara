@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
 
 # Interface: IRuntimeInteractiveMetadata
 
@@ -24,7 +24,7 @@
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
 
-*Defined in [types.ts:251](../../../lara-typescript/src/interactive-api-client/types.ts#L251)*
+*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
 
-*Defined in [types.ts:250](../../../lara-typescript/src/interactive-api-client/types.ts#L250)*
+*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 • **type**: *"interactive"*
 
-*Defined in [types.ts:254](../../../lara-typescript/src/interactive-api-client/types.ts#L254)*
+*Defined in [types.ts:249](../../../lara-typescript/src/interactive-api-client/types.ts#L249)*

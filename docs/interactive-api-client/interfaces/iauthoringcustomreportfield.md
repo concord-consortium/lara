@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthoringCustomReportField](iauthoringcustomreportfield.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthoringCustomReportField](iauthoringcustomreportfield.md)
 
 # Interface: IAuthoringCustomReportField
 
@@ -19,7 +19,7 @@
 
 • **columnHeading**: *string*
 
-*Defined in [types.ts:265](../../../lara-typescript/src/interactive-api-client/types.ts#L265)*
+*Defined in [types.ts:260](../../../lara-typescript/src/interactive-api-client/types.ts#L260)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **id**: *string*
 
-*Defined in [types.ts:264](../../../lara-typescript/src/interactive-api-client/types.ts#L264)*
+*Defined in [types.ts:259](../../../lara-typescript/src/interactive-api-client/types.ts#L259)*

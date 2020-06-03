@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ICustomMessage](icustommessage.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ICustomMessage](icustommessage.md)
 
 # Interface: ICustomMessage
 
@@ -19,7 +19,7 @@
 
 • **content**: *object*
 
-*Defined in [types.ts:313](../../../lara-typescript/src/interactive-api-client/types.ts#L313)*
+*Defined in [types.ts:308](../../../lara-typescript/src/interactive-api-client/types.ts#L308)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **type**: *string*
 
-*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*
+*Defined in [types.ts:307](../../../lara-typescript/src/interactive-api-client/types.ts#L307)*

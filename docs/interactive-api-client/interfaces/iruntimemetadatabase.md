@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IRuntimeMetadataBase](iruntimemetadatabase.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
 # Interface: IRuntimeMetadataBase
 
@@ -23,7 +23,7 @@
 
 • **answerText**: *string*
 
-*Defined in [types.ts:251](../../../lara-typescript/src/interactive-api-client/types.ts#L251)*
+*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 • **isSubmitted**: *boolean*
 
-*Defined in [types.ts:250](../../../lara-typescript/src/interactive-api-client/types.ts#L250)*
+*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*

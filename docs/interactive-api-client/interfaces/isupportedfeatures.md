@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ISupportedFeatures](isupportedfeatures.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ISupportedFeatures](isupportedfeatures.md)
 
 # Interface: ISupportedFeatures
 
@@ -21,7 +21,7 @@
 
 • **aspectRatio**? : *undefined | number*
 
-*Defined in [types.ts:202](../../../lara-typescript/src/interactive-api-client/types.ts#L202)*
+*Defined in [types.ts:197](../../../lara-typescript/src/interactive-api-client/types.ts#L197)*
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 • **authoredState**? : *undefined | false | true*
 
-*Defined in [types.ts:203](../../../lara-typescript/src/interactive-api-client/types.ts#L203)*
+*Defined in [types.ts:198](../../../lara-typescript/src/interactive-api-client/types.ts#L198)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **customMessages**? : *undefined | object*
 
-*Defined in [types.ts:205](../../../lara-typescript/src/interactive-api-client/types.ts#L205)*
+*Defined in [types.ts:200](../../../lara-typescript/src/interactive-api-client/types.ts#L200)*
 
 ___
 
@@ -45,4 +45,4 @@ ___
 
 • **interactiveState**? : *undefined | false | true*
 
-*Defined in [types.ts:204](../../../lara-typescript/src/interactive-api-client/types.ts#L204)*
+*Defined in [types.ts:199](../../../lara-typescript/src/interactive-api-client/types.ts#L199)*

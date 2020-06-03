@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotResponse](igetinteractivesnapshotresponse.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotResponse](igetinteractivesnapshotresponse.md)
 
 # Interface: IGetInteractiveSnapshotResponse
 
 ## Hierarchy
 
-* [IBaseRequestResponse](ibaserequestresponse.md)
+* IBaseRequestResponse
 
   ↳ **IGetInteractiveSnapshotResponse**
 
@@ -21,9 +21,9 @@
 
 • **requestId**: *number*
 
-*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
+*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
 
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 • **snapshotUrl**: *string*
 
-*Defined in [types.ts:398](../../../lara-typescript/src/interactive-api-client/types.ts#L398)*
+*Defined in [types.ts:393](../../../lara-typescript/src/interactive-api-client/types.ts#L393)*

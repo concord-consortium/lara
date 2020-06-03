@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IGetInteractiveListResponse](igetinteractivelistresponse.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IGetInteractiveListResponse](igetinteractivelistresponse.md)
 
 # Interface: IGetInteractiveListResponse
 
 ## Hierarchy
 
-* [IBaseRequestResponse](ibaserequestresponse.md)
+* IBaseRequestResponse
 
   ↳ **IGetInteractiveListResponse**
 
@@ -21,7 +21,7 @@
 
 • **interactives**: *[IInteractiveListResponseItem](iinteractivelistresponseitem.md)[]*
 
-*Defined in [types.ts:370](../../../lara-typescript/src/interactive-api-client/types.ts#L370)*
+*Defined in [types.ts:365](../../../lara-typescript/src/interactive-api-client/types.ts#L365)*
 
 ___
 
@@ -29,6 +29,6 @@ ___
 
 • **requestId**: *number*
 
-*Inherited from [IBaseRequestResponse](ibaserequestresponse.md).[requestId](ibaserequestresponse.md#requestid)*
+*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
 
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*

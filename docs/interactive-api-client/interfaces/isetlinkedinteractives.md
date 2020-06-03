@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
 
 # Interface: ISetLinkedInteractives
 
@@ -18,4 +18,4 @@
 
 • **linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*
 
-*Defined in [types.ts:317](../../../lara-typescript/src/interactive-api-client/types.ts#L317)*
+*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*

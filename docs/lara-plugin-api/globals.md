@@ -1,6 +1,6 @@
-[LARA Plugin API](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](README.md) › [Globals](globals.md)
 
-# LARA Plugin API
+# @concord-consortium/lara-plugin-api - v3.1.2
 
 ## Index
 
@@ -32,19 +32,11 @@
 * [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)
 * [ILogEventHandler](globals.md#ilogeventhandler)
 
-### Variables
-
-* [BOTTOM_MARGIN](globals.md#const-bottom_margin)
-* [SIDEBAR_SPACER](globals.md#const-sidebar_spacer)
-* [controllers](globals.md#const-controllers)
-
 ### Functions
 
 * [addPopup](globals.md#const-addpopup)
 * [addSidebar](globals.md#const-addsidebar)
-* [closeAllSidebars](globals.md#const-closeallsidebars)
 * [decorateContent](globals.md#const-decoratecontent)
-* [positionMultipleSidebars](globals.md#const-positionmultiplesidebars)
 * [registerPlugin](globals.md#const-registerplugin)
 
 ### Object literals
@@ -103,30 +95,6 @@ Name | Type |
 ------ | ------ |
 `event` | [ILogData](interfaces/ilogdata.md) |
 
-## Variables
-
-### `Const` BOTTOM_MARGIN
-
-• **BOTTOM_MARGIN**: *30* = 30
-
-*Defined in [sidebar.ts:7](../../lara-typescript/src/plugin-api/sidebar.ts#L7)*
-
-___
-
-### `Const` SIDEBAR_SPACER
-
-• **SIDEBAR_SPACER**: *35* = 35
-
-*Defined in [sidebar.ts:5](../../lara-typescript/src/plugin-api/sidebar.ts#L5)*
-
-___
-
-### `Const` controllers
-
-• **controllers**: *[ISidebarController](interfaces/isidebarcontroller.md)[]* = []
-
-*Defined in [sidebar.ts:42](../../lara-typescript/src/plugin-api/sidebar.ts#L42)*
-
 ## Functions
 
 ### `Const` addPopup
@@ -184,16 +152,6 @@ Name | Type |
 
 ___
 
-### `Const` closeAllSidebars
-
-▸ **closeAllSidebars**(): *void*
-
-*Defined in [sidebar.ts:72](../../lara-typescript/src/plugin-api/sidebar.ts#L72)*
-
-**Returns:** *void*
-
-___
-
 ### `Const` decorateContent
 
 ▸ **decorateContent**(`words`: string[], `replace`: string, `wordClass`: string, `listeners`: [IEventListeners](globals.md#ieventlisteners)): *void*
@@ -210,16 +168,6 @@ Name | Type | Description |
 `replace` | string | The replacement string. Can include '$1' representing the matched word. |
 `wordClass` | string | CSS class used in replacement string. Necessary only if `listeners` are provided too. |
 `listeners` | [IEventListeners](globals.md#ieventlisteners) | One or more { type, listener } tuples. Note that events are added to `wordClass` described above. It's client code responsibility to use this class in the `replace` string.  |
-
-**Returns:** *void*
-
-___
-
-### `Const` positionMultipleSidebars
-
-▸ **positionMultipleSidebars**(): *void*
-
-*Defined in [sidebar.ts:45](../../lara-typescript/src/plugin-api/sidebar.ts#L45)*
 
 **Returns:** *void*
 

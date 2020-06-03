@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IAuthInfo](iauthinfo.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthInfo](iauthinfo.md)
 
 # Interface: IAuthInfo
 
@@ -22,7 +22,7 @@
 
 • **email**? : *undefined | string*
 
-*Defined in [types.ts:331](../../../lara-typescript/src/interactive-api-client/types.ts#L331)*
+*Defined in [types.ts:326](../../../lara-typescript/src/interactive-api-client/types.ts#L326)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **loggedIn**: *boolean*
 
-*Defined in [types.ts:330](../../../lara-typescript/src/interactive-api-client/types.ts#L330)*
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 • **provider**: *string*
 
-*Defined in [types.ts:329](../../../lara-typescript/src/interactive-api-client/types.ts#L329)*
+*Defined in [types.ts:324](../../../lara-typescript/src/interactive-api-client/types.ts#L324)*

@@ -1,6 +1,6 @@
-[LARA Interactive API Client](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](README.md) › [Globals](globals.md)
 
-# LARA Interactive API Client
+# @concord-consortium/lara-interactive-api - v0.4.0-pre.3
 
 A TypeScript-based client for the LARA Interactive API.  This also includes all the types for the API which are shared with the server-side Typescript files
 that implement the LARA-side of the API.

@@ -1,6 +1,6 @@
-[LARA Plugin API](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](README.md) › [Globals](globals.md)
 
-# LARA Plugin API
+# @concord-consortium/lara-plugin-api - v3.1.2
 
 ### This documentation is meant to be used by LARA Plugin developers.
 

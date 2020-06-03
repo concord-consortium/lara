@@ -1,4 +1,4 @@
-[LARA Interactive API Client](../README.md) › [Globals](../globals.md) › [IShowAlert](ishowalert.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.3](../README.md) › [Globals](../globals.md) › [IShowAlert](ishowalert.md)
 
 # Interface: IShowAlert
 
@@ -24,7 +24,7 @@
 
 • **headerText**? : *undefined | string*
 
-*Defined in [types.ts:286](../../../lara-typescript/src/interactive-api-client/types.ts#L286)*
+*Defined in [types.ts:281](../../../lara-typescript/src/interactive-api-client/types.ts#L281)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **style**: *"info" | "warning" | "error"*
 
-*Defined in [types.ts:285](../../../lara-typescript/src/interactive-api-client/types.ts#L285)*
+*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **text**: *string*
 
-*Defined in [types.ts:287](../../../lara-typescript/src/interactive-api-client/types.ts#L287)*
+*Defined in [types.ts:282](../../../lara-typescript/src/interactive-api-client/types.ts#L282)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **type**: *"alert"*
 
-*Defined in [types.ts:284](../../../lara-typescript/src/interactive-api-client/types.ts#L284)*
+*Defined in [types.ts:279](../../../lara-typescript/src/interactive-api-client/types.ts#L279)*
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 *Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
 
-*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
+*Defined in [types.ts:275](../../../lara-typescript/src/interactive-api-client/types.ts#L275)*
