@@ -40,8 +40,45 @@
     }
   }
 
+  form[class^="edit_"] {
+    max-height: 500px;
+    overflow: scroll;
+    padding-bottom: 130px;
+    position: relative;
+
+    fieldset {
+      width: calc(100% - 2px);
+    }
+
+    .overlay-gradient {
+      background: transparent;
+      background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgba(255,255,255,.1) 100%);
+      bottom: 55px;
+      height: 100px;
+      left: 0;
+      position: fixed;
+      transform: translateX(0); // allows element to be fixed within its container
+      width: 100%;
+    }
+    .submit-container {
+      background: #eee;
+      bottom: 0;
+      height: 55px;
+      left: 0;
+      position: fixed;
+      transform: translateX(0); // allows element to be fixed within its container
+      width: 100%;
+      z-index: 1;
+
+      input.close {
+        margin-right: 1em;
+      }
+    }
+  }
+
   input.close {
     float: right;
+
   }
 
   input.embeddable-save {
