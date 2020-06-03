@@ -43,7 +43,7 @@
   form[class^="edit_"] {
     max-height: 500px;
     overflow: scroll;
-    padding-bottom: 130px;
+    padding-bottom: 80px;
     position: relative;
 
     fieldset {
@@ -54,7 +54,7 @@
       background: transparent;
       background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgba(255,255,255,.1) 100%);
       bottom: 55px;
-      height: 100px;
+      height: 50px;
       left: 0;
       position: fixed;
       transform: translateX(0); // allows element to be fixed within its container
