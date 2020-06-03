@@ -25,7 +25,7 @@ describe("Client", () => {
 
     it("throws an error", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).toThrowError();
     });
   });
@@ -37,16 +37,16 @@ describe("Client", () => {
 
     it("throws an error when second Client instance is created", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).not.toThrowError();
       expect(() => {
-        new Client();
+        const c = new Client();
       }).toThrowError();
     });
 
     it("automatically connects to parent window using iframe-phone", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).not.toThrowError();
       expect(mockedPhone).toBeDefined();
       expect(mockedPhone.listenerMessages).toEqual([
