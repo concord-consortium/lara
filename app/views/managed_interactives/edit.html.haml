@@ -6,9 +6,10 @@
   = f.error_messages
 
   %div{:id => "admin-interactive-#{@interactive.id}"}
-
-  = f.button "Cancel", :class => 'close', :type => 'button'
-  = f.submit "Save", :class => 'embeddable-save', :default => 'default'
+  .overlay-gradient
+  .submit-container
+    = f.button "Cancel", :class => 'close', :type => 'button'
+    = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
   $(document).ready( function() {

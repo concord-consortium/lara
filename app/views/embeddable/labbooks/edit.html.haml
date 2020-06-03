@@ -21,8 +21,10 @@
     .help
       If this is provided, the user will be able to see expandable hint next to the question title.
       = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
-  = f.submit 'Cancel', class: 'close'
-  = f.submit 'Save', class: 'embeddable-save'
+  .overlay-gradient
+  .submit-container
+    = f.submit 'Cancel', class: 'close'
+    = f.submit 'Save', class: 'embeddable-save'
 
 :javascript
   $(function() {

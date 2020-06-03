@@ -10,5 +10,7 @@
   %p
     = f.collection_select :score_mapping_id, CRater::ScoreMapping.all, :id, :description
 
-  = f.submit "Cancel", :class => 'close'
-  = f.submit "Save", :class => 'embeddable-save'
+  .overlay-gradient
+  .submit-container
+    = f.submit "Cancel", :class => 'close'
+    = f.submit "Save", :class => 'embeddable-save'
