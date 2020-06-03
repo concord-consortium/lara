@@ -1,8 +1,8 @@
-import * as InternalAPI from "./index";
+import * as Plugins from "./index";
 
 describe("Plugin API", () => {
   it("should export all the API functions", () => {
-    expect(InternalAPI.initPlugin).toBeDefined();
-    expect(InternalAPI.setNextPluginLabel).toBeDefined();
+    expect(Plugins.initPlugin).toBeDefined();
+    expect(Plugins.setNextPluginLabel).toBeDefined();
   });
 });
