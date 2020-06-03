@@ -9,7 +9,7 @@ jest.mock("./in-frame", () => ({
 }));
 
 jest.mock("iframe-phone", () => {
-  return mockIFramePhone(document.createElement("iframe"));
+  return mockIFramePhone();
 });
 
 const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
