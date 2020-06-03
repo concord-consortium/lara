@@ -1,10 +1,10 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)
+[LARA Interactive API Client](../README.md) > [ILinkedAuthoredInteractive](../interfaces/ilinkedauthoredinteractive.md)
 
 # Interface: ILinkedAuthoredInteractive
 
 ## Hierarchy
 
-* **ILinkedAuthoredInteractive**
+**ILinkedAuthoredInteractive**
 
 ## Index
 
@@ -15,26 +15,44 @@
 * [label](ilinkedauthoredinteractive.md#label)
 * [sendStateOnInit](ilinkedauthoredinteractive.md#sendstateoninit)
 
+---
+
 ## Properties
+
+<a id="chainedstate"></a>
 
 ###  chainedState
 
-• **chainedState**: *boolean*
+**● chainedState**: *`boolean`*
+
+*Defined in [types.ts:60](../../../lara-typescript/src/interactive-api-client/types.ts#L60)*
 
 ___
+<a id="id"></a>
 
 ###  id
 
-• **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
+**● id**: *[InteractiveAuthoredId](../#interactiveauthoredid)*
+
+*Defined in [types.ts:58](../../../lara-typescript/src/interactive-api-client/types.ts#L58)*
 
 ___
+<a id="label"></a>
 
 ###  label
 
-• **label**: *string*
+**● label**: *`string`*
+
+*Defined in [types.ts:59](../../../lara-typescript/src/interactive-api-client/types.ts#L59)*
 
 ___
+<a id="sendstateoninit"></a>
 
 ###  sendStateOnInit
 
-• **sendStateOnInit**: *boolean*
+**● sendStateOnInit**: *`boolean`*
+
+*Defined in [types.ts:61](../../../lara-typescript/src/interactive-api-client/types.ts#L61)*
+
+___
+

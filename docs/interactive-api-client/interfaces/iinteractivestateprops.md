@@ -1,101 +1,134 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IInteractiveStateProps](iinteractivestateprops.md)
+[LARA Interactive API Client](../README.md) > [IInteractiveStateProps](../interfaces/iinteractivestateprops.md)
 
-# Interface: IInteractiveStateProps ‹**InteractiveState**›
+# Interface: IInteractiveStateProps
 
 ## Type parameters
-
-▪ **InteractiveState**
-
+#### InteractiveState 
 ## Hierarchy
 
-* **IInteractiveStateProps**
+**IInteractiveStateProps**
 
-  ↳ [IRuntimeInitInteractive](iruntimeinitinteractive.md)
+↳  [IRuntimeInitInteractive](iruntimeinitinteractive.md)
 
 ## Index
 
 ### Properties
 
-* [activityName](iinteractivestateprops.md#optional-activityname)
-* [allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)
-* [createdAt](iinteractivestateprops.md#optional-createdat)
-* [hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)
+* [activityName](iinteractivestateprops.md#activityname)
+* [allLinkedStates](iinteractivestateprops.md#alllinkedstates)
+* [createdAt](iinteractivestateprops.md#createdat)
+* [hasLinkedInteractive](iinteractivestateprops.md#haslinkedinteractive)
 * [interactive](iinteractivestateprops.md#interactive)
 * [interactiveState](iinteractivestateprops.md#interactivestate)
-* [interactiveStateUrl](iinteractivestateprops.md#optional-interactivestateurl)
-* [linkedState](iinteractivestateprops.md#optional-linkedstate)
-* [pageName](iinteractivestateprops.md#optional-pagename)
-* [pageNumber](iinteractivestateprops.md#optional-pagenumber)
-* [updatedAt](iinteractivestateprops.md#optional-updatedat)
+* [interactiveStateUrl](iinteractivestateprops.md#interactivestateurl)
+* [linkedState](iinteractivestateprops.md#linkedstate)
+* [pageName](iinteractivestateprops.md#pagename)
+* [pageNumber](iinteractivestateprops.md#pagenumber)
+* [updatedAt](iinteractivestateprops.md#updatedat)
+
+---
 
 ## Properties
 
-### `Optional` activityName
+<a id="activityname"></a>
 
-• **activityName**? : *undefined | string*
+### `<Optional>` activityName
 
-___
+**● activityName**: *`undefined` \| `string`*
 
-### `Optional` allLinkedStates
-
-• **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
+*Defined in [types.ts:15](../../../lara-typescript/src/interactive-api-client/types.ts#L15)*
 
 ___
+<a id="alllinkedstates"></a>
 
-### `Optional` createdAt
+### `<Optional>` allLinkedStates
 
-• **createdAt**? : *undefined | string*
+**● allLinkedStates**: *[IInteractiveStateProps](iinteractivestateprops.md)[]*
 
-___
-
-### `Optional` hasLinkedInteractive
-
-• **hasLinkedInteractive**? : *undefined | false | true*
+*Defined in [types.ts:5](../../../lara-typescript/src/interactive-api-client/types.ts#L5)*
 
 ___
+<a id="createdat"></a>
+
+### `<Optional>` createdAt
+
+**● createdAt**: *`undefined` \| `string`*
+
+*Defined in [types.ts:6](../../../lara-typescript/src/interactive-api-client/types.ts#L6)*
+
+___
+<a id="haslinkedinteractive"></a>
+
+### `<Optional>` hasLinkedInteractive
+
+**● hasLinkedInteractive**: *`undefined` \| `false` \| `true`*
+
+*Defined in [types.ts:3](../../../lara-typescript/src/interactive-api-client/types.ts#L3)*
+
+___
+<a id="interactive"></a>
 
 ###  interactive
 
-• **interactive**: *object*
+**● interactive**: *`object`*
 
-#### Type declaration:
+*Defined in [types.ts:9](../../../lara-typescript/src/interactive-api-client/types.ts#L9)*
 
-* **id**? : *undefined | number*
-
-* **name**? : *undefined | string*
+#### Type declaration
 
 ___
+<a id="interactivestate"></a>
 
 ###  interactiveState
 
-• **interactiveState**: *InteractiveState | null*
+**● interactiveState**: *`InteractiveState` \| `null`*
+
+*Defined in [types.ts:2](../../../lara-typescript/src/interactive-api-client/types.ts#L2)*
+
+___
+<a id="interactivestateurl"></a>
+
+### `<Optional>` interactiveStateUrl
+
+**● interactiveStateUrl**: *`undefined` \| `string`*
+
+*Defined in [types.ts:8](../../../lara-typescript/src/interactive-api-client/types.ts#L8)*
+
+___
+<a id="linkedstate"></a>
+
+### `<Optional>` linkedState
+
+**● linkedState**: *`undefined` \| `object`*
+
+*Defined in [types.ts:4](../../../lara-typescript/src/interactive-api-client/types.ts#L4)*
+
+___
+<a id="pagename"></a>
+
+### `<Optional>` pageName
+
+**● pageName**: *`undefined` \| `string`*
+
+*Defined in [types.ts:14](../../../lara-typescript/src/interactive-api-client/types.ts#L14)*
+
+___
+<a id="pagenumber"></a>
+
+### `<Optional>` pageNumber
+
+**● pageNumber**: *`undefined` \| `number`*
+
+*Defined in [types.ts:13](../../../lara-typescript/src/interactive-api-client/types.ts#L13)*
+
+___
+<a id="updatedat"></a>
+
+### `<Optional>` updatedAt
+
+**● updatedAt**: *`undefined` \| `string`*
+
+*Defined in [types.ts:7](../../../lara-typescript/src/interactive-api-client/types.ts#L7)*
 
 ___
 
-### `Optional` interactiveStateUrl
-
-• **interactiveStateUrl**? : *undefined | string*
-
-___
-
-### `Optional` linkedState
-
-• **linkedState**? : *undefined | object*
-
-___
-
-### `Optional` pageName
-
-• **pageName**? : *undefined | string*
-
-___
-
-### `Optional` pageNumber
-
-• **pageNumber**? : *undefined | number*
-
-___
-
-### `Optional` updatedAt
-
-• **updatedAt**? : *undefined | string*

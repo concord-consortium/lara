@@ -1,44 +1,62 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtResponse](igetfirebasejwtresponse.md)
+[LARA Interactive API Client](../README.md) > [IGetFirebaseJwtResponse](../interfaces/igetfirebasejwtresponse.md)
 
 # Interface: IGetFirebaseJwtResponse
 
 ## Hierarchy
 
-* IBaseRequestResponse
+ `IBaseRequestResponse`
 
-  ↳ **IGetFirebaseJwtResponse**
+**↳ IGetFirebaseJwtResponse**
 
 ## Index
 
 ### Properties
 
-* [message](igetfirebasejwtresponse.md#optional-message)
+* [message](igetfirebasejwtresponse.md#message)
 * [requestId](igetfirebasejwtresponse.md#requestid)
-* [response_type](igetfirebasejwtresponse.md#optional-response_type)
-* [token](igetfirebasejwtresponse.md#optional-token)
+* [response_type](igetfirebasejwtresponse.md#response_type)
+* [token](igetfirebasejwtresponse.md#token)
+
+---
 
 ## Properties
 
-### `Optional` message
+<a id="message"></a>
 
-• **message**? : *undefined | string*
+### `<Optional>` message
+
+**● message**: *`undefined` \| `string`*
+
+*Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*
 
 ___
+<a id="requestid"></a>
 
 ###  requestId
 
-• **requestId**: *number*
+**● requestId**: *`number`*
 
-*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
+*Inherited from IBaseRequestResponse.requestId*
+
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+
+___
+<a id="response_type"></a>
+
+### `<Optional>` response_type
+
+**● response_type**: *`undefined` \| "ERROR"*
+
+*Defined in [types.ts:350](../../../lara-typescript/src/interactive-api-client/types.ts#L350)*
+
+___
+<a id="token"></a>
+
+### `<Optional>` token
+
+**● token**: *`undefined` \| `string`*
+
+*Defined in [types.ts:352](../../../lara-typescript/src/interactive-api-client/types.ts#L352)*
 
 ___
 
-### `Optional` response_type
-
-• **response_type**? : *undefined | "ERROR"*
-
-___
-
-### `Optional` token
-
-• **token**? : *undefined | string*

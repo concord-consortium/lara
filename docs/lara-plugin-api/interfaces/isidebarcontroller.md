@@ -1,10 +1,10 @@
-[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [ISidebarController](isidebarcontroller.md)
+[LARA Plugin API](../README.md) > [ISidebarController](../interfaces/isidebarcontroller.md)
 
 # Interface: ISidebarController
 
 ## Hierarchy
 
-* **ISidebarController**
+**ISidebarController**
 
 ## Index
 
@@ -13,22 +13,36 @@
 * [close](isidebarcontroller.md#close)
 * [open](isidebarcontroller.md#open)
 
+---
+
 ## Properties
+
+<a id="close"></a>
 
 ###  close
 
-• **close**: *function*
+**● close**: *`function`*
 
-#### Type declaration:
+*Defined in [sidebar.ts:27](../../../lara-typescript/src/plugin-api/sidebar.ts#L27)*
 
-▸ (): *void*
+#### Type declaration
+▸(): `void`
+
+**Returns:** `void`
 
 ___
+<a id="open"></a>
 
 ###  open
 
-• **open**: *function*
+**● open**: *`function`*
 
-#### Type declaration:
+*Defined in [sidebar.ts:26](../../../lara-typescript/src/plugin-api/sidebar.ts#L26)*
 
-▸ (): *void*
+#### Type declaration
+▸(): `void`
+
+**Returns:** `void`
+
+___
+

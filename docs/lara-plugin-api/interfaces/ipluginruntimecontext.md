@@ -1,10 +1,10 @@
-[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IPluginRuntimeContext](ipluginruntimecontext.md)
+[LARA Plugin API](../README.md) > [IPluginRuntimeContext](../interfaces/ipluginruntimecontext.md)
 
 # Interface: IPluginRuntimeContext
 
 ## Hierarchy
 
-* **IPluginRuntimeContext**
+**IPluginRuntimeContext**
 
 ## Index
 
@@ -26,176 +26,181 @@
 * [userEmail](ipluginruntimecontext.md#useremail)
 * [wrappedEmbeddable](ipluginruntimecontext.md#wrappedembeddable)
 
+---
+
 ## Properties
+
+<a id="authoredstate"></a>
 
 ###  authoredState
 
-• **authoredState**: *string | null*
+**● authoredState**: *`string` \| `null`*
 
-The authored configuration for this instance (if available).
+*Defined in [types.ts:18](../../../lara-typescript/src/plugin-api/types.ts#L18)*
 
 ___
+<a id="container"></a>
 
 ###  container
 
-• **container**: *HTMLElement*
+**● container**: *`HTMLElement`*
 
-HTMLElement created by LARA for the plugin to use to render both its runtime and authoring output.
+*Defined in [types.ts:22](../../../lara-typescript/src/plugin-api/types.ts#L22)*
 
 ___
+<a id="getclassinfo"></a>
 
 ###  getClassInfo
 
-• **getClassInfo**: *function*
+**● getClassInfo**: *`function`*
 
-Function that returns class details (Promise) or null if class info is not available.
+*Defined in [types.ts:43](../../../lara-typescript/src/plugin-api/types.ts#L43)*
 
-#### Type declaration:
+#### Type declaration
+▸(): `Promise`<[IClassInfo](iclassinfo.md)> \| `null`
 
-▸ (): *Promise‹[IClassInfo](iclassinfo.md)› | null*
+**Returns:** `Promise`<[IClassInfo](iclassinfo.md)> \| `null`
 
 ___
+<a id="getfirebasejwt"></a>
 
 ###  getFirebaseJwt
 
-• **getFirebaseJwt**: *function*
+**● getFirebaseJwt**: *`function`*
 
-Function that returns JWT (Promise) for given app name.
+*Defined in [types.ts:45](../../../lara-typescript/src/plugin-api/types.ts#L45)*
 
-#### Type declaration:
-
-▸ (`appName`: string): *Promise‹[IJwtResponse](ijwtresponse.md)›*
+#### Type declaration
+▸(appName: *`string`*): `Promise`<[IJwtResponse](ijwtresponse.md)>
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`appName` | string |
+| Name | Type |
+| ------ | ------ |
+| appName | `string` |
+
+**Returns:** `Promise`<[IJwtResponse](ijwtresponse.md)>
 
 ___
+<a id="learnerstate"></a>
 
 ###  learnerState
 
-• **learnerState**: *string | null*
+**● learnerState**: *`string` \| `null`*
 
-The saved learner data for this instance (if available).
+*Defined in [types.ts:20](../../../lara-typescript/src/plugin-api/types.ts#L20)*
 
 ___
+<a id="log"></a>
 
 ###  log
 
-• **log**: *function*
+**● log**: *`function`*
 
-Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
-Either by setting URL param logging=true or by enabling logging in Portal.
-```
-context.log("testEvent");
-context.log({event: "testEvent", event_value: 123});
-context.log({event: "testEvent", someExtraParam: 123});
-context.log({event: "testEvent", parameters: { paramInParamsHash: 123 }});
-```
-This augments the logged data with plugin_id, and optionally, embeddable_type
-and embeddable_id.
+*Defined in [types.ts:63](../../../lara-typescript/src/plugin-api/types.ts#L63)*
 
-**`param`** Data to log. Can be either event name or hash with at least `event` property.
-
-#### Type declaration:
-
-▸ (`logData`: string | [ILogData](ilogdata.md)): *void*
+#### Type declaration
+▸(logData: *`string` \| [ILogData](ilogdata.md)*): `void`
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`logData` | string &#124; [ILogData](ilogdata.md) |
+| Name | Type |
+| ------ | ------ |
+| logData | `string` \| [ILogData](ilogdata.md) |
+
+**Returns:** `void`
 
 ___
+<a id="name"></a>
 
 ###  name
 
-• **name**: *string*
+**● name**: *`string`*
 
-Name of the plugin
+*Defined in [types.ts:12](../../../lara-typescript/src/plugin-api/types.ts#L12)*
 
 ___
+<a id="pluginid"></a>
 
 ###  pluginId
 
-• **pluginId**: *number*
+**● pluginId**: *`number`*
 
-Plugin instance ID.
+*Defined in [types.ts:16](../../../lara-typescript/src/plugin-api/types.ts#L16)*
 
 ___
+<a id="remoteendpoint"></a>
 
 ###  remoteEndpoint
 
-• **remoteEndpoint**: *string | null*
+**● remoteEndpoint**: *`string` \| `null`*
 
-The portal remote endpoint (if available).
+*Defined in [types.ts:26](../../../lara-typescript/src/plugin-api/types.ts#L26)*
 
 ___
+<a id="resourceurl"></a>
 
 ###  resourceUrl
 
-• **resourceUrl**: *string*
+**● resourceUrl**: *`string`*
 
-URL of the resource associated with the current run (sequence URL or activity URL)
+*Defined in [types.ts:30](../../../lara-typescript/src/plugin-api/types.ts#L30)*
 
 ___
+<a id="runid"></a>
 
 ###  runId
 
-• **runId**: *number*
+**● runId**: *`number`*
 
-The run ID for the current LARA run.
+*Defined in [types.ts:24](../../../lara-typescript/src/plugin-api/types.ts#L24)*
 
 ___
+<a id="savelearnerpluginstate"></a>
 
 ###  saveLearnerPluginState
 
-• **saveLearnerPluginState**: *function*
+**● saveLearnerPluginState**: *`function`*
 
-Function that saves the users state for the plugin.
-Note that plugins can have different scopes, e.g. activity or a single page.
-If the plugin instance is added to the activity, its state will be shared across all the pages.
-If multiple plugin instances are added to various pages, their state will be different on every page.
-```
-context.saveLearnerPluginState('{"one": 1}').then((data) => console.log(data))
-```
+*Defined in [types.ts:41](../../../lara-typescript/src/plugin-api/types.ts#L41)*
 
-**`param`** A string representing serialized plugin state; if it's JSON, remember to stringify it first.
-
-#### Type declaration:
-
-▸ (`state`: string): *Promise‹string›*
+#### Type declaration
+▸(state: *`string`*): `Promise`<`string`>
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`state` | string |
+| Name | Type |
+| ------ | ------ |
+| state | `string` |
+
+**Returns:** `Promise`<`string`>
 
 ___
+<a id="url"></a>
 
 ###  url
 
-• **url**: *string*
+**● url**: *`string`*
 
-Url from which the plugin was loaded.
+*Defined in [types.ts:14](../../../lara-typescript/src/plugin-api/types.ts#L14)*
 
 ___
+<a id="useremail"></a>
 
 ###  userEmail
 
-• **userEmail**: *string | null*
+**● userEmail**: *`string` \| `null`*
 
-The current user email address (if available).
+*Defined in [types.ts:28](../../../lara-typescript/src/plugin-api/types.ts#L28)*
 
 ___
+<a id="wrappedembeddable"></a>
 
 ###  wrappedEmbeddable
 
-• **wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) | null*
+**● wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) \| `null`*
 
-Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the
-guiPreview option set to true within its manifest.
+*Defined in [types.ts:49](../../../lara-typescript/src/plugin-api/types.ts#L49)*
+
+___
+

@@ -1,12 +1,12 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md)
+[LARA Interactive API Client](../README.md) > [IGetInteractiveSnapshotOptions](../interfaces/igetinteractivesnapshotoptions.md)
 
 # Interface: IGetInteractiveSnapshotOptions
 
 ## Hierarchy
 
-* **IGetInteractiveSnapshotOptions**
+**IGetInteractiveSnapshotOptions**
 
-  ↳ [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
+↳  [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
 
 ## Index
 
@@ -14,8 +14,17 @@
 
 * [interactiveRuntimeId](igetinteractivesnapshotoptions.md#interactiveruntimeid)
 
+---
+
 ## Properties
+
+<a id="interactiveruntimeid"></a>
 
 ###  interactiveRuntimeId
 
-• **interactiveRuntimeId**: *[InteractiveRuntimeId](../globals.md#interactiveruntimeid)*
+**● interactiveRuntimeId**: *[InteractiveRuntimeId](../#interactiveruntimeid)*
+
+*Defined in [types.ts:391](../../../lara-typescript/src/interactive-api-client/types.ts#L391)*
+
+___
+

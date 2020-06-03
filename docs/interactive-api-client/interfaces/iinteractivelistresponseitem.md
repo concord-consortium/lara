@@ -1,10 +1,10 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
+[LARA Interactive API Client](../README.md) > [IInteractiveListResponseItem](../interfaces/iinteractivelistresponseitem.md)
 
 # Interface: IInteractiveListResponseItem
 
 ## Hierarchy
 
-* **IInteractiveListResponseItem**
+**IInteractiveListResponseItem**
 
 ## Index
 
@@ -13,35 +13,56 @@
 * [id](iinteractivelistresponseitem.md#id)
 * [name](iinteractivelistresponseitem.md#name)
 * [pageLocation](iinteractivelistresponseitem.md#pagelocation)
-* [thumbnailUrl](iinteractivelistresponseitem.md#optional-thumbnailurl)
+* [thumbnailUrl](iinteractivelistresponseitem.md#thumbnailurl)
 * [url](iinteractivelistresponseitem.md#url)
+
+---
 
 ## Properties
 
+<a id="id"></a>
+
 ###  id
 
-• **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
+**● id**: *[InteractiveAuthoredId](../#interactiveauthoredid)*
+
+*Defined in [types.ts:363](../../../lara-typescript/src/interactive-api-client/types.ts#L363)*
 
 ___
+<a id="name"></a>
 
 ###  name
 
-• **name**: *string*
+**● name**: *`string`*
+
+*Defined in [types.ts:364](../../../lara-typescript/src/interactive-api-client/types.ts#L364)*
 
 ___
+<a id="pagelocation"></a>
 
 ###  pageLocation
 
-• **pageLocation**: *"assessment list" | "interactive box" | "introduction"*
+**● pageLocation**: *"assessment list" \| "interactive box" \| "introduction"*
+
+*Defined in [types.ts:365](../../../lara-typescript/src/interactive-api-client/types.ts#L365)*
 
 ___
+<a id="thumbnailurl"></a>
 
-### `Optional` thumbnailUrl
+### `<Optional>` thumbnailUrl
 
-• **thumbnailUrl**? : *undefined | string*
+**● thumbnailUrl**: *`undefined` \| `string`*
+
+*Defined in [types.ts:367](../../../lara-typescript/src/interactive-api-client/types.ts#L367)*
 
 ___
+<a id="url"></a>
 
 ###  url
 
-• **url**: *string*
+**● url**: *`string`*
+
+*Defined in [types.ts:366](../../../lara-typescript/src/interactive-api-client/types.ts#L366)*
+
+___
+

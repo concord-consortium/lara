@@ -1,34 +1,46 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
+[LARA Interactive API Client](../README.md) > [IGetFirebaseJwtRequest](../interfaces/igetfirebasejwtrequest.md)
 
 # Interface: IGetFirebaseJwtRequest
 
 ## Hierarchy
 
-* IBaseRequestResponse
+ `IBaseRequestResponse`
 
-* [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md)
+ [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md)
 
-  ↳ **IGetFirebaseJwtRequest**
+**↳ IGetFirebaseJwtRequest**
 
 ## Index
 
 ### Properties
 
-* [firebase_app](igetfirebasejwtrequest.md#optional-firebase_app)
+* [firebase_app](igetfirebasejwtrequest.md#firebase_app)
 * [requestId](igetfirebasejwtrequest.md#requestid)
+
+---
 
 ## Properties
 
-### `Optional` firebase_app
+<a id="firebase_app"></a>
 
-• **firebase_app**? : *undefined | string*
+### `<Optional>` firebase_app
 
-*Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#optional-firebase_app)*
+**● firebase_app**: *`undefined` \| `string`*
+
+*Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#firebase_app)*
+
+*Defined in [types.ts:342](../../../lara-typescript/src/interactive-api-client/types.ts#L342)*
 
 ___
+<a id="requestid"></a>
 
 ###  requestId
 
-• **requestId**: *number*
+**● requestId**: *`number`*
 
-*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
+*Inherited from IBaseRequestResponse.requestId*
+
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+
+___
+

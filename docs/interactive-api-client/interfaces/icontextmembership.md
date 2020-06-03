@@ -1,10 +1,10 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IContextMembership](icontextmembership.md)
+[LARA Interactive API Client](../README.md) > [IContextMembership](../interfaces/icontextmembership.md)
 
 # Interface: IContextMembership
 
 ## Hierarchy
 
-* **IContextMembership**
+**IContextMembership**
 
 ## Index
 
@@ -12,8 +12,17 @@
 
 * [members](icontextmembership.md#members)
 
+---
+
 ## Properties
+
+<a id="members"></a>
 
 ###  members
 
-• **members**: *[IContextMember](icontextmember.md)[]*
+**● members**: *[IContextMember](icontextmember.md)[]*
+
+*Defined in [types.ts:194](../../../lara-typescript/src/interactive-api-client/types.ts#L194)*
+
+___
+

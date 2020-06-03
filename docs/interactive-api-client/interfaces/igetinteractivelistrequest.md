@@ -1,34 +1,46 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetInteractiveListRequest](igetinteractivelistrequest.md)
+[LARA Interactive API Client](../README.md) > [IGetInteractiveListRequest](../interfaces/igetinteractivelistrequest.md)
 
 # Interface: IGetInteractiveListRequest
 
 ## Hierarchy
 
-* IBaseRequestResponse
+ `IBaseRequestResponse`
 
-* [IGetInteractiveListOptions](igetinteractivelistoptions.md)
+ [IGetInteractiveListOptions](igetinteractivelistoptions.md)
 
-  ↳ **IGetInteractiveListRequest**
+**↳ IGetInteractiveListRequest**
 
 ## Index
 
 ### Properties
 
 * [requestId](igetinteractivelistrequest.md#requestid)
-* [supportsSnapshots](igetinteractivelistrequest.md#optional-supportssnapshots)
+* [supportsSnapshots](igetinteractivelistrequest.md#supportssnapshots)
+
+---
 
 ## Properties
 
+<a id="requestid"></a>
+
 ###  requestId
 
-• **requestId**: *number*
+**● requestId**: *`number`*
 
-*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
+*Inherited from IBaseRequestResponse.requestId*
+
+*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
+
+___
+<a id="supportssnapshots"></a>
+
+### `<Optional>` supportsSnapshots
+
+**● supportsSnapshots**: *`undefined` \| `false` \| `true`*
+
+*Inherited from [IGetInteractiveListOptions](igetinteractivelistoptions.md).[supportsSnapshots](igetinteractivelistoptions.md#supportssnapshots)*
+
+*Defined in [types.ts:356](../../../lara-typescript/src/interactive-api-client/types.ts#L356)*
 
 ___
 
-### `Optional` supportsSnapshots
-
-• **supportsSnapshots**? : *undefined | false | true*
-
-*Inherited from [IGetInteractiveListOptions](igetinteractivelistoptions.md).[supportsSnapshots](igetinteractivelistoptions.md#optional-supportssnapshots)*

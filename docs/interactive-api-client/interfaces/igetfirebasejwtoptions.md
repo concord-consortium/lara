@@ -1,21 +1,30 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md)
+[LARA Interactive API Client](../README.md) > [IGetFirebaseJwtOptions](../interfaces/igetfirebasejwtoptions.md)
 
 # Interface: IGetFirebaseJwtOptions
 
 ## Hierarchy
 
-* **IGetFirebaseJwtOptions**
+**IGetFirebaseJwtOptions**
 
-  ↳ [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
+↳  [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
 
 ## Index
 
 ### Properties
 
-* [firebase_app](igetfirebasejwtoptions.md#optional-firebase_app)
+* [firebase_app](igetfirebasejwtoptions.md#firebase_app)
+
+---
 
 ## Properties
 
-### `Optional` firebase_app
+<a id="firebase_app"></a>
 
-• **firebase_app**? : *undefined | string*
+### `<Optional>` firebase_app
+
+**● firebase_app**: *`undefined` \| `string`*
+
+*Defined in [types.ts:342](../../../lara-typescript/src/interactive-api-client/types.ts#L342)*
+
+___
+

@@ -1,10 +1,10 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [ICustomMessage](icustommessage.md)
+[LARA Interactive API Client](../README.md) > [ICustomMessage](../interfaces/icustommessage.md)
 
 # Interface: ICustomMessage
 
 ## Hierarchy
 
-* **ICustomMessage**
+**ICustomMessage**
 
 ## Index
 
@@ -13,14 +13,26 @@
 * [content](icustommessage.md#content)
 * [type](icustommessage.md#type)
 
+---
+
 ## Properties
+
+<a id="content"></a>
 
 ###  content
 
-• **content**: *object*
+**● content**: *`object`*
+
+*Defined in [types.ts:313](../../../lara-typescript/src/interactive-api-client/types.ts#L313)*
 
 ___
+<a id="type"></a>
 
 ###  type
 
-• **type**: *string*
+**● type**: *`string`*
+
+*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*
+
+___
+
