@@ -2,7 +2,7 @@
 
 # @concord-consortium/lara-interactive-api - v0.4.0-pre.4
 
-##[API documentation](globals.md)
+## [API documentation](globals.md)
 
 A TypeScript-based API for the LARA Interactive API. This also includes all the types for the API which are shared 
 with the server-side Typescript files that implement the LARA-side of the API.
