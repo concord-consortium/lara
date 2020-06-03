@@ -23,8 +23,6 @@
 
 • **message**? : *undefined | string*
 
-*Defined in [types.ts:346](../../../lara-typescript/src/interactive-api-client/types.ts#L346)*
-
 ___
 
 ###  requestId
@@ -33,20 +31,14 @@ ___
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
-
 ___
 
 ### `Optional` response_type
 
 • **response_type**? : *undefined | "ERROR"*
 
-*Defined in [types.ts:345](../../../lara-typescript/src/interactive-api-client/types.ts#L345)*
-
 ___
 
 ### `Optional` token
 
 • **token**? : *undefined | string*
-
-*Defined in [types.ts:347](../../../lara-typescript/src/interactive-api-client/types.ts#L347)*

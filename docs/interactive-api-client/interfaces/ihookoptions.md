@@ -17,5 +17,3 @@
 ### `Optional` supportedFeatures
 
 • **supportedFeatures**? : *[ISupportedFeatures](isupportedfeatures.md)*
-
-*Defined in [types.ts:115](../../../lara-typescript/src/interactive-api-client/types.ts#L115)*

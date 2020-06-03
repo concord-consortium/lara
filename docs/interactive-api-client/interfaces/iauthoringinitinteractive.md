@@ -26,15 +26,11 @@
 
 • **authoredState**: *AuthoredState | null*
 
-*Defined in [types.ts:68](../../../lara-typescript/src/interactive-api-client/types.ts#L68)*
-
 ___
 
 ###  error
 
 • **error**: *null*
-
-*Defined in [types.ts:66](../../../lara-typescript/src/interactive-api-client/types.ts#L66)*
 
 ___
 
@@ -42,20 +38,14 @@ ___
 
 • **mode**: *"authoring"*
 
-*Defined in [types.ts:67](../../../lara-typescript/src/interactive-api-client/types.ts#L67)*
-
 ___
 
 ###  themeInfo
 
 • **themeInfo**: *[IThemeInfo](ithemeinfo.md)*
 
-*Defined in [types.ts:69](../../../lara-typescript/src/interactive-api-client/types.ts#L69)*
-
 ___
 
 ###  version
 
 • **version**: *1*
-
-*Defined in [types.ts:65](../../../lara-typescript/src/interactive-api-client/types.ts#L65)*

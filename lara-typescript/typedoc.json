@@ -6,5 +6,7 @@
   "excludeNotExported": true,
   "excludePrivate": true,
   "excludeProtected": true,
-  "includeVersion": true
+  "includeVersion": true,
+  "stripInternal": true,
+  "disableSources": true
 }

@@ -33,15 +33,11 @@
 
 • **onGetInteractiveState**? : *undefined | function*
 
-*Defined in [types.ts:110](../../../lara-typescript/src/interactive-api-client/types.ts#L110)*
-
 ___
 
 ### `Optional` onGlobalInteractiveStateUpdated
 
 • **onGlobalInteractiveStateUpdated**? : *undefined | function*
-
-*Defined in [types.ts:111](../../../lara-typescript/src/interactive-api-client/types.ts#L111)*
 
 ___
 
@@ -49,15 +45,11 @@ ___
 
 • **onHello**? : *undefined | function*
 
-*Defined in [types.ts:107](../../../lara-typescript/src/interactive-api-client/types.ts#L107)*
-
 ___
 
 ### `Optional` onInitInteractive
 
 • **onInitInteractive**? : *undefined | function*
-
-*Defined in [types.ts:109](../../../lara-typescript/src/interactive-api-client/types.ts#L109)*
 
 ___
 
@@ -65,12 +57,8 @@ ___
 
 • **startDisconnected**? : *undefined | false | true*
 
-*Defined in [types.ts:105](../../../lara-typescript/src/interactive-api-client/types.ts#L105)*
-
 ___
 
 ### `Optional` supportedFeatures
 
 • **supportedFeatures**? : *[ISupportedFeatures](isupportedfeatures.md)*
-
-*Defined in [types.ts:106](../../../lara-typescript/src/interactive-api-client/types.ts#L106)*

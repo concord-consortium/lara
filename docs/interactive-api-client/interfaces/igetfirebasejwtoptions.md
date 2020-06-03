@@ -19,5 +19,3 @@
 ### `Optional` firebase_app
 
 • **firebase_app**? : *undefined | string*
-
-*Defined in [types.ts:337](../../../lara-typescript/src/interactive-api-client/types.ts#L337)*

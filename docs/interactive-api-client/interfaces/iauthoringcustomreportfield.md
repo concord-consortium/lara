@@ -19,12 +19,8 @@
 
 • **columnHeading**: *string*
 
-*Defined in [types.ts:260](../../../lara-typescript/src/interactive-api-client/types.ts#L260)*
-
 ___
 
 ###  id
 
 • **id**: *string*
-
-*Defined in [types.ts:259](../../../lara-typescript/src/interactive-api-client/types.ts#L259)*

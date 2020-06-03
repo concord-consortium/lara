@@ -50,8 +50,6 @@
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[activityName](iinteractivestateprops.md#optional-activityname)*
 
-*Defined in [types.ts:15](../../../lara-typescript/src/interactive-api-client/types.ts#L15)*
-
 ___
 
 ### `Optional` allLinkedStates
@@ -60,15 +58,11 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)*
 
-*Defined in [types.ts:5](../../../lara-typescript/src/interactive-api-client/types.ts#L5)*
-
 ___
 
 ###  authInfo
 
 • **authInfo**: *object*
-
-*Defined in [types.ts:32](../../../lara-typescript/src/interactive-api-client/types.ts#L32)*
 
 #### Type declaration:
 
@@ -84,23 +78,17 @@ ___
 
 • **authoredState**: *AuthoredState | null*
 
-*Defined in [types.ts:23](../../../lara-typescript/src/interactive-api-client/types.ts#L23)*
-
 ___
 
 ###  classInfoUrl
 
 • **classInfoUrl**: *string*
 
-*Defined in [types.ts:27](../../../lara-typescript/src/interactive-api-client/types.ts#L27)*
-
 ___
 
 ###  collaboratorUrls
 
 • **collaboratorUrls**: *string[] | null*
-
-*Defined in [types.ts:26](../../../lara-typescript/src/interactive-api-client/types.ts#L26)*
 
 ___
 
@@ -110,23 +98,17 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[createdAt](iinteractivestateprops.md#optional-createdat)*
 
-*Defined in [types.ts:6](../../../lara-typescript/src/interactive-api-client/types.ts#L6)*
-
 ___
 
 ###  error
 
 • **error**: *any*
 
-*Defined in [types.ts:21](../../../lara-typescript/src/interactive-api-client/types.ts#L21)*
-
 ___
 
 ###  globalInteractiveState
 
 • **globalInteractiveState**: *GlobalInteractiveState | null*
-
-*Defined in [types.ts:24](../../../lara-typescript/src/interactive-api-client/types.ts#L24)*
 
 ___
 
@@ -136,8 +118,6 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)*
 
-*Defined in [types.ts:3](../../../lara-typescript/src/interactive-api-client/types.ts#L3)*
-
 ___
 
 ###  interactive
@@ -145,8 +125,6 @@ ___
 • **interactive**: *object*
 
 *Overrides [IInteractiveStateProps](iinteractivestateprops.md).[interactive](iinteractivestateprops.md#interactive)*
-
-*Defined in [types.ts:28](../../../lara-typescript/src/interactive-api-client/types.ts#L28)*
 
 #### Type declaration:
 
@@ -162,8 +140,6 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[interactiveState](iinteractivestateprops.md#interactivestate)*
 
-*Defined in [types.ts:2](../../../lara-typescript/src/interactive-api-client/types.ts#L2)*
-
 ___
 
 ###  interactiveStateUrl
@@ -172,15 +148,11 @@ ___
 
 *Overrides [IInteractiveStateProps](iinteractivestateprops.md).[interactiveStateUrl](iinteractivestateprops.md#optional-interactivestateurl)*
 
-*Defined in [types.ts:25](../../../lara-typescript/src/interactive-api-client/types.ts#L25)*
-
 ___
 
 ###  linkedInteractives
 
 • **linkedInteractives**: *[ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)[]*
-
-*Defined in [types.ts:37](../../../lara-typescript/src/interactive-api-client/types.ts#L37)*
 
 ___
 
@@ -190,15 +162,11 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[linkedState](iinteractivestateprops.md#optional-linkedstate)*
 
-*Defined in [types.ts:4](../../../lara-typescript/src/interactive-api-client/types.ts#L4)*
-
 ___
 
 ###  mode
 
 • **mode**: *"runtime"*
-
-*Defined in [types.ts:22](../../../lara-typescript/src/interactive-api-client/types.ts#L22)*
 
 ___
 
@@ -208,8 +176,6 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageName](iinteractivestateprops.md#optional-pagename)*
 
-*Defined in [types.ts:14](../../../lara-typescript/src/interactive-api-client/types.ts#L14)*
-
 ___
 
 ### `Optional` pageNumber
@@ -218,15 +184,11 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageNumber](iinteractivestateprops.md#optional-pagenumber)*
 
-*Defined in [types.ts:13](../../../lara-typescript/src/interactive-api-client/types.ts#L13)*
-
 ___
 
 ###  themeInfo
 
 • **themeInfo**: *[IThemeInfo](ithemeinfo.md)*
-
-*Defined in [types.ts:38](../../../lara-typescript/src/interactive-api-client/types.ts#L38)*
 
 ___
 
@@ -236,12 +198,8 @@ ___
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[updatedAt](iinteractivestateprops.md#optional-updatedat)*
 
-*Defined in [types.ts:7](../../../lara-typescript/src/interactive-api-client/types.ts#L7)*
-
 ___
 
 ###  version
 
 • **version**: *1*
-
-*Defined in [types.ts:20](../../../lara-typescript/src/interactive-api-client/types.ts#L20)*

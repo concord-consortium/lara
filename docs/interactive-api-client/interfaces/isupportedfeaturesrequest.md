@@ -19,12 +19,8 @@
 
 • **apiVersion**: *1*
 
-*Defined in [types.ts:207](../../../lara-typescript/src/interactive-api-client/types.ts#L207)*
-
 ___
 
 ###  features
 
 • **features**: *[ISupportedFeatures](isupportedfeatures.md)*
-
-*Defined in [types.ts:208](../../../lara-typescript/src/interactive-api-client/types.ts#L208)*

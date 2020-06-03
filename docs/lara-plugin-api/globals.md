@@ -51,15 +51,11 @@
 
 Ƭ **IEventListeners**: *[IEventListener](interfaces/ieventlistener.md) | [IEventListener](interfaces/ieventlistener.md)[]*
 
-*Defined in [decorate-content.ts:8](../../lara-typescript/src/plugin-api/decorate-content.ts#L8)*
-
 ___
 
 ###  IInteractiveAvailableEventHandler
 
 Ƭ **IInteractiveAvailableEventHandler**: *function*
-
-*Defined in [types.ts:235](../../lara-typescript/src/plugin-api/types.ts#L235)*
 
 InteractiveAvailable event handler.
 
@@ -78,8 +74,6 @@ ___
 ###  ILogEventHandler
 
 Ƭ **ILogEventHandler**: *function*
-
-*Defined in [types.ts:216](../../lara-typescript/src/plugin-api/types.ts#L216)*
 
 Log event handler.
 
@@ -100,8 +94,6 @@ Name | Type |
 ### `Const` addPopup
 
 ▸ **addPopup**(`_options`: [IPopupOptions](interfaces/ipopupoptions.md)): *[IPopupController](interfaces/ipopupcontroller.md)*
-
-*Defined in [popup.ts:86](../../lara-typescript/src/plugin-api/popup.ts#L86)*
 
 Ask LARA to add a new popup window.
 
@@ -126,8 +118,6 @@ ___
 ### `Const` addSidebar
 
 ▸ **addSidebar**(`_options`: [ISidebarOptions](interfaces/isidebaroptions.md)): *[ISidebarController](interfaces/isidebarcontroller.md)*
-
-*Defined in [sidebar.ts:90](../../lara-typescript/src/plugin-api/sidebar.ts#L90)*
 
 Ask LARA to add a new sidebar.
 
@@ -156,8 +146,6 @@ ___
 
 ▸ **decorateContent**(`words`: string[], `replace`: string, `wordClass`: string, `listeners`: [IEventListeners](globals.md#ieventlisteners)): *void*
 
-*Defined in [decorate-content.ts:19](../../lara-typescript/src/plugin-api/decorate-content.ts#L19)*
-
 Ask LARA to decorate authored content (text / html).
 
 **Parameters:**
@@ -176,8 +164,6 @@ ___
 ### `Const` registerPlugin
 
 ▸ **registerPlugin**(`options`: [IRegisterPluginOptions](interfaces/iregisterpluginoptions.md)): *boolean*
-
-*Defined in [plugins.ts:12](../../lara-typescript/src/plugin-api/plugins.ts#L12)*
 
 Register a new external script
 ```
@@ -200,37 +186,25 @@ Name | Type | Description |
 
 ### ▪ **ADD_POPUP_DEFAULT_OPTIONS**: *object*
 
-*Defined in [popup.ts:48](../../lara-typescript/src/plugin-api/popup.ts#L48)*
-
 ###  autoOpen
 
 • **autoOpen**: *boolean* = true
-
-*Defined in [popup.ts:50](../../lara-typescript/src/plugin-api/popup.ts#L50)*
 
 ###  backgroundColor
 
 • **backgroundColor**: *string* = ""
 
-*Defined in [popup.ts:65](../../lara-typescript/src/plugin-api/popup.ts#L65)*
-
 ###  closeButton
 
 • **closeButton**: *boolean* = true
-
-*Defined in [popup.ts:51](../../lara-typescript/src/plugin-api/popup.ts#L51)*
 
 ###  closeOnEscape
 
 • **closeOnEscape**: *boolean* = false
 
-*Defined in [popup.ts:52](../../lara-typescript/src/plugin-api/popup.ts#L52)*
-
 ###  dialogClass
 
 • **dialogClass**: *string* = ""
-
-*Defined in [popup.ts:64](../../lara-typescript/src/plugin-api/popup.ts#L64)*
 
 Note that dialogClass is intentionally undocumented. Styling uses class makes us depend on the
 current dialog implementation. It might be necessary for LARA themes, although plugins should not use it.
@@ -239,89 +213,59 @@ current dialog implementation. It might be necessary for LARA themes, although p
 
 • **draggable**: *boolean* = true
 
-*Defined in [popup.ts:55](../../lara-typescript/src/plugin-api/popup.ts#L55)*
-
 ###  height
 
 • **height**: *string* = "auto"
-
-*Defined in [popup.ts:58](../../lara-typescript/src/plugin-api/popup.ts#L58)*
 
 ###  modal
 
 • **modal**: *boolean* = false
 
-*Defined in [popup.ts:54](../../lara-typescript/src/plugin-api/popup.ts#L54)*
-
 ###  onBeforeClose
 
 • **onBeforeClose**: *undefined* = undefined
-
-*Defined in [popup.ts:69](../../lara-typescript/src/plugin-api/popup.ts#L69)*
 
 ###  onDragStart
 
 • **onDragStart**: *undefined* = undefined
 
-*Defined in [popup.ts:71](../../lara-typescript/src/plugin-api/popup.ts#L71)*
-
 ###  onDragStop
 
 • **onDragStop**: *undefined* = undefined
-
-*Defined in [popup.ts:72](../../lara-typescript/src/plugin-api/popup.ts#L72)*
 
 ###  onOpen
 
 • **onOpen**: *undefined* = undefined
 
-*Defined in [popup.ts:68](../../lara-typescript/src/plugin-api/popup.ts#L68)*
-
 ###  onResize
 
 • **onResize**: *undefined* = undefined
-
-*Defined in [popup.ts:70](../../lara-typescript/src/plugin-api/popup.ts#L70)*
 
 ###  padding
 
 • **padding**: *number* = 10
 
-*Defined in [popup.ts:59](../../lara-typescript/src/plugin-api/popup.ts#L59)*
-
 ###  removeOnClose
 
 • **removeOnClose**: *boolean* = true
-
-*Defined in [popup.ts:53](../../lara-typescript/src/plugin-api/popup.ts#L53)*
 
 ###  resizable
 
 • **resizable**: *boolean* = true
 
-*Defined in [popup.ts:56](../../lara-typescript/src/plugin-api/popup.ts#L56)*
-
 ###  title
 
 • **title**: *string* = ""
-
-*Defined in [popup.ts:49](../../lara-typescript/src/plugin-api/popup.ts#L49)*
 
 ###  titlebarColor
 
 • **titlebarColor**: *string* = ""
 
-*Defined in [popup.ts:66](../../lara-typescript/src/plugin-api/popup.ts#L66)*
-
 ###  width
 
 • **width**: *number* = 300
 
-*Defined in [popup.ts:57](../../lara-typescript/src/plugin-api/popup.ts#L57)*
-
 ▪ **position**: *object*
-
-*Defined in [popup.ts:67](../../lara-typescript/src/plugin-api/popup.ts#L67)*
 
 * **at**: *string* = "center"
 
@@ -335,25 +279,17 @@ ___
 
 ### ▪ **ADD_SIDEBAR_DEFAULT_OPTIONS**: *object*
 
-*Defined in [sidebar.ts:30](../../lara-typescript/src/plugin-api/sidebar.ts#L30)*
-
 ###  handle
 
 • **handle**: *string* = ""
-
-*Defined in [sidebar.ts:33](../../lara-typescript/src/plugin-api/sidebar.ts#L33)*
 
 ###  handleColor
 
 • **handleColor**: *string* = "#aaa"
 
-*Defined in [sidebar.ts:34](../../lara-typescript/src/plugin-api/sidebar.ts#L34)*
-
 ###  icon
 
 • **icon**: *string* = "default"
-
-*Defined in [sidebar.ts:32](../../lara-typescript/src/plugin-api/sidebar.ts#L32)*
 
 Arrow pointing left.
 
@@ -361,25 +297,17 @@ Arrow pointing left.
 
 • **padding**: *number* = 25
 
-*Defined in [sidebar.ts:38](../../lara-typescript/src/plugin-api/sidebar.ts#L38)*
-
 ###  titleBar
 
 • **titleBar**: *undefined* = undefined
-
-*Defined in [sidebar.ts:35](../../lara-typescript/src/plugin-api/sidebar.ts#L35)*
 
 ###  titleBarColor
 
 • **titleBarColor**: *string* = "#bbb"
 
-*Defined in [sidebar.ts:36](../../lara-typescript/src/plugin-api/sidebar.ts#L36)*
-
 ###  width
 
 • **width**: *number* = 500
-
-*Defined in [sidebar.ts:37](../../lara-typescript/src/plugin-api/sidebar.ts#L37)*
 
 ___
 
@@ -387,15 +315,11 @@ ___
 
 ### ▪ **events**: *object*
 
-*Defined in [events.ts:7](../../lara-typescript/src/plugin-api/events.ts#L7)*
-
 Functions related to event observing provided by LARA.
 
 ###  offInteractiveAvailable
 
 ▸ **offInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
-
-*Defined in [events.ts:28](../../lara-typescript/src/plugin-api/events.ts#L28)*
 
 Removes InteractiveAvailable event handler.
 
@@ -411,8 +335,6 @@ Name | Type |
 
 ▸ **offLog**(`handler`: [ILogEventHandler](globals.md#ilogeventhandler)): *void*
 
-*Defined in [events.ts:19](../../lara-typescript/src/plugin-api/events.ts#L19)*
-
 Removes log event handler.
 
 **Parameters:**
@@ -426,8 +348,6 @@ Name | Type |
 ###  onInteractiveAvailable
 
 ▸ **onInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
-
-*Defined in [events.ts:24](../../lara-typescript/src/plugin-api/events.ts#L24)*
 
 Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
 Currently uses when click to play mode is enabled and the click to play overlay is clicked.
@@ -443,8 +363,6 @@ Name | Type |
 ###  onLog
 
 ▸ **onLog**(`handler`: [ILogEventHandler](globals.md#ilogeventhandler)): *void*
-
-*Defined in [events.ts:15](../../lara-typescript/src/plugin-api/events.ts#L15)*
 
 Subscribes to log events. Gets called when any event is logged to the CC Log Manager app.
 

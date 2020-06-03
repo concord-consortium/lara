@@ -25,8 +25,6 @@
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
-
 ___
 
 ### `Optional` supportsSnapshots
@@ -34,5 +32,3 @@ ___
 • **supportsSnapshots**? : *undefined | false | true*
 
 *Inherited from [IGetInteractiveListOptions](igetinteractivelistoptions.md).[supportsSnapshots](igetinteractivelistoptions.md#optional-supportssnapshots)*
-
-*Defined in [types.ts:351](../../../lara-typescript/src/interactive-api-client/types.ts#L351)*

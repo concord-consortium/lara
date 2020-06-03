@@ -22,20 +22,14 @@
 
 • **email**? : *undefined | string*
 
-*Defined in [types.ts:326](../../../lara-typescript/src/interactive-api-client/types.ts#L326)*
-
 ___
 
 ###  loggedIn
 
 • **loggedIn**: *boolean*
 
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
-
 ___
 
 ###  provider
 
 • **provider**: *string*
-
-*Defined in [types.ts:324](../../../lara-typescript/src/interactive-api-client/types.ts#L324)*

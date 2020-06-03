@@ -27,8 +27,6 @@
 
 *Inherited from [IAuthInfo](iauthinfo.md).[email](iauthinfo.md#optional-email)*
 
-*Defined in [types.ts:326](../../../lara-typescript/src/interactive-api-client/types.ts#L326)*
-
 ___
 
 ###  loggedIn
@@ -36,8 +34,6 @@ ___
 • **loggedIn**: *boolean*
 
 *Inherited from [IAuthInfo](iauthinfo.md).[loggedIn](iauthinfo.md#loggedin)*
-
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
 
 ___
 
@@ -47,8 +43,6 @@ ___
 
 *Inherited from [IAuthInfo](iauthinfo.md).[provider](iauthinfo.md#provider)*
 
-*Defined in [types.ts:324](../../../lara-typescript/src/interactive-api-client/types.ts#L324)*
-
 ___
 
 ###  requestId
@@ -56,5 +50,3 @@ ___
 • **requestId**: *number*
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
-
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*

@@ -23,15 +23,11 @@
 
 • **class_hash**: *string*
 
-*Defined in [types.ts:142](../../../lara-typescript/src/plugin-api/types.ts#L142)*
-
 ___
 
 ###  offering_id
 
 • **offering_id**: *number*
-
-*Defined in [types.ts:143](../../../lara-typescript/src/plugin-api/types.ts#L143)*
 
 ___
 
@@ -39,15 +35,11 @@ ___
 
 • **platform_id**: *string*
 
-*Defined in [types.ts:144](../../../lara-typescript/src/plugin-api/types.ts#L144)*
-
 ___
 
 ###  platform_user_id
 
 • **platform_user_id**: *number*
-
-*Defined in [types.ts:145](../../../lara-typescript/src/plugin-api/types.ts#L145)*
 
 ___
 
@@ -55,12 +47,8 @@ ___
 
 • **user_id**: *string*
 
-*Defined in [types.ts:146](../../../lara-typescript/src/plugin-api/types.ts#L146)*
-
 ___
 
 ###  user_type
 
 • **user_type**: *"learner" | "teacher"*
-
-*Defined in [types.ts:147](../../../lara-typescript/src/plugin-api/types.ts#L147)*

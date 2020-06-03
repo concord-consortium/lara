@@ -19,8 +19,6 @@
 
 • **listener**: *function*
 
-*Defined in [decorate-content.ts:5](../../../lara-typescript/src/plugin-api/decorate-content.ts#L5)*
-
 #### Type declaration:
 
 ▸ (`evt`: Event): *void*
@@ -36,5 +34,3 @@ ___
 ###  type
 
 • **type**: *string*
-
-*Defined in [decorate-content.ts:4](../../../lara-typescript/src/plugin-api/decorate-content.ts#L4)*

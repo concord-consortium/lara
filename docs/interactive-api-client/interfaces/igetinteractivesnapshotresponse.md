@@ -23,12 +23,8 @@
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
 
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*
-
 ___
 
 ###  snapshotUrl
 
 • **snapshotUrl**: *string*
-
-*Defined in [types.ts:393](../../../lara-typescript/src/interactive-api-client/types.ts#L393)*

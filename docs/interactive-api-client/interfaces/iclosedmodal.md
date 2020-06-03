@@ -17,5 +17,3 @@
 ###  uuid
 
 • **uuid**: *string*
-
-*Defined in [types.ts:303](../../../lara-typescript/src/interactive-api-client/types.ts#L303)*

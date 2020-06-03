@@ -25,15 +25,11 @@
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
 
-*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
-
 ___
 
 ###  choiceIds
 
 • **choiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
-
-*Defined in [types.ts:253](../../../lara-typescript/src/interactive-api-client/types.ts#L253)*
 
 ___
 
@@ -43,12 +39,8 @@ ___
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
 
-*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*
-
 ___
 
 ###  type
 
 • **type**: *"multiple choice"*
-
-*Defined in [types.ts:252](../../../lara-typescript/src/interactive-api-client/types.ts#L252)*

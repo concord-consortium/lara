@@ -25,8 +25,6 @@
 
 *Inherited from [IGetFirebaseJwtOptions](igetfirebasejwtoptions.md).[firebase_app](igetfirebasejwtoptions.md#optional-firebase_app)*
 
-*Defined in [types.ts:337](../../../lara-typescript/src/interactive-api-client/types.ts#L337)*
-
 ___
 
 ###  requestId
@@ -34,5 +32,3 @@ ___
 • **requestId**: *number*
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
-
-*Defined in [types.ts:320](../../../lara-typescript/src/interactive-api-client/types.ts#L320)*

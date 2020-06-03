@@ -21,15 +21,11 @@
 
 • **description**: *string*
 
-*Defined in [types.ts:378](../../../lara-typescript/src/interactive-api-client/types.ts#L378)*
-
 ___
 
 ###  id
 
 • **id**: *string*
-
-*Defined in [types.ts:376](../../../lara-typescript/src/interactive-api-client/types.ts#L376)*
 
 ___
 
@@ -37,12 +33,8 @@ ___
 
 • **name**: *string*
 
-*Defined in [types.ts:377](../../../lara-typescript/src/interactive-api-client/types.ts#L377)*
-
 ___
 
 ###  thumbnailUrl
 
 • **thumbnailUrl**: *string*
-
-*Defined in [types.ts:379](../../../lara-typescript/src/interactive-api-client/types.ts#L379)*

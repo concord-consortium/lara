@@ -19,8 +19,6 @@
 
 • **close**: *function*
 
-*Defined in [sidebar.ts:27](../../../lara-typescript/src/plugin-api/sidebar.ts#L27)*
-
 #### Type declaration:
 
 ▸ (): *void*
@@ -30,8 +28,6 @@ ___
 ###  open
 
 • **open**: *function*
-
-*Defined in [sidebar.ts:26](../../../lara-typescript/src/plugin-api/sidebar.ts#L26)*
 
 #### Type declaration:
 

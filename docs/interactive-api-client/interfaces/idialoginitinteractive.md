@@ -30,15 +30,11 @@
 
 • **authoredState**: *AuthoredState*
 
-*Defined in [types.ts:83](../../../lara-typescript/src/interactive-api-client/types.ts#L83)*
-
 ___
 
 ###  dialogState
 
 • **dialogState**: *DialogState*
-
-*Defined in [types.ts:85](../../../lara-typescript/src/interactive-api-client/types.ts#L85)*
 
 ___
 
@@ -46,20 +42,14 @@ ___
 
 • **interactiveState**: *InteractiveState*
 
-*Defined in [types.ts:84](../../../lara-typescript/src/interactive-api-client/types.ts#L84)*
-
 ___
 
 ###  mode
 
 • **mode**: *"dialog"*
 
-*Defined in [types.ts:82](../../../lara-typescript/src/interactive-api-client/types.ts#L82)*
-
 ___
 
 ###  version
 
 • **version**: *1*
-
-*Defined in [types.ts:81](../../../lara-typescript/src/interactive-api-client/types.ts#L81)*

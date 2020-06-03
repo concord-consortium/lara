@@ -21,15 +21,11 @@
 
 • **chainedState**: *boolean*
 
-*Defined in [types.ts:52](../../../lara-typescript/src/interactive-api-client/types.ts#L52)*
-
 ___
 
 ###  interactiveRuntimeId
 
 • **interactiveRuntimeId**: *[InteractiveRuntimeId](../globals.md#interactiveruntimeid)*
-
-*Defined in [types.ts:50](../../../lara-typescript/src/interactive-api-client/types.ts#L50)*
 
 ___
 
@@ -37,12 +33,8 @@ ___
 
 • **label**: *string*
 
-*Defined in [types.ts:51](../../../lara-typescript/src/interactive-api-client/types.ts#L51)*
-
 ___
 
 ###  sendStateOnInit
 
 • **sendStateOnInit**: *boolean*
-
-*Defined in [types.ts:53](../../../lara-typescript/src/interactive-api-client/types.ts#L53)*

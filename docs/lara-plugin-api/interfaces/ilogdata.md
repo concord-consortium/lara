@@ -23,20 +23,14 @@ All the other properties provides go to the `extra` hash.
 
 • **event**: *string*
 
-*Defined in [types.ts:207](../../../lara-typescript/src/plugin-api/types.ts#L207)*
-
 ___
 
 ### `Optional` event_value
 
 • **event_value**? : *any*
 
-*Defined in [types.ts:208](../../../lara-typescript/src/plugin-api/types.ts#L208)*
-
 ___
 
 ### `Optional` parameters
 
 • **parameters**? : *any*
-
-*Defined in [types.ts:209](../../../lara-typescript/src/plugin-api/types.ts#L209)*

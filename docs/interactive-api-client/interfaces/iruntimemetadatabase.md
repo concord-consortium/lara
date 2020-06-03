@@ -23,12 +23,8 @@
 
 • **answerText**: *string*
 
-*Defined in [types.ts:246](../../../lara-typescript/src/interactive-api-client/types.ts#L246)*
-
 ___
 
 ###  isSubmitted
 
 • **isSubmitted**: *boolean*
-
-*Defined in [types.ts:245](../../../lara-typescript/src/interactive-api-client/types.ts#L245)*

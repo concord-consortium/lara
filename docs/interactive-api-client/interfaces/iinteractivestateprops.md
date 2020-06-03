@@ -34,15 +34,11 @@
 
 • **activityName**? : *undefined | string*
 
-*Defined in [types.ts:15](../../../lara-typescript/src/interactive-api-client/types.ts#L15)*
-
 ___
 
 ### `Optional` allLinkedStates
 
 • **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
-
-*Defined in [types.ts:5](../../../lara-typescript/src/interactive-api-client/types.ts#L5)*
 
 ___
 
@@ -50,23 +46,17 @@ ___
 
 • **createdAt**? : *undefined | string*
 
-*Defined in [types.ts:6](../../../lara-typescript/src/interactive-api-client/types.ts#L6)*
-
 ___
 
 ### `Optional` hasLinkedInteractive
 
 • **hasLinkedInteractive**? : *undefined | false | true*
 
-*Defined in [types.ts:3](../../../lara-typescript/src/interactive-api-client/types.ts#L3)*
-
 ___
 
 ###  interactive
 
 • **interactive**: *object*
-
-*Defined in [types.ts:9](../../../lara-typescript/src/interactive-api-client/types.ts#L9)*
 
 #### Type declaration:
 
@@ -80,15 +70,11 @@ ___
 
 • **interactiveState**: *InteractiveState | null*
 
-*Defined in [types.ts:2](../../../lara-typescript/src/interactive-api-client/types.ts#L2)*
-
 ___
 
 ### `Optional` interactiveStateUrl
 
 • **interactiveStateUrl**? : *undefined | string*
-
-*Defined in [types.ts:8](../../../lara-typescript/src/interactive-api-client/types.ts#L8)*
 
 ___
 
@@ -96,15 +82,11 @@ ___
 
 • **linkedState**? : *undefined | object*
 
-*Defined in [types.ts:4](../../../lara-typescript/src/interactive-api-client/types.ts#L4)*
-
 ___
 
 ### `Optional` pageName
 
 • **pageName**? : *undefined | string*
-
-*Defined in [types.ts:14](../../../lara-typescript/src/interactive-api-client/types.ts#L14)*
 
 ___
 
@@ -112,12 +94,8 @@ ___
 
 • **pageNumber**? : *undefined | number*
 
-*Defined in [types.ts:13](../../../lara-typescript/src/interactive-api-client/types.ts#L13)*
-
 ___
 
 ### `Optional` updatedAt
 
 • **updatedAt**? : *undefined | string*
-
-*Defined in [types.ts:7](../../../lara-typescript/src/interactive-api-client/types.ts#L7)*

@@ -31,15 +31,11 @@
 
 • **alg**: *string*
 
-*Defined in [types.ts:151](../../../lara-typescript/src/plugin-api/types.ts#L151)*
-
 ___
 
 ###  aud
 
 • **aud**: *string*
-
-*Defined in [types.ts:152](../../../lara-typescript/src/plugin-api/types.ts#L152)*
 
 ___
 
@@ -47,15 +43,11 @@ ___
 
 • **claims**: *[IPortalClaims](iportalclaims.md)*
 
-*Defined in [types.ts:164](../../../lara-typescript/src/plugin-api/types.ts#L164)*
-
 ___
 
 ###  class_info_url
 
 • **class_info_url**: *string*
-
-*Defined in [types.ts:153](../../../lara-typescript/src/plugin-api/types.ts#L153)*
 
 ___
 
@@ -63,15 +55,11 @@ ___
 
 • **domain**: *string*
 
-*Defined in [types.ts:154](../../../lara-typescript/src/plugin-api/types.ts#L154)*
-
 ___
 
 ###  domain_uid
 
 • **domain_uid**: *number*
-
-*Defined in [types.ts:155](../../../lara-typescript/src/plugin-api/types.ts#L155)*
 
 ___
 
@@ -79,15 +67,11 @@ ___
 
 • **exp**: *number*
 
-*Defined in [types.ts:156](../../../lara-typescript/src/plugin-api/types.ts#L156)*
-
 ___
 
 ###  externalId
 
 • **externalId**: *number*
-
-*Defined in [types.ts:157](../../../lara-typescript/src/plugin-api/types.ts#L157)*
 
 ___
 
@@ -95,15 +79,11 @@ ___
 
 • **iat**: *number*
 
-*Defined in [types.ts:158](../../../lara-typescript/src/plugin-api/types.ts#L158)*
-
 ___
 
 ###  iss
 
 • **iss**: *string*
-
-*Defined in [types.ts:159](../../../lara-typescript/src/plugin-api/types.ts#L159)*
 
 ___
 
@@ -111,15 +91,11 @@ ___
 
 • **logging**: *boolean*
 
-*Defined in [types.ts:160](../../../lara-typescript/src/plugin-api/types.ts#L160)*
-
 ___
 
 ###  returnUrl
 
 • **returnUrl**: *string*
-
-*Defined in [types.ts:161](../../../lara-typescript/src/plugin-api/types.ts#L161)*
 
 ___
 
@@ -127,12 +103,8 @@ ___
 
 • **sub**: *string*
 
-*Defined in [types.ts:162](../../../lara-typescript/src/plugin-api/types.ts#L162)*
-
 ___
 
 ###  uid
 
 • **uid**: *string*
-
-*Defined in [types.ts:163](../../../lara-typescript/src/plugin-api/types.ts#L163)*

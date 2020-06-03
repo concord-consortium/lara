@@ -19,12 +19,8 @@
 
 • **content**: *object*
 
-*Defined in [types.ts:308](../../../lara-typescript/src/interactive-api-client/types.ts#L308)*
-
 ___
 
 ###  type
 
 • **type**: *string*
-
-*Defined in [types.ts:307](../../../lara-typescript/src/interactive-api-client/types.ts#L307)*

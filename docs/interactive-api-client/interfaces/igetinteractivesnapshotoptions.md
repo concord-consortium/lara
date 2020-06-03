@@ -19,5 +19,3 @@
 ###  interactiveRuntimeId
 
 • **interactiveRuntimeId**: *[InteractiveRuntimeId](../globals.md#interactiveruntimeid)*
-
-*Defined in [types.ts:386](../../../lara-typescript/src/interactive-api-client/types.ts#L386)*

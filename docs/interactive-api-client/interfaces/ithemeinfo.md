@@ -18,8 +18,6 @@
 
 • **colors**: *object*
 
-*Defined in [types.ts:42](../../../lara-typescript/src/interactive-api-client/types.ts#L42)*
-
 #### Type declaration:
 
 * **colorA**: *string*

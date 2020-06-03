@@ -20,20 +20,14 @@
 
 • **firstName**: *string*
 
-*Defined in [types.ts:185](../../../lara-typescript/src/interactive-api-client/types.ts#L185)*
-
 ___
 
 ###  lastName
 
 • **lastName**: *string*
 
-*Defined in [types.ts:186](../../../lara-typescript/src/interactive-api-client/types.ts#L186)*
-
 ___
 
 ###  userId
 
 • **userId**: *string*
-
-*Defined in [types.ts:184](../../../lara-typescript/src/interactive-api-client/types.ts#L184)*

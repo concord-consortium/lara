@@ -22,15 +22,11 @@
 
 • **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
 
-*Defined in [types.ts:358](../../../lara-typescript/src/interactive-api-client/types.ts#L358)*
-
 ___
 
 ###  name
 
 • **name**: *string*
-
-*Defined in [types.ts:359](../../../lara-typescript/src/interactive-api-client/types.ts#L359)*
 
 ___
 
@@ -38,20 +34,14 @@ ___
 
 • **pageLocation**: *"assessment list" | "interactive box" | "introduction"*
 
-*Defined in [types.ts:360](../../../lara-typescript/src/interactive-api-client/types.ts#L360)*
-
 ___
 
 ### `Optional` thumbnailUrl
 
 • **thumbnailUrl**? : *undefined | string*
 
-*Defined in [types.ts:362](../../../lara-typescript/src/interactive-api-client/types.ts#L362)*
-
 ___
 
 ###  url
 
 • **url**: *string*
-
-*Defined in [types.ts:361](../../../lara-typescript/src/interactive-api-client/types.ts#L361)*

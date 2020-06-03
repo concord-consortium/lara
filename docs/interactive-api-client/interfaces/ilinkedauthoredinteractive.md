@@ -21,15 +21,11 @@
 
 • **chainedState**: *boolean*
 
-*Defined in [types.ts:60](../../../lara-typescript/src/interactive-api-client/types.ts#L60)*
-
 ___
 
 ###  id
 
 • **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
-
-*Defined in [types.ts:58](../../../lara-typescript/src/interactive-api-client/types.ts#L58)*
 
 ___
 
@@ -37,12 +33,8 @@ ___
 
 • **label**: *string*
 
-*Defined in [types.ts:59](../../../lara-typescript/src/interactive-api-client/types.ts#L59)*
-
 ___
 
 ###  sendStateOnInit
 
 • **sendStateOnInit**: *boolean*
-
-*Defined in [types.ts:61](../../../lara-typescript/src/interactive-api-client/types.ts#L61)*

@@ -27,15 +27,11 @@
 
 • **authoredState**: *AuthoredState*
 
-*Defined in [types.ts:91](../../../lara-typescript/src/interactive-api-client/types.ts#L91)*
-
 ___
 
 ###  interactiveState
 
 • **interactiveState**: *InteractiveState*
-
-*Defined in [types.ts:92](../../../lara-typescript/src/interactive-api-client/types.ts#L92)*
 
 ___
 
@@ -43,12 +39,8 @@ ___
 
 • **mode**: *"aggregate"*
 
-*Defined in [types.ts:90](../../../lara-typescript/src/interactive-api-client/types.ts#L90)*
-
 ___
 
 ###  version
 
 • **version**: *1*
-
-*Defined in [types.ts:89](../../../lara-typescript/src/interactive-api-client/types.ts#L89)*

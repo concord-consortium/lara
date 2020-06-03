@@ -32,8 +32,6 @@
 
 • **authoredState**: *string | null*
 
-*Defined in [types.ts:18](../../../lara-typescript/src/plugin-api/types.ts#L18)*
-
 The authored configuration for this instance (if available).
 
 ___
@@ -42,8 +40,6 @@ ___
 
 • **container**: *HTMLElement*
 
-*Defined in [types.ts:22](../../../lara-typescript/src/plugin-api/types.ts#L22)*
-
 HTMLElement created by LARA for the plugin to use to render both its runtime and authoring output.
 
 ___
@@ -51,8 +47,6 @@ ___
 ###  getClassInfo
 
 • **getClassInfo**: *function*
-
-*Defined in [types.ts:43](../../../lara-typescript/src/plugin-api/types.ts#L43)*
 
 Function that returns class details (Promise) or null if class info is not available.
 
@@ -65,8 +59,6 @@ ___
 ###  getFirebaseJwt
 
 • **getFirebaseJwt**: *function*
-
-*Defined in [types.ts:45](../../../lara-typescript/src/plugin-api/types.ts#L45)*
 
 Function that returns JWT (Promise) for given app name.
 
@@ -86,8 +78,6 @@ ___
 
 • **learnerState**: *string | null*
 
-*Defined in [types.ts:20](../../../lara-typescript/src/plugin-api/types.ts#L20)*
-
 The saved learner data for this instance (if available).
 
 ___
@@ -95,8 +85,6 @@ ___
 ###  log
 
 • **log**: *function*
-
-*Defined in [types.ts:63](../../../lara-typescript/src/plugin-api/types.ts#L63)*
 
 Logs event to the CC Log Server. Note that logging must be enabled for a given activity.
 Either by setting URL param logging=true or by enabling logging in Portal.
@@ -127,8 +115,6 @@ ___
 
 • **name**: *string*
 
-*Defined in [types.ts:12](../../../lara-typescript/src/plugin-api/types.ts#L12)*
-
 Name of the plugin
 
 ___
@@ -136,8 +122,6 @@ ___
 ###  pluginId
 
 • **pluginId**: *number*
-
-*Defined in [types.ts:16](../../../lara-typescript/src/plugin-api/types.ts#L16)*
 
 Plugin instance ID.
 
@@ -147,8 +131,6 @@ ___
 
 • **remoteEndpoint**: *string | null*
 
-*Defined in [types.ts:26](../../../lara-typescript/src/plugin-api/types.ts#L26)*
-
 The portal remote endpoint (if available).
 
 ___
@@ -156,8 +138,6 @@ ___
 ###  resourceUrl
 
 • **resourceUrl**: *string*
-
-*Defined in [types.ts:30](../../../lara-typescript/src/plugin-api/types.ts#L30)*
 
 URL of the resource associated with the current run (sequence URL or activity URL)
 
@@ -167,8 +147,6 @@ ___
 
 • **runId**: *number*
 
-*Defined in [types.ts:24](../../../lara-typescript/src/plugin-api/types.ts#L24)*
-
 The run ID for the current LARA run.
 
 ___
@@ -176,8 +154,6 @@ ___
 ###  saveLearnerPluginState
 
 • **saveLearnerPluginState**: *function*
-
-*Defined in [types.ts:41](../../../lara-typescript/src/plugin-api/types.ts#L41)*
 
 Function that saves the users state for the plugin.
 Note that plugins can have different scopes, e.g. activity or a single page.
@@ -205,8 +181,6 @@ ___
 
 • **url**: *string*
 
-*Defined in [types.ts:14](../../../lara-typescript/src/plugin-api/types.ts#L14)*
-
 Url from which the plugin was loaded.
 
 ___
@@ -215,8 +189,6 @@ ___
 
 • **userEmail**: *string | null*
 
-*Defined in [types.ts:28](../../../lara-typescript/src/plugin-api/types.ts#L28)*
-
 The current user email address (if available).
 
 ___
@@ -224,8 +196,6 @@ ___
 ###  wrappedEmbeddable
 
 • **wrappedEmbeddable**: *[IEmbeddableRuntimeContext](iembeddableruntimecontext.md) | null*
-
-*Defined in [types.ts:49](../../../lara-typescript/src/plugin-api/types.ts#L49)*
 
 Wrapped embeddable runtime context if plugin is wrapping some embeddable and the plugin has the
 guiPreview option set to true within its manifest.

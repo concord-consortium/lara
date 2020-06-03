@@ -17,5 +17,3 @@
 ###  linkedInteractives
 
 • **linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*
-
-*Defined in [types.ts:312](../../../lara-typescript/src/interactive-api-client/types.ts#L312)*

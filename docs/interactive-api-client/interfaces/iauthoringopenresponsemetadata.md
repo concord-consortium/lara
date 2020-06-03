@@ -25,8 +25,6 @@
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
-*Defined in [types.ts:222](../../../lara-typescript/src/interactive-api-client/types.ts#L222)*
-
 ___
 
 ### `Optional` prompt
@@ -34,8 +32,6 @@ ___
 • **prompt**? : *undefined | string*
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[prompt](iauthoringmetadatabase.md#optional-prompt)*
-
-*Defined in [types.ts:223](../../../lara-typescript/src/interactive-api-client/types.ts#L223)*
 
 ___
 
@@ -45,12 +41,8 @@ ___
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
 
-*Defined in [types.ts:220](../../../lara-typescript/src/interactive-api-client/types.ts#L220)*
-
 ___
 
 ###  type
 
 • **type**: *"open response"*
-
-*Defined in [types.ts:226](../../../lara-typescript/src/interactive-api-client/types.ts#L226)*

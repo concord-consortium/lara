@@ -122,15 +122,11 @@
 
 Ƭ **ChoiceId**: *string | number*
 
-*Defined in [types.ts:216](../../lara-typescript/src/interactive-api-client/types.ts#L216)*
-
 ___
 
 ###  ClientMessage
 
 Ƭ **ClientMessage**: *[DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage) | [IFrameSaverClientMessage](globals.md#iframesaverclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage)*
-
-*Defined in [types.ts:172](../../lara-typescript/src/interactive-api-client/types.ts#L172)*
 
 ___
 
@@ -138,15 +134,11 @@ ___
 
 Ƭ **DeprecatedIFrameSaverClientMessage**: *"setLearnerUrl"*
 
-*Defined in [types.ts:169](../../lara-typescript/src/interactive-api-client/types.ts#L169)*
-
 ___
 
 ###  DeprecatedIFrameSaverServerMessage
 
 Ƭ **DeprecatedIFrameSaverServerMessage**: *"getLearnerUrl" | "loadInteractive"*
-
-*Defined in [types.ts:170](../../lara-typescript/src/interactive-api-client/types.ts#L170)*
 
 ___
 
@@ -154,15 +146,11 @@ ___
 
 Ƭ **GlobalIFrameSaverClientMessage**: *"interactiveStateGlobal"*
 
-*Defined in [types.ts:164](../../lara-typescript/src/interactive-api-client/types.ts#L164)*
-
 ___
 
 ###  GlobalIFrameSaverServerMessage
 
 Ƭ **GlobalIFrameSaverServerMessage**: *"loadInteractiveGlobal"*
-
-*Defined in [types.ts:165](../../lara-typescript/src/interactive-api-client/types.ts#L165)*
 
 ___
 
@@ -170,15 +158,11 @@ ___
 
 Ƭ **IAuthoringMetadata**: *[IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
 
-*Defined in [types.ts:240](../../lara-typescript/src/interactive-api-client/types.ts#L240)*
-
 ___
 
 ###  IFrameSaverClientMessage
 
 Ƭ **IFrameSaverClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringMetadata" | "runtimeMetadata" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getInteractiveList" | "setLinkedInteractives" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
-
-*Defined in [types.ts:132](../../lara-typescript/src/interactive-api-client/types.ts#L132)*
 
 ___
 
@@ -186,15 +170,11 @@ ___
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
 
-*Defined in [types.ts:95](../../lara-typescript/src/interactive-api-client/types.ts#L95)*
-
 ___
 
 ###  IRuntimeMetadata
 
 Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
-
-*Defined in [types.ts:255](../../lara-typescript/src/interactive-api-client/types.ts#L255)*
 
 ___
 
@@ -202,15 +182,11 @@ ___
 
 Ƭ **IShowModal**: *[IShowAlert](interfaces/ishowalert.md) | [IShowLightbox](interfaces/ishowlightbox.md) | [IShowDialog](interfaces/ishowdialog.md)*
 
-*Defined in [types.ts:296](../../lara-typescript/src/interactive-api-client/types.ts#L296)*
-
 ___
 
 ###  IframePhoneServerMessage
 
 Ƭ **IframePhoneServerMessage**: *"hello"*
-
-*Defined in [types.ts:167](../../lara-typescript/src/interactive-api-client/types.ts#L167)*
 
 ___
 
@@ -218,15 +194,11 @@ ___
 
 Ƭ **IframeSaverServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "interactiveList" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership"*
 
-*Defined in [types.ts:152](../../lara-typescript/src/interactive-api-client/types.ts#L152)*
-
 ___
 
 ###  InitInteractiveMode
 
 Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report" | "dialog"*
-
-*Defined in [types.ts:101](../../lara-typescript/src/interactive-api-client/types.ts#L101)*
 
 ___
 
@@ -234,15 +206,11 @@ ___
 
 Ƭ **InteractiveAuthoredId**: *string*
 
-*Defined in [types.ts:56](../../lara-typescript/src/interactive-api-client/types.ts#L56)*
-
 ___
 
 ###  InteractiveRuntimeId
 
 Ƭ **InteractiveRuntimeId**: *string*
-
-*Defined in [types.ts:48](../../lara-typescript/src/interactive-api-client/types.ts#L48)*
 
 ___
 
@@ -250,15 +218,11 @@ ___
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage) | [IframeSaverServerMessage](globals.md#iframesaverservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
 
-*Defined in [types.ts:176](../../lara-typescript/src/interactive-api-client/types.ts#L176)*
-
 ## Functions
 
 ### `Const` addAuthoredStateListener
 
 ▸ **addAuthoredStateListener**‹**AuthoredState**›(`listener`: function): *void*
-
-*Defined in [api.ts:173](../../lara-typescript/src/interactive-api-client/api.ts#L173)*
 
 **Type parameters:**
 
@@ -284,8 +248,6 @@ ___
 
 ▸ **addGlobalInteractiveStateListener**‹**GlobalInteractiveState**›(`listener`: function): *void*
 
-*Defined in [api.ts:182](../../lara-typescript/src/interactive-api-client/api.ts#L182)*
-
 **Type parameters:**
 
 ▪ **GlobalInteractiveState**
@@ -309,8 +271,6 @@ ___
 ### `Const` addInteractiveStateListener
 
 ▸ **addInteractiveStateListener**‹**InteractiveState**›(`listener`: function): *void*
-
-*Defined in [api.ts:164](../../lara-typescript/src/interactive-api-client/api.ts#L164)*
 
 **Type parameters:**
 
@@ -336,8 +296,6 @@ ___
 
 ▸ **closeModal**(`options`: [ICloseModal](interfaces/iclosemodal.md)): *void*
 
-*Defined in [api.ts:229](../../lara-typescript/src/interactive-api-client/api.ts#L229)*
-
 **Parameters:**
 
 Name | Type |
@@ -352,8 +310,6 @@ ___
 
 ▸ **getAuthInfo**(): *Promise‹[IAuthInfo](interfaces/iauthinfo.md)›*
 
-*Defined in [api.ts:128](../../lara-typescript/src/interactive-api-client/api.ts#L128)*
-
 **Returns:** *Promise‹[IAuthInfo](interfaces/iauthinfo.md)›*
 
 ___
@@ -361,8 +317,6 @@ ___
 ### `Const` getAuthoredState
 
 ▸ **getAuthoredState**‹**AuthoredState**›(): *AuthoredState | null*
-
-*Defined in [api.ts:54](../../lara-typescript/src/interactive-api-client/api.ts#L54)*
 
 **Type parameters:**
 
@@ -375,8 +329,6 @@ ___
 ### `Const` getFirebaseJWT
 
 ▸ **getFirebaseJWT**(`options`: [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)): *Promise‹string›*
-
-*Defined in [api.ts:143](../../lara-typescript/src/interactive-api-client/api.ts#L143)*
 
 **Parameters:**
 
@@ -392,8 +344,6 @@ ___
 
 ▸ **getGlobalInteractiveState**‹**GlobalInteractiveState**›(): *GlobalInteractiveState | null*
 
-*Defined in [api.ts:81](../../lara-typescript/src/interactive-api-client/api.ts#L81)*
-
 **Type parameters:**
 
 ▪ **GlobalInteractiveState**
@@ -405,8 +355,6 @@ ___
 ### `Const` getInitInteractiveMessage
 
 ▸ **getInitInteractiveMessage**‹**InteractiveState**, **AuthoredState**, **DialogState**, **GlobalInteractiveState**›(): *Promise‹[IInitInteractive](globals.md#iinitinteractive)‹InteractiveState, AuthoredState, DialogState, GlobalInteractiveState› | null›*
-
-*Defined in [api.ts:13](../../lara-typescript/src/interactive-api-client/api.ts#L13)*
 
 **Type parameters:**
 
@@ -426,8 +374,6 @@ ___
 
 ▸ **getInteractiveList**(`options`: [IGetInteractiveListRequest](interfaces/igetinteractivelistrequest.md)): *void*
 
-*Defined in [api.ts:236](../../lara-typescript/src/interactive-api-client/api.ts#L236)*
-
 **Parameters:**
 
 Name | Type |
@@ -441,8 +387,6 @@ ___
 ### `Const` getInteractiveSnapshot
 
 ▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)): *void*
-
-*Defined in [api.ts:257](../../lara-typescript/src/interactive-api-client/api.ts#L257)*
 
 **Parameters:**
 
@@ -458,8 +402,6 @@ ___
 
 ▸ **getInteractiveState**‹**InteractiveState**›(): *InteractiveState | null*
 
-*Defined in [api.ts:27](../../lara-typescript/src/interactive-api-client/api.ts#L27)*
-
 **Type parameters:**
 
 ▪ **InteractiveState**
@@ -471,8 +413,6 @@ ___
 ### `Const` getLibraryInteractiveList
 
 ▸ **getLibraryInteractiveList**(`options`: [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)): *void*
-
-*Defined in [api.ts:250](../../lara-typescript/src/interactive-api-client/api.ts#L250)*
 
 **Parameters:**
 
@@ -488,8 +428,6 @@ ___
 
 ▸ **inIframe**(): *boolean*
 
-*Defined in [in-frame.ts:10](../../lara-typescript/src/interactive-api-client/in-frame.ts#L10)*
-
 **Returns:** *boolean*
 
 ___
@@ -497,8 +435,6 @@ ___
 ### `Const` removeAuthoredStateListener
 
 ▸ **removeAuthoredStateListener**‹**AuthoredState**›(`listener`: function): *void*
-
-*Defined in [api.ts:177](../../lara-typescript/src/interactive-api-client/api.ts#L177)*
 
 **Type parameters:**
 
@@ -524,8 +460,6 @@ ___
 
 ▸ **removeGlobalInteractiveStateListener**‹**GlobalInteractiveState**›(`listener`: function): *void*
 
-*Defined in [api.ts:187](../../lara-typescript/src/interactive-api-client/api.ts#L187)*
-
 **Type parameters:**
 
 ▪ **GlobalInteractiveState**
@@ -550,8 +484,6 @@ ___
 
 ▸ **removeInteractiveStateListener**‹**InteractiveState**›(`listener`: function): *void*
 
-*Defined in [api.ts:169](../../lara-typescript/src/interactive-api-client/api.ts#L169)*
-
 **Type parameters:**
 
 ▪ **InteractiveState**
@@ -575,8 +507,6 @@ ___
 ### `Const` setAuthoredState
 
 ▸ **setAuthoredState**‹**AuthoredState**›(`newAuthoredState`: AuthoredState | null): *void*
-
-*Defined in [api.ts:75](../../lara-typescript/src/interactive-api-client/api.ts#L75)*
 
 Note that state will become frozen and should never be mutated.
 Each time you update state, make sure that a new object is passed.
@@ -612,8 +542,6 @@ ___
 
 ▸ **setAuthoringCustomReportFields**(`fields`: [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)): *void*
 
-*Defined in [api.ts:208](../../lara-typescript/src/interactive-api-client/api.ts#L208)*
-
 **Parameters:**
 
 Name | Type |
@@ -628,8 +556,6 @@ ___
 
 ▸ **setAuthoringMetadata**(`metadata`: [IAuthoringMetadata](globals.md#iauthoringmetadata)): *void*
 
-*Defined in [api.ts:194](../../lara-typescript/src/interactive-api-client/api.ts#L194)*
-
 **Parameters:**
 
 Name | Type |
@@ -643,8 +569,6 @@ ___
 ### `Const` setGlobalInteractiveState
 
 ▸ **setGlobalInteractiveState**‹**GlobalInteractiveState**›(`newGlobalState`: GlobalInteractiveState | null): *void*
-
-*Defined in [api.ts:102](../../lara-typescript/src/interactive-api-client/api.ts#L102)*
 
 Note that state will become frozen and should never be mutated.
 Each time you update state, make sure that a new object is passed.
@@ -680,8 +604,6 @@ ___
 
 ▸ **setHeight**(`height`: number | string): *void*
 
-*Defined in [api.ts:116](../../lara-typescript/src/interactive-api-client/api.ts#L116)*
-
 **Parameters:**
 
 Name | Type |
@@ -696,8 +618,6 @@ ___
 
 ▸ **setHint**(`hint`: string): *void*
 
-*Defined in [api.ts:120](../../lara-typescript/src/interactive-api-client/api.ts#L120)*
-
 **Parameters:**
 
 Name | Type |
@@ -711,8 +631,6 @@ ___
 ### `Const` setInteractiveState
 
 ▸ **setInteractiveState**‹**InteractiveState**›(`newInteractiveState`: InteractiveState | null): *void*
-
-*Defined in [api.ts:48](../../lara-typescript/src/interactive-api-client/api.ts#L48)*
 
 Note that state will become frozen and should never be mutated.
 Each time you update state, make sure that a new object is passed.
@@ -748,8 +666,6 @@ ___
 
 ▸ **setLinkedInteractives**(`options`: [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)): *void*
 
-*Defined in [api.ts:243](../../lara-typescript/src/interactive-api-client/api.ts#L243)*
-
 **Parameters:**
 
 Name | Type |
@@ -763,8 +679,6 @@ ___
 ### `Const` setNavigation
 
 ▸ **setNavigation**(`options`: [INavigationOptions](interfaces/inavigationoptions.md)): *void*
-
-*Defined in [api.ts:124](../../lara-typescript/src/interactive-api-client/api.ts#L124)*
 
 **Parameters:**
 
@@ -780,8 +694,6 @@ ___
 
 ▸ **setRuntimeCustomReportValues**(`values`: [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)): *void*
 
-*Defined in [api.ts:215](../../lara-typescript/src/interactive-api-client/api.ts#L215)*
-
 **Parameters:**
 
 Name | Type |
@@ -795,8 +707,6 @@ ___
 ### `Const` setRuntimeMetadata
 
 ▸ **setRuntimeMetadata**(`metadata`: [IRuntimeMetadata](globals.md#iruntimemetadata)): *void*
-
-*Defined in [api.ts:201](../../lara-typescript/src/interactive-api-client/api.ts#L201)*
 
 **Parameters:**
 
@@ -812,8 +722,6 @@ ___
 
 ▸ **setSupportedFeatures**(`features`: [ISupportedFeatures](interfaces/isupportedfeatures.md)): *void*
 
-*Defined in [api.ts:108](../../lara-typescript/src/interactive-api-client/api.ts#L108)*
-
 **Parameters:**
 
 Name | Type |
@@ -828,8 +736,6 @@ ___
 
 ▸ **showModal**(`options`: [IShowModal](globals.md#ishowmodal)): *void*
 
-*Defined in [api.ts:222](../../lara-typescript/src/interactive-api-client/api.ts#L222)*
-
 **Parameters:**
 
 Name | Type |
@@ -843,8 +749,6 @@ ___
 ### `Const` useAuthoredState
 
 ▸ **useAuthoredState**‹**AuthoredState**›(): *object*
-
-*Defined in [hooks.ts:41](../../lara-typescript/src/interactive-api-client/hooks.ts#L41)*
 
 **Type parameters:**
 
@@ -862,8 +766,6 @@ ___
 
 ▸ **useGlobalInteractiveState**‹**GlobalInteractiveState**›(): *object*
 
-*Defined in [hooks.ts:66](../../lara-typescript/src/interactive-api-client/hooks.ts#L66)*
-
 **Type parameters:**
 
 ▪ **GlobalInteractiveState**
@@ -879,8 +781,6 @@ ___
 ### `Const` useInitMessage
 
 ▸ **useInitMessage**‹**InteractiveState**, **AuthoredState**, **DialogState**, **GlobalInteractiveState**›(): *null | [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
-
-*Defined in [hooks.ts:97](../../lara-typescript/src/interactive-api-client/hooks.ts#L97)*
 
 **Type parameters:**
 
@@ -899,8 +799,6 @@ ___
 ### `Const` useInteractiveState
 
 ▸ **useInteractiveState**‹**InteractiveState**›(): *object*
-
-*Defined in [hooks.ts:14](../../lara-typescript/src/interactive-api-client/hooks.ts#L14)*
 
 **Type parameters:**
 
