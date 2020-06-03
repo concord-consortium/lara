@@ -25,7 +25,10 @@ export class ManagedState {
   }
 
   public set initMessage(value: any) {
-    value = deepFreeze(value);
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
+      value = deepFreeze(value);
+    }
     this._initMessage = value;
     this.emit("initInteractive", value);
   }
@@ -35,7 +38,8 @@ export class ManagedState {
   }
 
   public set interactiveState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._interactiveState = value;
@@ -47,7 +51,8 @@ export class ManagedState {
   }
 
   public set authoredState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._authoredState = value;
@@ -59,7 +64,8 @@ export class ManagedState {
   }
 
   public set globalInteractiveState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._globalInteractiveState = value;
