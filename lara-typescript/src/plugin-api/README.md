@@ -1,3 +1,5 @@
+## [API documentation](globals.md)
+
 ### This documentation is meant to be used by LARA Plugin developers.
 
 #### Setup and webpack configuration

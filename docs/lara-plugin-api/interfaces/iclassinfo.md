@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IClassInfo](../interfaces/iclassinfo.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IClassInfo](iclassinfo.md)
 
 # Interface: IClassInfo
 
 ## Hierarchy
 
-**IClassInfo**
+* **IClassInfo**
 
 ## Index
 
@@ -17,62 +17,38 @@
 * [teachers](iclassinfo.md#teachers)
 * [uri](iclassinfo.md#uri)
 
----
-
 ## Properties
-
-<a id="class_hash"></a>
 
 ###  class_hash
 
-**● class_hash**: *`string`*
-
-*Defined in [types.ts:187](../../../lara-typescript/src/plugin-api/types.ts#L187)*
+• **class_hash**: *string*
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *`number`*
-
-*Defined in [types.ts:185](../../../lara-typescript/src/plugin-api/types.ts#L185)*
+• **id**: *number*
 
 ___
-<a id="offerings"></a>
 
 ###  offerings
 
-**● offerings**: *[IOffering](ioffering.md)[]*
-
-*Defined in [types.ts:190](../../../lara-typescript/src/plugin-api/types.ts#L190)*
+• **offerings**: *[IOffering](ioffering.md)[]*
 
 ___
-<a id="students"></a>
 
 ###  students
 
-**● students**: *[IUser](iuser.md)[]*
-
-*Defined in [types.ts:189](../../../lara-typescript/src/plugin-api/types.ts#L189)*
+• **students**: *[IUser](iuser.md)[]*
 
 ___
-<a id="teachers"></a>
 
 ###  teachers
 
-**● teachers**: *[IUser](iuser.md)[]*
-
-*Defined in [types.ts:188](../../../lara-typescript/src/plugin-api/types.ts#L188)*
+• **teachers**: *[IUser](iuser.md)[]*
 
 ___
-<a id="uri"></a>
 
 ###  uri
 
-**● uri**: *`string`*
-
-*Defined in [types.ts:186](../../../lara-typescript/src/plugin-api/types.ts#L186)*
-
-___
-
+• **uri**: *string*

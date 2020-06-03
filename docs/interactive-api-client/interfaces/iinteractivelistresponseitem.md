@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [IInteractiveListResponseItem](../interfaces/iinteractivelistresponseitem.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
 
 # Interface: IInteractiveListResponseItem
 
 ## Hierarchy
 
-**IInteractiveListResponseItem**
+* **IInteractiveListResponseItem**
 
 ## Index
 
@@ -13,56 +13,35 @@
 * [id](iinteractivelistresponseitem.md#id)
 * [name](iinteractivelistresponseitem.md#name)
 * [pageLocation](iinteractivelistresponseitem.md#pagelocation)
-* [thumbnailUrl](iinteractivelistresponseitem.md#thumbnailurl)
+* [thumbnailUrl](iinteractivelistresponseitem.md#optional-thumbnailurl)
 * [url](iinteractivelistresponseitem.md#url)
-
----
 
 ## Properties
 
-<a id="id"></a>
-
 ###  id
 
-**● id**: *[InteractiveAuthoredId](../#interactiveauthoredid)*
-
-*Defined in [types.ts:363](../../../lara-typescript/src/interactive-api-client/types.ts#L363)*
+• **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
 
 ___
-<a id="name"></a>
 
 ###  name
 
-**● name**: *`string`*
-
-*Defined in [types.ts:364](../../../lara-typescript/src/interactive-api-client/types.ts#L364)*
+• **name**: *string*
 
 ___
-<a id="pagelocation"></a>
 
 ###  pageLocation
 
-**● pageLocation**: *"assessment list" \| "interactive box" \| "introduction"*
-
-*Defined in [types.ts:365](../../../lara-typescript/src/interactive-api-client/types.ts#L365)*
+• **pageLocation**: *"assessment list" | "interactive box" | "introduction"*
 
 ___
-<a id="thumbnailurl"></a>
 
-### `<Optional>` thumbnailUrl
+### `Optional` thumbnailUrl
 
-**● thumbnailUrl**: *`undefined` \| `string`*
-
-*Defined in [types.ts:367](../../../lara-typescript/src/interactive-api-client/types.ts#L367)*
+• **thumbnailUrl**? : *undefined | string*
 
 ___
-<a id="url"></a>
 
 ###  url
 
-**● url**: *`string`*
-
-*Defined in [types.ts:366](../../../lara-typescript/src/interactive-api-client/types.ts#L366)*
-
-___
-
+• **url**: *string*

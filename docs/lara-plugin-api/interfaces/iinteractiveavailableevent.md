@@ -1,10 +1,12 @@
-[LARA Plugin API](../README.md) > [IInteractiveAvailableEvent](../interfaces/iinteractiveavailableevent.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IInteractiveAvailableEvent](iinteractiveavailableevent.md)
 
 # Interface: IInteractiveAvailableEvent
 
+Data passed to InteractiveAvailable event handlers.
+
 ## Hierarchy
 
-**IInteractiveAvailableEvent**
+* **IInteractiveAvailableEvent**
 
 ## Index
 
@@ -13,26 +15,18 @@
 * [available](iinteractiveavailableevent.md#available)
 * [container](iinteractiveavailableevent.md#container)
 
----
-
 ## Properties
-
-<a id="available"></a>
 
 ###  available
 
-**● available**: *`boolean`*
+• **available**: *boolean*
 
-*Defined in [types.ts:229](../../../lara-typescript/src/plugin-api/types.ts#L229)*
+Availablility of interactive
 
 ___
-<a id="container"></a>
 
 ###  container
 
-**● container**: *`HTMLElement`*
+• **container**: *HTMLElement*
 
-*Defined in [types.ts:225](../../../lara-typescript/src/plugin-api/types.ts#L225)*
-
-___
-
+Interactive container of the interactive that was just started.

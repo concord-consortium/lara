@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [ISetLinkedInteractives](../interfaces/isetlinkedinteractives.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
 
 # Interface: ISetLinkedInteractives
 
 ## Hierarchy
 
-**ISetLinkedInteractives**
+* **ISetLinkedInteractives**
 
 ## Index
 
@@ -12,17 +12,8 @@
 
 * [linkedInteractives](isetlinkedinteractives.md#linkedinteractives)
 
----
-
 ## Properties
-
-<a id="linkedinteractives"></a>
 
 ###  linkedInteractives
 
-**● linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*
-
-*Defined in [types.ts:317](../../../lara-typescript/src/interactive-api-client/types.ts#L317)*
-
-___
-
+• **linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*

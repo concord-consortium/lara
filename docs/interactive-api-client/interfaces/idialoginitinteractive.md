@@ -1,14 +1,18 @@
-[LARA Interactive API Client](../README.md) > [IDialogInitInteractive](../interfaces/idialoginitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IDialogInitInteractive](idialoginitinteractive.md)
 
-# Interface: IDialogInitInteractive
+# Interface: IDialogInitInteractive ‹**InteractiveState, AuthoredState, DialogState**›
 
 ## Type parameters
-#### InteractiveState 
-#### AuthoredState 
-#### DialogState 
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
+
+▪ **DialogState**
+
 ## Hierarchy
 
-**IDialogInitInteractive**
+* **IDialogInitInteractive**
 
 ## Index
 
@@ -20,53 +24,32 @@
 * [mode](idialoginitinteractive.md#mode)
 * [version](idialoginitinteractive.md#version)
 
----
-
 ## Properties
-
-<a id="authoredstate"></a>
 
 ###  authoredState
 
-**● authoredState**: *`AuthoredState`*
-
-*Defined in [types.ts:83](../../../lara-typescript/src/interactive-api-client/types.ts#L83)*
+• **authoredState**: *AuthoredState*
 
 ___
-<a id="dialogstate"></a>
 
 ###  dialogState
 
-**● dialogState**: *`DialogState`*
-
-*Defined in [types.ts:85](../../../lara-typescript/src/interactive-api-client/types.ts#L85)*
+• **dialogState**: *DialogState*
 
 ___
-<a id="interactivestate"></a>
 
 ###  interactiveState
 
-**● interactiveState**: *`InteractiveState`*
-
-*Defined in [types.ts:84](../../../lara-typescript/src/interactive-api-client/types.ts#L84)*
+• **interactiveState**: *InteractiveState*
 
 ___
-<a id="mode"></a>
 
 ###  mode
 
-**● mode**: *"dialog"*
-
-*Defined in [types.ts:82](../../../lara-typescript/src/interactive-api-client/types.ts#L82)*
+• **mode**: *"dialog"*
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`1`*
-
-*Defined in [types.ts:81](../../../lara-typescript/src/interactive-api-client/types.ts#L81)*
-
-___
-
+• **version**: *1*

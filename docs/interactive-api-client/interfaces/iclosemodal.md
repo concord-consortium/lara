@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [ICloseModal](../interfaces/iclosemodal.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [ICloseModal](iclosemodal.md)
 
 # Interface: ICloseModal
 
 ## Hierarchy
 
-**ICloseModal**
+* **ICloseModal**
 
 ## Index
 
@@ -12,17 +12,8 @@
 
 * [uuid](iclosemodal.md#uuid)
 
----
-
 ## Properties
-
-<a id="uuid"></a>
 
 ###  uuid
 
-**● uuid**: *`string`*
-
-*Defined in [types.ts:304](../../../lara-typescript/src/interactive-api-client/types.ts#L304)*
-
-___
-
+• **uuid**: *string*

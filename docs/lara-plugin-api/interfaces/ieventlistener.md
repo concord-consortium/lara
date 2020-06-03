@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IEventListener](../interfaces/ieventlistener.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IEventListener](ieventlistener.md)
 
 # Interface: IEventListener
 
 ## Hierarchy
 
-**IEventListener**
+* **IEventListener**
 
 ## Index
 
@@ -13,37 +13,24 @@
 * [listener](ieventlistener.md#listener)
 * [type](ieventlistener.md#type)
 
----
-
 ## Properties
-
-<a id="listener"></a>
 
 ###  listener
 
-**● listener**: *`function`*
+• **listener**: *function*
 
-*Defined in [decorate-content.ts:5](../../../lara-typescript/src/plugin-api/decorate-content.ts#L5)*
+#### Type declaration:
 
-#### Type declaration
-▸(evt: *`Event`*): `void`
+▸ (`evt`: Event): *void*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| evt | `Event` |
-
-**Returns:** `void`
+Name | Type |
+------ | ------ |
+`evt` | Event |
 
 ___
-<a id="type"></a>
 
 ###  type
 
-**● type**: *`string`*
-
-*Defined in [decorate-content.ts:4](../../../lara-typescript/src/plugin-api/decorate-content.ts#L4)*
-
-___
-
+• **type**: *string*

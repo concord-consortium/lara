@@ -1,260 +1,205 @@
-[LARA Interactive API Client](../README.md) > [IRuntimeInitInteractive](../interfaces/iruntimeinitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IRuntimeInitInteractive](iruntimeinitinteractive.md)
 
-# Interface: IRuntimeInitInteractive
+# Interface: IRuntimeInitInteractive ‹**InteractiveState, AuthoredState, GlobalInteractiveState**›
 
 ## Type parameters
-#### InteractiveState 
-#### AuthoredState 
-#### GlobalInteractiveState 
+
+▪ **InteractiveState**
+
+▪ **AuthoredState**
+
+▪ **GlobalInteractiveState**
+
 ## Hierarchy
 
- [IInteractiveStateProps](iinteractivestateprops.md)<`InteractiveState`>
+* [IInteractiveStateProps](iinteractivestateprops.md)‹InteractiveState›
 
-**↳ IRuntimeInitInteractive**
+  ↳ **IRuntimeInitInteractive**
 
 ## Index
 
 ### Properties
 
-* [activityName](iruntimeinitinteractive.md#activityname)
-* [allLinkedStates](iruntimeinitinteractive.md#alllinkedstates)
+* [activityName](iruntimeinitinteractive.md#optional-activityname)
+* [allLinkedStates](iruntimeinitinteractive.md#optional-alllinkedstates)
 * [authInfo](iruntimeinitinteractive.md#authinfo)
 * [authoredState](iruntimeinitinteractive.md#authoredstate)
 * [classInfoUrl](iruntimeinitinteractive.md#classinfourl)
 * [collaboratorUrls](iruntimeinitinteractive.md#collaboratorurls)
-* [createdAt](iruntimeinitinteractive.md#createdat)
+* [createdAt](iruntimeinitinteractive.md#optional-createdat)
 * [error](iruntimeinitinteractive.md#error)
 * [globalInteractiveState](iruntimeinitinteractive.md#globalinteractivestate)
-* [hasLinkedInteractive](iruntimeinitinteractive.md#haslinkedinteractive)
+* [hasLinkedInteractive](iruntimeinitinteractive.md#optional-haslinkedinteractive)
 * [interactive](iruntimeinitinteractive.md#interactive)
 * [interactiveState](iruntimeinitinteractive.md#interactivestate)
 * [interactiveStateUrl](iruntimeinitinteractive.md#interactivestateurl)
 * [linkedInteractives](iruntimeinitinteractive.md#linkedinteractives)
-* [linkedState](iruntimeinitinteractive.md#linkedstate)
+* [linkedState](iruntimeinitinteractive.md#optional-linkedstate)
 * [mode](iruntimeinitinteractive.md#mode)
-* [pageName](iruntimeinitinteractive.md#pagename)
-* [pageNumber](iruntimeinitinteractive.md#pagenumber)
+* [pageName](iruntimeinitinteractive.md#optional-pagename)
+* [pageNumber](iruntimeinitinteractive.md#optional-pagenumber)
 * [themeInfo](iruntimeinitinteractive.md#themeinfo)
-* [updatedAt](iruntimeinitinteractive.md#updatedat)
+* [updatedAt](iruntimeinitinteractive.md#optional-updatedat)
 * [version](iruntimeinitinteractive.md#version)
-
----
 
 ## Properties
 
-<a id="activityname"></a>
+### `Optional` activityName
 
-### `<Optional>` activityName
+• **activityName**? : *undefined | string*
 
-**● activityName**: *`undefined` \| `string`*
-
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[activityName](iinteractivestateprops.md#activityname)*
-
-*Defined in [types.ts:15](../../../lara-typescript/src/interactive-api-client/types.ts#L15)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[activityName](iinteractivestateprops.md#optional-activityname)*
 
 ___
-<a id="alllinkedstates"></a>
 
-### `<Optional>` allLinkedStates
+### `Optional` allLinkedStates
 
-**● allLinkedStates**: *[IInteractiveStateProps](iinteractivestateprops.md)[]*
+• **allLinkedStates**? : *[IInteractiveStateProps](iinteractivestateprops.md)[]*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[allLinkedStates](iinteractivestateprops.md#alllinkedstates)*
-
-*Defined in [types.ts:5](../../../lara-typescript/src/interactive-api-client/types.ts#L5)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[allLinkedStates](iinteractivestateprops.md#optional-alllinkedstates)*
 
 ___
-<a id="authinfo"></a>
 
 ###  authInfo
 
-**● authInfo**: *`object`*
+• **authInfo**: *object*
 
-*Defined in [types.ts:32](../../../lara-typescript/src/interactive-api-client/types.ts#L32)*
+#### Type declaration:
 
-#### Type declaration
+* **email**: *string*
+
+* **loggedIn**: *boolean*
+
+* **provider**: *string*
 
 ___
-<a id="authoredstate"></a>
 
 ###  authoredState
 
-**● authoredState**: *`AuthoredState` \| `null`*
-
-*Defined in [types.ts:23](../../../lara-typescript/src/interactive-api-client/types.ts#L23)*
+• **authoredState**: *AuthoredState | null*
 
 ___
-<a id="classinfourl"></a>
 
 ###  classInfoUrl
 
-**● classInfoUrl**: *`string`*
-
-*Defined in [types.ts:27](../../../lara-typescript/src/interactive-api-client/types.ts#L27)*
+• **classInfoUrl**: *string*
 
 ___
-<a id="collaboratorurls"></a>
 
 ###  collaboratorUrls
 
-**● collaboratorUrls**: *`string`[] \| `null`*
-
-*Defined in [types.ts:26](../../../lara-typescript/src/interactive-api-client/types.ts#L26)*
+• **collaboratorUrls**: *string[] | null*
 
 ___
-<a id="createdat"></a>
 
-### `<Optional>` createdAt
+### `Optional` createdAt
 
-**● createdAt**: *`undefined` \| `string`*
+• **createdAt**? : *undefined | string*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[createdAt](iinteractivestateprops.md#createdat)*
-
-*Defined in [types.ts:6](../../../lara-typescript/src/interactive-api-client/types.ts#L6)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[createdAt](iinteractivestateprops.md#optional-createdat)*
 
 ___
-<a id="error"></a>
 
 ###  error
 
-**● error**: *`any`*
-
-*Defined in [types.ts:21](../../../lara-typescript/src/interactive-api-client/types.ts#L21)*
+• **error**: *any*
 
 ___
-<a id="globalinteractivestate"></a>
 
 ###  globalInteractiveState
 
-**● globalInteractiveState**: *`GlobalInteractiveState` \| `null`*
-
-*Defined in [types.ts:24](../../../lara-typescript/src/interactive-api-client/types.ts#L24)*
+• **globalInteractiveState**: *GlobalInteractiveState | null*
 
 ___
-<a id="haslinkedinteractive"></a>
 
-### `<Optional>` hasLinkedInteractive
+### `Optional` hasLinkedInteractive
 
-**● hasLinkedInteractive**: *`undefined` \| `false` \| `true`*
+• **hasLinkedInteractive**? : *undefined | false | true*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[hasLinkedInteractive](iinteractivestateprops.md#haslinkedinteractive)*
-
-*Defined in [types.ts:3](../../../lara-typescript/src/interactive-api-client/types.ts#L3)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)*
 
 ___
-<a id="interactive"></a>
 
 ###  interactive
 
-**● interactive**: *`object`*
+• **interactive**: *object*
 
 *Overrides [IInteractiveStateProps](iinteractivestateprops.md).[interactive](iinteractivestateprops.md#interactive)*
 
-*Defined in [types.ts:28](../../../lara-typescript/src/interactive-api-client/types.ts#L28)*
+#### Type declaration:
 
-#### Type declaration
+* **id**: *number*
+
+* **name**: *string*
 
 ___
-<a id="interactivestate"></a>
 
 ###  interactiveState
 
-**● interactiveState**: *`InteractiveState` \| `null`*
+• **interactiveState**: *InteractiveState | null*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[interactiveState](iinteractivestateprops.md#interactivestate)*
 
-*Defined in [types.ts:2](../../../lara-typescript/src/interactive-api-client/types.ts#L2)*
-
 ___
-<a id="interactivestateurl"></a>
 
 ###  interactiveStateUrl
 
-**● interactiveStateUrl**: *`string`*
+• **interactiveStateUrl**: *string*
 
-*Overrides [IInteractiveStateProps](iinteractivestateprops.md).[interactiveStateUrl](iinteractivestateprops.md#interactivestateurl)*
-
-*Defined in [types.ts:25](../../../lara-typescript/src/interactive-api-client/types.ts#L25)*
+*Overrides [IInteractiveStateProps](iinteractivestateprops.md).[interactiveStateUrl](iinteractivestateprops.md#optional-interactivestateurl)*
 
 ___
-<a id="linkedinteractives"></a>
 
 ###  linkedInteractives
 
-**● linkedInteractives**: *[ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)[]*
-
-*Defined in [types.ts:37](../../../lara-typescript/src/interactive-api-client/types.ts#L37)*
+• **linkedInteractives**: *[ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)[]*
 
 ___
-<a id="linkedstate"></a>
 
-### `<Optional>` linkedState
+### `Optional` linkedState
 
-**● linkedState**: *`undefined` \| `object`*
+• **linkedState**? : *undefined | object*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[linkedState](iinteractivestateprops.md#linkedstate)*
-
-*Defined in [types.ts:4](../../../lara-typescript/src/interactive-api-client/types.ts#L4)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[linkedState](iinteractivestateprops.md#optional-linkedstate)*
 
 ___
-<a id="mode"></a>
 
 ###  mode
 
-**● mode**: *"runtime"*
-
-*Defined in [types.ts:22](../../../lara-typescript/src/interactive-api-client/types.ts#L22)*
+• **mode**: *"runtime"*
 
 ___
-<a id="pagename"></a>
 
-### `<Optional>` pageName
+### `Optional` pageName
 
-**● pageName**: *`undefined` \| `string`*
+• **pageName**? : *undefined | string*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageName](iinteractivestateprops.md#pagename)*
-
-*Defined in [types.ts:14](../../../lara-typescript/src/interactive-api-client/types.ts#L14)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageName](iinteractivestateprops.md#optional-pagename)*
 
 ___
-<a id="pagenumber"></a>
 
-### `<Optional>` pageNumber
+### `Optional` pageNumber
 
-**● pageNumber**: *`undefined` \| `number`*
+• **pageNumber**? : *undefined | number*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageNumber](iinteractivestateprops.md#pagenumber)*
-
-*Defined in [types.ts:13](../../../lara-typescript/src/interactive-api-client/types.ts#L13)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageNumber](iinteractivestateprops.md#optional-pagenumber)*
 
 ___
-<a id="themeinfo"></a>
 
 ###  themeInfo
 
-**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
-
-*Defined in [types.ts:38](../../../lara-typescript/src/interactive-api-client/types.ts#L38)*
+• **themeInfo**: *[IThemeInfo](ithemeinfo.md)*
 
 ___
-<a id="updatedat"></a>
 
-### `<Optional>` updatedAt
+### `Optional` updatedAt
 
-**● updatedAt**: *`undefined` \| `string`*
+• **updatedAt**? : *undefined | string*
 
-*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[updatedAt](iinteractivestateprops.md#updatedat)*
-
-*Defined in [types.ts:7](../../../lara-typescript/src/interactive-api-client/types.ts#L7)*
+*Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[updatedAt](iinteractivestateprops.md#optional-updatedat)*
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`1`*
-
-*Defined in [types.ts:20](../../../lara-typescript/src/interactive-api-client/types.ts#L20)*
-
-___
-
+• **version**: *1*
