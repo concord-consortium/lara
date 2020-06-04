@@ -16060,7 +16060,31 @@ exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
     return ajaxPromise(learnerStateSaveUrl, { state: state });
 };
 exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
-    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
+    var editPluginForm = document.getElementsByClassName("edit_plugin")[0];
+    var editEmbeddedPluginForm = document.getElementsByClassName("edit_embeddable_embeddable_plugin")[0];
+    var editForm = editPluginForm || editEmbeddedPluginForm;
+    var preventFormClosing = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    if (editForm) {
+        editForm.addEventListener("submit", preventFormClosing);
+    }
+    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData })
+        .then(function (result) {
+        if (editForm) {
+            editForm.removeEventListener("submit", preventFormClosing);
+            editForm.submit();
+        }
+        return result;
+    })
+        .catch(function (err) {
+        if (editForm) {
+            editForm.removeEventListener("submit", preventFormClosing);
+        }
+        window.alert("Unable to save authored state: " + err.toString());
+        throw err;
+    });
 };
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);

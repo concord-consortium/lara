@@ -284,15 +284,19 @@ describe("Plugin authoring context helper", () => {
 
     describe("when save fails", () => {
       beforeEach(() => {
+        window.alert = jest.fn();
         ajax = jest.fn((opts) => {
           opts.error("jqXHR", "error", "boom");
         });
         jest.spyOn($, "ajax").mockImplementation(ajax);
       });
-      it("should save data", () => {
-        expect.assertions(1);
+      it("should show an alert and return error", () => {
+        expect.assertions(2);
         return authoringContext.saveAuthoredPluginState(authorData)
-          .catch((e) => expect(e).toEqual("boom"));
+          .catch((e) => {
+            expect(window.alert).toBeCalledTimes(1);
+            expect(e).toEqual("boom");
+          });
       });
     });
   });

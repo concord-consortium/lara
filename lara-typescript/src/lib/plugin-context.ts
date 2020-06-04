@@ -106,7 +106,36 @@ export const saveLearnerPluginState = (learnerStateSaveUrl: string, state: strin
 };
 
 export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorData: string): Promise<string> => {
-  return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
+  // disable the submit on the container form until the ajax call returns so that the ajax call can complete
+  // TODO: this code should be removed when this story changes how we render authoring forms
+  // https://www.pivotaltracker.com/story/show/167500798
+  type MaybeForm = HTMLFormElement | undefined;
+  const editPluginForm = document.getElementsByClassName("edit_plugin")[0] as MaybeForm;
+  const editEmbeddedPluginForm = document.getElementsByClassName("edit_embeddable_embeddable_plugin")[0] as MaybeForm;
+  const editForm = editPluginForm || editEmbeddedPluginForm;
+  const preventFormClosing = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  if (editForm){
+    editForm.addEventListener("submit", preventFormClosing);
+  }
+
+  return ajaxPromise(authoringSaveStateUrl, { author_data: authorData })
+          .then((result) => {
+            if (editForm){
+              editForm.removeEventListener("submit", preventFormClosing);
+              editForm.submit();
+            }
+            return result;
+          })
+          .catch((err) => {
+            if (editForm){
+              editForm.removeEventListener("submit", preventFormClosing);
+            }
+            window.alert(`Unable to save authored state: ${err.toString()}`);
+            throw err;
+          });
 };
 
 const getFirebaseJwt = (firebaseJwtUrl: string, appName: string): Promise<IJwtResponse> => {
