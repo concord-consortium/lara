@@ -20,7 +20,6 @@
             = source_form.select :format, VideoSource::SUPPORTED_MIME_TYPES
             = source_form.link_to_remove "Delete"
     = f.link_to_add "Add source", :sources
-  .overlay-gradient
   .submit-container
     = f.button "Cancel", :class => 'close', :type => 'button'
     = f.submit "Save", :class => 'embeddable-save', :default => 'default'
