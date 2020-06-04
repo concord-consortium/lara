@@ -16,8 +16,6 @@ $ ->
         .html(data.html)
         .prepend($modal_close)
         .addClass(data.css_class)
-        .css('top', $(window).scrollTop() + 40)
-        .css('margin-bottom', 40)
         .show()
       $modal_container.show();
       # for check-answer.js - add click handlers for the new elements
