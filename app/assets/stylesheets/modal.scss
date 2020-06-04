@@ -55,17 +55,6 @@
     fieldset {
       width: calc(100% - 2px);
     }
-
-    .overlay-gradient {
-      background: transparent;
-      background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgba(255,255,255,.1) 100%);
-      bottom: 55px;
-      height: 50px;
-      left: 0;
-      position: fixed;
-      transform: translateX(0); // allows element to be fixed within its container
-      width: 100%;
-    }
     .submit-container {
       background: #eee;
       bottom: 0;
@@ -75,6 +64,18 @@
       transform: translateX(0); // allows element to be fixed within its container
       width: 100%;
       z-index: 1;
+
+      &:before {
+        background: transparent;
+        background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgba(255,255,255,.1) 100%);
+        content: '';
+        height: 50px;
+        left: 0;
+        position: fixed;
+        top: -50px;
+        transform: translateX(0); // allows element to be fixed within its container
+        width: 100%;
+      }
 
       input.close {
         margin-right: 1em;
