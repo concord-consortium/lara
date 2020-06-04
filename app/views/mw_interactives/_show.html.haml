@@ -67,7 +67,7 @@
       var $clickToPlay = $(clickToPlayElem);
       var $interactiveContainer = $clickToPlay.parent('.interactive-container');
       var $embeddableContainer = $clickToPlay.parents('.embeddable-container');
-      LARA.InternalAPI.events.emitInteractiveAvailable({
+      LARA.Events.emitInteractiveAvailable({
         container: $embeddableContainer[0],
         available: true
       });

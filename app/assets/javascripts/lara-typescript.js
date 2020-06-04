@@ -10197,37 +10197,40 @@ var weakMemoize = function weakMemoize(func) {
 __webpack_require__.r(__webpack_exports__);
 function toVal(mix) {
 	var k, y, str='';
-	if (mix) {
-		if (typeof mix === 'object') {
-			if (Array.isArray(mix)) {
-				for (k=0; k < mix.length; k++) {
-					if (mix[k] && (y = toVal(mix[k]))) {
-						str && (str += ' ');
-						str += y;
-					}
-				}
-			} else {
-				for (k in mix) {
-					if (mix[k] && (y = toVal(k))) {
+
+	if (typeof mix === 'string' || typeof mix === 'number') {
+		str += mix;
+	} else if (typeof mix === 'object') {
+		if (Array.isArray(mix)) {
+			for (k=0; k < mix.length; k++) {
+				if (mix[k]) {
+					if (y = toVal(mix[k])) {
 						str && (str += ' ');
 						str += y;
 					}
 				}
 			}
-		} else if (typeof mix !== 'boolean' && !mix.call) {
-			str && (str += ' ');
-			str += mix;
+		} else {
+			for (k in mix) {
+				if (mix[k]) {
+					str && (str += ' ');
+					str += k;
+				}
+			}
 		}
 	}
+
 	return str;
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-	var i=0, x, str='';
+	var i=0, tmp, x, str='';
 	while (i < arguments.length) {
-		if (x = toVal(arguments[i++])) {
-			str && (str += ' ');
-			str += x
+		if (tmp = arguments[i++]) {
+			if (x = toVal(tmp)) {
+				str && (str += ' ');
+				str += x
+			}
 		}
 	}
 	return str;
@@ -25502,6 +25505,43 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/events/index.ts":
+/*!*****************************!*\
+  !*** ./src/events/index.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
+var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
+var emitter = new eventemitter2_1.EventEmitter2({
+    maxListeners: Infinity
+});
+exports.emitLog = function (logData) {
+    emitter.emit("log", logData);
+};
+exports.onLog = function (handler) {
+    emitter.on("log", handler);
+};
+exports.offLog = function (handler) {
+    emitter.off("log", handler);
+};
+exports.emitInteractiveAvailable = function (event) {
+    emitter.emit("interactiveAvailable", event);
+};
+exports.onInteractiveAvailable = function (handler) {
+    emitter.on("interactiveAvailable", handler);
+};
+exports.offInteractiveAvailable = function (handler) {
+    emitter.off("interactiveAvailable", handler);
+};
+
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
@@ -25512,29 +25552,33 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InteractiveAPI = exports.InternalAPI = exports.PluginAPI_V3 = void 0;
+exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
-var InternalAPI = __webpack_require__(/*! ./internal-api */ "./src/internal-api/index.ts");
-exports.InternalAPI = InternalAPI;
-var InteractiveAPI = __webpack_require__(/*! ./interactive-api */ "./src/interactive-api/index.ts");
+var InteractiveAPI = __webpack_require__(/*! ./interactive-api-parent */ "./src/interactive-api-parent/index.ts");
 exports.InteractiveAPI = InteractiveAPI;
+var Plugins = __webpack_require__(/*! ./plugins */ "./src/plugins/index.ts");
+exports.Plugins = Plugins;
+var Events = __webpack_require__(/*! ./events */ "./src/events/index.ts");
+exports.Events = Events;
 var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/page-item-authoring/index.tsx");
+exports.PageItemAuthoring = PageItemAuthoring;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
 window.LARA.PluginAPI_V3 = PluginAPI;
-window.LARA.InternalAPI = InternalAPI;
+window.LARA.Plugins = Plugins;
+window.LARA.Events = Events;
 window.LARA.InteractiveAPI = InteractiveAPI;
 window.LARA.PageItemAuthoring = PageItemAuthoring;
 
 
 /***/ }),
 
-/***/ "./src/interactive-api/global-iframe-saver.ts":
-/*!****************************************************!*\
-  !*** ./src/interactive-api/global-iframe-saver.ts ***!
-  \****************************************************/
+/***/ "./src/interactive-api-parent/global-iframe-saver.ts":
+/*!***********************************************************!*\
+  !*** ./src/interactive-api-parent/global-iframe-saver.ts ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25542,7 +25586,7 @@ window.LARA.PageItemAuthoring = PageItemAuthoring;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlobalIframeSaver = void 0;
-var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
 var GlobalIframeSaver = /** @class */ (function () {
     function GlobalIframeSaver(config) {
         this.saveUrl = config.save_url;
@@ -25610,10 +25654,10 @@ exports.GlobalIframeSaver = GlobalIframeSaver;
 
 /***/ }),
 
-/***/ "./src/interactive-api/iframe-phone-manager.ts":
-/*!*****************************************************!*\
-  !*** ./src/interactive-api/iframe-phone-manager.ts ***!
-  \*****************************************************/
+/***/ "./src/interactive-api-parent/iframe-phone-manager.ts":
+/*!************************************************************!*\
+  !*** ./src/interactive-api-parent/iframe-phone-manager.ts ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25696,10 +25740,10 @@ exports.IframePhoneManager = IframePhoneManager;
 
 /***/ }),
 
-/***/ "./src/interactive-api/iframe-saver.ts":
-/*!*********************************************!*\
-  !*** ./src/interactive-api/iframe-saver.ts ***!
-  \*********************************************/
+/***/ "./src/interactive-api-parent/iframe-saver.ts":
+/*!****************************************************!*\
+  !*** ./src/interactive-api-parent/iframe-saver.ts ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25707,7 +25751,7 @@ exports.IframePhoneManager = IframePhoneManager;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IFrameSaver = void 0;
-var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts");
+var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
 var getAuthoredState = function ($dataDiv) {
     var authoredState = $dataDiv.data("authored-state");
     if ((authoredState == null) || (authoredState === "")) {
@@ -26029,7 +26073,7 @@ var IFrameSaver = /** @class */ (function () {
         var focusNamespace = "focus." + namespace;
         var mouseoutNamespace = "mouseout." + namespace;
         if (enabled) {
-            this.autoSaveIntervalId = setInterval((function () { return _this.save(); }), 5 * 1000);
+            this.autoSaveIntervalId = window.setInterval((function () { return _this.save(); }), 5 * 1000);
             $(window).on(focusNamespace, function () { return _this.save(); });
             return this.$iframe.on(mouseoutNamespace, function () { return _this.save(); });
         }
@@ -26081,10 +26125,10 @@ exports.IFrameSaver = IFrameSaver;
 
 /***/ }),
 
-/***/ "./src/interactive-api/index.ts":
-/*!**************************************!*\
-  !*** ./src/interactive-api/index.ts ***!
-  \**************************************/
+/***/ "./src/interactive-api-parent/index.ts":
+/*!*********************************************!*\
+  !*** ./src/interactive-api-parent/index.ts ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26101,403 +26145,15 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts");
-__exportStar(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api/iframe-phone-manager.ts"), exports);
-__exportStar(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api/global-iframe-saver.ts"), exports);
-__exportStar(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api/iframe-saver.ts"), exports);
+var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-parent/global-iframe-saver.ts");
+__exportStar(__webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts"), exports);
+__exportStar(__webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-parent/global-iframe-saver.ts"), exports);
+__exportStar(__webpack_require__(/*! ./iframe-saver */ "./src/interactive-api-parent/iframe-saver.ts"), exports);
 $(document).ready(function () {
     if (gon.globalInteractiveState != null) {
         window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
     }
 });
-
-
-/***/ }),
-
-/***/ "./src/internal-api/events.ts":
-/*!************************************!*\
-  !*** ./src/internal-api/events.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.events = void 0;
-var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
-exports.events = {
-    emitLog: events_1.emitLog,
-    emitInteractiveAvailable: events_1.emitInteractiveAvailable
-};
-
-
-/***/ }),
-
-/***/ "./src/internal-api/index.ts":
-/*!***********************************!*\
-  !*** ./src/internal-api/index.ts ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
-Object.defineProperty(exports, "initPlugin", { enumerable: true, get: function () { return plugins_1.initPlugin; } });
-Object.defineProperty(exports, "setNextPluginLabel", { enumerable: true, get: function () { return plugins_1.setNextPluginLabel; } });
-__exportStar(__webpack_require__(/*! ./events */ "./src/internal-api/events.ts"), exports);
-
-
-/***/ }),
-
-/***/ "./src/lib/embeddable-runtime-context.ts":
-/*!***********************************************!*\
-  !*** ./src/lib/embeddable-runtime-context.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateEmbeddableRuntimeContext = void 0;
-var events_1 = __webpack_require__(/*! ./events */ "./src/lib/events.ts");
-var getInteractiveState = function (interactiveStateUrl) {
-    if (!interactiveStateUrl) {
-        return null;
-    }
-    return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
-};
-var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
-    if (!interactiveStateUrl) {
-        return null;
-    }
-    if (!interactiveStatePromise) {
-        interactiveStatePromise = getInteractiveState(interactiveStateUrl);
-    }
-    return interactiveStatePromise.then(function (interactiveState) {
-        try {
-            var rawJSON = JSON.parse(interactiveState.raw_data);
-            if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
-                return rawJSON.lara_options.reporting_url;
-            }
-            return null;
-        }
-        catch (error) {
-            // tslint:disable-next-line:no-console
-            console.error(error);
-            return null;
-        }
-    });
-};
-exports.generateEmbeddableRuntimeContext = function (context) {
-    return {
-        container: context.container,
-        laraJson: context.laraJson,
-        getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
-        getReportingUrl: function (getInteractiveStatePromise) {
-            return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
-        },
-        onInteractiveAvailable: function (handler) {
-            // Add generic listener and filter events to limit them just to this given embeddable.
-            events_1.onInteractiveAvailable(function (event) {
-                if (event.container === context.container) {
-                    handler(event);
-                }
-            });
-        },
-        interactiveAvailable: context.interactiveAvailable
-    };
-};
-
-
-/***/ }),
-
-/***/ "./src/lib/events.ts":
-/*!***************************!*\
-  !*** ./src/lib/events.ts ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
-var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
-var emitter = new eventemitter2_1.EventEmitter2({
-    maxListeners: Infinity
-});
-exports.emitLog = function (logData) {
-    emitter.emit("log", logData);
-};
-exports.onLog = function (handler) {
-    emitter.on("log", handler);
-};
-exports.offLog = function (handler) {
-    emitter.off("log", handler);
-};
-exports.emitInteractiveAvailable = function (event) {
-    emitter.emit("interactiveAvailable", event);
-};
-exports.onInteractiveAvailable = function (handler) {
-    emitter.on("interactiveAvailable", handler);
-};
-exports.offInteractiveAvailable = function (handler) {
-    emitter.off("interactiveAvailable", handler);
-};
-
-
-/***/ }),
-
-/***/ "./src/lib/plugin-context.ts":
-/*!***********************************!*\
-  !*** ./src/lib/plugin-context.ts ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateAuthoringPluginContext = exports.generateRuntimePluginContext = exports.saveAuthoredPluginState = exports.saveLearnerPluginState = void 0;
-var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/lib/embeddable-runtime-context.ts");
-var $ = __webpack_require__(/*! jquery */ "jquery");
-var ajaxPromise = function (url, data) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: url,
-            type: "PUT",
-            data: data,
-            success: function (result) {
-                resolve(result);
-            },
-            error: function (jqXHR, errText, err) {
-                reject(err);
-            }
-        });
-    });
-};
-exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
-    return ajaxPromise(learnerStateSaveUrl, { state: state });
-};
-exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
-    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
-};
-var getFirebaseJwt = function (firebaseJwtUrl, appName) {
-    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
-    return fetch(appSpecificUrl, { method: "POST" })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-        if (data.response_type === "ERROR") {
-            throw { message: data.message };
-        }
-        try {
-            var token = data.token.split(".")[1];
-            var claimsJson = atob(token);
-            var claims = JSON.parse(claimsJson);
-            return { token: data.token, claims: claims };
-        }
-        catch (error) {
-            throw { message: "Unable to parse JWT Token", error: error };
-        }
-    });
-};
-var getClassInfo = function (classInfoUrl) {
-    if (!classInfoUrl) {
-        return null;
-    }
-    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
-};
-var log = function (context, logData) {
-    var logger = window.loggerUtils;
-    if (logger) {
-        if (typeof (logData) === "string") {
-            logData = { event: logData };
-        }
-        var pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
-        logger.log(pluginLogData);
-    }
-};
-var fetchPluginEventLogData = function (context) {
-    var logData = {
-        plugin_id: context.pluginId
-    };
-    if (context.embeddablePluginId) {
-        logData.embeddable_plugin_id = context.embeddablePluginId;
-    }
-    if (context.wrappedEmbeddable) {
-        logData.wrapped_embeddable_type = context.wrappedEmbeddable.laraJson.type;
-        logData.wrapped_embeddable_id = context.wrappedEmbeddable.laraJson.ref_id;
-    }
-    return logData;
-};
-exports.generateRuntimePluginContext = function (options) {
-    var context = {
-        name: options.name,
-        url: options.url,
-        pluginId: options.pluginId,
-        authoredState: options.authoredState,
-        learnerState: options.learnerState,
-        container: options.container,
-        runId: options.runId,
-        remoteEndpoint: options.remoteEndpoint,
-        userEmail: options.userEmail,
-        resourceUrl: options.resourceUrl,
-        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(options.learnerStateSaveUrl, state); },
-        getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
-        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
-        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        log: function (logData) { return log(options, logData); }
-    };
-    return context;
-};
-exports.generateAuthoringPluginContext = function (options) {
-    return {
-        name: options.name,
-        url: options.url,
-        pluginId: options.pluginId,
-        authoredState: options.authoredState,
-        container: options.container,
-        componentLabel: options.componentLabel,
-        saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); },
-        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); }
-    };
-};
-
-
-/***/ }),
-
-/***/ "./src/lib/plugins.ts":
-/*!****************************!*\
-  !*** ./src/lib/plugins.ts ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerPlugin = exports.initPlugin = exports.setNextPluginLabel = void 0;
-var plugin_context_1 = __webpack_require__(/*! ./plugin-context */ "./src/lib/plugin-context.ts");
-var pluginError = function (e, other) {
-    // tslint:disable-next-line:no-console
-    console.group("LARA Plugin Error");
-    // tslint:disable-next-line:no-console
-    console.error(e);
-    // tslint:disable-next-line:no-console
-    console.dir(other);
-    // tslint:disable-next-line:no-console
-    console.groupEnd();
-};
-/** @hidden Note, we call these `classes` but any constructor function will do. */
-var pluginClasses = {};
-/**
- * Called in plugins/_show.haml before each plugin is loaded.  The value is used by #registerPlugin
- * to override the plugin's passed label.  This removes the previous need for the plugin's label to
- * match the label in LARA's database.
- */
-var nextPluginLabel = "";
-exports.setNextPluginLabel = function (override) {
-    nextPluginLabel = override;
-};
-/****************************************************************************
- Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
- This method is called to initialize the plugin.
- Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
- @param label The the script identifier.
- @param options Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
- ****************************************************************************/
-exports.initPlugin = function (label, options) {
-    if (options.type === "authoring") {
-        initAuthoringPlugin(label, options);
-    }
-    else {
-        initRuntimePlugin(label, options);
-    }
-};
-var initRuntimePlugin = function (label, options) {
-    var Constructor = pluginClasses[label].runtimeClass;
-    if (typeof Constructor === "function") {
-        try {
-            var plugin = new Constructor(plugin_context_1.generateRuntimePluginContext(options));
-        }
-        catch (e) {
-            pluginError(e, options);
-        }
-        // tslint:disable-next-line:no-console
-        console.info("Plugin", label, "is now registered");
-    }
-    else {
-        // tslint:disable-next-line:no-console
-        console.error("No plugin registered for label:", label);
-    }
-};
-var initAuthoringPlugin = function (label, options) {
-    var Constructor = pluginClasses[label].authoringClass;
-    if (typeof Constructor === "function") {
-        try {
-            var plugin = new Constructor(plugin_context_1.generateAuthoringPluginContext(options));
-        }
-        catch (e) {
-            pluginError(e, options);
-        }
-        // tslint:disable-next-line:no-console
-        console.info("Plugin", label, "is now registered");
-    }
-    else {
-        // tslint:disable-next-line:no-console
-        console.error("No plugin registered for label:", label);
-    }
-};
-/****************************************************************************
- Register a new external script
- ```
- registerPlugin({runtimeClass: DebuggerRuntime, authoringClass?: DebuggerAuthoring})
- ```
- @param options The registration options
- @returns `true` if plugin was registered correctly.
- ***************************************************************************/
-exports.registerPlugin = function (options) {
-    if (nextPluginLabel === "") {
-        // tslint:disable-next-line:no-console
-        console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
-        return false;
-    }
-    var runtimeClass = options.runtimeClass, authoringClass = options.authoringClass;
-    if (typeof runtimeClass !== "function") {
-        // tslint:disable-next-line:no-console
-        console.error("Plugin did not provide a runtime constructor", nextPluginLabel);
-        return false;
-    }
-    if (typeof authoringClass !== "function") {
-        // tslint:disable-next-line:no-console
-        console.warn("Plugin did not provide an authoring constructor. This is ok if \"guiAuthoring\"\n                  is not set for this component.", nextPluginLabel);
-    }
-    if (pluginClasses[nextPluginLabel]) {
-        // tslint:disable-next-line:no-console
-        console.error("Duplicate Plugin for label", nextPluginLabel);
-        return false;
-    }
-    else {
-        pluginClasses[nextPluginLabel] = options;
-        nextPluginLabel = "";
-        return true;
-    }
-};
 
 
 /***/ }),
@@ -27404,7 +27060,7 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.events = void 0;
-var events_1 = __webpack_require__(/*! ../lib/events */ "./src/lib/events.ts");
+var events_1 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
 /**
  * Functions related to event observing provided by LARA.
  */
@@ -27486,7 +27142,7 @@ __exportStar(__webpack_require__(/*! ./events */ "./src/plugin-api/events.ts"), 
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerPlugin = void 0;
-var plugins_1 = __webpack_require__(/*! ../lib/plugins */ "./src/lib/plugins.ts");
+var plugins_1 = __webpack_require__(/*! ../plugins/plugins */ "./src/plugins/plugins.ts");
 /****************************************************************************
  Register a new external script
  ```
@@ -27799,6 +27455,326 @@ exports.addSidebar = function (_options) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+/***/ }),
+
+/***/ "./src/plugins/embeddable-runtime-context.ts":
+/*!***************************************************!*\
+  !*** ./src/plugins/embeddable-runtime-context.ts ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateEmbeddableRuntimeContext = void 0;
+var events_1 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
+var getInteractiveState = function (interactiveStateUrl) {
+    if (!interactiveStateUrl) {
+        return null;
+    }
+    return fetch(interactiveStateUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
+};
+var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
+    if (!interactiveStateUrl) {
+        return null;
+    }
+    if (!interactiveStatePromise) {
+        interactiveStatePromise = getInteractiveState(interactiveStateUrl);
+    }
+    return interactiveStatePromise.then(function (interactiveState) {
+        try {
+            var rawJSON = JSON.parse(interactiveState.raw_data);
+            if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
+                return rawJSON.lara_options.reporting_url;
+            }
+            return null;
+        }
+        catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error);
+            return null;
+        }
+    });
+};
+exports.generateEmbeddableRuntimeContext = function (context) {
+    return {
+        container: context.container,
+        laraJson: context.laraJson,
+        getInteractiveState: function () { return getInteractiveState(context.interactiveStateUrl); },
+        getReportingUrl: function (getInteractiveStatePromise) {
+            return getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise);
+        },
+        onInteractiveAvailable: function (handler) {
+            // Add generic listener and filter events to limit them just to this given embeddable.
+            events_1.onInteractiveAvailable(function (event) {
+                if (event.container === context.container) {
+                    handler(event);
+                }
+            });
+        },
+        interactiveAvailable: context.interactiveAvailable
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/plugins/index.ts":
+/*!******************************!*\
+  !*** ./src/plugins/index.ts ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var plugins_1 = __webpack_require__(/*! ./plugins */ "./src/plugins/plugins.ts");
+Object.defineProperty(exports, "initPlugin", { enumerable: true, get: function () { return plugins_1.initPlugin; } });
+Object.defineProperty(exports, "setNextPluginLabel", { enumerable: true, get: function () { return plugins_1.setNextPluginLabel; } });
+
+
+/***/ }),
+
+/***/ "./src/plugins/plugin-context.ts":
+/*!***************************************!*\
+  !*** ./src/plugins/plugin-context.ts ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateAuthoringPluginContext = exports.generateRuntimePluginContext = exports.saveAuthoredPluginState = exports.saveLearnerPluginState = void 0;
+var embeddable_runtime_context_1 = __webpack_require__(/*! ./embeddable-runtime-context */ "./src/plugins/embeddable-runtime-context.ts");
+var $ = __webpack_require__(/*! jquery */ "jquery");
+var ajaxPromise = function (url, data) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            type: "PUT",
+            data: data,
+            success: function (result) {
+                resolve(result);
+            },
+            error: function (jqXHR, errText, err) {
+                reject(err);
+            }
+        });
+    });
+};
+exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+    return ajaxPromise(learnerStateSaveUrl, { state: state });
+};
+exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
+    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
+};
+var getFirebaseJwt = function (firebaseJwtUrl, appName) {
+    var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
+    return fetch(appSpecificUrl, { method: "POST" })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+        if (data.response_type === "ERROR") {
+            throw { message: data.message };
+        }
+        try {
+            var token = data.token.split(".")[1];
+            var claimsJson = atob(token);
+            var claims = JSON.parse(claimsJson);
+            return { token: data.token, claims: claims };
+        }
+        catch (error) {
+            throw { message: "Unable to parse JWT Token", error: error };
+        }
+    });
+};
+var getClassInfo = function (classInfoUrl) {
+    if (!classInfoUrl) {
+        return null;
+    }
+    return fetch(classInfoUrl, { method: "get", credentials: "include" }).then(function (resp) { return resp.json(); });
+};
+var log = function (context, logData) {
+    var logger = window.loggerUtils;
+    if (logger) {
+        if (typeof (logData) === "string") {
+            logData = { event: logData };
+        }
+        var pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
+        logger.log(pluginLogData);
+    }
+};
+var fetchPluginEventLogData = function (context) {
+    var logData = {
+        plugin_id: context.pluginId
+    };
+    if (context.embeddablePluginId) {
+        logData.embeddable_plugin_id = context.embeddablePluginId;
+    }
+    if (context.wrappedEmbeddable) {
+        logData.wrapped_embeddable_type = context.wrappedEmbeddable.laraJson.type;
+        logData.wrapped_embeddable_id = context.wrappedEmbeddable.laraJson.ref_id;
+    }
+    return logData;
+};
+exports.generateRuntimePluginContext = function (options) {
+    var context = {
+        name: options.name,
+        url: options.url,
+        pluginId: options.pluginId,
+        authoredState: options.authoredState,
+        learnerState: options.learnerState,
+        container: options.container,
+        runId: options.runId,
+        remoteEndpoint: options.remoteEndpoint,
+        userEmail: options.userEmail,
+        resourceUrl: options.resourceUrl,
+        saveLearnerPluginState: function (state) { return exports.saveLearnerPluginState(options.learnerStateSaveUrl, state); },
+        getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
+        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
+        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
+        log: function (logData) { return log(options, logData); }
+    };
+    return context;
+};
+exports.generateAuthoringPluginContext = function (options) {
+    return {
+        name: options.name,
+        url: options.url,
+        pluginId: options.pluginId,
+        authoredState: options.authoredState,
+        container: options.container,
+        componentLabel: options.componentLabel,
+        saveAuthoredPluginState: function (state) { return exports.saveAuthoredPluginState(options.authorDataSaveUrl, state); },
+        wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
+        getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); }
+    };
+};
+
+
+/***/ }),
+
+/***/ "./src/plugins/plugins.ts":
+/*!********************************!*\
+  !*** ./src/plugins/plugins.ts ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerPlugin = exports.initPlugin = exports.setNextPluginLabel = void 0;
+var plugin_context_1 = __webpack_require__(/*! ./plugin-context */ "./src/plugins/plugin-context.ts");
+var pluginError = function (e, other) {
+    // tslint:disable-next-line:no-console
+    console.group("LARA Plugin Error");
+    // tslint:disable-next-line:no-console
+    console.error(e);
+    // tslint:disable-next-line:no-console
+    console.dir(other);
+    // tslint:disable-next-line:no-console
+    console.groupEnd();
+};
+/** @hidden Note, we call these `classes` but any constructor function will do. */
+var pluginClasses = {};
+/**
+ * Called in plugins/_show.haml before each plugin is loaded.  The value is used by #registerPlugin
+ * to override the plugin's passed label.  This removes the previous need for the plugin's label to
+ * match the label in LARA's database.
+ */
+var nextPluginLabel = "";
+exports.setNextPluginLabel = function (override) {
+    nextPluginLabel = override;
+};
+/****************************************************************************
+ Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
+ This method is called to initialize the plugin.
+ Called at runtime by LARA to create an instance of the plugin as would happen in `views/plugin/_show.html.haml`.
+ @param label The the script identifier.
+ @param options Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
+ ****************************************************************************/
+exports.initPlugin = function (label, options) {
+    if (options.type === "authoring") {
+        initAuthoringPlugin(label, options);
+    }
+    else {
+        initRuntimePlugin(label, options);
+    }
+};
+var initRuntimePlugin = function (label, options) {
+    var Constructor = pluginClasses[label].runtimeClass;
+    if (typeof Constructor === "function") {
+        try {
+            var plugin = new Constructor(plugin_context_1.generateRuntimePluginContext(options));
+        }
+        catch (e) {
+            pluginError(e, options);
+        }
+        // tslint:disable-next-line:no-console
+        console.info("Plugin", label, "is now registered");
+    }
+    else {
+        // tslint:disable-next-line:no-console
+        console.error("No plugin registered for label:", label);
+    }
+};
+var initAuthoringPlugin = function (label, options) {
+    var Constructor = pluginClasses[label].authoringClass;
+    if (typeof Constructor === "function") {
+        try {
+            var plugin = new Constructor(plugin_context_1.generateAuthoringPluginContext(options));
+        }
+        catch (e) {
+            pluginError(e, options);
+        }
+        // tslint:disable-next-line:no-console
+        console.info("Plugin", label, "is now registered");
+    }
+    else {
+        // tslint:disable-next-line:no-console
+        console.error("No plugin registered for label:", label);
+    }
+};
+/****************************************************************************
+ Register a new external script
+ ```
+ registerPlugin({runtimeClass: DebuggerRuntime, authoringClass?: DebuggerAuthoring})
+ ```
+ @param options The registration options
+ @returns `true` if plugin was registered correctly.
+ ***************************************************************************/
+exports.registerPlugin = function (options) {
+    if (nextPluginLabel === "") {
+        // tslint:disable-next-line:no-console
+        console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
+        return false;
+    }
+    var runtimeClass = options.runtimeClass, authoringClass = options.authoringClass;
+    if (typeof runtimeClass !== "function") {
+        // tslint:disable-next-line:no-console
+        console.error("Plugin did not provide a runtime constructor", nextPluginLabel);
+        return false;
+    }
+    if (typeof authoringClass !== "function") {
+        // tslint:disable-next-line:no-console
+        console.warn("Plugin did not provide an authoring constructor. This is ok if \"guiAuthoring\"\n                  is not set for this component.", nextPluginLabel);
+    }
+    if (pluginClasses[nextPluginLabel]) {
+        // tslint:disable-next-line:no-console
+        console.error("Duplicate Plugin for label", nextPluginLabel);
+        return false;
+    }
+    else {
+        pluginClasses[nextPluginLabel] = options;
+        nextPluginLabel = "";
+        return true;
+    }
+};
 
 
 /***/ }),

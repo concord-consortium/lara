@@ -1,11 +1,9 @@
-import { mockIFramePhone, MockPhone } from "../interactive-api/mock-iframe-phone";
+import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-iframe-phone";
 import { Client } from "./client";
 import * as iframePhone from "iframe-phone";
 
-let parentEl: HTMLIFrameElement;
 jest.mock("iframe-phone", () => {
-  parentEl = document.createElement("iframe");
-  return mockIFramePhone(parentEl);
+  return mockIFramePhone();
 });
 
 let inIframe = false;
@@ -27,7 +25,7 @@ describe("Client", () => {
 
     it("throws an error", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).toThrowError();
     });
   });
@@ -39,16 +37,16 @@ describe("Client", () => {
 
     it("throws an error when second Client instance is created", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).not.toThrowError();
       expect(() => {
-        new Client();
+        const c = new Client();
       }).toThrowError();
     });
 
     it("automatically connects to parent window using iframe-phone", () => {
       expect(() => {
-        new Client();
+        const c = new Client();
       }).not.toThrowError();
       expect(mockedPhone).toBeDefined();
       expect(mockedPhone.listenerMessages).toEqual([

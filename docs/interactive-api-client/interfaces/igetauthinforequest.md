@@ -1,12 +1,12 @@
-[LARA Interactive API Client](../README.md) > [IGetAuthInfoRequest](../interfaces/igetauthinforequest.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetAuthInfoRequest](igetauthinforequest.md)
 
 # Interface: IGetAuthInfoRequest
 
 ## Hierarchy
 
- `IBaseRequestResponse`
+* IBaseRequestResponse
 
-**↳ IGetAuthInfoRequest**
+  ↳ **IGetAuthInfoRequest**
 
 ## Index
 
@@ -14,19 +14,10 @@
 
 * [requestId](igetauthinforequest.md#requestid)
 
----
-
 ## Properties
-
-<a id="requestid"></a>
 
 ###  requestId
 
-**● requestId**: *`number`*
+• **requestId**: *number*
 
-*Inherited from IBaseRequestResponse.requestId*
-
-*Defined in [types.ts:325](../../../lara-typescript/src/interactive-api-client/types.ts#L325)*
-
-___
-
+*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*

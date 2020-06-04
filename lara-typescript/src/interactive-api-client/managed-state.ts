@@ -1,6 +1,12 @@
-import { ClientEvent, IInitInteractive } from "./types";
+import { IInitInteractive } from "./types";
 import { EventEmitter2 } from "eventemitter2";
 import * as deepFreeze from "deep-freeze";
+
+type ManagedStateEvent =
+  "interactiveStateUpdated" |
+  "globalInteractiveStateUpdated" |
+  "authoredStateUpdated" |
+  "initInteractive";
 
 export class ManagedState {
   private _initMessage: Readonly<IInitInteractive<any, any, any, any>> | null = null;
@@ -19,7 +25,10 @@ export class ManagedState {
   }
 
   public set initMessage(value: any) {
-    value = deepFreeze(value);
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
+      value = deepFreeze(value);
+    }
     this._initMessage = value;
     this.emit("initInteractive", value);
   }
@@ -29,7 +38,8 @@ export class ManagedState {
   }
 
   public set interactiveState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._interactiveState = value;
@@ -41,7 +51,8 @@ export class ManagedState {
   }
 
   public set authoredState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._authoredState = value;
@@ -53,26 +64,27 @@ export class ManagedState {
   }
 
   public set globalInteractiveState(value: any) {
-    if (typeof value === "object") {
+    // null is an object too.
+    if (value !== null && typeof value === "object") {
       value = deepFreeze(value);
     }
     this._globalInteractiveState = value;
     this.emit("globalInteractiveStateUpdated", value);
   }
 
-  public emit(event: ClientEvent, content?: any) {
+  public emit(event: ManagedStateEvent, content?: any) {
     this.emitter.emit(event, content);
   }
 
-  public on(event: ClientEvent, handler: any) {
+  public on(event: ManagedStateEvent, handler: any) {
     this.emitter.on(event, handler);
   }
 
-  public off(event: ClientEvent, handler: any) {
+  public off(event: ManagedStateEvent, handler: any) {
     this.emitter.off(event, handler);
   }
 
-  public once(event: ClientEvent, handler: any) {
+  public once(event: ManagedStateEvent, handler: any) {
     this.emitter.once(event, handler);
   }
 }

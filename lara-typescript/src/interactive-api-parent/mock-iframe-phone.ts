@@ -241,7 +241,7 @@ export class MockPhone {
 }
 
 let iframeEndpointInstance: MockPhone;
-export const mockIFramePhone = (target: HTMLIFrameElement) => {
+export const mockIFramePhone = (target = document.createElement("iframe")) => {
   return {
     ParentEndpoint: MockPhone,
 

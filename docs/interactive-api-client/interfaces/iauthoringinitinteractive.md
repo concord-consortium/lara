@@ -1,12 +1,14 @@
-[LARA Interactive API Client](../README.md) > [IAuthoringInitInteractive](../interfaces/iauthoringinitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringInitInteractive](iauthoringinitinteractive.md)
 
-# Interface: IAuthoringInitInteractive
+# Interface: IAuthoringInitInteractive ‹**AuthoredState**›
 
 ## Type parameters
-#### AuthoredState 
+
+▪ **AuthoredState**
+
 ## Hierarchy
 
-**IAuthoringInitInteractive**
+* **IAuthoringInitInteractive**
 
 ## Index
 
@@ -18,53 +20,32 @@
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
 
----
-
 ## Properties
-
-<a id="authoredstate"></a>
 
 ###  authoredState
 
-**● authoredState**: *`AuthoredState` \| `null`*
-
-*Defined in [types.ts:68](../../../lara-typescript/src/interactive-api-client/types.ts#L68)*
+• **authoredState**: *AuthoredState | null*
 
 ___
-<a id="error"></a>
 
 ###  error
 
-**● error**: *`null`*
-
-*Defined in [types.ts:66](../../../lara-typescript/src/interactive-api-client/types.ts#L66)*
+• **error**: *null*
 
 ___
-<a id="mode"></a>
 
 ###  mode
 
-**● mode**: *"authoring"*
-
-*Defined in [types.ts:67](../../../lara-typescript/src/interactive-api-client/types.ts#L67)*
+• **mode**: *"authoring"*
 
 ___
-<a id="themeinfo"></a>
 
 ###  themeInfo
 
-**● themeInfo**: *[IThemeInfo](ithemeinfo.md)*
-
-*Defined in [types.ts:69](../../../lara-typescript/src/interactive-api-client/types.ts#L69)*
+• **themeInfo**: *[IThemeInfo](ithemeinfo.md)*
 
 ___
-<a id="version"></a>
 
 ###  version
 
-**● version**: *`1`*
-
-*Defined in [types.ts:65](../../../lara-typescript/src/interactive-api-client/types.ts#L65)*
-
-___
-
+• **version**: *1*

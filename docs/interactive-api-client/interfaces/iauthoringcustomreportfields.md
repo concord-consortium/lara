@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [IAuthoringCustomReportFields](../interfaces/iauthoringcustomreportfields.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringCustomReportFields](iauthoringcustomreportfields.md)
 
 # Interface: IAuthoringCustomReportFields
 
 ## Hierarchy
 
-**IAuthoringCustomReportFields**
+* **IAuthoringCustomReportFields**
 
 ## Index
 
@@ -12,17 +12,8 @@
 
 * [fields](iauthoringcustomreportfields.md#fields)
 
----
-
 ## Properties
-
-<a id="fields"></a>
 
 ###  fields
 
-**● fields**: *[IAuthoringCustomReportField](iauthoringcustomreportfield.md)[]*
-
-*Defined in [types.ts:268](../../../lara-typescript/src/interactive-api-client/types.ts#L268)*
-
-___
-
+• **fields**: *[IAuthoringCustomReportField](iauthoringcustomreportfield.md)[]*

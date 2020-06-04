@@ -1,9 +1,8 @@
 import { IRegisterPluginOptions } from "../plugin-api";
-import { IPluginContextOptions,
-         IPluginRuntimeContextOptions,
-         IPluginAuthoringContextOptions,
-         generateRuntimePluginContext,
-         generateAuthoringPluginContext} from "./plugin-context";
+import {
+  IPluginContextOptions, IPluginRuntimeContextOptions, IPluginAuthoringContextOptions, generateRuntimePluginContext,
+  generateAuthoringPluginContext
+} from "./plugin-context";
 
 const pluginError = (e: string, other: any) => {
   // tslint:disable-next-line:no-console

@@ -1,3 +1,5 @@
+import { ILogData, IInteractiveAvailableEventHandler } from "../events";
+
 export interface IPlugin {
   /** No special requirements for plugin class */
 }
@@ -198,38 +200,3 @@ export interface IInteractiveState {
   interactive_state_url: string;
   activity_name: string;
 }
-
-/**
- * That's the minimal set of properties that needs to be provided.
- * All the other properties provides go to the `extra` hash.
- */
-export interface ILogData {
-  event: string;
-  event_value?: any;
-  parameters?: any;
-}
-
-/**
- * Log event handler.
- * @param logData Data logged by the code.
- */
-export type ILogEventHandler = (event: ILogData) => void;
-
-/**
- * Data passed to InteractiveAvailable event handlers.
- */
-export interface IInteractiveAvailableEvent {
-  /**
-   * Interactive container of the interactive that was just started.
-   */
-  container: HTMLElement;
-  /**
-   * Availablility of interactive
-   */
-  available: boolean;
-}
-
-/**
- * InteractiveAvailable event handler.
- */
-export type IInteractiveAvailableEventHandler = (event: IInteractiveAvailableEvent) => void;

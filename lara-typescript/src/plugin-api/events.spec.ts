@@ -1,5 +1,5 @@
 import { events } from "./events";
-import * as EventsImpl from "../lib/events";
+import * as EventsImpl from "../events";
 
 describe("Events", () => {
   it("should delegate methods to events lib", () => {

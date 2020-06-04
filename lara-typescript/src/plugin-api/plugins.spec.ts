@@ -1,5 +1,5 @@
 import { registerPlugin } from "./plugins";
-import * as PluginsImpl from "../lib/plugins";
+import * as PluginsImpl from "../plugins/plugins";
 
 describe("Plugins", () => {
   it("should delegate registerPlugin", () => {

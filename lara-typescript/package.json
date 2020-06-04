@@ -7,13 +7,9 @@
     "publish:interactive-api-client": "npm run build && cd dist/interactive-api-client && npm publish --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
-    "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client build:docs:fix-doc-paths build:docs:copy-files",
-    "build:docs:plugin-api": "typedoc --theme markdown --readme src/plugin-api/README.md --ignoreCompilerErrors --name 'LARA Plugin API' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/lara-plugin-api src/plugin-api",
-    "build:docs:interactive-api-client": "typedoc --theme markdown --readme src/interactive-api-client/README.md --ignoreCompilerErrors --name 'LARA Interactive API Client' --excludeNotExported --excludeExternals --excludePrivate --mode file --out ./docs/interactive-api-client src/interactive-api-client",
-    "build:docs:fix-doc-paths": "./fix-doc-paths.js",
-    "build:docs:copy-files": "npm-run-all build:docs:copy-files:plugin-api build:docs:copy-files:interactive-api-client",
-    "build:docs:copy-files:plugin-api": "cpx './docs/lara-plugin-api/**/*.*' ../docs/lara-plugin-api/",
-    "build:docs:copy-files:interactive-api-client": "cpx './docs/interactive-api-client/**/*.*' ../docs/interactive-api-client/",
+    "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client",
+    "build:docs:plugin-api": "typedoc --readme src/plugin-api/README.md --out ../docs/lara-plugin-api src/plugin-api/index.ts",
+    "build:docs:interactive-api-client": "typedoc --readme src/interactive-api-client/README.md --out ../docs/interactive-api-client src/interactive-api-client/index.ts",
     "build:dev:lara-typescript": "webpack && cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/",
     "build:dev:page-item-authoring": "webpack && cp ./dist/page-item-authoring.js ../app/assets/javascripts/ && cp ./dist/page-item-authoring.css ../app/assets/stylesheets/",
     "clean": "rimraf dist docs ../docs/lara-plugin-api ../docs/interactive-api-client",
@@ -39,7 +35,9 @@
     "url": "https://github.com/concord-consortium/lara/issues"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>src/setupTests.ts"],
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.ts"
+    ],
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
@@ -64,12 +62,13 @@
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
   "devDependencies": {
+    "@testing-library/react-hooks": "^3.2.1",
     "@types/deep-freeze": "^0.1.2",
     "@types/jest": "^25.2.3",
     "@types/jquery": "^3.3.29",
     "@types/jqueryui": "^1.12.7",
-    "@types/react": "^16.8.13",
-    "@types/react-dom": "^16.8.13",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
     "@types/react-select": "^3.0.12",
     "@types/react-tabs": "^2.3.1",
     "babel-core": "^6.26.3",
@@ -86,8 +85,9 @@
     "node-sass": "^4.12.0",
     "npm-run-all": "^4.1.5",
     "raw-loader": "^1.0.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "ts-jest": "^26.1.0",
@@ -96,8 +96,9 @@
     "tslint": "^5.13.1",
     "tslint-loader": "^3.5.4",
     "tslint-react": "^4.0.0",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^1.1.27",
+    "tslint-react-hooks": "^2.2.2",
+    "typedoc": "0.17.0-3",
+    "typedoc-plugin-markdown": "^2.3.0",
     "typescript": "^3.9.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"

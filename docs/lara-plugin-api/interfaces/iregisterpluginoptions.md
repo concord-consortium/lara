@@ -1,40 +1,28 @@
-[LARA Plugin API](../README.md) > [IRegisterPluginOptions](../interfaces/iregisterpluginoptions.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IRegisterPluginOptions](iregisterpluginoptions.md)
 
 # Interface: IRegisterPluginOptions
 
 ## Hierarchy
 
-**IRegisterPluginOptions**
+* **IRegisterPluginOptions**
 
 ## Index
 
 ### Properties
 
-* [authoringClass](iregisterpluginoptions.md#authoringclass)
+* [authoringClass](iregisterpluginoptions.md#optional-authoringclass)
 * [runtimeClass](iregisterpluginoptions.md#runtimeclass)
-
----
 
 ## Properties
 
-<a id="authoringclass"></a>
+### `Optional` authoringClass
 
-### `<Optional>` authoringClass
-
-**● authoringClass**: *`undefined` \| `object`*
-
-*Defined in [types.ts:7](../../../lara-typescript/src/plugin-api/types.ts#L7)*
+• **authoringClass**? : *undefined | object*
 
 ___
-<a id="runtimeclass"></a>
 
 ###  runtimeClass
 
-**● runtimeClass**: *`object`*
+• **runtimeClass**: *object*
 
-*Defined in [types.ts:6](../../../lara-typescript/src/plugin-api/types.ts#L6)*
-
-#### Type declaration
-
-___
-
+#### Type declaration:

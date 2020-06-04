@@ -229,7 +229,7 @@ Logger.prototype.log = function(data) {
 Logger.prototype._emitEvent = function(data) {
   if (this._canEmitEvent()) {
     this._drainEventQueue();
-    window.LARA.InternalAPI.events.emitLog(data);
+    window.LARA.Events.emitLog(data);
   }
   else {
     // if it is not yet available, queue the data until it is available
@@ -239,8 +239,8 @@ Logger.prototype._emitEvent = function(data) {
 }
 
 Logger.prototype._canEmitEvent = function() {
-   // window.LARA.InternalAPI.events.emitLog is defined in lara-typescript and may not be available yet
-   return !!(window.LARA && window.LARA.InternalAPI && window.LARA.InternalAPI.events && window.LARA.InternalAPI.events.emitLog);
+   // window.LARA.Events.emitLog is defined in lara-typescript and may not be available yet
+   return !!(window.LARA && window.LARA.Events && window.LARA.Events.emitLog);
 }
 
 Logger.prototype._waitToDrainEventQueue = function () {
@@ -255,7 +255,7 @@ Logger.prototype._waitToDrainEventQueue = function () {
 Logger.prototype._drainEventQueue = function () {
   if (this._eventQueue.length > 0) {
     this._eventQueue.forEach(function (item) {
-      window.LARA.InternalAPI.events.emitLog(item);
+      window.LARA.Events.emitLog(item);
     })
     this._eventQueue = [];
   }

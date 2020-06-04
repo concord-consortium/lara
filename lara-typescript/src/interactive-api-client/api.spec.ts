@@ -1,4 +1,4 @@
-import { mockIFramePhone, MockPhone } from "../interactive-api/mock-iframe-phone";
+import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-iframe-phone";
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
@@ -9,7 +9,7 @@ jest.mock("./in-frame", () => ({
 }));
 
 jest.mock("iframe-phone", () => {
-  return mockIFramePhone(document.createElement("iframe"));
+  return mockIFramePhone();
 });
 
 const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;

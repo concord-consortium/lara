@@ -1,16 +1,16 @@
-[LARA Interactive API Client](../README.md) > [IBaseShowModal](../interfaces/ibaseshowmodal.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IBaseShowModal](ibaseshowmodal.md)
 
 # Interface: IBaseShowModal
 
 ## Hierarchy
 
-**IBaseShowModal**
+* **IBaseShowModal**
 
-↳  [IShowAlert](ishowalert.md)
+  ↳ [IShowAlert](ishowalert.md)
 
-↳  [IShowLightbox](ishowlightbox.md)
+  ↳ [IShowLightbox](ishowlightbox.md)
 
-↳  [IShowDialog](ishowdialog.md)
+  ↳ [IShowDialog](ishowdialog.md)
 
 ## Index
 
@@ -18,17 +18,8 @@
 
 * [uuid](ibaseshowmodal.md#uuid)
 
----
-
 ## Properties
-
-<a id="uuid"></a>
 
 ###  uuid
 
-**● uuid**: *`string`*
-
-*Defined in [types.ts:280](../../../lara-typescript/src/interactive-api-client/types.ts#L280)*
-
-___
-
+• **uuid**: *string*

@@ -1,10 +1,10 @@
-[LARA Interactive API Client](../README.md) > [IAuthoringMultipleChoiceChoiceMetadata](../interfaces/iauthoringmultiplechoicechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceChoiceMetadata
 
 ## Hierarchy
 
-**IAuthoringMultipleChoiceChoiceMetadata**
+* **IAuthoringMultipleChoiceChoiceMetadata**
 
 ## Index
 
@@ -14,35 +14,20 @@
 * [id](iauthoringmultiplechoicechoicemetadata.md#id)
 * [isCorrect](iauthoringmultiplechoicechoicemetadata.md#iscorrect)
 
----
-
 ## Properties
-
-<a id="content"></a>
 
 ###  content
 
-**● content**: *`string`*
-
-*Defined in [types.ts:238](../../../lara-typescript/src/interactive-api-client/types.ts#L238)*
+• **content**: *string*
 
 ___
-<a id="id"></a>
 
 ###  id
 
-**● id**: *[ChoiceId](../#choiceid)*
-
-*Defined in [types.ts:237](../../../lara-typescript/src/interactive-api-client/types.ts#L237)*
+• **id**: *[ChoiceId](../globals.md#choiceid)*
 
 ___
-<a id="iscorrect"></a>
 
 ###  isCorrect
 
-**● isCorrect**: *`boolean`*
-
-*Defined in [types.ts:239](../../../lara-typescript/src/interactive-api-client/types.ts#L239)*
-
-___
-
+• **isCorrect**: *boolean*

@@ -1,10 +1,10 @@
-[LARA Plugin API](../README.md) > [IEmbeddableRuntimeContext](../interfaces/iembeddableruntimecontext.md)
+[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IEmbeddableRuntimeContext](iembeddableruntimecontext.md)
 
 # Interface: IEmbeddableRuntimeContext
 
 ## Hierarchy
 
-**IEmbeddableRuntimeContext**
+* **IEmbeddableRuntimeContext**
 
 ## Index
 
@@ -17,89 +17,99 @@
 * [laraJson](iembeddableruntimecontext.md#larajson)
 * [onInteractiveAvailable](iembeddableruntimecontext.md#oninteractiveavailable)
 
----
-
 ## Properties
-
-<a id="container"></a>
 
 ###  container
 
-**● container**: *`HTMLElement`*
+• **container**: *HTMLElement*
 
-*Defined in [types.ts:68](../../../lara-typescript/src/plugin-api/types.ts#L68)*
+Embeddable container.
 
 ___
-<a id="getinteractivestate"></a>
 
 ###  getInteractiveState
 
-**● getInteractiveState**: *`function`*
+• **getInteractiveState**: *function*
 
-*Defined in [types.ts:89](../../../lara-typescript/src/plugin-api/types.ts#L89)*
+Function that returns interactive state (Promise) or null if embeddable isn't interactive.
 
-#### Type declaration
-▸(): `Promise`<[IInteractiveState](iinteractivestate.md)> \| `null`
+#### Type declaration:
 
-**Returns:** `Promise`<[IInteractiveState](iinteractivestate.md)> \| `null`
+▸ (): *Promise‹[IInteractiveState](iinteractivestate.md)› | null*
 
 ___
-<a id="getreportingurl"></a>
 
 ###  getReportingUrl
 
-**● getReportingUrl**: *`function`*
+• **getReportingUrl**: *function*
 
-*Defined in [types.ts:99](../../../lara-typescript/src/plugin-api/types.ts#L99)*
+Function that returns reporting URL (Promise) or null if it's not an interactive or reporting URL is not defined.
+Note that reporting URL is defined in the interactive state (that can be obtained via #getInteractiveState method).
+If your code needs both interactive state and reporting URL, you can pass interactiveStatePromise as an argument
+to this method to limit number of network requests.
 
-#### Type declaration
-▸(interactiveStatePromise: *`Promise`<[IInteractiveState](iinteractivestate.md)>*): `Promise`<`string` \| `null`> \| `null`
+**`param`** An optional promise returned from #getInteractiveState method. If it's provided
+this function will use it to get interacive state and won't issue any additional network requests.
+
+#### Type declaration:
+
+▸ (`interactiveStatePromise?`: Promise‹[IInteractiveState](iinteractivestate.md)›): *Promise‹string | null› | null*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| `Optional` interactiveStatePromise | `Promise`<[IInteractiveState](iinteractivestate.md)> |
-
-**Returns:** `Promise`<`string` \| `null`> \| `null`
+Name | Type |
+------ | ------ |
+`interactiveStatePromise?` | Promise‹[IInteractiveState](iinteractivestate.md)› |
 
 ___
-<a id="interactiveavailable"></a>
 
 ###  interactiveAvailable
 
-**● interactiveAvailable**: *`boolean`*
+• **interactiveAvailable**: *boolean*
 
-*Defined in [types.ts:109](../../../lara-typescript/src/plugin-api/types.ts#L109)*
+True if the interactive is immediately available
 
 ___
-<a id="larajson"></a>
 
 ###  laraJson
 
-**● laraJson**: *`any`*
+• **laraJson**: *any*
 
-*Defined in [types.ts:87](../../../lara-typescript/src/plugin-api/types.ts#L87)*
+Serialized form of the embeddable. Defined by LARA export code, so it's format cannot be specified here.
+Example (interactive):
+```
+{
+aspect_ratio_method: "DEFAULT",
+authored_state: null,
+click_to_play: false,
+enable_learner_state: true,
+name: "Test Interactive",
+native_height: 435,
+native_width: 576,
+url: "http://concord-consortium.github.io/lara-interactive-api/iframe.html",
+type: "MwInteractive",
+ref_id: "86-MwInteractive"
+}
+```
 
 ___
-<a id="oninteractiveavailable"></a>
 
 ###  onInteractiveAvailable
 
-**● onInteractiveAvailable**: *`function`*
+• **onInteractiveAvailable**: *function*
 
-*Defined in [types.ts:107](../../../lara-typescript/src/plugin-api/types.ts#L107)*
+Function that subscribes provided handler to event that gets called when the interactive's availablity changes.
+Normally an interactive starts as available unless click to play is enabled.  When click to play is enabled
+the interactive starts as not available and this handler is called when the click to play overlay is hidden.
 
-#### Type declaration
-▸(handler: *[IInteractiveAvailableEventHandler](../#iinteractiveavailableeventhandler)*): `void`
+**`param`** Event handler function.
+
+#### Type declaration:
+
+▸ (`handler`: [IInteractiveAvailableEventHandler](../globals.md#iinteractiveavailableeventhandler)): *void*
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| handler | [IInteractiveAvailableEventHandler](../#iinteractiveavailableeventhandler) |
-
-**Returns:** `void`
-
-___
-
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveAvailableEventHandler](../globals.md#iinteractiveavailableeventhandler) |

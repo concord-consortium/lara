@@ -1,54 +1,39 @@
-[LARA Interactive API Client](../README.md) > [IAuthoringMetadataBase](../interfaces/iauthoringmetadatabase.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
 # Interface: IAuthoringMetadataBase
 
 ## Hierarchy
 
-**IAuthoringMetadataBase**
+* **IAuthoringMetadataBase**
 
-↳  [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
+  ↳ [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
-↳  [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
+  ↳ [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
 
-↳  [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
+  ↳ [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
 ## Index
 
 ### Properties
 
 * [isRequired](iauthoringmetadatabase.md#isrequired)
-* [prompt](iauthoringmetadatabase.md#prompt)
+* [prompt](iauthoringmetadatabase.md#optional-prompt)
 * [secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)
-
----
 
 ## Properties
 
-<a id="isrequired"></a>
-
 ###  isRequired
 
-**● isRequired**: *`boolean`*
-
-*Defined in [types.ts:227](../../../lara-typescript/src/interactive-api-client/types.ts#L227)*
+• **isRequired**: *boolean*
 
 ___
-<a id="prompt"></a>
 
-### `<Optional>` prompt
+### `Optional` prompt
 
-**● prompt**: *`undefined` \| `string`*
-
-*Defined in [types.ts:228](../../../lara-typescript/src/interactive-api-client/types.ts#L228)*
+• **prompt**? : *undefined | string*
 
 ___
-<a id="secondarytypefornow"></a>
 
 ###  secondaryTypeForNow
 
-**● secondaryTypeForNow**: *`any`*
-
-*Defined in [types.ts:225](../../../lara-typescript/src/interactive-api-client/types.ts#L225)*
-
-___
-
+• **secondaryTypeForNow**: *any*
