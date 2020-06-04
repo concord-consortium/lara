@@ -16,14 +16,19 @@
 }
 
 .modal {
-  display: none;
-  position: absolute;
-  width: 500px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  padding: 20px;
   background: #fff;
   border: 5px solid #eee;
+  bottom: 20px;
+  display: none;
+  left: 50%;
+  margin: 0;
+  min-height: 400px;
+  overflow: hidden;
+  padding: 20px 20px 0;
+  position: fixed;
+  transform: translate(-50%, 0);
+  top: 20px;
+  width: 500px;
 
   &.allow-full-width {
     width: unset;
@@ -41,9 +46,10 @@
   }
 
   form[class^="edit_"] {
-    max-height: 500px;
+    height: auto;
+    max-height: calc(100% - 105px);
     overflow: scroll;
-    padding-bottom: 80px;
+    padding-bottom: 105px;
     position: relative;
 
     fieldset {
