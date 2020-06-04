@@ -213,6 +213,10 @@ export interface INavigationOptions {
   message?: string;
 }
 
+export interface IHintRequest {
+  text: string | null;
+}
+
 export type ChoiceId = string | number;
 
 // TODO: look at portal reports to get values or enum

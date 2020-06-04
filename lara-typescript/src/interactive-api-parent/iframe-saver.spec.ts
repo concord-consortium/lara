@@ -216,11 +216,11 @@ describe("IFrameSaver", () => {
     it("should enable hint", () => {
       const $helpIcon = $(".help-icon");
       expect($helpIcon.hasClass("hidden")).toEqual(true);
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: "new hint" });
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: {text: "new hint"} });
       expect($helpIcon.hasClass("hidden")).toEqual(false);
       expect($(".help-content .text").text()).toEqual("new hint");
 
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: "" });
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: {text: ""} });
       expect($helpIcon.hasClass("hidden")).toEqual(true);
       expect($(".help-content .text").text()).toEqual("");
     });
