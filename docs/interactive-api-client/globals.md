@@ -77,6 +77,7 @@
 * [InitInteractiveMode](globals.md#initinteractivemode)
 * [InteractiveAuthoredId](globals.md#interactiveauthoredid)
 * [InteractiveRuntimeId](globals.md#interactiveruntimeid)
+* [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ServerMessage](globals.md#servermessage)
 
 ### Functions
@@ -95,6 +96,7 @@
 * [getInteractiveState](globals.md#const-getinteractivestate)
 * [getLibraryInteractiveList](globals.md#const-getlibraryinteractivelist)
 * [inIframe](globals.md#const-iniframe)
+* [log](globals.md#const-log)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
@@ -126,7 +128,7 @@ ___
 
 ###  ClientMessage
 
-Ƭ **ClientMessage**: *[DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage) | [IFrameSaverClientMessage](globals.md#iframesaverclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage)*
+Ƭ **ClientMessage**: *[DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage) | [IFrameSaverClientMessage](globals.md#iframesaverclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage)*
 
 ___
 
@@ -211,6 +213,12 @@ ___
 ###  InteractiveRuntimeId
 
 Ƭ **InteractiveRuntimeId**: *string*
+
+___
+
+###  LoggerClientMessage
+
+Ƭ **LoggerClientMessage**: *"log"*
 
 ___
 
@@ -429,6 +437,21 @@ ___
 ▸ **inIframe**(): *boolean*
 
 **Returns:** *boolean*
+
+___
+
+### `Const` log
+
+▸ **log**(`action`: string, `data?`: undefined | object): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`action` | string |
+`data?` | undefined &#124; object |
+
+**Returns:** *void*
 
 ___
 

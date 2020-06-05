@@ -60,6 +60,11 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{type: "hint", content: "test hint"}]);
   });
 
+  it("supports log", () => {
+    api.log("test action", {param1: 1});
+    expect(mockedPhone.messages).toEqual([{type: "log", content: {action: "test action", data: {param1: 1}}}]);
+  });
+
   it("supports setSupportedFeatures", () => {
     api.setSupportedFeatures({ interactiveState: true, authoredState: true, aspectRatio: 1 });
     expect(mockedPhone.messages).toEqual([{
