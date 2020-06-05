@@ -154,6 +154,8 @@ $margin-r: 5% !default;
 	height: 400px;
 	overflow: hidden;
 	padding: 0;
+	position: sticky;
+	top: 100px;
 	transition: .1s;
 	width: 46px !important;
 
