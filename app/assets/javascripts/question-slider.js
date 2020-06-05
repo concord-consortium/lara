@@ -6,4 +6,5 @@ function toggleQuestions() {
   } else {
     jQuery('.question-tab span').text('Hide Questions');
   }
+  interactiveSizing();
 }
