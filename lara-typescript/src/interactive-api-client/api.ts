@@ -160,6 +160,10 @@ export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<string>
   });
 };
 
+export const log = (action: string, data?: object) => {
+  getClient().post("log", {action, data});
+};
+
 // tslint:disable-next-line:max-line-length
 export const addInteractiveStateListener = <InteractiveState>(listener: (interactiveState: InteractiveState) => void) => {
   getClient().managedState.on("interactiveStateUpdated", listener);

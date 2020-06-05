@@ -27571,7 +27571,25 @@ exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
     return ajaxPromise(learnerStateSaveUrl, { state: state });
 };
 exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
-    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData });
+    var editPluginForm = document.getElementsByClassName("edit_plugin")[0];
+    var editEmbeddedPluginForm = document.getElementsByClassName("edit_embeddable_embeddable_plugin")[0];
+    var editForm = editPluginForm || editEmbeddedPluginForm;
+    var preventFormClosing = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    editForm === null || editForm === void 0 ? void 0 : editForm.addEventListener("submit", preventFormClosing);
+    return ajaxPromise(authoringSaveStateUrl, { author_data: authorData })
+        .then(function (result) {
+        editForm === null || editForm === void 0 ? void 0 : editForm.removeEventListener("submit", preventFormClosing);
+        editForm === null || editForm === void 0 ? void 0 : editForm.submit();
+        return result;
+    })
+        .catch(function (err) {
+        editForm === null || editForm === void 0 ? void 0 : editForm.removeEventListener("submit", preventFormClosing);
+        window.alert("Unable to save authored state: " + err.toString());
+        throw err;
+    });
 };
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);

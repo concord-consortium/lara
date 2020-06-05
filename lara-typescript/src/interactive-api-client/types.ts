@@ -164,6 +164,8 @@ export type IframeSaverServerMessage = "authInfo" |
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
 export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
 
+export type LoggerClientMessage = "log";
+
 export type IframePhoneServerMessage = "hello";
 
 export type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
@@ -171,7 +173,8 @@ export type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteract
 
 export type ClientMessage = DeprecatedIFrameSaverClientMessage |
                             IFrameSaverClientMessage |
-                            GlobalIFrameSaverClientMessage;
+                            GlobalIFrameSaverClientMessage |
+                            LoggerClientMessage;
 
 export type ServerMessage = IframePhoneServerMessage |
                             DeprecatedIFrameSaverServerMessage |
