@@ -1,5 +1,51 @@
 
 .modal {
+  bottom: 20px;
+  margin: 0;
+  min-height: 400px;
+  overflow: hidden;
+  padding: 20px 20px 0 !important;
+  position: fixed !important;
+  top: 20px !important;
+
+  form[class^="edit_"] {
+    height: auto;
+    max-height: calc(100% - 105px);
+    overflow: scroll;
+    padding-bottom: 105px;
+    position: relative;
+
+    fieldset {
+      width: calc(100% - 2px);
+    }
+    .submit-container {
+      background: #eee;
+      bottom: 0;
+      height: 55px;
+      left: 0;
+      position: fixed;
+      transform: translateX(0); // allows element to be fixed within its container
+      width: 100%;
+      z-index: 1;
+
+      &:before {
+        background: transparent;
+        background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgba(255,255,255,.1) 100%);
+        content: '';
+        height: 50px;
+        left: 0;
+        position: fixed;
+        top: -50px;
+        transform: translateX(0); // allows element to be fixed within its container
+        width: 100%;
+      }
+
+      input.close {
+        margin-right: 1em;
+      }
+    }
+  }
+
   #add_new_choice {
     /* Hacky way of moving this out of flow and putting it a line above where it should be */
     position: absolute;
