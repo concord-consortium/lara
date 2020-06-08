@@ -20,17 +20,20 @@ module BaseInteractive
   end
 
   def parsed_authored_state
-    JSON.parse(authored_state) rescue {}
+    JSON.parse(authored_state).symbolize_keys rescue {}
   end
 
   def basic_question_type_hash
+    # Expected data format can be checked in lara-typescript/interactive-api-client/types.ts:
+    # IAuthoringMetadata<...> interfaces.
     data = parsed_authored_state
-    basic_props = {
-      id: embeddable_id,
-      show_in_featured_question_report: show_in_featured_question_report,
-      question_number: index_in_activity,
-    }
-    if data["type"] === "open_response"
+
+    if data[:type] === "open_response" || data[:type] === "multiple_choice"
+      basic_props = {
+        id: embeddable_id,
+        show_in_featured_question_report: show_in_featured_question_report,
+        question_number: index_in_activity,
+      }
       return basic_props.merge(data)
     end
     nil
