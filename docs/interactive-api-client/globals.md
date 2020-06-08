@@ -38,6 +38,7 @@
 * [IGetLibraryInteractiveListOptions](interfaces/igetlibraryinteractivelistoptions.md)
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
+* [IHintRequest](interfaces/ihintrequest.md)
 * [IHookOptions](interfaces/ihookoptions.md)
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
@@ -639,13 +640,13 @@ ___
 
 ### `Const` setHint
 
-▸ **setHint**(`hint`: string): *void*
+▸ **setHint**(`hint`: string | null): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`hint` | string |
+`hint` | string &#124; null |
 
 **Returns:** *void*
 

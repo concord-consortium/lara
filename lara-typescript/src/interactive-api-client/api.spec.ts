@@ -57,7 +57,7 @@ describe("api", () => {
 
   it("supports setHint", () => {
     api.setHint("test hint");
-    expect(mockedPhone.messages).toEqual([{type: "hint", content: "test hint"}]);
+    expect(mockedPhone.messages).toEqual([{type: "hint", content: {text: "test hint"}}]);
   });
 
   it("supports log", () => {

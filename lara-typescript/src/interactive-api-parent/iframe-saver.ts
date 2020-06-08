@@ -1,6 +1,7 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
+import { IHintRequest } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -219,15 +220,15 @@ export class IFrameSaver {
       this.$iframe.trigger("sizeUpdate");
     });
 
-    this.addListener("hint", (hint: string | null) => {
+    this.addListener("hint", (hintRequest: IHintRequest) => {
       const $container = this.$iframe.closest(".embeddable-container");
       const $helpIcon = $container.find(".help-icon");
-      if (hint) {
+      if (hintRequest.text) {
         $helpIcon.removeClass("hidden");
       } else {
         $container.find(".help-icon").addClass("hidden");
       }
-      $container.find(".help-content .text").text(hint || "");
+      $container.find(".help-content .text").text(hintRequest.text || "");
     });
 
     this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {

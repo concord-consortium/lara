@@ -25899,16 +25899,16 @@ var IFrameSaver = /** @class */ (function () {
             _this.$iframe.data("height", height);
             _this.$iframe.trigger("sizeUpdate");
         });
-        this.addListener("hint", function (hint) {
+        this.addListener("hint", function (hintRequest) {
             var $container = _this.$iframe.closest(".embeddable-container");
             var $helpIcon = $container.find(".help-icon");
-            if (hint) {
+            if (hintRequest.text) {
                 $helpIcon.removeClass("hidden");
             }
             else {
                 $container.find(".help-icon").addClass("hidden");
             }
-            $container.find(".help-content .text").text(hint || "");
+            $container.find(".help-content .text").text(hintRequest.text || "");
         });
         this.addListener("supportedFeatures", function (info) {
             if (info.features && info.features.aspectRatio) {

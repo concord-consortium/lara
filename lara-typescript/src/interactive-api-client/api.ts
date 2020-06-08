@@ -1,8 +1,24 @@
 import {
-  IInitInteractive, ISupportedFeaturesRequest, INavigationOptions, IAuthInfo, IGetFirebaseJwtOptions,
-  IGetFirebaseJwtResponse, ISupportedFeatures, IGetFirebaseJwtRequest, IGetAuthInfoRequest, IAuthoringMetadata,
-  IRuntimeMetadata, IAuthoringCustomReportFields, IRuntimeCustomReportValues, IShowModal, ICloseModal,
-  IGetInteractiveListRequest, ISetLinkedInteractives, IGetLibraryInteractiveListRequest, IGetInteractiveSnapshotRequest
+  IInitInteractive,
+  ISupportedFeaturesRequest,
+  INavigationOptions,
+  IAuthInfo,
+  IGetFirebaseJwtOptions,
+  IGetFirebaseJwtResponse,
+  ISupportedFeatures,
+  IGetFirebaseJwtRequest,
+  IGetAuthInfoRequest,
+  IAuthoringMetadata,
+  IRuntimeMetadata,
+  IAuthoringCustomReportFields,
+  IRuntimeCustomReportValues,
+  IShowModal,
+  ICloseModal,
+  IGetInteractiveListRequest,
+  ISetLinkedInteractives,
+  IGetLibraryInteractiveListRequest,
+  IGetInteractiveSnapshotRequest,
+  IHintRequest
 } from "./types";
 import { getClient } from "./client";
 
@@ -117,8 +133,12 @@ export const setHeight = (height: number | string) => {
   getClient().post("height", height);
 };
 
-export const setHint = (hint: string) => {
-  getClient().post("hint", hint);
+/*
+ * Providing empty string or null disables hint.
+ */
+export const setHint = (hint: string | null) => {
+  const request: IHintRequest = { text: hint };
+  getClient().post("hint", request);
 };
 
 export const setNavigation = (options: INavigationOptions) => {
