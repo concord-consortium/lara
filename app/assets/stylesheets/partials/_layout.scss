@@ -143,19 +143,21 @@ $margin-r: 5% !default;
 .ui-block-1.open,
 .ui-block.first.open {
 	transition: .1s;
-	width: 95.6% !important;
+	width: 890px !important;
 }
 
 .ui-block-2.closed,
 .ui-block.second.closed,
 .ui-block-2.closed,
 .ui-block.second.closed {
-	flex-basis: 2.7% !important;
+	flex: 0 0 45px !important;
 	height: 400px;
 	overflow: hidden;
 	padding: 0;
+	position: sticky;
+	top: 100px;
 	transition: .1s;
-	width: 4.4% !important;
+	width: 46px !important;
 
 	.buttons, .embeddables, .question {
 		display: none;

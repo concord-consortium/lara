@@ -909,16 +909,29 @@ fieldset {
     position: relative;
     h2 {
       background-color: #555;
+      border-bottom: dotted 1px #999;
       font: 500 1.3em 'Lato', georgia, 'times new roman', serif;
       color: #fff !important;
       margin: -10px -10px 10px; /* Undoes padding from div on top, left, & right for background */
       padding: 10px; /* Gives the head itself some padding */
       text-align: left;
     }
-    .embeddables-form {
+    .column-controls {
       background: #555;
+      color: #fff;
       margin: -10px -10px 10px;
-      padding: 0 10px 10px;
+      overflow: hidden;
+      padding: 10px;
+
+      label {
+        margin-bottom: 0;
+      }
+    }
+    .edit_interactive_page {
+      float: left;
+    }
+    .embeddables-form {
+      float: right;
       text-align: right;
     }
     .embeddable-container {
