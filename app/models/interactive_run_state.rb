@@ -72,20 +72,34 @@ class InteractiveRunState < ActiveRecord::Base
     end
   end
 
+  def parsed_interactive_state
+    JSON.parse(raw_data).symbolize_keys rescue {}
+  end
+
   def basic_answer_type_hash
+    # Expected data format can be checked in lara-typescript/interactive-api-client/types.ts:
+    # IRuntimeMetadata<...> interfaces.
     data = parsed_interactive_state
+
     basic_props = {
       id: answer_id,
       question_id: interactive.embeddable_id
     }
-    if data["type"] === "open_response_answer"
-      return basic_props.merge({question_type: "open_response"}).merge(data)
-    end
-    nil
-  end
 
-  def parsed_interactive_state
-    JSON.parse(raw_data) rescue {}
+    if data[:type] === "open_response_answer"
+      return basic_props.merge({question_type: "open_response"}).merge(data)
+    elsif data[:type] === "multiple_choice_answer"
+      result = basic_props.merge({question_type: "multiple_choice"}).merge(data)
+      # Make a conversion here to let interactives use more friendly naming,
+      # but still be compatible with Report and Portal.
+      result[:answer] = {
+        choice_ids: result[:selectedChoiceIds]
+      }
+      result.delete(:selectedChoiceIds)
+      return result
+    end
+
+    nil
   end
 
   def report_service_hash
