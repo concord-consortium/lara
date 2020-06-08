@@ -72,7 +72,25 @@ class InteractiveRunState < ActiveRecord::Base
     end
   end
 
+  def basic_answer_type_hash
+    data = parsed_interactive_state
+    basic_props = {
+      id: answer_id,
+      question_id: interactive.embeddable_id
+    }
+    if data["type"] === "open_response_answer"
+      return basic_props.merge({question_type: "open_response"}).merge(data)
+    end
+    nil
+  end
+
+  def parsed_interactive_state
+    JSON.parse(raw_data) rescue {}
+  end
+
   def report_service_hash
+    return basic_answer_type_hash if basic_answer_type_hash
+
     result = {
       id: answer_id,
       question_type: "iframe_interactive",

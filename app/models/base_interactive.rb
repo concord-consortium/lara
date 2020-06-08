@@ -19,7 +19,26 @@ module BaseInteractive
     iframe_data
   end
 
+  def parsed_authored_state
+    JSON.parse(authored_state) rescue {}
+  end
+
+  def basic_question_type_hash
+    data = parsed_authored_state
+    basic_props = {
+      id: embeddable_id,
+      show_in_featured_question_report: show_in_featured_question_report,
+      question_number: index_in_activity,
+    }
+    if data["type"] === "open_response"
+      return basic_props.merge(data)
+    end
+    nil
+  end
+
   def report_service_hash
+    return basic_question_type_hash if basic_question_type_hash
+
     {
       type: 'iframe_interactive',
       id: embeddable_id,
