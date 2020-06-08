@@ -14,6 +14,10 @@ interface IListenerMap {
   [key: string]: IRequestCallback[];
 }
 
+const parseJSONIfString = (data: any) => {
+  return typeof data === "string" ?  JSON.parse(data) : data;
+};
+
 const phoneInitialized = () => iframePhone.getIFrameEndpoint().getListenerNames().length > 0;
 
 let clientInstance: Client;
@@ -110,12 +114,14 @@ export class Client {
     this.addListener("initInteractive", (newInitMessage: IInitInteractive<any, any, any, any>) => {
       this.managedState.initMessage = newInitMessage;
 
-      this.managedState.authoredState = newInitMessage.authoredState;
+      // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.
+      // Sometimes they send string (report page), sometimes already parsed JSON (authoring, runtime).
+      this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
       if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
-        this.managedState.interactiveState = newInitMessage.interactiveState;
+        this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
       }
       if (newInitMessage.mode === "runtime") {
-        this.managedState.globalInteractiveState = newInitMessage.globalInteractiveState;
+        this.managedState.globalInteractiveState = parseJSONIfString(newInitMessage.globalInteractiveState);
       }
     });
 
@@ -124,7 +130,7 @@ export class Client {
     });
 
     this.addListener("loadInteractiveGlobal", (globalState: any) => {
-      this.managedState.globalInteractiveState = globalState;
+      this.managedState.globalInteractiveState = parseJSONIfString(globalState);
     });
 
     this.phone.initialize();

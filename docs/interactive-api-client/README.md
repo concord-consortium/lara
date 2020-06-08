@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.4.0-pre.4
+# @concord-consortium/lara-interactive-api - v0.4.0-pre.6
 
 ## [API documentation](globals.md)
 
