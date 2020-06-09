@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { SlateContainer } from "@concord-consortium/slate-editor";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
@@ -42,6 +43,19 @@ const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiv
     />, root);
 };
 
+interface ISlateContainerProps {
+  className?: string;
+  editorClassName?: string;
+  toolbar?: any; // TODO: Fix Slate repo to export types
+}
+
+const renderSlateContainer = (root: HTMLElement, props: ISlateContainerProps) => {
+  return ReactDOM.render(
+    <SlateContainer
+      {...props}
+    />, root);
+};
+
 export {
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
@@ -50,5 +64,8 @@ export {
   renderMWInteractiveAuthoring,
 
   InteractiveAuthoringPreview,
-  renderInteractiveAuthoringPreview
+  renderInteractiveAuthoringPreview,
+
+  SlateContainer,
+  renderSlateContainer
 };
