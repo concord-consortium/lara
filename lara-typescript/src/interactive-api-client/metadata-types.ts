@@ -30,8 +30,8 @@ export interface IAuthoringOpenResponseMetadata extends IAuthoringMetadataBase {
 
 export interface IAuthoringMultipleChoiceChoiceMetadata {
   id: ChoiceId;
-  content: string;
-  correct: boolean;
+  content?: string;
+  correct?: boolean;
 }
 
 export interface IAuthoringMultipleChoiceMetadata extends IAuthoringMetadataBase {
@@ -67,7 +67,7 @@ export interface IRuntimeOpenResponseMetadata extends IRuntimeMetadataBase {
 }
 
 export interface IRuntimeMultipleChoiceMetadata extends IRuntimeMetadataBase {
-  type: "multiple_choice_answer";
+  answerType: "multiple_choice_answer";
   selectedChoiceIds: ChoiceId[];
 }
 

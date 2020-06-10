@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.9](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
 
 # Interface: IRuntimeMultipleChoiceMetadata
 
@@ -16,7 +16,6 @@
 * [answerType](iruntimemultiplechoicemetadata.md#answertype)
 * [selectedChoiceIds](iruntimemultiplechoicemetadata.md#selectedchoiceids)
 * [submitted](iruntimemultiplechoicemetadata.md#optional-submitted)
-* [type](iruntimemultiplechoicemetadata.md#type)
 
 ## Properties
 
@@ -33,9 +32,9 @@ ___
 
 ###  answerType
 
-• **answerType**: *string*
+• **answerType**: *"multiple_choice_answer"*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
+*Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
 
 ___
 
@@ -50,9 +49,3 @@ ___
 • **submitted**? : *undefined | false | true*
 
 *Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[submitted](iruntimemetadatabase.md#optional-submitted)*
-
-___
-
-###  type
-
-• **type**: *"multiple_choice_answer"*
