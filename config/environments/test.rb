@@ -41,4 +41,9 @@ LightweightStandalone::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  unless ENV["LOG_TO_FILE"]
+    # Disable logging to file. It might have performance impact while using Docker for Mac (slow filesystem sync).
+    config.logger = Logger.new(STDOUT)
+  end
 end
