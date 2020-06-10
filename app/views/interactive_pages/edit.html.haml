@@ -46,6 +46,8 @@
     = editable_field @page, :name, { :placeholder => 'page title' }
     %span.preview
       = link_to "Preview", preview_activity_page_path(@activity, @page), :target => 'new'
+    %span.preview
+      = link_to "Preview Teacher Edition", preview_activity_page_path(@activity, @page, mode: "teacher-edition"), :target => 'new'
   %div.edit_interactive_page
     = form_for @page do |f|
       = f.select :layout, options_for_select(InteractivePage::LAYOUT_OPTIONS.map { |l| [l[:name], l[:class_val]] }, @page.layout), {},  { :onchange => 'this.form.submit();', :title => 'Page layout' }
