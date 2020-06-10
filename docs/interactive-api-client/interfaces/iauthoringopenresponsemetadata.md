@@ -12,20 +12,12 @@
 
 ### Properties
 
-* [isRequired](iauthoringopenresponsemetadata.md#isrequired)
 * [prompt](iauthoringopenresponsemetadata.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringopenresponsemetadata.md#secondarytypefornow)
-* [type](iauthoringopenresponsemetadata.md#type)
+* [questionType](iauthoringopenresponsemetadata.md#questiontype)
+* [required](iauthoringopenresponsemetadata.md#optional-required)
+* [subtype](iauthoringopenresponsemetadata.md#optional-subtype)
 
 ## Properties
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
-
-___
 
 ### `Optional` prompt
 
@@ -35,14 +27,27 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+###  questionType
 
-• **secondaryTypeForNow**: *any*
+• **questionType**: *"open_response"*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
+*Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
 
 ___
 
-###  type
+### `Optional` required
 
-• **type**: *"open response"*
+• **required**? : *undefined | false | true*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*
+
+___
+
+### `Optional` subtype
+
+• **subtype**? : *undefined | string*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[subtype](iauthoringmetadatabase.md#optional-subtype)*
+
+Interactive can optionally set subtype, so Teacher Report can display different icons
+or categorize interactives into subcategories.

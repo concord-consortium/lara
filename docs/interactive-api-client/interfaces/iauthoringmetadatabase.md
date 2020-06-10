@@ -6,9 +6,9 @@
 
 * **IAuthoringMetadataBase**
 
-  ↳ [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
-
   ↳ [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
+
+  ↳ [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
   ↳ [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
@@ -16,17 +16,12 @@
 
 ### Properties
 
-* [isRequired](iauthoringmetadatabase.md#isrequired)
 * [prompt](iauthoringmetadatabase.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)
+* [questionType](iauthoringmetadatabase.md#questiontype)
+* [required](iauthoringmetadatabase.md#optional-required)
+* [subtype](iauthoringmetadatabase.md#optional-subtype)
 
 ## Properties
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-___
 
 ### `Optional` prompt
 
@@ -34,6 +29,21 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+###  questionType
 
-• **secondaryTypeForNow**: *any*
+• **questionType**: *string*
+
+___
+
+### `Optional` required
+
+• **required**? : *undefined | false | true*
+
+___
+
+### `Optional` subtype
+
+• **subtype**? : *undefined | string*
+
+Interactive can optionally set subtype, so Teacher Report can display different icons
+or categorize interactives into subcategories.
