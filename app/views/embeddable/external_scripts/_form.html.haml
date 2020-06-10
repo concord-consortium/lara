@@ -14,5 +14,6 @@
   %div{style: "margin-top: 0.5em;"}
     = f.label "tree json"
     = f.text_area :configuration, {id:'jsonConfigText'}
-  = f.submit "Cancel", :class => 'close'
-  = f.submit "Save", :class => 'embeddable-save'
+  .submit-container
+    = f.submit "Cancel", :class => 'close'
+    = f.submit "Save", :class => 'embeddable-save'

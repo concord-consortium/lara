@@ -16,14 +16,14 @@
 }
 
 .modal {
-  display: none;
-  position: absolute;
-  width: 500px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  padding: 20px;
   background: #fff;
   border: 5px solid #eee;
+  display: none;
+  left: 50%;
+  padding: 20px;
+  position: absolute;
+  transform: translate(-50%, 0);
+  width: 500px;
 
   &.allow-full-width {
     width: unset;
@@ -42,6 +42,7 @@
 
   input.close {
     float: right;
+
   }
 
   input.embeddable-save {
