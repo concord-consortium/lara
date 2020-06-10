@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IGetInteractiveListOptions](igetinteractivelistoptions.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.9](../README.md) › [Globals](../globals.md) › [IGetInteractiveListOptions](igetinteractivelistoptions.md)
 
 # Interface: IGetInteractiveListOptions
 
