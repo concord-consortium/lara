@@ -1,20 +1,20 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IRuntimeOpenResponseMetadata](iruntimeopenresponsemetadata.md)
 
-# Interface: IRuntimeInteractiveMetadata
+# Interface: IRuntimeOpenResponseMetadata
 
 ## Hierarchy
 
 * [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
-  ↳ **IRuntimeInteractiveMetadata**
+  ↳ **IRuntimeOpenResponseMetadata**
 
 ## Index
 
 ### Properties
 
-* [answerText](iruntimeinteractivemetadata.md#optional-answertext)
-* [answerType](iruntimeinteractivemetadata.md#answertype)
-* [submitted](iruntimeinteractivemetadata.md#optional-submitted)
+* [answerText](iruntimeopenresponsemetadata.md#optional-answertext)
+* [answerType](iruntimeopenresponsemetadata.md#answertype)
+* [submitted](iruntimeopenresponsemetadata.md#optional-submitted)
 
 ## Properties
 
@@ -31,9 +31,12 @@ ___
 
 ###  answerType
 
-• **answerType**: *"interactive_state"*
+• **answerType**: *"open_response_answer"*
 
 *Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
+
+answerType is different so Report and Portal can recognize this type of question.
+Use answerText (defined in IRuntimeMetadataBase) to provide open response answer.
 
 ___
 

@@ -12,35 +12,47 @@
 
 ### Properties
 
-* [answerText](iruntimemultiplechoicemetadata.md#answertext)
-* [choiceIds](iruntimemultiplechoicemetadata.md#choiceids)
-* [isSubmitted](iruntimemultiplechoicemetadata.md#issubmitted)
+* [answerText](iruntimemultiplechoicemetadata.md#optional-answertext)
+* [answerType](iruntimemultiplechoicemetadata.md#answertype)
+* [selectedChoiceIds](iruntimemultiplechoicemetadata.md#selectedchoiceids)
+* [submitted](iruntimemultiplechoicemetadata.md#optional-submitted)
 * [type](iruntimemultiplechoicemetadata.md#type)
 
 ## Properties
 
-###  answerText
+### `Optional` answerText
 
-• **answerText**: *string*
+• **answerText**? : *undefined | string*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#optional-answertext)*
 
-___
-
-###  choiceIds
-
-• **choiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
+answerText can be used by all the interactive types to display answer summary without having to load iframe
+with report view.
 
 ___
 
-###  isSubmitted
+###  answerType
 
-• **isSubmitted**: *boolean*
+• **answerType**: *string*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
+
+___
+
+###  selectedChoiceIds
+
+• **selectedChoiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
+
+___
+
+### `Optional` submitted
+
+• **submitted**? : *undefined | false | true*
+
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[submitted](iruntimemetadatabase.md#optional-submitted)*
 
 ___
 
 ###  type
 
-• **type**: *"multiple choice"*
+• **type**: *"multiple_choice_answer"*

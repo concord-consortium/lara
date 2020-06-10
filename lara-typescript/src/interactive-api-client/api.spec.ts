@@ -181,23 +181,6 @@ describe("api", () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  it("does not yet implement setAuthoringMetadata", () => {
-    expect(() => api.setAuthoringMetadata({
-      type: "interactive",
-      secondaryTypeForNow: "foo",
-      isRequired: true,
-      prompt: "bar"
-    })).toThrow(/not yet implemented/);
-  });
-
-  it("does not yet implement setRuntimeMetadata", () => {
-    expect(() => api.setRuntimeMetadata({
-      type: "interactive",
-      isSubmitted: true,
-      answerText: "foo"
-    })).toThrow(/not yet implemented/);
-  });
-
   it("does not yet implement setAuthoringCustomReportFields", () => {
     expect(() => api.setAuthoringCustomReportFields({
       fields: [

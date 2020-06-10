@@ -11,8 +11,8 @@
 ### Properties
 
 * [content](iauthoringmultiplechoicechoicemetadata.md#content)
+* [correct](iauthoringmultiplechoicechoicemetadata.md#correct)
 * [id](iauthoringmultiplechoicechoicemetadata.md#id)
-* [isCorrect](iauthoringmultiplechoicechoicemetadata.md#iscorrect)
 
 ## Properties
 
@@ -22,12 +22,12 @@
 
 ___
 
-###  id
+###  correct
 
-• **id**: *[ChoiceId](../globals.md#choiceid)*
+• **correct**: *boolean*
 
 ___
 
-###  isCorrect
+###  id
 
-• **isCorrect**: *boolean*
+• **id**: *[ChoiceId](../globals.md#choiceid)*

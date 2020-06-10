@@ -13,24 +13,16 @@
 ### Properties
 
 * [choices](iauthoringmultiplechoicemetadata.md#choices)
-* [isRequired](iauthoringmultiplechoicemetadata.md#isrequired)
 * [prompt](iauthoringmultiplechoicemetadata.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringmultiplechoicemetadata.md#secondarytypefornow)
-* [type](iauthoringmultiplechoicemetadata.md#type)
+* [questionType](iauthoringmultiplechoicemetadata.md#questiontype)
+* [required](iauthoringmultiplechoicemetadata.md#optional-required)
+* [subtype](iauthoringmultiplechoicemetadata.md#optional-subtype)
 
 ## Properties
 
 ###  choices
 
 • **choices**: *[IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)[]*
-
-___
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
 ___
 
@@ -42,14 +34,27 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+###  questionType
 
-• **secondaryTypeForNow**: *any*
+• **questionType**: *"multiple_choice"*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
+*Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
 
 ___
 
-###  type
+### `Optional` required
 
-• **type**: *"multiple choice"*
+• **required**? : *undefined | false | true*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*
+
+___
+
+### `Optional` subtype
+
+• **subtype**? : *undefined | string*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[subtype](iauthoringmetadatabase.md#optional-subtype)*
+
+Interactive can optionally set subtype, so Teacher Report can display different icons
+or categorize interactives into subcategories.
