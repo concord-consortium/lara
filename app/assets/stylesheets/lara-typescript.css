@@ -400,6 +400,9 @@
 .modal-dialog .dialog button:active {
   opacity: 0.8; }
 
+.cc-image-highlight {
+  box-shadow: 0 0 0 2px lightskyblue; }
+
 .react-tabs {
   -webkit-tap-highlight-color: transparent; }
 

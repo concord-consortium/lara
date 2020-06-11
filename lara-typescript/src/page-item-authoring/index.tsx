@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { SlateContainer } from "@concord-consortium/slate-editor";
+import { SlateContainer, slateToHtml, htmlToSlate } from "@concord-consortium/slate-editor";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
@@ -67,5 +67,7 @@ export {
   renderInteractiveAuthoringPreview,
 
   SlateContainer,
-  renderSlateContainer
+  renderSlateContainer,
+  slateToHtml,
+  htmlToSlate
 };
