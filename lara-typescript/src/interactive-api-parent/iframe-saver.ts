@@ -1,7 +1,8 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
-import { IHintRequest } from "../interactive-api-client";
+import { IHintRequest, IShowModal, IShowAlert, ICloseModal, ModalType } from "../interactive-api-client";
+import { addPopup } from "../plugin-api";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -76,6 +77,11 @@ type IGetAuthInfoResponseOptionalRequestId = LaraInteractiveApi.IGetAuthInfoResp
 type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
 type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
 
+interface ModalState {
+  type: ModalType;
+  $content: JQuery<HTMLElement>;
+}
+
 export class IFrameSaver {
 
   private static instances: IFrameSaver[] = [];
@@ -105,6 +111,7 @@ export class IFrameSaver {
   private alreadySetup: boolean;
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
+  private modals: Record<string, ModalState>;
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;
@@ -135,6 +142,8 @@ export class IFrameSaver {
     this.alreadySetup = false;
 
     this.iframePhone = IframePhoneManager.getPhone($iframe[0] as HTMLIFrameElement, () => this.phoneAnswered());
+
+    this.modals = {};
   }
 
   public save(successCallback?: SuccessCallback | null) {
@@ -229,6 +238,18 @@ export class IFrameSaver {
         $container.find(".help-icon").addClass("hidden");
       }
       $container.find(".help-content .text").text(hintRequest.text || "");
+    });
+
+    this.addListener("showModal", (options: IShowModal) => {
+      if (options.type === "alert") {
+        this.showAlert(options);
+      }
+    });
+
+    this.addListener("closeModal", (options: ICloseModal) => {
+      if (this.modals[options.uuid]?.type === "alert") {
+        this.closeAlert(options);
+      }
     });
 
     this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
@@ -445,5 +466,42 @@ export class IFrameSaver {
 
   private addListener(message: LaraInteractiveApi.ClientMessage, listener: (content: any) => void) {
     this.iframePhone.addListener(message, listener);
+  }
+
+  private showAlert(options: IShowAlert) {
+    const { style, title: _title, text } = options;
+    let title: string;
+    let titlebarColor: string | undefined;
+    let message: string;
+    if (style === "correct") {
+      title = _title != null ? _title : "Correct";
+      titlebarColor = "#75a643";
+      message = text || "Yes! You are correct.";
+    }
+    else if (style === "incorrect") {
+      title = _title != null ? _title : "Incorrect";
+      titlebarColor = "#b45532";
+      message = text || "Sorry, that is incorrect.";
+    }
+    else {
+      title = _title || "";
+      message = text || "";
+    }
+
+    const $content = $(`<div class='check-answer'><p class='response'>${message}</p></div`);
+    this.modals[options.uuid] = { type: options.type, $content };
+    addPopup({
+      content: $content[0],
+      title,
+      titlebarColor,
+      modal: true
+    });
+  }
+
+  private closeAlert(options: ICloseModal) {
+    const $content = this.modals[options.uuid]?.$content;
+    if ($content?.is(":ui-dialog")) {
+      $content.dialog("close");
+    }
   }
 }

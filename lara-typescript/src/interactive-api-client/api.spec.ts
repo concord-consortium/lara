@@ -2,7 +2,7 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-ifram
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
-import { IGetFirebaseJwtOptions, IGetFirebaseJwtResponse } from "./types";
+import { IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -195,20 +195,42 @@ describe("api", () => {
     })).toThrow(/not yet implemented/);
   });
 
-  it("does not yet implement showModal", () => {
-    expect(() => api.showModal({
+  it("should implement showModal [alert]", () => {
+    const options: IShowAlert = {
       uuid: "foo",
       type: "alert",
-      style: "info",
-      headerText: "Did you know?",
-      text: "That is is an alert"
-    })).toThrow(/not yet implemented/);
+      style: "correct",
+      title: "Custom Title",
+      text: "Custom message"
+    };
+    api.showModal(options);
+    expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
-  it("does not yet implement closeModal", () => {
-    expect(() => api.closeModal({
-      uuid: "foo"
-    })).toThrow(/not yet implemented/);
+  it("does not yet implement showModal [lightbox]", () => {
+    const options: IShowLightbox = {
+      uuid: "foo",
+      type: "lightbox",
+      url: "https://concord.org"
+    };
+    expect(() => api.showModal(options)).toThrow(/not yet implemented/);
+  });
+
+  it("does not yet implement showModal [dialog]", () => {
+    interface IFooDialog { foo: string; }
+    const options: IShowDialog<IFooDialog> = {
+      uuid: "foo",
+      type: "dialog",
+      url: "https://concord.org",
+      dialogState: { foo: "bar" }
+    };
+    expect(() => api.showModal(options)).toThrow(/not yet implemented/);
+  });
+
+  it("should close a modal alert/lightbox/dialog", () => {
+    const options: ICloseModal = { uuid: "foo" };
+    api.closeModal(options);
+    expect(mockedPhone.messages).toEqual([{ type: "closeModal", content: options }]);
   });
 
   it("does not yet implement getInteractiveList", () => {
