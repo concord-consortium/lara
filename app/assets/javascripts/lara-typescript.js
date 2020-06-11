@@ -26725,6 +26725,7 @@ exports.IframePhoneManager = IframePhoneManager;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IFrameSaver = void 0;
 var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
+var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
 var getAuthoredState = function ($dataDiv) {
     var authoredState = $dataDiv.data("authored-state");
     if ((authoredState == null) || (authoredState === "")) {
@@ -26789,6 +26790,7 @@ var IFrameSaver = /** @class */ (function () {
         }
         this.alreadySetup = false;
         this.iframePhone = iframe_phone_manager_1.IframePhoneManager.getPhone($iframe[0], function () { return _this.phoneAnswered(); });
+        this.modals = {};
     }
     IFrameSaver.defaultSuccess = function () {
         // tslint:disable-next-line:no-console
@@ -26882,6 +26884,17 @@ var IFrameSaver = /** @class */ (function () {
                 $container.find(".help-icon").addClass("hidden");
             }
             $container.find(".help-content .text").text(hintRequest.text || "");
+        });
+        this.addListener("showModal", function (options) {
+            if (options.type === "alert") {
+                _this.showAlert(options);
+            }
+        });
+        this.addListener("closeModal", function (options) {
+            var _a;
+            if (((_a = _this.modals[options.uuid]) === null || _a === void 0 ? void 0 : _a.type) === "alert") {
+                _this.closeAlert(options);
+            }
         });
         this.addListener("supportedFeatures", function (info) {
             if (info.features && info.features.aspectRatio) {
@@ -27089,6 +27102,41 @@ var IFrameSaver = /** @class */ (function () {
     };
     IFrameSaver.prototype.addListener = function (message, listener) {
         this.iframePhone.addListener(message, listener);
+    };
+    IFrameSaver.prototype.showAlert = function (options) {
+        var style = options.style, _title = options.title, text = options.text;
+        var title;
+        var titlebarColor;
+        var message;
+        if (style === "correct") {
+            title = _title != null ? _title : "Correct";
+            titlebarColor = "#75a643";
+            message = text || "Yes! You are correct.";
+        }
+        else if (style === "incorrect") {
+            title = _title != null ? _title : "Incorrect";
+            titlebarColor = "#b45532";
+            message = text || "Sorry, that is incorrect.";
+        }
+        else {
+            title = _title || "";
+            message = text || "";
+        }
+        var $content = $("<div class='check-answer'><p class='response'>" + message + "</p></div");
+        this.modals[options.uuid] = { type: options.type, $content: $content };
+        plugin_api_1.addPopup({
+            content: $content[0],
+            title: title,
+            titlebarColor: titlebarColor,
+            modal: true
+        });
+    };
+    IFrameSaver.prototype.closeAlert = function (options) {
+        var _a;
+        var $content = (_a = this.modals[options.uuid]) === null || _a === void 0 ? void 0 : _a.$content;
+        if ($content === null || $content === void 0 ? void 0 : $content.is(":ui-dialog")) {
+            $content.dialog("close");
+        }
     };
     IFrameSaver.instances = [];
     return IFrameSaver;
