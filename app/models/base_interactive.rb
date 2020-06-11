@@ -57,7 +57,7 @@ module BaseInteractive
     if type === "multiple_choice"
       result.merge!({
         # This property is defined in IAuthoringMultipleChoiceMetadata:
-        choices: metadata[:choices]
+        choices: (metadata[:choices] || []).map { |c| (c || {}).symbolize_keys.slice(:id, :content, :correct) }
       })
     end
 
