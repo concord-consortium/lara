@@ -9,10 +9,10 @@ export type ChoiceId = string;
 export interface IAuthoringMetadataBase {
   questionType: string;
   /**
-   * Interactive can optionally set subtype, so Teacher Report can display different icons
+   * Interactive can optionally set questionSubType, so Teacher Report can display different icons
    * or categorize interactives into subcategories.
    */
-  subtype?: string;
+  questionSubType?: string;
   required?: boolean;
   prompt?: string;
 }
