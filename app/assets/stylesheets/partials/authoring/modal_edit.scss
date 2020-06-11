@@ -8,9 +8,10 @@
   position: fixed !important;
   top: 20px !important;
 
-  form[class^="edit_"] {
+  form[class^="edit_"], form.styled-admin-form {
     height: auto;
     max-height: calc(100% - 105px);
+    min-height: calc(100% - 105px);
     overflow: scroll;
     padding-bottom: 105px;
     position: relative;
