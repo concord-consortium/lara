@@ -37,7 +37,7 @@ module BaseInteractive
       # Otherwise, the default "iframe_interactive" will be used.
       type: type,
       # These properties are defined in IAuthoringMetadataBase:
-      subtype: metadata[:subtype],
+      sub_type: metadata[:questionSubType],
       required: metadata[:required],
       prompt: metadata[:prompt],
       # These properties are stored in LARA. They're basic interactive properties. Some of them might be unused by
@@ -50,7 +50,8 @@ module BaseInteractive
       display_in_iframe: reportable_in_iframe?,
       width: native_width,
       height: native_height,
-      question_number: index_in_activity
+      question_number: index_in_activity,
+      authored_state: parsed_authored_state
     }
 
     if type === "multiple_choice"

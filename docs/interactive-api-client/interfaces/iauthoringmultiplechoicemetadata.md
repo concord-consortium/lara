@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.9](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceMetadata
 
@@ -14,9 +14,9 @@
 
 * [choices](iauthoringmultiplechoicemetadata.md#choices)
 * [prompt](iauthoringmultiplechoicemetadata.md#optional-prompt)
+* [questionSubType](iauthoringmultiplechoicemetadata.md#optional-questionsubtype)
 * [questionType](iauthoringmultiplechoicemetadata.md#questiontype)
 * [required](iauthoringmultiplechoicemetadata.md#optional-required)
-* [subtype](iauthoringmultiplechoicemetadata.md#optional-subtype)
 
 ## Properties
 
@@ -34,6 +34,17 @@ ___
 
 ___
 
+### `Optional` questionSubType
+
+• **questionSubType**? : *undefined | string*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionSubType](iauthoringmetadatabase.md#optional-questionsubtype)*
+
+Interactive can optionally set questionSubType, so Teacher Report can display different icons
+or categorize interactives into subcategories.
+
+___
+
 ###  questionType
 
 • **questionType**: *"multiple_choice"*
@@ -47,14 +58,3 @@ ___
 • **required**? : *undefined | false | true*
 
 *Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*
-
-___
-
-### `Optional` subtype
-
-• **subtype**? : *undefined | string*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[subtype](iauthoringmetadatabase.md#optional-subtype)*
-
-Interactive can optionally set subtype, so Teacher Report can display different icons
-or categorize interactives into subcategories.
