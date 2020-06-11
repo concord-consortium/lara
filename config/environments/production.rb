@@ -42,7 +42,7 @@ LightweightStandalone::Application.configure do
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
-  if ENV['RAILS_STDOUT_LOGGING']
+  if ENV['RAILS_STDOUT_LOGGING'].present?
     config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
   end
 
