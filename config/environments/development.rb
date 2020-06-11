@@ -39,7 +39,7 @@ LightweightStandalone::Application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.alert = false
-    Bullet.bullet_logger = !!ENV["LOG_TO_FILE"]
+    Bullet.bullet_logger = ENV["RAILS_STDOUT_LOGGING"].blank?
     Bullet.console = true
     Bullet.growl = false
     Bullet.xmpp = false
@@ -64,7 +64,7 @@ LightweightStandalone::Application.configure do
   localDevPath = File.expand_path((ENV['LOCAL_DEV_ENVIRONMENT_FILE'] || 'local-development.rb'), File.dirname(__FILE__))
   require(localDevPath) if File.file?(localDevPath)
 
-  unless ENV["LOG_TO_FILE"]
+  if ENV["RAILS_STDOUT_LOGGING"].present?
     # Disable logging to file. It might have performance impact while using Docker for Mac (slow filesystem sync).
     config.logger = Logger.new(STDOUT)
   end
