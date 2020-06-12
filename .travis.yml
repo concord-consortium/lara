@@ -9,7 +9,7 @@ env:
   global:
     - CC_TEST_REPORTER_ID=7729fca8695dd1ce5c6117fcd57680ee5a00726647ae7d4fe52c029de211449f
     - COVERAGE_REPORT=true
-    - RAILS_STDOUT_LOGGING=false # TravisCI terminates job if it logs to STDOUT too much
+    - RAILS_STDOUT_LOGGING= # TravisCI terminates job if it logs to STDOUT too much
 
 before_install:
   - gem update bundler
