@@ -3,10 +3,16 @@
   = field_set_tag 'Heading' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
+    = f.text_area :content, :id => 'content-editor', :rows => 5, :class => 'wysiwyg-minimal', :style => 'display: block'
+    #slate-editor
+    - content_value = @embeddable.content.gsub(/\r\n?/, '')
+    - content_value = content_value.gsub(/"/, '\"')
     :javascript
       $(function() {
-        initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
+        var contentValue = LARA.PageItemAuthoring.htmlToSlate("#{content_value}");
+        var root = document.getElementById('slate-editor');
+        var props = { value: contentValue, onValueChange: updateSlateEditor };
+        LARA.PageItemAuthoring.renderSlateContainer(root, props);
       });
   .options
     = field_set_tag "Options" do
