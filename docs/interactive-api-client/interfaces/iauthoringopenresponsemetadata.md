@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
 # Interface: IAuthoringOpenResponseMetadata
 
@@ -12,20 +12,12 @@
 
 ### Properties
 
-* [isRequired](iauthoringopenresponsemetadata.md#isrequired)
 * [prompt](iauthoringopenresponsemetadata.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringopenresponsemetadata.md#secondarytypefornow)
-* [type](iauthoringopenresponsemetadata.md#type)
+* [questionSubType](iauthoringopenresponsemetadata.md#optional-questionsubtype)
+* [questionType](iauthoringopenresponsemetadata.md#questiontype)
+* [required](iauthoringopenresponsemetadata.md#optional-required)
 
 ## Properties
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
-
-___
 
 ### `Optional` prompt
 
@@ -35,14 +27,27 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+### `Optional` questionSubType
 
-• **secondaryTypeForNow**: *any*
+• **questionSubType**? : *undefined | string*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionSubType](iauthoringmetadatabase.md#optional-questionsubtype)*
+
+Interactive can optionally set questionSubType, so Teacher Report can display different icons
+or categorize interactives into subcategories.
 
 ___
 
-###  type
+###  questionType
 
-• **type**: *"open response"*
+• **questionType**: *"open_response"*
+
+*Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
+
+___
+
+### `Optional` required
+
+• **required**? : *undefined | false | true*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*

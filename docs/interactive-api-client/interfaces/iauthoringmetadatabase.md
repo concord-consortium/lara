@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
 # Interface: IAuthoringMetadataBase
 
@@ -6,9 +6,9 @@
 
 * **IAuthoringMetadataBase**
 
-  ↳ [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
-
   ↳ [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
+
+  ↳ [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
   ↳ [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
@@ -16,17 +16,12 @@
 
 ### Properties
 
-* [isRequired](iauthoringmetadatabase.md#isrequired)
 * [prompt](iauthoringmetadatabase.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)
+* [questionSubType](iauthoringmetadatabase.md#optional-questionsubtype)
+* [questionType](iauthoringmetadatabase.md#questiontype)
+* [required](iauthoringmetadatabase.md#optional-required)
 
 ## Properties
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-___
 
 ### `Optional` prompt
 
@@ -34,6 +29,21 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+### `Optional` questionSubType
 
-• **secondaryTypeForNow**: *any*
+• **questionSubType**? : *undefined | string*
+
+Interactive can optionally set questionSubType, so Teacher Report can display different icons
+or categorize interactives into subcategories.
+
+___
+
+###  questionType
+
+• **questionType**: *string*
+
+___
+
+### `Optional` required
+
+• **required**? : *undefined | false | true*

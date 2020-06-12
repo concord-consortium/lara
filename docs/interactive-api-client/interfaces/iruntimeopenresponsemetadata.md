@@ -1,21 +1,20 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IRuntimeOpenResponseMetadata](iruntimeopenresponsemetadata.md)
 
-# Interface: IRuntimeMultipleChoiceMetadata
+# Interface: IRuntimeOpenResponseMetadata
 
 ## Hierarchy
 
 * [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
-  ↳ **IRuntimeMultipleChoiceMetadata**
+  ↳ **IRuntimeOpenResponseMetadata**
 
 ## Index
 
 ### Properties
 
-* [answerText](iruntimemultiplechoicemetadata.md#optional-answertext)
-* [answerType](iruntimemultiplechoicemetadata.md#answertype)
-* [selectedChoiceIds](iruntimemultiplechoicemetadata.md#selectedchoiceids)
-* [submitted](iruntimemultiplechoicemetadata.md#optional-submitted)
+* [answerText](iruntimeopenresponsemetadata.md#optional-answertext)
+* [answerType](iruntimeopenresponsemetadata.md#answertype)
+* [submitted](iruntimeopenresponsemetadata.md#optional-submitted)
 
 ## Properties
 
@@ -32,15 +31,12 @@ ___
 
 ###  answerType
 
-• **answerType**: *"multiple_choice_answer"*
+• **answerType**: *"open_response_answer"*
 
 *Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
 
-___
-
-###  selectedChoiceIds
-
-• **selectedChoiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
+answerType is different so Report and Portal can recognize this type of question.
+Use answerText (defined in IRuntimeMetadataBase) to provide open response answer.
 
 ___
 

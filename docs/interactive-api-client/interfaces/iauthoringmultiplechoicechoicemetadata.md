@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.6](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceChoiceMetadata
 
@@ -10,24 +10,24 @@
 
 ### Properties
 
-* [content](iauthoringmultiplechoicechoicemetadata.md#content)
+* [content](iauthoringmultiplechoicechoicemetadata.md#optional-content)
+* [correct](iauthoringmultiplechoicechoicemetadata.md#optional-correct)
 * [id](iauthoringmultiplechoicechoicemetadata.md#id)
-* [isCorrect](iauthoringmultiplechoicechoicemetadata.md#iscorrect)
 
 ## Properties
 
-###  content
+### `Optional` content
 
-• **content**: *string*
+• **content**? : *undefined | string*
+
+___
+
+### `Optional` correct
+
+• **correct**? : *undefined | false | true*
 
 ___
 
 ###  id
 
 • **id**: *[ChoiceId](../globals.md#choiceid)*
-
-___
-
-###  isCorrect
-
-• **isCorrect**: *boolean*

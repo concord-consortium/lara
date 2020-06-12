@@ -19,9 +19,30 @@ module BaseInteractive
     iframe_data
   end
 
+  def parsed_authored_state
+    JSON.parse(authored_state).symbolize_keys rescue {}
+  end
+
   def report_service_hash
-    {
-      type: 'iframe_interactive',
+    # Expected metadata format can be checked in lara-typescript/interactive-api-client/metadata-types.ts:
+    # IAuthoring<...>Metadata interfaces.
+    # Metadata is simply provided as a part of authored state. It's optional and everything should work if there's
+    # no metadata defined or authored state is empty.
+    metadata = parsed_authored_state
+
+    type = metadata[:questionType] || "iframe_interactive"
+
+    result = {
+      # type can be overwritten by metadata[:questionType] prop (e.g. to "open_response").
+      # Otherwise, the default "iframe_interactive" will be used.
+      type: type,
+      # These properties are defined in IAuthoringMetadataBase:
+      sub_type: metadata[:questionSubType],
+      required: metadata[:required],
+      prompt: metadata[:prompt],
+      # These properties are stored in LARA. They're basic interactive properties. Some of them might be unused by
+      # Report or Portal when interactive pretends to be a basic question type. But these services might be extended
+      # to show both basic question answer and optionally provide iframe report view.
       id: embeddable_id,
       name: name,
       url: url,
@@ -29,8 +50,18 @@ module BaseInteractive
       display_in_iframe: reportable_in_iframe?,
       width: native_width,
       height: native_height,
-      question_number: index_in_activity
+      question_number: index_in_activity,
+      authored_state: parsed_authored_state
     }
+
+    if type === "multiple_choice"
+      result.merge!({
+        # This property is defined in IAuthoringMultipleChoiceMetadata:
+        choices: (metadata[:choices] || []).map { |c| (c || {}).symbolize_keys.slice(:id, :content, :correct) }
+      })
+    end
+
+    result
   end
 
   def page_section

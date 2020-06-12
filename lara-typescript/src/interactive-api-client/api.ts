@@ -8,8 +8,6 @@ import {
   ISupportedFeatures,
   IGetFirebaseJwtRequest,
   IGetAuthInfoRequest,
-  IAuthoringMetadata,
-  IRuntimeMetadata,
   IAuthoringCustomReportFields,
   IRuntimeCustomReportValues,
   IShowModal,
@@ -210,20 +208,6 @@ export const addGlobalInteractiveStateListener = <GlobalInteractiveState>(listen
 // tslint:disable-next-line:max-line-length
 export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(listener: (globalInteractiveState: GlobalInteractiveState) => void) => {
   getClient().managedState.off("globalInteractiveStateUpdated", listener);
-};
-
-/**
- * @todo Implement this function.
- */
-export const setAuthoringMetadata = (metadata: IAuthoringMetadata) => {
-  THROW_NOT_IMPLEMENTED_YET("setAuthoringMetadata");
-};
-
-/**
- * @todo Implement this function.
- */
-export const setRuntimeMetadata = (metadata: IRuntimeMetadata) => {
-  THROW_NOT_IMPLEMENTED_YET("setRuntimeMetadata");
 };
 
 /**

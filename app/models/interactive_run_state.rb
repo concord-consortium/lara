@@ -32,6 +32,17 @@ class InteractiveRunState < ActiveRecord::Base
     return results
   end
 
+  # When interactive "pretends" to be one of the basic types, its question type also needs to do that.
+  def self.question_type_for(type)
+    mapping = {
+      "open_response_answer" => "open_response",
+      "multiple_choice_answer" => "multiple_choice",
+      "interactive_state" => "iframe_interactive",
+      "external_link" => "iframe_interactive"
+    }
+    mapping[type] || "iframe_interactive"
+  end
+
   def question
     interactive
   end
@@ -72,24 +83,59 @@ class InteractiveRunState < ActiveRecord::Base
     end
   end
 
+  def parsed_interactive_state
+    JSON.parse(raw_data).symbolize_keys rescue {}
+  end
+
   def report_service_hash
+    # Expected data format can be checked in lara-typescript/interactive-api-client/metadata-types.ts:
+    # IRuntime<...>Metadata interfaces.
+    # Metadata is simply provided as a part of interactive state. It's optional and everything should work if there's
+    # no metadata defined or interactive state is empty.
+    metadata = parsed_interactive_state
+
+    # This property is defined in IRuntimeMetadataBase:
+    type = metadata[:answerType] || (interactive.has_report_url ? "external_link" : "interactive_state")
+
     result = {
+      # type can be overwritten by metadata[:answerType] prop (e.g. to "open_response_answer").
+      # Otherwise, the default "interactive_state" or "external_link" will be used.
+      type: type,
+      # question_type should match answer type.
+      question_type: InteractiveRunState.question_type_for(type),
+      # These properties are defined in IRuntimeMetadataBase:
+      submitted: metadata[:submitted],
+      answer_text: metadata[:answerText],
+      # These properties are stored in LARA. They're basic interactive run state properties. Some of them might be
+      # unused by Report or Portal when interactive pretends to be a basic question type. But these services might be
+      # extended to show both basic question answer and optionally provide iframe report view.
       id: answer_id,
-      question_type: "iframe_interactive",
-      question_id: interactive.embeddable_id
+      question_id: interactive.embeddable_id,
+      # Even when interactive pretends to be one of the basic questions, it makes sense to add full report state
+      # (combination of authored and interactive state), so the full reporting view can be displayed if necessary.
+      report_state: report_state.to_json
     }
-    # There are two options how interactive can be saved in report service:
-    # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
-    #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
-    # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
-    #   and sent to the interactive using LARA Interactive API.
-    if interactive.has_report_url
-      result[:type] = "external_link"
+
+    case type
+    when "multiple_choice_answer"
+      # Convert selectedChoiceIds to answer:choice_ids to let interactives use more friendly naming,
+      # but still be compatible with Report and Portal format.
+      # selectedChoiceIds is defined in IRuntimeMultipleChoiceMetadata.
+      result[:answer] = {
+        choice_ids: metadata[:selectedChoiceIds]
+      }
+    when "open_response_answer"
+      # answerText is defined in IRuntimeMetadataBase.
+      # Use answer key to be compatible with current Report and Portal format.
+      result[:answer] = metadata[:answerText]
+    when "external_link"
       result[:answer] = reporting_url
-    else
-      result[:type] = "interactive_state"
-      result[:answer] = report_state.to_json
+    when "interactive_state"
+      # Current Report and Portal versions expect interactive report state to be passed in "answer" property.
+      # Don't remove report_state, so it's possible to update these apps to use report_state one day.
+      result[:answer] = result[:report_state]
     end
+
     result
   end
 
