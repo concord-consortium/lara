@@ -66,6 +66,9 @@
     font-style: italic;
     font-size: 0.9em;
   }
+  &.hidden {
+    display: none;
+  }
 }
 
 .challenge {
