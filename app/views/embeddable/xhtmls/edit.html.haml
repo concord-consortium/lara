@@ -5,8 +5,10 @@
   = field_set_tag 'Content' do
     = f.text_area :content, :id => 'content-editor', :rows => 5, :class => 'wysiwyg-minimal', :style => 'display: block'
     #slate-editor
-    - content_value = @embeddable.content.gsub(/\r\n?/, '')
-    - content_value = content_value.gsub(/"/, '\"')
+    - if !@embeddable.content.nil?
+      - content_value = @embeddable.content.gsub(/\r\n?/, '')
+      - content_value = content_value.gsub(/"/, '\"')
+
     :javascript
       $(function() {
         var contentValue = LARA.PageItemAuthoring.htmlToSlate("#{content_value}");
