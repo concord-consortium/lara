@@ -111,28 +111,10 @@ describe ManagedInteractive do
         type: 'iframe_interactive',
         id: managed_interactive.id,
         display_in_iframe: managed_interactive.reportable_in_iframe?,
-
-        library_interactive_id: managed_interactive.library_interactive_id,
-        name: managed_interactive.name,
-        url_fragment: managed_interactive.url_fragment,
-        authored_state: managed_interactive.authored_state,
-        is_hidden: managed_interactive.is_hidden,
-        is_full_width: managed_interactive.is_full_width,
         show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
-        inherit_aspect_ratio_method: managed_interactive.inherit_aspect_ratio_method,
-        custom_aspect_ratio_method: managed_interactive.custom_aspect_ratio_method,
-        inherit_native_width: managed_interactive.inherit_native_width,
-        custom_native_width: managed_interactive.custom_native_width,
-        inherit_native_height: managed_interactive.inherit_native_height,
-        custom_native_height: managed_interactive.custom_native_height,
-        inherit_click_to_play: managed_interactive.inherit_click_to_play,
-        custom_click_to_play: managed_interactive.custom_click_to_play,
-        inherit_full_window: managed_interactive.inherit_full_window,
-        custom_full_window: managed_interactive.custom_full_window,
-        inherit_click_to_play_prompt: managed_interactive.inherit_click_to_play_prompt,
-        custom_click_to_play_prompt: managed_interactive.custom_click_to_play_prompt,
-        inherit_image_url: managed_interactive.inherit_image_url,
-        custom_image_url: managed_interactive.custom_image_url
+        name: managed_interactive.name,
+        native_width: managed_interactive.native_width,
+        native_height: managed_interactive.native_height
       )
     end
   end

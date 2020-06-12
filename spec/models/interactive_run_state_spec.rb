@@ -144,7 +144,46 @@ describe InteractiveRunState do
 
       # the portal requires this type. So if you change it,
       # you need to change the portal too
-      it { should include("question_type" => "iframe interactive") }
+      it { should include(question_type: "iframe interactive") }
+
+      describe "when interactive run state pretends to be open response answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer"}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "open_response",
+            answer: "Test answer"
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be multiple choice answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"]}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "multiple_choice",
+            answer_ids: ["a", "b"]
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be multiple choice answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"]}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "multiple_choice",
+            answer_ids: ["a", "b"]
+          })
+        end
+      end
     end
 
     # this key is generated automatically when created
