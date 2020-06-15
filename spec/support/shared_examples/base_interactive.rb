@@ -9,7 +9,6 @@ shared_examples "a base interactive" do |model_factory|
       expect(interactive.portal_hash).to include(
         type: 'iframe_interactive',
         is_required: false,
-        id: interactive.id,
         name: interactive.name,
         url: interactive.url,
         native_width: interactive.native_width,
@@ -17,6 +16,13 @@ shared_examples "a base interactive" do |model_factory|
         display_in_iframe: interactive.reportable_in_iframe?,
         show_in_featured_question_report: interactive.show_in_featured_question_report
       )
+      if interactive.instance_of?(MwInteractive)
+        # To be backward compatible with MwInteractives already exported to Portal.
+        expect(interactive.portal_hash[:id]).to eql(interactive.id)
+      else
+        # e.g. ManagedInteractive
+        expect(interactive.portal_hash[:id]).to eql(interactive.embeddable_id)
+      end
     end
 
     describe "when interactive pretends to be open response question" do

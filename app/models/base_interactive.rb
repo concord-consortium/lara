@@ -25,14 +25,6 @@ module BaseInteractive
       result[:name] = result[:prompt]
     end
 
-    if result[:type] === "iframe_interactive"
-      # When interactive doesn't pretend to be a basic question type, use regular ID number (instead of embeddable_id
-      # used by default by report_service_hash) to be backward compatible with existing interactives that are
-      # already exported to Portal. `embeddable_id` is safer when type is overwritten by interative metadata,
-      # but in this case it's not necessary and lets us not break existing interactives.
-      result[:id] = id
-    end
-
     # Open response and multiple choice properties are the same as in report_service_hash and/or properties mapped above.
     # Portal expects less fields that will be actually sent, but it doesn't seem to cause any problems.
     result
