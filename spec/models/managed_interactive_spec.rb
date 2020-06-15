@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe ManagedInteractive do
+  it_behaves_like "a base interactive", :managed_interactive
+
   let(:library_interactive) { FactoryGirl.create(:library_interactive,
                                                  :name => 'Test Library managed_Interactive',
                                                  :base_url => 'http://concord.org/',

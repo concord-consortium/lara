@@ -19,7 +19,7 @@ module BaseInteractive
 
     result[:native_width] = result[:width]
     result[:native_height] = result[:height]
-    result[:is_required] = result[:required]
+    result[:is_required] = !!result[:required]
     # If name is not available, but prompt is, this should make Portal details report a bit more readable.
     unless result[:name].present?
       result[:name] = result[:prompt]

@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe MwInteractive do
+  it_behaves_like "a base interactive", :mw_interactive
+
   let (:interactive_options) { {linked_interactive_id: 1} }
   let (:interactive) { FactoryGirl.create(:mw_interactive, interactive_options) }
   let (:page) { FactoryGirl.create(:page) }
@@ -73,65 +75,6 @@ describe MwInteractive do
         is_full_width: interactive.is_full_width,
         authored_state: interactive.authored_state
       })
-    end
-  end
-
-  describe "#portal_hash" do
-    it 'returns properties supported by Portal' do
-      expect(interactive.portal_hash).to include(
-        type: 'iframe_interactive',
-        id: interactive.id,
-        name: interactive.name,
-        url: interactive.url,
-        native_width: interactive.native_width,
-        native_height: interactive.native_height,
-        display_in_iframe: interactive.reportable_in_iframe?,
-        show_in_featured_question_report: interactive.show_in_featured_question_report
-      )
-    end
-
-    describe "when interactive pretends to be open response question" do
-      let (:interactive) { FactoryGirl.create(:mw_interactive,
-        authored_state: JSON({questionType: "open_response", prompt: "Test prompt", required: true}) ) }
-
-      it 'returns properties supported by Portal' do
-        expect(interactive.portal_hash).to include(
-          type: 'open_response',
-          prompt: "Test prompt",
-          required: true,
-          id: interactive.embeddable_id,
-          name: interactive.name,
-          url: interactive.url,
-          native_width: interactive.native_width,
-          native_height: interactive.native_height,
-          display_in_iframe: interactive.reportable_in_iframe?,
-          show_in_featured_question_report: interactive.show_in_featured_question_report
-        )
-      end
-    end
-
-    describe "when interactive pretends to be multiple choice question" do
-      let (:interactive) { FactoryGirl.create(:mw_interactive,
-        authored_state: JSON({
-          questionType: "multiple_choice", prompt: "Test prompt", required: true,
-          choices: [{id: "1", content: "Choice A", correct: true}]
-        }) ) }
-
-      it 'returns properties supported by Portal' do
-        expect(interactive.portal_hash).to include(
-          type: 'multiple_choice',
-          prompt: "Test prompt",
-          required: true,
-          choices: [{id: "1", content: "Choice A", correct: true}],
-          id: interactive.embeddable_id,
-          name: interactive.name,
-          url: interactive.url,
-          native_width: interactive.native_width,
-          native_height: interactive.native_height,
-          display_in_iframe: interactive.reportable_in_iframe?,
-          show_in_featured_question_report: interactive.show_in_featured_question_report
-        )
-      end
     end
   end
 
