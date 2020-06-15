@@ -205,6 +205,82 @@ describe InteractiveRunState do
       end
     end
 
+    describe "#report_service_hash" do
+      subject { interactive_run_state.report_service_hash }
+
+      describe "when interactive has a report url" do
+        # Only when reporting_url is available.
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+        let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "external_link",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id,
+            answer: "test.com"
+          })
+        end
+      end
+
+      describe "when interactive doesn't have a report url" do
+        # Only when reporting_url is available.
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+        let(:run_data) { '{"someProp": 123}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "interactive_state",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id
+          })
+          expect(JSON.parse(subject[:answer])).to include({
+            "version" => 1,
+            "mode" => "report",
+            "interactiveState" => '{"someProp": 123}'
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be open response answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should overwrite type and provide supported fields to Report Service" do
+          expect(subject).to include({
+            type: "open_response_answer",
+            id: interactive_run_state.answer_id,
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            question_type: "open_response",
+            answer: "Test answer",
+            submitted: true
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be multiple choice answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Report Service" do
+          expect(subject).to include({
+            type: "multiple_choice_answer",
+            id: interactive_run_state.answer_id,
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            question_type: "multiple_choice",
+            answer: { choice_ids: ["a", "b"] },
+            submitted: true
+          })
+        end
+      end
+    end
+
     # this key is generated automatically when created
     describe "key" do
       describe "when not manually set" do
