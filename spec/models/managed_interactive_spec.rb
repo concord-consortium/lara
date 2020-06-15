@@ -107,20 +107,6 @@ describe ManagedInteractive do
     end
   end
 
-  describe "#portal_hash" do
-    it 'returns properties supported by Portal' do
-      expect(managed_interactive.portal_hash).to include(
-        type: 'iframe_interactive',
-        id: managed_interactive.id,
-        display_in_iframe: managed_interactive.reportable_in_iframe?,
-        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
-        name: managed_interactive.name,
-        native_width: managed_interactive.native_width,
-        native_height: managed_interactive.native_height
-      )
-    end
-  end
-
   describe "#to_interactive_json" do
     it 'has useful values' do
       expect(JSON.parse(managed_interactive.to_interactive_json)).to eq(JSON.parse({

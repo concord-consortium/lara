@@ -137,39 +137,75 @@ describe InteractiveRunState do
       subject { interactive_run_state.portal_hash }
 
       describe "when interactive has a report url" do
-        # Only when reporting_url is available.
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
         let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
-        it "should provide required set of properties" do
-          expect(subject).to include({
-            type: "external_link",
-            question_type: "iframe interactive", # missing underscore, as that's what Portal actually expects
-            question_id: interactive.id.to_s,
-            answer: "test.com",
-            is_final: false
-          })
+        describe "when interactive is an instance of MwInteractive" do
+          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+
+          it "should provide required set of properties and the question_id should be numeric ID" do
+            expect(subject).to include({
+              type: "external_link",
+              question_type: "iframe interactive", # missing underscore, as that's what Portal actually expects
+              question_id: interactive.id.to_s,
+              answer: "test.com",
+              is_final: false
+            })
+          end
+        end
+
+        describe "when interactive is NOT an instance of MwInteractive" do
+          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: true) }
+          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
+
+          it "should provide required set of properties and the question_id should be embeddable ID" do
+            expect(subject).to include({
+              type: "external_link",
+              question_type: "iframe interactive", # missing underscore, as that's what Portal actually expects
+              question_id: interactive.embeddable_id,
+              answer: "test.com",
+              is_final: false
+            })
+          end
         end
       end
 
       describe "when interactive doesn't have a report url" do
-        # Only when reporting_url is available.
-        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
         let(:run_data) { '{"someProp": 123}' }
         let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
 
-        it "should provide required set of properties" do
-          expect(subject).to include({
-            type: "interactive",
-            question_id: interactive.id.to_s,
-            is_final: false
-          })
-          expect(JSON.parse(subject[:answer])).to include({
-            "version" => 1,
-            "mode" => "report",
-            "interactiveState" => '{"someProp": 123}'
-          })
+        describe "when interactive is an instance of MwInteractive" do
+          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+
+          it "should provide required set of properties and the question_id should be numeric ID" do
+            expect(subject).to include({
+              type: "interactive",
+              question_id: interactive.id.to_s,
+              is_final: false
+            })
+            expect(JSON.parse(subject[:answer])).to include({
+              "version" => 1,
+              "mode" => "report",
+              "interactiveState" => '{"someProp": 123}'
+            })
+          end
+        end
+
+        describe "when interactive is NOT an instance of MwInteractive" do
+          let(:interactive) { FactoryGirl.create(:managed_interactive) }
+
+          it "should provide required set of properties and the question_id should be embeddable ID" do
+            expect(subject).to include({
+              type: "interactive",
+              question_id: interactive.embeddable_id,
+              is_final: false
+            })
+            expect(JSON.parse(subject[:answer])).to include({
+              "version" => 1,
+              "mode" => "report",
+              "interactiveState" => '{"someProp": 123}'
+            })
+          end
         end
       end
 
