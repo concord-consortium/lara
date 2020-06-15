@@ -192,7 +192,8 @@ describe InteractiveRunState do
         end
 
         describe "when interactive is NOT an instance of MwInteractive" do
-          let(:interactive) { FactoryGirl.create(:managed_interactive) }
+          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: false) }
+          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
 
           it "should provide required set of properties and the question_id should be embeddable ID" do
             expect(subject).to include({
