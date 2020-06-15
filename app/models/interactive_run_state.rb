@@ -61,16 +61,29 @@ class InteractiveRunState < ActiveRecord::Base
     # Portal expects different types than report service.
     type_mapping = {
       "interactive_state" => "interactive",
+      "external_link" => "external_link",
       "open_response_answer" => "open_response",
       "multiple_choice_answer" => "multiple_choice",
     }
     result[:type] = type_mapping[result[:type]]
-    # not very consistent naming, but that's what portal expects
-    result[:question_type] = "iframe interactive"
+    result[:is_final] = !!result[:submitted]
 
-    result[:is_final] = result[:submitted]
-
-    if result[:type] === "multiple_choice"
+    if result[:type] === "interactive"
+      # When interactive doesn't pretend to be a basic question type, use regular ID number (instead of embeddable_id
+      # used by default by report_service_hash) to be backward compatible with existing interactives that are
+      # already exported to Portal. `embeddable_id` is safer when type is overwritten by interative metadata,
+      # but in this case it's not necessary and lets us not break existing interactives.
+      result[:question_id] = interactive.id.to_s
+    elsif result[:type] === "external_link"
+      # Not very consistent naming (missing underscore), but that's what portal expects.
+      # Note that question type is only necessary for external_link answer type.
+      result[:question_type] = "iframe interactive"
+      # When interactive doesn't pretend to be a basic question type, use regular ID number (instead of embeddable_id
+      # used by default by report_service_hash) to be backward compatible with existing interactives that are
+      # already exported to Portal. `embeddable_id` is safer when type is overwritten by interative metadata,
+      # but in this case it's not necessary and lets us not break existing interactives.
+      result[:question_id] = interactive.id.to_s
+    elsif result[:type] === "multiple_choice"
       result[:answer_ids] = result[:answer][:choice_ids]
       # multiple_choice_answer.rb also sends answer_texts.
       # This property is skipped here, as Portal doesn't use it anyway.
