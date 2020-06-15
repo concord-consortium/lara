@@ -3,22 +3,17 @@
   = field_set_tag 'Heading' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :id => 'content-editor', :rows => 5, :class => 'wysiwyg-minimal', :style => 'display: block'
-    #slate-editor
-    - if !@embeddable.content.nil?
-      - content_value = @embeddable.content.gsub(/\r\n?/, '')
-      - content_value = content_value.gsub(/"/, '\"')
-
-    :javascript
-      $(function() {
-        var contentValue = LARA.PageItemAuthoring.htmlToSlate("#{content_value}");
-        var root = document.getElementById('slate-editor');
-        var props = { value: contentValue, onValueChange: updateSlateEditor };
-        LARA.PageItemAuthoring.renderSlateContainer(root, props);
-      });
+    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal', :style => 'display: block'
   .options
     = field_set_tag "Options" do
       .ul
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   = f.submit "Cancel", :class => 'close'
   = f.submit "Save", :class => 'embeddable-save'
+
+  :javascript
+    $(function() {
+      $("wysiwyg, .wysiwyg-minimal").each(function (index) {
+        initSlateEditor($(this), $(this).text(), index);
+      });
+    });

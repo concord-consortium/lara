@@ -1,36 +1,35 @@
-window.initSlateEditor = function (selector, value) {
-  // addSlateEditor(selector, value);
+window.initSlateEditor = function (wysiwyg, value, index) {
+  var slateEditorId = "slate-editor-" + index.toString();
+  $(wysiwyg).hide();
+  $('<div id="' + slateEditorId + '" class="slate-editor"></div>').insertAfter(wysiwyg);
+
+  var contentValue = LARA.PageItemAuthoring.htmlToSlate(value);
+  var root = document.getElementById(slateEditorId);
+  var props = { onFocus: setCurrentEditor, value: contentValue, onValueChange: updateSlateEditor };
+  LARA.PageItemAuthoring.renderSlateContainer(root, props);
+
 };
 
-function addSlateEditor(selector, value) {
-  // hide .wysiwyg editor
-  // selector.hide();
-
-  // add #slate-editor div immediately after .wysiwyg editor
-  // $('<div id="slate-editor"></div>').insertAfter('.wysiwyg-minimal');
-
-  // attach Slate Editor to #slate-editor div
-  // var contentValue = LARA.PageItemAuthoring.htmlToSlate("#{content_value}");
-  // console.log(contentValue);
-  // var root = document.getElementById('slate-editor');
-  // var props = { value: contentValue, onValueChange: updateSlateEditor };
-  // LARA.PageItemAuthoring.renderSlateContainer(root, props);
-
+function setCurrentEditor (editor) {
+  currentSlateEditorId = $(editor.el).parent().parent().attr("id");
+  $(document).data("currentSlateEditorId", currentSlateEditorId);
 }
 
 function updateSlateEditor (editorValue) {
-  var root = document.getElementById('slate-editor');
-  var props = { value: editorValue, onValueChange: updateSlateEditor };
+  var slateEditorId = $(document).data("currentSlateEditorId");
+  var root = document.getElementById(slateEditorId);
+  var props = { onFocus: setCurrentEditor, value: editorValue, onValueChange: updateSlateEditor };
   LARA.PageItemAuthoring.renderSlateContainer(root, props);
 
   var prevValue = $(root).data("prevValue");
-  console.log(prevValue);
-  console.log(editorValue);
+  //console.log(prevValue);
+  //console.log(editorValue);
   if (prevValue && editorValue.document !== prevValue.document) {
-    console.log("Calling slateToHtml()");
+    //console.log("Calling slateToHtml()");
     var contentHtml = LARA.PageItemAuthoring.slateToHtml(editorValue);
-    console.log("Called slateToHtml()");
-    $('#content-editor').text(contentHtml);
+    //console.log("Called slateToHtml()");
+    $(root).siblings("textarea").text(contentHtml);
+    $(root).siblings("textarea").val(contentHtml);
     console.log("Copied content to textarea.");
   }
   $(root).data("prevValue", editorValue);

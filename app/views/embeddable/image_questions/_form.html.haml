@@ -41,8 +41,8 @@
       = render :partial => 'shared/edit_featured', :locals => { :f => f }
       = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   :javascript
-    $(function() {
-      initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
+    $("wysiwyg, .wysiwyg-minimal").each(function (index) {
+      initSlateEditor($(this), $(this).text(), index);
     });
 
   = f.submit "Cancel", :class => 'close'

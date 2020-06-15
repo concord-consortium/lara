@@ -59,7 +59,9 @@
     = f.link_to_add "Add choice", :choices
     :javascript
       $(function() {
-          initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
+          $("wysiwyg, .wysiwyg-minimal").each(function (index) {
+            initSlateEditor($(this), $(this).text(), index);
+          });
 
           var $radios = $('#embeddable_layout_options input'),
               $showAsMenu = $('##{show_as_menu_id}');
