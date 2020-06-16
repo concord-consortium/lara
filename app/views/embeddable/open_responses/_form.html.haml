@@ -17,8 +17,9 @@
         = render :partial => 'shared/edit_featured', :locals => { :f => f }
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
 
-  = f.submit "Cancel", :class => 'close'
-  = f.submit "Save", :class => 'embeddable-save'
+  .submit-container
+    = f.submit "Cancel", :class => 'close'
+    = f.submit "Save", :class => 'embeddable-save'
 
   :javascript
     $(function() {

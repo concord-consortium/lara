@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IRuntimeInteractiveMetadata](iruntimeinteractivemetadata.md)
 
 # Interface: IRuntimeInteractiveMetadata
 
@@ -12,28 +12,33 @@
 
 ### Properties
 
-* [answerText](iruntimeinteractivemetadata.md#answertext)
-* [isSubmitted](iruntimeinteractivemetadata.md#issubmitted)
-* [type](iruntimeinteractivemetadata.md#type)
+* [answerText](iruntimeinteractivemetadata.md#optional-answertext)
+* [answerType](iruntimeinteractivemetadata.md#answertype)
+* [submitted](iruntimeinteractivemetadata.md#optional-submitted)
 
 ## Properties
 
-###  answerText
+### `Optional` answerText
 
-• **answerText**: *string*
+• **answerText**? : *undefined | string*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#optional-answertext)*
 
-___
-
-###  isSubmitted
-
-• **isSubmitted**: *boolean*
-
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
+answerText can be used by all the interactive types to display answer summary without having to load iframe
+with report view.
 
 ___
 
-###  type
+###  answerType
 
-• **type**: *"interactive"*
+• **answerType**: *"interactive_state"*
+
+*Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
+
+___
+
+### `Optional` submitted
+
+• **submitted**? : *undefined | false | true*
+
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[submitted](iruntimemetadatabase.md#optional-submitted)*

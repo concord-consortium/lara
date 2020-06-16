@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.4.0-pre.4
+# @concord-consortium/lara-interactive-api - v0.4.0-pre.10
 
 ## Index
 
@@ -52,6 +52,7 @@
 * [IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md)
 * [IRuntimeMetadataBase](interfaces/iruntimemetadatabase.md)
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
+* [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
@@ -103,7 +104,6 @@
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [setAuthoredState](globals.md#const-setauthoredstate)
 * [setAuthoringCustomReportFields](globals.md#const-setauthoringcustomreportfields)
-* [setAuthoringMetadata](globals.md#const-setauthoringmetadata)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
 * [setHint](globals.md#const-sethint)
@@ -111,7 +111,6 @@
 * [setLinkedInteractives](globals.md#const-setlinkedinteractives)
 * [setNavigation](globals.md#const-setnavigation)
 * [setRuntimeCustomReportValues](globals.md#const-setruntimecustomreportvalues)
-* [setRuntimeMetadata](globals.md#const-setruntimemetadata)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
@@ -123,7 +122,7 @@
 
 ###  ChoiceId
 
-Ƭ **ChoiceId**: *string | number*
+Ƭ **ChoiceId**: *string*
 
 ___
 
@@ -159,13 +158,13 @@ ___
 
 ###  IAuthoringMetadata
 
-Ƭ **IAuthoringMetadata**: *[IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
+Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
 
 ___
 
 ###  IFrameSaverClientMessage
 
-Ƭ **IFrameSaverClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringMetadata" | "runtimeMetadata" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getInteractiveList" | "setLinkedInteractives" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
+Ƭ **IFrameSaverClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getInteractiveList" | "setLinkedInteractives" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
 
 ___
 
@@ -177,7 +176,7 @@ ___
 
 ###  IRuntimeMetadata
 
-Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
+Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
 
 ___
 
@@ -576,20 +575,6 @@ Name | Type |
 
 ___
 
-### `Const` setAuthoringMetadata
-
-▸ **setAuthoringMetadata**(`metadata`: [IAuthoringMetadata](globals.md#iauthoringmetadata)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`metadata` | [IAuthoringMetadata](globals.md#iauthoringmetadata) |
-
-**Returns:** *void*
-
-___
-
 ### `Const` setGlobalInteractiveState
 
 ▸ **setGlobalInteractiveState**‹**GlobalInteractiveState**›(`newGlobalState`: GlobalInteractiveState | null): *void*
@@ -723,20 +708,6 @@ ___
 Name | Type |
 ------ | ------ |
 `values` | [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md) |
-
-**Returns:** *void*
-
-___
-
-### `Const` setRuntimeMetadata
-
-▸ **setRuntimeMetadata**(`metadata`: [IRuntimeMetadata](globals.md#iruntimemetadata)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`metadata` | [IRuntimeMetadata](globals.md#iruntimemetadata) |
 
 **Returns:** *void*
 

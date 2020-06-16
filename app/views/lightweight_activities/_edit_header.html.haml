@@ -3,6 +3,8 @@
     Edit activity
   %span.preview
     = link_to "Preview", preview_activity_path(@activity), :target => 'new'
+  %span.preview
+    = link_to "Preview Teacher Edition", preview_activity_path(@activity, mode: "teacher-edition"), :target => 'new'
   - if current_user.is_admin
     %span.edit-in
       = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"

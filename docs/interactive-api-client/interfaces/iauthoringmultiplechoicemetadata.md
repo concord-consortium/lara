@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
 # Interface: IAuthoringMultipleChoiceMetadata
 
@@ -13,24 +13,16 @@
 ### Properties
 
 * [choices](iauthoringmultiplechoicemetadata.md#choices)
-* [isRequired](iauthoringmultiplechoicemetadata.md#isrequired)
 * [prompt](iauthoringmultiplechoicemetadata.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringmultiplechoicemetadata.md#secondarytypefornow)
-* [type](iauthoringmultiplechoicemetadata.md#type)
+* [questionSubType](iauthoringmultiplechoicemetadata.md#optional-questionsubtype)
+* [questionType](iauthoringmultiplechoicemetadata.md#questiontype)
+* [required](iauthoringmultiplechoicemetadata.md#optional-required)
 
 ## Properties
 
 ###  choices
 
 • **choices**: *[IAuthoringMultipleChoiceChoiceMetadata](iauthoringmultiplechoicechoicemetadata.md)[]*
-
-___
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
 
 ___
 
@@ -42,14 +34,27 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+### `Optional` questionSubType
 
-• **secondaryTypeForNow**: *any*
+• **questionSubType**? : *undefined | string*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionSubType](iauthoringmetadatabase.md#optional-questionsubtype)*
+
+Interactive can optionally set questionSubType, so Teacher Report can display different icons
+or categorize interactives into subcategories.
 
 ___
 
-###  type
+###  questionType
 
-• **type**: *"multiple choice"*
+• **questionType**: *"multiple_choice"*
+
+*Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
+
+___
+
+### `Optional` required
+
+• **required**? : *undefined | false | true*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*

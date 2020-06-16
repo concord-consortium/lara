@@ -71233,9 +71233,14 @@ exports.ManagedInteractiveAuthoring = function (props) {
     var selectedOption = libraryInteractive ? createSelectOption(libraryInteractive) : undefined;
     var handleSelectChange = function (newSelectedOption) {
         var selectedLibraryInteractive = libraryInteractives.list.find(function (li) { return li.id === newSelectedOption.value; });
-        setLibraryInteractive(selectedLibraryInteractive);
-        if (libraryInteractiveIdRef.current) {
-            libraryInteractiveIdRef.current.value = newSelectedOption.value.toString();
+        if (selectedLibraryInteractive) {
+            var confirmMessage = "Use " + selectedLibraryInteractive.name + "?  Once selected it can't be changed.";
+            if (confirm(confirmMessage)) {
+                setLibraryInteractive(selectedLibraryInteractive);
+                if (libraryInteractiveIdRef.current) {
+                    libraryInteractiveIdRef.current.value = newSelectedOption.value.toString();
+                }
+            }
         }
     };
     var handleUrlFragmentChange = function (newUrlFragment) { return setUrlFragment(newUrlFragment); };
@@ -71302,7 +71307,9 @@ exports.ManagedInteractiveAuthoring = function (props) {
             React.createElement("legend", null, "Library Interactive"),
             React.createElement("input", { type: "hidden", id: formField("library_interactive_id").id, name: formField("library_interactive_id").name, ref: libraryInteractiveIdRef, defaultValue: libraryInteractive ? "" + libraryInteractive.id : "" }),
             React.createElement("input", { type: "hidden", id: formField("authored_state").id, name: formField("authored_state").name, ref: libraryInteractiveAuthoredStateRef, defaultValue: managedInteractive.authored_state }),
-            React.createElement(react_select_1.default, { value: selectedOption, onChange: handleSelectChange, options: selectOptions })),
+            selectedOption
+                ? selectedOption.label
+                : React.createElement(react_select_1.default, { value: selectedOption, onChange: handleSelectChange, options: selectOptions })),
         renderRequiredFields(),
         renderTabs());
 };

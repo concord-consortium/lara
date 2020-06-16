@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
 
 # Interface: IRuntimeMultipleChoiceMetadata
 
@@ -12,35 +12,40 @@
 
 ### Properties
 
-* [answerText](iruntimemultiplechoicemetadata.md#answertext)
-* [choiceIds](iruntimemultiplechoicemetadata.md#choiceids)
-* [isSubmitted](iruntimemultiplechoicemetadata.md#issubmitted)
-* [type](iruntimemultiplechoicemetadata.md#type)
+* [answerText](iruntimemultiplechoicemetadata.md#optional-answertext)
+* [answerType](iruntimemultiplechoicemetadata.md#answertype)
+* [selectedChoiceIds](iruntimemultiplechoicemetadata.md#selectedchoiceids)
+* [submitted](iruntimemultiplechoicemetadata.md#optional-submitted)
 
 ## Properties
 
-###  answerText
+### `Optional` answerText
 
-• **answerText**: *string*
+• **answerText**? : *undefined | string*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#answertext)*
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerText](iruntimemetadatabase.md#optional-answertext)*
 
-___
-
-###  choiceIds
-
-• **choiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
+answerText can be used by all the interactive types to display answer summary without having to load iframe
+with report view.
 
 ___
 
-###  isSubmitted
+###  answerType
 
-• **isSubmitted**: *boolean*
+• **answerType**: *"multiple_choice_answer"*
 
-*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[isSubmitted](iruntimemetadatabase.md#issubmitted)*
+*Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
 
 ___
 
-###  type
+###  selectedChoiceIds
 
-• **type**: *"multiple choice"*
+• **selectedChoiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
+
+___
+
+### `Optional` submitted
+
+• **submitted**? : *undefined | false | true*
+
+*Inherited from [IRuntimeMetadataBase](iruntimemetadatabase.md).[submitted](iruntimemetadatabase.md#optional-submitted)*

@@ -73,9 +73,14 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
 
   const handleSelectChange = (newSelectedOption: ISelectOption) => {
     const selectedLibraryInteractive = libraryInteractives.list.find(li => li.id === newSelectedOption.value);
-    setLibraryInteractive(selectedLibraryInteractive);
-    if (libraryInteractiveIdRef.current) {
-      libraryInteractiveIdRef.current.value = newSelectedOption.value.toString();
+    if (selectedLibraryInteractive) {
+      const confirmMessage = `Use ${selectedLibraryInteractive.name}?  Once selected it can't be changed.`;
+      if (confirm(confirmMessage)) {
+        setLibraryInteractive(selectedLibraryInteractive);
+        if (libraryInteractiveIdRef.current) {
+          libraryInteractiveIdRef.current.value = newSelectedOption.value.toString();
+        }
+      }
     }
   };
 
@@ -203,7 +208,10 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         ref={libraryInteractiveAuthoredStateRef}
         defaultValue={managedInteractive.authored_state}
       />
-      <Select value={selectedOption} onChange={handleSelectChange} options={selectOptions} />
+      {selectedOption
+        ? selectedOption.label
+        : <Select value={selectedOption} onChange={handleSelectChange} options={selectOptions} />
+      }
     </fieldset>
 
     {renderRequiredFields()}

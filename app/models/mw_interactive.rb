@@ -31,6 +31,18 @@ class MwInteractive < ActiveRecord::Base
     "iframe interactive"
   end
 
+  def portal_hash
+    result = super # BaseInteractive#portal_hash
+    if result[:type] === "iframe_interactive"
+      # When interactive doesn't pretend to be a basic question type, use regular ID number (instead of embeddable_id
+      # used by default) to be backward compatible with existing MwInteractives that are already exported to Portal.
+      # `embeddable_id` is safer when type is overwritten by interative metadata, but in this case it's not necessary
+      # and lets us not break existing interactives.
+      result[:id] = id
+    end
+    result
+  end
+
   def to_hash
     # Deliberately ignoring user (will be set in duplicate)
     {

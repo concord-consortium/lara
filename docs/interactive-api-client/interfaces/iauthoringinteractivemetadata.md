@@ -1,6 +1,8 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
 
 # Interface: IAuthoringInteractiveMetadata
+
+Generic interactive type.
 
 ## Hierarchy
 
@@ -12,20 +14,12 @@
 
 ### Properties
 
-* [isRequired](iauthoringinteractivemetadata.md#isrequired)
 * [prompt](iauthoringinteractivemetadata.md#optional-prompt)
-* [secondaryTypeForNow](iauthoringinteractivemetadata.md#secondarytypefornow)
-* [type](iauthoringinteractivemetadata.md#type)
+* [questionSubType](iauthoringinteractivemetadata.md#optional-questionsubtype)
+* [questionType](iauthoringinteractivemetadata.md#questiontype)
+* [required](iauthoringinteractivemetadata.md#optional-required)
 
 ## Properties
-
-###  isRequired
-
-• **isRequired**: *boolean*
-
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[isRequired](iauthoringmetadatabase.md#isrequired)*
-
-___
 
 ### `Optional` prompt
 
@@ -35,14 +29,27 @@ ___
 
 ___
 
-###  secondaryTypeForNow
+### `Optional` questionSubType
 
-• **secondaryTypeForNow**: *any*
+• **questionSubType**? : *undefined | string*
 
-*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[secondaryTypeForNow](iauthoringmetadatabase.md#secondarytypefornow)*
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionSubType](iauthoringmetadatabase.md#optional-questionsubtype)*
+
+Interactive can optionally set questionSubType, so Teacher Report can display different icons
+or categorize interactives into subcategories.
 
 ___
 
-###  type
+###  questionType
 
-• **type**: *"interactive"*
+• **questionType**: *"iframe_interactive"*
+
+*Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
+
+___
+
+### `Optional` required
+
+• **required**? : *undefined | false | true*
+
+*Inherited from [IAuthoringMetadataBase](iauthoringmetadatabase.md).[required](iauthoringmetadatabase.md#optional-required)*

@@ -45,5 +45,6 @@
       initSlateEditor($(this), $(this).text(), index, {useAjax: false});
     });
 
-  = f.submit "Cancel", :class => 'close'
-  = f.submit "Save", :class => 'embeddable-save'
+  .submit-container
+    = f.submit "Cancel", :class => 'close'
+    = f.submit "Save", :class => 'embeddable-save'

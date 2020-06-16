@@ -8,7 +8,7 @@
     %tr.sub-header
       %td.left
         Score
-      %td.right  
+      %td.right
         Score mapping text
     %tr.score
       %td.left
@@ -45,9 +45,9 @@
         = f.label "6"
       %td.right
         = f.text_area :score6, :rows => "1",:cols => "100", :class => 'wysiwyg'
-
-= f.submit "Cancel", :class => 'close'
-= f.submit "Save", :class => 'embeddable-save'
+.submit-container
+  = f.submit "Cancel", :class => 'close'
+  = f.submit "Save", :class => 'embeddable-save'
 :javascript
   $(function() {
     initTinyMCE('.wysiwyg', window.TinyMCEConfig);

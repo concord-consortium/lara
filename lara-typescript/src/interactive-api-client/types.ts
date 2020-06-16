@@ -137,8 +137,6 @@ export type IFrameSaverClientMessage = "interactiveState" |
                                        "navigation" |
                                        "getFirebaseJWT" |
                                        "authoredState" |
-                                       "authoringMetadata" |
-                                       "runtimeMetadata" |
                                        "authoringCustomReportFields" |
                                        "runtimeCustomReportValues" |
                                        "showModal" |
@@ -219,48 +217,6 @@ export interface INavigationOptions {
 export interface IHintRequest {
   text: string | null;
 }
-
-export type ChoiceId = string | number;
-
-// TODO: look at portal reports to get values or enum
-export interface IAuthoringMetadataBase {
-  secondaryTypeForNow: any;  // TODO: this would come from the portal report
-                             // codebase for the icons showing in the column headings
-  isRequired: boolean;
-  prompt?: string;
-}
-export interface IAuthoringOpenResponseMetadata extends IAuthoringMetadataBase {
-  type: "open response";
-}
-export interface IAuthoringInteractiveMetadata extends IAuthoringMetadataBase {
-  type: "interactive";
-}
-export interface IAuthoringMultipleChoiceChoiceMetadata {
-  id: ChoiceId;
-  content: string;
-  isCorrect: boolean;
-}
-export interface IAuthoringMultipleChoiceMetadata extends IAuthoringMetadataBase {
-  type: "multiple choice";
-  choices: IAuthoringMultipleChoiceChoiceMetadata[];
-}
-export type IAuthoringMetadata = IAuthoringOpenResponseMetadata |
-                                 IAuthoringInteractiveMetadata |
-                                 IAuthoringMultipleChoiceMetadata;
-
-export interface IRuntimeMetadataBase {
-  isSubmitted: boolean;
-  answerText: string;
-}
-export interface IRuntimeInteractiveMetadata extends IRuntimeMetadataBase {
-  type: "interactive";
-}
-export interface IRuntimeMultipleChoiceMetadata extends IRuntimeMetadataBase {
-  type: "multiple choice";
-  choiceIds: ChoiceId[];
-}
-export type IRuntimeMetadata = IRuntimeInteractiveMetadata |
-                               IRuntimeMultipleChoiceMetadata;
 
 export interface IAuthoringCustomReportField {
   id: string;
