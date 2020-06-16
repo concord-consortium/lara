@@ -42,7 +42,7 @@
       = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   :javascript
     $("wysiwyg, .wysiwyg-minimal").each(function (index) {
-      initSlateEditor($(this), $(this).text(), index);
+      initSlateEditor($(this), $(this).text(), index, {useAjax: false});
     });
 
   = f.submit "Cancel", :class => 'close'

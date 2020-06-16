@@ -1,13 +1,13 @@
-window.initSlateEditor = function (wysiwyg, value, index) {
-  var slateEditorId = "slate-editor-" + index.toString();
+window.initSlateEditor = function (wysiwyg, value, index, options) {
   $(wysiwyg).hide();
+  var slateEditorId = "slate-editor-" + index.toString();
   $('<div id="' + slateEditorId + '" class="slate-editor"></div>').insertAfter(wysiwyg);
+  $("#" + slateEditorId).data("useAjax", options.useAjax);
 
   var contentValue = LARA.PageItemAuthoring.htmlToSlate(value);
   var root = document.getElementById(slateEditorId);
   var props = { onFocus: setCurrentEditor, value: contentValue, onValueChange: updateSlateEditor };
   LARA.PageItemAuthoring.renderSlateContainer(root, props);
-
 };
 
 function setCurrentEditor (editor) {
@@ -22,15 +22,29 @@ function updateSlateEditor (editorValue) {
   LARA.PageItemAuthoring.renderSlateContainer(root, props);
 
   var prevValue = $(root).data("prevValue");
-  //console.log(prevValue);
-  //console.log(editorValue);
   if (prevValue && editorValue.document !== prevValue.document) {
-    //console.log("Calling slateToHtml()");
     var contentHtml = LARA.PageItemAuthoring.slateToHtml(editorValue);
-    //console.log("Called slateToHtml()");
-    $(root).siblings("textarea").text(contentHtml);
-    $(root).siblings("textarea").val(contentHtml);
-    console.log("Copied content to textarea.");
+    var textarea = $(root).prev("textarea");
+    if ($(root).data("useAjax")) {
+      var e = new Event('input', { bubbles: true });
+      setNativeValue($(textarea)[0], contentHtml);
+      $(textarea)[0].dispatchEvent(e);
+    } else {
+      textarea.text(contentHtml);
+      textarea.val(contentHtml);
+    }
   }
   $(root).data("prevValue", editorValue);
+}
+
+function setNativeValue(element, value) {
+  var valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
+  var prototype = Object.getPrototypeOf(element);
+  var prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+
+  if (valueSetter && valueSetter !== prototypeValueSetter) {
+  	prototypeValueSetter.call(element, value);
+  } else {
+    valueSetter.call(element, value);
+  }
 }
