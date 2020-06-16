@@ -1,0 +1,17 @@
+// These styles are applied to Slate Editor WYSIWYG blocks (while user is editing).
+
+.slate-container {
+  border: solid 1px #dfdfdf;
+}
+.slate-toolbar {
+  background: #dfdfdf;
+  display: block;
+}
+.slate-editor {
+  img {
+    max-width: 100%;
+  }
+  li, p {
+    margin-bottom: 20px;
+  }
+}
