@@ -56,31 +56,39 @@ class InteractiveRunState < ActiveRecord::Base
   end
 
   def portal_hash
-    # There are two options how interactive can be saved in Portal:
-    # - When reporting url is provided, it means that the interactive is supposed to be saved as an URL.
-    #   It's useful if state can be saved in the URL or is kept by the interactive itself (e.g. CODAP / docstore)
-    # - Otherwise, interactive state JSON is sent to the Portal. Later, the same state will be provided to teacher report
-    #   and sent to the interactive using LARA Interactive API.
-    if interactive.has_report_url
-      {
-        "type" => "external_link",
-        "question_type" => interactive.class.portal_type,
-        "question_id" => interactive.id.to_s,
-        # there is a chance that answer will be set to 'nil' here. That will happen
-        # if there is no state or the state doesn't have a report url. In practice
-        # this nil should not actually be sent to the portal because the
-        # maybe_send_to_portal method below should only send it if reporting_url is present.
-        "answer" => reporting_url,
-        "is_final" => false
-      }
-    else
-      {
-        "type" => "interactive",
-        "question_id" => interactive.id.to_s,
-        "answer" => report_state.to_json,
-        "is_final" => false
-      }
+    result = report_service_hash
+
+    # Portal expects different types than report service.
+    type_mapping = {
+      "interactive_state" => "interactive",
+      "external_link" => "external_link",
+      "open_response_answer" => "open_response",
+      "multiple_choice_answer" => "multiple_choice",
+    }
+    result[:type] = type_mapping[result[:type]]
+    result[:is_final] = !!result[:submitted]
+
+    if result[:type] === "external_link"
+      # Not very consistent naming (missing underscore), but that's what Portal expects.
+      # Note that question type is only necessary for external_link answer type.
+      result[:question_type] = "iframe interactive"
+    elsif result[:type] === "multiple_choice"
+      result[:answer_ids] = result[:answer][:choice_ids]
+      # multiple_choice_answer.rb also sends answer_texts.
+      # This property is skipped here, as Portal doesn't use it anyway.
     end
+
+    if (result[:type] === "interactive" || result[:type] === "external_link") && interactive.instance_of?(MwInteractive)
+      # When interactive doesn't pretend to be a basic question type, use regular ID number (instead of embeddable_id
+      # used by default) to be backward compatible with existing MwInteractives that are already exported to Portal.
+      # `embeddable_id` is safer when type is overwritten by interative metadata, but in this case it's not
+      # necessary and lets us not break existing interactives. Note that `ManagedInteractive` states should use
+      # default question_id based on embeddable_id.
+      result[:question_id] = interactive.id.to_s
+    end
+
+    # Portal expects less fields that will be actually sent, but it doesn't seem to cause any problems.
+    result
   end
 
   def parsed_interactive_state

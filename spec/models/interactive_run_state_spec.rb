@@ -134,17 +134,188 @@ describe InteractiveRunState do
 
     # this hash is depended on by the Portal
     describe "portal_hash" do
-      # Only when reporting_url is available.
-      let(:interactive)     { FactoryGirl.create(:mw_interactive,
-        enable_learner_state: true, has_report_url: true) }
-      let(:run_data) {'{"second": 2, "lara_options": {"reporting_url": "test.com"}}'}
-      let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
-
       subject { interactive_run_state.portal_hash }
 
-      # the portal requires this type. So if you change it,
-      # you need to change the portal too
-      it { should include("question_type" => "iframe interactive") }
+      describe "when interactive has a report url" do
+        let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        describe "when interactive is an instance of MwInteractive" do
+          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+
+          it "should provide required set of properties and the question_id should be numeric ID" do
+            expect(subject).to include({
+              type: "external_link",
+              question_type: "iframe interactive", # missing underscore, as that's what Portal actually expects
+              question_id: interactive.id.to_s,
+              answer: "test.com",
+              is_final: false
+            })
+          end
+        end
+
+        describe "when interactive is NOT an instance of MwInteractive" do
+          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: true) }
+          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
+
+          it "should provide required set of properties and the question_id should be embeddable ID" do
+            expect(subject).to include({
+              type: "external_link",
+              question_type: "iframe interactive", # missing underscore, as that's what Portal actually expects
+              question_id: interactive.embeddable_id,
+              answer: "test.com",
+              is_final: false
+            })
+          end
+        end
+      end
+
+      describe "when interactive doesn't have a report url" do
+        let(:run_data) { '{"someProp": 123}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        describe "when interactive is an instance of MwInteractive" do
+          let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+
+          it "should provide required set of properties and the question_id should be numeric ID" do
+            expect(subject).to include({
+              type: "interactive",
+              question_id: interactive.id.to_s,
+              is_final: false
+            })
+            expect(JSON.parse(subject[:answer])).to include({
+              "version" => 1,
+              "mode" => "report",
+              "interactiveState" => '{"someProp": 123}'
+            })
+          end
+        end
+
+        describe "when interactive is NOT an instance of MwInteractive" do
+          let(:library_interactive) { FactoryGirl.create(:library_interactive, has_report_url: false) }
+          let(:interactive) { FactoryGirl.create(:managed_interactive, library_interactive: library_interactive) }
+
+          it "should provide required set of properties and the question_id should be embeddable ID" do
+            expect(subject).to include({
+              type: "interactive",
+              question_id: interactive.embeddable_id,
+              is_final: false
+            })
+            expect(JSON.parse(subject[:answer])).to include({
+              "version" => 1,
+              "mode" => "report",
+              "interactiveState" => '{"someProp": 123}'
+            })
+          end
+        end
+      end
+
+      describe "when interactive run state pretends to be open response answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "open_response",
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            answer: "Test answer",
+            is_final: true
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be multiple choice answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "multiple_choice",
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            answer_ids: ["a", "b"],
+            # answer_texts is not used by portal anymore (even though it's sent in multiple_choice_answer.rb)
+            is_final: true
+          })
+        end
+      end
+    end
+
+    describe "#report_service_hash" do
+      subject { interactive_run_state.report_service_hash }
+
+      describe "when interactive has a report url" do
+        # Only when reporting_url is available.
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+        let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "external_link",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id,
+            answer: "test.com"
+          })
+        end
+      end
+
+      describe "when interactive doesn't have a report url" do
+        # Only when reporting_url is available.
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+        let(:run_data) { '{"someProp": 123}' }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should provide required set of properties" do
+          expect(subject).to include({
+            type: "interactive_state",
+            id: interactive_run_state.answer_id,
+            question_type: "iframe_interactive",
+            question_id: interactive.embeddable_id
+          })
+          expect(JSON.parse(subject[:answer])).to include({
+            "version" => 1,
+            "mode" => "report",
+            "interactiveState" => '{"someProp": 123}'
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be open response answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "open_response_answer", answerText: "Test answer", submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should overwrite type and provide supported fields to Report Service" do
+          expect(subject).to include({
+            type: "open_response_answer",
+            id: interactive_run_state.answer_id,
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            question_type: "open_response",
+            answer: "Test answer",
+            submitted: true
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be multiple choice answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data)}
+
+        it "should overwrite type and provide supported fields to Report Service" do
+          expect(subject).to include({
+            type: "multiple_choice_answer",
+            id: interactive_run_state.answer_id,
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            question_type: "multiple_choice",
+            answer: { choice_ids: ["a", "b"] },
+            submitted: true
+          })
+        end
+      end
     end
 
     # this key is generated automatically when created
