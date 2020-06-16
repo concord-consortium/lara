@@ -15,6 +15,7 @@
   :javascript
     $(function() {
       $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
-        initSlateEditor($(this), $(this).text(), index, {useAjax: false});
+        wysiwygContent = prepareWysiwygContent($(this).text());
+        initSlateEditor($(this), wysiwygContent, index, {useAjax: false});
       });
     });

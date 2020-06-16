@@ -48,3 +48,10 @@ function setNativeValue(element, value) {
     valueSetter.call(element, value);
   }
 }
+
+function prepareWysiwygContent (content) {
+  var cleanContent = content.replace(/(\r\n|\n|\r)/gm, "");
+  cleanContent = cleanContent.replace(/\s\s+/g, " ");
+  cleanContent = cleanContent.replace(/>\s</g, "><");
+  return cleanContent;
+}
