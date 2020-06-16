@@ -11,7 +11,10 @@
   img {
     max-width: 100%;
   }
+  li {
+    list-style: disc;
+  }
   li, p {
-    margin-bottom: 20px;
+    margin-bottom: 1em;
   }
 }
