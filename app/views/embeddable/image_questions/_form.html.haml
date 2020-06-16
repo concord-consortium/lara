@@ -40,11 +40,14 @@
       = render :partial => 'shared/edit_prediction', :locals => { :f => f }
       = render :partial => 'shared/edit_featured', :locals => { :f => f }
       = render :partial => 'shared/edit_full_width', :locals => { :f => f }
-  :javascript
-    $("wysiwyg, .wysiwyg-minimal").each(function (index) {
-      initSlateEditor($(this), $(this).text(), index, {useAjax: false});
-    });
 
   .submit-container
     = f.submit "Cancel", :class => 'close'
     = f.submit "Save", :class => 'embeddable-save'
+
+  :javascript
+    $(function() {
+      $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
+        initSlateEditor($(this), $(this).text(), index, {useAjax: false});
+      });
+    });

@@ -59,7 +59,7 @@
     = f.link_to_add "Add choice", :choices
     :javascript
       $(function() {
-          $("wysiwyg, .wysiwyg-minimal").each(function (index) {
+          $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
             initSlateEditor($(this), $(this).text(), index, {useAjax: false});
           });
 
