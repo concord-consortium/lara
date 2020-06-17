@@ -27376,6 +27376,9 @@ exports.InteractiveAuthoring = function (_a) {
         setAuthoredState(newAuthoredState);
         onAuthoredStateChange(newAuthoredState);
     };
+    var handleSupportedFeatures = function (info) {
+        setAuthoringSupported(!!info.features.authoredState);
+    };
     var handleReset = function () {
         setAuthoredState(null);
         setResetCount(resetCount + 1);
@@ -27392,7 +27395,7 @@ exports.InteractiveAuthoring = function (_a) {
                 ? React.createElement("input", { type: "button", className: "reset-btn", value: "Reset authored state", onClick: handleReset })
                 : undefined)
             : undefined,
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
 };
 
 
@@ -27413,10 +27416,9 @@ var React = __webpack_require__(/*! react */ "react");
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.InteractiveIframe = function (props) {
-    var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod;
+    var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod;
     var iframe = react_1.useRef(null);
-    // FIXME: The default height here should be based on the aspect ratio setting
-    // and the width of the iframe. That computation at runtime is currently handled
+    // FIXME: The interactive sizing computation at runtime is currently handled
     // by the setSize method in interactives-sizing.js
     // That code can't be used here, because the jQuery changes to the iframe
     // conflict with the React management of the iframe element.
@@ -27427,7 +27429,8 @@ exports.InteractiveIframe = function (props) {
     //   runtime use the interactiveIframe component
     // The last option is the best for maintainability, but it will slow down the
     // page load since the iframes won't start loading until the javascript is loaded
-    // So probably the best option is to abstract that code.
+    // So probably the best option is to abstract that sizing code so it can be
+    // used by both jQuery and React
     var _a = react_1.useState(null), height = _a[0], setHeight = _a[1];
     var _b = react_1.useState(authoredAspectRatio), aspectRatio = _b[0], setAspectRatio = _b[1];
     var handleHeightChange = function (newHeight) {
@@ -27437,6 +27440,9 @@ exports.InteractiveIframe = function (props) {
         if (info.features.aspectRatio &&
             authoredAspectRatioMethod === "DEFAULT") {
             setAspectRatio(parseInt(info.features.aspectRatio));
+        }
+        if (onSupportedFeaturesUpdate) {
+            onSupportedFeaturesUpdate(info);
         }
     };
     var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];
