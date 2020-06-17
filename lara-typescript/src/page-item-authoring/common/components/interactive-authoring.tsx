@@ -29,6 +29,10 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
     onAuthoredStateChange(newAuthoredState);
   };
 
+  const handleSupportedFeatures = (info: any) => {
+    setAuthoringSupported(!!info.features.authoredState);
+  };
+
   const handleReset = () => {
     setAuthoredState(null);
     setResetCount(resetCount + 1);
@@ -59,6 +63,7 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
         initMsg={initMsg}
         resetCount={resetCount}
         onAuthoredStateChange={handleAuthoredStateChange}
+        onSupportedFeaturesUpdate={handleSupportedFeatures}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
       />

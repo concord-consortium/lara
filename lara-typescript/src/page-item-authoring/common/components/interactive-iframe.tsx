@@ -9,6 +9,7 @@ interface Props {
   initMsg: any;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
+  onSupportedFeaturesUpdate?: (info: any) => void;
   authoredAspectRatio: number;
   authoredAspectRatioMethod: string;
 }
@@ -22,7 +23,7 @@ interface IFramePhoneParentEndpoint {
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
     src, width, initMsg, onAuthoredStateChange, resetCount,
-    authoredAspectRatio, authoredAspectRatioMethod
+    onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod
   } = props;
 
   const iframe = useRef<HTMLIFrameElement|null>(null);
@@ -51,6 +52,9 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     if (info.features.aspectRatio &&
         authoredAspectRatioMethod === "DEFAULT") {
       setAspectRatio(parseInt(info.features.aspectRatio));
+    }
+    if (onSupportedFeaturesUpdate) {
+      onSupportedFeaturesUpdate(info);
     }
   };
 
