@@ -1,7 +1,7 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
-                  :show_interactive, :show_info_assessment, :toggle_info_assessment, :embeddable_display_mode,
-                  :sidebar_title, :is_hidden, :additional_sections, :is_completion
+  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_header,
+                  :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
+                  :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
 
   serialize :additional_sections
 
@@ -175,6 +175,7 @@ class InteractivePage < ActiveRecord::Base
       sidebar: sidebar,
       sidebar_title: sidebar_title,
       show_introduction: show_introduction,
+      show_header: show_header,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
       show_info_assessment: show_info_assessment,
@@ -236,6 +237,7 @@ class InteractivePage < ActiveRecord::Base
                                     :sidebar,
                                     :sidebar_title,
                                     :show_introduction,
+                                    :show_header,
                                     :show_sidebar,
                                     :show_interactive,
                                     :show_info_assessment,
@@ -264,6 +266,7 @@ class InteractivePage < ActiveRecord::Base
       :sidebar,
       :sidebar_title,
       :show_introduction,
+      :show_header,
       :show_sidebar,
       :show_interactive,
       :show_info_assessment,
