@@ -29,29 +29,10 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
     onAuthoredStateChange(newAuthoredState);
   };
 
-  const handleHeightChange = (newHeight: number | string) => {
-    if (iframe.current) {
-      iframe.current.style.height = `${newHeight}px`;
-    }
-  };
-
-  const handleSupportedFeatures = (info: any) => {
-    setAuthoringSupported(!!info.features.authoredState);
-    if (info.features.aspectRatio) {
-      if (interactive.aspect_ratio_method === "DEFAULT") {
-        if (iframe.current) {
-          iframe.current.style.height = `${Math.round(iframe.current.offsetWidth / info.features.aspectRatio)}px`;
-        }
-      }
-    }
-  };
-
   const handleReset = () => {
     setAuthoredState(null);
     setResetCount(resetCount + 1);
   };
-
-  const handleSetIframeRef = (current: HTMLIFrameElement) => iframe.current = current;
 
   const initMsg = {
     version: 1,
@@ -74,16 +55,12 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
       <InteractiveIframe
         src={interactive.url}
         width="100%"
-        height="100%"
         initialAuthoredState={authoredState}
         initMsg={initMsg}
         resetCount={resetCount}
-        aspectRatio={interactive.aspect_ratio}
-        aspectRatioMethod={interactive.aspect_ratio_method}
         onAuthoredStateChange={handleAuthoredStateChange}
-        onSupportedFeaturesUpdate={handleSupportedFeatures}
-        onHeightChange={handleHeightChange}
-        onSetIFrameRef={handleSetIframeRef}
+        authoredAspectRatioMethod={interactive.aspect_ratio_method}
+        authoredAspectRatio={interactive.aspect_ratio}
       />
     </div>
   );
