@@ -5,16 +5,13 @@ import { useEffect, useRef, useState } from "react";
 interface Props {
   src: string;
   width: string | number;
-  height?: string | number;
   initialAuthoredState: object | null;
   initMsg: any;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
-  aspectRatio: number;
-  aspectRatioMethod: string;
-  onSupportedFeaturesUpdate: (info: any) => void;
-  onHeightChange: (height: number | string) => void;
-  onSetIFrameRef: (iframeRef: HTMLIFrameElement | null) => void;
+  onSupportedFeaturesUpdate?: (info: any) => void;
+  authoredAspectRatio: number;
+  authoredAspectRatioMethod: string;
 }
 
 interface IFramePhoneParentEndpoint {
@@ -25,13 +22,41 @@ interface IFramePhoneParentEndpoint {
 
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
-    src, width, height, initMsg, onAuthoredStateChange, resetCount,
-    onSupportedFeaturesUpdate, onHeightChange, onSetIFrameRef,
-    aspectRatio, aspectRatioMethod
+    src, width, initMsg, onAuthoredStateChange, resetCount,
+    onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod
   } = props;
 
   const iframe = useRef<HTMLIFrameElement|null>(null);
-  onSetIFrameRef(iframe.current);
+
+  // FIXME: The interactive sizing computation at runtime is currently handled
+  // by the setSize method in interactives-sizing.js
+  // That code can't be used here, because the jQuery changes to the iframe
+  // conflict with the React management of the iframe element.
+  // We could:
+  // - duplicate the sizing code here
+  // - abstract it so it can be shared by both the runtime and authoring.
+  // - move the runtime iframe rendering into React, so both authoring and
+  //   runtime use the interactiveIframe component
+  // The last option is the best for maintainability, but it will slow down the
+  // page load since the iframes won't start loading until the javascript is loaded
+  // So probably the best option is to abstract that sizing code so it can be
+  // used by both jQuery and React
+  const [height, setHeight] = useState<number|string|null>(null);
+  const [aspectRatio, setAspectRatio] = useState<number>(authoredAspectRatio);
+
+  const handleHeightChange = (newHeight: number | string) => {
+    setHeight(newHeight);
+  };
+
+  const handleSupportedFeatures = (info: any) => {
+    if (info.features.aspectRatio &&
+        authoredAspectRatioMethod === "DEFAULT") {
+      setAspectRatio(parseInt(info.features.aspectRatio));
+    }
+    if (onSupportedFeaturesUpdate) {
+      onSupportedFeaturesUpdate(info);
+    }
+  };
 
   const [iframeId, setIFrameId] = useState<number>(0);
   let phone: IFramePhoneParentEndpoint;
@@ -45,8 +70,8 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
         onAuthoredStateChange(authoredState);
       }
     });
-    phone.addListener("supportedFeatures", (info: any) => onSupportedFeaturesUpdate(info));
-    phone.addListener("height", (newHeight: number | string) => onHeightChange(newHeight));
+    phone.addListener("supportedFeatures", (info: any) => handleSupportedFeatures(info));
+    phone.addListener("height", (newHeight: number | string) => handleHeightChange(newHeight));
   };
   const disconnect = () => {
     if (phone) {
@@ -71,19 +96,24 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     }
   }, [src, resetCount]);
 
+  let computedHeight = 300;
+  if(height !== null) {
+    computedHeight = Number(height);
+  } else if(iframe.current && aspectRatio) {
+    computedHeight = Math.round(iframe.current.offsetWidth / aspectRatio);
+  }
+
   return (
     <iframe
       ref={iframe}
       src={src}
       width={width}
-      height={height}
+      height={computedHeight}
       key={iframeId}
       frameBorder="no"
       scrolling="no"
       allowFullScreen={true}
       allow="geolocation *; microphone *; camera *"
-      data-aspect_ratio={aspectRatio}
-      data-aspect_ratio_method={aspectRatioMethod}
       data-iframe_mouseover="false"
       onLoad={handleIframeLoaded}
     />
