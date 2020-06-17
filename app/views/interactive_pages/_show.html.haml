@@ -11,7 +11,7 @@
 - content_mod_classes += page.toggle_info_assessment && layout != 'l-full-width' ? ' collapsible' : ''
 .content-mod{ :class => content_mod_classes }
   - if page.show_header
-    .ui-block-header
+    .header-block-mod
       -# Wrapping plugins don't necessarily wrap items in the assessment block, so they need to be rendered separately.
       = render partial: 'interactive_pages/list_wrapping_plugins', locals: {wrapping_plugins: main_section_wrapping_plugins(page, @run)}
       = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: header_block_visible_embeddables(page, @run).select {|e| !is_wrapping_plugin?(e) }}
