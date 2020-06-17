@@ -115,16 +115,20 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(nil)
   end
 
+  def header_block_embeddables
+    section_embeddables(HEADER_BLOCK)
+  end
+
+  def header_block_visible_embeddables
+    section_visible_embeddables(HEADER_BLOCK)
+  end
+
   def interactive_box_embeddables
     section_embeddables(INTERACTIVE_BOX)
   end
 
   def interactive_box_visible_embeddables
     section_visible_embeddables(INTERACTIVE_BOX)
-  end
-
-  def header_block_visible_embeddables
-    section_visible_embeddables(HEADER_BLOCK)
   end
 
   def reportable_items

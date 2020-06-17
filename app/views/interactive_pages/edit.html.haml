@@ -90,11 +90,13 @@
     - if @page.show_header
       %div{:class => 'other full-width'}
         #header_block.questions
-          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'HEADER_BLOCK', :section_title => "Header", :toggle_option => false }
+          %h2 Header Section
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'HEADER_BLOCK', :toggle_option => false }
     .text
       - if @page.show_info_assessment
         #info_assess_block.questions
-          = render :partial => "edit_section", :locals => { :page => @page, :section_name => '', :section_title => "Info/Assess", :toggle_option => true }
+          %h2 Info/Assess
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => '', :toggle_option => true }
 
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
@@ -103,28 +105,7 @@
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
         #interactive_box.questions
           %h2 Interactive Box
-          %button.show-hide-toggle
-            Close All
-          .column-controls
-            = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-              .select_container
-                = embeddable_interactives_selector
-              = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
-              = submit_tag 'Add'
-          .embeddables_list.sortable_embeddables
-            - @page.interactive_box_visible_embeddables.each do |interactive|
-              .authorable.accordion_embeddable{:id => "embeddable_#{interactive.id}.#{interactive.class.to_s}"}
-                %h3.embeddable_heading
-                  %span.embeddable_title
-                    - if interactive.respond_to? :name
-                      - if !interactive.name.nil? && !interactive.name.empty?
-                        #{interactive.name}
-                      - else
-                        #{interactive.class.model_name.human.titleize}
-                    - else
-                      #{interactive.class.model_name.human.titleize}
-                  %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
-                = render :partial => "#{interactive.class.name.underscore.pluralize}/author", :locals => {:embeddable => interactive, :page => @page, :allow_hide => false}
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'INTERACTIVE_BOX', :toggle_option => false }
     - if @page.show_sidebar
       %div{style: 'clear: both;'}
         = text_editor @page, :sidebar, { editable_header: true, header_prop: :sidebar_title }
