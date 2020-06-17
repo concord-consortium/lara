@@ -27,8 +27,7 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
 
   const iframe = useRef<HTMLIFrameElement|null>(null);
 
-  // FIXME: The default height here should be based on the aspect ratio setting
-  // and the width of the iframe. That computation at runtime is currently handled
+  // FIXME: The interactive sizing computation at runtime is currently handled
   // by the setSize method in interactives-sizing.js
   // That code can't be used here, because the jQuery changes to the iframe
   // conflict with the React management of the iframe element.
@@ -39,7 +38,8 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   //   runtime use the interactiveIframe component
   // The last option is the best for maintainability, but it will slow down the
   // page load since the iframes won't start loading until the javascript is loaded
-  // So probably the best option is to abstract that code.
+  // So probably the best option is to abstract that sizing code so it can be
+  // used by both jQuery and React
   const [height, setHeight] = useState<number|string|null>(null);
   const [aspectRatio, setAspectRatio] = useState<number>(authoredAspectRatio);
 
