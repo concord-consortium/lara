@@ -19,6 +19,7 @@ class InteractivePage < ActiveRecord::Base
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
+  HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
 
   validates :sidebar_title, presence: true
@@ -120,6 +121,10 @@ class InteractivePage < ActiveRecord::Base
 
   def interactive_box_visible_embeddables
     section_visible_embeddables(INTERACTIVE_BOX)
+  end
+
+  def header_block_visible_embeddables
+    section_visible_embeddables(HEADER_BLOCK)
   end
 
   def reportable_items
