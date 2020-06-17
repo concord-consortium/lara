@@ -178,6 +178,7 @@ describe InteractivePage do
         sidebar: page.sidebar,
         sidebar_title: page.sidebar_title,
         show_introduction: page.show_introduction,
+        show_header: page.show_header,
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,
         show_info_assessment: page.show_info_assessment,
