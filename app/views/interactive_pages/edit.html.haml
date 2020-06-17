@@ -90,67 +90,12 @@
     - if @page.show_header
       %div{:class => 'other full-width'}
         #header_block.questions
-          %h2 Header
-          .column-controls
-            = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-              .select_container
-                = embeddable_selector
-              = hidden_field_tag :approved_script_id
-              = hidden_field_tag :component_label
-              = hidden_field_tag :section, InteractivePage::HEADER_BLOCK
-              = submit_tag 'Add', {id: 'add_embeddable_button'}
-          .embeddables_list.sortable_embeddables
-            - @page.header_block_visible_embeddables.each do |e|
-              - if e.show_in_edit?
-                - tracked = e.respond_to?(:tracked_question) && e.tracked_question
-                - tracked_class = tracked ? 'tracked' : ''
-                .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-                  %h3.embeddable_heading
-                    %span.embeddable_title
-                      - if e.respond_to? :name
-                        - if !e.name.nil? && !e.name.empty?
-                          #{e.name}
-                        - else
-                          #{e.class.model_name.human.titleize}
-                      - else
-                        #{e.class.model_name.human.titleize}
-                    %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
-                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'HEADER_BLOCK', :section_title => "Header", :toggle_option => false }
     .text
       - if @page.show_info_assessment
         #info_assess_block.questions
-          %h2 Info/Assess
-          %button.show-hide-toggle
-            Close All
-          .column-controls
-            = form_for @page do |f|
-              - if @page.has_attribute?('toggle_info_assessment')
-                %label
-                  = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
-                  Collapsible
-            = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
-              .select_container
-                = embeddable_selector
-              = hidden_field_tag :approved_script_id
-              = hidden_field_tag :component_label
-              = submit_tag 'Add', {id: 'add_embeddable_button'}
-          .embeddables_list.sortable_embeddables
-            - @page.section_embeddables(nil).each do |e|
-              - if e.show_in_edit?
-                - tracked = e.respond_to?(:tracked_question) && e.tracked_question
-                - tracked_class = tracked ? 'tracked' : ''
-                .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-                  %h3.embeddable_heading
-                    %span.embeddable_title
-                      - if e.respond_to? :name
-                        - if !e.name.nil? && !e.name.empty?
-                          #{e.name}
-                        - else
-                          #{e.class.model_name.human.titleize}
-                      - else
-                        #{e.class.model_name.human.titleize}
-                    %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
-                  = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => '', :section_title => "Info/Assess", :toggle_option => true }
+
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
         = render :partial => "#{s[:dir]}/author", :locals => { :page => @page, :section_name => s[:name], :section_label => s[:label], :allow_hide => false }
