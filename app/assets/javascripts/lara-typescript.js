@@ -26316,42 +26316,14 @@ exports.InteractiveAuthoringPreview = function (_a) {
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
-    // FIXME: The default height here should be based on the aspect ratio setting
-    // and the width of the iframe. That computation at runtime is currently handled
-    // by the setSize method in interactives-sizing.js
-    // That code can't be used here, because the jQuery changes to the iframe
-    // conflict with the React management of the iframe element.
-    // We could:
-    // - duplicate the sizing code here
-    // - abstract it so it can be shared by both the runtime and authoring.
-    // - move the runtime iframe rendering into React, so both authoring and
-    //   runtime use the interactiveIframe component
-    // The last option is the best for maintainability, but it will slow down the
-    // page load since the iframes won't start loading until the javascript is loaded
-    // So probably the best option is to abstract that code.
-    var _c = react_1.useState(300), height = _c[0], setHeight = _c[1];
-    var handleHeightChange = function (newHeight) {
-        setHeight(newHeight);
-    };
-    var handleSupportedFeatures = function (info) {
-        if (info.features.aspectRatio) {
-            if (interactive.aspect_ratio_method === "DEFAULT") {
-                if (iframe.current) {
-                    var newHeight = Math.round(iframe.current.offsetWidth / info.features.aspectRatio);
-                    setHeight(newHeight);
-                }
-            }
-        }
-    };
-    var handleSetIframeRef = function (current) { return iframe.current = current; };
     var initMsg = {
         version: 1,
         error: null,
         mode: "runtime",
         authoredState: authoredState
     };
-    return (React.createElement("div", { className: "authoring-interactive-preview" },
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", height: height, initialAuthoredState: authoredState, initMsg: initMsg, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+    return (React.createElement("div", { className: "authoring-interactive-preview", "data-blah": "hello" },
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
 };
 
 
@@ -26383,26 +26355,10 @@ exports.InteractiveAuthoring = function (_a) {
         setAuthoredState(newAuthoredState);
         onAuthoredStateChange(newAuthoredState);
     };
-    var handleHeightChange = function (newHeight) {
-        if (iframe.current) {
-            iframe.current.style.height = newHeight + "px";
-        }
-    };
-    var handleSupportedFeatures = function (info) {
-        setAuthoringSupported(!!info.features.authoredState);
-        if (info.features.aspectRatio) {
-            if (interactive.aspect_ratio_method === "DEFAULT") {
-                if (iframe.current) {
-                    iframe.current.style.height = Math.round(iframe.current.offsetWidth / info.features.aspectRatio) + "px";
-                }
-            }
-        }
-    };
     var handleReset = function () {
         setAuthoredState(null);
         setResetCount(resetCount + 1);
     };
-    var handleSetIframeRef = function (current) { return iframe.current = current; };
     var initMsg = {
         version: 1,
         error: null,
@@ -26415,7 +26371,7 @@ exports.InteractiveAuthoring = function (_a) {
                 ? React.createElement("input", { type: "button", className: "reset-btn", value: "Reset authored state", onClick: handleReset })
                 : undefined)
             : undefined,
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", height: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, aspectRatio: interactive.aspect_ratio, aspectRatioMethod: interactive.aspect_ratio_method, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, onHeightChange: handleHeightChange, onSetIFrameRef: handleSetIframeRef })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
 };
 
 
@@ -26436,10 +26392,33 @@ var React = __webpack_require__(/*! react */ "react");
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.InteractiveIframe = function (props) {
-    var src = props.src, width = props.width, height = props.height, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, onHeightChange = props.onHeightChange, onSetIFrameRef = props.onSetIFrameRef, aspectRatio = props.aspectRatio, aspectRatioMethod = props.aspectRatioMethod;
+    var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod;
     var iframe = react_1.useRef(null);
-    onSetIFrameRef(iframe.current);
-    var _a = react_1.useState(0), iframeId = _a[0], setIFrameId = _a[1];
+    // FIXME: The default height here should be based on the aspect ratio setting
+    // and the width of the iframe. That computation at runtime is currently handled
+    // by the setSize method in interactives-sizing.js
+    // That code can't be used here, because the jQuery changes to the iframe
+    // conflict with the React management of the iframe element.
+    // We could:
+    // - duplicate the sizing code here
+    // - abstract it so it can be shared by both the runtime and authoring.
+    // - move the runtime iframe rendering into React, so both authoring and
+    //   runtime use the interactiveIframe component
+    // The last option is the best for maintainability, but it will slow down the
+    // page load since the iframes won't start loading until the javascript is loaded
+    // So probably the best option is to abstract that code.
+    var _a = react_1.useState(null), height = _a[0], setHeight = _a[1];
+    var _b = react_1.useState(authoredAspectRatio), aspectRatio = _b[0], setAspectRatio = _b[1];
+    var handleHeightChange = function (newHeight) {
+        setHeight(newHeight);
+    };
+    var handleSupportedFeatures = function (info) {
+        if (info.features.aspectRatio &&
+            authoredAspectRatioMethod === "DEFAULT") {
+            setAspectRatio(parseInt(info.features.aspectRatio));
+        }
+    };
+    var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];
     var phone;
     var connect = function () {
         phone = new iframePhone.ParentEndpoint(iframe.current, function () {
@@ -26450,8 +26429,8 @@ exports.InteractiveIframe = function (props) {
                 onAuthoredStateChange(authoredState);
             }
         });
-        phone.addListener("supportedFeatures", function (info) { return onSupportedFeaturesUpdate(info); });
-        phone.addListener("height", function (newHeight) { return onHeightChange(newHeight); });
+        phone.addListener("supportedFeatures", function (info) { return handleSupportedFeatures(info); });
+        phone.addListener("height", function (newHeight) { return handleHeightChange(newHeight); });
     };
     var disconnect = function () {
         if (phone) {
@@ -26472,7 +26451,14 @@ exports.InteractiveIframe = function (props) {
             setIFrameId(iframeId + 1);
         }
     }, [src, resetCount]);
-    return (React.createElement("iframe", { ref: iframe, src: src, width: width, height: height, key: iframeId, frameBorder: "no", scrolling: "no", allowFullScreen: true, allow: "geolocation *; microphone *; camera *", "data-aspect_ratio": aspectRatio, "data-aspect_ratio_method": aspectRatioMethod, "data-iframe_mouseover": "false", onLoad: handleIframeLoaded }));
+    var computedHeight = 300;
+    if (height !== null) {
+        computedHeight = Number(height);
+    }
+    else if (iframe.current && aspectRatio) {
+        computedHeight = Math.round(iframe.current.offsetWidth / aspectRatio);
+    }
+    return (React.createElement("iframe", { ref: iframe, src: src, width: width, height: computedHeight, key: iframeId, frameBorder: "no", scrolling: "no", allowFullScreen: true, allow: "geolocation *; microphone *; camera *", "data-iframe_mouseover": "false", onLoad: handleIframeLoaded }));
 };
 
 
@@ -27839,3 +27825,4 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
+//# sourceMappingURL=lara-typescript.js.map
