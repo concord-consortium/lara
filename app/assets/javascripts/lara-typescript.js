@@ -26322,7 +26322,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
         mode: "runtime",
         authoredState: authoredState
     };
-    return (React.createElement("div", { className: "authoring-interactive-preview", "data-blah": "hello" },
+    return (React.createElement("div", { className: "authoring-interactive-preview" },
         React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
 };
 
