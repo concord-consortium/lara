@@ -238,11 +238,13 @@ export interface IBaseShowModal {
   uuid: string;
 }
 
+export type ModalType = "alert" | "lightbox" | "dialog";
+
 export interface IShowAlert extends IBaseShowModal {
   type: "alert";
-  style: "info" | "warning" | "error";
-  headerText?: string;
-  text: string;
+  style: "correct" | "incorrect" | "info" /* | "warning" | "error" */;
+  title?: string;
+  text?: string;
 }
 
 export interface IShowLightbox extends IBaseShowModal {
