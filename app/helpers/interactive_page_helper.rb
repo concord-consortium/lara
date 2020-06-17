@@ -41,6 +41,13 @@ module InteractivePageHelper
     page.main_visible_embeddables.map { |e| Embeddable::is_interactive?(e) ? e : finder.find_answer(e) }
   end
 
+  def header_block_visible_embeddables(page, run)
+    finder = Embeddable::AnswerFinder.new(run)
+    # Limit visible embeddables to ones that do not belong to any section.
+    # Don't return answer objects for interactives.
+    page.header_block_visible_embeddables.map { |e| Embeddable::is_interactive?(e) ? e : finder.find_answer(e) }
+  end
+
   def labbook_is_under_interactive?
     # Is the labbook is interleaved with interactions?
     if defined?(@labbook_is_under_interactive) && @labbook_is_under_interactive
