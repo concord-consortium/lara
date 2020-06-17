@@ -12,29 +12,29 @@
 
 ### Properties
 
-* [headerText](ishowalert.md#optional-headertext)
 * [style](ishowalert.md#style)
-* [text](ishowalert.md#text)
+* [text](ishowalert.md#optional-text)
+* [title](ishowalert.md#optional-title)
 * [type](ishowalert.md#type)
 * [uuid](ishowalert.md#uuid)
 
 ## Properties
 
-### `Optional` headerText
-
-• **headerText**? : *undefined | string*
-
-___
-
 ###  style
 
-• **style**: *"info" | "warning" | "error"*
+• **style**: *"correct" | "incorrect" | "info"*
 
 ___
 
-###  text
+### `Optional` text
 
-• **text**: *string*
+• **text**? : *undefined | string*
+
+___
+
+### `Optional` title
+
+• **title**? : *undefined | string*
 
 ___
 

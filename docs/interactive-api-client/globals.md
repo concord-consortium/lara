@@ -80,6 +80,7 @@
 * [InteractiveAuthoredId](globals.md#interactiveauthoredid)
 * [InteractiveRuntimeId](globals.md#interactiveruntimeid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
+* [ModalType](globals.md#modaltype)
 * [ServerMessage](globals.md#servermessage)
 
 ### Functions
@@ -219,6 +220,12 @@ ___
 ###  LoggerClientMessage
 
 Ƭ **LoggerClientMessage**: *"log"*
+
+___
+
+###  ModalType
+
+Ƭ **ModalType**: *"alert" | "lightbox" | "dialog"*
 
 ___
 
