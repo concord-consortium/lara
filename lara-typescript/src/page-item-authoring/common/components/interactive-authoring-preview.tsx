@@ -30,7 +30,7 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
   };
 
   return (
-    <div className="authoring-interactive-preview" data-blah="hello">
+    <div className="authoring-interactive-preview">
       <InteractiveIframe
         src={interactive.url || ""}
         width="100%"
