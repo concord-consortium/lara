@@ -71,13 +71,38 @@ npm unlink @concord-consortium/lara-plugin-api
 
 ### LARA Interactive API
 
-LARA Interactive API lives in `interactive-api` directory. This API is exposed to interactive developers.
-Code organization and documentation is similar in many ways to LARA Plugin API. It's also published to NPM.
+The LARA Interactive API lives in the `interactive-api-client` directory. This API is exposed to interactive developers.
+Code organization and documentation is similar in many ways to LARA Plugin API. It is published to NPM as `@concord-consortium/lara-interactive-api`.
+
+To facilitate testing local changes to the `lara-interactive-api` with existing clients:
+
+```
+cd lara-typescript
+npm run lara-api:link     # creates a global symlink for clients to link to
+cd [the client you want to test (e.g. concord-consortium/question-interactives)]
+npm link @concord-consortium/lara-interactive-api
+```
+
+To unlink:
+
+```
+cd [the client you were testing]
+npm unlink --no-save @concord-consortium/lara-interactive-api
+npm install               # to restore the use of the published version
+cd lara-typescript
+npm run lara-api:unlink   # removes the global symlink
+```
+
+You can list the current links using:
+
+```
+npm run list:links
+```
 
 ### Code that is used by LARA internals
 
-Other API that is meant to be used by LARA itself is exposed to global/window object under `LARA` namespace. 
+Other API that is meant to be used by LARA itself is exposed to global/window object under `LARA` namespace.
 
 Old-style LARA code (usually HAML pages or some CoffeeScript files) can reference `LARA.Plugins`, `LARA.Events`,
 `LARA.InteractiveAPI` and `LARA.PageItemAuthoring` functions directly. Note that every diretory in lara-typescript has
-its own `index.ts` file. These are functions that are exported to `LARA.Plugins/Events/InteractiveAPI/etc` modules. 
+its own `index.ts` file. These are functions that are exported to `LARA.Plugins/Events/InteractiveAPI/etc` modules.

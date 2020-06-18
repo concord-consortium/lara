@@ -12,11 +12,22 @@ module BaseInteractive
   end
 
   def portal_hash
-    iframe_data = to_hash
-    iframe_data[:type] = 'iframe_interactive'
-    iframe_data[:id] = id
-    iframe_data[:display_in_iframe] = reportable_in_iframe?
-    iframe_data
+    result = report_service_hash
+    # When Portal receives iframe_interactive, it expects:
+    # id, name, url, native_width, native_height, is_required, show_in_featured_question_report, display_in_iframe.
+    # Add / map property names that are different in report_service_hash.
+
+    result[:native_width] = result[:width]
+    result[:native_height] = result[:height]
+    result[:is_required] = !!result[:required]
+    # If name is not available, but prompt is, this should make Portal details report a bit more readable.
+    unless result[:name].present?
+      result[:name] = result[:prompt]
+    end
+
+    # Open response and multiple choice properties are the same as in report_service_hash and/or properties mapped above.
+    # Portal expects less fields that will be actually sent, but it doesn't seem to cause any problems.
+    result
   end
 
   def parsed_authored_state
