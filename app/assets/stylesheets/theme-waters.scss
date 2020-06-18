@@ -149,6 +149,23 @@ body.l-responsive-wrapper {
         background: $col-white;
         padding: 20px;
         width: 960px;
+
+        .ui-block-1.open,
+        .ui-block.first.open,
+        .ui-block-1.open,
+        .ui-block.first.open {
+          width: 855px !important;
+        }
+
+        .l-7030 {
+          .sticky-wrapper {
+            width: 632px;
+          }
+          .interactive-mod {
+            width: 632px;
+          }
+
+        }
       }
     } // end .activity-mod
 
