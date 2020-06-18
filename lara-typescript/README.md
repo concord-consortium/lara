@@ -83,6 +83,13 @@ cd [the client you want to test (e.g. concord-consortium/question-interactives)]
 npm link @concord-consortium/lara-interactive-api
 ```
 
+Note that for local changes to the interactive API to take effect you must build locally after making changes:
+
+```
+cd lara-typescript
+npm run build
+```
+
 To unlink:
 
 ```
