@@ -7,11 +7,3 @@ function toggleQuestions() {
     jQuery('.question-tab span').text('Hide Questions');
   }
 }
-
-var ro = new LARA.PageItemAuthoring.ResizeObserver(function (entries, observer) {
-  for (var i = 0; i < entries.length; i++) {
-    interactiveSizing();
-  }
-});
-
-ro.observe(document.getElementsByClassName('questions-mod')[0]);
