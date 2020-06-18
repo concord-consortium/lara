@@ -27439,7 +27439,7 @@ exports.InteractiveIframe = function (props) {
     var handleSupportedFeatures = function (info) {
         if (info.features.aspectRatio &&
             authoredAspectRatioMethod === "DEFAULT") {
-            setAspectRatio(parseInt(info.features.aspectRatio));
+            setAspectRatio(parseInt(info.features.aspectRatio, 10));
         }
         if (onSupportedFeaturesUpdate) {
             onSupportedFeaturesUpdate(info);
@@ -28854,4 +28854,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=lara-typescript.js.map

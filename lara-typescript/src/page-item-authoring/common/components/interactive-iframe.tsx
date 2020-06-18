@@ -51,7 +51,7 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   const handleSupportedFeatures = (info: any) => {
     if (info.features.aspectRatio &&
         authoredAspectRatioMethod === "DEFAULT") {
-      setAspectRatio(parseInt(info.features.aspectRatio));
+      setAspectRatio(parseInt(info.features.aspectRatio, 10));
     }
     if (onSupportedFeaturesUpdate) {
       onSupportedFeaturesUpdate(info);
@@ -97,9 +97,9 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   }, [src, resetCount]);
 
   let computedHeight = 300;
-  if(height !== null) {
+  if (height !== null) {
     computedHeight = Number(height);
-  } else if(iframe.current && aspectRatio) {
+  } else if (iframe.current && aspectRatio) {
     computedHeight = Math.round(iframe.current.offsetWidth / aspectRatio);
   }
 
