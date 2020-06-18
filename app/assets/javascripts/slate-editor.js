@@ -1,5 +1,7 @@
 window.initSlateEditor = function (wysiwyg, value, index, options) {
   $(wysiwyg).hide();
+  $(wysiwyg).parent().css({ 'position': 'relative' });
+  $(wysiwyg).parent().append('<div class="wysiwyg-toggle" onclick="toggleWysiwygView(this)">HTML</div>');
   var slateEditorId = "slate-editor-" + index.toString();
   $('<div id="' + slateEditorId + '" class="slate-editor"></div>').insertAfter(wysiwyg);
   $("#" + slateEditorId).data("useAjax", options.useAjax);
@@ -16,6 +18,7 @@ function setCurrentEditor (editor) {
 }
 
 function updateSlateEditor (editorValue) {
+  console.log('updateSlateEditor triggered');
   var slateEditorId = $(document).data("currentSlateEditorId");
   var root = document.getElementById(slateEditorId);
   var props = { onFocus: setCurrentEditor, value: editorValue, onValueChange: updateSlateEditor };
@@ -49,9 +52,26 @@ function setNativeValue(element, value) {
   }
 }
 
+function toggleWysiwygView(toggle) {
+  $(toggle).siblings('textarea').toggle();
+  $(toggle).siblings('.slate-editor').toggle();
+  if ($(toggle).text() === "HTML") {
+    $(toggle).text("Rich Text");
+  } else {
+    $(toggle).text("HTML");
+    var value = $(toggle).siblings('textarea')[0].value;
+    var contentValue = LARA.PageItemAuthoring.htmlToSlate(value);
+    var slateEditorId = $(toggle).siblings('.slate-editor').attr('id');
+    var root = document.getElementById(slateEditorId);
+    var props = { onFocus: setCurrentEditor, value: contentValue, onValueChange: updateSlateEditor };
+    LARA.PageItemAuthoring.renderSlateContainer(root, props);
+  }
+}
+
 function prepareWysiwygContent (content) {
   var cleanContent = content.replace(/(\r\n|\n|\r)/gm, "");
   cleanContent = cleanContent.replace(/\s\s+/g, " ");
   cleanContent = cleanContent.replace(/>\s</g, "><");
+  cleanContent = cleanContent.replace(/<[^/>][^>]*><\/[^>]+>/g, "");
   return cleanContent;
 }
