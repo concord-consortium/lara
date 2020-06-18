@@ -26725,7 +26725,7 @@ exports.IframePhoneManager = IframePhoneManager;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IFrameSaver = void 0;
 var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
-var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
+var modal_api_plugin_1 = __webpack_require__(/*! ./modal-api-plugin */ "./src/interactive-api-parent/modal-api-plugin.ts");
 var getAuthoredState = function ($dataDiv) {
     var authoredState = $dataDiv.data("authored-state");
     if ((authoredState == null) || (authoredState === "")) {
@@ -26790,7 +26790,7 @@ var IFrameSaver = /** @class */ (function () {
         }
         this.alreadySetup = false;
         this.iframePhone = iframe_phone_manager_1.IframePhoneManager.getPhone($iframe[0], function () { return _this.phoneAnswered(); });
-        this.modals = {};
+        this.plugins = [modal_api_plugin_1.ModalApiPlugin()];
     }
     IFrameSaver.defaultSuccess = function () {
         // tslint:disable-next-line:no-console
@@ -26843,7 +26843,7 @@ var IFrameSaver = /** @class */ (function () {
     };
     IFrameSaver.prototype.phoneAnswered = function () {
         var _this = this;
-        // Workaround IframePhone problem - phone_answered cabllack can be triggered multiple times:
+        // Workaround IframePhone problem - phone_answered callback can be triggered multiple times:
         // https://www.pivotaltracker.com/story/show/89602814
         if (this.alreadySetup) {
             return;
@@ -26885,17 +26885,6 @@ var IFrameSaver = /** @class */ (function () {
             }
             $container.find(".help-content .text").text(hintRequest.text || "");
         });
-        this.addListener("showModal", function (options) {
-            if (options.type === "alert") {
-                _this.showAlert(options);
-            }
-        });
-        this.addListener("closeModal", function (options) {
-            var _a;
-            if (((_a = _this.modals[options.uuid]) === null || _a === void 0 ? void 0 : _a.type) === "alert") {
-                _this.closeAlert(options);
-            }
-        });
         this.addListener("supportedFeatures", function (info) {
             if (info.features && info.features.aspectRatio) {
                 // If the author specifies the aspect-ratio-method as "DEFAULT"
@@ -26921,6 +26910,18 @@ var IFrameSaver = /** @class */ (function () {
         });
         this.addListener("getFirebaseJWT", function (request) {
             return _this.getFirebaseJwt(request);
+        });
+        // add listeners from "plugins"
+        this.plugins.forEach(function (plugin) {
+            if (plugin.listeners) {
+                for (var m in plugin.listeners) {
+                    if (Object.prototype.hasOwnProperty.call(plugin.listeners, m)) {
+                        var msg = m;
+                        var listener = msg && plugin.listeners[msg];
+                        listener && _this.addListener(msg, listener);
+                    }
+                }
+            }
         });
         if (this.learnerStateSavingEnabled()) {
             this.post("getLearnerUrl");
@@ -27103,41 +27104,6 @@ var IFrameSaver = /** @class */ (function () {
     IFrameSaver.prototype.addListener = function (message, listener) {
         this.iframePhone.addListener(message, listener);
     };
-    IFrameSaver.prototype.showAlert = function (options) {
-        var style = options.style, _title = options.title, text = options.text;
-        var title;
-        var titlebarColor;
-        var message;
-        if (style === "correct") {
-            title = _title != null ? _title : "Correct";
-            titlebarColor = "#75a643";
-            message = text || "Yes! You are correct.";
-        }
-        else if (style === "incorrect") {
-            title = _title != null ? _title : "Incorrect";
-            titlebarColor = "#b45532";
-            message = text || "Sorry, that is incorrect.";
-        }
-        else {
-            title = _title || "";
-            message = text || "";
-        }
-        var $content = $("<div class='check-answer'><p class='response'>" + message + "</p></div");
-        this.modals[options.uuid] = { type: options.type, $content: $content };
-        plugin_api_1.addPopup({
-            content: $content[0],
-            title: title,
-            titlebarColor: titlebarColor,
-            modal: true
-        });
-    };
-    IFrameSaver.prototype.closeAlert = function (options) {
-        var _a;
-        var $content = (_a = this.modals[options.uuid]) === null || _a === void 0 ? void 0 : _a.$content;
-        if ($content === null || $content === void 0 ? void 0 : $content.is(":ui-dialog")) {
-            $content.dialog("close");
-        }
-    };
     IFrameSaver.instances = [];
     return IFrameSaver;
 }());
@@ -27175,6 +27141,148 @@ $(document).ready(function () {
         window.globalIframeSaver = new global_iframe_saver_1.GlobalIframeSaver(gon.globalInteractiveState);
     }
 });
+
+
+/***/ }),
+
+/***/ "./src/interactive-api-parent/modal-api-plugin.ts":
+/*!********************************************************!*\
+  !*** ./src/interactive-api-parent/modal-api-plugin.ts ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModalApiPlugin = void 0;
+var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
+var modalMap = {};
+function ModalApiPlugin() {
+    return {
+        listeners: {
+            showModal: function (options) {
+                var fnMap = {
+                    alert: function (opts) { return showAlert(opts); },
+                    lightbox: function (opts) { return showLightbox(opts); },
+                    dialog: function (opts) { return showDialog(opts); }
+                };
+                var showFn = fnMap[options.type];
+                showFn === null || showFn === void 0 ? void 0 : showFn(options);
+            },
+            closeModal: function (options) {
+                var _a;
+                var fnMap = {
+                    alert: function (opts) { return closeAlert(opts); },
+                    lightbox: function (opts) { return closeLightbox(opts); },
+                    dialog: function (opts) { return closeDialog(opts); }
+                };
+                var type = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.type;
+                var closeFn = type && fnMap[type];
+                closeFn === null || closeFn === void 0 ? void 0 : closeFn(options);
+            }
+        }
+    };
+}
+exports.ModalApiPlugin = ModalApiPlugin;
+function showAlert(options) {
+    var style = options.style, _title = options.title, text = options.text;
+    var title;
+    var titlebarColor;
+    var message;
+    if (style === "correct") {
+        title = _title != null ? _title : "Correct";
+        titlebarColor = "#75a643";
+        message = text || "Yes! You are correct.";
+    }
+    else if (style === "incorrect") {
+        title = _title != null ? _title : "Incorrect";
+        titlebarColor = "#b45532";
+        message = text || "Sorry, that is incorrect.";
+    }
+    else {
+        title = _title || "";
+        message = text || "";
+    }
+    var $content = $("<div class='check-answer'><p class='response'>" + message + "</p></div");
+    modalMap[options.uuid] = { type: options.type, $content: $content };
+    plugin_api_1.addPopup({
+        content: $content[0],
+        title: title,
+        titlebarColor: titlebarColor,
+        modal: true,
+        onClose: function () { return delete modalMap[options.uuid]; }
+    });
+}
+function closeAlert(options) {
+    var _a;
+    var $content = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.$content;
+    if ($content === null || $content === void 0 ? void 0 : $content.is(":ui-dialog")) {
+        $content.dialog("close");
+    }
+}
+function showLightbox(options) {
+    var getSizeOptions = function () {
+        var isImage = options.isImage, size = options.size;
+        // colorbox implementation detail
+        var kChromeSize = { width: 42, height: 70 };
+        var availableWidth = window.innerWidth - kChromeSize.width;
+        var availableHeight = window.innerHeight - kChromeSize.height;
+        var sizeOpts = {};
+        // images are auto-sized correctly without intervention
+        if (isImage) {
+            // prevent scaling up unless requested
+            var requiresUpscaling = (!!(size === null || size === void 0 ? void 0 : size.width) && size.width < availableWidth) &&
+                (!!(size === null || size === void 0 ? void 0 : size.height) && size.height < availableHeight);
+            sizeOpts.scalePhotos = !requiresUpscaling || options.allowUpscale;
+            return sizeOpts;
+        }
+        // for iframes, if size is specified, then maintain aspect ratio
+        if (size) {
+            var aspectRatio = size.width / size.height;
+            if (size.height > availableHeight) {
+                // height is constraining dimension
+                sizeOpts.width = availableHeight * aspectRatio;
+                sizeOpts.height = availableHeight;
+            }
+            else {
+                sizeOpts.width = size.width;
+                sizeOpts.height = size.height;
+            }
+            if (size.width > availableWidth) {
+                // width is constraining dimension
+                sizeOpts.width = availableWidth;
+                sizeOpts.height = availableWidth / aspectRatio;
+            }
+            return sizeOpts;
+        }
+        // otherwise use available space
+        sizeOpts.width = availableWidth;
+        sizeOpts.height = availableHeight;
+        return sizeOpts;
+    };
+    $.colorbox(__assign(__assign({ iframe: !options.isImage, photo: !!options.isImage, href: options.url, title: options.title, maxWidth: "100%", maxHeight: "100%" }, getSizeOptions()), { onOpen: function () { return modalMap[options.uuid] = { type: "lightbox", $content: $.colorbox.element() }; }, onClosed: function () { return delete modalMap[options.uuid]; } }));
+}
+function closeLightbox(options) {
+    $.colorbox.close();
+}
+function showDialog(options) {
+    // dialog
+}
+function closeDialog(options) {
+    // dialog
+}
 
 
 /***/ }),

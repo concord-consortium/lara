@@ -228,7 +228,7 @@ export const setRuntimeCustomReportValues = (values: IRuntimeCustomReportValues)
  * @todo Implement this function.
  */
 export const showModal = (options: IShowModal) => {
-  if (options.type === "alert") {
+  if ((options.type === "alert") || (options.type === "lightbox")) {
     getClient().post("showModal", options);
   }
   else {
