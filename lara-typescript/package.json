@@ -106,6 +106,7 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
+    "resize-observer-polyfill": "^1.5.1",
     "@concord-consortium/text-decorator": "^1.0.2",
     "deep-freeze": "0.0.1",
     "eventemitter2": "^5.0.1",

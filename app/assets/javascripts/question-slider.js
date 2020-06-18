@@ -6,7 +6,4 @@ function toggleQuestions() {
   } else {
     jQuery('.question-tab span').text('Hide Questions');
   }
-  interactiveSizing()
-  // trigger interactiveSizing again after CSS animation completes to ensure proper sizing
-  setTimeout(interactiveSizing, 400);
 }
