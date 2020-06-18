@@ -24,7 +24,6 @@
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
-//= require responsive-layout
 //= require shutterbug
 //= require page-unload-warning
 //= require modals
