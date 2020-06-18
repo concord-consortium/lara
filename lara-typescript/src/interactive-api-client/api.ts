@@ -12,11 +12,12 @@ import {
   IRuntimeCustomReportValues,
   IShowModal,
   ICloseModal,
-  IGetInteractiveListRequest,
+  IGetInteractiveListOptions,
   ISetLinkedInteractives,
   IGetLibraryInteractiveListRequest,
   IGetInteractiveSnapshotRequest,
-  IHintRequest
+  IHintRequest,
+  IJwtResponse
 } from "./types";
 import { getClient } from "./client";
 
@@ -158,20 +159,27 @@ export const getAuthInfo = (): Promise<IAuthInfo> => {
   });
 };
 
-export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<string> => {
-  return new Promise<string>((resolve, reject) => {
+export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<IJwtResponse> => {
+  return new Promise<IJwtResponse>((resolve, reject) => {
     const listener = (response: IGetFirebaseJwtResponse) => {
       if (response.response_type === "ERROR") {
         reject(response.message || "Error getting Firebase JWT");
+      } else if (response.token) {
+        try {
+          const claimsJson = atob(response.token.split(".")[1]);
+          resolve({token: response.token, claims: JSON.parse(claimsJson)});
+        } catch (error) {
+          reject("Unable to parse JWT Token");
+        }
       } else {
-        resolve(response.token);
+        reject("Empty token");
       }
     };
     const client = getClient();
     const requestId = client.getNextRequestId();
     const request: IGetFirebaseJwtRequest = {
       requestId,
-      ...options
+      firebase_app: options.firebaseApp
     };
     client.addListener("firebaseJWT", listener, requestId);
     client.post("getFirebaseJWT", request);
@@ -246,7 +254,7 @@ export const closeModal = (options: ICloseModal) => {
 /**
  * @todo Implement this function.
  */
-export const getInteractiveList = (options: IGetInteractiveListRequest) => {
+export const getInteractiveList = (options: IGetInteractiveListOptions) => {
   THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
 };
 

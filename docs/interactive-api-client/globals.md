@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.4.0-pre.11](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.4.0-pre.10
+# @concord-consortium/lara-interactive-api - v0.4.0-pre.11
 
 ## Index
 
@@ -17,7 +17,6 @@
 * [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
-* [IClientOptions](interfaces/iclientoptions.md)
 * [ICloseModal](interfaces/iclosemodal.md)
 * [IClosedModal](interfaces/iclosedmodal.md)
 * [IContextMember](interfaces/icontextmember.md)
@@ -39,13 +38,15 @@
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
 * [IHintRequest](interfaces/ihintrequest.md)
-* [IHookOptions](interfaces/ihookoptions.md)
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
+* [IJwtClaims](interfaces/ijwtclaims.md)
+* [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedAuthoredInteractive](interfaces/ilinkedauthoredinteractive.md)
 * [ILinkedRuntimeInteractive](interfaces/ilinkedruntimeinteractive.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
+* [IPortalClaims](interfaces/iportalclaims.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
@@ -343,7 +344,7 @@ ___
 
 ### `Const` getFirebaseJWT
 
-▸ **getFirebaseJWT**(`options`: [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)): *Promise‹string›*
+▸ **getFirebaseJWT**(`options`: [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)): *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
 **Parameters:**
 
@@ -351,7 +352,7 @@ Name | Type |
 ------ | ------ |
 `options` | [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md) |
 
-**Returns:** *Promise‹string›*
+**Returns:** *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
 ___
 
@@ -387,13 +388,13 @@ ___
 
 ### `Const` getInteractiveList
 
-▸ **getInteractiveList**(`options`: [IGetInteractiveListRequest](interfaces/igetinteractivelistrequest.md)): *void*
+▸ **getInteractiveList**(`options`: [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetInteractiveListRequest](interfaces/igetinteractivelistrequest.md) |
+`options` | [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md) |
 
 **Returns:** *void*
 
