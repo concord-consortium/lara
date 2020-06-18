@@ -6,6 +6,17 @@ const parentEl = document.createElement("iframe");
 
 jest.mock("iframe-phone", () => mockIFramePhone(parentEl));
 
+const mockShowModal = jest.fn();
+const mockCloseModal = jest.fn();
+jest.mock("./modal-api-plugin", () => ({
+  ModalApiPlugin: jest.fn().mockImplementation(() => ({
+    listeners: {
+      showModal: mockShowModal,
+      closeModal: mockCloseModal
+    }
+  }))
+}));
+
 const successResponse = {
   status: 200,
   responseText: "{}"
@@ -227,49 +238,28 @@ describe("IFrameSaver", () => {
     });
   });
 
-  describe("showModal [alert] iframe-phone message", () => {
+  describe("showModal/closeModal iframe-phone messages", () => {
+
     beforeEach(() => {
+      jest.clearAllMocks();
       saver = getSaver();
       MockedIframePhoneManager.connect();
     });
 
-    it("should show/hide correct modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "foo", type: "alert", style: "correct" };
+    it("should show/hide modal iframe lightbox", () => {
+      expect(mockShowModal).not.toHaveBeenCalled();
+      expect(mockCloseModal).not.toHaveBeenCalled();
+      const showOptions: IShowModal = {
+        uuid: "modal-uuid", type: "lightbox", url: "https://concord.org" };
       const showMessage: any = { type: "showModal", content: showOptions };
       MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-titlebar").text()).toMatch(/^Correct/);
-      const closeOptions: ICloseModal = { uuid: "foo" };
+      expect(mockShowModal).toHaveBeenCalled();
+      expect(mockCloseModal).not.toHaveBeenCalled();
+      const closeOptions: ICloseModal = { uuid: "modal-uuid" };
       const closeMessage: any = { type: "closeModal", content: closeOptions };
       MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
+      expect(mockCloseModal).toHaveBeenCalled();
     });
 
-    it("should show/hide incorrect modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "bar", type: "alert", style: "incorrect" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-titlebar").text()).toMatch(/^Incorrect/);
-      const closeOptions: ICloseModal = { uuid: "bar" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
-    });
-
-    it("should show/hide info modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "baz", type: "alert", style: "info", text: "Information" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-content").text()).toMatch(/^Information/);
-      const closeOptions: ICloseModal = { uuid: "baz" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
-    });
   });
 });
