@@ -9,6 +9,10 @@ interface ModalState {
 }
 const modalMap: Record<string, ModalState> = {};
 
+export function hasModal(uuid: string) {
+  return !!modalMap[uuid];
+}
+
 export function ModalApiPlugin(): IFrameSaverPlugin {
   return {
     listeners: {
@@ -131,9 +135,11 @@ function closeLightbox(options: ICloseModal) {
 }
 
 function showDialog(options: IShowDialog) {
-  // dialog
+  // placeholder
+  modalMap[options.uuid] = { type: "dialog", $content: $(".ui-dialog") };
 }
 
 function closeDialog(options: ICloseModal) {
-  // dialog
+  // placeholder
+  delete modalMap[options.uuid];
 }
