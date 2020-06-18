@@ -52,5 +52,5 @@
 //= require c_rater
 //= require interactive-manager
 //= require components
-//= require question-slider.js
+//= require question-slider
 //= require runtime-init
