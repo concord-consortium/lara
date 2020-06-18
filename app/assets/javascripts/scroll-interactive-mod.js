@@ -81,7 +81,7 @@ $(window).ready(function () {
 
   // Monitor the parent size so we can update the size of the fixed element
   // when the width or height of the parent changes
-  var ro = new LARA.PageItemAuthoring.ResizeObserver((entries, observer) => {
+  var ro = new LARA.PageItemAuthoring.ResizeObserver(function(entries, observer) {
     handleScroll();
   });
   ro.observe($sticky.parent()[0]);
