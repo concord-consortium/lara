@@ -228,14 +228,19 @@ export const setRuntimeCustomReportValues = (values: IRuntimeCustomReportValues)
  * @todo Implement this function.
  */
 export const showModal = (options: IShowModal) => {
-  THROW_NOT_IMPLEMENTED_YET("showModal");
+  if (options.type === "alert") {
+    getClient().post("showModal", options);
+  }
+  else {
+    THROW_NOT_IMPLEMENTED_YET(`showModal { type: "${options.type}" }`);
+  }
 };
 
 /**
  * @todo Implement this function.
  */
 export const closeModal = (options: ICloseModal) => {
-  THROW_NOT_IMPLEMENTED_YET("closeModal");
+  getClient().post("closeModal", options);
 };
 
 /**
