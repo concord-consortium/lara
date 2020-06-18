@@ -348,4 +348,47 @@ describe InteractiveRunState do
       it { is_expected.to be_answered }
     end
   end
+
+  describe "#copy_answer!" do
+    describe "when interactive doesn't have a report url" do
+      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+      let(:run_data) { '{"someProp": 123}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
+
+      it "should update raw_data" do
+        expect(interactive_run_state_2.raw_data).to eql(nil)
+        interactive_run_state_2.copy_answer!(interactive_run_state_1)
+        expect(interactive_run_state_2.raw_data).to eql(run_data)
+      end
+    end
+
+    describe "when interactive has a report url" do
+      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: true) }
+      let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
+
+      it "should NOT update raw_data" do
+        expect(interactive_run_state_2.raw_data).to eql(nil)
+        interactive_run_state_2.copy_answer!(interactive_run_state_1)
+        expect(interactive_run_state_2.raw_data).to eql(nil)
+      end
+    end
+
+    describe "when interactive has a report url but author forgot to set has_report_url to true" do
+      # has_report_url = false
+      let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true, has_report_url: false) }
+      # but report_url is here anyway:
+      let(:run_data) { '{"second": 2, "lara_options": {"reporting_url": "test.com"}}' }
+      let(:interactive_run_state_1) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+      let(:interactive_run_state_2) { InteractiveRunState.create(run: run, interactive: interactive) }
+
+      it "should NOT update raw_data" do
+        expect(interactive_run_state_2.raw_data).to eql(nil)
+        interactive_run_state_2.copy_answer!(interactive_run_state_1)
+        expect(interactive_run_state_2.raw_data).to eql(nil)
+      end
+    end
+  end
 end
