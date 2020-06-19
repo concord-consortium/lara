@@ -10,6 +10,15 @@ Cypress.Commands.add("requestWithToken", (options) => {
   })
 })
 
+Cypress.Commands.add("signUp",(username = Cypress.config("username"),password = Cypress.config("password")) => {
+    cy.visit("/users/sign_up");
+    cy.get("#user_email").type(username);
+    cy.get("#user_password").type(password);
+    cy.get("#user_password_confirmation").type(password);
+    cy.get('input[name="commit"]').click();
+  }
+);
+
 // By default it uses credentials specified in config/user-config.json
 Cypress.Commands.add("login", (username = Cypress.config("username"), password = Cypress.config("password")) => {
   cy.visit('/users/sign_in')
