@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import ResizeObserver from "resize-observer-polyfill";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
@@ -50,5 +51,7 @@ export {
   renderMWInteractiveAuthoring,
 
   InteractiveAuthoringPreview,
-  renderInteractiveAuthoringPreview
+  renderInteractiveAuthoringPreview,
+
+  ResizeObserver
 };

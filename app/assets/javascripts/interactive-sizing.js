@@ -82,7 +82,31 @@ function interactiveSizing () {
     var $iframe = $(this);
     $iframe.on('sizeUpdate', setSize);
     $iframe.trigger('sizeUpdate');
+
+    // Monitor the parent element size so we can update the size of the iframe
+    // this is necessary for aspect-ratio based sizing since we might need to
+    // adjust the height or width depending on our container.
+    // The container size can change if the columns are collapsed
+    // If we are in responsive layout the container size will also change
+    // when the window width is changed.
+    var ro = new LARA.PageItemAuthoring.ResizeObserver(function(entries, observer) {
+      $iframe.trigger('sizeUpdate');
+    });
+    ro.observe($iframe.parent()[0]);
   });
+
+  // Explicitly monitor the window size. In responsive layout we'll see changes
+  // in the width of the container with the ResizeObserver above. But we might
+  // not see changes in the height.
+  // Additionally, in other layouts the page width is fixed so we don't see
+  // container size changes when the window size changes.
+  // This is necessary when the interactive is height limited
+  // which makes sure the interactive remains fully visible without needing to scroll
+  $(window).on('resize', function () {
+    // Trigger update of iframe interactives that define some height or fixed aspect ratio.
+    $('[data-aspect-ratio]').trigger('sizeUpdate');
+  });
+
 }
 
 // Use 'load' event so all the images are loaded before we start calculating size.

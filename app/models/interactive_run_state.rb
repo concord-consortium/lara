@@ -8,6 +8,7 @@ class InteractiveRunState < ActiveRecord::Base
   belongs_to :interactive, :polymorphic => true
 
   after_update :maybe_send_to_portal
+  after_update :propagate_to_collaborators
 
   before_save :add_key_if_nil
 
@@ -53,6 +54,17 @@ class InteractiveRunState < ActiveRecord::Base
 
   def activity
     page && page.lightweight_activity
+  end
+
+  # Used by CollaborationRun to copy answer to collaborators.
+  def copy_answer!(another_int_run_state)
+    # CFM-based projects are the only ones that use reporting URL. Currently, CFM handles run with collaborators
+    # itself. Copying interactive state and replacing reporting URLs could break it.
+    return if interactive.has_report_url || another_int_run_state.reporting_url.present?
+
+    self.update_attributes!(
+      raw_data: another_int_run_state.raw_data
+    )
   end
 
   def portal_hash
