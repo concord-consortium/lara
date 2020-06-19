@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.11](../README.md) › [Globals](../globals.md) › [IRuntimeOpenResponseMetadata](iruntimeopenresponsemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.1](../README.md) › [Globals](../globals.md) › [IRuntimeOpenResponseMetadata](iruntimeopenresponsemetadata.md)
 
 # Interface: IRuntimeOpenResponseMetadata
 
