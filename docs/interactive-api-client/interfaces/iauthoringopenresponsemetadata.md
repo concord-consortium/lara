@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.1](../README.md) › [Globals](../globals.md) › [IAuthoringOpenResponseMetadata](iauthoringopenresponsemetadata.md)
 
 # Interface: IAuthoringOpenResponseMetadata
 

@@ -1,6 +1,5 @@
 import { mockIFramePhone, MockedIframePhoneManager, setAutoConnect } from "./mock-iframe-phone";
 import { IFrameSaver } from "./iframe-saver";
-import { IShowModal, ICloseModal } from "../interactive-api-client";
 
 const parentEl = document.createElement("iframe");
 
@@ -227,49 +226,17 @@ describe("IFrameSaver", () => {
     });
   });
 
-  describe("showModal [alert] iframe-phone message", () => {
+  describe("showModal/closeModal iframe-phone messages", () => {
+
     beforeEach(() => {
       saver = getSaver();
       MockedIframePhoneManager.connect();
     });
 
-    it("should show/hide correct modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "foo", type: "alert", style: "correct" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-titlebar").text()).toMatch(/^Correct/);
-      const closeOptions: ICloseModal = { uuid: "foo" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
+    it("should have installed listeners for showModal/closeModal", () => {
+      expect(MockedIframePhoneManager.hasListener("showModal")).toBe(true);
+      expect(MockedIframePhoneManager.hasListener("closeModal")).toBe(true);
     });
 
-    it("should show/hide incorrect modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "bar", type: "alert", style: "incorrect" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-titlebar").text()).toMatch(/^Incorrect/);
-      const closeOptions: ICloseModal = { uuid: "bar" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
-    });
-
-    it("should show/hide info modal alert", () => {
-      expect($(".ui-dialog").length).toBe(0);
-      const showOptions: IShowModal = { uuid: "baz", type: "alert", style: "info", text: "Information" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect($(".ui-dialog").length).toBe(1);
-      expect($(".ui-dialog").find(".ui-dialog-content").text()).toMatch(/^Information/);
-      const closeOptions: ICloseModal = { uuid: "baz" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect($(".ui-dialog").length).toBe(0);
-    });
   });
 });

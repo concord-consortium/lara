@@ -250,6 +250,10 @@ export interface IShowAlert extends IBaseShowModal {
 export interface IShowLightbox extends IBaseShowModal {
   type: "lightbox";
   url: string;
+  title?: string;
+  isImage?: boolean;
+  size?: { width: number, height: number };
+  allowUpscale?: boolean;
 }
 
 export interface IShowDialog<DialogState = {}> extends IBaseShowModal {

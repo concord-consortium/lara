@@ -84,6 +84,11 @@ export class MockIframePhoneManager {
     this._phonesToConnect.length = 0;
   }
 
+  public hasListener(type: string) {
+    return Object.keys(this._phones)
+            .some(phoneId => this._phones[phoneId].hasListener(type));
+  }
+
   // Posts fake message from given element (e.g. iframe). Current window is the receiver.
   // If there is a mock iframe phones connected to source element, it will be notified.
   public postMessageFrom(source: HTMLElement, message: any) {
@@ -185,6 +190,10 @@ export class MockPhone {
     }
     this.messages.push(message as IMessage);
     MockedIframePhoneManager.messages._add({source: window, target: this.targetElement, message});
+  }
+
+  public hasListener(type: string) {
+    return !!this.listeners[type];
   }
 
   public addListener(type: string, fn: Listener) {
