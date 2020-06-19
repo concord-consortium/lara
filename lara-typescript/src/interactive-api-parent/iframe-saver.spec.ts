@@ -1,21 +1,9 @@
 import { mockIFramePhone, MockedIframePhoneManager, setAutoConnect } from "./mock-iframe-phone";
 import { IFrameSaver } from "./iframe-saver";
-import { IShowModal, ICloseModal } from "../interactive-api-client";
 
 const parentEl = document.createElement("iframe");
 
 jest.mock("iframe-phone", () => mockIFramePhone(parentEl));
-
-const mockShowModal = jest.fn();
-const mockCloseModal = jest.fn();
-jest.mock("./modal-api-plugin", () => ({
-  ModalApiPlugin: jest.fn().mockImplementation(() => ({
-    listeners: {
-      showModal: mockShowModal,
-      closeModal: mockCloseModal
-    }
-  }))
-}));
 
 const successResponse = {
   status: 200,
@@ -241,24 +229,13 @@ describe("IFrameSaver", () => {
   describe("showModal/closeModal iframe-phone messages", () => {
 
     beforeEach(() => {
-      jest.clearAllMocks();
       saver = getSaver();
       MockedIframePhoneManager.connect();
     });
 
-    it("should show/hide modal iframe lightbox", () => {
-      expect(mockShowModal).not.toHaveBeenCalled();
-      expect(mockCloseModal).not.toHaveBeenCalled();
-      const showOptions: IShowModal = {
-        uuid: "modal-uuid", type: "lightbox", url: "https://concord.org" };
-      const showMessage: any = { type: "showModal", content: showOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], showMessage);
-      expect(mockShowModal).toHaveBeenCalled();
-      expect(mockCloseModal).not.toHaveBeenCalled();
-      const closeOptions: ICloseModal = { uuid: "modal-uuid" };
-      const closeMessage: any = { type: "closeModal", content: closeOptions };
-      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], closeMessage);
-      expect(mockCloseModal).toHaveBeenCalled();
+    it("should have installed listeners for showModal/closeModal", () => {
+      expect(MockedIframePhoneManager.hasListener("showModal")).toBe(true);
+      expect(MockedIframePhoneManager.hasListener("closeModal")).toBe(true);
     });
 
   });

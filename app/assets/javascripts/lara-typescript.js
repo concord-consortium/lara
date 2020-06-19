@@ -26790,7 +26790,7 @@ var IFrameSaver = /** @class */ (function () {
         }
         this.alreadySetup = false;
         this.iframePhone = iframe_phone_manager_1.IframePhoneManager.getPhone($iframe[0], function () { return _this.phoneAnswered(); });
-        this.plugins = [modal_api_plugin_1.ModalApiPlugin()];
+        this.plugins = [modal_api_plugin_1.ModalApiPlugin(this.iframePhone)];
     }
     IFrameSaver.defaultSuccess = function () {
         // tslint:disable-next-line:no-console
@@ -26910,18 +26910,6 @@ var IFrameSaver = /** @class */ (function () {
         });
         this.addListener("getFirebaseJWT", function (request) {
             return _this.getFirebaseJwt(request);
-        });
-        // add listeners from "plugins"
-        this.plugins.forEach(function (plugin) {
-            if (plugin.listeners) {
-                for (var m in plugin.listeners) {
-                    if (Object.prototype.hasOwnProperty.call(plugin.listeners, m)) {
-                        var msg = m;
-                        var listener = msg && plugin.listeners[msg];
-                        listener && _this.addListener(msg, listener);
-                    }
-                }
-            }
         });
         if (this.learnerStateSavingEnabled()) {
             this.post("getLearnerUrl");
@@ -27166,36 +27154,39 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModalApiPlugin = void 0;
+exports.ModalApiPlugin = exports.hasModal = void 0;
 var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
 var modalMap = {};
-function ModalApiPlugin() {
-    return {
-        listeners: {
-            showModal: function (options) {
-                var fnMap = {
-                    alert: function (opts) { return showAlert(opts); },
-                    lightbox: function (opts) { return showLightbox(opts); },
-                    dialog: function (opts) { return showDialog(opts); }
-                };
-                var showFn = fnMap[options.type];
-                showFn === null || showFn === void 0 ? void 0 : showFn(options);
-            },
-            closeModal: function (options) {
-                var _a;
-                var fnMap = {
-                    alert: function (opts) { return closeAlert(opts); },
-                    lightbox: function (opts) { return closeLightbox(opts); },
-                    dialog: function (opts) { return closeDialog(opts); }
-                };
-                var type = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.type;
-                var closeFn = type && fnMap[type];
-                closeFn === null || closeFn === void 0 ? void 0 : closeFn(options);
-            }
-        }
-    };
+function hasModal(uuid) {
+    return !!modalMap[uuid];
 }
-exports.ModalApiPlugin = ModalApiPlugin;
+exports.hasModal = hasModal;
+exports.ModalApiPlugin = function (iframePhone) {
+    iframePhone.addListener("showModal", function (options) {
+        var fnMap = {
+            alert: function (opts) { return showAlert(opts); },
+            lightbox: function (opts) { return showLightbox(opts); },
+            dialog: function (opts) { return showDialog(opts); }
+        };
+        var showFn = fnMap[options.type];
+        showFn === null || showFn === void 0 ? void 0 : showFn(options);
+    });
+    iframePhone.addListener("closeModal", function (options) {
+        var _a;
+        var fnMap = {
+            alert: function (opts) { return closeAlert(opts); },
+            lightbox: function (opts) { return closeLightbox(opts); },
+            dialog: function (opts) { return closeDialog(opts); }
+        };
+        var type = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.type;
+        var closeFn = type && fnMap[type];
+        closeFn === null || closeFn === void 0 ? void 0 : closeFn(options);
+    });
+    return function () {
+        iframePhone.removeListener("showModal");
+        iframePhone.removeListener("closeModal");
+    };
+};
 function showAlert(options) {
     var style = options.style, _title = options.title, text = options.text;
     var title;
@@ -27278,10 +27269,12 @@ function closeLightbox(options) {
     $.colorbox.close();
 }
 function showDialog(options) {
-    // dialog
+    // placeholder
+    modalMap[options.uuid] = { type: "dialog", $content: $(".ui-dialog") };
 }
 function closeDialog(options) {
-    // dialog
+    // placeholder
+    delete modalMap[options.uuid];
 }
 
 

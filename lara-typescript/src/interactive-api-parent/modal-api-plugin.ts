@@ -13,31 +13,33 @@ export function hasModal(uuid: string) {
   return !!modalMap[uuid];
 }
 
-export function ModalApiPlugin(): IFrameSaverPlugin {
-  return {
-    listeners: {
-      showModal: (options: IShowModal) => {
-        const fnMap: Record<ModalType, (opts: IShowModal) => void> = {
-          alert: (opts: IShowAlert) => showAlert(opts),
-          lightbox: (opts: IShowLightbox) => showLightbox(opts),
-          dialog: (opts: IShowDialog) => showDialog(opts)
-        };
-        const showFn = fnMap[options.type];
-        showFn?.(options);
-      },
-      closeModal: (options: ICloseModal) => {
-        const fnMap: Record<ModalType, (opts: ICloseModal) => void> = {
-          alert: (opts: ICloseModal) => closeAlert(opts),
-          lightbox: (opts: ICloseModal) => closeLightbox(opts),
-          dialog: (opts: ICloseModal) => closeDialog(opts)
-        };
-        const type = modalMap[options.uuid]?.type;
-        const closeFn = type && fnMap[type];
-        closeFn?.(options);
-      }
-    }
+export const ModalApiPlugin: IFrameSaverPlugin = iframePhone => {
+
+  iframePhone.addListener("showModal", (options: IShowModal) => {
+    const fnMap: Record<ModalType, (opts: IShowModal) => void> = {
+      alert: (opts: IShowAlert) => showAlert(opts),
+      lightbox: (opts: IShowLightbox) => showLightbox(opts),
+      dialog: (opts: IShowDialog) => showDialog(opts)
+    };
+    const showFn = fnMap[options.type];
+    showFn?.(options);
+  });
+  iframePhone.addListener("closeModal", (options: ICloseModal) => {
+    const fnMap: Record<ModalType, (opts: ICloseModal) => void> = {
+      alert: (opts: ICloseModal) => closeAlert(opts),
+      lightbox: (opts: ICloseModal) => closeLightbox(opts),
+      dialog: (opts: ICloseModal) => closeDialog(opts)
+    };
+    const type = modalMap[options.uuid]?.type;
+    const closeFn = type && fnMap[type];
+    closeFn?.(options);
+  });
+
+  return () => {
+    iframePhone.removeListener("showModal");
+    iframePhone.removeListener("closeModal");
   };
-}
+};
 
 function showAlert(options: IShowAlert) {
   const { style, title: _title, text } = options;
