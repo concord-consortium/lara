@@ -20,6 +20,14 @@ module BaseInteractive
     result[:native_width] = result[:width]
     result[:native_height] = result[:height]
     result[:is_required] = !!result[:required]
+    if result[:prompt].nil?
+      # Portal doesn't like nil prompt. Publication fails with:
+      # HTTP Unprocessable Entity 422
+      # NoMethodError: undefined method `gsub' for nil:NilClass
+      # Details: https://www.pivotaltracker.com/story/show/173400823
+      result[:prompt] = ""
+    end
+
     # If name is not available, but prompt is, this should make Portal details report a bit more readable.
     unless result[:name].present?
       result[:name] = result[:prompt]
