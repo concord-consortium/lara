@@ -1,7 +1,7 @@
 import { ParentEndpoint } from "iframe-phone";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
-import { IFrameSaverPlugin } from "./iframe-saver-plugin";
+import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
@@ -106,7 +106,7 @@ export class IFrameSaver {
   private alreadySetup: boolean;
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
-  private plugins: IFrameSaverPlugin[];
+  private plugins: IFrameSaverPluginDisconnectFn[];
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;
@@ -138,7 +138,7 @@ export class IFrameSaver {
 
     this.iframePhone = IframePhoneManager.getPhone($iframe[0] as HTMLIFrameElement, () => this.phoneAnswered());
 
-    this.plugins = [ModalApiPlugin()];
+    this.plugins = [ModalApiPlugin(this.iframePhone)];
   }
 
   public save(successCallback?: SuccessCallback | null) {
@@ -259,19 +259,6 @@ export class IFrameSaver {
 
     this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
       return this.getFirebaseJwt(request);
-    });
-
-    // add listeners from "plugins"
-    this.plugins.forEach(plugin => {
-      if (plugin.listeners) {
-        for (const m in plugin.listeners) {
-          if (Object.prototype.hasOwnProperty.call(plugin.listeners, m)) {
-            const msg = m as LaraInteractiveApi.IFrameSaverClientMessage;
-            const listener = msg && plugin.listeners[msg];
-            listener && this.addListener(msg, listener);
-          }
-        }
-      }
     });
 
     if (this.learnerStateSavingEnabled()) {
