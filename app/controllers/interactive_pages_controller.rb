@@ -120,6 +120,10 @@ class InteractivePagesController < ApplicationController
       e.embeddable_select_value = params[:embeddable_select_value] if !params[:embeddable_select_value].blank?
       e.save!
     end
+    if params[:section] == 'header_block'
+      e.is_full_width = true
+      e.save
+    end
     @page.add_embeddable(e, nil, params[:section])
     # The call below supposed to open edit dialog, but it doesn't seem to work anymore.
     edit_embeddable_redirect(e)

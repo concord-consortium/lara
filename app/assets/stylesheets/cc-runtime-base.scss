@@ -180,6 +180,20 @@ div.activity-mod>div.site-width {
 
 .header-block-mod {
   .embeddables {
+    .question-hdr, .question-bd {
+      width: 100%;
+    }
+    .question {
+      margin: 20px;
+      display: inline-block;
+      width: 45%;
+      vertical-align: top;
+
+      &.full-width-item {
+        width: 100%;
+        margin: 20px 0;
+      }
+    }
     & > div.full-width-item {
       div[class^="window-shade--windowShade"] {
         margin-top: 10px;
@@ -222,6 +236,9 @@ div.activity-mod>div.site-width {
             color: #fff;
             font-weight: 500;
           }
+        }
+        &.full-width-item {
+          margin: 20px 0;
         }
       }
     }
