@@ -218,13 +218,14 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
-  it("does not yet implement showModal [lightbox]", () => {
+  it("should implement showModal [lightbox]", () => {
     const options: IShowLightbox = {
       uuid: "foo",
       type: "lightbox",
       url: "https://concord.org"
     };
-    expect(() => api.showModal(options)).toThrow(/not yet implemented/);
+    api.showModal(options);
+    expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
   it("does not yet implement showModal [dialog]", () => {
