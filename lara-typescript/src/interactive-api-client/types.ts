@@ -293,10 +293,6 @@ export interface IGetAuthInfoResponse extends IBaseRequestResponse, IAuthInfo {
   // no extra options, just the requestId and the auth info
 }
 
-export interface IGetFirebaseJwtOptions {
-  firebaseApp: string;
-}
-
 export interface IGetFirebaseJwtRequest extends IBaseRequestResponse {
   firebase_app: string;
 }

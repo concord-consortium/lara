@@ -2,7 +2,7 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-ifram
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
-import { IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
+import { IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -110,15 +110,15 @@ describe("api", () => {
     });
   });
 
-  it("supports getFirebaseJWT called multiple times", () => {
-    const requestContent: IGetFirebaseJwtOptions[] = [
-      { firebaseApp: "foo" },
-      { firebaseApp: "bar" },
-      { firebaseApp: "baz" }
+  it("supports getFirebaseJwt called multiple times", () => {
+    const requestContent: string[] = [
+      "foo",
+      "bar",
+      "baz"
     ];
     testRequestResponse({
-      method: api.getFirebaseJWT,
-      requestType: "getFirebaseJWT",
+      method: api.getFirebaseJwt,
+      requestType: "getFirebaseJwt",
       requestContent,
       responseType: "firebaseJWT",
       responseContent: [
@@ -135,8 +135,8 @@ describe("api", () => {
     });
   });
 
-  it("supports errors from getFirebaseJWT", () => {
-    const promise = api.getFirebaseJWT({firebaseApp: "foo"});
+  it("supports errors from getFirebaseJwt", () => {
+    const promise = api.getFirebaseJwt("foo");
     const content: IGetFirebaseJwtResponse = {
       requestId: 1,
       response_type: "ERROR",
@@ -147,7 +147,7 @@ describe("api", () => {
   });
 
   it("handles incorrect JWTs", () => {
-    const promise = api.getFirebaseJWT({firebaseApp: "foo"});
+    const promise = api.getFirebaseJwt("foo");
     const content: IGetFirebaseJwtResponse = {
       requestId: 1,
       token: "invalid JWT"

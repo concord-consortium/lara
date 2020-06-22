@@ -3,7 +3,6 @@ import {
   ISupportedFeaturesRequest,
   INavigationOptions,
   IAuthInfo,
-  IGetFirebaseJwtOptions,
   IGetFirebaseJwtResponse,
   ISupportedFeatures,
   IGetFirebaseJwtRequest,
@@ -159,7 +158,7 @@ export const getAuthInfo = (): Promise<IAuthInfo> => {
   });
 };
 
-export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<IJwtResponse> => {
+export const getFirebaseJwt = (firebaseApp: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
     const listener = (response: IGetFirebaseJwtResponse) => {
       if (response.response_type === "ERROR") {
@@ -179,7 +178,7 @@ export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<IJwtRes
     const requestId = client.getNextRequestId();
     const request: IGetFirebaseJwtRequest = {
       requestId,
-      firebase_app: options.firebaseApp
+      firebase_app: firebaseApp
     };
     client.addListener("firebaseJWT", listener, requestId);
     client.post("getFirebaseJWT", request);
