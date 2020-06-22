@@ -25,7 +25,6 @@
 * [IDialogInitInteractive](interfaces/idialoginitinteractive.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
-* [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
 * [IGetFirebaseJwtResponse](interfaces/igetfirebasejwtresponse.md)
 * [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)
@@ -92,7 +91,7 @@
 * [closeModal](globals.md#const-closemodal)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
-* [getFirebaseJWT](globals.md#const-getfirebasejwt)
+* [getFirebaseJwt](globals.md#const-getfirebasejwt)
 * [getGlobalInteractiveState](globals.md#const-getglobalinteractivestate)
 * [getInitInteractiveMessage](globals.md#const-getinitinteractivemessage)
 * [getInteractiveList](globals.md#const-getinteractivelist)
@@ -342,15 +341,15 @@ ___
 
 ___
 
-### `Const` getFirebaseJWT
+### `Const` getFirebaseJwt
 
-▸ **getFirebaseJWT**(`options`: [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)): *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
+▸ **getFirebaseJwt**(`firebaseApp`: string): *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md) |
+`firebaseApp` | string |
 
 **Returns:** *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
