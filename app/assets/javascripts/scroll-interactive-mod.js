@@ -1,8 +1,18 @@
-// Space between window top border and the interactive container.
-window.SCROLL_INTERACTIVE_MOD_OFFSET = 75; // px
+/*global $, headerIsPinnedInThisTheme, LARA */
+
+// Space between window top border and the interactive container when it is pinned
+function scrollInteractiveModOffset(){
+  if (headerIsPinnedInThisTheme()) {
+    // If the heaer is pinned then we need to leave room for that pinned header
+    // currently we fix this at 75px and assume all headers are that tall.
+    // If we could compute this it would be better.
+    return 75;
+  }
+  return 0;
+}
 
 $(window).ready(function () {
-  var offset = window.SCROLL_INTERACTIVE_MOD_OFFSET;
+  var offset = scrollInteractiveModOffset();
   var $sticky = $('.pinned');
   if ($sticky.length === 0) {
     return;

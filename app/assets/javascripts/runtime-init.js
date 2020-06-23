@@ -1,6 +1,22 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
 
+// Some themes pin the header and some do not
+var _headerIsPinnedInThisTheme = null;
+function headerIsPinnedInThisTheme() {
+  // This currently seems to be the best way to check this. Themes just change
+  // CSS so there isn't a way for them add content to the dom or run javascript
+  // This is fragile though because someone might mess with .conten-hdr and then
+  // this will break.
+  // We cache the value since this won't change
+  if (_headerIsPinnedInThisTheme !== null) {
+    return _headerIsPinnedInThisTheme;
+  } else {
+    _headerIsPinnedInThisTheme = $('.site-width > .content-hdr').is(':visible');
+    return _headerIsPinnedInThisTheme;
+  }
+}
+
 $(document).ready(function () {
   var headerTop = null;
 
@@ -13,7 +29,7 @@ $(document).ready(function () {
     var windowTop = $(window).scrollTop();
 
     // Activity nav fixing, if there is one
-    if (headerTop) {
+    if (headerIsPinnedInThisTheme()) {
       if (windowTop >= headerTop / 2) {
         $('.activity-nav-mod.header-nav').addClass('fixed');
         $('.content-hdr').addClass('extra-pad');
