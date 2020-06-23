@@ -2,7 +2,7 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-ifram
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
-import { IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
+import { IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -110,32 +110,33 @@ describe("api", () => {
     });
   });
 
-  it("supports getFirebaseJWT called multiple times", () => {
-    const requestContent: IGetFirebaseJwtOptions[] = [
-      { firebase_app: "foo" },
-      { firebase_app: "bar" },
-      { firebase_app: "baz" }
+  it("supports getFirebaseJwt called multiple times", () => {
+    const requestContent: string[] = [
+      "foo",
+      "bar",
+      "baz"
     ];
     testRequestResponse({
-      method: api.getFirebaseJWT,
-      requestType: "getFirebaseJWT",
+      method: api.getFirebaseJwt,
+      requestType: "getFirebaseJwt",
       requestContent,
       responseType: "firebaseJWT",
       responseContent: [
-        {token: "FOO"},
-        {token: "BAR"},
-        {token: "BAZ"}
+        // Tokens generated using: https://jwt.io/
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
       ],
       resolvesTo: [
-        "FOO",
-        "BAR",
-        "BAZ"
+        {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+        {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+        {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
       ]
     });
   });
 
-  it("supports errors from getFirebaseJWT", () => {
-    const promise = api.getFirebaseJWT({firebase_app: "foo"});
+  it("supports errors from getFirebaseJwt", () => {
+    const promise = api.getFirebaseJwt("foo");
     const content: IGetFirebaseJwtResponse = {
       requestId: 1,
       response_type: "ERROR",
@@ -143,6 +144,16 @@ describe("api", () => {
     };
     mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
     expect(promise).rejects.toEqual("it's broke!");
+  });
+
+  it("handles incorrect JWTs", () => {
+    const promise = api.getFirebaseJwt("foo");
+    const content: IGetFirebaseJwtResponse = {
+      requestId: 1,
+      token: "invalid JWT"
+    };
+    mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
+    expect(promise).rejects.toEqual("Unable to parse JWT Token");
   });
 
   it("supports interactive state observing", () => {
@@ -236,7 +247,6 @@ describe("api", () => {
 
   it("does not yet implement getInteractiveList", () => {
     expect(() => api.getInteractiveList({
-      requestId: 1,
       supportsSnapshots: true
     })).toThrow(/not yet implemented/);
   });
@@ -273,13 +283,11 @@ const testRequestResponse = async (options: IRequestResponseOptions) => {
   const startListeners = mockedPhone.numListeners;
   const requestIds: number[] = [];
   const promises: Array<Promise<any>> = [];
-  const mockedMessages: any[] = [];
 
   options.requestContent.forEach((rc, index) => {
     const requestId = index + 1;
     requestIds.push(requestId);
     const content = {requestId, ...options.requestContent[index]};
-    mockedMessages.push({type: options.requestType, content});
     promises.push(options.method(options.requestContent[index]));
   });
 
