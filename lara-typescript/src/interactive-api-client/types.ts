@@ -1,3 +1,9 @@
+// Export some shared types.
+export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
+
+// Discussion about naming of these interfaces:
+// https://github.com/concord-consortium/lara/pull/550#issuecomment-639021815
+
 export interface IInteractiveStateProps<InteractiveState = {}> {
   interactiveState: InteractiveState | null;
   hasLinkedInteractive?: boolean;
@@ -99,21 +105,6 @@ export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, DialogSt
   IDialogInitInteractive<InteractiveState, AuthoredState, DialogState>;
 
 export type InitInteractiveMode = "runtime" | "authoring" | "report" | "dialog";
-
-// tslint:disable-next-line:max-line-length
-export interface IClientOptions<InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}> {
-  startDisconnected?: boolean;
-  supportedFeatures?: ISupportedFeatures;
-  onHello?: () => void;
-  // tslint:disable-next-line:max-line-length
-  onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) => void;
-  onGetInteractiveState?: () => InteractiveState | string | null;
-  onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;
-}
-
-export interface IHookOptions {
-  supportedFeatures?: ISupportedFeatures;
-}
 
 /*
 
@@ -302,12 +293,8 @@ export interface IGetAuthInfoResponse extends IBaseRequestResponse, IAuthInfo {
   // no extra options, just the requestId and the auth info
 }
 
-export interface IGetFirebaseJwtOptions {
-  firebase_app?: string;
-}
-
-export interface IGetFirebaseJwtRequest extends IBaseRequestResponse, IGetFirebaseJwtOptions {
-  // no extra options, just the requestId and the jwt options
+export interface IGetFirebaseJwtRequest extends IBaseRequestResponse {
+  firebase_app: string;
 }
 
 export interface IGetFirebaseJwtResponse extends IBaseRequestResponse {
