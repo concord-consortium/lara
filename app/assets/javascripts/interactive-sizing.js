@@ -56,7 +56,7 @@ function interactiveSizing () {
       // will remain pinned when it is in the the interactive box.
       // NOTE: this looks like a catch-22, but it normally isn't. The value of $container.height() comes from the CSS
       // calculation of the height of the interactive plus all of the extra stuff around it.
-      // If the page layout is changing (window resize or columns collapsing), then the $container.height() used in this calcuation
+      // If the page layout is changing (window resize or columns collapsing), then the $container.height() used in this calculation
       // might be stale.  However what we are looking at is the difference between that height and the
       // iframe.height(). So long as the stuff around the iframe is not also changing its height then the difference
       // should be constant even as the iframe is changing size.
