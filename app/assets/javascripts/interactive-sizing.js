@@ -53,7 +53,7 @@ function interactiveSizing () {
       // wrapping the interactive. If the height of the interactive is limited by maxHeight
       // either by MAX or DEFAULT mode, then the intention is for the full interactive
       // to be visible without scrolling.  Additionally this means the interactive
-      // will remained pinned when it is in the the interactive box.
+      // will remain pinned when it is in the the interactive box.
       // NOTE: this looks like a catch-22, but it normally isn't. The value of $container.height() comes from the CSS
       // calculation of the height of the interactive plus all of the extra stuff around it.
       // If the page layout is changing (window resize or columns collapsing), then the $container.height() used in this calcuation
