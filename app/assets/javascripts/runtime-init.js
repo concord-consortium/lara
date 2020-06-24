@@ -6,7 +6,7 @@ var _headerIsPinnedInThisTheme = null;
 function headerIsPinnedInThisTheme() {
   // This currently seems to be the best way to check this. Themes just change
   // CSS so there isn't a way for them add content to the dom or run javascript
-  // This is fragile though because someone might mess with .conten-hdr and then
+  // This is fragile though because someone might mess with .content-hdr and then
   // this will break.
   // We cache the value since this won't change
   if (_headerIsPinnedInThisTheme !== null) {
