@@ -48,11 +48,7 @@ h3 {
 }
 
 .content-hdr {
-  &.extra-pad {
-    padding-top: 0;
-  }
-
-  .h2 { color: $col-orange; }
+  display: none;
 }
 
 body.l-responsive-wrapper {
@@ -248,17 +244,6 @@ body.l-responsive-wrapper {
       margin-right: 0;
     }
   } // end .pagination
-
-  &.fixed {
-    background-color: transparent;
-    position: relative;
-    top: auto;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    padding: 0;
-    z-index: 1;
-  }
 } // end .activity-nav-mod
 
 #nav-activity-menu {
