@@ -59,9 +59,6 @@
         Hidden
       %p.page-section-controls#page-section-controls
         %label
-          = f.check_box :show_introduction, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
-          Page introduction
-        %label
           = f.check_box :show_header, :disabled => @page.is_completion, :onchange => 'this.form.submit();'
           Header block
         %label
@@ -85,8 +82,6 @@
     - # TODO: Display preview of student completion page.
     =render :partial => "edit_completion"
   - else
-    - if @page.show_introduction
-      = text_editor @page, :text, { header: 'Introduction' }
     - if @page.show_header
       %div{:class => 'other full-width'}
         #header_block.questions

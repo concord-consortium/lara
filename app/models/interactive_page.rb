@@ -1,5 +1,5 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_header,
+  attr_accessible :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
                   :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
                   :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
 
@@ -170,6 +170,11 @@ class InteractivePage < ActiveRecord::Base
     self.class.registered_additional_sections.select { |s| additional_sections[s[:name]] }
   end
 
+  def intro_text
+    first_textbox = page_items.where(section: HEADER_BLOCK, embeddable_type: "Embeddable::Xhtml").first
+    intro_content = first_textbox.embeddable.content
+  end
+
   def to_hash
     # Intentionally leaving out:
     # - lightweight_activity association will be added there
@@ -178,12 +183,10 @@ class InteractivePage < ActiveRecord::Base
     {
       name: name,
       position: position,
-      text: text,
       layout: layout,
       is_hidden: is_hidden,
       sidebar: sidebar,
       sidebar_title: sidebar_title,
-      show_introduction: show_introduction,
       show_header: show_header,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
@@ -240,12 +243,10 @@ class InteractivePage < ActiveRecord::Base
     helper = LaraSerializationHelper.new
     page_json = self.as_json(only: [:name,
                                     :position,
-                                    :text,
                                     :layout,
                                     :is_hidden,
                                     :sidebar,
                                     :sidebar_title,
-                                    :show_introduction,
                                     :show_header,
                                     :show_sidebar,
                                     :show_interactive,
@@ -269,12 +270,10 @@ class InteractivePage < ActiveRecord::Base
     import_simple_attributes = [
       :name,
       :position,
-      :text,
       :layout,
       :is_hidden,
       :sidebar,
       :sidebar_title,
-      :show_introduction,
       :show_header,
       :show_sidebar,
       :show_interactive,
