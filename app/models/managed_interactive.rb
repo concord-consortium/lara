@@ -173,10 +173,10 @@ class ManagedInteractive < ActiveRecord::Base
   def export
     hash = to_hash()
     hash.delete(:library_interactive_id)
-    hash[:library_interactive] = {
+    hash[:library_interactive] = library_interactive ? {
       hash: library_interactive.generate_export_hash(),
       data: library_interactive.to_hash()
-    }
+    } : nil
     hash
   end
 
