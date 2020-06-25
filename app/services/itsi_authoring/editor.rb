@@ -51,6 +51,8 @@ class ITSIAuthoring::Editor
     case type
       when 'open_response'
         open_response_json(e)
+      when 'xhtml'
+        xhtml_json(e)
       when 'image_question'
         image_question_json(e)
       else
@@ -66,6 +68,16 @@ class ITSIAuthoring::Editor
       is_hidden: e.is_hidden,
       default_text: e.default_text,
       update_url: embeddable_open_response_path(e)
+    }
+  end
+
+  def xhtml_json(e)
+    {
+      type: 'xhtml',
+      name: e.name,
+      is_hidden: e.is_hidden,
+      content: e.content,
+      update_url: embeddable_xhtml_path(e)
     }
   end
 
