@@ -38,7 +38,6 @@ class ITSIAuthoring::Editor
   def section_json(page)
     {
       name: page.name,
-      text: page.text, # introduction text
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
       interactives: page.interactives.map { |i| interactive_json(i, page) },
