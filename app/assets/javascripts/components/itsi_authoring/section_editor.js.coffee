@@ -72,20 +72,17 @@ modulejs.define 'components/itsi_authoring/section_editor',
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
-          if @props.section.name == "Introduction"
-            for embeddable, i in @props.section.embeddables
-              if embeddable.type == 'xhtml'
-                editor = @getEditorForEmbeddedElement embeddable
-                if editor
-                  (editor {key: "intro#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
+          for embeddable, i in @props.section.header_embeddables
+            editor = @getEditorForEmbeddedElement embeddable
+            if editor
+              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
           for interactive, i in @props.section.interactives
             editor = @getEditorForInteractiveElement interactive
             if editor
               (editor {key: "interactive#{i}", data: interactive, alert: @props.alert, confirmHide: @props.confirmHide, jsonListUrls: @props.jsonListUrls})
           for embeddable, i in @props.section.embeddables
             editor = @getEditorForEmbeddedElement embeddable
-            if embeddable.type != 'xhtml'
-              if editor
-                (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
+            if editor
+              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
         )
       )

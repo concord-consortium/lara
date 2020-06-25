@@ -42,7 +42,10 @@ class ITSIAuthoring::Editor
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
       interactives: page.interactives.map { |i| interactive_json(i, page) },
-      embeddables: page.embeddables.map { |e| embeddable_json(e) }
+      embeddables: page.embeddables.select { |e| e.page_section.nil? }
+                                   .map { |e| embeddable_json(e) },
+      header_embeddables: page.embeddables.select { |e| e.page_section == InteractivePage::HEADER_BLOCK }
+                                          .map { |he| embeddable_json(he) }
     }
   end
 

@@ -27,7 +27,7 @@ modulejs.define 'components/itsi_authoring/textblock_editor',
       'embeddable_xhtml[content]': 'content'
 
     initialEditState: ->
-      (@props.data.prompt?.length or 0) is 0
+      false
 
     render: ->
       (div {className: 'ia-section-editor-element'},
