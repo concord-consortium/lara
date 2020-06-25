@@ -265,7 +265,7 @@ class InteractivePage < ActiveRecord::Base
     page_json
   end
 
-  def self.extact_from_hash(page_json_object)
+  def self.extract_from_hash(page_json_object)
     #pages = activity_json_object[:pages]
     import_simple_attributes = [
       :name,
@@ -292,7 +292,7 @@ class InteractivePage < ActiveRecord::Base
 
   def self.import(page_json_object, helper=nil)
     helper = LaraSerializationHelper.new if helper.nil?
-    import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+    import_page = InteractivePage.new(self.extract_from_hash(page_json_object))
 
     InteractivePage.transaction do
       import_page.save!(validate: false)
@@ -317,6 +317,19 @@ class InteractivePage < ActiveRecord::Base
       # one embeddable pointing to another one).
       page_json_object[:embeddables].each do |embed_hash|
         helper.set_references(embed_hash[:embeddable])
+      end
+      # For older export files, if page intro exists, add it as a new embeddable in header_block
+      if page_json_object[:text]
+        import_page.show_header = true
+        intro_embeddable_hash = {
+                           "content": page_json_object[:text],
+                           "is_full_width": true,
+                           "is_hidden": false,
+                           "name": "",
+                           "type": "Embeddable::Xhtml"
+                          }
+        intro_embeddable = helper.import(intro_embeddable_hash)
+        import_page.add_embeddable(intro_embeddable, position = 1, section = "header_block")
       end
     end
     import_page
