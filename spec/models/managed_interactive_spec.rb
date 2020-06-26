@@ -134,6 +134,21 @@ describe ManagedInteractive do
     end
   end
 
+  describe '#export' do
+    describe 'without a library interactive set' do
+      let(:library_interactive) { nil }
+      it 'exports' do
+        exported = managed_interactive.export()
+        expect(exported[:library_interactive]).to be nil
+      end
+    end
+
+    it 'exports with a library interactive set' do
+      exported = managed_interactive.export()
+      expect(exported[:library_interactive]).not_to be nil
+    end
+  end
+
   describe "#import" do
     it 'imports what is exported' do
       exported = managed_interactive.export()
