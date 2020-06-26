@@ -68,6 +68,27 @@ Create file /etc/resolver/docker with the following contents.
 
 If you have a local webserver running on localhost:80 you either need to move that to a different port, or change the port mapping used by dingy. You can do that by changing the argument `-p 80:80` to `-p [new port]:80`
 
+## Enabling SSL for Dinghy reverse proxy on OS X
+
+**Warning:** Switching to SSL might break some things. You will probably need to
+update database entities:
+ * external_activities in the Portal
+ * runs and sequence_runs in LARA (remote_endpoints)
+ * maybe some SSO paths?
+
+Installing certificates, and configuring the docker overlay:
+1. install [mkcert](https://github.com/FiloSottile/mkcert) :  `brew install mkcert`
+2. Create and install the trusted CA in keychain:   `mkcert -install`
+3. Ensure you have a certificate directory: `mkdir -p ~/.dinghy/certs`
+4. Make certs:
+    1. `cd ~/.dinghy/certs`
+    2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
+    3. `mkcert -cert-file app.portal.docker.crt -key-file app.portal.docker.key app.portal.docker`
+5. You should be using `docker-compose-portal-proxy.yml` in your docker overlays. Check for the
+`COMPOSE_FILE=` entry in `.env` includes that overlay.
+6. Edit your `.env` file to include `PORTAL_PROTOCOL=https`
+
+
 ## Editing CSS
 
 This project was setup with [Compass](http://compass-style.org/), however, you shouldn't ever need to run `compass watch`. The asset pipeline should take care of itself in development mode.

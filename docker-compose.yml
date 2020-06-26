@@ -22,6 +22,7 @@ services:
       SHUTTERBUG_URI:
       # Enables logging to stdout instead of file.
       RAILS_STDOUT_LOGGING: "true"
+      PORTAL_PROTOCOL: "http" #set to https in .env
     # no ports are published, see below for details
     depends_on:
       - db
