@@ -3,7 +3,7 @@ describe PublicationsController do
   let(:act) { FactoryGirl.create(:public_activity) }
   let(:private_act) { FactoryGirl.create(:activity)}
   let(:ar)  { FactoryGirl.create(:run, :activity_id => act.id) }
-  let(:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  let(:page) { act.pages.create!(:name => "Page 1") }
   let(:sequence) { FactoryGirl.create(:sequence) }
 
   before(:each) do

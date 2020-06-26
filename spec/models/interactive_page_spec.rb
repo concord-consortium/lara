@@ -416,7 +416,6 @@ describe InteractivePage do
           page = InteractivePage.import(p)
           expect(page).to be_a(InteractivePage)
           expect(p[:name]).to eq(page.name)
-          expect(p[:text]).to eq(page.text)
           expect(p[:sidebar_title]).to eq(page.sidebar_title)
           expect(p[:position]).to be(page.position)
         end

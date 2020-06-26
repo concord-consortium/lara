@@ -42,7 +42,7 @@ describe LightweightActivity do
 
   it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
+      page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
       activity.pages << page
     end
     activity.reload
@@ -130,7 +130,7 @@ describe LightweightActivity do
 
     before :each do
       [3,1,2].each do |i|
-        page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
+        page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
         activity.pages << page
       end
       activity.reload

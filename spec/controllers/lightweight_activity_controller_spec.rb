@@ -11,7 +11,7 @@ describe LightweightActivitiesController do
   let (:admin) { FactoryGirl.create(:admin) }
   let (:author) { FactoryGirl.create(:author) }
   let (:page) { FactoryGirl.create(:page, name: "Page 1", text: "This is the main activity text." ) }
-  # act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  # act.pages.create!(:name => "Page 1") }
   let (:theme) { FactoryGirl.create(:theme) }
   let (:project) { FactoryGirl.create(:project) }
   let (:act) {
@@ -20,7 +20,7 @@ describe LightweightActivitiesController do
   }
   let (:private_act) { FactoryGirl.create(:activity)}
   let (:ar_run)  { FactoryGirl.create(:run, :activity_id => act.id, :user_id => nil) }
-  # let (:page) { act.pages.create!(:name => "Page 1", :text => "This is the main activity text.") }
+  # let (:page) { act.pages.create!(:name => "Page 1") }
   let (:sequence) { FactoryGirl.create(:sequence) }
 
   let (:user)    { FactoryGirl.create(:user) }
