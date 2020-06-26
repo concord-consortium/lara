@@ -432,7 +432,7 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
@@ -472,7 +472,7 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
         request.env["HTTP_REFERER"] = "/activities/#{act.id}/edit"
       end
@@ -511,7 +511,7 @@ describe LightweightActivitiesController do
       before do
         # TODO: Instead of creating three new pages each time, can we use let?
         [1,2,3].each do |i|
-          act.pages.create!(:name => "Page #{i}", :text => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.", :sidebar => '')
+          act.pages.create!(:name => "Page #{i}", :sidebar => "This is the #{ActiveSupport::Inflector.ordinalize(i)} page.")
         end
       end
 

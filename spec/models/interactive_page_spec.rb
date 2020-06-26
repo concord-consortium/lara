@@ -172,12 +172,10 @@ describe InteractivePage do
       expected = {
         name: page.name,
         position: page.position,
-        text: page.text,
         layout: page.layout,
         is_hidden: page.is_hidden,
         sidebar: page.sidebar,
         sidebar_title: page.sidebar_title,
-        show_introduction: page.show_introduction,
         show_header: page.show_header,
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,

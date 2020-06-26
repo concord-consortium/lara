@@ -7,9 +7,8 @@ FactoryGirl.define do
 
   factory :page, class: InteractivePage, aliases: [:interactive_page]  do
     name { generate(:name) }
-    text { generate(:page_text) }
     sidebar { generate(:page_sidebar) }
-    show_introduction 1
+    show_header 1
     show_sidebar 1
     show_interactive 1
     show_info_assessment 1
