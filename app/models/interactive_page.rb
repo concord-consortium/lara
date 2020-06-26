@@ -315,18 +315,23 @@ class InteractivePage < ActiveRecord::Base
       end
       # For older export files, if page intro exists, add it as a new embeddable in header_block
       if page_json_object[:text]
+        intro_embeddable = import_legacy_intro(page_json_object[:text])
         import_page.show_header = true
-        intro_embeddable_hash = {
-                           "content": page_json_object[:text],
-                           "is_full_width": true,
-                           "is_hidden": false,
-                           "name": "",
-                           "type": "Embeddable::Xhtml"
-                          }
-        intro_embeddable = helper.import(intro_embeddable_hash)
-        import_page.add_embeddable(intro_embeddable, position = 1, section = "header_block")
+        import_page.add_embeddable(intro_embeddable, position = 1, section = HEADER_BLOCK)
       end
     end
     import_page
+  end
+
+  def self.import_legacy_intro(intro_text)
+    helper = LaraSerializationHelper.new if helper.nil?
+    intro_embeddable_hash = {
+                       "content": intro_text,
+                       "is_full_width": true,
+                       "is_hidden": false,
+                       "name": "",
+                       "type": "Embeddable::Xhtml"
+                      }
+    intro_embeddable = helper.import(intro_embeddable_hash)
   end
 end
