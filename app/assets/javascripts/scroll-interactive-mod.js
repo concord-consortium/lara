@@ -4,11 +4,13 @@
 function scrollInteractiveModOffset(){
   if (headerIsPinnedInThisTheme()) {
     // If the heaer is pinned then we need to leave room for that pinned header
-    // currently we fix this at 75px and assume all headers are that tall.
+    // currently all headers are 75px and we set this at 80px to provide a little
+    // extra space so it is easy to see where the top of the interactive is
     // If we could compute this it would be better.
-    return 75;
+    return 80;
   }
-  return 0;
+  // Add a 5 pixel header so it is easier to see where the top of the interactive is
+  return 5;
 }
 
 $(window).ready(function () {
