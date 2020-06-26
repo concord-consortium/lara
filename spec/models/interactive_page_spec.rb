@@ -19,13 +19,6 @@ describe InteractivePage do
   end
 
   describe 'validation of HTML inputs' do
-    it 'rejects invalid HTML for text' do
-      page.text = '<p>This HTML is invalid.<p>Tag soup.</p>'
-      expect(page.valid?).to be_truthy # Ugh, but HTML not XML
-      page.text = 'This HTML is valid.'
-      page.valid?
-    end
-
     it 'rejects invalid HTML for the sidebar' do
       page.sidebar = '<p class="invalid-attribute>This has an invalid attribute.</p>'
       expect(page.valid?).to be_falsey
@@ -224,7 +217,6 @@ describe InteractivePage do
       dupe = page.duplicate
       expect(dupe).to be_a(InteractivePage)
       expect(dupe.name).to eq(page.name)
-      expect(dupe.text).to eq(page.text)
       expect(dupe.is_hidden).to eq(page.is_hidden)
       expect(dupe.sidebar_title).to eq(page.sidebar_title)
       expect(dupe.is_completion).to eq(page.is_completion)

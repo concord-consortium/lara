@@ -343,7 +343,6 @@ describe LightweightActivity do
 
       it 'should still duplicate the page' do
         first_page = FactoryGirl.create(:page)
-        first_page.text = bad_content
         first_page.sidebar = bad_content
         activity.pages << first_page
         activity.fix_page_positions
