@@ -1,4 +1,4 @@
-import RInteractive from "../../support/elements/interactives/learnr_interactive"
+import RInteractive from "../../support/elements/interactives/learnrlara/learnr_interactive"
 
 context('Test Learn R Interactive Embedded In LARA', () => {
 
@@ -73,4 +73,3 @@ context('Test Learn R Interactive Embedded In LARA', () => {
         })
     })
 })
-
