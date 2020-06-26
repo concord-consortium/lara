@@ -26,7 +26,6 @@
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": [
                 {
                     "embeddable": {
@@ -85,7 +84,6 @@
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": [
                 {
                     "embeddable": {
@@ -231,7 +229,6 @@
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": []
         }
     ],

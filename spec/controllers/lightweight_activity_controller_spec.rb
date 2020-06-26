@@ -10,7 +10,7 @@ describe LightweightActivitiesController do
 
   let (:admin) { FactoryGirl.create(:admin) }
   let (:author) { FactoryGirl.create(:author) }
-  let (:page) { FactoryGirl.create(:page, name: "Page 1", text: "This is the main activity text." ) }
+  let (:page) { FactoryGirl.create(:page, name: "Page 1" ) }
   # act.pages.create!(:name => "Page 1") }
   let (:theme) { FactoryGirl.create(:theme) }
   let (:project) { FactoryGirl.create(:project) }
@@ -62,7 +62,7 @@ describe LightweightActivitiesController do
         end
 
         describe "when the run page is hidden" do
-          let(:page) { FactoryGirl.create(:page, name: "Page 1", text: "This page is hidden.", is_hidden: true) }
+          let(:page) { FactoryGirl.create(:page, name: "Page 1", is_hidden: true) }
 
           it "should not redirect to the run page" do
             expect(subject).not_to redirect_to(page_with_run_path(act.id, page.id, ar_run.key))
@@ -72,8 +72,7 @@ describe LightweightActivitiesController do
 
         describe "when the run page is for a different activity" do
           let(:other_act) { FactoryGirl.create(:public_activity) }
-          let(:other_page) { FactoryGirl.create(:page, name: "Page 2",
-            text: "This page isn't in Act 1.", lightweight_activity: other_act) }
+          let(:other_page) { FactoryGirl.create(:page, name: "Page 2", lightweight_activity: other_act) }
           let(:last_page) { other_page }
 
           it "should redirect to Act 2 run page." do

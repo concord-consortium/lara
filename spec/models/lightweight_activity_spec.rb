@@ -47,7 +47,6 @@ describe LightweightActivity do
     end
     activity.reload
 
-    expect(activity.pages.first.text).to eq("some text 1")
     expect(activity.pages.last.name).to eq("page 3")
   end
 

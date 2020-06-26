@@ -28,7 +28,7 @@ class InteractivePage < ActiveRecord::Base
 
   # Reject invalid HTML inputs
   # See https://www.pivotaltracker.com/story/show/60459320
-  validates :text, :sidebar, :html => true
+  validates :sidebar, :html => true
 
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
@@ -168,11 +168,6 @@ class InteractivePage < ActiveRecord::Base
   def visible_sections
     return [] unless additional_sections
     self.class.registered_additional_sections.select { |s| additional_sections[s[:name]] }
-  end
-
-  def intro_text
-    first_textbox = page_items.where(section: HEADER_BLOCK, embeddable_type: "Embeddable::Xhtml").first
-    intro_content = first_textbox.embeddable.content
   end
 
   def to_hash

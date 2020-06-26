@@ -240,26 +240,6 @@ describe InteractivePage do
       expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
     end
 
-    describe "with invalid markup" do
-      before(:each) do
-        # Add at least one interactive as it triggers additional .save call
-        # during duplication, which should be handled correctly.
-        page.add_interactive(FactoryGirl.create(:mw_interactive))
-        page.reload
-        page.text = "foo</p>"
-        page.save(:validate => false)
-      end
-      it "the page itself should not be valid" do
-        expect(page).not_to be_valid
-      end
-      it "should have the same number of embeddables" do
-        expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
-      end
-      it "should have the same number of interactives as the original" do
-        expect(page.duplicate.interactives.length).to be(page.interactives.length)
-      end
-    end
-
     describe 'copies of the original interactives' do
       let(:hidden_image)    { FactoryGirl.create(:image_interactive, is_hidden: true)}
       let(:hidden_mw)       { FactoryGirl.create(:mw_interactive, is_hidden: true)}
