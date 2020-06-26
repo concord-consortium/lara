@@ -60,6 +60,21 @@ describe InteractivePage do
     end
   end
 
+  describe 'header block' do
+    it 'has a header block' do
+      expect(page.show_header).to eq(true)
+    end
+
+    it 'has a header block to which an embeddable can be added' do
+      embed_text = "This is an embeddable in the header block."
+      embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
+      page.add_embeddable(embed, 1, InteractivePage::HEADER_BLOCK)
+      expect(page.embeddables.size).to eq(4)
+      expect(page.page_items.last.section).to eq(InteractivePage::HEADER_BLOCK)
+      expect(page.embeddables.last.content).to eq(embed_text)
+    end
+  end
+
   describe 'embeddable display modes' do
     it 'has an array of strings which are valid as embeddable display modes' do
       expect(InteractivePage::EMBEDDABLE_DISPLAY_OPTIONS.length).to be > 0
