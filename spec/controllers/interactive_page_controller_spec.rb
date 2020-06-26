@@ -13,11 +13,11 @@ describe InteractivePagesController do
   end
 
   let (:page2) do
-    page2 = FactoryGirl.create(:page, :name => "Page 2", :text => "This is the next activity text.", :lightweight_activity => act)
+    page2 = FactoryGirl.create(:page, :name => "Page 2", :lightweight_activity => act)
   end
 
   let (:page3) do
-    page3 = FactoryGirl.create(:page, :name => "Page 3", :text => "This is the last activity text.", :lightweight_activity => act)
+    page3 = FactoryGirl.create(:page, :name => "Page 3", :lightweight_activity => act)
   end
 
   let (:user) { FactoryGirl.create(:user) }
