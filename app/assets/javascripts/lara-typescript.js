@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"), require("React"), require("ReactDOM"));
+		module.exports = factory(require("jQuery"), require("React"), require("ReactDOM"), require("ReactDOMServer"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery", "React", "ReactDOM"], factory);
+		define(["jQuery", "React", "ReactDOM", "ReactDOMServer"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("jQuery"), require("React"), require("ReactDOM")) : factory(root["jQuery"], root["React"], root["ReactDOM"]);
+		var a = typeof exports === 'object' ? factory(require("jQuery"), require("React"), require("ReactDOM"), require("ReactDOMServer")) : factory(root["jQuery"], root["React"], root["ReactDOM"], root["ReactDOMServer"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__) {
+})(window, function(__WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__, __WEBPACK_EXTERNAL_MODULE_react_dom_server__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -128,18 +128,20 @@ module.exports = _inheritsLoose;
 /*!**************************************************************************!*\
   !*** ./node_modules/@concord-consortium/slate-editor/build/index.esm.js ***!
   \**************************************************************************/
-/*! exports provided: EditorToolbar, SlateContainer, SlateEditor, SlateToolbar, ToolbarButton, deserializeDocument, deserializeValue, getPlatformTooltip, htmlToSlate, serializeDocument, serializeValue, slateToHtml, slateToText, textToSlate */
+/*! exports provided: Editor, EditorToolbar, SlateContainer, SlateEditor, SlateToolbar, ToolbarButton, deserializeDocument, deserializeValue, getContentHeight, getPlatformTooltip, htmlToSlate, serializeDocument, serializeValue, slateToHtml, slateToText, textToSlate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global, process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorToolbar", function() { return EditorToolbar; });
+/* WEBPACK VAR INJECTION */(function(global, process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Editor", function() { return Editor$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorToolbar", function() { return EditorToolbar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SlateContainer", function() { return SlateContainer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SlateEditor", function() { return SlateEditor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SlateToolbar", function() { return SlateToolbar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ToolbarButton", function() { return ToolbarButton; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deserializeDocument", function() { return deserializeDocument; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deserializeValue", function() { return deserializeValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getContentHeight", function() { return getContentHeight; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPlatformTooltip", function() { return getPlatformTooltip; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "htmlToSlate", function() { return htmlToSlate; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "serializeDocument", function() { return serializeDocument; });
@@ -149,10 +151,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "textToSlate", function() { return textToSlate; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/server */ "./node_modules/react-dom/server.browser.js");
-/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom_server__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/server */ "react-dom/server");
+/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom_server__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -176,6 +178,1101 @@ function createCommonjsModule(fn, basedir, module) {
 function commonjsRequire () {
 	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 }
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?
+Symbol.for("react.suspense_list"):60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.block"):60121,w=b?Symbol.for("react.fundamental"):60117,x=b?Symbol.for("react.responder"):60118,y=b?Symbol.for("react.scope"):60119;
+function z(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case t:case r:case h:return a;default:return u}}case d:return u}}}function A(a){return z(a)===m}var AsyncMode=l;var ConcurrentMode=m;var ContextConsumer=k;var ContextProvider=h;var Element=c;var ForwardRef=n;var Fragment=e;var Lazy=t;var Memo=r;var Portal=d;
+var Profiler=g;var StrictMode=f;var Suspense=p;var isAsyncMode=function(a){return A(a)||z(a)===l};var isConcurrentMode=A;var isContextConsumer=function(a){return z(a)===k};var isContextProvider=function(a){return z(a)===h};var isElement=function(a){return "object"===typeof a&&null!==a&&a.$$typeof===c};var isForwardRef=function(a){return z(a)===n};var isFragment=function(a){return z(a)===e};var isLazy=function(a){return z(a)===t};
+var isMemo=function(a){return z(a)===r};var isPortal=function(a){return z(a)===d};var isProfiler=function(a){return z(a)===g};var isStrictMode=function(a){return z(a)===f};var isSuspense=function(a){return z(a)===p};
+var isValidElementType=function(a){return "string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===w||a.$$typeof===x||a.$$typeof===y||a.$$typeof===v)};var typeOf=z;
+
+var reactIs_production_min = {
+	AsyncMode: AsyncMode,
+	ConcurrentMode: ConcurrentMode,
+	ContextConsumer: ContextConsumer,
+	ContextProvider: ContextProvider,
+	Element: Element,
+	ForwardRef: ForwardRef,
+	Fragment: Fragment,
+	Lazy: Lazy,
+	Memo: Memo,
+	Portal: Portal,
+	Profiler: Profiler,
+	StrictMode: StrictMode,
+	Suspense: Suspense,
+	isAsyncMode: isAsyncMode,
+	isConcurrentMode: isConcurrentMode,
+	isContextConsumer: isContextConsumer,
+	isContextProvider: isContextProvider,
+	isElement: isElement,
+	isForwardRef: isForwardRef,
+	isFragment: isFragment,
+	isLazy: isLazy,
+	isMemo: isMemo,
+	isPortal: isPortal,
+	isProfiler: isProfiler,
+	isStrictMode: isStrictMode,
+	isSuspense: isSuspense,
+	isValidElementType: isValidElementType,
+	typeOf: typeOf
+};
+
+var reactIs_development = createCommonjsModule(function (module, exports) {
+
+
+
+if (true) {
+  (function() {
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+});
+var reactIs_development_1 = reactIs_development.AsyncMode;
+var reactIs_development_2 = reactIs_development.ConcurrentMode;
+var reactIs_development_3 = reactIs_development.ContextConsumer;
+var reactIs_development_4 = reactIs_development.ContextProvider;
+var reactIs_development_5 = reactIs_development.Element;
+var reactIs_development_6 = reactIs_development.ForwardRef;
+var reactIs_development_7 = reactIs_development.Fragment;
+var reactIs_development_8 = reactIs_development.Lazy;
+var reactIs_development_9 = reactIs_development.Memo;
+var reactIs_development_10 = reactIs_development.Portal;
+var reactIs_development_11 = reactIs_development.Profiler;
+var reactIs_development_12 = reactIs_development.StrictMode;
+var reactIs_development_13 = reactIs_development.Suspense;
+var reactIs_development_14 = reactIs_development.isAsyncMode;
+var reactIs_development_15 = reactIs_development.isConcurrentMode;
+var reactIs_development_16 = reactIs_development.isContextConsumer;
+var reactIs_development_17 = reactIs_development.isContextProvider;
+var reactIs_development_18 = reactIs_development.isElement;
+var reactIs_development_19 = reactIs_development.isForwardRef;
+var reactIs_development_20 = reactIs_development.isFragment;
+var reactIs_development_21 = reactIs_development.isLazy;
+var reactIs_development_22 = reactIs_development.isMemo;
+var reactIs_development_23 = reactIs_development.isPortal;
+var reactIs_development_24 = reactIs_development.isProfiler;
+var reactIs_development_25 = reactIs_development.isStrictMode;
+var reactIs_development_26 = reactIs_development.isSuspense;
+var reactIs_development_27 = reactIs_development.isValidElementType;
+var reactIs_development_28 = reactIs_development.typeOf;
+
+var reactIs = createCommonjsModule(function (module) {
+
+if (false) {} else {
+  module.exports = reactIs_development;
+}
+});
+
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+var ReactPropTypesSecret_1 = ReactPropTypesSecret;
+
+var printWarning = function() {};
+
+if (true) {
+  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+  var loggedTypeFailures = {};
+  var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+  if (true) {
+    for (var typeSpecName in typeSpecs) {
+      if (has(typeSpecs, typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            var err = Error(
+              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+            );
+            err.name = 'Invariant Violation';
+            throw err;
+          }
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
+        } catch (ex) {
+          error = ex;
+        }
+        if (error && !(error instanceof Error)) {
+          printWarning(
+            (componentName || 'React class') + ': type specification of ' +
+            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+            'You may have forgotten to pass an argument to the type checker ' +
+            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+            'shape all require an argument).'
+          );
+        }
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
+
+          var stack = getStack ? getStack() : '';
+
+          printWarning(
+            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Resets warning cache when testing.
+ *
+ * @private
+ */
+checkPropTypes.resetWarningCache = function() {
+  if (true) {
+    loggedTypeFailures = {};
+  }
+};
+
+var checkPropTypes_1 = checkPropTypes;
+
+var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
+var printWarning$1 = function() {};
+
+if (true) {
+  printWarning$1 = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
+
+var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+  var ANONYMOUS = '<<anonymous>>';
+
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker,
+  };
+
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+  /*eslint-disable no-self-compare*/
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  }
+  // Make `instanceof Error` still work for returned errors.
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if (true) {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret_1) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          var err = new Error(
+            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+            'Use `PropTypes.checkPropTypes()` to call them. ' +
+            'Read more at http://fb.me/use-check-prop-types'
+          );
+          err.name = 'Invariant Violation';
+          throw err;
+        } else if ( true && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+          if (
+            !manualPropTypeCallCache[cacheKey] &&
+            // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3
+          ) {
+            printWarning$1(
+              'You are manually calling a React.PropTypes validation ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'and will throw in the standalone `prop-types` package. ' +
+              'You may be seeing this warning due to a third-party PropTypes ' +
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
+            );
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+      var propValue = props[propName];
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret_1);
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!reactIs.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      if (true) {
+        if (arguments.length > 1) {
+          printWarning$1(
+            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+          );
+        } else {
+          printWarning$1('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
+      return emptyFunctionThatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+        if (type === 'symbol') {
+          return String(value);
+        }
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+      for (var key in propValue) {
+        if (has$1(propValue, key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+       true ? printWarning$1('Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
+      return emptyFunctionThatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+      if (typeof checker !== 'function') {
+        printWarning$1(
+          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
+        );
+        return emptyFunctionThatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          continue;
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = objectAssign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+          );
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+      case 'boolean':
+        return !propValue;
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    }
+
+    // falsy value can't be a Symbol
+    if (!propValue) {
+      return false;
+    }
+
+    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    }
+
+    // Fallback for non-spec compliant Symbols which are polyfilled.
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Equivalent of `typeof` but with special handling for array and regexp.
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+    return propType;
+  }
+
+  // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+    var propType = getPropType(propValue);
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+    return propType;
+  }
+
+  // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+      default:
+        return type;
+    }
+  }
+
+  // Returns class name of the object, if any.
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes_1;
+  ReactPropTypes.resetWarningCache = checkPropTypes_1.resetWarningCache;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+function emptyFunction() {}
+function emptyFunctionWithReset() {}
+emptyFunctionWithReset.resetWarningCache = emptyFunction;
+
+var factoryWithThrowingShims = function() {
+  function shim(props, propName, componentName, location, propFullName, secret) {
+    if (secret === ReactPropTypesSecret_1) {
+      // It is still safe when called from React.
+      return;
+    }
+    var err = new Error(
+      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+      'Use PropTypes.checkPropTypes() to call them. ' +
+      'Read more at http://fb.me/use-check-prop-types'
+    );
+    err.name = 'Invariant Violation';
+    throw err;
+  }  shim.isRequired = shim;
+  function getShim() {
+    return shim;
+  }  // Important!
+  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+  var ReactPropTypes = {
+    array: shim,
+    bool: shim,
+    func: shim,
+    number: shim,
+    object: shim,
+    string: shim,
+    symbol: shim,
+
+    any: shim,
+    arrayOf: getShim,
+    element: shim,
+    elementType: shim,
+    instanceOf: getShim,
+    node: shim,
+    objectOf: getShim,
+    oneOf: getShim,
+    oneOfType: getShim,
+    shape: getShim,
+    exact: getShim,
+
+    checkPropTypes: emptyFunctionWithReset,
+    resetWarningCache: emptyFunction
+  };
+
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+var propTypes = createCommonjsModule(function (module) {
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (true) {
+  var ReactIs = reactIs;
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
+} else {}
+});
 
 var immutable = createCommonjsModule(function (module, exports) {
 /**
@@ -5221,11 +6318,11 @@ function invariant$1(condition, message) {
  */
 
 var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var w = d * 7;
-var y = d * 365.25;
+var m$1 = s * 60;
+var h$1 = m$1 * 60;
+var d$1 = h$1 * 24;
+var w$1 = d$1 * 7;
+var y$1 = d$1 * 365.25;
 
 /**
  * Parse or format the given `val`.
@@ -5282,27 +6379,27 @@ function parse(str) {
     case 'yrs':
     case 'yr':
     case 'y':
-      return n * y;
+      return n * y$1;
     case 'weeks':
     case 'week':
     case 'w':
-      return n * w;
+      return n * w$1;
     case 'days':
     case 'day':
     case 'd':
-      return n * d;
+      return n * d$1;
     case 'hours':
     case 'hour':
     case 'hrs':
     case 'hr':
     case 'h':
-      return n * h;
+      return n * h$1;
     case 'minutes':
     case 'minute':
     case 'mins':
     case 'min':
     case 'm':
-      return n * m;
+      return n * m$1;
     case 'seconds':
     case 'second':
     case 'secs':
@@ -5330,14 +6427,14 @@ function parse(str) {
 
 function fmtShort(ms) {
   var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return Math.round(ms / d) + 'd';
+  if (msAbs >= d$1) {
+    return Math.round(ms / d$1) + 'd';
   }
-  if (msAbs >= h) {
-    return Math.round(ms / h) + 'h';
+  if (msAbs >= h$1) {
+    return Math.round(ms / h$1) + 'h';
   }
-  if (msAbs >= m) {
-    return Math.round(ms / m) + 'm';
+  if (msAbs >= m$1) {
+    return Math.round(ms / m$1) + 'm';
   }
   if (msAbs >= s) {
     return Math.round(ms / s) + 's';
@@ -5355,14 +6452,14 @@ function fmtShort(ms) {
 
 function fmtLong(ms) {
   var msAbs = Math.abs(ms);
-  if (msAbs >= d) {
-    return plural(ms, msAbs, d, 'day');
+  if (msAbs >= d$1) {
+    return plural(ms, msAbs, d$1, 'day');
   }
-  if (msAbs >= h) {
-    return plural(ms, msAbs, h, 'hour');
+  if (msAbs >= h$1) {
+    return plural(ms, msAbs, h$1, 'hour');
   }
-  if (msAbs >= m) {
-    return plural(ms, msAbs, m, 'minute');
+  if (msAbs >= m$1) {
+    return plural(ms, msAbs, m$1, 'minute');
   }
   if (msAbs >= s) {
     return plural(ms, msAbs, s, 'second');
@@ -5929,7 +7026,7 @@ var _Symbol = Symbol$1;
 var objectProto = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
+var hasOwnProperty$1 = objectProto.hasOwnProperty;
 
 /**
  * Used to resolve the
@@ -5949,7 +7046,7 @@ var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag(value) {
-  var isOwn = hasOwnProperty.call(value, symToStringTag),
+  var isOwn = hasOwnProperty$1.call(value, symToStringTag),
       tag = value[symToStringTag];
 
   try {
@@ -6237,11 +7334,11 @@ var funcProto$1 = Function.prototype,
 var funcToString$1 = funcProto$1.toString;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
+var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
 
 /** Used to detect if a method is native. */
 var reIsNative = RegExp('^' +
-  funcToString$1.call(hasOwnProperty$1).replace(reRegExpChar, '\\$&')
+  funcToString$1.call(hasOwnProperty$2).replace(reRegExpChar, '\\$&')
   .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 );
 
@@ -6336,7 +7433,7 @@ var HASH_UNDEFINED = '__lodash_hash_undefined__';
 var objectProto$3 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
+var hasOwnProperty$3 = objectProto$3.hasOwnProperty;
 
 /**
  * Gets the hash value for `key`.
@@ -6353,7 +7450,7 @@ function hashGet(key) {
     var result = data[key];
     return result === HASH_UNDEFINED ? undefined : result;
   }
-  return hasOwnProperty$2.call(data, key) ? data[key] : undefined;
+  return hasOwnProperty$3.call(data, key) ? data[key] : undefined;
 }
 
 var _hashGet = hashGet;
@@ -6362,7 +7459,7 @@ var _hashGet = hashGet;
 var objectProto$4 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+var hasOwnProperty$4 = objectProto$4.hasOwnProperty;
 
 /**
  * Checks if a hash value for `key` exists.
@@ -6375,7 +7472,7 @@ var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
  */
 function hashHas(key) {
   var data = this.__data__;
-  return _nativeCreate ? (data[key] !== undefined) : hasOwnProperty$3.call(data, key);
+  return _nativeCreate ? (data[key] !== undefined) : hasOwnProperty$4.call(data, key);
 }
 
 var _hashHas = hashHas;
@@ -7073,7 +8170,7 @@ var _baseAssignValue = baseAssignValue;
 var objectProto$5 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+var hasOwnProperty$5 = objectProto$5.hasOwnProperty;
 
 /**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent
@@ -7087,7 +8184,7 @@ var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
  */
 function assignValue(object, key, value) {
   var objValue = object[key];
-  if (!(hasOwnProperty$4.call(object, key) && eq_1(objValue, value)) ||
+  if (!(hasOwnProperty$5.call(object, key) && eq_1(objValue, value)) ||
       (value === undefined && !(key in object))) {
     _baseAssignValue(object, key, value);
   }
@@ -7224,7 +8321,7 @@ var _baseIsArguments = baseIsArguments;
 var objectProto$6 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+var hasOwnProperty$6 = objectProto$6.hasOwnProperty;
 
 /** Built-in value references. */
 var propertyIsEnumerable = objectProto$6.propertyIsEnumerable;
@@ -7248,7 +8345,7 @@ var propertyIsEnumerable = objectProto$6.propertyIsEnumerable;
  * // => false
  */
 var isArguments = _baseIsArguments(function() { return arguments; }()) ? _baseIsArguments : function(value) {
-  return isObjectLike_1(value) && hasOwnProperty$5.call(value, 'callee') &&
+  return isObjectLike_1(value) && hasOwnProperty$6.call(value, 'callee') &&
     !propertyIsEnumerable.call(value, 'callee');
 };
 
@@ -8063,7 +9160,7 @@ var isTypedArray_1 = isTypedArray;
 var objectProto$7 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
+var hasOwnProperty$7 = objectProto$7.hasOwnProperty;
 
 /**
  * Creates an array of the enumerable property names of the array-like `value`.
@@ -8083,7 +9180,7 @@ function arrayLikeKeys(value, inherited) {
       length = result.length;
 
   for (var key in value) {
-    if ((inherited || hasOwnProperty$6.call(value, key)) &&
+    if ((inherited || hasOwnProperty$7.call(value, key)) &&
         !(skipIndexes && (
            // Safari 9 has enumerable `arguments.length` in strict mode.
            key == 'length' ||
@@ -8146,7 +9243,7 @@ var _nativeKeys = nativeKeys;
 var objectProto$9 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+var hasOwnProperty$8 = objectProto$9.hasOwnProperty;
 
 /**
  * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
@@ -8161,7 +9258,7 @@ function baseKeys(object) {
   }
   var result = [];
   for (var key in Object(object)) {
-    if (hasOwnProperty$7.call(object, key) && key != 'constructor') {
+    if (hasOwnProperty$8.call(object, key) && key != 'constructor') {
       result.push(key);
     }
   }
@@ -8275,7 +9372,7 @@ var _nativeKeysIn = nativeKeysIn;
 var objectProto$a = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
+var hasOwnProperty$9 = objectProto$a.hasOwnProperty;
 
 /**
  * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
@@ -8292,7 +9389,7 @@ function baseKeysIn(object) {
       result = [];
 
   for (var key in object) {
-    if (!(key == 'constructor' && (isProto || !hasOwnProperty$8.call(object, key)))) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty$9.call(object, key)))) {
       result.push(key);
     }
   }
@@ -8654,7 +9751,7 @@ var _getTag = getTag;
 var objectProto$c = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
+var hasOwnProperty$a = objectProto$c.hasOwnProperty;
 
 /**
  * Initializes an array clone.
@@ -8668,7 +9765,7 @@ function initCloneArray(array) {
       result = new array.constructor(length);
 
   // Add properties assigned by `RegExp#exec`.
-  if (length && typeof array[0] == 'string' && hasOwnProperty$9.call(array, 'index')) {
+  if (length && typeof array[0] == 'string' && hasOwnProperty$a.call(array, 'index')) {
     result.index = array.index;
     result.input = array.input;
   }
@@ -9196,7 +10293,7 @@ var funcProto$2 = Function.prototype,
 var funcToString$2 = funcProto$2.toString;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$a = objectProto$d.hasOwnProperty;
+var hasOwnProperty$b = objectProto$d.hasOwnProperty;
 
 /** Used to infer the `Object` constructor. */
 var objectCtorString = funcToString$2.call(Object);
@@ -9237,7 +10334,7 @@ function isPlainObject$1(value) {
   if (proto === null) {
     return true;
   }
-  var Ctor = hasOwnProperty$a.call(proto, 'constructor') && proto.constructor;
+  var Ctor = hasOwnProperty$b.call(proto, 'constructor') && proto.constructor;
   return typeof Ctor == 'function' && Ctor instanceof Ctor &&
     funcToString$2.call(Ctor) == objectCtorString;
 }
@@ -9384,7 +10481,7 @@ var direction_1 = direction;
  * @type {Number}
  */
 
-var n = void 0;
+var n$1 = void 0;
 
 /**
  * The global key generating function.
@@ -9428,9 +10525,9 @@ function setGenerator(func) {
  */
 
 function resetGenerator() {
-  n = 0;
+  n$1 = 0;
   generate = function generate() {
-    return '' + n++;
+    return '' + n$1++;
   };
 }
 
@@ -26137,4640 +27234,6 @@ var RangeInterface = function () {
 
 mixin(RangeInterface, [Annotation, Decoration, Range, Selection]);
 
-var _extends$1 = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-/**
- * Deserialize a plain text `string` to a Slate value.
- *
- * @param {String} string
- * @param {Object} options
- *   @property {Boolean} toJSON
- *   @property {String|Object|Block} defaultBlock
- *   @property {Array|Set} defaultMarks
- * @return {Value}
- */
-
-function deserialize(string) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var _options$defaultBlock = options.defaultBlock,
-      defaultBlock = _options$defaultBlock === undefined ? 'line' : _options$defaultBlock,
-      _options$defaultMarks = options.defaultMarks,
-      defaultMarks = _options$defaultMarks === undefined ? [] : _options$defaultMarks,
-      _options$delimiter = options.delimiter,
-      delimiter = _options$delimiter === undefined ? '\n' : _options$delimiter,
-      _options$toJSON = options.toJSON,
-      toJSON = _options$toJSON === undefined ? false : _options$toJSON;
-
-
-  if (immutable.Set.isSet(defaultMarks)) {
-    defaultMarks = defaultMarks.toArray();
-  }
-
-  defaultBlock = Node.createProperties(defaultBlock);
-  defaultMarks = defaultMarks.map(Mark.createProperties);
-
-  var json = {
-    object: 'value',
-    document: {
-      object: 'document',
-      data: {},
-      nodes: string.split(delimiter).map(function (line) {
-        return _extends$1({}, defaultBlock, {
-          object: 'block',
-          data: {},
-          nodes: [{
-            object: 'text',
-            text: line,
-            marks: defaultMarks
-          }]
-        });
-      })
-    }
-  };
-
-  var ret = toJSON ? json : Value.fromJSON(json);
-  return ret;
-}
-
-/**
- * Serialize a Slate `value` to a plain text string.
- *
- * @param {Value} value
- * @return {String}
- */
-
-function serialize(value) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  return serializeNode(value.document, options);
-}
-
-/**
- * Serialize a `node` to plain text.
- *
- * @param {Node} node
- * @return {String}
- */
-
-function serializeNode(node) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var _options$delimiter2 = options.delimiter,
-      delimiter = _options$delimiter2 === undefined ? '\n' : _options$delimiter2;
-
-
-  if (node.object === 'document' || node.object === 'block' && Block.isBlockList(node.nodes)) {
-    return node.nodes.map(serializeNode).join(delimiter);
-  } else {
-    return node.text;
-  }
-}
-
-/**
- * Export.
- *
- * @type {Object}
- */
-
-var index$1 = {
-  deserialize: deserialize,
-  serialize: serialize
-};
-
-var EFormat;
-(function (EFormat) {
-    // marks
-    EFormat["bold"] = "bold";
-    EFormat["italic"] = "italic";
-    EFormat["underlined"] = "underlined";
-    EFormat["inserted"] = "inserted";
-    EFormat["deleted"] = "deleted";
-    EFormat["code"] = "code";
-    EFormat["marked"] = "marked";
-    EFormat["superscript"] = "superscript";
-    EFormat["subscript"] = "subscript";
-    EFormat["color"] = "color";
-    // blocks
-    EFormat["defaultBlock"] = "paragraph";
-    EFormat["block"] = "block";
-    EFormat["blockQuote"] = "block-quote";
-    EFormat["heading1"] = "heading1";
-    EFormat["heading2"] = "heading2";
-    EFormat["heading3"] = "heading3";
-    EFormat["heading4"] = "heading4";
-    EFormat["heading5"] = "heading5";
-    EFormat["heading6"] = "heading6";
-    EFormat["horizontalRule"] = "horizontal-rule";
-    EFormat["paragraph"] = "paragraph";
-    EFormat["preformatted"] = "preformatted";
-    EFormat["listItem"] = "list-item";
-    EFormat["numberedList"] = "ordered-list";
-    EFormat["bulletedList"] = "bulleted-list";
-    // inlines
-    EFormat["inline"] = "inline";
-    EFormat["image"] = "image";
-    EFormat["link"] = "link"; // <a>
-})(EFormat || (EFormat = {}));
-var EMetaFormat;
-(function (EMetaFormat) {
-    EMetaFormat["fontIncrease"] = "fontIncrease";
-    EMetaFormat["fontDecrease"] = "fontDecrease";
-})(EMetaFormat || (EMetaFormat = {}));
-function textToSlate(text) {
-    // cast to any required as typings don't account for string shortcut
-    return index$1.deserialize(text, { defaultBlock: EFormat.defaultBlock });
-}
-function slateToText(value) {
-    return value ? index$1.serialize(value) : "";
-}
-
-var toString$1 = Object.prototype.toString;
-
-var typeOf = function(val){
-  switch (toString$1.call(val)) {
-    case '[object Function]': return 'function'
-    case '[object Date]': return 'date'
-    case '[object RegExp]': return 'regexp'
-    case '[object Arguments]': return 'arguments'
-    case '[object Array]': return 'array'
-    case '[object String]': return 'string'
-  }
-
-  if (typeof val == 'object' && val && typeof val.length == 'number') {
-    try {
-      if (typeof val.callee == 'function') return 'arguments';
-    } catch (ex) {
-      if (ex instanceof TypeError) {
-        return 'arguments';
-      }
-    }
-  }
-
-  if (val === null) return 'null'
-  if (val === undefined) return 'undefined'
-  if (val && val.nodeType === 1) return 'element'
-  if (val === Object(val)) return 'object'
-
-  return typeof val
-};
-
-var classCallCheck$1 = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-
-
-
-
-
-
-
-
-var _extends$2 = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var toConsumableArray$1 = function (arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-    return arr2;
-  } else {
-    return Array.from(arr);
-  }
-};
-
-/**
- * String.
- *
- * @type {String}
- */
-
-var String$1 = new immutable.Record({
-  object: 'string',
-  text: ''
-});
-
-/**
- * A rule to (de)serialize text nodes. This is automatically added to the HTML
- * serializer so that users don't have to worry about text-level serialization.
- *
- * @type {Object}
- */
-
-var TEXT_RULE = {
-  deserialize: function deserialize(el) {
-    if (el.tagName && el.tagName.toLowerCase() === 'br') {
-      return {
-        object: 'text',
-        text: '\n',
-        marks: []
-      };
-    }
-
-    if (el.nodeName === '#text') {
-      if (el.nodeValue && el.nodeValue.match(/<!--.*?-->/)) return;
-
-      return {
-        object: 'text',
-        text: el.nodeValue,
-        marks: []
-      };
-    }
-  },
-  serialize: function serialize(obj, children) {
-    if (obj.object === 'string') {
-      return children.split('\n').reduce(function (array, text, i) {
-        if (i !== 0) array.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', { key: i }));
-        array.push(text);
-        return array;
-      }, []);
-    }
-  }
-};
-
-/**
- * A default `parseHtml` function that returns the `<body>` using `DOMParser`.
- *
- * @param {String} html
- * @return {Object}
- */
-
-function defaultParseHtml(html) {
-  if (typeof DOMParser == 'undefined') {
-    throw new Error('The native `DOMParser` global which the `Html` serializer uses by default is not present in this environment. You must supply the `options.parseHtml` function instead.');
-  }
-
-  var parsed = new DOMParser().parseFromString(html, 'text/html');
-  var body = parsed.body;
-  // COMPAT: in IE 11 body is null if html is an empty string
-
-  return body || window.document.createElement('body');
-}
-
-/**
- * HTML serializer.
- *
- * @type {Html}
- */
-
-var Html =
-/**
- * Create a new serializer with `rules`.
- *
- * @param {Object} options
- *   @property {Array} rules
- *   @property {String|Object|Block} defaultBlock
- *   @property {Function} parseHtml
- */
-
-function Html() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  classCallCheck$1(this, Html);
-
-  _initialiseProps.call(this);
-
-  var _options$defaultBlock = options.defaultBlock,
-      defaultBlock = _options$defaultBlock === undefined ? 'paragraph' : _options$defaultBlock,
-      _options$parseHtml = options.parseHtml,
-      parseHtml = _options$parseHtml === undefined ? defaultParseHtml : _options$parseHtml,
-      _options$rules = options.rules,
-      rules = _options$rules === undefined ? [] : _options$rules;
-
-
-  defaultBlock = Node.createProperties(defaultBlock);
-
-  this.rules = [].concat(toConsumableArray$1(rules), [TEXT_RULE]);
-  this.defaultBlock = defaultBlock;
-  this.parseHtml = parseHtml;
-};
-
-/**
- * Add a unique key to a React `element`.
- *
- * @param {Element} element
- * @return {Element}
- */
-
-var _initialiseProps = function _initialiseProps() {
-  var _this = this;
-
-  this.deserialize = function (html) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var _options$toJSON = options.toJSON,
-        toJSON = _options$toJSON === undefined ? false : _options$toJSON;
-    var defaultBlock = _this.defaultBlock,
-        parseHtml = _this.parseHtml;
-
-    var fragment = parseHtml(html);
-    var children = Array.from(fragment.childNodes);
-    var nodes = _this.deserializeElements(children);
-
-    // COMPAT: ensure that all top-level inline nodes are wrapped into a block.
-    nodes = nodes.reduce(function (memo, node, i, original) {
-      if (node.object === 'block') {
-        memo.push(node);
-        return memo;
-      }
-
-      if (i > 0 && original[i - 1].object !== 'block') {
-        var _block = memo[memo.length - 1];
-        _block.nodes.push(node);
-        return memo;
-      }
-
-      var block = _extends$2({
-        object: 'block',
-        data: {}
-      }, defaultBlock, {
-        nodes: [node]
-      });
-
-      memo.push(block);
-      return memo;
-    }, []);
-
-    // TODO: pretty sure this is no longer needed.
-    if (nodes.length === 0) {
-      nodes = [_extends$2({
-        object: 'block',
-        data: {}
-      }, defaultBlock, {
-        nodes: [{
-          object: 'text',
-          text: '',
-          marks: []
-        }]
-      })];
-    }
-
-    var json = {
-      object: 'value',
-      document: {
-        object: 'document',
-        data: {},
-        nodes: nodes
-      }
-    };
-
-    var ret = toJSON ? json : Value.fromJSON(json);
-    return ret;
-  };
-
-  this.deserializeElements = function () {
-    var elements = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-    var nodes = [];
-
-    elements.filter(_this.cruftNewline).forEach(function (element) {
-      var node = _this.deserializeElement(element);
-
-      switch (typeOf(node)) {
-        case 'array':
-          nodes = nodes.concat(node);
-          break;
-        case 'object':
-          nodes.push(node);
-          break;
-      }
-    });
-
-    return nodes;
-  };
-
-  this.deserializeElement = function (element) {
-    var node = void 0;
-
-    if (!element.tagName) {
-      element.tagName = '';
-    }
-
-    var next = function next(elements) {
-      if (Object.prototype.toString.call(elements) === '[object NodeList]') {
-        elements = Array.from(elements);
-      }
-
-      switch (typeOf(elements)) {
-        case 'array':
-          return _this.deserializeElements(elements);
-        case 'object':
-          return _this.deserializeElement(elements);
-        case 'null':
-        case 'undefined':
-          return;
-        default:
-          throw new Error('The `next` argument was called with invalid children: "' + elements + '".');
-      }
-    };
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = _this.rules[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var rule = _step.value;
-
-        if (!rule.deserialize) continue;
-        var ret = rule.deserialize(element, next);
-        var type = typeOf(ret);
-
-        if (type !== 'array' && type !== 'object' && type !== 'null' && type !== 'undefined') {
-          throw new Error('A rule returned an invalid deserialized representation: "' + node + '".');
-        }
-
-        if (ret === undefined) {
-          continue;
-        } else if (ret === null) {
-          return null;
-        } else if (ret.object === 'mark') {
-          node = _this.deserializeMark(ret);
-        } else {
-          node = ret;
-        }
-
-        if (node.object === 'block' || node.object === 'inline') {
-          node.data = node.data || {};
-          node.nodes = node.nodes || [];
-        } else if (node.object === 'text') {
-          node.marks = node.marks || [];
-          node.text = node.text || '';
-        }
-
-        break;
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
-    return node || next(element.childNodes);
-  };
-
-  this.deserializeMark = function (mark) {
-    var type = mark.type,
-        data = mark.data;
-
-
-    var applyMark = function applyMark(node) {
-      if (node.object === 'mark') {
-        var ret = _this.deserializeMark(node);
-        return ret;
-      } else if (node.object === 'text') {
-        node.marks = node.marks || [];
-        node.marks.push({ type: type, data: data });
-      } else if (node.nodes) {
-        node.nodes = node.nodes.map(applyMark);
-      }
-
-      return node;
-    };
-
-    return mark.nodes.reduce(function (nodes, node) {
-      var ret = applyMark(node);
-      if (Array.isArray(ret)) return nodes.concat(ret);
-      nodes.push(ret);
-      return nodes;
-    }, []);
-  };
-
-  this.serialize = function (value) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var document = value.document;
-
-    var elements = document.nodes.map(_this.serializeNode).filter(function (el) {
-      return el;
-    });
-    if (options.render === false) return elements;
-
-    var html = Object(react_dom_server__WEBPACK_IMPORTED_MODULE_1__["renderToStaticMarkup"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-      'body',
-      null,
-      elements
-    ));
-    var inner = html.slice(6, -7);
-    return inner;
-  };
-
-  this.serializeNode = function (node) {
-    if (node.object === 'text') {
-      var string = new String$1({ text: node.text });
-      var text = _this.serializeString(string);
-
-      return node.marks.reduce(function (children, mark) {
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-          for (var _iterator2 = _this.rules[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var rule = _step2.value;
-
-            if (!rule.serialize) continue;
-            var ret = rule.serialize(mark, children);
-            if (ret === null) return;
-            if (ret) return addKey(ret);
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-              _iterator2.return();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
-        }
-
-        throw new Error('No serializer defined for mark of type "' + mark.type + '".');
-      }, text);
-    }
-
-    var children = node.nodes.map(_this.serializeNode);
-
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
-
-    try {
-      for (var _iterator3 = _this.rules[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var rule = _step3.value;
-
-        if (!rule.serialize) continue;
-        var ret = rule.serialize(node, children);
-        if (ret === null) return;
-        if (ret) return addKey(ret);
-      }
-    } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-          _iterator3.return();
-        }
-      } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
-        }
-      }
-    }
-
-    throw new Error('No serializer defined for node of type "' + node.type + '".');
-  };
-
-  this.serializeString = function (string) {
-    var _iteratorNormalCompletion4 = true;
-    var _didIteratorError4 = false;
-    var _iteratorError4 = undefined;
-
-    try {
-      for (var _iterator4 = _this.rules[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-        var rule = _step4.value;
-
-        if (!rule.serialize) continue;
-        var ret = rule.serialize(string, string.text);
-        if (ret) return ret;
-      }
-    } catch (err) {
-      _didIteratorError4 = true;
-      _iteratorError4 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion4 && _iterator4.return) {
-          _iterator4.return();
-        }
-      } finally {
-        if (_didIteratorError4) {
-          throw _iteratorError4;
-        }
-      }
-    }
-  };
-
-  this.cruftNewline = function (element) {
-    return !(element.nodeName === '#text' && element.nodeValue === '\n');
-  };
-};
-
-var key = 0;
-
-function addKey(element) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(element, { key: key++ });
-}
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-}
-
-var dedupe = createCommonjsModule(function (module) {
-/*!
-  Copyright (c) 2017 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-
-	var classNames = (function () {
-		// don't inherit from Object so we can skip hasOwnProperty check later
-		// http://stackoverflow.com/questions/15518328/creating-js-object-with-object-createnull#answer-21079232
-		function StorageObject() {}
-		StorageObject.prototype = Object.create(null);
-
-		function _parseArray (resultSet, array) {
-			var length = array.length;
-
-			for (var i = 0; i < length; ++i) {
-				_parse(resultSet, array[i]);
-			}
-		}
-
-		var hasOwn = {}.hasOwnProperty;
-
-		function _parseNumber (resultSet, num) {
-			resultSet[num] = true;
-		}
-
-		function _parseObject (resultSet, object) {
-			for (var k in object) {
-				if (hasOwn.call(object, k)) {
-					// set value to false instead of deleting it to avoid changing object structure
-					// https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/#de-referencing-misconceptions
-					resultSet[k] = !!object[k];
-				}
-			}
-		}
-
-		var SPACE = /\s+/;
-		function _parseString (resultSet, str) {
-			var array = str.split(SPACE);
-			var length = array.length;
-
-			for (var i = 0; i < length; ++i) {
-				resultSet[array[i]] = true;
-			}
-		}
-
-		function _parse (resultSet, arg) {
-			if (!arg) return;
-			var argType = typeof arg;
-
-			// 'foo bar'
-			if (argType === 'string') {
-				_parseString(resultSet, arg);
-
-			// ['foo', 'bar', ...]
-			} else if (Array.isArray(arg)) {
-				_parseArray(resultSet, arg);
-
-			// { 'foo': true, ... }
-			} else if (argType === 'object') {
-				_parseObject(resultSet, arg);
-
-			// '130'
-			} else if (argType === 'number') {
-				_parseNumber(resultSet, arg);
-			}
-		}
-
-		function _classNames () {
-			// don't leak arguments
-			// https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
-			var len = arguments.length;
-			var args = Array(len);
-			for (var i = 0; i < len; i++) {
-				args[i] = arguments[i];
-			}
-
-			var classSet = new StorageObject();
-			_parseArray(classSet, args);
-
-			var list = [];
-
-			for (var k in classSet) {
-				if (classSet[k]) {
-					list.push(k);
-				}
-			}
-
-			return list.join(' ');
-		}
-
-		return _classNames;
-	})();
-
-	if ( module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else {
-		window.classNames = classNames;
-	}
-}());
-});
-
-// http://www.w3.org/TR/CSS21/grammar.html
-// https://github.com/visionmedia/css-parse/pull/49#issuecomment-30088027
-var COMMENT_REGEX = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g;
-
-var NEWLINE_REGEX = /\n/g;
-var WHITESPACE_REGEX = /^\s*/;
-
-// declaration
-var PROPERTY_REGEX = /^(\*?[-#/*\\\w]+(\[[0-9a-z_-]+\])?)\s*/;
-var COLON_REGEX = /^:\s*/;
-var VALUE_REGEX = /^((?:'(?:\\'|.)*?'|"(?:\\"|.)*?"|\([^)]*?\)|[^};])+)/;
-var SEMICOLON_REGEX = /^[;\s]*/;
-
-// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim#Polyfill
-var TRIM_REGEX = /^\s+|\s+$/g;
-
-// strings
-var NEWLINE = '\n';
-var FORWARD_SLASH = '/';
-var ASTERISK = '*';
-var EMPTY_STRING = '';
-
-// types
-var TYPE_COMMENT = 'comment';
-var TYPE_DECLARATION = 'declaration';
-
-/**
- * @param {String} style
- * @param {Object} [options]
- * @return {Object[]}
- * @throws {TypeError}
- * @throws {Error}
- */
-var inlineStyleParser = function(style, options) {
-  if (typeof style !== 'string') {
-    throw new TypeError('First argument must be a string');
-  }
-
-  if (!style) return [];
-
-  options = options || {};
-
-  /**
-   * Positional.
-   */
-  var lineno = 1;
-  var column = 1;
-
-  /**
-   * Update lineno and column based on `str`.
-   *
-   * @param {String} str
-   */
-  function updatePosition(str) {
-    var lines = str.match(NEWLINE_REGEX);
-    if (lines) lineno += lines.length;
-    var i = str.lastIndexOf(NEWLINE);
-    column = ~i ? str.length - i : column + str.length;
-  }
-
-  /**
-   * Mark position and patch `node.position`.
-   *
-   * @return {Function}
-   */
-  function position() {
-    var start = { line: lineno, column: column };
-    return function(node) {
-      node.position = new Position(start);
-      whitespace();
-      return node;
-    };
-  }
-
-  /**
-   * Store position information for a node.
-   *
-   * @constructor
-   * @property {Object} start
-   * @property {Object} end
-   * @property {undefined|String} source
-   */
-  function Position(start) {
-    this.start = start;
-    this.end = { line: lineno, column: column };
-    this.source = options.source;
-  }
-
-  /**
-   * Non-enumerable source string.
-   */
-  Position.prototype.content = style;
-
-  /**
-   * Error `msg`.
-   *
-   * @param {String} msg
-   * @throws {Error}
-   */
-  function error(msg) {
-    var err = new Error(
-      options.source + ':' + lineno + ':' + column + ': ' + msg
-    );
-    err.reason = msg;
-    err.filename = options.source;
-    err.line = lineno;
-    err.column = column;
-    err.source = style;
-
-    if (options.silent) ; else {
-      throw err;
-    }
-  }
-
-  /**
-   * Match `re` and return captures.
-   *
-   * @param {RegExp} re
-   * @return {undefined|Array}
-   */
-  function match(re) {
-    var m = re.exec(style);
-    if (!m) return;
-    var str = m[0];
-    updatePosition(str);
-    style = style.slice(str.length);
-    return m;
-  }
-
-  /**
-   * Parse whitespace.
-   */
-  function whitespace() {
-    match(WHITESPACE_REGEX);
-  }
-
-  /**
-   * Parse comments.
-   *
-   * @param {Object[]} [rules]
-   * @return {Object[]}
-   */
-  function comments(rules) {
-    var c;
-    rules = rules || [];
-    while ((c = comment())) {
-      if (c !== false) {
-        rules.push(c);
-      }
-    }
-    return rules;
-  }
-
-  /**
-   * Parse comment.
-   *
-   * @return {Object}
-   * @throws {Error}
-   */
-  function comment() {
-    var pos = position();
-    if (FORWARD_SLASH != style.charAt(0) || ASTERISK != style.charAt(1)) return;
-
-    var i = 2;
-    while (
-      EMPTY_STRING != style.charAt(i) &&
-      (ASTERISK != style.charAt(i) || FORWARD_SLASH != style.charAt(i + 1))
-    ) {
-      ++i;
-    }
-    i += 2;
-
-    if (EMPTY_STRING === style.charAt(i - 1)) {
-      return error('End of comment missing');
-    }
-
-    var str = style.slice(2, i - 2);
-    column += 2;
-    updatePosition(str);
-    style = style.slice(i);
-    column += 2;
-
-    return pos({
-      type: TYPE_COMMENT,
-      comment: str
-    });
-  }
-
-  /**
-   * Parse declaration.
-   *
-   * @return {Object}
-   * @throws {Error}
-   */
-  function declaration() {
-    var pos = position();
-
-    // prop
-    var prop = match(PROPERTY_REGEX);
-    if (!prop) return;
-    comment();
-
-    // :
-    if (!match(COLON_REGEX)) return error("property missing ':'");
-
-    // val
-    var val = match(VALUE_REGEX);
-
-    var ret = pos({
-      type: TYPE_DECLARATION,
-      property: trim(prop[0].replace(COMMENT_REGEX, EMPTY_STRING)),
-      value: val
-        ? trim(val[0].replace(COMMENT_REGEX, EMPTY_STRING))
-        : EMPTY_STRING
-    });
-
-    // ;
-    match(SEMICOLON_REGEX);
-
-    return ret;
-  }
-
-  /**
-   * Parse declarations.
-   *
-   * @return {Object[]}
-   */
-  function declarations() {
-    var decls = [];
-
-    comments(decls);
-
-    // declarations
-    var decl;
-    while ((decl = declaration())) {
-      if (decl !== false) {
-        decls.push(decl);
-        comments(decls);
-      }
-    }
-
-    return decls;
-  }
-
-  whitespace();
-  return declarations();
-};
-
-/**
- * Trim `str`.
- *
- * @param {String} str
- * @return {String}
- */
-function trim(str) {
-  return str ? str.replace(TRIM_REGEX, EMPTY_STRING) : EMPTY_STRING;
-}
-
-/**
- * Parses inline style to object.
- *
- * @example
- * // returns { 'line-height': '42' }
- * StyleToObject('line-height: 42;');
- *
- * @param  {String}      style      - The inline style.
- * @param  {Function}    [iterator] - The iterator function.
- * @return {null|Object}
- */
-function StyleToObject(style, iterator) {
-  var output = null;
-  if (!style || typeof style !== 'string') {
-    return output;
-  }
-
-  var declaration;
-  var declarations = inlineStyleParser(style);
-  var hasIterator = typeof iterator === 'function';
-  var property;
-  var value;
-
-  for (var i = 0, len = declarations.length; i < len; i++) {
-    declaration = declarations[i];
-    property = declaration.property;
-    value = declaration.value;
-
-    if (hasIterator) {
-      iterator(property, value, declaration);
-    } else if (value) {
-      output || (output = {});
-      output[property] = value;
-    }
-  }
-
-  return output;
-}
-
-var styleToObject = StyleToObject;
-
-function toReactAttributeKey(key) {
-    return key.toLowerCase()
-        .replace("class", "className")
-        .replace("colspan", "colSpan")
-        .replace("rowspan", "rowSpan");
-}
-function toReactStyleKey(key) {
-    // https://github.com/facebook/react/blob/5f6b75dd265cd831d2c4e407c4580b9cd7d996f5/packages/react-dom/src/shared/DOMProperty.js#L447-L448
-    var CAMELIZE = /[-:]([a-z])/g;
-    return key.replace(CAMELIZE, function (token) { return token[1].toUpperCase(); });
-}
-function toReactStyle(styleStr) {
-    var style = {};
-    var count = 0;
-    styleStr && styleToObject(styleStr, function (name, value) {
-        // convert to react key format (ignoring custom css properties)
-        var key = /^--.*/.test(name) ? name : toReactStyleKey(name);
-        style[key] = value;
-        ++count;
-    });
-    return count ? style : undefined;
-}
-function getDataFromElement(el, _data) {
-    if (!el.hasAttributes())
-        return { data: _data };
-    var data = _data || {};
-    for (var i = 0; i < el.attributes.length; ++i) {
-        var key = el.attributes[i].name.toLowerCase();
-        data[key] = el.attributes[i].value;
-    }
-    return { data: data };
-}
-function getRenderAttributesFromNode(obj, omitProps) {
-    var data = obj.data;
-    var renderAttrs = {};
-    data.forEach(function (value, key) {
-        var _key = toReactAttributeKey(key);
-        if (!omitProps || !(omitProps === null || omitProps === void 0 ? void 0 : omitProps.find(function (prop) { return prop === _key; }))) {
-            renderAttrs[_key] = _key === "style"
-                ? toReactStyle(value)
-                : value;
-        }
-    });
-    return renderAttrs;
-}
-function mergeClassStrings(classes1, classes2) {
-    var c1 = classes1 === null || classes1 === void 0 ? void 0 : classes1.split(" ").filter(function (c) { return !!c; });
-    var c2 = classes2 === null || classes2 === void 0 ? void 0 : classes2.split(" ").filter(function (c) { return !!c; });
-    return dedupe(c1, c2) || undefined;
-}
-
-function getRenderIndexOfMark(props) {
-    var mark = props.mark, marks = props.marks;
-    var markIndex = -1;
-    var i = 0;
-    marks.forEach(function (m) {
-        if (m === mark)
-            markIndex = i;
-        ++i;
-    });
-    return markIndex;
-}
-function findActiveMark(value, format) {
-    return value.activeMarks.find(function (mark) { return (mark === null || mark === void 0 ? void 0 : mark.type) === format; });
-}
-function hasActiveMark(value, format) {
-    return !!findActiveMark(value, format);
-}
-function isBlockOfType(node, format) {
-    return Block.isBlock(node) && (node.type === format);
-}
-// returns whether there is a selected block of the specified type.
-// value.blocks represents the closest selected block(s), i.e. it may
-// indicate that a list item is selected without indicating its list.
-function hasBlock(value, format) {
-    return value.blocks.some(function (node) { return isBlockOfType(node, format); });
-}
-// returns whether the selection touches any block of the specified type.
-// this is a more expansive notion of selection than value.blocks, which
-// includes any top-level blocks touched as well, e.g. if the caret is in
-// a list item the top-level block will be returned as well.
-function selectionContainsBlock(value, format) {
-    var document = value.document, selection = value.selection;
-    var nodes = document.getDescendantsAtRange(selection);
-    return nodes.some(function (node) { return !Text.isText(node) && ((node === null || node === void 0 ? void 0 : node.type) === format); });
-}
-function hasActiveInline(value, format) {
-    return value.inlines.some(function (inline) { return (inline === null || inline === void 0 ? void 0 : inline.type) === format; });
-}
-function handleToggleSuperSubscript(format, editor) {
-    var value = editor.value;
-    if (hasActiveMark(value, EFormat.superscript) || hasActiveMark(value, EFormat.subscript)) {
-        editor.removeMark(EFormat.superscript).removeMark(EFormat.subscript);
-    }
-    else {
-        editor.toggleMark(format);
-    }
-}
-
-function getActiveColorMark(editor) {
-    return editor.value.activeMarks.find(function (mark) { return (mark === null || mark === void 0 ? void 0 : mark.type) === EFormat.color; });
-}
-function removeColorMarksFromSelection(editor) {
-    editor.value.marks.toArray()
-        .filter(function (mark) { return mark.type === EFormat.color; })
-        .forEach(function (mark) { return editor.removeMark(mark); });
-}
-var kTextColorClass = "cc-text-color";
-function renderColorMark(mark, attributes, children, isSerializing) {
-    if (isSerializing === void 0) { isSerializing = false; }
-    var data = mark.data;
-    var color = data.get("color");
-    var textColor = { color: color };
-    // color shouldn't change when text is selected
-    var selectedColor = isSerializing ? undefined : { "--selected-color": color };
-    var mergedStyle = __assign(__assign(__assign({}, (attributes.style || {})), textColor), selectedColor);
-    var classes = mergeClassStrings(kTextColorClass, attributes.className);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", __assign({ className: classes, style: mergedStyle }, attributes), children));
-}
-var kSpanTag = "span";
-function getColorMarkToRender(props) {
-    return props.marks.find(function (m) { return !!(m && (m.type === EFormat.color)); });
-}
-// By default, marks are rendered in the order in which they're stored in the model,
-// which is the order in which they're added by the user. In some cases, however,
-// there are ordering dependencies in the rendering of the marks, notably that a
-// text color mark must wrap a strikethrough mark for the strikethrough to be
-// rendered in the correct color. Therefore, we play a bit of sleight-of-hand by
-// rendering the mark that should be rendered at the appropriate mark render index
-// rather than rendering the mark that slate actually asked us to render.
-function getMarkToRender(props) {
-    // find index of mark we were asked to render
-    var requestedMarkIndex = getRenderIndexOfMark(props);
-    // color mark is always rendered last
-    return requestedMarkIndex === props.marks.size - 1
-        ? getColorMarkToRender(props)
-        : undefined;
-}
-function ColorPlugin() {
-    return {
-        deserialize: function (el, next) {
-            if ((el.tagName.toLowerCase() === kSpanTag) && el.classList.contains(kTextColorClass)) {
-                var data = getDataFromElement(el);
-                return __assign(__assign({ object: "mark", type: EFormat.color }, data), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, type = obj.type;
-            if ((object === "mark") && (type === EFormat.color)) {
-                var mark = obj;
-                return renderColorMark(mark, getRenderAttributesFromNode(mark, ["color"]), children, true);
-            }
-        },
-        queries: {
-            getActiveColor: function (editor) {
-                var mark = getActiveColorMark(editor);
-                return mark && mark.data.get("color");
-            },
-            hasActiveColorMark: function (editor) {
-                return !!getActiveColorMark(editor);
-            }
-        },
-        commands: {
-            setColorMark: function (editor, color) {
-                var kBlackColor = "#000000";
-                removeColorMarksFromSelection(editor);
-                (color !== kBlackColor) && editor.addMark({ type: EFormat.color, data: { color: color } });
-                return editor;
-            }
-        },
-        renderMark: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children;
-            var mark = getMarkToRender(props);
-            return mark
-                ? renderColorMark(mark, __assign(__assign({}, getRenderAttributesFromNode(mark)), attributes), children)
-                : next();
-        }
-    };
-}
-
-function renderBlockAsTag(tag, block, attributes, children, isSerializing) {
-    var _children = tag === "hr" ? undefined : children;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, _children);
-}
-var kTagToFormatMap = {
-    blockquote: EFormat.blockQuote,
-    div: EFormat.block,
-    h1: EFormat.heading1,
-    h2: EFormat.heading2,
-    h3: EFormat.heading3,
-    h4: EFormat.heading4,
-    h5: EFormat.heading5,
-    h6: EFormat.heading6,
-    hr: EFormat.horizontalRule,
-    p: EFormat.paragraph,
-    pre: EFormat.preformatted
-};
-var kFormatToTagMap = {};
-// build the kFormatToTagMap from the kTagToFormatMap
-for (var tag in kTagToFormatMap) {
-    var format = kTagToFormatMap[tag];
-    kFormatToTagMap[format] = tag;
-}
-// other block tags handled as generic blocks
-// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
-var kLegacyBlockTags = [
-    "address", "article", "aside",
-    "dd", "dl", "dt",
-    "details", "fieldset", "figcaption", "figure",
-    "footer", "form", "header", "hgroup", "nav", "section"
-];
-kLegacyBlockTags.forEach(function (tag) { return kTagToFormatMap[tag] = EFormat.block; });
-function getTagForBlock(node) {
-    if (!Block.isBlock(node))
-        return undefined;
-    var format = node.type, data = node.data;
-    return data.get("tag") || kFormatToTagMap[format];
-}
-function getDataFromBlockElement(el) {
-    var tag = el.tagName.toLowerCase();
-    var dataObj = getDataFromElement(el, { tag: tag });
-    // convert <center> tag to center alignment property
-    if (tag === "center") {
-        (dataObj === null || dataObj === void 0 ? void 0 : dataObj.data) && (dataObj.data.align = "center");
-    }
-    return dataObj;
-}
-function getRenderAttributesFromBlock(block) {
-    var isCenterTag = (block.type === EFormat.block) &&
-        (block.data.get("tag") === "center");
-    var omits = __spreadArrays(["tag"], (isCenterTag ? ["align"] : []));
-    return getRenderAttributesFromNode(block, omits);
-}
-/**
- * On return/enter, navigate to next/previous cell if inside a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleEnter = function (event, editor, next) {
-    // placeholder for any further special-case treatment
-    return next();
-};
-function CoreBlocksPlugin() {
-    return {
-        deserialize: function (el, next) {
-            var tag = el.tagName.toLowerCase();
-            var format = kTagToFormatMap[tag];
-            if (format) {
-                return __assign(__assign({ object: "block", type: format }, getDataFromBlockElement(el)), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var tag = getTagForBlock(obj);
-            if (tag) {
-                var node = obj;
-                var attributes = getRenderAttributesFromBlock(node);
-                return renderBlockAsTag(tag, node, attributes, children);
-            }
-        },
-        onCommand: function (command, editor, next) {
-            var type = command.type, args = command.args;
-            if (type === "toggleBlock") {
-                var format = args === null || args === void 0 ? void 0 : args[0];
-                if (format && kFormatToTagMap[format]) {
-                    editor.setBlocks(hasBlock(editor.value, format) ? EFormat.defaultBlock : format);
-                    return;
-                }
-            }
-            return next();
-        },
-        onKeyDown: function (event, editor, next) {
-            switch (event.key) {
-                case 'Enter':
-                    return handleEnter(event, editor, next);
-                default:
-                    return next();
-            }
-        },
-        renderBlock: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children, node = props.node;
-            var tag = getTagForBlock(node);
-            return tag
-                ? renderBlockAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromBlock(node)), attributes), children)
-                : next();
-        }
-    };
-}
-
-/** `Object#toString` result references. */
-var stringTag$3 = '[object String]';
-
-/**
- * Checks if `value` is classified as a `String` primitive or object.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a string, else `false`.
- * @example
- *
- * _.isString('abc');
- * // => true
- *
- * _.isString(1);
- * // => false
- */
-function isString(value) {
-  return typeof value == 'string' ||
-    (!isArray_1(value) && isObjectLike_1(value) && _baseGetTag(value) == stringTag$3);
-}
-
-var isString_1 = isString;
-
-/**
- * The base implementation of `_.property` without support for deep paths.
- *
- * @private
- * @param {string} key The key of the property to get.
- * @returns {Function} Returns the new accessor function.
- */
-function baseProperty(key) {
-  return function(object) {
-    return object == null ? undefined : object[key];
-  };
-}
-
-var _baseProperty = baseProperty;
-
-/**
- * Gets the size of an ASCII `string`.
- *
- * @private
- * @param {string} string The string inspect.
- * @returns {number} Returns the string size.
- */
-var asciiSize = _baseProperty('length');
-
-var _asciiSize = asciiSize;
-
-/** Used to compose unicode character classes. */
-var rsAstralRange = '\\ud800-\\udfff',
-    rsComboMarksRange = '\\u0300-\\u036f',
-    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
-    rsComboSymbolsRange = '\\u20d0-\\u20ff',
-    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
-    rsVarRange = '\\ufe0e\\ufe0f';
-
-/** Used to compose unicode capture groups. */
-var rsZWJ = '\\u200d';
-
-/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
-var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboRange + rsVarRange + ']');
-
-/**
- * Checks if `string` contains Unicode symbols.
- *
- * @private
- * @param {string} string The string to inspect.
- * @returns {boolean} Returns `true` if a symbol is found, else `false`.
- */
-function hasUnicode(string) {
-  return reHasUnicode.test(string);
-}
-
-var _hasUnicode = hasUnicode;
-
-/** Used to compose unicode character classes. */
-var rsAstralRange$1 = '\\ud800-\\udfff',
-    rsComboMarksRange$1 = '\\u0300-\\u036f',
-    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
-    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
-    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1,
-    rsVarRange$1 = '\\ufe0e\\ufe0f';
-
-/** Used to compose unicode capture groups. */
-var rsAstral = '[' + rsAstralRange$1 + ']',
-    rsCombo = '[' + rsComboRange$1 + ']',
-    rsFitz = '\\ud83c[\\udffb-\\udfff]',
-    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
-    rsNonAstral = '[^' + rsAstralRange$1 + ']',
-    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
-    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
-    rsZWJ$1 = '\\u200d';
-
-/** Used to compose unicode regexes. */
-var reOptMod = rsModifier + '?',
-    rsOptVar = '[' + rsVarRange$1 + ']?',
-    rsOptJoin = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
-    rsSeq = rsOptVar + reOptMod + rsOptJoin,
-    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
-
-/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
-var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
-
-/**
- * Gets the size of a Unicode `string`.
- *
- * @private
- * @param {string} string The string inspect.
- * @returns {number} Returns the string size.
- */
-function unicodeSize(string) {
-  var result = reUnicode.lastIndex = 0;
-  while (reUnicode.test(string)) {
-    ++result;
-  }
-  return result;
-}
-
-var _unicodeSize = unicodeSize;
-
-/**
- * Gets the number of symbols in `string`.
- *
- * @private
- * @param {string} string The string to inspect.
- * @returns {number} Returns the string size.
- */
-function stringSize(string) {
-  return _hasUnicode(string)
-    ? _unicodeSize(string)
-    : _asciiSize(string);
-}
-
-var _stringSize = stringSize;
-
-/** `Object#toString` result references. */
-var mapTag$5 = '[object Map]',
-    setTag$5 = '[object Set]';
-
-/**
- * Gets the size of `collection` by returning its length for array-like
- * values or the number of own enumerable string keyed properties for objects.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Collection
- * @param {Array|Object|string} collection The collection to inspect.
- * @returns {number} Returns the collection size.
- * @example
- *
- * _.size([1, 2, 3]);
- * // => 3
- *
- * _.size({ 'a': 1, 'b': 2 });
- * // => 2
- *
- * _.size('pebbles');
- * // => 7
- */
-function size(collection) {
-  if (collection == null) {
-    return 0;
-  }
-  if (isArrayLike_1(collection)) {
-    return isString_1(collection) ? _stringSize(collection) : collection.length;
-  }
-  var tag = _getTag(collection);
-  if (tag == mapTag$5 || tag == setTag$5) {
-    return collection.size;
-  }
-  return _baseKeys(collection).length;
-}
-
-var size_1 = size;
-
-var kTagToFormatMap$1 = {
-    span: EFormat.inline
-};
-var kFormatToTagMap$1 = {};
-// build the kFormatToTagMap from the kTagToFormatMap
-for (var tag$1 in kTagToFormatMap$1) {
-    var format$1 = kTagToFormatMap$1[tag$1];
-    kFormatToTagMap$1[format$1] = tag$1;
-}
-// legacy tags (https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elements)
-// empty in the HTML element sense - not allowed to have child elements
-var kLegacyEmptyInlineTags = [
-    "embed", "input"
-];
-// void in the Slate sense of not having editable contents
-var kLegacyVoidNonEmptyInlineTags = [
-    "audio", "iframe", "picture", "video"
-];
-var kLegacyContentInlineTags = [
-    "abbr", "acronym", "big", "cite", "dfn", "label", "q", "samp", "small",
-];
-var kLegacyConvertedInlineTags = ["font"];
-var kLegacyNonEmptyInlineTags = __spreadArrays(kLegacyContentInlineTags, kLegacyVoidNonEmptyInlineTags);
-var kLegacyVoidInlineTags = __spreadArrays(kLegacyEmptyInlineTags, kLegacyVoidNonEmptyInlineTags);
-var kLegacyInlineTags = __spreadArrays(kLegacyConvertedInlineTags, kLegacyContentInlineTags, kLegacyVoidInlineTags);
-// other inline tags handled as generic inlines
-kLegacyInlineTags.forEach(function (tag) { return kTagToFormatMap$1[tag] = EFormat.inline; });
-function isCoreInline(node) {
-    return Inline.isInline(node) && !!kFormatToTagMap$1[node.type];
-}
-function getTagForInline(node) {
-    if (!Inline.isInline(node) || !isCoreInline(node))
-        return undefined;
-    var format = node.type, data = node.data;
-    return data.get("tag") || kFormatToTagMap$1[format];
-}
-function getRenderTagForInline(node) {
-    if (!Inline.isInline(node) || !isCoreInline(node))
-        return undefined;
-    var format = node.type, data = node.data;
-    var tag = data.get("tag");
-    // <font> tags are converted to styled <span> tags
-    return tag && (tag !== "font")
-        ? tag
-        : kFormatToTagMap$1[format];
-}
-function isVoidInline(node) {
-    if (isCoreInline(node)) {
-        var tag = getTagForInline(node);
-        if (tag && kLegacyVoidInlineTags.includes(tag)) {
-            return true;
-        }
-    }
-    return false;
-}
-function getDataFromInlineElement(el) {
-    var tag = el.tagName.toLowerCase();
-    return getDataFromElement(el, { tag: tag });
-}
-// convert <font> tag to style attributes for a <span> tag
-// cf. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font
-function getRenderAttributesFromFontInline(inline) {
-    var data = inline.data;
-    var fontStyle = {};
-    var color = data.get("color");
-    if (color)
-        fontStyle.color = color;
-    var face = data.get("face");
-    if (face)
-        fontStyle.fontFamily = face;
-    var size = data.get("size");
-    if (size) {
-        var index = 0;
-        if (/^\d$/.test(size))
-            index = +size;
-        else if (/^-\d$/.test(size))
-            index = 3 - +size[1];
-        else if (/^\+\d$/.test(size))
-            index = 3 + +size[1];
-        if (index) {
-            index = Math.max(1, Math.min(7, index)) - 1;
-            fontStyle.fontSize = ["xx-small", "small", "medium", "large", "x-large", "xx-large", "xxx-large"][index];
-        }
-    }
-    var attributes = getRenderAttributesFromNode(inline, ["tag", "color", "face", "size"]);
-    var style = __assign(__assign({}, fontStyle), ((attributes === null || attributes === void 0 ? void 0 : attributes.style) || {}));
-    if (size_1(style)) {
-        attributes.style = style;
-    }
-    return attributes;
-}
-function getRenderAttributesFromInline(inline) {
-    if (getTagForInline(inline) === "font") {
-        return getRenderAttributesFromFontInline(inline);
-    }
-    return getRenderAttributesFromNode(inline, ["tag"]);
-}
-function renderInlineAsTag(tag, inline, attributes, children, isSerializing) {
-    var _children = kLegacyEmptyInlineTags.includes(tag) ? null : children;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, _children);
-}
-function CoreInlinesPlugin() {
-    return {
-        deserialize: function (el, next) {
-            var tag = el.tagName.toLowerCase();
-            var format = kTagToFormatMap$1[tag];
-            if (format) {
-                return __assign(__assign({ object: "inline", type: format }, getDataFromInlineElement(el)), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var tag = getRenderTagForInline(obj);
-            if (tag) {
-                var inline = obj;
-                var attributes = getRenderAttributesFromInline(inline);
-                return renderInlineAsTag(tag, inline, attributes, children);
-            }
-        },
-        onQuery: function (query, editor, next) {
-            if (query.type === "isVoid") {
-                var node = query.args[0];
-                if (isCoreInline(node)) {
-                    return isVoidInline(node);
-                }
-            }
-            return next();
-        },
-        renderInline: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children, node = props.node;
-            var tag = getRenderTagForInline(node);
-            return tag
-                ? renderInlineAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromInline(node)), attributes), children)
-                : next();
-        }
-    };
-}
-
-function renderMarkAsTag(tag, mark, attributes, children, isSerializing) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, children);
-}
-var kTagToFormatMap$2 = {
-    code: EFormat.code,
-    del: EFormat.deleted,
-    em: EFormat.italic,
-    ins: EFormat.inserted,
-    mark: EFormat.marked,
-    strong: EFormat.bold,
-    sub: EFormat.subscript,
-    sup: EFormat.superscript,
-    u: EFormat.underlined
-};
-var kFormatToTagMap$2 = {};
-// build the kFormatToTagMap from the kTagToFormatMap
-for (var tag$2 in kTagToFormatMap$2) {
-    var format$2 = kTagToFormatMap$2[tag$2];
-    kFormatToTagMap$2[format$2] = tag$2;
-}
-// add additional tags supported for import but not used for rendering
-kTagToFormatMap$2["b"] = EFormat.bold;
-kTagToFormatMap$2["i"] = EFormat.italic;
-kTagToFormatMap$2["s"] = EFormat.deleted;
-kTagToFormatMap$2["strike"] = EFormat.deleted;
-function getTagForMark(mark) {
-    // auto-convert mark tags for consistency with TinyMCE editor
-    return kFormatToTagMap$2[mark.type];
-    // const { type, data } = mark;
-    // const formatValue = data.get(type);
-    // return typeof formatValue === "string"
-    //         ? formatValue
-    //         : kFormatToTagMap[type];
-}
-function getHandledMarkAtIndex(props, index) {
-    var marks = props.marks;
-    // return the mark that would be at that index if only
-    // marks handled by this plugin were present.
-    var handledMarkIndex = 0;
-    return marks.find(function (m) {
-        var isHandledMark = !!(m && kFormatToTagMap$2[m.type]);
-        if (isHandledMark) {
-            if (handledMarkIndex === index)
-                return true;
-            ++handledMarkIndex;
-        }
-        return false;
-    });
-}
-// By default, marks are rendered in the order in which they're stored in the model,
-// which is the order in which they're added by the user. In some cases, however,
-// there are ordering dependencies in the rendering of the marks, notably that a
-// text color mark must wrap a strikethrough mark for the strikethrough to be
-// rendered in the correct color. Therefore, we play a bit of sleight-of-hand by
-// rendering the mark that should be rendered at the appropriate mark render index
-// rather than rendering the mark that slate actually asked us to render.
-function getMarkToRender$1(props) {
-    // find index of mark we were asked to render
-    var requestedMarkIndex = getRenderIndexOfMark(props);
-    // render the mark that would be at that index if unhandled marks were removed
-    return getHandledMarkAtIndex(props, requestedMarkIndex);
-}
-function CoreMarksPlugin() {
-    return {
-        deserialize: function (el, next) {
-            var _a;
-            var tag = el.tagName.toLowerCase();
-            var format = kTagToFormatMap$2[tag];
-            if (format) {
-                return __assign(__assign({ object: "mark", type: format }, getDataFromElement(el, (_a = {}, _a[format] = tag, _a))), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, format = obj.type;
-            if (kFormatToTagMap$2[format] && (object === "mark")) {
-                var mark = obj;
-                var tag = getTagForMark(mark);
-                var attributes = getRenderAttributesFromNode(mark, [format]);
-                return renderMarkAsTag(tag, mark, attributes, children);
-            }
-        },
-        renderMark: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children;
-            var mark = getMarkToRender$1(props);
-            // use imported tag if present
-            var tag = mark && getTagForMark(mark);
-            return mark && tag
-                ? renderMarkAsTag(tag, mark, __assign(__assign({}, getRenderAttributesFromNode(mark)), attributes), children)
-                : next();
-        }
-    };
-}
-
-var kImageHighlightClass = "cc-image-highlight";
-function renderImage(node, attributes, children, options) {
-    var data = node.data;
-    var highlightClass = (options === null || options === void 0 ? void 0 : options.isHighlighted) && !(options === null || options === void 0 ? void 0 : options.isSerializing) ? kImageHighlightClass : undefined;
-    var classes = mergeClassStrings(highlightClass, attributes.className);
-    var src = data.get("src");
-    var onClick = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onClick;
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", __assign({ className: classes, src: src, onClick: onClick }, attributes)));
-}
-var kImageTag = "img";
-function ImagePlugin() {
-    return {
-        deserialize: function (el, next) {
-            if (el.tagName.toLowerCase() === kImageTag) {
-                var data = getDataFromElement(el);
-                return __assign(__assign({ object: "inline", type: EFormat.image }, data), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, type = obj.type;
-            if ((object === "inline") && (type === EFormat.image)) {
-                var image = obj;
-                return renderImage(image, getRenderAttributesFromNode(image), children, { isSerializing: true });
-            }
-        },
-        queries: {
-            isImageActive: function (editor) {
-                return hasActiveInline(editor.value, EFormat.image);
-            },
-            isImageEnabled: function (editor) {
-                return (editor.value.blocks.size <= 1) && (editor.value.inlines.size === 0);
-            }
-        },
-        commands: {
-            configureImage: function (editor, displayDialog) {
-                displayDialog({
-                    title: "Insert Image",
-                    prompts: ["Enter the URL of the image:"],
-                    onAccept: function (_editor, inputs) { return _editor.command("addImage", inputs); }
-                });
-                return editor;
-            },
-            addImage: function (editor, dialogValues) {
-                var src = dialogValues[0];
-                if (!editor)
-                    return editor;
-                if (!src)
-                    return editor;
-                editor.insertInline({
-                    type: EFormat.image,
-                    data: { src: src }
-                });
-                return editor;
-            },
-        },
-        schema: {
-            inlines: {
-                image: {
-                    isVoid: true,
-                }
-            }
-        },
-        renderInline: function (props, editor, next) {
-            var attributes = props.attributes, node = props.node, children = props.children;
-            if (node.type !== EFormat.image)
-                return next();
-            var dataAttrs = getRenderAttributesFromNode(node);
-            var options = {
-                isSerializing: false,
-                isHighlighted: props.isSelected || props.isFocused,
-                onClick: function () { return editor.moveFocusToStartOfNode(node); }
-            };
-            return renderImage(node, __assign(__assign({}, dataAttrs), attributes), children, options);
-        }
-    };
-}
-
-function renderLink(link, attributes, children, isSerializing) {
-    if (isSerializing === void 0) { isSerializing = false; }
-    var data = link.data;
-    var href = data.get('href');
-    var rel = isSerializing ? undefined : "noopener noreferrer";
-    var onDoubleClick = isSerializing ? undefined : function () { return window.open(href); };
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", __assign({}, attributes, { href: href, rel: rel, onDoubleClick: onDoubleClick }), children));
-}
-var kLinkTag = "a";
-function LinkPlugin() {
-    return {
-        deserialize: function (el, next) {
-            if (el.tagName.toLowerCase() === kLinkTag) {
-                var data = getDataFromElement(el);
-                return __assign(__assign({ object: "inline", type: EFormat.link }, data), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, type = obj.type;
-            if ((object === "inline") && (type === EFormat.link)) {
-                var link = obj;
-                return renderLink(link, getRenderAttributesFromNode(link), children, true);
-            }
-        },
-        queries: {
-            isLinkActive: function (editor) {
-                return hasActiveInline(editor.value, EFormat.link);
-            },
-            isLinkEnabled: function (editor) {
-                // must be in a single block
-                return (editor.value.blocks.size <= 1) &&
-                    // must have no selected inlines (click will insert link)
-                    ((editor.value.inlines.size === 0) ||
-                        // or have exactly one inline link selected (click will de-link)
-                        ((editor.value.inlines.size === 1) &&
-                            editor.value.inlines.every(function (inline) { return (inline === null || inline === void 0 ? void 0 : inline.type) === EFormat.link; })));
-            }
-        },
-        commands: {
-            wrapLink: function (editor, href) {
-                editor.wrapInline({
-                    type: EFormat.link,
-                    data: { href: href },
-                });
-                editor.moveToEnd();
-                return editor;
-            },
-            configureLink: function (editor, displayDialog) {
-                var value = editor.value;
-                var hasLink = hasActiveInline(editor.value, EFormat.link);
-                function unwrapLink(_editor) {
-                    _editor.unwrapInline(EFormat.link);
-                }
-                if (hasLink) {
-                    editor.command(unwrapLink);
-                }
-                else {
-                    var textPrompt = value.selection.isExpanded ? [] : ["Enter the text for the link:"];
-                    var linkCmd_1 = value.selection.isExpanded ? "applyLink" : "insertLink";
-                    displayDialog({
-                        title: "Insert Link",
-                        prompts: __spreadArrays(textPrompt, ["Enter the URL of the link:"]),
-                        onAccept: function (_editor, inputs) { return _editor.command(linkCmd_1, inputs); }
-                    });
-                }
-                return editor;
-            },
-            insertLink: function (editor, dialogValues) {
-                var text = dialogValues[0];
-                var href = dialogValues[1];
-                editor
-                    .insertText(text)
-                    .moveFocusBackward(text.length)
-                    .command("wrapLink", href);
-                return editor;
-            },
-            applyLink: function (editor, dialogValues) {
-                var href = dialogValues[0];
-                editor.command("wrapLink", href);
-                return editor;
-            }
-        },
-        renderInline: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children, node = props.node;
-            return node.type === EFormat.link
-                ? renderLink(node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
-                : next();
-        }
-    };
-}
-
-function renderNodeAsTag(tag, node, attributes, children, isSerializing) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, children);
-}
-var kTagToFormatMap$3 = {
-    li: EFormat.listItem,
-    ol: EFormat.numberedList,
-    ul: EFormat.bulletedList
-};
-var kFormatToTagMap$3 = {};
-// build the kFormatToTagMap from the kTagToFormatMap
-for (var tag$3 in kTagToFormatMap$3) {
-    var format$3 = kTagToFormatMap$3[tag$3];
-    kFormatToTagMap$3[format$3] = tag$3;
-}
-/**
- * On return/enter, navigate to next/previous cell if inside a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleEnter$1 = function (event, editor, next) {
-    // For now, treat enter like tab. A more sophisticated implementation would
-    // advance to the next/previous row rather than to the next cell, but that
-    // is trickier to figure out.
-    // return handleTab(event, editor, next);
-    return next();
-};
-function isListOfTypeSelected(editor, format) {
-    var _a = editor.value, blocks = _a.blocks, document = _a.document;
-    return blocks.some(function (block) {
-        return !!block && !!document.getClosest(block.key, function (parent) { return isBlockOfType(parent, format); });
-    });
-}
-function ListPlugin() {
-    return {
-        deserialize: function (el, next) {
-            var tag = el.tagName.toLowerCase();
-            var format = kTagToFormatMap$3[tag];
-            if (format) {
-                return __assign(__assign({ object: "block", type: format }, getDataFromElement(el)), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, type = obj.type;
-            var format = type;
-            var tag = kFormatToTagMap$3[format];
-            if (tag && (object === "block")) {
-                var node = obj;
-                var attributes = getRenderAttributesFromNode(node);
-                return renderNodeAsTag(tag, node, attributes, children);
-            }
-        },
-        onCommand: function (command, editor, next) {
-            var type = command.type, args = command.args;
-            if (type === "toggleBlock") {
-                var format = args === null || args === void 0 ? void 0 : args[0];
-                var containsListItems = hasBlock(editor.value, EFormat.listItem);
-                if ((format === EFormat.bulletedList) || (format === EFormat.numberedList)) {
-                    var isListOfThisType = isListOfTypeSelected(editor, format);
-                    if (!containsListItems) {
-                        // For a brand new list, first set the selection to be a list-item.
-                        // Then wrap the new list-items with the appropriate type of block.
-                        editor.setBlocks(EFormat.listItem)
-                            .wrapBlock(format);
-                    }
-                    else if (isListOfThisType) {
-                        // If we are setting a list to its current type, we treat this as
-                        // a toggle-off. To do this, we unwrap the selection and remove all
-                        // list-items.
-                        editor.setBlocks(EFormat.defaultBlock) // Removes blocks typed w/ "list-item"
-                            .unwrapBlock(EFormat.bulletedList)
-                            .unwrapBlock(EFormat.numberedList);
-                    }
-                    else {
-                        // If we have ended up here, then we are switching a list between slate
-                        // types, i.e., bulleted <-> numbered.
-                        editor.unwrapBlock(format === EFormat.bulletedList ? EFormat.numberedList : EFormat.bulletedList)
-                            .wrapBlock(format);
-                    }
-                    return;
-                }
-                else {
-                    if (containsListItems) {
-                        // In this case, we are trying to change a block away from
-                        // being a list. To do this, we either set the slateType we are
-                        // after, or clear it, if it's already set to that slateType. Then
-                        // we remove any part of the selection that might be a wrapper
-                        // of either type of list.
-                        editor.unwrapBlock(EFormat.bulletedList)
-                            .unwrapBlock(EFormat.numberedList);
-                    }
-                }
-            }
-            return next();
-        },
-        onKeyDown: function (event, editor, next) {
-            switch (event.key) {
-                case 'Enter':
-                    return handleEnter$1(event, editor, next);
-                default:
-                    return next();
-            }
-        },
-        renderBlock: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children, node = props.node;
-            var tag = kFormatToTagMap$3[node.type];
-            return tag
-                ? renderNodeAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
-                : next();
-        }
-    };
-}
-
-function renderNodeAsTag$1(tableTag, node, attributes, children, isSerializing) {
-    // <col> tags can't have children
-    var _children = tableTag === "col" ? null : children;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tableTag, attributes, _children);
-}
-var kTagToFormatMap$4 = {
-    table: "table",
-    caption: "table-caption",
-    colgroup: "table-column-group",
-    col: "table-column",
-    thead: "table-header",
-    tbody: "table-body",
-    tr: "table-row",
-    th: "table-header-cell",
-    td: "table-cell",
-    tfoot: "table-footer"
-};
-var kFormatToTagMap$4 = {};
-// build the kFormatToTagMap from the kTagToFormatMap
-for (var tag$4 in kTagToFormatMap$4) {
-    var format$4 = kTagToFormatMap$4[tag$4];
-    kFormatToTagMap$4[format$4] = tag$4;
-}
-function isTableCell(node) {
-    return ((node === null || node === void 0 ? void 0 : node.object) === "block") && (((node === null || node === void 0 ? void 0 : node.type) === "table-cell") || ((node === null || node === void 0 ? void 0 : node.type) === "table-header-cell"));
-}
-function getSelectionInfo(editor) {
-    var blocks = editor.value.blocks;
-    var selectedCells = 0;
-    blocks.forEach(function (node) { return isTableCell(node) && ++selectedCells; });
-    return { selectedBlocks: blocks.size, selectedCells: selectedCells };
-}
-function isCaretAtStart(editor) {
-    var _a = editor.value, document = _a.document, _b = _a.selection, isCollapsed = _b.isCollapsed, start = _b.start;
-    var startNode = isCollapsed && document.getDescendant(start.key);
-    return !!startNode && start.isAtStartOfNode(startNode);
-}
-function isCaretAtEnd(editor) {
-    var _a = editor.value, document = _a.document, _b = _a.selection, isCollapsed = _b.isCollapsed, end = _b.end;
-    var endNode = isCollapsed && document.getDescendant(end.key);
-    return !!endNode && end.isAtEndOfNode(endNode);
-}
-// returns true if an expanded selection could be normalized for editing
-// returns false if an expanded selection should not allow editing
-// returns undefined if this function has no opinion (collapsed selection, not a table cell, etc.)
-function normalizeExpandedSelection(editor) {
-    var _a = editor.value, document = _a.document, _b = _a.selection, isExpanded = _b.isExpanded, start = _b.start, end = _b.end;
-    if (!isExpanded)
-        return undefined;
-    var _c = getSelectionInfo(editor), selectedBlocks = _c.selectedBlocks, selectedCells = _c.selectedCells;
-    if (selectedCells === 0)
-        return undefined;
-    if ((selectedCells === 1) && (selectedBlocks === 1))
-        return true;
-    if (selectedBlocks > 2)
-        return false;
-    var startNode = document.getDescendant(start.key);
-    var endNode = document.getDescendant(end.key);
-    if ((selectedBlocks === 2) && startNode && endNode && end.isAtStartOfNode(endNode)) {
-        editor.select(editor.value.selection.moveEndToEndOfNode(startNode));
-        return true;
-    }
-    return false;
-}
-function prevTableCell(editor) {
-    var _a = editor.value, document = _a.document, start = _a.selection.start;
-    var startNode = document.getDescendant(start.key);
-    var prevText = startNode && document.getPreviousText(startNode.key);
-    var prevBlock = prevText && document.getClosestBlock(prevText.key);
-    return prevBlock && isTableCell(prevBlock) ? prevBlock : undefined;
-}
-function nextTableCell(editor) {
-    var _a = editor.value, document = _a.document, end = _a.selection.end;
-    var endNode = document.getDescendant(end.key);
-    var endText = endNode && document.getNextText(endNode.key);
-    var nextBlock = endText && document.getClosestBlock(endText.key);
-    return nextBlock && isTableCell(nextBlock) ? nextBlock : undefined;
-}
-/**
- * On tab, navigate to next/previous cell if inside a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleTab = function (event, editor, next) {
-    var selectedCells = getSelectionInfo(editor).selectedCells;
-    if (selectedCells) {
-        var tabCell = event.shiftKey ? prevTableCell(editor) : nextTableCell(editor);
-        tabCell && editor.moveToRangeOfNode(tabCell);
-        event.preventDefault();
-    }
-    else {
-        next();
-    }
-};
-/**
- * On return/enter, navigate to next/previous cell if inside a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleEnter$2 = function (event, editor, next) {
-    // For now, treat enter like tab. A more sophisticated implementation would
-    // advance to the next/previous row rather than to the next cell, but that
-    // is trickier to figure out.
-    return handleTab(event, editor, next);
-};
-/**
- * On backspace, do nothing if at the start of a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleBackspace = function (event, editor, next) {
-    var value = editor.value;
-    var selection = value.selection;
-    var isCollapsed = selection.isCollapsed;
-    var _a = getSelectionInfo(editor), selectedBlocks = _a.selectedBlocks, selectedCells = _a.selectedCells;
-    // can backspace outside a table unless the caret is immediately after a table
-    if (((selectedCells === 0) && !(isCaretAtStart(editor) && prevTableCell(editor))) ||
-        // can delete the text inside a table cell, but not beyond the cell
-        ((selectedCells === 1) && (selectedBlocks === 1) &&
-            (!isCollapsed || (selection.start.offset !== 0))) ||
-        // can delete text in a cell if an expanded selection can be normalized to one cell
-        normalizeExpandedSelection(editor)) {
-        return next();
-    }
-    // also can't delete if more than one cell is selected
-    event.preventDefault();
-};
-/**
- * On delete, do nothing if at the end of a table cell.
- *
- * @param {Event} event
- * @param {Editor} editor
- */
-var handleDelete = function (event, editor, next) {
-    var value = editor.value;
-    var selection = value.selection;
-    var isCollapsed = selection.isCollapsed;
-    var _a = getSelectionInfo(editor), selectedBlocks = _a.selectedBlocks, selectedCells = _a.selectedCells;
-    // can delete outside a table unless the caret is immediately before a table
-    if (((selectedCells === 0) && !(isCaretAtEnd(editor) && nextTableCell(editor))) ||
-        // can delete the text inside a table cell, but not beyond the cell
-        ((selectedCells === 1) && (selectedBlocks === 1) &&
-            (!isCollapsed || (selection.end.offset !== value.startText.text.length))) ||
-        // can delete text in a cell if an expanded selection can be normalized to one cell
-        normalizeExpandedSelection(editor)) {
-        return next();
-    }
-    // also can't delete if more than one cell is selected
-    event.preventDefault();
-};
-function TablePlugin() {
-    return {
-        deserialize: function (el, next) {
-            var tag = el.tagName.toLowerCase();
-            var format = kTagToFormatMap$4[tag];
-            if (format) {
-                var data = getDataFromElement(el);
-                return __assign(__assign({ object: "block", type: format }, data), { nodes: next(el.childNodes) });
-            }
-        },
-        serialize: function (obj, children) {
-            var object = obj.object, type = obj.type;
-            var format = type;
-            var tag = kFormatToTagMap$4[format];
-            if (tag && (object === "block")) {
-                var node = obj;
-                var attributes = getRenderAttributesFromNode(node);
-                return renderNodeAsTag$1(tag, node, attributes, children);
-            }
-        },
-        postSerialize: function (html) {
-            // slate-html-serializer uses react-dom/server/renderToStaticMarkup(), which
-            // generates incorrect case for "colspan" (but not for "rowspan" ¯\_(ツ)_/¯).
-            return html.replace("colSpan", "colspan");
-        },
-        renderBlock: function (props, editor, next) {
-            var attributes = props.attributes, children = props.children, node = props.node;
-            var tag = kFormatToTagMap$4[node.type];
-            return tag
-                ? renderNodeAsTag$1(tag, node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
-                : next();
-        },
-        onBeforeInput: function (event, editor, next) {
-            if (normalizeExpandedSelection(editor) === false) {
-                event.preventDefault();
-            }
-            else {
-                return next();
-            }
-        },
-        onKeyDown: function (event, editor, next) {
-            switch (event.key) {
-                case 'Tab':
-                    return handleTab(event, editor, next);
-                case 'Enter':
-                    return handleEnter$2(event, editor, next);
-                case 'Backspace':
-                    return handleBackspace(event, editor, next);
-                case 'Delete':
-                    return handleDelete(event, editor, next);
-                default:
-                    return next();
-            }
-        }
-    };
-}
-
-// A modified version of the TEXT_RULE from the slate-html-serializer with
-// special handling for &nbsp;
-var TEXT_RULE$1 = {
-    deserialize: function (el) {
-        if (el.tagName && el.tagName.toLowerCase() === 'br') {
-            return {
-                object: 'text',
-                text: '\n',
-                marks: [],
-            };
-        }
-        if (el.nodeName === '#text') {
-            if (el.nodeValue && el.nodeValue.match(/<!--.*?-->/))
-                return;
-            return {
-                object: 'text',
-                text: el.nodeValue,
-                marks: [],
-            };
-        }
-    },
-    serialize: function (obj, children) {
-        if (obj.object === 'string') {
-            return children.split('\n').reduce(function (array, text, i) {
-                if (i !== 0)
-                    array.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", { key: i }));
-                // encode non-breaking spaces (for visibility)
-                array.push(text.replace(/\u00A0/g, "&nbsp;"));
-                return array;
-            }, []);
-        }
-    },
-    postSerialize: function (html) {
-        // After encoding non-breaking spaces in the TEXT_RULE above,
-        // renderToStaticMarkup() re-escapes so we have to unescape.
-        return html.replace(/&amp;nbsp;/g, "&nbsp;");
-    }
-};
-var rules = [
-    ColorPlugin(), CoreMarksPlugin(),
-    ImagePlugin(), LinkPlugin(), CoreInlinesPlugin(),
-    ListPlugin(), TablePlugin(), CoreBlocksPlugin(),
-    TEXT_RULE$1
-];
-var htmlSerializer = new Html({ rules: rules });
-function htmlToSlate(html) {
-    return htmlSerializer.deserialize(html);
-}
-function slateToHtml(value) {
-    var blocks = htmlSerializer.serialize(value, { render: false });
-    // we render each top-level block element separately, so they each end up on their own line.
-    var htmlStrings = blocks.map(function (block) { return Object(react_dom_server__WEBPACK_IMPORTED_MODULE_1__["renderToStaticMarkup"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("body", null, block)).slice(6, -7); });
-    var html = htmlStrings.join("\n");
-    for (var _i = 0, rules_1 = rules; _i < rules_1.length; _i++) {
-        var rule = rules_1[_i];
-        // give plugins a chance to post-process the generated HTML
-        rule.postSerialize && (html = rule.postSerialize(html));
-    }
-    return html;
-}
-
-/**
- * Casts `value` as an array if it's not one.
- *
- * @static
- * @memberOf _
- * @since 4.4.0
- * @category Lang
- * @param {*} value The value to inspect.
- * @returns {Array} Returns the cast array.
- * @example
- *
- * _.castArray(1);
- * // => [1]
- *
- * _.castArray({ 'a': 1 });
- * // => [{ 'a': 1 }]
- *
- * _.castArray('abc');
- * // => ['abc']
- *
- * _.castArray(null);
- * // => [null]
- *
- * _.castArray(undefined);
- * // => [undefined]
- *
- * _.castArray();
- * // => []
- *
- * var array = [1, 2, 3];
- * console.log(_.castArray(array) === array);
- * // => true
- */
-function castArray() {
-  if (!arguments.length) {
-    return [];
-  }
-  var value = arguments[0];
-  return isArray_1(value) ? value : [value];
-}
-
-var castArray_1 = castArray;
-
-/** Used to stand-in for `undefined` hash values. */
-var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
-
-/**
- * Adds `value` to the array cache.
- *
- * @private
- * @name add
- * @memberOf SetCache
- * @alias push
- * @param {*} value The value to cache.
- * @returns {Object} Returns the cache instance.
- */
-function setCacheAdd(value) {
-  this.__data__.set(value, HASH_UNDEFINED$2);
-  return this;
-}
-
-var _setCacheAdd = setCacheAdd;
-
-/**
- * Checks if `value` is in the array cache.
- *
- * @private
- * @name has
- * @memberOf SetCache
- * @param {*} value The value to search for.
- * @returns {number} Returns `true` if `value` is found, else `false`.
- */
-function setCacheHas(value) {
-  return this.__data__.has(value);
-}
-
-var _setCacheHas = setCacheHas;
-
-/**
- *
- * Creates an array cache object to store unique values.
- *
- * @private
- * @constructor
- * @param {Array} [values] The values to cache.
- */
-function SetCache(values) {
-  var index = -1,
-      length = values == null ? 0 : values.length;
-
-  this.__data__ = new _MapCache;
-  while (++index < length) {
-    this.add(values[index]);
-  }
-}
-
-// Add methods to `SetCache`.
-SetCache.prototype.add = SetCache.prototype.push = _setCacheAdd;
-SetCache.prototype.has = _setCacheHas;
-
-var _SetCache = SetCache;
-
-/**
- * A specialized version of `_.some` for arrays without support for iteratee
- * shorthands.
- *
- * @private
- * @param {Array} [array] The array to iterate over.
- * @param {Function} predicate The function invoked per iteration.
- * @returns {boolean} Returns `true` if any element passes the predicate check,
- *  else `false`.
- */
-function arraySome(array, predicate) {
-  var index = -1,
-      length = array == null ? 0 : array.length;
-
-  while (++index < length) {
-    if (predicate(array[index], index, array)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-var _arraySome = arraySome;
-
-/**
- * Checks if a `cache` value for `key` exists.
- *
- * @private
- * @param {Object} cache The cache to query.
- * @param {string} key The key of the entry to check.
- * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
- */
-function cacheHas(cache, key) {
-  return cache.has(key);
-}
-
-var _cacheHas = cacheHas;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG = 1,
-    COMPARE_UNORDERED_FLAG = 2;
-
-/**
- * A specialized version of `baseIsEqualDeep` for arrays with support for
- * partial deep comparisons.
- *
- * @private
- * @param {Array} array The array to compare.
- * @param {Array} other The other array to compare.
- * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
- * @param {Function} customizer The function to customize comparisons.
- * @param {Function} equalFunc The function to determine equivalents of values.
- * @param {Object} stack Tracks traversed `array` and `other` objects.
- * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
- */
-function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
-  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
-      arrLength = array.length,
-      othLength = other.length;
-
-  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
-    return false;
-  }
-  // Assume cyclic values are equal.
-  var stacked = stack.get(array);
-  if (stacked && stack.get(other)) {
-    return stacked == other;
-  }
-  var index = -1,
-      result = true,
-      seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new _SetCache : undefined;
-
-  stack.set(array, other);
-  stack.set(other, array);
-
-  // Ignore non-index properties.
-  while (++index < arrLength) {
-    var arrValue = array[index],
-        othValue = other[index];
-
-    if (customizer) {
-      var compared = isPartial
-        ? customizer(othValue, arrValue, index, other, array, stack)
-        : customizer(arrValue, othValue, index, array, other, stack);
-    }
-    if (compared !== undefined) {
-      if (compared) {
-        continue;
-      }
-      result = false;
-      break;
-    }
-    // Recursively compare arrays (susceptible to call stack limits).
-    if (seen) {
-      if (!_arraySome(other, function(othValue, othIndex) {
-            if (!_cacheHas(seen, othIndex) &&
-                (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
-              return seen.push(othIndex);
-            }
-          })) {
-        result = false;
-        break;
-      }
-    } else if (!(
-          arrValue === othValue ||
-            equalFunc(arrValue, othValue, bitmask, customizer, stack)
-        )) {
-      result = false;
-      break;
-    }
-  }
-  stack['delete'](array);
-  stack['delete'](other);
-  return result;
-}
-
-var _equalArrays = equalArrays;
-
-/**
- * Converts `map` to its key-value pairs.
- *
- * @private
- * @param {Object} map The map to convert.
- * @returns {Array} Returns the key-value pairs.
- */
-function mapToArray(map) {
-  var index = -1,
-      result = Array(map.size);
-
-  map.forEach(function(value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
-}
-
-var _mapToArray = mapToArray;
-
-/**
- * Converts `set` to an array of its values.
- *
- * @private
- * @param {Object} set The set to convert.
- * @returns {Array} Returns the values.
- */
-function setToArray(set) {
-  var index = -1,
-      result = Array(set.size);
-
-  set.forEach(function(value) {
-    result[++index] = value;
-  });
-  return result;
-}
-
-var _setToArray = setToArray;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG$1 = 1,
-    COMPARE_UNORDERED_FLAG$1 = 2;
-
-/** `Object#toString` result references. */
-var boolTag$3 = '[object Boolean]',
-    dateTag$3 = '[object Date]',
-    errorTag$2 = '[object Error]',
-    mapTag$6 = '[object Map]',
-    numberTag$3 = '[object Number]',
-    regexpTag$3 = '[object RegExp]',
-    setTag$6 = '[object Set]',
-    stringTag$4 = '[object String]',
-    symbolTag$3 = '[object Symbol]';
-
-var arrayBufferTag$3 = '[object ArrayBuffer]',
-    dataViewTag$4 = '[object DataView]';
-
-/** Used to convert symbols to primitives and strings. */
-var symbolProto$2 = _Symbol ? _Symbol.prototype : undefined,
-    symbolValueOf$1 = symbolProto$2 ? symbolProto$2.valueOf : undefined;
-
-/**
- * A specialized version of `baseIsEqualDeep` for comparing objects of
- * the same `toStringTag`.
- *
- * **Note:** This function only supports comparing values with tags of
- * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
- *
- * @private
- * @param {Object} object The object to compare.
- * @param {Object} other The other object to compare.
- * @param {string} tag The `toStringTag` of the objects to compare.
- * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
- * @param {Function} customizer The function to customize comparisons.
- * @param {Function} equalFunc The function to determine equivalents of values.
- * @param {Object} stack Tracks traversed `object` and `other` objects.
- * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
- */
-function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
-  switch (tag) {
-    case dataViewTag$4:
-      if ((object.byteLength != other.byteLength) ||
-          (object.byteOffset != other.byteOffset)) {
-        return false;
-      }
-      object = object.buffer;
-      other = other.buffer;
-
-    case arrayBufferTag$3:
-      if ((object.byteLength != other.byteLength) ||
-          !equalFunc(new _Uint8Array(object), new _Uint8Array(other))) {
-        return false;
-      }
-      return true;
-
-    case boolTag$3:
-    case dateTag$3:
-    case numberTag$3:
-      // Coerce booleans to `1` or `0` and dates to milliseconds.
-      // Invalid dates are coerced to `NaN`.
-      return eq_1(+object, +other);
-
-    case errorTag$2:
-      return object.name == other.name && object.message == other.message;
-
-    case regexpTag$3:
-    case stringTag$4:
-      // Coerce regexes to strings and treat strings, primitives and objects,
-      // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
-      // for more details.
-      return object == (other + '');
-
-    case mapTag$6:
-      var convert = _mapToArray;
-
-    case setTag$6:
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG$1;
-      convert || (convert = _setToArray);
-
-      if (object.size != other.size && !isPartial) {
-        return false;
-      }
-      // Assume cyclic values are equal.
-      var stacked = stack.get(object);
-      if (stacked) {
-        return stacked == other;
-      }
-      bitmask |= COMPARE_UNORDERED_FLAG$1;
-
-      // Recursively compare objects (susceptible to call stack limits).
-      stack.set(object, other);
-      var result = _equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
-      stack['delete'](object);
-      return result;
-
-    case symbolTag$3:
-      if (symbolValueOf$1) {
-        return symbolValueOf$1.call(object) == symbolValueOf$1.call(other);
-      }
-  }
-  return false;
-}
-
-var _equalByTag = equalByTag;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG$2 = 1;
-
-/** Used for built-in method references. */
-var objectProto$e = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$b = objectProto$e.hasOwnProperty;
-
-/**
- * A specialized version of `baseIsEqualDeep` for objects with support for
- * partial deep comparisons.
- *
- * @private
- * @param {Object} object The object to compare.
- * @param {Object} other The other object to compare.
- * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
- * @param {Function} customizer The function to customize comparisons.
- * @param {Function} equalFunc The function to determine equivalents of values.
- * @param {Object} stack Tracks traversed `object` and `other` objects.
- * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
- */
-function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
-  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$2,
-      objProps = _getAllKeys(object),
-      objLength = objProps.length,
-      othProps = _getAllKeys(other),
-      othLength = othProps.length;
-
-  if (objLength != othLength && !isPartial) {
-    return false;
-  }
-  var index = objLength;
-  while (index--) {
-    var key = objProps[index];
-    if (!(isPartial ? key in other : hasOwnProperty$b.call(other, key))) {
-      return false;
-    }
-  }
-  // Assume cyclic values are equal.
-  var stacked = stack.get(object);
-  if (stacked && stack.get(other)) {
-    return stacked == other;
-  }
-  var result = true;
-  stack.set(object, other);
-  stack.set(other, object);
-
-  var skipCtor = isPartial;
-  while (++index < objLength) {
-    key = objProps[index];
-    var objValue = object[key],
-        othValue = other[key];
-
-    if (customizer) {
-      var compared = isPartial
-        ? customizer(othValue, objValue, key, other, object, stack)
-        : customizer(objValue, othValue, key, object, other, stack);
-    }
-    // Recursively compare objects (susceptible to call stack limits).
-    if (!(compared === undefined
-          ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))
-          : compared
-        )) {
-      result = false;
-      break;
-    }
-    skipCtor || (skipCtor = key == 'constructor');
-  }
-  if (result && !skipCtor) {
-    var objCtor = object.constructor,
-        othCtor = other.constructor;
-
-    // Non `Object` object instances with different constructors are not equal.
-    if (objCtor != othCtor &&
-        ('constructor' in object && 'constructor' in other) &&
-        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
-          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
-      result = false;
-    }
-  }
-  stack['delete'](object);
-  stack['delete'](other);
-  return result;
-}
-
-var _equalObjects = equalObjects;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG$3 = 1;
-
-/** `Object#toString` result references. */
-var argsTag$3 = '[object Arguments]',
-    arrayTag$2 = '[object Array]',
-    objectTag$4 = '[object Object]';
-
-/** Used for built-in method references. */
-var objectProto$f = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$c = objectProto$f.hasOwnProperty;
-
-/**
- * A specialized version of `baseIsEqual` for arrays and objects which performs
- * deep comparisons and tracks traversed objects enabling objects with circular
- * references to be compared.
- *
- * @private
- * @param {Object} object The object to compare.
- * @param {Object} other The other object to compare.
- * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
- * @param {Function} customizer The function to customize comparisons.
- * @param {Function} equalFunc The function to determine equivalents of values.
- * @param {Object} [stack] Tracks traversed `object` and `other` objects.
- * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
- */
-function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-  var objIsArr = isArray_1(object),
-      othIsArr = isArray_1(other),
-      objTag = objIsArr ? arrayTag$2 : _getTag(object),
-      othTag = othIsArr ? arrayTag$2 : _getTag(other);
-
-  objTag = objTag == argsTag$3 ? objectTag$4 : objTag;
-  othTag = othTag == argsTag$3 ? objectTag$4 : othTag;
-
-  var objIsObj = objTag == objectTag$4,
-      othIsObj = othTag == objectTag$4,
-      isSameTag = objTag == othTag;
-
-  if (isSameTag && isBuffer_1(object)) {
-    if (!isBuffer_1(other)) {
-      return false;
-    }
-    objIsArr = true;
-    objIsObj = false;
-  }
-  if (isSameTag && !objIsObj) {
-    stack || (stack = new _Stack);
-    return (objIsArr || isTypedArray_1(object))
-      ? _equalArrays(object, other, bitmask, customizer, equalFunc, stack)
-      : _equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
-  }
-  if (!(bitmask & COMPARE_PARTIAL_FLAG$3)) {
-    var objIsWrapped = objIsObj && hasOwnProperty$c.call(object, '__wrapped__'),
-        othIsWrapped = othIsObj && hasOwnProperty$c.call(other, '__wrapped__');
-
-    if (objIsWrapped || othIsWrapped) {
-      var objUnwrapped = objIsWrapped ? object.value() : object,
-          othUnwrapped = othIsWrapped ? other.value() : other;
-
-      stack || (stack = new _Stack);
-      return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
-    }
-  }
-  if (!isSameTag) {
-    return false;
-  }
-  stack || (stack = new _Stack);
-  return _equalObjects(object, other, bitmask, customizer, equalFunc, stack);
-}
-
-var _baseIsEqualDeep = baseIsEqualDeep;
-
-/**
- * The base implementation of `_.isEqual` which supports partial comparisons
- * and tracks traversed objects.
- *
- * @private
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @param {boolean} bitmask The bitmask flags.
- *  1 - Unordered comparison
- *  2 - Partial comparison
- * @param {Function} [customizer] The function to customize comparisons.
- * @param {Object} [stack] Tracks traversed `value` and `other` objects.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- */
-function baseIsEqual(value, other, bitmask, customizer, stack) {
-  if (value === other) {
-    return true;
-  }
-  if (value == null || other == null || (!isObjectLike_1(value) && !isObjectLike_1(other))) {
-    return value !== value && other !== other;
-  }
-  return _baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
-}
-
-var _baseIsEqual = baseIsEqual;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG$4 = 1,
-    COMPARE_UNORDERED_FLAG$2 = 2;
-
-/**
- * The base implementation of `_.isMatch` without support for iteratee shorthands.
- *
- * @private
- * @param {Object} object The object to inspect.
- * @param {Object} source The object of property values to match.
- * @param {Array} matchData The property names, values, and compare flags to match.
- * @param {Function} [customizer] The function to customize comparisons.
- * @returns {boolean} Returns `true` if `object` is a match, else `false`.
- */
-function baseIsMatch(object, source, matchData, customizer) {
-  var index = matchData.length,
-      length = index,
-      noCustomizer = !customizer;
-
-  if (object == null) {
-    return !length;
-  }
-  object = Object(object);
-  while (index--) {
-    var data = matchData[index];
-    if ((noCustomizer && data[2])
-          ? data[1] !== object[data[0]]
-          : !(data[0] in object)
-        ) {
-      return false;
-    }
-  }
-  while (++index < length) {
-    data = matchData[index];
-    var key = data[0],
-        objValue = object[key],
-        srcValue = data[1];
-
-    if (noCustomizer && data[2]) {
-      if (objValue === undefined && !(key in object)) {
-        return false;
-      }
-    } else {
-      var stack = new _Stack;
-      if (customizer) {
-        var result = customizer(objValue, srcValue, key, object, source, stack);
-      }
-      if (!(result === undefined
-            ? _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$4 | COMPARE_UNORDERED_FLAG$2, customizer, stack)
-            : result
-          )) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-var _baseIsMatch = baseIsMatch;
-
-/**
- * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` if suitable for strict
- *  equality comparisons, else `false`.
- */
-function isStrictComparable(value) {
-  return value === value && !isObject_1(value);
-}
-
-var _isStrictComparable = isStrictComparable;
-
-/**
- * Gets the property names, values, and compare flags of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {Array} Returns the match data of `object`.
- */
-function getMatchData(object) {
-  var result = keys_1(object),
-      length = result.length;
-
-  while (length--) {
-    var key = result[length],
-        value = object[key];
-
-    result[length] = [key, value, _isStrictComparable(value)];
-  }
-  return result;
-}
-
-var _getMatchData = getMatchData;
-
-/**
- * A specialized version of `matchesProperty` for source values suitable
- * for strict equality comparisons, i.e. `===`.
- *
- * @private
- * @param {string} key The key of the property to get.
- * @param {*} srcValue The value to match.
- * @returns {Function} Returns the new spec function.
- */
-function matchesStrictComparable(key, srcValue) {
-  return function(object) {
-    if (object == null) {
-      return false;
-    }
-    return object[key] === srcValue &&
-      (srcValue !== undefined || (key in Object(object)));
-  };
-}
-
-var _matchesStrictComparable = matchesStrictComparable;
-
-/**
- * The base implementation of `_.matches` which doesn't clone `source`.
- *
- * @private
- * @param {Object} source The object of property values to match.
- * @returns {Function} Returns the new spec function.
- */
-function baseMatches(source) {
-  var matchData = _getMatchData(source);
-  if (matchData.length == 1 && matchData[0][2]) {
-    return _matchesStrictComparable(matchData[0][0], matchData[0][1]);
-  }
-  return function(object) {
-    return object === source || _baseIsMatch(object, source, matchData);
-  };
-}
-
-var _baseMatches = baseMatches;
-
-/**
- * Gets the value at `path` of `object`. If the resolved value is
- * `undefined`, the `defaultValue` is returned in its place.
- *
- * @static
- * @memberOf _
- * @since 3.7.0
- * @category Object
- * @param {Object} object The object to query.
- * @param {Array|string} path The path of the property to get.
- * @param {*} [defaultValue] The value returned for `undefined` resolved values.
- * @returns {*} Returns the resolved value.
- * @example
- *
- * var object = { 'a': [{ 'b': { 'c': 3 } }] };
- *
- * _.get(object, 'a[0].b.c');
- * // => 3
- *
- * _.get(object, ['a', '0', 'b', 'c']);
- * // => 3
- *
- * _.get(object, 'a.b.c', 'default');
- * // => 'default'
- */
-function get(object, path, defaultValue) {
-  var result = object == null ? undefined : _baseGet(object, path);
-  return result === undefined ? defaultValue : result;
-}
-
-var get_1 = get;
-
-/** Used to compose bitmasks for value comparisons. */
-var COMPARE_PARTIAL_FLAG$5 = 1,
-    COMPARE_UNORDERED_FLAG$3 = 2;
-
-/**
- * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
- *
- * @private
- * @param {string} path The path of the property to get.
- * @param {*} srcValue The value to match.
- * @returns {Function} Returns the new spec function.
- */
-function baseMatchesProperty(path, srcValue) {
-  if (_isKey(path) && _isStrictComparable(srcValue)) {
-    return _matchesStrictComparable(_toKey(path), srcValue);
-  }
-  return function(object) {
-    var objValue = get_1(object, path);
-    return (objValue === undefined && objValue === srcValue)
-      ? hasIn_1(object, path)
-      : _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$5 | COMPARE_UNORDERED_FLAG$3);
-  };
-}
-
-var _baseMatchesProperty = baseMatchesProperty;
-
-/**
- * A specialized version of `baseProperty` which supports deep paths.
- *
- * @private
- * @param {Array|string} path The path of the property to get.
- * @returns {Function} Returns the new accessor function.
- */
-function basePropertyDeep(path) {
-  return function(object) {
-    return _baseGet(object, path);
-  };
-}
-
-var _basePropertyDeep = basePropertyDeep;
-
-/**
- * Creates a function that returns the value at `path` of a given object.
- *
- * @static
- * @memberOf _
- * @since 2.4.0
- * @category Util
- * @param {Array|string} path The path of the property to get.
- * @returns {Function} Returns the new accessor function.
- * @example
- *
- * var objects = [
- *   { 'a': { 'b': 2 } },
- *   { 'a': { 'b': 1 } }
- * ];
- *
- * _.map(objects, _.property('a.b'));
- * // => [2, 1]
- *
- * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
- * // => [1, 2]
- */
-function property(path) {
-  return _isKey(path) ? _baseProperty(_toKey(path)) : _basePropertyDeep(path);
-}
-
-var property_1 = property;
-
-/**
- * The base implementation of `_.iteratee`.
- *
- * @private
- * @param {*} [value=_.identity] The value to convert to an iteratee.
- * @returns {Function} Returns the iteratee.
- */
-function baseIteratee(value) {
-  // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
-  // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
-  if (typeof value == 'function') {
-    return value;
-  }
-  if (value == null) {
-    return identity_1;
-  }
-  if (typeof value == 'object') {
-    return isArray_1(value)
-      ? _baseMatchesProperty(value[0], value[1])
-      : _baseMatches(value);
-  }
-  return property_1(value);
-}
-
-var _baseIteratee = baseIteratee;
-
-/**
- * Creates a base function for methods like `_.forIn` and `_.forOwn`.
- *
- * @private
- * @param {boolean} [fromRight] Specify iterating from right to left.
- * @returns {Function} Returns the new base function.
- */
-function createBaseFor(fromRight) {
-  return function(object, iteratee, keysFunc) {
-    var index = -1,
-        iterable = Object(object),
-        props = keysFunc(object),
-        length = props.length;
-
-    while (length--) {
-      var key = props[fromRight ? length : ++index];
-      if (iteratee(iterable[key], key, iterable) === false) {
-        break;
-      }
-    }
-    return object;
-  };
-}
-
-var _createBaseFor = createBaseFor;
-
-/**
- * The base implementation of `baseForOwn` which iterates over `object`
- * properties returned by `keysFunc` and invokes `iteratee` for each property.
- * Iteratee functions may exit iteration early by explicitly returning `false`.
- *
- * @private
- * @param {Object} object The object to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @param {Function} keysFunc The function to get the keys of `object`.
- * @returns {Object} Returns `object`.
- */
-var baseFor = _createBaseFor();
-
-var _baseFor = baseFor;
-
-/**
- * The base implementation of `_.forOwn` without support for iteratee shorthands.
- *
- * @private
- * @param {Object} object The object to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Object} Returns `object`.
- */
-function baseForOwn(object, iteratee) {
-  return object && _baseFor(object, iteratee, keys_1);
-}
-
-var _baseForOwn = baseForOwn;
-
-/**
- * Creates a `baseEach` or `baseEachRight` function.
- *
- * @private
- * @param {Function} eachFunc The function to iterate over a collection.
- * @param {boolean} [fromRight] Specify iterating from right to left.
- * @returns {Function} Returns the new base function.
- */
-function createBaseEach(eachFunc, fromRight) {
-  return function(collection, iteratee) {
-    if (collection == null) {
-      return collection;
-    }
-    if (!isArrayLike_1(collection)) {
-      return eachFunc(collection, iteratee);
-    }
-    var length = collection.length,
-        index = fromRight ? length : -1,
-        iterable = Object(collection);
-
-    while ((fromRight ? index-- : ++index < length)) {
-      if (iteratee(iterable[index], index, iterable) === false) {
-        break;
-      }
-    }
-    return collection;
-  };
-}
-
-var _createBaseEach = createBaseEach;
-
-/**
- * The base implementation of `_.forEach` without support for iteratee shorthands.
- *
- * @private
- * @param {Array|Object} collection The collection to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array|Object} Returns `collection`.
- */
-var baseEach = _createBaseEach(_baseForOwn);
-
-var _baseEach = baseEach;
-
-/**
- * The base implementation of `_.map` without support for iteratee shorthands.
- *
- * @private
- * @param {Array|Object} collection The collection to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns the new mapped array.
- */
-function baseMap(collection, iteratee) {
-  var index = -1,
-      result = isArrayLike_1(collection) ? Array(collection.length) : [];
-
-  _baseEach(collection, function(value, key, collection) {
-    result[++index] = iteratee(value, key, collection);
-  });
-  return result;
-}
-
-var _baseMap = baseMap;
-
-/**
- * Creates an array of values by running each element in `collection` thru
- * `iteratee`. The iteratee is invoked with three arguments:
- * (value, index|key, collection).
- *
- * Many lodash methods are guarded to work as iteratees for methods like
- * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
- *
- * The guarded methods are:
- * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
- * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
- * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
- * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Collection
- * @param {Array|Object} collection The collection to iterate over.
- * @param {Function} [iteratee=_.identity] The function invoked per iteration.
- * @returns {Array} Returns the new mapped array.
- * @example
- *
- * function square(n) {
- *   return n * n;
- * }
- *
- * _.map([4, 8], square);
- * // => [16, 64]
- *
- * _.map({ 'a': 4, 'b': 8 }, square);
- * // => [16, 64] (iteration order is not guaranteed)
- *
- * var users = [
- *   { 'user': 'barney' },
- *   { 'user': 'fred' }
- * ];
- *
- * // The `_.property` iteratee shorthand.
- * _.map(users, 'user');
- * // => ['barney', 'fred']
- */
-function map(collection, iteratee) {
-  var func = isArray_1(collection) ? _arrayMap : _baseMap;
-  return func(collection, _baseIteratee(iteratee));
-}
-
-var map_1 = map;
-
-/**
- * The base implementation of `_.values` and `_.valuesIn` which creates an
- * array of `object` property values corresponding to the property names
- * of `props`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {Array} props The property names to get values for.
- * @returns {Object} Returns the array of property values.
- */
-function baseValues(object, props) {
-  return _arrayMap(props, function(key) {
-    return object[key];
-  });
-}
-
-var _baseValues = baseValues;
-
-/**
- * Creates an array of the own enumerable string keyed property values of `object`.
- *
- * **Note:** Non-object values are coerced to objects.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property values.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.values(new Foo);
- * // => [1, 2] (iteration order is not guaranteed)
- *
- * _.values('hi');
- * // => ['h', 'i']
- */
-function values(object) {
-  return object == null ? [] : _baseValues(object, keys_1(object));
-}
-
-var values_1 = values;
-
-function typeProp(type) {
-    return type != null ? { type: type } : {};
-}
-function keyProp(key) {
-    return key != null ? { key: key } : {};
-}
-function serializeMark(mark) {
-    var type = mark.type, data = mark.data;
-    var dataKeys = data && keys_1(data);
-    var dataValues = data && values_1(data);
-    // special case for single data values, so we get { color: "#aabbcc" }
-    // instead of { color: { color: "#aabbcc"} }
-    return (((dataValues === null || dataValues === void 0 ? void 0 : dataValues.length) === 1) && ((dataKeys === null || dataKeys === void 0 ? void 0 : dataKeys[0]) === type))
-        ? dataValues[0]
-        : ((dataValues === null || dataValues === void 0 ? void 0 : dataValues.length) ? data : true);
-}
-function serializeTextNode(node) {
-    var key = node.key, text = node.text, marks = node.marks;
-    var textNode = __assign(__assign({}, keyProp(key)), { text: text || "" });
-    marks === null || marks === void 0 ? void 0 : marks.forEach(function (mark) {
-        textNode[mark.type] = serializeMark(mark);
-    });
-    return textNode;
-}
-function serializeChildren(nodes, objTypes) {
-    return nodes.map(function (node) { return serializeNode$1(node, objTypes); });
-}
-// The 0.47 notions of Blocks/Inlines are combined in 0.50 to the notion of Element
-function serializeElement(node, objTypes) {
-    var object = node.object, type = node.type, key = node.key, nodes = node.nodes, data = node.data;
-    var children = serializeChildren(castArray_1(nodes), objTypes);
-    var element = __assign(__assign(__assign(__assign({}, typeProp(type)), keyProp(key)), { children: children }), data);
-    object && (objTypes[type] = object);
-    return element;
-}
-function serializeNode$1(node, objTypes) {
-    var _a;
-    var object = node.object;
-    switch (object) {
-        case "block":
-        case "inline":
-            return serializeElement(node, objTypes);
-        case "text":
-            return serializeTextNode(node);
-        default:
-            return ((_a = node) === null || _a === void 0 ? void 0 : _a.nodes) ? serializeElement(node, objTypes)
-                : serializeTextNode(node);
-    }
-}
-function serializeDocument(document) {
-    var nodes = document.nodes, key = document.key, data = document.data;
-    var objTypes = {};
-    var children = serializeChildren(castArray_1(nodes), objTypes);
-    // return objTypes map as part of document for use in deserialization
-    return __assign(__assign(__assign({}, keyProp(key)), { children: children, objTypes: objTypes }), data);
-}
-function serializeValueJSON(value) {
-    var _data = value.data, document = value.document;
-    var _a = _data || {}, undos = _a.undos, redos = _a.redos, others = __rest(_a, ["undos", "redos"]);
-    var data = size_1(others) ? { data: __assign({}, others) } : {};
-    return __assign(__assign({ object: "value" }, data), { document: document && serializeDocument(document) });
-}
-function serializeValue(value) {
-    var _a;
-    var options = ((_a = value === null || value === void 0 ? void 0 : value.data) === null || _a === void 0 ? void 0 : _a.size) ? { preserveData: true } : undefined;
-    return serializeValueJSON(Value.isValue(value) ? value.toJSON(options) : value);
-}
-function deserializeMark(type, value) {
-    var _a;
-    var mark = { type: type };
-    if (typeof value === "boolean")
-        return mark;
-    if (typeof value === "object")
-        return __assign(__assign({}, mark), { data: value });
-    return __assign(__assign({}, mark), { data: (_a = {}, _a[type] = value, _a) });
-}
-function deserializeTextNode(node) {
-    var key = node.key, text = node.text, others = __rest(node, ["key", "text"]);
-    var marks = map_1(others, function (value, type) { return deserializeMark(type, value); });
-    var marksVal = (marks === null || marks === void 0 ? void 0 : marks.length) ? { marks: marks } : {};
-    return __assign(__assign(__assign({ object: "text" }, keyProp(key)), { text: text }), marksVal);
-}
-function deserializeChildren(children, objTypes) {
-    return children.map(function (child) { return deserializeNode(child, objTypes); });
-}
-function deserializeElement(node, objTypes) {
-    var _type = node.type, key = node.key, children = node.children, others = __rest(node, ["type", "key", "children"]);
-    var type = _type || "paragraph";
-    var object = (objTypes[type] || "block");
-    var nodes = deserializeChildren(children, objTypes);
-    var data = size_1(others) ? { data: others } : {};
-    return __assign(__assign(__assign({ object: object, type: type }, keyProp(key)), { nodes: nodes }), data);
-}
-function deserializeNode(node, objTypes) {
-    return node.children
-        ? deserializeElement(node, objTypes)
-        : deserializeTextNode(node);
-}
-function deserializeDocument(document) {
-    var key = document.key, children = document.children, objTypes = document.objTypes;
-    return __assign(__assign({ object: "document" }, keyProp(key)), { nodes: deserializeChildren(children, objTypes) });
-}
-function deserializeValue(value) {
-    var documentJSON = value.document && deserializeDocument(value.document);
-    var dataJSON = value.data ? { data: value.data } : {};
-    var valueJSON = __assign({ object: "value", document: documentJSON }, dataJSON);
-    return Value.fromJSON(valueJSON);
-}
-
-/** @license React v16.13.1
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d$1=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h$1=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m$1=b?Symbol.for("react.concurrent_mode"):60111,n$1=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?
-Symbol.for("react.suspense_list"):60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.block"):60121,w$1=b?Symbol.for("react.fundamental"):60117,x=b?Symbol.for("react.responder"):60118,y$1=b?Symbol.for("react.scope"):60119;
-function z(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m$1:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n$1:case t:case r:case h$1:return a;default:return u}}case d$1:return u}}}function A(a){return z(a)===m$1}var AsyncMode=l;var ConcurrentMode=m$1;var ContextConsumer=k;var ContextProvider=h$1;var Element=c;var ForwardRef=n$1;var Fragment=e;var Lazy=t;var Memo=r;var Portal=d$1;
-var Profiler=g;var StrictMode=f;var Suspense=p;var isAsyncMode=function(a){return A(a)||z(a)===l};var isConcurrentMode=A;var isContextConsumer=function(a){return z(a)===k};var isContextProvider=function(a){return z(a)===h$1};var isElement=function(a){return "object"===typeof a&&null!==a&&a.$$typeof===c};var isForwardRef=function(a){return z(a)===n$1};var isFragment=function(a){return z(a)===e};var isLazy=function(a){return z(a)===t};
-var isMemo=function(a){return z(a)===r};var isPortal=function(a){return z(a)===d$1};var isProfiler=function(a){return z(a)===g};var isStrictMode=function(a){return z(a)===f};var isSuspense=function(a){return z(a)===p};
-var isValidElementType=function(a){return "string"===typeof a||"function"===typeof a||a===e||a===m$1||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h$1||a.$$typeof===k||a.$$typeof===n$1||a.$$typeof===w$1||a.$$typeof===x||a.$$typeof===y$1||a.$$typeof===v)};var typeOf$1=z;
-
-var reactIs_production_min = {
-	AsyncMode: AsyncMode,
-	ConcurrentMode: ConcurrentMode,
-	ContextConsumer: ContextConsumer,
-	ContextProvider: ContextProvider,
-	Element: Element,
-	ForwardRef: ForwardRef,
-	Fragment: Fragment,
-	Lazy: Lazy,
-	Memo: Memo,
-	Portal: Portal,
-	Profiler: Profiler,
-	StrictMode: StrictMode,
-	Suspense: Suspense,
-	isAsyncMode: isAsyncMode,
-	isConcurrentMode: isConcurrentMode,
-	isContextConsumer: isContextConsumer,
-	isContextProvider: isContextProvider,
-	isElement: isElement,
-	isForwardRef: isForwardRef,
-	isFragment: isFragment,
-	isLazy: isLazy,
-	isMemo: isMemo,
-	isPortal: isPortal,
-	isProfiler: isProfiler,
-	isStrictMode: isStrictMode,
-	isSuspense: isSuspense,
-	isValidElementType: isValidElementType,
-	typeOf: typeOf$1
-};
-
-var reactIs_development = createCommonjsModule(function (module, exports) {
-
-
-
-if (true) {
-  (function() {
-
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-// (unstable) APIs that have been removed. Can we remove the symbols?
-
-var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
-var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
-
-function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_ASYNC_MODE_TYPE:
-          case REACT_CONCURRENT_MODE_TYPE:
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-} // AsyncMode is deprecated along with isAsyncMode
-
-var AsyncMode = REACT_ASYNC_MODE_TYPE;
-var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-    }
-  }
-
-  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-}
-function isConcurrentMode(object) {
-  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.AsyncMode = AsyncMode;
-exports.ConcurrentMode = ConcurrentMode;
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-});
-var reactIs_development_1 = reactIs_development.AsyncMode;
-var reactIs_development_2 = reactIs_development.ConcurrentMode;
-var reactIs_development_3 = reactIs_development.ContextConsumer;
-var reactIs_development_4 = reactIs_development.ContextProvider;
-var reactIs_development_5 = reactIs_development.Element;
-var reactIs_development_6 = reactIs_development.ForwardRef;
-var reactIs_development_7 = reactIs_development.Fragment;
-var reactIs_development_8 = reactIs_development.Lazy;
-var reactIs_development_9 = reactIs_development.Memo;
-var reactIs_development_10 = reactIs_development.Portal;
-var reactIs_development_11 = reactIs_development.Profiler;
-var reactIs_development_12 = reactIs_development.StrictMode;
-var reactIs_development_13 = reactIs_development.Suspense;
-var reactIs_development_14 = reactIs_development.isAsyncMode;
-var reactIs_development_15 = reactIs_development.isConcurrentMode;
-var reactIs_development_16 = reactIs_development.isContextConsumer;
-var reactIs_development_17 = reactIs_development.isContextProvider;
-var reactIs_development_18 = reactIs_development.isElement;
-var reactIs_development_19 = reactIs_development.isForwardRef;
-var reactIs_development_20 = reactIs_development.isFragment;
-var reactIs_development_21 = reactIs_development.isLazy;
-var reactIs_development_22 = reactIs_development.isMemo;
-var reactIs_development_23 = reactIs_development.isPortal;
-var reactIs_development_24 = reactIs_development.isProfiler;
-var reactIs_development_25 = reactIs_development.isStrictMode;
-var reactIs_development_26 = reactIs_development.isSuspense;
-var reactIs_development_27 = reactIs_development.isValidElementType;
-var reactIs_development_28 = reactIs_development.typeOf;
-
-var reactIs = createCommonjsModule(function (module) {
-
-if (false) {} else {
-  module.exports = reactIs_development;
-}
-});
-
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty$d = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty$d.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-var ReactPropTypesSecret_1 = ReactPropTypesSecret;
-
-var printWarning = function() {};
-
-if (true) {
-  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
-  var loggedTypeFailures = {};
-  var has = Function.call.bind(Object.prototype.hasOwnProperty);
-
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (true) {
-    for (var typeSpecName in typeSpecs) {
-      if (has(typeSpecs, typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          if (typeof typeSpecs[typeSpecName] !== 'function') {
-            var err = Error(
-              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
-            );
-            err.name = 'Invariant Violation';
-            throw err;
-          }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
-        } catch (ex) {
-          error = ex;
-        }
-        if (error && !(error instanceof Error)) {
-          printWarning(
-            (componentName || 'React class') + ': type specification of ' +
-            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
-            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
-            'You may have forgotten to pass an argument to the type checker ' +
-            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-            'shape all require an argument).'
-          );
-        }
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          printWarning(
-            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
-          );
-        }
-      }
-    }
-  }
-}
-
-/**
- * Resets warning cache when testing.
- *
- * @private
- */
-checkPropTypes.resetWarningCache = function() {
-  if (true) {
-    loggedTypeFailures = {};
-  }
-};
-
-var checkPropTypes_1 = checkPropTypes;
-
-var has$1 = Function.call.bind(Object.prototype.hasOwnProperty);
-var printWarning$1 = function() {};
-
-if (true) {
-  printWarning$1 = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-function emptyFunctionThatReturnsNull() {
-  return null;
-}
-
-var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-  /**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
-  function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
-      return iteratorFn;
-    }
-  }
-
-  /**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
-
-  var ANONYMOUS = '<<anonymous>>';
-
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
-  var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    elementType: createElementTypeTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker,
-    exact: createStrictShapeTypeChecker,
-  };
-
-  /**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
-  /*eslint-disable no-self-compare*/
-  function is(x, y) {
-    // SameValue algorithm
-    if (x === y) {
-      // Steps 1-5, 7-10
-      // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
-    }
-  }
-  /*eslint-enable no-self-compare*/
-
-  /**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
-  function PropTypeError(message) {
-    this.message = message;
-    this.stack = '';
-  }
-  // Make `instanceof Error` still work for returned errors.
-  PropTypeError.prototype = Error.prototype;
-
-  function createChainableTypeChecker(validate) {
-    if (true) {
-      var manualPropTypeCallCache = {};
-      var manualPropTypeWarningCount = 0;
-    }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-      componentName = componentName || ANONYMOUS;
-      propFullName = propFullName || propName;
-
-      if (secret !== ReactPropTypesSecret_1) {
-        if (throwOnDirectAccess) {
-          // New behavior only for users of `prop-types` package
-          var err = new Error(
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
-          );
-          err.name = 'Invariant Violation';
-          throw err;
-        } else if ( true && typeof console !== 'undefined') {
-          // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
-          if (
-            !manualPropTypeCallCache[cacheKey] &&
-            // Avoid spamming the console because they are often not actionable except for lib authors
-            manualPropTypeWarningCount < 3
-          ) {
-            printWarning$1(
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
-            );
-            manualPropTypeCallCache[cacheKey] = true;
-            manualPropTypeWarningCount++;
-          }
-        }
-      }
-      if (props[propName] == null) {
-        if (isRequired) {
-          if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
-          }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
-        }
-        return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
-      }
-    }
-
-    var chainedCheckType = checkType.bind(null, false);
-    chainedCheckType.isRequired = checkType.bind(null, true);
-
-    return chainedCheckType;
-  }
-
-  function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== expectedType) {
-        // `propValue` being instance of, say, date/regexp, pass the 'object'
-        // check, but we can offer a more precise error message here rather than
-        // 'of type `object`'.
-        var preciseType = getPreciseType(propValue);
-
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
-  }
-
-  function createArrayOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
-      }
-      var propValue = props[propName];
-      if (!Array.isArray(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
-      }
-      for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret_1);
-        if (error instanceof Error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!isValidElement(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!reactIs.isValidElementType(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createInstanceTypeChecker(expectedClass) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!(props[propName] instanceof expectedClass)) {
-        var expectedClassName = expectedClass.name || ANONYMOUS;
-        var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createEnumTypeChecker(expectedValues) {
-    if (!Array.isArray(expectedValues)) {
-      if (true) {
-        if (arguments.length > 1) {
-          printWarning$1(
-            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
-            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
-          );
-        } else {
-          printWarning$1('Invalid argument supplied to oneOf, expected an array.');
-        }
-      }
-      return emptyFunctionThatReturnsNull;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      for (var i = 0; i < expectedValues.length; i++) {
-        if (is(propValue, expectedValues[i])) {
-          return null;
-        }
-      }
-
-      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
-        var type = getPreciseType(value);
-        if (type === 'symbol') {
-          return String(value);
-        }
-        return value;
-      });
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createObjectOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
-      }
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
-      }
-      for (var key in propValue) {
-        if (has$1(propValue, key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-          if (error instanceof Error) {
-            return error;
-          }
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createUnionTypeChecker(arrayOfTypeCheckers) {
-    if (!Array.isArray(arrayOfTypeCheckers)) {
-       true ? printWarning$1('Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
-      return emptyFunctionThatReturnsNull;
-    }
-
-    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-      var checker = arrayOfTypeCheckers[i];
-      if (typeof checker !== 'function') {
-        printWarning$1(
-          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
-        );
-        return emptyFunctionThatReturnsNull;
-      }
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-        var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
-          return null;
-        }
-      }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createNodeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      for (var key in shapeTypes) {
-        var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createStrictShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      // We need to check all keys in case some are required but missing from
-      // props.
-      var allKeys = objectAssign({}, props[propName], shapeTypes);
-      for (var key in allKeys) {
-        var checker = shapeTypes[key];
-        if (!checker) {
-          return new PropTypeError(
-            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
-            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
-          );
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-
-    return createChainableTypeChecker(validate);
-  }
-
-  function isNode(propValue) {
-    switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
-        return true;
-      case 'boolean':
-        return !propValue;
-      case 'object':
-        if (Array.isArray(propValue)) {
-          return propValue.every(isNode);
-        }
-        if (propValue === null || isValidElement(propValue)) {
-          return true;
-        }
-
-        var iteratorFn = getIteratorFn(propValue);
-        if (iteratorFn) {
-          var iterator = iteratorFn.call(propValue);
-          var step;
-          if (iteratorFn !== propValue.entries) {
-            while (!(step = iterator.next()).done) {
-              if (!isNode(step.value)) {
-                return false;
-              }
-            }
-          } else {
-            // Iterator will provide entry [k,v] tuples rather than values.
-            while (!(step = iterator.next()).done) {
-              var entry = step.value;
-              if (entry) {
-                if (!isNode(entry[1])) {
-                  return false;
-                }
-              }
-            }
-          }
-        } else {
-          return false;
-        }
-
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  function isSymbol(propType, propValue) {
-    // Native Symbol.
-    if (propType === 'symbol') {
-      return true;
-    }
-
-    // falsy value can't be a Symbol
-    if (!propValue) {
-      return false;
-    }
-
-    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
-      return true;
-    }
-
-    // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // Equivalent of `typeof` but with special handling for array and regexp.
-  function getPropType(propValue) {
-    var propType = typeof propValue;
-    if (Array.isArray(propValue)) {
-      return 'array';
-    }
-    if (propValue instanceof RegExp) {
-      // Old webkits (at least until Android 4.0) return 'function' rather than
-      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-      // passes PropTypes.object.
-      return 'object';
-    }
-    if (isSymbol(propType, propValue)) {
-      return 'symbol';
-    }
-    return propType;
-  }
-
-  // This handles more types than `getPropType`. Only used for error messages.
-  // See `createPrimitiveTypeChecker`.
-  function getPreciseType(propValue) {
-    if (typeof propValue === 'undefined' || propValue === null) {
-      return '' + propValue;
-    }
-    var propType = getPropType(propValue);
-    if (propType === 'object') {
-      if (propValue instanceof Date) {
-        return 'date';
-      } else if (propValue instanceof RegExp) {
-        return 'regexp';
-      }
-    }
-    return propType;
-  }
-
-  // Returns a string that is postfixed to a warning about an invalid type.
-  // For example, "undefined" or "of type array"
-  function getPostfixForTypeWarning(value) {
-    var type = getPreciseType(value);
-    switch (type) {
-      case 'array':
-      case 'object':
-        return 'an ' + type;
-      case 'boolean':
-      case 'date':
-      case 'regexp':
-        return 'a ' + type;
-      default:
-        return type;
-    }
-  }
-
-  // Returns class name of the object, if any.
-  function getClassName(propValue) {
-    if (!propValue.constructor || !propValue.constructor.name) {
-      return ANONYMOUS;
-    }
-    return propValue.constructor.name;
-  }
-
-  ReactPropTypes.checkPropTypes = checkPropTypes_1;
-  ReactPropTypes.resetWarningCache = checkPropTypes_1.resetWarningCache;
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-function emptyFunction() {}
-function emptyFunctionWithReset() {}
-emptyFunctionWithReset.resetWarningCache = emptyFunction;
-
-var factoryWithThrowingShims = function() {
-  function shim(props, propName, componentName, location, propFullName, secret) {
-    if (secret === ReactPropTypesSecret_1) {
-      // It is still safe when called from React.
-      return;
-    }
-    var err = new Error(
-      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-      'Use PropTypes.checkPropTypes() to call them. ' +
-      'Read more at http://fb.me/use-check-prop-types'
-    );
-    err.name = 'Invariant Violation';
-    throw err;
-  }  shim.isRequired = shim;
-  function getShim() {
-    return shim;
-  }  // Important!
-  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-  var ReactPropTypes = {
-    array: shim,
-    bool: shim,
-    func: shim,
-    number: shim,
-    object: shim,
-    string: shim,
-    symbol: shim,
-
-    any: shim,
-    arrayOf: getShim,
-    element: shim,
-    elementType: shim,
-    instanceOf: getShim,
-    node: shim,
-    objectOf: getShim,
-    oneOf: getShim,
-    oneOfType: getShim,
-    shape: getShim,
-    exact: getShim,
-
-    checkPropTypes: emptyFunctionWithReset,
-    resetWarningCache: emptyFunction
-  };
-
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-var propTypes = createCommonjsModule(function (module) {
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (true) {
-  var ReactIs = reactIs;
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = factoryWithTypeCheckers(ReactIs.isElement, throwOnDirectAccess);
-} else {}
-});
-
 /**
  * Create a prop type checker for Slate objects with `name` and `validate`.
  *
@@ -32842,7 +29305,7 @@ function decode(string) {
  * @return {Value}
  */
 
-function deserialize$1(string, options) {
+function deserialize(string, options) {
   var raw = decode(string);
   var value = Value.fromJSON(raw, options);
   return value;
@@ -32855,7 +29318,7 @@ function deserialize$1(string, options) {
  * @return {Node}
  */
 
-function deserializeNode$1(string, options) {
+function deserializeNode(string, options) {
   var raw = decode(string);
   var node = Node.fromJSON(raw, options);
   return node;
@@ -32868,7 +29331,7 @@ function deserializeNode$1(string, options) {
  * @return {String}
  */
 
-function serialize$1(value, options) {
+function serialize(value, options) {
   var raw = value.toJSON(options);
   var encoded = encode(raw);
   return encoded;
@@ -32881,7 +29344,7 @@ function serialize$1(value, options) {
  * @return {String}
  */
 
-function serializeNode$2(node, options) {
+function serializeNode(node, options) {
   var raw = node.toJSON(options);
   var encoded = encode(raw);
   return encoded;
@@ -32893,11 +29356,122 @@ function serializeNode$2(node, options) {
  * @type {Object}
  */
 
+var index$1 = {
+  deserialize: deserialize,
+  deserializeNode: deserializeNode,
+  serialize: serialize,
+  serializeNode: serializeNode
+};
+
+var _extends$1 = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+/**
+ * Deserialize a plain text `string` to a Slate value.
+ *
+ * @param {String} string
+ * @param {Object} options
+ *   @property {Boolean} toJSON
+ *   @property {String|Object|Block} defaultBlock
+ *   @property {Array|Set} defaultMarks
+ * @return {Value}
+ */
+
+function deserialize$1(string) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _options$defaultBlock = options.defaultBlock,
+      defaultBlock = _options$defaultBlock === undefined ? 'line' : _options$defaultBlock,
+      _options$defaultMarks = options.defaultMarks,
+      defaultMarks = _options$defaultMarks === undefined ? [] : _options$defaultMarks,
+      _options$delimiter = options.delimiter,
+      delimiter = _options$delimiter === undefined ? '\n' : _options$delimiter,
+      _options$toJSON = options.toJSON,
+      toJSON = _options$toJSON === undefined ? false : _options$toJSON;
+
+
+  if (immutable.Set.isSet(defaultMarks)) {
+    defaultMarks = defaultMarks.toArray();
+  }
+
+  defaultBlock = Node.createProperties(defaultBlock);
+  defaultMarks = defaultMarks.map(Mark.createProperties);
+
+  var json = {
+    object: 'value',
+    document: {
+      object: 'document',
+      data: {},
+      nodes: string.split(delimiter).map(function (line) {
+        return _extends$1({}, defaultBlock, {
+          object: 'block',
+          data: {},
+          nodes: [{
+            object: 'text',
+            text: line,
+            marks: defaultMarks
+          }]
+        });
+      })
+    }
+  };
+
+  var ret = toJSON ? json : Value.fromJSON(json);
+  return ret;
+}
+
+/**
+ * Serialize a Slate `value` to a plain text string.
+ *
+ * @param {Value} value
+ * @return {String}
+ */
+
+function serialize$1(value) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return serializeNode$1(value.document, options);
+}
+
+/**
+ * Serialize a `node` to plain text.
+ *
+ * @param {Node} node
+ * @return {String}
+ */
+
+function serializeNode$1(node) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _options$delimiter2 = options.delimiter,
+      delimiter = _options$delimiter2 === undefined ? '\n' : _options$delimiter2;
+
+
+  if (node.object === 'document' || node.object === 'block' && Block.isBlockList(node.nodes)) {
+    return node.nodes.map(serializeNode$1).join(delimiter);
+  } else {
+    return node.text;
+  }
+}
+
+/**
+ * Export.
+ *
+ * @type {Object}
+ */
+
 var index$2 = {
   deserialize: deserialize$1,
-  deserializeNode: deserializeNode$1,
-  serialize: serialize$1,
-  serializeNode: serializeNode$2
+  serialize: serialize$1
 };
 
 var prefix$1 = 'Invariant failed';
@@ -32911,7 +29485,7 @@ var index$3 = (function (condition, message) {
   }
 });
 
-var _extends$3 = Object.assign || function (target) {
+var _extends$2 = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -32995,7 +29569,7 @@ var slicedToArray$2 = function () {
 
 
 
-var toConsumableArray$2 = function (arr) {
+var toConsumableArray$1 = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
 
@@ -33075,7 +29649,7 @@ function SlateReactPlaceholder() {
       }
     };
 
-    return [].concat(toConsumableArray$2(others), [decoration]);
+    return [].concat(toConsumableArray$1(others), [decoration]);
   }
 
   /**
@@ -33093,7 +29667,7 @@ function SlateReactPlaceholder() {
 
 
     if (deco.type === 'placeholder' && deco.data.get('key') === instanceId) {
-      var placeHolderStyle = _extends$3({
+      var placeHolderStyle = _extends$2({
         pointerEvents: 'none',
         display: 'inline-block',
         width: '0',
@@ -33220,7 +29794,7 @@ var SELECTORS = {
   ZERO_WIDTH: '[' + DATA_ATTRS.ZERO_WIDTH + ']'
 };
 
-var classCallCheck$2 = function (instance, Constructor) {
+var classCallCheck$1 = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
@@ -33263,7 +29837,7 @@ var defineProperty$2 = function (obj, key, value) {
   return obj;
 };
 
-var _extends$4 = Object.assign || function (target) {
+var _extends$3 = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -33367,7 +29941,7 @@ var slicedToArray$3 = function () {
 
 
 
-var toConsumableArray$3 = function (arr) {
+var toConsumableArray$2 = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
 
@@ -33555,7 +30129,7 @@ var Leaf$2 = function Leaf(props) {
     for (var _iterator = marks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var mark = _step.value;
 
-      var ret = editor.run('renderMark', _extends$4({}, renderProps, {
+      var ret = editor.run('renderMark', _extends$3({}, renderProps, {
         mark: mark,
         children: children,
         attributes: defineProperty$2({}, DATA_ATTRS.OBJECT, 'mark')
@@ -33588,7 +30162,7 @@ var Leaf$2 = function Leaf(props) {
     for (var _iterator2 = decorations[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
       var decoration = _step2.value;
 
-      var ret = editor.run('renderDecoration', _extends$4({}, renderProps, {
+      var ret = editor.run('renderDecoration', _extends$3({}, renderProps, {
         decoration: decoration,
         children: children,
         attributes: defineProperty$2({}, DATA_ATTRS.OBJECT, 'decoration')
@@ -33621,7 +30195,7 @@ var Leaf$2 = function Leaf(props) {
     for (var _iterator3 = annotations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
       var annotation = _step3.value;
 
-      var ret = editor.run('renderAnnotation', _extends$4({}, renderProps, {
+      var ret = editor.run('renderAnnotation', _extends$3({}, renderProps, {
         annotation: annotation,
         children: children,
         attributes: defineProperty$2({}, DATA_ATTRS.OBJECT, 'annotation')
@@ -33707,7 +30281,7 @@ var Text$1 = react__WEBPACK_IMPORTED_MODULE_0___default.a.forwardRef(function (p
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
     'span',
-    _extends$4({
+    _extends$3({
       ref: ref,
       style: style
     }, (_ref = {}, defineProperty$2(_ref, DATA_ATTRS.OBJECT, node.object), defineProperty$2(_ref, DATA_ATTRS.KEY, key), _ref)),
@@ -33793,13 +30367,13 @@ var Void = function (_React$Component) {
 
     var _temp, _this, _ret;
 
-    classCallCheck$2(this, Void);
+    classCallCheck$1(this, Void);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = possibleConstructorReturn$1(this, (_ref = Void.__proto__ || Object.getPrototypeOf(Void)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps$1.call(_this), _temp), possibleConstructorReturn$1(_this, _ret);
+    return _ret = (_temp = (_this = possibleConstructorReturn$1(this, (_ref = Void.__proto__ || Object.getPrototypeOf(Void)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps.call(_this), _temp), possibleConstructorReturn$1(_this, _ret);
   }
   /**
    * Property types.
@@ -33844,7 +30418,7 @@ var Void = function (_React$Component) {
 
       var spacer = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         Tag,
-        _extends$4({ style: style }, spacerAttrs),
+        _extends$3({ style: style }, spacerAttrs),
         this.renderText()
       );
 
@@ -33860,7 +30434,7 @@ var Void = function (_React$Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         Tag,
-        _extends$4({
+        _extends$3({
           contentEditable: readOnly || node.object === 'block' ? null : false
         }, attrs),
         readOnly ? null : spacer,
@@ -33897,7 +30471,7 @@ Void.propTypes = {
   parent: Types.node.isRequired,
   readOnly: propTypes.bool.isRequired };
 
-var _initialiseProps$1 = function _initialiseProps() {
+var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.debug = function (message) {
@@ -33960,13 +30534,13 @@ var Node$1 = function (_React$Component) {
 
     var _temp, _this, _ret;
 
-    classCallCheck$2(this, Node$$1);
+    classCallCheck$1(this, Node$$1);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = possibleConstructorReturn$1(this, (_ref = Node$$1.__proto__ || Object.getPrototypeOf(Node$$1)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps$1$1.call(_this), _temp), possibleConstructorReturn$1(_this, _ret);
+    return _ret = (_temp = (_this = possibleConstructorReturn$1(this, (_ref = Node$$1.__proto__ || Object.getPrototypeOf(Node$$1)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps$1.call(_this), _temp), possibleConstructorReturn$1(_this, _ret);
   }
   /**
    * Property types.
@@ -34160,7 +30734,7 @@ var Node$1 = function (_React$Component) {
 
       return editor.isVoid(node) ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         Void,
-        _extends$4({}, this.props, {
+        _extends$3({}, this.props, {
           textRef: function textRef(ref) {
             if (ref) {
               _this2.tmp.nodeRefs[0] = ref;
@@ -34194,7 +30768,7 @@ Node$1.propTypes = {
   readOnly: propTypes.bool.isRequired,
   selection: Types.selection };
 
-var _initialiseProps$1$1 = function _initialiseProps() {
+var _initialiseProps$1 = function _initialiseProps() {
   var _this3 = this;
 
   this.tmp = {
@@ -34512,7 +31086,7 @@ var Content = function (_React$Component) {
 
     var _temp, _this, _ret;
 
-    classCallCheck$2(this, Content);
+    classCallCheck$1(this, Content);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -34989,7 +31563,7 @@ var Content = function (_React$Component) {
           selection = value.selection;
 
 
-      var style = _extends$4({
+      var style = _extends$3({
         // Prevent the default outline styles.
         outline: 'none',
         // Preserve adjacent whitespace and new lines.
@@ -35011,7 +31585,7 @@ var Content = function (_React$Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         Container,
-        _extends$4({}, domProps, {
+        _extends$3({}, domProps, {
           key: this.tmp.contentKey
         }, handlers, data, {
           ref: this.setRef,
@@ -35077,7 +31651,7 @@ Content.defaultProps = {
  * @type {Array}
  */
 
-var PROPS = [].concat(toConsumableArray$3(EVENT_HANDLERS), ['commands', 'decorateNode', 'queries', 'renderAnnotation', 'renderBlock', 'renderDecoration', 'renderDocument', 'renderEditor', 'renderInline', 'renderMark', 'schema']);
+var PROPS = [].concat(toConsumableArray$2(EVENT_HANDLERS), ['commands', 'decorateNode', 'queries', 'renderAnnotation', 'renderBlock', 'renderDecoration', 'renderDocument', 'renderEditor', 'renderInline', 'renderMark', 'schema']);
 
 /**
  * The top-level editor props in a plugin.
@@ -35124,7 +31698,7 @@ function Rendering() {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'div',
-        _extends$4({}, attributes, { style: { position: 'relative' } }),
+        _extends$3({}, attributes, { style: { position: 'relative' } }),
         children
       );
     },
@@ -35154,7 +31728,7 @@ function Rendering() {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
         'span',
-        _extends$4({}, attributes, { style: { position: 'relative' } }),
+        _extends$3({}, attributes, { style: { position: 'relative' } }),
         children
       );
     },
@@ -35547,7 +32121,7 @@ function QueriesPlugin$1() {
 
           var ref = nodeRefs[i];
           var n = parseInt(i, 10);
-          var _path = search(ref, [].concat(toConsumableArray$3(p), [n]));
+          var _path = search(ref, [].concat(toConsumableArray$2(p), [n]));
 
           if (_path) {
             return _path;
@@ -36028,7 +32602,7 @@ var ZERO_WIDTH_SPACE = String.fromCharCode(65279);
  * https://github.com/facebook/draft-js/commit/cda13cb8ff9c896cdb9ff832d1edeaa470d3b871
  */
 
-var flushControlled = react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.unstable_flushControlled;
+var flushControlled = react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.unstable_flushControlled;
 
 function renderSync(editor, fn) {
   flushControlled(function () {
@@ -36296,7 +32870,7 @@ function CompositionManager(editor) {
     var _bufferedMutations;
 
     debug$3$1('flush');
-    (_bufferedMutations = bufferedMutations).push.apply(_bufferedMutations, toConsumableArray$3(mutations));
+    (_bufferedMutations = bufferedMutations).push.apply(_bufferedMutations, toConsumableArray$2(mutations));
     startAction();
   }
 
@@ -36808,7 +33382,7 @@ function cloneFragment(event, editor) {
 
   // Create a fake selection so that we can add a Base64-encoded copy of the
   // fragment to the HTML, to decode on future pastes.
-  var encoded = index$2.serializeNode(fragment);
+  var encoded = index$1.serializeNode(fragment);
   var range = native.getRangeAt(0);
   var contents = range.cloneContents();
   var attach = contents.childNodes[0];
@@ -36870,7 +33444,7 @@ function cloneFragment(event, editor) {
   //  Then gets plaintext for clipboard with proper linebreaks for BLOCK elements
   //  Via Plain serializer
   var valFromSelection = Value.create({ document: fragment });
-  var plainText = index$1.serialize(valFromSelection);
+  var plainText = index$2.serialize(valFromSelection);
 
   // Add the phony content to a div element. This is needed to copy the
   // contents into the html clipboard register.
@@ -36978,8 +33552,8 @@ function getEventTransfer(event) {
   }
 
   // Decode a fragment or node if they exist.
-  if (fragment) fragment = index$2.deserializeNode(fragment);
-  if (node) node = index$2.deserializeNode(node);
+  if (fragment) fragment = index$1.deserializeNode(fragment);
+  if (node) node = index$1.deserializeNode(node);
 
   // COMPAT: Edge sometimes throws 'NotSupportedError'
   // when accessing `transfer.items` (2017/7/12)
@@ -37452,7 +34026,7 @@ function AfterPlugin() {
     }
 
     var fragment = editor.value.fragment;
-    var encoded = index$2.serializeNode(fragment);
+    var encoded = index$1.serializeNode(fragment);
     setEventTransfer(event, 'fragment', encoded);
     next();
   }
@@ -37830,7 +34404,7 @@ function AfterPlugin() {
 
       var defaultBlock = startBlock;
       var defaultMarks = document.getInsertMarksAtRange(selection);
-      var frag = index$1.deserialize(text, { defaultBlock: defaultBlock, defaultMarks: defaultMarks }).document;
+      var frag = index$2.deserialize(text, { defaultBlock: defaultBlock, defaultMarks: defaultMarks }).document;
       editor.insertFragment(frag);
     }
 
@@ -38401,7 +34975,7 @@ function DOMPlugin() {
   // finicky (it has to come before other plugins to work).
   var androidPlugins = IS_ANDROID ? [AndroidPlugin(options), NoopPlugin()] : [];
 
-  return [].concat(androidPlugins, [beforePlugin], toConsumableArray$3(plugins), [afterPlugin]);
+  return [].concat(androidPlugins, [beforePlugin], toConsumableArray$2(plugins), [afterPlugin]);
 }
 
 function RestoreDOMPlugin() {
@@ -38710,7 +35284,7 @@ function DebugMutationsPlugin() {
 
     // The first argument must not be the array as `debug` renders the first
     // argument in a different way than the rest
-    debug$8.apply(undefined, [array.length + ' Mutations'].concat(toConsumableArray$3(array)));
+    debug$8.apply(undefined, [array.length + ' Mutations'].concat(toConsumableArray$2(array)));
   });
 
   /**
@@ -38821,7 +35395,7 @@ var Editor$1 = function (_React$Component) {
 
     var _temp, _this, _ret;
 
-    classCallCheck$2(this, Editor$$1);
+    classCallCheck$1(this, Editor$$1);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -38854,7 +35428,7 @@ var Editor$1 = function (_React$Component) {
       index(_this.tmp.resolves < 5 || _this.tmp.resolves !== _this.tmp.updates, 'A Slate <Editor> component is re-resolving the `plugins`, `schema`, `commands`, `queries` or `placeholder` prop on each update, which leads to poor performance. This is often due to passing in a new references for these props with each render by declaring them inline in your render function. Do not do this! Declare them outside your render function, or memoize them instead.');
 
       _this.tmp.resolves++;
-      var react = TheReactPlugin(_extends$4({}, _this.props, {
+      var react = TheReactPlugin(_extends$3({}, _this.props, {
         editor: _this,
         value: _this.props.value || _this.state.value
       }));
@@ -38981,7 +35555,7 @@ var Editor$1 = function (_React$Component) {
 
       var domProps = omit_1(this.props, Object.keys(Editor$$1.propTypes));
 
-      var children = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Content, _extends$4({}, domProps, {
+      var children = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Content, _extends$3({}, domProps, {
         ref: this.tmp.contentRef,
         autoCorrect: autoCorrect,
         className: className,
@@ -39000,7 +35574,7 @@ var Editor$1 = function (_React$Component) {
       }));
 
       // Render the editor's children with the controller.
-      var element = this.controller.run('renderEditor', _extends$4({}, this.props, {
+      var element = this.controller.run('renderEditor', _extends$3({}, this.props, {
         editor: this,
         children: children
       }));
@@ -39212,7 +35786,7 @@ var Editor$1 = function (_React$Component) {
  * @type {Component}
  */
 
-Editor$1.propTypes = _extends$4({
+Editor$1.propTypes = _extends$3({
   autoCorrect: propTypes.bool,
   autoFocus: propTypes.bool,
   className: propTypes.string,
@@ -39246,6 +35820,3462 @@ Editor$1.defaultProps = {
   readOnly: false,
   schema: {},
   spellCheck: true };
+
+var EFormat;
+(function (EFormat) {
+    // marks
+    EFormat["bold"] = "bold";
+    EFormat["italic"] = "italic";
+    EFormat["underlined"] = "underlined";
+    EFormat["inserted"] = "inserted";
+    EFormat["deleted"] = "deleted";
+    EFormat["code"] = "code";
+    EFormat["marked"] = "marked";
+    EFormat["superscript"] = "superscript";
+    EFormat["subscript"] = "subscript";
+    EFormat["color"] = "color";
+    // blocks
+    EFormat["defaultBlock"] = "paragraph";
+    EFormat["block"] = "block";
+    EFormat["blockQuote"] = "block-quote";
+    EFormat["heading1"] = "heading1";
+    EFormat["heading2"] = "heading2";
+    EFormat["heading3"] = "heading3";
+    EFormat["heading4"] = "heading4";
+    EFormat["heading5"] = "heading5";
+    EFormat["heading6"] = "heading6";
+    EFormat["horizontalRule"] = "horizontal-rule";
+    EFormat["paragraph"] = "paragraph";
+    EFormat["preformatted"] = "preformatted";
+    EFormat["listItem"] = "list-item";
+    EFormat["numberedList"] = "ordered-list";
+    EFormat["bulletedList"] = "bulleted-list";
+    // inlines
+    EFormat["inline"] = "inline";
+    EFormat["image"] = "image";
+    EFormat["link"] = "link"; // <a>
+})(EFormat || (EFormat = {}));
+var EMetaFormat;
+(function (EMetaFormat) {
+    EMetaFormat["fontIncrease"] = "fontIncrease";
+    EMetaFormat["fontDecrease"] = "fontDecrease";
+})(EMetaFormat || (EMetaFormat = {}));
+function textToSlate(text) {
+    // cast to any required as typings don't account for string shortcut
+    return index$2.deserialize(text, { defaultBlock: EFormat.defaultBlock });
+}
+function slateToText(value) {
+    return value ? index$2.serialize(value) : "";
+}
+
+var toString$1 = Object.prototype.toString;
+
+var typeOf$1 = function(val){
+  switch (toString$1.call(val)) {
+    case '[object Function]': return 'function'
+    case '[object Date]': return 'date'
+    case '[object RegExp]': return 'regexp'
+    case '[object Arguments]': return 'arguments'
+    case '[object Array]': return 'array'
+    case '[object String]': return 'string'
+  }
+
+  if (typeof val == 'object' && val && typeof val.length == 'number') {
+    try {
+      if (typeof val.callee == 'function') return 'arguments';
+    } catch (ex) {
+      if (ex instanceof TypeError) {
+        return 'arguments';
+      }
+    }
+  }
+
+  if (val === null) return 'null'
+  if (val === undefined) return 'undefined'
+  if (val && val.nodeType === 1) return 'element'
+  if (val === Object(val)) return 'object'
+
+  return typeof val
+};
+
+var classCallCheck$2 = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+
+
+
+
+
+
+
+
+var _extends$4 = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray$3 = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
+/**
+ * String.
+ *
+ * @type {String}
+ */
+
+var String$1 = new immutable.Record({
+  object: 'string',
+  text: ''
+});
+
+/**
+ * A rule to (de)serialize text nodes. This is automatically added to the HTML
+ * serializer so that users don't have to worry about text-level serialization.
+ *
+ * @type {Object}
+ */
+
+var TEXT_RULE = {
+  deserialize: function deserialize(el) {
+    if (el.tagName && el.tagName.toLowerCase() === 'br') {
+      return {
+        object: 'text',
+        text: '\n',
+        marks: []
+      };
+    }
+
+    if (el.nodeName === '#text') {
+      if (el.nodeValue && el.nodeValue.match(/<!--.*?-->/)) return;
+
+      return {
+        object: 'text',
+        text: el.nodeValue,
+        marks: []
+      };
+    }
+  },
+  serialize: function serialize(obj, children) {
+    if (obj.object === 'string') {
+      return children.split('\n').reduce(function (array, text, i) {
+        if (i !== 0) array.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('br', { key: i }));
+        array.push(text);
+        return array;
+      }, []);
+    }
+  }
+};
+
+/**
+ * A default `parseHtml` function that returns the `<body>` using `DOMParser`.
+ *
+ * @param {String} html
+ * @return {Object}
+ */
+
+function defaultParseHtml(html) {
+  if (typeof DOMParser == 'undefined') {
+    throw new Error('The native `DOMParser` global which the `Html` serializer uses by default is not present in this environment. You must supply the `options.parseHtml` function instead.');
+  }
+
+  var parsed = new DOMParser().parseFromString(html, 'text/html');
+  var body = parsed.body;
+  // COMPAT: in IE 11 body is null if html is an empty string
+
+  return body || window.document.createElement('body');
+}
+
+/**
+ * HTML serializer.
+ *
+ * @type {Html}
+ */
+
+var Html =
+/**
+ * Create a new serializer with `rules`.
+ *
+ * @param {Object} options
+ *   @property {Array} rules
+ *   @property {String|Object|Block} defaultBlock
+ *   @property {Function} parseHtml
+ */
+
+function Html() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  classCallCheck$2(this, Html);
+
+  _initialiseProps$2.call(this);
+
+  var _options$defaultBlock = options.defaultBlock,
+      defaultBlock = _options$defaultBlock === undefined ? 'paragraph' : _options$defaultBlock,
+      _options$parseHtml = options.parseHtml,
+      parseHtml = _options$parseHtml === undefined ? defaultParseHtml : _options$parseHtml,
+      _options$rules = options.rules,
+      rules = _options$rules === undefined ? [] : _options$rules;
+
+
+  defaultBlock = Node.createProperties(defaultBlock);
+
+  this.rules = [].concat(toConsumableArray$3(rules), [TEXT_RULE]);
+  this.defaultBlock = defaultBlock;
+  this.parseHtml = parseHtml;
+};
+
+/**
+ * Add a unique key to a React `element`.
+ *
+ * @param {Element} element
+ * @return {Element}
+ */
+
+var _initialiseProps$2 = function _initialiseProps() {
+  var _this = this;
+
+  this.deserialize = function (html) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var _options$toJSON = options.toJSON,
+        toJSON = _options$toJSON === undefined ? false : _options$toJSON;
+    var defaultBlock = _this.defaultBlock,
+        parseHtml = _this.parseHtml;
+
+    var fragment = parseHtml(html);
+    var children = Array.from(fragment.childNodes);
+    var nodes = _this.deserializeElements(children);
+
+    // COMPAT: ensure that all top-level inline nodes are wrapped into a block.
+    nodes = nodes.reduce(function (memo, node, i, original) {
+      if (node.object === 'block') {
+        memo.push(node);
+        return memo;
+      }
+
+      if (i > 0 && original[i - 1].object !== 'block') {
+        var _block = memo[memo.length - 1];
+        _block.nodes.push(node);
+        return memo;
+      }
+
+      var block = _extends$4({
+        object: 'block',
+        data: {}
+      }, defaultBlock, {
+        nodes: [node]
+      });
+
+      memo.push(block);
+      return memo;
+    }, []);
+
+    // TODO: pretty sure this is no longer needed.
+    if (nodes.length === 0) {
+      nodes = [_extends$4({
+        object: 'block',
+        data: {}
+      }, defaultBlock, {
+        nodes: [{
+          object: 'text',
+          text: '',
+          marks: []
+        }]
+      })];
+    }
+
+    var json = {
+      object: 'value',
+      document: {
+        object: 'document',
+        data: {},
+        nodes: nodes
+      }
+    };
+
+    var ret = toJSON ? json : Value.fromJSON(json);
+    return ret;
+  };
+
+  this.deserializeElements = function () {
+    var elements = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    var nodes = [];
+
+    elements.filter(_this.cruftNewline).forEach(function (element) {
+      var node = _this.deserializeElement(element);
+
+      switch (typeOf$1(node)) {
+        case 'array':
+          nodes = nodes.concat(node);
+          break;
+        case 'object':
+          nodes.push(node);
+          break;
+      }
+    });
+
+    return nodes;
+  };
+
+  this.deserializeElement = function (element) {
+    var node = void 0;
+
+    if (!element.tagName) {
+      element.tagName = '';
+    }
+
+    var next = function next(elements) {
+      if (Object.prototype.toString.call(elements) === '[object NodeList]') {
+        elements = Array.from(elements);
+      }
+
+      switch (typeOf$1(elements)) {
+        case 'array':
+          return _this.deserializeElements(elements);
+        case 'object':
+          return _this.deserializeElement(elements);
+        case 'null':
+        case 'undefined':
+          return;
+        default:
+          throw new Error('The `next` argument was called with invalid children: "' + elements + '".');
+      }
+    };
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = _this.rules[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var rule = _step.value;
+
+        if (!rule.deserialize) continue;
+        var ret = rule.deserialize(element, next);
+        var type = typeOf$1(ret);
+
+        if (type !== 'array' && type !== 'object' && type !== 'null' && type !== 'undefined') {
+          throw new Error('A rule returned an invalid deserialized representation: "' + node + '".');
+        }
+
+        if (ret === undefined) {
+          continue;
+        } else if (ret === null) {
+          return null;
+        } else if (ret.object === 'mark') {
+          node = _this.deserializeMark(ret);
+        } else {
+          node = ret;
+        }
+
+        if (node.object === 'block' || node.object === 'inline') {
+          node.data = node.data || {};
+          node.nodes = node.nodes || [];
+        } else if (node.object === 'text') {
+          node.marks = node.marks || [];
+          node.text = node.text || '';
+        }
+
+        break;
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return node || next(element.childNodes);
+  };
+
+  this.deserializeMark = function (mark) {
+    var type = mark.type,
+        data = mark.data;
+
+
+    var applyMark = function applyMark(node) {
+      if (node.object === 'mark') {
+        var ret = _this.deserializeMark(node);
+        return ret;
+      } else if (node.object === 'text') {
+        node.marks = node.marks || [];
+        node.marks.push({ type: type, data: data });
+      } else if (node.nodes) {
+        node.nodes = node.nodes.map(applyMark);
+      }
+
+      return node;
+    };
+
+    return mark.nodes.reduce(function (nodes, node) {
+      var ret = applyMark(node);
+      if (Array.isArray(ret)) return nodes.concat(ret);
+      nodes.push(ret);
+      return nodes;
+    }, []);
+  };
+
+  this.serialize = function (value) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var document = value.document;
+
+    var elements = document.nodes.map(_this.serializeNode).filter(function (el) {
+      return el;
+    });
+    if (options.render === false) return elements;
+
+    var html = Object(react_dom_server__WEBPACK_IMPORTED_MODULE_2__["renderToStaticMarkup"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+      'body',
+      null,
+      elements
+    ));
+    var inner = html.slice(6, -7);
+    return inner;
+  };
+
+  this.serializeNode = function (node) {
+    if (node.object === 'text') {
+      var string = new String$1({ text: node.text });
+      var text = _this.serializeString(string);
+
+      return node.marks.reduce(function (children, mark) {
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = _this.rules[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var rule = _step2.value;
+
+            if (!rule.serialize) continue;
+            var ret = rule.serialize(mark, children);
+            if (ret === null) return;
+            if (ret) return addKey(ret);
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        throw new Error('No serializer defined for mark of type "' + mark.type + '".');
+      }, text);
+    }
+
+    var children = node.nodes.map(_this.serializeNode);
+
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
+
+    try {
+      for (var _iterator3 = _this.rules[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var rule = _step3.value;
+
+        if (!rule.serialize) continue;
+        var ret = rule.serialize(node, children);
+        if (ret === null) return;
+        if (ret) return addKey(ret);
+      }
+    } catch (err) {
+      _didIteratorError3 = true;
+      _iteratorError3 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+          _iterator3.return();
+        }
+      } finally {
+        if (_didIteratorError3) {
+          throw _iteratorError3;
+        }
+      }
+    }
+
+    throw new Error('No serializer defined for node of type "' + node.type + '".');
+  };
+
+  this.serializeString = function (string) {
+    var _iteratorNormalCompletion4 = true;
+    var _didIteratorError4 = false;
+    var _iteratorError4 = undefined;
+
+    try {
+      for (var _iterator4 = _this.rules[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        var rule = _step4.value;
+
+        if (!rule.serialize) continue;
+        var ret = rule.serialize(string, string.text);
+        if (ret) return ret;
+      }
+    } catch (err) {
+      _didIteratorError4 = true;
+      _iteratorError4 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+          _iterator4.return();
+        }
+      } finally {
+        if (_didIteratorError4) {
+          throw _iteratorError4;
+        }
+      }
+    }
+  };
+
+  this.cruftNewline = function (element) {
+    return !(element.nodeName === '#text' && element.nodeValue === '\n');
+  };
+};
+
+var key = 0;
+
+function addKey(element) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(element, { key: key++ });
+}
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+}
+
+var dedupe = createCommonjsModule(function (module) {
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+
+	var classNames = (function () {
+		// don't inherit from Object so we can skip hasOwnProperty check later
+		// http://stackoverflow.com/questions/15518328/creating-js-object-with-object-createnull#answer-21079232
+		function StorageObject() {}
+		StorageObject.prototype = Object.create(null);
+
+		function _parseArray (resultSet, array) {
+			var length = array.length;
+
+			for (var i = 0; i < length; ++i) {
+				_parse(resultSet, array[i]);
+			}
+		}
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function _parseNumber (resultSet, num) {
+			resultSet[num] = true;
+		}
+
+		function _parseObject (resultSet, object) {
+			for (var k in object) {
+				if (hasOwn.call(object, k)) {
+					// set value to false instead of deleting it to avoid changing object structure
+					// https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/#de-referencing-misconceptions
+					resultSet[k] = !!object[k];
+				}
+			}
+		}
+
+		var SPACE = /\s+/;
+		function _parseString (resultSet, str) {
+			var array = str.split(SPACE);
+			var length = array.length;
+
+			for (var i = 0; i < length; ++i) {
+				resultSet[array[i]] = true;
+			}
+		}
+
+		function _parse (resultSet, arg) {
+			if (!arg) return;
+			var argType = typeof arg;
+
+			// 'foo bar'
+			if (argType === 'string') {
+				_parseString(resultSet, arg);
+
+			// ['foo', 'bar', ...]
+			} else if (Array.isArray(arg)) {
+				_parseArray(resultSet, arg);
+
+			// { 'foo': true, ... }
+			} else if (argType === 'object') {
+				_parseObject(resultSet, arg);
+
+			// '130'
+			} else if (argType === 'number') {
+				_parseNumber(resultSet, arg);
+			}
+		}
+
+		function _classNames () {
+			// don't leak arguments
+			// https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
+			var len = arguments.length;
+			var args = Array(len);
+			for (var i = 0; i < len; i++) {
+				args[i] = arguments[i];
+			}
+
+			var classSet = new StorageObject();
+			_parseArray(classSet, args);
+
+			var list = [];
+
+			for (var k in classSet) {
+				if (classSet[k]) {
+					list.push(k);
+				}
+			}
+
+			return list.join(' ');
+		}
+
+		return _classNames;
+	})();
+
+	if ( module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else {
+		window.classNames = classNames;
+	}
+}());
+});
+
+// http://www.w3.org/TR/CSS21/grammar.html
+// https://github.com/visionmedia/css-parse/pull/49#issuecomment-30088027
+var COMMENT_REGEX = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g;
+
+var NEWLINE_REGEX = /\n/g;
+var WHITESPACE_REGEX = /^\s*/;
+
+// declaration
+var PROPERTY_REGEX = /^(\*?[-#/*\\\w]+(\[[0-9a-z_-]+\])?)\s*/;
+var COLON_REGEX = /^:\s*/;
+var VALUE_REGEX = /^((?:'(?:\\'|.)*?'|"(?:\\"|.)*?"|\([^)]*?\)|[^};])+)/;
+var SEMICOLON_REGEX = /^[;\s]*/;
+
+// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim#Polyfill
+var TRIM_REGEX = /^\s+|\s+$/g;
+
+// strings
+var NEWLINE = '\n';
+var FORWARD_SLASH = '/';
+var ASTERISK = '*';
+var EMPTY_STRING = '';
+
+// types
+var TYPE_COMMENT = 'comment';
+var TYPE_DECLARATION = 'declaration';
+
+/**
+ * @param {String} style
+ * @param {Object} [options]
+ * @return {Object[]}
+ * @throws {TypeError}
+ * @throws {Error}
+ */
+var inlineStyleParser = function(style, options) {
+  if (typeof style !== 'string') {
+    throw new TypeError('First argument must be a string');
+  }
+
+  if (!style) return [];
+
+  options = options || {};
+
+  /**
+   * Positional.
+   */
+  var lineno = 1;
+  var column = 1;
+
+  /**
+   * Update lineno and column based on `str`.
+   *
+   * @param {String} str
+   */
+  function updatePosition(str) {
+    var lines = str.match(NEWLINE_REGEX);
+    if (lines) lineno += lines.length;
+    var i = str.lastIndexOf(NEWLINE);
+    column = ~i ? str.length - i : column + str.length;
+  }
+
+  /**
+   * Mark position and patch `node.position`.
+   *
+   * @return {Function}
+   */
+  function position() {
+    var start = { line: lineno, column: column };
+    return function(node) {
+      node.position = new Position(start);
+      whitespace();
+      return node;
+    };
+  }
+
+  /**
+   * Store position information for a node.
+   *
+   * @constructor
+   * @property {Object} start
+   * @property {Object} end
+   * @property {undefined|String} source
+   */
+  function Position(start) {
+    this.start = start;
+    this.end = { line: lineno, column: column };
+    this.source = options.source;
+  }
+
+  /**
+   * Non-enumerable source string.
+   */
+  Position.prototype.content = style;
+
+  /**
+   * Error `msg`.
+   *
+   * @param {String} msg
+   * @throws {Error}
+   */
+  function error(msg) {
+    var err = new Error(
+      options.source + ':' + lineno + ':' + column + ': ' + msg
+    );
+    err.reason = msg;
+    err.filename = options.source;
+    err.line = lineno;
+    err.column = column;
+    err.source = style;
+
+    if (options.silent) ; else {
+      throw err;
+    }
+  }
+
+  /**
+   * Match `re` and return captures.
+   *
+   * @param {RegExp} re
+   * @return {undefined|Array}
+   */
+  function match(re) {
+    var m = re.exec(style);
+    if (!m) return;
+    var str = m[0];
+    updatePosition(str);
+    style = style.slice(str.length);
+    return m;
+  }
+
+  /**
+   * Parse whitespace.
+   */
+  function whitespace() {
+    match(WHITESPACE_REGEX);
+  }
+
+  /**
+   * Parse comments.
+   *
+   * @param {Object[]} [rules]
+   * @return {Object[]}
+   */
+  function comments(rules) {
+    var c;
+    rules = rules || [];
+    while ((c = comment())) {
+      if (c !== false) {
+        rules.push(c);
+      }
+    }
+    return rules;
+  }
+
+  /**
+   * Parse comment.
+   *
+   * @return {Object}
+   * @throws {Error}
+   */
+  function comment() {
+    var pos = position();
+    if (FORWARD_SLASH != style.charAt(0) || ASTERISK != style.charAt(1)) return;
+
+    var i = 2;
+    while (
+      EMPTY_STRING != style.charAt(i) &&
+      (ASTERISK != style.charAt(i) || FORWARD_SLASH != style.charAt(i + 1))
+    ) {
+      ++i;
+    }
+    i += 2;
+
+    if (EMPTY_STRING === style.charAt(i - 1)) {
+      return error('End of comment missing');
+    }
+
+    var str = style.slice(2, i - 2);
+    column += 2;
+    updatePosition(str);
+    style = style.slice(i);
+    column += 2;
+
+    return pos({
+      type: TYPE_COMMENT,
+      comment: str
+    });
+  }
+
+  /**
+   * Parse declaration.
+   *
+   * @return {Object}
+   * @throws {Error}
+   */
+  function declaration() {
+    var pos = position();
+
+    // prop
+    var prop = match(PROPERTY_REGEX);
+    if (!prop) return;
+    comment();
+
+    // :
+    if (!match(COLON_REGEX)) return error("property missing ':'");
+
+    // val
+    var val = match(VALUE_REGEX);
+
+    var ret = pos({
+      type: TYPE_DECLARATION,
+      property: trim(prop[0].replace(COMMENT_REGEX, EMPTY_STRING)),
+      value: val
+        ? trim(val[0].replace(COMMENT_REGEX, EMPTY_STRING))
+        : EMPTY_STRING
+    });
+
+    // ;
+    match(SEMICOLON_REGEX);
+
+    return ret;
+  }
+
+  /**
+   * Parse declarations.
+   *
+   * @return {Object[]}
+   */
+  function declarations() {
+    var decls = [];
+
+    comments(decls);
+
+    // declarations
+    var decl;
+    while ((decl = declaration())) {
+      if (decl !== false) {
+        decls.push(decl);
+        comments(decls);
+      }
+    }
+
+    return decls;
+  }
+
+  whitespace();
+  return declarations();
+};
+
+/**
+ * Trim `str`.
+ *
+ * @param {String} str
+ * @return {String}
+ */
+function trim(str) {
+  return str ? str.replace(TRIM_REGEX, EMPTY_STRING) : EMPTY_STRING;
+}
+
+/**
+ * Parses inline style to object.
+ *
+ * @example
+ * // returns { 'line-height': '42' }
+ * StyleToObject('line-height: 42;');
+ *
+ * @param  {String}      style      - The inline style.
+ * @param  {Function}    [iterator] - The iterator function.
+ * @return {null|Object}
+ */
+function StyleToObject(style, iterator) {
+  var output = null;
+  if (!style || typeof style !== 'string') {
+    return output;
+  }
+
+  var declaration;
+  var declarations = inlineStyleParser(style);
+  var hasIterator = typeof iterator === 'function';
+  var property;
+  var value;
+
+  for (var i = 0, len = declarations.length; i < len; i++) {
+    declaration = declarations[i];
+    property = declaration.property;
+    value = declaration.value;
+
+    if (hasIterator) {
+      iterator(property, value, declaration);
+    } else if (value) {
+      output || (output = {});
+      output[property] = value;
+    }
+  }
+
+  return output;
+}
+
+var styleToObject = StyleToObject;
+
+function toReactAttributeKey(key) {
+    return key.toLowerCase()
+        .replace("class", "className")
+        .replace("colspan", "colSpan")
+        .replace("rowspan", "rowSpan");
+}
+function toReactStyleKey(key) {
+    // https://github.com/facebook/react/blob/5f6b75dd265cd831d2c4e407c4580b9cd7d996f5/packages/react-dom/src/shared/DOMProperty.js#L447-L448
+    var CAMELIZE = /[-:]([a-z])/g;
+    return key.replace(CAMELIZE, function (token) { return token[1].toUpperCase(); });
+}
+function toReactStyle(styleStr) {
+    var style = {};
+    var count = 0;
+    styleStr && styleToObject(styleStr, function (name, value) {
+        // convert to react key format (ignoring custom css properties)
+        var key = /^--.*/.test(name) ? name : toReactStyleKey(name);
+        style[key] = value;
+        ++count;
+    });
+    return count ? style : undefined;
+}
+function getDataFromElement(el, _data) {
+    if (!el.hasAttributes())
+        return { data: _data };
+    var data = _data || {};
+    for (var i = 0; i < el.attributes.length; ++i) {
+        var key = el.attributes[i].name.toLowerCase();
+        data[key] = el.attributes[i].value;
+    }
+    return { data: data };
+}
+function getRenderAttributesFromNode(obj, omitProps) {
+    var data = obj.data;
+    var renderAttrs = {};
+    data.forEach(function (value, key) {
+        var _key = toReactAttributeKey(key);
+        if (!omitProps || !(omitProps === null || omitProps === void 0 ? void 0 : omitProps.find(function (prop) { return prop === _key; }))) {
+            renderAttrs[_key] = _key === "style"
+                ? toReactStyle(value)
+                : value;
+        }
+    });
+    return renderAttrs;
+}
+function mergeClassStrings(classes1, classes2) {
+    var c1 = classes1 === null || classes1 === void 0 ? void 0 : classes1.split(" ").filter(function (c) { return !!c; });
+    var c2 = classes2 === null || classes2 === void 0 ? void 0 : classes2.split(" ").filter(function (c) { return !!c; });
+    return dedupe(c1, c2) || undefined;
+}
+
+function getBoundingRectForBlock(editor, block) {
+    var document = editor.value.document;
+    var path = block && document.getPath(block.key) || undefined;
+    // eslint-disable-next-line react/no-find-dom-node
+    var elt = path && editor.findDOMNode(path);
+    return elt === null || elt === void 0 ? void 0 : elt.getBoundingClientRect();
+}
+function getContentHeight(editor) {
+    var document = editor.value.document;
+    var firstBounds = getBoundingRectForBlock(editor, document.nodes.first());
+    var lastBounds = getBoundingRectForBlock(editor, document.nodes.last());
+    return firstBounds && lastBounds
+        ? lastBounds.bottom - firstBounds.top
+        : undefined;
+}
+function getRenderIndexOfMark(props) {
+    var mark = props.mark, marks = props.marks;
+    var markIndex = -1;
+    var i = 0;
+    marks.forEach(function (m) {
+        if (m === mark)
+            markIndex = i;
+        ++i;
+    });
+    return markIndex;
+}
+function findActiveMark(value, format) {
+    return value.activeMarks.find(function (mark) { return (mark === null || mark === void 0 ? void 0 : mark.type) === format; });
+}
+function hasActiveMark(value, format) {
+    return !!findActiveMark(value, format);
+}
+function isBlockOfType(node, format) {
+    return Block.isBlock(node) && (node.type === format);
+}
+// returns whether there is a selected block of the specified type.
+// value.blocks represents the closest selected block(s), i.e. it may
+// indicate that a list item is selected without indicating its list.
+function hasBlock(value, format) {
+    return value.blocks.some(function (node) { return isBlockOfType(node, format); });
+}
+// returns whether the selection touches any block of the specified type.
+// this is a more expansive notion of selection than value.blocks, which
+// includes any top-level blocks touched as well, e.g. if the caret is in
+// a list item the top-level block will be returned as well.
+function selectionContainsBlock(value, format) {
+    var document = value.document, selection = value.selection;
+    var nodes = document.getDescendantsAtRange(selection);
+    return nodes.some(function (node) { return !Text.isText(node) && ((node === null || node === void 0 ? void 0 : node.type) === format); });
+}
+function hasActiveInline(value, format) {
+    return value.inlines.some(function (inline) { return (inline === null || inline === void 0 ? void 0 : inline.type) === format; });
+}
+function handleToggleSuperSubscript(format, editor) {
+    var value = editor.value;
+    if (hasActiveMark(value, EFormat.superscript) || hasActiveMark(value, EFormat.subscript)) {
+        editor.removeMark(EFormat.superscript).removeMark(EFormat.subscript);
+    }
+    else {
+        editor.toggleMark(format);
+    }
+}
+
+function getActiveColorMark(editor) {
+    return editor.value.activeMarks.find(function (mark) { return (mark === null || mark === void 0 ? void 0 : mark.type) === EFormat.color; });
+}
+function removeColorMarksFromSelection(editor) {
+    editor.value.marks.toArray()
+        .filter(function (mark) { return mark.type === EFormat.color; })
+        .forEach(function (mark) { return editor.removeMark(mark); });
+}
+var kTextColorClass = "cc-text-color";
+function renderColorMark(mark, attributes, children, isSerializing) {
+    if (isSerializing === void 0) { isSerializing = false; }
+    var data = mark.data;
+    var color = data.get("color");
+    var textColor = { color: color };
+    // color shouldn't change when text is selected
+    var selectedColor = isSerializing ? undefined : { "--selected-color": color };
+    var mergedStyle = __assign(__assign(__assign({}, (attributes.style || {})), textColor), selectedColor);
+    var classes = mergeClassStrings(kTextColorClass, attributes.className);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", __assign({ className: classes, style: mergedStyle }, attributes), children));
+}
+var kSpanTag = "span";
+function getColorMarkToRender(props) {
+    return props.marks.find(function (m) { return !!(m && (m.type === EFormat.color)); });
+}
+// By default, marks are rendered in the order in which they're stored in the model,
+// which is the order in which they're added by the user. In some cases, however,
+// there are ordering dependencies in the rendering of the marks, notably that a
+// text color mark must wrap a strikethrough mark for the strikethrough to be
+// rendered in the correct color. Therefore, we play a bit of sleight-of-hand by
+// rendering the mark that should be rendered at the appropriate mark render index
+// rather than rendering the mark that slate actually asked us to render.
+function getMarkToRender(props) {
+    // find index of mark we were asked to render
+    var requestedMarkIndex = getRenderIndexOfMark(props);
+    // color mark is always rendered last
+    return requestedMarkIndex === props.marks.size - 1
+        ? getColorMarkToRender(props)
+        : undefined;
+}
+function ColorPlugin() {
+    return {
+        deserialize: function (el, next) {
+            if ((el.tagName.toLowerCase() === kSpanTag) && el.classList.contains(kTextColorClass)) {
+                var data = getDataFromElement(el);
+                return __assign(__assign({ object: "mark", type: EFormat.color }, data), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, type = obj.type;
+            if ((object === "mark") && (type === EFormat.color)) {
+                var mark = obj;
+                return renderColorMark(mark, getRenderAttributesFromNode(mark, ["color"]), children, true);
+            }
+        },
+        queries: {
+            getActiveColor: function (editor) {
+                var mark = getActiveColorMark(editor);
+                return mark && mark.data.get("color");
+            },
+            hasActiveColorMark: function (editor) {
+                return !!getActiveColorMark(editor);
+            }
+        },
+        commands: {
+            setColorMark: function (editor, color) {
+                var kBlackColor = "#000000";
+                removeColorMarksFromSelection(editor);
+                (color !== kBlackColor) && editor.addMark({ type: EFormat.color, data: { color: color } });
+                return editor;
+            }
+        },
+        renderMark: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children;
+            var mark = getMarkToRender(props);
+            return mark
+                ? renderColorMark(mark, __assign(__assign({}, getRenderAttributesFromNode(mark)), attributes), children)
+                : next();
+        }
+    };
+}
+
+function renderBlockAsTag(tag, block, attributes, children, isSerializing) {
+    var _children = tag === "hr" ? undefined : children;
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, _children);
+}
+var kTagToFormatMap = {
+    blockquote: EFormat.blockQuote,
+    div: EFormat.block,
+    h1: EFormat.heading1,
+    h2: EFormat.heading2,
+    h3: EFormat.heading3,
+    h4: EFormat.heading4,
+    h5: EFormat.heading5,
+    h6: EFormat.heading6,
+    hr: EFormat.horizontalRule,
+    p: EFormat.paragraph,
+    pre: EFormat.preformatted
+};
+var kFormatToTagMap = {};
+// build the kFormatToTagMap from the kTagToFormatMap
+for (var tag in kTagToFormatMap) {
+    var format = kTagToFormatMap[tag];
+    kFormatToTagMap[format] = tag;
+}
+// other block tags handled as generic blocks
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
+var kLegacyBlockTags = [
+    "address", "article", "aside",
+    "dd", "dl", "dt",
+    "details", "fieldset", "figcaption", "figure",
+    "footer", "form", "header", "hgroup", "nav", "section"
+];
+kLegacyBlockTags.forEach(function (tag) { return kTagToFormatMap[tag] = EFormat.block; });
+function getTagForBlock(node) {
+    if (!Block.isBlock(node))
+        return undefined;
+    var format = node.type, data = node.data;
+    return data.get("tag") || kFormatToTagMap[format];
+}
+function getDataFromBlockElement(el) {
+    var tag = el.tagName.toLowerCase();
+    var dataObj = getDataFromElement(el, { tag: tag });
+    // convert <center> tag to center alignment property
+    if (tag === "center") {
+        (dataObj === null || dataObj === void 0 ? void 0 : dataObj.data) && (dataObj.data.align = "center");
+    }
+    return dataObj;
+}
+function getRenderAttributesFromBlock(block) {
+    var isCenterTag = (block.type === EFormat.block) &&
+        (block.data.get("tag") === "center");
+    var omits = __spreadArrays(["tag"], (isCenterTag ? ["align"] : []));
+    return getRenderAttributesFromNode(block, omits);
+}
+/**
+ * On return/enter, navigate to next/previous cell if inside a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleEnter = function (event, editor, next) {
+    // placeholder for any further special-case treatment
+    return next();
+};
+function CoreBlocksPlugin() {
+    return {
+        deserialize: function (el, next) {
+            var tag = el.tagName.toLowerCase();
+            var format = kTagToFormatMap[tag];
+            if (format) {
+                return __assign(__assign({ object: "block", type: format }, getDataFromBlockElement(el)), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var tag = getTagForBlock(obj);
+            if (tag) {
+                var node = obj;
+                var attributes = getRenderAttributesFromBlock(node);
+                return renderBlockAsTag(tag, node, attributes, children);
+            }
+        },
+        onCommand: function (command, editor, next) {
+            var type = command.type, args = command.args;
+            if (type === "toggleBlock") {
+                var format = args === null || args === void 0 ? void 0 : args[0];
+                if (format && kFormatToTagMap[format]) {
+                    editor.setBlocks(hasBlock(editor.value, format) ? EFormat.defaultBlock : format);
+                    return;
+                }
+            }
+            return next();
+        },
+        onKeyDown: function (event, editor, next) {
+            switch (event.key) {
+                case 'Enter':
+                    return handleEnter(event, editor, next);
+                default:
+                    return next();
+            }
+        },
+        renderBlock: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children, node = props.node;
+            var tag = getTagForBlock(node);
+            return tag
+                ? renderBlockAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromBlock(node)), attributes), children)
+                : next();
+        }
+    };
+}
+
+/** `Object#toString` result references. */
+var stringTag$3 = '[object String]';
+
+/**
+ * Checks if `value` is classified as a `String` primitive or object.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a string, else `false`.
+ * @example
+ *
+ * _.isString('abc');
+ * // => true
+ *
+ * _.isString(1);
+ * // => false
+ */
+function isString(value) {
+  return typeof value == 'string' ||
+    (!isArray_1(value) && isObjectLike_1(value) && _baseGetTag(value) == stringTag$3);
+}
+
+var isString_1 = isString;
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new accessor function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+var _baseProperty = baseProperty;
+
+/**
+ * Gets the size of an ASCII `string`.
+ *
+ * @private
+ * @param {string} string The string inspect.
+ * @returns {number} Returns the string size.
+ */
+var asciiSize = _baseProperty('length');
+
+var _asciiSize = asciiSize;
+
+/** Used to compose unicode character classes. */
+var rsAstralRange = '\\ud800-\\udfff',
+    rsComboMarksRange = '\\u0300-\\u036f',
+    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+    rsVarRange = '\\ufe0e\\ufe0f';
+
+/** Used to compose unicode capture groups. */
+var rsZWJ = '\\u200d';
+
+/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboRange + rsVarRange + ']');
+
+/**
+ * Checks if `string` contains Unicode symbols.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {boolean} Returns `true` if a symbol is found, else `false`.
+ */
+function hasUnicode(string) {
+  return reHasUnicode.test(string);
+}
+
+var _hasUnicode = hasUnicode;
+
+/** Used to compose unicode character classes. */
+var rsAstralRange$1 = '\\ud800-\\udfff',
+    rsComboMarksRange$1 = '\\u0300-\\u036f',
+    reComboHalfMarksRange$1 = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange$1 = '\\u20d0-\\u20ff',
+    rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1,
+    rsVarRange$1 = '\\ufe0e\\ufe0f';
+
+/** Used to compose unicode capture groups. */
+var rsAstral = '[' + rsAstralRange$1 + ']',
+    rsCombo = '[' + rsComboRange$1 + ']',
+    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+    rsNonAstral = '[^' + rsAstralRange$1 + ']',
+    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+    rsZWJ$1 = '\\u200d';
+
+/** Used to compose unicode regexes. */
+var reOptMod = rsModifier + '?',
+    rsOptVar = '[' + rsVarRange$1 + ']?',
+    rsOptJoin = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+
+/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+
+/**
+ * Gets the size of a Unicode `string`.
+ *
+ * @private
+ * @param {string} string The string inspect.
+ * @returns {number} Returns the string size.
+ */
+function unicodeSize(string) {
+  var result = reUnicode.lastIndex = 0;
+  while (reUnicode.test(string)) {
+    ++result;
+  }
+  return result;
+}
+
+var _unicodeSize = unicodeSize;
+
+/**
+ * Gets the number of symbols in `string`.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {number} Returns the string size.
+ */
+function stringSize(string) {
+  return _hasUnicode(string)
+    ? _unicodeSize(string)
+    : _asciiSize(string);
+}
+
+var _stringSize = stringSize;
+
+/** `Object#toString` result references. */
+var mapTag$5 = '[object Map]',
+    setTag$5 = '[object Set]';
+
+/**
+ * Gets the size of `collection` by returning its length for array-like
+ * values or the number of own enumerable string keyed properties for objects.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to inspect.
+ * @returns {number} Returns the collection size.
+ * @example
+ *
+ * _.size([1, 2, 3]);
+ * // => 3
+ *
+ * _.size({ 'a': 1, 'b': 2 });
+ * // => 2
+ *
+ * _.size('pebbles');
+ * // => 7
+ */
+function size(collection) {
+  if (collection == null) {
+    return 0;
+  }
+  if (isArrayLike_1(collection)) {
+    return isString_1(collection) ? _stringSize(collection) : collection.length;
+  }
+  var tag = _getTag(collection);
+  if (tag == mapTag$5 || tag == setTag$5) {
+    return collection.size;
+  }
+  return _baseKeys(collection).length;
+}
+
+var size_1 = size;
+
+var kTagToFormatMap$1 = {
+    span: EFormat.inline
+};
+var kFormatToTagMap$1 = {};
+// build the kFormatToTagMap from the kTagToFormatMap
+for (var tag$1 in kTagToFormatMap$1) {
+    var format$1 = kTagToFormatMap$1[tag$1];
+    kFormatToTagMap$1[format$1] = tag$1;
+}
+// legacy tags (https://developer.mozilla.org/en-US/docs/Web/HTML/Inline_elements)
+// empty in the HTML element sense - not allowed to have child elements
+var kLegacyEmptyInlineTags = [
+    "embed", "input"
+];
+// void in the Slate sense of not having editable contents
+var kLegacyVoidNonEmptyInlineTags = [
+    "audio", "iframe", "picture", "video"
+];
+var kLegacyContentInlineTags = [
+    "abbr", "acronym", "big", "cite", "dfn", "label", "q", "samp", "small",
+];
+var kLegacyConvertedInlineTags = ["font"];
+var kLegacyNonEmptyInlineTags = __spreadArrays(kLegacyContentInlineTags, kLegacyVoidNonEmptyInlineTags);
+var kLegacyVoidInlineTags = __spreadArrays(kLegacyEmptyInlineTags, kLegacyVoidNonEmptyInlineTags);
+var kLegacyInlineTags = __spreadArrays(kLegacyConvertedInlineTags, kLegacyContentInlineTags, kLegacyVoidInlineTags);
+// other inline tags handled as generic inlines
+kLegacyInlineTags.forEach(function (tag) { return kTagToFormatMap$1[tag] = EFormat.inline; });
+function isCoreInline(node) {
+    return Inline.isInline(node) && !!kFormatToTagMap$1[node.type];
+}
+function getTagForInline(node) {
+    if (!Inline.isInline(node) || !isCoreInline(node))
+        return undefined;
+    var format = node.type, data = node.data;
+    return data.get("tag") || kFormatToTagMap$1[format];
+}
+function getRenderTagForInline(node) {
+    if (!Inline.isInline(node) || !isCoreInline(node))
+        return undefined;
+    var format = node.type, data = node.data;
+    var tag = data.get("tag");
+    // <font> tags are converted to styled <span> tags
+    return tag && (tag !== "font")
+        ? tag
+        : kFormatToTagMap$1[format];
+}
+function isVoidInline(node) {
+    if (isCoreInline(node)) {
+        var tag = getTagForInline(node);
+        if (tag && kLegacyVoidInlineTags.includes(tag)) {
+            return true;
+        }
+    }
+    return false;
+}
+function getDataFromInlineElement(el) {
+    var tag = el.tagName.toLowerCase();
+    return getDataFromElement(el, { tag: tag });
+}
+// convert <font> tag to style attributes for a <span> tag
+// cf. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font
+function getRenderAttributesFromFontInline(inline) {
+    var data = inline.data;
+    var fontStyle = {};
+    var color = data.get("color");
+    if (color)
+        fontStyle.color = color;
+    var face = data.get("face");
+    if (face)
+        fontStyle.fontFamily = face;
+    var size = data.get("size");
+    if (size) {
+        var index = 0;
+        if (/^\d$/.test(size))
+            index = +size;
+        else if (/^-\d$/.test(size))
+            index = 3 - +size[1];
+        else if (/^\+\d$/.test(size))
+            index = 3 + +size[1];
+        if (index) {
+            index = Math.max(1, Math.min(7, index)) - 1;
+            fontStyle.fontSize = ["xx-small", "small", "medium", "large", "x-large", "xx-large", "xxx-large"][index];
+        }
+    }
+    var attributes = getRenderAttributesFromNode(inline, ["tag", "color", "face", "size"]);
+    var style = __assign(__assign({}, fontStyle), ((attributes === null || attributes === void 0 ? void 0 : attributes.style) || {}));
+    if (size_1(style)) {
+        attributes.style = style;
+    }
+    return attributes;
+}
+function getRenderAttributesFromInline(inline) {
+    if (getTagForInline(inline) === "font") {
+        return getRenderAttributesFromFontInline(inline);
+    }
+    return getRenderAttributesFromNode(inline, ["tag"]);
+}
+function renderInlineAsTag(tag, inline, attributes, children, isSerializing) {
+    var _children = kLegacyEmptyInlineTags.includes(tag) ? null : children;
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, _children);
+}
+function CoreInlinesPlugin() {
+    return {
+        deserialize: function (el, next) {
+            var tag = el.tagName.toLowerCase();
+            var format = kTagToFormatMap$1[tag];
+            if (format) {
+                return __assign(__assign({ object: "inline", type: format }, getDataFromInlineElement(el)), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var tag = getRenderTagForInline(obj);
+            if (tag) {
+                var inline = obj;
+                var attributes = getRenderAttributesFromInline(inline);
+                return renderInlineAsTag(tag, inline, attributes, children);
+            }
+        },
+        onQuery: function (query, editor, next) {
+            if (query.type === "isVoid") {
+                var node = query.args[0];
+                if (isCoreInline(node)) {
+                    return isVoidInline(node);
+                }
+            }
+            return next();
+        },
+        renderInline: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children, node = props.node;
+            var tag = getRenderTagForInline(node);
+            return tag
+                ? renderInlineAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromInline(node)), attributes), children)
+                : next();
+        }
+    };
+}
+
+function renderMarkAsTag(tag, mark, attributes, children, isSerializing) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, children);
+}
+var kTagToFormatMap$2 = {
+    code: EFormat.code,
+    del: EFormat.deleted,
+    em: EFormat.italic,
+    ins: EFormat.inserted,
+    mark: EFormat.marked,
+    strong: EFormat.bold,
+    sub: EFormat.subscript,
+    sup: EFormat.superscript,
+    u: EFormat.underlined
+};
+var kFormatToTagMap$2 = {};
+// build the kFormatToTagMap from the kTagToFormatMap
+for (var tag$2 in kTagToFormatMap$2) {
+    var format$2 = kTagToFormatMap$2[tag$2];
+    kFormatToTagMap$2[format$2] = tag$2;
+}
+// add additional tags supported for import but not used for rendering
+kTagToFormatMap$2["b"] = EFormat.bold;
+kTagToFormatMap$2["i"] = EFormat.italic;
+kTagToFormatMap$2["s"] = EFormat.deleted;
+kTagToFormatMap$2["strike"] = EFormat.deleted;
+function getTagForMark(mark) {
+    // auto-convert mark tags for consistency with TinyMCE editor
+    return kFormatToTagMap$2[mark.type];
+    // const { type, data } = mark;
+    // const formatValue = data.get(type);
+    // return typeof formatValue === "string"
+    //         ? formatValue
+    //         : kFormatToTagMap[type];
+}
+function getHandledMarkAtIndex(props, index) {
+    var marks = props.marks;
+    // return the mark that would be at that index if only
+    // marks handled by this plugin were present.
+    var handledMarkIndex = 0;
+    return marks.find(function (m) {
+        var isHandledMark = !!(m && kFormatToTagMap$2[m.type]);
+        if (isHandledMark) {
+            if (handledMarkIndex === index)
+                return true;
+            ++handledMarkIndex;
+        }
+        return false;
+    });
+}
+// By default, marks are rendered in the order in which they're stored in the model,
+// which is the order in which they're added by the user. In some cases, however,
+// there are ordering dependencies in the rendering of the marks, notably that a
+// text color mark must wrap a strikethrough mark for the strikethrough to be
+// rendered in the correct color. Therefore, we play a bit of sleight-of-hand by
+// rendering the mark that should be rendered at the appropriate mark render index
+// rather than rendering the mark that slate actually asked us to render.
+function getMarkToRender$1(props) {
+    // find index of mark we were asked to render
+    var requestedMarkIndex = getRenderIndexOfMark(props);
+    // render the mark that would be at that index if unhandled marks were removed
+    return getHandledMarkAtIndex(props, requestedMarkIndex);
+}
+function CoreMarksPlugin() {
+    return {
+        deserialize: function (el, next) {
+            var tag = el.tagName.toLowerCase();
+            var format = kTagToFormatMap$2[tag];
+            if (format) {
+                return {
+                    object: "mark",
+                    type: format,
+                    // Adding data attributes in this way allows us to (1) preserve the original tag (e.g. <b> vs. <strong>)
+                    // and (2) preserve any attributes that may have been associated with the tag. Unfortunately, it also
+                    // wreaks havoc with Slate's mark management because marks are compared by value, so two bold marks
+                    // with different tags/attributes no longer compare as equal resulting in toggleMark() not working as
+                    // expected, neighboring bold marks not being combined properly, etc. Given that of the original
+                    // benefits, we are not taking advantage of (1) because we are following TinyMCE's example and simply
+                    // converting legacy tags to their current equivalents and there are no known examples of attributes
+                    // being applied to mark tags (2), we simply disable this functionality for now. Leaving it commented
+                    // out for now in case we encounter an argument for going back.
+                    // ...getDataFromElement(el, { [format]: tag }),
+                    nodes: next(el.childNodes),
+                };
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, format = obj.type;
+            if (kFormatToTagMap$2[format] && (object === "mark")) {
+                var mark = obj;
+                var tag = getTagForMark(mark);
+                var attributes = getRenderAttributesFromNode(mark, [format]);
+                return renderMarkAsTag(tag, mark, attributes, children);
+            }
+        },
+        renderMark: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children;
+            var mark = getMarkToRender$1(props);
+            // use imported tag if present
+            var tag = mark && getTagForMark(mark);
+            return mark && tag
+                ? renderMarkAsTag(tag, mark, __assign(__assign({}, getRenderAttributesFromNode(mark)), attributes), children)
+                : next();
+        }
+    };
+}
+
+var kImageHighlightClass = "cc-image-highlight";
+function renderImage(node, attributes, children, options) {
+    var data = node.data;
+    var highlightClass = (options === null || options === void 0 ? void 0 : options.isHighlighted) && !(options === null || options === void 0 ? void 0 : options.isSerializing) ? kImageHighlightClass : undefined;
+    var classes = mergeClassStrings(highlightClass, attributes.className);
+    var src = data.get("src");
+    var onClick = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onClick;
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", __assign({ className: classes, src: src, onClick: onClick }, attributes)));
+}
+var kImageTag = "img";
+function ImagePlugin() {
+    return {
+        deserialize: function (el, next) {
+            if (el.tagName.toLowerCase() === kImageTag) {
+                var data = getDataFromElement(el);
+                return __assign(__assign({ object: "inline", type: EFormat.image }, data), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, type = obj.type;
+            if ((object === "inline") && (type === EFormat.image)) {
+                var image = obj;
+                return renderImage(image, getRenderAttributesFromNode(image), children, { isSerializing: true });
+            }
+        },
+        queries: {
+            isImageActive: function (editor) {
+                return hasActiveInline(editor.value, EFormat.image);
+            },
+            isImageEnabled: function (editor) {
+                return (editor.value.blocks.size <= 1) && (editor.value.inlines.size === 0);
+            }
+        },
+        commands: {
+            configureImage: function (editor, displayDialog) {
+                displayDialog({
+                    title: "Insert Image",
+                    prompts: ["Enter the URL of the image:"],
+                    onAccept: function (_editor, inputs) { return _editor.command("addImage", inputs); }
+                });
+                return editor;
+            },
+            addImage: function (editor, dialogValues) {
+                var src = dialogValues[0];
+                if (!editor)
+                    return editor;
+                if (!src)
+                    return editor;
+                editor.insertInline({
+                    type: EFormat.image,
+                    data: { src: src }
+                });
+                return editor;
+            },
+        },
+        schema: {
+            inlines: {
+                image: {
+                    isVoid: true,
+                }
+            }
+        },
+        renderInline: function (props, editor, next) {
+            var attributes = props.attributes, node = props.node, children = props.children;
+            if (node.type !== EFormat.image)
+                return next();
+            var dataAttrs = getRenderAttributesFromNode(node);
+            var options = {
+                isSerializing: false,
+                isHighlighted: props.isSelected || props.isFocused,
+                onClick: function () { return editor.moveFocusToStartOfNode(node); }
+            };
+            return renderImage(node, __assign(__assign({}, dataAttrs), attributes), children, options);
+        }
+    };
+}
+
+function renderLink(link, attributes, children, isSerializing) {
+    if (isSerializing === void 0) { isSerializing = false; }
+    var data = link.data;
+    var href = data.get('href');
+    var rel = isSerializing ? undefined : "noopener noreferrer";
+    var onDoubleClick = isSerializing ? undefined : function () { return window.open(href); };
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", __assign({}, attributes, { href: href, rel: rel, onDoubleClick: onDoubleClick }), children));
+}
+var kLinkTag = "a";
+function LinkPlugin() {
+    return {
+        deserialize: function (el, next) {
+            if (el.tagName.toLowerCase() === kLinkTag) {
+                var data = getDataFromElement(el);
+                return __assign(__assign({ object: "inline", type: EFormat.link }, data), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, type = obj.type;
+            if ((object === "inline") && (type === EFormat.link)) {
+                var link = obj;
+                return renderLink(link, getRenderAttributesFromNode(link), children, true);
+            }
+        },
+        queries: {
+            isLinkActive: function (editor) {
+                return hasActiveInline(editor.value, EFormat.link);
+            },
+            isLinkEnabled: function (editor) {
+                // must be in a single block
+                return (editor.value.blocks.size <= 1) &&
+                    // must have no selected inlines (click will insert link)
+                    ((editor.value.inlines.size === 0) ||
+                        // or have exactly one inline link selected (click will de-link)
+                        ((editor.value.inlines.size === 1) &&
+                            editor.value.inlines.every(function (inline) { return (inline === null || inline === void 0 ? void 0 : inline.type) === EFormat.link; })));
+            }
+        },
+        commands: {
+            wrapLink: function (editor, href) {
+                editor.wrapInline({
+                    type: EFormat.link,
+                    data: { href: href },
+                });
+                editor.moveToEnd();
+                return editor;
+            },
+            configureLink: function (editor, displayDialog) {
+                var value = editor.value;
+                var hasLink = hasActiveInline(editor.value, EFormat.link);
+                function unwrapLink(_editor) {
+                    _editor.unwrapInline(EFormat.link);
+                }
+                if (hasLink) {
+                    editor.command(unwrapLink);
+                }
+                else {
+                    var textPrompt = value.selection.isExpanded ? [] : ["Enter the text for the link:"];
+                    var linkCmd_1 = value.selection.isExpanded ? "applyLink" : "insertLink";
+                    displayDialog({
+                        title: "Insert Link",
+                        prompts: __spreadArrays(textPrompt, ["Enter the URL of the link:"]),
+                        onAccept: function (_editor, inputs) { return _editor.command(linkCmd_1, inputs); }
+                    });
+                }
+                return editor;
+            },
+            insertLink: function (editor, dialogValues) {
+                var text = dialogValues[0];
+                var href = dialogValues[1];
+                editor
+                    .insertText(text)
+                    .moveFocusBackward(text.length)
+                    .command("wrapLink", href);
+                return editor;
+            },
+            applyLink: function (editor, dialogValues) {
+                var href = dialogValues[0];
+                editor.command("wrapLink", href);
+                return editor;
+            }
+        },
+        renderInline: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children, node = props.node;
+            return node.type === EFormat.link
+                ? renderLink(node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
+                : next();
+        }
+    };
+}
+
+function renderNodeAsTag(tag, node, attributes, children, isSerializing) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tag, attributes, children);
+}
+var kTagToFormatMap$3 = {
+    li: EFormat.listItem,
+    ol: EFormat.numberedList,
+    ul: EFormat.bulletedList
+};
+var kFormatToTagMap$3 = {};
+// build the kFormatToTagMap from the kTagToFormatMap
+for (var tag$3 in kTagToFormatMap$3) {
+    var format$3 = kTagToFormatMap$3[tag$3];
+    kFormatToTagMap$3[format$3] = tag$3;
+}
+/**
+ * On return/enter, navigate to next/previous cell if inside a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleEnter$1 = function (event, editor, next) {
+    // For now, treat enter like tab. A more sophisticated implementation would
+    // advance to the next/previous row rather than to the next cell, but that
+    // is trickier to figure out.
+    // return handleTab(event, editor, next);
+    return next();
+};
+function isListOfTypeSelected(editor, format) {
+    var _a = editor.value, blocks = _a.blocks, document = _a.document;
+    return blocks.some(function (block) {
+        return !!block && !!document.getClosest(block.key, function (parent) { return isBlockOfType(parent, format); });
+    });
+}
+function ListPlugin() {
+    return {
+        deserialize: function (el, next) {
+            var tag = el.tagName.toLowerCase();
+            var format = kTagToFormatMap$3[tag];
+            if (format) {
+                return __assign(__assign({ object: "block", type: format }, getDataFromElement(el)), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, type = obj.type;
+            var format = type;
+            var tag = kFormatToTagMap$3[format];
+            if (tag && (object === "block")) {
+                var node = obj;
+                var attributes = getRenderAttributesFromNode(node);
+                return renderNodeAsTag(tag, node, attributes, children);
+            }
+        },
+        onCommand: function (command, editor, next) {
+            var type = command.type, args = command.args;
+            if (type === "toggleBlock") {
+                var format = args === null || args === void 0 ? void 0 : args[0];
+                var containsListItems = hasBlock(editor.value, EFormat.listItem);
+                if ((format === EFormat.bulletedList) || (format === EFormat.numberedList)) {
+                    var isListOfThisType = isListOfTypeSelected(editor, format);
+                    if (!containsListItems) {
+                        // For a brand new list, first set the selection to be a list-item.
+                        // Then wrap the new list-items with the appropriate type of block.
+                        editor.setBlocks(EFormat.listItem)
+                            .wrapBlock(format);
+                    }
+                    else if (isListOfThisType) {
+                        // If we are setting a list to its current type, we treat this as
+                        // a toggle-off. To do this, we unwrap the selection and remove all
+                        // list-items.
+                        editor.setBlocks(EFormat.defaultBlock) // Removes blocks typed w/ "list-item"
+                            .unwrapBlock(EFormat.bulletedList)
+                            .unwrapBlock(EFormat.numberedList);
+                    }
+                    else {
+                        // If we have ended up here, then we are switching a list between slate
+                        // types, i.e., bulleted <-> numbered.
+                        editor.unwrapBlock(format === EFormat.bulletedList ? EFormat.numberedList : EFormat.bulletedList)
+                            .wrapBlock(format);
+                    }
+                    return;
+                }
+                else {
+                    if (containsListItems) {
+                        // In this case, we are trying to change a block away from
+                        // being a list. To do this, we either set the slateType we are
+                        // after, or clear it, if it's already set to that slateType. Then
+                        // we remove any part of the selection that might be a wrapper
+                        // of either type of list.
+                        editor.unwrapBlock(EFormat.bulletedList)
+                            .unwrapBlock(EFormat.numberedList);
+                    }
+                }
+            }
+            return next();
+        },
+        onKeyDown: function (event, editor, next) {
+            switch (event.key) {
+                case 'Enter':
+                    return handleEnter$1(event, editor, next);
+                default:
+                    return next();
+            }
+        },
+        renderBlock: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children, node = props.node;
+            var tag = kFormatToTagMap$3[node.type];
+            return tag
+                ? renderNodeAsTag(tag, node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
+                : next();
+        }
+    };
+}
+
+function renderNodeAsTag$1(tableTag, node, attributes, children, isSerializing) {
+    // <col> tags can't have children
+    var _children = tableTag === "col" ? null : children;
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(tableTag, attributes, _children);
+}
+var kTagToFormatMap$4 = {
+    table: "table",
+    caption: "table-caption",
+    colgroup: "table-column-group",
+    col: "table-column",
+    thead: "table-header",
+    tbody: "table-body",
+    tr: "table-row",
+    th: "table-header-cell",
+    td: "table-cell",
+    tfoot: "table-footer"
+};
+var kFormatToTagMap$4 = {};
+// build the kFormatToTagMap from the kTagToFormatMap
+for (var tag$4 in kTagToFormatMap$4) {
+    var format$4 = kTagToFormatMap$4[tag$4];
+    kFormatToTagMap$4[format$4] = tag$4;
+}
+function isTableCell(node) {
+    return ((node === null || node === void 0 ? void 0 : node.object) === "block") && (((node === null || node === void 0 ? void 0 : node.type) === "table-cell") || ((node === null || node === void 0 ? void 0 : node.type) === "table-header-cell"));
+}
+function getSelectionInfo(editor) {
+    var blocks = editor.value.blocks;
+    var selectedCells = 0;
+    blocks.forEach(function (node) { return isTableCell(node) && ++selectedCells; });
+    return { selectedBlocks: blocks.size, selectedCells: selectedCells };
+}
+function isCaretAtStart(editor) {
+    var _a = editor.value, document = _a.document, _b = _a.selection, isCollapsed = _b.isCollapsed, start = _b.start;
+    var startNode = isCollapsed && document.getDescendant(start.key);
+    return !!startNode && start.isAtStartOfNode(startNode);
+}
+function isCaretAtEnd(editor) {
+    var _a = editor.value, document = _a.document, _b = _a.selection, isCollapsed = _b.isCollapsed, end = _b.end;
+    var endNode = isCollapsed && document.getDescendant(end.key);
+    return !!endNode && end.isAtEndOfNode(endNode);
+}
+// returns true if an expanded selection could be normalized for editing
+// returns false if an expanded selection should not allow editing
+// returns undefined if this function has no opinion (collapsed selection, not a table cell, etc.)
+function normalizeExpandedSelection(editor) {
+    var _a = editor.value, document = _a.document, _b = _a.selection, isExpanded = _b.isExpanded, start = _b.start, end = _b.end;
+    if (!isExpanded)
+        return undefined;
+    var _c = getSelectionInfo(editor), selectedBlocks = _c.selectedBlocks, selectedCells = _c.selectedCells;
+    if (selectedCells === 0)
+        return undefined;
+    if ((selectedCells === 1) && (selectedBlocks === 1))
+        return true;
+    if (selectedBlocks > 2)
+        return false;
+    var startNode = document.getDescendant(start.key);
+    var endNode = document.getDescendant(end.key);
+    if ((selectedBlocks === 2) && startNode && endNode && end.isAtStartOfNode(endNode)) {
+        editor.select(editor.value.selection.moveEndToEndOfNode(startNode));
+        return true;
+    }
+    return false;
+}
+function prevTableCell(editor) {
+    var _a = editor.value, document = _a.document, start = _a.selection.start;
+    var startNode = document.getDescendant(start.key);
+    var prevText = startNode && document.getPreviousText(startNode.key);
+    var prevBlock = prevText && document.getClosestBlock(prevText.key);
+    return prevBlock && isTableCell(prevBlock) ? prevBlock : undefined;
+}
+function nextTableCell(editor) {
+    var _a = editor.value, document = _a.document, end = _a.selection.end;
+    var endNode = document.getDescendant(end.key);
+    var endText = endNode && document.getNextText(endNode.key);
+    var nextBlock = endText && document.getClosestBlock(endText.key);
+    return nextBlock && isTableCell(nextBlock) ? nextBlock : undefined;
+}
+/**
+ * On tab, navigate to next/previous cell if inside a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleTab = function (event, editor, next) {
+    var selectedCells = getSelectionInfo(editor).selectedCells;
+    if (selectedCells) {
+        var tabCell = event.shiftKey ? prevTableCell(editor) : nextTableCell(editor);
+        tabCell && editor.moveToRangeOfNode(tabCell);
+        event.preventDefault();
+    }
+    else {
+        next();
+    }
+};
+/**
+ * On return/enter, navigate to next/previous cell if inside a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleEnter$2 = function (event, editor, next) {
+    // For now, treat enter like tab. A more sophisticated implementation would
+    // advance to the next/previous row rather than to the next cell, but that
+    // is trickier to figure out.
+    return handleTab(event, editor, next);
+};
+/**
+ * On backspace, do nothing if at the start of a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleBackspace = function (event, editor, next) {
+    var value = editor.value;
+    var selection = value.selection;
+    var isCollapsed = selection.isCollapsed;
+    var _a = getSelectionInfo(editor), selectedBlocks = _a.selectedBlocks, selectedCells = _a.selectedCells;
+    // can backspace outside a table unless the caret is immediately after a table
+    if (((selectedCells === 0) && !(isCaretAtStart(editor) && prevTableCell(editor))) ||
+        // can delete the text inside a table cell, but not beyond the cell
+        ((selectedCells === 1) && (selectedBlocks === 1) &&
+            (!isCollapsed || (selection.start.offset !== 0))) ||
+        // can delete text in a cell if an expanded selection can be normalized to one cell
+        normalizeExpandedSelection(editor)) {
+        return next();
+    }
+    // also can't delete if more than one cell is selected
+    event.preventDefault();
+};
+/**
+ * On delete, do nothing if at the end of a table cell.
+ *
+ * @param {Event} event
+ * @param {Editor} editor
+ */
+var handleDelete = function (event, editor, next) {
+    var value = editor.value;
+    var selection = value.selection;
+    var isCollapsed = selection.isCollapsed;
+    var _a = getSelectionInfo(editor), selectedBlocks = _a.selectedBlocks, selectedCells = _a.selectedCells;
+    // can delete outside a table unless the caret is immediately before a table
+    if (((selectedCells === 0) && !(isCaretAtEnd(editor) && nextTableCell(editor))) ||
+        // can delete the text inside a table cell, but not beyond the cell
+        ((selectedCells === 1) && (selectedBlocks === 1) &&
+            (!isCollapsed || (selection.end.offset !== value.startText.text.length))) ||
+        // can delete text in a cell if an expanded selection can be normalized to one cell
+        normalizeExpandedSelection(editor)) {
+        return next();
+    }
+    // also can't delete if more than one cell is selected
+    event.preventDefault();
+};
+function TablePlugin() {
+    return {
+        deserialize: function (el, next) {
+            var tag = el.tagName.toLowerCase();
+            var format = kTagToFormatMap$4[tag];
+            if (format) {
+                var data = getDataFromElement(el);
+                return __assign(__assign({ object: "block", type: format }, data), { nodes: next(el.childNodes) });
+            }
+        },
+        serialize: function (obj, children) {
+            var object = obj.object, type = obj.type;
+            var format = type;
+            var tag = kFormatToTagMap$4[format];
+            if (tag && (object === "block")) {
+                var node = obj;
+                var attributes = getRenderAttributesFromNode(node);
+                return renderNodeAsTag$1(tag, node, attributes, children);
+            }
+        },
+        postSerialize: function (html) {
+            // slate-html-serializer uses react-dom/server/renderToStaticMarkup(), which
+            // generates incorrect case for "colspan" (but not for "rowspan" ¯\_(ツ)_/¯).
+            return html.replace("colSpan", "colspan");
+        },
+        renderBlock: function (props, editor, next) {
+            var attributes = props.attributes, children = props.children, node = props.node;
+            var tag = kFormatToTagMap$4[node.type];
+            return tag
+                ? renderNodeAsTag$1(tag, node, __assign(__assign({}, getRenderAttributesFromNode(node)), attributes), children)
+                : next();
+        },
+        onBeforeInput: function (event, editor, next) {
+            if (normalizeExpandedSelection(editor) === false) {
+                event.preventDefault();
+            }
+            else {
+                return next();
+            }
+        },
+        onKeyDown: function (event, editor, next) {
+            switch (event.key) {
+                case 'Tab':
+                    return handleTab(event, editor, next);
+                case 'Enter':
+                    return handleEnter$2(event, editor, next);
+                case 'Backspace':
+                    return handleBackspace(event, editor, next);
+                case 'Delete':
+                    return handleDelete(event, editor, next);
+                default:
+                    return next();
+            }
+        }
+    };
+}
+
+// A modified version of the TEXT_RULE from the slate-html-serializer with
+// special handling for &nbsp;
+var TEXT_RULE$1 = {
+    deserialize: function (el) {
+        if (el.tagName && el.tagName.toLowerCase() === 'br') {
+            return {
+                object: 'text',
+                text: '\n',
+                marks: [],
+            };
+        }
+        if (el.nodeName === '#text') {
+            if (el.nodeValue && el.nodeValue.match(/<!--.*?-->/))
+                return;
+            return {
+                object: 'text',
+                text: el.nodeValue,
+                marks: [],
+            };
+        }
+    },
+    serialize: function (obj, children) {
+        if (obj.object === 'string') {
+            return children.split('\n').reduce(function (array, text, i) {
+                if (i !== 0)
+                    array.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", { key: i }));
+                // encode non-breaking spaces (for visibility)
+                array.push(text.replace(/\u00A0/g, "&nbsp;"));
+                return array;
+            }, []);
+        }
+    },
+    postSerialize: function (html) {
+        // After encoding non-breaking spaces in the TEXT_RULE above,
+        // renderToStaticMarkup() re-escapes so we have to unescape.
+        return html.replace(/&amp;nbsp;/g, "&nbsp;");
+    }
+};
+var rules = [
+    ColorPlugin(), CoreMarksPlugin(),
+    ImagePlugin(), LinkPlugin(), CoreInlinesPlugin(),
+    ListPlugin(), TablePlugin(), CoreBlocksPlugin(),
+    TEXT_RULE$1
+];
+var htmlSerializer = new Html({ rules: rules });
+function htmlToSlate(html) {
+    return htmlSerializer.deserialize(html);
+}
+function slateToHtml(value) {
+    var blocks = htmlSerializer.serialize(value, { render: false });
+    // we render each top-level block element separately, so they each end up on their own line.
+    var htmlStrings = blocks.map(function (block) { return Object(react_dom_server__WEBPACK_IMPORTED_MODULE_2__["renderToStaticMarkup"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("body", null, block)).slice(6, -7); });
+    var html = htmlStrings.join("\n");
+    for (var _i = 0, rules_1 = rules; _i < rules_1.length; _i++) {
+        var rule = rules_1[_i];
+        // give plugins a chance to post-process the generated HTML
+        rule.postSerialize && (html = rule.postSerialize(html));
+    }
+    return html;
+}
+
+/**
+ * Casts `value` as an array if it's not one.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.4.0
+ * @category Lang
+ * @param {*} value The value to inspect.
+ * @returns {Array} Returns the cast array.
+ * @example
+ *
+ * _.castArray(1);
+ * // => [1]
+ *
+ * _.castArray({ 'a': 1 });
+ * // => [{ 'a': 1 }]
+ *
+ * _.castArray('abc');
+ * // => ['abc']
+ *
+ * _.castArray(null);
+ * // => [null]
+ *
+ * _.castArray(undefined);
+ * // => [undefined]
+ *
+ * _.castArray();
+ * // => []
+ *
+ * var array = [1, 2, 3];
+ * console.log(_.castArray(array) === array);
+ * // => true
+ */
+function castArray() {
+  if (!arguments.length) {
+    return [];
+  }
+  var value = arguments[0];
+  return isArray_1(value) ? value : [value];
+}
+
+var castArray_1 = castArray;
+
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
+
+/**
+ * Adds `value` to the array cache.
+ *
+ * @private
+ * @name add
+ * @memberOf SetCache
+ * @alias push
+ * @param {*} value The value to cache.
+ * @returns {Object} Returns the cache instance.
+ */
+function setCacheAdd(value) {
+  this.__data__.set(value, HASH_UNDEFINED$2);
+  return this;
+}
+
+var _setCacheAdd = setCacheAdd;
+
+/**
+ * Checks if `value` is in the array cache.
+ *
+ * @private
+ * @name has
+ * @memberOf SetCache
+ * @param {*} value The value to search for.
+ * @returns {number} Returns `true` if `value` is found, else `false`.
+ */
+function setCacheHas(value) {
+  return this.__data__.has(value);
+}
+
+var _setCacheHas = setCacheHas;
+
+/**
+ *
+ * Creates an array cache object to store unique values.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [values] The values to cache.
+ */
+function SetCache(values) {
+  var index = -1,
+      length = values == null ? 0 : values.length;
+
+  this.__data__ = new _MapCache;
+  while (++index < length) {
+    this.add(values[index]);
+  }
+}
+
+// Add methods to `SetCache`.
+SetCache.prototype.add = SetCache.prototype.push = _setCacheAdd;
+SetCache.prototype.has = _setCacheHas;
+
+var _SetCache = SetCache;
+
+/**
+ * A specialized version of `_.some` for arrays without support for iteratee
+ * shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} predicate The function invoked per iteration.
+ * @returns {boolean} Returns `true` if any element passes the predicate check,
+ *  else `false`.
+ */
+function arraySome(array, predicate) {
+  var index = -1,
+      length = array == null ? 0 : array.length;
+
+  while (++index < length) {
+    if (predicate(array[index], index, array)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+var _arraySome = arraySome;
+
+/**
+ * Checks if a `cache` value for `key` exists.
+ *
+ * @private
+ * @param {Object} cache The cache to query.
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function cacheHas(cache, key) {
+  return cache.has(key);
+}
+
+var _cacheHas = cacheHas;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1,
+    COMPARE_UNORDERED_FLAG = 2;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for arrays with support for
+ * partial deep comparisons.
+ *
+ * @private
+ * @param {Array} array The array to compare.
+ * @param {Array} other The other array to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `array` and `other` objects.
+ * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+ */
+function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
+  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
+      arrLength = array.length,
+      othLength = other.length;
+
+  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+    return false;
+  }
+  // Assume cyclic values are equal.
+  var stacked = stack.get(array);
+  if (stacked && stack.get(other)) {
+    return stacked == other;
+  }
+  var index = -1,
+      result = true,
+      seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new _SetCache : undefined;
+
+  stack.set(array, other);
+  stack.set(other, array);
+
+  // Ignore non-index properties.
+  while (++index < arrLength) {
+    var arrValue = array[index],
+        othValue = other[index];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, arrValue, index, other, array, stack)
+        : customizer(arrValue, othValue, index, array, other, stack);
+    }
+    if (compared !== undefined) {
+      if (compared) {
+        continue;
+      }
+      result = false;
+      break;
+    }
+    // Recursively compare arrays (susceptible to call stack limits).
+    if (seen) {
+      if (!_arraySome(other, function(othValue, othIndex) {
+            if (!_cacheHas(seen, othIndex) &&
+                (arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+              return seen.push(othIndex);
+            }
+          })) {
+        result = false;
+        break;
+      }
+    } else if (!(
+          arrValue === othValue ||
+            equalFunc(arrValue, othValue, bitmask, customizer, stack)
+        )) {
+      result = false;
+      break;
+    }
+  }
+  stack['delete'](array);
+  stack['delete'](other);
+  return result;
+}
+
+var _equalArrays = equalArrays;
+
+/**
+ * Converts `map` to its key-value pairs.
+ *
+ * @private
+ * @param {Object} map The map to convert.
+ * @returns {Array} Returns the key-value pairs.
+ */
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
+
+  map.forEach(function(value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
+
+var _mapToArray = mapToArray;
+
+/**
+ * Converts `set` to an array of its values.
+ *
+ * @private
+ * @param {Object} set The set to convert.
+ * @returns {Array} Returns the values.
+ */
+function setToArray(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function(value) {
+    result[++index] = value;
+  });
+  return result;
+}
+
+var _setToArray = setToArray;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG$1 = 1,
+    COMPARE_UNORDERED_FLAG$1 = 2;
+
+/** `Object#toString` result references. */
+var boolTag$3 = '[object Boolean]',
+    dateTag$3 = '[object Date]',
+    errorTag$2 = '[object Error]',
+    mapTag$6 = '[object Map]',
+    numberTag$3 = '[object Number]',
+    regexpTag$3 = '[object RegExp]',
+    setTag$6 = '[object Set]',
+    stringTag$4 = '[object String]',
+    symbolTag$3 = '[object Symbol]';
+
+var arrayBufferTag$3 = '[object ArrayBuffer]',
+    dataViewTag$4 = '[object DataView]';
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto$2 = _Symbol ? _Symbol.prototype : undefined,
+    symbolValueOf$1 = symbolProto$2 ? symbolProto$2.valueOf : undefined;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for comparing objects of
+ * the same `toStringTag`.
+ *
+ * **Note:** This function only supports comparing values with tags of
+ * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {string} tag The `toStringTag` of the objects to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
+  switch (tag) {
+    case dataViewTag$4:
+      if ((object.byteLength != other.byteLength) ||
+          (object.byteOffset != other.byteOffset)) {
+        return false;
+      }
+      object = object.buffer;
+      other = other.buffer;
+
+    case arrayBufferTag$3:
+      if ((object.byteLength != other.byteLength) ||
+          !equalFunc(new _Uint8Array(object), new _Uint8Array(other))) {
+        return false;
+      }
+      return true;
+
+    case boolTag$3:
+    case dateTag$3:
+    case numberTag$3:
+      // Coerce booleans to `1` or `0` and dates to milliseconds.
+      // Invalid dates are coerced to `NaN`.
+      return eq_1(+object, +other);
+
+    case errorTag$2:
+      return object.name == other.name && object.message == other.message;
+
+    case regexpTag$3:
+    case stringTag$4:
+      // Coerce regexes to strings and treat strings, primitives and objects,
+      // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+      // for more details.
+      return object == (other + '');
+
+    case mapTag$6:
+      var convert = _mapToArray;
+
+    case setTag$6:
+      var isPartial = bitmask & COMPARE_PARTIAL_FLAG$1;
+      convert || (convert = _setToArray);
+
+      if (object.size != other.size && !isPartial) {
+        return false;
+      }
+      // Assume cyclic values are equal.
+      var stacked = stack.get(object);
+      if (stacked) {
+        return stacked == other;
+      }
+      bitmask |= COMPARE_UNORDERED_FLAG$1;
+
+      // Recursively compare objects (susceptible to call stack limits).
+      stack.set(object, other);
+      var result = _equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
+      stack['delete'](object);
+      return result;
+
+    case symbolTag$3:
+      if (symbolValueOf$1) {
+        return symbolValueOf$1.call(object) == symbolValueOf$1.call(other);
+      }
+  }
+  return false;
+}
+
+var _equalByTag = equalByTag;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG$2 = 1;
+
+/** Used for built-in method references. */
+var objectProto$e = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$c = objectProto$e.hasOwnProperty;
+
+/**
+ * A specialized version of `baseIsEqualDeep` for objects with support for
+ * partial deep comparisons.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} stack Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
+  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$2,
+      objProps = _getAllKeys(object),
+      objLength = objProps.length,
+      othProps = _getAllKeys(other),
+      othLength = othProps.length;
+
+  if (objLength != othLength && !isPartial) {
+    return false;
+  }
+  var index = objLength;
+  while (index--) {
+    var key = objProps[index];
+    if (!(isPartial ? key in other : hasOwnProperty$c.call(other, key))) {
+      return false;
+    }
+  }
+  // Assume cyclic values are equal.
+  var stacked = stack.get(object);
+  if (stacked && stack.get(other)) {
+    return stacked == other;
+  }
+  var result = true;
+  stack.set(object, other);
+  stack.set(other, object);
+
+  var skipCtor = isPartial;
+  while (++index < objLength) {
+    key = objProps[index];
+    var objValue = object[key],
+        othValue = other[key];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, objValue, key, other, object, stack)
+        : customizer(objValue, othValue, key, object, other, stack);
+    }
+    // Recursively compare objects (susceptible to call stack limits).
+    if (!(compared === undefined
+          ? (objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack))
+          : compared
+        )) {
+      result = false;
+      break;
+    }
+    skipCtor || (skipCtor = key == 'constructor');
+  }
+  if (result && !skipCtor) {
+    var objCtor = object.constructor,
+        othCtor = other.constructor;
+
+    // Non `Object` object instances with different constructors are not equal.
+    if (objCtor != othCtor &&
+        ('constructor' in object && 'constructor' in other) &&
+        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+      result = false;
+    }
+  }
+  stack['delete'](object);
+  stack['delete'](other);
+  return result;
+}
+
+var _equalObjects = equalObjects;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG$3 = 1;
+
+/** `Object#toString` result references. */
+var argsTag$3 = '[object Arguments]',
+    arrayTag$2 = '[object Array]',
+    objectTag$4 = '[object Object]';
+
+/** Used for built-in method references. */
+var objectProto$f = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$d = objectProto$f.hasOwnProperty;
+
+/**
+ * A specialized version of `baseIsEqual` for arrays and objects which performs
+ * deep comparisons and tracks traversed objects enabling objects with circular
+ * references to be compared.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.
+ * @param {Function} customizer The function to customize comparisons.
+ * @param {Function} equalFunc The function to determine equivalents of values.
+ * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+ * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ */
+function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
+  var objIsArr = isArray_1(object),
+      othIsArr = isArray_1(other),
+      objTag = objIsArr ? arrayTag$2 : _getTag(object),
+      othTag = othIsArr ? arrayTag$2 : _getTag(other);
+
+  objTag = objTag == argsTag$3 ? objectTag$4 : objTag;
+  othTag = othTag == argsTag$3 ? objectTag$4 : othTag;
+
+  var objIsObj = objTag == objectTag$4,
+      othIsObj = othTag == objectTag$4,
+      isSameTag = objTag == othTag;
+
+  if (isSameTag && isBuffer_1(object)) {
+    if (!isBuffer_1(other)) {
+      return false;
+    }
+    objIsArr = true;
+    objIsObj = false;
+  }
+  if (isSameTag && !objIsObj) {
+    stack || (stack = new _Stack);
+    return (objIsArr || isTypedArray_1(object))
+      ? _equalArrays(object, other, bitmask, customizer, equalFunc, stack)
+      : _equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+  }
+  if (!(bitmask & COMPARE_PARTIAL_FLAG$3)) {
+    var objIsWrapped = objIsObj && hasOwnProperty$d.call(object, '__wrapped__'),
+        othIsWrapped = othIsObj && hasOwnProperty$d.call(other, '__wrapped__');
+
+    if (objIsWrapped || othIsWrapped) {
+      var objUnwrapped = objIsWrapped ? object.value() : object,
+          othUnwrapped = othIsWrapped ? other.value() : other;
+
+      stack || (stack = new _Stack);
+      return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+    }
+  }
+  if (!isSameTag) {
+    return false;
+  }
+  stack || (stack = new _Stack);
+  return _equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+}
+
+var _baseIsEqualDeep = baseIsEqualDeep;
+
+/**
+ * The base implementation of `_.isEqual` which supports partial comparisons
+ * and tracks traversed objects.
+ *
+ * @private
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @param {boolean} bitmask The bitmask flags.
+ *  1 - Unordered comparison
+ *  2 - Partial comparison
+ * @param {Function} [customizer] The function to customize comparisons.
+ * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ */
+function baseIsEqual(value, other, bitmask, customizer, stack) {
+  if (value === other) {
+    return true;
+  }
+  if (value == null || other == null || (!isObjectLike_1(value) && !isObjectLike_1(other))) {
+    return value !== value && other !== other;
+  }
+  return _baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
+}
+
+var _baseIsEqual = baseIsEqual;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG$4 = 1,
+    COMPARE_UNORDERED_FLAG$2 = 2;
+
+/**
+ * The base implementation of `_.isMatch` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Object} object The object to inspect.
+ * @param {Object} source The object of property values to match.
+ * @param {Array} matchData The property names, values, and compare flags to match.
+ * @param {Function} [customizer] The function to customize comparisons.
+ * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+ */
+function baseIsMatch(object, source, matchData, customizer) {
+  var index = matchData.length,
+      length = index,
+      noCustomizer = !customizer;
+
+  if (object == null) {
+    return !length;
+  }
+  object = Object(object);
+  while (index--) {
+    var data = matchData[index];
+    if ((noCustomizer && data[2])
+          ? data[1] !== object[data[0]]
+          : !(data[0] in object)
+        ) {
+      return false;
+    }
+  }
+  while (++index < length) {
+    data = matchData[index];
+    var key = data[0],
+        objValue = object[key],
+        srcValue = data[1];
+
+    if (noCustomizer && data[2]) {
+      if (objValue === undefined && !(key in object)) {
+        return false;
+      }
+    } else {
+      var stack = new _Stack;
+      if (customizer) {
+        var result = customizer(objValue, srcValue, key, object, source, stack);
+      }
+      if (!(result === undefined
+            ? _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$4 | COMPARE_UNORDERED_FLAG$2, customizer, stack)
+            : result
+          )) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+var _baseIsMatch = baseIsMatch;
+
+/**
+ * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` if suitable for strict
+ *  equality comparisons, else `false`.
+ */
+function isStrictComparable(value) {
+  return value === value && !isObject_1(value);
+}
+
+var _isStrictComparable = isStrictComparable;
+
+/**
+ * Gets the property names, values, and compare flags of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the match data of `object`.
+ */
+function getMatchData(object) {
+  var result = keys_1(object),
+      length = result.length;
+
+  while (length--) {
+    var key = result[length],
+        value = object[key];
+
+    result[length] = [key, value, _isStrictComparable(value)];
+  }
+  return result;
+}
+
+var _getMatchData = getMatchData;
+
+/**
+ * A specialized version of `matchesProperty` for source values suitable
+ * for strict equality comparisons, i.e. `===`.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @param {*} srcValue The value to match.
+ * @returns {Function} Returns the new spec function.
+ */
+function matchesStrictComparable(key, srcValue) {
+  return function(object) {
+    if (object == null) {
+      return false;
+    }
+    return object[key] === srcValue &&
+      (srcValue !== undefined || (key in Object(object)));
+  };
+}
+
+var _matchesStrictComparable = matchesStrictComparable;
+
+/**
+ * The base implementation of `_.matches` which doesn't clone `source`.
+ *
+ * @private
+ * @param {Object} source The object of property values to match.
+ * @returns {Function} Returns the new spec function.
+ */
+function baseMatches(source) {
+  var matchData = _getMatchData(source);
+  if (matchData.length == 1 && matchData[0][2]) {
+    return _matchesStrictComparable(matchData[0][0], matchData[0][1]);
+  }
+  return function(object) {
+    return object === source || _baseIsMatch(object, source, matchData);
+  };
+}
+
+var _baseMatches = baseMatches;
+
+/**
+ * Gets the value at `path` of `object`. If the resolved value is
+ * `undefined`, the `defaultValue` is returned in its place.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.7.0
+ * @category Object
+ * @param {Object} object The object to query.
+ * @param {Array|string} path The path of the property to get.
+ * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+ * @returns {*} Returns the resolved value.
+ * @example
+ *
+ * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+ *
+ * _.get(object, 'a[0].b.c');
+ * // => 3
+ *
+ * _.get(object, ['a', '0', 'b', 'c']);
+ * // => 3
+ *
+ * _.get(object, 'a.b.c', 'default');
+ * // => 'default'
+ */
+function get(object, path, defaultValue) {
+  var result = object == null ? undefined : _baseGet(object, path);
+  return result === undefined ? defaultValue : result;
+}
+
+var get_1 = get;
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG$5 = 1,
+    COMPARE_UNORDERED_FLAG$3 = 2;
+
+/**
+ * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
+ *
+ * @private
+ * @param {string} path The path of the property to get.
+ * @param {*} srcValue The value to match.
+ * @returns {Function} Returns the new spec function.
+ */
+function baseMatchesProperty(path, srcValue) {
+  if (_isKey(path) && _isStrictComparable(srcValue)) {
+    return _matchesStrictComparable(_toKey(path), srcValue);
+  }
+  return function(object) {
+    var objValue = get_1(object, path);
+    return (objValue === undefined && objValue === srcValue)
+      ? hasIn_1(object, path)
+      : _baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$5 | COMPARE_UNORDERED_FLAG$3);
+  };
+}
+
+var _baseMatchesProperty = baseMatchesProperty;
+
+/**
+ * A specialized version of `baseProperty` which supports deep paths.
+ *
+ * @private
+ * @param {Array|string} path The path of the property to get.
+ * @returns {Function} Returns the new accessor function.
+ */
+function basePropertyDeep(path) {
+  return function(object) {
+    return _baseGet(object, path);
+  };
+}
+
+var _basePropertyDeep = basePropertyDeep;
+
+/**
+ * Creates a function that returns the value at `path` of a given object.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Util
+ * @param {Array|string} path The path of the property to get.
+ * @returns {Function} Returns the new accessor function.
+ * @example
+ *
+ * var objects = [
+ *   { 'a': { 'b': 2 } },
+ *   { 'a': { 'b': 1 } }
+ * ];
+ *
+ * _.map(objects, _.property('a.b'));
+ * // => [2, 1]
+ *
+ * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
+ * // => [1, 2]
+ */
+function property(path) {
+  return _isKey(path) ? _baseProperty(_toKey(path)) : _basePropertyDeep(path);
+}
+
+var property_1 = property;
+
+/**
+ * The base implementation of `_.iteratee`.
+ *
+ * @private
+ * @param {*} [value=_.identity] The value to convert to an iteratee.
+ * @returns {Function} Returns the iteratee.
+ */
+function baseIteratee(value) {
+  // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+  // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+  if (typeof value == 'function') {
+    return value;
+  }
+  if (value == null) {
+    return identity_1;
+  }
+  if (typeof value == 'object') {
+    return isArray_1(value)
+      ? _baseMatchesProperty(value[0], value[1])
+      : _baseMatches(value);
+  }
+  return property_1(value);
+}
+
+var _baseIteratee = baseIteratee;
+
+/**
+ * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var index = -1,
+        iterable = Object(object),
+        props = keysFunc(object),
+        length = props.length;
+
+    while (length--) {
+      var key = props[fromRight ? length : ++index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+var _createBaseFor = createBaseFor;
+
+/**
+ * The base implementation of `baseForOwn` which iterates over `object`
+ * properties returned by `keysFunc` and invokes `iteratee` for each property.
+ * Iteratee functions may exit iteration early by explicitly returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = _createBaseFor();
+
+var _baseFor = baseFor;
+
+/**
+ * The base implementation of `_.forOwn` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Object} Returns `object`.
+ */
+function baseForOwn(object, iteratee) {
+  return object && _baseFor(object, iteratee, keys_1);
+}
+
+var _baseForOwn = baseForOwn;
+
+/**
+ * Creates a `baseEach` or `baseEachRight` function.
+ *
+ * @private
+ * @param {Function} eachFunc The function to iterate over a collection.
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseEach(eachFunc, fromRight) {
+  return function(collection, iteratee) {
+    if (collection == null) {
+      return collection;
+    }
+    if (!isArrayLike_1(collection)) {
+      return eachFunc(collection, iteratee);
+    }
+    var length = collection.length,
+        index = fromRight ? length : -1,
+        iterable = Object(collection);
+
+    while ((fromRight ? index-- : ++index < length)) {
+      if (iteratee(iterable[index], index, iterable) === false) {
+        break;
+      }
+    }
+    return collection;
+  };
+}
+
+var _createBaseEach = createBaseEach;
+
+/**
+ * The base implementation of `_.forEach` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array|Object} Returns `collection`.
+ */
+var baseEach = _createBaseEach(_baseForOwn);
+
+var _baseEach = baseEach;
+
+/**
+ * The base implementation of `_.map` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ */
+function baseMap(collection, iteratee) {
+  var index = -1,
+      result = isArrayLike_1(collection) ? Array(collection.length) : [];
+
+  _baseEach(collection, function(value, key, collection) {
+    result[++index] = iteratee(value, key, collection);
+  });
+  return result;
+}
+
+var _baseMap = baseMap;
+
+/**
+ * Creates an array of values by running each element in `collection` thru
+ * `iteratee`. The iteratee is invoked with three arguments:
+ * (value, index|key, collection).
+ *
+ * Many lodash methods are guarded to work as iteratees for methods like
+ * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
+ *
+ * The guarded methods are:
+ * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
+ * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
+ * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
+ * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Collection
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ * @example
+ *
+ * function square(n) {
+ *   return n * n;
+ * }
+ *
+ * _.map([4, 8], square);
+ * // => [16, 64]
+ *
+ * _.map({ 'a': 4, 'b': 8 }, square);
+ * // => [16, 64] (iteration order is not guaranteed)
+ *
+ * var users = [
+ *   { 'user': 'barney' },
+ *   { 'user': 'fred' }
+ * ];
+ *
+ * // The `_.property` iteratee shorthand.
+ * _.map(users, 'user');
+ * // => ['barney', 'fred']
+ */
+function map(collection, iteratee) {
+  var func = isArray_1(collection) ? _arrayMap : _baseMap;
+  return func(collection, _baseIteratee(iteratee));
+}
+
+var map_1 = map;
+
+/**
+ * The base implementation of `_.values` and `_.valuesIn` which creates an
+ * array of `object` property values corresponding to the property names
+ * of `props`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array} props The property names to get values for.
+ * @returns {Object} Returns the array of property values.
+ */
+function baseValues(object, props) {
+  return _arrayMap(props, function(key) {
+    return object[key];
+  });
+}
+
+var _baseValues = baseValues;
+
+/**
+ * Creates an array of the own enumerable string keyed property values of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property values.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.values(new Foo);
+ * // => [1, 2] (iteration order is not guaranteed)
+ *
+ * _.values('hi');
+ * // => ['h', 'i']
+ */
+function values(object) {
+  return object == null ? [] : _baseValues(object, keys_1(object));
+}
+
+var values_1 = values;
+
+function typeProp(type) {
+    return type != null ? { type: type } : {};
+}
+function keyProp(key) {
+    return key != null ? { key: key } : {};
+}
+function serializeMark(mark) {
+    var type = mark.type, data = mark.data;
+    var dataKeys = data && keys_1(data);
+    var dataValues = data && values_1(data);
+    // special case for single data values, so we get { color: "#aabbcc" }
+    // instead of { color: { color: "#aabbcc"} }
+    return (((dataValues === null || dataValues === void 0 ? void 0 : dataValues.length) === 1) && ((dataKeys === null || dataKeys === void 0 ? void 0 : dataKeys[0]) === type))
+        ? dataValues[0]
+        : ((dataValues === null || dataValues === void 0 ? void 0 : dataValues.length) ? data : true);
+}
+function serializeTextNode(node) {
+    var key = node.key, text = node.text, marks = node.marks;
+    var textNode = __assign(__assign({}, keyProp(key)), { text: text || "" });
+    marks === null || marks === void 0 ? void 0 : marks.forEach(function (mark) {
+        textNode[mark.type] = serializeMark(mark);
+    });
+    return textNode;
+}
+function serializeChildren(nodes, objTypes) {
+    return nodes.map(function (node) { return serializeNode$2(node, objTypes); });
+}
+// The 0.47 notions of Blocks/Inlines are combined in 0.50 to the notion of Element
+function serializeElement(node, objTypes) {
+    var object = node.object, type = node.type, key = node.key, nodes = node.nodes, data = node.data;
+    var children = serializeChildren(castArray_1(nodes), objTypes);
+    var element = __assign(__assign(__assign(__assign({}, typeProp(type)), keyProp(key)), { children: children }), data);
+    object && (objTypes[type] = object);
+    return element;
+}
+function serializeNode$2(node, objTypes) {
+    var _a;
+    var object = node.object;
+    switch (object) {
+        case "block":
+        case "inline":
+            return serializeElement(node, objTypes);
+        case "text":
+            return serializeTextNode(node);
+        default:
+            return ((_a = node) === null || _a === void 0 ? void 0 : _a.nodes) ? serializeElement(node, objTypes)
+                : serializeTextNode(node);
+    }
+}
+function serializeDocument(document) {
+    var nodes = document.nodes, key = document.key, data = document.data;
+    var objTypes = {};
+    var children = serializeChildren(castArray_1(nodes), objTypes);
+    // return objTypes map as part of document for use in deserialization
+    return __assign(__assign(__assign({}, keyProp(key)), { children: children, objTypes: objTypes }), data);
+}
+function serializeValueJSON(value) {
+    var _data = value.data, document = value.document;
+    var _a = _data || {}, undos = _a.undos, redos = _a.redos, others = __rest(_a, ["undos", "redos"]);
+    var data = size_1(others) ? { data: __assign({}, others) } : {};
+    return __assign(__assign({ object: "value" }, data), { document: document && serializeDocument(document) });
+}
+function serializeValue(value) {
+    var _a;
+    var options = ((_a = value === null || value === void 0 ? void 0 : value.data) === null || _a === void 0 ? void 0 : _a.size) ? { preserveData: true } : undefined;
+    return serializeValueJSON(Value.isValue(value) ? value.toJSON(options) : value);
+}
+function deserializeMark(type, value) {
+    var _a;
+    var mark = { type: type };
+    if (typeof value === "boolean")
+        return mark;
+    if (typeof value === "object")
+        return __assign(__assign({}, mark), { data: value });
+    return __assign(__assign({}, mark), { data: (_a = {}, _a[type] = value, _a) });
+}
+function deserializeTextNode(node) {
+    var key = node.key, text = node.text, others = __rest(node, ["key", "text"]);
+    var marks = map_1(others, function (value, type) { return deserializeMark(type, value); });
+    var marksVal = (marks === null || marks === void 0 ? void 0 : marks.length) ? { marks: marks } : {};
+    return __assign(__assign(__assign({ object: "text" }, keyProp(key)), { text: text }), marksVal);
+}
+function deserializeChildren(children, objTypes) {
+    return children.map(function (child) { return deserializeNode$1(child, objTypes); });
+}
+function deserializeElement(node, objTypes) {
+    var _type = node.type, key = node.key, children = node.children, others = __rest(node, ["type", "key", "children"]);
+    var type = _type || "paragraph";
+    var object = (objTypes[type] || "block");
+    var nodes = deserializeChildren(children, objTypes);
+    var data = size_1(others) ? { data: others } : {};
+    return __assign(__assign(__assign({ object: object, type: type }, keyProp(key)), { nodes: nodes }), data);
+}
+function deserializeNode$1(node, objTypes) {
+    return node.children
+        ? deserializeElement(node, objTypes)
+        : deserializeTextNode(node);
+}
+function deserializeDocument(document) {
+    var key = document.key, children = document.children, objTypes = document.objTypes;
+    return __assign(__assign({ object: "document" }, keyProp(key)), { nodes: deserializeChildren(children, objTypes) });
+}
+function deserializeValue(value) {
+    var documentJSON = value.document && deserializeDocument(value.document);
+    var dataJSON = value.data ? { data: value.data } : {};
+    var valueJSON = __assign({ object: "value", document: documentJSON }, dataJSON);
+    return Value.fromJSON(valueJSON);
+}
 
 /**
  * Creates a `_.find` or `_.findLast` function.
@@ -39852,13 +39882,14 @@ var SlateEditor = function (props) {
         : props.value || kEmptyEditorValue;
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(value), prevValue = _a[0], setPrevValue = _a[1];
     var fontSize = getFontSize(value);
-    var style = fontSize ? { fontSize: fontSize + "em" } : undefined;
+    var fontStyle = fontSize ? { fontSize: fontSize + "em" } : undefined;
+    var style = __assign(__assign({}, props.style), fontStyle);
     var handleChange = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (change) {
         var isContentChange = (change.value.document !== prevValue.document) ||
             isValueDataChange(change.value, prevValue);
         setPrevValue(change.value);
         onValueChange === null || onValueChange === void 0 ? void 0 : onValueChange(change.value);
-        isContentChange && (onContentChange === null || onContentChange === void 0 ? void 0 : onContentChange(serializeValue(change.value)));
+        isContentChange && (onContentChange === null || onContentChange === void 0 ? void 0 : onContentChange(change.value));
     }, [prevValue, onValueChange, onContentChange]);
     var hotkeyFnMap = useHotkeyMap(props.hotkeyMap || kDefaultHotkeyMap);
     var handleKeyDown = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e, editor, next) {
@@ -39949,15 +39980,14 @@ function getPlatformTooltip(str) {
     var modKey = IS_MAC ? "cmd-" : "ctrl-";
     return str.replace("mod-", modKey);
 }
-// let renderCount = 0;
 var EditorToolbar = function (iProps) {
-    // console.log("SlateEditor.renderCount:", ++renderCount);
     var props = __assign(__assign({}, kDefaultProps), iProps);
-    var orientation = props.orientation, colors = props.colors, selectedColors = props.selectedColors, buttonsPerRow = props.buttonsPerRow, iconSize = props.iconSize, buttonSize = props.buttonSize, buttons = props.buttons, onDidInvokeTool = props.onDidInvokeTool, editor = props.editor;
+    var orientation = props.orientation, colors = props.colors, selectedColors = props.selectedColors, buttonsPerRow = props.buttonsPerRow, iconSize = props.iconSize, buttonSize = props.buttonSize, buttons = props.buttons, onDidInvokeTool = props.onDidInvokeTool, padding = props.padding, editor = props.editor;
     var longAxisButtonCount = buttonsPerRow || buttons.length;
     var crossAxisButtonCount = buttonsPerRow ? Math.ceil(buttons.length / buttonsPerRow) : 1;
-    var toolbarLongExtent = longAxisButtonCount * buttonSize;
-    var toolbarCrossExtent = crossAxisButtonCount * buttonSize;
+    var kPadding = padding || 0;
+    var toolbarLongExtent = longAxisButtonCount * buttonSize + 2 * kPadding;
+    var toolbarCrossExtent = crossAxisButtonCount * buttonSize + 2 * kPadding;
     var toolbarSize = orientation === "vertical"
         ? { width: toolbarCrossExtent, height: toolbarLongExtent }
         : { width: toolbarLongExtent, height: toolbarCrossExtent };
@@ -40163,7 +40193,7 @@ var ModalDialogPortal = function (props) {
     var modalPortalRoot = props.modalPortalRoot, others = __rest(props, ["modalPortalRoot"]);
     var modalDialog = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ModalDialog, __assign({}, others));
     return (modalPortalRoot
-        ? react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.createPortal(modalDialog, modalPortalRoot)
+        ? react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.createPortal(modalDialog, modalPortalRoot)
         : modalDialog);
 };
 
@@ -40397,7 +40427,7 @@ var SlateToolbarPortal = function (props) {
     var portalRoot = props.portalRoot, others = __rest(props, ["portalRoot"]);
     var toolbar = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SlateToolbar, __assign({}, others));
     return (portalRoot
-        ? react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.createPortal(toolbar, portalRoot)
+        ? react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.createPortal(toolbar, portalRoot)
         : toolbar);
 };
 
@@ -59716,4078 +59746,6 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ "./node_modules/react-dom/cjs/react-dom-server.browser.development.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/react-dom/cjs/react-dom-server.browser.development.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/** @license React v16.13.1
- * react-dom-server.browser.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-var React = __webpack_require__(/*! react */ "react");
-var _assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
-var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
-
-// Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be replaced with error codes
-// during build.
-function formatProdErrorMessage(code) {
-  var url = 'https://reactjs.org/docs/error-decoder.html?invariant=' + code;
-
-  for (var i = 1; i < arguments.length; i++) {
-    url += '&args[]=' + encodeURIComponent(arguments[i]);
-  }
-
-  return "Minified React error #" + code + "; visit " + url + " for the full message or " + 'use the non-minified dev environment for full errors and additional ' + 'helpful warnings.';
-}
-
-var ReactVersion = '16.13.1';
-
-var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED; // Prevent newer renderers from RTE when used with older react package versions.
-// Current owner and dispatcher used to share the same ref,
-// but PR #14548 split them out to better support the react-debug-tools package.
-
-if (!ReactSharedInternals.hasOwnProperty('ReactCurrentDispatcher')) {
-  ReactSharedInternals.ReactCurrentDispatcher = {
-    current: null
-  };
-}
-
-if (!ReactSharedInternals.hasOwnProperty('ReactCurrentBatchConfig')) {
-  ReactSharedInternals.ReactCurrentBatchConfig = {
-    suspense: null
-  };
-}
-
-// by calls to these methods by a Babel plugin.
-//
-// In PROD (or in packages without access to React internals),
-// they are left as they are instead.
-
-function warn(format) {
-  {
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    printWarning('warn', format, args);
-  }
-}
-function error(format) {
-  {
-    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      args[_key2 - 1] = arguments[_key2];
-    }
-
-    printWarning('error', format, args);
-  }
-}
-
-function printWarning(level, format, args) {
-  // When changing this logic, you might want to also
-  // update consoleWithStackDev.www.js as well.
-  {
-    var hasExistingStack = args.length > 0 && typeof args[args.length - 1] === 'string' && args[args.length - 1].indexOf('\n    in') === 0;
-
-    if (!hasExistingStack) {
-      var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
-      var stack = ReactDebugCurrentFrame.getStackAddendum();
-
-      if (stack !== '') {
-        format += '%s';
-        args = args.concat([stack]);
-      }
-    }
-
-    var argsWithFormat = args.map(function (item) {
-      return '' + item;
-    }); // Careful: RN currently depends on this prefix
-
-    argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
-    // breaks IE9: https://github.com/facebook/react/issues/13610
-    // eslint-disable-next-line react-internal/no-production-logging
-
-    Function.prototype.apply.call(console[level], console, argsWithFormat);
-
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      var argIndex = 0;
-      var message = 'Warning: ' + format.replace(/%s/g, function () {
-        return args[argIndex++];
-      });
-      throw new Error(message);
-    } catch (x) {}
-  }
-}
-
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
-
-var Uninitialized = -1;
-var Pending = 0;
-var Resolved = 1;
-var Rejected = 2;
-function refineResolvedLazyComponent(lazyComponent) {
-  return lazyComponent._status === Resolved ? lazyComponent._result : null;
-}
-function initializeLazyComponentType(lazyComponent) {
-  if (lazyComponent._status === Uninitialized) {
-    lazyComponent._status = Pending;
-    var ctor = lazyComponent._ctor;
-    var thenable = ctor();
-    lazyComponent._result = thenable;
-    thenable.then(function (moduleObject) {
-      if (lazyComponent._status === Pending) {
-        var defaultExport = moduleObject.default;
-
-        {
-          if (defaultExport === undefined) {
-            error('lazy: Expected the result of a dynamic import() call. ' + 'Instead received: %s\n\nYour code should look like: \n  ' + "const MyComponent = lazy(() => import('./MyComponent'))", moduleObject);
-          }
-        }
-
-        lazyComponent._status = Resolved;
-        lazyComponent._result = defaultExport;
-      }
-    }, function (error) {
-      if (lazyComponent._status === Pending) {
-        lazyComponent._status = Rejected;
-        lazyComponent._result = error;
-      }
-    });
-  }
-}
-
-function getWrappedName(outerType, innerType, wrapperName) {
-  var functionName = innerType.displayName || innerType.name || '';
-  return outerType.displayName || (functionName !== '' ? wrapperName + "(" + functionName + ")" : wrapperName);
-}
-
-function getComponentName(type) {
-  if (type == null) {
-    // Host root, text node or just invalid type.
-    return null;
-  }
-
-  {
-    if (typeof type.tag === 'number') {
-      error('Received an unexpected object in getComponentName(). ' + 'This is likely a bug in React. Please file an issue.');
-    }
-  }
-
-  if (typeof type === 'function') {
-    return type.displayName || type.name || null;
-  }
-
-  if (typeof type === 'string') {
-    return type;
-  }
-
-  switch (type) {
-    case REACT_FRAGMENT_TYPE:
-      return 'Fragment';
-
-    case REACT_PORTAL_TYPE:
-      return 'Portal';
-
-    case REACT_PROFILER_TYPE:
-      return "Profiler";
-
-    case REACT_STRICT_MODE_TYPE:
-      return 'StrictMode';
-
-    case REACT_SUSPENSE_TYPE:
-      return 'Suspense';
-
-    case REACT_SUSPENSE_LIST_TYPE:
-      return 'SuspenseList';
-  }
-
-  if (typeof type === 'object') {
-    switch (type.$$typeof) {
-      case REACT_CONTEXT_TYPE:
-        return 'Context.Consumer';
-
-      case REACT_PROVIDER_TYPE:
-        return 'Context.Provider';
-
-      case REACT_FORWARD_REF_TYPE:
-        return getWrappedName(type, type.render, 'ForwardRef');
-
-      case REACT_MEMO_TYPE:
-        return getComponentName(type.type);
-
-      case REACT_BLOCK_TYPE:
-        return getComponentName(type.render);
-
-      case REACT_LAZY_TYPE:
-        {
-          var thenable = type;
-          var resolvedThenable = refineResolvedLazyComponent(thenable);
-
-          if (resolvedThenable) {
-            return getComponentName(resolvedThenable);
-          }
-
-          break;
-        }
-    }
-  }
-
-  return null;
-}
-
-var BEFORE_SLASH_RE = /^(.*)[\\\/]/;
-function describeComponentFrame (name, source, ownerName) {
-  var sourceInfo = '';
-
-  if (source) {
-    var path = source.fileName;
-    var fileName = path.replace(BEFORE_SLASH_RE, '');
-
-    {
-      // In DEV, include code for a common special case:
-      // prefer "folder/index.js" instead of just "index.js".
-      if (/^index\./.test(fileName)) {
-        var match = path.match(BEFORE_SLASH_RE);
-
-        if (match) {
-          var pathBeforeSlash = match[1];
-
-          if (pathBeforeSlash) {
-            var folderName = pathBeforeSlash.replace(BEFORE_SLASH_RE, '');
-            fileName = folderName + '/' + fileName;
-          }
-        }
-      }
-    }
-
-    sourceInfo = ' (at ' + fileName + ':' + source.lineNumber + ')';
-  } else if (ownerName) {
-    sourceInfo = ' (created by ' + ownerName + ')';
-  }
-
-  return '\n    in ' + (name || 'Unknown') + sourceInfo;
-}
-
-var enableSuspenseServerRenderer = false;
-
-var enableDeprecatedFlareAPI = false; // Experimental Host Component support.
-
-var ReactDebugCurrentFrame;
-var didWarnAboutInvalidateContextType;
-
-{
-  ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
-  didWarnAboutInvalidateContextType = new Set();
-}
-
-var emptyObject = {};
-
-{
-  Object.freeze(emptyObject);
-}
-
-function maskContext(type, context) {
-  var contextTypes = type.contextTypes;
-
-  if (!contextTypes) {
-    return emptyObject;
-  }
-
-  var maskedContext = {};
-
-  for (var contextName in contextTypes) {
-    maskedContext[contextName] = context[contextName];
-  }
-
-  return maskedContext;
-}
-
-function checkContextTypes(typeSpecs, values, location) {
-  {
-    checkPropTypes(typeSpecs, values, location, 'Component', ReactDebugCurrentFrame.getCurrentStack);
-  }
-}
-
-function validateContextBounds(context, threadID) {
-  // If we don't have enough slots in this context to store this threadID,
-  // fill it in without leaving any holes to ensure that the VM optimizes
-  // this as non-holey index properties.
-  // (Note: If `react` package is < 16.6, _threadCount is undefined.)
-  for (var i = context._threadCount | 0; i <= threadID; i++) {
-    // We assume that this is the same as the defaultValue which might not be
-    // true if we're rendering inside a secondary renderer but they are
-    // secondary because these use cases are very rare.
-    context[i] = context._currentValue2;
-    context._threadCount = i + 1;
-  }
-}
-function processContext(type, context, threadID, isClass) {
-  if (isClass) {
-    var contextType = type.contextType;
-
-    {
-      if ('contextType' in type) {
-        var isValid = // Allow null for conditional declaration
-        contextType === null || contextType !== undefined && contextType.$$typeof === REACT_CONTEXT_TYPE && contextType._context === undefined; // Not a <Context.Consumer>
-
-        if (!isValid && !didWarnAboutInvalidateContextType.has(type)) {
-          didWarnAboutInvalidateContextType.add(type);
-          var addendum = '';
-
-          if (contextType === undefined) {
-            addendum = ' However, it is set to undefined. ' + 'This can be caused by a typo or by mixing up named and default imports. ' + 'This can also happen due to a circular dependency, so ' + 'try moving the createContext() call to a separate file.';
-          } else if (typeof contextType !== 'object') {
-            addendum = ' However, it is set to a ' + typeof contextType + '.';
-          } else if (contextType.$$typeof === REACT_PROVIDER_TYPE) {
-            addendum = ' Did you accidentally pass the Context.Provider instead?';
-          } else if (contextType._context !== undefined) {
-            // <Context.Consumer>
-            addendum = ' Did you accidentally pass the Context.Consumer instead?';
-          } else {
-            addendum = ' However, it is set to an object with keys {' + Object.keys(contextType).join(', ') + '}.';
-          }
-
-          error('%s defines an invalid contextType. ' + 'contextType should point to the Context object returned by React.createContext().%s', getComponentName(type) || 'Component', addendum);
-        }
-      }
-    }
-
-    if (typeof contextType === 'object' && contextType !== null) {
-      validateContextBounds(contextType, threadID);
-      return contextType[threadID];
-    }
-
-    {
-      var maskedContext = maskContext(type, context);
-
-      {
-        if (type.contextTypes) {
-          checkContextTypes(type.contextTypes, maskedContext, 'context');
-        }
-      }
-
-      return maskedContext;
-    }
-  } else {
-    {
-      var _maskedContext = maskContext(type, context);
-
-      {
-        if (type.contextTypes) {
-          checkContextTypes(type.contextTypes, _maskedContext, 'context');
-        }
-      }
-
-      return _maskedContext;
-    }
-  }
-}
-
-var nextAvailableThreadIDs = new Uint16Array(16);
-
-for (var i = 0; i < 15; i++) {
-  nextAvailableThreadIDs[i] = i + 1;
-}
-
-nextAvailableThreadIDs[15] = 0;
-
-function growThreadCountAndReturnNextAvailable() {
-  var oldArray = nextAvailableThreadIDs;
-  var oldSize = oldArray.length;
-  var newSize = oldSize * 2;
-
-  if (!(newSize <= 0x10000)) {
-    {
-      throw Error( "Maximum number of concurrent React renderers exceeded. This can happen if you are not properly destroying the Readable provided by React. Ensure that you call .destroy() on it if you no longer want to read from it, and did not read to the end. If you use .pipe() this should be automatic." );
-    }
-  }
-
-  var newArray = new Uint16Array(newSize);
-  newArray.set(oldArray);
-  nextAvailableThreadIDs = newArray;
-  nextAvailableThreadIDs[0] = oldSize + 1;
-
-  for (var _i = oldSize; _i < newSize - 1; _i++) {
-    nextAvailableThreadIDs[_i] = _i + 1;
-  }
-
-  nextAvailableThreadIDs[newSize - 1] = 0;
-  return oldSize;
-}
-
-function allocThreadID() {
-  var nextID = nextAvailableThreadIDs[0];
-
-  if (nextID === 0) {
-    return growThreadCountAndReturnNextAvailable();
-  }
-
-  nextAvailableThreadIDs[0] = nextAvailableThreadIDs[nextID];
-  return nextID;
-}
-function freeThreadID(id) {
-  nextAvailableThreadIDs[id] = nextAvailableThreadIDs[0];
-  nextAvailableThreadIDs[0] = id;
-}
-
-// A reserved attribute.
-// It is handled by React separately and shouldn't be written to the DOM.
-var RESERVED = 0; // A simple string attribute.
-// Attributes that aren't in the whitelist are presumed to have this type.
-
-var STRING = 1; // A string attribute that accepts booleans in React. In HTML, these are called
-// "enumerated" attributes with "true" and "false" as possible values.
-// When true, it should be set to a "true" string.
-// When false, it should be set to a "false" string.
-
-var BOOLEANISH_STRING = 2; // A real boolean attribute.
-// When true, it should be present (set either to an empty string or its name).
-// When false, it should be omitted.
-
-var BOOLEAN = 3; // An attribute that can be used as a flag as well as with a value.
-// When true, it should be present (set either to an empty string or its name).
-// When false, it should be omitted.
-// For any other value, should be present with that value.
-
-var OVERLOADED_BOOLEAN = 4; // An attribute that must be numeric or parse as a numeric.
-// When falsy, it should be removed.
-
-var NUMERIC = 5; // An attribute that must be positive numeric or parse as a positive numeric.
-// When falsy, it should be removed.
-
-var POSITIVE_NUMERIC = 6;
-
-/* eslint-disable max-len */
-var ATTRIBUTE_NAME_START_CHAR = ":A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
-/* eslint-enable max-len */
-
-var ATTRIBUTE_NAME_CHAR = ATTRIBUTE_NAME_START_CHAR + "\\-.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
-var ROOT_ATTRIBUTE_NAME = 'data-reactroot';
-var VALID_ATTRIBUTE_NAME_REGEX = new RegExp('^[' + ATTRIBUTE_NAME_START_CHAR + '][' + ATTRIBUTE_NAME_CHAR + ']*$');
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var illegalAttributeNameCache = {};
-var validatedAttributeNameCache = {};
-function isAttributeNameSafe(attributeName) {
-  if (hasOwnProperty.call(validatedAttributeNameCache, attributeName)) {
-    return true;
-  }
-
-  if (hasOwnProperty.call(illegalAttributeNameCache, attributeName)) {
-    return false;
-  }
-
-  if (VALID_ATTRIBUTE_NAME_REGEX.test(attributeName)) {
-    validatedAttributeNameCache[attributeName] = true;
-    return true;
-  }
-
-  illegalAttributeNameCache[attributeName] = true;
-
-  {
-    error('Invalid attribute name: `%s`', attributeName);
-  }
-
-  return false;
-}
-function shouldIgnoreAttribute(name, propertyInfo, isCustomComponentTag) {
-  if (propertyInfo !== null) {
-    return propertyInfo.type === RESERVED;
-  }
-
-  if (isCustomComponentTag) {
-    return false;
-  }
-
-  if (name.length > 2 && (name[0] === 'o' || name[0] === 'O') && (name[1] === 'n' || name[1] === 'N')) {
-    return true;
-  }
-
-  return false;
-}
-function shouldRemoveAttributeWithWarning(name, value, propertyInfo, isCustomComponentTag) {
-  if (propertyInfo !== null && propertyInfo.type === RESERVED) {
-    return false;
-  }
-
-  switch (typeof value) {
-    case 'function': // $FlowIssue symbol is perfectly valid here
-
-    case 'symbol':
-      // eslint-disable-line
-      return true;
-
-    case 'boolean':
-      {
-        if (isCustomComponentTag) {
-          return false;
-        }
-
-        if (propertyInfo !== null) {
-          return !propertyInfo.acceptsBooleans;
-        } else {
-          var prefix = name.toLowerCase().slice(0, 5);
-          return prefix !== 'data-' && prefix !== 'aria-';
-        }
-      }
-
-    default:
-      return false;
-  }
-}
-function shouldRemoveAttribute(name, value, propertyInfo, isCustomComponentTag) {
-  if (value === null || typeof value === 'undefined') {
-    return true;
-  }
-
-  if (shouldRemoveAttributeWithWarning(name, value, propertyInfo, isCustomComponentTag)) {
-    return true;
-  }
-
-  if (isCustomComponentTag) {
-    return false;
-  }
-
-  if (propertyInfo !== null) {
-    switch (propertyInfo.type) {
-      case BOOLEAN:
-        return !value;
-
-      case OVERLOADED_BOOLEAN:
-        return value === false;
-
-      case NUMERIC:
-        return isNaN(value);
-
-      case POSITIVE_NUMERIC:
-        return isNaN(value) || value < 1;
-    }
-  }
-
-  return false;
-}
-function getPropertyInfo(name) {
-  return properties.hasOwnProperty(name) ? properties[name] : null;
-}
-
-function PropertyInfoRecord(name, type, mustUseProperty, attributeName, attributeNamespace, sanitizeURL) {
-  this.acceptsBooleans = type === BOOLEANISH_STRING || type === BOOLEAN || type === OVERLOADED_BOOLEAN;
-  this.attributeName = attributeName;
-  this.attributeNamespace = attributeNamespace;
-  this.mustUseProperty = mustUseProperty;
-  this.propertyName = name;
-  this.type = type;
-  this.sanitizeURL = sanitizeURL;
-} // When adding attributes to this list, be sure to also add them to
-// the `possibleStandardNames` module to ensure casing and incorrect
-// name warnings.
-
-
-var properties = {}; // These props are reserved by React. They shouldn't be written to the DOM.
-
-var reservedProps = ['children', 'dangerouslySetInnerHTML', // TODO: This prevents the assignment of defaultValue to regular
-// elements (not just inputs). Now that ReactDOMInput assigns to the
-// defaultValue property -- do we need this?
-'defaultValue', 'defaultChecked', 'innerHTML', 'suppressContentEditableWarning', 'suppressHydrationWarning', 'style'];
-
-reservedProps.forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, RESERVED, false, // mustUseProperty
-  name, // attributeName
-  null, // attributeNamespace
-  false);
-}); // A few React string attributes have a different name.
-// This is a mapping from React prop names to the attribute names.
-
-[['acceptCharset', 'accept-charset'], ['className', 'class'], ['htmlFor', 'for'], ['httpEquiv', 'http-equiv']].forEach(function (_ref) {
-  var name = _ref[0],
-      attributeName = _ref[1];
-  properties[name] = new PropertyInfoRecord(name, STRING, false, // mustUseProperty
-  attributeName, // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are "enumerated" HTML attributes that accept "true" and "false".
-// In React, we let users pass `true` and `false` even though technically
-// these aren't boolean attributes (they are coerced to strings).
-
-['contentEditable', 'draggable', 'spellCheck', 'value'].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, BOOLEANISH_STRING, false, // mustUseProperty
-  name.toLowerCase(), // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are "enumerated" SVG attributes that accept "true" and "false".
-// In React, we let users pass `true` and `false` even though technically
-// these aren't boolean attributes (they are coerced to strings).
-// Since these are SVG attributes, their attribute names are case-sensitive.
-
-['autoReverse', 'externalResourcesRequired', 'focusable', 'preserveAlpha'].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, BOOLEANISH_STRING, false, // mustUseProperty
-  name, // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are HTML boolean attributes.
-
-['allowFullScreen', 'async', // Note: there is a special case that prevents it from being written to the DOM
-// on the client side because the browsers are inconsistent. Instead we call focus().
-'autoFocus', 'autoPlay', 'controls', 'default', 'defer', 'disabled', 'disablePictureInPicture', 'formNoValidate', 'hidden', 'loop', 'noModule', 'noValidate', 'open', 'playsInline', 'readOnly', 'required', 'reversed', 'scoped', 'seamless', // Microdata
-'itemScope'].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, BOOLEAN, false, // mustUseProperty
-  name.toLowerCase(), // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are the few React props that we set as DOM properties
-// rather than attributes. These are all booleans.
-
-['checked', // Note: `option.selected` is not updated if `select.multiple` is
-// disabled with `removeAttribute`. We have special logic for handling this.
-'multiple', 'muted', 'selected' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, BOOLEAN, true, // mustUseProperty
-  name, // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are HTML attributes that are "overloaded booleans": they behave like
-// booleans, but can also accept a string value.
-
-['capture', 'download' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, OVERLOADED_BOOLEAN, false, // mustUseProperty
-  name, // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are HTML attributes that must be positive numbers.
-
-['cols', 'rows', 'size', 'span' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, POSITIVE_NUMERIC, false, // mustUseProperty
-  name, // attributeName
-  null, // attributeNamespace
-  false);
-}); // These are HTML attributes that must be numbers.
-
-['rowSpan', 'start'].forEach(function (name) {
-  properties[name] = new PropertyInfoRecord(name, NUMERIC, false, // mustUseProperty
-  name.toLowerCase(), // attributeName
-  null, // attributeNamespace
-  false);
-});
-var CAMELIZE = /[\-\:]([a-z])/g;
-
-var capitalize = function (token) {
-  return token[1].toUpperCase();
-}; // This is a list of all SVG attributes that need special casing, namespacing,
-// or boolean value assignment. Regular attributes that just accept strings
-// and have the same names are omitted, just like in the HTML whitelist.
-// Some of these attributes can be hard to find. This list was created by
-// scraping the MDN documentation.
-
-
-['accent-height', 'alignment-baseline', 'arabic-form', 'baseline-shift', 'cap-height', 'clip-path', 'clip-rule', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'dominant-baseline', 'enable-background', 'fill-opacity', 'fill-rule', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'glyph-name', 'glyph-orientation-horizontal', 'glyph-orientation-vertical', 'horiz-adv-x', 'horiz-origin-x', 'image-rendering', 'letter-spacing', 'lighting-color', 'marker-end', 'marker-mid', 'marker-start', 'overline-position', 'overline-thickness', 'paint-order', 'panose-1', 'pointer-events', 'rendering-intent', 'shape-rendering', 'stop-color', 'stop-opacity', 'strikethrough-position', 'strikethrough-thickness', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width', 'text-anchor', 'text-decoration', 'text-rendering', 'underline-position', 'underline-thickness', 'unicode-bidi', 'unicode-range', 'units-per-em', 'v-alphabetic', 'v-hanging', 'v-ideographic', 'v-mathematical', 'vector-effect', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'word-spacing', 'writing-mode', 'xmlns:xlink', 'x-height' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (attributeName) {
-  var name = attributeName.replace(CAMELIZE, capitalize);
-  properties[name] = new PropertyInfoRecord(name, STRING, false, // mustUseProperty
-  attributeName, null, // attributeNamespace
-  false);
-}); // String SVG attributes with the xlink namespace.
-
-['xlink:actuate', 'xlink:arcrole', 'xlink:role', 'xlink:show', 'xlink:title', 'xlink:type' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (attributeName) {
-  var name = attributeName.replace(CAMELIZE, capitalize);
-  properties[name] = new PropertyInfoRecord(name, STRING, false, // mustUseProperty
-  attributeName, 'http://www.w3.org/1999/xlink', false);
-}); // String SVG attributes with the xml namespace.
-
-['xml:base', 'xml:lang', 'xml:space' // NOTE: if you add a camelCased prop to this list,
-// you'll need to set attributeName to name.toLowerCase()
-// instead in the assignment below.
-].forEach(function (attributeName) {
-  var name = attributeName.replace(CAMELIZE, capitalize);
-  properties[name] = new PropertyInfoRecord(name, STRING, false, // mustUseProperty
-  attributeName, 'http://www.w3.org/XML/1998/namespace', false);
-}); // These attribute exists both in HTML and SVG.
-// The attribute name is case-sensitive in SVG so we can't just use
-// the React name like we do for attributes that exist only in HTML.
-
-['tabIndex', 'crossOrigin'].forEach(function (attributeName) {
-  properties[attributeName] = new PropertyInfoRecord(attributeName, STRING, false, // mustUseProperty
-  attributeName.toLowerCase(), // attributeName
-  null, // attributeNamespace
-  false);
-}); // These attributes accept URLs. These must not allow javascript: URLS.
-// These will also need to accept Trusted Types object in the future.
-
-var xlinkHref = 'xlinkHref';
-properties[xlinkHref] = new PropertyInfoRecord('xlinkHref', STRING, false, // mustUseProperty
-'xlink:href', 'http://www.w3.org/1999/xlink', true);
-['src', 'href', 'action', 'formAction'].forEach(function (attributeName) {
-  properties[attributeName] = new PropertyInfoRecord(attributeName, STRING, false, // mustUseProperty
-  attributeName.toLowerCase(), // attributeName
-  null, // attributeNamespace
-  true);
-});
-
-var ReactDebugCurrentFrame$1 = null;
-
-{
-  ReactDebugCurrentFrame$1 = ReactSharedInternals.ReactDebugCurrentFrame;
-} // A javascript: URL can contain leading C0 control or \u0020 SPACE,
-// and any newline or tab are filtered out as if they're not part of the URL.
-// https://url.spec.whatwg.org/#url-parsing
-// Tab or newline are defined as \r\n\t:
-// https://infra.spec.whatwg.org/#ascii-tab-or-newline
-// A C0 control is a code point in the range \u0000 NULL to \u001F
-// INFORMATION SEPARATOR ONE, inclusive:
-// https://infra.spec.whatwg.org/#c0-control-or-space
-
-/* eslint-disable max-len */
-
-
-var isJavaScriptProtocol = /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*\:/i;
-var didWarn = false;
-
-function sanitizeURL(url) {
-  {
-    if (!didWarn && isJavaScriptProtocol.test(url)) {
-      didWarn = true;
-
-      error('A future version of React will block javascript: URLs as a security precaution. ' + 'Use event handlers instead if you can. If you need to generate unsafe HTML try ' + 'using dangerouslySetInnerHTML instead. React was passed %s.', JSON.stringify(url));
-    }
-  }
-}
-
-// code copied and modified from escape-html
-
-/**
- * Module variables.
- * @private
- */
-var matchHtmlRegExp = /["'&<>]/;
-/**
- * Escapes special characters and HTML entities in a given html string.
- *
- * @param  {string} string HTML string to escape for later insertion
- * @return {string}
- * @public
- */
-
-function escapeHtml(string) {
-  var str = '' + string;
-  var match = matchHtmlRegExp.exec(str);
-
-  if (!match) {
-    return str;
-  }
-
-  var escape;
-  var html = '';
-  var index;
-  var lastIndex = 0;
-
-  for (index = match.index; index < str.length; index++) {
-    switch (str.charCodeAt(index)) {
-      case 34:
-        // "
-        escape = '&quot;';
-        break;
-
-      case 38:
-        // &
-        escape = '&amp;';
-        break;
-
-      case 39:
-        // '
-        escape = '&#x27;'; // modified from escape-html; used to be '&#39'
-
-        break;
-
-      case 60:
-        // <
-        escape = '&lt;';
-        break;
-
-      case 62:
-        // >
-        escape = '&gt;';
-        break;
-
-      default:
-        continue;
-    }
-
-    if (lastIndex !== index) {
-      html += str.substring(lastIndex, index);
-    }
-
-    lastIndex = index + 1;
-    html += escape;
-  }
-
-  return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
-} // end code copied and modified from escape-html
-
-/**
- * Escapes text to prevent scripting attacks.
- *
- * @param {*} text Text value to escape.
- * @return {string} An escaped string.
- */
-
-
-function escapeTextForBrowser(text) {
-  if (typeof text === 'boolean' || typeof text === 'number') {
-    // this shortcircuit helps perf for types that we know will never have
-    // special characters, especially given that this function is used often
-    // for numeric dom ids.
-    return '' + text;
-  }
-
-  return escapeHtml(text);
-}
-
-/**
- * Escapes attribute value to prevent scripting attacks.
- *
- * @param {*} value Value to escape.
- * @return {string} An escaped string.
- */
-
-function quoteAttributeValueForBrowser(value) {
-  return '"' + escapeTextForBrowser(value) + '"';
-}
-
-function createMarkupForRoot() {
-  return ROOT_ATTRIBUTE_NAME + '=""';
-}
-/**
- * Creates markup for a property.
- *
- * @param {string} name
- * @param {*} value
- * @return {?string} Markup string, or null if the property was invalid.
- */
-
-function createMarkupForProperty(name, value) {
-  var propertyInfo = getPropertyInfo(name);
-
-  if (name !== 'style' && shouldIgnoreAttribute(name, propertyInfo, false)) {
-    return '';
-  }
-
-  if (shouldRemoveAttribute(name, value, propertyInfo, false)) {
-    return '';
-  }
-
-  if (propertyInfo !== null) {
-    var attributeName = propertyInfo.attributeName;
-    var type = propertyInfo.type;
-
-    if (type === BOOLEAN || type === OVERLOADED_BOOLEAN && value === true) {
-      return attributeName + '=""';
-    } else {
-      if (propertyInfo.sanitizeURL) {
-        value = '' + value;
-        sanitizeURL(value);
-      }
-
-      return attributeName + '=' + quoteAttributeValueForBrowser(value);
-    }
-  } else if (isAttributeNameSafe(name)) {
-    return name + '=' + quoteAttributeValueForBrowser(value);
-  }
-
-  return '';
-}
-/**
- * Creates markup for a custom property.
- *
- * @param {string} name
- * @param {*} value
- * @return {string} Markup string, or empty string if the property was invalid.
- */
-
-function createMarkupForCustomAttribute(name, value) {
-  if (!isAttributeNameSafe(name) || value == null) {
-    return '';
-  }
-
-  return name + '=' + quoteAttributeValueForBrowser(value);
-}
-
-/**
- * inlined Object.is polyfill to avoid requiring consumers ship their own
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
- */
-function is(x, y) {
-  return x === y && (x !== 0 || 1 / x === 1 / y) || x !== x && y !== y // eslint-disable-line no-self-compare
-  ;
-}
-
-var objectIs = typeof Object.is === 'function' ? Object.is : is;
-
-var currentlyRenderingComponent = null;
-var firstWorkInProgressHook = null;
-var workInProgressHook = null; // Whether the work-in-progress hook is a re-rendered hook
-
-var isReRender = false; // Whether an update was scheduled during the currently executing render pass.
-
-var didScheduleRenderPhaseUpdate = false; // Lazily created map of render-phase updates
-
-var renderPhaseUpdates = null; // Counter to prevent infinite loops.
-
-var numberOfReRenders = 0;
-var RE_RENDER_LIMIT = 25;
-var isInHookUserCodeInDev = false; // In DEV, this is the name of the currently executing primitive hook
-
-var currentHookNameInDev;
-
-function resolveCurrentlyRenderingComponent() {
-  if (!(currentlyRenderingComponent !== null)) {
-    {
-      throw Error( "Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem." );
-    }
-  }
-
-  {
-    if (isInHookUserCodeInDev) {
-      error('Do not call Hooks inside useEffect(...), useMemo(...), or other built-in Hooks. ' + 'You can only call Hooks at the top level of your React function. ' + 'For more information, see ' + 'https://fb.me/rules-of-hooks');
-    }
-  }
-
-  return currentlyRenderingComponent;
-}
-
-function areHookInputsEqual(nextDeps, prevDeps) {
-  if (prevDeps === null) {
-    {
-      error('%s received a final argument during this render, but not during ' + 'the previous render. Even though the final argument is optional, ' + 'its type cannot change between renders.', currentHookNameInDev);
-    }
-
-    return false;
-  }
-
-  {
-    // Don't bother comparing lengths in prod because these arrays should be
-    // passed inline.
-    if (nextDeps.length !== prevDeps.length) {
-      error('The final argument passed to %s changed size between renders. The ' + 'order and size of this array must remain constant.\n\n' + 'Previous: %s\n' + 'Incoming: %s', currentHookNameInDev, "[" + nextDeps.join(', ') + "]", "[" + prevDeps.join(', ') + "]");
-    }
-  }
-
-  for (var i = 0; i < prevDeps.length && i < nextDeps.length; i++) {
-    if (objectIs(nextDeps[i], prevDeps[i])) {
-      continue;
-    }
-
-    return false;
-  }
-
-  return true;
-}
-
-function createHook() {
-  if (numberOfReRenders > 0) {
-    {
-      {
-        throw Error( "Rendered more hooks than during the previous render" );
-      }
-    }
-  }
-
-  return {
-    memoizedState: null,
-    queue: null,
-    next: null
-  };
-}
-
-function createWorkInProgressHook() {
-  if (workInProgressHook === null) {
-    // This is the first hook in the list
-    if (firstWorkInProgressHook === null) {
-      isReRender = false;
-      firstWorkInProgressHook = workInProgressHook = createHook();
-    } else {
-      // There's already a work-in-progress. Reuse it.
-      isReRender = true;
-      workInProgressHook = firstWorkInProgressHook;
-    }
-  } else {
-    if (workInProgressHook.next === null) {
-      isReRender = false; // Append to the end of the list
-
-      workInProgressHook = workInProgressHook.next = createHook();
-    } else {
-      // There's already a work-in-progress. Reuse it.
-      isReRender = true;
-      workInProgressHook = workInProgressHook.next;
-    }
-  }
-
-  return workInProgressHook;
-}
-
-function prepareToUseHooks(componentIdentity) {
-  currentlyRenderingComponent = componentIdentity;
-
-  {
-    isInHookUserCodeInDev = false;
-  } // The following should have already been reset
-  // didScheduleRenderPhaseUpdate = false;
-  // firstWorkInProgressHook = null;
-  // numberOfReRenders = 0;
-  // renderPhaseUpdates = null;
-  // workInProgressHook = null;
-
-}
-function finishHooks(Component, props, children, refOrContext) {
-  // This must be called after every function component to prevent hooks from
-  // being used in classes.
-  while (didScheduleRenderPhaseUpdate) {
-    // Updates were scheduled during the render phase. They are stored in
-    // the `renderPhaseUpdates` map. Call the component again, reusing the
-    // work-in-progress hooks and applying the additional updates on top. Keep
-    // restarting until no more updates are scheduled.
-    didScheduleRenderPhaseUpdate = false;
-    numberOfReRenders += 1; // Start over from the beginning of the list
-
-    workInProgressHook = null;
-    children = Component(props, refOrContext);
-  }
-
-  currentlyRenderingComponent = null;
-  firstWorkInProgressHook = null;
-  numberOfReRenders = 0;
-  renderPhaseUpdates = null;
-  workInProgressHook = null;
-
-  {
-    isInHookUserCodeInDev = false;
-  } // These were reset above
-  // currentlyRenderingComponent = null;
-  // didScheduleRenderPhaseUpdate = false;
-  // firstWorkInProgressHook = null;
-  // numberOfReRenders = 0;
-  // renderPhaseUpdates = null;
-  // workInProgressHook = null;
-
-
-  return children;
-}
-
-function readContext(context, observedBits) {
-  var threadID = currentThreadID;
-  validateContextBounds(context, threadID);
-
-  {
-    if (isInHookUserCodeInDev) {
-      error('Context can only be read while React is rendering. ' + 'In classes, you can read it in the render method or getDerivedStateFromProps. ' + 'In function components, you can read it directly in the function body, but not ' + 'inside Hooks like useReducer() or useMemo().');
-    }
-  }
-
-  return context[threadID];
-}
-
-function useContext(context, observedBits) {
-  {
-    currentHookNameInDev = 'useContext';
-  }
-
-  resolveCurrentlyRenderingComponent();
-  var threadID = currentThreadID;
-  validateContextBounds(context, threadID);
-  return context[threadID];
-}
-
-function basicStateReducer(state, action) {
-  // $FlowFixMe: Flow doesn't like mixed types
-  return typeof action === 'function' ? action(state) : action;
-}
-
-function useState(initialState) {
-  {
-    currentHookNameInDev = 'useState';
-  }
-
-  return useReducer(basicStateReducer, // useReducer has a special case to support lazy useState initializers
-  initialState);
-}
-function useReducer(reducer, initialArg, init) {
-  {
-    if (reducer !== basicStateReducer) {
-      currentHookNameInDev = 'useReducer';
-    }
-  }
-
-  currentlyRenderingComponent = resolveCurrentlyRenderingComponent();
-  workInProgressHook = createWorkInProgressHook();
-
-  if (isReRender) {
-    // This is a re-render. Apply the new render phase updates to the previous
-    // current hook.
-    var queue = workInProgressHook.queue;
-    var dispatch = queue.dispatch;
-
-    if (renderPhaseUpdates !== null) {
-      // Render phase updates are stored in a map of queue -> linked list
-      var firstRenderPhaseUpdate = renderPhaseUpdates.get(queue);
-
-      if (firstRenderPhaseUpdate !== undefined) {
-        renderPhaseUpdates.delete(queue);
-        var newState = workInProgressHook.memoizedState;
-        var update = firstRenderPhaseUpdate;
-
-        do {
-          // Process this render phase update. We don't have to check the
-          // priority because it will always be the same as the current
-          // render's.
-          var action = update.action;
-
-          {
-            isInHookUserCodeInDev = true;
-          }
-
-          newState = reducer(newState, action);
-
-          {
-            isInHookUserCodeInDev = false;
-          }
-
-          update = update.next;
-        } while (update !== null);
-
-        workInProgressHook.memoizedState = newState;
-        return [newState, dispatch];
-      }
-    }
-
-    return [workInProgressHook.memoizedState, dispatch];
-  } else {
-    {
-      isInHookUserCodeInDev = true;
-    }
-
-    var initialState;
-
-    if (reducer === basicStateReducer) {
-      // Special case for `useState`.
-      initialState = typeof initialArg === 'function' ? initialArg() : initialArg;
-    } else {
-      initialState = init !== undefined ? init(initialArg) : initialArg;
-    }
-
-    {
-      isInHookUserCodeInDev = false;
-    }
-
-    workInProgressHook.memoizedState = initialState;
-
-    var _queue = workInProgressHook.queue = {
-      last: null,
-      dispatch: null
-    };
-
-    var _dispatch = _queue.dispatch = dispatchAction.bind(null, currentlyRenderingComponent, _queue);
-
-    return [workInProgressHook.memoizedState, _dispatch];
-  }
-}
-
-function useMemo(nextCreate, deps) {
-  currentlyRenderingComponent = resolveCurrentlyRenderingComponent();
-  workInProgressHook = createWorkInProgressHook();
-  var nextDeps = deps === undefined ? null : deps;
-
-  if (workInProgressHook !== null) {
-    var prevState = workInProgressHook.memoizedState;
-
-    if (prevState !== null) {
-      if (nextDeps !== null) {
-        var prevDeps = prevState[1];
-
-        if (areHookInputsEqual(nextDeps, prevDeps)) {
-          return prevState[0];
-        }
-      }
-    }
-  }
-
-  {
-    isInHookUserCodeInDev = true;
-  }
-
-  var nextValue = nextCreate();
-
-  {
-    isInHookUserCodeInDev = false;
-  }
-
-  workInProgressHook.memoizedState = [nextValue, nextDeps];
-  return nextValue;
-}
-
-function useRef(initialValue) {
-  currentlyRenderingComponent = resolveCurrentlyRenderingComponent();
-  workInProgressHook = createWorkInProgressHook();
-  var previousRef = workInProgressHook.memoizedState;
-
-  if (previousRef === null) {
-    var ref = {
-      current: initialValue
-    };
-
-    {
-      Object.seal(ref);
-    }
-
-    workInProgressHook.memoizedState = ref;
-    return ref;
-  } else {
-    return previousRef;
-  }
-}
-
-function useLayoutEffect(create, inputs) {
-  {
-    currentHookNameInDev = 'useLayoutEffect';
-
-    error('useLayoutEffect does nothing on the server, because its effect cannot ' + "be encoded into the server renderer's output format. This will lead " + 'to a mismatch between the initial, non-hydrated UI and the intended ' + 'UI. To avoid this, useLayoutEffect should only be used in ' + 'components that render exclusively on the client. ' + 'See https://fb.me/react-uselayouteffect-ssr for common fixes.');
-  }
-}
-
-function dispatchAction(componentIdentity, queue, action) {
-  if (!(numberOfReRenders < RE_RENDER_LIMIT)) {
-    {
-      throw Error( "Too many re-renders. React limits the number of renders to prevent an infinite loop." );
-    }
-  }
-
-  if (componentIdentity === currentlyRenderingComponent) {
-    // This is a render phase update. Stash it in a lazily-created map of
-    // queue -> linked list of updates. After this render pass, we'll restart
-    // and apply the stashed updates on top of the work-in-progress hook.
-    didScheduleRenderPhaseUpdate = true;
-    var update = {
-      action: action,
-      next: null
-    };
-
-    if (renderPhaseUpdates === null) {
-      renderPhaseUpdates = new Map();
-    }
-
-    var firstRenderPhaseUpdate = renderPhaseUpdates.get(queue);
-
-    if (firstRenderPhaseUpdate === undefined) {
-      renderPhaseUpdates.set(queue, update);
-    } else {
-      // Append the update to the end of the list.
-      var lastRenderPhaseUpdate = firstRenderPhaseUpdate;
-
-      while (lastRenderPhaseUpdate.next !== null) {
-        lastRenderPhaseUpdate = lastRenderPhaseUpdate.next;
-      }
-
-      lastRenderPhaseUpdate.next = update;
-    }
-  }
-}
-
-function useCallback(callback, deps) {
-  // Callbacks are passed as they are in the server environment.
-  return callback;
-}
-
-function useResponder(responder, props) {
-  return {
-    props: props,
-    responder: responder
-  };
-}
-
-function useDeferredValue(value, config) {
-  resolveCurrentlyRenderingComponent();
-  return value;
-}
-
-function useTransition(config) {
-  resolveCurrentlyRenderingComponent();
-
-  var startTransition = function (callback) {
-    callback();
-  };
-
-  return [startTransition, false];
-}
-
-function noop() {}
-
-var currentThreadID = 0;
-function setCurrentThreadID(threadID) {
-  currentThreadID = threadID;
-}
-var Dispatcher = {
-  readContext: readContext,
-  useContext: useContext,
-  useMemo: useMemo,
-  useReducer: useReducer,
-  useRef: useRef,
-  useState: useState,
-  useLayoutEffect: useLayoutEffect,
-  useCallback: useCallback,
-  // useImperativeHandle is not run in the server environment
-  useImperativeHandle: noop,
-  // Effects are not run in the server environment.
-  useEffect: noop,
-  // Debugging effect
-  useDebugValue: noop,
-  useResponder: useResponder,
-  useDeferredValue: useDeferredValue,
-  useTransition: useTransition
-};
-
-var HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
-var MATH_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
-var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
-var Namespaces = {
-  html: HTML_NAMESPACE,
-  mathml: MATH_NAMESPACE,
-  svg: SVG_NAMESPACE
-}; // Assumes there is no parent namespace.
-
-function getIntrinsicNamespace(type) {
-  switch (type) {
-    case 'svg':
-      return SVG_NAMESPACE;
-
-    case 'math':
-      return MATH_NAMESPACE;
-
-    default:
-      return HTML_NAMESPACE;
-  }
-}
-function getChildNamespace(parentNamespace, type) {
-  if (parentNamespace == null || parentNamespace === HTML_NAMESPACE) {
-    // No (or default) parent namespace: potential entry point.
-    return getIntrinsicNamespace(type);
-  }
-
-  if (parentNamespace === SVG_NAMESPACE && type === 'foreignObject') {
-    // We're leaving SVG.
-    return HTML_NAMESPACE;
-  } // By default, pass namespace below.
-
-
-  return parentNamespace;
-}
-
-var ReactDebugCurrentFrame$2 = null;
-var ReactControlledValuePropTypes = {
-  checkPropTypes: null
-};
-
-{
-  ReactDebugCurrentFrame$2 = ReactSharedInternals.ReactDebugCurrentFrame;
-  var hasReadOnlyValue = {
-    button: true,
-    checkbox: true,
-    image: true,
-    hidden: true,
-    radio: true,
-    reset: true,
-    submit: true
-  };
-  var propTypes = {
-    value: function (props, propName, componentName) {
-      if (hasReadOnlyValue[props.type] || props.onChange || props.readOnly || props.disabled || props[propName] == null || enableDeprecatedFlareAPI ) {
-        return null;
-      }
-
-      return new Error('You provided a `value` prop to a form field without an ' + '`onChange` handler. This will render a read-only field. If ' + 'the field should be mutable use `defaultValue`. Otherwise, ' + 'set either `onChange` or `readOnly`.');
-    },
-    checked: function (props, propName, componentName) {
-      if (props.onChange || props.readOnly || props.disabled || props[propName] == null || enableDeprecatedFlareAPI ) {
-        return null;
-      }
-
-      return new Error('You provided a `checked` prop to a form field without an ' + '`onChange` handler. This will render a read-only field. If ' + 'the field should be mutable use `defaultChecked`. Otherwise, ' + 'set either `onChange` or `readOnly`.');
-    }
-  };
-  /**
-   * Provide a linked `value` attribute for controlled forms. You should not use
-   * this outside of the ReactDOM controlled form components.
-   */
-
-  ReactControlledValuePropTypes.checkPropTypes = function (tagName, props) {
-    checkPropTypes(propTypes, props, 'prop', tagName, ReactDebugCurrentFrame$2.getStackAddendum);
-  };
-}
-
-// For HTML, certain tags should omit their close tag. We keep a whitelist for
-// those special-case tags.
-var omittedCloseTags = {
-  area: true,
-  base: true,
-  br: true,
-  col: true,
-  embed: true,
-  hr: true,
-  img: true,
-  input: true,
-  keygen: true,
-  link: true,
-  meta: true,
-  param: true,
-  source: true,
-  track: true,
-  wbr: true // NOTE: menuitem's close tag should be omitted, but that causes problems.
-
-};
-
-// `omittedCloseTags` except that `menuitem` should still have its closing tag.
-
-var voidElementTags = _assign({
-  menuitem: true
-}, omittedCloseTags);
-
-var HTML = '__html';
-var ReactDebugCurrentFrame$3 = null;
-
-{
-  ReactDebugCurrentFrame$3 = ReactSharedInternals.ReactDebugCurrentFrame;
-}
-
-function assertValidProps(tag, props) {
-  if (!props) {
-    return;
-  } // Note the use of `==` which checks for null or undefined.
-
-
-  if (voidElementTags[tag]) {
-    if (!(props.children == null && props.dangerouslySetInnerHTML == null)) {
-      {
-        throw Error( tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`." + ( ReactDebugCurrentFrame$3.getStackAddendum() ) );
-      }
-    }
-  }
-
-  if (props.dangerouslySetInnerHTML != null) {
-    if (!(props.children == null)) {
-      {
-        throw Error( "Can only set one of `children` or `props.dangerouslySetInnerHTML`." );
-      }
-    }
-
-    if (!(typeof props.dangerouslySetInnerHTML === 'object' && HTML in props.dangerouslySetInnerHTML)) {
-      {
-        throw Error( "`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://fb.me/react-invariant-dangerously-set-inner-html for more information." );
-      }
-    }
-  }
-
-  {
-    if (!props.suppressContentEditableWarning && props.contentEditable && props.children != null) {
-      error('A component is `contentEditable` and contains `children` managed by ' + 'React. It is now your responsibility to guarantee that none of ' + 'those nodes are unexpectedly modified or duplicated. This is ' + 'probably not intentional.');
-    }
-  }
-
-  if (!(props.style == null || typeof props.style === 'object')) {
-    {
-      throw Error( "The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX." + ( ReactDebugCurrentFrame$3.getStackAddendum() ) );
-    }
-  }
-}
-
-/**
- * CSS properties which accept numbers but are not in units of "px".
- */
-var isUnitlessNumber = {
-  animationIterationCount: true,
-  borderImageOutset: true,
-  borderImageSlice: true,
-  borderImageWidth: true,
-  boxFlex: true,
-  boxFlexGroup: true,
-  boxOrdinalGroup: true,
-  columnCount: true,
-  columns: true,
-  flex: true,
-  flexGrow: true,
-  flexPositive: true,
-  flexShrink: true,
-  flexNegative: true,
-  flexOrder: true,
-  gridArea: true,
-  gridRow: true,
-  gridRowEnd: true,
-  gridRowSpan: true,
-  gridRowStart: true,
-  gridColumn: true,
-  gridColumnEnd: true,
-  gridColumnSpan: true,
-  gridColumnStart: true,
-  fontWeight: true,
-  lineClamp: true,
-  lineHeight: true,
-  opacity: true,
-  order: true,
-  orphans: true,
-  tabSize: true,
-  widows: true,
-  zIndex: true,
-  zoom: true,
-  // SVG-related properties
-  fillOpacity: true,
-  floodOpacity: true,
-  stopOpacity: true,
-  strokeDasharray: true,
-  strokeDashoffset: true,
-  strokeMiterlimit: true,
-  strokeOpacity: true,
-  strokeWidth: true
-};
-/**
- * @param {string} prefix vendor-specific prefix, eg: Webkit
- * @param {string} key style name, eg: transitionDuration
- * @return {string} style name prefixed with `prefix`, properly camelCased, eg:
- * WebkitTransitionDuration
- */
-
-function prefixKey(prefix, key) {
-  return prefix + key.charAt(0).toUpperCase() + key.substring(1);
-}
-/**
- * Support style names that may come passed in prefixed by adding permutations
- * of vendor prefixes.
- */
-
-
-var prefixes = ['Webkit', 'ms', 'Moz', 'O']; // Using Object.keys here, or else the vanilla for-in loop makes IE8 go into an
-// infinite loop, because it iterates over the newly added props too.
-
-Object.keys(isUnitlessNumber).forEach(function (prop) {
-  prefixes.forEach(function (prefix) {
-    isUnitlessNumber[prefixKey(prefix, prop)] = isUnitlessNumber[prop];
-  });
-});
-
-/**
- * Convert a value into the proper css writable value. The style name `name`
- * should be logical (no hyphens), as specified
- * in `CSSProperty.isUnitlessNumber`.
- *
- * @param {string} name CSS property name such as `topMargin`.
- * @param {*} value CSS property value such as `10px`.
- * @return {string} Normalized style value with dimensions applied.
- */
-
-function dangerousStyleValue(name, value, isCustomProperty) {
-  // Note that we've removed escapeTextForBrowser() calls here since the
-  // whole string will be escaped when the attribute is injected into
-  // the markup. If you provide unsafe user data here they can inject
-  // arbitrary CSS which may be problematic (I couldn't repro this):
-  // https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-  // http://www.thespanner.co.uk/2007/11/26/ultimate-xss-css-injection/
-  // This is not an XSS hole but instead a potential CSS injection issue
-  // which has lead to a greater discussion about how we're going to
-  // trust URLs moving forward. See #2115901
-  var isEmpty = value == null || typeof value === 'boolean' || value === '';
-
-  if (isEmpty) {
-    return '';
-  }
-
-  if (!isCustomProperty && typeof value === 'number' && value !== 0 && !(isUnitlessNumber.hasOwnProperty(name) && isUnitlessNumber[name])) {
-    return value + 'px'; // Presumes implicit 'px' suffix for unitless numbers
-  }
-
-  return ('' + value).trim();
-}
-
-var uppercasePattern = /([A-Z])/g;
-var msPattern = /^ms-/;
-/**
- * Hyphenates a camelcased CSS property name, for example:
- *
- *   > hyphenateStyleName('backgroundColor')
- *   < "background-color"
- *   > hyphenateStyleName('MozTransition')
- *   < "-moz-transition"
- *   > hyphenateStyleName('msTransition')
- *   < "-ms-transition"
- *
- * As Modernizr suggests (http://modernizr.com/docs/#prefixed), an `ms` prefix
- * is converted to `-ms-`.
- */
-
-function hyphenateStyleName(name) {
-  return name.replace(uppercasePattern, '-$1').toLowerCase().replace(msPattern, '-ms-');
-}
-
-function isCustomComponent(tagName, props) {
-  if (tagName.indexOf('-') === -1) {
-    return typeof props.is === 'string';
-  }
-
-  switch (tagName) {
-    // These are reserved SVG and MathML elements.
-    // We don't mind this whitelist too much because we expect it to never grow.
-    // The alternative is to track the namespace in a few places which is convoluted.
-    // https://w3c.github.io/webcomponents/spec/custom/#custom-elements-core-concepts
-    case 'annotation-xml':
-    case 'color-profile':
-    case 'font-face':
-    case 'font-face-src':
-    case 'font-face-uri':
-    case 'font-face-format':
-    case 'font-face-name':
-    case 'missing-glyph':
-      return false;
-
-    default:
-      return true;
-  }
-}
-
-var warnValidStyle = function () {};
-
-{
-  // 'msTransform' is correct, but the other prefixes should be capitalized
-  var badVendoredStyleNamePattern = /^(?:webkit|moz|o)[A-Z]/;
-  var msPattern$1 = /^-ms-/;
-  var hyphenPattern = /-(.)/g; // style values shouldn't contain a semicolon
-
-  var badStyleValueWithSemicolonPattern = /;\s*$/;
-  var warnedStyleNames = {};
-  var warnedStyleValues = {};
-  var warnedForNaNValue = false;
-  var warnedForInfinityValue = false;
-
-  var camelize = function (string) {
-    return string.replace(hyphenPattern, function (_, character) {
-      return character.toUpperCase();
-    });
-  };
-
-  var warnHyphenatedStyleName = function (name) {
-    if (warnedStyleNames.hasOwnProperty(name) && warnedStyleNames[name]) {
-      return;
-    }
-
-    warnedStyleNames[name] = true;
-
-    error('Unsupported style property %s. Did you mean %s?', name, // As Andi Smith suggests
-    // (http://www.andismith.com/blog/2012/02/modernizr-prefixed/), an `-ms` prefix
-    // is converted to lowercase `ms`.
-    camelize(name.replace(msPattern$1, 'ms-')));
-  };
-
-  var warnBadVendoredStyleName = function (name) {
-    if (warnedStyleNames.hasOwnProperty(name) && warnedStyleNames[name]) {
-      return;
-    }
-
-    warnedStyleNames[name] = true;
-
-    error('Unsupported vendor-prefixed style property %s. Did you mean %s?', name, name.charAt(0).toUpperCase() + name.slice(1));
-  };
-
-  var warnStyleValueWithSemicolon = function (name, value) {
-    if (warnedStyleValues.hasOwnProperty(value) && warnedStyleValues[value]) {
-      return;
-    }
-
-    warnedStyleValues[value] = true;
-
-    error("Style property values shouldn't contain a semicolon. " + 'Try "%s: %s" instead.', name, value.replace(badStyleValueWithSemicolonPattern, ''));
-  };
-
-  var warnStyleValueIsNaN = function (name, value) {
-    if (warnedForNaNValue) {
-      return;
-    }
-
-    warnedForNaNValue = true;
-
-    error('`NaN` is an invalid value for the `%s` css style property.', name);
-  };
-
-  var warnStyleValueIsInfinity = function (name, value) {
-    if (warnedForInfinityValue) {
-      return;
-    }
-
-    warnedForInfinityValue = true;
-
-    error('`Infinity` is an invalid value for the `%s` css style property.', name);
-  };
-
-  warnValidStyle = function (name, value) {
-    if (name.indexOf('-') > -1) {
-      warnHyphenatedStyleName(name);
-    } else if (badVendoredStyleNamePattern.test(name)) {
-      warnBadVendoredStyleName(name);
-    } else if (badStyleValueWithSemicolonPattern.test(value)) {
-      warnStyleValueWithSemicolon(name, value);
-    }
-
-    if (typeof value === 'number') {
-      if (isNaN(value)) {
-        warnStyleValueIsNaN(name, value);
-      } else if (!isFinite(value)) {
-        warnStyleValueIsInfinity(name, value);
-      }
-    }
-  };
-}
-
-var warnValidStyle$1 = warnValidStyle;
-
-var ariaProperties = {
-  'aria-current': 0,
-  // state
-  'aria-details': 0,
-  'aria-disabled': 0,
-  // state
-  'aria-hidden': 0,
-  // state
-  'aria-invalid': 0,
-  // state
-  'aria-keyshortcuts': 0,
-  'aria-label': 0,
-  'aria-roledescription': 0,
-  // Widget Attributes
-  'aria-autocomplete': 0,
-  'aria-checked': 0,
-  'aria-expanded': 0,
-  'aria-haspopup': 0,
-  'aria-level': 0,
-  'aria-modal': 0,
-  'aria-multiline': 0,
-  'aria-multiselectable': 0,
-  'aria-orientation': 0,
-  'aria-placeholder': 0,
-  'aria-pressed': 0,
-  'aria-readonly': 0,
-  'aria-required': 0,
-  'aria-selected': 0,
-  'aria-sort': 0,
-  'aria-valuemax': 0,
-  'aria-valuemin': 0,
-  'aria-valuenow': 0,
-  'aria-valuetext': 0,
-  // Live Region Attributes
-  'aria-atomic': 0,
-  'aria-busy': 0,
-  'aria-live': 0,
-  'aria-relevant': 0,
-  // Drag-and-Drop Attributes
-  'aria-dropeffect': 0,
-  'aria-grabbed': 0,
-  // Relationship Attributes
-  'aria-activedescendant': 0,
-  'aria-colcount': 0,
-  'aria-colindex': 0,
-  'aria-colspan': 0,
-  'aria-controls': 0,
-  'aria-describedby': 0,
-  'aria-errormessage': 0,
-  'aria-flowto': 0,
-  'aria-labelledby': 0,
-  'aria-owns': 0,
-  'aria-posinset': 0,
-  'aria-rowcount': 0,
-  'aria-rowindex': 0,
-  'aria-rowspan': 0,
-  'aria-setsize': 0
-};
-
-var warnedProperties = {};
-var rARIA = new RegExp('^(aria)-[' + ATTRIBUTE_NAME_CHAR + ']*$');
-var rARIACamel = new RegExp('^(aria)[A-Z][' + ATTRIBUTE_NAME_CHAR + ']*$');
-var hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-
-function validateProperty(tagName, name) {
-  {
-    if (hasOwnProperty$1.call(warnedProperties, name) && warnedProperties[name]) {
-      return true;
-    }
-
-    if (rARIACamel.test(name)) {
-      var ariaName = 'aria-' + name.slice(4).toLowerCase();
-      var correctName = ariaProperties.hasOwnProperty(ariaName) ? ariaName : null; // If this is an aria-* attribute, but is not listed in the known DOM
-      // DOM properties, then it is an invalid aria-* attribute.
-
-      if (correctName == null) {
-        error('Invalid ARIA attribute `%s`. ARIA attributes follow the pattern aria-* and must be lowercase.', name);
-
-        warnedProperties[name] = true;
-        return true;
-      } // aria-* attributes should be lowercase; suggest the lowercase version.
-
-
-      if (name !== correctName) {
-        error('Invalid ARIA attribute `%s`. Did you mean `%s`?', name, correctName);
-
-        warnedProperties[name] = true;
-        return true;
-      }
-    }
-
-    if (rARIA.test(name)) {
-      var lowerCasedName = name.toLowerCase();
-      var standardName = ariaProperties.hasOwnProperty(lowerCasedName) ? lowerCasedName : null; // If this is an aria-* attribute, but is not listed in the known DOM
-      // DOM properties, then it is an invalid aria-* attribute.
-
-      if (standardName == null) {
-        warnedProperties[name] = true;
-        return false;
-      } // aria-* attributes should be lowercase; suggest the lowercase version.
-
-
-      if (name !== standardName) {
-        error('Unknown ARIA attribute `%s`. Did you mean `%s`?', name, standardName);
-
-        warnedProperties[name] = true;
-        return true;
-      }
-    }
-  }
-
-  return true;
-}
-
-function warnInvalidARIAProps(type, props) {
-  {
-    var invalidProps = [];
-
-    for (var key in props) {
-      var isValid = validateProperty(type, key);
-
-      if (!isValid) {
-        invalidProps.push(key);
-      }
-    }
-
-    var unknownPropString = invalidProps.map(function (prop) {
-      return '`' + prop + '`';
-    }).join(', ');
-
-    if (invalidProps.length === 1) {
-      error('Invalid aria prop %s on <%s> tag. ' + 'For details, see https://fb.me/invalid-aria-prop', unknownPropString, type);
-    } else if (invalidProps.length > 1) {
-      error('Invalid aria props %s on <%s> tag. ' + 'For details, see https://fb.me/invalid-aria-prop', unknownPropString, type);
-    }
-  }
-}
-
-function validateProperties(type, props) {
-  if (isCustomComponent(type, props)) {
-    return;
-  }
-
-  warnInvalidARIAProps(type, props);
-}
-
-var didWarnValueNull = false;
-function validateProperties$1(type, props) {
-  {
-    if (type !== 'input' && type !== 'textarea' && type !== 'select') {
-      return;
-    }
-
-    if (props != null && props.value === null && !didWarnValueNull) {
-      didWarnValueNull = true;
-
-      if (type === 'select' && props.multiple) {
-        error('`value` prop on `%s` should not be null. ' + 'Consider using an empty array when `multiple` is set to `true` ' + 'to clear the component or `undefined` for uncontrolled components.', type);
-      } else {
-        error('`value` prop on `%s` should not be null. ' + 'Consider using an empty string to clear the component or `undefined` ' + 'for uncontrolled components.', type);
-      }
-    }
-  }
-}
-
-/**
- * Mapping from registration name to plugin module
- */
-
-var registrationNameModules = {};
-/**
- * Mapping from lowercase registration names to the properly cased version,
- * used to warn in the case of missing event handlers. Available
- * only in true.
- * @type {Object}
- */
-
-var possibleRegistrationNames =  {} ; // Trust the developer to only use possibleRegistrationNames in true
-
-// When adding attributes to the HTML or SVG whitelist, be sure to
-// also add them to this module to ensure casing and incorrect name
-// warnings.
-var possibleStandardNames = {
-  // HTML
-  accept: 'accept',
-  acceptcharset: 'acceptCharset',
-  'accept-charset': 'acceptCharset',
-  accesskey: 'accessKey',
-  action: 'action',
-  allowfullscreen: 'allowFullScreen',
-  alt: 'alt',
-  as: 'as',
-  async: 'async',
-  autocapitalize: 'autoCapitalize',
-  autocomplete: 'autoComplete',
-  autocorrect: 'autoCorrect',
-  autofocus: 'autoFocus',
-  autoplay: 'autoPlay',
-  autosave: 'autoSave',
-  capture: 'capture',
-  cellpadding: 'cellPadding',
-  cellspacing: 'cellSpacing',
-  challenge: 'challenge',
-  charset: 'charSet',
-  checked: 'checked',
-  children: 'children',
-  cite: 'cite',
-  class: 'className',
-  classid: 'classID',
-  classname: 'className',
-  cols: 'cols',
-  colspan: 'colSpan',
-  content: 'content',
-  contenteditable: 'contentEditable',
-  contextmenu: 'contextMenu',
-  controls: 'controls',
-  controlslist: 'controlsList',
-  coords: 'coords',
-  crossorigin: 'crossOrigin',
-  dangerouslysetinnerhtml: 'dangerouslySetInnerHTML',
-  data: 'data',
-  datetime: 'dateTime',
-  default: 'default',
-  defaultchecked: 'defaultChecked',
-  defaultvalue: 'defaultValue',
-  defer: 'defer',
-  dir: 'dir',
-  disabled: 'disabled',
-  disablepictureinpicture: 'disablePictureInPicture',
-  download: 'download',
-  draggable: 'draggable',
-  enctype: 'encType',
-  for: 'htmlFor',
-  form: 'form',
-  formmethod: 'formMethod',
-  formaction: 'formAction',
-  formenctype: 'formEncType',
-  formnovalidate: 'formNoValidate',
-  formtarget: 'formTarget',
-  frameborder: 'frameBorder',
-  headers: 'headers',
-  height: 'height',
-  hidden: 'hidden',
-  high: 'high',
-  href: 'href',
-  hreflang: 'hrefLang',
-  htmlfor: 'htmlFor',
-  httpequiv: 'httpEquiv',
-  'http-equiv': 'httpEquiv',
-  icon: 'icon',
-  id: 'id',
-  innerhtml: 'innerHTML',
-  inputmode: 'inputMode',
-  integrity: 'integrity',
-  is: 'is',
-  itemid: 'itemID',
-  itemprop: 'itemProp',
-  itemref: 'itemRef',
-  itemscope: 'itemScope',
-  itemtype: 'itemType',
-  keyparams: 'keyParams',
-  keytype: 'keyType',
-  kind: 'kind',
-  label: 'label',
-  lang: 'lang',
-  list: 'list',
-  loop: 'loop',
-  low: 'low',
-  manifest: 'manifest',
-  marginwidth: 'marginWidth',
-  marginheight: 'marginHeight',
-  max: 'max',
-  maxlength: 'maxLength',
-  media: 'media',
-  mediagroup: 'mediaGroup',
-  method: 'method',
-  min: 'min',
-  minlength: 'minLength',
-  multiple: 'multiple',
-  muted: 'muted',
-  name: 'name',
-  nomodule: 'noModule',
-  nonce: 'nonce',
-  novalidate: 'noValidate',
-  open: 'open',
-  optimum: 'optimum',
-  pattern: 'pattern',
-  placeholder: 'placeholder',
-  playsinline: 'playsInline',
-  poster: 'poster',
-  preload: 'preload',
-  profile: 'profile',
-  radiogroup: 'radioGroup',
-  readonly: 'readOnly',
-  referrerpolicy: 'referrerPolicy',
-  rel: 'rel',
-  required: 'required',
-  reversed: 'reversed',
-  role: 'role',
-  rows: 'rows',
-  rowspan: 'rowSpan',
-  sandbox: 'sandbox',
-  scope: 'scope',
-  scoped: 'scoped',
-  scrolling: 'scrolling',
-  seamless: 'seamless',
-  selected: 'selected',
-  shape: 'shape',
-  size: 'size',
-  sizes: 'sizes',
-  span: 'span',
-  spellcheck: 'spellCheck',
-  src: 'src',
-  srcdoc: 'srcDoc',
-  srclang: 'srcLang',
-  srcset: 'srcSet',
-  start: 'start',
-  step: 'step',
-  style: 'style',
-  summary: 'summary',
-  tabindex: 'tabIndex',
-  target: 'target',
-  title: 'title',
-  type: 'type',
-  usemap: 'useMap',
-  value: 'value',
-  width: 'width',
-  wmode: 'wmode',
-  wrap: 'wrap',
-  // SVG
-  about: 'about',
-  accentheight: 'accentHeight',
-  'accent-height': 'accentHeight',
-  accumulate: 'accumulate',
-  additive: 'additive',
-  alignmentbaseline: 'alignmentBaseline',
-  'alignment-baseline': 'alignmentBaseline',
-  allowreorder: 'allowReorder',
-  alphabetic: 'alphabetic',
-  amplitude: 'amplitude',
-  arabicform: 'arabicForm',
-  'arabic-form': 'arabicForm',
-  ascent: 'ascent',
-  attributename: 'attributeName',
-  attributetype: 'attributeType',
-  autoreverse: 'autoReverse',
-  azimuth: 'azimuth',
-  basefrequency: 'baseFrequency',
-  baselineshift: 'baselineShift',
-  'baseline-shift': 'baselineShift',
-  baseprofile: 'baseProfile',
-  bbox: 'bbox',
-  begin: 'begin',
-  bias: 'bias',
-  by: 'by',
-  calcmode: 'calcMode',
-  capheight: 'capHeight',
-  'cap-height': 'capHeight',
-  clip: 'clip',
-  clippath: 'clipPath',
-  'clip-path': 'clipPath',
-  clippathunits: 'clipPathUnits',
-  cliprule: 'clipRule',
-  'clip-rule': 'clipRule',
-  color: 'color',
-  colorinterpolation: 'colorInterpolation',
-  'color-interpolation': 'colorInterpolation',
-  colorinterpolationfilters: 'colorInterpolationFilters',
-  'color-interpolation-filters': 'colorInterpolationFilters',
-  colorprofile: 'colorProfile',
-  'color-profile': 'colorProfile',
-  colorrendering: 'colorRendering',
-  'color-rendering': 'colorRendering',
-  contentscripttype: 'contentScriptType',
-  contentstyletype: 'contentStyleType',
-  cursor: 'cursor',
-  cx: 'cx',
-  cy: 'cy',
-  d: 'd',
-  datatype: 'datatype',
-  decelerate: 'decelerate',
-  descent: 'descent',
-  diffuseconstant: 'diffuseConstant',
-  direction: 'direction',
-  display: 'display',
-  divisor: 'divisor',
-  dominantbaseline: 'dominantBaseline',
-  'dominant-baseline': 'dominantBaseline',
-  dur: 'dur',
-  dx: 'dx',
-  dy: 'dy',
-  edgemode: 'edgeMode',
-  elevation: 'elevation',
-  enablebackground: 'enableBackground',
-  'enable-background': 'enableBackground',
-  end: 'end',
-  exponent: 'exponent',
-  externalresourcesrequired: 'externalResourcesRequired',
-  fill: 'fill',
-  fillopacity: 'fillOpacity',
-  'fill-opacity': 'fillOpacity',
-  fillrule: 'fillRule',
-  'fill-rule': 'fillRule',
-  filter: 'filter',
-  filterres: 'filterRes',
-  filterunits: 'filterUnits',
-  floodopacity: 'floodOpacity',
-  'flood-opacity': 'floodOpacity',
-  floodcolor: 'floodColor',
-  'flood-color': 'floodColor',
-  focusable: 'focusable',
-  fontfamily: 'fontFamily',
-  'font-family': 'fontFamily',
-  fontsize: 'fontSize',
-  'font-size': 'fontSize',
-  fontsizeadjust: 'fontSizeAdjust',
-  'font-size-adjust': 'fontSizeAdjust',
-  fontstretch: 'fontStretch',
-  'font-stretch': 'fontStretch',
-  fontstyle: 'fontStyle',
-  'font-style': 'fontStyle',
-  fontvariant: 'fontVariant',
-  'font-variant': 'fontVariant',
-  fontweight: 'fontWeight',
-  'font-weight': 'fontWeight',
-  format: 'format',
-  from: 'from',
-  fx: 'fx',
-  fy: 'fy',
-  g1: 'g1',
-  g2: 'g2',
-  glyphname: 'glyphName',
-  'glyph-name': 'glyphName',
-  glyphorientationhorizontal: 'glyphOrientationHorizontal',
-  'glyph-orientation-horizontal': 'glyphOrientationHorizontal',
-  glyphorientationvertical: 'glyphOrientationVertical',
-  'glyph-orientation-vertical': 'glyphOrientationVertical',
-  glyphref: 'glyphRef',
-  gradienttransform: 'gradientTransform',
-  gradientunits: 'gradientUnits',
-  hanging: 'hanging',
-  horizadvx: 'horizAdvX',
-  'horiz-adv-x': 'horizAdvX',
-  horizoriginx: 'horizOriginX',
-  'horiz-origin-x': 'horizOriginX',
-  ideographic: 'ideographic',
-  imagerendering: 'imageRendering',
-  'image-rendering': 'imageRendering',
-  in2: 'in2',
-  in: 'in',
-  inlist: 'inlist',
-  intercept: 'intercept',
-  k1: 'k1',
-  k2: 'k2',
-  k3: 'k3',
-  k4: 'k4',
-  k: 'k',
-  kernelmatrix: 'kernelMatrix',
-  kernelunitlength: 'kernelUnitLength',
-  kerning: 'kerning',
-  keypoints: 'keyPoints',
-  keysplines: 'keySplines',
-  keytimes: 'keyTimes',
-  lengthadjust: 'lengthAdjust',
-  letterspacing: 'letterSpacing',
-  'letter-spacing': 'letterSpacing',
-  lightingcolor: 'lightingColor',
-  'lighting-color': 'lightingColor',
-  limitingconeangle: 'limitingConeAngle',
-  local: 'local',
-  markerend: 'markerEnd',
-  'marker-end': 'markerEnd',
-  markerheight: 'markerHeight',
-  markermid: 'markerMid',
-  'marker-mid': 'markerMid',
-  markerstart: 'markerStart',
-  'marker-start': 'markerStart',
-  markerunits: 'markerUnits',
-  markerwidth: 'markerWidth',
-  mask: 'mask',
-  maskcontentunits: 'maskContentUnits',
-  maskunits: 'maskUnits',
-  mathematical: 'mathematical',
-  mode: 'mode',
-  numoctaves: 'numOctaves',
-  offset: 'offset',
-  opacity: 'opacity',
-  operator: 'operator',
-  order: 'order',
-  orient: 'orient',
-  orientation: 'orientation',
-  origin: 'origin',
-  overflow: 'overflow',
-  overlineposition: 'overlinePosition',
-  'overline-position': 'overlinePosition',
-  overlinethickness: 'overlineThickness',
-  'overline-thickness': 'overlineThickness',
-  paintorder: 'paintOrder',
-  'paint-order': 'paintOrder',
-  panose1: 'panose1',
-  'panose-1': 'panose1',
-  pathlength: 'pathLength',
-  patterncontentunits: 'patternContentUnits',
-  patterntransform: 'patternTransform',
-  patternunits: 'patternUnits',
-  pointerevents: 'pointerEvents',
-  'pointer-events': 'pointerEvents',
-  points: 'points',
-  pointsatx: 'pointsAtX',
-  pointsaty: 'pointsAtY',
-  pointsatz: 'pointsAtZ',
-  prefix: 'prefix',
-  preservealpha: 'preserveAlpha',
-  preserveaspectratio: 'preserveAspectRatio',
-  primitiveunits: 'primitiveUnits',
-  property: 'property',
-  r: 'r',
-  radius: 'radius',
-  refx: 'refX',
-  refy: 'refY',
-  renderingintent: 'renderingIntent',
-  'rendering-intent': 'renderingIntent',
-  repeatcount: 'repeatCount',
-  repeatdur: 'repeatDur',
-  requiredextensions: 'requiredExtensions',
-  requiredfeatures: 'requiredFeatures',
-  resource: 'resource',
-  restart: 'restart',
-  result: 'result',
-  results: 'results',
-  rotate: 'rotate',
-  rx: 'rx',
-  ry: 'ry',
-  scale: 'scale',
-  security: 'security',
-  seed: 'seed',
-  shaperendering: 'shapeRendering',
-  'shape-rendering': 'shapeRendering',
-  slope: 'slope',
-  spacing: 'spacing',
-  specularconstant: 'specularConstant',
-  specularexponent: 'specularExponent',
-  speed: 'speed',
-  spreadmethod: 'spreadMethod',
-  startoffset: 'startOffset',
-  stddeviation: 'stdDeviation',
-  stemh: 'stemh',
-  stemv: 'stemv',
-  stitchtiles: 'stitchTiles',
-  stopcolor: 'stopColor',
-  'stop-color': 'stopColor',
-  stopopacity: 'stopOpacity',
-  'stop-opacity': 'stopOpacity',
-  strikethroughposition: 'strikethroughPosition',
-  'strikethrough-position': 'strikethroughPosition',
-  strikethroughthickness: 'strikethroughThickness',
-  'strikethrough-thickness': 'strikethroughThickness',
-  string: 'string',
-  stroke: 'stroke',
-  strokedasharray: 'strokeDasharray',
-  'stroke-dasharray': 'strokeDasharray',
-  strokedashoffset: 'strokeDashoffset',
-  'stroke-dashoffset': 'strokeDashoffset',
-  strokelinecap: 'strokeLinecap',
-  'stroke-linecap': 'strokeLinecap',
-  strokelinejoin: 'strokeLinejoin',
-  'stroke-linejoin': 'strokeLinejoin',
-  strokemiterlimit: 'strokeMiterlimit',
-  'stroke-miterlimit': 'strokeMiterlimit',
-  strokewidth: 'strokeWidth',
-  'stroke-width': 'strokeWidth',
-  strokeopacity: 'strokeOpacity',
-  'stroke-opacity': 'strokeOpacity',
-  suppresscontenteditablewarning: 'suppressContentEditableWarning',
-  suppresshydrationwarning: 'suppressHydrationWarning',
-  surfacescale: 'surfaceScale',
-  systemlanguage: 'systemLanguage',
-  tablevalues: 'tableValues',
-  targetx: 'targetX',
-  targety: 'targetY',
-  textanchor: 'textAnchor',
-  'text-anchor': 'textAnchor',
-  textdecoration: 'textDecoration',
-  'text-decoration': 'textDecoration',
-  textlength: 'textLength',
-  textrendering: 'textRendering',
-  'text-rendering': 'textRendering',
-  to: 'to',
-  transform: 'transform',
-  typeof: 'typeof',
-  u1: 'u1',
-  u2: 'u2',
-  underlineposition: 'underlinePosition',
-  'underline-position': 'underlinePosition',
-  underlinethickness: 'underlineThickness',
-  'underline-thickness': 'underlineThickness',
-  unicode: 'unicode',
-  unicodebidi: 'unicodeBidi',
-  'unicode-bidi': 'unicodeBidi',
-  unicoderange: 'unicodeRange',
-  'unicode-range': 'unicodeRange',
-  unitsperem: 'unitsPerEm',
-  'units-per-em': 'unitsPerEm',
-  unselectable: 'unselectable',
-  valphabetic: 'vAlphabetic',
-  'v-alphabetic': 'vAlphabetic',
-  values: 'values',
-  vectoreffect: 'vectorEffect',
-  'vector-effect': 'vectorEffect',
-  version: 'version',
-  vertadvy: 'vertAdvY',
-  'vert-adv-y': 'vertAdvY',
-  vertoriginx: 'vertOriginX',
-  'vert-origin-x': 'vertOriginX',
-  vertoriginy: 'vertOriginY',
-  'vert-origin-y': 'vertOriginY',
-  vhanging: 'vHanging',
-  'v-hanging': 'vHanging',
-  videographic: 'vIdeographic',
-  'v-ideographic': 'vIdeographic',
-  viewbox: 'viewBox',
-  viewtarget: 'viewTarget',
-  visibility: 'visibility',
-  vmathematical: 'vMathematical',
-  'v-mathematical': 'vMathematical',
-  vocab: 'vocab',
-  widths: 'widths',
-  wordspacing: 'wordSpacing',
-  'word-spacing': 'wordSpacing',
-  writingmode: 'writingMode',
-  'writing-mode': 'writingMode',
-  x1: 'x1',
-  x2: 'x2',
-  x: 'x',
-  xchannelselector: 'xChannelSelector',
-  xheight: 'xHeight',
-  'x-height': 'xHeight',
-  xlinkactuate: 'xlinkActuate',
-  'xlink:actuate': 'xlinkActuate',
-  xlinkarcrole: 'xlinkArcrole',
-  'xlink:arcrole': 'xlinkArcrole',
-  xlinkhref: 'xlinkHref',
-  'xlink:href': 'xlinkHref',
-  xlinkrole: 'xlinkRole',
-  'xlink:role': 'xlinkRole',
-  xlinkshow: 'xlinkShow',
-  'xlink:show': 'xlinkShow',
-  xlinktitle: 'xlinkTitle',
-  'xlink:title': 'xlinkTitle',
-  xlinktype: 'xlinkType',
-  'xlink:type': 'xlinkType',
-  xmlbase: 'xmlBase',
-  'xml:base': 'xmlBase',
-  xmllang: 'xmlLang',
-  'xml:lang': 'xmlLang',
-  xmlns: 'xmlns',
-  'xml:space': 'xmlSpace',
-  xmlnsxlink: 'xmlnsXlink',
-  'xmlns:xlink': 'xmlnsXlink',
-  xmlspace: 'xmlSpace',
-  y1: 'y1',
-  y2: 'y2',
-  y: 'y',
-  ychannelselector: 'yChannelSelector',
-  z: 'z',
-  zoomandpan: 'zoomAndPan'
-};
-
-var validateProperty$1 = function () {};
-
-{
-  var warnedProperties$1 = {};
-  var _hasOwnProperty = Object.prototype.hasOwnProperty;
-  var EVENT_NAME_REGEX = /^on./;
-  var INVALID_EVENT_NAME_REGEX = /^on[^A-Z]/;
-  var rARIA$1 = new RegExp('^(aria)-[' + ATTRIBUTE_NAME_CHAR + ']*$');
-  var rARIACamel$1 = new RegExp('^(aria)[A-Z][' + ATTRIBUTE_NAME_CHAR + ']*$');
-
-  validateProperty$1 = function (tagName, name, value, canUseEventSystem) {
-    if (_hasOwnProperty.call(warnedProperties$1, name) && warnedProperties$1[name]) {
-      return true;
-    }
-
-    var lowerCasedName = name.toLowerCase();
-
-    if (lowerCasedName === 'onfocusin' || lowerCasedName === 'onfocusout') {
-      error('React uses onFocus and onBlur instead of onFocusIn and onFocusOut. ' + 'All React events are normalized to bubble, so onFocusIn and onFocusOut ' + 'are not needed/supported by React.');
-
-      warnedProperties$1[name] = true;
-      return true;
-    } // We can't rely on the event system being injected on the server.
-
-
-    if (canUseEventSystem) {
-      if (registrationNameModules.hasOwnProperty(name)) {
-        return true;
-      }
-
-      var registrationName = possibleRegistrationNames.hasOwnProperty(lowerCasedName) ? possibleRegistrationNames[lowerCasedName] : null;
-
-      if (registrationName != null) {
-        error('Invalid event handler property `%s`. Did you mean `%s`?', name, registrationName);
-
-        warnedProperties$1[name] = true;
-        return true;
-      }
-
-      if (EVENT_NAME_REGEX.test(name)) {
-        error('Unknown event handler property `%s`. It will be ignored.', name);
-
-        warnedProperties$1[name] = true;
-        return true;
-      }
-    } else if (EVENT_NAME_REGEX.test(name)) {
-      // If no event plugins have been injected, we are in a server environment.
-      // So we can't tell if the event name is correct for sure, but we can filter
-      // out known bad ones like `onclick`. We can't suggest a specific replacement though.
-      if (INVALID_EVENT_NAME_REGEX.test(name)) {
-        error('Invalid event handler property `%s`. ' + 'React events use the camelCase naming convention, for example `onClick`.', name);
-      }
-
-      warnedProperties$1[name] = true;
-      return true;
-    } // Let the ARIA attribute hook validate ARIA attributes
-
-
-    if (rARIA$1.test(name) || rARIACamel$1.test(name)) {
-      return true;
-    }
-
-    if (lowerCasedName === 'innerhtml') {
-      error('Directly setting property `innerHTML` is not permitted. ' + 'For more information, lookup documentation on `dangerouslySetInnerHTML`.');
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    if (lowerCasedName === 'aria') {
-      error('The `aria` attribute is reserved for future use in React. ' + 'Pass individual `aria-` attributes instead.');
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    if (lowerCasedName === 'is' && value !== null && value !== undefined && typeof value !== 'string') {
-      error('Received a `%s` for a string attribute `is`. If this is expected, cast ' + 'the value to a string.', typeof value);
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    if (typeof value === 'number' && isNaN(value)) {
-      error('Received NaN for the `%s` attribute. If this is expected, cast ' + 'the value to a string.', name);
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    var propertyInfo = getPropertyInfo(name);
-    var isReserved = propertyInfo !== null && propertyInfo.type === RESERVED; // Known attributes should match the casing specified in the property config.
-
-    if (possibleStandardNames.hasOwnProperty(lowerCasedName)) {
-      var standardName = possibleStandardNames[lowerCasedName];
-
-      if (standardName !== name) {
-        error('Invalid DOM property `%s`. Did you mean `%s`?', name, standardName);
-
-        warnedProperties$1[name] = true;
-        return true;
-      }
-    } else if (!isReserved && name !== lowerCasedName) {
-      // Unknown attributes should have lowercase casing since that's how they
-      // will be cased anyway with server rendering.
-      error('React does not recognize the `%s` prop on a DOM element. If you ' + 'intentionally want it to appear in the DOM as a custom ' + 'attribute, spell it as lowercase `%s` instead. ' + 'If you accidentally passed it from a parent component, remove ' + 'it from the DOM element.', name, lowerCasedName);
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    if (typeof value === 'boolean' && shouldRemoveAttributeWithWarning(name, value, propertyInfo, false)) {
-      if (value) {
-        error('Received `%s` for a non-boolean attribute `%s`.\n\n' + 'If you want to write it to the DOM, pass a string instead: ' + '%s="%s" or %s={value.toString()}.', value, name, name, value, name);
-      } else {
-        error('Received `%s` for a non-boolean attribute `%s`.\n\n' + 'If you want to write it to the DOM, pass a string instead: ' + '%s="%s" or %s={value.toString()}.\n\n' + 'If you used to conditionally omit it with %s={condition && value}, ' + 'pass %s={condition ? value : undefined} instead.', value, name, name, value, name, name, name);
-      }
-
-      warnedProperties$1[name] = true;
-      return true;
-    } // Now that we've validated casing, do not validate
-    // data types for reserved props
-
-
-    if (isReserved) {
-      return true;
-    } // Warn when a known attribute is a bad type
-
-
-    if (shouldRemoveAttributeWithWarning(name, value, propertyInfo, false)) {
-      warnedProperties$1[name] = true;
-      return false;
-    } // Warn when passing the strings 'false' or 'true' into a boolean prop
-
-
-    if ((value === 'false' || value === 'true') && propertyInfo !== null && propertyInfo.type === BOOLEAN) {
-      error('Received the string `%s` for the boolean attribute `%s`. ' + '%s ' + 'Did you mean %s={%s}?', value, name, value === 'false' ? 'The browser will interpret it as a truthy value.' : 'Although this works, it will not work as expected if you pass the string "false".', name, value);
-
-      warnedProperties$1[name] = true;
-      return true;
-    }
-
-    return true;
-  };
-}
-
-var warnUnknownProperties = function (type, props, canUseEventSystem) {
-  {
-    var unknownProps = [];
-
-    for (var key in props) {
-      var isValid = validateProperty$1(type, key, props[key], canUseEventSystem);
-
-      if (!isValid) {
-        unknownProps.push(key);
-      }
-    }
-
-    var unknownPropString = unknownProps.map(function (prop) {
-      return '`' + prop + '`';
-    }).join(', ');
-
-    if (unknownProps.length === 1) {
-      error('Invalid value for prop %s on <%s> tag. Either remove it from the element, ' + 'or pass a string or number value to keep it in the DOM. ' + 'For details, see https://fb.me/react-attribute-behavior', unknownPropString, type);
-    } else if (unknownProps.length > 1) {
-      error('Invalid values for props %s on <%s> tag. Either remove them from the element, ' + 'or pass a string or number value to keep them in the DOM. ' + 'For details, see https://fb.me/react-attribute-behavior', unknownPropString, type);
-    }
-  }
-};
-
-function validateProperties$2(type, props, canUseEventSystem) {
-  if (isCustomComponent(type, props)) {
-    return;
-  }
-
-  warnUnknownProperties(type, props, canUseEventSystem);
-}
-
-var toArray = React.Children.toArray; // This is only used in DEV.
-// Each entry is `this.stack` from a currently executing renderer instance.
-// (There may be more than one because ReactDOMServer is reentrant).
-// Each stack is an array of frames which may contain nested stacks of elements.
-
-var currentDebugStacks = [];
-var ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher;
-var ReactDebugCurrentFrame$4;
-var prevGetCurrentStackImpl = null;
-
-var getCurrentServerStackImpl = function () {
-  return '';
-};
-
-var describeStackFrame = function (element) {
-  return '';
-};
-
-var validatePropertiesInDevelopment = function (type, props) {};
-
-var pushCurrentDebugStack = function (stack) {};
-
-var pushElementToDebugStack = function (element) {};
-
-var popCurrentDebugStack = function () {};
-
-var hasWarnedAboutUsingContextAsConsumer = false;
-
-{
-  ReactDebugCurrentFrame$4 = ReactSharedInternals.ReactDebugCurrentFrame;
-
-  validatePropertiesInDevelopment = function (type, props) {
-    validateProperties(type, props);
-    validateProperties$1(type, props);
-    validateProperties$2(type, props,
-    /* canUseEventSystem */
-    false);
-  };
-
-  describeStackFrame = function (element) {
-    var source = element._source;
-    var type = element.type;
-    var name = getComponentName(type);
-    var ownerName = null;
-    return describeComponentFrame(name, source, ownerName);
-  };
-
-  pushCurrentDebugStack = function (stack) {
-    currentDebugStacks.push(stack);
-
-    if (currentDebugStacks.length === 1) {
-      // We are entering a server renderer.
-      // Remember the previous (e.g. client) global stack implementation.
-      prevGetCurrentStackImpl = ReactDebugCurrentFrame$4.getCurrentStack;
-      ReactDebugCurrentFrame$4.getCurrentStack = getCurrentServerStackImpl;
-    }
-  };
-
-  pushElementToDebugStack = function (element) {
-    // For the innermost executing ReactDOMServer call,
-    var stack = currentDebugStacks[currentDebugStacks.length - 1]; // Take the innermost executing frame (e.g. <Foo>),
-
-    var frame = stack[stack.length - 1]; // and record that it has one more element associated with it.
-
-    frame.debugElementStack.push(element); // We only need this because we tail-optimize single-element
-    // children and directly handle them in an inner loop instead of
-    // creating separate frames for them.
-  };
-
-  popCurrentDebugStack = function () {
-    currentDebugStacks.pop();
-
-    if (currentDebugStacks.length === 0) {
-      // We are exiting the server renderer.
-      // Restore the previous (e.g. client) global stack implementation.
-      ReactDebugCurrentFrame$4.getCurrentStack = prevGetCurrentStackImpl;
-      prevGetCurrentStackImpl = null;
-    }
-  };
-
-  getCurrentServerStackImpl = function () {
-    if (currentDebugStacks.length === 0) {
-      // Nothing is currently rendering.
-      return '';
-    } // ReactDOMServer is reentrant so there may be multiple calls at the same time.
-    // Take the frames from the innermost call which is the last in the array.
-
-
-    var frames = currentDebugStacks[currentDebugStacks.length - 1];
-    var stack = ''; // Go through every frame in the stack from the innermost one.
-
-    for (var i = frames.length - 1; i >= 0; i--) {
-      var frame = frames[i]; // Every frame might have more than one debug element stack entry associated with it.
-      // This is because single-child nesting doesn't create materialized frames.
-      // Instead it would push them through `pushElementToDebugStack()`.
-
-      var debugElementStack = frame.debugElementStack;
-
-      for (var ii = debugElementStack.length - 1; ii >= 0; ii--) {
-        stack += describeStackFrame(debugElementStack[ii]);
-      }
-    }
-
-    return stack;
-  };
-}
-
-var didWarnDefaultInputValue = false;
-var didWarnDefaultChecked = false;
-var didWarnDefaultSelectValue = false;
-var didWarnDefaultTextareaValue = false;
-var didWarnInvalidOptionChildren = false;
-var didWarnAboutNoopUpdateForComponent = {};
-var didWarnAboutBadClass = {};
-var didWarnAboutModulePatternComponent = {};
-var didWarnAboutDeprecatedWillMount = {};
-var didWarnAboutUndefinedDerivedState = {};
-var didWarnAboutUninitializedState = {};
-var valuePropNames = ['value', 'defaultValue'];
-var newlineEatingTags = {
-  listing: true,
-  pre: true,
-  textarea: true
-}; // We accept any tag to be rendered but since this gets injected into arbitrary
-// HTML, we want to make sure that it's a safe tag.
-// http://www.w3.org/TR/REC-xml/#NT-Name
-
-var VALID_TAG_REGEX = /^[a-zA-Z][a-zA-Z:_\.\-\d]*$/; // Simplified subset
-
-var validatedTagCache = {};
-
-function validateDangerousTag(tag) {
-  if (!validatedTagCache.hasOwnProperty(tag)) {
-    if (!VALID_TAG_REGEX.test(tag)) {
-      {
-        throw Error( "Invalid tag: " + tag );
-      }
-    }
-
-    validatedTagCache[tag] = true;
-  }
-}
-
-var styleNameCache = {};
-
-var processStyleName = function (styleName) {
-  if (styleNameCache.hasOwnProperty(styleName)) {
-    return styleNameCache[styleName];
-  }
-
-  var result = hyphenateStyleName(styleName);
-  styleNameCache[styleName] = result;
-  return result;
-};
-
-function createMarkupForStyles(styles) {
-  var serialized = '';
-  var delimiter = '';
-
-  for (var styleName in styles) {
-    if (!styles.hasOwnProperty(styleName)) {
-      continue;
-    }
-
-    var isCustomProperty = styleName.indexOf('--') === 0;
-    var styleValue = styles[styleName];
-
-    {
-      if (!isCustomProperty) {
-        warnValidStyle$1(styleName, styleValue);
-      }
-    }
-
-    if (styleValue != null) {
-      serialized += delimiter + (isCustomProperty ? styleName : processStyleName(styleName)) + ':';
-      serialized += dangerousStyleValue(styleName, styleValue, isCustomProperty);
-      delimiter = ';';
-    }
-  }
-
-  return serialized || null;
-}
-
-function warnNoop(publicInstance, callerName) {
-  {
-    var _constructor = publicInstance.constructor;
-    var componentName = _constructor && getComponentName(_constructor) || 'ReactClass';
-    var warningKey = componentName + '.' + callerName;
-
-    if (didWarnAboutNoopUpdateForComponent[warningKey]) {
-      return;
-    }
-
-    error('%s(...): Can only update a mounting component. ' + 'This usually means you called %s() outside componentWillMount() on the server. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
-
-    didWarnAboutNoopUpdateForComponent[warningKey] = true;
-  }
-}
-
-function shouldConstruct(Component) {
-  return Component.prototype && Component.prototype.isReactComponent;
-}
-
-function getNonChildrenInnerMarkup(props) {
-  var innerHTML = props.dangerouslySetInnerHTML;
-
-  if (innerHTML != null) {
-    if (innerHTML.__html != null) {
-      return innerHTML.__html;
-    }
-  } else {
-    var content = props.children;
-
-    if (typeof content === 'string' || typeof content === 'number') {
-      return escapeTextForBrowser(content);
-    }
-  }
-
-  return null;
-}
-
-function flattenTopLevelChildren(children) {
-  if (!React.isValidElement(children)) {
-    return toArray(children);
-  }
-
-  var element = children;
-
-  if (element.type !== REACT_FRAGMENT_TYPE) {
-    return [element];
-  }
-
-  var fragmentChildren = element.props.children;
-
-  if (!React.isValidElement(fragmentChildren)) {
-    return toArray(fragmentChildren);
-  }
-
-  var fragmentChildElement = fragmentChildren;
-  return [fragmentChildElement];
-}
-
-function flattenOptionChildren(children) {
-  if (children === undefined || children === null) {
-    return children;
-  }
-
-  var content = ''; // Flatten children and warn if they aren't strings or numbers;
-  // invalid types are ignored.
-
-  React.Children.forEach(children, function (child) {
-    if (child == null) {
-      return;
-    }
-
-    content += child;
-
-    {
-      if (!didWarnInvalidOptionChildren && typeof child !== 'string' && typeof child !== 'number') {
-        didWarnInvalidOptionChildren = true;
-
-        error('Only strings and numbers are supported as <option> children.');
-      }
-    }
-  });
-  return content;
-}
-
-var hasOwnProperty$2 = Object.prototype.hasOwnProperty;
-var STYLE = 'style';
-var RESERVED_PROPS = {
-  children: null,
-  dangerouslySetInnerHTML: null,
-  suppressContentEditableWarning: null,
-  suppressHydrationWarning: null
-};
-
-function createOpenTagMarkup(tagVerbatim, tagLowercase, props, namespace, makeStaticMarkup, isRootElement) {
-  var ret = '<' + tagVerbatim;
-
-  for (var propKey in props) {
-    if (!hasOwnProperty$2.call(props, propKey)) {
-      continue;
-    }
-
-    var propValue = props[propKey];
-
-    if (propValue == null) {
-      continue;
-    }
-
-    if (propKey === STYLE) {
-      propValue = createMarkupForStyles(propValue);
-    }
-
-    var markup = null;
-
-    if (isCustomComponent(tagLowercase, props)) {
-      if (!RESERVED_PROPS.hasOwnProperty(propKey)) {
-        markup = createMarkupForCustomAttribute(propKey, propValue);
-      }
-    } else {
-      markup = createMarkupForProperty(propKey, propValue);
-    }
-
-    if (markup) {
-      ret += ' ' + markup;
-    }
-  } // For static pages, no need to put React ID and checksum. Saves lots of
-  // bytes.
-
-
-  if (makeStaticMarkup) {
-    return ret;
-  }
-
-  if (isRootElement) {
-    ret += ' ' + createMarkupForRoot();
-  }
-
-  return ret;
-}
-
-function validateRenderResult(child, type) {
-  if (child === undefined) {
-    {
-      {
-        throw Error( (getComponentName(type) || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null." );
-      }
-    }
-  }
-}
-
-function resolve(child, context, threadID) {
-  while (React.isValidElement(child)) {
-    // Safe because we just checked it's an element.
-    var element = child;
-    var Component = element.type;
-
-    {
-      pushElementToDebugStack(element);
-    }
-
-    if (typeof Component !== 'function') {
-      break;
-    }
-
-    processChild(element, Component);
-  } // Extra closure so queue and replace can be captured properly
-
-
-  function processChild(element, Component) {
-    var isClass = shouldConstruct(Component);
-    var publicContext = processContext(Component, context, threadID, isClass);
-    var queue = [];
-    var replace = false;
-    var updater = {
-      isMounted: function (publicInstance) {
-        return false;
-      },
-      enqueueForceUpdate: function (publicInstance) {
-        if (queue === null) {
-          warnNoop(publicInstance, 'forceUpdate');
-          return null;
-        }
-      },
-      enqueueReplaceState: function (publicInstance, completeState) {
-        replace = true;
-        queue = [completeState];
-      },
-      enqueueSetState: function (publicInstance, currentPartialState) {
-        if (queue === null) {
-          warnNoop(publicInstance, 'setState');
-          return null;
-        }
-
-        queue.push(currentPartialState);
-      }
-    };
-    var inst;
-
-    if (isClass) {
-      inst = new Component(element.props, publicContext, updater);
-
-      if (typeof Component.getDerivedStateFromProps === 'function') {
-        {
-          if (inst.state === null || inst.state === undefined) {
-            var componentName = getComponentName(Component) || 'Unknown';
-
-            if (!didWarnAboutUninitializedState[componentName]) {
-              error('`%s` uses `getDerivedStateFromProps` but its initial state is ' + '%s. This is not recommended. Instead, define the initial state by ' + 'assigning an object to `this.state` in the constructor of `%s`. ' + 'This ensures that `getDerivedStateFromProps` arguments have a consistent shape.', componentName, inst.state === null ? 'null' : 'undefined', componentName);
-
-              didWarnAboutUninitializedState[componentName] = true;
-            }
-          }
-        }
-
-        var partialState = Component.getDerivedStateFromProps.call(null, element.props, inst.state);
-
-        {
-          if (partialState === undefined) {
-            var _componentName = getComponentName(Component) || 'Unknown';
-
-            if (!didWarnAboutUndefinedDerivedState[_componentName]) {
-              error('%s.getDerivedStateFromProps(): A valid state object (or null) must be returned. ' + 'You have returned undefined.', _componentName);
-
-              didWarnAboutUndefinedDerivedState[_componentName] = true;
-            }
-          }
-        }
-
-        if (partialState != null) {
-          inst.state = _assign({}, inst.state, partialState);
-        }
-      }
-    } else {
-      {
-        if (Component.prototype && typeof Component.prototype.render === 'function') {
-          var _componentName2 = getComponentName(Component) || 'Unknown';
-
-          if (!didWarnAboutBadClass[_componentName2]) {
-            error("The <%s /> component appears to have a render method, but doesn't extend React.Component. " + 'This is likely to cause errors. Change %s to extend React.Component instead.', _componentName2, _componentName2);
-
-            didWarnAboutBadClass[_componentName2] = true;
-          }
-        }
-      }
-
-      var componentIdentity = {};
-      prepareToUseHooks(componentIdentity);
-      inst = Component(element.props, publicContext, updater);
-      inst = finishHooks(Component, element.props, inst, publicContext);
-
-      if (inst == null || inst.render == null) {
-        child = inst;
-        validateRenderResult(child, Component);
-        return;
-      }
-
-      {
-        var _componentName3 = getComponentName(Component) || 'Unknown';
-
-        if (!didWarnAboutModulePatternComponent[_componentName3]) {
-          error('The <%s /> component appears to be a function component that returns a class instance. ' + 'Change %s to a class that extends React.Component instead. ' + "If you can't use a class try assigning the prototype on the function as a workaround. " + "`%s.prototype = React.Component.prototype`. Don't use an arrow function since it " + 'cannot be called with `new` by React.', _componentName3, _componentName3, _componentName3);
-
-          didWarnAboutModulePatternComponent[_componentName3] = true;
-        }
-      }
-    }
-
-    inst.props = element.props;
-    inst.context = publicContext;
-    inst.updater = updater;
-    var initialState = inst.state;
-
-    if (initialState === undefined) {
-      inst.state = initialState = null;
-    }
-
-    if (typeof inst.UNSAFE_componentWillMount === 'function' || typeof inst.componentWillMount === 'function') {
-      if (typeof inst.componentWillMount === 'function') {
-        {
-          if ( inst.componentWillMount.__suppressDeprecationWarning !== true) {
-            var _componentName4 = getComponentName(Component) || 'Unknown';
-
-            if (!didWarnAboutDeprecatedWillMount[_componentName4]) {
-              warn( // keep this warning in sync with ReactStrictModeWarning.js
-              'componentWillMount has been renamed, and is not recommended for use. ' + 'See https://fb.me/react-unsafe-component-lifecycles for details.\n\n' + '* Move code from componentWillMount to componentDidMount (preferred in most cases) ' + 'or the constructor.\n' + '\nPlease update the following components: %s', _componentName4);
-
-              didWarnAboutDeprecatedWillMount[_componentName4] = true;
-            }
-          }
-        } // In order to support react-lifecycles-compat polyfilled components,
-        // Unsafe lifecycles should not be invoked for any component with the new gDSFP.
-
-
-        if (typeof Component.getDerivedStateFromProps !== 'function') {
-          inst.componentWillMount();
-        }
-      }
-
-      if (typeof inst.UNSAFE_componentWillMount === 'function' && typeof Component.getDerivedStateFromProps !== 'function') {
-        // In order to support react-lifecycles-compat polyfilled components,
-        // Unsafe lifecycles should not be invoked for any component with the new gDSFP.
-        inst.UNSAFE_componentWillMount();
-      }
-
-      if (queue.length) {
-        var oldQueue = queue;
-        var oldReplace = replace;
-        queue = null;
-        replace = false;
-
-        if (oldReplace && oldQueue.length === 1) {
-          inst.state = oldQueue[0];
-        } else {
-          var nextState = oldReplace ? oldQueue[0] : inst.state;
-          var dontMutate = true;
-
-          for (var i = oldReplace ? 1 : 0; i < oldQueue.length; i++) {
-            var partial = oldQueue[i];
-
-            var _partialState = typeof partial === 'function' ? partial.call(inst, nextState, element.props, publicContext) : partial;
-
-            if (_partialState != null) {
-              if (dontMutate) {
-                dontMutate = false;
-                nextState = _assign({}, nextState, _partialState);
-              } else {
-                _assign(nextState, _partialState);
-              }
-            }
-          }
-
-          inst.state = nextState;
-        }
-      } else {
-        queue = null;
-      }
-    }
-
-    child = inst.render();
-
-    {
-      if (child === undefined && inst.render._isMockFunction) {
-        // This is probably bad practice. Consider warning here and
-        // deprecating this convenience.
-        child = null;
-      }
-    }
-
-    validateRenderResult(child, Component);
-    var childContext;
-
-    {
-      if (typeof inst.getChildContext === 'function') {
-        var _childContextTypes = Component.childContextTypes;
-
-        if (typeof _childContextTypes === 'object') {
-          childContext = inst.getChildContext();
-
-          for (var contextKey in childContext) {
-            if (!(contextKey in _childContextTypes)) {
-              {
-                throw Error( (getComponentName(Component) || 'Unknown') + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes." );
-              }
-            }
-          }
-        } else {
-          {
-            error('%s.getChildContext(): childContextTypes must be defined in order to ' + 'use getChildContext().', getComponentName(Component) || 'Unknown');
-          }
-        }
-      }
-
-      if (childContext) {
-        context = _assign({}, context, childContext);
-      }
-    }
-  }
-
-  return {
-    child: child,
-    context: context
-  };
-}
-
-var ReactDOMServerRenderer =
-/*#__PURE__*/
-function () {
-  // TODO: type this more strictly:
-  // DEV-only
-  function ReactDOMServerRenderer(children, makeStaticMarkup) {
-    var flatChildren = flattenTopLevelChildren(children);
-    var topFrame = {
-      type: null,
-      // Assume all trees start in the HTML namespace (not totally true, but
-      // this is what we did historically)
-      domNamespace: Namespaces.html,
-      children: flatChildren,
-      childIndex: 0,
-      context: emptyObject,
-      footer: ''
-    };
-
-    {
-      topFrame.debugElementStack = [];
-    }
-
-    this.threadID = allocThreadID();
-    this.stack = [topFrame];
-    this.exhausted = false;
-    this.currentSelectValue = null;
-    this.previousWasTextNode = false;
-    this.makeStaticMarkup = makeStaticMarkup;
-    this.suspenseDepth = 0; // Context (new API)
-
-    this.contextIndex = -1;
-    this.contextStack = [];
-    this.contextValueStack = [];
-
-    {
-      this.contextProviderStack = [];
-    }
-  }
-
-  var _proto = ReactDOMServerRenderer.prototype;
-
-  _proto.destroy = function destroy() {
-    if (!this.exhausted) {
-      this.exhausted = true;
-      this.clearProviders();
-      freeThreadID(this.threadID);
-    }
-  }
-  /**
-   * Note: We use just two stacks regardless of how many context providers you have.
-   * Providers are always popped in the reverse order to how they were pushed
-   * so we always know on the way down which provider you'll encounter next on the way up.
-   * On the way down, we push the current provider, and its context value *before*
-   * we mutated it, onto the stacks. Therefore, on the way up, we always know which
-   * provider needs to be "restored" to which value.
-   * https://github.com/facebook/react/pull/12985#issuecomment-396301248
-   */
-  ;
-
-  _proto.pushProvider = function pushProvider(provider) {
-    var index = ++this.contextIndex;
-    var context = provider.type._context;
-    var threadID = this.threadID;
-    validateContextBounds(context, threadID);
-    var previousValue = context[threadID]; // Remember which value to restore this context to on our way up.
-
-    this.contextStack[index] = context;
-    this.contextValueStack[index] = previousValue;
-
-    {
-      // Only used for push/pop mismatch warnings.
-      this.contextProviderStack[index] = provider;
-    } // Mutate the current value.
-
-
-    context[threadID] = provider.props.value;
-  };
-
-  _proto.popProvider = function popProvider(provider) {
-    var index = this.contextIndex;
-
-    {
-      if (index < 0 || provider !== this.contextProviderStack[index]) {
-        error('Unexpected pop.');
-      }
-    }
-
-    var context = this.contextStack[index];
-    var previousValue = this.contextValueStack[index]; // "Hide" these null assignments from Flow by using `any`
-    // because conceptually they are deletions--as long as we
-    // promise to never access values beyond `this.contextIndex`.
-
-    this.contextStack[index] = null;
-    this.contextValueStack[index] = null;
-
-    {
-      this.contextProviderStack[index] = null;
-    }
-
-    this.contextIndex--; // Restore to the previous value we stored as we were walking down.
-    // We've already verified that this context has been expanded to accommodate
-    // this thread id, so we don't need to do it again.
-
-    context[this.threadID] = previousValue;
-  };
-
-  _proto.clearProviders = function clearProviders() {
-    // Restore any remaining providers on the stack to previous values
-    for (var index = this.contextIndex; index >= 0; index--) {
-      var context = this.contextStack[index];
-      var previousValue = this.contextValueStack[index];
-      context[this.threadID] = previousValue;
-    }
-  };
-
-  _proto.read = function read(bytes) {
-    if (this.exhausted) {
-      return null;
-    }
-
-    var prevThreadID = currentThreadID;
-    setCurrentThreadID(this.threadID);
-    var prevDispatcher = ReactCurrentDispatcher.current;
-    ReactCurrentDispatcher.current = Dispatcher;
-
-    try {
-      // Markup generated within <Suspense> ends up buffered until we know
-      // nothing in that boundary suspended
-      var out = [''];
-      var suspended = false;
-
-      while (out[0].length < bytes) {
-        if (this.stack.length === 0) {
-          this.exhausted = true;
-          freeThreadID(this.threadID);
-          break;
-        }
-
-        var frame = this.stack[this.stack.length - 1];
-
-        if (suspended || frame.childIndex >= frame.children.length) {
-          var footer = frame.footer;
-
-          if (footer !== '') {
-            this.previousWasTextNode = false;
-          }
-
-          this.stack.pop();
-
-          if (frame.type === 'select') {
-            this.currentSelectValue = null;
-          } else if (frame.type != null && frame.type.type != null && frame.type.type.$$typeof === REACT_PROVIDER_TYPE) {
-            var provider = frame.type;
-            this.popProvider(provider);
-          } else if (frame.type === REACT_SUSPENSE_TYPE) {
-            this.suspenseDepth--;
-            var buffered = out.pop();
-
-            if (suspended) {
-              suspended = false; // If rendering was suspended at this boundary, render the fallbackFrame
-
-              var fallbackFrame = frame.fallbackFrame;
-
-              if (!fallbackFrame) {
-                {
-                  throw Error(true ? "ReactDOMServer did not find an internal fallback frame for Suspense. This is a bug in React. Please file an issue." : undefined);
-                }
-              }
-
-              this.stack.push(fallbackFrame);
-              out[this.suspenseDepth] += '<!--$!-->'; // Skip flushing output since we're switching to the fallback
-
-              continue;
-            } else {
-              out[this.suspenseDepth] += buffered;
-            }
-          } // Flush output
-
-
-          out[this.suspenseDepth] += footer;
-          continue;
-        }
-
-        var child = frame.children[frame.childIndex++];
-        var outBuffer = '';
-
-        if (true) {
-          pushCurrentDebugStack(this.stack); // We're starting work on this frame, so reset its inner stack.
-
-          frame.debugElementStack.length = 0;
-        }
-
-        try {
-          outBuffer += this.render(child, frame.context, frame.domNamespace);
-        } catch (err) {
-          if (err != null && typeof err.then === 'function') {
-            if (enableSuspenseServerRenderer) {
-              if (!(this.suspenseDepth > 0)) {
-                {
-                  throw Error(true ? "A React component suspended while rendering, but no fallback UI was specified.\n\nAdd a <Suspense fallback=...> component higher in the tree to provide a loading indicator or placeholder to display." : undefined);
-                }
-              }
-
-              suspended = true;
-            } else {
-              if (true) {
-                {
-                  throw Error(true ? "ReactDOMServer does not yet support Suspense." : undefined);
-                }
-              }
-            }
-          } else {
-            throw err;
-          }
-        } finally {
-          if (true) {
-            popCurrentDebugStack();
-          }
-        }
-
-        if (out.length <= this.suspenseDepth) {
-          out.push('');
-        }
-
-        out[this.suspenseDepth] += outBuffer;
-      }
-
-      return out[0];
-    } finally {
-      ReactCurrentDispatcher.current = prevDispatcher;
-      setCurrentThreadID(prevThreadID);
-    }
-  };
-
-  _proto.render = function render(child, context, parentNamespace) {
-    if (typeof child === 'string' || typeof child === 'number') {
-      var text = '' + child;
-
-      if (text === '') {
-        return '';
-      }
-
-      if (this.makeStaticMarkup) {
-        return escapeTextForBrowser(text);
-      }
-
-      if (this.previousWasTextNode) {
-        return '<!-- -->' + escapeTextForBrowser(text);
-      }
-
-      this.previousWasTextNode = true;
-      return escapeTextForBrowser(text);
-    } else {
-      var nextChild;
-
-      var _resolve = resolve(child, context, this.threadID);
-
-      nextChild = _resolve.child;
-      context = _resolve.context;
-
-      if (nextChild === null || nextChild === false) {
-        return '';
-      } else if (!React.isValidElement(nextChild)) {
-        if (nextChild != null && nextChild.$$typeof != null) {
-          // Catch unexpected special types early.
-          var $$typeof = nextChild.$$typeof;
-
-          if (!($$typeof !== REACT_PORTAL_TYPE)) {
-            {
-              throw Error( "Portals are not currently supported by the server renderer. Render them conditionally so that they only appear on the client render." );
-            }
-          } // Catch-all to prevent an infinite loop if React.Children.toArray() supports some new type.
-
-
-          {
-            {
-              throw Error( "Unknown element-like object type: " + $$typeof.toString() + ". This is likely a bug in React. Please file an issue." );
-            }
-          }
-        }
-
-        var nextChildren = toArray(nextChild);
-        var frame = {
-          type: null,
-          domNamespace: parentNamespace,
-          children: nextChildren,
-          childIndex: 0,
-          context: context,
-          footer: ''
-        };
-
-        {
-          frame.debugElementStack = [];
-        }
-
-        this.stack.push(frame);
-        return '';
-      } // Safe because we just checked it's an element.
-
-
-      var nextElement = nextChild;
-      var elementType = nextElement.type;
-
-      if (typeof elementType === 'string') {
-        return this.renderDOM(nextElement, context, parentNamespace);
-      }
-
-      switch (elementType) {
-        case REACT_STRICT_MODE_TYPE:
-        case REACT_CONCURRENT_MODE_TYPE:
-        case REACT_PROFILER_TYPE:
-        case REACT_SUSPENSE_LIST_TYPE:
-        case REACT_FRAGMENT_TYPE:
-          {
-            var _nextChildren = toArray(nextChild.props.children);
-
-            var _frame = {
-              type: null,
-              domNamespace: parentNamespace,
-              children: _nextChildren,
-              childIndex: 0,
-              context: context,
-              footer: ''
-            };
-
-            {
-              _frame.debugElementStack = [];
-            }
-
-            this.stack.push(_frame);
-            return '';
-          }
-
-        case REACT_SUSPENSE_TYPE:
-          {
-            {
-              {
-                {
-                  throw Error( "ReactDOMServer does not yet support Suspense." );
-                }
-              }
-            }
-          }
-      }
-
-      if (typeof elementType === 'object' && elementType !== null) {
-        switch (elementType.$$typeof) {
-          case REACT_FORWARD_REF_TYPE:
-            {
-              var element = nextChild;
-
-              var _nextChildren4;
-
-              var componentIdentity = {};
-              prepareToUseHooks(componentIdentity);
-              _nextChildren4 = elementType.render(element.props, element.ref);
-              _nextChildren4 = finishHooks(elementType.render, element.props, _nextChildren4, element.ref);
-              _nextChildren4 = toArray(_nextChildren4);
-              var _frame4 = {
-                type: null,
-                domNamespace: parentNamespace,
-                children: _nextChildren4,
-                childIndex: 0,
-                context: context,
-                footer: ''
-              };
-
-              {
-                _frame4.debugElementStack = [];
-              }
-
-              this.stack.push(_frame4);
-              return '';
-            }
-
-          case REACT_MEMO_TYPE:
-            {
-              var _element = nextChild;
-              var _nextChildren5 = [React.createElement(elementType.type, _assign({
-                ref: _element.ref
-              }, _element.props))];
-              var _frame5 = {
-                type: null,
-                domNamespace: parentNamespace,
-                children: _nextChildren5,
-                childIndex: 0,
-                context: context,
-                footer: ''
-              };
-
-              {
-                _frame5.debugElementStack = [];
-              }
-
-              this.stack.push(_frame5);
-              return '';
-            }
-
-          case REACT_PROVIDER_TYPE:
-            {
-              var provider = nextChild;
-              var nextProps = provider.props;
-
-              var _nextChildren6 = toArray(nextProps.children);
-
-              var _frame6 = {
-                type: provider,
-                domNamespace: parentNamespace,
-                children: _nextChildren6,
-                childIndex: 0,
-                context: context,
-                footer: ''
-              };
-
-              {
-                _frame6.debugElementStack = [];
-              }
-
-              this.pushProvider(provider);
-              this.stack.push(_frame6);
-              return '';
-            }
-
-          case REACT_CONTEXT_TYPE:
-            {
-              var reactContext = nextChild.type; // The logic below for Context differs depending on PROD or DEV mode. In
-              // DEV mode, we create a separate object for Context.Consumer that acts
-              // like a proxy to Context. This proxy object adds unnecessary code in PROD
-              // so we use the old behaviour (Context.Consumer references Context) to
-              // reduce size and overhead. The separate object references context via
-              // a property called "_context", which also gives us the ability to check
-              // in DEV mode if this property exists or not and warn if it does not.
-
-              {
-                if (reactContext._context === undefined) {
-                  // This may be because it's a Context (rather than a Consumer).
-                  // Or it may be because it's older React where they're the same thing.
-                  // We only want to warn if we're sure it's a new React.
-                  if (reactContext !== reactContext.Consumer) {
-                    if (!hasWarnedAboutUsingContextAsConsumer) {
-                      hasWarnedAboutUsingContextAsConsumer = true;
-
-                      error('Rendering <Context> directly is not supported and will be removed in ' + 'a future major release. Did you mean to render <Context.Consumer> instead?');
-                    }
-                  }
-                } else {
-                  reactContext = reactContext._context;
-                }
-              }
-
-              var _nextProps = nextChild.props;
-              var threadID = this.threadID;
-              validateContextBounds(reactContext, threadID);
-              var nextValue = reactContext[threadID];
-
-              var _nextChildren7 = toArray(_nextProps.children(nextValue));
-
-              var _frame7 = {
-                type: nextChild,
-                domNamespace: parentNamespace,
-                children: _nextChildren7,
-                childIndex: 0,
-                context: context,
-                footer: ''
-              };
-
-              {
-                _frame7.debugElementStack = [];
-              }
-
-              this.stack.push(_frame7);
-              return '';
-            }
-          // eslint-disable-next-line-no-fallthrough
-
-          case REACT_FUNDAMENTAL_TYPE:
-            {
-
-              {
-                {
-                  throw Error( "ReactDOMServer does not yet support the fundamental API." );
-                }
-              }
-            }
-          // eslint-disable-next-line-no-fallthrough
-
-          case REACT_LAZY_TYPE:
-            {
-              var _element2 = nextChild;
-              var lazyComponent = nextChild.type; // Attempt to initialize lazy component regardless of whether the
-              // suspense server-side renderer is enabled so synchronously
-              // resolved constructors are supported.
-
-              initializeLazyComponentType(lazyComponent);
-
-              switch (lazyComponent._status) {
-                case Resolved:
-                  {
-                    var _nextChildren9 = [React.createElement(lazyComponent._result, _assign({
-                      ref: _element2.ref
-                    }, _element2.props))];
-                    var _frame9 = {
-                      type: null,
-                      domNamespace: parentNamespace,
-                      children: _nextChildren9,
-                      childIndex: 0,
-                      context: context,
-                      footer: ''
-                    };
-
-                    {
-                      _frame9.debugElementStack = [];
-                    }
-
-                    this.stack.push(_frame9);
-                    return '';
-                  }
-
-                case Rejected:
-                  throw lazyComponent._result;
-
-                case Pending:
-                default:
-                  {
-                    {
-                      throw Error( "ReactDOMServer does not yet support lazy-loaded components." );
-                    }
-                  }
-
-              }
-            }
-          // eslint-disable-next-line-no-fallthrough
-
-          case REACT_SCOPE_TYPE:
-            {
-
-              {
-                {
-                  throw Error( "ReactDOMServer does not yet support scope components." );
-                }
-              }
-            }
-        }
-      }
-
-      var info = '';
-
-      {
-        var owner = nextElement._owner;
-
-        if (elementType === undefined || typeof elementType === 'object' && elementType !== null && Object.keys(elementType).length === 0) {
-          info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and " + 'named imports.';
-        }
-
-        var ownerName = owner ? getComponentName(owner) : null;
-
-        if (ownerName) {
-          info += '\n\nCheck the render method of `' + ownerName + '`.';
-        }
-      }
-
-      {
-        {
-          throw Error( "Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " + (elementType == null ? elementType : typeof elementType) + "." + info );
-        }
-      }
-    }
-  };
-
-  _proto.renderDOM = function renderDOM(element, context, parentNamespace) {
-    var tag = element.type.toLowerCase();
-    var namespace = parentNamespace;
-
-    if (parentNamespace === Namespaces.html) {
-      namespace = getIntrinsicNamespace(tag);
-    }
-
-    {
-      if (namespace === Namespaces.html) {
-        // Should this check be gated by parent namespace? Not sure we want to
-        // allow <SVG> or <mATH>.
-        if (tag !== element.type) {
-          error('<%s /> is using incorrect casing. ' + 'Use PascalCase for React components, ' + 'or lowercase for HTML elements.', element.type);
-        }
-      }
-    }
-
-    validateDangerousTag(tag);
-    var props = element.props;
-
-    if (tag === 'input') {
-      {
-        ReactControlledValuePropTypes.checkPropTypes('input', props);
-
-        if (props.checked !== undefined && props.defaultChecked !== undefined && !didWarnDefaultChecked) {
-          error('%s contains an input of type %s with both checked and defaultChecked props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the checked prop, or the defaultChecked prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', 'A component', props.type);
-
-          didWarnDefaultChecked = true;
-        }
-
-        if (props.value !== undefined && props.defaultValue !== undefined && !didWarnDefaultInputValue) {
-          error('%s contains an input of type %s with both value and defaultValue props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', 'A component', props.type);
-
-          didWarnDefaultInputValue = true;
-        }
-      }
-
-      props = _assign({
-        type: undefined
-      }, props, {
-        defaultChecked: undefined,
-        defaultValue: undefined,
-        value: props.value != null ? props.value : props.defaultValue,
-        checked: props.checked != null ? props.checked : props.defaultChecked
-      });
-    } else if (tag === 'textarea') {
-      {
-        ReactControlledValuePropTypes.checkPropTypes('textarea', props);
-
-        if (props.value !== undefined && props.defaultValue !== undefined && !didWarnDefaultTextareaValue) {
-          error('Textarea elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled textarea ' + 'and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components');
-
-          didWarnDefaultTextareaValue = true;
-        }
-      }
-
-      var initialValue = props.value;
-
-      if (initialValue == null) {
-        var defaultValue = props.defaultValue; // TODO (yungsters): Remove support for children content in <textarea>.
-
-        var textareaChildren = props.children;
-
-        if (textareaChildren != null) {
-          {
-            error('Use the `defaultValue` or `value` props instead of setting ' + 'children on <textarea>.');
-          }
-
-          if (!(defaultValue == null)) {
-            {
-              throw Error( "If you supply `defaultValue` on a <textarea>, do not pass children." );
-            }
-          }
-
-          if (Array.isArray(textareaChildren)) {
-            if (!(textareaChildren.length <= 1)) {
-              {
-                throw Error( "<textarea> can only have at most one child." );
-              }
-            }
-
-            textareaChildren = textareaChildren[0];
-          }
-
-          defaultValue = '' + textareaChildren;
-        }
-
-        if (defaultValue == null) {
-          defaultValue = '';
-        }
-
-        initialValue = defaultValue;
-      }
-
-      props = _assign({}, props, {
-        value: undefined,
-        children: '' + initialValue
-      });
-    } else if (tag === 'select') {
-      {
-        ReactControlledValuePropTypes.checkPropTypes('select', props);
-
-        for (var i = 0; i < valuePropNames.length; i++) {
-          var propName = valuePropNames[i];
-
-          if (props[propName] == null) {
-            continue;
-          }
-
-          var isArray = Array.isArray(props[propName]);
-
-          if (props.multiple && !isArray) {
-            error('The `%s` prop supplied to <select> must be an array if ' + '`multiple` is true.', propName);
-          } else if (!props.multiple && isArray) {
-            error('The `%s` prop supplied to <select> must be a scalar ' + 'value if `multiple` is false.', propName);
-          }
-        }
-
-        if (props.value !== undefined && props.defaultValue !== undefined && !didWarnDefaultSelectValue) {
-          error('Select elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled select ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components');
-
-          didWarnDefaultSelectValue = true;
-        }
-      }
-
-      this.currentSelectValue = props.value != null ? props.value : props.defaultValue;
-      props = _assign({}, props, {
-        value: undefined
-      });
-    } else if (tag === 'option') {
-      var selected = null;
-      var selectValue = this.currentSelectValue;
-      var optionChildren = flattenOptionChildren(props.children);
-
-      if (selectValue != null) {
-        var value;
-
-        if (props.value != null) {
-          value = props.value + '';
-        } else {
-          value = optionChildren;
-        }
-
-        selected = false;
-
-        if (Array.isArray(selectValue)) {
-          // multiple
-          for (var j = 0; j < selectValue.length; j++) {
-            if ('' + selectValue[j] === value) {
-              selected = true;
-              break;
-            }
-          }
-        } else {
-          selected = '' + selectValue === value;
-        }
-
-        props = _assign({
-          selected: undefined,
-          children: undefined
-        }, props, {
-          selected: selected,
-          children: optionChildren
-        });
-      }
-    }
-
-    {
-      validatePropertiesInDevelopment(tag, props);
-    }
-
-    assertValidProps(tag, props);
-    var out = createOpenTagMarkup(element.type, tag, props, namespace, this.makeStaticMarkup, this.stack.length === 1);
-    var footer = '';
-
-    if (omittedCloseTags.hasOwnProperty(tag)) {
-      out += '/>';
-    } else {
-      out += '>';
-      footer = '</' + element.type + '>';
-    }
-
-    var children;
-    var innerMarkup = getNonChildrenInnerMarkup(props);
-
-    if (innerMarkup != null) {
-      children = [];
-
-      if (newlineEatingTags.hasOwnProperty(tag) && innerMarkup.charAt(0) === '\n') {
-        // text/html ignores the first character in these tags if it's a newline
-        // Prefer to break application/xml over text/html (for now) by adding
-        // a newline specifically to get eaten by the parser. (Alternately for
-        // textareas, replacing "^\n" with "\r\n" doesn't get eaten, and the first
-        // \r is normalized out by HTMLTextAreaElement#value.)
-        // See: <http://www.w3.org/TR/html-polyglot/#newlines-in-textarea-and-pre>
-        // See: <http://www.w3.org/TR/html5/syntax.html#element-restrictions>
-        // See: <http://www.w3.org/TR/html5/syntax.html#newlines>
-        // See: Parsing of "textarea" "listing" and "pre" elements
-        //  from <http://www.w3.org/TR/html5/syntax.html#parsing-main-inbody>
-        out += '\n';
-      }
-
-      out += innerMarkup;
-    } else {
-      children = toArray(props.children);
-    }
-
-    var frame = {
-      domNamespace: getChildNamespace(parentNamespace, element.type),
-      type: tag,
-      children: children,
-      childIndex: 0,
-      context: context,
-      footer: footer
-    };
-
-    {
-      frame.debugElementStack = [];
-    }
-
-    this.stack.push(frame);
-    this.previousWasTextNode = false;
-    return out;
-  };
-
-  return ReactDOMServerRenderer;
-}();
-
-/**
- * Render a ReactElement to its initial HTML. This should only be used on the
- * server.
- * See https://reactjs.org/docs/react-dom-server.html#rendertostring
- */
-
-function renderToString(element) {
-  var renderer = new ReactDOMServerRenderer(element, false);
-
-  try {
-    var markup = renderer.read(Infinity);
-    return markup;
-  } finally {
-    renderer.destroy();
-  }
-}
-/**
- * Similar to renderToString, except this doesn't create extra DOM attributes
- * such as data-react-id that React uses internally.
- * See https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup
- */
-
-function renderToStaticMarkup(element) {
-  var renderer = new ReactDOMServerRenderer(element, true);
-
-  try {
-    var markup = renderer.read(Infinity);
-    return markup;
-  } finally {
-    renderer.destroy();
-  }
-}
-
-function renderToNodeStream() {
-  {
-    {
-      throw Error( "ReactDOMServer.renderToNodeStream(): The streaming API is not available in the browser. Use ReactDOMServer.renderToString() instead." );
-    }
-  }
-}
-
-function renderToStaticNodeStream() {
-  {
-    {
-      throw Error( "ReactDOMServer.renderToStaticNodeStream(): The streaming API is not available in the browser. Use ReactDOMServer.renderToStaticMarkup() instead." );
-    }
-  }
-} // Note: when changing this, also consider https://github.com/facebook/react/issues/11526
-
-
-var ReactDOMServer = {
-  renderToString: renderToString,
-  renderToStaticMarkup: renderToStaticMarkup,
-  renderToNodeStream: renderToNodeStream,
-  renderToStaticNodeStream: renderToStaticNodeStream,
-  version: ReactVersion
-};
-
-// TODO: decide on the top-level export form.
-// This is hacky but makes it work with both Rollup and Jest
-
-
-var server_browser = ReactDOMServer.default || ReactDOMServer;
-
-module.exports = server_browser;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-dom/server.browser.js":
-/*!**************************************************!*\
-  !*** ./node_modules/react-dom/server.browser.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-dom-server.browser.development.js */ "./node_modules/react-dom/cjs/react-dom-server.browser.development.js");
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/react-input-autosize/lib/AutosizeInput.js":
 /*!****************************************************************!*\
   !*** ./node_modules/react-input-autosize/lib/AutosizeInput.js ***!
@@ -72327,6 +68285,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
+
+/***/ }),
+
+/***/ "react-dom/server":
+/*!*********************************!*\
+  !*** external "ReactDOMServer" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom_server__;
 
 /***/ })
 
