@@ -70899,7 +70899,7 @@ exports.InteractiveIframe = function (props) {
     var handleSupportedFeatures = function (info) {
         if (info.features.aspectRatio &&
             authoredAspectRatioMethod === "DEFAULT") {
-            setAspectRatio(parseInt(info.features.aspectRatio));
+            setAspectRatio(parseInt(info.features.aspectRatio, 10));
         }
         if (onSupportedFeaturesUpdate) {
             onSupportedFeaturesUpdate(info);
@@ -71057,13 +71057,14 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.htmlToSlate = exports.slateToHtml = exports.renderSlateContainer = exports.SlateContainer = exports.renderInteractiveAuthoringPreview = exports.InteractiveAuthoringPreview = exports.renderMWInteractiveAuthoring = exports.MWInteractiveAuthoring = exports.renderManagedInteractiveAuthoring = exports.ManagedInteractiveAuthoring = void 0;
+exports.serializeValue = exports.htmlToSlate = exports.slateToHtml = exports.renderSlateContainer = exports.SlateContainer = exports.renderInteractiveAuthoringPreview = exports.InteractiveAuthoringPreview = exports.renderMWInteractiveAuthoring = exports.MWInteractiveAuthoring = exports.renderManagedInteractiveAuthoring = exports.ManagedInteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
 var slate_editor_1 = __webpack_require__(/*! @concord-consortium/slate-editor */ "./node_modules/@concord-consortium/slate-editor/build/index.esm.js");
 Object.defineProperty(exports, "SlateContainer", { enumerable: true, get: function () { return slate_editor_1.SlateContainer; } });
 Object.defineProperty(exports, "slateToHtml", { enumerable: true, get: function () { return slate_editor_1.slateToHtml; } });
 Object.defineProperty(exports, "htmlToSlate", { enumerable: true, get: function () { return slate_editor_1.htmlToSlate; } });
+Object.defineProperty(exports, "serializeValue", { enumerable: true, get: function () { return slate_editor_1.serializeValue; } });
 var managed_interactives_1 = __webpack_require__(/*! ./managed-interactives */ "./src/page-item-authoring/managed-interactives/index.tsx");
 Object.defineProperty(exports, "ManagedInteractiveAuthoring", { enumerable: true, get: function () { return managed_interactives_1.ManagedInteractiveAuthoring; } });
 var mw_interactives_1 = __webpack_require__(/*! ./mw-interactives */ "./src/page-item-authoring/mw-interactives/index.tsx");
@@ -72331,4 +72332,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=lara-typescript.js.map
