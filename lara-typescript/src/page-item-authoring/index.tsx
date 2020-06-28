@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as ReactDOMServer from "react-dom/server";
 import ResizeObserver from "resize-observer-polyfill";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
@@ -43,6 +44,10 @@ const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiv
     />, root);
 };
 
+const renderToStaticMarkup = (element: React.ReactElement) => {
+  return ReactDOMServer.renderToStaticMarkup(element);
+};
+
 export {
   ManagedInteractiveAuthoring,
   renderManagedInteractiveAuthoring,
@@ -52,6 +57,8 @@ export {
 
   InteractiveAuthoringPreview,
   renderInteractiveAuthoringPreview,
+
+  renderToStaticMarkup,
 
   ResizeObserver
 };

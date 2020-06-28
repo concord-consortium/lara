@@ -80,7 +80,8 @@ module.exports = (env, argv) => {
       'jquery': 'jQuery',
       'jqueryui': 'jQuery.ui',
       'react': 'React',
-      'react-dom': 'ReactDOM'
+      'react-dom': 'ReactDOM',
+      'react-dom/server': 'ReactDOMServer'
     }
   },
 
