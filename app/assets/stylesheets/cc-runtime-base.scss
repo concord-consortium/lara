@@ -191,12 +191,7 @@ div.activity-mod>div.site-width {
 
       &.full-width-item {
         width: 100%;
-        margin: 20px 0;
-      }
-    }
-    & > div.full-width-item {
-      div[class^="window-shade--windowShade"] {
-        margin-top: 10px;
+        margin: 0 0 20px;
       }
     }
 
@@ -207,7 +202,7 @@ div.activity-mod>div.site-width {
     // TODO: Find a more efficient way to apply styles to only the first textbox
     .challenge {
       &[id^="embeddable-xhtml"] {
-        margin: 0;
+        margin: 0 0 20px;
         .question-bd {
           background: transparent;
           border: none;
