@@ -192,20 +192,6 @@ describe("api", () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  it("does not yet implement setAuthoringCustomReportFields", () => {
-    expect(() => api.setAuthoringCustomReportFields({
-      fields: [
-        {id: "foo", columnHeading: "Foo"}
-      ]
-    })).toThrow(/not yet implemented/);
-  });
-
-  it("does not yet implement setRuntimeCustomReportValues", () => {
-    expect(() => api.setRuntimeCustomReportValues({
-      values: {foo: "bar"}
-    })).toThrow(/not yet implemented/);
-  });
-
   it("should implement showModal [alert]", () => {
     const options: IShowAlert = {
       uuid: "foo",

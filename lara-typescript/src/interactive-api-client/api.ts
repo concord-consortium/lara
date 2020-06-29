@@ -220,20 +220,6 @@ export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(lis
 /**
  * @todo Implement this function.
  */
-export const setAuthoringCustomReportFields = (fields: IAuthoringCustomReportFields) => {
-  THROW_NOT_IMPLEMENTED_YET("setAuthoringCustomReportFields");
-};
-
-/**
- * @todo Implement this function.
- */
-export const setRuntimeCustomReportValues = (values: IRuntimeCustomReportValues) => {
-  THROW_NOT_IMPLEMENTED_YET("setRuntimeCustomReportValues");
-};
-
-/**
- * @todo Implement this function.
- */
 export const showModal = (options: IShowModal) => {
   if ((options.type === "alert") || (options.type === "lightbox")) {
     getClient().post("showModal", options);

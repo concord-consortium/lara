@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.2](../README.md) › [Globals](../globals.md) › [ILibraryInteractiveListResponseItem](ilibraryinteractivelistresponseitem.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [ILibraryInteractiveListResponseItem](ilibraryinteractivelistresponseitem.md)
 
 # Interface: ILibraryInteractiveListResponseItem
 
