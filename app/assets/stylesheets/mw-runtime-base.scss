@@ -555,11 +555,6 @@ div.intra-page-nav {
 
 .header-block-mod {
   .embeddables {
-    & > div.full-width-item {
-      div[class^="window-shade--windowShade"] {
-        margin-top: 10px;
-      }
-    }
 
     // The first textbox in this section should be styled to match the old
     // Introduction section. The style rules below should only be applied to the
