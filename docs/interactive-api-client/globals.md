@@ -22,6 +22,9 @@
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
 * [ICustomMessage](interfaces/icustommessage.md)
+* [ICustomReportFieldsAuthoredState](interfaces/icustomreportfieldsauthoredstate.md)
+* [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
+* [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
 * [IDialogInitInteractive](interfaces/idialoginitinteractive.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
@@ -108,14 +111,12 @@
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [setAuthoredState](globals.md#const-setauthoredstate)
-* [setAuthoringCustomReportFields](globals.md#const-setauthoringcustomreportfields)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
 * [setHint](globals.md#const-sethint)
 * [setInteractiveState](globals.md#const-setinteractivestate)
 * [setLinkedInteractives](globals.md#const-setlinkedinteractives)
 * [setNavigation](globals.md#const-setnavigation)
-* [setRuntimeCustomReportValues](globals.md#const-setruntimecustomreportvalues)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
@@ -578,20 +579,6 @@ Name | Type |
 
 ___
 
-### `Const` setAuthoringCustomReportFields
-
-▸ **setAuthoringCustomReportFields**(`fields`: [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`fields` | [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md) |
-
-**Returns:** *void*
-
-___
-
 ### `Const` setGlobalInteractiveState
 
 ▸ **setGlobalInteractiveState**‹**GlobalInteractiveState**›(`newGlobalState`: GlobalInteractiveState | null): *void*
@@ -711,20 +698,6 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [INavigationOptions](interfaces/inavigationoptions.md) |
-
-**Returns:** *void*
-
-___
-
-### `Const` setRuntimeCustomReportValues
-
-▸ **setRuntimeCustomReportValues**(`values`: [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`values` | [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md) |
 
 **Returns:** *void*
 

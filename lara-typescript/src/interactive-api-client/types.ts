@@ -106,6 +106,29 @@ export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, DialogSt
 
 export type InitInteractiveMode = "runtime" | "authoring" | "report" | "dialog";
 
+// Custom Report Fields
+//
+// These interfaces are used by interactives to define their custom fields and provide values for them.
+// The authored state and interactive state are already sendt
+
+export interface ICustomReportFieldsAuthoredStateField {
+  key: string;
+  columnHeader: string;
+}
+export interface ICustomReportFieldsAuthoredState {
+  customReportFields: {
+    version: 1;
+    fields: ICustomReportFieldsAuthoredStateField[]
+  };
+}
+
+export interface ICustomReportFieldsInteractiveState {
+  customReportFields: {
+    version: 1;
+    values: {[key: string]: any};
+  };
+}
+
 /*
 
 TODO:
