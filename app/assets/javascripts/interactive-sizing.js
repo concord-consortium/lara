@@ -22,7 +22,7 @@ function interactiveSizing () {
     var aspectRatio = $iframe.data('aspect-ratio');
     var resizeMethod = $iframe.data('aspect-ratio-method');
     var maxHeight = window.innerHeight;
-    var $container = $iframe.parents(".embeddable-root");
+    var $container = $iframe.parents(".embeddable-container");
 
     // Reset dimensions.
     // FIXME: this causes problems with plugin wrappers.  The
@@ -60,6 +60,13 @@ function interactiveSizing () {
       // might be stale.  However what we are looking at is the difference between that height and the
       // iframe.height(). So long as the stuff around the iframe is not also changing its height then the difference
       // should be constant even as the iframe is changing size.
+      // NOTE: the wrapping plugin content is inside of the embeddable-root element
+      // but outside of the embeddable container. We've decided not to include that
+      // wrapping plugin content in the height calculation.
+      // The width of the wrapping content is matched though.
+      // Part of the reason for this decision is that large wrapping plugin content
+      // could easily be more than the size of the screen, so if we included this
+      // content in the calucation below the interactive would have zero space for itself
       var wrappingContentHeight = $container.height() - $iframe.height();
       maxHeight -= wrappingContentHeight;
     }
