@@ -10,6 +10,8 @@ import "react-tabs/style/react-tabs.css";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeManagedInteractive } from "./customize";
 import { Checkbox } from "../common/components/checkbox";
+import { useCurrentUser } from "../common/hooks/use-current-user";
+import { AuthoredState } from "../common/components/authored-state";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -59,6 +61,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
+  const user = useCurrentUser();
 
   if (libraryInteractives.state === "loading") {
     return <div className="loading">Loading library ...</div>;
@@ -167,6 +170,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         <TabList>
           <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
+          {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
         </TabList>
         <TabPanel forceRender={true}>
           {libraryInteractive.authorable
@@ -186,6 +190,15 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
             onUrlFragmentChange={handleUrlFragmentChange}
           />
         </TabPanel>
+        {user?.isAdmin
+          ? <TabPanel forceRender={true}>
+              <AuthoredState
+                id={formField("authored_state").id}
+                name={formField("authored_state").name}
+                authoredState={interactive.authored_state}
+              />
+            </TabPanel>
+          : undefined}
       </Tabs>
     );
   };
