@@ -9,6 +9,8 @@ type ManagedStateEvent =
   "initInteractive";
 
 export class ManagedState {
+  public interactiveStateDirty = false;
+
   private _initMessage: Readonly<IInitInteractive<any, any, any, any>> | null = null;
   // State variables are kept separately from initMessage, as they might get updated. For client user convenience,
   // this state is kept here and all the updates emit appropriate event.
@@ -44,6 +46,7 @@ export class ManagedState {
     }
     this._interactiveState = value;
     this.emit("interactiveStateUpdated", value);
+    this.interactiveStateDirty = true;
   }
 
   public get authoredState() {

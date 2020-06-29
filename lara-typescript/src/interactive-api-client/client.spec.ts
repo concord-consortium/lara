@@ -90,8 +90,10 @@ describe("Client", () => {
     it("automatically supports the getInteractiveState message", () => {
       const client = new Client();
       client.managedState.interactiveState = {test: 123};
+      expect(client.managedState.interactiveStateDirty).toEqual(true);
       mockedPhone.fakeServerMessage({type: "getInteractiveState"});
       expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {test: 123}}]);
+      expect(client.managedState.interactiveStateDirty).toEqual(false);
     });
 
     it("automatically supports the loadInteractiveGlobal message", () => {
@@ -136,6 +138,22 @@ describe("Client", () => {
       // listener should be removed now
       mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
       expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("warns user when he tries to leave the page and interactive state is dirty", () => {
+      const spy = jest.spyOn(window, "addEventListener");
+      const client = new Client();
+      expect(spy).toHaveBeenCalled();
+      expect(spy.mock.calls[0][0]).toEqual("beforeunload");
+      const callback: any = spy.mock.calls[0][1];
+
+      const event: any = {};
+      callback(event);
+      expect(event.returnValue).toBeUndefined();
+
+      client.managedState.interactiveState = {newState: 123};
+      callback(event);
+      expect(event.returnValue).toBeDefined();
     });
   });
 });

@@ -42,6 +42,8 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
   return getClient().managedState.interactiveState;
 };
 
+let setInteractiveStateTimeoutId: number;
+export const setInteractiveStateTimeout = 2000; // ms
 /**
  * Note that state will become frozen and should never be mutated.
  * Each time you update state, make sure that a new object is passed.
@@ -62,7 +64,11 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
 export const setInteractiveState = <InteractiveState>(newInteractiveState: InteractiveState | null) => {
   const client = getClient();
   client.managedState.interactiveState = newInteractiveState;
-  client.post("interactiveState", newInteractiveState);
+  window.clearTimeout(setInteractiveStateTimeoutId);
+  setInteractiveStateTimeoutId = window.setTimeout(() => {
+    client.post("interactiveState", newInteractiveState);
+    client.managedState.interactiveStateDirty = false;
+  }, setInteractiveStateTimeout);
 };
 
 export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
