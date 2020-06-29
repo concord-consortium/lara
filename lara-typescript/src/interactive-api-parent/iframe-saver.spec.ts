@@ -224,6 +224,17 @@ describe("IFrameSaver", () => {
       expect($helpIcon.hasClass("hidden")).toEqual(true);
       expect($(".help-content .text").text()).toEqual("");
     });
+
+    it("should support rich text (HTML) hints", () => {
+      const $helpIcon = $(".help-icon");
+      const richText = "<strong>Bold</strong> <em>Text</em>";
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: {text: richText} });
+      expect($(".help-content .text").html()).toEqual(richText);
+
+      const scriptText = richText + `<script>alert("Oh, no you don't!")</script>`;
+      MockedIframePhoneManager.postMessageFrom($("#interactive")[0], { type: "hint", content: {text: scriptText} });
+      expect($(".help-content .text").html()).toEqual(richText);
+    });
   });
 
   describe("showModal/closeModal iframe-phone messages", () => {

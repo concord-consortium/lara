@@ -1,4 +1,5 @@
 import { ParentEndpoint } from "iframe-phone";
+import * as DOMPurify from "dompurify";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
@@ -232,7 +233,8 @@ export class IFrameSaver {
       } else {
         $container.find(".help-icon").addClass("hidden");
       }
-      $container.find(".help-content .text").text(hintRequest.text || "");
+      const html = DOMPurify.sanitize(hintRequest.text || "", {SAFE_FOR_JQUERY: true});
+      $container.find(".help-content .text").html(html);
     });
 
     this.addListener("supportedFeatures", (info: LaraInteractiveApi.ISupportedFeaturesRequest) => {
