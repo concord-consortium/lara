@@ -41,6 +41,10 @@ module InteractivePageHelper
     page.main_visible_embeddables.map { |e| Embeddable::is_interactive?(e) ? e : finder.find_answer(e) }
   end
 
+  def header_block_wrapping_plugins(page, run)
+    page.header_visible_embeddables.select { |e| is_wrapping_plugin?(e) }
+  end
+
   def header_block_visible_embeddables(page, run)
     finder = Embeddable::AnswerFinder.new(run)
     # Limit visible embeddables to ones that do not belong to any section.

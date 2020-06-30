@@ -5,7 +5,7 @@
   - if page.show_header
     .header-block-mod
       -# Wrapping plugins don't necessarily wrap items in the assessment block, so they need to be rendered separately.
-      = render partial: 'interactive_pages/list_wrapping_plugins', locals: {wrapping_plugins: main_section_wrapping_plugins(page, @run)}
+      = render partial: 'interactive_pages/list_wrapping_plugins', locals: {wrapping_plugins: header_block_wrapping_plugins(page, @run)}
       = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: header_block_visible_embeddables(page, @run).select {|e| !is_wrapping_plugin?(e) }}
 
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-4060, r-3070;
