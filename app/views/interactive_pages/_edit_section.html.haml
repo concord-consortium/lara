@@ -1,17 +1,15 @@
 :ruby
-  if section_name == 'HEADER_BLOCK'
+  if section_name == InteractivePage::HEADER_BLOCK
     section_hidden_field = hidden_field_tag :section, InteractivePage::HEADER_BLOCK
     selector_menu = embeddable_selector
-    section_embeddables_list = @page.header_block_visible_embeddables
-  elsif section_name == 'INTERACTIVE_BOX'
+  elsif section_name == InteractivePage::INTERACTIVE_BOX
     section_hidden_field = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
     selector_menu = embeddable_interactives_selector
-    section_embeddables_list = @page.interactive_box_visible_embeddables
   else
     section_hidden_field = nil
     selector_menu = embeddable_selector
-    section_embeddables_list = @page.section_embeddables(nil)
   end
+  section_embeddables_list = @page.section_embeddables(section_name)
 
 %button.show-hide-toggle
   Close All

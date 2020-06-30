@@ -86,12 +86,12 @@
       %div{:class => 'other full-width'}
         #header_block.questions
           %h2 Header Section
-          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'HEADER_BLOCK', :toggle_option => false }
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => InteractivePage::HEADER_BLOCK, :toggle_option => false }
     .text
       - if @page.show_info_assessment
         #info_assess_block.questions
           %h2 Info/Assess
-          = render :partial => "edit_section", :locals => { :page => @page, :section_name => '', :toggle_option => true }
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => nil, :toggle_option => true }
 
       -# Additional sections are dynamically loaded, based on .visible_sections value:
       - @page.visible_sections.each do |s|
@@ -100,7 +100,7 @@
       %div{:class => (@page.show_info_assessment ? 'other' : 'other full-width')}
         #interactive_box.questions
           %h2 Interactive Box
-          = render :partial => "edit_section", :locals => { :page => @page, :section_name => 'INTERACTIVE_BOX', :toggle_option => false }
+          = render :partial => "edit_section", :locals => { :page => @page, :section_name => InteractivePage::INTERACTIVE_BOX, :toggle_option => false }
     - if @page.show_sidebar
       %div{style: 'clear: both;'}
         = text_editor @page, :sidebar, { editable_header: true, header_prop: :sidebar_title }
