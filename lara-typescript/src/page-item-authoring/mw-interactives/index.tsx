@@ -8,6 +8,8 @@ import { CustomizeMWInteractive } from "./customize";
 
 import "react-tabs/style/react-tabs.css";
 import { Checkbox } from "../common/components/checkbox";
+import { useCurrentUser } from "../common/hooks/use-current-user";
+import { AuthoredState } from "../common/components/authored-state";
 
 interface Props {
   interactive: IMWInteractive;
@@ -43,6 +45,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const { interactive, defaultClickToPlayPrompt } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
+  const user = useCurrentUser();
 
   const handleUrlBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => setAuthoringUrl(e.target.value);
 
@@ -112,6 +115,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
         <TabList>
           <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
+          {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
         </TabList>
         <TabPanel forceRender={true}>
           {hasAuthoringUrl
@@ -130,6 +134,15 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
             defaultClickToPlayPrompt={defaultClickToPlayPrompt}
           />
         </TabPanel>
+        {user?.isAdmin
+          ? <TabPanel forceRender={true}>
+              <AuthoredState
+                id={formField("authored_state").id}
+                name={formField("authored_state").name}
+                authoredState={interactive.authored_state}
+              />
+            </TabPanel>
+          : undefined}
       </Tabs>
     );
   };

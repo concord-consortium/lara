@@ -28575,6 +28575,87 @@ exports.AspectRatioChooser = function (props) {
 
 /***/ }),
 
+/***/ "./src/page-item-authoring/common/components/authored-state.tsx":
+/*!**********************************************************************!*\
+  !*** ./src/page-item-authoring/common/components/authored-state.tsx ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthoredState = void 0;
+var React = __webpack_require__(/*! react */ "react");
+var react_1 = __webpack_require__(/*! react */ "react");
+var prettyAuthoredState = function (authoredState) {
+    try {
+        var json = JSON.parse(authoredState);
+        return JSON.stringify(json, null, 2);
+    }
+    catch (e) {
+        return "{}";
+    }
+};
+var useValidateAuthoredState = function (_authoredState) {
+    var _a = react_1.useState(_authoredState), authoredState = _a[0], setAuthoredState = _a[1];
+    var _b = react_1.useState(true), isValidJSON = _b[0], setIsValidJSON = _b[1];
+    react_1.useEffect(function () {
+        try {
+            JSON.parse(authoredState);
+            setIsValidJSON(true);
+        }
+        catch (e) {
+            setIsValidJSON(false);
+        }
+    }, [authoredState]);
+    return { isValidJSON: isValidJSON, setAuthoredState: setAuthoredState };
+};
+exports.AuthoredState = function (_a) {
+    var id = _a.id, name = _a.name, authoredState = _a.authoredState;
+    var _b = react_1.useState(false), edit = _b[0], setEdit = _b[1];
+    var _c = useValidateAuthoredState(authoredState), isValidJSON = _c.isValidJSON, setAuthoredState = _c.setAuthoredState;
+    var prettyState = prettyAuthoredState(authoredState);
+    var textareaRef = react_1.useRef(null);
+    var handleEditChange = function () {
+        if (textareaRef.current) {
+            // this is only here to check if the JSON is valid, the text area is not a controlled component
+            setAuthoredState(textareaRef.current.value);
+        }
+    };
+    var renderEditMode = function () {
+        var style = { width: "98%", height: "200px", border: "1px solid #aaa", outline: "none" };
+        return (React.createElement("textarea", { ref: textareaRef, onChange: handleEditChange, id: id, name: name, style: style }, prettyState));
+    };
+    var renderReadOnlyMode = function () {
+        return (React.createElement("div", { style: { padding: 10, border: "1px solid #aaa", whiteSpace: "pre" } }, prettyState));
+    };
+    var handleToggleEdit = function () {
+        setEdit(!edit);
+        if (!edit) {
+            setTimeout(function () { var _a; return (_a = textareaRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, 1);
+        }
+    };
+    var editCheckboxLabel = "Edit authored state";
+    return (React.createElement("div", null,
+        edit ? renderEditMode() : renderReadOnlyMode(),
+        React.createElement("div", { style: { marginTop: 5 } }, isValidJSON ? "JSON is valid" : React.createElement("span", { style: { color: "#f00" } }, "JSON is INVALID!")),
+        React.createElement("p", null,
+            React.createElement("input", { type: "checkbox", checked: edit, onChange: handleToggleEdit }),
+            " ",
+            editCheckboxLabel),
+        edit ? React.createElement("p", null,
+            React.createElement("strong", null, "Note:"),
+            " any changes you make on the Authoring tab will be superseded by any changes made here when you save.",
+            React.createElement("br", null),
+            "You must leave the \"",
+            editCheckboxLabel,
+            "\" checkbox enabled for your changes to be saved.") : undefined));
+};
+
+
+/***/ }),
+
 /***/ "./src/page-item-authoring/common/components/checkbox.tsx":
 /*!****************************************************************!*\
   !*** ./src/page-item-authoring/common/components/checkbox.tsx ***!
@@ -28855,6 +28936,46 @@ exports.ReadOnlyFormField = function (_a) {
 
 /***/ }),
 
+/***/ "./src/page-item-authoring/common/hooks/use-current-user.ts":
+/*!******************************************************************!*\
+  !*** ./src/page-item-authoring/common/hooks/use-current-user.ts ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useCurrentUser = void 0;
+var react_1 = __webpack_require__(/*! react */ "react");
+exports.useCurrentUser = function () {
+    var _a = react_1.useState(undefined), user = _a[0], setUser = _a[1];
+    react_1.useEffect(function () {
+        fetch("/api/v1/user_check", { credentials: "same-origin" })
+            .then(function (result) { return result.json(); })
+            .then(function (json) {
+            var jsonUser = json === null || json === void 0 ? void 0 : json.user;
+            if (jsonUser) {
+                var id = jsonUser.id, email = jsonUser.email, is_admin = jsonUser.is_admin, is_author = jsonUser.is_author;
+                setUser({
+                    id: id,
+                    email: email,
+                    isAdmin: is_admin,
+                    isAuthor: is_author,
+                });
+            }
+            else {
+                setUser(null);
+            }
+        })
+            .catch(function () { return setUser(null); });
+    }, []);
+    return user;
+};
+
+
+/***/ }),
+
 /***/ "./src/page-item-authoring/common/hooks/use-library-interactives.tsx":
 /*!***************************************************************************!*\
   !*** ./src/page-item-authoring/common/hooks/use-library-interactives.tsx ***!
@@ -29108,6 +29229,8 @@ __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/managed-interactives/customize.tsx");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
+var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-user */ "./src/page-item-authoring/common/hooks/use-current-user.ts");
+var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.ManagedInteractiveAuthoring = function (props) {
     var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
@@ -29116,6 +29239,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
     var libraryInteractiveIdRef = react_1.useRef(null);
     var libraryInteractiveAuthoredStateRef = react_1.useRef(null);
     var _b = react_1.useState(managedInteractive.url_fragment), urlFragment = _b[0], setUrlFragment = _b[1];
+    var user = use_current_user_1.useCurrentUser();
     if (libraryInteractives.state === "loading") {
         return React.createElement("div", { className: "loading" }, "Loading library ...");
     }
@@ -29185,7 +29309,8 @@ exports.ManagedInteractiveAuthoring = function (props) {
         return (React.createElement(react_tabs_1.Tabs, null,
             React.createElement(react_tabs_1.TabList, null,
                 React.createElement(react_tabs_1.Tab, null, "Authoring"),
-                React.createElement(react_tabs_1.Tab, null, "Advanced Options")),
+                React.createElement(react_tabs_1.Tab, null, "Advanced Options"),
+                (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.Tab, null, "Authored State (Admin Only)") : undefined),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true }, libraryInteractive.authorable
                 ? React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: interactive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
                 : React.createElement("p", null,
@@ -29193,7 +29318,10 @@ exports.ManagedInteractiveAuthoring = function (props) {
                     libraryInteractive.name,
                     ") does not support authoring.")),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true },
-                React.createElement(customize_1.CustomizeManagedInteractive, { libraryInteractive: libraryInteractive, managedInteractive: managedInteractive, defaultClickToPlayPrompt: defaultClickToPlayPrompt, onUrlFragmentChange: handleUrlFragmentChange }))));
+                React.createElement(customize_1.CustomizeManagedInteractive, { libraryInteractive: libraryInteractive, managedInteractive: managedInteractive, defaultClickToPlayPrompt: defaultClickToPlayPrompt, onUrlFragmentChange: handleUrlFragmentChange })),
+            (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.TabPanel, { forceRender: true },
+                React.createElement(authored_state_1.AuthoredState, { id: formField("authored_state").id, name: formField("authored_state").name, authoredState: interactive.authored_state }))
+                : undefined));
     };
     // this generates a form element that renders inside the rails popup form
     return React.createElement(React.Fragment, null,
@@ -29310,11 +29438,14 @@ var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-fiel
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/mw-interactives/customize.tsx");
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
+var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-user */ "./src/page-item-authoring/common/hooks/use-current-user.ts");
+var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.MWInteractiveAuthoring = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
     var interactiveAuthoredStateRef = react_1.useRef(null);
     var _a = react_1.useState(interactive.url), authoringUrl = _a[0], setAuthoringUrl = _a[1];
+    var user = use_current_user_1.useCurrentUser();
     var handleUrlBlur = function (e) { return setAuthoringUrl(e.target.value); };
     var renderRequiredFields = function () {
         var name = interactive.name, url = interactive.url, is_full_width = interactive.is_full_width, no_snapshots = interactive.no_snapshots;
@@ -29349,13 +29480,17 @@ exports.MWInteractiveAuthoring = function (props) {
         return (React.createElement(react_tabs_1.Tabs, null,
             React.createElement(react_tabs_1.TabList, null,
                 React.createElement(react_tabs_1.Tab, null, "Authoring"),
-                React.createElement(react_tabs_1.Tab, null, "Advanced Options")),
+                React.createElement(react_tabs_1.Tab, null, "Advanced Options"),
+                (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.Tab, null, "Authored State (Admin Only)") : undefined),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true }, hasAuthoringUrl
                 ?
                     React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: authoredInteractive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
                 : React.createElement("div", null, "Please enter an url above and then move the focus out of the url field.")),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true },
-                React.createElement(customize_1.CustomizeMWInteractive, { interactive: interactive, defaultClickToPlayPrompt: defaultClickToPlayPrompt }))));
+                React.createElement(customize_1.CustomizeMWInteractive, { interactive: interactive, defaultClickToPlayPrompt: defaultClickToPlayPrompt })),
+            (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.TabPanel, { forceRender: true },
+                React.createElement(authored_state_1.AuthoredState, { id: formField("authored_state").id, name: formField("authored_state").name, authoredState: interactive.authored_state }))
+                : undefined));
     };
     // this generates a form element that renders inside the rails popup form
     return React.createElement(React.Fragment, null,
