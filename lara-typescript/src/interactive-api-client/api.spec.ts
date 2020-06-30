@@ -30,12 +30,19 @@ describe("api", () => {
       mode: "runtime",
       interactiveState: {foo: "bar"}
     });
+    // interactive state shouldn't be dirty after initial load.
+    expect(getClient().managedState.interactiveStateDirty).toEqual(false);
   });
 
-  it("supports setInteractiveState and getInteractiveState", () => {
+  it("supports setInteractiveState and getInteractiveState", (done) => {
     api.setInteractiveState({foo: true});
-    expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
     expect(api.getInteractiveState()).toEqual({foo: true});
+    expect(getClient().managedState.interactiveStateDirty).toEqual(true);
+    setTimeout(() => {
+      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
+      expect(getClient().managedState.interactiveStateDirty).toEqual(false);
+      done();
+    }, api.setInteractiveStateTimeout + 1);
   });
 
   it("supports setAuthoredState and getAuthoredState", () => {
@@ -190,20 +197,6 @@ describe("api", () => {
     api.removeGlobalInteractiveStateListener(listener);
     getClient().managedState.globalInteractiveState = {bar: 123};
     expect(listener).toHaveBeenCalledTimes(1);
-  });
-
-  it("does not yet implement setAuthoringCustomReportFields", () => {
-    expect(() => api.setAuthoringCustomReportFields({
-      fields: [
-        {id: "foo", columnHeading: "Foo"}
-      ]
-    })).toThrow(/not yet implemented/);
-  });
-
-  it("does not yet implement setRuntimeCustomReportValues", () => {
-    expect(() => api.setRuntimeCustomReportValues({
-      values: {foo: "bar"}
-    })).toThrow(/not yet implemented/);
   });
 
   it("should implement showModal [alert]", () => {

@@ -14,6 +14,7 @@
 //= require modulejs
 //= require react-16.13.1
 //= require react-dom-16.13.1
+//= require react-dom-server-16.13.1
 //= require create-react-class-15.6.3
 //= require react-factories
 //= require jquery-ajax-csrf

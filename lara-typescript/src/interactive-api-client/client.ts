@@ -45,6 +45,15 @@ export class Client {
       throw new Error("IframePhone has been initialized previously. Only once Client instance is allowed.");
     }
     this.connect();
+
+    // Warn users when they want to reload page before the data gets sent to LARA.
+    window.addEventListener("beforeunload", (e) => {
+      if (this.managedState.interactiveStateDirty) {
+        // Browser will display different message anyway, but returnValue must be set.
+        e.returnValue = "State has not been saved. Are you sure you want to leave this page?";
+      }
+      return e;
+    });
   }
 
   public getNextRequestId() {
@@ -119,6 +128,9 @@ export class Client {
       this.managedState.authoredState = parseJSONIfString(newInitMessage.authoredState);
       if (newInitMessage.mode === "runtime" || newInitMessage.mode === "report") {
         this.managedState.interactiveState = parseJSONIfString(newInitMessage.interactiveState);
+        // Don't consider initial state to be dirty, as user would see warnings while trying to leave page even
+        // without making any change.
+        this.managedState.interactiveStateDirty = false;
       }
       if (newInitMessage.mode === "runtime") {
         this.managedState.globalInteractiveState = parseJSONIfString(newInitMessage.globalInteractiveState);
@@ -127,6 +139,7 @@ export class Client {
 
     this.addListener("getInteractiveState", () => {
       this.post("interactiveState", this.managedState.interactiveState);
+      this.managedState.interactiveStateDirty = false;
     });
 
     this.addListener("loadInteractiveGlobal", (globalState: any) => {
