@@ -26,7 +26,7 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   def up
     InteractivePage.find_each(batch_size: 10) do |ip|
       if ip.text.present?
-        ip.show_header = true
+        ip.show_header = ip.show_introduction
         ip.save
         textbox = Embeddable::Xhtml.create(
                                            name: '',
@@ -46,22 +46,17 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
 
   def down
     InteractivePage.find_each(batch_size: 10) do |ip|
-      pi_count = 0
-      if ip.text.present?
-        PageItem.where(interactive_page_id: ip.id, section: 'header_block').each do |pi|
-          if pi.embeddable_type == 'Embeddable::Xhtml'
-            textbox = Embeddable::Xhtml.where(id: pi.embeddable_id).first
-            if ip.text == textbox.content
-              textbox.destroy()
-            end
+      PageItem.where(interactive_page_id: ip.id, section: 'header_block').order(:position).each do |pi|
+        if pi.embeddable_type == 'Embeddable::Xhtml'
+          textbox = Embeddable::Xhtml.where(id: pi.embeddable_id).first
+          if ip.text.nil?
+            ip.text = textbox.content
+            textbox.destroy()
           end
-          pi_count = pi_count + 1
-        end
-        if pi_count == 1
-          ip.show_header = false
-          ip.save
         end
       end
+      ip.show_introduction = ip.show_header
+      ip.save
     end
   end
 end
