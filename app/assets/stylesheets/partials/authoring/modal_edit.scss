@@ -10,10 +10,10 @@
 
   form[class^="edit_"], form.styled-admin-form {
     height: auto;
-    max-height: calc(100% - 105px);
-    min-height: calc(100% - 105px);
+    max-height: calc(100% - 150px);
+    min-height: calc(100% - 150px);
     overflow: scroll;
-    padding-bottom: 105px;
+    padding-bottom: 150px;
     position: relative;
 
     fieldset {
