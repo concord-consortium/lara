@@ -42,7 +42,7 @@ module InteractivePageHelper
   end
 
   def header_block_wrapping_plugins(page, run)
-    page.header_visible_embeddables.select { |e| is_wrapping_plugin?(e) }
+    page.header_block_visible_embeddables.select { |e| is_wrapping_plugin?(e) }
   end
 
   def header_block_visible_embeddables(page, run)
