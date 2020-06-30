@@ -1,6 +1,7 @@
 .interactive-mod{class: layout == 'l-full-width' ? nil : 'pinned'}
   - page.interactive_box_visible_embeddables.each do |interactive|
-    %div{ id: interactive.embeddable_dom_id }
-      -# This CSS class is important, as it might be referenced by plugins and passed to a plugin instance.
+    -# The embeddable-root class is important, it is used in sizing calculations
+    .embeddable-root{ id: interactive.embeddable_dom_id }
+      -# The embeddable-container class is important, as it is referenced by plugins and passed to a plugin instance.
       .embeddable-container
         = render_interactive(interactive)
