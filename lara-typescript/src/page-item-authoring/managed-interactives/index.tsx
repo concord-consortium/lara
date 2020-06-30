@@ -163,13 +163,13 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
                   onBlur={handleUrlFragmentBlur}
                 />
               </fieldset>
-              <fieldset>
-                <legend>Authoring Guidance</legend>
-                {libraryInteractive.authoring_guidance
-                  ? <div dangerouslySetInnerHTML={{__html: libraryInteractive.authoring_guidance}} />
-                  : undefined
-                }
-              </fieldset>
+              {libraryInteractive.authoring_guidance
+                ? <fieldset>
+                    <legend>Authoring Guidance</legend>
+                    <div dangerouslySetInnerHTML={{__html: libraryInteractive.authoring_guidance}} />
+                  </fieldset>
+                : undefined
+              }
             </>
         }
       </>);
