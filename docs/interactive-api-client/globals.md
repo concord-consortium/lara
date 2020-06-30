@@ -86,6 +86,10 @@
 * [ModalType](globals.md#modaltype)
 * [ServerMessage](globals.md#servermessage)
 
+### Variables
+
+* [setInteractiveStateTimeout](globals.md#const-setinteractivestatetimeout)
+
 ### Functions
 
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
@@ -233,6 +237,12 @@ ___
 ###  ServerMessage
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage) | [IframeSaverServerMessage](globals.md#iframesaverservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+
+## Variables
+
+### `Const` setInteractiveStateTimeout
+
+• **setInteractiveStateTimeout**: *2000* = 2000
 
 ## Functions
 

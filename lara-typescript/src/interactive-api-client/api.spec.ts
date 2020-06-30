@@ -30,12 +30,19 @@ describe("api", () => {
       mode: "runtime",
       interactiveState: {foo: "bar"}
     });
+    // interactive state shouldn't be dirty after initial load.
+    expect(getClient().managedState.interactiveStateDirty).toEqual(false);
   });
 
-  it("supports setInteractiveState and getInteractiveState", () => {
+  it("supports setInteractiveState and getInteractiveState", (done) => {
     api.setInteractiveState({foo: true});
-    expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
     expect(api.getInteractiveState()).toEqual({foo: true});
+    expect(getClient().managedState.interactiveStateDirty).toEqual(true);
+    setTimeout(() => {
+      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
+      expect(getClient().managedState.interactiveStateDirty).toEqual(false);
+      done();
+    }, api.setInteractiveStateTimeout + 1);
   });
 
   it("supports setAuthoredState and getAuthoredState", () => {
