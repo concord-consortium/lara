@@ -3,7 +3,7 @@ class PageItem < ActiveRecord::Base
   acts_as_list :scope => :interactive_page
 
   belongs_to :interactive_page
-  belongs_to :embeddable, :polymorphic => true, dependent: :destroy
+  belongs_to :embeddable, :polymorphic => true, :dependent => :destroy
 
 
   def toggle_hideshow_embeddable
