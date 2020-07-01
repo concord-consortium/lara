@@ -29086,7 +29086,7 @@ var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
-    var url_fragment = managedInteractive.url_fragment, inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url;
+    var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, show_in_featured_question_report = managedInteractive.show_in_featured_question_report;
     var _a = react_1.useState(inherit_aspect_ratio_method), inheritAspectRatio = _a[0], setInheritAspectRatio = _a[1];
     var _b = react_1.useState({
         width: custom_native_width,
@@ -29120,8 +29120,19 @@ exports.CustomizeManagedInteractive = function (props) {
     var handleChangeCustomImageUrl = handleStringOption(setCustomImageUrl);
     var clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
         (!inheritClickToPlay && customClickToPlay);
-    var handleUrlFragmentBlur = function (e) {
-        props.onUrlFragmentChange(e.target.value);
+    var renderCommonFields = function () {
+        return React.createElement(React.Fragment, null, libraryInteractive.enable_learner_state ?
+            React.createElement(React.Fragment, null,
+                React.createElement("fieldset", null,
+                    React.createElement("legend", null, "Link Saved Work From"),
+                    React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
+                    React.createElement("div", { className: "warning" },
+                        React.createElement("em", null, "Warning"),
+                        ": Please do not link to another interactive unless the interactive knows how to load prior work.")),
+                React.createElement("fieldset", null,
+                    React.createElement("legend", null, "Featured Report"),
+                    React.createElement(checkbox_1.Checkbox, { id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report?" })))
+            : undefined);
     };
     if (!libraryInteractive.customizable) {
         var renderAspectRatioValues = function () {
@@ -29143,11 +29154,11 @@ exports.CustomizeManagedInteractive = function (props) {
                 ")");
         };
         return (React.createElement("div", null,
+            renderCommonFields(),
             React.createElement("p", null,
                 "The selected library interactive (",
                 libraryInteractive.name,
-                ") does not support customizing the advanced options.  Here are the default option values:"),
-            React.createElement(read_only_form_field_1.ReadOnlyFormField, { legend: "Url Fragment", value: url_fragment }),
+                ") does not support customizing the additional advanced options. Here are their values:"),
             React.createElement(read_only_form_field_1.ReadOnlyFormField, { legend: "Aspect Ratio", value: aspect_ratio_chooser_1.availableAspectRatios[custom_aspect_ratio_method], inherit: true, inherited: inherit_aspect_ratio_method, inheritedValue: aspect_ratio_chooser_1.availableAspectRatios[libraryInteractive.aspect_ratio_method] }, renderAspectRatioValues())));
     }
     var renderClickToPlayOptions = function () {
@@ -29162,9 +29173,7 @@ exports.CustomizeManagedInteractive = function (props) {
     };
     // this generates a form element that renders inside the rails popup form
     return React.createElement(React.Fragment, null,
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Url Fragment"),
-            React.createElement("textarea", { id: formField("url_fragment").id, name: formField("url_fragment").name, defaultValue: url_fragment, onBlur: handleUrlFragmentBlur })),
+        renderCommonFields(),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Aspect Ratio"),
             React.createElement("input", { type: "hidden", name: formField("custom_aspect_ratio_method").name, value: customAspectRatioValues.mode }),
@@ -29261,31 +29270,21 @@ exports.ManagedInteractiveAuthoring = function (props) {
             }
         }
     };
-    var handleUrlFragmentChange = function (newUrlFragment) { return setUrlFragment(newUrlFragment); };
+    var handleUrlFragmentBlur = function (e) {
+        setUrlFragment(e.target.value);
+    };
     var renderRequiredFields = function () {
         if (!libraryInteractive) {
             return undefined;
         }
-        var name = managedInteractive.name, is_full_width = managedInteractive.is_full_width, show_in_featured_question_report = managedInteractive.show_in_featured_question_report, linked_interactive_id = managedInteractive.linked_interactive_id;
+        var name = managedInteractive.name, is_full_width = managedInteractive.is_full_width;
         return React.createElement(React.Fragment, null,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Name"),
                 React.createElement("input", { type: "text", id: formField("name").id, name: formField("name").name, defaultValue: name })),
-            libraryInteractive.enable_learner_state ?
-                React.createElement("fieldset", null,
-                    React.createElement("legend", null, "Link Saved Work From"),
-                    React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
-                    React.createElement("div", { className: "warning" },
-                        React.createElement("em", null, "Warning"),
-                        ": Please do not link to another interactive unless the interactive knows how to load prior work."))
-                : undefined,
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Options"),
-                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" }),
-                React.createElement("br", null),
-                libraryInteractive.enable_learner_state
-                    ? React.createElement(checkbox_1.Checkbox, { id: formField("show_in_featured_question_report").id, name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report?" })
-                    : undefined));
+                React.createElement(checkbox_1.Checkbox, { id: formField("is_full_width").id, name: formField("is_full_width").name, defaultChecked: is_full_width, label: "Full width? (Full width layout only)" })));
     };
     var renderTabs = function () {
         if (!libraryInteractive) {
@@ -29306,19 +29305,26 @@ exports.ManagedInteractiveAuthoring = function (props) {
                     : JSON.stringify(newAuthoredState);
             }
         };
+        var renderAuthoringPanel = function () {
+            var url_fragment = managedInteractive.url_fragment;
+            return (React.createElement(React.Fragment, null, libraryInteractive.authorable
+                ? React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: interactive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
+                : React.createElement(React.Fragment, null,
+                    React.createElement("fieldset", null,
+                        React.createElement("legend", null, "Url Fragment"),
+                        React.createElement("textarea", { id: formField("url_fragment").id, name: formField("url_fragment").name, defaultValue: url_fragment, onBlur: handleUrlFragmentBlur })),
+                    libraryInteractive.authoring_guidance
+                        ? React.createElement("div", { dangerouslySetInnerHTML: { __html: libraryInteractive.authoring_guidance } })
+                        : undefined)));
+        };
         return (React.createElement(react_tabs_1.Tabs, null,
             React.createElement(react_tabs_1.TabList, null,
                 React.createElement(react_tabs_1.Tab, null, "Authoring"),
                 React.createElement(react_tabs_1.Tab, null, "Advanced Options"),
                 (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.Tab, null, "Authored State (Admin Only)") : undefined),
-            React.createElement(react_tabs_1.TabPanel, { forceRender: true }, libraryInteractive.authorable
-                ? React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: interactive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
-                : React.createElement("p", null,
-                    "The selected library interactive (",
-                    libraryInteractive.name,
-                    ") does not support authoring.")),
+            React.createElement(react_tabs_1.TabPanel, { forceRender: true }, renderAuthoringPanel()),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true },
-                React.createElement(customize_1.CustomizeManagedInteractive, { libraryInteractive: libraryInteractive, managedInteractive: managedInteractive, defaultClickToPlayPrompt: defaultClickToPlayPrompt, onUrlFragmentChange: handleUrlFragmentChange })),
+                React.createElement(customize_1.CustomizeManagedInteractive, { libraryInteractive: libraryInteractive, managedInteractive: managedInteractive, defaultClickToPlayPrompt: defaultClickToPlayPrompt })),
             (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.TabPanel, { forceRender: true },
                 React.createElement(authored_state_1.AuthoredState, { id: formField("authored_state").id, name: formField("authored_state").name, authoredState: interactive.authored_state }))
                 : undefined));
@@ -30320,3 +30326,4 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
+//# sourceMappingURL=lara-typescript.js.map
