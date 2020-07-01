@@ -19,8 +19,8 @@ before_install:
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
   - cd cypress && npm install
-  - cd - && docker build -t concordconsortium/lara .
-  - docker-compose up
+  - docker build -t concordconsortium/lara .
+  - docker run -d -p 127.0.0.1:80:4567 concordconsortium/lara /bin/sh -c "cd /root/lara;"
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
