@@ -348,7 +348,6 @@ ActiveRecord::Schema.define(:version => 20200625215657) do
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
     t.text     "sidebar"
-    t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
     t.boolean  "show_interactive",        :default => false
     t.boolean  "show_info_assessment",    :default => false
