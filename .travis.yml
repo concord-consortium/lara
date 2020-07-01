@@ -5,6 +5,9 @@ rvm:
 
 dist: precise
 
+services:
+  - docker
+
 env:
   global:
     - CC_TEST_REPORTER_ID=7729fca8695dd1ce5c6117fcd57680ee5a00726647ae7d4fe52c029de211449f
@@ -15,6 +18,9 @@ before_install:
   - gem update bundler
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
+  - cd cypress && npm install
+  - cd - && docker build -t concordconsortium/lara .
+  - docker-compose up
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -30,6 +36,7 @@ script:
   - bundle exec rake
   - cd lara-plugin-api-V2 && npm i && npm run test
   - cd - && cd lara-typescript && npm i && npm run test
+  - cd - && cd cypress && npm run test:dev
   - cd -
 #  - bundle exec rake jasmine:ci
 
