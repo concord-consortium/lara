@@ -19,6 +19,7 @@ before_install:
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
   - docker build -t lara .
   - docker run -d -p 127.0.0.1:80:4567 lara /bin/sh -c "cd /root/lara;"
   - cd cypress && npm install
