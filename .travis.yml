@@ -1,4 +1,4 @@
-sudo: true # see: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: required # see: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 language: ruby
 rvm:
   - "2.3.7"
