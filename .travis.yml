@@ -22,7 +22,8 @@ before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
   - docker build -t lara .
   - docker run -d -p 127.0.0.1:80:4567 lara /bin/sh -c "cd /root/lara;"
-  - cd cypress && npm install
+  - cd cypress && npm install 
+  - cd -
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
