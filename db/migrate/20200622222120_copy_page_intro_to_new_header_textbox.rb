@@ -2,8 +2,8 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   module Embeddable
     class Embeddable::Xhtml < ActiveRecord::Base
       attr_accessible :name, :content, :is_hidden, :is_full_width
-      has_many :page_items, :as => :embeddable, :dependent => :destroy
-      has_many :interactive_pages, :through => :page_items
+      has_many :page_items, as: :embeddable, dependent: :destroy
+      has_many :interactive_pages, through: :page_items
     end
 
     def self.table_name_prefix
@@ -12,15 +12,15 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   end
 
   class InteractivePage < ActiveRecord::Base
-    has_many :page_items, :order => [:section, :position]
+    has_many :page_items, order: [:section, :position]
   end
 
   class PageItem < ActiveRecord::Base
     attr_accessible :interactive_page, :position, :section, :embeddable,
                     :interactive_page_id, :embeddable_id, :embeddable_type
-    acts_as_list :scope => :interactive_page
+    acts_as_list scope: :interactive_page
     belongs_to :interactive_page
-    belongs_to :embeddable, :polymorphic => true, dependent: :destroy
+    belongs_to :embeddable, polymorphic: true, dependent: :destroy
   end
 
   def up
