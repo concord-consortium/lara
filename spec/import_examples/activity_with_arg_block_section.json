@@ -22,11 +22,10 @@
             "position": 1,
             "show_info_assessment": true,
             "show_interactive": false,
-            "show_introduction": true,
+            "show_header": true,
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": [
                 {
                     "embeddable": {
@@ -81,11 +80,10 @@
             "position": 2,
             "show_info_assessment": false,
             "show_interactive": false,
-            "show_introduction": false,
+            "show_header": false,
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": [
                 {
                     "embeddable": {
@@ -227,11 +225,10 @@
             "position": 3,
             "show_info_assessment": false,
             "show_interactive": false,
-            "show_introduction": false,
+            "show_header": false,
             "show_sidebar": false,
             "sidebar": null,
             "sidebar_title": "Did you know?",
-            "text": null,
             "embeddables": []
         }
     ],

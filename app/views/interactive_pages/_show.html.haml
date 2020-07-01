@@ -2,14 +2,18 @@
   - unless page.name.blank?
     %h4.h4
       = page.name
-  - if page.show_introduction && !page.text.blank?
-    .intro-txt!= page.text
+  - if page.show_header
+    .header-block-mod
+      -# Wrapping plugins don't necessarily wrap items in the assessment block, so they need to be rendered separately.
+      = render partial: 'interactive_pages/list_wrapping_plugins', locals: {wrapping_plugins: header_block_wrapping_plugins(page, @run)}
+      = render partial: 'interactive_pages/list_embeddables', locals: {embeddables: header_block_visible_embeddables(page, @run).select {|e| !is_wrapping_plugin?(e) }}
 
 -# Control layout here. Add one of the following classes: l-full-width, l-6040, l-7030, r-4060, r-3070;
 - content_mod_classes = layout
 -# Add collapsible class if assessment block is collapsible.
 - content_mod_classes += page.toggle_info_assessment && layout != 'l-full-width' ? ' collapsible' : ''
 .content-mod{ :class => content_mod_classes }
+
   .ui-block-1
     - if page.show_interactive && page.interactive_box_visible_embeddables.length > 0
       = render partial: 'interactive_pages/interactive', locals: {page: page, layout: layout}

@@ -42,12 +42,11 @@ describe LightweightActivity do
 
   it 'should have InteractivePages in the correct order' do
     [3,1,2].each do |i|
-      page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
+      page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
       activity.pages << page
     end
     activity.reload
 
-    expect(activity.pages.first.text).to eq("some text 1")
     expect(activity.pages.last.name).to eq("page 3")
   end
 
@@ -130,7 +129,7 @@ describe LightweightActivity do
 
     before :each do
       [3,1,2].each do |i|
-        page = FactoryGirl.create(:page, :name => "page #{i}", :text => "some text #{i}", :position => i)
+        page = FactoryGirl.create(:page, :name => "page #{i}", :position => i)
         activity.pages << page
       end
       activity.reload
@@ -344,7 +343,6 @@ describe LightweightActivity do
 
       it 'should still duplicate the page' do
         first_page = FactoryGirl.create(:page)
-        first_page.text = bad_content
         first_page.sidebar = bad_content
         activity.pages << first_page
         activity.fix_page_positions

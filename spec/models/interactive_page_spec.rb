@@ -19,13 +19,6 @@ describe InteractivePage do
   end
 
   describe 'validation of HTML inputs' do
-    it 'rejects invalid HTML for text' do
-      page.text = '<p>This HTML is invalid.<p>Tag soup.</p>'
-      expect(page.valid?).to be_truthy # Ugh, but HTML not XML
-      page.text = 'This HTML is valid.'
-      page.valid?
-    end
-
     it 'rejects invalid HTML for the sidebar' do
       page.sidebar = '<p class="invalid-attribute>This has an invalid attribute.</p>'
       expect(page.valid?).to be_falsey
@@ -64,6 +57,21 @@ describe InteractivePage do
     it 'does not validate with layouts not in the hash' do
       page.layout = 'invalid-layout-string'
       expect(page.valid?).to be_falsey
+    end
+  end
+
+  describe 'header block' do
+    it 'has a header block' do
+      expect(page.show_header).to eq(true)
+    end
+
+    it 'has a header block to which an embeddable can be added' do
+      embed_text = "This is an embeddable in the header block."
+      embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
+      page.add_embeddable(embed, 1, InteractivePage::HEADER_BLOCK)
+      expect(page.embeddables.size).to eq(4)
+      expect(page.page_items.last.section).to eq(InteractivePage::HEADER_BLOCK)
+      expect(page.embeddables.last.content).to eq(embed_text)
     end
   end
 
@@ -172,12 +180,11 @@ describe InteractivePage do
       expected = {
         name: page.name,
         position: page.position,
-        text: page.text,
         layout: page.layout,
         is_hidden: page.is_hidden,
         sidebar: page.sidebar,
         sidebar_title: page.sidebar_title,
-        show_introduction: page.show_introduction,
+        show_header: page.show_header,
         show_sidebar: page.show_sidebar,
         show_interactive: page.show_interactive,
         show_info_assessment: page.show_info_assessment,
@@ -225,7 +232,6 @@ describe InteractivePage do
       dupe = page.duplicate
       expect(dupe).to be_a(InteractivePage)
       expect(dupe.name).to eq(page.name)
-      expect(dupe.text).to eq(page.text)
       expect(dupe.is_hidden).to eq(page.is_hidden)
       expect(dupe.sidebar_title).to eq(page.sidebar_title)
       expect(dupe.is_completion).to eq(page.is_completion)
@@ -239,26 +245,6 @@ describe InteractivePage do
     it 'has copies of the original embeddables' do
       # Note that this only confirms that there are the same number of embeddables. Page starts with 3.
       expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
-    end
-
-    describe "with invalid markup" do
-      before(:each) do
-        # Add at least one interactive as it triggers additional .save call
-        # during duplication, which should be handled correctly.
-        page.add_interactive(FactoryGirl.create(:mw_interactive))
-        page.reload
-        page.text = "foo</p>"
-        page.save(:validate => false)
-      end
-      it "the page itself should not be valid" do
-        expect(page).not_to be_valid
-      end
-      it "should have the same number of embeddables" do
-        expect(page.duplicate.embeddables.length).to be(page.embeddables.length)
-      end
-      it "should have the same number of interactives as the original" do
-        expect(page.duplicate.interactives.length).to be(page.interactives.length)
-      end
     end
 
     describe 'copies of the original interactives' do
@@ -417,7 +403,6 @@ describe InteractivePage do
           page = InteractivePage.import(p)
           expect(page).to be_a(InteractivePage)
           expect(p[:name]).to eq(page.name)
-          expect(p[:text]).to eq(page.text)
           expect(p[:sidebar_title]).to eq(page.sidebar_title)
           expect(p[:position]).to be(page.position)
         end

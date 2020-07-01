@@ -22,7 +22,7 @@
       "position": 1,
       "show_info_assessment": true,
       "show_interactive": false,
-      "show_introduction": false,
+      "show_header": false,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
