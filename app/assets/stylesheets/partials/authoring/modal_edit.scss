@@ -10,11 +10,15 @@
 
   form[class^="edit_"], form.styled-admin-form {
     height: auto;
-    max-height: calc(100% - 105px);
-    min-height: calc(100% - 105px);
+    max-height: calc(100% - 100px);
     overflow: scroll;
-    padding-bottom: 105px;
     position: relative;
+
+    &:after { // provides clearance for .submit-container
+      content: "";
+      display: block;
+      height: 100px;
+    }
 
     fieldset {
       width: calc(100% - 2px);
