@@ -51,7 +51,7 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
           textbox = Embeddable::Xhtml.where(id: pi.embeddable_id).first
           if ip.text.nil?
             ip.text = textbox.content
-            textbox.destroy()
+            pi.destroy()
           end
         end
       end
