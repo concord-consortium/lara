@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:travis": "cypress run --headless -s 'cypress/integration/interactives/**/*' --ci-build-id BUILD_NUMBER --env testEnv=dev",
     "test:dev": "cypress open --env testEnv=dev",
     "test:staging": "cypress open --env testEnv=staging",
     "test:production": "cypress open --env testEnv=production"

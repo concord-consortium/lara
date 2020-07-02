@@ -39,7 +39,7 @@ script:
   - bundle exec rake
   - cd lara-plugin-api-V2 && npm i && npm run test
   - cd - && cd lara-typescript && npm i && npm run test
-  - cd - && cd cypress && npm run test:dev
+  - cd - && cd cypress && npm run test:travis
   - cd -
 #  - bundle exec rake jasmine:ci
 
