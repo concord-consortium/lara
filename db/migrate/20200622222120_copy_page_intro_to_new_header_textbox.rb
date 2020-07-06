@@ -24,8 +24,13 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
   end
 
   def up
-    InteractivePage.find_each(batch_size: 10) do |ip|
-      if ip.text.present?
+    # Only include pages that don't already have a header_block page item
+    # And have non null text
+    InteractivePage
+      .select("interactive_pages.id, text, show_header, show_introduction")
+      .joins('LEFT OUTER JOIN page_items ON interactive_pages.id = page_items.interactive_page_id AND page_items.section = "header_block"')
+      .where('page_items.id is null AND interactive_pages.text is not null')
+      .find_each(batch_size: 1000) do |ip|
         ip.show_header = ip.show_introduction
         ip.save
         textbox = Embeddable::Xhtml.create(
@@ -40,7 +45,6 @@ class CopyPageIntroToNewHeaderTextbox < ActiveRecord::Migration
                         position: 1,
                         section: 'header_block'
                        )
-      end
     end
   end
 
