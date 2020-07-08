@@ -10,7 +10,8 @@
 
   form[class^="edit_"], form.styled-admin-form {
     height: auto;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 70px);
+    min-height: calc(100% - 70px);
     overflow: scroll;
     position: relative;
 
