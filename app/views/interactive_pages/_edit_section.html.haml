@@ -30,17 +30,18 @@
     = submit_tag 'Add', {id: 'add_embeddable_button'}
 .embeddables_list.sortable_embeddables
   - section_embeddables_list.each do |e|
-    - tracked = e.respond_to?(:tracked_question) && e.tracked_question
-    - tracked_class = tracked ? 'tracked' : ''
-    .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
-      %h3.embeddable_heading
-        %span.embeddable_title
-          - if e.respond_to? :name
-            - if !e.name.nil? && !e.name.empty?
-              #{e.name}
+    - if !is_wrapping_plugin?(e)
+      - tracked = e.respond_to?(:tracked_question) && e.tracked_question
+      - tracked_class = tracked ? 'tracked' : ''
+      .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+        %h3.embeddable_heading
+          %span.embeddable_title
+            - if e.respond_to? :name
+              - if !e.name.nil? && !e.name.empty?
+                #{e.name}
+              - else
+                #{e.class.model_name.human.titleize}
             - else
               #{e.class.model_name.human.titleize}
-          - else
-            #{e.class.model_name.human.titleize}
-        %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
-      = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
+          %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
+        = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
