@@ -30,7 +30,7 @@
     = submit_tag 'Add', {id: 'add_embeddable_button'}
 .embeddables_list.sortable_embeddables
   - section_embeddables_list.each do |e|
-    - if !is_wrapping_plugin?(e)
+    - if e.show_in_edit?
       - tracked = e.respond_to?(:tracked_question) && e.tracked_question
       - tracked_class = tracked ? 'tracked' : ''
       .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
