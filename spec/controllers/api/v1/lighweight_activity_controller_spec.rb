@@ -6,6 +6,25 @@ describe Api::V1::LightweightActivitiesController do
   let (:author2) { FactoryGirl.create(:author) }
   let (:activity) { FactoryGirl.create(:activity, user: author1) }
 
+  describe "#show" do
+    it 'recognizes and generates #show' do
+      expect({:get => "api/v1/activities/1.json"}).to route_to(
+        :controller => 'api/v1/lightweight_activities',
+        :action => 'show',
+        :id => "1",
+        :format => "json"
+      )
+    end
+
+    it "when user is anonymous, shows an activity's json" do
+
+      get :show, :id => activity.id, :format => :json
+      expect(response.status).to eq(200)
+      # json_response = JSON.parse(response.body)
+      # expect(json_response["token"]).to eq('fake-token')
+    end
+  end
+
   describe "#destroy" do
     def expect_success_for(user)
       if user
