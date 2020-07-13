@@ -58,4 +58,12 @@ module LightweightActivityHelper
       return ribbon(t("COMPLETED"),"my-ribbon")
     end
   end
+
+  def activity_player_path(activity)
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{@activity.id}&baseUrl=#{CGI.escape(root_url)}"
+  end
+
+  def activity_player_page_path(activity, page)
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{@activity.id}&page=#{page.id}&baseUrl=#{CGI.escape(root_url)}"
+  end
 end
