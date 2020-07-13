@@ -171,7 +171,7 @@ LightweightStandalone::Application.routes.draw do
         match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
       end
 
-      resources :activities, :controller => 'lightweight_activities', only: [:destroy]
+      resources :activities, :controller => 'lightweight_activities', only: [:show, :destroy]
       resources :sequences, only: [:destroy]
 
       match 'import' => 'import#import', :via => 'post'
