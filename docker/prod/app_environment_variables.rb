@@ -4,6 +4,8 @@ ENV['LOGGER_APPLICATION_NAME']           ||= 'LARA-log-poc'
 
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
 
+ENV['ACTIVITY_PLAYER_URL']               ||= 'https://activity-player.concord.org/branch/master'
+
 # this specifies a | separated list of urls for interactives
 # these special interactive URLs trigger LARA to conver their associated LabBook to
 # upload LabBook
