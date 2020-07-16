@@ -98,58 +98,59 @@
     });
 - else
   -# Version 3
-  - plugin_learner_state = PluginLearnerState.find_or_create(plugin, @run)
-  - learner_state = plugin_learner_state.state
-  -# embeddable template variable will be undefined when the activity level plugins are rendered
-  - embeddable_defined = defined?(embeddable) && embeddable.present?
+  - if plugin.author_data.present?
+    - plugin_learner_state = PluginLearnerState.find_or_create(plugin, @run)
+    - learner_state = plugin_learner_state.state
+    -# embeddable template variable will be undefined when the activity level plugins are rendered
+    - embeddable_defined = defined?(embeddable) && embeddable.present?
 
-  -# wrapped_embeddable template variable might be undefined when the activity level plugins are rendered
-  - wrapped_embedd = defined?(wrapped_embeddable) && wrapped_embeddable
-  - if wrapped_embedd
-    -# Plugin is wrapping some other embeddable. It's injected into its div and gets question content.
-    - runtime_div_selector = "##{wrapped_embedd.embeddable_dom_id}"
-    - wrapped_selector = "#{runtime_div_selector} .embeddable-container"
-  - else
-    -# Typical case. Plugin renders its own output.
-    - output_id = "output-#{plugin.id}"
-    .plugin-output{id: output_id}
-    - runtime_div_selector = "##{output_id}"
-    - wrapped_selector = nil
-  - interactive_state_url = nil
-  - if wrapped_embedd && wrapped_embedd.respond_to?(:interactive_run_states)
-    - irs = InteractiveRunState.by_run_and_interactive(@run, wrapped_embedd)
-    - interactive_state_url = irs && irs.key ? api_v1_show_interactive_run_state_path({key: irs.key}) : ''
-  - clickToPlay = !!(wrapped_embedd && wrapped_embedd.respond_to?(:click_to_play) && wrapped_embedd.click_to_play)
-  :javascript
-    // Begin script for #{plugin.name}
-    $(document).ready(function() {
-      // It's impossible to get type checking here, but object below MUST always implement IEmbeddableContext interface
-      // defined at lara-plugin-api/helpers/embeddable-runtime-context.ts.
-      var embeddableContext = #{!wrapped_embedd ? 'null' : "{
-        container: $('#{wrapped_selector}')[0],
-        laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json},
-        interactiveStateUrl: #{interactive_state_url ? "'#{escape_javascript(interactive_state_url)}'" : 'null'},
-        interactiveAvailable: #{!clickToPlay}
-      }"};
-      // It's impossible to get type checking here, but object below MUST always implement IPluginContext interface
-      // defined at lara-plugin-api/helpers/plugin-runtime-context.ts.
-      var pluginContext = {
-        name: '#{plugin.name}',
-        url: '#{plugin.url}',
-        pluginId: #{plugin.id},
-        embeddablePluginId: #{embeddable_defined ? embeddable.id : 'null'},
-        authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
-        learnerState: #{learner_state ? "'#{ escape_javascript(learner_state) }'" : 'null'},
-        learnerStateSaveUrl: `#{escape_javascript(update_plugin_learner_state_url)}`,
-        container: $('#{runtime_div_selector}')[0],
-        runId: #{@run.id},
-        remoteEndpoint: #{@run.remote_endpoint ? "'#{escape_javascript(@run.remote_endpoint)}'" : 'null'},
-        userEmail: #{@run.user && @run.user.email ? "'#{escape_javascript(@run.user.email)}'" : 'null'},
-        classInfoUrl: #{@run.class_info_url ? "'#{escape_javascript(@run.class_info_url)}'" : 'null'},
-        firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
-        wrappedEmbeddable: embeddableContext,
-        resourceUrl: '#{escape_javascript(@sequence_run ? sequence_url(@sequence_run.sequence) : activity_url(@run.activity))}'
-      }
-      console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API")
-      LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
-    });
+    -# wrapped_embeddable template variable might be undefined when the activity level plugins are rendered
+    - wrapped_embedd = defined?(wrapped_embeddable) && wrapped_embeddable
+    - if wrapped_embedd
+      -# Plugin is wrapping some other embeddable. It's injected into its div and gets question content.
+      - runtime_div_selector = "##{wrapped_embedd.embeddable_dom_id}"
+      - wrapped_selector = "#{runtime_div_selector} .embeddable-container"
+    - else
+      -# Typical case. Plugin renders its own output.
+      - output_id = "output-#{plugin.id}"
+      .plugin-output{id: output_id}
+      - runtime_div_selector = "##{output_id}"
+      - wrapped_selector = nil
+    - interactive_state_url = nil
+    - if wrapped_embedd && wrapped_embedd.respond_to?(:interactive_run_states)
+      - irs = InteractiveRunState.by_run_and_interactive(@run, wrapped_embedd)
+      - interactive_state_url = irs && irs.key ? api_v1_show_interactive_run_state_path({key: irs.key}) : ''
+    - clickToPlay = !!(wrapped_embedd && wrapped_embedd.respond_to?(:click_to_play) && wrapped_embedd.click_to_play)
+    :javascript
+      // Begin script for #{plugin.name}
+      $(document).ready(function() {
+        // It's impossible to get type checking here, but object below MUST always implement IEmbeddableContext interface
+        // defined at lara-plugin-api/helpers/embeddable-runtime-context.ts.
+        var embeddableContext = #{!wrapped_embedd ? 'null' : "{
+          container: $('#{wrapped_selector}')[0],
+          laraJson: #{(LaraSerializationHelper.new).export(wrapped_embedd).to_json},
+          interactiveStateUrl: #{interactive_state_url ? "'#{escape_javascript(interactive_state_url)}'" : 'null'},
+          interactiveAvailable: #{!clickToPlay}
+        }"};
+        // It's impossible to get type checking here, but object below MUST always implement IPluginContext interface
+        // defined at lara-plugin-api/helpers/plugin-runtime-context.ts.
+        var pluginContext = {
+          name: '#{plugin.name}',
+          url: '#{plugin.url}',
+          pluginId: #{plugin.id},
+          embeddablePluginId: #{embeddable_defined ? embeddable.id : 'null'},
+          authoredState: #{plugin.author_data ? "'#{ escape_javascript(plugin.author_data) }'" : 'null'},
+          learnerState: #{learner_state ? "'#{ escape_javascript(learner_state) }'" : 'null'},
+          learnerStateSaveUrl: `#{escape_javascript(update_plugin_learner_state_url)}`,
+          container: $('#{runtime_div_selector}')[0],
+          runId: #{@run.id},
+          remoteEndpoint: #{@run.remote_endpoint ? "'#{escape_javascript(@run.remote_endpoint)}'" : 'null'},
+          userEmail: #{@run.user && @run.user.email ? "'#{escape_javascript(@run.user.email)}'" : 'null'},
+          classInfoUrl: #{@run.class_info_url ? "'#{escape_javascript(@run.class_info_url)}'" : 'null'},
+          firebaseJwtUrl: '#{escape_javascript(firebase_jwt_url)}',
+          wrappedEmbeddable: embeddableContext,
+          resourceUrl: '#{escape_javascript(@sequence_run ? sequence_url(@sequence_run.sequence) : activity_url(@run.activity))}'
+        }
+        console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API")
+        LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
+      });
