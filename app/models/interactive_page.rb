@@ -136,7 +136,21 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def reportable_items
-    visible_embeddables.select { |item| item.reportable? }
+    all_visible_embeddables = []
+    if self.show_header
+      all_visible_embeddables.concat header_block_visible_embeddables.select { |item| item.reportable? }
+    end
+    if self.show_info_assessment
+      all_visible_embeddables.concat main_visible_embeddables.select { |item| item.reportable? }
+    end
+    if self.additional_sections
+      self.additional_sections.each do |as|
+        all_visible_embeddables.concat section_visible_embeddables(as).select { |item| item.reportable? }
+      end
+    end
+    if self.show_interactive
+      all_visible_embeddables.concat interactive_box_visible_embeddables.select { |item| item.reportable? }
+    end
   end
 
   def add_embeddable(embeddable, position = nil, section = nil)
