@@ -326,6 +326,7 @@ export interface IGetFirebaseJwtResponse extends IBaseRequestResponse {
 }
 
 export interface IGetInteractiveListOptions {
+  scope: "page"; // to allow for adding other scopes in the future
   supportsSnapshots?: boolean;
 }
 export interface IGetInteractiveListRequest extends IBaseRequestResponse, IGetInteractiveListOptions {
@@ -334,10 +335,12 @@ export interface IGetInteractiveListRequest extends IBaseRequestResponse, IGetIn
 
 export interface IInteractiveListResponseItem {
   id: InteractiveAuthoredId;
+  pageId: number;
   name: string;
-  pageLocation: "assessment list" | "interactive box" | "introduction";
+  section: "header_block" | "assessment_block" | "interactive_box";
   url: string;
-  thumbnailUrl?: string;
+  thumbnailUrl: string | null;
+  supportsSnapshots: boolean;
 }
 export interface IGetInteractiveListResponse extends IBaseRequestResponse {
   interactives: IInteractiveListResponseItem[];

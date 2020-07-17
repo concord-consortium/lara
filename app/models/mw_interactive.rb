@@ -152,4 +152,9 @@ class MwInteractive < ActiveRecord::Base
   def prompt
     name
   end
+
+  def thumbnail_url
+    # mirror managed_interactive has thumbnail_url which proxies to library_interactive
+    nil
+  end
 end

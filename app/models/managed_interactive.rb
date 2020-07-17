@@ -97,6 +97,10 @@ class ManagedInteractive < ActiveRecord::Base
     library_interactive ? library_interactive.no_snapshots : false
   end
 
+  def thumbnail_url
+    library_interactive ? library_interactive.thumbnail_url : nil
+  end
+
   def self.portal_type
     "iframe interactive"
   end

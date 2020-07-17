@@ -12,9 +12,16 @@
 
 ### Properties
 
+* [scope](igetinteractivelistoptions.md#scope)
 * [supportsSnapshots](igetinteractivelistoptions.md#optional-supportssnapshots)
 
 ## Properties
+
+###  scope
+
+• **scope**: *"page"*
+
+___
 
 ### `Optional` supportsSnapshots
 

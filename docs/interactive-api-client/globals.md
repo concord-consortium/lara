@@ -398,7 +398,7 @@ ___
 
 ### `Const` getInteractiveList
 
-▸ **getInteractiveList**(`options`: [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)): *void*
+▸ **getInteractiveList**(`options`: [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)): *Promise‹[IGetInteractiveListResponse](interfaces/igetinteractivelistresponse.md)›*
 
 **Parameters:**
 
@@ -406,7 +406,7 @@ Name | Type |
 ------ | ------ |
 `options` | [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md) |
 
-**Returns:** *void*
+**Returns:** *Promise‹[IGetInteractiveListResponse](interfaces/igetinteractivelistresponse.md)›*
 
 ___
 

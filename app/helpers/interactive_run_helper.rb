@@ -47,6 +47,7 @@ module InteractiveRunHelper
     data['authored-state'] = interactive.authored_state
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
+    data['get-interactive-list-url'] = api_v1_get_interactive_list_url(interactive.interactive_page.id)
 
     opts = {
       :src => interactive.url,

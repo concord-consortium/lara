@@ -15,6 +15,7 @@
 ### Properties
 
 * [requestId](igetinteractivelistrequest.md#requestid)
+* [scope](igetinteractivelistrequest.md#scope)
 * [supportsSnapshots](igetinteractivelistrequest.md#optional-supportssnapshots)
 
 ## Properties
@@ -24,6 +25,14 @@
 • **requestId**: *number*
 
 *Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
+
+___
+
+###  scope
+
+• **scope**: *"page"*
+
+*Inherited from [IGetInteractiveListOptions](igetinteractivelistoptions.md).[scope](igetinteractivelistoptions.md#scope)*
 
 ___
 

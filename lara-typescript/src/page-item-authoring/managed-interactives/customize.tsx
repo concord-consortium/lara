@@ -104,8 +104,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
         </fieldset>
       </>
       : undefined}
-    </>
-  }
+    </>;
+  };
 
   if (!libraryInteractive.customizable) {
     const renderAspectRatioValues = () => {

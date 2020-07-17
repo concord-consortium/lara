@@ -12,8 +12,10 @@
 
 * [id](iinteractivelistresponseitem.md#id)
 * [name](iinteractivelistresponseitem.md#name)
-* [pageLocation](iinteractivelistresponseitem.md#pagelocation)
-* [thumbnailUrl](iinteractivelistresponseitem.md#optional-thumbnailurl)
+* [pageId](iinteractivelistresponseitem.md#pageid)
+* [section](iinteractivelistresponseitem.md#section)
+* [supportsSnapshots](iinteractivelistresponseitem.md#supportssnapshots)
+* [thumbnailUrl](iinteractivelistresponseitem.md#thumbnailurl)
 * [url](iinteractivelistresponseitem.md#url)
 
 ## Properties
@@ -30,15 +32,27 @@ ___
 
 ___
 
-###  pageLocation
+###  pageId
 
-• **pageLocation**: *"assessment list" | "interactive box" | "introduction"*
+• **pageId**: *number*
 
 ___
 
-### `Optional` thumbnailUrl
+###  section
 
-• **thumbnailUrl**? : *undefined | string*
+• **section**: *"header_block" | "assessment_block" | "interactive_box"*
+
+___
+
+###  supportsSnapshots
+
+• **supportsSnapshots**: *boolean*
+
+___
+
+###  thumbnailUrl
+
+• **thumbnailUrl**: *string | null*
 
 ___
 
