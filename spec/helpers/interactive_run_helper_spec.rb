@@ -8,21 +8,14 @@ describe InteractiveRunHelper do
     init_haml_helpers
   end
 
-  let(:act_stubs)  {{}}
-  let(:page_stubs) {{}}
-
-  let(:activity)     { mock_model(LightweightActivity, act_stubs) }
-  let(:page)         { mock_model(InteractivePage, page_stubs)    }
-  let(:run)          { mock_model(Run, run_stubs)                 }
+  let(:project)      { FactoryGirl.create(:project) }
+  let(:theme)        { FactoryGirl.create(:theme) }
+  let(:activity)     { FactoryGirl.create(:public_activity, project: project, theme: theme ) }
+  let(:page)         { FactoryGirl.create(:page, :lightweight_activity => activity) }
+  let(:run)          { FactoryGirl.create(:run, run_stubs) }
   let(:sequence_run) { nil }
-  let(:interactive)  { mock_model(MwInteractive, interactive_stubs) }
-  let(:user_stubs)   { {
-    email: "test@example.com",
-    most_recent_authentication: {
-      provider: nil
-    }
-  } }
-  let(:user)         { mock_model(User, user_stubs) }
+  let(:interactive)  { FactoryGirl.create(:mw_interactive, authored_state: "{}", name: "test" ) }
+  let(:user)         { FactoryGirl.create(:user, { email: "test@example.com" } ) }
 
   let(:run_stubs) do
     {
@@ -35,16 +28,15 @@ describe InteractiveRunHelper do
     }
   end
 
-  let(:interactive_stubs) do
-    {
-      authored_state: "{}",
-      name: "test"
-    }
-  end
-
   subject {helper.interactive_data_div(interactive,run)}
 
   describe "#interactive_data_div(interactive,run)" do
+    before :each do
+      page.add_interactive(interactive)
+      interactive.reload
+      page.reload
+    end
+
     describe "without a run" do
       let(:run) { nil }
 
@@ -61,6 +53,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-authored-state")
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
+        expect(subject).to include("data-get-interactive-list-url")
       end
     end
 
@@ -79,6 +72,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-authored-state")
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
+        expect(subject).to include("data-get-interactive-list-url")
       end
     end
 

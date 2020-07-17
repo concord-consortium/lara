@@ -89,6 +89,10 @@ class InteractivePage < ActiveRecord::Base
     embeddables.select{ |e| Embeddable::is_interactive?(e) }
   end
 
+  def interactive_page_items
+    page_items.select{ |pi| Embeddable::is_interactive?(pi.embeddable) }
+  end
+
   def section_embeddables(section)
     page_items.where(section: section).collect{ |qi| qi.embeddable }
   end
@@ -143,10 +147,10 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
-  def add_interactive(interactive, position = nil, validate = true)
+  def add_interactive(interactive, position = nil, validate = true, section = INTERACTIVE_BOX)
     self[:show_interactive] = true
     self.save!(validate: validate)
-    add_embeddable(interactive, position, INTERACTIVE_BOX)
+    add_embeddable(interactive, position, section)
   end
 
   def next_visible_page

@@ -28010,6 +28010,7 @@ var IFrameSaver = /** @class */ (function () {
         this.interactiveId = $dataDiv.data("interactive-id");
         this.interactiveName = $dataDiv.data("interactive-name");
         this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+        this.getInteractivesListUrl = $dataDiv.data("get-interactives-list-url");
         this.saveIndicator = SaveIndicator.instance();
         this.$deleteButton.click(function () { return _this.deleteData(); });
         this.savedState = null;
@@ -28140,6 +28141,9 @@ var IFrameSaver = /** @class */ (function () {
         });
         this.addListener("getFirebaseJWT", function (request) {
             return _this.getFirebaseJwt(request);
+        });
+        this.addListener("getInteractiveList", function (request) {
+            return _this.getInteractiveList(request);
         });
         if (this.learnerStateSavingEnabled()) {
             this.post("getLearnerUrl");
@@ -28313,6 +28317,21 @@ var IFrameSaver = /** @class */ (function () {
             },
             error: function (jqxhr, status, error) {
                 _this.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
+            }
+        });
+    };
+    IFrameSaver.prototype.getInteractiveList = function (request) {
+        var _this = this;
+        var requestId = request.requestId, scope = request.scope, supportsSnapshots = request.supportsSnapshots;
+        return $.ajax({
+            type: "GET",
+            url: this.getInteractivesListUrl,
+            data: { scope: scope, supportsSnapshots: supportsSnapshots },
+            success: function (data) {
+                _this.post("interactiveList", { requestId: requestId, interactives: data.interactives });
+            },
+            error: function (jqxhr, status, error) {
+                _this.post("interactiveList", { requestId: requestId, response_type: "ERROR", message: error });
             }
         });
     };
@@ -29314,7 +29333,9 @@ exports.ManagedInteractiveAuthoring = function (props) {
                         React.createElement("legend", null, "Url Fragment"),
                         React.createElement("textarea", { id: formField("url_fragment").id, name: formField("url_fragment").name, defaultValue: url_fragment, onBlur: handleUrlFragmentBlur })),
                     libraryInteractive.authoring_guidance
-                        ? React.createElement("div", { dangerouslySetInnerHTML: { __html: libraryInteractive.authoring_guidance } })
+                        ? React.createElement("fieldset", null,
+                            React.createElement("legend", null, "Authoring Guidance"),
+                            React.createElement("div", { dangerouslySetInnerHTML: { __html: libraryInteractive.authoring_guidance } }))
                         : undefined)));
         };
         return (React.createElement(react_tabs_1.Tabs, null,
@@ -30326,4 +30347,3 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /******/ });
 });
-//# sourceMappingURL=lara-typescript.js.map
