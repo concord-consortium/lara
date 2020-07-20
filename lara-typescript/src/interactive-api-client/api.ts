@@ -3,7 +3,6 @@ import {
   ISupportedFeaturesRequest,
   INavigationOptions,
   IAuthInfo,
-  IGetFirebaseJwtOptions,
   IGetFirebaseJwtResponse,
   ISupportedFeatures,
   IGetFirebaseJwtRequest,
@@ -12,11 +11,12 @@ import {
   IRuntimeCustomReportValues,
   IShowModal,
   ICloseModal,
-  IGetInteractiveListRequest,
+  IGetInteractiveListOptions,
   ISetLinkedInteractives,
   IGetLibraryInteractiveListRequest,
   IGetInteractiveSnapshotRequest,
-  IHintRequest
+  IHintRequest,
+  IJwtResponse
 } from "./types";
 import { getClient } from "./client";
 
@@ -42,6 +42,8 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
   return getClient().managedState.interactiveState;
 };
 
+let setInteractiveStateTimeoutId: number;
+export const setInteractiveStateTimeout = 2000; // ms
 /**
  * Note that state will become frozen and should never be mutated.
  * Each time you update state, make sure that a new object is passed.
@@ -62,7 +64,11 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
 export const setInteractiveState = <InteractiveState>(newInteractiveState: InteractiveState | null) => {
   const client = getClient();
   client.managedState.interactiveState = newInteractiveState;
-  client.post("interactiveState", newInteractiveState);
+  window.clearTimeout(setInteractiveStateTimeoutId);
+  setInteractiveStateTimeoutId = window.setTimeout(() => {
+    client.post("interactiveState", newInteractiveState);
+    client.managedState.interactiveStateDirty = false;
+  }, setInteractiveStateTimeout);
 };
 
 export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
@@ -158,20 +164,27 @@ export const getAuthInfo = (): Promise<IAuthInfo> => {
   });
 };
 
-export const getFirebaseJWT = (options: IGetFirebaseJwtOptions): Promise<string> => {
-  return new Promise<string>((resolve, reject) => {
+export const getFirebaseJwt = (firebaseApp: string): Promise<IJwtResponse> => {
+  return new Promise<IJwtResponse>((resolve, reject) => {
     const listener = (response: IGetFirebaseJwtResponse) => {
       if (response.response_type === "ERROR") {
         reject(response.message || "Error getting Firebase JWT");
+      } else if (response.token) {
+        try {
+          const claimsJson = atob(response.token.split(".")[1]);
+          resolve({token: response.token, claims: JSON.parse(claimsJson)});
+        } catch (error) {
+          reject("Unable to parse JWT Token");
+        }
       } else {
-        resolve(response.token);
+        reject("Empty token");
       }
     };
     const client = getClient();
     const requestId = client.getNextRequestId();
     const request: IGetFirebaseJwtRequest = {
       requestId,
-      ...options
+      firebase_app: firebaseApp
     };
     client.addListener("firebaseJWT", listener, requestId);
     client.post("getFirebaseJWT", request);
@@ -213,22 +226,8 @@ export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(lis
 /**
  * @todo Implement this function.
  */
-export const setAuthoringCustomReportFields = (fields: IAuthoringCustomReportFields) => {
-  THROW_NOT_IMPLEMENTED_YET("setAuthoringCustomReportFields");
-};
-
-/**
- * @todo Implement this function.
- */
-export const setRuntimeCustomReportValues = (values: IRuntimeCustomReportValues) => {
-  THROW_NOT_IMPLEMENTED_YET("setRuntimeCustomReportValues");
-};
-
-/**
- * @todo Implement this function.
- */
 export const showModal = (options: IShowModal) => {
-  if (options.type === "alert") {
+  if ((options.type === "alert") || (options.type === "lightbox")) {
     getClient().post("showModal", options);
   }
   else {
@@ -246,7 +245,7 @@ export const closeModal = (options: ICloseModal) => {
 /**
  * @todo Implement this function.
  */
-export const getInteractiveList = (options: IGetInteractiveListRequest) => {
+export const getInteractiveList = (options: IGetInteractiveListOptions) => {
   THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
 };
 

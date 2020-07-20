@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import ResizeObserver from "resize-observer-polyfill";
 import { SlateContainer, slateToHtml, htmlToSlate, serializeValue } from "@concord-consortium/slate-editor";
 
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
@@ -65,6 +66,8 @@ export {
 
   InteractiveAuthoringPreview,
   renderInteractiveAuthoringPreview,
+
+  ResizeObserver,
 
   SlateContainer,
   renderSlateContainer,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200519211013) do
+ActiveRecord::Schema.define(:version => 20200625215657) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -345,11 +345,9 @@ ActiveRecord::Schema.define(:version => 20200519211013) do
     t.string   "name"
     t.integer  "lightweight_activity_id"
     t.integer  "position"
-    t.text     "text"
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
     t.text     "sidebar"
-    t.boolean  "show_introduction",       :default => false
     t.boolean  "show_sidebar",            :default => false
     t.boolean  "show_interactive",        :default => false
     t.boolean  "show_info_assessment",    :default => false
@@ -361,6 +359,7 @@ ActiveRecord::Schema.define(:version => 20200519211013) do
     t.text     "additional_sections"
     t.boolean  "is_hidden",               :default => false,           :null => false
     t.boolean  "is_completion",           :default => false
+    t.boolean  "show_header",             :default => false
   end
 
   add_index "interactive_pages", ["lightweight_activity_id", "position"], :name => "interactive_pages_by_activity_idx"

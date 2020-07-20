@@ -7,7 +7,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   'components/itsi_authoring/prediction_editor'
   'components/itsi_authoring/drawing_response_editor'
   'components/itsi_authoring/model_editor'
-  'components/itsi_authoring/text_editor'
+  'components/itsi_authoring/textblock_editor'
 ],
 (
   OpenResponseQuestionEditorClass,
@@ -15,7 +15,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   PredictionEditorClass,
   DrawingResponseEditorClass,
   ModelEditorClass,
-  TextEditorClass,
+  TextBlockEditorClass,
 ) ->
 
   OpenResponseQuestionEditor = React.createFactory OpenResponseQuestionEditorClass
@@ -23,7 +23,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   PredictionEditor = React.createFactory PredictionEditorClass
   DrawingResponseEditor = React.createFactory DrawingResponseEditorClass
   ModelEditor = React.createFactory ModelEditorClass
-  TextEditor = React.createFactory TextEditorClass
+  TextBlockEditor = React.createFactory TextBlockEditorClass
 
   createReactClass
 
@@ -62,6 +62,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
       switch element.type
         when 'image_question' then DrawingResponseEditor
         when 'open_response' then OpenResponseQuestionEditor
+        when 'xhtml' then TextBlockEditor
         else null
 
     render: ->
@@ -71,16 +72,17 @@ modulejs.define 'components/itsi_authoring/section_editor',
           (span {className: 'ia-section-editor-title'}, @props.title)
         )
         (div {className: 'ia-section-editor-elements', style: {display: if @state.selected then 'block' else 'none'}},
-          (TextEditor {data: @props.section, alert: @props.alert})
+          for embeddable, i in @props.section.header_embeddables
+            editor = @getEditorForEmbeddedElement embeddable
+            if editor
+              (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
           for interactive, i in @props.section.interactives
             editor = @getEditorForInteractiveElement interactive
             if editor
               (editor {key: "interactive#{i}", data: interactive, alert: @props.alert, confirmHide: @props.confirmHide, jsonListUrls: @props.jsonListUrls})
-
           for embeddable, i in @props.section.embeddables
             editor = @getEditorForEmbeddedElement embeddable
             if editor
               (editor {key: "embeddable#{i}", data: embeddable, alert: @props.alert, confirmHide: @props.confirmHide})
         )
       )
-

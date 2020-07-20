@@ -38,11 +38,13 @@ class ITSIAuthoring::Editor
   def section_json(page)
     {
       name: page.name,
-      text: page.text, # introduction text
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
       interactives: page.interactives.map { |i| interactive_json(i, page) },
-      embeddables: page.embeddables.map { |e| embeddable_json(e) }
+      embeddables: page.embeddables.select { |e| e.page_section.nil? }
+                                   .map { |e| embeddable_json(e) },
+      header_embeddables: page.embeddables.select { |e| e.page_section == InteractivePage::HEADER_BLOCK }
+                                          .map { |he| embeddable_json(he) }
     }
   end
 
@@ -51,6 +53,8 @@ class ITSIAuthoring::Editor
     case type
       when 'open_response'
         open_response_json(e)
+      when 'xhtml'
+        xhtml_json(e)
       when 'image_question'
         image_question_json(e)
       else
@@ -66,6 +70,16 @@ class ITSIAuthoring::Editor
       is_hidden: e.is_hidden,
       default_text: e.default_text,
       update_url: embeddable_open_response_path(e)
+    }
+  end
+
+  def xhtml_json(e)
+    {
+      type: 'xhtml',
+      name: e.name,
+      is_hidden: e.is_hidden,
+      content: e.content,
+      update_url: embeddable_xhtml_path(e)
     }
   end
 

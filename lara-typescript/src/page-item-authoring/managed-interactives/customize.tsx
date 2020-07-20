@@ -16,7 +16,6 @@ interface Props {
   managedInteractive: IManagedInteractive;
   libraryInteractive: ILibraryInteractive;
   defaultClickToPlayPrompt: string;
-  onUrlFragmentChange: (urlFragment: string) => void;
 }
 
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
@@ -24,7 +23,6 @@ const formField = RailsFormField<IManagedInteractive>("managed_interactive");
 export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const { managedInteractive, libraryInteractive, defaultClickToPlayPrompt } = props;
   const {
-    url_fragment,
     inherit_aspect_ratio_method,
     custom_aspect_ratio_method,
     custom_native_width,
@@ -36,7 +34,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     inherit_full_window,
     custom_full_window,
     inherit_image_url,
-    custom_image_url
+    custom_image_url,
+    linked_interactive_id,
+    show_in_featured_question_report
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -77,9 +77,35 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
   const clickToPlayEnabled = (inheritClickToPlay && libraryInteractive.click_to_play) ||
                              (!inheritClickToPlay && customClickToPlay);
 
-  const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.onUrlFragmentChange(e.target.value);
-  };
+  const renderCommonFields = () => {
+    return <>
+      {libraryInteractive.enable_learner_state ?
+      <>
+        <fieldset>
+          <legend>Link Saved Work From</legend>
+          <input
+            type="text"
+            name={formField("linked_interactive_id").name}
+            defaultValue={`${linked_interactive_id || ""}`}
+          />
+          <div className="warning">
+            <em>Warning</em>: Please do not link to another interactive
+            unless the interactive knows how to load prior work.
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Featured Report</legend>
+          <Checkbox
+              id={formField("show_in_featured_question_report").id}
+              name={formField("show_in_featured_question_report").name}
+              defaultChecked={show_in_featured_question_report}
+              label="Show in featured question report?"
+            />
+        </fieldset>
+      </>
+      : undefined}
+    </>
+  }
 
   if (!libraryInteractive.customizable) {
     const renderAspectRatioValues = () => {
@@ -100,11 +126,13 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
     return (
       <div>
+        {renderCommonFields()}
+
         <p>
           The selected library interactive ({libraryInteractive.name})
-          does not support customizing the advanced options.  Here are the default option values:
+          does not support customizing the additional advanced options.
+          Here are their values:
         </p>
-        <ReadOnlyFormField legend="Url Fragment" value={url_fragment} />
         <ReadOnlyFormField
           legend="Aspect Ratio"
           value={availableAspectRatios[custom_aspect_ratio_method as AspectRatioMode]}
@@ -173,15 +201,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
 
   // this generates a form element that renders inside the rails popup form
   return <>
-    <fieldset>
-      <legend>Url Fragment</legend>
-      <textarea
-        id={formField("url_fragment").id}
-        name={formField("url_fragment").name}
-        defaultValue={url_fragment}
-        onBlur={handleUrlFragmentBlur}
-      />
-    </fieldset>
+    {renderCommonFields()}
 
     <fieldset>
       <legend>Aspect Ratio</legend>

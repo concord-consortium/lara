@@ -2,7 +2,7 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-ifram
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
-import { IGetFirebaseJwtOptions, IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
+import { IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -30,12 +30,19 @@ describe("api", () => {
       mode: "runtime",
       interactiveState: {foo: "bar"}
     });
+    // interactive state shouldn't be dirty after initial load.
+    expect(getClient().managedState.interactiveStateDirty).toEqual(false);
   });
 
-  it("supports setInteractiveState and getInteractiveState", () => {
+  it("supports setInteractiveState and getInteractiveState", (done) => {
     api.setInteractiveState({foo: true});
-    expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
     expect(api.getInteractiveState()).toEqual({foo: true});
+    expect(getClient().managedState.interactiveStateDirty).toEqual(true);
+    setTimeout(() => {
+      expect(mockedPhone.messages).toEqual([{type: "interactiveState", content: {foo: true}}]);
+      expect(getClient().managedState.interactiveStateDirty).toEqual(false);
+      done();
+    }, api.setInteractiveStateTimeout + 1);
   });
 
   it("supports setAuthoredState and getAuthoredState", () => {
@@ -110,32 +117,33 @@ describe("api", () => {
     });
   });
 
-  it("supports getFirebaseJWT called multiple times", () => {
-    const requestContent: IGetFirebaseJwtOptions[] = [
-      { firebase_app: "foo" },
-      { firebase_app: "bar" },
-      { firebase_app: "baz" }
+  it("supports getFirebaseJwt called multiple times", () => {
+    const requestContent: string[] = [
+      "foo",
+      "bar",
+      "baz"
     ];
     testRequestResponse({
-      method: api.getFirebaseJWT,
-      requestType: "getFirebaseJWT",
+      method: api.getFirebaseJwt,
+      requestType: "getFirebaseJwt",
       requestContent,
       responseType: "firebaseJWT",
       responseContent: [
-        {token: "FOO"},
-        {token: "BAR"},
-        {token: "BAZ"}
+        // Tokens generated using: https://jwt.io/
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
       ],
       resolvesTo: [
-        "FOO",
-        "BAR",
-        "BAZ"
+        {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+        {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+        {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
       ]
     });
   });
 
-  it("supports errors from getFirebaseJWT", () => {
-    const promise = api.getFirebaseJWT({firebase_app: "foo"});
+  it("supports errors from getFirebaseJwt", () => {
+    const promise = api.getFirebaseJwt("foo");
     const content: IGetFirebaseJwtResponse = {
       requestId: 1,
       response_type: "ERROR",
@@ -143,6 +151,16 @@ describe("api", () => {
     };
     mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
     expect(promise).rejects.toEqual("it's broke!");
+  });
+
+  it("handles incorrect JWTs", () => {
+    const promise = api.getFirebaseJwt("foo");
+    const content: IGetFirebaseJwtResponse = {
+      requestId: 1,
+      token: "invalid JWT"
+    };
+    mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
+    expect(promise).rejects.toEqual("Unable to parse JWT Token");
   });
 
   it("supports interactive state observing", () => {
@@ -181,20 +199,6 @@ describe("api", () => {
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
-  it("does not yet implement setAuthoringCustomReportFields", () => {
-    expect(() => api.setAuthoringCustomReportFields({
-      fields: [
-        {id: "foo", columnHeading: "Foo"}
-      ]
-    })).toThrow(/not yet implemented/);
-  });
-
-  it("does not yet implement setRuntimeCustomReportValues", () => {
-    expect(() => api.setRuntimeCustomReportValues({
-      values: {foo: "bar"}
-    })).toThrow(/not yet implemented/);
-  });
-
   it("should implement showModal [alert]", () => {
     const options: IShowAlert = {
       uuid: "foo",
@@ -207,13 +211,14 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
-  it("does not yet implement showModal [lightbox]", () => {
+  it("should implement showModal [lightbox]", () => {
     const options: IShowLightbox = {
       uuid: "foo",
       type: "lightbox",
       url: "https://concord.org"
     };
-    expect(() => api.showModal(options)).toThrow(/not yet implemented/);
+    api.showModal(options);
+    expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
   it("does not yet implement showModal [dialog]", () => {
@@ -235,7 +240,6 @@ describe("api", () => {
 
   it("does not yet implement getInteractiveList", () => {
     expect(() => api.getInteractiveList({
-      requestId: 1,
       supportsSnapshots: true
     })).toThrow(/not yet implemented/);
   });
@@ -272,13 +276,11 @@ const testRequestResponse = async (options: IRequestResponseOptions) => {
   const startListeners = mockedPhone.numListeners;
   const requestIds: number[] = [];
   const promises: Array<Promise<any>> = [];
-  const mockedMessages: any[] = [];
 
   options.requestContent.forEach((rc, index) => {
     const requestId = index + 1;
     requestIds.push(requestId);
     const content = {requestId, ...options.requestContent[index]};
-    mockedMessages.push({type: options.requestType, content});
     promises.push(options.method(options.requestContent[index]));
   });
 

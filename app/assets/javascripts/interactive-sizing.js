@@ -1,8 +1,8 @@
-/*global $ */
+/*global $, scrollInteractiveModOffset, LARA */
 
 function interactiveSizing () {
   function setInteractiveWidth($iframe, width) {
-    var $container = $iframe.parents(".embeddable-container")
+    var $container = $iframe.parents(".embeddable-root");
     if ($container.length > 0) {
       $container.css('width', width);
     }
@@ -22,12 +22,19 @@ function interactiveSizing () {
     var aspectRatio = $iframe.data('aspect-ratio');
     var resizeMethod = $iframe.data('aspect-ratio-method');
     var maxHeight = window.innerHeight;
-
-    var $pinned = $iframe.parents('.pinned');
-    var isPinned = $pinned.length > 0;
-    var multipleInteractives = isPinned && $pinned.children().length > 1;
+    var $container = $iframe.parents(".embeddable-container");
 
     // Reset dimensions.
+    // FIXME: this causes problems with plugin wrappers.  The
+    // wrappingContentHeight below will be computed with a width of 100%, but the
+    // final result of setSize might make the width less than 100%. So if the
+    // wrapping content is flowing text then it might be taller when the width
+    // is less.
+    // However removing this width reset causes an infite loop because
+    // after the size is updated the resize observer fires. And since the
+    // size calculation is made based on the new width this results in a new size
+    // which triggers the resize observer.... In theory this should settle down
+    // after a few iterations but it doesn't.
     setInteractiveWidth($iframe, '100%');
 
     // if the interactive specifies a height then use that instead of calculating the height
@@ -37,23 +44,31 @@ function interactiveSizing () {
       return;
     }
 
-    if (isPinned && multipleInteractives) {
-      // This case is treated in a basic way for now. MAX setting doesn't make much sense.
-      // We just set aspect ratio (either provided by user or interactive) and we don't limit interactive height.
-      // So, interactives might get 'unpinned' as a result. It could have been treated better in the future,
-      // if there's a need for that.
-      $iframe.css('height', $iframe.width() / aspectRatio);
-      return;
-    }
+    // Decrease maxHeight to account for pinned navigation used in some themes
+    maxHeight -= scrollInteractiveModOffset();
 
-    if (isPinned) {
-      // If interactive is pinned (and there's only one interactive), make sure that maxHeight calculations don't
-      // cause interactive to become unpinned (as it gets too tall). Calculate the current difference between height
-      // of the interactive and its container. That will automatically handle question header (when interactive saves
-      // state) and all the possible margins and padding. Also, take into account a pinned interactive offset (space
-      // between the window top border and the interactive container top edge).
-      var headersHeight = $pinned.height() - $iframe.height();
-      maxHeight -= headersHeight + window.SCROLL_INTERACTIVE_MOD_OFFSET;
+    // To be safe make sure we are actually inside of an embeddable root
+    if ($container.length > 0) {
+      // Decrease the maxHeight with any extra headers or other components
+      // wrapping the interactive. If the height of the interactive is limited by maxHeight
+      // either by MAX or DEFAULT mode, then the intention is for the full interactive
+      // to be visible without scrolling.  Additionally this means the interactive
+      // will remain pinned when it is in the the interactive box.
+      // NOTE: this looks like a catch-22, but it normally isn't. The value of $container.height() comes from the CSS
+      // calculation of the height of the interactive plus all of the extra stuff around it.
+      // If the page layout is changing (window resize or columns collapsing), then the $container.height() used in this calculation
+      // might be stale.  However what we are looking at is the difference between that height and the
+      // iframe.height(). So long as the stuff around the iframe is not also changing its height then the difference
+      // should be constant even as the iframe is changing size.
+      // NOTE: the wrapping plugin content is inside of the embeddable-root element
+      // but outside of the embeddable container. We've decided not to include that
+      // wrapping plugin content in the height calculation.
+      // The width of the wrapping content is matched though.
+      // Part of the reason for this decision is that large wrapping plugin content
+      // could easily be more than the size of the screen, so if we included this
+      // content in the calucation below the interactive would have zero space for itself
+      var wrappingContentHeight = $container.height() - $iframe.height();
+      maxHeight -= wrappingContentHeight;
     }
 
     if (resizeMethod === 'MAX') {
@@ -82,7 +97,31 @@ function interactiveSizing () {
     var $iframe = $(this);
     $iframe.on('sizeUpdate', setSize);
     $iframe.trigger('sizeUpdate');
+
+    // Monitor the parent element size so we can update the size of the iframe
+    // this is necessary for aspect-ratio based sizing since we might need to
+    // adjust the height or width depending on our container.
+    // The container size can change when:
+    // - the columns are collapsed
+    // - we are in responsive layout and the window width is changed.
+    // - a wrapping plugin shows or hides additional elements around the interactive
+    var ro = new LARA.PageItemAuthoring.ResizeObserver(function(entries, observer) {
+      $iframe.trigger('sizeUpdate');
+    });
+    ro.observe($iframe.parents(".embeddable-root")[0]);
   });
+
+  // Explicitly monitor the window size. In responsive layout we'll see changes
+  // in the width of the container with the ResizeObserver above. But we might
+  // not see changes in the height.
+  // Additionally, in other layouts the page width is fixed so we don't see
+  // container size changes when the window size changes.
+  // Updating our size is necessary when the interactive is height limited
+  // because that calculation is based on window.innerHeight
+  $(window).on('resize', function () {
+    $('[data-aspect-ratio]').trigger('sizeUpdate');
+  });
+
 }
 
 // Use 'load' event so all the images are loaded before we start calculating size.

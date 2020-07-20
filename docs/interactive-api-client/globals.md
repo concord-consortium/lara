@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.4.0-pre.10](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.4.0-pre.10
+# @concord-consortium/lara-interactive-api - v0.5.0-pre.3
 
 ## Index
 
@@ -17,16 +17,17 @@
 * [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
-* [IClientOptions](interfaces/iclientoptions.md)
 * [ICloseModal](interfaces/iclosemodal.md)
 * [IClosedModal](interfaces/iclosedmodal.md)
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
 * [ICustomMessage](interfaces/icustommessage.md)
+* [ICustomReportFieldsAuthoredState](interfaces/icustomreportfieldsauthoredstate.md)
+* [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
+* [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
 * [IDialogInitInteractive](interfaces/idialoginitinteractive.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
-* [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
 * [IGetFirebaseJwtResponse](interfaces/igetfirebasejwtresponse.md)
 * [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)
@@ -39,13 +40,15 @@
 * [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md)
 * [IGetLibraryInteractiveListResponse](interfaces/igetlibraryinteractivelistresponse.md)
 * [IHintRequest](interfaces/ihintrequest.md)
-* [IHookOptions](interfaces/ihookoptions.md)
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
+* [IJwtClaims](interfaces/ijwtclaims.md)
+* [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedAuthoredInteractive](interfaces/ilinkedauthoredinteractive.md)
 * [ILinkedRuntimeInteractive](interfaces/ilinkedruntimeinteractive.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
+* [IPortalClaims](interfaces/iportalclaims.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
@@ -83,6 +86,10 @@
 * [ModalType](globals.md#modaltype)
 * [ServerMessage](globals.md#servermessage)
 
+### Variables
+
+* [setInteractiveStateTimeout](globals.md#const-setinteractivestatetimeout)
+
 ### Functions
 
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
@@ -91,7 +98,7 @@
 * [closeModal](globals.md#const-closemodal)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
-* [getFirebaseJWT](globals.md#const-getfirebasejwt)
+* [getFirebaseJwt](globals.md#const-getfirebasejwt)
 * [getGlobalInteractiveState](globals.md#const-getglobalinteractivestate)
 * [getInitInteractiveMessage](globals.md#const-getinitinteractivemessage)
 * [getInteractiveList](globals.md#const-getinteractivelist)
@@ -104,14 +111,12 @@
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [setAuthoredState](globals.md#const-setauthoredstate)
-* [setAuthoringCustomReportFields](globals.md#const-setauthoringcustomreportfields)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
 * [setHint](globals.md#const-sethint)
 * [setInteractiveState](globals.md#const-setinteractivestate)
 * [setLinkedInteractives](globals.md#const-setlinkedinteractives)
 * [setNavigation](globals.md#const-setnavigation)
-* [setRuntimeCustomReportValues](globals.md#const-setruntimecustomreportvalues)
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
@@ -233,6 +238,12 @@ ___
 
 Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage) | [IframeSaverServerMessage](globals.md#iframesaverservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
 
+## Variables
+
+### `Const` setInteractiveStateTimeout
+
+• **setInteractiveStateTimeout**: *2000* = 2000
+
 ## Functions
 
 ### `Const` addAuthoredStateListener
@@ -341,17 +352,17 @@ ___
 
 ___
 
-### `Const` getFirebaseJWT
+### `Const` getFirebaseJwt
 
-▸ **getFirebaseJWT**(`options`: [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md)): *Promise‹string›*
+▸ **getFirebaseJwt**(`firebaseApp`: string): *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetFirebaseJwtOptions](interfaces/igetfirebasejwtoptions.md) |
+`firebaseApp` | string |
 
-**Returns:** *Promise‹string›*
+**Returns:** *Promise‹[IJwtResponse](interfaces/ijwtresponse.md)›*
 
 ___
 
@@ -387,13 +398,13 @@ ___
 
 ### `Const` getInteractiveList
 
-▸ **getInteractiveList**(`options`: [IGetInteractiveListRequest](interfaces/igetinteractivelistrequest.md)): *void*
+▸ **getInteractiveList**(`options`: [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetInteractiveListRequest](interfaces/igetinteractivelistrequest.md) |
+`options` | [IGetInteractiveListOptions](interfaces/igetinteractivelistoptions.md) |
 
 **Returns:** *void*
 
@@ -568,20 +579,6 @@ Name | Type |
 
 ___
 
-### `Const` setAuthoringCustomReportFields
-
-▸ **setAuthoringCustomReportFields**(`fields`: [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`fields` | [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md) |
-
-**Returns:** *void*
-
-___
-
 ### `Const` setGlobalInteractiveState
 
 ▸ **setGlobalInteractiveState**‹**GlobalInteractiveState**›(`newGlobalState`: GlobalInteractiveState | null): *void*
@@ -701,20 +698,6 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [INavigationOptions](interfaces/inavigationoptions.md) |
-
-**Returns:** *void*
-
-___
-
-### `Const` setRuntimeCustomReportValues
-
-▸ **setRuntimeCustomReportValues**(`values`: [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`values` | [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md) |
 
 **Returns:** *void*
 

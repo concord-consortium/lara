@@ -10,6 +10,8 @@ import "react-tabs/style/react-tabs.css";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeManagedInteractive } from "./customize";
 import { Checkbox } from "../common/components/checkbox";
+import { useCurrentUser } from "../common/hooks/use-current-user";
+import { AuthoredState } from "../common/components/authored-state";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -59,6 +61,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
+  const user = useCurrentUser();
 
   if (libraryInteractives.state === "loading") {
     return <div className="loading">Loading library ...</div>;
@@ -84,14 +87,16 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
     }
   };
 
-  const handleUrlFragmentChange = (newUrlFragment: string) => setUrlFragment(newUrlFragment);
+  const handleUrlFragmentBlur = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setUrlFragment(e.target.value);
+  };
 
   const renderRequiredFields = () => {
     if (!libraryInteractive) {
       return undefined;
     }
 
-    const { name, is_full_width, show_in_featured_question_report, linked_interactive_id } = managedInteractive;
+    const { name, is_full_width } = managedInteractive;
 
     return <>
       <fieldset>
@@ -104,21 +109,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         />
       </fieldset>
 
-      {libraryInteractive.enable_learner_state ?
-      <fieldset>
-        <legend>Link Saved Work From</legend>
-        <input
-          type="text"
-          name={formField("linked_interactive_id").name}
-          defaultValue={`${linked_interactive_id || ""}`}
-        />
-        <div className="warning">
-          <em>Warning</em>: Please do not link to another interactive
-          unless the interactive knows how to load prior work.
-        </div>
-      </fieldset>
-      : undefined}
-
       <fieldset>
         <legend>Options</legend>
         <Checkbox
@@ -127,15 +117,6 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
           defaultChecked={is_full_width}
           label="Full width? (Full width layout only)"
         />
-        <br />
-        {libraryInteractive.enable_learner_state
-          ? <Checkbox
-              id={formField("show_in_featured_question_report").id}
-              name={formField("show_in_featured_question_report").name}
-              defaultChecked={show_in_featured_question_report}
-              label="Show in featured question report?"
-            />
-          : undefined}
       </fieldset>
     </>;
   };
@@ -162,30 +143,64 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       }
     };
 
+    const renderAuthoringPanel = () => {
+      const { url_fragment } = managedInteractive;
+
+      return (<>
+        {libraryInteractive.authorable
+          ? <InteractiveAuthoring
+              interactive={interactive}
+              onAuthoredStateChange={handleAuthoredStateChange}
+              allowReset={false}
+            />
+          : <>
+              <fieldset>
+                <legend>Url Fragment</legend>
+                <textarea
+                  id={formField("url_fragment").id}
+                  name={formField("url_fragment").name}
+                  defaultValue={url_fragment}
+                  onBlur={handleUrlFragmentBlur}
+                />
+              </fieldset>
+              {libraryInteractive.authoring_guidance
+                ? <fieldset>
+                    <legend>Authoring Guidance</legend>
+                    <div dangerouslySetInnerHTML={{__html: libraryInteractive.authoring_guidance}} />
+                  </fieldset>
+                : undefined
+              }
+            </>
+        }
+      </>);
+    };
+
     return (
       <Tabs>
         <TabList>
           <Tab>Authoring</Tab>
           <Tab>Advanced Options</Tab>
+          {user?.isAdmin ? <Tab>Authored State (Admin Only)</Tab> : undefined}
         </TabList>
         <TabPanel forceRender={true}>
-          {libraryInteractive.authorable
-            ? <InteractiveAuthoring
-                interactive={interactive}
-                onAuthoredStateChange={handleAuthoredStateChange}
-                allowReset={false}
-              />
-            : <p>The selected library interactive ({libraryInteractive.name}) does not support authoring.</p>
-          }
+          {renderAuthoringPanel()}
         </TabPanel>
         <TabPanel forceRender={true}>
           <CustomizeManagedInteractive
             libraryInteractive={libraryInteractive}
             managedInteractive={managedInteractive}
             defaultClickToPlayPrompt={defaultClickToPlayPrompt}
-            onUrlFragmentChange={handleUrlFragmentChange}
           />
         </TabPanel>
+        {user?.isAdmin
+          ? <TabPanel forceRender={true}>
+              <AuthoredState
+                id={formField("authored_state").id}
+                name={formField("authored_state").name}
+                authoredState={interactive.authored_state}
+              />
+            </TabPanel>
+          : undefined}
       </Tabs>
     );
   };

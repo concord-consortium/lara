@@ -58,8 +58,6 @@
 - if labbook && !interactive.full_window
   .question
     = render partial: 'embeddable/labbook_answers/lightweight', locals: { embeddable: labbook }
-- else
-  %br
 
 :javascript
   $(document).ready(function() {

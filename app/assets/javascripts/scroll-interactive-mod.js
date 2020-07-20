@@ -1,8 +1,20 @@
-// Space between window top border and the interactive container.
-window.SCROLL_INTERACTIVE_MOD_OFFSET = 75; // px
+/*global $, headerIsPinnedInThisTheme, LARA */
+
+// Space between window top border and the interactive container when it is pinned
+function scrollInteractiveModOffset(){
+  if (headerIsPinnedInThisTheme()) {
+    // If the heaer is pinned then we need to leave room for that pinned header
+    // currently all headers are 75px and we set this at 80px to provide a little
+    // extra space so it is easy to see where the top of the interactive is
+    // If we could compute this it would be better.
+    return 80;
+  }
+  // Add a 5 pixel header so it is easier to see where the top of the interactive is
+  return 5;
+}
 
 $(window).ready(function () {
-  var offset = window.SCROLL_INTERACTIVE_MOD_OFFSET;
+  var offset = scrollInteractiveModOffset();
   var $sticky = $('.pinned');
   if ($sticky.length === 0) {
     return;
@@ -78,5 +90,11 @@ $(window).ready(function () {
   }
 
   $window.on('scroll', handleScroll);
-  $window.on('resize', handleScroll);
+
+  // Monitor the parent size so we can update the size of the fixed element
+  // when the width or height of the parent changes
+  var ro = new LARA.PageItemAuthoring.ResizeObserver(function(entries, observer) {
+    handleScroll();
+  });
+  ro.observe($sticky.parent()[0]);
 });

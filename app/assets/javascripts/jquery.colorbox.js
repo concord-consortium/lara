@@ -1,6 +1,7 @@
 /*jslint browser: true, sloppy: true, todo: true, devel: true, white: true */
 /*global $ */
-
+/* [CC] This file has been modified substantially from its original version,
+	so updating to a newer version of the library would be non-trivial. */
 /*!
 	Colorbox v1.4.32 - 2013-10-16
 	jQuery lightbox and modal window plugin
@@ -998,7 +999,8 @@
                             photo.width = photo.width * percent;
                         }
 					};
-                    if (photo.width > photo.height) {
+					// [CC] Note that the sizing code has been substantially modified by CC.
+                    // if (photo.width > photo.height) {
                         if (settings.maxw && photo.width > settings.maxw) {
                             // Reduce to the max width || max height
                             percent = (photo.width - settings.maxw) / photo.width;
@@ -1026,7 +1028,7 @@
                             }
                             setResize();
                         }
-                    } else {
+                    // } else {
                         if (settings.maxh && photo.height > settings.maxh) {
                             // Reduce to the max width || max height
                             percent = (photo.height - settings.maxh) / photo.height;
@@ -1054,7 +1056,7 @@
                             }
                             setResize();
                         }
-                    }
+                    // }
 				}
 
 				if (settings.h) {

@@ -1,3 +1,9 @@
+// Export some shared types.
+export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
+
+// Discussion about naming of these interfaces:
+// https://github.com/concord-consortium/lara/pull/550#issuecomment-639021815
+
 export interface IInteractiveStateProps<InteractiveState = {}> {
   interactiveState: InteractiveState | null;
   hasLinkedInteractive?: boolean;
@@ -100,19 +106,26 @@ export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, DialogSt
 
 export type InitInteractiveMode = "runtime" | "authoring" | "report" | "dialog";
 
-// tslint:disable-next-line:max-line-length
-export interface IClientOptions<InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}> {
-  startDisconnected?: boolean;
-  supportedFeatures?: ISupportedFeatures;
-  onHello?: () => void;
-  // tslint:disable-next-line:max-line-length
-  onInitInteractive?: (initMessage: IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>) => void;
-  onGetInteractiveState?: () => InteractiveState | string | null;
-  onGlobalInteractiveStateUpdated?: (globalState: GlobalInteractiveState) => void;
+// Custom Report Fields
+//
+// These interfaces are used by interactives to define their custom fields and provide values for them.
+
+export interface ICustomReportFieldsAuthoredStateField {
+  key: string;
+  columnHeader: string;
+}
+export interface ICustomReportFieldsAuthoredState {
+  customReportFields: {
+    version: 1;
+    fields: ICustomReportFieldsAuthoredStateField[]
+  };
 }
 
-export interface IHookOptions {
-  supportedFeatures?: ISupportedFeatures;
+export interface ICustomReportFieldsInteractiveState {
+  customReportFields: {
+    version: 1;
+    values: {[key: string]: any};
+  };
 }
 
 /*
@@ -250,6 +263,10 @@ export interface IShowAlert extends IBaseShowModal {
 export interface IShowLightbox extends IBaseShowModal {
   type: "lightbox";
   url: string;
+  title?: string;
+  isImage?: boolean;
+  size?: { width: number, height: number };
+  allowUpscale?: boolean;
 }
 
 export interface IShowDialog<DialogState = {}> extends IBaseShowModal {
@@ -298,12 +315,8 @@ export interface IGetAuthInfoResponse extends IBaseRequestResponse, IAuthInfo {
   // no extra options, just the requestId and the auth info
 }
 
-export interface IGetFirebaseJwtOptions {
-  firebase_app?: string;
-}
-
-export interface IGetFirebaseJwtRequest extends IBaseRequestResponse, IGetFirebaseJwtOptions {
-  // no extra options, just the requestId and the jwt options
+export interface IGetFirebaseJwtRequest extends IBaseRequestResponse {
+  firebase_app: string;
 }
 
 export interface IGetFirebaseJwtResponse extends IBaseRequestResponse {

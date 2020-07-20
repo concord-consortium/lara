@@ -1,7 +1,7 @@
 class InteractivePage < ActiveRecord::Base
-  attr_accessible :lightweight_activity, :name, :position, :text, :layout, :sidebar, :show_introduction, :show_sidebar,
-                  :show_interactive, :show_info_assessment, :toggle_info_assessment, :embeddable_display_mode,
-                  :sidebar_title, :is_hidden, :additional_sections, :is_completion
+  attr_accessible :lightweight_activity, :name, :position, :layout, :sidebar, :show_header,
+                  :show_sidebar, :show_interactive, :show_info_assessment, :toggle_info_assessment,
+                  :embeddable_display_mode, :sidebar_title, :is_hidden, :additional_sections, :is_completion
 
   serialize :additional_sections
 
@@ -19,6 +19,7 @@ class InteractivePage < ActiveRecord::Base
 
   EMBEDDABLE_DISPLAY_OPTIONS = ['stacked','carousel']
 
+  HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
 
   validates :sidebar_title, presence: true
@@ -27,7 +28,7 @@ class InteractivePage < ActiveRecord::Base
 
   # Reject invalid HTML inputs
   # See https://www.pivotaltracker.com/story/show/60459320
-  validates :text, :sidebar, :html => true
+  validates :sidebar, :html => true
 
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
@@ -114,6 +115,14 @@ class InteractivePage < ActiveRecord::Base
     section_visible_embeddables(nil)
   end
 
+  def header_block_embeddables
+    section_embeddables(HEADER_BLOCK)
+  end
+
+  def header_block_visible_embeddables
+    section_visible_embeddables(HEADER_BLOCK)
+  end
+
   def interactive_box_embeddables
     section_embeddables(INTERACTIVE_BOX)
   end
@@ -169,12 +178,11 @@ class InteractivePage < ActiveRecord::Base
     {
       name: name,
       position: position,
-      text: text,
       layout: layout,
       is_hidden: is_hidden,
       sidebar: sidebar,
       sidebar_title: sidebar_title,
-      show_introduction: show_introduction,
+      show_header: show_header,
       show_sidebar: show_sidebar,
       show_interactive: show_interactive,
       show_info_assessment: show_info_assessment,
@@ -230,12 +238,11 @@ class InteractivePage < ActiveRecord::Base
     helper = LaraSerializationHelper.new
     page_json = self.as_json(only: [:name,
                                     :position,
-                                    :text,
                                     :layout,
                                     :is_hidden,
                                     :sidebar,
                                     :sidebar_title,
-                                    :show_introduction,
+                                    :show_header,
                                     :show_sidebar,
                                     :show_interactive,
                                     :show_info_assessment,
@@ -253,17 +260,16 @@ class InteractivePage < ActiveRecord::Base
     page_json
   end
 
-  def self.extact_from_hash(page_json_object)
+  def self.extract_from_hash(page_json_object)
     #pages = activity_json_object[:pages]
     import_simple_attributes = [
       :name,
       :position,
-      :text,
       :layout,
       :is_hidden,
       :sidebar,
       :sidebar_title,
-      :show_introduction,
+      :show_header,
       :show_sidebar,
       :show_interactive,
       :show_info_assessment,
@@ -281,7 +287,7 @@ class InteractivePage < ActiveRecord::Base
 
   def self.import(page_json_object, helper=nil)
     helper = LaraSerializationHelper.new if helper.nil?
-    import_page = InteractivePage.new(self.extact_from_hash(page_json_object))
+    import_page = InteractivePage.new(self.extract_from_hash(page_json_object))
 
     InteractivePage.transaction do
       import_page.save!(validate: false)
@@ -307,7 +313,25 @@ class InteractivePage < ActiveRecord::Base
       page_json_object[:embeddables].each do |embed_hash|
         helper.set_references(embed_hash[:embeddable])
       end
+      # For older export files, if page intro exists, add it as a new embeddable in header_block
+      import_legacy_intro(import_page, page_json_object[:text])
     end
     import_page
+  end
+
+  def self.import_legacy_intro(import_page, intro_text)
+    if intro_text
+      helper = LaraSerializationHelper.new if helper.nil?
+      intro_embeddable_hash = {
+                         "content": intro_text,
+                         "is_full_width": true,
+                         "is_hidden": false,
+                         "name": "",
+                         "type": "Embeddable::Xhtml"
+                        }
+      intro_embeddable = helper.import(intro_embeddable_hash)
+      import_page.show_header = true
+      import_page.add_embeddable(intro_embeddable, position = 1, section = HEADER_BLOCK)
+    end
   end
 end

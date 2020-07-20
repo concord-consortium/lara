@@ -16,6 +16,16 @@ class ImageQuestionDrawingTool
         'https://interactions-resources.concord.org/stamps/medium-particle.svg'
         'https://interactions-resources.concord.org/stamps/fast-particle.svg'
         'https://interactions-resources.concord.org/stamps/low-density-particles.svg'
+      ],
+      'Objects': [
+        'https://interactions-resources.concord.org/stamps/car-facing-east.svg'
+        'https://interactions-resources.concord.org/stamps/car-facing-west.svg'
+        'https://interactions-resources.concord.org/stamps/front-crushed-east.svg'
+        'https://interactions-resources.concord.org/stamps/front-crushed-west.svg'
+        'https://interactions-resources.concord.org/stamps/N-S-magnet.svg'
+        'https://interactions-resources.concord.org/stamps/S-N-magnet.svg'
+        'https://interactions-resources.concord.org/stamps/new-phone.svg'
+        'https://interactions-resources.concord.org/stamps/broken-phone.svg'
       ]
     },
     # LARA provides simple proxy (/image-proxy?url=). It's useful even if we use

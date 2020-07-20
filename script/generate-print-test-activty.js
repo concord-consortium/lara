@@ -28,7 +28,7 @@ var pageTemplate = {
       "position": 1,
       "show_info_assessment": true,
       "show_interactive": true,
-      "show_introduction": true,
+      "show_header": true,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",

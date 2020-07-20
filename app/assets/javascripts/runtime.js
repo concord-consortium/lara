@@ -25,7 +25,6 @@
 //= require jquery_ujs
 //= require jquery.placeholder
 //= require jquery.jcarousel
-//= require responsive-layout
 //= require shutterbug
 //= require page-unload-warning
 //= require modals
@@ -53,5 +52,5 @@
 //= require c_rater
 //= require interactive-manager
 //= require components
-//= require question-slider.js
+//= require question-slider
 //= require runtime-init

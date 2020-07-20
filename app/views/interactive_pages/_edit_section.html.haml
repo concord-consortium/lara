@@ -1,0 +1,47 @@
+:ruby
+  if section_name == InteractivePage::HEADER_BLOCK
+    section_hidden_field = hidden_field_tag :section, InteractivePage::HEADER_BLOCK
+    selector_menu = embeddable_selector
+  elsif section_name == InteractivePage::INTERACTIVE_BOX
+    section_hidden_field = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
+    selector_menu = embeddable_interactives_selector
+  else
+    section_hidden_field = nil
+    selector_menu = embeddable_selector
+  end
+  section_embeddables_list = @page.section_embeddables(section_name)
+
+%button.show-hide-toggle
+  Close All
+.column-controls
+  - if toggle_option
+    = form_for @page do |f|
+      - if @page.has_attribute?('toggle_info_assessment')
+        %label
+          = f.check_box :toggle_info_assessment, :onchange => 'this.form.submit();'
+          Collapsible
+  = form_tag add_embeddable_activity_page_path(@activity, @page), :class => 'embeddables-form' do
+    .select_container
+      = selector_menu
+    = hidden_field_tag :approved_script_id
+    = hidden_field_tag :component_label
+    - if !section_hidden_field.nil?
+      = section_hidden_field
+    = submit_tag 'Add', {id: 'add_embeddable_button'}
+.embeddables_list.sortable_embeddables
+  - section_embeddables_list.each do |e|
+    - if e.show_in_edit?
+      - tracked = e.respond_to?(:tracked_question) && e.tracked_question
+      - tracked_class = tracked ? 'tracked' : ''
+      .authorable.accordion_embeddable{:id => "embeddable_#{e.id}.#{e.class.to_s}", :class => tracked_class}
+        %h3.embeddable_heading
+          %span.embeddable_title
+            - if e.respond_to? :name
+              - if !e.name.nil? && !e.name.empty?
+                #{e.name}
+              - else
+                #{e.class.model_name.human.titleize}
+            - else
+              #{e.class.model_name.human.titleize}
+          %span.sortable-icon.ui-icon.ui-icon-arrowthick-2-n-s
+        = render :partial => "#{e.class.name.underscore.pluralize}/author", :locals => { :embeddable => e, :page => @page, :allow_hide => true }
