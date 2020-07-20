@@ -5,7 +5,6 @@ window.initSlateEditor = function (wysiwyg, value, index, options) {
   var slateEditorId = "slate-editor-" + index.toString();
   $('<div id="' + slateEditorId + '" class="slate-editor"></div>').insertAfter(wysiwyg);
   $editor = $("#" + slateEditorId);
-  $editor.data("editorId", slateEditorId);
   $editor.data("useAjax", options.useAjax);
 
   function renderEditor($this, value) {
@@ -14,18 +13,7 @@ window.initSlateEditor = function (wysiwyg, value, index, options) {
       onValueChange: function(value) {
         $this.triggerHandler("editor.value", [ value ]);
       },
-      onContentChange: function(value) {
-        var contentHtml = LARA.PageItemAuthoring.slateToHtml(value)
-        var textarea = $this.prev("textarea");
-        if ($this.data("useAjax")) {
-          var e = new Event('input', { bubbles: true });
-          setNativeValue($(textarea)[0], contentHtml);
-          $(textarea)[0].dispatchEvent(e);
-        } else {
-          textarea.text(contentHtml);
-          textarea.val(contentHtml);
-        }
-      }
+      onContentChange: handleContentChange($this, value)
     };
     LARA.PageItemAuthoring.renderSlateContainer($this[0], props);
   }
@@ -42,6 +30,19 @@ window.initSlateEditor = function (wysiwyg, value, index, options) {
 
   $editor.triggerHandler("editor.value", [ LARA.PageItemAuthoring.htmlToSlate(value || "") ]);
 };
+
+function handleContentChange(editor, value) {
+  var contentHtml = LARA.PageItemAuthoring.slateToHtml(value);
+  var textarea = editor.prev("textarea");
+  if (editor.data("useAjax")) {
+    var e = new Event('input', { bubbles: true });
+    setNativeValue($(textarea)[0], contentHtml);
+    $(textarea)[0].dispatchEvent(e);
+  } else {
+    textarea.text(contentHtml);
+    textarea.val(contentHtml);
+  }
+}
 
 function setNativeValue(element, value) {
   var valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
