@@ -1,13 +1,14 @@
 module EmbeddableHelper
 
-  def embeddable_selector
+  def embeddable_selector(section)
+    select_id = section ? "embeddable_type_" + section : "embeddable_type"
     embeddable_types = Embeddable::Types.map { |type| [type.model_name.human, type.to_s] }
     plugin_items = ApprovedScript.authoring_menu_items("embeddable").map { |ami| [ami.name, Embeddable::EmbeddablePlugin.to_s, {"data-approved-script-id" => ami.approved_script_id, "data-component-label" => ami.component_label}] }
-    select_tag :embeddable_type, options_for_select(embeddable_types + plugin_items)
+    select_tag :embeddable_type, options_for_select(embeddable_types + plugin_items), {id: select_id}
   end
 
   def embeddable_interactives_selector
-    select_tag :embeddable_type, options_for_select(Embeddable::InteractiveTypes.map { |type| [type.model_name.human, type.to_s] })
+    select_tag :embeddable_type, options_for_select(Embeddable::InteractiveTypes.map { |type| [type.model_name.human, type.to_s] }), {id: "embeddable_type_interactives"}
   end
 
   def available_wrapped_embeddable_plugins(embeddable)
