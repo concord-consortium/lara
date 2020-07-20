@@ -129,10 +129,11 @@
     });
 
     // set the hidden plugin fields when embeddable plugins are selected
-    $('#embeddable_type').on('change', function() {
+    $('select[name=embeddable_type]').on('change', function() {
       var selected = $(this).find(':selected');
-      $('#approved_script_id').val(selected.data('approved-script-id') || "")
-      $('#component_label').val(selected.data('component-label') || "")
+      var form = $(this).closest("form");
+      form.find('[name=approved_script_id]').val(selected.data('approved-script-id') || "")
+      form.find('[name=component_label]').val(selected.data('component-label') || "")
     })
 
     // set the hidden plugin fields when wrapped embeddable plugins are selected
