@@ -60,8 +60,7 @@
     :javascript
       $(function() {
           $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
-            wysiwygContent = prepareWysiwygContent($(this).text());
-            initSlateEditor($(this), wysiwygContent, index, {useAjax: false});
+            initSlateEditor($(this), $(this).text(), index, {useAjax: false});
           });
 
           var $radios = $('#embeddable_layout_options input'),

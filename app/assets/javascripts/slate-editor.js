@@ -7,31 +7,27 @@ window.initSlateEditor = function (wysiwyg, value, index, options) {
   $editor = $("#" + slateEditorId);
   $editor.data("editorId", slateEditorId);
   $editor.data("useAjax", options.useAjax);
-  $editor.data("renderCount", 0);
 
   function renderEditor($this, value) {
-    // note: I added this recursive render detector because earlier versions of the code
-    // had that problem. I haven't seen it recur with this refactored code, so we can
-    // remove it at some point if we don't see any reoccurrence of the phenomenon.
-    let renderCount = $this.data("renderCount");
-    if (renderCount === 0) {
-      $this.data("renderCount", ++renderCount);
-      const props = {
-        value,
-        onValueChange: function(value) {
-          $this.triggerHandler("editor.value", [ value ]);
-        },
-        onContentChange: function(value) {
-          // argument is now the same value as onValueChange
-          console.log("NewContent:", LARA.PageItemAuthoring.slateToHtml(value));
+    const props = {
+      value,
+      onValueChange: function(value) {
+        $this.triggerHandler("editor.value", [ value ]);
+      },
+      onContentChange: function(value) {
+        var contentHtml = LARA.PageItemAuthoring.slateToHtml(value)
+        var textarea = $this.prev("textarea");
+        if ($this.data("useAjax")) {
+          var e = new Event('input', { bubbles: true });
+          setNativeValue($(textarea)[0], contentHtml);
+          $(textarea)[0].dispatchEvent(e);
+        } else {
+          textarea.text(contentHtml);
+          textarea.val(contentHtml);
         }
-      };
-      LARA.PageItemAuthoring.renderSlateContainer($this[0], props);
-      $this.data("renderCount", --renderCount);
-    }
-    else {
-      console.log("editor.value render circularity detected!")
-    }
+      }
+    };
+    LARA.PageItemAuthoring.renderSlateContainer($this[0], props);
   }
 
   // handle this as a triggerable event so it can be triggered from elsewhere,
@@ -46,30 +42,6 @@ window.initSlateEditor = function (wysiwyg, value, index, options) {
 
   $editor.triggerHandler("editor.value", [ LARA.PageItemAuthoring.htmlToSlate(value || "") ]);
 };
-
-// function updateSlateEditor (editorValue) {
-//   var slateEditorId = $(document).data("currentSlateEditorId");
-//   var root = document.getElementById(slateEditorId);
-//   if (!root) return;
-//   var prevValue = $(root).data("prevValue");
-//   if (editorValue === prevValue) return;
-//   var props = { onFocus: setCurrentEditor, value: editorValue, onValueChange: updateSlateEditor };
-//   LARA.PageItemAuthoring.renderSlateContainer(root, props);
-
-//   if (prevValue && editorValue.document !== prevValue.document) {
-//     // var contentHtml = LARA.PageItemAuthoring.slateToHtml(editorValue);
-//     // var textarea = $(root).prev("textarea");
-//     // if ($(root).data("useAjax")) {
-//     //   var e = new Event('input', { bubbles: true });
-//     //   setNativeValue($(textarea)[0], contentHtml);
-//     //   $(textarea)[0].dispatchEvent(e);
-//     // } else {
-//     //   textarea.text(contentHtml);
-//     //   textarea.val(contentHtml);
-//     // }
-//   }
-//   $(root).data("prevValue", editorValue);
-// }
 
 function setNativeValue(element, value) {
   var valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
@@ -99,14 +71,4 @@ function toggleWysiwygView(toggle) {
     var slateValue = LARA.PageItemAuthoring.htmlToSlate(value);
     $editor.trigger("editor.value", [ slateValue ]);
   }
-}
-
-// this function should not be necessary any more
-function prepareWysiwygContent (content) {
-  return content;
-  // var cleanContent = content.replace(/(\r\n|\n|\r)/gm, "");
-  // cleanContent = cleanContent.replace(/\s\s+/g, " ");
-  // cleanContent = cleanContent.replace(/>\s</g, "><");
-  // cleanContent = cleanContent.replace(/<[^/>][^>]*><\/[^>]+>/g, "");
-  // return cleanContent;
 }

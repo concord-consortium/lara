@@ -24,7 +24,6 @@
   :javascript
     $(function() {
       $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
-        wysiwygContent = prepareWysiwygContent($(this).text());
-        initSlateEditor($(this), wysiwygContent, index, {useAjax: false});
+        initSlateEditor($(this), $(this).text(), index, {useAjax: false});
       });
     });
