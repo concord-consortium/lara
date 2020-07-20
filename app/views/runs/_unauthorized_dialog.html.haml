@@ -9,16 +9,16 @@
     = form_tag({controller: 'runs', action: 'unauthorized_feedback'}, {method: 'post', remote: true}) do
       .item
         .prompt= label_tag :username, "Your username:"
-        .field= text_field_tag :username
+        .field= text_field_tag :username, nil, tabindex: 1
       .item{style: 'margin-top: 10px;'}
-        .prompt= label_tag :username, "Your teacher's name:"
-        .field= text_field_tag :teacher
+        .prompt= label_tag :teacher, "Your teacher's name:"
+        .field= text_field_tag :teacher, nil, tabindex: 2
       .item{style: 'margin-top: 10px;'}
         .prompt= label_tag :description, "Describe what you were doing when the error occurred:"
-        .field= text_area_tag :description, nil, style: 'width: 100%; height: 7em;'
+        .field= text_area_tag :description, nil, tabindex: 3, style: 'width: 100%; height: 7em;'
       = hidden_field_tag :authenticity_token, form_authenticity_token
       = hidden_field_tag :original_url, request.original_url
-      = submit_tag "Submit"
+      = submit_tag "Submit", tabindex: 4
 
 
 :javascript
