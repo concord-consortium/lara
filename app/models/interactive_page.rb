@@ -37,6 +37,14 @@ class InteractivePage < ActiveRecord::Base
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
   end
 
+  @registered_sections = []
+  def self.registered_sections
+    @registered_sections
+  end
+  def self.register_section(s)
+    @registered_sections.push(s)
+  end
+
   # Interactive page can register additional page sections:
   #
   #  InteractivePage.register_page_section({name: 'FooBar', dir: 'foo_bar', label: 'Foo Bar'})
@@ -54,6 +62,7 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def self.register_additional_section(s)
+    @registered_sections.push(s)
     @registered_additional_sections.push(s)
     # Let client code use .update_attributes methods (and similar) to set show_<section_name>.
     attr_accessible "show_#{s[:name]}"
@@ -73,16 +82,29 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
+  # The order of these register_ calls matters. It determines the order of the embeddables.
+  InteractivePage.register_section({name: HEADER_BLOCK, show_method: 'show_header'})
+  InteractivePage.register_section({name: nil, show_method: 'show_info_assessment'})
+
   # Register additional sections of interactive page.
   # This code could (or should) to some config file or initializer, but as we
   # have only one additional section at the moment, let's keep it here.
   InteractivePage.register_additional_section({name:  CRater::ARG_SECTION_NAME,
                                                dir:   CRater::ARG_SECTION_DIR,
-                                               label: CRater::ARG_SECTION_LABEL})
+                                               label: CRater::ARG_SECTION_LABEL,
+                                               show_method: 'show_' + CRater::ARG_SECTION_NAME})
+
+  InteractivePage.register_section({name: INTERACTIVE_BOX, show_method: 'show_interactive'})
 
   # This is a sort of polymorphic has_many :through.
   def embeddables
-    page_items.collect{ |qi| qi.embeddable }
+    ordered_embeddables = []
+    self.class.registered_sections.each do |rs|
+      if self.send(rs[:show_method])
+        ordered_embeddables += page_items.where(section: rs[:name]).collect{ |qi| qi.embeddable }
+      end
+    end
+    ordered_embeddables
   end
 
   def interactives
@@ -136,11 +158,12 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def reportable_items
-    all_visible_embeddables = self.show_header ? header_block_visible_embeddables.select { |item| item.reportable? } : []
-    all_visible_embeddables += self.show_info_assessment ? main_visible_embeddables.select { |item| item.reportable? } : []
+    # all_visible_embeddables = self.show_header ? header_block_visible_embeddables.select { |item| item.reportable? } : []
+    # all_visible_embeddables += self.show_info_assessment ? main_visible_embeddables.select { |item| item.reportable? } : []
     # the following line may need to be changed/augmented if we ever have more than one kind of additional section
-    all_visible_embeddables += self.show_arg_block ? section_visible_embeddables("arg_block").select { |item| item.reportable? } : []
-    all_visible_embeddables += self.show_interactive ? interactive_box_visible_embeddables.select { |item| item.reportable? } : []
+    # all_visible_embeddables += self.show_arg_block ? section_visible_embeddables("arg_block").select { |item| item.reportable? } : []
+    # all_visible_embeddables += self.show_interactive ? interactive_box_visible_embeddables.select { |item| item.reportable? } : []
+    visible_embeddables.select { |item| item.reportable? }
   end
 
   def add_embeddable(embeddable, position = nil, section = nil)
