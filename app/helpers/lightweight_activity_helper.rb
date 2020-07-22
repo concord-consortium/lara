@@ -60,10 +60,11 @@ module LightweightActivityHelper
   end
 
   def activity_player_path(activity)
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{@activity.id}&baseUrl=#{CGI.escape(root_url)}"
+    activity_api_path = "#{api_v1_activity_url(@activity.id)}.json"
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_path)}"
   end
 
   def activity_player_page_path(activity, page)
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{@activity.id}&page=#{page.position}&baseUrl=#{CGI.escape(root_url)}"
+    return  "#{activity_player_path(activity)}&page=#{page.position}"
   end
 end
