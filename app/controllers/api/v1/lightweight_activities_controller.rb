@@ -10,9 +10,6 @@ class Api::V1::LightweightActivitiesController < API::APIController
   def show
     activity = LightweightActivity.find(params[:id])
     lightweight_activity_json = activity.export.to_json
-    respond_to do |format|
-      format.html # show.html.html.haml
-      format.json { render json: lightweight_activity_json }
-    end
+    render json: lightweight_activity_json
   end
 end
