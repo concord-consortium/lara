@@ -71,7 +71,7 @@ describe InteractivePage do
       page.add_embeddable(embed, 1, InteractivePage::HEADER_BLOCK)
       expect(page.embeddables.size).to eq(4)
       expect(page.page_items.last.section).to eq(InteractivePage::HEADER_BLOCK)
-      expect(page.embeddables.last.content).to eq(embed_text)
+      expect(page.embeddables.first.content).to eq(embed_text)
     end
   end
 
@@ -436,9 +436,10 @@ describe InteractivePage do
 
   describe 'InteractivePage#register_additional_section' do
     before(:all) do
-      InteractivePage.register_additional_section({name:  'test_section',
-                                                   dir:   'dir',
-                                                   label: 'label'})
+      InteractivePage.register_additional_section({name:        'test_section',
+                                                   dir:         'dir',
+                                                   label:       'label',
+                                                   show_method: 'show_test_section'})
     end
     it 'should add new methods (show_<secion_name_)' do
       expect(page).not_to respond_to(:show_unexisting_section)

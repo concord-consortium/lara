@@ -158,7 +158,7 @@
     "layout": "l-6040",
     "name": null,
     "position": 3,
-    "show_info_assessment": false,
+    "show_info_assessment": true,
     "show_interactive": true,
     "show_header": false,
     "show_sidebar": false,
