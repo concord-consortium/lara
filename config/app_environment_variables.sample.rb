@@ -20,7 +20,6 @@ ENV['C_RATER_PASSWORD']                  ||= 'XXXXXXX'
 # ENV['C_RATER_FAKE']                    ||= 'true'
 ENV['ROLLBARS_KEY']                      ||= 'XXXXXXX'
 ENV['LABBOOK_PROVIDER_URL']              ||= 'https://labbook.concord.org'
-ENV['ACTIVITY_PLAYER_URL']               ||= 'https://activity-player.concord.org/branch/master'
 
 # this specifies a | separated list of urls for interactives
 # these special interactive URLs trigger LARA to convert their associated LabBook to
