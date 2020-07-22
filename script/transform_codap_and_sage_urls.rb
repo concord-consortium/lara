@@ -35,7 +35,9 @@ def document_store_to_cfm(url_string, use_cfm_master)
   if document_id == nil
     raise "Document ID not found in the url #{url_string}!"
   end
-  new_query["documentId"] = document_id
+  # Redirect URL. It should redirect https://models-resources.concord.org/legacy-document-store/123
+  # to a new location: https://models-resources.concord.org/cfm-shared/<unique_id>/file.json
+  new_query["documentId"] = "https://models-resources.concord.org/legacy-document-store/" + document_id
 
   url.query = URI.encode_www_form(new_query)
   url.scheme = "https"  # just in case
@@ -82,11 +84,11 @@ def test
   codap_test_url = "https://document-store.concord.org/v2/documents/159578/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling"
   sage_test_url = "https://document-store.concord.org/v2/documents/159582/autolaunch?server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F&scaling"
 
-  codap_master_cfm_url = "https://cloud-file-manager.concord.org/branch/master/autolaunch/autolaunch.html?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F%3FcfmBaseUrl%3Dhttps%3A%2F%2Fcloud-file-manager.concord.org%2Fbranch%2Fmaster%2Fjs&scaling&documentId=159578"
-  sage_master_cfm_url = "https://cloud-file-manager.concord.org/branch/master/autolaunch/autolaunch.html?server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F%3FcfmBaseUrl%3Dmaster%26sage%3AcfmBaseUrl%3Dmaster%26codap%3AcfmBaseUrl%3Dmaster&scaling&documentId=159582"
+  codap_master_cfm_url = "https://cloud-file-manager.concord.org/branch/master/autolaunch/autolaunch.html?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F%3FcfmBaseUrl%3Dhttps%3A%2F%2Fcloud-file-manager.concord.org%2Fbranch%2Fmaster%2Fjs&scaling&documentId=https%3A%2F%2Fmodels-resources.concord.org%2Flegacy-document-store%2F159578"
+  sage_master_cfm_url = "https://cloud-file-manager.concord.org/branch/master/autolaunch/autolaunch.html?server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F%3FcfmBaseUrl%3Dmaster%26sage%3AcfmBaseUrl%3Dmaster%26codap%3AcfmBaseUrl%3Dmaster&scaling&documentId=https%3A%2F%2Fmodels-resources.concord.org%2Flegacy-document-store%2F159582"
 
-  codap_production_cfm_url = "https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling&documentId=159578"
-  sage_production_cfm_url = "https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F&scaling&documentId=159582"
+  codap_production_cfm_url = "https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling&documentId=https%3A%2F%2Fmodels-resources.concord.org%2Flegacy-document-store%2F159578"
+  sage_production_cfm_url = "https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F&scaling&documentId=https%3A%2F%2Fmodels-resources.concord.org%2Flegacy-document-store%2F159582"
 
   if document_store_to_cfm(codap_test_url, true) != codap_master_cfm_url
     raise "CODAP DocStore -> CFM master transformation incorrect"
