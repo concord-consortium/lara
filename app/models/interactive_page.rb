@@ -158,11 +158,6 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def reportable_items
-    # all_visible_embeddables = self.show_header ? header_block_visible_embeddables.select { |item| item.reportable? } : []
-    # all_visible_embeddables += self.show_info_assessment ? main_visible_embeddables.select { |item| item.reportable? } : []
-    # the following line may need to be changed/augmented if we ever have more than one kind of additional section
-    # all_visible_embeddables += self.show_arg_block ? section_visible_embeddables("arg_block").select { |item| item.reportable? } : []
-    # all_visible_embeddables += self.show_interactive ? interactive_box_visible_embeddables.select { |item| item.reportable? } : []
     visible_embeddables.select { |item| item.reportable? }
   end
 
