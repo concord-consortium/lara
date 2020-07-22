@@ -2,6 +2,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 
 import { InteractiveIframe } from "./interactive-iframe";
+import { AuthoringApiUrls } from "../types";
 
 interface Props {
   interactive: {
@@ -12,9 +13,11 @@ interface Props {
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   allowReset: boolean;
+  authoringApiUrls: AuthoringApiUrls;
 }
 
-export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredStateChange, allowReset}) => {
+export const InteractiveAuthoring: React.FC<Props> = (props) => {
+  const {interactive, onAuthoredStateChange, allowReset, authoringApiUrls} = props;
   const iframe = useRef<HTMLIFrameElement|null>(null);
   const [authoringSupported, setAuthoringSupported] = useState(false);
   const [authoredState, setAuthoredState] = useState<object|null>(
@@ -66,6 +69,7 @@ export const InteractiveAuthoring: React.FC<Props> = ({interactive, onAuthoredSt
         onSupportedFeaturesUpdate={handleSupportedFeatures}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}
+        authoringApiUrls={authoringApiUrls}
       />
     </div>
   );

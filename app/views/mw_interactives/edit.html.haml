@@ -15,6 +15,7 @@
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderMWInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
       interactive: #{@interactive.to_authoring_hash().to_json},
-      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
+      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json},
+      authoringApiUrls: #{@interactive.authoring_api_urls(request.protocol, request.host_with_port).to_json},
     });
   });
