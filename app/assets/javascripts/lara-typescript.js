@@ -28584,6 +28584,14 @@ function getAndroidApiVersion() {
 
   return null;
 }
+
+/**
+ * Export.
+ *
+ * @type {Boolean}
+ */
+
+var IS_CHROME = browser$2 === 'chrome';
 var IS_FIREFOX = browser$2 === 'firefox';
 var IS_SAFARI = browser$2 === 'safari';
 var IS_IE = browser$2 === 'ie';
@@ -31489,8 +31497,16 @@ var Content = function (_React$Component) {
       // at the end of a block. The selection ends up to the left of the inserted
       // character instead of to the right. This behavior continues even if
       // you enter more than one character. (2019/01/03)
-      if (!IS_ANDROID && handler === 'onSelect') {
-        var editor = this.props.editor;
+      //
+      // CHROME: The updateSelection causes similar issues to Android with IME.
+      // cf. https://github.com/ianstormtaylor/slate/pull/3126
+      var skipUpdate = IS_ANDROID || IS_CHROME && HAS_INPUT_EVENTS_LEVEL_2;
+      var editor = this.props.editor;
+
+
+      if (!skipUpdate &&
+      // cf. https://github.com/ianstormtaylor/slate/pull/2454
+      !editor.isComposing && handler === 'onSelect') {
         var value = editor.value;
         var selection = value.selection;
 
@@ -33726,8 +33742,32 @@ var debug$4 = browser$1('slate:after');
  */
 
 function AfterPlugin() {
+  var inProgressCompositionText = null;
+  // event.data from most recently inserted composition - used for event matching
+  var insertedCompositionEventData = null;
   var isDraggingInternally = null;
   var isMouseDown = false;
+
+  // inProgressCompositionText can be more current than event.data
+  function eventData(event) {
+    return inProgressCompositionText || event.data;
+  }
+
+  /**
+   * Called from BeforePlugin
+   * Tracks the most recent state of the in-progress composition.
+   *
+   * @param {*} editor
+   * @param {*} event
+   */
+
+  function onCompositionInput(editor, event) {
+    event = event.nativeEvent || event;
+
+    if (event.inputType === 'insertCompositionText') {
+      inProgressCompositionText = event.data;
+    }
+  }
 
   /**
    * On before input.
@@ -33747,7 +33787,9 @@ function AfterPlugin() {
     // gets triggered for character insertions, so we can just insert directly.
     if (isSynthetic) {
       event.preventDefault();
-      editor.insertText(event.data);
+      editor.insertText(eventData(event));
+      // use actual event.data because it's used for matching not insertion
+      if (editor.isComposing()) insertedCompositionEventData = event.data;
       return next();
     }
 
@@ -33820,6 +33862,9 @@ function AfterPlugin() {
           break;
         }
 
+      // cf. https://github.com/ianstormtaylor/slate/issues/2368#issuecomment-545033238
+      // cf. https://github.com/ianstormtaylor/slate/pull/3126
+      case 'insertFromComposition':
       case 'insertFromYank':
       case 'insertReplacementText':
       case 'insertText':
@@ -33828,7 +33873,7 @@ function AfterPlugin() {
           // and `dataTransfer` should have the text for the
           // `insertReplacementText` input type, but Safari uses `insertText` for
           // spell check replacements and sets `data` to `null`. (2018/08/09)
-          var text = event.data == null ? event.dataTransfer.getData('text/plain') : event.data;
+          var text = event.data == null ? event.dataTransfer.getData('text/plain') : eventData(event);
 
           if (text == null) break;
 
@@ -33893,6 +33938,35 @@ function AfterPlugin() {
       // it to the end of the node. (2016/11/29)
       editor.focus().moveToEndOfNode(node);
     }
+
+    next();
+  }
+
+  /**
+   * On composition end.
+   *
+   * @param {Event} event
+   * @param {Editor} editor
+   * @param {Function} next
+   */
+
+  function onCompositionEnd(event, editor, next) {
+    debug$4('onCompositionEnd', { event: event });
+
+    // COMPAT: In Chrome, `beforeinput` events for compositions
+    // aren't correct and never fire the "insertFromComposition"
+    // type that we need. So instead, insert whenever a composition
+    // ends since it will already have been committed to the DOM.
+    // cf. https://github.com/ianstormtaylor/slate/blob/93fe25151722343488e9002a0ebd8ed3ba66ee95/packages/slate-react/src/components/editable.tsx#L596-L602
+    if (!IS_SAFARI && !IS_FIREFOX && event.data) {
+      // unless it's already been inserted in onBeforeInput
+      if (event.data !== insertedCompositionEventData) {
+        editor.insertText(eventData(event));
+      }
+    }
+
+    inProgressCompositionText = null;
+    insertedCompositionEventData = null;
 
     next();
   }
@@ -34445,9 +34519,11 @@ function AfterPlugin() {
    */
 
   return {
+    commands: { onCompositionInput: onCompositionInput },
     onBeforeInput: onBeforeInput,
     onBlur: onBlur,
     onClick: onClick,
+    onCompositionEnd: onCompositionEnd,
     onCopy: onCopy,
     onCut: onCut,
     onDragEnd: onDragEnd,
@@ -34480,7 +34556,7 @@ var debug$5 = browser$1('slate:before');
 function BeforePlugin() {
   var activeElement = null;
   var compositionCount = 0;
-  var isComposing = false;
+  var _isComposing = false;
   var isCopying = false;
   var isDragging = false;
   var isUserActionPerformed = false;
@@ -34575,7 +34651,7 @@ function BeforePlugin() {
     // `isComposing` flag, since a composition is still in affect.
     window.requestAnimationFrame(function () {
       if (compositionCount > n) return;
-      isComposing = false;
+      _isComposing = false;
     });
 
     debug$5('onCompositionEnd', { event: event });
@@ -34605,7 +34681,7 @@ function BeforePlugin() {
    */
 
   function onCompositionStart(event, editor, next) {
-    isComposing = true;
+    _isComposing = true;
     compositionCount++;
 
     var value = editor.value;
@@ -34835,7 +34911,8 @@ function BeforePlugin() {
    */
 
   function onInput(event, editor, next) {
-    if (isComposing) return;
+    // let AfterPlugin have a crack at composition-related input events
+    if (_isComposing) return editor.command('onCompositionInput', event);
     if (editor.value.selection.isBlurred) return;
     isUserActionPerformed = true;
     debug$5('onInput', { event: event });
@@ -34856,7 +34933,7 @@ function BeforePlugin() {
     // When composing, we need to prevent all hotkeys from executing while
     // typing. However, certain characters also move the selection before
     // we're able to handle it, so prevent their default behavior.
-    if (isComposing) {
+    if (_isComposing) {
       if (Hotkeys.isCompose(event)) event.preventDefault();
       return;
     }
@@ -34902,7 +34979,7 @@ function BeforePlugin() {
 
   function onSelect(event, editor, next) {
     if (isCopying) return;
-    if (isComposing) return;
+    if (_isComposing) return;
 
     if (editor.readOnly) return;
 
@@ -34922,6 +34999,10 @@ function BeforePlugin() {
   function clearUserActionPerformed() {
     isUserActionPerformed = false;
     return null;
+  }
+
+  function setUserActionPerformed() {
+    isUserActionPerformed = true;
   }
 
   /**
@@ -34950,8 +35031,17 @@ function BeforePlugin() {
     onKeyDown: onKeyDown,
     onPaste: onPaste,
     onSelect: onSelect,
-    queries: { userActionPerformed: userActionPerformed },
-    commands: { clearUserActionPerformed: clearUserActionPerformed }
+    queries: {
+      // cf. https://github.com/ianstormtaylor/slate/pull/2415/files#r232777986
+      isComposing: function isComposing() {
+        return _isComposing;
+      },
+      userActionPerformed: userActionPerformed
+    },
+    commands: {
+      clearUserActionPerformed: clearUserActionPerformed,
+      setUserActionPerformed: setUserActionPerformed
+    }
   };
 }
 
@@ -37589,8 +37679,9 @@ function renderImage(node, attributes, children, options) {
     var highlightClass = (options === null || options === void 0 ? void 0 : options.isHighlighted) && !(options === null || options === void 0 ? void 0 : options.isSerializing) ? kImageHighlightClass : undefined;
     var classes = mergeClassStrings(highlightClass, attributes.className);
     var src = data.get("src");
+    var onLoad = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onLoad;
     var onClick = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onClick;
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", __assign({ className: classes, src: src, onClick: onClick }, attributes)));
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", __assign({ className: classes, src: src, onClick: onClick, onLoad: onLoad }, attributes)));
 }
 var kImageTag = "img";
 function ImagePlugin() {
@@ -37653,6 +37744,7 @@ function ImagePlugin() {
             var options = {
                 isSerializing: false,
                 isHighlighted: props.isSelected || props.isFocused,
+                onLoad: function () { return editor.command("onLoad", node); },
                 onClick: function () { return editor.moveFocusToStartOfNode(node); }
             };
             return renderImage(node, __assign(__assign({}, dataAttrs), attributes), children, options);
@@ -39849,12 +39941,25 @@ function FontSizePlugin() {
     };
 }
 
+/*
+ * Calls its onLoad() argument when resources load (e.g. <img> onLoad).
+ */
+function OnLoadPlugin(onLoad) {
+    return {
+        commands: {
+            onLoad: function (editor, node) {
+                onLoad === null || onLoad === void 0 ? void 0 : onLoad(node);
+                return editor;
+            }
+        }
+    };
+}
+
 var kEmptyEditorValue = textToSlate("");
 var kDefaultHotkeyMap = {
     'mod+b': function (editor) { return editor.toggleMark(EFormat.bold); },
     'mod+i': function (editor) { return editor.toggleMark(EFormat.italic); },
-    'mod+u': function (editor) { return editor.toggleMark(EFormat.underlined); },
-    'mod+\\': function (editor) { return editor.toggleMark(EFormat.code); }
+    'mod+u': function (editor) { return editor.toggleMark(EFormat.underlined); }
 };
 function extractUserDataJSON(value) {
     var _data = value.toJSON({ preserveData: true }).data;
@@ -39871,26 +39976,33 @@ var defaultPlugins = [
     FontSizePlugin()
 ];
 var SlateEditor = function (props) {
-    var history = props.history, onEditorRef = props.onEditorRef, onValueChange = props.onValueChange, onContentChange = props.onContentChange, onFocus = props.onFocus, onBlur = props.onBlur, plugins = props.plugins;
+    var history = props.history, onEditorRef = props.onEditorRef, onLoad = props.onLoad, onValueChange = props.onValueChange, onContentChange = props.onContentChange, onFocus = props.onFocus, onBlur = props.onBlur, plugins = props.plugins;
+    var onLoadPlugin = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () { return OnLoadPlugin(onLoad); }, [onLoad]);
     var historyPlugin = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () { return history || (history == null) // enabled by default
         ? EditorHistory(typeof history === "object" ? history : undefined)
         : NoEditorHistory(); }, [history]);
-    var allPlugins = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () { return __spreadArrays((plugins || []), defaultPlugins, [historyPlugin]); }, [historyPlugin, plugins]);
+    var allPlugins = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () { return __spreadArrays((plugins || []), defaultPlugins, [onLoadPlugin, historyPlugin]); }, [onLoadPlugin, historyPlugin, plugins]);
     var editorRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
     var value = typeof props.value === "string"
         ? textToSlate(props.value)
         : props.value || kEmptyEditorValue;
-    var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(value), prevValue = _a[0], setPrevValue = _a[1];
     var fontSize = getFontSize(value);
     var fontStyle = fontSize ? { fontSize: fontSize + "em" } : undefined;
     var style = __assign(__assign({}, props.style), fontStyle);
-    var handleChange = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (change) {
-        var isContentChange = (change.value.document !== prevValue.document) ||
-            isValueDataChange(change.value, prevValue);
-        setPrevValue(change.value);
+    var handleChange = function (change) {
+        var isContentChange = (change.value.document !== value.document) ||
+            isValueDataChange(change.value, value);
+        var isFocused = change.value.selection.isFocused;
+        var isFocusChange = isFocused !== value.selection.isFocused;
+        // base our onFocus/onBlur callbacks on Slate value changes, _not_
+        // on the Editor's onFocus/onBlur callbacks (which are browser-based).
+        // cf. https://github.com/ianstormtaylor/slate/issues/2640#issuecomment-476447608
+        // cf. https://github.com/ianstormtaylor/slate/issues/2434#issuecomment-577783398
+        isFocusChange && isFocused && (onFocus === null || onFocus === void 0 ? void 0 : onFocus(editorRef.current));
         onValueChange === null || onValueChange === void 0 ? void 0 : onValueChange(change.value);
         isContentChange && (onContentChange === null || onContentChange === void 0 ? void 0 : onContentChange(change.value));
-    }, [prevValue, onValueChange, onContentChange]);
+        isFocusChange && !isFocused && (onBlur === null || onBlur === void 0 ? void 0 : onBlur(editorRef.current));
+    };
     var hotkeyFnMap = useHotkeyMap(props.hotkeyMap || kDefaultHotkeyMap);
     var handleKeyDown = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e, editor, next) {
         var found = find_1(hotkeyFnMap, function (entry) {
@@ -39905,29 +40017,14 @@ var SlateEditor = function (props) {
         editorRef.current = editor || undefined;
         onEditorRef === null || onEditorRef === void 0 ? void 0 : onEditorRef(editorRef.current);
     }, [onEditorRef]);
-    // For focus/blur, by default Slate will synchronize its internal model with
-    // the browser's focus/blur "eventually" in an asynchronous fashion. When
-    // there are multiple editors on the screen, focusing/blurring one can cause
-    // others to blur/focus in response, which can then result in stale responses.
-    // Immediately calling focus/blur in the appropriate callback forces Slate
-    // to synchronize the model immediately.
-    // cf. https://github.com/ianstormtaylor/slate/issues/2097#issuecomment-464935337
-    var handleFocus = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (event, editor) {
-        editor.focus();
-        onFocus === null || onFocus === void 0 ? void 0 : onFocus(editor);
-    }, [onFocus]);
-    var handleBlur = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (event, editor) {
-        editor.blur();
-        onBlur === null || onBlur === void 0 ? void 0 : onBlur(editor);
-    }, [onBlur]);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Editor$1, { "data-testid": "slate-editor", style: style, className: "slate-editor " + (props.className || ""), ref: handleEditorRef, value: value, plugins: allPlugins, onKeyDown: handleKeyDown, onChange: handleChange, onFocus: handleFocus, onBlur: handleBlur }));
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Editor$1, { "data-testid": "slate-editor", style: style, className: "slate-editor " + (props.className || ""), ref: handleEditorRef, value: value, plugins: allPlugins, onKeyDown: handleKeyDown, onChange: handleChange }));
 };
 SlateEditor.displayName = "SlateEditor";
 
 var kDefaultFillColor = "#909090";
 var kDefaultSelectedFillColor = "#009CDC";
 var ToolbarButton = function (props) {
-    var format = props.format, SvgIcon = props.SvgIcon, iconSize = props.iconSize, buttonSize = props.buttonSize, tooltip = props.tooltip, isActive = props.isActive, isEnabled = props.isEnabled, colors = props.colors, selectedColors = props.selectedColors, onChange = props.onChange, onClick = props.onClick, onMouseDown = props.onMouseDown, onDidInvokeTool = props.onDidInvokeTool, onSaveSelection = props.onSaveSelection, onRestoreSelection = props.onRestoreSelection;
+    var format = props.format, SvgIcon = props.SvgIcon, iconSize = props.iconSize, buttonSize = props.buttonSize, tooltip = props.tooltip, isActive = props.isActive, isEnabled = props.isEnabled, colors = props.colors, selectedColors = props.selectedColors, onChange = props.onChange, onClick = props.onClick, onMouseDown = props.onMouseDown, onDidInvokeTool = props.onDidInvokeTool, onSaveSelection = props.onSaveSelection, onRestoreSelection = props.onRestoreSelection, onUserActionPerformed = props.onUserActionPerformed;
     var buttonStyle = {
         width: buttonSize,
         height: buttonSize
@@ -39947,10 +40044,12 @@ var ToolbarButton = function (props) {
     }
     var handleMouseDown = function (e) {
         onSaveSelection === null || onSaveSelection === void 0 ? void 0 : onSaveSelection();
+        onUserActionPerformed === null || onUserActionPerformed === void 0 ? void 0 : onUserActionPerformed();
         onMouseDown === null || onMouseDown === void 0 ? void 0 : onMouseDown(e);
     };
     var handleEnabledClick = function (e) {
         onRestoreSelection === null || onRestoreSelection === void 0 ? void 0 : onRestoreSelection();
+        onUserActionPerformed === null || onUserActionPerformed === void 0 ? void 0 : onUserActionPerformed();
         if (onClick) {
             onClick(format, e);
             onDidInvokeTool === null || onDidInvokeTool === void 0 ? void 0 : onDidInvokeTool(props.format);
@@ -39981,8 +40080,9 @@ function getPlatformTooltip(str) {
     return str.replace("mod-", modKey);
 }
 var EditorToolbar = function (iProps) {
+    var _a;
     var props = __assign(__assign({}, kDefaultProps), iProps);
-    var orientation = props.orientation, colors = props.colors, selectedColors = props.selectedColors, buttonsPerRow = props.buttonsPerRow, iconSize = props.iconSize, buttonSize = props.buttonSize, buttons = props.buttons, onDidInvokeTool = props.onDidInvokeTool, padding = props.padding, editor = props.editor;
+    var orientation = props.orientation, colors = props.colors, buttonsPerRow = props.buttonsPerRow, iconSize = props.iconSize, buttonSize = props.buttonSize, buttons = props.buttons, onDidInvokeTool = props.onDidInvokeTool, padding = props.padding, editor = props.editor;
     var longAxisButtonCount = buttonsPerRow || buttons.length;
     var crossAxisButtonCount = buttonsPerRow ? Math.ceil(buttons.length / buttonsPerRow) : 1;
     var kPadding = padding || 0;
@@ -39991,7 +40091,7 @@ var EditorToolbar = function (iProps) {
     var toolbarSize = orientation === "vertical"
         ? { width: toolbarCrossExtent, height: toolbarLongExtent }
         : { width: toolbarLongExtent, height: toolbarCrossExtent };
-    var toolbarStyle = (colors === null || colors === void 0 ? void 0 : colors.background) ? __assign({ backgroundColor: colors.background }, toolbarSize) : toolbarSize;
+    var toolbarStyle = ((_a = colors === null || colors === void 0 ? void 0 : colors.buttonColors) === null || _a === void 0 ? void 0 : _a.background) ? __assign({ backgroundColor: colors.buttonColors.background }, toolbarSize) : toolbarSize;
     var orientationClass = orientation || "horizontal";
     // By default, clicking on a button (such as a toolbar button) takes focus from an
     // active editor. Buttons that want to preserve the current selection, which is the
@@ -40004,13 +40104,16 @@ var EditorToolbar = function (iProps) {
     var handleRestoreSelection = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
         editor && editor.select(savedSelection.current);
     }, [editor]);
+    var handleUserActionPerformed = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
+        editor && editor.command("setUserActionPerformed");
+    }, [editor]);
     if (iProps.show === false)
         return null;
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "editor-toolbar " + (props.className || "") },
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "editor-toolbar-container " + orientationClass, style: toolbarStyle }, buttons.map(function (button) {
             var format = button.format, others = __rest(button, ["format"]);
             var _iconSize = button.iconSize || iconSize;
-            return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ToolbarButton, __assign({ key: "key-" + format, format: format, iconSize: _iconSize, buttonSize: buttonSize, colors: colors, selectedColors: selectedColors, onDidInvokeTool: onDidInvokeTool, onSaveSelection: handleSaveSelection, onRestoreSelection: handleRestoreSelection }, others)));
+            return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ToolbarButton, __assign({ key: "key-" + format, format: format, iconSize: _iconSize, buttonSize: buttonSize, colors: colors === null || colors === void 0 ? void 0 : colors.buttonColors, selectedColors: colors === null || colors === void 0 ? void 0 : colors.selectedColors, onDidInvokeTool: onDidInvokeTool, onSaveSelection: handleSaveSelection, onRestoreSelection: handleRestoreSelection, onUserActionPerformed: handleUserActionPerformed }, others)));
         }))));
 };
 
@@ -40203,10 +40306,10 @@ function isToolEntryFormat(entry, format) {
         : (entry === null || entry === void 0 ? void 0 : entry.format) === format;
 }
 var SlateToolbar = function (props) {
-    var _a, _b;
+    var _a, _b, _c;
     var className = props.className, editor = props.editor, order = props.order, others = __rest(props, ["className", "editor", "order"]);
-    var _c = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false), showDialog = _c[0], setShowDialog = _c[1];
-    var _d = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(), dialogSettings = _d[0], setDialogSettings = _d[1];
+    var _d = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false), showDialog = _d[0], setShowDialog = _d[1];
+    var _e = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(), dialogSettings = _e[0], setDialogSettings = _e[1];
     var displayDialog = function (settings) {
         setDialogSettings(settings);
         // prevents focus-bouncing between editor and dialog
@@ -40264,13 +40367,14 @@ var SlateToolbar = function (props) {
             onClick: function () { return editor && handleToggleSuperSubscript(EFormat.subscript, editor); }
         },
         (function () {
+            var _a, _b;
             var selection;
             var fill = editor && editor.query("getActiveColor") || "#000000";
             return {
                 format: EFormat.color,
                 SvgIcon: InputColor,
-                colors: __assign(__assign({}, props.colors), { fill: fill }),
-                selectedColors: __assign(__assign({}, props.selectedColors), { fill: fill }),
+                colors: __assign(__assign({}, (_a = props.colors) === null || _a === void 0 ? void 0 : _a.buttonColors), { fill: fill }),
+                selectedColors: __assign(__assign({}, (_b = props.colors) === null || _b === void 0 ? void 0 : _b.selectedColors), { fill: fill }),
                 tooltip: getPlatformTooltip("color"),
                 isActive: !!editor && editor.query("hasActiveColorMark"),
                 onMouseDown: function () {
@@ -40413,10 +40517,11 @@ var SlateToolbar = function (props) {
         setShowDialog(false);
         editor && inputs && ((_a = dialogSettings === null || dialogSettings === void 0 ? void 0 : dialogSettings.onAccept) === null || _a === void 0 ? void 0 : _a.call(dialogSettings, editor, inputs));
     };
+    var themeColor = ((_a = props.colors) === null || _a === void 0 ? void 0 : _a.themeColor) || ((_c = (_b = props.colors) === null || _b === void 0 ? void 0 : _b.buttonColors) === null || _c === void 0 ? void 0 : _c.background);
     var dialog = showDialog && dialogSettings
         ? (props.modalPortalRoot
-            ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ModalDialogPortal, { modalPortalRoot: props.modalPortalRoot, coverClassName: props.modalCoverClassName, dialogClassName: props.modalDialogClassName, themeColor: (_a = props.colors) === null || _a === void 0 ? void 0 : _a.background, title: dialogSettings.title, prompts: dialogSettings.prompts, onClose: handleCloseDialog })
-            : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ModalDialog, { coverClassName: props.modalCoverClassName, dialogClassName: props.modalDialogClassName, themeColor: (_b = props.colors) === null || _b === void 0 ? void 0 : _b.background, title: dialogSettings.title, prompts: dialogSettings.prompts, onClose: handleCloseDialog }))
+            ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ModalDialogPortal, { modalPortalRoot: props.modalPortalRoot, coverClassName: props.modalCoverClassName, dialogClassName: props.modalDialogClassName, themeColor: themeColor, title: dialogSettings.title, prompts: dialogSettings.prompts, onClose: handleCloseDialog })
+            : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ModalDialog, { coverClassName: props.modalCoverClassName, dialogClassName: props.modalDialogClassName, themeColor: themeColor, title: dialogSettings.title, prompts: dialogSettings.prompts, onClose: handleCloseDialog }))
         : null;
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EditorToolbar, __assign({ className: "slate-toolbar " + (props.className || ""), iconSize: 16, buttons: _buttons, editor: editor }, others)),
