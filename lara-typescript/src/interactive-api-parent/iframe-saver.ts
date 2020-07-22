@@ -4,7 +4,6 @@ import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
-import { IInteractiveListResponseItem } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -103,7 +102,6 @@ export class IFrameSaver {
   private interactiveId: number;
   private interactiveName: string;
   private getFirebaseJWTUrl: string;
-  private getInteractivesListUrl: string;
   private savedState: object | string | null;
   private autoSaveIntervalId: number | null;
   private alreadySetup: boolean;
@@ -125,7 +123,6 @@ export class IFrameSaver {
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
-    this.getInteractivesListUrl = $dataDiv.data("get-interactives-list-url");
 
     this.saveIndicator = SaveIndicator.instance();
 
@@ -264,10 +261,6 @@ export class IFrameSaver {
 
     this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
       return this.getFirebaseJwt(request);
-    });
-
-    this.addListener("getInteractiveList", (request: LaraInteractiveApi.IGetInteractiveListRequest) => {
-      return this.getInteractiveList(request);
     });
 
     if (this.learnerStateSavingEnabled()) {
@@ -449,21 +442,6 @@ export class IFrameSaver {
       },
       error: (jqxhr, status, error) => {
         this.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
-      }});
-  }
-
-  private getInteractiveList(request: LaraInteractiveApi.IGetInteractiveListRequest) {
-    const {requestId, scope, supportsSnapshots} = request;
-
-    return $.ajax({
-      type: "GET",
-      url: this.getInteractivesListUrl,
-      data: {scope, supportsSnapshots},
-      success: (data: {interactives: IInteractiveListResponseItem[]}) => {
-        this.post("interactiveList", {requestId, interactives: data.interactives});
-      },
-      error: (jqxhr, status, error) => {
-        this.post("interactiveList", {requestId, response_type: "ERROR", message: error});
       }});
   }
 

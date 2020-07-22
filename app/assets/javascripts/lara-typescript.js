@@ -28010,7 +28010,6 @@ var IFrameSaver = /** @class */ (function () {
         this.interactiveId = $dataDiv.data("interactive-id");
         this.interactiveName = $dataDiv.data("interactive-name");
         this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
-        this.getInteractivesListUrl = $dataDiv.data("get-interactives-list-url");
         this.saveIndicator = SaveIndicator.instance();
         this.$deleteButton.click(function () { return _this.deleteData(); });
         this.savedState = null;
@@ -28141,9 +28140,6 @@ var IFrameSaver = /** @class */ (function () {
         });
         this.addListener("getFirebaseJWT", function (request) {
             return _this.getFirebaseJwt(request);
-        });
-        this.addListener("getInteractiveList", function (request) {
-            return _this.getInteractiveList(request);
         });
         if (this.learnerStateSavingEnabled()) {
             this.post("getLearnerUrl");
@@ -28317,21 +28313,6 @@ var IFrameSaver = /** @class */ (function () {
             },
             error: function (jqxhr, status, error) {
                 _this.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
-            }
-        });
-    };
-    IFrameSaver.prototype.getInteractiveList = function (request) {
-        var _this = this;
-        var requestId = request.requestId, scope = request.scope, supportsSnapshots = request.supportsSnapshots;
-        return $.ajax({
-            type: "GET",
-            url: this.getInteractivesListUrl,
-            data: { scope: scope, supportsSnapshots: supportsSnapshots },
-            success: function (data) {
-                _this.post("interactiveList", { requestId: requestId, interactives: data.interactives });
-            },
-            error: function (jqxhr, status, error) {
-                _this.post("interactiveList", { requestId: requestId, response_type: "ERROR", message: error });
             }
         });
     };
@@ -28795,14 +28776,14 @@ exports.InteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
-exports.InteractiveAuthoring = function (_a) {
-    var interactive = _a.interactive, onAuthoredStateChange = _a.onAuthoredStateChange, allowReset = _a.allowReset;
+exports.InteractiveAuthoring = function (props) {
+    var interactive = props.interactive, onAuthoredStateChange = props.onAuthoredStateChange, allowReset = props.allowReset, authoringApiUrls = props.authoringApiUrls;
     var iframe = react_1.useRef(null);
-    var _b = react_1.useState(false), authoringSupported = _b[0], setAuthoringSupported = _b[1];
-    var _c = react_1.useState(typeof interactive.authored_state === "string"
+    var _a = react_1.useState(false), authoringSupported = _a[0], setAuthoringSupported = _a[1];
+    var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
-        : interactive.authored_state), authoredState = _c[0], setAuthoredState = _c[1];
-    var _d = react_1.useState(0), resetCount = _d[0], setResetCount = _d[1];
+        : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    var _c = react_1.useState(0), resetCount = _c[0], setResetCount = _c[1];
     var handleAuthoredStateChange = function (newAuthoredState) {
         setAuthoredState(newAuthoredState);
         onAuthoredStateChange(newAuthoredState);
@@ -28826,7 +28807,7 @@ exports.InteractiveAuthoring = function (_a) {
                 ? React.createElement("input", { type: "button", className: "reset-btn", value: "Reset authored state", onClick: handleReset })
                 : undefined)
             : undefined,
-        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
+        React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, onSupportedFeaturesUpdate: handleSupportedFeatures, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio, authoringApiUrls: authoringApiUrls })));
 };
 
 
@@ -28847,7 +28828,7 @@ var React = __webpack_require__(/*! react */ "react");
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
 exports.InteractiveIframe = function (props) {
-    var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod;
+    var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod, authoringApiUrls = props.authoringApiUrls;
     var iframe = react_1.useRef(null);
     // FIXME: The interactive sizing computation at runtime is currently handled
     // by the setSize method in interactives-sizing.js
@@ -28876,6 +28857,20 @@ exports.InteractiveIframe = function (props) {
             onSupportedFeaturesUpdate(info);
         }
     };
+    var handleGetInteractiveList = function (request, url) {
+        var requestId = request.requestId, scope = request.scope, supportsSnapshots = request.supportsSnapshots;
+        return $.ajax({
+            type: "GET",
+            url: url,
+            data: { scope: scope, supportsSnapshots: supportsSnapshots },
+            success: function (data) {
+                phone.post("interactiveList", { requestId: requestId, interactives: data.interactives });
+            },
+            error: function (jqxhr, status, error) {
+                phone.post("interactiveList", { requestId: requestId, response_type: "ERROR", message: error });
+            }
+        });
+    };
     var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];
     var phone;
     var connect = function () {
@@ -28889,6 +28884,12 @@ exports.InteractiveIframe = function (props) {
         });
         phone.addListener("supportedFeatures", function (info) { return handleSupportedFeatures(info); });
         phone.addListener("height", function (newHeight) { return handleHeightChange(newHeight); });
+        var getInteractiveListUrl = authoringApiUrls === null || authoringApiUrls === void 0 ? void 0 : authoringApiUrls.get_interactive_list;
+        if (getInteractiveListUrl) {
+            phone.addListener("getInteractiveList", function (request) {
+                handleGetInteractiveList(request, getInteractiveListUrl);
+            });
+        }
     };
     var disconnect = function () {
         if (phone) {
@@ -29069,11 +29070,11 @@ Object.defineProperty(exports, "MWInteractiveAuthoring", { enumerable: true, get
 var interactive_authoring_preview_1 = __webpack_require__(/*! ./common/components/interactive-authoring-preview */ "./src/page-item-authoring/common/components/interactive-authoring-preview.tsx");
 Object.defineProperty(exports, "InteractiveAuthoringPreview", { enumerable: true, get: function () { return interactive_authoring_preview_1.InteractiveAuthoringPreview; } });
 var renderManagedInteractiveAuthoring = function (root, props) {
-    return ReactDOM.render(React.createElement(managed_interactives_1.ManagedInteractiveAuthoring, { managedInteractive: props.managedInteractive, libraryInteractive: props.libraryInteractive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt }), root);
+    return ReactDOM.render(React.createElement(managed_interactives_1.ManagedInteractiveAuthoring, { managedInteractive: props.managedInteractive, libraryInteractive: props.libraryInteractive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt, authoringApiUrls: props.authoringApiUrls }), root);
 };
 exports.renderManagedInteractiveAuthoring = renderManagedInteractiveAuthoring;
 var renderMWInteractiveAuthoring = function (root, props) {
-    return ReactDOM.render(React.createElement(mw_interactives_1.MWInteractiveAuthoring, { interactive: props.interactive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt }), root);
+    return ReactDOM.render(React.createElement(mw_interactives_1.MWInteractiveAuthoring, { interactive: props.interactive, defaultClickToPlayPrompt: props.defaultClickToPlayPrompt, authoringApiUrls: props.authoringApiUrls }), root);
 };
 exports.renderMWInteractiveAuthoring = renderMWInteractiveAuthoring;
 var renderInteractiveAuthoringPreview = function (root, props) {
@@ -29261,7 +29262,7 @@ var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-use
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.ManagedInteractiveAuthoring = function (props) {
-    var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
+    var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
     var libraryInteractives = use_library_interactives_1.useLibraryInteractives();
     var _a = react_1.useState(props.libraryInteractive), libraryInteractive = _a[0], setLibraryInteractive = _a[1];
     var libraryInteractiveIdRef = react_1.useRef(null);
@@ -29327,7 +29328,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
         var renderAuthoringPanel = function () {
             var url_fragment = managedInteractive.url_fragment;
             return (React.createElement(React.Fragment, null, libraryInteractive.authorable
-                ? React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: interactive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
+                ? React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: interactive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false, authoringApiUrls: authoringApiUrls })
                 : React.createElement(React.Fragment, null,
                     React.createElement("fieldset", null,
                         React.createElement("legend", null, "Url Fragment"),
@@ -29469,7 +29470,7 @@ var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-use
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.MWInteractiveAuthoring = function (props) {
-    var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
+    var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
     var interactiveAuthoredStateRef = react_1.useRef(null);
     var _a = react_1.useState(interactive.url), authoringUrl = _a[0], setAuthoringUrl = _a[1];
     var user = use_current_user_1.useCurrentUser();
@@ -29511,7 +29512,7 @@ exports.MWInteractiveAuthoring = function (props) {
                 (user === null || user === void 0 ? void 0 : user.isAdmin) ? React.createElement(react_tabs_1.Tab, null, "Authored State (Admin Only)") : undefined),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true }, hasAuthoringUrl
                 ?
-                    React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: authoredInteractive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false })
+                    React.createElement(interactive_authoring_1.InteractiveAuthoring, { interactive: authoredInteractive, onAuthoredStateChange: handleAuthoredStateChange, allowReset: false, authoringApiUrls: authoringApiUrls })
                 : React.createElement("div", null, "Please enter an url above and then move the focus out of the url field.")),
             React.createElement(react_tabs_1.TabPanel, { forceRender: true },
                 React.createElement(customize_1.CustomizeMWInteractive, { interactive: interactive, defaultClickToPlayPrompt: defaultClickToPlayPrompt })),

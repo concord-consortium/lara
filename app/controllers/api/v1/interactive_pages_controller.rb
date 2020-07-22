@@ -1,6 +1,6 @@
 class Api::V1::InteractivePagesController < ApplicationController
   layout false
-  before_filter :set_interactive
+  before_filter :set_interactive_page
 
   def get_interactive_list
     begin
@@ -48,7 +48,7 @@ class Api::V1::InteractivePagesController < ApplicationController
 
   private
 
-  def set_interactive
+  def set_interactive_page
     begin
       @interactive_page = InteractivePage.find(params['id'])
     rescue ActiveRecord::RecordNotFound

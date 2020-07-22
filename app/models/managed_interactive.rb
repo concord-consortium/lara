@@ -141,6 +141,12 @@ class ManagedInteractive < ActiveRecord::Base
     hash
   end
 
+  def authoring_api_urls(protocol, host)
+    {
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+    }
+  end
+
   # returns same json as mw_interactive, used for react-based authoring
   def to_interactive_json
     # NOTE: model_library_url is missing as there is no analog
