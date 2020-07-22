@@ -888,6 +888,9 @@ button[type="submit"] {
   font-size: 15px;
   color: #fff;
   @include drk-txt-shadow($btn-orange);
+  &:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 2px 3px #6fc6da;
+  }
 }
 
 // button
@@ -895,6 +898,9 @@ input[type="button"],
 button[type="button"] {
   border: 0;
   @include btn;
+  &:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 2px 3px #6fc6da;
+  }
 }
 input:disabled {
   opacity: 0.3;

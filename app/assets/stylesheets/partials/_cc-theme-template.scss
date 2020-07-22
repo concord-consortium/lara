@@ -80,6 +80,9 @@
     &.disabled {
       cursor: not-allowed;
     }
+    &:focus {
+      box-shadow: 0 0 0 1px #fff, 0 0 2px 3px #6fc6da;
+    }
   }
 
   .related-hdr {
