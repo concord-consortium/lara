@@ -23,6 +23,11 @@ describe Api::V1::InteractivePagesController do
   let (:interactive4) { FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive1, :url_fragment => "test1") }
   let (:interactive5) { FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive2, :url_fragment => "test2") }
 
+  def add_interactive_to_section(page, interactive, section)
+    page.add_embeddable(interactive, nil, section)
+    interactive.reload
+  end
+
   describe "#get_interactive_list" do
 
     describe "on an unknown page" do
@@ -78,16 +83,12 @@ describe Api::V1::InteractivePagesController do
 
     describe "on a page with interactives" do
       before :each do
-        page.add_interactive(interactive1, nil, true, InteractivePage::INTERACTIVE_BOX)
-        page.add_interactive(interactive2, nil, true, InteractivePage::HEADER_BLOCK)
-        page.add_interactive(interactive3, nil, true, nil) # nil is assessment block
-        page.add_interactive(interactive4, nil, true, InteractivePage::INTERACTIVE_BOX)
-        page.add_interactive(interactive5, nil, true, InteractivePage::HEADER_BLOCK)
-        interactive1.reload
-        interactive2.reload
-        interactive3.reload
-        interactive4.reload
-        interactive5.reload
+        add_interactive_to_section(page, interactive1, InteractivePage::INTERACTIVE_BOX)
+        add_interactive_to_section(page, interactive2, InteractivePage::HEADER_BLOCK)
+        add_interactive_to_section(page, interactive3, nil) # nil is assessment block
+        add_interactive_to_section(page, interactive4, InteractivePage::INTERACTIVE_BOX)
+        add_interactive_to_section(page, interactive5, InteractivePage::HEADER_BLOCK)
+        page.save!(validate: true)
         page.reload
       end
 
