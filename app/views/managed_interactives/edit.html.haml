@@ -16,6 +16,7 @@
       interactive: #{@interactive.to_interactive_json},
       managedInteractive: #{@interactive.to_authoring_hash().to_json},
       libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"},
-      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json}
+      defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json},
+      authoringApiUrls: #{@interactive.authoring_api_urls(request.protocol, request.host_with_port).to_json},
     });
   });

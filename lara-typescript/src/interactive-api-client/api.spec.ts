@@ -221,6 +221,24 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
+  it("should implement getInteractiveList", () => {
+    const requestContent = [
+      {scope: "page", supportsSnapshots: true}
+    ];
+    testRequestResponse({
+      method: api.getInteractiveList,
+      requestType: "getInteractiveList",
+      requestContent,
+      responseType: "interactiveList",
+      responseContent: [
+        {interactives: []}
+      ],
+      resolvesTo: [
+        {interactives: []}
+      ]
+    });
+  });
+
   it("does not yet implement showModal [dialog]", () => {
     interface IFooDialog { foo: string; }
     const options: IShowDialog<IFooDialog> = {
@@ -236,12 +254,6 @@ describe("api", () => {
     const options: ICloseModal = { uuid: "foo" };
     api.closeModal(options);
     expect(mockedPhone.messages).toEqual([{ type: "closeModal", content: options }]);
-  });
-
-  it("does not yet implement getInteractiveList", () => {
-    expect(() => api.getInteractiveList({
-      supportsSnapshots: true
-    })).toThrow(/not yet implemented/);
   });
 
   it("does not yet implement setLinkedInteractives", () => {
@@ -280,7 +292,6 @@ const testRequestResponse = async (options: IRequestResponseOptions) => {
   options.requestContent.forEach((rc, index) => {
     const requestId = index + 1;
     requestIds.push(requestId);
-    const content = {requestId, ...options.requestContent[index]};
     promises.push(options.method(options.requestContent[index]));
   });
 

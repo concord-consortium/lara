@@ -2,6 +2,10 @@ import * as React from "react";
 import * as iframePhone from "iframe-phone";
 import { useEffect, useRef, useState } from "react";
 
+import * as LaraInteractiveApi from "../../../interactive-api-client";
+import { IInteractiveListResponseItem } from "../../../interactive-api-client";
+import { AuthoringApiUrls } from "../types";
+
 interface Props {
   src: string;
   width: string | number;
@@ -12,6 +16,7 @@ interface Props {
   onSupportedFeaturesUpdate?: (info: any) => void;
   authoredAspectRatio: number;
   authoredAspectRatioMethod: string;
+  authoringApiUrls?: AuthoringApiUrls;
 }
 
 interface IFramePhoneParentEndpoint {
@@ -23,7 +28,8 @@ interface IFramePhoneParentEndpoint {
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
     src, width, initMsg, onAuthoredStateChange, resetCount,
-    onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod
+    onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod,
+    authoringApiUrls
   } = props;
 
   const iframe = useRef<HTMLIFrameElement|null>(null);
@@ -58,6 +64,21 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     }
   };
 
+  const handleGetInteractiveList = (request: LaraInteractiveApi.IGetInteractiveListRequest, url: string) => {
+    const {requestId, scope, supportsSnapshots} = request;
+
+    return $.ajax({
+      type: "GET",
+      url,
+      data: {scope, supportsSnapshots},
+      success: (data: {interactives: IInteractiveListResponseItem[]}) => {
+        phone.post("interactiveList", {requestId, interactives: data.interactives});
+      },
+      error: (jqxhr, status, error) => {
+        phone.post("interactiveList", {requestId, response_type: "ERROR", message: error});
+      }});
+  };
+
   const [iframeId, setIFrameId] = useState<number>(0);
   let phone: IFramePhoneParentEndpoint;
 
@@ -72,7 +93,17 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
     });
     phone.addListener("supportedFeatures", (info: any) => handleSupportedFeatures(info));
     phone.addListener("height", (newHeight: number | string) => handleHeightChange(newHeight));
+
+    const getInteractiveListUrl = authoringApiUrls?.get_interactive_list;
+    if (getInteractiveListUrl) {
+      phone.addListener("getInteractiveList",
+        (request: LaraInteractiveApi.IGetInteractiveListRequest) => {
+          handleGetInteractiveList(request, getInteractiveListUrl);
+        }
+      );
+    }
   };
+
   const disconnect = () => {
     if (phone) {
       phone.disconnect();

@@ -171,7 +171,7 @@ LightweightStandalone::Application.routes.draw do
         match 'report' =>  "question_trackers#report", via: ['get','post', 'put'], defaults: { format: 'json' }
       end
 
-      resources :activities, :controller => 'lightweight_activities', only: [:destroy]
+      resources :activities, :controller => 'lightweight_activities', only: [:show, :destroy]
       resources :sequences, only: [:destroy]
 
       match 'import' => 'import#import', :via => 'post'
@@ -190,6 +190,7 @@ LightweightStandalone::Application.routes.draw do
       match "user_check" => 'user_check#index', defaults: { format: 'json' }
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
+      match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'

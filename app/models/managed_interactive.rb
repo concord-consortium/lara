@@ -97,6 +97,10 @@ class ManagedInteractive < ActiveRecord::Base
     library_interactive ? library_interactive.no_snapshots : false
   end
 
+  def thumbnail_url
+    library_interactive ? library_interactive.thumbnail_url : nil
+  end
+
   def self.portal_type
     "iframe interactive"
   end
@@ -135,6 +139,12 @@ class ManagedInteractive < ActiveRecord::Base
     hash[:linked_interactive_id] = linked_interactive_id
     hash[:aspect_ratio] = aspect_ratio
     hash
+  end
+
+  def authoring_api_urls(protocol, host)
+    {
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+    }
   end
 
   # returns same json as mw_interactive, used for react-based authoring

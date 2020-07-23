@@ -76,6 +76,12 @@ class MwInteractive < ActiveRecord::Base
     hash
   end
 
+  def authoring_api_urls(protocol, host)
+    {
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+    }
+  end
+
   def duplicate
     # Generate a new object with those values
     MwInteractive.new(self.to_hash)
@@ -151,5 +157,10 @@ class MwInteractive < ActiveRecord::Base
 
   def prompt
     name
+  end
+
+  def thumbnail_url
+    # mirror managed_interactive has thumbnail_url which proxies to library_interactive
+    image_url
   end
 end
