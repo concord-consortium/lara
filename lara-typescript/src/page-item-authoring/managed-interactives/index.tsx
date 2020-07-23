@@ -12,11 +12,13 @@ import { CustomizeManagedInteractive } from "./customize";
 import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
+import { AuthoringApiUrls } from "../common/types";
 
 interface Props {
   managedInteractive: IManagedInteractive;
   libraryInteractive?: ILibraryInteractive;
   defaultClickToPlayPrompt: string;
+  authoringApiUrls: AuthoringApiUrls;
 }
 
 interface ISelectOption {
@@ -55,7 +57,7 @@ export interface IManagedInteractive {
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
 
 export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { managedInteractive, defaultClickToPlayPrompt } = props;
+  const { managedInteractive, defaultClickToPlayPrompt, authoringApiUrls } = props;
   const libraryInteractives = useLibraryInteractives();
   const [libraryInteractive, setLibraryInteractive] = useState<ILibraryInteractive|undefined>(props.libraryInteractive);
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
@@ -152,6 +154,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
               interactive={interactive}
               onAuthoredStateChange={handleAuthoredStateChange}
               allowReset={false}
+              authoringApiUrls={authoringApiUrls}
             />
           : <>
               <fieldset>

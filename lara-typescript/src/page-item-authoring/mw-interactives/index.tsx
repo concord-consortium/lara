@@ -10,10 +10,12 @@ import "react-tabs/style/react-tabs.css";
 import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
+import { AuthoringApiUrls } from "../common/types";
 
 interface Props {
   interactive: IMWInteractive;
   defaultClickToPlayPrompt: string;
+  authoringApiUrls: AuthoringApiUrls;
 }
 
 export interface IMWInteractive {
@@ -42,7 +44,7 @@ export interface IMWInteractive {
 const formField = RailsFormField<IMWInteractive>("mw_interactive");
 
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
-  const { interactive, defaultClickToPlayPrompt } = props;
+  const { interactive, defaultClickToPlayPrompt, authoringApiUrls } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
   const user = useCurrentUser();
@@ -124,6 +126,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
                 interactive={authoredInteractive}
                 onAuthoredStateChange={handleAuthoredStateChange}
                 allowReset={false}
+                authoringApiUrls={authoringApiUrls}
               />
             : <div>Please enter an url above and then move the focus out of the url field.</div>
           }

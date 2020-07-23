@@ -12,11 +12,13 @@ import {
   IShowModal,
   ICloseModal,
   IGetInteractiveListOptions,
+  IGetInteractiveListResponse,
   ISetLinkedInteractives,
   IGetLibraryInteractiveListRequest,
   IGetInteractiveSnapshotRequest,
   IHintRequest,
-  IJwtResponse
+  IJwtResponse,
+  IGetInteractiveListRequest
 } from "./types";
 import { getClient } from "./client";
 
@@ -242,11 +244,17 @@ export const closeModal = (options: ICloseModal) => {
   getClient().post("closeModal", options);
 };
 
-/**
- * @todo Implement this function.
- */
 export const getInteractiveList = (options: IGetInteractiveListOptions) => {
-  THROW_NOT_IMPLEMENTED_YET("getInteractiveList");
+  return new Promise<IGetInteractiveListResponse>((resolve) => {
+    const client = getClient();
+    const requestId = client.getNextRequestId();
+    const request: IGetInteractiveListRequest = {
+      requestId,
+      ...options
+    };
+    client.addListener("interactiveList", resolve, requestId);
+    client.post("getInteractiveList", request);
+  });
 };
 
 /**

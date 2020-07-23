@@ -58,4 +58,13 @@ module LightweightActivityHelper
       return ribbon(t("COMPLETED"),"my-ribbon")
     end
   end
+
+  def activity_player_url(activity)
+    activity_api_url = "#{api_v1_activity_url(@activity.id)}.json"
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}"
+  end
+
+  def activity_player_page_url(activity, page)
+    return  "#{activity_player_url(activity)}&page=#{page.position}"
+  end
 end
