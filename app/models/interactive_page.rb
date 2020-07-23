@@ -89,6 +89,10 @@ class InteractivePage < ActiveRecord::Base
     embeddables.select{ |e| Embeddable::is_interactive?(e) }
   end
 
+  def interactive_page_items
+    page_items.select{ |pi| Embeddable::is_interactive?(pi.embeddable) }
+  end
+
   def section_embeddables(section)
     page_items.where(section: section).collect{ |qi| qi.embeddable }
   end

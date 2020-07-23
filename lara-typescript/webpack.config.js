@@ -135,5 +135,53 @@ module.exports = (env, argv) => {
     externals: {
       'react': 'commonjs2 react'   // allows interactives to use their own react instead of bundling it in this library
     }
+  },
+
+  // need separate config as the externals are handled differently in the example interactive
+  {
+    context: __dirname, // to automatically find tsconfig.json
+    devtool: 'source-map',
+    entry: {
+      'example-interactive': './src/example-interactive/src/index.tsx',
+    },
+    mode: 'development',
+    output: {
+      filename: '[name]/index.js'
+    },
+    performance: { hints: false },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          enforce: 'pre',
+          use: [
+            {
+              loader: 'tslint-loader',
+              options: {}
+            }
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          options: {
+          }
+        }
+      ]
+    },
+    resolve: {
+      extensions: [ '.ts', '.tsx', '.js' ]
+    },
+    stats: {
+      // suppress "export not found" warnings about re-exported types
+      warningsFilter: /export .* was not found in/
+    },
+    plugins: [
+      new ForkTsCheckerWebpackPlugin(),
+      new CopyPlugin([
+        { from: 'src/example-interactive/index.html', to: 'example-interactive' },
+        { from: 'src/example-interactive/index.css', to: 'example-interactive' }
+      ])
+    ]
   }];
 };
