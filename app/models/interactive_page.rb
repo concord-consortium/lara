@@ -147,10 +147,10 @@ class InteractivePage < ActiveRecord::Base
     end
   end
 
-  def add_interactive(interactive, position = nil, validate = true, section = INTERACTIVE_BOX)
+  def add_interactive(interactive, position = nil, validate = true)
     self[:show_interactive] = true
     self.save!(validate: validate)
-    add_embeddable(interactive, position, section)
+    add_embeddable(interactive, position, INTERACTIVE_BOX)
   end
 
   def next_visible_page
