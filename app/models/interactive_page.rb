@@ -100,9 +100,7 @@ class InteractivePage < ActiveRecord::Base
   def embeddables
     ordered_embeddables = []
     self.class.registered_sections.each do |rs|
-      if self.send(rs[:show_method])
-        ordered_embeddables += page_items.where(section: rs[:name]).collect{ |qi| qi.embeddable }
-      end
+      ordered_embeddables += page_items.where(section: rs[:name]).collect{ |qi| qi.embeddable }
     end
     ordered_embeddables
   end
@@ -125,7 +123,13 @@ class InteractivePage < ActiveRecord::Base
   end
 
   def visible_embeddables
-    embeddables.select{ |e| !e.is_hidden }
+    visible_embeddables = []
+    self.class.registered_sections.each do |rs|
+      if self.send(rs[:show_method])
+        visible_embeddables += section_visible_embeddables(rs[:name])
+      end
+    end
+    visible_embeddables
   end
 
   def visible_interactives
