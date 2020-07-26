@@ -34,8 +34,6 @@ class RInteractive {
     getCodeOutput() {
         return cy.get('.tutorial-exercise-output-frame')
     }
-    // 52d8543a-c589-4aa0-b536-d028e4ddf689
-    // 76351344
 
 }
 
