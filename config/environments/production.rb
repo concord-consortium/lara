@@ -64,7 +64,7 @@ LightweightStandalone::Application.configure do
   theme-has-astro-dark.css theme-ngss-assessment.css theme-building-models.css theme-geode-himalayas.css
   theme-ipums-terra.css theme-data-games.css theme-precipitating-change.css theme-geniventure.css
   theme-connectedbio.css theme-geohazard.css theme-geocode.css theme-rmath.css theme-waters.css
-  theme-geohazard-wildfire.css theme-geohazard-flood.css)
+  theme-geohazard-wildfire.css theme-geohazard-flood.css theme-waters-2.css)
   # CSS file used by TinyMCE iframe:
   config.assets.precompile += %w(tinymce-content.css)
   # Disable delivery errors, bad email addresses will be ignored
