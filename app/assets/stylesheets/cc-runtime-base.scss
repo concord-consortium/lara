@@ -202,17 +202,25 @@ div.activity-mod>div.site-width {
     // TODO: Find a more efficient way to apply styles to only the first textbox
     .challenge {
       &[id^="embeddable-xhtml"] {
-        margin: 0 0 20px;
+        margin: 20px;
         .question-bd {
           background: transparent;
           border: none;
-          padding: 0;
+          padding: 22px 22px 15px;
         }
         .question-hdr {
           padding: 0;
           h5 {
             color: #444;
             font-weight: bold;
+          }
+        }
+
+        &.full-width {
+          margin: 0 0 20px;
+
+          .question-bd {
+            padding: 0;
           }
         }
       }
