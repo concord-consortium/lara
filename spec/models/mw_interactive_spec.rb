@@ -46,16 +46,31 @@ describe MwInteractive do
       hash = interactive.to_hash
       expect(hash).to eq(expected)
       expect(hash[:linked_interactive_id]).to be_nil
+      expect(hash[:linked_interactive_type]).to be_nil
     end
   end
 
   describe '#to_authoring_hash' do
     it 'has useful values' do
+      page.add_interactive(interactive)
+      interactive.reload
+      page.reload
+
       expected = interactive.to_hash
       expected[:id] = interactive.id
       expected[:linked_interactive_id] = interactive.linked_interactive_id
+      expected[:linked_interactive_type] = interactive.linked_interactive_type
       expected[:aspect_ratio] = interactive.aspect_ratio
+      expected[:page_item_id] = interactive.page_item.id
       expect(interactive.to_authoring_hash).to eq(expected)
+    end
+  end
+
+  describe '#to_authoring_preview_hash' do
+    it 'has useful values' do
+      expected = interactive.to_authoring_hash
+      expected[:linked_interactives] = interactive.linked_interactives_hash
+      expect(interactive.to_authoring_preview_hash).to eq(expected)
     end
   end
 

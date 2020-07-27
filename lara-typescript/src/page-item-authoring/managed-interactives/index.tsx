@@ -37,6 +37,7 @@ export interface IManagedInteractive {
   aspect_ratio: number;
   enable_learner_state: boolean;
   linked_interactive_id: number;
+  linked_interactive_type: string;
   show_in_featured_question_report: boolean;
   inherit_aspect_ratio_method: boolean;
   custom_aspect_ratio_method: string;
@@ -52,6 +53,7 @@ export interface IManagedInteractive {
   custom_click_to_play_prompt: string;
   inherit_image_url: boolean;
   custom_image_url: string;
+  page_item_id: number;
 }
 
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
@@ -134,7 +136,8 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       aspect_ratio_method: managedInteractive.inherit_aspect_ratio_method
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,
-      authored_state: managedInteractive.authored_state
+      authored_state: managedInteractive.authored_state,
+      page_item_id: managedInteractive.page_item_id
     };
 
     const handleAuthoredStateChange = (newAuthoredState: string | object) => {

@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
 
 # Interface: ISetLinkedInteractives
 
@@ -6,14 +6,23 @@
 
 * **ISetLinkedInteractives**
 
+  ↳ [ISetLinkedInteractivesRequest](isetlinkedinteractivesrequest.md)
+
 ## Index
 
 ### Properties
 
-* [linkedInteractives](isetlinkedinteractives.md#linkedinteractives)
+* [linkedInteractives](isetlinkedinteractives.md#optional-linkedinteractives)
+* [linkedState](isetlinkedinteractives.md#optional-linkedstate)
 
 ## Properties
 
-###  linkedInteractives
+### `Optional` linkedInteractives
 
-• **linkedInteractives**: *[ILinkedAuthoredInteractive](ilinkedauthoredinteractive.md)[]*
+• **linkedInteractives**? : *[ILinkedInteractiveMap](ilinkedinteractivemap.md)*
+
+___
+
+### `Optional` linkedState
+
+• **linkedState**? : *[InteractivePageItemId](../globals.md#interactivepageitemid)*

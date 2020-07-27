@@ -98,4 +98,14 @@ module BaseInteractive
     return nil
   end
 
+  def linked_interactives_hash
+    hash = {}
+    if page_item
+      LinkedPageItem.where(primary_id: page_item.id).each do |linked_page_item|
+        hash[linked_page_item.secondary_id] = {label: linked_page_item.label}
+      end
+    end
+    hash
+  end
+
 end

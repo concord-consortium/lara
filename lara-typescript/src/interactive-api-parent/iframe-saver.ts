@@ -4,6 +4,7 @@ import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
+import { ILinkedInteractiveMap } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -14,6 +15,17 @@ const getAuthoredState = ($dataDiv: JQuery) => {
     authoredState = JSON.parse(authoredState);
   }
   return authoredState;
+};
+
+const getLinkedInteractives = ($dataDiv: JQuery) => {
+  let linkedInteractives = $dataDiv.data("linked-interactives");
+  if ((linkedInteractives == null) || (linkedInteractives === "")) {
+    linkedInteractives = {};
+  }
+  if (typeof linkedInteractives === "string") {
+    linkedInteractives = safeJSONParse(linkedInteractives) || {};
+  }
+  return linkedInteractives;
 };
 
 interface IInteractiveRunStateResponse {
@@ -108,6 +120,7 @@ export class IFrameSaver {
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
   private plugins: IFrameSaverPluginDisconnectFn[];
+  private linkedInteractives: ILinkedInteractiveMap;
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;
@@ -123,6 +136,7 @@ export class IFrameSaver {
     this.interactiveId = $dataDiv.data("interactive-id");
     this.interactiveName = $dataDiv.data("interactive-name");
     this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+    this.linkedInteractives = getLinkedInteractives($dataDiv);
 
     this.saveIndicator = SaveIndicator.instance();
 
@@ -377,7 +391,7 @@ export class IFrameSaver {
         loggedIn: this.loggedIn,
         email: this.userEmail
       },
-      linkedInteractives: [], // TODO: add linked interactives (future story)
+      linkedInteractives: this.linkedInteractives,
       themeInfo: {            // TODO: add theme colors (future story)
         colors: {
           colorA: "red",

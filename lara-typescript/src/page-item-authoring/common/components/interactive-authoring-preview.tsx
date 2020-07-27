@@ -8,6 +8,7 @@ export interface IPreviewInteractive {
   aspect_ratio: number;
   aspect_ratio_method: string;
   authored_state: string | object;
+  linked_interactives: string | object;
 }
 
 interface Props {
@@ -21,12 +22,16 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive}) => {
       ? JSON.parse(interactive.authored_state || "{}")
       : interactive.authored_state
   );
+  const linkedInteractives = typeof interactive.linked_interactives === "string"
+    ? JSON.parse(interactive.linked_interactives || "{}")
+    : interactive.linked_interactives;
 
   const initMsg = {
     version: 1,
     error: null,
     mode: "runtime",
-    authoredState
+    authoredState,
+    linkedInteractives
   };
 
   return (

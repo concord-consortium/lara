@@ -40,7 +40,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
     loggedIn: boolean;
     email: string;
   };
-  linkedInteractives: ILinkedRuntimeInteractive[];
+  linkedInteractives: ILinkedInteractiveMap;
   themeInfo: IThemeInfo;
 }
 
@@ -51,20 +51,12 @@ export interface IThemeInfo {
   };
 }
 
-export type InteractiveRuntimeId = string;
-export interface ILinkedRuntimeInteractive {
-  interactiveRuntimeId: InteractiveRuntimeId;
+export type InteractivePageItemId = number;
+export interface ILinkedInteractive {
   label: string;
-  chainedState: boolean;
-  sendStateOnInit: boolean;
 }
-
-export type InteractiveAuthoredId = string;
-export interface ILinkedAuthoredInteractive {
-  id: InteractiveAuthoredId;
-  label: string;
-  chainedState: boolean;
-  sendStateOnInit: boolean;
+export interface ILinkedInteractiveMap {
+  [key: number /* InteractivePageItemId */]: ILinkedInteractive;
 }
 
 export interface IAuthoringInitInteractive<AuthoredState = {}> {
@@ -73,6 +65,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   mode: "authoring";
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
+  pageItemId: number;
 }
 
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
@@ -142,7 +135,7 @@ Full window header buttons
 //
 
 // the iframesaver messages are 1 per line to reduce merge conflicts as new ones are added
-export type IFrameSaverClientMessage = "interactiveState" |
+export type IRuntimeClientMessage = "interactiveState" |
                                        "height" |
                                        "hint" |
                                        "getAuthInfo" |
@@ -154,23 +147,27 @@ export type IFrameSaverClientMessage = "interactiveState" |
                                        "runtimeCustomReportValues" |
                                        "showModal" |
                                        "closeModal" |
-                                       "getInteractiveList" |
-                                       "setLinkedInteractives" |
                                        "getLibraryInteractiveList" |
                                        "getInteractiveSnapshot"
                                       ;
 
-export type IframeSaverServerMessage = "authInfo" |
+export type IRuntimeServerMessage = "authInfo" |
                                        "getInteractiveState" |
                                        "initInteractive" |
                                        "firebaseJWT" |
                                        "closedModal" |
                                        "customMessage" |
-                                       "interactiveList" |
                                        "libraryInteractiveList" |
                                        "interactiveSnapshot" |
                                        "contextMembership"
                                        ;
+
+export type IAuthoringClientMessage = "getInteractiveList" |
+                                      "setLinkedInteractives"
+                                      ;
+
+export type IAuthoringServerMessage = "interactiveList"
+                                      ;
 
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
 export type GlobalIFrameSaverServerMessage = "loadInteractiveGlobal";
@@ -179,17 +176,19 @@ export type LoggerClientMessage = "log";
 
 export type IframePhoneServerMessage = "hello";
 
-export type DeprecatedIFrameSaverClientMessage = "setLearnerUrl";
-export type DeprecatedIFrameSaverServerMessage = "getLearnerUrl" | "loadInteractive";
+export type DeprecatedRuntimeClientMessage = "setLearnerUrl";
+export type DeprecatedRuntimeServerMessage = "getLearnerUrl" | "loadInteractive";
 
-export type ClientMessage = DeprecatedIFrameSaverClientMessage |
-                            IFrameSaverClientMessage |
+export type ClientMessage = DeprecatedRuntimeClientMessage |
+                            IRuntimeClientMessage |
+                            IAuthoringClientMessage |
                             GlobalIFrameSaverClientMessage |
                             LoggerClientMessage;
 
 export type ServerMessage = IframePhoneServerMessage |
-                            DeprecatedIFrameSaverServerMessage |
-                            IframeSaverServerMessage |
+                            DeprecatedRuntimeServerMessage |
+                            IRuntimeServerMessage |
+                            IAuthoringServerMessage |
                             GlobalIFrameSaverServerMessage;
 
 // server messages
@@ -291,7 +290,12 @@ export interface ICustomMessage {
 }
 
 export interface ISetLinkedInteractives {
-  linkedInteractives: ILinkedAuthoredInteractive[];
+  linkedInteractives?: ILinkedInteractiveMap;
+  linkedState?: InteractivePageItemId;
+}
+
+export interface ISetLinkedInteractivesRequest extends ISetLinkedInteractives {
+  sourceId: InteractivePageItemId;
 }
 
 //
@@ -334,7 +338,7 @@ export interface IGetInteractiveListRequest extends IBaseRequestResponse, IGetIn
 }
 
 export interface IInteractiveListResponseItem {
-  id: InteractiveAuthoredId;
+  id: InteractivePageItemId;
   pageId: number;
   name: string;
   section: "header_block" | "assessment_block" | "interactive_box";
@@ -364,7 +368,7 @@ export interface IGetLibraryInteractiveListResponse extends IBaseRequestResponse
 }
 
 export interface IGetInteractiveSnapshotOptions {
-  interactiveRuntimeId: InteractiveRuntimeId;
+  interactiveId: InteractivePageItemId;
 }
 export interface IGetInteractiveSnapshotRequest extends IBaseRequestResponse, IGetInteractiveSnapshotOptions {
   // no extra options

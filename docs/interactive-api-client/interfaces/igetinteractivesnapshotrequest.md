@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
 
 # Interface: IGetInteractiveSnapshotRequest
 
@@ -14,16 +14,16 @@
 
 ### Properties
 
-* [interactiveRuntimeId](igetinteractivesnapshotrequest.md#interactiveruntimeid)
+* [interactiveId](igetinteractivesnapshotrequest.md#interactiveid)
 * [requestId](igetinteractivesnapshotrequest.md#requestid)
 
 ## Properties
 
-###  interactiveRuntimeId
+###  interactiveId
 
-• **interactiveRuntimeId**: *[InteractiveRuntimeId](../globals.md#interactiveruntimeid)*
+• **interactiveId**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
 
-*Inherited from [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md).[interactiveRuntimeId](igetinteractivesnapshotoptions.md#interactiveruntimeid)*
+*Inherited from [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md).[interactiveId](igetinteractivesnapshotoptions.md#interactiveid)*
 
 ___
 

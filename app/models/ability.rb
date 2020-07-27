@@ -21,6 +21,7 @@ class Ability
       can :create, Sequence
       can :create, LightweightActivity
       can :create, InteractivePage
+      can :create, LinkedPageItem
       can :create, Plugin
       can :manage, Sequence, :user_id => user.id
       can :manage, LightweightActivity, :user_id => user.id

@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 
 import { InteractiveIframe } from "./interactive-iframe";
 import { AuthoringApiUrls } from "../types";
+import { IAuthoringInitInteractive } from "../../../interactive-api-client/types";
 
 interface Props {
   interactive: {
@@ -10,6 +11,7 @@ interface Props {
     aspect_ratio: number;
     aspect_ratio_method: string;
     authored_state: string | object;
+    page_item_id: number;
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   allowReset: boolean;
@@ -26,6 +28,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
       : interactive.authored_state
   );
   const [resetCount, setResetCount] = useState(0);
+  const {page_item_id: pageItemId} = interactive;
 
   const handleAuthoredStateChange = (newAuthoredState: object) => {
     setAuthoredState(newAuthoredState);
@@ -45,7 +48,8 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
     version: 1,
     error: null,
     mode: "authoring",
-    authoredState
+    authoredState,
+    pageItemId
   };
 
   return (
