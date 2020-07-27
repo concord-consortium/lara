@@ -14,6 +14,8 @@ shared_context "activity with arg block submissions" do
     @q2 = FactoryGirl.create(:open_response, prompt: 'q2')
     @q3 = FactoryGirl.create(:mc_embeddable, prompt: 'q3')
     @q4 = FactoryGirl.create(:open_response, prompt: 'q4')
+    allow_any_instance_of(InteractivePage).to receive(:show_arg_block).and_return(true)
+    page.show_arg_block
     page.add_embeddable(@q1, 0, 'arg_block')
     page.add_embeddable(@q2, 1, 'arg_block')
     page.add_embeddable(@q3, 2, 'arg_block')

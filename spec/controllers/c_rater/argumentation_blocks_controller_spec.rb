@@ -14,6 +14,8 @@ describe CRater::ArgumentationBlocksController do
   describe '#create_embeddables' do
     it 'should create argumentation block embeddables' do
       post :create_embeddables, page_id: page.id
+      allow_any_instance_of(InteractivePage).to receive(:show_arg_block).and_return(true)
+      page.show_arg_block
       expect(page.embeddables.length).to eql(4)
       expect(response).to redirect_to(prev_page)
     end

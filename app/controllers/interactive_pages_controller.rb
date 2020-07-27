@@ -63,11 +63,11 @@ class InteractivePagesController < ApplicationController
 
   def update
     authorize! :update, @page
-    update_activity_changed_by
     respond_to do |format|
       if request.xhr?
         if @page.update_attributes(params[:interactive_page])
           # *** respond with the new value ***
+          update_activity_changed_by
           format.html { render :text => params[:interactive_page].values.first }
         else
           # *** respond with the old value ***
@@ -78,6 +78,7 @@ class InteractivePagesController < ApplicationController
         format.html do
           if @page.update_attributes(params[:interactive_page])
             @page.reload # In case it's the name we updated
+            update_activity_changed_by
             flash[:notice] = "Page #{@page.name} was updated."
           else
             flash[:warning] = "There was a problem updating Page #{@page.name}."
