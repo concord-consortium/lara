@@ -13,7 +13,7 @@ class ManagedInteractive < ActiveRecord::Base
     :show_in_featured_question_report,
     :authored_state,
     :is_hidden,
-    :linked_interactive_id,
+    :linked_interactive_id, :linked_interactive_type,
     :inherit_aspect_ratio_method, :custom_aspect_ratio_method,
     :inherit_native_width, :custom_native_width,
     :inherit_native_height, :custom_native_height,
@@ -38,7 +38,7 @@ class ManagedInteractive < ActiveRecord::Base
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
-  belongs_to :linked_interactive, :class_name => 'ManagedInteractive'
+  belongs_to :linked_interactive, :polymorphic => true
 
   # getter for constructed url
   def url
@@ -137,13 +137,22 @@ class ManagedInteractive < ActiveRecord::Base
     hash = to_hash
     hash[:id] = id
     hash[:linked_interactive_id] = linked_interactive_id
+    hash[:linked_interactive_type] = linked_interactive_type
     hash[:aspect_ratio] = aspect_ratio
+    hash[:page_item_id] = page_item ? page_item.id : nil
+    hash
+  end
+
+  def to_authoring_preview_hash
+    hash = to_authoring_hash
+    hash[:linked_interactives] = linked_interactives_hash
     hash
   end
 
   def authoring_api_urls(protocol, host)
     {
-      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil,
+      set_linked_interactives: interactive_page ? Rails.application.routes.url_helpers.api_v1_set_linked_interactives_url(id: interactive_page.id, protocol: protocol, host: host) : nil
     }
   end
 
@@ -170,7 +179,8 @@ class ManagedInteractive < ActiveRecord::Base
       aspect_ratio: aspect_ratio,
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots,
-      linked_interactive_id: linked_interactive_id
+      linked_interactive_id: linked_interactive_id,
+      linked_interactive_type: linked_interactive_type
     }.to_json
   end
 

@@ -13,6 +13,8 @@ export const GetInteractiveListComponent: React.FC<AuthoringApiProps> = ({setErr
     const supportsSnapshots = supportsSnapshotsValue === "true"
       ? true : (supportsSnapshotsValue === "false" ? false : undefined);
 
+    setError(undefined);
+    setOutput(undefined);
     try {
       setOutput(await client.getInteractiveList({scope, supportsSnapshots}));
     } catch (err) {

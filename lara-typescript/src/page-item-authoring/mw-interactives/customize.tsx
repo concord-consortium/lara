@@ -30,7 +30,8 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
     image_url,
     show_in_featured_question_report,
     aspect_ratio_method,
-    linked_interactive_id
+    linked_interactive_id,
+    linked_interactive_type
   } = interactive;
 
   const [aspectRatioValues, setAspectRatioValues] = useState<IAspectRatioChooserValues>({
@@ -109,6 +110,13 @@ export const CustomizeMWInteractive: React.FC<Props> = (props) => {
           name={formField("linked_interactive_id").name}
           defaultValue={`${linked_interactive_id || ""}`}
         />
+        <select
+          name={formField("linked_interactive_type").name}
+          defaultValue={`${linked_interactive_type || ""}`}
+        >
+          <option value="MWInteractive">MWInteractive</option>
+          <option value="ManagedInteractive">ManagedInteractive</option>
+        </select>
         <div className="warning">
           <em>Warning</em>: Please do not link to another interactive
           unless the interactive knows how to load prior work.

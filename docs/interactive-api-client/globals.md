@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.5.0-pre.3
+# @concord-consortium/lara-interactive-api - v0.5.0-pre.4
 
 ## Index
 
@@ -45,8 +45,8 @@
 * [IJwtClaims](interfaces/ijwtclaims.md)
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
-* [ILinkedAuthoredInteractive](interfaces/ilinkedauthoredinteractive.md)
-* [ILinkedRuntimeInteractive](interfaces/ilinkedruntimeinteractive.md)
+* [ILinkedInteractive](interfaces/ilinkedinteractive.md)
+* [ILinkedInteractiveMap](interfaces/ilinkedinteractivemap.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
@@ -57,6 +57,7 @@
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
 * [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
+* [ISetLinkedInteractivesRequest](interfaces/isetlinkedinteractivesrequest.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
 * [IShowLightbox](interfaces/ishowlightbox.md)
@@ -68,20 +69,21 @@
 
 * [ChoiceId](globals.md#choiceid)
 * [ClientMessage](globals.md#clientmessage)
-* [DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage)
-* [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage)
+* [DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage)
+* [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage)
 * [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage)
 * [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)
+* [IAuthoringClientMessage](globals.md#iauthoringclientmessage)
 * [IAuthoringMetadata](globals.md#iauthoringmetadata)
-* [IFrameSaverClientMessage](globals.md#iframesaverclientmessage)
+* [IAuthoringServerMessage](globals.md#iauthoringservermessage)
 * [IInitInteractive](globals.md#iinitinteractive)
+* [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
 * [IRuntimeMetadata](globals.md#iruntimemetadata)
+* [IRuntimeServerMessage](globals.md#iruntimeservermessage)
 * [IShowModal](globals.md#ishowmodal)
 * [IframePhoneServerMessage](globals.md#iframephoneservermessage)
-* [IframeSaverServerMessage](globals.md#iframesaverservermessage)
 * [InitInteractiveMode](globals.md#initinteractivemode)
-* [InteractiveAuthoredId](globals.md#interactiveauthoredid)
-* [InteractiveRuntimeId](globals.md#interactiveruntimeid)
+* [InteractivePageItemId](globals.md#interactivepageitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
 * [ServerMessage](globals.md#servermessage)
@@ -105,6 +107,7 @@
 * [getInteractiveSnapshot](globals.md#const-getinteractivesnapshot)
 * [getInteractiveState](globals.md#const-getinteractivestate)
 * [getLibraryInteractiveList](globals.md#const-getlibraryinteractivelist)
+* [getMode](globals.md#const-getmode)
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
@@ -134,19 +137,19 @@ ___
 
 ###  ClientMessage
 
-Ƭ **ClientMessage**: *[DeprecatedIFrameSaverClientMessage](globals.md#deprecatediframesaverclientmessage) | [IFrameSaverClientMessage](globals.md#iframesaverclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage)*
+Ƭ **ClientMessage**: *[DeprecatedRuntimeClientMessage](globals.md#deprecatedruntimeclientmessage) | [IRuntimeClientMessage](globals.md#iruntimeclientmessage) | [IAuthoringClientMessage](globals.md#iauthoringclientmessage) | [GlobalIFrameSaverClientMessage](globals.md#globaliframesaverclientmessage) | [LoggerClientMessage](globals.md#loggerclientmessage)*
 
 ___
 
-###  DeprecatedIFrameSaverClientMessage
+###  DeprecatedRuntimeClientMessage
 
-Ƭ **DeprecatedIFrameSaverClientMessage**: *"setLearnerUrl"*
+Ƭ **DeprecatedRuntimeClientMessage**: *"setLearnerUrl"*
 
 ___
 
-###  DeprecatedIFrameSaverServerMessage
+###  DeprecatedRuntimeServerMessage
 
-Ƭ **DeprecatedIFrameSaverServerMessage**: *"getLearnerUrl" | "loadInteractive"*
+Ƭ **DeprecatedRuntimeServerMessage**: *"getLearnerUrl" | "loadInteractive"*
 
 ___
 
@@ -162,15 +165,21 @@ ___
 
 ___
 
+###  IAuthoringClientMessage
+
+Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives"*
+
+___
+
 ###  IAuthoringMetadata
 
 Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
 
 ___
 
-###  IFrameSaverClientMessage
+###  IAuthoringServerMessage
 
-Ƭ **IFrameSaverClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getInteractiveList" | "setLinkedInteractives" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
+Ƭ **IAuthoringServerMessage**: *"interactiveList"*
 
 ___
 
@@ -180,9 +189,21 @@ ___
 
 ___
 
+###  IRuntimeClientMessage
+
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
+
+___
+
 ###  IRuntimeMetadata
 
 Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
+
+___
+
+###  IRuntimeServerMessage
+
+Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership"*
 
 ___
 
@@ -198,27 +219,15 @@ ___
 
 ___
 
-###  IframeSaverServerMessage
-
-Ƭ **IframeSaverServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "interactiveList" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership"*
-
-___
-
 ###  InitInteractiveMode
 
 Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report" | "dialog"*
 
 ___
 
-###  InteractiveAuthoredId
+###  InteractivePageItemId
 
-Ƭ **InteractiveAuthoredId**: *string*
-
-___
-
-###  InteractiveRuntimeId
-
-Ƭ **InteractiveRuntimeId**: *string*
+Ƭ **InteractivePageItemId**: *number*
 
 ___
 
@@ -236,7 +245,7 @@ ___
 
 ###  ServerMessage
 
-Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedIFrameSaverServerMessage](globals.md#deprecatediframesaverservermessage) | [IframeSaverServerMessage](globals.md#iframesaverservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
+Ƭ **ServerMessage**: *[IframePhoneServerMessage](globals.md#iframephoneservermessage) | [DeprecatedRuntimeServerMessage](globals.md#deprecatedruntimeservermessage) | [IRuntimeServerMessage](globals.md#iruntimeservermessage) | [IAuthoringServerMessage](globals.md#iauthoringservermessage) | [GlobalIFrameSaverServerMessage](globals.md#globaliframesaverservermessage)*
 
 ## Variables
 
@@ -447,6 +456,14 @@ Name | Type |
 `options` | [IGetLibraryInteractiveListRequest](interfaces/igetlibraryinteractivelistrequest.md) |
 
 **Returns:** *void*
+
+___
+
+### `Const` getMode
+
+▸ **getMode**(): *Promise‹undefined | "runtime" | "authoring" | "report" | "dialog"›*
+
+**Returns:** *Promise‹undefined | "runtime" | "authoring" | "report" | "dialog"›*
 
 ___
 
@@ -677,7 +694,7 @@ ___
 
 ### `Const` setLinkedInteractives
 
-▸ **setLinkedInteractives**(`options`: [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)): *void*
+▸ **setLinkedInteractives**(`options`: [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)): *Promise‹void›*
 
 **Parameters:**
 
@@ -685,7 +702,7 @@ Name | Type |
 ------ | ------ |
 `options` | [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md) |
 
-**Returns:** *void*
+**Returns:** *Promise‹void›*
 
 ___
 

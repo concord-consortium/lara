@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](../README.md) › [Globals](../globals.md) › [IInteractiveListResponseItem](iinteractivelistresponseitem.md)
 
 # Interface: IInteractiveListResponseItem
 
@@ -22,7 +22,7 @@
 
 ###  id
 
-• **id**: *[InteractiveAuthoredId](../globals.md#interactiveauthoredid)*
+• **id**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
 
 ___
 

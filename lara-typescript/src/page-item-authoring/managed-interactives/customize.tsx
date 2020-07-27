@@ -36,6 +36,7 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     inherit_image_url,
     custom_image_url,
     linked_interactive_id,
+    linked_interactive_type,
     show_in_featured_question_report
   } = managedInteractive;
 
@@ -88,6 +89,13 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
             name={formField("linked_interactive_id").name}
             defaultValue={`${linked_interactive_id || ""}`}
           />
+          <select
+            name={formField("linked_interactive_type").name}
+            defaultValue={`${linked_interactive_type || ""}`}
+          >
+            <option value="MWInteractive">MWInteractive</option>
+            <option value="ManagedInteractive">ManagedInteractive</option>
+          </select>
           <div className="warning">
             <em>Warning</em>: Please do not link to another interactive
             unless the interactive knows how to load prior work.

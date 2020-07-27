@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [IAuthoringInitInteractive](iauthoringinitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](../README.md) › [Globals](../globals.md) › [IAuthoringInitInteractive](iauthoringinitinteractive.md)
 
 # Interface: IAuthoringInitInteractive ‹**AuthoredState**›
 
@@ -17,6 +17,7 @@
 * [authoredState](iauthoringinitinteractive.md#authoredstate)
 * [error](iauthoringinitinteractive.md#error)
 * [mode](iauthoringinitinteractive.md#mode)
+* [pageItemId](iauthoringinitinteractive.md#pageitemid)
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
 
@@ -37,6 +38,12 @@ ___
 ###  mode
 
 • **mode**: *"authoring"*
+
+___
+
+###  pageItemId
+
+• **pageItemId**: *number*
 
 ___
 

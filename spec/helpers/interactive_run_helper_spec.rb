@@ -53,6 +53,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-authored-state")
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
+        expect(subject).to include("data-linked-interactive")
       end
     end
 
@@ -71,6 +72,7 @@ describe InteractiveRunHelper do
         expect(subject).to include("data-authored-state")
         expect(subject).to include("data-interactive-id")
         expect(subject).to include("data-interactive-name")
+        expect(subject).to include("data-linked-interactive")
       end
     end
 

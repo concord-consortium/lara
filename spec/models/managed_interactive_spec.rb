@@ -19,10 +19,11 @@ describe ManagedInteractive do
                                                  :no_snapshots => true
                                                 )}
 
+  let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
                                                  :library_interactive => library_interactive,
                                                  :url_fragment => "test",
-                                                 :linked_interactive_id => 1
+                                                 :linked_interactive => mw_interactive
                                                 )}
   let (:page) { FactoryGirl.create(:page) }
 
@@ -70,11 +71,26 @@ describe ManagedInteractive do
 
   describe '#to_authoring_hash' do
     it 'has useful values' do
+      page.add_interactive(managed_interactive)
+
+      managed_interactive.reload
+      page.reload
+
       expected = managed_interactive.to_hash
       expected[:id] = managed_interactive.id
       expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
+      expected[:linked_interactive_type] = managed_interactive.linked_interactive_type
       expected[:aspect_ratio] = managed_interactive.aspect_ratio
+      expected[:page_item_id] = managed_interactive.page_item.id
       expect(managed_interactive.to_authoring_hash).to eq(expected)
+    end
+  end
+
+  describe '#to_authoring_preview_hash' do
+    it 'has useful values' do
+      expected = managed_interactive.to_authoring_hash
+      expected[:linked_interactives] = managed_interactive.linked_interactives_hash
+      expect(managed_interactive.to_authoring_preview_hash).to eq(expected)
     end
   end
 
@@ -130,6 +146,7 @@ describe ManagedInteractive do
         "aspect_ratio_method": managed_interactive.aspect_ratio_method,
         "no_snapshots": managed_interactive.no_snapshots,
         "linked_interactive_id": managed_interactive.linked_interactive_id,
+        "linked_interactive_type": managed_interactive.linked_interactive_type,
       }.to_json))
     end
   end
