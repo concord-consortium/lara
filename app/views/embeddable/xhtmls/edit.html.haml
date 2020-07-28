@@ -11,6 +11,9 @@
   .options
     = field_set_tag "Options" do
       .ul
+        .li
+          = f.check_box :is_callout
+          = t(:IS_CALLOUT_ASSESSMENT_ITEM)
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   .submit-container
     = f.submit "Cancel", :class => 'close'

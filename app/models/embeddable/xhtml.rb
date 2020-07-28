@@ -1,6 +1,6 @@
 module Embeddable
   class Xhtml < ActiveRecord::Base
-    attr_accessible :name, :content, :is_hidden, :is_full_width
+    attr_accessible :name, :content, :is_hidden, :is_full_width, :is_callout
 
     include Embeddable
 
@@ -17,7 +17,8 @@ module Embeddable
         name: name,
         content: content,
         is_hidden: is_hidden,
-        is_full_width: is_full_width
+        is_full_width: is_full_width,
+        is_callout: is_callout
       }
     end
 
@@ -26,7 +27,7 @@ module Embeddable
     end
 
     def export
-      self.as_json(only:[:name, :content, :is_hidden, :is_full_width])
+      self.as_json(only:[:name, :content, :is_hidden, :is_full_width, :is_callout])
     end
 
     def reportable?
