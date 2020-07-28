@@ -52,10 +52,9 @@ class Api::V1::InteractivePagesController < ApplicationController
   def set_linked_interactives
     begin
       begin
-        authorize! :read, @interactive_page
         authorize! :create, LinkedPageItem
       rescue CanCan::AccessDenied
-        raise "You are not authorized to set linked interactives for the requested page"
+        raise "You are not authorized to create linked interactives"
       end
 
       source_page_item_id = params[:sourceId]
@@ -66,6 +65,12 @@ class Api::V1::InteractivePagesController < ApplicationController
       source_page_item = @interactive_page.page_items.find_by_id(source_page_item_id)
       if !source_page_item
         raise "Invalid sourceId parameter in request"
+      end
+
+      begin
+        authorize! :manage, source_page_item
+      rescue CanCan::AccessDenied
+        raise "You are not authorized to set linked interactives for the requested page"
       end
 
       linked_interactives = params[:linkedInteractives]

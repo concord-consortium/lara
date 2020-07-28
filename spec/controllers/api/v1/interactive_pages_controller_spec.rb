@@ -151,7 +151,7 @@ describe Api::V1::InteractivePagesController do
       end
     end
 
-    describe "in a private activity" do
+    describe "as a non-author" do
       let (:publication_status) { "private" }
 
       it "returns an error" do
@@ -160,7 +160,7 @@ describe Api::V1::InteractivePagesController do
         expect(response.content_type).to eq("application/json")
         expect(response.body).to eql({
           success: false,
-          message: "You are not authorized to set linked interactives for the requested page"
+          message: "You are not authorized to create linked interactives"
         }.to_json)
       end
     end
@@ -202,6 +202,32 @@ describe Api::V1::InteractivePagesController do
           expect(response.body).to eql({
             success: false,
             message: "Invalid sourceId parameter in request"
+          }.to_json)
+        end
+      end
+
+      describe "on a page you didn't author" do
+        let (:other_author) { FactoryGirl.create(:author) }
+        let (:other_act) { FactoryGirl.create(:public_activity, project: project, theme: theme, publication_status: publication_status, user: other_author ) }
+        let (:other_page) { FactoryGirl.create(:page, :lightweight_activity => other_act) }
+        let (:other_interactive) { FactoryGirl.create(:mw_interactive) }
+
+        before :each do
+          add_interactive_to_section(other_page, other_interactive, InteractivePage::INTERACTIVE_BOX)
+          other_page.save!(validate: true)
+          other_page.reload
+        end
+
+        it "returns an error" do
+          xhr :post, "set_linked_interactives", {
+            id: other_page.id,
+            sourceId: other_interactive.page_item.id,
+          }
+          expect(response.status).to eq(200)
+          expect(response.content_type).to eq("application/json")
+          expect(response.body).to eql({
+            success: false,
+            message: "You are not authorized to set linked interactives for the requested page"
           }.to_json)
         end
       end
