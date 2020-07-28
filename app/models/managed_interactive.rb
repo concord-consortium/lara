@@ -144,7 +144,8 @@ class ManagedInteractive < ActiveRecord::Base
   end
 
   def to_authoring_preview_hash
-    hash = to_authoring_hash
+    # in preview mode we look like an interactive
+    hash = to_interactive
     hash[:linked_interactives] = linked_interactives_hash
     hash
   end
@@ -156,8 +157,7 @@ class ManagedInteractive < ActiveRecord::Base
     }
   end
 
-  # returns same json as mw_interactive, used for react-based authoring
-  def to_interactive_json
+  def to_interactive
     # NOTE: model_library_url is missing as there is no analog
     {
       id: id,
@@ -181,7 +181,7 @@ class ManagedInteractive < ActiveRecord::Base
       no_snapshots: no_snapshots,
       linked_interactive_id: linked_interactive_id,
       linked_interactive_type: linked_interactive_type
-    }.to_json
+    }
   end
 
   def duplicate

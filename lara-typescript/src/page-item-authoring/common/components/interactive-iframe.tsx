@@ -3,14 +3,14 @@ import * as iframePhone from "iframe-phone";
 import { useEffect, useRef, useState } from "react";
 
 import * as LaraInteractiveApi from "../../../interactive-api-client";
-import { IInteractiveListResponseItem } from "../../../interactive-api-client";
+import { IInteractiveListResponseItem, IInitInteractive } from "../../../interactive-api-client";
 import { AuthoringApiUrls } from "../types";
 
 interface Props {
   src: string;
   width: string | number;
   initialAuthoredState: object | null;
-  initMsg: any;
+  initMsg: IInitInteractive;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
   onSupportedFeaturesUpdate?: (info: any) => void;
