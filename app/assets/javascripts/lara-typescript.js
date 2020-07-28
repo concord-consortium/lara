@@ -28755,7 +28755,7 @@ var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
 exports.InteractiveAuthoringPreview = function (_a) {
-    var interactive = _a.interactive;
+    var interactive = _a.interactive, user = _a.user;
     var iframe = react_1.useRef(null);
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
@@ -28768,7 +28768,27 @@ exports.InteractiveAuthoringPreview = function (_a) {
         error: null,
         mode: "runtime",
         authoredState: authoredState,
-        linkedInteractives: linkedInteractives
+        interactiveState: null,
+        globalInteractiveState: null,
+        interactiveStateUrl: "",
+        collaboratorUrls: null,
+        classInfoUrl: "",
+        interactive: {
+            id: interactive.id,
+            name: interactive.name
+        },
+        authInfo: {
+            provider: user.authProvider,
+            loggedIn: user.loggedIn,
+            email: user.email
+        },
+        linkedInteractives: linkedInteractives,
+        themeInfo: {
+            colors: {
+                colorA: "red",
+                colorB: "green"
+            }
+        }
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
         React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
@@ -28816,6 +28836,12 @@ exports.InteractiveAuthoring = function (props) {
         error: null,
         mode: "authoring",
         authoredState: authoredState,
+        themeInfo: {
+            colors: {
+                colorA: "red",
+                colorB: "green"
+            }
+        },
         pageItemId: pageItemId
     };
     return (React.createElement("div", { className: "authoring-mw-interactive" },
@@ -29108,7 +29134,7 @@ var renderMWInteractiveAuthoring = function (root, props) {
 };
 exports.renderMWInteractiveAuthoring = renderMWInteractiveAuthoring;
 var renderInteractiveAuthoringPreview = function (root, props) {
-    return ReactDOM.render(React.createElement(interactive_authoring_preview_1.InteractiveAuthoringPreview, { interactive: props.interactive }), root);
+    return ReactDOM.render(React.createElement(interactive_authoring_preview_1.InteractiveAuthoringPreview, { interactive: props.interactive, user: props.user }), root);
 };
 exports.renderInteractiveAuthoringPreview = renderInteractiveAuthoringPreview;
 
