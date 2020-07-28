@@ -71,11 +71,24 @@
 }
 
 .challenge {
-  .question-hdr, .question-hdr-collapse {
-    background: darken($black-15, 3%);
+  .question-hdr {
+    display: none;
   }
   .question-bd {
-    background: $black-5;
+    border: none;
+    padding: 0;
+  }
+
+  &.callout {
+    .question-hdr, .question-hdr-collapse {
+      background: darken($black-15, 3%);
+      display: block;
+    }
+    .question-bd {
+      background: $black-5;
+      padding: 20px 20px 13px;
+      @extend .mod-border-rounded;
+    }
   }
 } // end .challenge
 
