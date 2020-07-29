@@ -41,6 +41,7 @@ export interface IMWInteractive {
   linked_interactive_id: number;
   linked_interactive_type: string;
   interactive_item_id: string;
+  linked_interactive_item_id: string;
 }
 
 const formField = RailsFormField<IMWInteractive>("mw_interactive");

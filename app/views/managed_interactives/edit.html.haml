@@ -1,7 +1,7 @@
 - form_url = defined?(@page) ? page_managed_interactive_path(@page, @interactive) : managed_interactive_path(@interactive)
 .managed-interactive-edit-id
   Interactive ID:
-  %span.managed-interactve-id=@interactive.id
+  %span.managed-interactve-id=@interactive.interactive_item_id
 = form_for @interactive, :url => form_url, :html => {:class => "styled-admin-form"} do |f|
   = f.error_messages
 

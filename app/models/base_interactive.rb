@@ -108,4 +108,24 @@ module BaseInteractive
     list
   end
 
+  def make_interactive_item_id(interactive)
+    interactive.page_item ? "interactive_#{interactive.page_item.id}" : nil
+  end
+
+  def interactive_item_id
+    make_interactive_item_id(self)
+  end
+
+  def linked_interactive_item_id
+    linked_interactive ? make_interactive_item_id(linked_interactive) : nil
+  end
+
+  def linked_interactive_item_id=(val)
+    matches = val.nil? ? nil : val.match(/^interactive_(.+)$/)
+    page_item = matches ? PageItem.find(matches[1]) : nil
+    if page_item
+      self.linked_interactive = page_item.embeddable
+    end
+  end
+
 end

@@ -54,6 +54,7 @@ export interface IManagedInteractive {
   inherit_image_url: boolean;
   custom_image_url: string;
   interactive_item_id: string;
+  linked_interactive_item_id: string;
 }
 
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
