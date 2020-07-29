@@ -57,6 +57,8 @@ class ITSIAuthoring::Editor
         xhtml_json(e)
       when 'image_question'
         image_question_json(e)
+      when 'managed_interactive'
+        managed_interactive_json(e)
       else
         {}
     end
@@ -70,6 +72,19 @@ class ITSIAuthoring::Editor
       is_hidden: e.is_hidden,
       default_text: e.default_text,
       update_url: embeddable_open_response_path(e)
+    }
+  end
+
+  def managed_interactive_json(e)
+    authored_state = JSON.parse(e.authored_state)
+    {
+      type: 'managed_interactive_' + authored_state["questionType"],
+      id: e.id,
+      name: e.name,
+      prompt: authored_state["prompt"],
+      is_hidden: e.is_hidden,
+      default_text: authored_state["defaultAnswer"],
+      update_url: managed_interactive_path(e)
     }
   end
 
