@@ -46,7 +46,6 @@
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedInteractive](interfaces/ilinkedinteractive.md)
-* [ILinkedInteractiveMap](interfaces/ilinkedinteractivemap.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
@@ -83,7 +82,7 @@
 * [IShowModal](globals.md#ishowmodal)
 * [IframePhoneServerMessage](globals.md#iframephoneservermessage)
 * [InitInteractiveMode](globals.md#initinteractivemode)
-* [InteractivePageItemId](globals.md#interactivepageitemid)
+* [InteractiveItemId](globals.md#interactiveitemid)
 * [LoggerClientMessage](globals.md#loggerclientmessage)
 * [ModalType](globals.md#modaltype)
 * [ServerMessage](globals.md#servermessage)
@@ -225,9 +224,9 @@ ___
 
 ___
 
-###  InteractivePageItemId
+###  InteractiveItemId
 
-Ƭ **InteractivePageItemId**: *number*
+Ƭ **InteractiveItemId**: *string*
 
 ___
 

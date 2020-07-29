@@ -40,7 +40,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
     loggedIn: boolean;
     email: string;
   };
-  linkedInteractives: ILinkedInteractiveMap;
+  linkedInteractives: ILinkedInteractive[];
   themeInfo: IThemeInfo;
 }
 
@@ -51,12 +51,10 @@ export interface IThemeInfo {
   };
 }
 
-export type InteractivePageItemId = number;
+export type InteractiveItemId = string;
 export interface ILinkedInteractive {
+  id: InteractiveItemId;
   label: string;
-}
-export interface ILinkedInteractiveMap {
-  [key: number /* InteractivePageItemId */]: ILinkedInteractive;
 }
 
 export interface IAuthoringInitInteractive<AuthoredState = {}> {
@@ -65,7 +63,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   mode: "authoring";
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
-  pageItemId: number;
+  interactiveItemId: string;
 }
 
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
@@ -290,12 +288,12 @@ export interface ICustomMessage {
 }
 
 export interface ISetLinkedInteractives {
-  linkedInteractives?: ILinkedInteractiveMap;
-  linkedState?: InteractivePageItemId;
+  linkedInteractives?: ILinkedInteractive[];
+  linkedState?: InteractiveItemId;
 }
 
 export interface ISetLinkedInteractivesRequest extends ISetLinkedInteractives {
-  sourceId: InteractivePageItemId;
+  sourceId: InteractiveItemId;
 }
 
 //
@@ -338,7 +336,7 @@ export interface IGetInteractiveListRequest extends IBaseRequestResponse, IGetIn
 }
 
 export interface IInteractiveListResponseItem {
-  id: InteractivePageItemId;
+  id: InteractiveItemId;
   pageId: number;
   name: string;
   section: "header_block" | "assessment_block" | "interactive_box";
@@ -368,7 +366,7 @@ export interface IGetLibraryInteractiveListResponse extends IBaseRequestResponse
 }
 
 export interface IGetInteractiveSnapshotOptions {
-  interactiveId: InteractivePageItemId;
+  interactiveItemId: InteractiveItemId;
 }
 export interface IGetInteractiveSnapshotRequest extends IBaseRequestResponse, IGetInteractiveSnapshotOptions {
   // no extra options

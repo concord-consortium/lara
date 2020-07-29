@@ -139,14 +139,14 @@ class ManagedInteractive < ActiveRecord::Base
     hash[:linked_interactive_id] = linked_interactive_id
     hash[:linked_interactive_type] = linked_interactive_type
     hash[:aspect_ratio] = aspect_ratio
-    hash[:page_item_id] = page_item ? page_item.id : nil
+    hash[:interactive_item_id] = page_item ? "interactive_#{page_item.id}" : nil
     hash
   end
 
   def to_authoring_preview_hash
     # in preview mode we look like an interactive
     hash = to_interactive
-    hash[:linked_interactives] = linked_interactives_hash
+    hash[:linked_interactives] = linked_interactives_list
     hash
   end
 

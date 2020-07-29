@@ -81,7 +81,7 @@ describe ManagedInteractive do
       expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
       expected[:linked_interactive_type] = managed_interactive.linked_interactive_type
       expected[:aspect_ratio] = managed_interactive.aspect_ratio
-      expected[:page_item_id] = managed_interactive.page_item.id
+      expected[:interactive_item_id] = "interactive_#{managed_interactive.page_item.id}"
       expect(managed_interactive.to_authoring_hash).to eq(expected)
     end
   end
@@ -89,7 +89,7 @@ describe ManagedInteractive do
   describe '#to_authoring_preview_hash' do
     it 'has useful values' do
       expected = managed_interactive.to_interactive
-      expected[:linked_interactives] = managed_interactive.linked_interactives_hash
+      expected[:linked_interactives] = managed_interactive.linked_interactives_list
       expect(managed_interactive.to_authoring_preview_hash).to eq(expected)
     end
   end

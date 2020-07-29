@@ -12,10 +12,10 @@
 
 ### Properties
 
-* [interactiveId](igetinteractivesnapshotoptions.md#interactiveid)
+* [interactiveItemId](igetinteractivesnapshotoptions.md#interactiveitemid)
 
 ## Properties
 
-###  interactiveId
+###  interactiveItemId
 
-• **interactiveId**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **interactiveItemId**: *[InteractiveItemId](../globals.md#interactiveitemid)*

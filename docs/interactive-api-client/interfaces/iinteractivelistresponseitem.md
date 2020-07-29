@@ -22,7 +22,7 @@
 
 ###  id
 
-• **id**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **id**: *[InteractiveItemId](../globals.md#interactiveitemid)*
 
 ___
 

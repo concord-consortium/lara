@@ -240,27 +240,27 @@ describe("api", () => {
   });
 
   it("should implement setLinkedInteractives", async () => {
-    // setLinkedInteractives needs the pageItemId from the initInteractive message
+    // setLinkedInteractives needs the interactiveItemId from the initInteractive message
     setTimeout(() => {
       mockedPhone.fakeServerMessage({
         type: "initInteractive",
-        content: { mode: "authoring", pageItemId: 100 }
+        content: { mode: "authoring", interactiveItemId: "interactive_100" }
       });
     }, 10);
     await api.setLinkedInteractives({
-      linkedInteractives: {
-        1: {label: "one"},
-        2: {label: "two"}
-      },
-      linkedState: 1
+      linkedInteractives: [
+        {id: "interactive_1", label: "one"},
+        {id: "interactive_2", label: "two"}
+      ],
+      linkedState: "interactive_1"
     });
     expect(mockedPhone.messages).toEqual([{type: "setLinkedInteractives", content: {
-      linkedInteractives: {
-        1: {label: "one"},
-        2: {label: "two"}
-      },
-      linkedState: 1,
-      sourceId: 100
+      linkedInteractives: [
+        {id: "interactive_1", label: "one"},
+        {id: "interactive_2", label: "two"}
+      ],
+      linkedState: "interactive_1",
+      sourceId: "interactive_100"
     }}]);
   });
 
@@ -284,7 +284,7 @@ describe("api", () => {
   it("does not yet implement getInteractiveSnapshot", () => {
     expect(() => api.getInteractiveSnapshot({
       requestId: 1,
-      interactiveId: 1
+      interactiveItemId: "1"
     })).toThrow(/not yet implemented/);
   });
 });

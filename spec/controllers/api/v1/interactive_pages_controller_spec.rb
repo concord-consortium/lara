@@ -99,11 +99,11 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.page_item.id, pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive2.page_item.id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.page_item.id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
-            {id: interactive1.page_item.id, pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.page_item.id, pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: "interactive_#{interactive3.page_item.id}", pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: "interactive_#{interactive2.page_item.id}", pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: "interactive_#{interactive5.page_item.id}", pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false},
+            {id: "interactive_#{interactive1.page_item.id}", pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: "interactive_#{interactive4.page_item.id}", pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -115,9 +115,9 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive3.page_item.id, pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive1.page_item.id, pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
-            {id: interactive4.page_item.id, pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
+            {id: "interactive_#{interactive3.page_item.id}", pageId: page.id, name: interactive3.name, section: "assessment_block", url: interactive3.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: "interactive_#{interactive1.page_item.id}", pageId: page.id, name: interactive1.name, section: InteractivePage::INTERACTIVE_BOX, url: interactive1.url, thumbnailUrl: nil, supportsSnapshots: true},
+            {id: "interactive_#{interactive4.page_item.id}", pageId: page.id, name: interactive4.name, section: InteractivePage::INTERACTIVE_BOX, url: "http://foo.com/test1", thumbnailUrl: nil, supportsSnapshots: true}
           ]
         }.to_json)
       end
@@ -129,8 +129,8 @@ describe Api::V1::InteractivePagesController do
         expect(response.body).to eql({
           success: true,
           interactives: [
-            {id: interactive2.page_item.id, pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
-            {id: interactive5.page_item.id, pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
+            {id: "interactive_#{interactive2.page_item.id}", pageId: page.id, name: interactive2.name, section: InteractivePage::HEADER_BLOCK, url: interactive2.url, thumbnailUrl: nil, supportsSnapshots: false},
+            {id: "interactive_#{interactive5.page_item.id}", pageId: page.id, name: interactive5.name, section: InteractivePage::HEADER_BLOCK, url: "http://bar.com/test2", thumbnailUrl: "http://thumbnail.url", supportsSnapshots: false}
           ]
         }.to_json)
       end
@@ -191,17 +191,17 @@ describe Api::V1::InteractivePagesController do
         end
       end
 
-      describe "returns an error when there is an invalid source param" do
+      describe "returns an error when there is an unknown source param" do
         it "returns an error" do
           xhr :post, "set_linked_interactives", {
             id: page.id,
-            sourceId: 1000000000
+            sourceId: "interactive_1000000000"
           }
           expect(response.status).to eq(200)
           expect(response.content_type).to eq("application/json")
           expect(response.body).to eql({
             success: false,
-            message: "Invalid sourceId parameter in request"
+            message: "Unknown sourceId parameter in request: 1000000000"
           }.to_json)
         end
       end
@@ -221,7 +221,7 @@ describe Api::V1::InteractivePagesController do
         it "returns an error" do
           xhr :post, "set_linked_interactives", {
             id: other_page.id,
-            sourceId: other_interactive.page_item.id,
+            sourceId: "interactive_#{other_interactive.page_item.id}",
           }
           expect(response.status).to eq(200)
           expect(response.content_type).to eq("application/json")
@@ -235,11 +235,11 @@ describe Api::V1::InteractivePagesController do
       it "allows a 1:1 link" do
         xhr :post, "set_linked_interactives", {
           id: page.id,
-          sourceId: interactive1.page_item.id,
-          linkedInteractives: {
-            "#{interactive2.page_item.id}": {label: "two"}
-          },
-          linkedState: interactive3.page_item.id
+          sourceId: "interactive_#{interactive1.page_item.id}",
+          linkedInteractives: [
+            {id: "interactive_#{interactive2.page_item.id}", label: "two"}
+          ],
+          linkedState: "interactive_#{interactive3.page_item.id}"
         }
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")
@@ -251,12 +251,12 @@ describe Api::V1::InteractivePagesController do
       it "allows a 1:N link" do
         xhr :post, "set_linked_interactives", {
           id: page.id,
-          sourceId: interactive1.page_item.id,
-          linkedInteractives: {
-            "#{interactive2.page_item.id}": {label: "two"},
-            "#{interactive3.page_item.id}": {label: "three"}
-          },
-          linkedState: interactive3.page_item.id
+          sourceId: "interactive_#{interactive1.page_item.id}",
+          linkedInteractives: [
+            {id: "interactive_#{interactive2.page_item.id}", label: "two"},
+            {id: "interactive_#{interactive3.page_item.id}", label: "three"}
+          ],
+          linkedState: "interactive_#{interactive3.page_item.id}"
         }
         expect(response.status).to eq(200)
         expect(response.content_type).to eq("application/json")

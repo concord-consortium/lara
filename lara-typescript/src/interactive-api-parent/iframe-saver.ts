@@ -4,7 +4,7 @@ import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
-import { ILinkedInteractiveMap } from "../interactive-api-client";
+import { ILinkedInteractive } from "../interactive-api-client";
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -120,7 +120,7 @@ export class IFrameSaver {
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
   private plugins: IFrameSaverPluginDisconnectFn[];
-  private linkedInteractives: ILinkedInteractiveMap;
+  private linkedInteractives: ILinkedInteractive[];
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
     this.$iframe = $iframe;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import * as client from "../../../../interactive-api-client";
 import { AuthoringApiProps } from "../authoring";
-import { ILinkedInteractiveMap } from "../../../../interactive-api-client";
+import { ILinkedInteractive } from "../../../../interactive-api-client";
 
 export const SetLinkedInteractivesComponent: React.FC<AuthoringApiProps> = ({setError, setOutput}) => {
   const linkedInteractivesRef = useRef<HTMLTextAreaElement|null>(null);
@@ -12,7 +12,7 @@ export const SetLinkedInteractivesComponent: React.FC<AuthoringApiProps> = ({set
     setError(undefined);
     setOutput(undefined);
 
-    let linkedInteractives: ILinkedInteractiveMap | undefined;
+    let linkedInteractives: ILinkedInteractive[] | undefined;
     try {
       const linkedInteractivesValue = (linkedInteractivesRef.current?.value || "").trim();
       linkedInteractives = linkedInteractivesValue.length > 0 ? JSON.parse(linkedInteractivesValue) : undefined;
@@ -20,13 +20,10 @@ export const SetLinkedInteractivesComponent: React.FC<AuthoringApiProps> = ({set
       return setError(`Unable to parse linkedInteractives: ${e.toString()}`);
     }
 
-    let linkedState: number | undefined;
+    let linkedState: string | undefined;
     const linkedStateValue = (linkedStateRef.current?.value || "").trim();
     if (linkedStateValue.length > 0) {
-      linkedState = parseInt(linkedStateValue, 10);
-      if (isNaN(linkedState)) {
-        return setError(`The linkedState field is not empty or a valid number: ${linkedStateValue}`);
-      }
+      linkedState = linkedStateValue;
     }
 
     try {
@@ -37,7 +34,7 @@ export const SetLinkedInteractivesComponent: React.FC<AuthoringApiProps> = ({set
     }
   };
 
-  const defaultLinkedInteractives = '{\n  "ID1": {"label": "LABEL"},\n  "ID2": {"label": "LABEL"}\n}';
+  const defaultLinkedInteractives = '[\n  {"id": "ID1", "label": "LABEL"},\n  {"id": "ID2", "label": "LABEL"}\n]';
 
   return (
     <div className="padded margin monospace">

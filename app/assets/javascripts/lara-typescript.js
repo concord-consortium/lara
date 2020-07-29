@@ -28819,7 +28819,7 @@ exports.InteractiveAuthoring = function (props) {
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
     var _c = react_1.useState(0), resetCount = _c[0], setResetCount = _c[1];
-    var pageItemId = interactive.page_item_id;
+    var interactiveItemId = interactive.interactive_item_id;
     var handleAuthoredStateChange = function (newAuthoredState) {
         setAuthoredState(newAuthoredState);
         onAuthoredStateChange(newAuthoredState);
@@ -28842,7 +28842,7 @@ exports.InteractiveAuthoring = function (props) {
                 colorB: "green"
             }
         },
-        pageItemId: pageItemId
+        interactiveItemId: interactiveItemId
     };
     return (React.createElement("div", { className: "authoring-mw-interactive" },
         allowReset
@@ -29203,8 +29203,8 @@ exports.CustomizeManagedInteractive = function (props) {
                     React.createElement("legend", null, "Link Saved Work From"),
                     React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
                     React.createElement("select", { name: formField("linked_interactive_type").name, defaultValue: "" + (linked_interactive_type || "") },
-                        React.createElement("option", { value: "MWInteractive" }, "MWInteractive"),
-                        React.createElement("option", { value: "ManagedInteractive" }, "ManagedInteractive")),
+                        React.createElement("option", { value: "MWInteractive" }, "Iframe Interactive"),
+                        React.createElement("option", { value: "ManagedInteractive" }, "Library Interactive")),
                     React.createElement("div", { className: "warning" },
                         React.createElement("em", null, "Warning"),
                         ": Please do not link to another interactive unless the interactive knows how to load prior work.")),
@@ -29376,7 +29376,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
                 ? libraryInteractive.aspect_ratio_method
                 : managedInteractive.custom_aspect_ratio_method,
             authored_state: managedInteractive.authored_state,
-            page_item_id: managedInteractive.page_item_id
+            interactive_item_id: managedInteractive.interactive_item_id
         };
         var handleAuthoredStateChange = function (newAuthoredState) {
             if (libraryInteractiveAuthoredStateRef.current) {
@@ -29566,7 +29566,7 @@ exports.MWInteractiveAuthoring = function (props) {
             aspect_ratio: interactive.aspect_ratio,
             aspect_ratio_method: interactive.aspect_ratio_method,
             authored_state: interactive.authored_state,
-            page_item_id: interactive.page_item_id
+            interactive_item_id: interactive.interactive_item_id
         };
         var hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
         return (React.createElement(react_tabs_1.Tabs, null,
