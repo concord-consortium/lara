@@ -48,12 +48,12 @@ EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
     var embeddableHeight = newHeight - this.buttonHeight -2;
-    $('.question').css('max-height', embeddableHeight + 'px');
+    $('.jcarousel .question').css('max-height', embeddableHeight + 'px');
 };
 
 // Set the width of the embeddables
 EmbeddableCarousel.prototype.setWidth = function (newWidth) {
-    $('.question').css('width', newWidth + 'px');
+    $('.jcarousel .question').css('width', newWidth + 'px');
 };
 
 // Update state of carousel controls
@@ -108,7 +108,7 @@ EmbeddableCarousel.prototype.tallestQuestion = function() {
     var tallest = 0;
     var current = 0;
     var self = this;
-    $('.question').each( function () {
+    $('.jcarousel .question').each( function () {
         // force text-box content into our current computed width
         // this helps to get an accurate measurement.
         $(this).width(self.bestWidth);
