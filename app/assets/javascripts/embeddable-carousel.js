@@ -22,7 +22,8 @@ var EmbeddableCarousel = function (element) {
     this.controlPrev = $('.jcarousel-prev');
     // Assume we start at the first item
     this.turnOnNext();
-    // Two cases here: one, we have an image which may take a bit to load and thus define
+    // Two cases here:
+    // One, we have an image which may take a bit to load and thus define
     // the height of the .interactive-mod which is what we're using to get the height.
     // Two, we have an iframe or video tag which has already been height-adjusted (or the
     // image is already loaded and we don't need to wait.)
@@ -47,7 +48,7 @@ EmbeddableCarousel.prototype.setCarouselSize = function () {
 EmbeddableCarousel.prototype.setHeight = function (newHeight) {
     this.container.css('height', newHeight + 'px');
     // Adjust embeddable containers to allow for buttons
-    var embeddableHeight = newHeight - this.buttonHeight -2;
+    var embeddableHeight = newHeight - this.buttonHeight - 2;
     $('.jcarousel .question').css('max-height', embeddableHeight + 'px');
 };
 
@@ -132,7 +133,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
     var interactiveHeight = $('.interactive-mod').height();
     var offset = $('.content-mod').offset();
 
-    var available = $(window).height() - offset.top;
+    var available = Math.max($(window).height() - offset.top, 330); // make sure height is at least 330 pixels
     if (this.isResponsive()) {
         this.bestHeight = this.tallestQuestion() + 30;
     } else if (this.isFullWidth()) {
