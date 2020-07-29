@@ -93,8 +93,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
             name={formField("linked_interactive_type").name}
             defaultValue={`${linked_interactive_type || ""}`}
           >
-            <option value="MWInteractive">MWInteractive</option>
-            <option value="ManagedInteractive">ManagedInteractive</option>
+            <option value="MWInteractive">Iframe Interactive</option>
+            <option value="ManagedInteractive">Library Interactive</option>
           </select>
           <div className="warning">
             <em>Warning</em>: Please do not link to another interactive
