@@ -47,6 +47,10 @@ modulejs.define 'components/common/ajax_form_mixin',
     e?.preventDefault?()
     defaultValues = {}
     for key, value of @state.values
+      if key == 'managed_interactive_open_response[prompt]'
+        default_answer = @state.values['managed_interactive_open_response[default_text]']
+        authored_state = '{"version":1,"questionType":"open_response","prompt":"' + value + '","defaultAnswer":" ' + default_answer + '"}'
+        @valueChanged 'managed_interactive[authored_state]', authored_state
       defaultValues[key] = value
     @setState
       edit: false
