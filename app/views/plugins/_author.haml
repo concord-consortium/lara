@@ -27,16 +27,17 @@
       %div{style: ""}
         - if show_wrapped_embeddable
           .wrapped-embeddable.questions-mod{id: wrapped_id}
-            -# The embeddable-root class is important it is used for sizing calculations.
-            -# in this particular case the sizing calculations might not apply, but it is kept for consistency
-            .question.embeddable-root{ class: question_css_class(wrapped_embeddable) }
-              -# The embeddable-container class is important, it is referenced by plugins and passed to a plugin instance.
-              .embeddable-container
-                - if Embeddable::is_interactive?(wrapped_embeddable)
-                  = render_interactive(wrapped_embeddable)
-                - else
-                  - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
-                  = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
+            .question{ class: question_css_class(wrapped_embeddable) }
+              -# The embeddable-root class is important it is used for sizing calculations.
+              -# in this particular case the sizing calculations might not apply, but it is kept for consistency
+              .embeddable-root
+                -# The embeddable-container class is important, it is referenced by plugins and passed to a plugin instance.
+                .embeddable-container
+                  - if Embeddable::is_interactive?(wrapped_embeddable)
+                    = render_interactive(wrapped_embeddable)
+                  - else
+                    - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
+                    = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
           -# reload-on-close is used so that the css loaded for the preview is not seen
           .plugin-output.content-mod.reload-on-close{id: output_id}
         - else
