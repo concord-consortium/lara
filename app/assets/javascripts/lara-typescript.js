@@ -29162,7 +29162,7 @@ var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
-    var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, linked_interactive_type = managedInteractive.linked_interactive_type, show_in_featured_question_report = managedInteractive.show_in_featured_question_report;
+    var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, linked_interactive_type = managedInteractive.linked_interactive_type, show_in_featured_question_report = managedInteractive.show_in_featured_question_report, linked_interactive_item_id = managedInteractive.linked_interactive_item_id;
     var _a = react_1.useState(inherit_aspect_ratio_method), inheritAspectRatio = _a[0], setInheritAspectRatio = _a[1];
     var _b = react_1.useState({
         width: custom_native_width,
@@ -29201,10 +29201,7 @@ exports.CustomizeManagedInteractive = function (props) {
             React.createElement(React.Fragment, null,
                 React.createElement("fieldset", null,
                     React.createElement("legend", null, "Link Saved Work From"),
-                    React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
-                    React.createElement("select", { name: formField("linked_interactive_type").name, defaultValue: "" + (linked_interactive_type || "") },
-                        React.createElement("option", { value: "MWInteractive" }, "Iframe Interactive"),
-                        React.createElement("option", { value: "ManagedInteractive" }, "Library Interactive")),
+                    React.createElement("input", { type: "text", name: formField("linked_interactive_item_id").name, defaultValue: "" + (linked_interactive_item_id || "") }),
                     React.createElement("div", { className: "warning" },
                         React.createElement("em", null, "Warning"),
                         ": Please do not link to another interactive unless the interactive knows how to load prior work.")),
@@ -29446,7 +29443,7 @@ var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
-    var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id, linked_interactive_type = interactive.linked_interactive_type;
+    var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id, linked_interactive_type = interactive.linked_interactive_type, linked_interactive_item_id = interactive.linked_interactive_item_id;
     var _a = react_1.useState({
         width: native_width,
         height: native_height,
@@ -29479,10 +29476,7 @@ exports.CustomizeMWInteractive = function (props) {
                 React.createElement(checkbox_1.Checkbox, { name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Link Saved Work From"),
-                React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
-                React.createElement("select", { name: formField("linked_interactive_type").name, defaultValue: "" + (linked_interactive_type || "") },
-                    React.createElement("option", { value: "MWInteractive" }, "MWInteractive"),
-                    React.createElement("option", { value: "ManagedInteractive" }, "ManagedInteractive")),
+                React.createElement("input", { type: "text", name: formField("linked_interactive_item_id").name, defaultValue: "" + (linked_interactive_item_id || "") }),
                 React.createElement("div", { className: "warning" },
                     React.createElement("em", null, "Warning"),
                     ": Please do not link to another interactive unless the interactive knows how to load prior work.")));
