@@ -30,7 +30,7 @@ class Api::V1::InteractivePagesController < ApplicationController
         .map do |pi|
           i = pi.embeddable
           {
-            id: pi.id,
+            id: "interactive_#{pi.id}",
             pageId: @interactive_page.id,
             name: i.name,
             section: pi.section != nil ? pi.section : "assessment_block",
@@ -57,14 +57,18 @@ class Api::V1::InteractivePagesController < ApplicationController
         raise "You are not authorized to create linked interactives"
       end
 
-      source_page_item_id = params[:sourceId]
-      if !source_page_item_id
+      source_id = params[:sourceId]
+      if !source_id
         raise "Missing sourceId parameter in request"
+      end
+      source_page_item_id = extract_page_item_id(source_id)
+      if !source_page_item_id
+        raise "Invalid sourceId parameter in request: #{source_id}"
       end
 
       source_page_item = @interactive_page.page_items.find_by_id(source_page_item_id)
       if !source_page_item
-        raise "Invalid sourceId parameter in request"
+        raise "Unknown sourceId parameter in request: #{source_page_item_id}"
       end
 
       begin
@@ -74,12 +78,16 @@ class Api::V1::InteractivePagesController < ApplicationController
       end
 
       linked_interactives = params[:linkedInteractives]
-      linked_state_page_item_id = params[:linkedState]
-      if !linked_interactives && !linked_state_page_item_id
+      linked_state = params[:linkedState]
+      if !linked_interactives && !linked_state
         raise "Missing linkedInteractives or linkedState parameters in request"
       end
-      if !linked_interactives.is_a? Hash
-        raise "Invalid linkedInteractives parameter, it needs to be a hash"
+
+      if linked_state
+        linked_state_page_item_id = extract_page_item_id(linked_state)
+        if !linked_state_page_item_id
+          raise "Invalid linkedState parameter in request: #{linked_state}"
+        end
       end
 
       ActiveRecord::Base.transaction do
@@ -87,14 +95,26 @@ class Api::V1::InteractivePagesController < ApplicationController
           # clear the existing links
           LinkedPageItem.delete_all(primary_id: source_page_item_id)
 
+          # convert {0: {id:...}, 1: {id: ...}} to [{id:...}, {id:...}]
+          if linked_interactives.is_a? Hash
+            linked_interactives = linked_interactives.values
+          end
+
           # add the new links
-          linked_interactives.each do |secondary_id, options|
-            if !options.is_a? Hash
-              raise "Invalid linkedInteractives parameter, #{secondary_id} needs to be a key to a hash"
+          linked_interactives.each do |item|
+            if !item.is_a? Hash
+              raise "Invalid linkedInteractives parameter, each array item needs to be a hash"
             end
-            item = LinkedPageItem.new({primary_id: source_page_item_id, secondary_id: secondary_id, label: options["label"]})
+            if item["id"].nil? || item["label"].nil?
+              raise "Missing id or label value in linkedInteractives item"
+            end
+            secondary_id = extract_page_item_id(item["id"])
+            if secondary_id.nil?
+              raise "Invalid interactive id: #{item["id"]}"
+            end
+            item = LinkedPageItem.new({primary_id: source_page_item_id, secondary_id: secondary_id, label: item["label"]})
             if !item.save
-              raise "Unable to create linkedInteractive for #{secondary_id}"
+              raise "Unable to create linkedInteractive for #{item["id"]}"
             end
           end
         end
@@ -127,5 +147,10 @@ class Api::V1::InteractivePagesController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render :json => { :success => false, :message => "Could not find interactive page ##{params['id']}"}
     end
+  end
+
+  def extract_page_item_id(interative_id)
+    m = interative_id.match(/^interactive_(.+)$/)
+    m ? m[1] : nil
   end
 end

@@ -10,9 +10,16 @@
 
 ### Properties
 
+* [id](ilinkedinteractive.md#id)
 * [label](ilinkedinteractive.md#label)
 
 ## Properties
+
+###  id
+
+• **id**: *[InteractiveItemId](../globals.md#interactiveitemid)*
+
+___
 
 ###  label
 

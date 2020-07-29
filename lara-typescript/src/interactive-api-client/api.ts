@@ -278,7 +278,7 @@ export const setLinkedInteractives = (options: ISetLinkedInteractives) => {
         }
         const client = getClient();
         const request: ISetLinkedInteractivesRequest = {
-          sourceId: initInteractiveMessage.pageItemId,
+          sourceId: initInteractiveMessage.interactiveItemId,
           ...options
         };
         client.post("setLinkedInteractives", request);

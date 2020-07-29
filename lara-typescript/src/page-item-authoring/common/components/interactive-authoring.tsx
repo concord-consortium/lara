@@ -11,7 +11,7 @@ interface Props {
     aspect_ratio: number;
     aspect_ratio_method: string;
     authored_state: string | object;
-    page_item_id: number;
+    interactive_item_id: string;
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   allowReset: boolean;
@@ -28,7 +28,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
       : interactive.authored_state
   );
   const [resetCount, setResetCount] = useState(0);
-  const {page_item_id: pageItemId} = interactive;
+  const {interactive_item_id: interactiveItemId} = interactive;
 
   const handleAuthoredStateChange = (newAuthoredState: object) => {
     setAuthoredState(newAuthoredState);
@@ -55,7 +55,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
         colorB: "green"
       }
     },
-    pageItemId
+    interactiveItemId
   };
 
   return (

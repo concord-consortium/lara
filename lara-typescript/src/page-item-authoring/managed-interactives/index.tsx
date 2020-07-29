@@ -53,7 +53,7 @@ export interface IManagedInteractive {
   custom_click_to_play_prompt: string;
   inherit_image_url: boolean;
   custom_image_url: string;
-  page_item_id: number;
+  interactive_item_id: string;
 }
 
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
@@ -137,7 +137,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,
       authored_state: managedInteractive.authored_state,
-      page_item_id: managedInteractive.page_item_id
+      interactive_item_id: managedInteractive.interactive_item_id
     };
 
     const handleAuthoredStateChange = (newAuthoredState: string | object) => {

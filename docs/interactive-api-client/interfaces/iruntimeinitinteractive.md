@@ -152,7 +152,7 @@ ___
 
 ###  linkedInteractives
 
-• **linkedInteractives**: *[ILinkedInteractiveMap](ilinkedinteractivemap.md)*
+• **linkedInteractives**: *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 

@@ -47,7 +47,7 @@ module InteractiveRunHelper
     data['authored-state'] = interactive.authored_state
     data['interactive-id'] = interactive.id
     data['interactive-name'] = interactive.name
-    data['linked-interactives'] = interactive.linked_interactives_hash.to_json
+    data['linked-interactives'] = interactive.linked_interactives_list.to_json
 
     opts = {
       :src => interactive.url,

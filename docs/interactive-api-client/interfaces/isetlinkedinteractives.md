@@ -19,10 +19,10 @@
 
 ### `Optional` linkedInteractives
 
-• **linkedInteractives**? : *[ILinkedInteractiveMap](ilinkedinteractivemap.md)*
+• **linkedInteractives**? : *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 
 ### `Optional` linkedState
 
-• **linkedState**? : *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **linkedState**? : *[InteractiveItemId](../globals.md#interactiveitemid)*

@@ -16,8 +16,8 @@
 
 * [authoredState](iauthoringinitinteractive.md#authoredstate)
 * [error](iauthoringinitinteractive.md#error)
+* [interactiveItemId](iauthoringinitinteractive.md#interactiveitemid)
 * [mode](iauthoringinitinteractive.md#mode)
-* [pageItemId](iauthoringinitinteractive.md#pageitemid)
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
 
@@ -35,15 +35,15 @@ ___
 
 ___
 
-###  mode
+###  interactiveItemId
 
-• **mode**: *"authoring"*
+• **interactiveItemId**: *string*
 
 ___
 
-###  pageItemId
+###  mode
 
-• **pageItemId**: *number*
+• **mode**: *"authoring"*
 
 ___
 

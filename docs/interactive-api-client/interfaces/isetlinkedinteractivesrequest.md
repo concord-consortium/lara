@@ -20,7 +20,7 @@
 
 ### `Optional` linkedInteractives
 
-• **linkedInteractives**? : *[ILinkedInteractiveMap](ilinkedinteractivemap.md)*
+• **linkedInteractives**? : *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 *Inherited from [ISetLinkedInteractives](isetlinkedinteractives.md).[linkedInteractives](isetlinkedinteractives.md#optional-linkedinteractives)*
 
@@ -28,7 +28,7 @@ ___
 
 ### `Optional` linkedState
 
-• **linkedState**? : *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **linkedState**? : *[InteractiveItemId](../globals.md#interactiveitemid)*
 
 *Inherited from [ISetLinkedInteractives](isetlinkedinteractives.md).[linkedState](isetlinkedinteractives.md#optional-linkedstate)*
 
@@ -36,4 +36,4 @@ ___
 
 ###  sourceId
 
-• **sourceId**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **sourceId**: *[InteractiveItemId](../globals.md#interactiveitemid)*

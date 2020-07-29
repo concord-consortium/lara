@@ -14,16 +14,16 @@
 
 ### Properties
 
-* [interactiveId](igetinteractivesnapshotrequest.md#interactiveid)
+* [interactiveItemId](igetinteractivesnapshotrequest.md#interactiveitemid)
 * [requestId](igetinteractivesnapshotrequest.md#requestid)
 
 ## Properties
 
-###  interactiveId
+###  interactiveItemId
 
-• **interactiveId**: *[InteractivePageItemId](../globals.md#interactivepageitemid)*
+• **interactiveItemId**: *[InteractiveItemId](../globals.md#interactiveitemid)*
 
-*Inherited from [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md).[interactiveId](igetinteractivesnapshotoptions.md#interactiveid)*
+*Inherited from [IGetInteractiveSnapshotOptions](igetinteractivesnapshotoptions.md).[interactiveItemId](igetinteractivesnapshotoptions.md#interactiveitemid)*
 
 ___
 
