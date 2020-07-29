@@ -3,6 +3,7 @@
 modulejs.define 'components/itsi_authoring/section_editor',
 [
   'components/itsi_authoring/open_response_question_editor'
+  'components/itsi_authoring/open_response_interactive_editor'
   'components/itsi_authoring/sensor_editor'
   'components/itsi_authoring/prediction_editor'
   'components/itsi_authoring/drawing_response_editor'
@@ -11,6 +12,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 ],
 (
   OpenResponseQuestionEditorClass,
+  OpenResponseInteractiveEditorClass,
   SensorEditorClass,
   PredictionEditorClass,
   DrawingResponseEditorClass,
@@ -19,6 +21,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
 ) ->
 
   OpenResponseQuestionEditor = React.createFactory OpenResponseQuestionEditorClass
+  OpenResponseInteractiveEditor = React.createFactory OpenResponseInteractiveEditorClass
   SensorEditor = React.createFactory SensorEditorClass
   PredictionEditor = React.createFactory PredictionEditorClass
   DrawingResponseEditor = React.createFactory DrawingResponseEditorClass
@@ -49,19 +52,21 @@ modulejs.define 'components/itsi_authoring/section_editor',
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
-      return ModelEditor unless element.url
-      url = decodeURIComponent element.url
-      if /globalStateKey/.test url
-        if /sensor-connector\.json/.test url
-          return SensorEditor
-        else
-          return PredictionEditor
-      ModelEditor
+      if Object.keys(element).length != 0
+        return ModelEditor unless element.url
+        url = decodeURIComponent element.url
+        if /globalStateKey/.test url
+          if /sensor-connector\.json/.test url
+            return SensorEditor
+          else
+            return PredictionEditor
+        ModelEditor
 
     getEditorForEmbeddedElement: (element) ->
       switch element.type
         when 'image_question' then DrawingResponseEditor
         when 'open_response' then OpenResponseQuestionEditor
+        when 'managed_interactive_open_response' then OpenResponseInteractiveEditor
         when 'xhtml' then TextBlockEditor
         else null
 
