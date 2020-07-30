@@ -1,3 +1,6 @@
+# exit on any error
+set -e
+
 # start the rails server
 PIDFILE=$(pwd)/tmp/pids/server.pid
 if [ -f $PIDFILE ]; then
