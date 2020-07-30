@@ -45,3 +45,6 @@ branches:
   except:
     - staging
     - production
+
+addons:
+  chrome: stable
