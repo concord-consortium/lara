@@ -10,7 +10,7 @@ jobs:
     - script: bundle exec rake
     - script: cd lara-plugin-api-V2 && npm i && npm run test
     - script: cd lara-typescript && npm i && npm run test
-    - script: ./script/cypress-on-travis.sh
+    - script: ./script/cypress-on-travis.sh || travis_terminate 1;
 
 env:
   global:
@@ -49,3 +49,4 @@ apt:
   packages:
     # for Cypress tests
     - libgconf-2-4
+    - libatk-adaptor

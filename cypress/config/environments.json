@@ -5,6 +5,9 @@
   "staging": {
     "baseUrl": "https://authoring.staging.concord.org"
   },
+  "travis": {
+    "baseUrl": "http://localhost:3000"
+  },
   "dev": {
     "baseUrl": "dev baseUrl needs to be set in config/user-config.json (see config/user-config.sample.json)"
   }

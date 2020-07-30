@@ -13,6 +13,7 @@ test environments that you are planning to use:
 
  - dev
  - staging
+ - travis
  - production
 
 Note that these credentials must work on `/users/sign_in` page, e.g. http://authoring.staging.concord.org/users/sign_in.

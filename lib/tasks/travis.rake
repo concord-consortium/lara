@@ -3,7 +3,7 @@ namespace :travis do
   desc "create_user"
   task :create_user => :environment do
 
-    # NOTE: this must match user-config.travis.json
+    # NOTE: this must match settings in cypress/config/user-config.sample.json for the travis environment
     email = "travis@example.com"
     password = "travis_password"
 
