@@ -40,7 +40,7 @@ class ITSIAuthoring::Editor
       name: page.name,
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
-      interactives: page.interactives.map { |i| interactive_json(i, page) },
+      interactives: page.section_embeddables(InteractivePage::INTERACTIVE_BOX).map { |i| interactive_json(i, page) },
       embeddables: page.embeddables.select { |e| e.page_section.nil? }
                                    .map { |e| embeddable_json(e) },
       header_embeddables: page.embeddables.select { |e| e.page_section == InteractivePage::HEADER_BLOCK }
@@ -72,19 +72,6 @@ class ITSIAuthoring::Editor
       is_hidden: e.is_hidden,
       default_text: e.default_text,
       update_url: embeddable_open_response_path(e)
-    }
-  end
-
-  def managed_interactive_json(e)
-    authored_state = JSON.parse(e.authored_state)
-    {
-      type: 'managed_interactive_' + authored_state["questionType"],
-      id: e.id,
-      name: e.name,
-      prompt: authored_state["prompt"],
-      is_hidden: e.is_hidden,
-      default_text: authored_state["defaultAnswer"],
-      update_url: managed_interactive_path(e)
     }
   end
 
@@ -131,6 +118,17 @@ class ITSIAuthoring::Editor
       model_library_url: i.model_library_url,
       authored_state: i.authored_state,
       update_url: page_mw_interactive_path(page, i)
+    }
+  end
+
+  def managed_interactive_json(i)
+    {
+      type: 'managed_interactive',
+      name: i.name,
+      is_hidden: i.is_hidden,
+      url: i.url,
+      authored_state: i.authored_state,
+      update_url: managed_interactive_path(i)
     }
   end
 end
