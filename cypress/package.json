@@ -6,6 +6,7 @@
   "scripts": {
     "test:dev": "cypress open --env testEnv=dev",
     "test:staging": "cypress open --env testEnv=staging",
+    "test:travis": "cypress open --env testEnv=travis",
     "test:production": "cypress open --env testEnv=production"
   },
   "author": "",
