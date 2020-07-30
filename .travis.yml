@@ -3,7 +3,7 @@ language: ruby
 rvm:
   - "2.3.7"
 
-dist: xenial
+dist: precise
 
 jobs:
   include:
