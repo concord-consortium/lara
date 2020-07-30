@@ -8,12 +8,13 @@
           -# e variable is actually either embeddable (for interactives, plugins, etc.) or embeddable answer
           -# (open response, multiple choice and all the question types). If the latter, get a real question object.
           - question = e.respond_to?(:question) ? e.question : e
-          -# The embeddable-root CSS class is important as it is used by sizing calculations
-          .question.embeddable-root{ class: question_css_class(e), id: question.embeddable_dom_id }
-            -# The embeddable-container CSS class is important, as it is referenced by plugins and passed to a plugin instance.
-            .embeddable-container
-              - if Embeddable::is_interactive?(e)
-                = render_interactive(e)
-              - else
-                - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
-                = render(partial: partial_name, locals: { embeddable: e })
+          .question{ class: question_css_class(e), id: question.embeddable_dom_id }
+            -# The embeddable-root CSS class is important as it is used by sizing calculations
+            .embeddable-root
+              -# The embeddable-container CSS class is important, as it is referenced by plugins and passed to a plugin instance.
+              .embeddable-container
+                - if Embeddable::is_interactive?(e)
+                  = render_interactive(e)
+                - else
+                  - partial_name = "#{e.class.name.underscore.pluralize}/lightweight"
+                  = render(partial: partial_name, locals: { embeddable: e })
