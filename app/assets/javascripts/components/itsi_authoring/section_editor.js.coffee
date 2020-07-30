@@ -3,29 +3,29 @@
 modulejs.define 'components/itsi_authoring/section_editor',
 [
   'components/itsi_authoring/open_response_question_editor'
-  'components/itsi_authoring/open_response_interactive_editor'
   'components/itsi_authoring/sensor_editor'
   'components/itsi_authoring/prediction_editor'
   'components/itsi_authoring/drawing_response_editor'
   'components/itsi_authoring/model_editor'
+  'components/itsi_authoring/managed_interactive_editor'
   'components/itsi_authoring/textblock_editor'
 ],
 (
   OpenResponseQuestionEditorClass,
-  OpenResponseInteractiveEditorClass,
   SensorEditorClass,
   PredictionEditorClass,
   DrawingResponseEditorClass,
   ModelEditorClass,
+  ManagedInteractiveEditorClass,
   TextBlockEditorClass,
 ) ->
 
   OpenResponseQuestionEditor = React.createFactory OpenResponseQuestionEditorClass
-  OpenResponseInteractiveEditor = React.createFactory OpenResponseInteractiveEditorClass
   SensorEditor = React.createFactory SensorEditorClass
   PredictionEditor = React.createFactory PredictionEditorClass
   DrawingResponseEditor = React.createFactory DrawingResponseEditorClass
   ModelEditor = React.createFactory ModelEditorClass
+  ManagedInteractiveEditor = React.createFactory ManagedInteractiveEditorClass
   TextBlockEditor = React.createFactory TextBlockEditorClass
 
   createReactClass
@@ -52,21 +52,20 @@ modulejs.define 'components/itsi_authoring/section_editor',
       @setState selected: selected
 
     getEditorForInteractiveElement: (element) ->
-      if Object.keys(element).length != 0
-        return ModelEditor unless element.url
-        url = decodeURIComponent element.url
-        if /globalStateKey/.test url
-          if /sensor-connector\.json/.test url
-            return SensorEditor
-          else
-            return PredictionEditor
-        ModelEditor
+      return ModelEditor unless element.url
+      url = decodeURIComponent element.url
+      if /globalStateKey/.test url
+        if /sensor-connector\.json/.test url
+          return SensorEditor
+        else
+          return PredictionEditor
+      ModelEditor
 
     getEditorForEmbeddedElement: (element) ->
       switch element.type
         when 'image_question' then DrawingResponseEditor
         when 'open_response' then OpenResponseQuestionEditor
-        when 'managed_interactive_open_response' then OpenResponseInteractiveEditor
+        when 'managed_interactive' then ManagedInteractiveEditor
         when 'xhtml' then TextBlockEditor
         else null
 
