@@ -44,3 +44,8 @@ branches:
   except:
     - staging
     - production
+
+apt:
+  packages:
+    # for Cypress tests
+    - libgconf-2-4
