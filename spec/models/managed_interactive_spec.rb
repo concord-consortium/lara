@@ -81,7 +81,8 @@ describe ManagedInteractive do
       expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
       expected[:linked_interactive_type] = managed_interactive.linked_interactive_type
       expected[:aspect_ratio] = managed_interactive.aspect_ratio
-      expected[:interactive_item_id] = "interactive_#{managed_interactive.page_item.id}"
+      expected[:interactive_item_id] = managed_interactive.interactive_item_id
+      expected[:linked_interactive_item_id] = managed_interactive.linked_interactive_item_id
       expect(managed_interactive.to_authoring_hash).to eq(expected)
     end
   end
@@ -355,6 +356,53 @@ describe ManagedInteractive do
       # without a library interactive it defaults to false
       managed_interactive.library_interactive = nil
       expect(managed_interactive.no_snapshots).to be false
+    end
+  end
+
+  # this is only tested here and not also in mw_interactive as it all uses code in the base_interactive
+  describe "interactive_item_id" do
+
+    before :each do
+      page.add_interactive(managed_interactive)
+      managed_interactive.reload
+      page.reload
+    end
+
+    it "has a getter" do
+      expect(managed_interactive.interactive_item_id).to eq "interactive_#{managed_interactive.page_item.id}"
+    end
+
+    it "does not have a setter" do
+      expect(managed_interactive.respond_to?('interactive_item_id=')).to be false
+    end
+  end
+
+  describe "linked_interactive_item_id" do
+
+    let(:mw_interactive2) { FactoryGirl.create(:mw_interactive) }
+
+    before :each do
+      page.add_interactive(mw_interactive)
+      page.add_interactive(mw_interactive2)
+      page.add_interactive(managed_interactive)
+      managed_interactive.reload
+      mw_interactive.reload
+      page.reload
+    end
+
+    it "has a getter" do
+      expect(managed_interactive.linked_interactive).to eq mw_interactive
+      expect(managed_interactive.linked_interactive_item_id).to eq mw_interactive.interactive_item_id
+      expect(mw_interactive.interactive_item_id).to_not eq nil
+      expect(managed_interactive.linked_interactive_item_id).to_not eq nil
+    end
+
+    it "has a setter" do
+      expect(managed_interactive.linked_interactive).to eq mw_interactive
+      managed_interactive.linked_interactive_item_id = mw_interactive2.interactive_item_id
+      managed_interactive.save!
+      managed_interactive.reload
+      expect(managed_interactive.linked_interactive).to eq mw_interactive2
     end
   end
 end

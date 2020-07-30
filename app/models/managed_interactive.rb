@@ -21,6 +21,7 @@ class ManagedInteractive < ActiveRecord::Base
     :inherit_full_window, :custom_full_window,
     :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
     :inherit_image_url, :custom_image_url
+    :linked_interactive_item_id
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :custom_native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -139,7 +140,8 @@ class ManagedInteractive < ActiveRecord::Base
     hash[:linked_interactive_id] = linked_interactive_id
     hash[:linked_interactive_type] = linked_interactive_type
     hash[:aspect_ratio] = aspect_ratio
-    hash[:interactive_item_id] = page_item ? "interactive_#{page_item.id}" : nil
+    hash[:interactive_item_id] = interactive_item_id
+    hash[:linked_interactive_item_id] = linked_interactive_item_id
     hash
   end
 

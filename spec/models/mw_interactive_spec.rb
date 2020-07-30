@@ -61,7 +61,8 @@ describe MwInteractive do
       expected[:linked_interactive_id] = interactive.linked_interactive_id
       expected[:linked_interactive_type] = interactive.linked_interactive_type
       expected[:aspect_ratio] = interactive.aspect_ratio
-      expected[:interactive_item_id] = "interactive_#{interactive.page_item.id}"
+      expected[:interactive_item_id] = interactive.interactive_item_id
+      expected[:linked_interactive_item_id] = interactive.linked_interactive_item_id
       expect(interactive.to_authoring_hash).to eq(expected)
     end
   end
