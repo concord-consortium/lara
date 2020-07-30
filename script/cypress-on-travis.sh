@@ -15,5 +15,4 @@ cp config/user-config.travis.json config/user-config.json
 npm run test:travis
 
 # kill the rails server
-cd ..
 kill -9 $(cat $PIDFILE)
