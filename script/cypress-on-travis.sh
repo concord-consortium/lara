@@ -16,7 +16,7 @@ bundle exec rake travis:create_user
 cp config/user-config.sample.json config/user-config.json
 
 # DEBUG INFO
-# ldd /home/travis/.cache/Cypress/4.8.0/Cypress/Cypress
+ldd /home/travis/.cache/Cypress/4.11.0/Cypress/Cypress
 
 # make sure the rails sever is running (uses wait-on in package.json)
 echo "Waiting for rails server to start ..."
