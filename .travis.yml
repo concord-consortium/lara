@@ -19,7 +19,7 @@ env:
     - RAILS_STDOUT_LOGGING= # TravisCI terminates job if it logs to STDOUT too much
 
 before_install:
-  - sudo apt-get -y install libgconf-2-4 libatk-adaptor # for Cypress tests
+  - sudo apt-get -y install libgconf-2-4 libatk-bridge2.0-0 # for Cypress tests
   - gem update bundler
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
