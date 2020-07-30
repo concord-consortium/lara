@@ -566,42 +566,6 @@ div.intra-page-nav {
         margin: 0 0 20px;
       }
     }
-
-    // The first textbox in this section should be styled to match the old
-    // Introduction section. The style rules below should only be applied to the
-    // first text box. Since there isn't a first-of-class option, the style
-    // rules need to be undone for all subsequent siblings.
-    // TODO: Find a more efficient way to apply styles to only the first textbox
-    .challenge {
-      margin: 20px;
-      &[id^="embeddable-xhtml"] {
-        .question-bd {
-          padding: 22px 22px 15px;
-        }
-
-        &.full-width-item {
-          margin: 0 0 20px;
-        }
-      }
-    }
-    .challenge ~ .challenge {
-      &[id^="embeddable-xhtml"] {
-        .question-bd {
-          padding: 0;
-        }
-
-        &.callout {
-          .question-bd {
-            padding: 20px 20px 13px;
-          }
-        }
-
-        &.full-width-item {
-          margin: 0 20px 20px;
-          width: calc(100% - 40px);
-        }
-      }
-    }
   }
 }
 
