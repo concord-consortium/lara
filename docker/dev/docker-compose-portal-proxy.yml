@@ -45,7 +45,7 @@ services:
   app:
     environment:
       CONCORD_CONFIGURED_PORTALS: LOCALHOST HAS_STAGING
-      CONCORD_LOCALHOST_URL: ${PORTAL_PROTOCOL}://${PORTAL_HOST}/
+      CONCORD_LOCALHOST_URL: ${PORTAL_PROTOCOL:-http}://${PORTAL_HOST:?Need to define PORTAL_HOST}/
       CONCORD_LOCALHOST_CLIENT_ID: localhost
       CONCORD_LOCALHOST_CLIENT_SECRET: 'unsecure local secret'
       # the code requires at least 2 portals configured this second one to has Staging
