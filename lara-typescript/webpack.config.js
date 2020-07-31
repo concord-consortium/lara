@@ -4,7 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
-  return [{
+  return [
+  // lara-typescript for use in LARA runtime and authoring system
+  // normalize.css for use by plugins
+  // lara-plugin-api module: this doesn't have an explicity entry,
+  //   the index.d.ts that is built during the lara-typescript compile
+  //   is published as this module
+  {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
     entry: {
@@ -85,7 +91,7 @@ module.exports = (env, argv) => {
     }
   },
 
-  // need separate config as the externals are handled differently in the external library
+  // interactive-api-client needs separate config as the externals are handled differently
   {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
@@ -137,7 +143,7 @@ module.exports = (env, argv) => {
     }
   },
 
-  // need separate config as the externals are handled differently in the example interactive
+  // example-interactive needs separate config as the externals are handled differently
   {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
