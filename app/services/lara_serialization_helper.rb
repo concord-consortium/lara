@@ -21,6 +21,18 @@ class LaraSerializationHelper
       # interactive missing. I guess it could be double checked and fixed in the future.
       results[:linked_interactive] = self.export(item.linked_interactive)
     end
+
+    # This is done here and not in the models as we don't want to export the linked embeddables as they are already exported
+    # we only want to save the key so that the references to the embeddables can be restored during import.
+    # The embeddedable references are saved instead of the page_item references as new page_items are created when the
+    # embeddables are imported into the page.
+    if item.respond_to?(:primary_linked_items)
+      results[:linked_page_items] = item.primary_linked_items.map {|pli| {
+        primary_ref_id: key(pli.primary.embeddable),
+        secondary_ref_id: key(pli.secondary.embeddable),
+        label: pli.label
+      }}
+    end
     results
   end
 
@@ -48,6 +60,16 @@ class LaraSerializationHelper
     end
     if item_hash[:linked_interactive] && item.respond_to?(:linked_interactive)
       item.linked_interactive = import(item_hash[:linked_interactive])
+    end
+    if item_hash[:linked_page_items]
+      item_hash[:linked_page_items].each do |lpi_hash|
+        primary = lookup_item(lpi_hash[:primary_ref_id])
+        secondary = lookup_item(lpi_hash[:secondary_ref_id])
+        if primary && secondary
+          lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: lpi_hash[:label])
+          lpi.save!(validate: false)
+        end
+      end
     end
     item.save!(validate: false)
     item

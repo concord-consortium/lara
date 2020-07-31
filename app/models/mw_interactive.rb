@@ -19,6 +19,9 @@ class MwInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
+  has_many :primary_linked_items, :through => :page_item
+  has_many :secondary_linked_items, :through => :page_item
+
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
@@ -120,7 +123,8 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def self.import(import_hash)
-    return self.new(import_hash)
+    # remove the linked_page_items created by the serialization helper
+    return self.new(import_hash.except(:linked_page_items))
   end
 
   def reportable?
