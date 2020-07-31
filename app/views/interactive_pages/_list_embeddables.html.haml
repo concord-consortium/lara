@@ -10,6 +10,9 @@
           - question = e.respond_to?(:question) ? e.question : e
           .question{ class: question_css_class(e), id: question.embeddable_dom_id }
             -# The embeddable-root CSS class is important as it is used by sizing calculations
+            -# it needs to be different than the .question div above. The div above is set to
+            -# 45% width when inside of a full width page or block, and the div below
+            -# width is set dynamically depending on the interactive sizing
             .embeddable-root
               -# The embeddable-container CSS class is important, as it is referenced by plugins and passed to a plugin instance.
               .embeddable-container
