@@ -34,6 +34,9 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
+  has_many :primary_linked_items, :through => :page_item
+  has_many :secondary_linked_items, :through => :page_item
+
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
@@ -208,6 +211,9 @@ class ManagedInteractive < ActiveRecord::Base
     # save off the imported library interactive to hydrate it after the instance is created
     imported_library_interactive = import_hash[:library_interactive]
     import_hash.delete(:library_interactive)
+
+    # delete the linked_page_items created by the serialization helper
+    import_hash.delete(:linked_page_items)
 
     managed_interactive = self.new(import_hash)
 
