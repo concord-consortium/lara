@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(:version => 20200728144910) do
     t.datetime "updated_at",                       :null => false
     t.boolean  "is_hidden",     :default => false
     t.boolean  "is_full_width", :default => false
-    t.boolean  "is_callout",    :default => false
+    t.boolean  "is_callout",    :default => true
   end
 
   create_table "global_interactive_states", :force => true do |t|
