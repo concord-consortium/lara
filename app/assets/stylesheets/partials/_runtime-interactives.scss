@@ -72,7 +72,14 @@
 
 .challenge {
   .question-hdr {
-    display: none;
+    background: transparent;
+    padding: 4px 0;
+
+    .h5 {
+      color: #333;
+      font-weight: bolder;
+      text-shadow: none;
+    }
   }
   .question-bd {
     border: none;
@@ -81,8 +88,15 @@
 
   &.callout {
     .question-hdr, .question-hdr-collapse {
-      background: darken($black-15, 3%);
+      background: darken($black-15, 20%);
       display: block;
+      padding: 4px 8px;
+
+      .h5 {
+        color: #fff;
+        font-weight: normal;
+        @include drk-txt-shadow($black-15);
+      }
     }
     .question-bd {
       background: $black-5;

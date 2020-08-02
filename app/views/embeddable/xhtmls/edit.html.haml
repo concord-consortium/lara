@@ -1,7 +1,6 @@
-- form_class = @embeddable.is_callout ? 'edit_embeddable_xhtml callout' : 'edit_embeddable_xhtml'
-= form_for @embeddable, html: {class: form_class} do |f|
+= form_for @embeddable, html: {class: 'edit_embeddable_xhtml'} do |f|
   = f.error_messages
-  = field_set_tag 'Heading', class: 'textblock-heading-field' do
+  = field_set_tag 'Heading (optional)', class: 'textblock-heading-field' do
     = f.text_field :name
   = field_set_tag 'Content' do
     = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
@@ -15,12 +14,6 @@
         .li
           = f.check_box :is_callout
           = t(:IS_CALLOUT_ASSESSMENT_ITEM)
-          :javascript
-            $(function() {
-              $('#embeddable_xhtml_is_callout').change(function () {
-                $('.edit_embeddable_xhtml').toggleClass('callout');
-              });
-            });
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   .submit-container
     = f.submit "Cancel", :class => 'close'
