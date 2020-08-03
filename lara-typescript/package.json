@@ -11,7 +11,7 @@
     "build:docs:plugin-api": "typedoc --readme src/plugin-api/README.md --out ../docs/lara-plugin-api src/plugin-api/index.ts",
     "build:docs:interactive-api-client": "typedoc --readme src/interactive-api-client/README.md --out ../docs/interactive-api-client src/interactive-api-client/index.ts",
     "build:dev:lara-typescript": "webpack && npm run build:copy-to-rails",
-    "build:copy-to-rails": "cp ./dist/lara-typescript.js ../app/assets/javascripts/ && cp ./dist/lara-typescript.css ../app/assets/stylesheets/ && cp -r ./dist/example-interactive ../public/",
+    "build:copy-to-rails": "node scripts/copy-to-rails.js",
     "clean": "rimraf dist docs ../docs/lara-plugin-api ../docs/interactive-api-client",
     "lara-api:link": "npm run build:webpack && cd dist/interactive-api-client && npm link && cd ../..",
     "lara-api:unlink": "cd dist/interactive-api-client && npm unlink && cd ../..",
