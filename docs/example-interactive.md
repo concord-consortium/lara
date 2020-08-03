@@ -12,7 +12,7 @@ It can be found at `[lara-host]/example-interactive/`.
 For example the most recent production build is here:
 https://authoring.concord.org/example-interactive/
 
-If you are expanding the example interactive it can be run locally:
+If you are expanding the example interactive, it can be run locally:
 
 1. `cd lara-typescript`
 2. `npm init` (if not already done)
@@ -24,7 +24,7 @@ If you are expanding the example interactive it can be run locally:
 When you make a change to the example interactive source, and you've already started the live server above:
 1. `npm build`
 
-In other words, the example-interactive not automatically rebuilt when you change the source.
+In other words, the example-interactive is not automatically rebuilt when you change the source.
 
 # Adding to the example interactive
 

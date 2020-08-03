@@ -5,11 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
   return [
-  // lara-typescript for use in LARA runtime and authoring system
-  // normalize.css for use by plugins
-  // lara-plugin-api module: this doesn't have an explicity entry,
+  // Outputs built by this configuration:
+  // - lara-typescript: for use in LARA runtime and authoring system
+  // - normalize.css: for use by plugins
+  // - lara-plugin-api module: this doesn't have an explicit entry,
   //   the index.d.ts that is built during the lara-typescript compile
-  //   is published as this module
+  //   is published as this module. see plugin-api/package.json
   {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
@@ -91,7 +92,10 @@ module.exports = (env, argv) => {
     }
   },
 
-  // interactive-api-client needs separate config as the externals are handled differently
+  // Outputs built by this configuration:
+  // - interactive-api-client: for use by interactive developers
+  //   this needs separate config as the externals are handled differently and
+  //   different files are copied.
   {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
@@ -143,7 +147,10 @@ module.exports = (env, argv) => {
     }
   },
 
-  // example-interactive needs separate config as the externals are handled differently
+  // Outputs built by this configuration:
+  // - example-interactive: for use by developers and testers
+  //   needs separate config as different files are copied,
+  //   and no externals should be used
   {
     context: __dirname, // to automatically find tsconfig.json
     devtool: 'source-map',
