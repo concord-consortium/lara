@@ -79,8 +79,8 @@ describe LaraSerializationHelper do
         ref_id: expected_key,
         type: expected_type,
         linked_interactives: [
-          {label: "one", interactive_ref_id: helper.key(interactive2)},
-          {label: "two", interactive_ref_id: helper.key(interactive3)},
+          {label: "one", ref_id: helper.key(interactive2)},
+          {label: "two", ref_id: helper.key(interactive3)},
         ]
       })
     end
@@ -135,11 +135,11 @@ describe LaraSerializationHelper do
                 ref_id: "100-MwInteractive",
                 linked_interactives: [
                   {
-                    interactive_ref_id: "101-ManagedInteractive",
+                    ref_id: "101-ManagedInteractive",
                     label: "one"
                   },
                   {
-                    interactive_ref_id: "102-MwInteractive",
+                    ref_id: "102-MwInteractive",
                     label: "two"
                   }
                 ]
@@ -168,7 +168,7 @@ describe LaraSerializationHelper do
                 ref_id: "103-ManagedInteractive",
                 linked_interactives: [
                   {
-                    interactive_ref_id: "100-MwInteractive",
+                    ref_id: "100-MwInteractive",
                     label: "three"
                   }
                 ]

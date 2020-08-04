@@ -28,7 +28,7 @@ class LaraSerializationHelper
     # embeddables are imported into the page.
     if item.respond_to?(:primary_linked_items)
       results[:linked_interactives] = item.primary_linked_items.map {|pli| {
-        interactive_ref_id: key(pli.secondary.embeddable),
+        ref_id: key(pli.secondary.embeddable),
         label: pli.label
       }}
     end
@@ -62,7 +62,7 @@ class LaraSerializationHelper
     end
     if item_hash[:linked_interactives]
       item_hash[:linked_interactives].each do |lpi_hash|
-        secondary = lookup_item(lpi_hash[:interactive_ref_id])
+        secondary = lookup_item(lpi_hash[:ref_id])
         if secondary
           lpi = LinkedPageItem.new(primary_id: item.page_item.id, secondary_id: secondary.page_item.id, label: lpi_hash[:label])
           lpi.save!(validate: false)
