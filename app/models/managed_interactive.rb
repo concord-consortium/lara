@@ -212,8 +212,8 @@ class ManagedInteractive < ActiveRecord::Base
     imported_library_interactive = import_hash[:library_interactive]
     import_hash.delete(:library_interactive)
 
-    # delete the linked_page_items created by the serialization helper
-    import_hash.delete(:linked_page_items)
+    # delete the linked_interactives created by the serialization helper
+    import_hash.delete(:linked_interactives)
 
     managed_interactive = self.new(import_hash)
 

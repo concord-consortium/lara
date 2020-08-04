@@ -123,8 +123,8 @@ class MwInteractive < ActiveRecord::Base
   end
 
   def self.import(import_hash)
-    # remove the linked_page_items created by the serialization helper
-    return self.new(import_hash.except(:linked_page_items))
+    # remove the linked_interactives created by the serialization helper
+    return self.new(import_hash.except(:linked_interactives))
   end
 
   def reportable?

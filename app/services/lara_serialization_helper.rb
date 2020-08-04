@@ -27,9 +27,8 @@ class LaraSerializationHelper
     # The embeddedable references are saved instead of the page_item references as new page_items are created when the
     # embeddables are imported into the page.
     if item.respond_to?(:primary_linked_items)
-      results[:linked_page_items] = item.primary_linked_items.map {|pli| {
-        primary_ref_id: key(pli.primary.embeddable),
-        secondary_ref_id: key(pli.secondary.embeddable),
+      results[:linked_interactives] = item.primary_linked_items.map {|pli| {
+        interactive_ref_id: key(pli.secondary.embeddable),
         label: pli.label
       }}
     end
@@ -61,12 +60,11 @@ class LaraSerializationHelper
     if item_hash[:linked_interactive] && item.respond_to?(:linked_interactive)
       item.linked_interactive = import(item_hash[:linked_interactive])
     end
-    if item_hash[:linked_page_items]
-      item_hash[:linked_page_items].each do |lpi_hash|
-        primary = lookup_item(lpi_hash[:primary_ref_id])
-        secondary = lookup_item(lpi_hash[:secondary_ref_id])
-        if primary && secondary
-          lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: lpi_hash[:label])
+    if item_hash[:linked_interactives]
+      item_hash[:linked_interactives].each do |lpi_hash|
+        secondary = lookup_item(lpi_hash[:interactive_ref_id])
+        if secondary
+          lpi = LinkedPageItem.new(primary_id: item.page_item.id, secondary_id: secondary.page_item.id, label: lpi_hash[:label])
           lpi.save!(validate: false)
         end
       end
