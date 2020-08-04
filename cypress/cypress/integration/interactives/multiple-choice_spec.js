@@ -2,54 +2,53 @@ import LaraPage from "../../support/elements/lara-page"
 import MultipleChoice from "../../support/elements/interactives/question-interactives/multiple-choice"
 
 
-context('Test Learn R Interactive Embedded In LARA', () => {
+context('Test Multiple Choice Question-Interactive In LARA', () => {
 
     let testUrl = "https://authoring.staging.concord.org/activities/20515/pages/306789/"
     let laraPage = new LaraPage;
     let mc = new MultipleChoice;
+    const questions = [
+        {
+            type: "vertical",
+            mcPrompt: "MC Vertical Required with post submission feedback and a hint. Users can check answers for custom feedback with new icons for correct/incorrect responses.",
+            mcPostSubText: "Testing post submission feedback",
+            choiceA: {
+                status: "right",
+                index: 0,
+                text: "Choice A [correct vertical]",
+                custom_feedback: "Choice A is correct [custom feedback vertical]"
+            },
+            choiceB: {
+                status: "wrong",
+                index: 1,
+                text: "Choice B [incorrect vertical]",
+                custom_feedback: "Choice B is incorrect [custom feedback vertical]"
+            }
+        },
+        {
+            type: "dropdown",
+            mcPrompt: "MC Dropdown can only have 1 answer. Users can check multiple answers. Custom feedback for answers here.",
+            mcPostSubText: "Testing post submission feedback",
+            choiceA: {
+                status: "right",
+                index: 0,
+                text: "Choice A [correct dropdown]",
+                custom_feedback: "Choice A is correct [custom feedback dropdown]"
+            },
+            choiceB: {
+                status: "wrong",
+                index: 1,
+                text: "Choice B [incorrect dropdown]",
+                custom_feedback: "Choice B is correct [custom feedback dropdown]"
+            }
+        }
+    ]
 
     before(() => {
         cy.visit(testUrl)
     })
 
     context('Test Required MC question with hint and custom submission feedback', () => {
-
-        const questions = [
-            {
-                type: "vertical",
-                mcPrompt: "MC Vertical Required with post submission feedback and a hint. Users can check answers for custom feedback with new icons for correct/incorrect responses.",
-                mcPostSubText: "Testing post submission feedback",
-                choiceA: {
-                    status: "right",
-                    index: 0,
-                    text: "Choice A [correct vertical]",
-                    custom_feedback: "Choice A is correct [custom feedback vertical]"
-                },
-                choiceB: {
-                    status: "wrong",
-                    index: 1,
-                    text: "Choice B [incorrect vertical]",
-                    custom_feedback: "Choice B is incorrect [custom feedback vertical]"
-                }
-            },
-            {
-                type: "dropdown",
-                mcPrompt: "MC Dropdown can only have 1 answer. Users can check multiple answers. Custom feedback for answers here.",
-                mcPostSubText: "Testing post submission feedback",
-                choiceA: {
-                    status: "right",
-                    index: 0,
-                    text: "Choice A [correct dropdown]",
-                    custom_feedback: "Choice A is correct [custom feedback dropdown]"
-                },
-                choiceB: {
-                    status: "wrong",
-                    index: 1,
-                    text: "Choice B [incorrect dropdown]",
-                    custom_feedback: "Choice B is correct [custom feedback dropdown]"
-                }
-            }
-        ]
 
         it('Checks for multiple choice prompt content', () => {
             laraPage.getInfoAssessmentBlock().within(() => {
@@ -137,7 +136,8 @@ context('Test Learn R Interactive Embedded In LARA', () => {
                 })
             })
         })
-
+    })
+    context('Test drop', () => {
         // Question 2
         it('Verifies dropdown layout selection', () => {
             laraPage.getInfoAssessmentBlock().within(() => {
@@ -153,8 +153,6 @@ context('Test Learn R Interactive Embedded In LARA', () => {
                 })
             })
         })
-
-
     })
 
 })

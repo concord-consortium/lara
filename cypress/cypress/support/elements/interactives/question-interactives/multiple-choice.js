@@ -21,7 +21,6 @@ class MultipleChoice {
 
     getPrompt(i) {
         return cy.get('.runtime--prompt--question-int') // .list-unstyled ?
-      
     }
 
     getAnswerOptions() {

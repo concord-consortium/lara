@@ -8,3 +8,22 @@
  * 4.  Hints have rich text and display in ? button
  * 5.  Default text which shows greyed out in the textbox for OR questions
  */
+class OpenResponse {
+
+    getPrompt(i) {
+        return cy.get('.runtime--prompt--question-int') // .list-unstyled ?
+    }
+
+    getTextArea() {
+        return cy.get('textarea')
+    }
+
+    getLockAnswerButton() {
+        return cy.get('[data-cy="lock-answer-button"]')
+    }
+
+    getLockedInfo() {
+        return cy.get('[data-cy="locked-info"]')
+    }
+
+} export default OpenResponse;
