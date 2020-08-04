@@ -70,7 +70,7 @@ describe LaraSerializationHelper do
       page.reload
     end
 
-    it "should append linked_page_items" do
+    it "should append linked_interactives" do
       add_linked_interactive(interactive1, interactive2, "one")
       add_linked_interactive(interactive1, interactive3, "two")
       add_linked_interactive(interactive4, interactive1, "three")
@@ -78,9 +78,9 @@ describe LaraSerializationHelper do
       expect(result).to include({
         ref_id: expected_key,
         type: expected_type,
-        linked_page_items: [
-          {label: "one", primary_ref_id: expected_key, secondary_ref_id: helper.key(interactive2)},
-          {label: "two", primary_ref_id: expected_key, secondary_ref_id: helper.key(interactive3)},
+        linked_interactives: [
+          {label: "one", interactive_ref_id: helper.key(interactive2)},
+          {label: "two", interactive_ref_id: helper.key(interactive3)},
         ]
       })
     end
@@ -125,12 +125,58 @@ describe LaraSerializationHelper do
 
     describe "import page with interactives linked to other interactives" do
       let(:export_data) do
-        {type: "InteractivePage", ref_id: "100-InteractivePage", embeddables: [
-          {embeddable: {type: "MwInteractive", ref_id: "100-MwInteractive", linked_page_items: [{:primary_ref_id=>"100-MwInteractive", :secondary_ref_id=>"101-ManagedInteractive", :label=>"one"}, {:primary_ref_id=>"100-MwInteractive", :secondary_ref_id=>"102-MwInteractive", :label=>"two"}]}, section: "interactive_box"},
-          {embeddable: {type: "ManagedInteractive", ref_id: "101-ManagedInteractive", linked_page_items: []}, section: "interactive_box"},
-          {embeddable: {type: "MwInteractive", ref_id: "102-MwInteractive", linked_page_items: []}, section: "interactive_box"},
-          {embeddable: {type: "ManagedInteractive", ref_id: "103-ManagedInteractive", linked_page_items: [{:primary_ref_id=>"103-ManagedInteractive", :secondary_ref_id=>"100-MwInteractive", :label=>"three"}]}, section: "interactive_box"}
-        ]}
+        {
+          type: "InteractivePage",
+          ref_id: "100-InteractivePage",
+          embeddables: [
+            {
+              embeddable: {
+                type: "MwInteractive",
+                ref_id: "100-MwInteractive",
+                linked_interactives: [
+                  {
+                    interactive_ref_id: "101-ManagedInteractive",
+                    label: "one"
+                  },
+                  {
+                    interactive_ref_id: "102-MwInteractive",
+                    label: "two"
+                  }
+                ]
+              },
+              section: "interactive_box"
+            },
+            {
+              embeddable: {
+                type: "ManagedInteractive",
+                ref_id: "101-ManagedInteractive",
+                linked_interactives: []
+              },
+              section: "interactive_box"
+            },
+            {
+              embeddable: {
+                type: "MwInteractive",
+                ref_id: "102-MwInteractive",
+                linked_interactives: []
+              },
+              section: "interactive_box"
+            },
+            {
+              embeddable: {
+                type: "ManagedInteractive",
+                ref_id: "103-ManagedInteractive",
+                linked_interactives: [
+                  {
+                    interactive_ref_id: "100-MwInteractive",
+                    label: "three"
+                  }
+                ]
+              },
+              section: "interactive_box"
+            }
+          ]
+        }
       end
       let(:result) do
         helper.import(export_data)
