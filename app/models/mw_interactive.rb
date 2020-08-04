@@ -19,6 +19,9 @@ class MwInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
+  has_many :primary_linked_items, :through => :page_item
+  has_many :secondary_linked_items, :through => :page_item
+
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 

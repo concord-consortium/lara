@@ -56,8 +56,4 @@ describe PageItem do
     expect(LinkedPageItem.where(id: primary_ids).length).to eq 0
   end
 
-  def add_linked_interactive(primary, secondary)
-    FactoryGirl.create(:linked_page_item, {primary: primary.page_item, secondary: secondary.page_item})
-  end
-
 end
