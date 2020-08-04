@@ -27965,6 +27965,16 @@ var getAuthoredState = function ($dataDiv) {
     }
     return authoredState;
 };
+var getLinkedInteractives = function ($dataDiv) {
+    var linkedInteractives = $dataDiv.data("linked-interactives");
+    if ((linkedInteractives == null) || (linkedInteractives === "")) {
+        linkedInteractives = {};
+    }
+    if (typeof linkedInteractives === "string") {
+        linkedInteractives = safeJSONParse(linkedInteractives) || {};
+    }
+    return linkedInteractives;
+};
 var safeJSONParse = function (obj) {
     try {
         return JSON.parse(obj);
@@ -28010,6 +28020,7 @@ var IFrameSaver = /** @class */ (function () {
         this.interactiveId = $dataDiv.data("interactive-id");
         this.interactiveName = $dataDiv.data("interactive-name");
         this.getFirebaseJWTUrl = $dataDiv.data("get-firebase-jwt-url");
+        this.linkedInteractives = getLinkedInteractives($dataDiv);
         this.saveIndicator = SaveIndicator.instance();
         this.$deleteButton.click(function () { return _this.deleteData(); });
         this.savedState = null;
@@ -28252,7 +28263,7 @@ var IFrameSaver = /** @class */ (function () {
                 loggedIn: this.loggedIn,
                 email: this.userEmail
             },
-            linkedInteractives: [],
+            linkedInteractives: this.linkedInteractives,
             themeInfo: {
                 colors: {
                     colorA: "red",
@@ -28744,16 +28755,40 @@ var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
 exports.InteractiveAuthoringPreview = function (_a) {
-    var interactive = _a.interactive;
+    var interactive = _a.interactive, user = _a.user;
     var iframe = react_1.useRef(null);
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
+    var linkedInteractives = typeof interactive.linked_interactives === "string"
+        ? JSON.parse(interactive.linked_interactives || "{}")
+        : interactive.linked_interactives;
     var initMsg = {
         version: 1,
         error: null,
         mode: "runtime",
-        authoredState: authoredState
+        authoredState: authoredState,
+        interactiveState: null,
+        globalInteractiveState: null,
+        interactiveStateUrl: "",
+        collaboratorUrls: null,
+        classInfoUrl: "",
+        interactive: {
+            id: interactive.id,
+            name: interactive.name
+        },
+        authInfo: {
+            provider: user.authProvider,
+            loggedIn: user.loggedIn,
+            email: user.email
+        },
+        linkedInteractives: linkedInteractives,
+        themeInfo: {
+            colors: {
+                colorA: "red",
+                colorB: "green"
+            }
+        }
     };
     return (React.createElement("div", { className: "authoring-interactive-preview" },
         React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
@@ -28784,6 +28819,7 @@ exports.InteractiveAuthoring = function (props) {
         ? JSON.parse(interactive.authored_state || "{}")
         : interactive.authored_state), authoredState = _b[0], setAuthoredState = _b[1];
     var _c = react_1.useState(0), resetCount = _c[0], setResetCount = _c[1];
+    var interactiveItemId = interactive.interactive_item_id;
     var handleAuthoredStateChange = function (newAuthoredState) {
         setAuthoredState(newAuthoredState);
         onAuthoredStateChange(newAuthoredState);
@@ -28799,7 +28835,14 @@ exports.InteractiveAuthoring = function (props) {
         version: 1,
         error: null,
         mode: "authoring",
-        authoredState: authoredState
+        authoredState: authoredState,
+        themeInfo: {
+            colors: {
+                colorA: "red",
+                colorB: "green"
+            }
+        },
+        interactiveItemId: interactiveItemId
     };
     return (React.createElement("div", { className: "authoring-mw-interactive" },
         allowReset
@@ -28871,6 +28914,13 @@ exports.InteractiveIframe = function (props) {
             }
         });
     };
+    var handleSetLinkedInteractives = function (request, url) {
+        return $.ajax({
+            type: "POST",
+            url: url,
+            data: request
+        });
+    };
     var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];
     var phone;
     var connect = function () {
@@ -28888,6 +28938,12 @@ exports.InteractiveIframe = function (props) {
         if (getInteractiveListUrl) {
             phone.addListener("getInteractiveList", function (request) {
                 handleGetInteractiveList(request, getInteractiveListUrl);
+            });
+        }
+        var setLinkedInteractivesUrl = authoringApiUrls === null || authoringApiUrls === void 0 ? void 0 : authoringApiUrls.set_linked_interactives;
+        if (setLinkedInteractivesUrl) {
+            phone.addListener("setLinkedInteractives", function (request) {
+                handleSetLinkedInteractives(request, setLinkedInteractivesUrl);
             });
         }
     };
@@ -29078,7 +29134,7 @@ var renderMWInteractiveAuthoring = function (root, props) {
 };
 exports.renderMWInteractiveAuthoring = renderMWInteractiveAuthoring;
 var renderInteractiveAuthoringPreview = function (root, props) {
-    return ReactDOM.render(React.createElement(interactive_authoring_preview_1.InteractiveAuthoringPreview, { interactive: props.interactive }), root);
+    return ReactDOM.render(React.createElement(interactive_authoring_preview_1.InteractiveAuthoringPreview, { interactive: props.interactive, user: props.user }), root);
 };
 exports.renderInteractiveAuthoringPreview = renderInteractiveAuthoringPreview;
 
@@ -29106,7 +29162,7 @@ var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
-    var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, show_in_featured_question_report = managedInteractive.show_in_featured_question_report;
+    var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, linked_interactive_type = managedInteractive.linked_interactive_type, show_in_featured_question_report = managedInteractive.show_in_featured_question_report, linked_interactive_item_id = managedInteractive.linked_interactive_item_id;
     var _a = react_1.useState(inherit_aspect_ratio_method), inheritAspectRatio = _a[0], setInheritAspectRatio = _a[1];
     var _b = react_1.useState({
         width: custom_native_width,
@@ -29145,7 +29201,7 @@ exports.CustomizeManagedInteractive = function (props) {
             React.createElement(React.Fragment, null,
                 React.createElement("fieldset", null,
                     React.createElement("legend", null, "Link Saved Work From"),
-                    React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
+                    React.createElement("input", { type: "text", name: formField("linked_interactive_item_id").name, defaultValue: "" + (linked_interactive_item_id || "") }),
                     React.createElement("div", { className: "warning" },
                         React.createElement("em", null, "Warning"),
                         ": Please do not link to another interactive unless the interactive knows how to load prior work.")),
@@ -29316,7 +29372,8 @@ exports.ManagedInteractiveAuthoring = function (props) {
             aspect_ratio_method: managedInteractive.inherit_aspect_ratio_method
                 ? libraryInteractive.aspect_ratio_method
                 : managedInteractive.custom_aspect_ratio_method,
-            authored_state: managedInteractive.authored_state
+            authored_state: managedInteractive.authored_state,
+            interactive_item_id: managedInteractive.interactive_item_id
         };
         var handleAuthoredStateChange = function (newAuthoredState) {
             if (libraryInteractiveAuthoredStateRef.current) {
@@ -29386,7 +29443,7 @@ var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
-    var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id;
+    var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id, linked_interactive_type = interactive.linked_interactive_type, linked_interactive_item_id = interactive.linked_interactive_item_id;
     var _a = react_1.useState({
         width: native_width,
         height: native_height,
@@ -29419,7 +29476,7 @@ exports.CustomizeMWInteractive = function (props) {
                 React.createElement(checkbox_1.Checkbox, { name: formField("show_in_featured_question_report").name, defaultChecked: show_in_featured_question_report, label: "Show in featured question report" })),
             React.createElement("fieldset", null,
                 React.createElement("legend", null, "Link Saved Work From"),
-                React.createElement("input", { type: "text", name: formField("linked_interactive_id").name, defaultValue: "" + (linked_interactive_id || "") }),
+                React.createElement("input", { type: "text", name: formField("linked_interactive_item_id").name, defaultValue: "" + (linked_interactive_item_id || "") }),
                 React.createElement("div", { className: "warning" },
                     React.createElement("em", null, "Warning"),
                     ": Please do not link to another interactive unless the interactive knows how to load prior work.")));
@@ -29502,7 +29559,8 @@ exports.MWInteractiveAuthoring = function (props) {
             url: authoringUrl || "",
             aspect_ratio: interactive.aspect_ratio,
             aspect_ratio_method: interactive.aspect_ratio_method,
-            authored_state: interactive.authored_state
+            authored_state: interactive.authored_state,
+            interactive_item_id: interactive.interactive_item_id
         };
         var hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
         return (React.createElement(react_tabs_1.Tabs, null,

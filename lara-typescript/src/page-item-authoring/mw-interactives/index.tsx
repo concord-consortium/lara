@@ -39,6 +39,9 @@ export interface IMWInteractive {
   aspect_ratio_method: string;
   no_snapshots: boolean;
   linked_interactive_id: number;
+  linked_interactive_type: string;
+  interactive_item_id: string;
+  linked_interactive_item_id: string;
 }
 
 const formField = RailsFormField<IMWInteractive>("mw_interactive");
@@ -107,7 +110,8 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       url: authoringUrl || "",
       aspect_ratio: interactive.aspect_ratio,
       aspect_ratio_method: interactive.aspect_ratio_method,
-      authored_state: interactive.authored_state
+      authored_state: interactive.authored_state,
+      interactive_item_id: interactive.interactive_item_id
     };
 
     const hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;

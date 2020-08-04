@@ -18,7 +18,8 @@ import {
   IGetInteractiveSnapshotRequest,
   IHintRequest,
   IJwtResponse,
-  IGetInteractiveListRequest
+  IGetInteractiveListRequest,
+  ISetLinkedInteractivesRequest
 } from "./types";
 import { getClient } from "./client";
 
@@ -38,6 +39,10 @@ export const getInitInteractiveMessage =
       client.managedState.once("initInteractive", () => resolve(client.managedState.initMessage));
     }
   });
+};
+
+export const getMode = () => {
+  return getInitInteractiveMessage().then(initInteractiveMessage => initInteractiveMessage?.mode);
 };
 
 export const getInteractiveState = <InteractiveState>(): InteractiveState | null => {
@@ -245,23 +250,42 @@ export const closeModal = (options: ICloseModal) => {
 };
 
 export const getInteractiveList = (options: IGetInteractiveListOptions) => {
-  return new Promise<IGetInteractiveListResponse>((resolve) => {
-    const client = getClient();
-    const requestId = client.getNextRequestId();
-    const request: IGetInteractiveListRequest = {
-      requestId,
-      ...options
-    };
-    client.addListener("interactiveList", resolve, requestId);
-    client.post("getInteractiveList", request);
+  return new Promise<IGetInteractiveListResponse>((resolve, reject) => {
+    return getMode()
+      .then(mode => {
+        if (mode === "authoring") {
+          const client = getClient();
+          const requestId = client.getNextRequestId();
+          const request: IGetInteractiveListRequest = {
+            requestId,
+            ...options
+          };
+          client.addListener("interactiveList", resolve, requestId);
+          client.post("getInteractiveList", request);
+        } else {
+          reject("getInteractiveList is only available in authoring mode");
+        }
+      });
   });
 };
 
-/**
- * @todo Implement this function.
- */
 export const setLinkedInteractives = (options: ISetLinkedInteractives) => {
-  THROW_NOT_IMPLEMENTED_YET("setLinkedInteractives");
+  return new Promise<void>((resolve, reject) => {
+    return getInitInteractiveMessage()
+      .then(initInteractiveMessage => {
+        if (!initInteractiveMessage || initInteractiveMessage.mode !== "authoring") {
+          throw new Error("setLinkedInteractives is only available in authoring mode");
+        }
+        const client = getClient();
+        const request: ISetLinkedInteractivesRequest = {
+          sourceId: initInteractiveMessage.interactiveItemId,
+          ...options
+        };
+        client.post("setLinkedInteractives", request);
+        resolve();
+      }).
+      catch(reject);
+  });
 };
 
 /**

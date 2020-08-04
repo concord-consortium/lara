@@ -13,7 +13,7 @@ class ManagedInteractive < ActiveRecord::Base
     :show_in_featured_question_report,
     :authored_state,
     :is_hidden,
-    :linked_interactive_id,
+    :linked_interactive_id, :linked_interactive_type,
     :inherit_aspect_ratio_method, :custom_aspect_ratio_method,
     :inherit_native_width, :custom_native_width,
     :inherit_native_height, :custom_native_height,
@@ -21,6 +21,7 @@ class ManagedInteractive < ActiveRecord::Base
     :inherit_full_window, :custom_full_window,
     :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
     :inherit_image_url, :custom_image_url
+    :linked_interactive_item_id
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :custom_native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -33,12 +34,15 @@ class ManagedInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
+  has_many :primary_linked_items, :through => :page_item
+  has_many :secondary_linked_items, :through => :page_item
+
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
 
-  belongs_to :linked_interactive, :class_name => 'ManagedInteractive'
+  belongs_to :linked_interactive, :polymorphic => true
 
   # getter for constructed url
   def url
@@ -137,18 +141,28 @@ class ManagedInteractive < ActiveRecord::Base
     hash = to_hash
     hash[:id] = id
     hash[:linked_interactive_id] = linked_interactive_id
+    hash[:linked_interactive_type] = linked_interactive_type
     hash[:aspect_ratio] = aspect_ratio
+    hash[:interactive_item_id] = interactive_item_id
+    hash[:linked_interactive_item_id] = linked_interactive_item_id
+    hash
+  end
+
+  def to_authoring_preview_hash
+    # in preview mode we look like an interactive
+    hash = to_interactive
+    hash[:linked_interactives] = linked_interactives_list
     hash
   end
 
   def authoring_api_urls(protocol, host)
     {
-      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil,
+      set_linked_interactives: interactive_page ? Rails.application.routes.url_helpers.api_v1_set_linked_interactives_url(id: interactive_page.id, protocol: protocol, host: host) : nil
     }
   end
 
-  # returns same json as mw_interactive, used for react-based authoring
-  def to_interactive_json
+  def to_interactive
     # NOTE: model_library_url is missing as there is no analog
     {
       id: id,
@@ -170,8 +184,9 @@ class ManagedInteractive < ActiveRecord::Base
       aspect_ratio: aspect_ratio,
       aspect_ratio_method: aspect_ratio_method,
       no_snapshots: no_snapshots,
-      linked_interactive_id: linked_interactive_id
-    }.to_json
+      linked_interactive_id: linked_interactive_id,
+      linked_interactive_type: linked_interactive_type
+    }
   end
 
   def duplicate

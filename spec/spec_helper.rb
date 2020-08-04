@@ -157,3 +157,7 @@ def  clean_env_vars
   )
   envs.each { |e| ENV.delete(e) }
 end
+
+def add_linked_interactive(primary, secondary, label = nil)
+  FactoryGirl.create(:linked_page_item, {primary: primary.page_item, secondary: secondary.page_item, label: label})
+end

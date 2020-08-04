@@ -239,6 +239,31 @@ describe("api", () => {
     });
   });
 
+  it("should implement setLinkedInteractives", async () => {
+    // setLinkedInteractives needs the interactiveItemId from the initInteractive message
+    setTimeout(() => {
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: { mode: "authoring", interactiveItemId: "interactive_100" }
+      });
+    }, 10);
+    await api.setLinkedInteractives({
+      linkedInteractives: [
+        {id: "interactive_1", label: "one"},
+        {id: "interactive_2", label: "two"}
+      ],
+      linkedState: "interactive_1"
+    });
+    expect(mockedPhone.messages).toEqual([{type: "setLinkedInteractives", content: {
+      linkedInteractives: [
+        {id: "interactive_1", label: "one"},
+        {id: "interactive_2", label: "two"}
+      ],
+      linkedState: "interactive_1",
+      sourceId: "interactive_100"
+    }}]);
+  });
+
   it("does not yet implement showModal [dialog]", () => {
     interface IFooDialog { foo: string; }
     const options: IShowDialog<IFooDialog> = {
@@ -256,16 +281,10 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "closeModal", content: options }]);
   });
 
-  it("does not yet implement setLinkedInteractives", () => {
-    expect(() => api.setLinkedInteractives({
-      linkedInteractives: []
-    })).toThrow(/not yet implemented/);
-  });
-
   it("does not yet implement getInteractiveSnapshot", () => {
     expect(() => api.getInteractiveSnapshot({
       requestId: 1,
-      interactiveRuntimeId: "foo"
+      interactiveItemId: "1"
     })).toThrow(/not yet implemented/);
   });
 });

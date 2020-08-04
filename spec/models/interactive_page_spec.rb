@@ -384,6 +384,46 @@ describe InteractivePage do
         expect(dupe.interactives[4].linked_interactive).to eql (dupe.interactives[5].linked_interactive)
       end
     end
+
+    describe "interactives linked to each other" do
+      let(:int_1) { FactoryGirl.create(:mw_interactive) }
+      let(:int_2) { FactoryGirl.create(:managed_interactive) }
+      let(:int_3) { FactoryGirl.create(:mw_interactive) }
+      let(:int_4) { FactoryGirl.create(:managed_interactive) }
+      let(:dupe)  { page.duplicate }
+
+      before(:each) do
+        page.add_interactive int_1
+        page.add_interactive int_2
+        page.add_interactive int_3
+        page.add_interactive int_4
+        page.reload
+
+        add_linked_interactive(int_1, int_2, "one")
+        add_linked_interactive(int_1, int_3, "two")
+        add_linked_interactive(int_4, int_1, "three")
+      end
+
+      it "should link the interactives" do
+        dup_int_1, dup_int_2, dup_int_3, dup_int_4 = dupe.embeddables.last(4)
+
+        dup_int_1_linked_items = dup_int_1.primary_linked_items
+        expect(dup_int_1_linked_items.length).to be 2
+        expect(dup_int_1_linked_items[0].secondary.embeddable).to eq dup_int_2
+        expect(dup_int_1_linked_items[1].secondary.embeddable).to eq dup_int_3
+        expect(dup_int_1_linked_items[0].label).to eq "one"
+        expect(dup_int_1_linked_items[1].label).to eq "two"
+
+        expect(dup_int_2.page_item.primary_linked_items.length).to be 0
+        expect(dup_int_3.page_item.primary_linked_items.length).to be 0
+
+        dup_int_4_linked_items = dup_int_4.primary_linked_items
+        expect(dup_int_4.page_item.primary_linked_items.length).to be 1
+        expect(dup_int_4_linked_items[0].secondary.embeddable).to eq dup_int_1
+        expect(dup_int_4_linked_items[0].label).to eq "three"
+      end
+    end
+
   end
 
   ## TODO: Test that 'additional_sections' imports from json.

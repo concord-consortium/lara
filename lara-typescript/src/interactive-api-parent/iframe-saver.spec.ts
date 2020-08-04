@@ -49,6 +49,7 @@ describe("IFrameSaver", () => {
               data-authprovider="fakeprovider"
               data-user-email="user@example.com"
               data-loggedin="true"
+              data-linked-interactives='{"1":{"label":"one"}}'
           >
           </div>
           <button class="delete_interactive_data">Undo all my work</button>
@@ -164,7 +165,7 @@ describe("IFrameSaver", () => {
           pageNumber: 2,
           pageName: "test page",
           activityName: "test act",
-          linkedInteractives: [],
+          linkedInteractives: {1: {label: "one"}},
           themeInfo: {
             colors: {
               colorA: "red",
@@ -195,7 +196,7 @@ describe("IFrameSaver", () => {
           classInfoUrl: null,
           interactive: {id: 1, name: "test"},
           authInfo: {provider: "fakeprovider", loggedIn: true, email: "user@example.com"},
-          linkedInteractives: [],
+          linkedInteractives: {1: {label: "one"}},
           themeInfo: {
             colors: {
               colorA: "red",
