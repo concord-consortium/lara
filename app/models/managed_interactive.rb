@@ -20,7 +20,7 @@ class ManagedInteractive < ActiveRecord::Base
     :inherit_click_to_play, :custom_click_to_play,
     :inherit_full_window, :custom_full_window,
     :inherit_click_to_play_prompt, :custom_click_to_play_prompt,
-    :inherit_image_url, :custom_image_url
+    :inherit_image_url, :custom_image_url,
     :linked_interactive_item_id
 
   default_value_for :custom_native_width, ASPECT_RATIO_DEFAULT_WIDTH
