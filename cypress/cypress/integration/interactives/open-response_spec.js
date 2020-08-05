@@ -60,7 +60,7 @@ context('Test Open Response Question-Interactive Embedded In LARA', () => {
         })
     })
 
-    context('OR question not required. Has a custom default answer of "Testing default answer"', () => {
+    context('OR question not required. has a custom default answer', () => {
         let prompt = 'OR question not required. Has a custom default answer of "Testing default answer"'
         let defaultText = 'Testing default answer'
         const studentResponse = 'Student response here. Student response here. Student response here. Student response here. Student response here. '
@@ -75,15 +75,15 @@ context('Test Open Response Question-Interactive Embedded In LARA', () => {
             })
         })
 
-        it.only('types student response with custom placeholder text', () => {
+        it('types student response with custom placeholder text', () => {
             laraPage.getInfoAssessmentBlock().within(() => {
                 cy.getInteractiveIframe(6).find('#app').within(() => {
                     or.getTextArea().should('have.attr','placeholder',defaultText)
                     or.getTextArea().type(studentResponse)
-                    or.getTextArea().should('contain', studentResponse)
+                    or.getTextArea().should('contain', studentResponse).and('be.visible')
                     cy.wait(2000)
                     or.getTextArea().clear({force:true})
-                    or.getTextArea().should('be.empty')
+                    or.getTextArea().should('be.empty').and('have.attr','placeholder',defaultText)
                     or.getTextArea().type(studentResponse)
                 })
             })
