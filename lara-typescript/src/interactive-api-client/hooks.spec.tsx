@@ -1,5 +1,6 @@
-import React from "react";
+import * as React from "react";
 import { act, renderHook } from "@testing-library/react-hooks";
+import { render } from "@testing-library/react";
 import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-iframe-phone";
 import * as hooks from "./hooks";
 import * as iframePhone from "iframe-phone";
@@ -92,6 +93,27 @@ describe("useInteractiveState", () => {
     expect(result.current.interactiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
     expect(getClient().managedState.interactiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
   });
+
+  it("ensures that interactive state is always observed correctly", async () => {
+    const TestComponent: React.FC = () => {
+      const { interactiveState } = hooks.useInteractiveState<any>();
+      const managedStateUpdated = React.useRef(false);
+
+      if (!managedStateUpdated.current) {
+        // Immediate update of authoredState. In real life it wouldn't be done in the component obviously,
+        // but that's an easy way to ensure problematic timing - after initial render of the useAuthoredState hook,
+        // but before useEffect defined in useAuthoredState is called. This is regression test related to this issue:
+        // https://www.pivotaltracker.com/story/show/174154314
+        getClient().managedState.interactiveState = "new state 123";
+        // Prevent infinite loop, update authoredState just once.
+        managedStateUpdated.current = true;
+      }
+      return <div>{ interactiveState }</div>;
+    };
+
+    const { container } = render(<TestComponent />);
+    expect(container.textContent).toEqual("new state 123");
+  });
 });
 
 describe("useAuthoredState", () => {
@@ -117,7 +139,7 @@ describe("useAuthoredState", () => {
     expect(result.current.authoredState).toEqual({newState: true});
   });
 
-  it("lets client app update interactive state", async () => {
+  it("lets client app update authored state", async () => {
     const { result } = renderHook(() => hooks.useAuthoredState<any>());
 
     expect(result.current.authoredState).toEqual(null);
@@ -147,6 +169,27 @@ describe("useAuthoredState", () => {
 
     expect(result.current.authoredState).toEqual({a: 1, c: 3, d: 4, e: 5});
     expect(getClient().managedState.authoredState).toEqual({a: 1, c: 3, d: 4, e: 5});
+  });
+
+  it("ensures that authored state is always observed correctly", async () => {
+    const TestComponent: React.FC = () => {
+      const { authoredState } = hooks.useAuthoredState<any>();
+      const managedStateUpdated = React.useRef(false);
+
+      if (!managedStateUpdated.current) {
+        // Immediate update of authoredState. In real life it wouldn't be done in the component obviously,
+        // but that's an easy way to ensure problematic timing - after initial render of the useAuthoredState hook,
+        // but before useEffect defined in useAuthoredState is called. This is regression test related to this issue:
+        // https://www.pivotaltracker.com/story/show/174154314
+        getClient().managedState.authoredState = "new state 123";
+        // Prevent infinite loop, update authoredState just once.
+        managedStateUpdated.current = true;
+      }
+      return <div>{ authoredState }</div>;
+    };
+
+    const { container } = render(<TestComponent />);
+    expect(container.textContent).toEqual("new state 123");
   });
 });
 
@@ -203,5 +246,26 @@ describe("useGlobalInteractiveState", () => {
 
     expect(result.current.globalInteractiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
     expect(getClient().managedState.globalInteractiveState).toEqual({a: 1, c: 3, d: 4, e: 5});
+  });
+
+  it("ensures that global interactive state is always observed correctly", async () => {
+    const TestComponent: React.FC = () => {
+      const { globalInteractiveState } = hooks.useGlobalInteractiveState<any>();
+      const managedStateUpdated = React.useRef(false);
+
+      if (!managedStateUpdated.current) {
+        // Immediate update of authoredState. In real life it wouldn't be done in the component obviously,
+        // but that's an easy way to ensure problematic timing - after initial render of the useAuthoredState hook,
+        // but before useEffect defined in useAuthoredState is called. This is regression test related to this issue:
+        // https://www.pivotaltracker.com/story/show/174154314
+        getClient().managedState.globalInteractiveState = "new state 123";
+        // Prevent infinite loop, update authoredState just once.
+        managedStateUpdated.current = true;
+      }
+      return <div>{ globalInteractiveState }</div>;
+    };
+
+    const { container } = render(<TestComponent />);
+    expect(container.textContent).toEqual("new state 123");
   });
 });
