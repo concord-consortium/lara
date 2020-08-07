@@ -38,8 +38,7 @@ class AddCalloutOptionToEmbeddableXhtmls < ActiveRecord::Migration
                                   .pluck(:embeddable_id)
                                   .first
         if !textbox_id.nil?
-          textbox = Embeddable::Xhtml.find(textbox_id)
-          textbox.update_attribute(:is_callout, false)
+          Embeddable::Xhtml.where(id: textbox_id).update_all(is_callout: false)
         end
     end
   end
