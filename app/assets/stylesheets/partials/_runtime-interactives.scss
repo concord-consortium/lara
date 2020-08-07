@@ -71,11 +71,38 @@
 }
 
 .challenge {
-  .question-hdr, .question-hdr-collapse {
-    background: darken($black-15, 3%);
+  .question-hdr {
+    background: transparent;
+    padding: 4px 0;
+
+    .h5 {
+      color: #333;
+      font-weight: bolder;
+      text-shadow: none;
+    }
   }
   .question-bd {
-    background: $black-5;
+    border: none;
+    padding: 0;
+  }
+
+  &.callout {
+    .question-hdr, .question-hdr-collapse {
+      background: darken($black-15, 20%);
+      display: block;
+      padding: 4px 8px;
+
+      .h5 {
+        color: #fff;
+        font-weight: normal;
+        @include drk-txt-shadow($black-15);
+      }
+    }
+    .question-bd {
+      background: $black-5;
+      padding: 20px 20px 13px;
+      @extend .mod-border-rounded;
+    }
   }
 } // end .challenge
 

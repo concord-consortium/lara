@@ -1,6 +1,6 @@
-= form_for @embeddable do |f|
+= form_for @embeddable, html: {class: 'edit_embeddable_xhtml'} do |f|
   = f.error_messages
-  = field_set_tag 'Heading' do
+  = field_set_tag 'Heading (optional)', class: 'textblock-heading-field' do
     = f.text_field :name
   = field_set_tag 'Content' do
     = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
@@ -11,6 +11,9 @@
   .options
     = field_set_tag "Options" do
       .ul
+        .li
+          = f.check_box :is_callout
+          = t(:IS_CALLOUT_ASSESSMENT_ITEM)
         = render :partial => 'shared/edit_full_width', :locals => { :f => f }
   .submit-container
     = f.submit "Cancel", :class => 'close'
