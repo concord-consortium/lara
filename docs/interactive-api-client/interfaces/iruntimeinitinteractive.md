@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0-pre.3](../README.md) › [Globals](../globals.md) › [IRuntimeInitInteractive](iruntimeinitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.5.0-pre.4](../README.md) › [Globals](../globals.md) › [IRuntimeInitInteractive](iruntimeinitinteractive.md)
 
 # Interface: IRuntimeInitInteractive ‹**InteractiveState, AuthoredState, GlobalInteractiveState**›
 
@@ -152,7 +152,7 @@ ___
 
 ###  linkedInteractives
 
-• **linkedInteractives**: *[ILinkedRuntimeInteractive](ilinkedruntimeinteractive.md)[]*
+• **linkedInteractives**: *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 

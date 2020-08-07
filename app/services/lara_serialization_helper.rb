@@ -21,6 +21,17 @@ class LaraSerializationHelper
       # interactive missing. I guess it could be double checked and fixed in the future.
       results[:linked_interactive] = self.export(item.linked_interactive)
     end
+
+    # This is done here and not in the models as we don't want to export the linked embeddables as they are already exported
+    # we only want to save the key so that the references to the embeddables can be restored during import.
+    # The embeddedable references are saved instead of the page_item references as new page_items are created when the
+    # embeddables are imported into the page.
+    if item.respond_to?(:primary_linked_items)
+      results[:linked_interactives] = item.primary_linked_items.map {|pli| {
+        ref_id: key(pli.secondary.embeddable),
+        label: pli.label
+      }}
+    end
     results
   end
 
@@ -28,7 +39,7 @@ class LaraSerializationHelper
     existing_item = lookup_item(item_hash[:ref_id])
     return existing_item if existing_item
 
-    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive))
+    item = item_hash[:type].constantize.import(item_hash.except(:type, :ref_id, :interactive_ref_id, :embeddable_ref_id, :linked_interactive, :linked_interactives))
     item.save!(validate: false)
     unless item_hash[:ref_id]
       # This is only for backward compatibility when not all the embeddables were defining ref_id in export hash.
@@ -48,6 +59,15 @@ class LaraSerializationHelper
     end
     if item_hash[:linked_interactive] && item.respond_to?(:linked_interactive)
       item.linked_interactive = import(item_hash[:linked_interactive])
+    end
+    if item_hash[:linked_interactives]
+      item_hash[:linked_interactives].each do |lpi_hash|
+        secondary = lookup_item(lpi_hash[:ref_id])
+        if secondary
+          lpi = LinkedPageItem.new(primary_id: item.page_item.id, secondary_id: secondary.page_item.id, label: lpi_hash[:label])
+          lpi.save!(validate: false)
+        end
+      end
     end
     item.save!(validate: false)
     item

@@ -5,10 +5,10 @@ class MwInteractive < ActiveRecord::Base
 
   attr_accessible :name, :url, :native_width, :native_height,
     :enable_learner_state, :has_report_url, :click_to_play,
-    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id,
+    :click_to_play_prompt, :image_url, :is_hidden, :linked_interactive_id, :linked_interactive_type,
     :full_window, :model_library_url, :authored_state, :no_snapshots,
     :show_delete_data_button, :show_in_featured_question_report, :is_full_width,
-    :aspect_ratio_method
+    :aspect_ratio_method, :linked_interactive_item_id
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -19,11 +19,14 @@ class MwInteractive < ActiveRecord::Base
   has_one :page_item, :as => :embeddable, :dependent => :destroy
   # PageItem is a join model; if this is deleted, that instance should go too
 
+  has_many :primary_linked_items, :through => :page_item
+  has_many :secondary_linked_items, :through => :page_item
+
   has_one :interactive_page, :through => :page_item
   has_many :interactive_run_states, :as => :interactive, :dependent => :destroy
 
   has_one :labbook, :as => :interactive, :class_name => 'Embeddable::Labbook'
-  belongs_to :linked_interactive, :class_name => 'MwInteractive'
+  belongs_to :linked_interactive, :polymorphic => true
 
   after_update :update_labbook_options
 
@@ -72,13 +75,23 @@ class MwInteractive < ActiveRecord::Base
     hash = to_hash
     hash[:id] = id
     hash[:linked_interactive_id] = linked_interactive_id
+    hash[:linked_interactive_type] = linked_interactive_type
     hash[:aspect_ratio] = aspect_ratio
+    hash[:interactive_item_id] = interactive_item_id
+    hash[:linked_interactive_item_id] = linked_interactive_item_id
+    hash
+  end
+
+  def to_authoring_preview_hash
+    hash = to_authoring_hash
+    hash[:linked_interactives] = linked_interactives_list
     hash
   end
 
   def authoring_api_urls(protocol, host)
     {
-      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil
+      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil,
+      set_linked_interactives: interactive_page ? Rails.application.routes.url_helpers.api_v1_set_linked_interactives_url(id: interactive_page.id, protocol: protocol, host: host) : nil
     }
   end
 

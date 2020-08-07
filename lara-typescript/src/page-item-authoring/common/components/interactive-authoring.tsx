@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 
 import { InteractiveIframe } from "./interactive-iframe";
 import { AuthoringApiUrls } from "../types";
+import { IInitInteractive } from "../../../interactive-api-client";
 
 interface Props {
   interactive: {
@@ -10,6 +11,7 @@ interface Props {
     aspect_ratio: number;
     aspect_ratio_method: string;
     authored_state: string | object;
+    interactive_item_id: string;
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   allowReset: boolean;
@@ -26,6 +28,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
       : interactive.authored_state
   );
   const [resetCount, setResetCount] = useState(0);
+  const {interactive_item_id: interactiveItemId} = interactive;
 
   const handleAuthoredStateChange = (newAuthoredState: object) => {
     setAuthoredState(newAuthoredState);
@@ -41,11 +44,18 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
     setResetCount(resetCount + 1);
   };
 
-  const initMsg = {
+  const initMsg: IInitInteractive = {
     version: 1,
     error: null,
     mode: "authoring",
-    authoredState
+    authoredState,
+    themeInfo: {            // TODO: add theme colors (future story)
+      colors: {
+        colorA: "red",
+        colorB: "green"
+      }
+    },
+    interactiveItemId
   };
 
   return (
