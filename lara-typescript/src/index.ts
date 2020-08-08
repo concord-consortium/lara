@@ -1,4 +1,5 @@
 import "./plugin-api/normalize.scss";
+import "@concord-consortium/slate-editor/build/index.css";
 
 import * as PluginAPI from "./plugin-api";
 import * as InteractiveAPI from "./interactive-api-parent";

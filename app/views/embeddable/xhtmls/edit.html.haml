@@ -3,11 +3,7 @@
   = field_set_tag 'Heading (optional)', class: 'textblock-heading-field' do
     = f.text_field :name
   = field_set_tag 'Content' do
-    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal'
-    :javascript
-      $(function() {
-        initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
-      });
+    = f.text_area :content, :rows => 5, :class => 'wysiwyg-minimal', :style => 'display: block'
   .options
     = field_set_tag "Options" do
       .ul
@@ -18,3 +14,10 @@
   .submit-container
     = f.submit "Cancel", :class => 'close'
     = f.submit "Save", :class => 'embeddable-save'
+
+  :javascript
+    $(function() {
+      $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
+        initSlateEditor($(this), $(this).text(), index, {useAjax: false});
+      });
+    });

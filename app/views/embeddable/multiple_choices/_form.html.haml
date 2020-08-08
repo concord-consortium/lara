@@ -6,9 +6,9 @@
   = field_set_tag 'Prompt' do
     = f.text_area :prompt, :rows => 5, :class => 'wysiwyg-minimal'
   = field_set_tag 'Hint' do
+    = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
     .help
       If this is provided, the user will be able to see expandable hint next to the question title.
-      = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
   = field_set_tag 'Layout',:id => "embeddable_layout_options" do
     .options
       %ul
@@ -59,7 +59,9 @@
     = f.link_to_add "Add choice", :choices
     :javascript
       $(function() {
-          initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
+          $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
+            initSlateEditor($(this), $(this).text(), index, {useAjax: false});
+          });
 
           var $radios = $('#embeddable_layout_options input'),
               $showAsMenu = $('##{show_as_menu_id}');

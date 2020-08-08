@@ -12,19 +12,11 @@ modulejs.define 'components/common/rich_text_editor',
 
     onChange: (editor) ->
       if @props.onChange
-        @props.onChange editor.getContent()
+        @props.onChange $(@textarea.current).prop("value")
 
     componentDidMount: ->
       $node = $(@textarea.current)
-      options = $.extend({}, @props.TinyMCEConfig || window.TinyMCEConfig)
-      options.setup = (editor) =>
-          # both events are needed as the 'change' event is only sent when the input loses focus (which handles menu choices like formatting)
-          editor.on 'keyup', (e) =>
-            @onChange editor
-          editor.on 'change', (e) =>
-            @onChange editor
-
-      $node.tinymce(options)
+      initSlateEditor($node, @props.text, 0, {useAjax: true})
 
     render: ->
-      (textarea {ref: @textarea, name: @props.name, cols: 100, rows: 5, defaultValue: @props.text})
+      (textarea {ref: @textarea, name: @props.name, cols: 100, rows: 5, defaultValue: @props.text, onChange: this.onChange})

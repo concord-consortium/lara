@@ -7,9 +7,9 @@
   = field_set_tag 'Default Text' do
     = f.text_area :default_text, :rows => 5
   = field_set_tag 'Hint' do
+    = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
     .help
       If this is provided, the user will be able to see expandable hint next to the question title.
-      = f.text_area :hint, :rows => 5, :class => 'wysiwyg-minimal'
   .options
     = field_set_tag "Options" do
       .ul
@@ -23,5 +23,7 @@
 
   :javascript
     $(function() {
-      initTinyMCE('.wysiwyg-minimal', window.TinyMCEConfigMinimal);
+      $(".wysiwyg, .wysiwyg-minimal").each(function (index) {
+        initSlateEditor($(this), $(this).text(), index, {useAjax: false});
+      });
     });

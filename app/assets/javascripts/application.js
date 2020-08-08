@@ -44,3 +44,4 @@
 //= require check-author-idle
 //= require application-init
 //= require interactive-form-helper
+//= require slate-editor.js
