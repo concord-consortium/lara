@@ -438,10 +438,7 @@ div.intra-page-nav {
   .question {
     margin: 20px;
     display: inline-block;
-    // the questions sit in two columns in the full width layout.
-    // The 438px width is computed to maximize their size:
-    // 960/2 = 480, 480 - margins = 440, then there is 2 px of padding somewhere
-    width: 438px;
+    width: 45%;
     vertical-align: top;
 
     &.full-width-item {
@@ -569,56 +566,6 @@ div.intra-page-nav {
         margin: 0 0 20px;
       }
     }
-
-    // The first textbox in this section should be styled to match the old
-    // Introduction section. The style rules below should only be applied to the
-    // first text box. Since there isn't a first-of-class option, the style
-    // rules need to be undone for all subsequent siblings.
-    // TODO: Find a more efficient way to apply styles to only the first textbox
-    .challenge {
-      &[id^="embeddable-xhtml"] {
-        margin: 20px;
-        .question-bd {
-          background: transparent;
-          border: none;
-          padding: 22px 22px 15px;
-        }
-        .question-hdr {
-          background: #fff;
-          padding: 0;
-          h5 {
-            color: #444;
-            font-weight: bold;
-          }
-        }
-
-        &.full-width {
-          margin: 0 0 20px;
-
-          .question-bd {
-            padding: 0;
-          }
-        }
-      }
-    }
-    .challenge ~ .challenge {
-      &[id^="embeddable-xhtml"] {
-        margin: 20px;
-        .question-bd {
-          background: $black-5;
-          border: solid 1px $black-10;
-          padding: 20px 20px 13px;
-        }
-        .question-hdr {
-          background: #c4c4c4;
-          padding: 4px 8px;
-          h5 {
-            color: #fff;
-            font-weight: 500;
-          }
-        }
-      }
-    }
   }
 }
 
@@ -684,15 +631,38 @@ div.intra-page-nav {
 }
 
 .challenge {
-  .question-hdr, .question-hdr-collapse {
-    background: darken($black-15, 3%);
+  .question-hdr {
+    background: transparent;
+    padding: 4px 0;
 
     .h5 {
-      @include drk-txt-shadow($black-15);
+      color: #333;
+      font-weight: bolder;
+      text-shadow: none;
     }
   }
   .question-bd {
-    background: $black-5;
+    border: none;
+    padding: 0;
+  }
+
+  &.callout {
+    .question-hdr, .question-hdr-collapse {
+      background: darken($black-15, 20%);
+      display: block;
+      padding: 4px 8px;
+
+      .h5 {
+        color: #fff;
+        font-weight: normal;
+        @include drk-txt-shadow($black-15);
+      }
+    }
+    .question-bd {
+      background: $black-5;
+      padding: 20px 20px 13px;
+      @extend .mod-border-rounded;
+    }
   }
 } // end .challenge
 

@@ -36,7 +36,9 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
     inherit_image_url,
     custom_image_url,
     linked_interactive_id,
-    show_in_featured_question_report
+    linked_interactive_type,
+    show_in_featured_question_report,
+    linked_interactive_item_id
   } = managedInteractive;
 
   const [inheritAspectRatio, setInheritAspectRatio] = useState(inherit_aspect_ratio_method);
@@ -85,8 +87,8 @@ export const CustomizeManagedInteractive: React.FC<Props> = (props) => {
           <legend>Link Saved Work From</legend>
           <input
             type="text"
-            name={formField("linked_interactive_id").name}
-            defaultValue={`${linked_interactive_id || ""}`}
+            name={formField("linked_interactive_item_id").name}
+            defaultValue={`${linked_interactive_item_id || ""}`}
           />
           <div className="warning">
             <em>Warning</em>: Please do not link to another interactive

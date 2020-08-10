@@ -5,7 +5,7 @@ import ResizeObserver from "resize-observer-polyfill";
 import { ManagedInteractiveAuthoring, IManagedInteractive } from "./managed-interactives";
 import { ILibraryInteractive } from "./common/hooks/use-library-interactives";
 import { MWInteractiveAuthoring, IMWInteractive } from "./mw-interactives";
-import { InteractiveAuthoringPreview, IPreviewInteractive } from "./common/components/interactive-authoring-preview";
+import { InteractiveAuthoringPreview, IPreviewInteractive, IPreviewUser } from "./common/components/interactive-authoring-preview";
 import { AuthoringApiUrls } from "./common/types";
 
 interface IRenderManagedInteractiveAuthoringProps {
@@ -40,11 +40,13 @@ const renderMWInteractiveAuthoring = (root: HTMLElement, props: IRenderMWInterac
 
 interface IInteractiveAuthoringPreviewProps {
   interactive: IPreviewInteractive;
+  user: IPreviewUser;
 }
 const renderInteractiveAuthoringPreview = (root: HTMLElement, props: IInteractiveAuthoringPreviewProps) => {
   return ReactDOM.render(
     <InteractiveAuthoringPreview
       interactive={props.interactive}
+      user={props.user}
     />, root);
 };
 

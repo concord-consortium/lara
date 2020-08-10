@@ -3,14 +3,14 @@ import * as iframePhone from "iframe-phone";
 import { useEffect, useRef, useState } from "react";
 
 import * as LaraInteractiveApi from "../../../interactive-api-client";
-import { IInteractiveListResponseItem } from "../../../interactive-api-client";
+import { IInteractiveListResponseItem, IInitInteractive } from "../../../interactive-api-client";
 import { AuthoringApiUrls } from "../types";
 
 interface Props {
   src: string;
   width: string | number;
   initialAuthoredState: object | null;
-  initMsg: any;
+  initMsg: IInitInteractive;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
   onSupportedFeaturesUpdate?: (info: any) => void;
@@ -79,6 +79,14 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       }});
   };
 
+  const handleSetLinkedInteractives = (request: LaraInteractiveApi.ISetLinkedInteractives, url: string) => {
+    return $.ajax({
+      type: "POST",
+      url,
+      data: request
+    });
+  };
+
   const [iframeId, setIFrameId] = useState<number>(0);
   let phone: IFramePhoneParentEndpoint;
 
@@ -99,6 +107,15 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       phone.addListener("getInteractiveList",
         (request: LaraInteractiveApi.IGetInteractiveListRequest) => {
           handleGetInteractiveList(request, getInteractiveListUrl);
+        }
+      );
+    }
+
+    const setLinkedInteractivesUrl = authoringApiUrls?.set_linked_interactives;
+    if (setLinkedInteractivesUrl) {
+      phone.addListener("setLinkedInteractives",
+        (request: LaraInteractiveApi.ISetLinkedInteractives) => {
+          handleSetLinkedInteractives(request, setLinkedInteractivesUrl);
         }
       );
     }

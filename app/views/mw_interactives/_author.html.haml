@@ -8,9 +8,11 @@
 .embeddable_tools
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'mw_int', :allow_hide => allow_hide }
 
+- userInfo = current_user.nil? ? {loggedIn: false, authProvider: nil, email: nil} : {loggedIn: true, authProvider: (Concord::AuthPortal.url_for_strategy_name(current_user.most_recent_authentication.provider) rescue nil), email: current_user.email}
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.id}"), {
-      interactive: #{embeddable.to_authoring_hash().to_json}
+      interactive: #{embeddable.to_authoring_preview_hash().to_json},
+      user: #{userInfo.to_json}
     });
   });

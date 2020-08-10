@@ -19,10 +19,11 @@ describe ManagedInteractive do
                                                  :no_snapshots => true
                                                 )}
 
+  let(:mw_interactive) { FactoryGirl.create(:mw_interactive) }
   let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
                                                  :library_interactive => library_interactive,
                                                  :url_fragment => "test",
-                                                 :linked_interactive_id => 1
+                                                 :linked_interactive => mw_interactive
                                                 )}
   let (:page) { FactoryGirl.create(:page) }
 
@@ -70,11 +71,27 @@ describe ManagedInteractive do
 
   describe '#to_authoring_hash' do
     it 'has useful values' do
+      page.add_interactive(managed_interactive)
+
+      managed_interactive.reload
+      page.reload
+
       expected = managed_interactive.to_hash
       expected[:id] = managed_interactive.id
       expected[:linked_interactive_id] = managed_interactive.linked_interactive_id
+      expected[:linked_interactive_type] = managed_interactive.linked_interactive_type
       expected[:aspect_ratio] = managed_interactive.aspect_ratio
+      expected[:interactive_item_id] = managed_interactive.interactive_item_id
+      expected[:linked_interactive_item_id] = managed_interactive.linked_interactive_item_id
       expect(managed_interactive.to_authoring_hash).to eq(expected)
+    end
+  end
+
+  describe '#to_authoring_preview_hash' do
+    it 'has useful values' do
+      expected = managed_interactive.to_interactive
+      expected[:linked_interactives] = managed_interactive.linked_interactives_list
+      expect(managed_interactive.to_authoring_preview_hash).to eq(expected)
     end
   end
 
@@ -107,30 +124,31 @@ describe ManagedInteractive do
     end
   end
 
-  describe "#to_interactive_json" do
+  describe "#to_interactive" do
     it 'has useful values' do
-      expect(JSON.parse(managed_interactive.to_interactive_json)).to eq(JSON.parse({
-        "id": managed_interactive.id,
-        "name": managed_interactive.name,
-        "url": managed_interactive.url,
-        "native_width": managed_interactive.native_width,
-        "native_height": managed_interactive.native_height,
-        "enable_learner_state": managed_interactive.enable_learner_state,
-        "show_delete_data_button": managed_interactive.show_delete_data_button,
-        "has_report_url": managed_interactive.has_report_url,
-        "click_to_play": managed_interactive.click_to_play,
-        "click_to_play_prompt": managed_interactive.click_to_play_prompt,
-        "full_window": managed_interactive.full_window,
-        "image_url": managed_interactive.image_url,
-        "is_hidden": managed_interactive.is_hidden,
-        "is_full_width": managed_interactive.is_full_width,
-        "show_in_featured_question_report": managed_interactive.show_in_featured_question_report,
-        "authored_state": managed_interactive.authored_state,
-        "aspect_ratio": managed_interactive.aspect_ratio,
-        "aspect_ratio_method": managed_interactive.aspect_ratio_method,
-        "no_snapshots": managed_interactive.no_snapshots,
-        "linked_interactive_id": managed_interactive.linked_interactive_id,
-      }.to_json))
+      expect(managed_interactive.to_interactive).to eq({
+        id: managed_interactive.id,
+        name: managed_interactive.name,
+        url: managed_interactive.url,
+        native_width: managed_interactive.native_width,
+        native_height: managed_interactive.native_height,
+        enable_learner_state: managed_interactive.enable_learner_state,
+        show_delete_data_button: managed_interactive.show_delete_data_button,
+        has_report_url: managed_interactive.has_report_url,
+        click_to_play: managed_interactive.click_to_play,
+        click_to_play_prompt: managed_interactive.click_to_play_prompt,
+        full_window: managed_interactive.full_window,
+        image_url: managed_interactive.image_url,
+        is_hidden: managed_interactive.is_hidden,
+        is_full_width: managed_interactive.is_full_width,
+        show_in_featured_question_report: managed_interactive.show_in_featured_question_report,
+        authored_state: managed_interactive.authored_state,
+        aspect_ratio: managed_interactive.aspect_ratio,
+        aspect_ratio_method: managed_interactive.aspect_ratio_method,
+        no_snapshots: managed_interactive.no_snapshots,
+        linked_interactive_id: managed_interactive.linked_interactive_id,
+        linked_interactive_type: managed_interactive.linked_interactive_type,
+      })
     end
   end
 
@@ -338,6 +356,53 @@ describe ManagedInteractive do
       # without a library interactive it defaults to false
       managed_interactive.library_interactive = nil
       expect(managed_interactive.no_snapshots).to be false
+    end
+  end
+
+  # this is only tested here and not also in mw_interactive as it all uses code in the base_interactive
+  describe "interactive_item_id" do
+
+    before :each do
+      page.add_interactive(managed_interactive)
+      managed_interactive.reload
+      page.reload
+    end
+
+    it "has a getter" do
+      expect(managed_interactive.interactive_item_id).to eq "interactive_#{managed_interactive.page_item.id}"
+    end
+
+    it "does not have a setter" do
+      expect(managed_interactive.respond_to?('interactive_item_id=')).to be false
+    end
+  end
+
+  describe "linked_interactive_item_id" do
+
+    let(:mw_interactive2) { FactoryGirl.create(:mw_interactive) }
+
+    before :each do
+      page.add_interactive(mw_interactive)
+      page.add_interactive(mw_interactive2)
+      page.add_interactive(managed_interactive)
+      managed_interactive.reload
+      mw_interactive.reload
+      page.reload
+    end
+
+    it "has a getter" do
+      expect(managed_interactive.linked_interactive).to eq mw_interactive
+      expect(managed_interactive.linked_interactive_item_id).to eq mw_interactive.interactive_item_id
+      expect(mw_interactive.interactive_item_id).to_not eq nil
+      expect(managed_interactive.linked_interactive_item_id).to_not eq nil
+    end
+
+    it "has a setter" do
+      expect(managed_interactive.linked_interactive).to eq mw_interactive
+      managed_interactive.linked_interactive_item_id = mw_interactive2.interactive_item_id
+      managed_interactive.save!
+      managed_interactive.reload
+      expect(managed_interactive.linked_interactive).to eq mw_interactive2
     end
   end
 end

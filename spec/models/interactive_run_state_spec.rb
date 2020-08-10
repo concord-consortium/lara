@@ -64,7 +64,7 @@ describe InteractiveRunState do
 
       describe "when the interactive has a linked interactive but the linked interactive has no state" do
         let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
-        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive_id: linked_interactive.id})}
+        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive: linked_interactive})}
 
         it "should return the raw_data" do
           expect(result_hash["raw_data"]).to eql run_data
@@ -81,7 +81,7 @@ describe InteractiveRunState do
         let(:linked_run_data)    {'{"first": 1}"'}
         let(:linked_interactive) { FactoryGirl.create(:mw_interactive)}
         let(:linked_run_state)   { InteractiveRunState.create(run: run, interactive: linked_interactive, raw_data: linked_run_data)}
-        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive_id: linked_interactive.id})}
+        let(:interactive)        { FactoryGirl.create(:mw_interactive, {linked_interactive: linked_interactive})}
 
         before(:each) do
           make linked_run_state
@@ -115,8 +115,8 @@ describe InteractiveRunState do
         let(:run_data_1)    {'{"first": 1}"'}
         let(:interactive_1) { FactoryGirl.create(:mw_interactive)}
         let(:run_state_1)   { InteractiveRunState.create(run: run, interactive: interactive_1, raw_data: run_data_1)}
-        let(:interactive_2) { FactoryGirl.create(:mw_interactive, {linked_interactive_id: interactive_1.id})}
-        let(:interactive) { FactoryGirl.create(:mw_interactive, {linked_interactive_id: interactive_2.id})}
+        let(:interactive_2) { FactoryGirl.create(:mw_interactive, {linked_interactive: interactive_1})}
+        let(:interactive) { FactoryGirl.create(:mw_interactive, {linked_interactive: interactive_2})}
 
         before(:each) do
           make run_state_1

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200625215657) do
+ActiveRecord::Schema.define(:version => 20200728144910) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20200625215657) do
     t.datetime "updated_at",                       :null => false
     t.boolean  "is_hidden",     :default => false
     t.boolean  "is_full_width", :default => false
+    t.boolean  "is_callout",    :default => true
   end
 
   create_table "global_interactive_states", :force => true do |t|
@@ -451,6 +452,18 @@ ActiveRecord::Schema.define(:version => 20200625215657) do
   add_index "lightweight_activities_sequences", ["lightweight_activity_id"], :name => "index_activities_sequence_join_by_activity"
   add_index "lightweight_activities_sequences", ["sequence_id"], :name => "index_activities_sequence_join_by_sequence"
 
+  create_table "linked_page_items", :force => true do |t|
+    t.integer  "primary_id"
+    t.integer  "secondary_id"
+    t.string   "label"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "linked_page_items", ["primary_id", "secondary_id", "label"], :name => "index_linked_page_items_unique", :unique => true
+  add_index "linked_page_items", ["primary_id"], :name => "index_linked_page_items_primary"
+  add_index "linked_page_items", ["secondary_id"], :name => "index_linked_page_items_secondary"
+
   create_table "managed_interactives", :force => true do |t|
     t.integer  "library_interactive_id"
     t.string   "name"
@@ -476,6 +489,7 @@ ActiveRecord::Schema.define(:version => 20200625215657) do
     t.boolean  "show_in_featured_question_report", :default => true
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
+    t.string   "linked_interactive_type"
   end
 
   create_table "mc_answer_choices", :id => false, :force => true do |t|
@@ -508,6 +522,7 @@ ActiveRecord::Schema.define(:version => 20200625215657) do
     t.boolean  "is_full_width",                    :default => true
     t.boolean  "show_in_featured_question_report", :default => true
     t.string   "aspect_ratio_method",              :default => "DEFAULT"
+    t.string   "linked_interactive_type"
   end
 
   add_index "mw_interactives", ["linked_interactive_id"], :name => "index_mw_interactives_on_linked_interactive_id"

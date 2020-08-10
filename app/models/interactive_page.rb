@@ -260,6 +260,20 @@ class InteractivePage < ActiveRecord::Base
 
         new_page.add_embeddable(copy, nil, embed.page_section)
       end
+
+      # with the embeddables added link any interactive links
+      self.embeddables.each do |embed|
+        if embed.respond_to?(:primary_linked_items)
+          embed.primary_linked_items.each do |pli|
+            primary = helper.get_copy(embed)
+            secondary = helper.get_copy(pli.secondary.embeddable)
+            if primary && secondary
+              lpi = LinkedPageItem.new(primary_id: primary.page_item.id, secondary_id: secondary.page_item.id, label: pli.label)
+              lpi.save!(validate: false)
+            end
+          end
+        end
+      end
     end
     new_page.reload
   end
