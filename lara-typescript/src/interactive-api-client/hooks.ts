@@ -15,10 +15,6 @@ export const useInteractiveState = <InteractiveState>() => {
   const [ interactiveState, setInteractiveState ] = useState<InteractiveState | null>(null);
 
   useEffect(() => {
-    // Note that we need to update authoredState exactly in this moment, right before setting up event listeners.
-    // It can't be done above using initial useState value. There's a little delay between initial render and calling
-    // useEffect. If update happens then, the state would be lost. It's not only a theoretical issue,
-    // it was actually happening in Safari: https://www.pivotaltracker.com/story/show/174154314
     setInteractiveState(client.getInteractiveState<InteractiveState>());
     // Setup client event listeners. They will ensure that another instance of this hook (or anything else
     // using client directly) makes changes to interactive state, this hook will receive these changes.
@@ -45,10 +41,13 @@ export const useAuthoredState = <AuthoredState>() => {
   const [ authoredState, setAuthoredState ] = useState<AuthoredState | null>(null);
 
   useEffect(() => {
-    // Note that we need to update interactiveState exactly in this moment, right before setting up event listeners.
+    // Note that we need to update authoredState exactly in this moment, right before setting up event listeners.
     // It can't be done above using initial useState value. There's a little delay between initial render and calling
-    // useEffect. If update happens then, the state would be lost. It's not only a theoretical issue,
-    // it was actually  happening in Safari: https://www.pivotaltracker.com/story/show/174154314
+    // useEffect. If client's authoredState gets updated before the listener is added, this hook will have outdated
+    // value. It's not only a theoretical issue, it was actually happening in Safari:
+    // https://www.pivotaltracker.com/story/show/174154314
+    // initInteractive message that includes authoredAuthored message was received between initial render and calling
+    // client.addAuthoredStateListener, so the state update was lost.
     setAuthoredState(client.getAuthoredState<AuthoredState>());
     // Setup client event listeners. They will ensure that another instance of this hook (or anything else
     // using client directly) makes changes to authored state, this hook will receive these changes.
@@ -75,10 +74,6 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
   const [ globalInteractiveState, setGlobalInteractiveState ] = useState<GlobalInteractiveState | null>(null);
 
   useEffect(() => {
-    // Note that we need to update globalInteractiveState exactly in this moment, right before setting up event
-    // listeners. It can't be done above using initial useState value. There's a little delay between initial render
-    // and calling useEffect. If update happens then, the state would be lost. It's not only a theoretical issue,
-    // it was actually happening in Safari: https://www.pivotaltracker.com/story/show/174154314
     setGlobalInteractiveState(client.getGlobalInteractiveState<GlobalInteractiveState>());
     // Setup client event listeners. They will ensure that another instance of this hook (or anything else
     // using client directly) makes changes to global interactive state, this hook will receive these changes.
