@@ -100,9 +100,9 @@ describe("useInteractiveState", () => {
       const managedStateUpdated = React.useRef(false);
 
       if (!managedStateUpdated.current) {
-        // Immediate update of authoredState. In real life it wouldn't be done in the component obviously,
-        // but that's an easy way to ensure problematic timing - after initial render of the useAuthoredState hook,
-        // but before useEffect defined in useAuthoredState is called. This is regression test related to this issue:
+        // Immediate update of interactiveState. In real life it wouldn't be done in the component obviously,
+        // but that's an easy way to ensure problematic timing - after initial render of the useInteractiveState hook,
+        // but before useEffect defined in useInteractiveState is called. This is regression test related to this issue:
         // https://www.pivotaltracker.com/story/show/174154314
         getClient().managedState.interactiveState = "new state 123";
         // Prevent infinite loop, update authoredState just once.
@@ -254,10 +254,10 @@ describe("useGlobalInteractiveState", () => {
       const managedStateUpdated = React.useRef(false);
 
       if (!managedStateUpdated.current) {
-        // Immediate update of authoredState. In real life it wouldn't be done in the component obviously,
-        // but that's an easy way to ensure problematic timing - after initial render of the useAuthoredState hook,
-        // but before useEffect defined in useAuthoredState is called. This is regression test related to this issue:
-        // https://www.pivotaltracker.com/story/show/174154314
+        // Immediate update of globalInteractiveState. In real life it wouldn't be done in the component obviously,
+        // but that's an easy way to ensure problematic timing - after initial render of the useGlobalInteractiveState
+        // hook, but before useEffect defined in useGlobalInteractiveState is called. This is regression test related
+        // to this issue: https://www.pivotaltracker.com/story/show/174154314
         getClient().managedState.globalInteractiveState = "new state 123";
         // Prevent infinite loop, update authoredState just once.
         managedStateUpdated.current = true;
