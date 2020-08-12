@@ -936,6 +936,8 @@ fieldset {
     }
     .embeddable-container {
       background: #eee;
+      overflow: auto;
+      padding-bottom: 5px;
     }
     .embeddable_tools {
       margin: 0 25px 0 0;
