@@ -341,8 +341,13 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     clear: both;
     float: none;
     height: auto;
+    margin-bottom: 16px;
     min-height: 0;
     width: 100%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   textarea {
     height: 200px;
@@ -936,6 +941,8 @@ fieldset {
     }
     .embeddable-container {
       background: #eee;
+      overflow: auto;
+      padding-bottom: 5px;
     }
     .embeddable_tools {
       margin: 0 25px 0 0;
