@@ -1,4 +1,4 @@
-{div, img, label, input} = ReactFactories
+{div, img, label} = ReactFactories
 
 modulejs.define 'components/itsi_authoring/managed_interactive_editor',
 [
@@ -35,10 +35,9 @@ modulejs.define 'components/itsi_authoring/managed_interactive_editor',
 
     getInitialState: ->
       modelOptions: []
-      authoringSupported: false
 
     initialEditState: ->
-      true
+      false
 
     onAuthoredStateChange: (authoredState) ->
       @valueChanged 'managed_interactive[authored_state]', JSON.stringify(authoredState)
@@ -48,7 +47,6 @@ modulejs.define 'components/itsi_authoring/managed_interactive_editor',
       container.style.height = height + 'px'
 
     handleSupportedFeaturesUpdate: (info) ->
-      @setState {authoringSupported: !!info.features.authoredState}
       if (info.features.aspectRatio?)
         container = @iframeContainer.current
         container.style.height = Math.round(container.offsetWidth / info.features.aspectRatio) + 'px'
@@ -57,14 +55,13 @@ modulejs.define 'components/itsi_authoring/managed_interactive_editor',
       @edit()
 
     render: ->
-      authorable = @state.authoringSupported
       authoredState = @state.values['managed_interactive[authored_state]']
-      (SectionEditorElement {data: @props.data, title: 'Model', toHide: 'mw_interactive[is_hidden]', onEdit: @switchToEditMode, alert: @props.alert, confirmHide: @props.confirmHide},
+      (SectionEditorElement {data: @props.data, title: @props.data.name, toHide: 'managed_interactive[is_hidden]', onEdit: @switchToEditMode, alert: @props.alert, confirmHide: @props.confirmHide},
         if @state.edit
           (SectionEditorForm {onSave: @save, onCancel: @cancel},
-            (label {}, 'Model')
+            (label {}, @props.data.name)
 
-            (div {className: "ia-interactive-container #{unless authorable then 'not-authorable' else ''}"},
+            (div {className: "ia-interactive-container"},
               (div {className: 'ia-interactive', ref: @iframeContainer},
                 (InteractiveIframe
                   ref: @iframe
@@ -79,13 +76,23 @@ modulejs.define 'components/itsi_authoring/managed_interactive_editor',
                   onSupportedFeaturesUpdate: @handleSupportedFeaturesUpdate
                   onHeightChange: @handleHeightChange
                 )
-                unless authorable
-                 (div {className: 'ia-interactive-overlay'})
               )
             )
           )
         else
-          (div {className: 'ia-section-text'},
-              'Preview coming soon.'
+          (div {className: 'ia-interactive-container'},
+            (div {className: 'ia-interactive', ref: @iframeContainer},
+              (InteractiveIframe
+                ref: @iframe
+                src: @state.values['managed_interactive[url]'],
+                initMsg: {
+                  version: 1
+                  error: null
+                  mode: 'runtime'
+                  authoredState: authoredState
+                }
+                onHeightChange: @handleHeightChange
+              )
+            )
           )
       )
