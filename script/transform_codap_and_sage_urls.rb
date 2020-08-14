@@ -53,9 +53,14 @@ end
 
 def master_cfm_to_production_cfm(url_string)
   url = URI(url_string)
+  # Parse server query param and remove CFM master branch query params
   new_query = Rack::Utils.parse_nested_query(url.query)
 
-  # Parse server query param and remove CFM master branch query params
+  unless new_query["server"]
+    # nothing to do
+    return url_string
+  end
+
   server_url = URI(new_query["server"])
   server_query_params =  Rack::Utils.parse_nested_query(server_url.query)
   # SageModeler requires branch name and 3 separate URL params
