@@ -102,6 +102,8 @@ class ITSIAuthoring::Editor
       when 'mw_interactive'
         # In fact MwInteractive is a simple iframe.
         iframe_interactive_json(i, page)
+      when 'managed_interactive'
+        managed_interactive_json(i)
       else
         # Other interactive types aren't supported by ITSI editor anyway.
         {}
