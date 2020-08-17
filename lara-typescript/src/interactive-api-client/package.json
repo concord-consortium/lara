@@ -1,6 +1,6 @@
 {
   "name": "@concord-consortium/lara-interactive-api",
-  "version": "0.5.0-pre.4",
+  "version": "0.5.0",
   "description": "LARA Interactive API client and types",
   "main": "./index.js",
   "types": "./index.d.ts",

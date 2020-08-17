@@ -66,6 +66,7 @@
   },
   "homepage": "https://github.com/concord-consortium/lara/tree/master/lara-typescript#readme",
   "devDependencies": {
+    "@testing-library/react": "^10.4.8",
     "@testing-library/react-hooks": "^3.2.1",
     "@types/deep-freeze": "^0.1.2",
     "@types/dompurify": "^2.0.2",
