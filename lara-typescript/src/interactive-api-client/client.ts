@@ -42,7 +42,7 @@ export class Client {
       throw new Error("Interactive API is meant to be used in iframe");
     }
     if (phoneInitialized()) {
-      throw new Error("IframePhone has been initialized previously. Only once Client instance is allowed.");
+      throw new Error("IframePhone has been initialized previously. Only one Client instance is allowed.");
     }
     this.connect();
 
