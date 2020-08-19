@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+const { useEffect } = React;
 import ResizeObserver from "resize-observer-polyfill";
 
 import { useInitMessage, setSupportedFeatures, setHeight } from "../../../interactive-api-client";
@@ -7,12 +7,13 @@ import { AuthoringComponent } from "./authoring";
 import { DialogComponent } from "./dialog";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
+import { IAuthoredState } from "./types";
 
 interface Props {
 }
 
 export const AppComponent: React.FC<Props> = (props) => {
-  const initMessage = useInitMessage();
+  const initMessage = useInitMessage<{}, IAuthoredState>();
 
   // TODO: this should really be moved into a client hook file so it can be reused
   useEffect(() => {

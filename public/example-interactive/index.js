@@ -31113,7 +31113,7 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var useEffect = React.useEffect;
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactive/src/components/authoring.tsx");
@@ -31123,7 +31123,7 @@ var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactive/
 exports.AppComponent = function (props) {
     var initMessage = interactive_api_client_1.useInitMessage();
     // TODO: this should really be moved into a client hook file so it can be reused
-    react_1.useEffect(function () {
+    useEffect(function () {
         if (initMessage) {
             var body_1 = document.getElementsByTagName("BODY")[0];
             var updateHeight_1 = function () {
@@ -31138,7 +31138,7 @@ exports.AppComponent = function (props) {
             return function () { return observer_1.disconnect(); };
         }
     }, [initMessage]);
-    react_1.useEffect(function () {
+    useEffect(function () {
         if (initMessage) {
             interactive_api_client_1.setSupportedFeatures({
                 authoredState: true,
@@ -31378,6 +31378,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthoringComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var get_interactive_list_1 = __webpack_require__(/*! ./authoring-apis/get-interactive-list */ "./src/example-interactive/src/components/authoring-apis/get-interactive-list.tsx");
 var set_linked_interactives_1 = __webpack_require__(/*! ./authoring-apis/set-linked-interactives */ "./src/example-interactive/src/components/authoring-apis/set-linked-interactives.tsx");
 exports.AuthoringComponent = function (_a) {
@@ -31385,6 +31386,7 @@ exports.AuthoringComponent = function (_a) {
     var _b = react_1.useState("getInteractiveList"), selectedAuthoringApi = _b[0], setSelectedAuthoringApi = _b[1];
     var _c = react_1.useState(), authoringApiError = _c[0], setAuthoringApiError = _c[1];
     var _d = react_1.useState(), authoringApiOutput = _d[0], setAuthoringApiOutput = _d[1];
+    var _e = interactive_api_client_1.useAuthoredState(), authoredState = _e.authoredState, setAuthoredState = _e.setAuthoredState;
     var handleClearAuthoringApiError = function () { return setAuthoringApiError(undefined); };
     var handleClearAuthoringApiOutput = function () { return setAuthoringApiOutput(undefined); };
     var handleAuthoringApiChange = function (e) {
@@ -31399,6 +31401,9 @@ exports.AuthoringComponent = function (_a) {
             default:
                 return undefined;
         }
+    };
+    var handleFirebaseAppChange = function (e) {
+        setAuthoredState({ firebaseApp: e.target.value });
     };
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
@@ -31419,7 +31424,12 @@ exports.AuthoringComponent = function (_a) {
                 : undefined),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Authoring Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
+            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2))),
+        React.createElement("fieldset", null,
+            React.createElement("legend", null, "Authoring Options"),
+            React.createElement("label", null,
+                "Firebase App:\u00A0",
+                React.createElement("input", { type: "text", value: authoredState === null || authoredState === void 0 ? void 0 : authoredState.firebaseApp, onChange: handleFirebaseAppChange })))));
 };
 
 
@@ -31483,12 +31493,30 @@ exports.ReportComponent = function (_a) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuntimeComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var useEffect = React.useEffect, useState = React.useState;
+var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 exports.RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
+    var _b = useState(), rawFirebaseJwt = _b[0], setRawFirebaseJWT = _b[1];
+    var authoredState = initMessage.authoredState;
+    useEffect(function () {
+        if (authoredState === null || authoredState === void 0 ? void 0 : authoredState.firebaseApp) {
+            interactive_api_client_1.getFirebaseJwt(authoredState.firebaseApp)
+                .then(function (response) {
+                setRawFirebaseJWT(response.token);
+            })
+                .catch(function (e) {
+                setRawFirebaseJWT("ERROR: " + e.toString());
+            });
+        }
+    }, [authoredState]);
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Runtime Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
+            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2))),
+        React.createElement("fieldset", null,
+            React.createElement("legend", null, "FirebaseJWT Response"),
+            React.createElement("div", { className: "padded monospace pre" }, rawFirebaseJwt))));
 };
 
 
@@ -31828,7 +31856,7 @@ var Client = /** @class */ (function () {
             throw new Error("Interactive API is meant to be used in iframe");
         }
         if (phoneInitialized()) {
-            throw new Error("IframePhone has been initialized previously. Only once Client instance is allowed.");
+            throw new Error("IframePhone has been initialized previously. Only one Client instance is allowed.");
         }
         this.connect();
         // Warn users when they want to reload page before the data gets sent to LARA.

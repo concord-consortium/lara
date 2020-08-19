@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
-import { IAuthoringInitInteractive, IAuthoringClientMessage } from "../../../interactive-api-client";
+import { IAuthoringInitInteractive, IAuthoringClientMessage, useAuthoredState } from "../../../interactive-api-client";
 import { GetInteractiveListComponent } from "./authoring-apis/get-interactive-list";
 import { SetLinkedInteractivesComponent } from "./authoring-apis/set-linked-interactives";
+import { IAuthoredState } from "./types";
 
 interface Props {
-  initMessage: IAuthoringInitInteractive;
+  initMessage: IAuthoringInitInteractive<IAuthoredState>;
 }
 
 export interface AuthoringApiProps {
@@ -17,6 +18,7 @@ export const AuthoringComponent: React.FC<Props> = ({initMessage}) => {
   const [selectedAuthoringApi, setSelectedAuthoringApi] = useState<IAuthoringClientMessage>("getInteractiveList");
   const [authoringApiError, setAuthoringApiError] = useState<any>();
   const [authoringApiOutput, setAuthoringApiOutput] = useState<any>();
+  const { authoredState, setAuthoredState } = useAuthoredState<IAuthoredState>();
 
   const handleClearAuthoringApiError = () => setAuthoringApiError(undefined);
   const handleClearAuthoringApiOutput = () => setAuthoringApiOutput(undefined);
@@ -34,6 +36,10 @@ export const AuthoringComponent: React.FC<Props> = ({initMessage}) => {
       default:
         return undefined;
     }
+  };
+
+  const handleFirebaseAppChange: (event: React.ChangeEvent<HTMLInputElement>) => void = e => {
+    setAuthoredState({ firebaseApp: e.target.value });
   };
 
   return (
@@ -69,6 +75,16 @@ export const AuthoringComponent: React.FC<Props> = ({initMessage}) => {
       <fieldset>
         <legend>Authoring Init Message</legend>
         <div className="padded monospace pre">{JSON.stringify(initMessage, null, 2)}</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Authoring Options</legend>
+        <label>
+          Firebase App:&nbsp;
+          <input type="text"
+            value={authoredState?.firebaseApp}
+            onChange={handleFirebaseAppChange} />
+        </label>
       </fieldset>
 
     </div>
