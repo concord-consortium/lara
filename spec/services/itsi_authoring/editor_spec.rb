@@ -14,17 +14,26 @@ describe ITSIAuthoring::Editor do
                                                  name: "page 1",
                                                  position: 0
                                                  )}
-  let(:library_interactive) { FactoryGirl.create(:library_interactive,
-                                                 name: 'Test Library Interactive',
+  let(:library_interactive1) { FactoryGirl.create(:library_interactive,
+                                                 name: 'Test Library Interactive 1',
                                                  base_url: 'https://concord.org/'
                                                 )}
-  let(:managed_interactive) { FactoryGirl.create(:managed_interactive,
-                                                 library_interactive: library_interactive,
-                                                 url_fragment: "test"
+  let(:library_interactive2) { FactoryGirl.create(:library_interactive,
+                                                 name: 'Test Library Interactive 2',
+                                                 base_url: 'https://concord.org/'
+                                                )}
+  let(:managed_interactive1) { FactoryGirl.create(:managed_interactive,
+                                                 library_interactive: library_interactive1,
+                                                 url_fragment: "test1"
+                                                )}
+  let(:managed_interactive2) { FactoryGirl.create(:managed_interactive,
+                                                 library_interactive: library_interactive2,
+                                                 url_fragment: "test2"
                                                 )}
 
   before(:each) do
-    page.add_interactive(managed_interactive)
+    page.add_interactive(managed_interactive1)
+    page.add_embeddable(managed_interactive2)
     page.reload
     activity.pages << page
   end
@@ -39,8 +48,19 @@ describe ITSIAuthoring::Editor do
         interactives: include(
           hash_including(
             type: "managed_interactive",
-            name: "Test Library Interactive",
-            url: "https://concord.org/test"
+            name: "Test Library Interactive 1",
+            url: "https://concord.org/test1"
+          )
+        )
+      )
+    )
+    expect(itsi_content[:sections].first).to match(
+      hash_including(
+        embeddables: include(
+          hash_including(
+            type: "managed_interactive",
+            name: "Test Library Interactive 2",
+            url: "https://concord.org/test2"
           )
         )
       )
