@@ -9,7 +9,20 @@
  * 
  * 
  * Notes: I think I can use the blank ID from the authoring in some way
- *        in order to grab the element in the dom. ANy verification
+ *        in order to grab the element in the dom. Any verification
  *        method where I can use the match term?
  * 
  */
+
+ class FITB {
+    getFITBContent() {
+        return cy.get('.fill-in-the-blank')
+    }
+    getFITBInput() {
+        return this.getFITBContent().find('input')
+    }
+    // getFITBInput(id) {
+    //     return this.getFITBContent().find('input').eq(id)
+    // }
+ }
+ export default FITB;
