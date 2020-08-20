@@ -133,7 +133,7 @@ EmbeddableCarousel.prototype.calculateHeight = function() {
     var interactiveHeight = $('.interactive-mod').height();
     var offset = $('.content-mod').offset();
 
-    var available = Math.max($(window).height() - offset.top, 410); // make sure height is at least 410 pixels
+    var available = Math.max($(window).height() - offset.top, 330); // make sure height is at least 330 pixels
     if (this.isResponsive()) {
         this.bestHeight = this.tallestQuestion() + 30;
     } else if (this.isFullWidth()) {
