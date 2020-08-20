@@ -138,6 +138,12 @@ $margin-r: 5% !default;
 	.questions-mod.ui-block.second, {
 		background: #eee;
 		padding: 10px;
+
+		&.jcarousel {
+	    background: #fff;
+	    margin: 0;
+	    padding: 10px 0 40px;
+		}
 	}
 	.ui-block-1.open,
 	.ui-block.first.open,
