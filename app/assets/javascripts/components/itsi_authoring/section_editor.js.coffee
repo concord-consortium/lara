@@ -7,6 +7,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   'components/itsi_authoring/prediction_editor'
   'components/itsi_authoring/drawing_response_editor'
   'components/itsi_authoring/model_editor'
+  'components/itsi_authoring/managed_interactive_editor'
   'components/itsi_authoring/textblock_editor'
 ],
 (
@@ -15,6 +16,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   PredictionEditorClass,
   DrawingResponseEditorClass,
   ModelEditorClass,
+  ManagedInteractiveEditorClass,
   TextBlockEditorClass,
 ) ->
 
@@ -23,6 +25,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
   PredictionEditor = React.createFactory PredictionEditorClass
   DrawingResponseEditor = React.createFactory DrawingResponseEditorClass
   ModelEditor = React.createFactory ModelEditorClass
+  ManagedInteractiveEditor = React.createFactory ManagedInteractiveEditorClass
   TextBlockEditor = React.createFactory TextBlockEditorClass
 
   createReactClass
@@ -62,6 +65,7 @@ modulejs.define 'components/itsi_authoring/section_editor',
       switch element.type
         when 'image_question' then DrawingResponseEditor
         when 'open_response' then OpenResponseQuestionEditor
+        when 'managed_interactive' then ManagedInteractiveEditor
         when 'xhtml' then TextBlockEditor
         else null
 

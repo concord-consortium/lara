@@ -40,7 +40,7 @@ class ITSIAuthoring::Editor
       name: page.name,
       is_hidden: page.is_hidden,
       update_url: interactive_page_path(page),
-      interactives: page.interactives.map { |i| interactive_json(i, page) },
+      interactives: page.section_embeddables(InteractivePage::INTERACTIVE_BOX).map { |i| interactive_json(i, page) },
       embeddables: page.embeddables.select { |e| e.page_section.nil? }
                                    .map { |e| embeddable_json(e) },
       header_embeddables: page.embeddables.select { |e| e.page_section == InteractivePage::HEADER_BLOCK }
@@ -57,6 +57,8 @@ class ITSIAuthoring::Editor
         xhtml_json(e)
       when 'image_question'
         image_question_json(e)
+      when 'managed_interactive'
+        managed_interactive_json(e)
       else
         {}
     end
@@ -100,6 +102,8 @@ class ITSIAuthoring::Editor
       when 'mw_interactive'
         # In fact MwInteractive is a simple iframe.
         iframe_interactive_json(i, page)
+      when 'managed_interactive'
+        managed_interactive_json(i)
       else
         # Other interactive types aren't supported by ITSI editor anyway.
         {}
@@ -116,6 +120,17 @@ class ITSIAuthoring::Editor
       model_library_url: i.model_library_url,
       authored_state: i.authored_state,
       update_url: page_mw_interactive_path(page, i)
+    }
+  end
+
+  def managed_interactive_json(i)
+    {
+      type: 'managed_interactive',
+      name: i.library_interactive.name,
+      is_hidden: i.is_hidden,
+      url: i.url,
+      authored_state: i.authored_state,
+      update_url: managed_interactive_path(i)
     }
   end
 end
