@@ -70,8 +70,14 @@
     }
   }
 
-  .jcarousel .question {
+  .jcarousel {
+    background: #fff;
     margin: 0;
+    padding: 10px 0 30px;
+
+    .question {
+      margin: 0;
+    }
   }
 
   h5:after {

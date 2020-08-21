@@ -1,4 +1,5 @@
 .jcarousel {
+  box-sizing: content-box;
   position: relative;
   overflow: hidden;
   /* You need at least a height, adjust this to your needs */
@@ -13,13 +14,13 @@
     float: left;
     overflow-x: hidden;
     overflow-y: auto;
-    
   }
   .buttons {
+    background: #fff;
+    border-top: 1px solid #ededed;
+    bottom: 0;
     position: absolute;
     width: 100%;
-    bottom: 0;
-    border-top: 1px solid #ededed;
     input[type="submit"] {
       margin-top: 8px;
     }
