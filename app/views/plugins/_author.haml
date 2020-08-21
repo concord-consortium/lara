@@ -38,7 +38,17 @@
                   - else
                     - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
                     = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
-          -# reload-on-close is used so that the css loaded for the preview is not seen
+          -# The authored UI of the plugin is injected in this plugin-out div.
+          -# The plugin also receives the question-mod block above as the wrapped embeddable
+          -# container. This approach doesn't match the dom structure at runtime, but it does provide
+          -# a basic preview. A better approach would be to give the plugin an independent dom element
+          -# for its authoring UI, and then also a dom element for it is preview content, plus
+          -# a dom element for the actual wrapped content. This would let us setup the preview
+          -# in a way that matches the runtime. We might even be able to to use the runtime partials
+          -#  app/views/interactive_pages/_list_embeddables.html.haml or
+          -#  app/views/interactive_pages/_interactive.html.haml
+          -# reload-on-close is used so that the css loaded during the the preview is cleaned up
+          -# by reloading the browser window even if the user just cancels the dialog
           .plugin-output.content-mod.reload-on-close{id: output_id}
         - else
           .plugin-output{id: output_id}
