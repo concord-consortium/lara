@@ -122,16 +122,18 @@
     -# we are observing changes before the plugin can modify the content
     :javascript
       (function ($plugin_output) {
+        var $plugin_question = $plugin_output.closest(".question");
+
         // hide the parent question until the plugin adds content
-        $plugin_output.closest(".question").addClass("hidden");
+        $plugin_question.addClass("hidden");
 
         // show the question when the plugin adds content, hide it again if the plugin
         // removes all of its content
         var observer = new MutationObserver(function (mutationsList, observer) {
           if($plugin_output.contents().length !== 0) {
-            $plugin_output.closest(".question").removeClass("hidden");
+            $plugin_question.removeClass("hidden");
           } else {
-            $plugin_output.closest(".question").addClass("hidden");
+            $plugin_question.addClass("hidden");
           }
         });
         observer.observe($plugin_output[0], {childList: true})
