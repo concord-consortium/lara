@@ -75,3 +75,5 @@ def print_embeddable_stats2(embeddable_type, host = "authoring.concord.org")
   nil
 end
 
+# Count of pages that don't have a matching lightweight activity
+InteractivePage.joins('LEFT OUTER JOIN lightweight_activities ON lightweight_activities.id = interactive_pages.lightweight_activity_id').where('lightweight_activities.id is null').count

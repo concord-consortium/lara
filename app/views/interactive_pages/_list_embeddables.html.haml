@@ -8,13 +8,17 @@
           -# e variable is actually either embeddable (for interactives, plugins, etc.) or embeddable answer
           -# (open response, multiple choice and all the question types). If the latter, get a real question object.
           - question = e.respond_to?(:question) ? e.question : e
-          .question{ class: question_css_class(e), id: question.embeddable_dom_id }
-            -# The embeddable-root CSS class is important as it is used by sizing calculations
-            -# it needs to be different than the .question div above. The div above is set to
-            -# 45% width when inside of a full width page or block, and the div below
-            -# width is set dynamically depending on the interactive sizing
-            .embeddable-root
-              -# The embeddable-container CSS class is important, as it is referenced by plugins and passed to a plugin instance.
+          -# The question div is managed by the question_css_class, it determines if this is a full-width (100%)
+          -# question or 'normal' question (45%)
+          .question{ class: question_css_class(e) }
+            -# The embeddable-root CSS class is used by sizing calculations, it gets set to 100% width, during
+            -# the calculation, and then it might be set to a lower percentage width in order to preserve an aspect ratio
+            -# The div with the id of question.embeddable_dom_id is used by wrapping plugins as the 'container'
+            .embeddable-root{ id: question.embeddable_dom_id }
+              -# The embeddable-container CSS class is used by wrapping plugins, the wrapping plugin gets a
+              -# container div for itself see above, and a container (embeddable-container) for the embeddable
+              -# it is wrapping. In the v2 plugin api this second container is called the wrappedEmbeddableDiv
+              -# the wrapping plugin injects itself between these 2 divs.
               .embeddable-container
                 - if Embeddable::is_interactive?(e)
                   = render_interactive(e)
