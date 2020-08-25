@@ -17,6 +17,7 @@ select, button {
 
 fieldset {
   margin-bottom: 10px;
+  min-width: 0px;
 }
 
 .centered {
@@ -55,5 +56,6 @@ fieldset {
 }
 
 .pre {
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
