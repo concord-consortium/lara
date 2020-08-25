@@ -3,7 +3,14 @@ language: ruby
 rvm:
   - "2.3.7"
 
-dist: precise
+dist: trusty
+
+jobs:
+  include:
+    - script: bundle exec rake
+    - script: cd lara-plugin-api-V2 && npm i && npm run test
+    - script: cd lara-typescript && npm i && npm run test
+    - script: ./script/cypress-on-travis.sh || travis_terminate 1;
 
 env:
   global:
@@ -12,6 +19,7 @@ env:
     - RAILS_STDOUT_LOGGING= # TravisCI terminates job if it logs to STDOUT too much
 
 before_install:
+  - sudo apt-get -y install libgconf-2-4 libatk-bridge2.0-0 # for Cypress tests
   - gem update bundler
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
@@ -25,14 +33,6 @@ before_script:
   - mysql -e 'create database lara_test;'
   - bundle exec rake db:migrate
 
-# uncomment this line if your project needs to run something other than `rake`:
-script:
-  - bundle exec rake
-  - cd lara-plugin-api-V2 && npm i && npm run test
-  - cd - && cd lara-typescript && npm i && npm run test
-  - cd -
-#  - bundle exec rake jasmine:ci
-
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
@@ -45,3 +45,6 @@ branches:
   except:
     - staging
     - production
+
+addons:
+  chrome: stable

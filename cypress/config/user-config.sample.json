@@ -7,6 +7,10 @@
     "username": "staging_test_user@test.email",
     "password": "secret_password"
   },
+  "travis": {
+    "username": "travis@example.com",
+    "password": "travis_password"
+  },
   "dev": {
     "baseUrl": "http://app.lara.docker",
     "username": "dev_test_user@test.email",

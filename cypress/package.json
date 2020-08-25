@@ -6,11 +6,13 @@
   "scripts": {
     "test:dev": "cypress open --env testEnv=dev",
     "test:staging": "cypress open --env testEnv=staging",
+    "test:travis": "cypress open --env testEnv=travis",
     "test:production": "cypress open --env testEnv=production"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "^4.7.0"
+    "cypress": "^4.11.0",
+    "wait-on": "^5.1.0"
   }
 }
