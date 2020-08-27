@@ -161,7 +161,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-function unwrapExports (x) {
+function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
@@ -397,34 +397,6 @@ exports.typeOf = typeOf;
   })();
 }
 });
-var reactIs_development_1 = reactIs_development.AsyncMode;
-var reactIs_development_2 = reactIs_development.ConcurrentMode;
-var reactIs_development_3 = reactIs_development.ContextConsumer;
-var reactIs_development_4 = reactIs_development.ContextProvider;
-var reactIs_development_5 = reactIs_development.Element;
-var reactIs_development_6 = reactIs_development.ForwardRef;
-var reactIs_development_7 = reactIs_development.Fragment;
-var reactIs_development_8 = reactIs_development.Lazy;
-var reactIs_development_9 = reactIs_development.Memo;
-var reactIs_development_10 = reactIs_development.Portal;
-var reactIs_development_11 = reactIs_development.Profiler;
-var reactIs_development_12 = reactIs_development.StrictMode;
-var reactIs_development_13 = reactIs_development.Suspense;
-var reactIs_development_14 = reactIs_development.isAsyncMode;
-var reactIs_development_15 = reactIs_development.isConcurrentMode;
-var reactIs_development_16 = reactIs_development.isContextConsumer;
-var reactIs_development_17 = reactIs_development.isContextProvider;
-var reactIs_development_18 = reactIs_development.isElement;
-var reactIs_development_19 = reactIs_development.isForwardRef;
-var reactIs_development_20 = reactIs_development.isFragment;
-var reactIs_development_21 = reactIs_development.isLazy;
-var reactIs_development_22 = reactIs_development.isMemo;
-var reactIs_development_23 = reactIs_development.isPortal;
-var reactIs_development_24 = reactIs_development.isProfiler;
-var reactIs_development_25 = reactIs_development.isStrictMode;
-var reactIs_development_26 = reactIs_development.isSuspense;
-var reactIs_development_27 = reactIs_development.isValidElementType;
-var reactIs_development_28 = reactIs_development.typeOf;
 
 var reactIs = createCommonjsModule(function (module) {
 
@@ -6903,13 +6875,6 @@ formatters.j = function (v) {
   }
 };
 });
-var browser_1 = browser.log;
-var browser_2 = browser.formatArgs;
-var browser_3 = browser.save;
-var browser_4 = browser.load;
-var browser_5 = browser.useColors;
-var browser_6 = browser.storage;
-var browser_7 = browser.colors;
 
 var esrever = createCommonjsModule(function (module, exports) {
 (function(root) {
@@ -8243,6 +8208,10 @@ function baseSet(object, path, value, customizer) {
     var key = _toKey(path[index]),
         newValue = value;
 
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      return object;
+    }
+
     if (index != lastIndex) {
       var objValue = nested[key];
       newValue = customizer ? customizer(objValue, key, nested) : undefined;
@@ -9421,11 +9390,11 @@ var _baseKeysIn = baseKeysIn;
  * _.keysIn(new Foo);
  * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
  */
-function keysIn$1(object) {
+function keysIn(object) {
   return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
 }
 
-var keysIn_1 = keysIn$1;
+var keysIn_1 = keysIn;
 
 /**
  * The base implementation of `_.assignIn` without support for multiple sources
@@ -10183,7 +10152,7 @@ function baseClone(value, bitmask, customizer, key, object, stack) {
 
   var keysFunc = isFull
     ? (isFlat ? _getAllKeysIn : _getAllKeys)
-    : (isFlat ? keysIn : keys_1);
+    : (isFlat ? keysIn_1 : keys_1);
 
   var props = isArr ? undefined : keysFunc(value);
   _arrayEach(props || value, function(subValue, key) {
@@ -28202,13 +28171,6 @@ formatters.j = function (v) {
   }
 };
 });
-var browser_1$1 = browser$1.log;
-var browser_2$1 = browser$1.formatArgs;
-var browser_3$1 = browser$1.save;
-var browser_4$1 = browser$1.load;
-var browser_5$1 = browser$1.useColors;
-var browser_6$1 = browser$1.storage;
-var browser_7$1 = browser$1.colors;
 
 /**
  * Module exports.
@@ -29192,15 +29154,6 @@ exports.toKeyCode = toKeyCode;
 exports.toKeyName = toKeyName;
 });
 
-unwrapExports(lib);
-var lib_1 = lib.isHotkey;
-var lib_2 = lib.isCodeHotkey;
-var lib_3 = lib.isKeyHotkey;
-var lib_4 = lib.parseHotkey;
-var lib_5 = lib.compareHotkey;
-var lib_6 = lib.toKeyCode;
-var lib_7 = lib.toKeyName;
-
 /**
  * Hotkey mappings for each platform.
  *
@@ -29265,9 +29218,9 @@ KEYS.forEach(function (key) {
   var apple = APPLE_HOTKEYS[key];
   var windows = WINDOWS_HOTKEYS[key];
 
-  var isGeneric = generic && lib_3(generic);
-  var isApple = apple && lib_3(apple);
-  var isWindows = windows && lib_3(windows);
+  var isGeneric = generic && lib.isKeyHotkey(generic);
+  var isApple = apple && lib.isKeyHotkey(apple);
+  var isWindows = windows && lib.isKeyHotkey(windows);
 
   Hotkeys[method] = function (event) {
     if (isGeneric && isGeneric(event)) return true;
@@ -37177,7 +37130,8 @@ function getTagForBlock(node) {
     if (!Block.isBlock(node))
         return undefined;
     var format = node.type, data = node.data;
-    return data.get("tag") || kFormatToTagMap[format];
+    // only use the imported tag for generic <div> elements
+    return (node.type === EFormat.block ? data.get("tag") : "") || kFormatToTagMap[format];
 }
 function getDataFromBlockElement(el) {
     var tag = el.tagName.toLowerCase();
@@ -37674,55 +37628,6 @@ function CoreMarksPlugin() {
     };
 }
 
-var classnames = createCommonjsModule(function (module) {
-/*!
-  Copyright (c) 2017 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg) && arg.length) {
-				var inner = classNames.apply(null, arg);
-				if (inner) {
-					classes.push(inner);
-				}
-			} else if (argType === 'object') {
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if ( module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else {
-		window.classNames = classNames;
-	}
-}());
-});
-
 /** Used to compose bitmasks for cloning. */
 var CLONE_SYMBOLS_FLAG$2 = 4;
 
@@ -37785,7 +37690,7 @@ function renderImage(node, attributes, children, options) {
     var constrain = data.get("constrain") !== false;
     var constrainClass = constrain ? undefined : "ccrte-no-constrain";
     var floatClasses = getClassesForFloatValue(data.get("float"));
-    var classes = classnames(classArray(className), highlightClass, constrainClass, floatClasses) || undefined;
+    var classes = dedupe(classArray(className), highlightClass, constrainClass, floatClasses) || undefined;
     var onLoad = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onLoad;
     var onClick = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onClick;
     var onDoubleClick = (options === null || options === void 0 ? void 0 : options.isSerializing) ? undefined : options === null || options === void 0 ? void 0 : options.onDoubleClick;
@@ -38631,10 +38536,11 @@ function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
   if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
     return false;
   }
-  // Assume cyclic values are equal.
-  var stacked = stack.get(array);
-  if (stacked && stack.get(other)) {
-    return stacked == other;
+  // Check that cyclic values are equal.
+  var arrStacked = stack.get(array);
+  var othStacked = stack.get(other);
+  if (arrStacked && othStacked) {
+    return arrStacked == other && othStacked == array;
   }
   var index = -1,
       result = true,
@@ -38869,10 +38775,11 @@ function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
       return false;
     }
   }
-  // Assume cyclic values are equal.
-  var stacked = stack.get(object);
-  if (stacked && stack.get(other)) {
-    return stacked == other;
+  // Check that cyclic values are equal.
+  var objStacked = stack.get(object);
+  var othStacked = stack.get(other);
+  if (objStacked && othStacked) {
+    return objStacked == other && othStacked == object;
   }
   var result = true;
   stack.set(object, other);
@@ -40104,18 +40011,11 @@ exports.toKeyCode = toKeyCode;
 exports.toKeyName = toKeyName;
 });
 
-var isHotkey = unwrapExports(lib$1);
-var lib_1$1 = lib$1.isHotkey;
-var lib_2$1 = lib$1.isCodeHotkey;
-var lib_3$1 = lib$1.isKeyHotkey;
-var lib_4$1 = lib$1.parseHotkey;
-var lib_5$1 = lib$1.compareHotkey;
-var lib_6$1 = lib$1.toKeyCode;
-var lib_7$1 = lib$1.toKeyName;
+var isHotkey = /*@__PURE__*/getDefaultExportFromCjs(lib$1);
 
 var useHotkeyMap = function (hotkeyMap) {
     return Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () {
-        return map_1(hotkeyMap, function (invoker, hotkey) { return ({ isHotkey: lib_3$1(hotkey), invoker: invoker }); });
+        return map_1(hotkeyMap, function (invoker, hotkey) { return ({ isHotkey: lib$1.isKeyHotkey(hotkey), invoker: invoker }); });
     }, [hotkeyMap]);
 };
 
@@ -42459,7 +42359,7 @@ var keyframes = function keyframes() {
   };
 };
 
-var classnames$1 = function classnames(args) {
+var classnames = function classnames(args) {
   var len = args.length;
   var i = 0;
   var cls = '';
@@ -42548,7 +42448,7 @@ var ClassNames = withEmotionCache(function (props, context) {
         args[_key2] = arguments[_key2];
       }
 
-      return merge(context.registered, css, classnames$1(args));
+      return merge(context.registered, css, classnames(args));
     };
 
     var content = {
@@ -43024,7 +42924,7 @@ AutosizeInput.defaultProps = {
 exports.default = AutosizeInput;
 });
 
-var AutosizeInput = unwrapExports(AutosizeInput_1);
+var AutosizeInput = /*@__PURE__*/getDefaultExportFromCjs(AutosizeInput_1);
 
 function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
 
@@ -47295,7 +47195,7 @@ var lodash = createCommonjsModule(function (module, exports) {
   var undefined$1;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.19';
+  var VERSION = '4.17.20';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -62871,7 +62771,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
      *
      * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
+     * _.filter(objects, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
      * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
@@ -62908,7 +62808,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      * // => { 'a': 4, 'b': 5, 'c': 6 }
      *
      * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
+     * _.filter(objects, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
      * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
@@ -64438,6 +64338,7 @@ function isToolEntryFormat(entry, format) {
 var SlateToolbar = function (props) {
     var _a, _b, _c;
     var className = props.className, editor = props.editor, order = props.order, others = __rest(props, ["className", "editor", "order"]);
+    var changeCount = props.changeCount, colors = props.colors;
     var _d = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false), showDialog = _d[0], setShowDialog = _d[1];
     var settingsRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
     var validValuesRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
@@ -64466,7 +64367,7 @@ var SlateToolbar = function (props) {
             validateFieldValues();
         }
     }); }, [editor]);
-    var buttons = [
+    var buttons = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () { return [
         {
             format: EFormat.bold,
             SvgIcon: IconBold,
@@ -64517,23 +64418,22 @@ var SlateToolbar = function (props) {
             onClick: function () { return editor && handleToggleSuperSubscript(EFormat.subscript, editor); }
         },
         (function () {
-            var _a, _b;
             var selection;
-            var fill = editor && editor.query("getActiveColor") || "#000000";
+            var fill = (editor === null || editor === void 0 ? void 0 : editor.query("getActiveColor")) || "#000000";
             return {
                 format: EFormat.color,
                 SvgIcon: InputColor,
-                colors: __assign(__assign({}, (_a = props.colors) === null || _a === void 0 ? void 0 : _a.buttonColors), { fill: fill }),
-                selectedColors: __assign(__assign({}, (_b = props.colors) === null || _b === void 0 ? void 0 : _b.selectedColors), { fill: fill }),
+                colors: __assign(__assign({}, colors === null || colors === void 0 ? void 0 : colors.buttonColors), { fill: fill }),
+                selectedColors: __assign(__assign({}, colors === null || colors === void 0 ? void 0 : colors.selectedColors), { fill: fill }),
                 tooltip: getPlatformTooltip("color"),
                 isActive: !!editor && editor.query("hasActiveColorMark"),
                 onMouseDown: function () {
                     // cache selection - interaction with platform color picker can blur
-                    selection = editor && editor.value.selection.toJSON();
+                    selection = editor === null || editor === void 0 ? void 0 : editor.value.selection.toJSON();
                 },
                 onChange: function (value) {
-                    // restore the selection
-                    editor && selection && editor.select(selection);
+                    // restore the selection (with gratuitous use of changeCount to quiet hooks warning)
+                    editor && selection && (changeCount >= 0) && editor.select(selection);
                     return editor === null || editor === void 0 ? void 0 : editor.command("setColorMark", value);
                 }
             };
@@ -64636,7 +64536,7 @@ var SlateToolbar = function (props) {
             isActive: false,
             onClick: function () { return editor === null || editor === void 0 ? void 0 : editor.command("increaseFontSize"); }
         }
-    ];
+    ]; }, [changeCount, dialogController, editor, colors === null || colors === void 0 ? void 0 : colors.buttonColors, colors === null || colors === void 0 ? void 0 : colors.selectedColors]);
     var _buttons = Object(react__WEBPACK_IMPORTED_MODULE_0__["useMemo"])(function () {
         if (!order)
             return buttons;
@@ -64753,7 +64653,7 @@ var SlateContainer = function (props) {
     var toolbar = portalRoot
         ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SlateToolbarPortal, __assign({ portalRoot: portalRoot, className: toolbarClasses, editor: editorRef.current, changeCount: changeCount }, toolbarOthers))
         : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SlateToolbar, __assign({ className: toolbarClasses, editor: editorRef.current, changeCount: changeCount }, toolbarOthers));
-    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "slate-container " + (className || "") },
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "ccrte-container slate-container " + (className || "") },
         toolbar,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SlateEditor, __assign({ className: editorClassName, value: props.value, hotkeyMap: props.hotkeyMap || hotkeyMap, onEditorRef: handleEditorRef, onValueChange: function (value) {
                 onValueChange === null || onValueChange === void 0 ? void 0 : onValueChange(value);

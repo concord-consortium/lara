@@ -1,8 +1,8 @@
 // These styles are applied to Slate Editor WYSIWYG blocks (while user is editing).
-.slate-editor {
+.ccrte-editor {
   height: 175px;
 }
-.slate-container {
+.ccrte-container {
   border: solid 1px #dfdfdf;
 
   .ccrte-toolbar {
@@ -33,6 +33,18 @@
     }
   }
   .ccrte-editor {
+    p, blockquote, h1, h2, h3, h4, h5, h6, ol, ul {
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      font: unset;
+      font-size: unset;
+    }
+    h1 { font-size: 1.6em; font-weight: bold; }
+    h2 { font-size: 1.5em; font-weight: bold; }
+    h3 { font-size: 1.4em; font-weight: bold; }
+    h4 { font-size: 1.3em; font-weight: bold; }
+    h5 { font-size: 1.2em; font-weight: bold; }
+    h6 { font-size: 1.1em; font-weight: bold; }
     img {
       max-width: 100%;
     }
@@ -41,9 +53,6 @@
     }
     ul li {
       list-style: disc;
-    }
-    li, p {
-      margin-bottom: 1em;
     }
   }
 }
@@ -66,10 +75,10 @@ textarea.wysiwyg, textarea.wysiwyg-minimal {
   textarea {
     margin-top: 20px;
   }
-  .slate-editor {
+  .ccrte-editor {
     margin-top: 5px;
 
-    .slate-container {
+    .ccrte-container {
       margin-top: 15px;
     }
   }
