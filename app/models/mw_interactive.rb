@@ -176,4 +176,8 @@ class MwInteractive < ActiveRecord::Base
     # mirror managed_interactive has thumbnail_url which proxies to library_interactive
     image_url
   end
+
+  def question
+    self
+  end
 end

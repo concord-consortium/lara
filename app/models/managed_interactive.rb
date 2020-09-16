@@ -245,4 +245,8 @@ class ManagedInteractive < ActiveRecord::Base
   def prompt
     name
   end
+
+  def question
+    self
+  end
 end

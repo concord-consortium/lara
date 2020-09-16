@@ -38,6 +38,21 @@ describe InteractiveRunState do
         end
       end
     end
+    describe "InteractiveRunState#default_answer" do
+      let(:interactive1) { FactoryGirl.create(:mw_interactive) }
+      let(:interactive2) { FactoryGirl.create(:managed_interactive) }
+      let(:run_state1) { InteractiveRunState.by_run_and_interactive(run, interactive1) }
+      let(:run_state2) { InteractiveRunState.by_run_and_interactive(run, interactive2) }
+      it "should return the interactive based on the conditions" do
+        make run_state1
+        make run_state2
+        answer1 = InteractiveRunState.default_answer({run: run, question: interactive1})
+        answer2 = InteractiveRunState.default_answer({run: run, question: interactive2})
+        expect(answer1).to eq interactive1
+        expect(answer2).to eq interactive2
+        expect(run.interactive_run_states.length).to eq 2
+      end
+    end
   end
 
   describe "instance methods" do
