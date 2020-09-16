@@ -44,11 +44,6 @@ class InteractiveRunState < ActiveRecord::Base
     mapping[type] || "iframe_interactive"
   end
 
-  def self.default_answer(conditions)
-    # return the interactive (refered to as question by the answer finder) as the answer
-    conditions[:question]
-  end
-
   def question
     interactive
   end

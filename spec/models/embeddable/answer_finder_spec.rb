@@ -21,10 +21,6 @@ describe Embeddable::AnswerFinder do
         expect(answer).to be_an_instance_of Embeddable::MultipleChoiceAnswer
         answer = finder.find_answer(image)
         expect(answer).to be_an_instance_of Embeddable::ImageQuestionAnswer
-        answer = finder.find_answer(mw_interactive)
-        expect(answer).to be_an_instance_of MwInteractive
-        answer = finder.find_answer(managed_interactive)
-        expect(answer).to be_an_instance_of ManagedInteractive
       end
 
       context 'when the question is an ImageQuestion with an author-defined background' do
@@ -56,7 +52,11 @@ describe Embeddable::AnswerFinder do
       it "should return the Embeddable itself" do
         finder = Embeddable::AnswerFinder.new(run)
         answer = finder.find_answer(html)
-        expect(answer).to eq(html) # embeddable was returned as-is
+        expect(answer).to eq(html)
+        answer = finder.find_answer(mw_interactive)
+        expect(answer).to eq(mw_interactive)
+        answer = finder.find_answer(managed_interactive)
+        expect(answer).to be(managed_interactive)
       end
     end
   end

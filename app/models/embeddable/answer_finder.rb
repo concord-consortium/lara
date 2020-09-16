@@ -73,10 +73,6 @@ module Embeddable
         return Embeddable::MultipleChoiceAnswer
       when Embeddable::Labbook
         return Embeddable::LabbookAnswer
-      when MwInteractive
-        return InteractiveRunState
-      when ManagedInteractive
-        return InteractiveRunState
       end
       return nil
     end
