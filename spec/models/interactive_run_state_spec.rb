@@ -38,6 +38,14 @@ describe InteractiveRunState do
         end
       end
     end
+    describe "InteractiveRunState#default_answer" do
+      it "generates a run" do
+        answer = InteractiveRunState.default_answer({run: run, question: interactive})
+        expect(answer).to be_instance_of(InteractiveRunState)
+        expect(answer.run).to eq run
+        expect(answer.interactive).to eq interactive
+      end
+    end
   end
 
   describe "instance methods" do

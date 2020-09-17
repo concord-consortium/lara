@@ -44,6 +44,13 @@ class InteractiveRunState < ActiveRecord::Base
     mapping[type] || "iframe_interactive"
   end
 
+  def self.default_answer(conditions)
+    InteractiveRunState.create({
+      run: conditions[:run],
+      interactive: conditions[:question]
+    })
+  end
+
   def question
     interactive
   end
