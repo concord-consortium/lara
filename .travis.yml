@@ -12,7 +12,7 @@ env:
     - RAILS_STDOUT_LOGGING= # TravisCI terminates job if it logs to STDOUT too much
 
 before_install:
-  - gem update bundler
+  - gem install bundler:1.17.3
   - nvm install 11.14.0
   - bundle config gems.railslts.com $RAILS_LTS_USER:$RAILS_LTS_PASSWORD
 
