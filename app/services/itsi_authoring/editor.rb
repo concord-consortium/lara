@@ -126,7 +126,7 @@ class ITSIAuthoring::Editor
   def managed_interactive_json(i)
     {
       type: 'managed_interactive',
-      name: i.library_interactive.name,
+      name: i.library_interactive&.name,
       is_hidden: i.is_hidden,
       url: i.url,
       authored_state: i.authored_state,
