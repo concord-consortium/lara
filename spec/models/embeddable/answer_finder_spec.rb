@@ -1,11 +1,13 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 describe Embeddable::AnswerFinder do
-  let(:open_response)  { FactoryGirl.create(:open_response)  }
-  let(:multiple_choice){ FactoryGirl.create(:multiple_choice)}
-  let(:html)           { FactoryGirl.create(:xhtml)          }
-  let(:image)          { FactoryGirl.create(:image_question) }
-  let(:run)            { FactoryGirl.create(:run)            }
+  let(:open_response)       { FactoryGirl.create(:open_response)       }
+  let(:multiple_choice)     { FactoryGirl.create(:multiple_choice)     }
+  let(:html)                { FactoryGirl.create(:xhtml)               }
+  let(:image)               { FactoryGirl.create(:image_question)      }
+  let(:mw_interactive)      { FactoryGirl.create(:mw_interactive)      }
+  let(:managed_interactive) { FactoryGirl.create(:managed_interactive) }
+  let(:run)                 { FactoryGirl.create(:run)                 }
 
   describe "#find_answer" do
 
@@ -18,6 +20,12 @@ describe Embeddable::AnswerFinder do
         expect(answer).to be_an_instance_of Embeddable::MultipleChoiceAnswer
         answer = finder.find_answer(image)
         expect(answer).to be_an_instance_of Embeddable::ImageQuestionAnswer
+        answer = finder.find_answer(mw_interactive)
+        expect(answer).to be_an_instance_of InteractiveRunState
+        expect(answer.question).to be mw_interactive
+        answer = finder.find_answer(managed_interactive)
+        expect(answer).to be_an_instance_of InteractiveRunState
+        expect(answer.question).to be managed_interactive
       end
 
       context 'when the question is an ImageQuestion with an author-defined background' do
