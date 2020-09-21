@@ -30,10 +30,15 @@ describe ITSIAuthoring::Editor do
                                                  library_interactive: library_interactive2,
                                                  url_fragment: "test2"
                                                 )}
+  let(:managed_interactive3) { FactoryGirl.create(:managed_interactive,
+                                                 library_interactive: nil,
+                                                 url_fragment: "test3"
+                                                )}
 
   before(:each) do
     page.add_interactive(managed_interactive1)
     page.add_embeddable(managed_interactive2)
+    page.add_embeddable(managed_interactive3)
     page.reload
     activity.pages << page
   end
@@ -61,6 +66,24 @@ describe ITSIAuthoring::Editor do
             type: "managed_interactive",
             name: "Test Library Interactive 2",
             url: "https://concord.org/test2"
+          )
+        )
+      )
+    )
+  end
+
+  it "does not generate JSON for a managed interactive that does not have a library interactive" do
+    editor = ITSIAuthoring::Editor.new(activity)
+    itsi_content = editor.to_json
+    expect(itsi_content).to have_key(:sections)
+    expect(itsi_content[:sections].length).to eq(1)
+    expect(itsi_content[:sections].first).not_to match(
+      hash_including(
+        embeddables: include(
+          hash_including(
+            type: "managed_interactive",
+            name: nil,
+            url: "https://concord.org/test3"
           )
         )
       )
