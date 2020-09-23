@@ -204,12 +204,14 @@ export interface IContextMembership {
 // client requests only (no responses from lara)
 //
 
+export type ICustomMessageOptions = Record<string, any>;
+
 export interface ISupportedFeatures {
   aspectRatio?: number;
   authoredState?: boolean;
   interactiveState?: boolean;
   customMessages?: {
-    handles?: string[];
+    handles?: Record<string, boolean | ICustomMessageOptions>;
     // TODO: extend later to allow for sending custom messages from interactive
   };
 }
@@ -284,8 +286,9 @@ export interface IClosedModal {
 
 export interface ICustomMessage {
   type: string;
-  content: object;
+  content: Record<string, any>;
 }
+export type ICustomMessageHandler = (message: ICustomMessage) => void;
 
 export interface ISetLinkedInteractives {
   linkedInteractives?: ILinkedInteractive[];

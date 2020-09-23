@@ -19,7 +19,8 @@ import {
   IHintRequest,
   IJwtResponse,
   IGetInteractiveListRequest,
-  ISetLinkedInteractivesRequest
+  ISetLinkedInteractivesRequest,
+  ICustomMessageHandler
 } from "./types";
 import { getClient } from "./client";
 
@@ -240,6 +241,14 @@ export const showModal = (options: IShowModal) => {
   else {
     THROW_NOT_IMPLEMENTED_YET(`showModal { type: "${options.type}" }`);
   }
+};
+
+export const addCustomMessageListener = (callback: ICustomMessageHandler) => {
+  getClient().addListener("customMessage", callback);
+};
+
+export const removeCustomMessageListener = () => {
+  getClient().removeListener("customMessage");
 };
 
 /**
