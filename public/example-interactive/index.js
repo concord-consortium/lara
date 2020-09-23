@@ -31490,6 +31490,13 @@ exports.ReportComponent = function (_a) {
 
 "use strict";
 
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RuntimeComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -31510,13 +31517,27 @@ exports.RuntimeComponent = function (_a) {
             });
         }
     }, [authoredState]);
+    var _c = useState([]), customMessages = _c[0], setCustomMessages = _c[1];
+    interactive_api_client_1.useCustomMessages(function (msg) {
+        setCustomMessages(function (messages) { return __spreadArrays(messages, [msg]); });
+    });
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Runtime Init Message"),
             React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2))),
         React.createElement("fieldset", null,
             React.createElement("legend", null, "FirebaseJWT Response"),
-            React.createElement("div", { className: "padded monospace pre" }, rawFirebaseJwt))));
+            React.createElement("div", { className: "padded monospace pre" }, rawFirebaseJwt)),
+        React.createElement("fieldset", null,
+            React.createElement("legend", null, "Custom Messages Received"),
+            React.createElement("div", { className: "padded monospace pre" },
+                React.createElement("table", null,
+                    React.createElement("thead", null,
+                        React.createElement("th", null, "Type"),
+                        React.createElement("th", null, "Content")),
+                    React.createElement("tbody", null, customMessages.map(function (msg, i) { return (React.createElement("tr", { key: i + "-" + msg.type },
+                        React.createElement("td", null, msg.type),
+                        React.createElement("td", null, msg.content))); })))))));
 };
 
 
@@ -31561,7 +31582,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31760,6 +31781,12 @@ exports.showModal = function (options) {
     else {
         THROW_NOT_IMPLEMENTED_YET("showModal { type: \"" + options.type + "\" }");
     }
+};
+exports.addCustomMessageListener = function (callback) {
+    client_1.getClient().addListener("customMessage", callback);
+};
+exports.removeCustomMessageListener = function () {
+    client_1.getClient().removeListener("customMessage");
 };
 /**
  * @todo Implement this function.
@@ -32001,7 +32028,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
+exports.useCustomMessages = exports.useInitMessage = exports.useGlobalInteractiveState = exports.useAuthoredState = exports.useInteractiveState = void 0;
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var client = __webpack_require__(/*! ./api */ "./src/interactive-api-client/api.ts");
 var handleUpdate = function (newStateOrUpdateFunc, prevState) {
@@ -32105,6 +32132,12 @@ exports.useInitMessage = function () {
         }); })();
     }, []);
     return initMessage;
+};
+exports.useCustomMessages = function (callback) {
+    react_1.useEffect(function () {
+        client.addCustomMessageListener(callback);
+        return function () { return client.removeCustomMessageListener(); };
+    }, []);
 };
 
 

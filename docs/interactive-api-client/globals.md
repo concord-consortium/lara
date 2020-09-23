@@ -75,6 +75,8 @@
 * [IAuthoringClientMessage](globals.md#iauthoringclientmessage)
 * [IAuthoringMetadata](globals.md#iauthoringmetadata)
 * [IAuthoringServerMessage](globals.md#iauthoringservermessage)
+* [ICustomMessageHandler](globals.md#icustommessagehandler)
+* [ICustomMessageOptions](globals.md#icustommessageoptions)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
 * [IRuntimeMetadata](globals.md#iruntimemetadata)
@@ -94,6 +96,7 @@
 ### Functions
 
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
+* [addCustomMessageListener](globals.md#const-addcustommessagelistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
@@ -110,6 +113,7 @@
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
+* [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [setAuthoredState](globals.md#const-setauthoredstate)
@@ -122,6 +126,7 @@
 * [setSupportedFeatures](globals.md#const-setsupportedfeatures)
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
+* [useCustomMessages](globals.md#const-usecustommessages)
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
@@ -179,6 +184,28 @@ ___
 ###  IAuthoringServerMessage
 
 Ƭ **IAuthoringServerMessage**: *"interactiveList"*
+
+___
+
+###  ICustomMessageHandler
+
+Ƭ **ICustomMessageHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [ICustomMessage](interfaces/icustommessage.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [ICustomMessage](interfaces/icustommessage.md) |
+
+___
+
+###  ICustomMessageOptions
+
+Ƭ **ICustomMessageOptions**: *Record‹string, any›*
 
 ___
 
@@ -273,6 +300,20 @@ ___
 Name | Type |
 ------ | ------ |
 `authoredState` | AuthoredState |
+
+**Returns:** *void*
+
+___
+
+### `Const` addCustomMessageListener
+
+▸ **addCustomMessageListener**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
 
 **Returns:** *void*
 
@@ -508,6 +549,14 @@ ___
 Name | Type |
 ------ | ------ |
 `authoredState` | AuthoredState |
+
+**Returns:** *void*
+
+___
+
+### `Const` removeCustomMessageListener
+
+▸ **removeCustomMessageListener**(): *void*
 
 **Returns:** *void*
 
@@ -760,6 +809,20 @@ ___
 * **authoredState**: *null | AuthoredState*
 
 * **setAuthoredState**: *handleSetAuthoredState* = handleSetAuthoredState
+
+___
+
+### `Const` useCustomMessages
+
+▸ **useCustomMessages**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
+
+**Returns:** *void*
 
 ___
 
