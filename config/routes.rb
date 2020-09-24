@@ -215,8 +215,8 @@ LightweightStandalone::Application.routes.draw do
   # These routes didn't work as nested resources
   delete "/embeddable/multiple_choice/:id/remove_choice/:choice_id" => 'embeddable/multiple_choices#remove_choice', :as => 'remove_choice_embeddable_multiple_choice', :constraints => { :id => /\d+/, :choice_id => /\d+/ }
   delete "/video_interactives/:id/remove_source/:source_id" => "video_interactives#remove_source", :as => 'remove_source_video_interactive', :constraints => { :id => /\d+/, :source_id => /\d+/ }
-  post "/pages/:id/remove_embeddable/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
-  post "/pages/:id/hideshow_embeddable/:embeddable_id" => 'interactive_pages#toggle_hideshow_embeddable', :as => 'page_hideshow_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
+  post "/pages/:id/remove_embeddable/:embeddable_type/:embeddable_id" => 'interactive_pages#remove_embeddable', :as => 'page_remove_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
+  post "/pages/:id/hideshow_embeddable/:embeddable_type/:embeddable_id" => 'interactive_pages#toggle_hideshow_embeddable', :as => 'page_hideshow_embeddable', :constraints => { :id => /\d+/, :embeddable_id => /\d+/ }
   get "/embeddable/multiple_choice/:id/check" => 'embeddable/multiple_choices#check', :as => 'check_multiple_choice_answer', :constraints => { :id => /\d+/ }
   get "/activities/:activity_id/pages/:id/:run_key" => 'interactive_pages#show', :as => 'page_with_run', :constraints => { :id => /\d+/, :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
   get "/activities/:activity_id/summary/:run_key" => 'lightweight_activities#summary', :as => 'summary_with_run', :constraints => { :activity_id => /\d+/, :run_key => /[-\w]{36}/ }
