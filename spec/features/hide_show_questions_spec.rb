@@ -8,7 +8,7 @@ feature "Activity page", :js => true do
   let(:activity_page) { activity.pages.first }
   let(:question)     { activity.reportable_items.find {|q| q.class == Embeddable::OpenResponse} }
   let(:activity_page_url) { edit_activity_page_path(activity, activity_page) }
-  let(:hideshow_url) { page_hideshow_embeddable_path(activity_page, question) }
+  let(:hideshow_url) { page_hideshow_embeddable_path(activity_page, question.class.to_s, question.id) }
 
   before :each do
     login_as user, :scope => :user

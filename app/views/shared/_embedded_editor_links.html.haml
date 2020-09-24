@@ -50,19 +50,19 @@
     = t("TRACKED_QUESTION.CANT_EDIT")
 - else
   - if allow_hide
-    = link_to "show", page_hideshow_embeddable_path(page, embeddable),
+    = link_to "show", page_hideshow_embeddable_path(page, embeddable.class.to_s, embeddable.id),
       :remote => true,
       :method => :post,
       :id => "show-#{dash_id}",
       :onclick => "toggle_hide_#{under_id}()"
-    = link_to "hide", page_hideshow_embeddable_path(page, embeddable),
+    = link_to "hide", page_hideshow_embeddable_path(page, embeddable.class.to_s, embeddable.id),
       :remote => true,
       :method => :post,
       :id => "hide-#{dash_id}",
       :onclick => @activity.active_runs > 0 ? "confirm('#{confirm_hide}') && toggle_hide_#{under_id}()" : "toggle_hide_#{under_id}()"
   = link_to "edit", edit_path, :remote => true, :id => "edit-embed-#{dash_id}"
 
-= link_to "remove", page_remove_embeddable_path(page, embeddable), :method => :post, :data => {:confirm => confirm_delete }
+= link_to "remove", page_remove_embeddable_path(page, embeddable.class.to_s, embeddable.id), :method => :post, :data => {:confirm => confirm_delete }
 - if params["edit_#{type}".to_sym].to_i == embeddable.id
   :javascript
     $("a[id^=edit-embed-#{dash_id}]").click()

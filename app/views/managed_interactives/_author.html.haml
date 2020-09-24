@@ -2,8 +2,8 @@
   .embeddable_options
     .model-edit
       .interactive-content
-        %div{:id => "authorable-interactive-#{embeddable.id}"}
-  %div{:id => "interactive-preview-#{embeddable.id}"}
+        %div{:id => "authorable-interactive-#{embeddable.embeddable_dom_id}"}
+  %div{:id => "interactive-preview-#{embeddable.embeddable_dom_id}"}
   = render :partial => "shared/embedded_editor_wrapper_plugins", :locals => { :embeddable => embeddable }
 .embeddable_tools
   = render :partial => "shared/embedded_editor_links", :locals => { :embeddable => embeddable, :page => page, :type => 'managed_int', :allow_hide => allow_hide }
@@ -11,7 +11,7 @@
 - userInfo = current_user.nil? ? {loggedIn: false, authProvider: nil, email: nil} : {loggedIn: true, authProvider: (Concord::AuthPortal.url_for_strategy_name(current_user.most_recent_authentication.provider) rescue nil), email: current_user.email}
 :javascript
   $(document).ready( function() {
-    LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.id}"), {
+    LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(document.getElementById("interactive-preview-#{embeddable.embeddable_dom_id}"), {
       interactive: #{embeddable.to_authoring_preview_hash().to_json},
       user: #{userInfo.to_json}
     });

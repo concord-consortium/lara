@@ -431,7 +431,7 @@ describe InteractivePagesController do
         page1.add_embeddable(embeddable)
         page1.reload
         embed_count = page1.embeddables.length
-        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
+        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => embeddable.class.to_s, :embeddable_id => embeddable.id
 
         page1.reload
         expect(page1.embeddables.length).to eq(embed_count - 1)
@@ -441,7 +441,7 @@ describe InteractivePagesController do
       it 'redirects to the edit page' do
         embeddable = FactoryGirl.create(:xhtml)
         page1.add_embeddable(embeddable)
-        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
+        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_type => embeddable.class.to_s, :embeddable_id => embeddable.id
 
         act.reload
         expect(act.changed_by).to eq(@user)
