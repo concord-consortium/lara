@@ -27762,7 +27762,7 @@ exports.offInteractiveSupportedFeatures = function (handler) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
+exports.initializeLara = exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
@@ -27776,11 +27776,17 @@ var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/
 exports.PageItemAuthoring = PageItemAuthoring;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
+window.LARA || (window.LARA = {}); // create if it doesn't exist
 window.LARA.PluginAPI_V3 = PluginAPI;
 window.LARA.Plugins = Plugins;
 window.LARA.Events = Events;
 window.LARA.InteractiveAPI = InteractiveAPI;
 window.LARA.PageItemAuthoring = PageItemAuthoring;
+// for clients that don't require LARA to be a global on window
+function initializeLara() {
+    return window.LARA;
+}
+exports.initializeLara = initializeLara;
 
 
 /***/ }),
