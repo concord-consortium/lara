@@ -130,18 +130,18 @@ class InteractivePagesController < ApplicationController
     edit_embeddable_redirect(e)
   end
 
-  def remove_embeddable
+  def remove_page_item
     authorize! :update, @page
     update_activity_changed_by
-    PageItem.find_by_interactive_page_id_and_embeddable_type_and_embeddable_id(params[:id], params[:embeddable_type], params[:embeddable_id]).destroy
+    @page_item.destroy
     # We aren't removing the embeddable itself. But we would remove the tracked_question of the embeddable.
     redirect_to edit_activity_page_path(@activity, @page)
   end
 
-  def toggle_hideshow_embeddable
+  def toggle_hideshow_page_item
     authorize! :update, @page
     update_activity_changed_by
-    PageItem.find_by_interactive_page_id_and_embeddable_type_and_embeddable_id(params[:id], params[:embeddable_type], params[:embeddable_id]).toggle_hideshow_embeddable
+    @page_item.toggle_hideshow_embeddable
     if request.xhr?
       respond_with_nothing
     else
@@ -210,6 +210,10 @@ class InteractivePagesController < ApplicationController
       @activity = LightweightActivity.find(params[:activity_id], :include => :pages)
       @page = @activity.pages.find(params[:id])
       # TODO: Exception handling if the ID'd Page doesn't belong to the ID'd Activity
+    elsif params[:page_item_id]
+      @page_item = PageItem.find_by_id(params[:page_item_id])
+      @page = @page_item.interactive_page
+      @activity = @page.lightweight_activity
     else
       # I don't like this method much.
       @page = InteractivePage.find(params[:id], :include => :lightweight_activity)
