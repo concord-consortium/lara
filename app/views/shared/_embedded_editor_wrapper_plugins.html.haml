@@ -19,7 +19,7 @@
         .item
           #{plugin.name}
         .edit= link_to t("PLUGIN.EDIT"), edit_embeddable_embeddable_plugin_path(plugin), :remote => true, id: "edit-embed-#{dash_id}"
-        .delete= link_to t("PLUGIN.DELETE"), page_remove_embeddable_path(@page, plugin), method: :post, data: { confirm: t("PLUGIN.DELETE_WARNING") }
+        .delete= link_to t("PLUGIN.DELETE"), remove_page_item_path(plugin.p_item), method: :post, data: { confirm: t("PLUGIN.DELETE_WARNING") }
         - if params["edit_embeddable_plugin".to_sym].to_i == plugin.id
           :javascript
             $("a[id^=edit-embed-#{dash_id}]").click()

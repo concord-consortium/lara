@@ -425,13 +425,13 @@ describe InteractivePagesController do
       end
     end
 
-    describe 'remove_embeddable' do
+    describe 'remove_page_item' do
       it 'removes the identified embeddable from the page' do
         embeddable = FactoryGirl.create(:xhtml)
         page1.add_embeddable(embeddable)
         page1.reload
         embed_count = page1.embeddables.length
-        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
+        post :remove_page_item, :page_item_id => embeddable.p_item.id
 
         page1.reload
         expect(page1.embeddables.length).to eq(embed_count - 1)
@@ -441,7 +441,7 @@ describe InteractivePagesController do
       it 'redirects to the edit page' do
         embeddable = FactoryGirl.create(:xhtml)
         page1.add_embeddable(embeddable)
-        post :remove_embeddable, :activity_id => act.id, :id => page1.id, :embeddable_id => embeddable.id
+        post :remove_page_item, :page_item_id => embeddable.p_item.id
 
         act.reload
         expect(act.changed_by).to eq(@user)

@@ -10,7 +10,7 @@ allowing developers and testers to test out additions or changes to the interact
 The example interactive is deployed as part of the build.
 It can be found at `[lara-host]/example-interactive/`.
 For example the most recent production build is here:
-https://authoring.concord.org/example-interactive/
+https://authoring.concord.org/example-interactive/index.html
 
 If you are expanding the example interactive, it can be run locally:
 
