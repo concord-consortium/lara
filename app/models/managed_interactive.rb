@@ -143,13 +143,6 @@ class ManagedInteractive < ActiveRecord::Base
     hash
   end
 
-  def authoring_api_urls(protocol, host)
-    {
-      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil,
-      set_linked_interactives: interactive_page ? Rails.application.routes.url_helpers.api_v1_set_linked_interactives_url(id: interactive_page.id, protocol: protocol, host: host) : nil
-    }
-  end
-
   def to_interactive
     # NOTE: model_library_url is missing as there is no analog
     {
