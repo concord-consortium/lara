@@ -136,18 +136,6 @@ class ManagedInteractive < ActiveRecord::Base
     }
   end
 
-  # used for react-based authoring
-  def to_authoring_hash
-    hash = to_hash
-    hash[:id] = id
-    hash[:linked_interactive_id] = linked_interactive_id
-    hash[:linked_interactive_type] = linked_interactive_type
-    hash[:aspect_ratio] = aspect_ratio
-    hash[:interactive_item_id] = interactive_item_id
-    hash[:linked_interactive_item_id] = linked_interactive_item_id
-    hash
-  end
-
   def to_authoring_preview_hash
     # in preview mode we look like an interactive
     hash = to_interactive

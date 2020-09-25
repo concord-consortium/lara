@@ -2,17 +2,16 @@ import * as React from "react";
 import { useState, useRef } from "react";
 import Select from "react-select";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
-
 import { useLibraryInteractives, ILibraryInteractive } from "../common/hooks/use-library-interactives";
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
-
-import "react-tabs/style/react-tabs.css";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeManagedInteractive } from "./customize";
 import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
+import { ILinkedInteractive } from "../../interactive-api-client";
+import "react-tabs/style/react-tabs.css";
 
 interface Props {
   managedInteractive: IManagedInteractive;
@@ -55,6 +54,7 @@ export interface IManagedInteractive {
   custom_image_url: string;
   interactive_item_id: string;
   linked_interactive_item_id: string;
+  linked_interactives: ILinkedInteractive[];
 }
 
 const formField = RailsFormField<IManagedInteractive>("managed_interactive");
@@ -138,7 +138,8 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         ? libraryInteractive.aspect_ratio_method
         : managedInteractive.custom_aspect_ratio_method,
       authored_state: managedInteractive.authored_state,
-      interactive_item_id: managedInteractive.interactive_item_id
+      interactive_item_id: managedInteractive.interactive_item_id,
+      linked_interactives: managedInteractive.linked_interactives
     };
 
     const handleAuthoredStateChange = (newAuthoredState: string | object) => {

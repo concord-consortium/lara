@@ -28813,7 +28813,6 @@ var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
 exports.InteractiveAuthoring = function (props) {
     var interactive = props.interactive, onAuthoredStateChange = props.onAuthoredStateChange, allowReset = props.allowReset, authoringApiUrls = props.authoringApiUrls;
-    var iframe = react_1.useRef(null);
     var _a = react_1.useState(false), authoringSupported = _a[0], setAuthoringSupported = _a[1];
     var _b = react_1.useState(typeof interactive.authored_state === "string"
         ? JSON.parse(interactive.authored_state || "{}")
@@ -28842,7 +28841,8 @@ exports.InteractiveAuthoring = function (props) {
                 colorB: "green"
             }
         },
-        interactiveItemId: interactiveItemId
+        interactiveItemId: interactiveItemId,
+        linkedInteractives: interactive.linked_interactives
     };
     return (React.createElement("div", { className: "authoring-mw-interactive" },
         allowReset
@@ -29310,12 +29310,12 @@ var react_select_1 = __webpack_require__(/*! react-select */ "./node_modules/rea
 var react_tabs_1 = __webpack_require__(/*! react-tabs */ "./node_modules/react-tabs/esm/index.js");
 var use_library_interactives_1 = __webpack_require__(/*! ../common/hooks/use-library-interactives */ "./src/page-item-authoring/common/hooks/use-library-interactives.tsx");
 var interactive_authoring_1 = __webpack_require__(/*! ../common/components/interactive-authoring */ "./src/page-item-authoring/common/components/interactive-authoring.tsx");
-__webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/managed-interactives/customize.tsx");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-user */ "./src/page-item-authoring/common/hooks/use-current-user.ts");
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
+__webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
 exports.ManagedInteractiveAuthoring = function (props) {
     var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
@@ -29373,7 +29373,8 @@ exports.ManagedInteractiveAuthoring = function (props) {
                 ? libraryInteractive.aspect_ratio_method
                 : managedInteractive.custom_aspect_ratio_method,
             authored_state: managedInteractive.authored_state,
-            interactive_item_id: managedInteractive.interactive_item_id
+            interactive_item_id: managedInteractive.interactive_item_id,
+            linked_interactives: managedInteractive.linked_interactives
         };
         var handleAuthoredStateChange = function (newAuthoredState) {
             if (libraryInteractiveAuthoredStateRef.current) {
@@ -29521,10 +29522,10 @@ var react_tabs_1 = __webpack_require__(/*! react-tabs */ "./node_modules/react-t
 var interactive_authoring_1 = __webpack_require__(/*! ../common/components/interactive-authoring */ "./src/page-item-authoring/common/components/interactive-authoring.tsx");
 var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-field */ "./src/page-item-authoring/common/utils/rails-form-field.ts");
 var customize_1 = __webpack_require__(/*! ./customize */ "./src/page-item-authoring/mw-interactives/customize.tsx");
-__webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-user */ "./src/page-item-authoring/common/hooks/use-current-user.ts");
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
+__webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
 exports.MWInteractiveAuthoring = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
@@ -29560,7 +29561,8 @@ exports.MWInteractiveAuthoring = function (props) {
             aspect_ratio: interactive.aspect_ratio,
             aspect_ratio_method: interactive.aspect_ratio_method,
             authored_state: interactive.authored_state,
-            interactive_item_id: interactive.interactive_item_id
+            interactive_item_id: interactive.interactive_item_id,
+            linked_interactives: interactive.linked_interactives
         };
         var hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;
         return (React.createElement(react_tabs_1.Tabs, null,

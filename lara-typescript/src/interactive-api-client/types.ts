@@ -64,6 +64,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
   interactiveItemId: string;
+  linkedInteractives: ILinkedInteractive[];
 }
 
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
