@@ -1,6 +1,6 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState } from "../plugin-api";
-import { emitInteractiveAvailable } from "../events";
+import { emitInteractiveAvailable, emitInteractiveSupportedFeatures } from "../events";
 import * as fetch from "jest-fetch-mock";
 import { IEmbeddableContextOptions } from "./plugin-context";
 (window as any).fetch = fetch;
@@ -127,6 +127,27 @@ describe("Embeddable runtime context helper", () => {
       const event = { container: embeddableContext.container, available: true };
       emitInteractiveAvailable(event);
       expect(handler).toHaveBeenCalledWith(event);
+    });
+  });
+
+  describe("#onInteractiveSupportedFeatures", () => {
+    it("accepts handler and calls it when this particular interactive specifies its supported features", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      const handler = jest.fn();
+      runtimeContext.onInteractiveSupportedFeatures(handler);
+      // Different container => different interactive. Handler should not be called.
+      emitInteractiveSupportedFeatures({ container: document.createElement("div"), supportedFeatures: {} });
+      expect(handler).toHaveBeenCalledTimes(0);
+      const event = { container: embeddableContext.container, supportedFeatures: {} };
+      emitInteractiveSupportedFeatures(event);
+      expect(handler).toHaveBeenCalledWith(event);
+    });
+  });
+
+  describe("#sendCustomMessage", () => {
+    it("provides sendCustomMessage function", () => {
+      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
+      runtimeContext.sendCustomMessage({ type: "foo", content: { bar: true } });
     });
   });
 });

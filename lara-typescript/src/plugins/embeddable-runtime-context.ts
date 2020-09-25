@@ -1,5 +1,8 @@
 import { IEmbeddableRuntimeContext, IInteractiveState } from "../plugin-api";
-import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailableEventHandler } from "../events";
+import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailableEventHandler,
+        onInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEvent, IInteractiveSupportedFeaturesEventHandler
+        } from "../events";
+import { ICustomMessage } from "../interactive-api-client/types";
 import { IEmbeddableContextOptions } from "./plugin-context";
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
@@ -50,6 +53,17 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
         }
       });
     },
-    interactiveAvailable: context.interactiveAvailable
+    onInteractiveSupportedFeatures: (handler: IInteractiveSupportedFeaturesEventHandler) => {
+      // Add generic listener and filter events to limit them just to this given embeddable.
+      onInteractiveSupportedFeatures((event: IInteractiveSupportedFeaturesEvent) => {
+        if (event.container === context.container) {
+          handler(event);
+        }
+      });
+    },
+    interactiveAvailable: context.interactiveAvailable,
+    sendCustomMessage: (message: ICustomMessage) => {
+      context.sendCustomMessage?.(message);
+    }
   };
 };

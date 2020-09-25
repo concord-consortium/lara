@@ -27716,7 +27716,7 @@ module.exports = g;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
+exports.offInteractiveSupportedFeatures = exports.onInteractiveSupportedFeatures = exports.emitInteractiveSupportedFeatures = exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
 var emitter = new eventemitter2_1.EventEmitter2({
     maxListeners: Infinity
@@ -27738,6 +27738,15 @@ exports.onInteractiveAvailable = function (handler) {
 };
 exports.offInteractiveAvailable = function (handler) {
     emitter.off("interactiveAvailable", handler);
+};
+exports.emitInteractiveSupportedFeatures = function (event) {
+    emitter.emit("interactiveSupportedFeatures", event);
+};
+exports.onInteractiveSupportedFeatures = function (handler) {
+    emitter.on("interactiveSupportedFeatures", handler);
+};
+exports.offInteractiveSupportedFeatures = function (handler) {
+    emitter.off("interactiveSupportedFeatures", handler);
 };
 
 
@@ -30089,7 +30098,19 @@ exports.generateEmbeddableRuntimeContext = function (context) {
                 }
             });
         },
-        interactiveAvailable: context.interactiveAvailable
+        onInteractiveSupportedFeatures: function (handler) {
+            // Add generic listener and filter events to limit them just to this given embeddable.
+            events_1.onInteractiveSupportedFeatures(function (event) {
+                if (event.container === context.container) {
+                    handler(event);
+                }
+            });
+        },
+        interactiveAvailable: context.interactiveAvailable,
+        sendCustomMessage: function (message) {
+            var _a;
+            (_a = context.sendCustomMessage) === null || _a === void 0 ? void 0 : _a.call(context, message);
+        }
     };
 };
 

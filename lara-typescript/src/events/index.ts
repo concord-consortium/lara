@@ -1,3 +1,4 @@
+import { ISupportedFeatures } from "../interactive-api-client/types";
 import { EventEmitter2 } from "eventemitter2";
 
 /**
@@ -35,6 +36,25 @@ export interface IInteractiveAvailableEvent {
  */
 export type IInteractiveAvailableEventHandler = (event: IInteractiveAvailableEvent) => void;
 
+/**
+ * Data passed to InteractiveSupportedFeatures event handlers.
+ */
+export interface IInteractiveSupportedFeaturesEvent {
+  /**
+   * Interactive container of the interactive that was just started.
+   */
+  container: HTMLElement;
+  /**
+   * Supported features
+   */
+  supportedFeatures: ISupportedFeatures;
+}
+
+/**
+ * SupportedFeatures event handler.
+ */
+export type IInteractiveSupportedFeaturesEventHandler = (event: IInteractiveSupportedFeaturesEvent) => void;
+
 const emitter = new EventEmitter2({
   maxListeners: Infinity
 });
@@ -57,4 +77,14 @@ export const onInteractiveAvailable = (handler: IInteractiveAvailableEventHandle
 };
 export const offInteractiveAvailable = (handler: IInteractiveAvailableEventHandler) => {
   emitter.off("interactiveAvailable", handler);
+};
+
+export const emitInteractiveSupportedFeatures = (event: IInteractiveSupportedFeaturesEvent) => {
+  emitter.emit("interactiveSupportedFeatures", event);
+};
+export const onInteractiveSupportedFeatures = (handler: IInteractiveSupportedFeaturesEventHandler) => {
+  emitter.on("interactiveSupportedFeatures", handler);
+};
+export const offInteractiveSupportedFeatures = (handler: IInteractiveSupportedFeaturesEventHandler) => {
+  emitter.off("interactiveSupportedFeatures", handler);
 };
