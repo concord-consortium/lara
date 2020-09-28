@@ -1,7 +1,7 @@
 import {
   onLog, offLog, ILogEventHandler,
   onInteractiveAvailable, offInteractiveAvailable, IInteractiveAvailableEventHandler,
-  onInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEventHandler
+  onInteractiveSupportedFeatures, offInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEventHandler
 } from "../events";
 // Export event types as a part of Plugin API.
 export {
@@ -46,5 +46,6 @@ export const events = {
   /**
    * Removes InteractiveAvailable event handler.
    */
-  offInteractiveSupportedFeatures: (handler: IInteractiveAvailableEventHandler) => offInteractiveAvailable(handler),
+  offInteractiveSupportedFeatures:
+    (handler: IInteractiveSupportedFeaturesEventHandler) => offInteractiveSupportedFeatures(handler)
 };

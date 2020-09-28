@@ -20,7 +20,8 @@ import {
   IJwtResponse,
   IGetInteractiveListRequest,
   ISetLinkedInteractivesRequest,
-  ICustomMessageHandler
+  ICustomMessageHandler,
+  ICustomMessagesHandledMap
 } from "./types";
 import { getClient } from "./client";
 
@@ -133,12 +134,20 @@ export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState
   client.post("interactiveStateGlobal", newGlobalState);
 };
 
+export const addCustomMessageListener = (callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) => {
+  getClient().addCustomMessageListener(callback, handles);
+};
+
+export const removeCustomMessageListener = () => {
+  getClient().removeCustomMessageListener();
+};
+
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
   const request: ISupportedFeaturesRequest = {
     apiVersion: 1,
     features
   };
-  getClient().post("supportedFeatures", request);
+  getClient().setSupportedFeatures(request);
 };
 
 export const setHeight = (height: number | string) => {
@@ -241,14 +250,6 @@ export const showModal = (options: IShowModal) => {
   else {
     THROW_NOT_IMPLEMENTED_YET(`showModal { type: "${options.type}" }`);
   }
-};
-
-export const addCustomMessageListener = (callback: ICustomMessageHandler) => {
-  getClient().addListener("customMessage", callback);
-};
-
-export const removeCustomMessageListener = () => {
-  getClient().removeListener("customMessage");
 };
 
 /**

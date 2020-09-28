@@ -77,6 +77,7 @@
 * [IAuthoringServerMessage](globals.md#iauthoringservermessage)
 * [ICustomMessageHandler](globals.md#icustommessagehandler)
 * [ICustomMessageOptions](globals.md#icustommessageoptions)
+* [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)
 * [IInitInteractive](globals.md#iinitinteractive)
 * [IRuntimeClientMessage](globals.md#iruntimeclientmessage)
 * [IRuntimeMetadata](globals.md#iruntimemetadata)
@@ -209,6 +210,12 @@ ___
 
 ___
 
+###  ICustomMessagesHandledMap
+
+Ƭ **ICustomMessagesHandledMap**: *Record‹string, boolean | [ICustomMessageOptions](globals.md#icustommessageoptions)›*
+
+___
+
 ###  IInitInteractive
 
 Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
@@ -307,13 +314,14 @@ ___
 
 ### `Const` addCustomMessageListener
 
-▸ **addCustomMessageListener**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler)): *void*
+▸ **addCustomMessageListener**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler), `handles?`: [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
+`handles?` | [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap) |
 
 **Returns:** *void*
 
@@ -814,13 +822,14 @@ ___
 
 ### `Const` useCustomMessages
 
-▸ **useCustomMessages**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler)): *void*
+▸ **useCustomMessages**(`callback`: [ICustomMessageHandler](globals.md#icustommessagehandler), `handles?`: [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
+`handles?` | [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap) |
 
 **Returns:** *void*
 

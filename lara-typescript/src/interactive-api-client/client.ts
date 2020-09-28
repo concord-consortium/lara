@@ -1,8 +1,9 @@
-// iframe phone uses 1 listener per message type so we multipex over 1 listener in this code
+// iframe phone uses 1 listener per message type so we multiplex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
-// to the same message and auto-removing listeners when a requestId is given
+// to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
-import { ClientMessage, IInitInteractive, ServerMessage } from "./types";
+import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
+        ServerMessage } from "./types";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -34,7 +35,8 @@ export class Client {
   public phone: iframePhone.IFrameEndpoint = iframePhone.getIFrameEndpoint();
   public managedState = new ManagedState();
 
-  private  listeners: IListenerMap = {};
+  private customMessagesHandled: ICustomMessagesHandledMap;
+  private listeners: IListenerMap = {};
   private requestId = 1;
 
   constructor() {
@@ -115,6 +117,25 @@ export class Client {
     }
 
     return false;
+  }
+
+  public addCustomMessageListener(callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) {
+    if (handles) this.customMessagesHandled = handles;
+    this.addListener("customMessage", callback);
+  }
+
+  public removeCustomMessageListener() {
+    return this.removeListener("customMessage");
+  }
+
+  public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
+    let newRequest = request;
+    if (this.customMessagesHandled) {
+      const { features, ...others } = request;
+      features.customMessages = { handles: this.customMessagesHandled };
+      newRequest = { features, ...others };
+    }
+    this.post("supportedFeatures", newRequest);
   }
 
   private connect() {

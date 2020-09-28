@@ -29690,7 +29690,7 @@ exports.events = {
     /**
      * Removes InteractiveAvailable event handler.
      */
-    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveAvailable(handler); },
+    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveSupportedFeatures(handler); }
 };
 
 

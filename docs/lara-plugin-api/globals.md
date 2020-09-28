@@ -443,7 +443,7 @@ Name | Type |
 
 ###  offInteractiveSupportedFeatures
 
-▸ **offInteractiveSupportedFeatures**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
+▸ **offInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
 
 Removes InteractiveAvailable event handler.
 
@@ -451,7 +451,7 @@ Removes InteractiveAvailable event handler.
 
 Name | Type |
 ------ | ------ |
-`handler` | [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler) |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler) |
 
 **Returns:** *void*
 

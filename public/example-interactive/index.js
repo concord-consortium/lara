@@ -31520,7 +31520,7 @@ exports.RuntimeComponent = function (_a) {
     var _c = useState([]), customMessages = _c[0], setCustomMessages = _c[1];
     interactive_api_client_1.useCustomMessages(function (msg) {
         setCustomMessages(function (messages) { return __spreadArrays(messages, [msg]); });
-    });
+    }, { "*": true });
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Runtime Init Message"),
@@ -31582,7 +31582,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31683,12 +31683,18 @@ exports.setGlobalInteractiveState = function (newGlobalState) {
     client.managedState.globalInteractiveState = newGlobalState;
     client.post("interactiveStateGlobal", newGlobalState);
 };
+exports.addCustomMessageListener = function (callback, handles) {
+    client_1.getClient().addCustomMessageListener(callback, handles);
+};
+exports.removeCustomMessageListener = function () {
+    client_1.getClient().removeCustomMessageListener();
+};
 exports.setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
         features: features
     };
-    client_1.getClient().post("supportedFeatures", request);
+    client_1.getClient().setSupportedFeatures(request);
 };
 exports.setHeight = function (height) {
     client_1.getClient().post("height", height);
@@ -31782,12 +31788,6 @@ exports.showModal = function (options) {
         THROW_NOT_IMPLEMENTED_YET("showModal { type: \"" + options.type + "\" }");
     }
 };
-exports.addCustomMessageListener = function (callback) {
-    client_1.getClient().addListener("customMessage", callback);
-};
-exports.removeCustomMessageListener = function () {
-    client_1.getClient().removeListener("customMessage");
-};
 /**
  * @todo Implement this function.
  */
@@ -31851,11 +31851,33 @@ exports.getInteractiveSnapshot = function (options) {
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Client = exports.getClient = void 0;
-// iframe phone uses 1 listener per message type so we multipex over 1 listener in this code
+// iframe phone uses 1 listener per message type so we multiplex over 1 listener in this code
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
-// to the same message and auto-removing listeners when a requestId is given
+// to the same message and auto-removing listeners when a requestId is given.
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
@@ -31879,6 +31901,15 @@ var Client = /** @class */ (function () {
         this.managedState = new managed_state_1.ManagedState();
         this.listeners = {};
         this.requestId = 1;
+        this.setSupportedFeatures = function (request) {
+            var newRequest = request;
+            if (_this.customMessagesHandled) {
+                var features = request.features, others = __rest(request, ["features"]);
+                features.customMessages = { handles: _this.customMessagesHandled };
+                newRequest = __assign({ features: features }, others);
+            }
+            _this.post("supportedFeatures", newRequest);
+        };
         if (!in_frame_1.inIframe()) {
             throw new Error("Interactive API is meant to be used in iframe");
         }
@@ -31947,6 +31978,14 @@ var Client = /** @class */ (function () {
             return true;
         }
         return false;
+    };
+    Client.prototype.addCustomMessageListener = function (callback, handles) {
+        if (handles)
+            this.customMessagesHandled = handles;
+        this.addListener("customMessage", callback);
+    };
+    Client.prototype.removeCustomMessageListener = function () {
+        return this.removeListener("customMessage");
     };
     Client.prototype.connect = function () {
         var _this = this;
@@ -32133,9 +32172,9 @@ exports.useInitMessage = function () {
     }, []);
     return initMessage;
 };
-exports.useCustomMessages = function (callback) {
+exports.useCustomMessages = function (callback, handles) {
     react_1.useEffect(function () {
-        client.addCustomMessageListener(callback);
+        client.addCustomMessageListener(callback, handles);
         return function () { return client.removeCustomMessageListener(); };
     }, []);
 };

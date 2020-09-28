@@ -25,7 +25,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [customMessages, setCustomMessages] = useState<ICustomMessage[]>([]);
   useCustomMessages((msg: ICustomMessage) => {
     setCustomMessages(messages => [...messages, msg]);
-  });
+  }, { "*": true });
 
   return (
     <div className="padded">

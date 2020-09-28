@@ -205,13 +205,14 @@ export interface IContextMembership {
 //
 
 export type ICustomMessageOptions = Record<string, any>;
+export type ICustomMessagesHandledMap = Record<string, boolean | ICustomMessageOptions>;
 
 export interface ISupportedFeatures {
   aspectRatio?: number;
   authoredState?: boolean;
   interactiveState?: boolean;
   customMessages?: {
-    handles?: Record<string, boolean | ICustomMessageOptions>;
+    handles?: ICustomMessagesHandledMap;
     // TODO: extend later to allow for sending custom messages from interactive
   };
 }

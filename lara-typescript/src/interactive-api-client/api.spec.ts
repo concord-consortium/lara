@@ -72,6 +72,12 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{type: "log", content: {action: "test action", data: {param1: 1}}}]);
   });
 
+  it("supports [add|remove]CustomMessageListener", () => {
+    const handler = jest.fn();
+    api.addCustomMessageListener(handler, { handles: { foo: true } });
+    api.removeCustomMessageListener();
+  });
+
   it("supports setSupportedFeatures", () => {
     api.setSupportedFeatures({ interactiveState: true, authoredState: true, aspectRatio: 1 });
     expect(mockedPhone.messages).toEqual([{
