@@ -29650,6 +29650,14 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.events = void 0;
 var events_1 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
+// Export event types as a part of Plugin API.
+var events_2 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
+Object.defineProperty(exports, "onLog", { enumerable: true, get: function () { return events_2.onLog; } });
+Object.defineProperty(exports, "offLog", { enumerable: true, get: function () { return events_2.offLog; } });
+Object.defineProperty(exports, "onInteractiveAvailable", { enumerable: true, get: function () { return events_2.onInteractiveAvailable; } });
+Object.defineProperty(exports, "offInteractiveAvailable", { enumerable: true, get: function () { return events_2.offInteractiveAvailable; } });
+Object.defineProperty(exports, "onInteractiveSupportedFeatures", { enumerable: true, get: function () { return events_2.onInteractiveSupportedFeatures; } });
+Object.defineProperty(exports, "offInteractiveSupportedFeatures", { enumerable: true, get: function () { return events_2.offInteractiveSupportedFeatures; } });
 /**
  * Functions related to event observing provided by LARA.
  */
@@ -29674,6 +29682,15 @@ exports.events = {
      * Removes InteractiveAvailable event handler.
      */
     offInteractiveAvailable: function (handler) { return events_1.offInteractiveAvailable(handler); },
+    /**
+     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+     * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
+     */
+    onInteractiveSupportedFeatures: function (handler) { return events_1.onInteractiveSupportedFeatures(handler); },
+    /**
+     * Removes InteractiveAvailable event handler.
+     */
+    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveAvailable(handler); },
 };
 
 

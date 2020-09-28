@@ -129,13 +129,13 @@ are available.
 
 #### Type declaration:
 
-▸ (`handler`: IInteractiveSupportedFeaturesEventHandler): *void*
+▸ (`handler`: [IInteractiveSupportedFeaturesEventHandler](../globals.md#iinteractivesupportedfeatureseventhandler)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`handler` | IInteractiveSupportedFeaturesEventHandler |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](../globals.md#iinteractivesupportedfeatureseventhandler) |
 
 ___
 
