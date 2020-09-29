@@ -29674,7 +29674,7 @@ exports.events = {
      */
     offLog: function (handler) { return events_1.offLog(handler); },
     /**
-     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
      * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
      */
     onInteractiveAvailable: function (handler) { return events_1.onInteractiveAvailable(handler); },
@@ -29683,12 +29683,11 @@ exports.events = {
      */
     offInteractiveAvailable: function (handler) { return events_1.offInteractiveAvailable(handler); },
     /**
-     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
-     * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
+     * Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
      */
     onInteractiveSupportedFeatures: function (handler) { return events_1.onInteractiveSupportedFeatures(handler); },
     /**
-     * Removes InteractiveAvailable event handler.
+     * Removes InteractiveSupportedFeatures event handler.
      */
     offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveSupportedFeatures(handler); }
 };

@@ -445,7 +445,7 @@ Name | Type |
 
 ▸ **offInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
 
-Removes InteractiveAvailable event handler.
+Removes InteractiveSupportedFeatures event handler.
 
 **Parameters:**
 
@@ -473,7 +473,7 @@ Name | Type |
 
 ▸ **onInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
 
-Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
 Currently uses when click to play mode is enabled and the click to play overlay is clicked.
 
 **Parameters:**
@@ -488,8 +488,7 @@ Name | Type |
 
 ▸ **onInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
 
-Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
-Currently uses when click to play mode is enabled and the click to play overlay is clicked.
+Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
 
 **Parameters:**
 

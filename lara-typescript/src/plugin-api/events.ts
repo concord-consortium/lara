@@ -29,7 +29,7 @@ export const events = {
    */
   offLog: (handler: ILogEventHandler) => offLog(handler),
   /**
-   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
    * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
    */
   onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => onInteractiveAvailable(handler),
@@ -38,13 +38,12 @@ export const events = {
    */
   offInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => offInteractiveAvailable(handler),
   /**
-   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
-   * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
+   * Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
    */
   onInteractiveSupportedFeatures:
     (handler: IInteractiveSupportedFeaturesEventHandler) => onInteractiveSupportedFeatures(handler),
   /**
-   * Removes InteractiveAvailable event handler.
+   * Removes InteractiveSupportedFeatures event handler.
    */
   offInteractiveSupportedFeatures:
     (handler: IInteractiveSupportedFeaturesEventHandler) => offInteractiveSupportedFeatures(handler)
