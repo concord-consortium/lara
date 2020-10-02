@@ -1,4 +1,4 @@
-[@concord-consortium/lara-plugin-api - v3.1.2](../README.md) › [Globals](../globals.md) › [IPlugin](iplugin.md)
+[@concord-consortium/lara-plugin-api - v3.2.0](../README.md) › [Globals](../globals.md) › [IPlugin](iplugin.md)
 
 # Interface: IPlugin
 
