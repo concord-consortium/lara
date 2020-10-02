@@ -21,15 +21,9 @@ jest.mock("iframe-phone", () => {
 
 const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
 
-const snapshotMock = jest.fn();
-(window as any).Shutterbug = {
-  snapshot: snapshotMock
-};
-
 describe("api", () => {
   beforeEach(() => {
     mockedPhone.reset();
-    snapshotMock.mockReset();
   });
 
   it("supports getInitInteractiveMessage", async () => {
