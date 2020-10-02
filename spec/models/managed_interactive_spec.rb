@@ -83,6 +83,7 @@ describe ManagedInteractive do
       expected[:aspect_ratio] = managed_interactive.aspect_ratio
       expected[:interactive_item_id] = managed_interactive.interactive_item_id
       expected[:linked_interactive_item_id] = managed_interactive.linked_interactive_item_id
+      expected[:linked_interactives] = managed_interactive.linked_interactives_list
       expect(managed_interactive.to_authoring_hash).to eq(expected)
     end
   end

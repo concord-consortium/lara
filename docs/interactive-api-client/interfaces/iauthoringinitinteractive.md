@@ -17,6 +17,7 @@
 * [authoredState](iauthoringinitinteractive.md#authoredstate)
 * [error](iauthoringinitinteractive.md#error)
 * [interactiveItemId](iauthoringinitinteractive.md#interactiveitemid)
+* [linkedInteractives](iauthoringinitinteractive.md#linkedinteractives)
 * [mode](iauthoringinitinteractive.md#mode)
 * [themeInfo](iauthoringinitinteractive.md#themeinfo)
 * [version](iauthoringinitinteractive.md#version)
@@ -38,6 +39,12 @@ ___
 ###  interactiveItemId
 
 • **interactiveItemId**: *string*
+
+___
+
+###  linkedInteractives
+
+• **linkedInteractives**: *[ILinkedInteractive](ilinkedinteractive.md)[]*
 
 ___
 

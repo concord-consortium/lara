@@ -70,29 +70,8 @@ class MwInteractive < ActiveRecord::Base
     }
   end
 
-  # used for react-based authoring
-  def to_authoring_hash()
-    hash = to_hash
-    hash[:id] = id
-    hash[:linked_interactive_id] = linked_interactive_id
-    hash[:linked_interactive_type] = linked_interactive_type
-    hash[:aspect_ratio] = aspect_ratio
-    hash[:interactive_item_id] = interactive_item_id
-    hash[:linked_interactive_item_id] = linked_interactive_item_id
-    hash
-  end
-
   def to_authoring_preview_hash
-    hash = to_authoring_hash
-    hash[:linked_interactives] = linked_interactives_list
-    hash
-  end
-
-  def authoring_api_urls(protocol, host)
-    {
-      get_interactive_list: interactive_page ? Rails.application.routes.url_helpers.api_v1_get_interactive_list_url(id: interactive_page.id, protocol: protocol, host: host) : nil,
-      set_linked_interactives: interactive_page ? Rails.application.routes.url_helpers.api_v1_set_linked_interactives_url(id: interactive_page.id, protocol: protocol, host: host) : nil
-    }
+    to_authoring_hash
   end
 
   def duplicate

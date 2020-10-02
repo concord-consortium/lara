@@ -1,16 +1,15 @@
 import * as React from "react";
 import { useRef, useState } from "react";
 import { Tabs, TabList, Tab, TabPanel} from "react-tabs";
-
 import { InteractiveAuthoring } from "../common/components/interactive-authoring";
 import { RailsFormField } from "../common/utils/rails-form-field";
 import { CustomizeMWInteractive } from "./customize";
-
-import "react-tabs/style/react-tabs.css";
 import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
+import {ILinkedInteractive} from "../../interactive-api-client";
+import "react-tabs/style/react-tabs.css";
 
 interface Props {
   interactive: IMWInteractive;
@@ -42,6 +41,7 @@ export interface IMWInteractive {
   linked_interactive_type: string;
   interactive_item_id: string;
   linked_interactive_item_id: string;
+  linked_interactives: ILinkedInteractive[];
 }
 
 const formField = RailsFormField<IMWInteractive>("mw_interactive");
@@ -111,7 +111,8 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       aspect_ratio: interactive.aspect_ratio,
       aspect_ratio_method: interactive.aspect_ratio_method,
       authored_state: interactive.authored_state,
-      interactive_item_id: interactive.interactive_item_id
+      interactive_item_id: interactive.interactive_item_id,
+      linked_interactives: interactive.linked_interactives
     };
 
     const hasAuthoringUrl = authoringUrl && authoringUrl.trim().length > 0;

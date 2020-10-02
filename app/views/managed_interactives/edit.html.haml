@@ -13,7 +13,6 @@
 :javascript
   $(document).ready( function() {
     LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
-      interactive: #{@interactive.to_interactive.to_json},
       managedInteractive: #{@interactive.to_authoring_hash().to_json},
       libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"},
       defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json},

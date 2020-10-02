@@ -1,9 +1,8 @@
 import * as React from "react";
-import { useRef, useState } from "react";
-
+import { useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { AuthoringApiUrls } from "../types";
-import { IInitInteractive } from "../../../interactive-api-client";
+import { IInitInteractive, ILinkedInteractive } from "../../../interactive-api-client";
 
 interface Props {
   interactive: {
@@ -12,6 +11,7 @@ interface Props {
     aspect_ratio_method: string;
     authored_state: string | object;
     interactive_item_id: string;
+    linked_interactives: ILinkedInteractive[];
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
   allowReset: boolean;
@@ -20,7 +20,6 @@ interface Props {
 
 export const InteractiveAuthoring: React.FC<Props> = (props) => {
   const {interactive, onAuthoredStateChange, allowReset, authoringApiUrls} = props;
-  const iframe = useRef<HTMLIFrameElement|null>(null);
   const [authoringSupported, setAuthoringSupported] = useState(false);
   const [authoredState, setAuthoredState] = useState<object|null>(
     typeof interactive.authored_state === "string"
@@ -55,7 +54,8 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
         colorB: "green"
       }
     },
-    interactiveItemId
+    interactiveItemId,
+    linkedInteractives: interactive.linked_interactives
   };
 
   return (
