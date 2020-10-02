@@ -27716,7 +27716,7 @@ module.exports = g;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
+exports.offInteractiveSupportedFeatures = exports.onInteractiveSupportedFeatures = exports.emitInteractiveSupportedFeatures = exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
 var emitter = new eventemitter2_1.EventEmitter2({
     maxListeners: Infinity
@@ -27739,6 +27739,15 @@ exports.onInteractiveAvailable = function (handler) {
 exports.offInteractiveAvailable = function (handler) {
     emitter.off("interactiveAvailable", handler);
 };
+exports.emitInteractiveSupportedFeatures = function (event) {
+    emitter.emit("interactiveSupportedFeatures", event);
+};
+exports.onInteractiveSupportedFeatures = function (handler) {
+    emitter.on("interactiveSupportedFeatures", handler);
+};
+exports.offInteractiveSupportedFeatures = function (handler) {
+    emitter.off("interactiveSupportedFeatures", handler);
+};
 
 
 /***/ }),
@@ -27753,7 +27762,7 @@ exports.offInteractiveAvailable = function (handler) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
+exports.initializeLara = exports.PageItemAuthoring = exports.Events = exports.Plugins = exports.InteractiveAPI = exports.PluginAPI_V3 = void 0;
 __webpack_require__(/*! ./plugin-api/normalize.scss */ "./src/plugin-api/normalize.scss");
 var PluginAPI = __webpack_require__(/*! ./plugin-api */ "./src/plugin-api/index.ts");
 exports.PluginAPI_V3 = PluginAPI;
@@ -27767,11 +27776,17 @@ var PageItemAuthoring = __webpack_require__(/*! ./page-item-authoring */ "./src/
 exports.PageItemAuthoring = PageItemAuthoring;
 // Note that LARA namespace is defined for the first time by V2 API. Once V2 is removed, this code should also be
 // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
+window.LARA || (window.LARA = {}); // create if it doesn't exist
 window.LARA.PluginAPI_V3 = PluginAPI;
 window.LARA.Plugins = Plugins;
 window.LARA.Events = Events;
 window.LARA.InteractiveAPI = InteractiveAPI;
 window.LARA.PageItemAuthoring = PageItemAuthoring;
+// for clients that don't require LARA to be a global on window
+function initializeLara() {
+    return window.LARA;
+}
+exports.initializeLara = initializeLara;
 
 
 /***/ }),
@@ -29637,6 +29652,14 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.events = void 0;
 var events_1 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
+// Export event types as a part of Plugin API.
+var events_2 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
+Object.defineProperty(exports, "onLog", { enumerable: true, get: function () { return events_2.onLog; } });
+Object.defineProperty(exports, "offLog", { enumerable: true, get: function () { return events_2.offLog; } });
+Object.defineProperty(exports, "onInteractiveAvailable", { enumerable: true, get: function () { return events_2.onInteractiveAvailable; } });
+Object.defineProperty(exports, "offInteractiveAvailable", { enumerable: true, get: function () { return events_2.offInteractiveAvailable; } });
+Object.defineProperty(exports, "onInteractiveSupportedFeatures", { enumerable: true, get: function () { return events_2.onInteractiveSupportedFeatures; } });
+Object.defineProperty(exports, "offInteractiveSupportedFeatures", { enumerable: true, get: function () { return events_2.offInteractiveSupportedFeatures; } });
 /**
  * Functions related to event observing provided by LARA.
  */
@@ -29653,7 +29676,7 @@ exports.events = {
      */
     offLog: function (handler) { return events_1.offLog(handler); },
     /**
-     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+     * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
      * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
      */
     onInteractiveAvailable: function (handler) { return events_1.onInteractiveAvailable(handler); },
@@ -29661,6 +29684,14 @@ exports.events = {
      * Removes InteractiveAvailable event handler.
      */
     offInteractiveAvailable: function (handler) { return events_1.offInteractiveAvailable(handler); },
+    /**
+     * Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
+     */
+    onInteractiveSupportedFeatures: function (handler) { return events_1.onInteractiveSupportedFeatures(handler); },
+    /**
+     * Removes InteractiveSupportedFeatures event handler.
+     */
+    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveSupportedFeatures(handler); }
 };
 
 
@@ -30091,7 +30122,19 @@ exports.generateEmbeddableRuntimeContext = function (context) {
                 }
             });
         },
-        interactiveAvailable: context.interactiveAvailable
+        onInteractiveSupportedFeatures: function (handler) {
+            // Add generic listener and filter events to limit them just to this given embeddable.
+            events_1.onInteractiveSupportedFeatures(function (event) {
+                if (event.container === context.container) {
+                    handler(event);
+                }
+            });
+        },
+        interactiveAvailable: context.interactiveAvailable,
+        sendCustomMessage: function (message) {
+            var _a;
+            (_a = context.sendCustomMessage) === null || _a === void 0 ? void 0 : _a.call(context, message);
+        }
     };
 };
 

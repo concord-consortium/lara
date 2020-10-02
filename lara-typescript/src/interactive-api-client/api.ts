@@ -19,7 +19,9 @@ import {
   IHintRequest,
   IJwtResponse,
   IGetInteractiveListRequest,
-  ISetLinkedInteractivesRequest
+  ISetLinkedInteractivesRequest,
+  ICustomMessageHandler,
+  ICustomMessagesHandledMap
 } from "./types";
 import { getClient } from "./client";
 
@@ -132,12 +134,20 @@ export const setGlobalInteractiveState = <GlobalInteractiveState>(newGlobalState
   client.post("interactiveStateGlobal", newGlobalState);
 };
 
+export const addCustomMessageListener = (callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) => {
+  getClient().addCustomMessageListener(callback, handles);
+};
+
+export const removeCustomMessageListener = () => {
+  getClient().removeCustomMessageListener();
+};
+
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
   const request: ISupportedFeaturesRequest = {
     apiVersion: 1,
     features
   };
-  getClient().post("supportedFeatures", request);
+  getClient().setSupportedFeatures(request);
 };
 
 export const setHeight = (height: number | string) => {

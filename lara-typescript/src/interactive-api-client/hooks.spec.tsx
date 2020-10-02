@@ -269,3 +269,13 @@ describe("useGlobalInteractiveState", () => {
     expect(container.textContent).toEqual("new state 123");
   });
 });
+
+describe("useCustomMessages", () => {
+
+  it("does something", () => {
+    const handler = jest.fn();
+    renderHook(() => hooks.useCustomMessages(handler, { foo: true }));
+    getClient().setSupportedFeatures({ apiVersion: 1, features: {} });
+  });
+
+});

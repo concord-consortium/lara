@@ -23,7 +23,7 @@ const pluginClasses: { [label: string]: IRegisterPluginOptions } = {};
  * to override the plugin's passed label.  This removes the previous need for the plugin's label to
  * match the label in LARA's database.
  */
-let nextPluginLabel: string = "";
+let nextPluginLabel = "";
 export const setNextPluginLabel = (override: string) => {
   nextPluginLabel = override;
 };

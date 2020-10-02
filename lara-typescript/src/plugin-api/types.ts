@@ -1,5 +1,6 @@
-import { ILogData, IInteractiveAvailableEventHandler } from "../events";
-import { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
+import { ILogData, IInteractiveAvailableEventHandler, IInteractiveSupportedFeaturesEventHandler } from "../events";
+import { ICustomMessage } from "../interactive-api-client/types";
+import { IJwtResponse } from "../shared/types";
 
 // Export some shared types.
 export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
@@ -113,6 +114,19 @@ export interface IEmbeddableRuntimeContext {
   onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => void;
   /** True if the interactive is immediately available */
   interactiveAvailable: boolean;
+  /****************************************************************************
+   Function that subscribes provided handler to event that gets called when the interactive's supported features are
+   are available.
+
+   @param handler Event handler function.
+   ****************************************************************************/
+  onInteractiveSupportedFeatures: (handler: IInteractiveSupportedFeaturesEventHandler) => void;
+  /****************************************************************************
+   Function that sends a custom message to the embeddable.
+
+   @param message The message to be sent
+   ****************************************************************************/
+  sendCustomMessage: (message: ICustomMessage) => void;
 }
 
 export interface IPluginAuthoringContext {

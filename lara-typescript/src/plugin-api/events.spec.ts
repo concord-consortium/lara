@@ -7,6 +7,8 @@ describe("Events", () => {
     jest.spyOn(EventsImpl, "offLog");
     jest.spyOn(EventsImpl, "onInteractiveAvailable");
     jest.spyOn(EventsImpl, "offInteractiveAvailable");
+    jest.spyOn(EventsImpl, "onInteractiveSupportedFeatures");
+    jest.spyOn(EventsImpl, "offInteractiveSupportedFeatures");
     const handler = jest.fn();
     events.onLog(handler);
     expect(EventsImpl.onLog).toHaveBeenCalledWith(handler);
@@ -16,5 +18,9 @@ describe("Events", () => {
     expect(EventsImpl.onInteractiveAvailable).toHaveBeenCalledWith(handler);
     events.offInteractiveAvailable(handler);
     expect(EventsImpl.offInteractiveAvailable).toHaveBeenCalledWith(handler);
+    events.onInteractiveSupportedFeatures(handler);
+    expect(EventsImpl.onInteractiveSupportedFeatures).toHaveBeenCalledWith(handler);
+    events.offInteractiveSupportedFeatures(handler);
+    expect(EventsImpl.offInteractiveSupportedFeatures).toHaveBeenCalledWith(handler);
   });
 });

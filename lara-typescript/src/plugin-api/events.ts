@@ -1,8 +1,16 @@
 import {
-  onLog, offLog, onInteractiveAvailable, offInteractiveAvailable, IInteractiveAvailableEventHandler, ILogEventHandler
+  onLog, offLog, ILogEventHandler,
+  onInteractiveAvailable, offInteractiveAvailable, IInteractiveAvailableEventHandler,
+  onInteractiveSupportedFeatures, offInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEventHandler
 } from "../events";
 // Export event types as a part of Plugin API.
-export { ILogEventHandler, IInteractiveAvailableEventHandler, ILogData, IInteractiveAvailableEvent } from "../events";
+export {
+  onLog, offLog, ILogData, ILogEventHandler,
+  onInteractiveAvailable, offInteractiveAvailable,
+  IInteractiveAvailableEvent, IInteractiveAvailableEventHandler,
+  onInteractiveSupportedFeatures, offInteractiveSupportedFeatures,
+  IInteractiveSupportedFeaturesEvent, IInteractiveSupportedFeaturesEventHandler
+} from "../events";
 
 /**
  * Functions related to event observing provided by LARA.
@@ -21,7 +29,7 @@ export const events = {
    */
   offLog: (handler: ILogEventHandler) => offLog(handler),
   /**
-   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+   * Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
    * Currently uses when click to play mode is enabled and the click to play overlay is clicked.
    */
   onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => onInteractiveAvailable(handler),
@@ -29,4 +37,14 @@ export const events = {
    * Removes InteractiveAvailable event handler.
    */
   offInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => offInteractiveAvailable(handler),
+  /**
+   * Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
+   */
+  onInteractiveSupportedFeatures:
+    (handler: IInteractiveSupportedFeaturesEventHandler) => onInteractiveSupportedFeatures(handler),
+  /**
+   * Removes InteractiveSupportedFeatures event handler.
+   */
+  offInteractiveSupportedFeatures:
+    (handler: IInteractiveSupportedFeaturesEventHandler) => offInteractiveSupportedFeatures(handler)
 };

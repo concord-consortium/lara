@@ -17,7 +17,7 @@
 
 ###  content
 
-• **content**: *object*
+• **content**: *Record‹string, any›*
 
 ___
 

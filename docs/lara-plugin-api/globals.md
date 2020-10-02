@@ -11,6 +11,7 @@
 * [IEventListener](interfaces/ieventlistener.md)
 * [IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md)
 * [IInteractiveState](interfaces/iinteractivestate.md)
+* [IInteractiveSupportedFeaturesEvent](interfaces/iinteractivesupportedfeaturesevent.md)
 * [IJwtClaims](interfaces/ijwtclaims.md)
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILogData](interfaces/ilogdata.md)
@@ -30,6 +31,7 @@
 
 * [IEventListeners](globals.md#ieventlisteners)
 * [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)
+* [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)
 * [ILogEventHandler](globals.md#ilogeventhandler)
 
 ### Functions
@@ -37,6 +39,12 @@
 * [addPopup](globals.md#const-addpopup)
 * [addSidebar](globals.md#const-addsidebar)
 * [decorateContent](globals.md#const-decoratecontent)
+* [offInteractiveAvailable](globals.md#const-offinteractiveavailable)
+* [offInteractiveSupportedFeatures](globals.md#const-offinteractivesupportedfeatures)
+* [offLog](globals.md#const-offlog)
+* [onInteractiveAvailable](globals.md#const-oninteractiveavailable)
+* [onInteractiveSupportedFeatures](globals.md#const-oninteractivesupportedfeatures)
+* [onLog](globals.md#const-onlog)
 * [registerPlugin](globals.md#const-registerplugin)
 
 ### Object literals
@@ -68,6 +76,24 @@ InteractiveAvailable event handler.
 Name | Type |
 ------ | ------ |
 `event` | [IInteractiveAvailableEvent](interfaces/iinteractiveavailableevent.md) |
+
+___
+
+###  IInteractiveSupportedFeaturesEventHandler
+
+Ƭ **IInteractiveSupportedFeaturesEventHandler**: *function*
+
+SupportedFeatures event handler.
+
+#### Type declaration:
+
+▸ (`event`: [IInteractiveSupportedFeaturesEvent](interfaces/iinteractivesupportedfeaturesevent.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`event` | [IInteractiveSupportedFeaturesEvent](interfaces/iinteractivesupportedfeaturesevent.md) |
 
 ___
 
@@ -156,6 +182,90 @@ Name | Type | Description |
 `replace` | string | The replacement string. Can include '$1' representing the matched word. |
 `wordClass` | string | CSS class used in replacement string. Necessary only if `listeners` are provided too. |
 `listeners` | [IEventListeners](globals.md#ieventlisteners) | One or more { type, listener } tuples. Note that events are added to `wordClass` described above. It's client code responsibility to use this class in the `replace` string.  |
+
+**Returns:** *void*
+
+___
+
+### `Const` offInteractiveAvailable
+
+▸ **offInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` offInteractiveSupportedFeatures
+
+▸ **offInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` offLog
+
+▸ **offLog**(`handler`: [ILogEventHandler](globals.md#ilogeventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [ILogEventHandler](globals.md#ilogeventhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` onInteractiveAvailable
+
+▸ **onInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` onInteractiveSupportedFeatures
+
+▸ **onInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler) |
+
+**Returns:** *void*
+
+___
+
+### `Const` onLog
+
+▸ **onLog**(`handler`: [ILogEventHandler](globals.md#ilogeventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [ILogEventHandler](globals.md#ilogeventhandler) |
 
 **Returns:** *void*
 
@@ -331,6 +441,20 @@ Name | Type |
 
 **Returns:** *void*
 
+###  offInteractiveSupportedFeatures
+
+▸ **offInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
+
+Removes InteractiveSupportedFeatures event handler.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler) |
+
+**Returns:** *void*
+
 ###  offLog
 
 ▸ **offLog**(`handler`: [ILogEventHandler](globals.md#ilogeventhandler)): *void*
@@ -349,7 +473,7 @@ Name | Type |
 
 ▸ **onInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
 
-Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availablity state.
+Subscribes to InteractiveAvailable events. Gets called when any interactive changes its availability state.
 Currently uses when click to play mode is enabled and the click to play overlay is clicked.
 
 **Parameters:**
@@ -357,6 +481,20 @@ Currently uses when click to play mode is enabled and the click to play overlay 
 Name | Type |
 ------ | ------ |
 `handler` | [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler) |
+
+**Returns:** *void*
+
+###  onInteractiveSupportedFeatures
+
+▸ **onInteractiveSupportedFeatures**(`handler`: [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)): *void*
+
+Subscribes to InteractiveSupportedFeatures events. Gets called when any interactive calls setSupportedFeatures().
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler) |
 
 **Returns:** *void*
 

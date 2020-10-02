@@ -103,7 +103,7 @@ describe("Client", () => {
       expect(client.managedState.globalInteractiveState).toEqual({ test: 123 });
     });
 
-    it("lets you add and remove custom message listener", () => {
+    it("lets you add and remove arbitrary message listener", () => {
       const client = new Client();
       const listener = jest.fn();
       client.addListener("authInfo", listener);
@@ -116,7 +116,7 @@ describe("Client", () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it("lets you add custom message listener with requestId", () => {
+    it("lets you add arbitrary message listener with requestId", () => {
       const client = new Client();
       const listener = jest.fn();
       const requestId = 123;
@@ -138,6 +138,14 @@ describe("Client", () => {
       // listener should be removed now
       mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
       expect(listener).toHaveBeenCalledTimes(1);
+    });
+
+    it("can add/remove custom message listener and pass supported messages to setSupportedFeatures", () => {
+      const client = new Client();
+      const listener = jest.fn();
+      client.addCustomMessageListener(listener, { handles: { foo: true } });
+      client.setSupportedFeatures({ apiVersion: 1, features: {} });
+      expect(client.removeCustomMessageListener()).toBe(true);
     });
 
     it("warns user when he tries to leave the page and interactive state is dirty", () => {

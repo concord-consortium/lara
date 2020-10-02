@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IInitInteractive } from "./types";
+import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive } from "./types";
 import * as client from "./api";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
@@ -114,4 +114,12 @@ export const useInitMessage = <InteractiveState = {}, AuthoredState = {}, Dialog
   }, []);
 
   return initMessage;
+};
+
+export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICustomMessagesHandledMap) => {
+  useEffect(() => {
+    client.addCustomMessageListener(callback, handles);
+
+    return () => client.removeCustomMessageListener();
+  }, []);
 };

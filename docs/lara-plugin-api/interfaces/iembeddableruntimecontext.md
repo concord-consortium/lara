@@ -16,6 +16,8 @@
 * [interactiveAvailable](iembeddableruntimecontext.md#interactiveavailable)
 * [laraJson](iembeddableruntimecontext.md#larajson)
 * [onInteractiveAvailable](iembeddableruntimecontext.md#oninteractiveavailable)
+* [onInteractiveSupportedFeatures](iembeddableruntimecontext.md#oninteractivesupportedfeatures)
+* [sendCustomMessage](iembeddableruntimecontext.md#sendcustommessage)
 
 ## Properties
 
@@ -113,3 +115,44 @@ the interactive starts as not available and this handler is called when the clic
 Name | Type |
 ------ | ------ |
 `handler` | [IInteractiveAvailableEventHandler](../globals.md#iinteractiveavailableeventhandler) |
+
+___
+
+###  onInteractiveSupportedFeatures
+
+• **onInteractiveSupportedFeatures**: *function*
+
+Function that subscribes provided handler to event that gets called when the interactive's supported features are
+are available.
+
+**`param`** Event handler function.
+
+#### Type declaration:
+
+▸ (`handler`: [IInteractiveSupportedFeaturesEventHandler](../globals.md#iinteractivesupportedfeatureseventhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IInteractiveSupportedFeaturesEventHandler](../globals.md#iinteractivesupportedfeatureseventhandler) |
+
+___
+
+###  sendCustomMessage
+
+• **sendCustomMessage**: *function*
+
+Function that sends a custom message to the embeddable.
+
+**`param`** The message to be sent
+
+#### Type declaration:
+
+▸ (`message`: ICustomMessage): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | ICustomMessage |
