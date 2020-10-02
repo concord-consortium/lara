@@ -93,6 +93,9 @@ module InteractiveRunHelper
       :data => data,
       # Note that iframe is hidden in print mode. It won't have enough time to load anyway.
       :class => 'interactive screen-only',
+      # PJ 10/2/2020: I think this is a bug as IDs might not be unique for MwInteractive and ManagedInteractive.
+      # Updating this ID might affect multiple LARA elements - click to play, taking snapshot, etc., so it should
+      # be fixed and tested carefully.
       :id => "interactive_#{interactive.id}"
     }
     capture_haml do
