@@ -2,7 +2,14 @@ import { mockIFramePhone, MockPhone } from "../interactive-api-parent/mock-ifram
 import * as iframePhone from "iframe-phone";
 import * as api from "./api";
 import { getClient } from "./client";
-import { IGetFirebaseJwtResponse, IShowAlert, IShowDialog, IShowLightbox, ICloseModal } from "./types";
+import {
+  IGetFirebaseJwtResponse,
+  IShowAlert,
+  IShowDialog,
+  IShowLightbox,
+  ICloseModal,
+  IGetInteractiveSnapshotOptions
+} from "./types";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -14,9 +21,15 @@ jest.mock("iframe-phone", () => {
 
 const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
 
+const snapshotMock = jest.fn();
+(window as any).Shutterbug = {
+  snapshot: snapshotMock
+};
+
 describe("api", () => {
   beforeEach(() => {
     mockedPhone.reset();
+    snapshotMock.mockReset();
   });
 
   it("supports getInitInteractiveMessage", async () => {
@@ -287,11 +300,22 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "closeModal", content: options }]);
   });
 
-  it("does not yet implement getInteractiveSnapshot", () => {
-    expect(() => api.getInteractiveSnapshot({
-      requestId: 1,
-      interactiveItemId: "1"
-    })).toThrow(/not yet implemented/);
+  it("should implement getInteractiveSnapshot", () => {
+    const requestContent: IGetInteractiveSnapshotOptions[] = [
+      {interactiveItemId: "interactive_123"}
+    ];
+    testRequestResponse({
+      method: api.getInteractiveSnapshot,
+      requestType: "getInteractiveSnapshot",
+      requestContent,
+      responseType: "interactiveSnapshot",
+      responseContent: [
+        {success: true, snapshotUrl: "http://snapshot.com/123"}
+      ],
+      resolvesTo: [
+        {success: true, snapshotUrl: "http://snapshot.com/123"}
+      ]
+    });
   });
 });
 

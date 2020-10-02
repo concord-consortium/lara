@@ -31582,7 +31582,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31826,17 +31826,23 @@ exports.setLinkedInteractives = function (options) {
             catch(reject);
     });
 };
+exports.getInteractiveSnapshot = function (options) {
+    return new Promise(function (resolve, reject) {
+        var listener = function (snapshotResponse) {
+            resolve(snapshotResponse);
+        };
+        var client = client_1.getClient();
+        var requestId = client.getNextRequestId();
+        var request = __assign({ requestId: requestId }, options);
+        client.addListener("interactiveSnapshot", listener, requestId);
+        client.post("getInteractiveSnapshot", request);
+    });
+};
 /**
  * @todo Implement this function.
  */
 exports.getLibraryInteractiveList = function (options) {
     THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
-};
-/**
- * @todo Implement this function.
- */
-exports.getInteractiveSnapshot = function (options) {
-    THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
 };
 
 

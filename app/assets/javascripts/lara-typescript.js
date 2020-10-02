@@ -27970,6 +27970,8 @@ exports.IFrameSaver = void 0;
 var DOMPurify = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 var iframe_phone_manager_1 = __webpack_require__(/*! ./iframe-phone-manager */ "./src/interactive-api-parent/iframe-phone-manager.ts");
 var modal_api_plugin_1 = __webpack_require__(/*! ./modal-api-plugin */ "./src/interactive-api-parent/modal-api-plugin.ts");
+// Shutterbug is imported globally and used by the old LARA JS code.
+var Shutterbug = window.Shutterbug;
 var getAuthoredState = function ($dataDiv) {
     var authoredState = $dataDiv.data("authored-state");
     if ((authoredState == null) || (authoredState === "")) {
@@ -28164,6 +28166,9 @@ var IFrameSaver = /** @class */ (function () {
                 }
             }
         });
+        this.addListener("getInteractiveSnapshot", function (request) {
+            return _this.getInteractiveSnapshot(request);
+        });
         this.addListener("getFirebaseJWT", function (request) {
             return _this.getFirebaseJwt(request);
         });
@@ -28339,6 +28344,32 @@ var IFrameSaver = /** @class */ (function () {
             },
             error: function (jqxhr, status, error) {
                 _this.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
+            }
+        });
+    };
+    IFrameSaver.prototype.getInteractiveSnapshot = function (_a) {
+        var _this = this;
+        var requestId = _a.requestId, interactiveItemId = _a.interactiveItemId;
+        // tslint:disable-next-line:no-console
+        console.log("snap of", interactiveItemId);
+        Shutterbug.snapshot({
+            selector: "[data-interactive-item-id=\"" + interactiveItemId + "\"]",
+            done: function (snapshotUrl) {
+                var response = {
+                    requestId: requestId,
+                    snapshotUrl: snapshotUrl,
+                    success: true
+                };
+                _this.post("interactiveSnapshot", response);
+            },
+            fail: function (jqXHR, textStatus, errorThrown) {
+                // tslint:disable-next-line:no-console
+                console.error("Snapshot request failed: ", textStatus, errorThrown);
+                var response = {
+                    requestId: requestId,
+                    success: false
+                };
+                _this.post("interactiveSnapshot", response);
             }
         });
     };

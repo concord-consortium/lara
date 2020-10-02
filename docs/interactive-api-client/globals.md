@@ -469,15 +469,15 @@ ___
 
 ### `Const` getInteractiveSnapshot
 
-▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)): *void*
+▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md)): *Promise‹[IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md) |
+`options` | [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md) |
 
-**Returns:** *void*
+**Returns:** *Promise‹[IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)›*
 
 ___
 
