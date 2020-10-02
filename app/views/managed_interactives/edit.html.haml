@@ -5,14 +5,14 @@
 = form_for @interactive, :url => form_url, :html => {:class => "styled-admin-form"} do |f|
   = f.error_messages
 
-  %div{:id => "admin-interactive-#{@interactive.id}"}
+  %div{:id => "admin-interactive-#{@interactive.interactive_item_id}"}
   .submit-container
     = f.button "Cancel", :class => 'close', :type => 'button'
     = f.submit "Save", :class => 'embeddable-save', :default => 'default'
 
 :javascript
   $(document).ready( function() {
-    LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.id}"), {
+    LARA.PageItemAuthoring.renderManagedInteractiveAuthoring(document.getElementById("admin-interactive-#{@interactive.interactive_item_id}"), {
       managedInteractive: #{@interactive.to_authoring_hash().to_json},
       libraryInteractive: #{@interactive.library_interactive ? @interactive.library_interactive.to_json : "undefined"},
       defaultClickToPlayPrompt: #{MwInteractive::DEFAULT_CLICK_TO_PLAY_PROMPT.to_json},
