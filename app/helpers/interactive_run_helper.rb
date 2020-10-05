@@ -78,6 +78,7 @@ module InteractiveRunHelper
       :aspect_ratio => interactive.aspect_ratio,
       :aspect_ratio_method => interactive.aspect_ratio_method,
       :id => interactive.id,
+      :interactive_item_id => interactive.interactive_item_id,
       :iframe_mouseover => "false"
     }
 

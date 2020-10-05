@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.5.0](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.6.0-pre.1](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.5.0
+# @concord-consortium/lara-interactive-api - v0.6.0-pre.1
 
 ## Index
 
@@ -469,15 +469,15 @@ ___
 
 ### `Const` getInteractiveSnapshot
 
-▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md)): *void*
+▸ **getInteractiveSnapshot**(`options`: [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md)): *Promise‹[IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`options` | [IGetInteractiveSnapshotRequest](interfaces/igetinteractivesnapshotrequest.md) |
+`options` | [IGetInteractiveSnapshotOptions](interfaces/igetinteractivesnapshotoptions.md) |
 
-**Returns:** *void*
+**Returns:** *Promise‹[IGetInteractiveSnapshotResponse](interfaces/igetinteractivesnapshotresponse.md)›*
 
 ___
 

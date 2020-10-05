@@ -31505,6 +31505,8 @@ var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-
 exports.RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = useState(), rawFirebaseJwt = _b[0], setRawFirebaseJWT = _b[1];
+    var _c = useState("interactive_123"), snapshotSourceId = _c[0], setSnapshotSourceId = _c[1];
+    var _d = useState(), snapshotUrl = _d[0], setSnapshotUrl = _d[1];
     var authoredState = initMessage.authoredState;
     useEffect(function () {
         if (authoredState === null || authoredState === void 0 ? void 0 : authoredState.firebaseApp) {
@@ -31517,10 +31519,24 @@ exports.RuntimeComponent = function (_a) {
             });
         }
     }, [authoredState]);
-    var _c = useState([]), customMessages = _c[0], setCustomMessages = _c[1];
+    var _e = useState([]), customMessages = _e[0], setCustomMessages = _e[1];
     interactive_api_client_1.useCustomMessages(function (msg) {
         setCustomMessages(function (messages) { return __spreadArrays(messages, [msg]); });
     }, { "*": true });
+    var handleSnapshotTargetChange = function (event) {
+        setSnapshotSourceId(event.target.value);
+    };
+    var handleTakeSnapshot = function () {
+        setSnapshotUrl("");
+        interactive_api_client_1.getInteractiveSnapshot({ interactiveItemId: snapshotSourceId }).then(function (response) {
+            if (response.success) {
+                setSnapshotUrl(response.snapshotUrl);
+            }
+            else {
+                window.alert("Snapshot has failed");
+            }
+        });
+    };
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Runtime Init Message"),
@@ -31537,7 +31553,18 @@ exports.RuntimeComponent = function (_a) {
                         React.createElement("th", null, "Content")),
                     React.createElement("tbody", null, customMessages.map(function (msg, i) { return (React.createElement("tr", { key: i + "-" + msg.type },
                         React.createElement("td", null, msg.type),
-                        React.createElement("td", null, msg.content))); })))))));
+                        React.createElement("td", null, msg.content))); }))))),
+        React.createElement("fieldset", null,
+            React.createElement("legend", null, "Snapshot API"),
+            React.createElement("div", null,
+                "Interactive ID: ",
+                React.createElement("input", { type: "text", value: snapshotSourceId, onChange: handleSnapshotTargetChange })),
+            React.createElement("div", null,
+                React.createElement("button", { onClick: handleTakeSnapshot }, "Take a snapshot")),
+            snapshotUrl &&
+                React.createElement("div", null,
+                    "Snapshot URL: ",
+                    React.createElement("a", { href: snapshotUrl, target: "_blank", style: { fontSize: 10 } }, snapshotUrl)))));
 };
 
 
@@ -31582,7 +31609,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInteractiveSnapshot = exports.getLibraryInteractiveList = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31826,17 +31853,23 @@ exports.setLinkedInteractives = function (options) {
             catch(reject);
     });
 };
+exports.getInteractiveSnapshot = function (options) {
+    return new Promise(function (resolve, reject) {
+        var listener = function (snapshotResponse) {
+            resolve(snapshotResponse);
+        };
+        var client = client_1.getClient();
+        var requestId = client.getNextRequestId();
+        var request = __assign({ requestId: requestId }, options);
+        client.addListener("interactiveSnapshot", listener, requestId);
+        client.post("getInteractiveSnapshot", request);
+    });
+};
 /**
  * @todo Implement this function.
  */
 exports.getLibraryInteractiveList = function (options) {
     THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
-};
-/**
- * @todo Implement this function.
- */
-exports.getInteractiveSnapshot = function (options) {
-    THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
 };
 
 

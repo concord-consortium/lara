@@ -378,5 +378,6 @@ export interface IGetInteractiveSnapshotRequest extends IBaseRequestResponse, IG
 }
 
 export interface IGetInteractiveSnapshotResponse extends IBaseRequestResponse {
-  snapshotUrl: string;
+  success: boolean;
+  snapshotUrl?: string;
 }

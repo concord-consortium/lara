@@ -4,7 +4,11 @@ import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
 import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
-import { ILinkedInteractive } from "../interactive-api-client";
+import {
+  IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive
+} from "../interactive-api-client";
+// Shutterbug is imported globally and used by the old LARA JS code.
+const Shutterbug = (window as any).Shutterbug;
 
 const getAuthoredState = ($dataDiv: JQuery) => {
   let authoredState = $dataDiv.data("authored-state");
@@ -273,6 +277,10 @@ export class IFrameSaver {
       }
     });
 
+    this.addListener("getInteractiveSnapshot", (request: IGetInteractiveSnapshotRequest) => {
+      return this.getInteractiveSnapshot(request);
+    });
+
     this.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
       return this.getFirebaseJwt(request);
     });
@@ -457,6 +465,36 @@ export class IFrameSaver {
       error: (jqxhr, status, error) => {
         this.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
       }});
+  }
+
+  private getInteractiveSnapshot({ requestId, interactiveItemId }: IGetInteractiveSnapshotRequest) {
+    const selector = `[data-interactive-item-id="${interactiveItemId}"]`;
+    if (!jQuery(selector).length) {
+      // tslint:disable-next-line:no-console
+      console.error("Snapshot has failed - interactive ID not found");
+      this.post("interactiveSnapshot", { requestId, success: false });
+    }
+
+    Shutterbug.snapshot({
+      selector,
+      done: (snapshotUrl: string) => {
+        const response: IGetInteractiveSnapshotResponse = {
+          requestId,
+          snapshotUrl,
+          success: true
+        };
+        this.post("interactiveSnapshot", response);
+      },
+      fail: (jqXHR: any, textStatus: any, errorThrown: any) => {
+        // tslint:disable-next-line:no-console
+        console.error("Snapshot request failed: ", textStatus, errorThrown);
+        const response: IGetInteractiveSnapshotResponse = {
+          requestId,
+          success: false
+        };
+        this.post("interactiveSnapshot", response);
+      }
+    });
   }
 
   private post(message: LaraInteractiveApi.ServerMessage, content?: object | string | number | null) {

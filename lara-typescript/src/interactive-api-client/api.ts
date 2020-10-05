@@ -7,8 +7,6 @@ import {
   ISupportedFeatures,
   IGetFirebaseJwtRequest,
   IGetAuthInfoRequest,
-  IAuthoringCustomReportFields,
-  IRuntimeCustomReportValues,
   IShowModal,
   ICloseModal,
   IGetInteractiveListOptions,
@@ -21,7 +19,9 @@ import {
   IGetInteractiveListRequest,
   ISetLinkedInteractivesRequest,
   ICustomMessageHandler,
-  ICustomMessagesHandledMap
+  ICustomMessagesHandledMap,
+  IGetInteractiveSnapshotOptions,
+  IGetInteractiveSnapshotResponse
 } from "./types";
 import { getClient } from "./client";
 
@@ -298,16 +298,25 @@ export const setLinkedInteractives = (options: ISetLinkedInteractives) => {
   });
 };
 
-/**
- * @todo Implement this function.
- */
-export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListRequest) => {
-  THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
+export const getInteractiveSnapshot = (options: IGetInteractiveSnapshotOptions) => {
+  return new Promise<IGetInteractiveSnapshotResponse>((resolve, reject) => {
+    const listener = (snapshotResponse: IGetInteractiveSnapshotResponse) => {
+      resolve(snapshotResponse);
+    };
+    const client = getClient();
+    const requestId = client.getNextRequestId();
+    const request: IGetInteractiveSnapshotRequest = {
+      requestId,
+      ...options
+    };
+    client.addListener("interactiveSnapshot", listener, requestId);
+    client.post("getInteractiveSnapshot", request);
+  });
 };
 
 /**
  * @todo Implement this function.
  */
-export const getInteractiveSnapshot = (options: IGetInteractiveSnapshotRequest) => {
-  THROW_NOT_IMPLEMENTED_YET("getInteractiveSnapshot");
+export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListRequest) => {
+  THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };

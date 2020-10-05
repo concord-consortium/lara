@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotResponse](igetinteractivesnapshotresponse.md)
+[@concord-consortium/lara-interactive-api - v0.6.0-pre.1](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotResponse](igetinteractivesnapshotresponse.md)
 
 # Interface: IGetInteractiveSnapshotResponse
 
@@ -13,7 +13,8 @@
 ### Properties
 
 * [requestId](igetinteractivesnapshotresponse.md#requestid)
-* [snapshotUrl](igetinteractivesnapshotresponse.md#snapshoturl)
+* [snapshotUrl](igetinteractivesnapshotresponse.md#optional-snapshoturl)
+* [success](igetinteractivesnapshotresponse.md#success)
 
 ## Properties
 
@@ -25,6 +26,12 @@
 
 ___
 
-###  snapshotUrl
+### `Optional` snapshotUrl
 
-• **snapshotUrl**: *string*
+• **snapshotUrl**? : *undefined | string*
+
+___
+
+###  success
+
+• **success**: *boolean*
