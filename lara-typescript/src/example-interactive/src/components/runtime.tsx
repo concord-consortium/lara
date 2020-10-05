@@ -1,6 +1,8 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-import { IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage } from "../../../interactive-api-client";
+import {
+  IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage, getInteractiveSnapshot
+} from "../../../interactive-api-client";
 import { IAuthoredState } from "./types";
 
 interface Props {
@@ -9,6 +11,8 @@ interface Props {
 
 export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [rawFirebaseJwt, setRawFirebaseJWT] = useState<string>();
+  const [snapshotSourceId, setSnapshotSourceId] = useState<string>("interactive_123");
+  const [snapshotUrl, setSnapshotUrl] = useState<string>();
   const { authoredState } = initMessage;
   useEffect(() => {
     if (authoredState?.firebaseApp) {
@@ -26,6 +30,21 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   useCustomMessages((msg: ICustomMessage) => {
     setCustomMessages(messages => [...messages, msg]);
   }, { "*": true });
+
+  const handleSnapshotTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSnapshotSourceId(event.target.value);
+  };
+
+  const handleTakeSnapshot = () => {
+    setSnapshotUrl("");
+    getInteractiveSnapshot({ interactiveItemId: snapshotSourceId }).then((response) => {
+      if (response.success) {
+        setSnapshotUrl(response.snapshotUrl);
+      } else {
+        window.alert("Snapshot has failed");
+      }
+    });
+  };
 
   return (
     <div className="padded">
@@ -55,6 +74,15 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
             </tbody>
           </table>
         </div>
+      </fieldset>
+      <fieldset>
+        <legend>Snapshot API</legend>
+        <div>Interactive ID: <input type="text" value={snapshotSourceId} onChange={handleSnapshotTargetChange}/></div>
+        <div><button onClick={handleTakeSnapshot}>Take a snapshot</button></div>
+        {
+          snapshotUrl &&
+          <div>Snapshot URL: <a href={snapshotUrl} target="_blank" style={{fontSize: 10}}>{snapshotUrl}</a></div>
+        }
       </fieldset>
     </div>
   );

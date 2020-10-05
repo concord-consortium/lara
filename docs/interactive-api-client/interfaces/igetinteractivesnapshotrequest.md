@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.5.0](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
+[@concord-consortium/lara-interactive-api - v0.6.0-pre.1](../README.md) › [Globals](../globals.md) › [IGetInteractiveSnapshotRequest](igetinteractivesnapshotrequest.md)
 
 # Interface: IGetInteractiveSnapshotRequest
 

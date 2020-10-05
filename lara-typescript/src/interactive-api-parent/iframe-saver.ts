@@ -468,10 +468,15 @@ export class IFrameSaver {
   }
 
   private getInteractiveSnapshot({ requestId, interactiveItemId }: IGetInteractiveSnapshotRequest) {
-    // tslint:disable-next-line:no-console
-    console.log("snap of", interactiveItemId);
+    const selector = `[data-interactive-item-id="${interactiveItemId}"]`;
+    if (!jQuery(selector).length) {
+      // tslint:disable-next-line:no-console
+      console.error("Snapshot has failed - interactive ID not found");
+      this.post("interactiveSnapshot", { requestId, success: false });
+    }
+
     Shutterbug.snapshot({
-      selector: `[data-interactive-item-id="${interactiveItemId}"]`,
+      selector,
       done: (snapshotUrl: string) => {
         const response: IGetInteractiveSnapshotResponse = {
           requestId,

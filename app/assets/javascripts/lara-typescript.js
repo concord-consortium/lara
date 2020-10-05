@@ -28350,10 +28350,14 @@ var IFrameSaver = /** @class */ (function () {
     IFrameSaver.prototype.getInteractiveSnapshot = function (_a) {
         var _this = this;
         var requestId = _a.requestId, interactiveItemId = _a.interactiveItemId;
-        // tslint:disable-next-line:no-console
-        console.log("snap of", interactiveItemId);
+        var selector = "[data-interactive-item-id=\"" + interactiveItemId + "\"]";
+        if (!jQuery(selector).length) {
+            // tslint:disable-next-line:no-console
+            console.error("Snapshot has failed - interactive ID not found");
+            this.post("interactiveSnapshot", { requestId: requestId, success: false });
+        }
         Shutterbug.snapshot({
-            selector: "[data-interactive-item-id=\"" + interactiveItemId + "\"]",
+            selector: selector,
             done: function (snapshotUrl) {
                 var response = {
                     requestId: requestId,
