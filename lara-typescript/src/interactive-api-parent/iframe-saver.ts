@@ -384,6 +384,12 @@ export class IFrameSaver {
       version: 1,
       error: err,
       mode: "runtime",
+      hostFeatures: {
+        modalDialog: {
+          version: "1.0.0",
+          imageLightbox: true
+        }
+      },
       authoredState: this.authoredState,
       interactiveState: null,  // set in interactiveStateProps()
       globalInteractiveState,

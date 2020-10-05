@@ -30,6 +30,7 @@
 * [error](iruntimeinitinteractive.md#error)
 * [globalInteractiveState](iruntimeinitinteractive.md#globalinteractivestate)
 * [hasLinkedInteractive](iruntimeinitinteractive.md#optional-haslinkedinteractive)
+* [hostFeatures](iruntimeinitinteractive.md#hostfeatures)
 * [interactive](iruntimeinitinteractive.md#interactive)
 * [interactiveState](iruntimeinitinteractive.md#interactivestate)
 * [interactiveStateUrl](iruntimeinitinteractive.md#interactivestateurl)
@@ -117,6 +118,12 @@ ___
 • **hasLinkedInteractive**? : *undefined | false | true*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)*
+
+___
+
+###  hostFeatures
+
+• **hostFeatures**: *[IHostFeatures](ihostfeatures.md)*
 
 ___
 

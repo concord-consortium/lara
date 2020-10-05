@@ -40,6 +40,12 @@ export const InteractiveAuthoringPreview: React.FC<Props> = ({interactive, user}
     version: 1,
     error: null,
     mode: "runtime",
+    hostFeatures: {
+      modalDialog: {
+        version: "1.0.0",
+        imageLightbox: true
+      }
+    },
     authoredState,
     interactiveState: null,
     globalInteractiveState: null,
