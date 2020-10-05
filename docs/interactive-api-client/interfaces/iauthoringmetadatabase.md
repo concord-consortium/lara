@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0-pre.1](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
+[@concord-consortium/lara-interactive-api - v0.6.0-pre.2](../README.md) › [Globals](../globals.md) › [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
 # Interface: IAuthoringMetadataBase
 
