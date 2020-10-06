@@ -4,7 +4,9 @@
   "description": "LARA TypeScript code",
   "scripts": {
     "publish:plugin-api": "npm run build && cd dist/plugin-api && npm publish --access public",
+    "publish:plugin-api:beta": "npm run build && cd dist/plugin-api && npm publish --tag beta --access public",
     "publish:interactive-api-client": "npm run build && cd dist/interactive-api-client && npm publish --access public",
+    "publish:interactive-api-client:beta": "npm run build && cd dist/interactive-api-client && npm publish --tag beta --access public",
     "build": "npm-run-all lint:build clean build:webpack build:docs",
     "build:webpack": "webpack --devtool false && npm run build:copy-to-rails",
     "build:docs": "npm-run-all build:docs:plugin-api build:docs:interactive-api-client",
