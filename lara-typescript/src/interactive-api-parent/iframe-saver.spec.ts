@@ -152,6 +152,12 @@ describe("IFrameSaver", () => {
           version: 1,
           error: null,
           mode: "runtime",
+          hostFeatures: {
+            modalDialog: {
+              version: "1.0.0",
+              imageLightbox: true
+            }
+          },
           authoredState: {test: 123},
           interactiveState: {interactiveState: 321},
           createdAt: "2017",
@@ -188,6 +194,12 @@ describe("IFrameSaver", () => {
           version: 1,
           error: null,
           mode: "runtime",
+          hostFeatures: {
+            modalDialog: {
+              version: "1.0.0",
+              imageLightbox: true
+            }
+          },
           authoredState: {test: 123},
           interactiveState: null,
           globalInteractiveState: null,
