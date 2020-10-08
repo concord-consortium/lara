@@ -21,11 +21,24 @@ export interface IInteractiveStateProps<InteractiveState = {}> {
   activityName?: string;
 }
 
+export interface IHostFeatureSupport extends Record<string, unknown> {
+  version: string;
+}
+
+export interface IHostModalDialogSupport extends IHostFeatureSupport {
+  imageLightbox: boolean;
+}
+
+export interface IHostFeatures extends Record<string, IHostFeatureSupport> {
+  modalDialog: IHostModalDialogSupport;
+}
+
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>
        extends IInteractiveStateProps<InteractiveState> {
   version: 1;
   error: any;
   mode: "runtime";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState | null;
   globalInteractiveState: GlobalInteractiveState | null;
   interactiveStateUrl: string;

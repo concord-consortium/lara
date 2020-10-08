@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0-pre.1](../README.md) › [Globals](../globals.md) › [IRuntimeInitInteractive](iruntimeinitinteractive.md)
+[@concord-consortium/lara-interactive-api - v0.6.0-pre.2](../README.md) › [Globals](../globals.md) › [IRuntimeInitInteractive](iruntimeinitinteractive.md)
 
 # Interface: IRuntimeInitInteractive ‹**InteractiveState, AuthoredState, GlobalInteractiveState**›
 
@@ -30,6 +30,7 @@
 * [error](iruntimeinitinteractive.md#error)
 * [globalInteractiveState](iruntimeinitinteractive.md#globalinteractivestate)
 * [hasLinkedInteractive](iruntimeinitinteractive.md#optional-haslinkedinteractive)
+* [hostFeatures](iruntimeinitinteractive.md#hostfeatures)
 * [interactive](iruntimeinitinteractive.md#interactive)
 * [interactiveState](iruntimeinitinteractive.md#interactivestate)
 * [interactiveStateUrl](iruntimeinitinteractive.md#interactivestateurl)
@@ -117,6 +118,12 @@ ___
 • **hasLinkedInteractive**? : *undefined | false | true*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[hasLinkedInteractive](iinteractivestateprops.md#optional-haslinkedinteractive)*
+
+___
+
+###  hostFeatures
+
+• **hostFeatures**: *[IHostFeatures](ihostfeatures.md)*
 
 ___
 

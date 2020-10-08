@@ -28268,6 +28268,12 @@ var IFrameSaver = /** @class */ (function () {
             version: 1,
             error: err,
             mode: "runtime",
+            hostFeatures: {
+                modalDialog: {
+                    version: "1.0.0",
+                    imageLightbox: true
+                }
+            },
             authoredState: this.authoredState,
             interactiveState: null,
             globalInteractiveState: globalInteractiveState,
@@ -28817,6 +28823,12 @@ exports.InteractiveAuthoringPreview = function (_a) {
         version: 1,
         error: null,
         mode: "runtime",
+        hostFeatures: {
+            modalDialog: {
+                version: "1.0.0",
+                imageLightbox: true
+            }
+        },
         authoredState: authoredState,
         interactiveState: null,
         globalInteractiveState: null,
