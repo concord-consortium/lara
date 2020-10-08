@@ -196,7 +196,7 @@ describe("ModalApiPlugin should show/close dialogs", () => {
   it("should implement showDialog/closeDialog functions", () => {
     const uuid = "dialog";
     expect(hasModal(uuid)).toBe(false);
-    const showOptions: IShowModal = { uuid, type: "dialog", url: "https://concord.org", dialogState: {} };
+    const showOptions: IShowModal = { uuid, type: "dialog", url: "https://concord.org" };
     mockPhone.fakeServerMessage({ type: "showModal", content: showOptions });
     expect(hasModal(uuid)).toBe(true);
     const closeOptions: ICloseModal = { uuid };

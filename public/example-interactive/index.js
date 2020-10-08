@@ -31117,7 +31117,6 @@ var useEffect = React.useEffect;
 var resize_observer_polyfill_1 = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactive/src/components/authoring.tsx");
-var dialog_1 = __webpack_require__(/*! ./dialog */ "./src/example-interactive/src/components/dialog.tsx");
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactive/src/components/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactive/src/components/runtime.tsx");
 exports.AppComponent = function (props) {
@@ -31153,8 +31152,6 @@ exports.AppComponent = function (props) {
     switch (initMessage.mode) {
         case "authoring":
             return React.createElement(authoring_1.AuthoringComponent, { initMessage: initMessage });
-        case "dialog":
-            return React.createElement(dialog_1.DialogComponent, { initMessage: initMessage });
         case "report":
             return React.createElement(report_1.ReportComponent, { initMessage: initMessage });
         case "runtime":
@@ -31435,29 +31432,6 @@ exports.AuthoringComponent = function (_a) {
 
 /***/ }),
 
-/***/ "./src/example-interactive/src/components/dialog.tsx":
-/*!***********************************************************!*\
-  !*** ./src/example-interactive/src/components/dialog.tsx ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DialogComponent = void 0;
-var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-exports.DialogComponent = function (_a) {
-    var initMessage = _a.initMessage;
-    return (React.createElement("div", { className: "padded" },
-        React.createElement("fieldset", null,
-            React.createElement("legend", null, "Dialog Init Message"),
-            React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
-};
-
-
-/***/ }),
-
 /***/ "./src/example-interactive/src/components/report.tsx":
 /*!***********************************************************!*\
   !*** ./src/example-interactive/src/components/report.tsx ***!
@@ -31609,7 +31583,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31633,6 +31607,7 @@ exports.getInteractiveState = function () {
     return client_1.getClient().managedState.interactiveState;
 };
 var setInteractiveStateTimeoutId;
+var delayedInteractiveStateUpdate = null;
 exports.setInteractiveStateTimeout = 2000; // ms
 /**
  * Note that state will become frozen and should never be mutated.
@@ -31655,10 +31630,25 @@ exports.setInteractiveState = function (newInteractiveState) {
     var client = client_1.getClient();
     client.managedState.interactiveState = newInteractiveState;
     window.clearTimeout(setInteractiveStateTimeoutId);
-    setInteractiveStateTimeoutId = window.setTimeout(function () {
+    delayedInteractiveStateUpdate = function () {
         client.post("interactiveState", newInteractiveState);
         client.managedState.interactiveStateDirty = false;
+        delayedInteractiveStateUpdate = null;
+    };
+    setInteractiveStateTimeoutId = window.setTimeout(function () {
+        // Note that delayedInteractiveStateUpdate might be equal to null if it was executed before using .flush()
+        delayedInteractiveStateUpdate === null || delayedInteractiveStateUpdate === void 0 ? void 0 : delayedInteractiveStateUpdate();
     }, exports.setInteractiveStateTimeout);
+};
+/**
+ * Useful in rare cases when it's not desirable to wait for the delayed state updates (at this point it only applies
+ * to interactive state updates). Internally used by the showModal and closeModal functions, as opening modal
+ * usually means reloading interactive. It's necessary to make sure that the state is up to date before it happens.
+ */
+exports.flushStateUpdates = function () {
+    // Note that if delayedInteractiveStateUpdate was set, it should set itself to null and setTimeout will ignore it.
+    delayedInteractiveStateUpdate === null || delayedInteractiveStateUpdate === void 0 ? void 0 : delayedInteractiveStateUpdate();
+    window.clearTimeout(setInteractiveStateTimeoutId);
 };
 exports.getAuthoredState = function () {
     return client_1.getClient().managedState.authoredState;
@@ -31805,20 +31795,20 @@ exports.removeGlobalInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.off("globalInteractiveStateUpdated", listener);
 };
 /**
- * @todo Implement this function.
+ * "lightbox" type is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
+ * "dialog" is used for showing dynamic interactives. It'll be initialized correctly by the host environment and
+ * all the runtime features will be supported.
  */
 exports.showModal = function (options) {
-    if ((options.type === "alert") || (options.type === "lightbox")) {
-        client_1.getClient().post("showModal", options);
-    }
-    else {
-        THROW_NOT_IMPLEMENTED_YET("showModal { type: \"" + options.type + "\" }");
-    }
+    // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
+    // before it happens.
+    exports.flushStateUpdates();
+    client_1.getClient().post("showModal", options);
 };
-/**
- * @todo Implement this function.
- */
 exports.closeModal = function (options) {
+    // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
+    // before it happens.
+    exports.flushStateUpdates();
     client_1.getClient().post("closeModal", options);
 };
 exports.getInteractiveList = function (options) {

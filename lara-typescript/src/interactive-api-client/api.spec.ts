@@ -278,14 +278,13 @@ describe("api", () => {
   });
 
   it("does not yet implement showModal [dialog]", () => {
-    interface IFooDialog { foo: string; }
-    const options: IShowDialog<IFooDialog> = {
+    const options: IShowDialog = {
       uuid: "foo",
       type: "dialog",
-      url: "https://concord.org",
-      dialogState: { foo: "bar" }
+      url: "https://concord.org"
     };
-    expect(() => api.showModal(options)).toThrow(/not yet implemented/);
+    api.showModal(options);
+    expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
   it("should close a modal alert/lightbox/dialog", () => {

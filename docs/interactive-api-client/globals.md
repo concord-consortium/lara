@@ -25,7 +25,6 @@
 * [ICustomReportFieldsAuthoredState](interfaces/icustomreportfieldsauthoredstate.md)
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
 * [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
-* [IDialogInitInteractive](interfaces/idialoginitinteractive.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
@@ -104,6 +103,7 @@
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
+* [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
 * [getFirebaseJwt](globals.md#const-getfirebasejwt)
@@ -221,7 +221,7 @@ ___
 
 ###  IInitInteractive
 
-Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
+Ƭ **IInitInteractive**: *[IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState›*
 
 ___
 
@@ -257,7 +257,7 @@ ___
 
 ###  InitInteractiveMode
 
-Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report" | "dialog"*
+Ƭ **InitInteractiveMode**: *"runtime" | "authoring" | "report"*
 
 ___
 
@@ -392,6 +392,18 @@ Name | Type |
 
 ___
 
+### `Const` flushStateUpdates
+
+▸ **flushStateUpdates**(): *void*
+
+Useful in rare cases when it's not desirable to wait for the delayed state updates (at this point it only applies
+to interactive state updates). Internally used by the showModal and closeModal functions, as opening modal
+usually means reloading interactive. It's necessary to make sure that the state is up to date before it happens.
+
+**Returns:** *void*
+
+___
+
 ### `Const` getAuthInfo
 
 ▸ **getAuthInfo**(): *Promise‹[IAuthInfo](interfaces/iauthinfo.md)›*
@@ -440,7 +452,7 @@ ___
 
 ### `Const` getInitInteractiveMessage
 
-▸ **getInitInteractiveMessage**‹**InteractiveState**, **AuthoredState**, **DialogState**, **GlobalInteractiveState**›(): *Promise‹[IInitInteractive](globals.md#iinitinteractive)‹InteractiveState, AuthoredState, DialogState, GlobalInteractiveState› | null›*
+▸ **getInitInteractiveMessage**‹**InteractiveState**, **AuthoredState**, **GlobalInteractiveState**›(): *Promise‹[IInitInteractive](globals.md#iinitinteractive)‹InteractiveState, AuthoredState, GlobalInteractiveState› | null›*
 
 **Type parameters:**
 
@@ -448,11 +460,9 @@ ___
 
 ▪ **AuthoredState**
 
-▪ **DialogState**
-
 ▪ **GlobalInteractiveState**
 
-**Returns:** *Promise‹[IInitInteractive](globals.md#iinitinteractive)‹InteractiveState, AuthoredState, DialogState, GlobalInteractiveState› | null›*
+**Returns:** *Promise‹[IInitInteractive](globals.md#iinitinteractive)‹InteractiveState, AuthoredState, GlobalInteractiveState› | null›*
 
 ___
 
@@ -512,9 +522,9 @@ ___
 
 ### `Const` getMode
 
-▸ **getMode**(): *Promise‹undefined | "runtime" | "authoring" | "report" | "dialog"›*
+▸ **getMode**(): *Promise‹undefined | "runtime" | "authoring" | "report"›*
 
-**Returns:** *Promise‹undefined | "runtime" | "authoring" | "report" | "dialog"›*
+**Returns:** *Promise‹undefined | "runtime" | "authoring" | "report"›*
 
 ___
 
@@ -797,6 +807,10 @@ ___
 
 ▸ **showModal**(`options`: [IShowModal](globals.md#ishowmodal)): *void*
 
+"lightbox" type is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
+"dialog" is used for showing dynamic interactives. It'll be initialized correctly by the host environment and
+all the runtime features will be supported.
+
 **Parameters:**
 
 Name | Type |
@@ -856,7 +870,7 @@ ___
 
 ### `Const` useInitMessage
 
-▸ **useInitMessage**‹**InteractiveState**, **AuthoredState**, **DialogState**, **GlobalInteractiveState**›(): *null | [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
+▸ **useInitMessage**‹**InteractiveState**, **AuthoredState**, **GlobalInteractiveState**›(): *null | [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState›*
 
 **Type parameters:**
 
@@ -864,11 +878,9 @@ ___
 
 ▪ **AuthoredState**
 
-▪ **DialogState**
-
 ▪ **GlobalInteractiveState**
 
-**Returns:** *null | [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState› | [IDialogInitInteractive](interfaces/idialoginitinteractive.md)‹InteractiveState, AuthoredState, DialogState›*
+**Returns:** *null | [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)‹InteractiveState, AuthoredState, GlobalInteractiveState› | [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)‹AuthoredState› | [IReportInitInteractive](interfaces/ireportinitinteractive.md)‹InteractiveState, AuthoredState›*
 
 ___
 

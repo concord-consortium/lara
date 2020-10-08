@@ -141,7 +141,7 @@ export class Client {
   private connect() {
     this.phone = iframePhone.getIFrameEndpoint();
 
-    this.addListener("initInteractive", (newInitMessage: IInitInteractive<any, any, any, any>) => {
+    this.addListener("initInteractive", (newInitMessage: IInitInteractive<any, any, any>) => {
       this.managedState.initMessage = newInitMessage;
 
       // parseJSONIfString is used below quite a few times, as LARA and report are not consistent about format.

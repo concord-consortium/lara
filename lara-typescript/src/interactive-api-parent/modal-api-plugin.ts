@@ -9,8 +9,10 @@ interface ModalState {
 }
 const modalMap: Record<string, ModalState> = {};
 
-export function hasModal(uuid: string) {
-  return !!modalMap[uuid];
+const defaultId = "main_modal";
+
+export function hasModal(uuid?: string) {
+  return !!modalMap[uuid || defaultId];
 }
 
 export const ModalApiPlugin: IFrameSaverPlugin = iframePhone => {
@@ -30,7 +32,7 @@ export const ModalApiPlugin: IFrameSaverPlugin = iframePhone => {
       lightbox: (opts: ICloseModal) => closeLightbox(opts),
       dialog: (opts: ICloseModal) => closeDialog(opts)
     };
-    const type = modalMap[options.uuid]?.type;
+    const type = modalMap[options.uuid || defaultId]?.type;
     const closeFn = type && fnMap[type];
     closeFn?.(options);
   });
@@ -62,18 +64,18 @@ function showAlert(options: IShowAlert) {
   }
 
   const $content = $(`<div class='check-answer'><p class='response'>${message}</p></div`);
-  modalMap[options.uuid] = { type: options.type, $content };
+  modalMap[options.uuid || defaultId] = { type: options.type, $content };
   addPopup({
     content: $content[0],
     title,
     titlebarColor,
     modal: true,
-    onClose: () => delete modalMap[options.uuid]
+    onClose: () => delete modalMap[options.uuid || defaultId]
   });
 }
 
 function closeAlert(options: ICloseModal) {
-  const $content = modalMap[options.uuid]?.$content;
+  const $content = modalMap[options.uuid || defaultId]?.$content;
   if ($content?.is(":ui-dialog")) {
     $content.dialog("close");
   }
@@ -127,8 +129,8 @@ function showLightbox(options: IShowLightbox) {
     maxWidth: "100%",
     maxHeight: "100%",
     ...getSizeOptions(),
-    onOpen: () => modalMap[options.uuid] = { type: "lightbox", $content: ($ as any).colorbox.element() },
-    onClosed: () => delete modalMap[options.uuid]
+    onOpen: () => modalMap[options.uuid || defaultId] = { type: "lightbox", $content: ($ as any).colorbox.element() },
+    onClosed: () => delete modalMap[options.uuid || defaultId]
   });
 }
 
@@ -138,10 +140,10 @@ function closeLightbox(options: ICloseModal) {
 
 function showDialog(options: IShowDialog) {
   // placeholder
-  modalMap[options.uuid] = { type: "dialog", $content: $(".ui-dialog") };
+  modalMap[options.uuid || defaultId] = { type: "dialog", $content: $(".ui-dialog") };
 }
 
 function closeDialog(options: ICloseModal) {
   // placeholder
-  delete modalMap[options.uuid];
+  delete modalMap[options.uuid || defaultId];
 }

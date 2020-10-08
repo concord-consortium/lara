@@ -28454,8 +28454,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModalApiPlugin = exports.hasModal = void 0;
 var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
 var modalMap = {};
+var defaultId = "main_modal";
 function hasModal(uuid) {
-    return !!modalMap[uuid];
+    return !!modalMap[uuid || defaultId];
 }
 exports.hasModal = hasModal;
 exports.ModalApiPlugin = function (iframePhone) {
@@ -28475,7 +28476,7 @@ exports.ModalApiPlugin = function (iframePhone) {
             lightbox: function (opts) { return closeLightbox(opts); },
             dialog: function (opts) { return closeDialog(opts); }
         };
-        var type = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.type;
+        var type = (_a = modalMap[options.uuid || defaultId]) === null || _a === void 0 ? void 0 : _a.type;
         var closeFn = type && fnMap[type];
         closeFn === null || closeFn === void 0 ? void 0 : closeFn(options);
     });
@@ -28504,18 +28505,18 @@ function showAlert(options) {
         message = text || "";
     }
     var $content = $("<div class='check-answer'><p class='response'>" + message + "</p></div");
-    modalMap[options.uuid] = { type: options.type, $content: $content };
+    modalMap[options.uuid || defaultId] = { type: options.type, $content: $content };
     plugin_api_1.addPopup({
         content: $content[0],
         title: title,
         titlebarColor: titlebarColor,
         modal: true,
-        onClose: function () { return delete modalMap[options.uuid]; }
+        onClose: function () { return delete modalMap[options.uuid || defaultId]; }
     });
 }
 function closeAlert(options) {
     var _a;
-    var $content = (_a = modalMap[options.uuid]) === null || _a === void 0 ? void 0 : _a.$content;
+    var $content = (_a = modalMap[options.uuid || defaultId]) === null || _a === void 0 ? void 0 : _a.$content;
     if ($content === null || $content === void 0 ? void 0 : $content.is(":ui-dialog")) {
         $content.dialog("close");
     }
@@ -28560,18 +28561,18 @@ function showLightbox(options) {
         sizeOpts.height = availableHeight;
         return sizeOpts;
     };
-    $.colorbox(__assign(__assign({ iframe: !options.isImage, photo: !!options.isImage, href: options.url, title: options.title, maxWidth: "100%", maxHeight: "100%" }, getSizeOptions()), { onOpen: function () { return modalMap[options.uuid] = { type: "lightbox", $content: $.colorbox.element() }; }, onClosed: function () { return delete modalMap[options.uuid]; } }));
+    $.colorbox(__assign(__assign({ iframe: !options.isImage, photo: !!options.isImage, href: options.url, title: options.title, maxWidth: "100%", maxHeight: "100%" }, getSizeOptions()), { onOpen: function () { return modalMap[options.uuid || defaultId] = { type: "lightbox", $content: $.colorbox.element() }; }, onClosed: function () { return delete modalMap[options.uuid || defaultId]; } }));
 }
 function closeLightbox(options) {
     $.colorbox.close();
 }
 function showDialog(options) {
     // placeholder
-    modalMap[options.uuid] = { type: "dialog", $content: $(".ui-dialog") };
+    modalMap[options.uuid || defaultId] = { type: "dialog", $content: $(".ui-dialog") };
 }
 function closeDialog(options) {
     // placeholder
-    delete modalMap[options.uuid];
+    delete modalMap[options.uuid || defaultId];
 }
 
 

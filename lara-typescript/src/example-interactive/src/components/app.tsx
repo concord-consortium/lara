@@ -4,7 +4,6 @@ import ResizeObserver from "resize-observer-polyfill";
 
 import { useInitMessage, setSupportedFeatures, setHeight } from "../../../interactive-api-client";
 import { AuthoringComponent } from "./authoring";
-import { DialogComponent } from "./dialog";
 import { ReportComponent } from "./report";
 import { RuntimeComponent } from "./runtime";
 import { IAuthoredState } from "./types";
@@ -54,8 +53,6 @@ export const AppComponent: React.FC<Props> = (props) => {
   switch (initMessage.mode) {
     case "authoring":
       return <AuthoringComponent initMessage={initMessage} />;
-    case "dialog":
-      return <DialogComponent initMessage={initMessage} />;
     case "report":
       return <ReportComponent initMessage={initMessage} />;
     case "runtime":
