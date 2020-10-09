@@ -16,7 +16,7 @@
 * [text](ishowalert.md#optional-text)
 * [title](ishowalert.md#optional-title)
 * [type](ishowalert.md#type)
-* [uuid](ishowalert.md#uuid)
+* [uuid](ishowalert.md#optional-uuid)
 
 ## Properties
 
@@ -44,8 +44,8 @@ ___
 
 ___
 
-###  uuid
+### `Optional` uuid
 
-• **uuid**: *string*
+• **uuid**? : *undefined | string*
 
-*Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
+*Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#optional-uuid)*

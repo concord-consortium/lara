@@ -6,5 +6,7 @@ export interface IFramePhoneStub {
   removeListener: (type: string) => void;
   post: (type: string, content?: any) => void;
 }
-export type IFrameSaverPluginDisconnectFn = () => void;
-export type IFrameSaverPlugin = (iframePhone: IFramePhoneStub) => IFrameSaverPluginDisconnectFn;
+export interface IFrameSaverPluginApi {
+  disconnect: () => void;
+}
+export type IFrameSaverPlugin = (iframePhone: IFramePhoneStub) => IFrameSaverPluginApi;

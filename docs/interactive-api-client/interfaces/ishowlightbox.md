@@ -18,7 +18,7 @@
 * [title](ishowlightbox.md#optional-title)
 * [type](ishowlightbox.md#type)
 * [url](ishowlightbox.md#url)
-* [uuid](ishowlightbox.md#uuid)
+* [uuid](ishowlightbox.md#optional-uuid)
 
 ## Properties
 
@@ -58,8 +58,8 @@ ___
 
 ___
 
-###  uuid
+### `Optional` uuid
 
-• **uuid**: *string*
+• **uuid**? : *undefined | string*
 
-*Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#uuid)*
+*Inherited from [IBaseShowModal](ibaseshowmodal.md).[uuid](ibaseshowmodal.md#optional-uuid)*

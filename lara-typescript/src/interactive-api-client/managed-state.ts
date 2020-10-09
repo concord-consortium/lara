@@ -11,7 +11,7 @@ type ManagedStateEvent =
 export class ManagedState {
   public interactiveStateDirty = false;
 
-  private _initMessage: Readonly<IInitInteractive<any, any, any, any>> | null = null;
+  private _initMessage: Readonly<IInitInteractive<any, any, any>> | null = null;
   // State variables are kept separately from initMessage, as they might get updated. For client user convenience,
   // this state is kept here and all the updates emit appropriate event.
   private _interactiveState: Readonly<any> | null = null;

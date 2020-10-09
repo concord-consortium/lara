@@ -100,15 +100,15 @@ export const useGlobalInteractiveState = <GlobalInteractiveState>() => {
 };
 
 // tslint:disable-next-line:max-line-length
-export const useInitMessage = <InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}>() => {
-  type InitMessage = IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>;
+export const useInitMessage = <InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>() => {
+  type InitMessage = IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState>;
   const [ initMessage, setInitMessage ] = useState<InitMessage | null>(null);
 
   useEffect(() => {
     // useEffect callback can't be async.
     (async () => {
       const initMsg =
-        await client.getInitInteractiveMessage<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState>();
+        await client.getInitInteractiveMessage<InteractiveState, AuthoredState, GlobalInteractiveState>();
       setInitMessage(initMsg);
     })();
   }, []);

@@ -88,14 +88,6 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
   themeInfo: IThemeInfo;
 }
 
-export interface IDialogInitInteractive<InteractiveState = {}, AuthoredState = {}, DialogState = {}> {
-  version: 1;
-  mode: "dialog";
-  authoredState: AuthoredState;
-  interactiveState: InteractiveState;
-  dialogState: DialogState;
-}
-
 export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "aggregate";
@@ -103,13 +95,12 @@ export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState 
   interactiveState: InteractiveState;
 }
 
-export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}> =
+export type IInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}> =
   IRuntimeInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> |
   IAuthoringInitInteractive<AuthoredState> |
-  IReportInitInteractive<InteractiveState, AuthoredState> |
-  IDialogInitInteractive<InteractiveState, AuthoredState, DialogState>;
+  IReportInitInteractive<InteractiveState, AuthoredState>;
 
-export type InitInteractiveMode = "runtime" | "authoring" | "report" | "dialog";
+export type InitInteractiveMode = "runtime" | "authoring" | "report";
 
 // Custom Report Fields
 //
@@ -262,7 +253,7 @@ export interface IRuntimeCustomReportValues {
 //
 
 export interface IBaseShowModal {
-  uuid: string;
+  uuid?: string;
 }
 
 export type ModalType = "alert" | "lightbox" | "dialog";
@@ -274,6 +265,7 @@ export interface IShowAlert extends IBaseShowModal {
   text?: string;
 }
 
+// Lightbox is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
 export interface IShowLightbox extends IBaseShowModal {
   type: "lightbox";
   url: string;
@@ -283,10 +275,10 @@ export interface IShowLightbox extends IBaseShowModal {
   allowUpscale?: boolean;
 }
 
-export interface IShowDialog<DialogState = {}> extends IBaseShowModal {
+// Dialog is used for interactives. It'll be initialized correctly by the host environment.
+export interface IShowDialog extends IBaseShowModal {
   type: "dialog";
   url: string;
-  dialogState: DialogState;
 }
 
 export type IShowModal = IShowAlert | IShowLightbox | IShowDialog;

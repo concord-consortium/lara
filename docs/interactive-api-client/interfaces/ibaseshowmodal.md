@@ -16,10 +16,10 @@
 
 ### Properties
 
-* [uuid](ibaseshowmodal.md#uuid)
+* [uuid](ibaseshowmodal.md#optional-uuid)
 
 ## Properties
 
-###  uuid
+### `Optional` uuid
 
-• **uuid**: *string*
+• **uuid**? : *undefined | string*

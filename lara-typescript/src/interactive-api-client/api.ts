@@ -30,11 +30,11 @@ const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
 };
 
 export const getInitInteractiveMessage =
-  <InteractiveState = {}, AuthoredState = {}, DialogState = {}, GlobalInteractiveState = {}>():
-  Promise<IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState> | null> => {
+  <InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>():
+  Promise<IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> | null> => {
   const client = getClient();
   // tslint:disable-next-line:max-line-length
-  return new Promise<IInitInteractive<InteractiveState, AuthoredState, DialogState, GlobalInteractiveState> | null>(resolve => {
+  return new Promise<IInitInteractive<InteractiveState, AuthoredState, GlobalInteractiveState> | null>(resolve => {
     if (client.managedState.initMessage) {
       resolve(client.managedState.initMessage);
     } else {
@@ -52,6 +52,7 @@ export const getInteractiveState = <InteractiveState>(): InteractiveState | null
 };
 
 let setInteractiveStateTimeoutId: number;
+let delayedInteractiveStateUpdate: (() => void) | null = null;
 export const setInteractiveStateTimeout = 2000; // ms
 /**
  * Note that state will become frozen and should never be mutated.
@@ -74,10 +75,26 @@ export const setInteractiveState = <InteractiveState>(newInteractiveState: Inter
   const client = getClient();
   client.managedState.interactiveState = newInteractiveState;
   window.clearTimeout(setInteractiveStateTimeoutId);
-  setInteractiveStateTimeoutId = window.setTimeout(() => {
+  delayedInteractiveStateUpdate = () => {
     client.post("interactiveState", newInteractiveState);
     client.managedState.interactiveStateDirty = false;
+    delayedInteractiveStateUpdate = null;
+  };
+  setInteractiveStateTimeoutId = window.setTimeout(() => {
+    // Note that delayedInteractiveStateUpdate might be equal to null if it was executed before using .flush()
+    delayedInteractiveStateUpdate?.();
   }, setInteractiveStateTimeout);
+};
+
+/**
+ * Useful in rare cases when it's not desirable to wait for the delayed state updates (at this point it only applies
+ * to interactive state updates). Internally used by the showModal and closeModal functions, as opening modal
+ * usually means reloading interactive. It's necessary to make sure that the state is up to date before it happens.
+ */
+export const flushStateUpdates = () => {
+  // Note that if delayedInteractiveStateUpdate was set, it should set itself to null and setTimeout will ignore it.
+  delayedInteractiveStateUpdate?.();
+  window.clearTimeout(setInteractiveStateTimeoutId);
 };
 
 export const getAuthoredState = <AuthoredState>(): AuthoredState | null => {
@@ -241,21 +258,21 @@ export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(lis
 };
 
 /**
- * @todo Implement this function.
+ * "lightbox" type is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
+ * "dialog" is used for showing dynamic interactives. It'll be initialized correctly by the host environment and
+ * all the runtime features will be supported.
  */
 export const showModal = (options: IShowModal) => {
-  if ((options.type === "alert") || (options.type === "lightbox")) {
-    getClient().post("showModal", options);
-  }
-  else {
-    THROW_NOT_IMPLEMENTED_YET(`showModal { type: "${options.type}" }`);
-  }
+  // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
+  // before it happens.
+  flushStateUpdates();
+  getClient().post("showModal", options);
 };
 
-/**
- * @todo Implement this function.
- */
 export const closeModal = (options: ICloseModal) => {
+  // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
+  // before it happens.
+  flushStateUpdates();
   getClient().post("closeModal", options);
 };
 
