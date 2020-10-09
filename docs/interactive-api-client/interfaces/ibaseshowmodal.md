@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0-pre.2](../README.md) › [Globals](../globals.md) › [IBaseShowModal](ibaseshowmodal.md)
+[@concord-consortium/lara-interactive-api - v0.6.0](../README.md) › [Globals](../globals.md) › [IBaseShowModal](ibaseshowmodal.md)
 
 # Interface: IBaseShowModal
 
