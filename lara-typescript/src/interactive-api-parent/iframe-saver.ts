@@ -2,7 +2,7 @@ import { ParentEndpoint } from "iframe-phone";
 import * as DOMPurify from "dompurify";
 import * as LaraInteractiveApi from "../interactive-api-client";
 import { IframePhoneManager } from "./iframe-phone-manager";
-import { IFrameSaverPluginDisconnectFn } from "./iframe-saver-plugin";
+import { IFrameSaverPluginApi } from "./iframe-saver-plugin";
 import { ModalApiPlugin } from "./modal-api-plugin";
 import {
   IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse, ILinkedInteractive
@@ -123,7 +123,7 @@ export class IFrameSaver {
   private alreadySetup: boolean;
   private iframePhone: ParentEndpoint;
   private successCallback: SuccessCallback | null | undefined;
-  private plugins: IFrameSaverPluginDisconnectFn[];
+  private plugins: IFrameSaverPluginApi[];
   private linkedInteractives: ILinkedInteractive[];
 
   constructor($iframe: JQuery, $dataDiv: JQuery, $deleteButton: JQuery) {
