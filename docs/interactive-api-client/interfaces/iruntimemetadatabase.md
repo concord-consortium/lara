@@ -12,6 +12,8 @@
 
   ↳ [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
 
+  ↳ [IRuntimeImageQuestionMetadata](iruntimeimagequestionmetadata.md)
+
 ## Index
 
 ### Properties

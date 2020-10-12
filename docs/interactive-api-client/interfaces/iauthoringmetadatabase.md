@@ -12,6 +12,8 @@
 
   ↳ [IAuthoringMultipleChoiceMetadata](iauthoringmultiplechoicemetadata.md)
 
+  ↳ [IAuthoringImageQuestionMetadata](iauthoringimagequestionmetadata.md)
+
 ## Index
 
 ### Properties
