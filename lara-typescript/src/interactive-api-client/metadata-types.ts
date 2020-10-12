@@ -78,7 +78,7 @@ export interface IRuntimeMultipleChoiceMetadata extends IRuntimeMetadataBase {
 
 export interface IRuntimeImageQuestionMetadata extends IRuntimeMetadataBase {
   answerType: "image_question_answer";
-  answerImageUrl: string;
+  answerImageUrl?: string;
 }
 
 export type IRuntimeMetadata = IRuntimeInteractiveMetadata | IRuntimeOpenResponseMetadata |

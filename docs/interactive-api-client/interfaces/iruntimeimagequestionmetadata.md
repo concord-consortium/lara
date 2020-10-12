@@ -12,16 +12,16 @@
 
 ### Properties
 
-* [answerImageUrl](iruntimeimagequestionmetadata.md#answerimageurl)
+* [answerImageUrl](iruntimeimagequestionmetadata.md#optional-answerimageurl)
 * [answerText](iruntimeimagequestionmetadata.md#optional-answertext)
 * [answerType](iruntimeimagequestionmetadata.md#answertype)
 * [submitted](iruntimeimagequestionmetadata.md#optional-submitted)
 
 ## Properties
 
-###  answerImageUrl
+### `Optional` answerImageUrl
 
-• **answerImageUrl**: *string*
+• **answerImageUrl**? : *undefined | string*
 
 ___
 
