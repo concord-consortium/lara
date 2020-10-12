@@ -25,12 +25,14 @@ export interface IHostFeatureSupport extends Record<string, unknown> {
   version: string;
 }
 
-export interface IHostModalDialogSupport extends IHostFeatureSupport {
-  imageLightbox: boolean;
+export interface IHostModalSupport extends IHostFeatureSupport {
+  dialog?: boolean;
+  lightbox?: boolean;
+  alert?: boolean;
 }
 
 export interface IHostFeatures extends Record<string, IHostFeatureSupport> {
-  modalDialog: IHostModalDialogSupport;
+  modal: IHostModalSupport;
 }
 
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>
@@ -279,16 +281,16 @@ export interface IShowLightbox extends IBaseShowModal {
 export interface IShowDialog extends IBaseShowModal {
   type: "dialog";
   url: string;
+  // Disables click-to-close backdrop and X icon in modal (depends on host environment).
+  // Only interactive own UI itself can request modal closing by using `closeModal()` function.
+  notCloseable?: boolean;
 }
 
 export type IShowModal = IShowAlert | IShowLightbox | IShowDialog;
 
 export interface ICloseModal {
-  uuid: string;
-}
-
-export interface IClosedModal {
-  uuid: string;
+  // Necessary only when there are multiple modals. Otherwise it'll close the currently open modal.
+  uuid?: string;
 }
 
 export interface ICustomMessage {

@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](../README.md) › [Globals](../globals.md) › [IHostFeatures](ihostfeatures.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IHostFeatures](ihostfeatures.md)
 
 # Interface: IHostFeatures
 
@@ -12,10 +12,10 @@
 
 ### Properties
 
-* [modalDialog](ihostfeatures.md#modaldialog)
+* [modal](ihostfeatures.md#modal)
 
 ## Properties
 
-###  modalDialog
+###  modal
 
-• **modalDialog**: *[IHostModalDialogSupport](ihostmodaldialogsupport.md)*
+• **modal**: *[IHostModalSupport](ihostmodalsupport.md)*

@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](../README.md) › [Globals](../globals.md) › [IJwtResponse](ijwtresponse.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IJwtResponse](ijwtresponse.md)
 
 # Interface: IJwtResponse
 

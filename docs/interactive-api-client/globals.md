@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.6.0
+# @concord-consortium/lara-interactive-api - v0.6.1
 
 ## Index
 
@@ -18,7 +18,6 @@
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
 * [ICloseModal](interfaces/iclosemodal.md)
-* [IClosedModal](interfaces/iclosedmodal.md)
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
 * [ICustomMessage](interfaces/icustommessage.md)
@@ -41,7 +40,7 @@
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
 * [IHostFeatures](interfaces/ihostfeatures.md)
-* [IHostModalDialogSupport](interfaces/ihostmodaldialogsupport.md)
+* [IHostModalSupport](interfaces/ihostmodalsupport.md)
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
 * [IJwtClaims](interfaces/ijwtclaims.md)

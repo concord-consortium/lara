@@ -153,9 +153,11 @@ describe("IFrameSaver", () => {
           error: null,
           mode: "runtime",
           hostFeatures: {
-            modalDialog: {
+            modal: {
               version: "1.0.0",
-              imageLightbox: true
+              alert: true,
+              lightbox: true,
+              dialog: false
             }
           },
           authoredState: {test: 123},

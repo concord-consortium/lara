@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](../README.md) › [Globals](../globals.md) › [IShowDialog](ishowdialog.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IShowDialog](ishowdialog.md)
 
 # Interface: IShowDialog
 
@@ -12,11 +12,18 @@
 
 ### Properties
 
+* [notCloseable](ishowdialog.md#optional-notcloseable)
 * [type](ishowdialog.md#type)
 * [url](ishowdialog.md#url)
 * [uuid](ishowdialog.md#optional-uuid)
 
 ## Properties
+
+### `Optional` notCloseable
+
+• **notCloseable**? : *undefined | false | true*
+
+___
 
 ###  type
 
