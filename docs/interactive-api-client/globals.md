@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.6.0
+# @concord-consortium/lara-interactive-api - v0.6.1
 
 ## Index
 
@@ -10,6 +10,7 @@
 * [IAuthInfo](interfaces/iauthinfo.md)
 * [IAuthoringCustomReportField](interfaces/iauthoringcustomreportfield.md)
 * [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)
+* [IAuthoringImageQuestionMetadata](interfaces/iauthoringimagequestionmetadata.md)
 * [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)
 * [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md)
 * [IAuthoringMetadataBase](interfaces/iauthoringmetadatabase.md)
@@ -18,7 +19,6 @@
 * [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md)
 * [IBaseShowModal](interfaces/ibaseshowmodal.md)
 * [ICloseModal](interfaces/iclosemodal.md)
-* [IClosedModal](interfaces/iclosedmodal.md)
 * [IContextMember](interfaces/icontextmember.md)
 * [IContextMembership](interfaces/icontextmembership.md)
 * [ICustomMessage](interfaces/icustommessage.md)
@@ -41,7 +41,7 @@
 * [IHintRequest](interfaces/ihintrequest.md)
 * [IHostFeatureSupport](interfaces/ihostfeaturesupport.md)
 * [IHostFeatures](interfaces/ihostfeatures.md)
-* [IHostModalDialogSupport](interfaces/ihostmodaldialogsupport.md)
+* [IHostModalSupport](interfaces/ihostmodalsupport.md)
 * [IInteractiveListResponseItem](interfaces/iinteractivelistresponseitem.md)
 * [IInteractiveStateProps](interfaces/iinteractivestateprops.md)
 * [IJwtClaims](interfaces/ijwtclaims.md)
@@ -52,6 +52,7 @@
 * [IPortalClaims](interfaces/iportalclaims.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
+* [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md)
 * [IRuntimeMetadataBase](interfaces/iruntimemetadatabase.md)
@@ -181,7 +182,7 @@ ___
 
 ###  IAuthoringMetadata
 
-Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)*
+Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md) | [IAuthoringImageQuestionMetadata](interfaces/iauthoringimagequestionmetadata.md)*
 
 ___
 
@@ -233,7 +234,7 @@ ___
 
 ###  IRuntimeMetadata
 
-Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)*
+Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md) | [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)*
 
 ___
 

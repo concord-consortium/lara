@@ -39,8 +39,13 @@ export interface IAuthoringMultipleChoiceMetadata extends IAuthoringMetadataBase
   choices: IAuthoringMultipleChoiceChoiceMetadata[];
 }
 
+export interface IAuthoringImageQuestionMetadata extends IAuthoringMetadataBase {
+  questionType: "image_question";
+  answerPrompt?: string;
+}
+
 export type IAuthoringMetadata = IAuthoringInteractiveMetadata | IAuthoringOpenResponseMetadata |
-  IAuthoringMultipleChoiceMetadata;
+  IAuthoringMultipleChoiceMetadata | IAuthoringImageQuestionMetadata;
 
 // Runtime metadata:
 
@@ -71,5 +76,10 @@ export interface IRuntimeMultipleChoiceMetadata extends IRuntimeMetadataBase {
   selectedChoiceIds: ChoiceId[];
 }
 
+export interface IRuntimeImageQuestionMetadata extends IRuntimeMetadataBase {
+  answerType: "image_question_answer";
+  answerImageUrl?: string;
+}
+
 export type IRuntimeMetadata = IRuntimeInteractiveMetadata | IRuntimeOpenResponseMetadata |
-  IRuntimeMultipleChoiceMetadata;
+  IRuntimeMultipleChoiceMetadata | IRuntimeImageQuestionMetadata;

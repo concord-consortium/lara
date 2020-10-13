@@ -1,25 +1,30 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IAuthoringInteractiveMetadata](iauthoringinteractivemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IAuthoringImageQuestionMetadata](iauthoringimagequestionmetadata.md)
 
-# Interface: IAuthoringInteractiveMetadata
-
-Generic interactive type.
+# Interface: IAuthoringImageQuestionMetadata
 
 ## Hierarchy
 
 * [IAuthoringMetadataBase](iauthoringmetadatabase.md)
 
-  ↳ **IAuthoringInteractiveMetadata**
+  ↳ **IAuthoringImageQuestionMetadata**
 
 ## Index
 
 ### Properties
 
-* [prompt](iauthoringinteractivemetadata.md#optional-prompt)
-* [questionSubType](iauthoringinteractivemetadata.md#optional-questionsubtype)
-* [questionType](iauthoringinteractivemetadata.md#questiontype)
-* [required](iauthoringinteractivemetadata.md#optional-required)
+* [answerPrompt](iauthoringimagequestionmetadata.md#optional-answerprompt)
+* [prompt](iauthoringimagequestionmetadata.md#optional-prompt)
+* [questionSubType](iauthoringimagequestionmetadata.md#optional-questionsubtype)
+* [questionType](iauthoringimagequestionmetadata.md#questiontype)
+* [required](iauthoringimagequestionmetadata.md#optional-required)
 
 ## Properties
+
+### `Optional` answerPrompt
+
+• **answerPrompt**? : *undefined | string*
+
+___
 
 ### `Optional` prompt
 
@@ -42,7 +47,7 @@ ___
 
 ###  questionType
 
-• **questionType**: *"iframe_interactive"*
+• **questionType**: *"image_question"*
 
 *Overrides [IAuthoringMetadataBase](iauthoringmetadatabase.md).[questionType](iauthoringmetadatabase.md#questiontype)*
 

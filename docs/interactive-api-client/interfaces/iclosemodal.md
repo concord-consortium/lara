@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.0](../README.md) › [Globals](../globals.md) › [ICloseModal](iclosemodal.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [ICloseModal](iclosemodal.md)
 
 # Interface: ICloseModal
 
@@ -10,10 +10,10 @@
 
 ### Properties
 
-* [uuid](iclosemodal.md#uuid)
+* [uuid](iclosemodal.md#optional-uuid)
 
 ## Properties
 
-###  uuid
+### `Optional` uuid
 
-• **uuid**: *string*
+• **uuid**? : *undefined | string*

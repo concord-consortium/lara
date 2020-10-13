@@ -1,23 +1,29 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IRuntimeMultipleChoiceMetadata](iruntimemultiplechoicemetadata.md)
+[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IRuntimeImageQuestionMetadata](iruntimeimagequestionmetadata.md)
 
-# Interface: IRuntimeMultipleChoiceMetadata
+# Interface: IRuntimeImageQuestionMetadata
 
 ## Hierarchy
 
 * [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
-  ↳ **IRuntimeMultipleChoiceMetadata**
+  ↳ **IRuntimeImageQuestionMetadata**
 
 ## Index
 
 ### Properties
 
-* [answerText](iruntimemultiplechoicemetadata.md#optional-answertext)
-* [answerType](iruntimemultiplechoicemetadata.md#answertype)
-* [selectedChoiceIds](iruntimemultiplechoicemetadata.md#selectedchoiceids)
-* [submitted](iruntimemultiplechoicemetadata.md#optional-submitted)
+* [answerImageUrl](iruntimeimagequestionmetadata.md#optional-answerimageurl)
+* [answerText](iruntimeimagequestionmetadata.md#optional-answertext)
+* [answerType](iruntimeimagequestionmetadata.md#answertype)
+* [submitted](iruntimeimagequestionmetadata.md#optional-submitted)
 
 ## Properties
+
+### `Optional` answerImageUrl
+
+• **answerImageUrl**? : *undefined | string*
+
+___
 
 ### `Optional` answerText
 
@@ -32,15 +38,9 @@ ___
 
 ###  answerType
 
-• **answerType**: *"multiple_choice_answer"*
+• **answerType**: *"image_question_answer"*
 
 *Overrides [IRuntimeMetadataBase](iruntimemetadatabase.md).[answerType](iruntimemetadatabase.md#answertype)*
-
-___
-
-###  selectedChoiceIds
-
-• **selectedChoiceIds**: *[ChoiceId](../globals.md#choiceid)[]*
 
 ___
 

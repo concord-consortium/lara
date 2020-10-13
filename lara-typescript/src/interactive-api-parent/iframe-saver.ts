@@ -385,9 +385,11 @@ export class IFrameSaver {
       error: err,
       mode: "runtime",
       hostFeatures: {
-        modalDialog: {
+        modal: {
           version: "1.0.0",
-          imageLightbox: true
+          dialog: false,
+          lightbox: true,
+          alert: true
         }
       },
       authoredState: this.authoredState,
