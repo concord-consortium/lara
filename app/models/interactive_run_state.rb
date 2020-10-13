@@ -38,6 +38,7 @@ class InteractiveRunState < ActiveRecord::Base
     mapping = {
       "open_response_answer" => "open_response",
       "multiple_choice_answer" => "multiple_choice",
+      "image_question_answer" => "image_question",
       "interactive_state" => "iframe_interactive",
       "external_link" => "iframe_interactive"
     }
@@ -82,6 +83,7 @@ class InteractiveRunState < ActiveRecord::Base
       "interactive_state" => "interactive",
       "external_link" => "external_link",
       "open_response_answer" => "open_response",
+      "image_question_answer" => "image_question",
       "multiple_choice_answer" => "multiple_choice",
     }
     result[:type] = type_mapping[result[:type]]
@@ -95,6 +97,9 @@ class InteractiveRunState < ActiveRecord::Base
       result[:answer_ids] = result[:answer][:choice_ids]
       # multiple_choice_answer.rb also sends answer_texts.
       # This property is skipped here, as Portal doesn't use it anyway.
+    elsif result[:type] === "image_question"
+      result[:image_url] = result[:answer][:image_url]
+      result[:answer] = result[:answer][:text]
     end
 
     if (result[:type] === "interactive" || result[:type] === "external_link") && interactive.instance_of?(MwInteractive)
@@ -155,6 +160,13 @@ class InteractiveRunState < ActiveRecord::Base
       # answerText is defined in IRuntimeMetadataBase.
       # Use answer key to be compatible with current Report and Portal format.
       result[:answer] = metadata[:answerText]
+    when "image_question_answer"
+      # answerImageUrl is defined in IRuntimeImageQuestionMetadata.
+      # # Use answer key to be compatible with current Report service format.
+      result[:answer] = {
+        image_url: metadata[:answerImageUrl],
+        text: metadata[:answerText]
+      }
     when "external_link"
       result[:answer] = reporting_url
     when "interactive_state"
