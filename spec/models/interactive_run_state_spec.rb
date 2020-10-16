@@ -233,6 +233,22 @@ describe InteractiveRunState do
         end
       end
 
+      describe "when interactive run state pretends to be image question answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "image_question_answer", answerText: "Test answer", answerImageUrl: "http://test.snapshot.com", submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should overwrite type and provide supported fields to Portal" do
+          expect(subject).to include({
+            type: "image_question",
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            answer: "Test answer",
+            image_url: "http://test.snapshot.com",
+            is_final: true
+          })
+        end
+      end
+
       describe "when interactive run state pretends to be multiple choice answer" do
         let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
         let(:run_data) { JSON({answerType: "multiple_choice_answer", selectedChoiceIds: ["a", "b"], submitted: true}) }
@@ -303,6 +319,27 @@ describe InteractiveRunState do
             question_id: "mw_interactive_#{interactive.id.to_s}",
             question_type: "open_response",
             answer: "Test answer",
+            submitted: true
+          })
+        end
+      end
+
+      describe "when interactive run state pretends to be image question answer" do
+        let(:interactive) { FactoryGirl.create(:mw_interactive, enable_learner_state: true) }
+        let(:run_data) { JSON({answerType: "image_question_answer", answerText: "Test answer", answerImageUrl: "http://test.snapshot.com", submitted: true}) }
+        let(:interactive_run_state) { InteractiveRunState.create(run: run, interactive: interactive, raw_data: run_data) }
+
+        it "should overwrite type and provide supported fields to Report Service" do
+          expect(subject).to include({
+            type: "image_question_answer",
+            id: interactive_run_state.answer_id,
+            question_id: "mw_interactive_#{interactive.id.to_s}",
+            question_type: "image_question",
+            answer: {
+              text: "Test answer",
+              image_url: "http://test.snapshot.com"
+            },
+            answer_text: "Test answer",
             submitted: true
           })
         end

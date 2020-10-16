@@ -99,6 +99,13 @@ module BaseInteractive
         # This property is defined in IAuthoringMultipleChoiceMetadata:
         choices: (metadata[:choices] || []).map { |c| (c || {}).symbolize_keys.slice(:id, :content, :correct) }
       })
+    elsif type === "image_question"
+      result.merge!({
+        # This property is defined in IAuthoringImageQuestionMetadata.
+        # It can be confusing that drawing prompt == answer prompt. The property has been renamed while image question
+        # interactive was developed. It seems to make sense, as this prompt is rendered next to textarea.
+        drawing_prompt: metadata[:answerPrompt]
+      })
     end
 
     result
