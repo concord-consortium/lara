@@ -6,13 +6,13 @@
     %div.action_menu_header_right
       %ul.menu
         %li.export= link_to('Export', show_status_sequence_path(sequence), :remote => true) if can? :export, sequence
+        %li.convert= link_to('Convert', activity_player_conversion_url(sequence), target: :_blank) if can? :export, sequence
         %li.copy= link_to "Copy", duplicate_sequence_path(sequence) if can? :duplicate, sequence
         %li.edit= link_to "Edit", edit_sequence_path(sequence) if can? :update, sequence
         %li.delete= link_to 'Delete', sequence_path(sequence), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, sequence
         %li.publish= link_to('Publish', publication_show_status_path(sequence.class,sequence.id), :remote => true) if can? :publish, sequence
         - if can? :read, sequence
           %li.print
-            %i.fa.fa-print
             = link_to "print", print_blank_sequence_path(sequence), :target => 'new'
           %li.run= link_to "Run", sequence_path(sequence)
 

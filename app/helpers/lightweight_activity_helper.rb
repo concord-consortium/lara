@@ -67,4 +67,11 @@ module LightweightActivityHelper
   def activity_player_page_url(activity, page)
     return  "#{activity_player_url(activity)}&page=#{page.position}"
   end
+
+  def activity_player_conversion_url(activity)
+    if @sequence
+      return "#{ENV['CONVERSION_SCRIPT_URL']}?resource_name=#{url_encode(@sequence.title)}&lara_root=#{url_encode('https://app.lara.docker')}&lara_resource=#{url_encode(api_v1_activity_url(@sequence.id))}.json&template=#{url_encode(api_v1_activity_url(ENV['CONVERSION_TEMPLATE_ID']))}"
+    end
+    return "#{ENV['CONVERSION_SCRIPT_URL']}?resource_name=#{url_encode(activity.name)}&lara_root=#{url_encode('https://app.lara.docker')}&lara_resource=#{url_encode(api_v1_activity_url(activity.id))}.json&template=#{url_encode(api_v1_activity_url(ENV['CONVERSION_TEMPLATE_ID']))}"
+  end
 end

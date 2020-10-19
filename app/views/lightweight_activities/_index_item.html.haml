@@ -8,6 +8,7 @@
     %div.action_menu_header_right
       %ul.menu
         %li.export= link_to('Export', show_status_activity_path(activity), :remote => true) if can? :export, activity
+        %li.convert= link_to('Convert', activity_player_conversion_url(activity), target: :_blank) if can? :export, activity
         %li.copy= link_to "Copy", duplicate_activity_path(activity) if can? :duplicate, activity
         %li.edit= link_to "Edit", edit_activity_path(activity) if can? :edit, activity
         - confirm_message = "Are you sure you want to delete this activity? You will lose data from #{pluralize(activity.active_runs, "learner")} that #{"has".pluralize(activity.active_runs)} attempted this activity."
@@ -15,7 +16,6 @@
         %li.publish= link_to('Publish', publication_show_status_path(activity.class,activity.id), :remote => true) if can? :publish, activity
         - if can? :read, activity
           %li.print
-            %i.fa.fa-print
             = link_to "print", print_blank_activity_path(activity), :target => 'new'
           %li.run= link_to "Run", activity_path(activity), :target => 'new'
 
