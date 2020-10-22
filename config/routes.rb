@@ -172,7 +172,7 @@ LightweightStandalone::Application.routes.draw do
       end
 
       resources :activities, :controller => 'lightweight_activities', only: [:show, :destroy]
-      resources :sequences, only: [:destroy]
+      resources :sequences, only: [:show, :destroy]
 
       match 'import' => 'import#import', :via => 'post'
 
