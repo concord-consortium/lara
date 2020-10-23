@@ -27,9 +27,7 @@ services:
       # update in .env if necessary (e.g. to work locally on ACTIVITY_PLAYER_URL)
       ACTIVITY_PLAYER_URL: "${ACTIVITY_PLAYER_URL:-https://activity-player.concord.org/branch/master}"
       # URL of script to create an Activity Player compatible version of resources by converting old embeddables to library interactives
-      CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/}"
-      # ID of activity to be used as a template by conversion script for library interactives information
-      CONVERSION_TEMPLATE_ID: "${CONVERSION_TEMPLATE_ID:-214}"
+      CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/?lara_root=https://app.lara.docker&template=https://app.lara.docker/api/v1/activities/214.json}"
     # no ports are published, see below for details
     depends_on:
       - db

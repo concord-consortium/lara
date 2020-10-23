@@ -70,8 +70,16 @@ module LightweightActivityHelper
 
   def activity_player_conversion_url(activity)
     if @sequence
-      return "#{ENV['CONVERSION_SCRIPT_URL']}?resource_name=#{url_encode(@sequence.title)}&lara_root=#{url_encode('https://app.lara.docker')}&lara_resource=#{url_encode(api_v1_activity_url(@sequence.id))}.json&template=#{url_encode(api_v1_activity_url(ENV['CONVERSION_TEMPLATE_ID']))}"
+      params[:lara_resource] = "#{api_v1_activity_url(@sequence.id)}.json"
+      params[:resource_name] = @sequence.title
+    else
+      params[:lara_resource] = "#{url_encode(api_v1_activity_url(activity.id))}.json"
+      params[:resource_name] = activity.name
     end
-    return "#{ENV['CONVERSION_SCRIPT_URL']}?resource_name=#{url_encode(activity.name)}&lara_root=#{url_encode('https://app.lara.docker')}&lara_resource=#{url_encode(api_v1_activity_url(activity.id))}.json&template=#{url_encode(api_v1_activity_url(ENV['CONVERSION_TEMPLATE_ID']))}"
+
+    url = ENV['CONVERSION_SCRIPT_URL']
+    uri = URI.parse url
+    uri.query = URI.encode_www_form URI.decode_www_form(uri.query || "").concat(params.to_a)
+    return uri.to_s
   end
 end
