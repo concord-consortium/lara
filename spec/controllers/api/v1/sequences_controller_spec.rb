@@ -4,7 +4,25 @@ describe Api::V1::SequencesController do
   let (:admin) { FactoryGirl.create(:admin) }
   let (:author1) { FactoryGirl.create(:author) }
   let (:author2) { FactoryGirl.create(:author) }
-  let (:sequence) { FactoryGirl.create(:sequence, user: author1) }
+  let (:sequence) { FactoryGirl.create(:sequence, user: author1, :title => 'Test Sequence') }
+
+  describe "#show" do
+  it 'recognizes and generates #show' do
+    expect({:get => "api/v1/sequences/1.json"}).to route_to(
+      :controller => 'api/v1/sequences',
+      :action => 'show',
+      :id => "1",
+      :format => "json"
+    )
+  end
+
+  it "when user is anonymous, shows a sequence's json" do
+    get :show, :id => sequence.id, :format => :json
+    expect(response.status).to eq(200)
+    json_response = JSON.parse(response.body)
+    expect(json_response["title"]).to eq('Test Sequence')
+  end
+end
 
   describe "#destroy" do
     def expect_success_for(user)
