@@ -79,6 +79,7 @@ module LightweightStandalone
       allow do
         origins '*'
         resource '/api/*', :headers => :any, :methods => [:get, :post, :put, :options]
+        resource '/image-proxy', :headers => :any, :methods => [:get, :options]
       end
     end
 
