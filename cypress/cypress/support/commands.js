@@ -1,6 +1,6 @@
 // Wrapper around cy.request() method that automatically grabs and sets LARA CSRF token.
 Cypress.Commands.add("requestWithToken", (options) => {
-  return cy.get('meta[name="csrf-token"]').then(token => {
+  return cy.get('meta[name="csrf-token"]', {log: false}).then(token => {
     const newOptions = Object.assign({}, options)
     if (!newOptions.headers) {
       newOptions.headers = {}
@@ -27,14 +27,37 @@ Cypress.Commands.add("logout", () => {
 })
 
 Cypress.Commands.add("importMaterial", fixturePath => {
+  const url = `${Cypress.config("baseUrl")}/api/v1/import`;
+
+  Cypress.log({
+    name: "importMaterial",
+    displayName: "import",
+    message: fixturePath,
+    consoleProps: () => {
+      return {
+        fixturePath: fixturePath,
+        importUrl: url
+      }
+    }
+  })
+
+
   return cy.fixture(fixturePath).then(materialJSON => {
     const name = materialJSON.name || materialJSON.title
-    expect(name, "Wrong material name - no [Cypress] prefix").to.match(/^\[Cypress]/)
+    if(!name.match(/^\[Cypress]/)) {
+      throw Error("Imported material name or title must start with [Cypress]")
+    }
     return cy.requestWithToken({
-      url: `${Cypress.config("baseUrl")}/api/v1/import`,
+      url: url,
       method: "POST",
-      body: {"import": materialJSON}
+      body: {"import": materialJSON},
+      followRedirect: false,
+      log: false
     }).then(response => {
+      if (response.status !== 200){
+        throw Error("Import response status was: " + response.status + " instead of 200. " +
+          "The url was: " + url)
+      }
       const body = response.body
       if (!body.success) {
         throw Error("Import has failed " + response.body.error)

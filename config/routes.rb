@@ -173,7 +173,6 @@ LightweightStandalone::Application.routes.draw do
 
       resources :activities, :controller => 'lightweight_activities', only: [:show, :destroy]
       resources :sequences, :controller => 'sequences', only: [:show, :destroy]
-      resources :library_interactives, :controller => 'library_interactives', only: [:index, :show]
 
       match 'import' => 'import#import', :via => 'post'
 
