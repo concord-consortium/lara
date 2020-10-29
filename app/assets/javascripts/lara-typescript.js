@@ -28931,6 +28931,17 @@ exports.InteractiveAuthoring = function (props) {
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InteractiveIframe = void 0;
 var React = __webpack_require__(/*! react */ "react");
@@ -28981,10 +28992,18 @@ exports.InteractiveIframe = function (props) {
         });
     };
     var handleSetLinkedInteractives = function (request, url) {
+        var data = __assign({}, request); // copy request as it can be modified below
+        if (data.linkedInteractives && data.linkedInteractives.length === 0) {
+            // jQuery doesn't send a parameter when its value is an empty array. It sends an empty string instead.
+            // Other options:
+            // - null would also be sent as an empty string by jQuery
+            // - undefined is ignored by jQuery in a similar way like an empty array
+            data.linkedInteractives = "";
+        }
         return $.ajax({
             type: "POST",
             url: url,
-            data: request
+            data: data
         });
     };
     var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];

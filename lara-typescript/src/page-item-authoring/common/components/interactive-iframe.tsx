@@ -80,10 +80,18 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
   };
 
   const handleSetLinkedInteractives = (request: LaraInteractiveApi.ISetLinkedInteractives, url: string) => {
+    const data = {...request}; // copy request as it can be modified below
+    if (data.linkedInteractives && data.linkedInteractives.length === 0) {
+      // jQuery doesn't send a parameter when its value is an empty array. It sends an empty string instead.
+      // Other options:
+      // - null would also be sent as an empty string by jQuery
+      // - undefined is ignored by jQuery in a similar way like an empty array
+      data.linkedInteractives = "" as any;
+    }
     return $.ajax({
       type: "POST",
       url,
-      data: request
+      data
     });
   };
 

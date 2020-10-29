@@ -77,11 +77,11 @@ class Api::V1::InteractivePagesController < ApplicationController
         raise "You are not authorized to set linked interactives for the requested page"
       end
 
-      linked_interactives = params[:linkedInteractives]
-      linked_state = params[:linkedState]
-      if !linked_interactives && !linked_state
+      if !params.has_key?(:linkedInteractives) && !params.has_key?(:linkedState)
         raise "Missing linkedInteractives or linkedState parameters in request"
       end
+      linked_interactives = params[:linkedInteractives]
+      linked_state = params[:linkedState]
 
       if linked_state
         linked_state_page_item_id = extract_page_item_id(linked_state)
@@ -100,21 +100,25 @@ class Api::V1::InteractivePagesController < ApplicationController
             linked_interactives = linked_interactives.values
           end
 
-          # add the new links
-          linked_interactives.each do |item|
-            if !item.is_a? Hash
-              raise "Invalid linkedInteractives parameter, each array item needs to be a hash"
-            end
-            if item["id"].nil? || item["label"].nil?
-              raise "Missing id or label value in linkedInteractives item"
-            end
-            secondary_id = extract_page_item_id(item["id"])
-            if secondary_id.nil?
-              raise "Invalid interactive id: #{item["id"]}"
-            end
-            item = LinkedPageItem.new({primary_id: source_page_item_id, secondary_id: secondary_id, label: item["label"]})
-            if !item.save
-              raise "Unable to create linkedInteractive for #{item["id"]}"
+          # Check if linked_interactives is an array, as client can send linked_interactives equal to null or empty
+          # string. These requests should be treated as a way to clear linked interactives list.
+          if linked_interactives.is_a? Array
+            # add the new links
+            linked_interactives.each do |item|
+              if !item.is_a? Hash
+                raise "Invalid linkedInteractives parameter, each array item needs to be a hash"
+              end
+              if item["id"].nil? || item["label"].nil?
+                raise "Missing id or label value in linkedInteractives item"
+              end
+              secondary_id = extract_page_item_id(item["id"])
+              if secondary_id.nil?
+                raise "Invalid interactive id: #{item["id"]}"
+              end
+              item = LinkedPageItem.new({primary_id: source_page_item_id, secondary_id: secondary_id, label: item["label"]})
+              if !item.save
+                raise "Unable to create linkedInteractive for #{item["id"]}"
+              end
             end
           end
         end

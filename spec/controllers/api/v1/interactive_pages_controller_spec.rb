@@ -264,6 +264,46 @@ describe Api::V1::InteractivePagesController do
           success: true
         }.to_json)
       end
+
+      it "allows to remove links" do
+        xhr :post, "set_linked_interactives", {
+          id: page.id,
+          sourceId: interactive1.interactive_item_id,
+          linkedInteractives: [],
+          linkedState: interactive3.interactive_item_id
+        }
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to eql({
+          success: true
+        }.to_json)
+
+        # In practice clients will send nil or empty string, as sometimes it's difficult to send an empty array using
+        # some forms of POST request.
+        xhr :post, "set_linked_interactives", {
+          id: page.id,
+          sourceId: interactive1.interactive_item_id,
+          linkedInteractives: nil,
+          linkedState: interactive3.interactive_item_id
+        }
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to eql({
+          success: true
+        }.to_json)
+
+        xhr :post, "set_linked_interactives", {
+          id: page.id,
+          sourceId: interactive1.interactive_item_id,
+          linkedInteractives: "",
+          linkedState: interactive3.interactive_item_id
+        }
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("application/json")
+        expect(response.body).to eql({
+          success: true
+        }.to_json)
+      end
     end
   end
 
