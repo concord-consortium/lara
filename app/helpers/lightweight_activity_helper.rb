@@ -73,7 +73,7 @@ module LightweightActivityHelper
       lara_resource = "#{api_v1_activity_url(@sequence.id)}.json"
       resource_name = @sequence.title
     else
-      lara_resource = "#{url_encode(api_v1_activity_url(activity.id))}.json"
+      lara_resource = "#{api_v1_activity_url(activity.id)}.json"
       resource_name = activity.name
     end
 
