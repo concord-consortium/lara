@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
+[@concord-consortium/lara-interactive-api - v0.6.2](../README.md) › [Globals](../globals.md) › [IGetFirebaseJwtRequest](igetfirebasejwtrequest.md)
 
 # Interface: IGetFirebaseJwtRequest
 

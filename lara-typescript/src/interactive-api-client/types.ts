@@ -304,10 +304,6 @@ export interface ISetLinkedInteractives {
   linkedState?: InteractiveItemId;
 }
 
-export interface ISetLinkedInteractivesRequest extends ISetLinkedInteractives {
-  sourceId: InteractiveItemId;
-}
-
 //
 // client requests with responses
 //
