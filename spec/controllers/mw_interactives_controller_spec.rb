@@ -51,18 +51,17 @@ describe MwInteractivesController do
           expect(mw_int.url).to eq(new_values_hash[:url])
         end
 
-        it 'returns to the edit page with a message indicating success' do
+        it 'returns to the edit page when there are no errors' do
           new_values_hash = { :name => 'Edited name', :url => 'http://lab.concord.org' }
           post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:notice]).to eq('Your iframe interactive was updated.')
         end
 
-        it 'returns to the edit page with an error on failure' do
-          new_values_hash = { :native_width => 'Ha!' }
-          post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
-          expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:warning]).to eq('There was a problem updating your iframe interactive.')
+        it 'raises an error when update fails' do
+          expect {
+            new_values_hash = { :native_width => 'Ha!' }
+            post :update, :id => int.id, :page_id => page.id, :mw_interactive => new_values_hash
+          }.to raise_error ActiveRecord::RecordInvalid
         end
       end
     end

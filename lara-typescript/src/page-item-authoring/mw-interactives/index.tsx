@@ -8,7 +8,7 @@ import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
-import {ILinkedInteractive} from "../../interactive-api-client";
+import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
 import "react-tabs/style/react-tabs.css";
 
 interface Props {
@@ -49,6 +49,7 @@ const formField = RailsFormField<IMWInteractive>("mw_interactive");
 export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
   const { interactive, defaultClickToPlayPrompt, authoringApiUrls } = props;
   const interactiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
+  const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
   const [authoringUrl, setAuthoringUrl] = useState(interactive.url);
   const user = useCurrentUser();
 
@@ -106,6 +107,12 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
       }
     };
 
+    const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
+      if (linkedInteractivesRef.current) {
+        linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
+      }
+    };
+
     const authoredInteractive = {
       url: authoringUrl || "",
       aspect_ratio: interactive.aspect_ratio,
@@ -130,6 +137,7 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
               <InteractiveAuthoring
                 interactive={authoredInteractive}
                 onAuthoredStateChange={handleAuthoredStateChange}
+                onLinkedInteractivesChange={handleLinkedInteractivesChange}
                 allowReset={false}
                 authoringApiUrls={authoringApiUrls}
               />
@@ -165,6 +173,12 @@ export const MWInteractiveAuthoring: React.FC<Props> = (props) => {
         name={formField("authored_state").name}
         ref={interactiveAuthoredStateRef}
         defaultValue={interactive.authored_state}
+      />
+      <input
+        type="hidden"
+        id={formField("linked_interactives").id}
+        name={formField("linked_interactives").name}
+        ref={linkedInteractivesRef}
       />
     </fieldset>
 

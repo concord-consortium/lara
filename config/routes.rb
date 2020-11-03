@@ -191,7 +191,6 @@ LightweightStandalone::Application.routes.draw do
 
       match 'get_firebase_jwt(/:run_id)' => 'jwt#get_firebase_jwt', :as => 'get_firebase_jwt', :via => 'post'
       match 'get_interactive_list/:id' => 'interactive_pages#get_interactive_list', :as => 'get_interactive_list', :via => 'get'
-      match 'set_linked_interactives/:id' => 'interactive_pages#set_linked_interactives', :as => 'set_linked_interactives', :via => 'post'
 
       match 'plugin_learner_states/:plugin_id/:run_id' =>
         'plugin_learner_states#load', as: 'show_plugin_learner_state', via: 'get'
