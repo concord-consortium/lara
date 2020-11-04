@@ -29,6 +29,18 @@ article, aside, details, figcaption, figure,
 footer, header, menu, nav, section {
   display: block;
 }
+a:link {
+  color: #007c8b;
+  text-decoration: none;
+  transition: .2s;
+}
+a:visited {
+  color: #0592af;
+}
+a:hover, a:active {
+  color: #ea6d2f;
+  text-decoration: underline;
+}
 body {
   line-height: 1;
 }
@@ -529,9 +541,20 @@ div.summary {
     margin-left: 0px;
   }
   ul li {
+    display: inline-block;
     list-style: none;
-    float: left;
-    margin: -10px 0 1px 10px;
+    margin: 0 0 0 15px;
+    
+    a {
+      color: #333;
+      font-size: 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: .2;
+      &:hover {
+        color: #ea6d2f;
+      }
+    }
   }
 }
 .action_menu_header_right.index {
@@ -539,14 +562,16 @@ div.summary {
 }
 ul.quiet_list {
   border-top: dashed 1px #ddd;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 15px;
+  margin-left: 0;
   clear: both;
   list-style: none;
   li.item {
     padding: 10px 5px;
     margin: 0;
     border-bottom: dashed 1px #ddd;
+    
 
     .action_menu {
       display: flex;
@@ -560,6 +585,7 @@ ul.quiet_list {
       width: 50%;
     }
     .action_menu_header_right {
+      text-align: right;
       width: 50%;
     }
     .action_menu_header_right.themes {
@@ -571,7 +597,7 @@ ul.quiet_list {
       margin-top: 23px;
     }
     .author, .updated, .published {
-        font-size: 0.8em;
+      font-size: 0.8em;
     }
     .active-runs {
       color: red;
@@ -748,66 +774,9 @@ ul#new {
     text-decoration: none;
   }
   li#desc-toggle a {
-    background: transparent url(/assets/icons/plus.png) 0 0 no-repeat;
-    background-size: 14px;
     color: #333;
-    height: 14px;
-    padding-left: 18px;
     text-decoration: none;
   }
-}
-li.export a {
-    /* We need an URL icon */
-    background-size: 14px;
-    color: #333;
-    height: 14px;
-    padding-left: 18px;
-    text-decoration: none;
-}
-li.copy a {
-    /* We need an URL icon */
-    background-size: 14px;
-    color: #333;
-    height: 14px;
-    padding-left: 18px;
-    text-decoration: none;
-}
-li.edit a {
-  background: transparent url(/assets/icons/edit.png) 0 0 no-repeat;
-  background-size: 14px;
-  color: #333;
-  height: 14px;
-  padding-left: 18px;
-  text-decoration: none;
-}
-li.print a {
-  color: #333;
-  height: 14px;
-  text-decoration: none;
-}
-li.run a {
-  background: transparent url(/assets/icons/run.png) 0 0 no-repeat;
-  background-size: 14px;
-  color: #333;
-  height: 14px;
-  padding-left: 18px;
-  text-decoration: none;
-}
-li.delete a {
-  background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
-  background-size: 14px;
-  color: #333;
-  height: 14px;
-  padding-left: 18px;
-  text-decoration: none;
-}
-li.publish a {
-  background: transparent url(/assets/icons/publish.png) 0 0 no-repeat;
-  background-size: 14px;
-  color: #333;
-  height: 14px;
-  padding-left: 18px;
-  text-decoration: none;
 }
 h2.list-head {
   clear: both;
@@ -1236,6 +1205,7 @@ ul#new-menu {
 
 #activity_listing_head, #sequence_listing_head, #official_listing_heading, #community_listing_heading {
   float: left;
+  margin: 10px 0;
 }
 
 .buttons-menu {

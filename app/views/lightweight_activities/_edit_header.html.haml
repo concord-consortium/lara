@@ -8,6 +8,9 @@
   - if ENV['ACTIVITY_PLAYER_URL'].present?
     %span.preview
       = link_to "Preview in Activity Player", activity_player_url(@activity), :target => 'new'
+  - if ENV['CONVERSION_SCRIPT_URL'].present?
+    %span.preview
+      = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
   - if current_user.is_admin
     %span.edit-in
       = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"
