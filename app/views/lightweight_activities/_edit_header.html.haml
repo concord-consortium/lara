@@ -7,7 +7,7 @@
     = link_to "Preview Teacher Edition", preview_activity_path(@activity, mode: "teacher-edition"), :target => 'new'
   - if ENV['ACTIVITY_PLAYER_URL'].present?
     %span.preview
-      = link_to "Preview in Activity Player", activity_player_url(@activity), :target => 'new'
+      = link_to "Preview in Activity Player", @activity.activity_player_url(request.protocol, request.host_with_port, true), :target => 'new'
   - if current_user.is_admin
     %span.edit-in
       = link_to "Edit in Standard Mode", "#{edit_activity_path(@activity)}?mode=standard"

@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button
+                  :student_report_enabled, :show_submit_button, :activity_player_only
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -98,7 +98,8 @@ class LightweightActivity < ActiveRecord::Base
       layout: layout,
       editor_mode: editor_mode,
       student_report_enabled: student_report_enabled,
-      show_submit_button: show_submit_button
+      show_submit_button: show_submit_button,
+      activity_player_only: activity_player_only
     }
   end
 
@@ -136,7 +137,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :layout,
                                         :editor_mode,
                                         :student_report_enabled,
-                                        :show_submit_button
+                                        :show_submit_button,
+                                        :activity_player_only
     ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
@@ -166,7 +168,8 @@ class LightweightActivity < ActiveRecord::Base
       show_submit_button: activity_json_object[:show_submit_button],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
-      editor_mode: activity_json_object[:editor_mode]
+      editor_mode: activity_json_object[:editor_mode],
+      activity_player_only: activity_json_object[:activity_player_only]
     }
 
   end
@@ -177,6 +180,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
+    import_activity.activity_player_only = activity_json_object[:activity_player_only]
     helper = LaraSerializationHelper.new if helper.nil?
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
@@ -207,6 +211,12 @@ class LightweightActivity < ActiveRecord::Base
 
   def serialize_for_portal(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
+    # lines 215-217 are a placeholder for Activity Player only activity URLs
+    api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
+    ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?activity=" + api_url
+    run_url = self.activity_player_only ? ap_url : local_url
+    # why won't the line below work?
+    # run_url = self.activity_player_only ? ApplicationController.helpers.activity_player_url(self, false) : local_url
     author_url = "#{local_url}/edit"
     print_url = "#{local_url}/print_blank"
     data = {
@@ -217,8 +227,8 @@ class LightweightActivity < ActiveRecord::Base
       # Otherwise, the old Portal code would reset its description copy each time the activity was published.
       # When all Portals are upgraded to v1.31 we can stop sending this property.
       "description" => self.description,
-      "url" => local_url,
-      "create_url" => local_url,
+      "url" => run_url,
+      "create_url" => run_url,
       "author_url" => author_url,
       "print_url"  => print_url,
       "student_report_enabled"  => student_report_enabled,
@@ -322,5 +332,15 @@ class LightweightActivity < ActiveRecord::Base
 
   def self.search(query)
     where("name LIKE ?", "%#{query}%")
+  end
+
+  def activity_player_url(protocol, host, preview)
+    activity_api_url = "#{Rails.application.routes.url_helpers.api_v1_activity_url(id: self.id, protocol: protocol, host: host)}.json"
+    preview = preview ? "&preview" : ""
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}" + preview
+  end
+
+  def activity_player_page_url(page, preview)
+    return  "#{activity_player_url(preview)}&page=#{page.position}"
   end
 end

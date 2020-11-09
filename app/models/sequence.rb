@@ -1,6 +1,7 @@
 class Sequence < ActiveRecord::Base
   attr_accessible :description, :title, :theme_id, :project_id,
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash, 
+    :activity_player_only
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -52,7 +53,8 @@ class Sequence < ActiveRecord::Base
       project_id: project_id,
       logo: logo,
       display_title: display_title,
-      thumbnail_url: thumbnail_url
+      thumbnail_url: thumbnail_url,
+      activity_player_only: activity_player_only
     }
   end
 
@@ -96,7 +98,8 @@ class Sequence < ActiveRecord::Base
                                         :project_id,
                                         :logo,
                                         :display_title,
-                                        :thumbnail_url
+                                        :thumbnail_url,
+                                        :activity_player_only
     ])
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
@@ -149,6 +152,12 @@ class Sequence < ActiveRecord::Base
     data
   end
 
+  def activity_player_sequence_url(protocol, host, preview)
+    sequence_api_url = "#{Rails.application.routes.url_helpers.api_v1_sequence_url(id: self.id, protocol: protocol, host: host)}.json"
+    preview = preview ? "&preview" : ""
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?sequence=#{CGI.escape(sequence_api_url)}" + preview
+  end
+
   def self.extact_from_hash(sequence_json_object)
     {
       abstract: sequence_json_object[:abstract],
@@ -158,7 +167,8 @@ class Sequence < ActiveRecord::Base
       project_id: sequence_json_object[:project_id],
       theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
-      title: sequence_json_object[:title]
+      title: sequence_json_object[:title],
+      activity_player_only: sequence_json_object[:activity_player_only]
     }
 
   end
@@ -166,6 +176,7 @@ class Sequence < ActiveRecord::Base
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
     helper = LaraSerializationHelper.new
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
+    import_sequence.activity_player_only = sequence_json_object[:activity_player_only]
     Sequence.transaction do
       import_sequence.title = import_sequence.title
       import_sequence.imported_activity_url = imported_activity_url
