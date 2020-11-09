@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [IContextMember](icontextmember.md)
+[@concord-consortium/lara-interactive-api - v0.7.0-pre.1](../README.md) › [Globals](../globals.md) › [IContextMember](icontextmember.md)
 
 # Interface: IContextMember
 

@@ -103,14 +103,18 @@ export class Client {
     return false;
   }
 
-  public removeListener(message: ServerMessage, requestId?: number) {
+  public removeListener(message: ServerMessage, requestId?: number, callback?: iframePhone.ListenerCallback) {
     if (this.listeners[message]) {
-      // note: requestId can be undefined when using it as a generic listener
-      const newListeners = this.listeners[message].filter(l => l.requestId !== requestId);
-      this.listeners[message] = newListeners;
-
+      // When callback is provided, remove this particular callback.
+      // Otherwise try to use requestId.
+      if (callback) {
+        this.listeners[message] = this.listeners[message].filter(l => l.callback !== callback);
+      } else {
+        // note: requestId can be undefined when using it as a generic listener
+        this.listeners[message] = this.listeners[message].filter(l => l.requestId !== requestId);
+      }
       // if no more local listeners exist remove it from iframe-phone
-      if (newListeners.length === 0) {
+      if (this.listeners[message].length === 0) {
         this.phone.removeListener(message);
       }
       return true;

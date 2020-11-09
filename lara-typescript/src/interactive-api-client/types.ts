@@ -153,7 +153,9 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "showModal" |
                                        "closeModal" |
                                        "getLibraryInteractiveList" |
-                                       "getInteractiveSnapshot"
+                                       "getInteractiveSnapshot" |
+                                       "addLinkedInteractiveStateListener" |
+                                       "removeLinkedInteractiveStateListener"
                                       ;
 
 export type IRuntimeServerMessage = "authInfo" |
@@ -164,7 +166,8 @@ export type IRuntimeServerMessage = "authInfo" |
                                        "customMessage" |
                                        "libraryInteractiveList" |
                                        "interactiveSnapshot" |
-                                       "contextMembership"
+                                       "contextMembership" |
+                                       "linkedInteractiveState"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -387,4 +390,17 @@ export interface IGetInteractiveSnapshotRequest extends IBaseRequestResponse, IG
 export interface IGetInteractiveSnapshotResponse extends IBaseRequestResponse {
   success: boolean;
   snapshotUrl?: string;
+}
+
+export interface IAddLinkedInteractiveStateListenerOptions {
+  interactiveItemId: InteractiveItemId;
+}
+
+export interface IRemoveLinkedInteractiveStateListenerOptions {
+  interactiveItemId: InteractiveItemId;
+}
+
+export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
+  interactiveItemId: InteractiveItemId;
+  interactiveState: LinkedInteractiveState | undefined;
 }

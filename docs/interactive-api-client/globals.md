@@ -1,11 +1,12 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api - v0.7.0-pre.1](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.6.1
+# @concord-consortium/lara-interactive-api - v0.7.0-pre.1
 
 ## Index
 
 ### Interfaces
 
+* [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAggregateInitInteractive](interfaces/iaggregateinitinteractive.md)
 * [IAuthInfo](interfaces/iauthinfo.md)
 * [IAuthoringCustomReportField](interfaces/iauthoringcustomreportfield.md)
@@ -48,8 +49,10 @@
 * [IJwtResponse](interfaces/ijwtresponse.md)
 * [ILibraryInteractiveListResponseItem](interfaces/ilibraryinteractivelistresponseitem.md)
 * [ILinkedInteractive](interfaces/ilinkedinteractive.md)
+* [ILinkedInteractiveStateResponse](interfaces/ilinkedinteractivestateresponse.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
+* [IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
@@ -103,6 +106,7 @@
 * [addCustomMessageListener](globals.md#const-addcustommessagelistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
+* [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAuthInfo](globals.md#const-getauthinfo)
@@ -121,6 +125,7 @@
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
+* [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
 * [setAuthoredState](globals.md#const-setauthoredstate)
 * [setGlobalInteractiveState](globals.md#const-setglobalinteractivestate)
 * [setHeight](globals.md#const-setheight)
@@ -228,7 +233,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener"*
 
 ___
 
@@ -240,7 +245,7 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership"*
+Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState"*
 
 ___
 
@@ -374,6 +379,32 @@ ___
 Name | Type |
 ------ | ------ |
 `interactiveState` | InteractiveState |
+
+**Returns:** *void*
+
+___
+
+### `Const` addLinkedInteractiveStateListener
+
+▸ **addLinkedInteractiveStateListener**‹**LinkedInteractiveState**›(`listener`: function, `options`: [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)): *void*
+
+**Type parameters:**
+
+▪ **LinkedInteractiveState**
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+▸ (`linkedIntState`: LinkedInteractiveState | undefined): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`linkedIntState` | LinkedInteractiveState &#124; undefined |
+
+▪ **options**: *[IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)*
 
 **Returns:** *void*
 
@@ -627,6 +658,32 @@ ___
 Name | Type |
 ------ | ------ |
 `interactiveState` | InteractiveState |
+
+**Returns:** *void*
+
+___
+
+### `Const` removeLinkedInteractiveStateListener
+
+▸ **removeLinkedInteractiveStateListener**‹**InteractiveState**›(`listener`: function, `options`: [IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)): *void*
+
+**Type parameters:**
+
+▪ **InteractiveState**
+
+**Parameters:**
+
+▪ **listener**: *function*
+
+▸ (`intState`: InteractiveState | null): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`intState` | InteractiveState &#124; null |
+
+▪ **options**: *[IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)*
 
 **Returns:** *void*
 

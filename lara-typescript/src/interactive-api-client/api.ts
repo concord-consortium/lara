@@ -21,7 +21,10 @@ import {
   ICustomMessageHandler,
   ICustomMessagesHandledMap,
   IGetInteractiveSnapshotOptions,
-  IGetInteractiveSnapshotResponse
+  IGetInteractiveSnapshotResponse,
+  IAddLinkedInteractiveStateListenerOptions,
+  ILinkedInteractiveStateResponse,
+  IRemoveLinkedInteractiveStateListenerOptions
 } from "./types";
 import { getClient } from "./client";
 
@@ -255,6 +258,42 @@ export const addGlobalInteractiveStateListener = <GlobalInteractiveState>(listen
 // tslint:disable-next-line:max-line-length
 export const removeGlobalInteractiveStateListener = <GlobalInteractiveState>(listener: (globalInteractiveState: GlobalInteractiveState) => void) => {
   getClient().managedState.off("globalInteractiveStateUpdated", listener);
+};
+
+// Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
+const _linkedInteractiveStateListeners = new Map();
+export const addLinkedInteractiveStateListener = <LinkedInteractiveState>(
+  listener: (linkedIntState: LinkedInteractiveState | undefined) => void,
+  options: IAddLinkedInteractiveStateListenerOptions
+) => {
+  const client = getClient();
+  const wrappedInternalListener = (response: ILinkedInteractiveStateResponse<LinkedInteractiveState>) => {
+    // This check is necessary, as this callback will be called for all observer linked states.
+    if (response.interactiveItemId === options.interactiveItemId) {
+      listener(response.interactiveState);
+    }
+  };
+  client.addListener("linkedInteractiveState", wrappedInternalListener);
+  // Save wrappedInternalListener so it's possible to remove it later.
+  _linkedInteractiveStateListeners.set(listener, wrappedInternalListener);
+  // Initialize observing in the host environment.
+  client.post("addLinkedInteractiveStateListener", options);
+};
+
+export const removeLinkedInteractiveStateListener = <InteractiveState>(
+  listener: (intState: InteractiveState | null) => void,
+  options: IRemoveLinkedInteractiveStateListenerOptions
+) => {
+  const client = getClient();
+  // Stop observing in the host environment.
+  client.post("removeLinkedInteractiveStateListener", options);
+  // Remove local message handler. Theoretically it's not necessary if host implementation is correct (no more messages
+  // will be sent), but just to keep things cleaner.
+  const wrappedInternalListener = _linkedInteractiveStateListeners.get(listener);
+  if (wrappedInternalListener) {
+    client.removeListener("linkedInteractiveState", undefined, wrappedInternalListener);
+    _linkedInteractiveStateListeners.delete(listener);
+  }
 };
 
 /**

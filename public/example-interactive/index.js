@@ -31583,7 +31583,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.setHeight = exports.setSupportedFeatures = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
@@ -31794,6 +31794,34 @@ exports.addGlobalInteractiveStateListener = function (listener) {
 exports.removeGlobalInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.off("globalInteractiveStateUpdated", listener);
 };
+// Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
+var _linkedInteractiveStateListeners = new Map();
+exports.addLinkedInteractiveStateListener = function (listener, options) {
+    var client = client_1.getClient();
+    var wrappedInternalListener = function (response) {
+        // This check is necessary, as this callback will be called for all observer linked states.
+        if (response.interactiveItemId === options.interactiveItemId) {
+            listener(response.interactiveState);
+        }
+    };
+    client.addListener("linkedInteractiveState", wrappedInternalListener);
+    // Save wrappedInternalListener so it's possible to remove it later.
+    _linkedInteractiveStateListeners.set(listener, wrappedInternalListener);
+    // Initialize observing in the host environment.
+    client.post("addLinkedInteractiveStateListener", options);
+};
+exports.removeLinkedInteractiveStateListener = function (listener, options) {
+    var client = client_1.getClient();
+    // Stop observing in the host environment.
+    client.post("removeLinkedInteractiveStateListener", options);
+    // Remove local message handler. Theoretically it's not necessary if host implementation is correct (no more messages
+    // will be sent), but just to keep things cleaner.
+    var wrappedInternalListener = _linkedInteractiveStateListeners.get(listener);
+    if (wrappedInternalListener) {
+        client.removeListener("linkedInteractiveState", undefined, wrappedInternalListener);
+        _linkedInteractiveStateListeners.delete(listener);
+    }
+};
 /**
  * "lightbox" type is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
  * "dialog" is used for showing dynamic interactives. It'll be initialized correctly by the host environment and
@@ -31989,13 +32017,19 @@ var Client = /** @class */ (function () {
         }
         return false;
     };
-    Client.prototype.removeListener = function (message, requestId) {
+    Client.prototype.removeListener = function (message, requestId, callback) {
         if (this.listeners[message]) {
-            // note: requestId can be undefined when using it as a generic listener
-            var newListeners = this.listeners[message].filter(function (l) { return l.requestId !== requestId; });
-            this.listeners[message] = newListeners;
+            // When callback is provided, remove this particular callback.
+            // Otherwise try to use requestId.
+            if (callback) {
+                this.listeners[message] = this.listeners[message].filter(function (l) { return l.callback !== callback; });
+            }
+            else {
+                // note: requestId can be undefined when using it as a generic listener
+                this.listeners[message] = this.listeners[message].filter(function (l) { return l.requestId !== requestId; });
+            }
             // if no more local listeners exist remove it from iframe-phone
-            if (newListeners.length === 0) {
+            if (this.listeners[message].length === 0) {
                 this.phone.removeListener(message);
             }
             return true;
