@@ -11,6 +11,12 @@ module EmbeddableHelper
     select_tag :embeddable_type, options_for_select(Embeddable::InteractiveTypes.map { |type| [type.model_name.human, type.to_s] }), {id: "embeddable_type_interactives"}
   end
 
+  def library_interactives_selector
+    mi_type = Embeddable::InteractiveTypes.select { |type| type.to_s == "ManagedInteractive" } # kind of dumb?
+    embeddable_types = mi_type.map { |type| [type.model_name.human, type.to_s] }
+    select_tag :embeddable_type, options_for_select(embeddable_types), {id: "embeddable_type_interactives"}
+  end
+
   def available_wrapped_embeddable_plugins(embeddable)
     ApprovedScript.authoring_menu_items("embeddable-decoration", embeddable)
   end
