@@ -8,7 +8,8 @@ import {
   IShowDialog,
   IShowLightbox,
   ICloseModal,
-  IGetInteractiveSnapshotOptions, ILinkedInteractiveStateResponse
+  IGetInteractiveSnapshotOptions,
+  ILinkedInteractiveStateResponse
 } from "./types";
 
 jest.mock("./in-frame", () => ({
@@ -216,10 +217,13 @@ describe("api", () => {
     const listener = jest.fn();
     const options = { interactiveItemId: "interactive_123" };
     api.addLinkedInteractiveStateListener(listener, options);
-    expect(mockedPhone.messages[0]).toEqual({ type: "addLinkedInteractiveStateListener", content: options });
+    expect(mockedPhone.messages[0].type).toEqual("addLinkedInteractiveStateListener");
+    expect(mockedPhone.messages[0].content.interactiveItemId).toEqual("interactive_123");
+    const listenerId = mockedPhone.messages[0].content.listenerId;
+    expect(listenerId).toBeDefined();
 
     const correctResponse: ILinkedInteractiveStateResponse<any> = {
-      interactiveItemId: "interactive_123",
+      listenerId,
       interactiveState: {foo: 123}
     };
     mockedPhone.fakeServerMessage({
@@ -230,7 +234,7 @@ describe("api", () => {
     expect(listener).toHaveBeenCalledTimes(1);
 
     const incorrectResponse: ILinkedInteractiveStateResponse<any> = {
-      interactiveItemId: "interactive_321", // wrong interactive item id
+      listenerId: "foo_bar", // wrong listenerId
       interactiveState: {foo: 123}
     };
     mockedPhone.fakeServerMessage({
@@ -240,8 +244,8 @@ describe("api", () => {
     // Listener should NOT be called.
     expect(listener).toHaveBeenCalledTimes(1);
 
-    api.removeLinkedInteractiveStateListener(listener, options);
-    expect(mockedPhone.messages[1]).toEqual({ type: "removeLinkedInteractiveStateListener", content: options });
+    api.removeLinkedInteractiveStateListener(listener);
+    expect(mockedPhone.messages[1]).toEqual({ type: "removeLinkedInteractiveStateListener", content: { listenerId } });
 
     mockedPhone.fakeServerMessage({
       type: "linkedInteractiveState",

@@ -24,9 +24,11 @@ import {
   IGetInteractiveSnapshotResponse,
   IAddLinkedInteractiveStateListenerOptions,
   ILinkedInteractiveStateResponse,
-  IRemoveLinkedInteractiveStateListenerOptions
+  IAddLinkedInteractiveStateListenerRequest,
+  IRemoveLinkedInteractiveStateListenerRequest
 } from "./types";
 import { getClient } from "./client";
+import { v4 as uuidv4 } from "uuid";
 
 const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
   throw new Error(`${method} is not yet implemented in the client!`);
@@ -267,31 +269,38 @@ export const addLinkedInteractiveStateListener = <LinkedInteractiveState>(
   options: IAddLinkedInteractiveStateListenerOptions
 ) => {
   const client = getClient();
-  const wrappedInternalListener = (response: ILinkedInteractiveStateResponse<LinkedInteractiveState>) => {
-    // This check is necessary, as this callback will be called for all observer linked states.
-    if (response.interactiveItemId === options.interactiveItemId) {
+  const listenerId = uuidv4();
+  const internalListener = (response: ILinkedInteractiveStateResponse<LinkedInteractiveState>) => {
+    if (response.listenerId === listenerId) {
       listener(response.interactiveState);
     }
   };
-  client.addListener("linkedInteractiveState", wrappedInternalListener);
-  // Save wrappedInternalListener so it's possible to remove it later.
-  _linkedInteractiveStateListeners.set(listener, wrappedInternalListener);
+  client.addListener("linkedInteractiveState", internalListener);
   // Initialize observing in the host environment.
-  client.post("addLinkedInteractiveStateListener", options);
+  const request: IAddLinkedInteractiveStateListenerRequest = {
+    ...options,
+    listenerId
+  };
+  client.post("addLinkedInteractiveStateListener", request);
+  // Save wrappedInternalListener so it's possible to remove it later.
+  _linkedInteractiveStateListeners.set(listener, {
+    listenerId: request.listenerId,
+    internalListener
+  });
 };
 
 export const removeLinkedInteractiveStateListener = <InteractiveState>(
-  listener: (intState: InteractiveState | null) => void,
-  options: IRemoveLinkedInteractiveStateListenerOptions
+  listener: (intState: InteractiveState | null) => void
 ) => {
   const client = getClient();
-  // Stop observing in the host environment.
-  client.post("removeLinkedInteractiveStateListener", options);
-  // Remove local message handler. Theoretically it's not necessary if host implementation is correct (no more messages
-  // will be sent), but just to keep things cleaner.
-  const wrappedInternalListener = _linkedInteractiveStateListeners.get(listener);
-  if (wrappedInternalListener) {
-    client.removeListener("linkedInteractiveState", undefined, wrappedInternalListener);
+  if (_linkedInteractiveStateListeners.has(listener)) {
+    const { internalListener, listenerId } = _linkedInteractiveStateListeners.get(listener);
+    // Remove local message handler. Theoretically it's not necessary if host implementation is correct
+    // (no more messages with this listenerId should be sent), but just to keep things cleaner.
+    client.removeListener("linkedInteractiveState", undefined, internalListener);
+    // Stop observing in the host environment.
+    const request: IRemoveLinkedInteractiveStateListenerRequest = { listenerId };
+    client.post("removeLinkedInteractiveStateListener", request);
     _linkedInteractiveStateListeners.delete(listener);
   }
 };

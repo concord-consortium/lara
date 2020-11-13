@@ -6,6 +6,8 @@
 
 * **IAddLinkedInteractiveStateListenerOptions**
 
+  ↳ [IAddLinkedInteractiveStateListenerRequest](iaddlinkedinteractivestatelistenerrequest.md)
+
 ## Index
 
 ### Properties

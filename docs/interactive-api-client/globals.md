@@ -7,6 +7,7 @@
 ### Interfaces
 
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
+* [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAggregateInitInteractive](interfaces/iaggregateinitinteractive.md)
 * [IAuthInfo](interfaces/iauthinfo.md)
 * [IAuthoringCustomReportField](interfaces/iauthoringcustomreportfield.md)
@@ -52,7 +53,7 @@
 * [ILinkedInteractiveStateResponse](interfaces/ilinkedinteractivestateresponse.md)
 * [INavigationOptions](interfaces/inavigationoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
-* [IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)
+* [IRemoveLinkedInteractiveStateListenerRequest](interfaces/iremovelinkedinteractivestatelistenerrequest.md)
 * [IReportInitInteractive](interfaces/ireportinitinteractive.md)
 * [IRuntimeCustomReportValues](interfaces/iruntimecustomreportvalues.md)
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
@@ -665,7 +666,7 @@ ___
 
 ### `Const` removeLinkedInteractiveStateListener
 
-▸ **removeLinkedInteractiveStateListener**‹**InteractiveState**›(`listener`: function, `options`: [IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)): *void*
+▸ **removeLinkedInteractiveStateListener**‹**InteractiveState**›(`listener`: function): *void*
 
 **Type parameters:**
 
@@ -682,8 +683,6 @@ ___
 Name | Type |
 ------ | ------ |
 `intState` | InteractiveState &#124; null |
-
-▪ **options**: *[IRemoveLinkedInteractiveStateListenerOptions](interfaces/iremovelinkedinteractivestatelisteneroptions.md)*
 
 **Returns:** *void*
 

@@ -14,17 +14,17 @@
 
 ### Properties
 
-* [interactiveItemId](ilinkedinteractivestateresponse.md#interactiveitemid)
 * [interactiveState](ilinkedinteractivestateresponse.md#interactivestate)
+* [listenerId](ilinkedinteractivestateresponse.md#listenerid)
 
 ## Properties
-
-###  interactiveItemId
-
-• **interactiveItemId**: *[InteractiveItemId](../globals.md#interactiveitemid)*
-
-___
 
 ###  interactiveState
 
 • **interactiveState**: *LinkedInteractiveState | undefined*
+
+___
+
+###  listenerId
+
+• **listenerId**: *string*

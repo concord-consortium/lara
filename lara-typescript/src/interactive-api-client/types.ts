@@ -396,11 +396,15 @@ export interface IAddLinkedInteractiveStateListenerOptions {
   interactiveItemId: InteractiveItemId;
 }
 
-export interface IRemoveLinkedInteractiveStateListenerOptions {
-  interactiveItemId: InteractiveItemId;
+export interface IAddLinkedInteractiveStateListenerRequest extends IAddLinkedInteractiveStateListenerOptions {
+  listenerId: string; // functions cannot be passed via postMessage, so additional ID is necessary
+}
+
+export interface IRemoveLinkedInteractiveStateListenerRequest {
+  listenerId: string; // functions cannot be passed via postMessage, so additional ID is necessary
 }
 
 export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
-  interactiveItemId: InteractiveItemId;
+  listenerId: string;
   interactiveState: LinkedInteractiveState | undefined;
 }
