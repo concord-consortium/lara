@@ -295,15 +295,8 @@ describe("api", () => {
     });
   });
 
-  it("should implement setLinkedInteractives", async () => {
-    // setLinkedInteractives needs the interactiveItemId from the initInteractive message
-    setTimeout(() => {
-      mockedPhone.fakeServerMessage({
-        type: "initInteractive",
-        content: { mode: "authoring", interactiveItemId: "interactive_100" }
-      });
-    }, 10);
-    await api.setLinkedInteractives({
+  it("should implement setLinkedInteractives", () => {
+    api.setLinkedInteractives({
       linkedInteractives: [
         {id: "interactive_1", label: "one"},
         {id: "interactive_2", label: "two"}
@@ -315,8 +308,7 @@ describe("api", () => {
         {id: "interactive_1", label: "one"},
         {id: "interactive_2", label: "two"}
       ],
-      linkedState: "interactive_1",
-      sourceId: "interactive_100"
+      linkedState: "interactive_1"
     }}]);
   });
 

@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.7.0-pre.1](../README.md) › [Globals](../globals.md) › [IRemoveLinkedInteractiveStateListenerRequest](iremovelinkedinteractivestatelistenerrequest.md)
+[@concord-consortium/lara-interactive-api](../README.md) › [Globals](../globals.md) › [IRemoveLinkedInteractiveStateListenerRequest](iremovelinkedinteractivestatelistenerrequest.md)
 
 # Interface: IRemoveLinkedInteractiveStateListenerRequest
 

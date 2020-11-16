@@ -1,4 +1,4 @@
-[@concord-consortium/lara-plugin-api - v3.2.0](../README.md) › [Globals](../globals.md) › [IJwtClaims](ijwtclaims.md)
+[@concord-consortium/lara-plugin-api](../README.md) › [Globals](../globals.md) › [IJwtClaims](ijwtclaims.md)
 
 # Interface: IJwtClaims
 

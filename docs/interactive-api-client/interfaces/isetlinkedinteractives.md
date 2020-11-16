@@ -1,12 +1,10 @@
-[@concord-consortium/lara-interactive-api - v0.7.0-pre.1](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
+[@concord-consortium/lara-interactive-api](../README.md) › [Globals](../globals.md) › [ISetLinkedInteractives](isetlinkedinteractives.md)
 
 # Interface: ISetLinkedInteractives
 
 ## Hierarchy
 
 * **ISetLinkedInteractives**
-
-  ↳ [ISetLinkedInteractivesRequest](isetlinkedinteractivesrequest.md)
 
 ## Index
 

@@ -1,6 +1,6 @@
-[@concord-consortium/lara-interactive-api - v0.7.0-pre.1](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-interactive-api](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-interactive-api - v0.7.0-pre.1
+# @concord-consortium/lara-interactive-api
 
 ## Index
 
@@ -63,7 +63,6 @@
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
 * [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
 * [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)
-* [ISetLinkedInteractivesRequest](interfaces/isetlinkedinteractivesrequest.md)
 * [IShowAlert](interfaces/ishowalert.md)
 * [IShowDialog](interfaces/ishowdialog.md)
 * [IShowLightbox](interfaces/ishowlightbox.md)
@@ -820,7 +819,7 @@ ___
 
 ### `Const` setLinkedInteractives
 
-▸ **setLinkedInteractives**(`options`: [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)): *Promise‹void›*
+▸ **setLinkedInteractives**(`options`: [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md)): *void*
 
 **Parameters:**
 
@@ -828,7 +827,7 @@ Name | Type |
 ------ | ------ |
 `options` | [ISetLinkedInteractives](interfaces/isetlinkedinteractives.md) |
 
-**Returns:** *Promise‹void›*
+**Returns:** *void*
 
 ___
 

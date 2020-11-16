@@ -32697,19 +32697,7 @@ exports.getInteractiveList = function (options) {
     });
 };
 exports.setLinkedInteractives = function (options) {
-    return new Promise(function (resolve, reject) {
-        return exports.getInitInteractiveMessage()
-            .then(function (initInteractiveMessage) {
-            if (!initInteractiveMessage || initInteractiveMessage.mode !== "authoring") {
-                throw new Error("setLinkedInteractives is only available in authoring mode");
-            }
-            var client = client_1.getClient();
-            var request = __assign({ sourceId: initInteractiveMessage.interactiveItemId }, options);
-            client.post("setLinkedInteractives", request);
-            resolve();
-        }).
-            catch(reject);
-    });
+    client_1.getClient().post("setLinkedInteractives", options);
 };
 exports.getInteractiveSnapshot = function (options) {
     return new Promise(function (resolve, reject) {
