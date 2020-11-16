@@ -3,11 +3,13 @@ require 'omniauth-oauth2'
 module Concord
   class AuthPortal
 
-    ExistingPortals   = {}
-    AuthorizeUrl      = "/auth/concord_id/authorize"
-    AccessTokenUrl    = "/auth/concord_id/access_token"
-    PublishingPath    = "/external_activities/publish/v2"
-    RePublishingPath  = "/external_activities/republish/v2"
+    ExistingPortals     = {}
+    AuthorizeUrl        = "/auth/concord_id/authorize"
+    AccessTokenUrl      = "/auth/concord_id/access_token"
+    PublishingPath      = "/external_activities/publish/v2"
+    RePublishingPath    = "/external_activities/republish/v2"
+    APPublishingPath    = "/api/v1/external_activities"
+    APRePublishingPath  = "/api/v1/external_activities/update_by_url"
 
     def self.configured_portal_names
       name_list = self.lookup('CONFIGURED_PORTALS') || ""
@@ -198,6 +200,14 @@ module Concord
 
         def self.republishing_url
           self.url + RePublishingPath
+        end
+
+        def self.activity_player_publishing_url
+          self.url + APPublishingPath
+        end
+
+        def self.activity_player_republishing_url
+          self.url + APRePublishingPath
         end
 
         # This method generates the string for the strategies omniauth controller method
