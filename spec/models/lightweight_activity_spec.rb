@@ -181,7 +181,8 @@ describe LightweightActivity do
         thumbnail_url: activity.thumbnail_url,
         notes: activity.notes,
         layout: activity.layout,
-        editor_mode: activity.editor_mode }
+        editor_mode: activity.editor_mode,
+        activity_player_only: false }
       expect(activity.to_hash).to eq(expected)
     end
   end
@@ -391,9 +392,11 @@ describe LightweightActivity do
         "thumbnail_url"       => thumbnail_url,
         "author_email"        => activity.user.email,
         "student_report_enabled" => activity.student_report_enabled,
-        "show_submit_button" => true,
+        "show_submit_button"  => true,
         "is_locked"           => false,
-        "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
+        "sections"            =>[{"name"=>"#{activity.name} Section", "pages"=>[]}],
+        "append_auth_token"   => false,
+        "tool_id"           => ""
       }
     end
 

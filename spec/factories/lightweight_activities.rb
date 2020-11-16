@@ -10,6 +10,7 @@ FactoryGirl.define do
     publication_status 'hidden'
     related { generate(:related) }
     description { generate(:description) }
+    activity_player_only false
   end
 
   factory :activity_with_page, :class => LightweightActivity do
