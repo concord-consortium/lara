@@ -13,6 +13,7 @@ interface Props {
   initMsg: IInitInteractive;
   resetCount?: number;
   onAuthoredStateChange?: (authoredState: string | object) => void;
+  onLinkedInteractivesChange?: (linkedInteractives: LaraInteractiveApi.ISetLinkedInteractives) => void;
   onSupportedFeaturesUpdate?: (info: any) => void;
   authoredAspectRatio: number;
   authoredAspectRatioMethod: string;
@@ -27,7 +28,7 @@ interface IFramePhoneParentEndpoint {
 
 export const InteractiveIframe: React.FC<Props> = (props) => {
   const {
-    src, width, initMsg, onAuthoredStateChange, resetCount,
+    src, width, initMsg, onAuthoredStateChange, onLinkedInteractivesChange, resetCount,
     onSupportedFeaturesUpdate, authoredAspectRatio, authoredAspectRatioMethod,
     authoringApiUrls
   } = props;
@@ -79,14 +80,6 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       }});
   };
 
-  const handleSetLinkedInteractives = (request: LaraInteractiveApi.ISetLinkedInteractives, url: string) => {
-    return $.ajax({
-      type: "POST",
-      url,
-      data: request
-    });
-  };
-
   const [iframeId, setIFrameId] = useState<number>(0);
   let phone: IFramePhoneParentEndpoint;
 
@@ -111,14 +104,9 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       );
     }
 
-    const setLinkedInteractivesUrl = authoringApiUrls?.set_linked_interactives;
-    if (setLinkedInteractivesUrl) {
-      phone.addListener("setLinkedInteractives",
-        (request: LaraInteractiveApi.ISetLinkedInteractives) => {
-          handleSetLinkedInteractives(request, setLinkedInteractivesUrl);
-        }
-      );
-    }
+    phone.addListener("setLinkedInteractives", (request: LaraInteractiveApi.ISetLinkedInteractives) => {
+      onLinkedInteractivesChange?.(request);
+    });
   };
 
   const disconnect = () => {

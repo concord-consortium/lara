@@ -51,11 +51,10 @@ describe VideoInteractivesController do
           expect(int.poster_url).to eq(new_values_hash[:poster_url])
         end
 
-        it 'returns to the edit page with a message indicating success' do
+        it 'returns to the edit page' do
           new_values_hash = { :caption => 'I made this up', :poster_url => 'http://mw.concord.org/modeler/_assets/img/mw.png' }
           post :update, :id => int.id, :page_id => page.id, :video_interactive => new_values_hash
           expect(response).to redirect_to(edit_activity_page_path(activity, page))
-          expect(flash[:notice]).to eq('Your video was updated.')
         end
 
         # it 'returns to the edit page with an error on failure' do

@@ -17,7 +17,6 @@ import {
   IHintRequest,
   IJwtResponse,
   IGetInteractiveListRequest,
-  ISetLinkedInteractivesRequest,
   ICustomMessageHandler,
   ICustomMessagesHandledMap,
   IGetInteractiveSnapshotOptions,
@@ -297,22 +296,7 @@ export const getInteractiveList = (options: IGetInteractiveListOptions) => {
 };
 
 export const setLinkedInteractives = (options: ISetLinkedInteractives) => {
-  return new Promise<void>((resolve, reject) => {
-    return getInitInteractiveMessage()
-      .then(initInteractiveMessage => {
-        if (!initInteractiveMessage || initInteractiveMessage.mode !== "authoring") {
-          throw new Error("setLinkedInteractives is only available in authoring mode");
-        }
-        const client = getClient();
-        const request: ISetLinkedInteractivesRequest = {
-          sourceId: initInteractiveMessage.interactiveItemId,
-          ...options
-        };
-        client.post("setLinkedInteractives", request);
-        resolve();
-      }).
-      catch(reject);
-  });
+  getClient().post("setLinkedInteractives", options);
 };
 
 export const getInteractiveSnapshot = (options: IGetInteractiveSnapshotOptions) => {

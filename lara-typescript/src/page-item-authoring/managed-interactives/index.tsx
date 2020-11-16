@@ -10,7 +10,7 @@ import { Checkbox } from "../common/components/checkbox";
 import { useCurrentUser } from "../common/hooks/use-current-user";
 import { AuthoredState } from "../common/components/authored-state";
 import { AuthoringApiUrls } from "../common/types";
-import { ILinkedInteractive } from "../../interactive-api-client";
+import { ILinkedInteractive, ISetLinkedInteractives } from "../../interactive-api-client";
 import "react-tabs/style/react-tabs.css";
 
 interface Props {
@@ -65,6 +65,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
   const [libraryInteractive, setLibraryInteractive] = useState<ILibraryInteractive|undefined>(props.libraryInteractive);
   const libraryInteractiveIdRef = useRef<HTMLInputElement|null>(null);
   const libraryInteractiveAuthoredStateRef = useRef<HTMLInputElement|null>(null);
+  const linkedInteractivesRef = useRef<HTMLInputElement|null>(null);
   const [urlFragment, setUrlFragment] = useState(managedInteractive.url_fragment);
   const user = useCurrentUser();
 
@@ -150,6 +151,12 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
       }
     };
 
+    const handleLinkedInteractivesChange = (newLinkedInteractives: ISetLinkedInteractives) => {
+      if (linkedInteractivesRef.current) {
+        linkedInteractivesRef.current.value = JSON.stringify(newLinkedInteractives);
+      }
+    };
+
     const renderAuthoringPanel = () => {
       const { url_fragment } = managedInteractive;
 
@@ -158,6 +165,7 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
           ? <InteractiveAuthoring
               interactive={interactive}
               onAuthoredStateChange={handleAuthoredStateChange}
+              onLinkedInteractivesChange={handleLinkedInteractivesChange}
               allowReset={false}
               authoringApiUrls={authoringApiUrls}
             />
@@ -230,6 +238,12 @@ export const ManagedInteractiveAuthoring: React.FC<Props> = (props) => {
         name={formField("authored_state").name}
         ref={libraryInteractiveAuthoredStateRef}
         defaultValue={managedInteractive.authored_state}
+      />
+      <input
+        type="hidden"
+        id={formField("linked_interactives").id}
+        name={formField("linked_interactives").name}
+        ref={linkedInteractivesRef}
       />
       {selectedOption
         ? selectedOption.label

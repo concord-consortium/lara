@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { InteractiveIframe } from "./interactive-iframe";
 import { AuthoringApiUrls } from "../types";
-import { IInitInteractive, ILinkedInteractive } from "../../../interactive-api-client";
+import { IInitInteractive, ILinkedInteractive, ISetLinkedInteractives } from "../../../interactive-api-client";
 
 interface Props {
   interactive: {
@@ -14,12 +14,13 @@ interface Props {
     linked_interactives: ILinkedInteractive[];
   };
   onAuthoredStateChange: (authoredState: string | object) => void;
+  onLinkedInteractivesChange: (linkedInteractives: ISetLinkedInteractives) => void;
   allowReset: boolean;
   authoringApiUrls: AuthoringApiUrls;
 }
 
 export const InteractiveAuthoring: React.FC<Props> = (props) => {
-  const {interactive, onAuthoredStateChange, allowReset, authoringApiUrls} = props;
+  const {interactive, onAuthoredStateChange, onLinkedInteractivesChange, allowReset, authoringApiUrls} = props;
   const [authoringSupported, setAuthoringSupported] = useState(false);
   const [authoredState, setAuthoredState] = useState<object|null>(
     typeof interactive.authored_state === "string"
@@ -76,6 +77,7 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
         initMsg={initMsg}
         resetCount={resetCount}
         onAuthoredStateChange={handleAuthoredStateChange}
+        onLinkedInteractivesChange={onLinkedInteractivesChange}
         onSupportedFeaturesUpdate={handleSupportedFeatures}
         authoredAspectRatioMethod={interactive.aspect_ratio_method}
         authoredAspectRatio={interactive.aspect_ratio}

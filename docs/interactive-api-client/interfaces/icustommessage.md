@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.1](../README.md) › [Globals](../globals.md) › [ICustomMessage](icustommessage.md)
+[@concord-consortium/lara-interactive-api - v0.6.2](../README.md) › [Globals](../globals.md) › [ICustomMessage](icustommessage.md)
 
 # Interface: ICustomMessage
 
