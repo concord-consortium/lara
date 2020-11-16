@@ -39,7 +39,11 @@ module Publishable
   end
 
   def republish_for_portal(auth_portal,self_url,json=nil)
-    portal_publish_with_token(auth_portal.secret,auth_portal,self_url,true,json)
+    if self.activity_player_only
+      portal_publish_with_token(user.authentication_token(auth_portal.strategy_name),auth_portal,self_url,true,json)
+    else 
+      portal_publish_with_token(auth_portal.secret,auth_portal,self_url,true,json)
+    end
   end
 
   def publication_details
@@ -68,15 +72,25 @@ module Publishable
     # Note that add_portal_publication will return response provided by the block itself
     # and this value will be returned from this method too.
     add_portal_publication(auth_portal) do
-      json = json || self.serialize_for_portal(self_url).to_json
+      if self.activity_player_only
+        json = self.serialize_for_portal_basic(self_url).to_json
+        url = auth_portal.activity_player_publishing_url
+        url = auth_portal.activity_player_republishing_url if republish
+        success_code = republish ? 200 : 201
+      else
+        json = json || self.serialize_for_portal(self_url).to_json
+        success_code = 201
+      end
+
       response = HTTParty.post(url,
         :body => json,
         :headers => { "Authorization" => auth_token, "Content-Type" => "application/json" }
       )
+      
       {
         # response is returned from add_portal_publication too.
         response: response,
-        success: response.code == 201,
+        success: response.code == success_code,
         publication_data: json
       }
     end
