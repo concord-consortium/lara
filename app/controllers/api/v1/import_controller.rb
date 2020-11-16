@@ -1,7 +1,9 @@
 class Api::V1::ImportController < API::APIController
+  skip_before_filter :verify_authenticity_token, :only => :import
   def import
     authorize! :create, LightweightActivity
-    import_result = Import.import(params[:import], current_user)
+    json_object = JSON.parse request.body.read, :symbolize_names => true
+    import_result = Import.import(json_object[:import], current_user)
     if import_result[:success]
       url = import_result[:type] === "Sequence" ?
         sequence_url(import_result[:import_item]) :

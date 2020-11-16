@@ -58,4 +58,30 @@ module LightweightActivityHelper
       return ribbon(t("COMPLETED"),"my-ribbon")
     end
   end
+
+  def activity_player_url(activity)
+    activity_api_url = "#{api_v1_activity_url(@activity.id)}.json"
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview"
+  end
+
+  def activity_player_page_url(activity, page)
+    return  "#{activity_player_url(activity)}&page=#{page.position}"
+  end
+
+  def activity_player_conversion_url(activity)
+    if @sequence
+      lara_resource = "#{api_v1_activity_url(@sequence.id)}.json"
+      resource_name = @sequence.title
+    else
+      lara_resource = "#{api_v1_activity_url(activity.id)}.json"
+      resource_name = activity.name
+    end
+
+    uri = URI.parse(ENV['CONVERSION_SCRIPT_URL'])
+    query = Rack::Utils.parse_query(uri.query)
+    query["lara_resource"] = lara_resource
+    query["resource_name"] = resource_name
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
+  end
 end

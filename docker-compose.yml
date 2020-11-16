@@ -22,10 +22,12 @@ services:
       SHUTTERBUG_URI:
       # Enables logging to stdout instead of file.
       RAILS_STDOUT_LOGGING: "true"
-      #set to https in .env
+      # set to https in .env
       PORTAL_PROTOCOL: "${PORTAL_PROTOCOL:-http}"
       # update in .env if necessary (e.g. to work locally on ACTIVITY_PLAYER_URL)
       ACTIVITY_PLAYER_URL: "${ACTIVITY_PLAYER_URL:-https://activity-player.concord.org/branch/master}"
+      # URL of script to create an Activity Player compatible version of resources by converting old embeddables to library interactives
+      CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/?lara_root=https://app.lara.docker&template=https://app.lara.docker/api/v1/activities/214.json}"
     # no ports are published, see below for details
     depends_on:
       - db
