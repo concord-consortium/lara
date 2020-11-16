@@ -138,8 +138,7 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :student_report_enabled,
                                         :show_submit_button,
-                                        :activity_player_only
-    ])
+                                        :activity_player_only ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:pages] = []
@@ -214,33 +213,31 @@ class LightweightActivity < ActiveRecord::Base
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
     ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?activity=" + api_url
 
-    if self.activity_player_only
-      run_url = ap_url
-      source_type = "Activity Player"
-      append_auth_token = true
-      tool_id = ENV["ACTIVITY_PLAYER_URL"]
-    else
-      run_url = local_url
-      source_type = "LARA"
-      append_auth_token = false
-      tool_id = ""  
-    end
-
-    {
-      "source_type" => source_type,
+    data = {
       "type" => "Activity",
       "name" => self.name,
-      "url" => run_url,
       "author_url" => "#{local_url}/edit",
       "print_url"  => "#{local_url}/print_blank",
       "student_report_enabled"  => student_report_enabled,
       "show_submit_button"  => show_submit_button,
       "thumbnail_url" => thumbnail_url,
-      "is_locked" => self.is_locked,
-      # These are specific to the Activity Player publish
-      "tool_id" => tool_id,
-      "append_auth_token" => append_auth_token
+      "is_locked" => self.is_locked
     }
+
+    if self.activity_player_only
+      data["run_url"] = ap_url
+      data["source_type"] = "Activity Player"
+      # These are specific to the Activity Player publish
+      data["tool_id"] = ENV["ACTIVITY_PLAYER_URL"]
+      data["append_auth_token"] = true
+    else
+      data["run_url"] = local_url
+      data["source_type"] = "LARA"
+      data["tool_id"] = ""  
+      data["append_auth_token"] = false
+    end
+
+    data
   end
 
   def serialize_for_portal(host)
