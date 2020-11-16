@@ -209,34 +209,48 @@ class LightweightActivity < ActiveRecord::Base
     raise "Activity #{id} is not part of Sequence #{seq.id}"
   end
 
-  def serialize_for_portal(host)
+  def serialize_for_portal_basic(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
-    # lines 215-217 are a placeholder for Activity Player only activity URLs
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
     ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?activity=" + api_url
-    run_url = self.activity_player_only ? ap_url : local_url
-    # why won't the line below work?
-    # run_url = self.activity_player_only ? ApplicationController.helpers.activity_player_url(self, false) : local_url
-    author_url = "#{local_url}/edit"
-    print_url = "#{local_url}/print_blank"
-    data = {
-      "source_type" => "LARA",
+
+    if self.activity_player_only
+      run_url = ap_url
+      source_type = "Activity Player"
+      append_auth_token = true
+      tool_id = ENV["ACTIVITY_PLAYER_URL"]
+    else
+      run_url = local_url
+      source_type = "LARA"
+      append_auth_token = false
+      tool_id = ""  
+    end
+
+    {
+      "source_type" => source_type,
       "type" => "Activity",
       "name" => self.name,
-      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its description copy each time the activity was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      "description" => self.description,
       "url" => run_url,
-      "create_url" => run_url,
-      "author_url" => author_url,
-      "print_url"  => print_url,
+      "author_url" => "#{local_url}/edit",
+      "print_url"  => "#{local_url}/print_blank",
       "student_report_enabled"  => student_report_enabled,
       "show_submit_button"  => show_submit_button,
       "thumbnail_url" => thumbnail_url,
-      "author_email" => self.user.email,
-      "is_locked" => self.is_locked
+      "is_locked" => self.is_locked,
+      # These are specific to the Activity Player publish
+      "tool_id" => tool_id,
+      "append_auth_token" => append_auth_token
     }
+  end
+
+  def serialize_for_portal(host)
+    data = serialize_for_portal_basic(host)
+    data["create_url"] = data["url"]
+    data["author_email"] = user.email
+    # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its description copy each time the activity was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+    data["description"] = self.description
 
     pages = []
     visible_pages_with_embeddables.each do |page|
@@ -340,7 +354,7 @@ class LightweightActivity < ActiveRecord::Base
     return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}" + preview
   end
 
-  def activity_player_page_url(page, preview)
-    return  "#{activity_player_url(preview)}&page=#{page.position}"
+  def activity_player_page_url(protocol, host, page, preview)
+    return  "#{activity_player_url(protocol, host, preview)}&page=#{page.position}"
   end
 end

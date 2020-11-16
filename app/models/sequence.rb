@@ -112,31 +112,50 @@ class Sequence < ActiveRecord::Base
     return sequence_json.to_json
   end
 
-  def serialize_for_portal(host)
+  def serialize_for_portal_basic(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
-    author_url = "#{local_url}/edit"
-    print_url = "#{local_url}/print_blank"
+    api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
+    ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?sequence=" + api_url
 
-    data = {
-      'source_type' => 'LARA',
+    if self.activity_player_only
+      run_url = ap_url
+      source_type = "Activity Player"
+      append_auth_token = true
+      tool_id = ENV["ACTIVITY_PLAYER_URL"]
+    else
+      run_url = local_url
+      source_type = "LARA"
+      append_auth_token = false
+      tool_id = ""  
+    end
+
+    {
+      'source_type' => source_type,
       'type' => 'Sequence',
       'name' => self.title,
-      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      'description' => self.description,
-      # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      'abstract' => self.abstract,
-      "url" => local_url,
-      "create_url" => local_url,
-      "author_url" => author_url,
-      "print_url"  => print_url,
+      "url" => run_url,
+      "author_url" => "#{local_url}/edit",
+      "print_url"  => "#{local_url}/print_blank",
       "thumbnail_url" => thumbnail_url,
-      "author_email" => self.user.email
+      # These are specific to the Activity Player publish
+      "tool_id" => tool_id,
+      "append_auth_token" => append_auth_token
     }
-    data['activities'] = self.activities.map { |a| a.serialize_for_portal(host) }
+  end
+
+  def serialize_for_portal(host)
+    data = serialize_for_portal_basic(host)
+    data["create_url"] = data["url"]
+    data["author_email"] = self.user.email
+    # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+    data["description"] = self.description
+    # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+    data["abstract"] = self.abstract
+    data["activities"] = self.activities.map { |a| a.serialize_for_portal(host) }
     data
   end
 
