@@ -1,3 +1,5 @@
+- activity_published = @activity.latest_publication_portals.length > 0 ? true : false
+
 = content_for :session do
   #session
     = render :partial => 'shared/session'
@@ -40,10 +42,10 @@
       .field
         = f.label :publication_status, 'Publication status'
         = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
-      .field
+      .field{:class => ("disabled" if activity_published)}
         = f.label :activity_player_only, "Activity Player only?"
-        = f.check_box :activity_player_only
-        .hint (If this box is checked, the activity will run in the Activity Player by default.)
+        = f.check_box :activity_player_only, :disabled => activity_published
+        .hint (If this box is checked, the activity will run in the Activity Player by default. Once the activity is published, you can't change this setting. You'll have to make a copy and change it for the copy.)
       .field
         = f.label :description, 'Text for index page'
         = f.text_area :description, :class => 'wysiwyg'

@@ -1,3 +1,5 @@
+- sequence_published = @sequence.latest_publication_portals.length > 0 ? true : false
+
 .sequence_form
   = form_for(@sequence) do |f|
     - if @sequence.errors.any?
@@ -38,9 +40,9 @@
     .field
       = f.label :publication_status, "Publication status"
       = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @sequence.publication_status)
-    .field
+    .field{:class => ("disabled" if sequence_published)}
       = f.label :activity_player_only, "Activity Player only?"
-      = f.check_box :activity_player_only
+      = f.check_box :activity_player_only, :disabled => sequence_published
       .hint (If this box is checked, the activity will run in the Activity Player by default.)
     .field
       = f.label :is_official, "Offical CC Sequence"
