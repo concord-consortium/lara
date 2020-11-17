@@ -116,6 +116,26 @@ describe("Client", () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
+    it("lets you remove specific message listener using callback reference", () => {
+      const client = new Client();
+      const listener = jest.fn();
+      client.addListener("authInfo", listener);
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 123}});
+      expect(listener).toHaveBeenCalledWith({test: 123});
+      expect(listener).toHaveBeenCalledTimes(1);
+
+      // wrong callback reference, listener should not be removed
+      client.removeListener("authInfo", undefined, jest.fn());
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
+      expect(listener).toHaveBeenCalledWith({test: 321});
+      expect(listener).toHaveBeenCalledTimes(2);
+
+      // it should be removed now
+      client.removeListener("authInfo", undefined, listener);
+      mockedPhone.fakeServerMessage({type: "authInfo", content: {test: 321}});
+      expect(listener).toHaveBeenCalledTimes(2);
+    });
+
     it("lets you add arbitrary message listener with requestId", () => {
       const client = new Client();
       const listener = jest.fn();

@@ -1,4 +1,4 @@
-[@concord-consortium/lara-interactive-api - v0.6.2](../README.md) › [Globals](../globals.md) › [IRuntimeMetadataBase](iruntimemetadatabase.md)
+[@concord-consortium/lara-interactive-api](../README.md) › [Globals](../globals.md) › [IRuntimeMetadataBase](iruntimemetadatabase.md)
 
 # Interface: IRuntimeMetadataBase
 

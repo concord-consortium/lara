@@ -1,6 +1,6 @@
-[@concord-consortium/lara-plugin-api - v3.2.0](README.md) › [Globals](globals.md)
+[@concord-consortium/lara-plugin-api](README.md) › [Globals](globals.md)
 
-# @concord-consortium/lara-plugin-api - v3.2.0
+# @concord-consortium/lara-plugin-api
 
 ## Index
 
