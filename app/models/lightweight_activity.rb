@@ -225,13 +225,13 @@ class LightweightActivity < ActiveRecord::Base
     }
 
     if self.activity_player_only
-      data["run_url"] = ap_url
+      data["url"] = ap_url
       data["source_type"] = "Activity Player"
       # These are specific to the Activity Player publish
       data["tool_id"] = ENV["ACTIVITY_PLAYER_URL"]
       data["append_auth_token"] = true
     else
-      data["run_url"] = local_url
+      data["url"] = local_url
       data["source_type"] = "LARA"
       data["tool_id"] = ""  
       data["append_auth_token"] = false

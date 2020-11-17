@@ -44,16 +44,16 @@ describe PublicationsController do
   describe "#add_portal" do
     let(:activity_hash) do
       {
-        "source_type"   => "LARA",
         "type"          =>"Activity",
         "name"          =>"Activity One",
-        "url"           =>"http://test.host/activities/#{act_one.id}",
         "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
         "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
         "student_report_enabled" => act_one.student_report_enabled,
         "show_submit_button" => true,
         "thumbnail_url" =>"thumbnail",
         "is_locked"     =>false,
+        "url"           =>"http://test.host/activities/#{act_one.id}",
+        "source_type"   => "LARA",
         "tool_id"       =>"",
         "append_auth_token" => false,
         "create_url"    =>"http://test.host/activities/#{act_one.id}",
@@ -113,7 +113,6 @@ describe PublicationsController do
     # this should be moved to publishable_spec
     it "should attempt to publish to the correct portal endpoint" do
       skip "New portal configurations, more testing here"
-      binding.pry
       expect(@url).to eq("#{ENV['CONCORD_PORTAL_URL']}/external_activities/publish/v2")
     end
 
