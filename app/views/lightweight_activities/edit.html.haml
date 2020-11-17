@@ -40,6 +40,10 @@
       .field
         = f.label :publication_status, 'Publication status'
         = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
+      .field{:class => ("disabled" if @activity.latest_publication_portals.length > 0)}
+        = f.label :runtime, "Runtime environment"
+        = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime), :disabled => @activity.latest_publication_portals.length > 0
+        .hint (Once the activity is published, you can't change this setting. You'll have to make a copy and change it for the copy instead.)
       .field
         = f.label :description, 'Text for index page'
         = f.text_area :description, :class => 'wysiwyg'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200728144910) do
+ActiveRecord::Schema.define(:version => 20201117173617) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(:version => 20200728144910) do
     t.boolean  "student_report_enabled",                 :default => true
     t.text     "last_report_service_hash"
     t.boolean  "show_submit_button",                     :default => true
+    t.string   "runtime",                                :default => "LARA"
   end
 
   add_index "lightweight_activities", ["changed_by_id"], :name => "index_lightweight_activities_on_changed_by_id"
@@ -680,6 +681,7 @@ ActiveRecord::Schema.define(:version => 20200728144910) do
     t.string   "publication_hash",         :limit => 40
     t.string   "imported_activity_url"
     t.text     "last_report_service_hash"
+    t.string   "runtime",                                :default => "LARA"
   end
 
   add_index "sequences", ["project_id"], :name => "index_sequences_on_project_id"

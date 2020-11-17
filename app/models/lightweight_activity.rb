@@ -15,10 +15,15 @@ class LightweightActivity < ActiveRecord::Base
     ['ITSI', ITSI_EDITOR_MODE]
   ]
 
+  RUNTIME_OPTIONS = {
+    'Activity Player' => 'Activity Player',
+    'LARA' => 'LARA'
+  }
+
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button
+                  :student_report_enabled, :show_submit_button, :runtime
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -98,7 +103,8 @@ class LightweightActivity < ActiveRecord::Base
       layout: layout,
       editor_mode: editor_mode,
       student_report_enabled: student_report_enabled,
-      show_submit_button: show_submit_button
+      show_submit_button: show_submit_button,
+      runtime: runtime
     }
   end
 
@@ -136,8 +142,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :layout,
                                         :editor_mode,
                                         :student_report_enabled,
-                                        :show_submit_button
-    ])
+                                        :show_submit_button,
+                                        :runtime ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:pages] = []
@@ -166,7 +172,8 @@ class LightweightActivity < ActiveRecord::Base
       show_submit_button: activity_json_object[:show_submit_button],
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
-      editor_mode: activity_json_object[:editor_mode]
+      editor_mode: activity_json_object[:editor_mode],
+      runtime: activity_json_object[:runtime]
     }
 
   end
@@ -177,6 +184,7 @@ class LightweightActivity < ActiveRecord::Base
     import_activity.theme = Theme.find_by_name(activity_json_object[:theme_name]) if activity_json_object[:theme_name]
     import_activity.imported_activity_url = imported_activity_url
     import_activity.is_official = activity_json_object[:is_official]
+    import_activity.runtime = activity_json_object[:runtime]
     helper = LaraSerializationHelper.new if helper.nil?
     LightweightActivity.transaction do
       import_activity.save!(validate: false)
@@ -205,28 +213,45 @@ class LightweightActivity < ActiveRecord::Base
     raise "Activity #{id} is not part of Sequence #{seq.id}"
   end
 
-  def serialize_for_portal(host)
+  def serialize_for_portal_basic(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.activity_path(self)}"
-    author_url = "#{local_url}/edit"
-    print_url = "#{local_url}/print_blank"
+    api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
+    ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?activity=" + api_url
+
     data = {
-      "source_type" => "LARA",
       "type" => "Activity",
       "name" => self.name,
-      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its description copy each time the activity was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      "description" => self.description,
-      "url" => local_url,
-      "create_url" => local_url,
-      "author_url" => author_url,
-      "print_url"  => print_url,
+      "author_url" => "#{local_url}/edit",
+      "print_url"  => "#{local_url}/print_blank",
       "student_report_enabled"  => student_report_enabled,
       "show_submit_button"  => show_submit_button,
       "thumbnail_url" => thumbnail_url,
-      "author_email" => self.user.email,
       "is_locked" => self.is_locked
     }
+
+    if self.runtime == "Activity Player"
+      data["url"] = ap_url
+      data["source_type"] = "Activity Player"
+      data["tool_id"] = ENV["ACTIVITY_PLAYER_URL"]
+      data["append_auth_token"] = true
+    else
+      data["url"] = local_url
+      data["source_type"] = "LARA"
+      data["tool_id"] = ""  
+      data["append_auth_token"] = false  
+    end
+
+    data
+  end
+
+  def serialize_for_portal(host)
+    data = serialize_for_portal_basic(host)
+    data["create_url"] = data["url"]
+    data["author_email"] = user.email
+    # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its description copy each time the activity was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+    data["description"] = self.description
 
     pages = []
     visible_pages_with_embeddables.each do |page|
@@ -322,5 +347,15 @@ class LightweightActivity < ActiveRecord::Base
 
   def self.search(query)
     where("name LIKE ?", "%#{query}%")
+  end
+
+  def activity_player_url(protocol, host, preview)
+    activity_api_url = "#{Rails.application.routes.url_helpers.api_v1_activity_url(id: self.id, protocol: protocol, host: host)}.json"
+    preview = preview ? "&preview" : ""
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}" + preview
+  end
+  
+  def activity_player_page_url(protocol, host, page, preview)
+    return  "#{activity_player_url(protocol, host, preview)}&page=#{page.position}"
   end
 end
