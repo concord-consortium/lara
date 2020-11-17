@@ -10,6 +10,7 @@ FactoryGirl.define do
     publication_status 'hidden'
     related { generate(:related) }
     description { generate(:description) }
+    runtime "LARA"
   end
 
   factory :activity_with_page, :class => LightweightActivity do

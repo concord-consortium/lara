@@ -5,6 +5,7 @@ FactoryGirl.define do
     title "MyString"
     description "MyText"
     abstract "short abstract"
+    runtime "LARA"
 
     factory :sequence_with_activity do
       ignore do

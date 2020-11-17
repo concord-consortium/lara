@@ -44,19 +44,21 @@ describe PublicationsController do
   describe "#add_portal" do
     let(:activity_hash) do
       {
-        "source_type"   => "LARA",
         "type"          =>"Activity",
         "name"          =>"Activity One",
-        "description"   =>"Activity One Description",
-        "url"           =>"http://test.host/activities/#{act_one.id}",
-        "create_url"    =>"http://test.host/activities/#{act_one.id}",
         "author_url"    =>"http://test.host/activities/#{act_one.id}/edit",
         "print_url"     =>"http://test.host/activities/#{act_one.id}/print_blank",
         "student_report_enabled" => act_one.student_report_enabled,
         "show_submit_button" => true,
         "thumbnail_url" =>"thumbnail",
-        "author_email"  => @user.email,
         "is_locked"     =>false,
+        "url"           =>"http://test.host/activities/#{act_one.id}",
+        "source_type"   => "LARA",
+        "tool_id"       =>"",
+        "append_auth_token" => false,
+        "create_url"    =>"http://test.host/activities/#{act_one.id}",
+        "author_email"  => @user.email,
+        "description"   =>"Activity One Description",
         "sections"      => [
            {"name"  => "Activity One Section",
             "pages" => []
@@ -103,7 +105,7 @@ describe PublicationsController do
     end
 
     # this should be moved to publishable_spec
-    it "should set publciation_status to public" do
+    it "should set publication_status to public" do
       get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
       # expect(act_one.publication_status).to eq('public')
     end

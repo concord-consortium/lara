@@ -112,7 +112,9 @@ describe Sequence do
         "print_url"     => print_url,
         "thumbnail_url" => nil, # our simple sequence doesn't have one
         "author_email" => sequence.user.email,
-        "activities"=>[]
+        "activities"=>[],
+        "append_auth_token" => false,
+        "tool_id" => ""
       }
     end
 
@@ -134,7 +136,9 @@ describe Sequence do
           # Note that we reordered activities!
           act2.serialize_for_portal("http://test.host"),
           act1.serialize_for_portal("http://test.host")
-        ]
+        ],
+        "append_auth_token" => false,
+        "tool_id" => ""
       }
     end
 
@@ -211,7 +215,8 @@ describe Sequence do
         project_id: sequence.project_id,
         logo: sequence.logo,
         display_title: sequence.display_title,
-        thumbnail_url: sequence.thumbnail_url
+        thumbnail_url: sequence.thumbnail_url,
+        runtime: "LARA"
       }
       expect(sequence.to_hash).to eq(expected)
     end
