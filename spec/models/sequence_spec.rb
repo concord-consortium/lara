@@ -98,6 +98,14 @@ describe Sequence do
       seq
     end
 
+    let (:activity_player_sequence) {
+      activity_player_sequence = FactoryGirl.create(:activity_player_sequence, sequence_opts)
+      activity_player_sequence.thumbnail_url = thumbnail_url
+      activity_player_sequence.user = user
+      activity_player_sequence.save
+      activity_player_sequence
+    }
+
     let(:simple_portal_hash) do
       url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(sequence)}"
       author_url = "#{url}/edit"
@@ -142,12 +150,37 @@ describe Sequence do
       }
     end
 
+    let(:ap_simple_portal_hash) do
+      url = "http://test.host#{Rails.application.routes.url_helpers.sequence_path(activity_player_sequence)}"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
+      ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?sequence=http://test.host/api/v1/sequences/#{activity_player_sequence.id}.json"
+      {
+        "source_type" => "Activity Player",
+        "type"=>"Sequence", "name"=> activity_player_sequence.title, "description"=> activity_player_sequence.description,
+        "abstract" => activity_player_sequence.abstract,
+        "url"=> ap_url,
+        "create_url"=> ap_url,
+        "author_url"    => author_url,
+        "print_url"     => print_url,
+        "thumbnail_url" => activity_player_sequence.thumbnail_url,
+        "author_email" => activity_player_sequence.user.email,
+        "activities"=>[],
+        "append_auth_token" => true,
+        "tool_id" => ENV["ACTIVITY_PLAYER_URL"]
+      }
+    end
+
     it 'returns a hash for a simple sequence that can be consumed by the Portal' do
       expect(sequence.serialize_for_portal('http://test.host')).to eq(simple_portal_hash)
     end
 
     it 'returns a hash for a sequence with activities that can be consumed by the Portal' do
       expect(sequence_with_activities.serialize_for_portal("http://test.host")).to eq(complex_portal_hash)
+    end
+
+    it 'returns a simple hash for an Activity Player sequence that can be consumed by the Portal' do
+      expect(activity_player_sequence.serialize_for_portal('http://test.host')).to eq(ap_simple_portal_hash)
     end
 
   end

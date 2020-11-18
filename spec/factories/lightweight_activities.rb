@@ -57,4 +57,12 @@ FactoryGirl.define do
     related { generate(:related) }
     description { generate(:description) }
   end
+
+  factory :activity_player_activity, :class => LightweightActivity do
+    name { generate(:name) }
+    publication_status 'public'
+    related { generate(:related) }
+    description { generate(:description) }
+    runtime "Activity Player"
+  end
 end
