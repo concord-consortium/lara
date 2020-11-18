@@ -31,6 +31,20 @@ describe PublicationsController do
       :thumbnail_url    => 'thumbnail',
     })
     activity.user = @user
+    activity.runtime = "LARA"
+    activity.save
+    activity
+  end
+
+  let(:act_two) do
+    activity = LightweightActivity.create!({
+      :name => 'Activity Two',
+      :description => 'Activity Two Description',
+      :publication_status => 'public',
+      :thumbnail_url    => 'thumbnail',
+    })
+    activity.user = @user
+    activity.runtime = "Activity Player"
     activity.save
     activity
   end
@@ -38,6 +52,7 @@ describe PublicationsController do
   describe "#publish" do
     it "should attempt to publish to the portal" do
       get :publish, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
+      get :publish, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
     end
   end
 
@@ -66,17 +81,40 @@ describe PublicationsController do
         ]
       }
     end
+    let(:ap_activity_hash) do
+      {
+        "type"          =>"Activity",
+        "name"          =>"Activity Two",
+        "author_url"    =>"http://test.host/activities/#{act_two.id}/edit",
+        "print_url"     =>"http://test.host/activities/#{act_two.id}/print_blank",
+        "student_report_enabled" => act_two.student_report_enabled,
+        "show_submit_button" => true,
+        "thumbnail_url" =>"thumbnail",
+        "is_locked"     =>false,
+        "url"           =>"#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{act_two.id}.json",
+        "source_type"   => "Activity Player",
+        "tool_id"       => ENV['ACTIVITY_PLAYER_URL'],
+        "append_auth_token" => true
+      }
+    end
     let(:good_body) { activity_hash.to_json }
+    let(:ap_good_body) { ap_activity_hash.to_json }
     let(:publishing_url) { "http://foo.bar/publish/v2/blarg"}
+    let(:activity_player_publishing_url) { "http://foo.bar/api/v1/external_activities/blarg" }
     let(:url) { "http://foo.bar/"}
     let(:strategy_name) { "foo_bar"}
-    let(:mock_portal) { double(:publishing_url => publishing_url, :url => url, :strategy_name => strategy_name) }
+    let(:mock_portal) { double(:publishing_url => publishing_url, :activity_player_publishing_url => activity_player_publishing_url, :url => url, :strategy_name => strategy_name) }
     let(:good_request) {{
       :body => good_body,
       :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'}
     }}
+    let(:ap_good_request) {{
+      :body => ap_good_body,
+      :headers => {'Authorization'=>'Bearer', 'Content-Type'=>'application/json'}
+    }}
     let(:good_response)   { {:status => 201, :body => "", :headers => {} }}
     let(:portal_response) { good_response }
+
     before(:each) do
       # @url = controller.portal_url
       # stub_request(:post, @url)
@@ -85,7 +123,12 @@ describe PublicationsController do
       stub_request(:post, publishing_url).
         with(good_request).
         to_return(portal_response)
+      stub_request(:post, activity_player_publishing_url).
+        with(ap_good_request).
+        to_return(portal_response)
     end
+
+
 
     it "should have proper routing" do
       expect({:get => "/publications/add/LightweightActivity/1"}).
@@ -107,6 +150,7 @@ describe PublicationsController do
     # this should be moved to publishable_spec
     it "should set publication_status to public" do
       get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
+      get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
       # expect(act_one.publication_status).to eq('public')
     end
 
@@ -121,6 +165,19 @@ describe PublicationsController do
       old_publication_count = act_one.portal_publications.length
       get :add_portal, { :publishable_id => act_one.id, :publishable_type => "LightweightActivity" }
       expect(act_one.reload.portal_publications.length).to eq(old_publication_count + 1)
+    end
+
+    it "should call 'portal_publish' on the activity player runtime activity" do
+      expect(act_two).to receive(:portal_publish).with(@user, mock_portal, "#{request.protocol}#{request.host_with_port}")
+      get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+      # should be moved to publishable_spec
+      # expect(act_two.publication_status).to eq('public')
+    end
+
+    it 'creates a new PortalPublication record' do
+      old_publication_count = act_two.portal_publications.length
+      get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
+      expect(act_two.reload.portal_publications.length).to eq(old_publication_count + 1)
     end
   end
 end
