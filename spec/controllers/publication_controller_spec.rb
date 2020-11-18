@@ -168,6 +168,7 @@ describe PublicationsController do
     end
 
     it "should call 'portal_publish' on the activity player runtime activity" do
+      allow(LightweightActivity).to receive(:find).and_return act_two
       expect(act_two).to receive(:portal_publish).with(@user, mock_portal, "#{request.protocol}#{request.host_with_port}")
       get :add_portal, { :publishable_id => act_two.id, :publishable_type => "LightweightActivity" }
       # should be moved to publishable_spec
