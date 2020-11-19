@@ -59,13 +59,13 @@ module LightweightActivityHelper
     end
   end
 
-  def activity_player_url(activity)
+  def activity_player_url(activity, mode="")
     activity_api_url = "#{api_v1_activity_url(@activity.id)}.json"
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview"
+    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview&mode=#{mode}"
   end
 
-  def activity_player_page_url(activity, page)
-    return  "#{activity_player_url(activity)}&page=#{page.position}"
+  def activity_player_page_url(activity, page, mode="")
+    return  "#{activity_player_url(activity, mode)}&page=#{page.position}"
   end
 
   def activity_player_conversion_url(activity)
@@ -83,5 +83,26 @@ module LightweightActivityHelper
     query["resource_name"] = resource_name
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s
+  end
+
+  def activity_preview_options(activity, page=nil)
+    if page
+      activity_player_url = activity_player_page_url(activity, page)
+      activity_player_te_url = activity_player_page_url(activity, page, "teacher-edition")
+      lara_runtime_url = preview_activity_page_path(activity, page)
+      lara_runtime_te_url = preview_activity_page_path(activity, page, mode: "teacher-edition")
+    else
+      activity_player_url = activity_player_url(activity)
+      activity_player_te_url = activity_player_url(activity, "teacher-edition")
+      lara_runtime_url = preview_activity_path(activity)
+      lara_runtime_te_url = preview_activity_path(activity, mode: "teacher-edition")
+    end
+    {
+      'Select a runtime option...' => '',
+      'Activity Player' => activity_player_url,
+      'Activity Player Teacher Edition' => activity_player_te_url,
+      'LARA Runtime' => lara_runtime_url,
+      'LARA Runtime Teacher Edition' => lara_runtime_te_url
+    }
   end
 end

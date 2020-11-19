@@ -195,6 +195,19 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
 .title {
   padding: 1% 0;
   width: 100%;
+
+  label {
+    color: #313131;
+    font-size: .5em;
+    font-weight: normal;
+  }
+}
+#preview-menu {
+  float: right;
+
+  select {
+    margin-left: 3px;
+  }
 }
 .page-nav {
   position: absolute;
