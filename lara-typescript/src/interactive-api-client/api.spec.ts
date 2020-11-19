@@ -8,7 +8,8 @@ import {
   IShowDialog,
   IShowLightbox,
   ICloseModal,
-  IGetInteractiveSnapshotOptions
+  IGetInteractiveSnapshotOptions,
+  ILinkedInteractiveStateResponse
 } from "./types";
 
 jest.mock("./in-frame", () => ({
@@ -209,6 +210,48 @@ describe("api", () => {
 
     api.removeGlobalInteractiveStateListener(listener);
     getClient().managedState.globalInteractiveState = {bar: 123};
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it("supports linked interactive state observing", () => {
+    const listener = jest.fn();
+    const options = { interactiveItemId: "interactive_123" };
+    api.addLinkedInteractiveStateListener(listener, options);
+    expect(mockedPhone.messages[0].type).toEqual("addLinkedInteractiveStateListener");
+    expect(mockedPhone.messages[0].content.interactiveItemId).toEqual("interactive_123");
+    const listenerId = mockedPhone.messages[0].content.listenerId;
+    expect(listenerId).toBeDefined();
+
+    const correctResponse: ILinkedInteractiveStateResponse<any> = {
+      listenerId,
+      interactiveState: {foo: 123}
+    };
+    mockedPhone.fakeServerMessage({
+      type: "linkedInteractiveState",
+      content: correctResponse
+    });
+    expect(listener).toHaveBeenCalledWith({foo: 123});
+    expect(listener).toHaveBeenCalledTimes(1);
+
+    const incorrectResponse: ILinkedInteractiveStateResponse<any> = {
+      listenerId: "foo_bar", // wrong listenerId
+      interactiveState: {foo: 123}
+    };
+    mockedPhone.fakeServerMessage({
+      type: "linkedInteractiveState",
+      content: incorrectResponse
+    });
+    // Listener should NOT be called.
+    expect(listener).toHaveBeenCalledTimes(1);
+
+    api.removeLinkedInteractiveStateListener(listener);
+    expect(mockedPhone.messages[1]).toEqual({ type: "removeLinkedInteractiveStateListener", content: { listenerId } });
+
+    mockedPhone.fakeServerMessage({
+      type: "linkedInteractiveState",
+      content: correctResponse
+    });
+    // Listener should NOT be called after it's been removed.
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
