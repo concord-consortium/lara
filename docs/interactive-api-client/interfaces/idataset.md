@@ -31,7 +31,7 @@ ___
 
 ###  rows
 
-• **rows**: *Array‹Array‹undefined | null | string | number››*
+• **rows**: *Array‹Array‹null | string | number››*
 
 ___
 

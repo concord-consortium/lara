@@ -31,8 +31,9 @@ export interface IHostModalSupport extends IHostFeatureSupport {
   alert?: boolean;
 }
 
-export interface IHostFeatures extends Record<string, IHostFeatureSupport> {
-  modal: IHostModalSupport;
+export interface IHostFeatures extends Record<string, IHostFeatureSupport | undefined> {
+  modal?: IHostModalSupport;
+  getFirebaseJwt?: IHostFeatureSupport;
 }
 
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>
