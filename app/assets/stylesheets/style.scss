@@ -149,7 +149,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
     clear: both;
     color: #eb8723;
     font: 700 2em 'Lato', georgia, 'times new roman', serif;
-    .preview a, .edit-in a {
+    .convert a, .edit-in a {
       font-weight: normal;
       font-size: 0.5em;
       color: #6fc5d8;
@@ -1117,16 +1117,13 @@ fieldset {
     margin-bottom: 1em;
     font-weight: bold;
     font-size: 1.5em;
-    .edit_trigger, .preview a, button {
+    .edit_trigger, button {
       font-weight: normal;
       font-size: 0.66em;
       color: #6fc5d8;
       background: none;
       text-decoration: underline;
       margin-top: inherit;
-    }
-    .preview {
-      margin-left: 30px;
     }
   }
 }
@@ -1300,7 +1297,7 @@ body.iframed {
       h1 .title {
         display: none;
       }
-      h1 span.preview a {
+      h1 span.convert a {
         padding-left: 10px;
       }
     }
