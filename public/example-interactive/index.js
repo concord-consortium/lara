@@ -32577,31 +32577,39 @@ exports.getAuthInfo = function () {
 };
 exports.getFirebaseJwt = function (firebaseApp) {
     return new Promise(function (resolve, reject) {
-        var listener = function (response) {
-            if (response.response_type === "ERROR") {
-                reject(response.message || "Error getting Firebase JWT");
-            }
-            else if (response.token) {
-                try {
-                    var claimsJson = atob(response.token.split(".")[1]);
-                    resolve({ token: response.token, claims: JSON.parse(claimsJson) });
-                }
-                catch (error) {
-                    reject("Unable to parse JWT Token");
-                }
+        exports.getInitInteractiveMessage().then(function (initMsg) {
+            var _a, _b;
+            if (initMsg && initMsg.mode === "runtime" && ((_b = (_a = initMsg.hostFeatures) === null || _a === void 0 ? void 0 : _a.getFirebaseJwt) === null || _b === void 0 ? void 0 : _b.version) === "1.0.0") {
+                var listener = function (response) {
+                    if (response.response_type === "ERROR") {
+                        reject(response.message || "Error getting Firebase JWT");
+                    }
+                    else if (response.token) {
+                        try {
+                            var claimsJson = atob(response.token.split(".")[1]);
+                            resolve({ token: response.token, claims: JSON.parse(claimsJson) });
+                        }
+                        catch (error) {
+                            reject("Unable to parse JWT Token");
+                        }
+                    }
+                    else {
+                        reject("Empty token");
+                    }
+                };
+                var client = client_1.getClient();
+                var requestId = client.getNextRequestId();
+                var request = {
+                    requestId: requestId,
+                    firebase_app: firebaseApp
+                };
+                client.addListener("firebaseJWT", listener, requestId);
+                client.post("getFirebaseJWT", { lol: 123 });
             }
             else {
-                reject("Empty token");
+                reject("getFirebaseJwt not supported by the host environment");
             }
-        };
-        var client = client_1.getClient();
-        var requestId = client.getNextRequestId();
-        var request = {
-            requestId: requestId,
-            firebase_app: firebaseApp
-        };
-        client.addListener("firebaseJWT", listener, requestId);
-        client.post("getFirebaseJWT", request);
+        });
     });
 };
 exports.log = function (action, data) {
