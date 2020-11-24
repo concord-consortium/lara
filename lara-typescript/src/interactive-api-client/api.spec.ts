@@ -11,6 +11,7 @@ import {
   IGetInteractiveSnapshotOptions,
   ILinkedInteractiveStateResponse
 } from "./types";
+import { getInitInteractiveMessage } from "./api";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -25,6 +26,8 @@ const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
 describe("api", () => {
   beforeEach(() => {
     mockedPhone.reset();
+    // Initialize client after resetting mock iframe phone.
+    getClient();
   });
 
   it("supports getInitInteractiveMessage", async () => {
@@ -131,50 +134,71 @@ describe("api", () => {
     });
   });
 
-  it("supports getFirebaseJwt called multiple times", () => {
-    const requestContent: string[] = [
-      "foo",
-      "bar",
-      "baz"
-    ];
-    testRequestResponse({
-      method: api.getFirebaseJwt,
-      requestType: "getFirebaseJwt",
-      requestContent,
-      responseType: "firebaseJWT",
-      responseContent: [
-        // Tokens generated using: https://jwt.io/
-        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
-        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
-        {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
-      ],
-      resolvesTo: [
-        {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
-        {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
-        {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
-      ]
+  describe("getFirebaseJwt", () => {
+    it("supports multiple calls", async () => {
+      const requestContent: string[] = [
+        "foo",
+        "bar",
+        "baz"
+      ];
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: {
+          mode: "runtime",
+          hostFeatures: {
+            getFirebaseJwt: {version: "1.0.0"}
+          }
+        }
+      });
+      await testRequestResponse({
+        method: api.getFirebaseJwt,
+        requestType: "getFirebaseJwt",
+        requestContent,
+        responseType: "firebaseJWT",
+        responseContent: [
+          // Tokens generated using: https://jwt.io/
+          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
+        ],
+        resolvesTo: [
+          {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+          {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+          {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
+        ]
+      });
     });
-  });
 
-  it("supports errors from getFirebaseJwt", () => {
-    const promise = api.getFirebaseJwt("foo");
-    const content: IGetFirebaseJwtResponse = {
-      requestId: 1,
-      response_type: "ERROR",
-      message: "it's broke!"
-    };
-    mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
-    expect(promise).rejects.toEqual("it's broke!");
-  });
+    it("fails when hostFeatures.getFirebaseJwt is not present", async () => {
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: {
+          mode: "runtime"
+        }
+      });
+      await expect(api.getFirebaseJwt("foo")).rejects.toEqual("getFirebaseJwt not supported by the host environment");
+    });
 
-  it("handles incorrect JWTs", () => {
-    const promise = api.getFirebaseJwt("foo");
-    const content: IGetFirebaseJwtResponse = {
-      requestId: 1,
-      token: "invalid JWT"
-    };
-    mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
-    expect(promise).rejects.toEqual("Unable to parse JWT Token");
+    it("handles errors from getFirebaseJwt", () => {
+      const promise = api.getFirebaseJwt("foo");
+      const content: IGetFirebaseJwtResponse = {
+        requestId: 1,
+        response_type: "ERROR",
+        message: "it's broke!"
+      };
+      mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
+      expect(promise).rejects.toEqual("it's broke!");
+    });
+
+    it("handles incorrect JWTs", () => {
+      const promise = api.getFirebaseJwt("foo");
+      const content: IGetFirebaseJwtResponse = {
+        requestId: 1,
+        token: "invalid JWT"
+      };
+      mockedPhone.fakeServerMessage({type: "firebaseJWT", content});
+      expect(promise).rejects.toEqual("Unable to parse JWT Token");
+    });
   });
 
   it("supports interactive state observing", () => {
@@ -277,20 +301,24 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "showModal", content: options }]);
   });
 
-  it("should implement getInteractiveList", () => {
+  it("should implement getInteractiveList", async () => {
     const requestContent = [
       {scope: "page", supportsSnapshots: true}
     ];
-    testRequestResponse({
+    mockedPhone.fakeServerMessage({
+      type: "initInteractive",
+      content: { mode: "authoring" },
+    });
+    await testRequestResponse({
       method: api.getInteractiveList,
       requestType: "getInteractiveList",
       requestContent,
       responseType: "interactiveList",
       responseContent: [
-        {interactives: []}
+        {interactives: ["abc"]}
       ],
       resolvesTo: [
-        {interactives: []}
+        {interactives: ["abc"]}
       ]
     });
   });
@@ -328,11 +356,11 @@ describe("api", () => {
     expect(mockedPhone.messages).toEqual([{ type: "closeModal", content: options }]);
   });
 
-  it("should implement getInteractiveSnapshot", () => {
+  it("should implement getInteractiveSnapshot", async () => {
     const requestContent: IGetInteractiveSnapshotOptions[] = [
       {interactiveItemId: "interactive_123"}
     ];
-    testRequestResponse({
+    await testRequestResponse({
       method: api.getInteractiveSnapshot,
       requestType: "getInteractiveSnapshot",
       requestContent,
@@ -374,16 +402,27 @@ const testRequestResponse = async (options: IRequestResponseOptions) => {
 
   // fake out of order responses to ensure requests are routed correctly
   requestIds.sort(() => Math.random() - 0.5);
-  // in case you want to see the order...
-  // console.log(`${options.responseType} random response order: ${requestIds.join(",")}`);
-  requestIds.forEach(requestId => {
-    const content = { requestId, ...options.responseContent[requestId - 1] };
-    mockedPhone.fakeServerMessage({type: options.responseType, content});
-  });
 
-  promises.forEach((promise, index) => {
-    expect(promise).resolves.toEqual(options.resolvesTo[index]);
-  });
+  // Why responses are sent with some delay?
+  // Note that some client functions might add message listeners with a delay. E.g. getFirebaseJwt adds response
+  // listener AFTER it gets init interactive msg / current mode. In tests everything is mocked, so 10ms is enough to
+  // make sure these responses are triggered after listeners. Generally, this function doesn't seem to be the best
+  // option, but it's already used by multiple tests. It seems that these confusing parts could be replaced by more
+  // advanced iframe-phone mock.
+  setTimeout(() => {
+    // in case you want to see the order...
+    // console.log(`${options.responseType} random response order: ${requestIds.join(",")}`);
+    requestIds.forEach(requestId => {
+      const content = { requestId, ...options.responseContent[requestId - 1] };
+      mockedPhone.fakeServerMessage({type: options.responseType, content});
+    });
+  }, 10);
+
+  await Promise.all(promises.map(async (promise, index) => {
+    await expect(promise).resolves.toEqual(options.resolvesTo[index]);
+  }));
+
+  mockedPhone.removeListener(options.requestType);
 
   // it removes the listener
   expect(mockedPhone.numListeners).toEqual(startListeners);

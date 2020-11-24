@@ -31,8 +31,9 @@ export interface IHostModalSupport extends IHostFeatureSupport {
   alert?: boolean;
 }
 
-export interface IHostFeatures extends Record<string, IHostFeatureSupport> {
-  modal: IHostModalSupport;
+export interface IHostFeatures extends Record<string, IHostFeatureSupport | undefined> {
+  modal?: IHostModalSupport;
+  getFirebaseJwt?: IHostFeatureSupport;
 }
 
 export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = {}, GlobalInteractiveState = {}>
@@ -403,4 +404,27 @@ export interface IRemoveLinkedInteractiveStateListenerRequest {
 export interface ILinkedInteractiveStateResponse<LinkedInteractiveState> {
   listenerId: string;
   interactiveState: LinkedInteractiveState | undefined;
+}
+
+/**
+ * Interface that can be used by interactives to export and consume datasets. For example:
+ * - Vortex interactive is exporting its dataset in the interactive state
+ * - Graph interactive (part of the question-interactives) can observe Vortex interactive state
+ *   (via linked interactive state observing API) and render dataset columns as bar graphs.
+ */
+export interface IDataset {
+  type: "dataset";
+  version: 1;
+  properties: string[];
+  xAxisProp: string;
+  rows: Array<Array<(number | string | null)>>;
+}
+
+/**
+ * Dataset should be saved as a part of the interactive state. Example:
+ * Vortex interactive state implements this interface, graph interactive uses it to make assumptions about Vortex
+ * interactive state.
+ */
+export interface IInteractiveStateWithDataset {
+  dataset?: IDataset | null;
 }

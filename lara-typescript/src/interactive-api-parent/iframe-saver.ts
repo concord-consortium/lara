@@ -390,6 +390,9 @@ export class IFrameSaver {
           dialog: false,
           lightbox: true,
           alert: true
+        },
+        getFirebaseJwt: {
+          version: "1.0.0",
         }
       },
       authoredState: this.authoredState,

@@ -12,10 +12,17 @@
 
 ### Properties
 
-* [modal](ihostfeatures.md#modal)
+* [getFirebaseJwt](ihostfeatures.md#optional-getfirebasejwt)
+* [modal](ihostfeatures.md#optional-modal)
 
 ## Properties
 
-###  modal
+### `Optional` getFirebaseJwt
 
-• **modal**: *[IHostModalSupport](ihostmodalsupport.md)*
+• **getFirebaseJwt**? : *[IHostFeatureSupport](ihostfeaturesupport.md)*
+
+___
+
+### `Optional` modal
+
+• **modal**? : *[IHostModalSupport](ihostmodalsupport.md)*
