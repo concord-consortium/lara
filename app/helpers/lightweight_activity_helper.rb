@@ -75,4 +75,13 @@ module LightweightActivityHelper
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s
   end
+
+  def runtime_url(activity)
+    if activity.runtime == "Activity Player"
+      view_activity_url = activity.activity_player_url(request.protocol, request.host_with_port, true)
+    else
+      view_activity_url = activity_path(activity)
+    end
+    return view_activity_url
+  end
 end
