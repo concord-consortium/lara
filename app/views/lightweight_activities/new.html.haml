@@ -29,7 +29,6 @@
       = f.select :project_id, options_from_collection_for_select(Project.all, 'id', 'title', @activity.project_id), { :include_blank => true }
     = field_set_tag "Official CC Activity" do
       = f.check_box :is_official
-      (Official CC activities appear in the STEM Resource Finder.)
     = field_set_tag "Is this activity locked?" do
       = f.check_box :is_locked
       ("Locked" activities may only be copied or edited by admin users, not regular authors.)
