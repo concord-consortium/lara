@@ -416,8 +416,9 @@ export interface IDataset {
   type: "dataset";
   version: 1;
   properties: string[];
-  xAxisProp: string;
   rows: Array<Array<(number | string | null)>>;
+  // Row indices will be used when xAxisProp is undefined.
+  xAxisProp?: string;
 }
 
 /**

@@ -19,7 +19,7 @@ Interface that can be used by interactives to export and consume datasets. For e
 * [rows](idataset.md#rows)
 * [type](idataset.md#type)
 * [version](idataset.md#version)
-* [xAxisProp](idataset.md#xaxisprop)
+* [xAxisProp](idataset.md#optional-xaxisprop)
 
 ## Properties
 
@@ -47,6 +47,6 @@ ___
 
 ___
 
-###  xAxisProp
+### `Optional` xAxisProp
 
-• **xAxisProp**: *string*
+• **xAxisProp**? : *undefined | string*
