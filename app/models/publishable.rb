@@ -4,6 +4,11 @@ module Publishable
 
   class AutoPublishIncomplete < StandardError; end
 
+  RUNTIME_OPTIONS = {
+    'Activity Player' => 'Activity Player',
+    'LARA' => 'LARA'
+  }
+
   def latest_publication_portals
     total_counts = portal_publications.group(:portal_url).count
     success_counts = portal_publications.where(:success => true).group(:portal_url).count
@@ -64,8 +69,6 @@ module Publishable
   def portal_publish_with_token(token, auth_portal, self_url, republish=false, json=nil)
     # TODO: better error handling
     raise "#{self.class.name} is Not Publishable" unless self.respond_to?(:serialize_for_portal)
-    url = auth_portal.publishing_url
-    url = auth_portal.republishing_url if republish
     Rails.logger.info "Attempting to publish #{self.class.name} #{self.id} to #{auth_portal.url}."
     auth_token = 'Bearer %s' % token
 
@@ -79,6 +82,8 @@ module Publishable
         success_code = republish ? 200 : 201
       else
         json = json || self.serialize_for_portal(self_url).to_json
+        url = auth_portal.publishing_url
+        url = auth_portal.republishing_url if republish
         success_code = 201
       end
 

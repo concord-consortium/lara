@@ -15,11 +15,6 @@ class LightweightActivity < ActiveRecord::Base
     ['ITSI', ITSI_EDITOR_MODE]
   ]
 
-  RUNTIME_OPTIONS = {
-    'Activity Player' => 'Activity Player',
-    'LARA' => 'LARA'
-  }
-
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
@@ -231,14 +226,10 @@ class LightweightActivity < ActiveRecord::Base
 
     if self.runtime == "Activity Player"
       data["url"] = ap_url
-      data["source_type"] = "Activity Player"
-      data["tool_id"] = ENV["ACTIVITY_PLAYER_URL"]
+      data["tool_id"] = "https://activity-player.concord.org"
       data["append_auth_token"] = true
     else
       data["url"] = local_url
-      data["source_type"] = "LARA"
-      data["tool_id"] = ""  
-      data["append_auth_token"] = false  
     end
 
     data
@@ -246,6 +237,7 @@ class LightweightActivity < ActiveRecord::Base
 
   def serialize_for_portal(host)
     data = serialize_for_portal_basic(host)
+    data["source_type"] = "LARA"
     data["create_url"] = data["url"]
     data["author_email"] = user.email
     # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
@@ -351,8 +343,14 @@ class LightweightActivity < ActiveRecord::Base
 
   def activity_player_url(protocol, host, preview)
     activity_api_url = "#{Rails.application.routes.url_helpers.api_v1_activity_url(id: self.id, protocol: protocol, host: host)}.json"
-    preview = preview ? "&preview" : ""
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}" + preview
+    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
+    query = Rack::Utils.parse_query(uri.query)
+    if preview
+      query["preview"] = nil # adds 'preview' to query string as a valueless param
+    end
+    query["activity"] = URI.escape(activity_api_url)
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
   end
   
   def activity_player_page_url(protocol, host, page, preview)

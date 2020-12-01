@@ -1,8 +1,4 @@
 class Sequence < ActiveRecord::Base
-  RUNTIME_OPTIONS = {
-    'Activity Player' => 'Activity Player',
-    'LARA' => 'LARA'
-  }
 
   attr_accessible :description, :title, :theme_id, :project_id,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
@@ -179,8 +175,14 @@ class Sequence < ActiveRecord::Base
 
   def activity_player_sequence_url(protocol, host, preview)
     sequence_api_url = "#{Rails.application.routes.url_helpers.api_v1_sequence_url(id: self.id, protocol: protocol, host: host)}.json"
-    preview = preview ? "&preview" : ""
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?sequence=#{CGI.escape(sequence_api_url)}" + preview
+    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
+    query = Rack::Utils.parse_query(uri.query)
+    if preview
+      query["preview"] = nil # adds 'preview' to query string as a valueless param
+    end
+    query["sequence"] = URI.escape(sequence_api_url)
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
   end
 
   def self.extact_from_hash(sequence_json_object)
