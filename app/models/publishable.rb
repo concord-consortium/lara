@@ -45,6 +45,8 @@ module Publishable
 
   def republish_for_portal(auth_portal,self_url,json=nil)
     if self.runtime == "Activity Player"
+      # The Portal API doesn't support auth_portal.secret authentication, so we switched to using user.authentication_token
+      # This means the user needs permission to publish whereas they don't with auth_portal.secret
       portal_publish_with_token(user.authentication_token(auth_portal.strategy_name),auth_portal,self_url,true,json)
     else
       portal_publish_with_token(auth_portal.secret,auth_portal,self_url,true,json)
