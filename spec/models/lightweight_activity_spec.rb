@@ -401,8 +401,6 @@ describe LightweightActivity do
         "student_report_enabled" => activity.student_report_enabled,
         "show_submit_button"     => true,
         "is_locked"              => false,
-        "append_auth_token"      => false,
-        "tool_id"                => "",
         "sections"               =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end
@@ -412,22 +410,17 @@ describe LightweightActivity do
       print_url = "#{url}/print_blank"
       ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json"
       {
-        "source_type"            => "Activity Player",
         "type"                   =>"Activity",
         "name"                   => activity_player_activity.name,
-        "description"            => activity_player_activity.description,
         "url"                    => ap_url,
-        "create_url"             => ap_url,
         "author_url"             => author_url,
         "print_url"              => print_url,
         "thumbnail_url"          => thumbnail_url,
-        "author_email"           => activity_player_activity.user.email,
         "student_report_enabled" => activity_player_activity.student_report_enabled,
         "show_submit_button"     => true,
         "is_locked"              => false,
         "append_auth_token"      => true,
-        "tool_id"                => ENV["ACTIVITY_PLAYER_URL"],
-        "sections"               =>[{"name"=>"#{activity_player_activity.name} Section", "pages"=>[]}]
+        "tool_id"                => "https://activity-player.concord.org"
       }
     end
 
@@ -436,7 +429,7 @@ describe LightweightActivity do
     end
 
     it 'returns a simple hash for an Activity Player activity that can be consumed by the Portal' do
-      expect(activity_player_activity.serialize_for_portal('http://test.host')).to eq(ap_simple_portal_hash)
+      expect(activity_player_activity.serialize_for_portal_basic('http://test.host')).to eq(ap_simple_portal_hash)
     end
 
     describe 'pages section' do
