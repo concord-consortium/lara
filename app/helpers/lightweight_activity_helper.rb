@@ -59,15 +59,6 @@ module LightweightActivityHelper
     end
   end
 
-  def activity_player_url(activity)
-    activity_api_url = "#{api_v1_activity_url(@activity.id)}.json"
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview"
-  end
-
-  def activity_player_page_url(activity, page)
-    return  "#{activity_player_url(activity)}&page=#{page.position}"
-  end
-
   def activity_player_conversion_url(activity)
     if @sequence
       lara_resource = "#{api_v1_activity_url(@sequence.id)}.json"
@@ -83,5 +74,14 @@ module LightweightActivityHelper
     query["resource_name"] = resource_name
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s
+  end
+
+  def runtime_url(activity)
+    if activity.runtime == "Activity Player"
+      view_activity_url = activity.activity_player_url(request.protocol, request.host_with_port, true)
+    else
+      view_activity_url = activity_path(activity)
+    end
+    return view_activity_url
   end
 end

@@ -18,7 +18,7 @@
     Edit sequence
   - if ENV['ACTIVITY_PLAYER_URL'].present?
     %span.preview
-      = link_to "Preview in Activity Player", activity_player_sequence_url(@sequence), :target => 'new'
+      = link_to "Preview in Activity Player", @sequence.activity_player_sequence_url(request.protocol, request.host_with_port, true), :target => 'new'
 
 = render :partial => "publications/publication_details", :locals =>{ :publication => @sequence}
 

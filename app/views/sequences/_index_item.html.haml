@@ -2,7 +2,7 @@
   %div.action_menu
     %div.action_menu_header_left
       = sequence.id.to_s + '.'
-      = link_to sequence.title, sequence, :class => 'container_link', :title => 'Preview Sequence'
+      = link_to sequence.title, sequence_runtime_url(sequence), :class => 'container_link', :title => 'Preview Sequence'
     %div.action_menu_header_right
       %ul.menu
         %li.export= link_to('Export', show_status_sequence_path(sequence), :remote => true) if can? :export, sequence
@@ -15,7 +15,7 @@
         - if can? :read, sequence
           %li.print
             = link_to "print", print_blank_sequence_path(sequence), :target => 'new'
-          %li.run= link_to "Run", sequence_path(sequence)
+          %li.run= link_to "Run", sequence_runtime_url(sequence)
 
   %div{:id => dom_id_for(sequence, :details), :class => 'tiny'}
     = pluralize(sequence.activities.length, 'activity')

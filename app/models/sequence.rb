@@ -1,6 +1,8 @@
 class Sequence < ActiveRecord::Base
+
   attr_accessible :description, :title, :theme_id, :project_id,
-    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash
+    :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
+    :runtime
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -52,7 +54,8 @@ class Sequence < ActiveRecord::Base
       project_id: project_id,
       logo: logo,
       display_title: display_title,
-      thumbnail_url: thumbnail_url
+      thumbnail_url: thumbnail_url,
+      runtime: runtime
     }
   end
 
@@ -96,7 +99,8 @@ class Sequence < ActiveRecord::Base
                                         :project_id,
                                         :logo,
                                         :display_title,
-                                        :thumbnail_url
+                                        :thumbnail_url,
+                                        :runtime
     ])
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
@@ -109,31 +113,51 @@ class Sequence < ActiveRecord::Base
     return sequence_json.to_json
   end
 
-  def serialize_for_portal(host)
+  def serialize_for_portal_basic(host)
     local_url = "#{host}#{Rails.application.routes.url_helpers.sequence_path(self)}"
-    author_url = "#{local_url}/edit"
-    print_url = "#{local_url}/print_blank"
+    api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
+    ap_url = ENV["ACTIVITY_PLAYER_URL"] + "?sequence=" + api_url
 
-    data = {
-      'source_type' => 'LARA',
+    if self.runtime == "Activity Player"
+      run_url = ap_url
+      source_type = "Activity Player"
+      append_auth_token = true
+      tool_id = ENV["ACTIVITY_PLAYER_URL"]
+    else
+      run_url = local_url
+      source_type = "LARA"
+      append_auth_token = false
+      tool_id = ""  
+    end
+
+    {
+      'source_type' => source_type,
       'type' => 'Sequence',
       'name' => self.title,
-      # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      'description' => self.description,
-      # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
-      # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
-      # When all Portals are upgraded to v1.31 we can stop sending this property.
-      'abstract' => self.abstract,
-      "url" => local_url,
-      "create_url" => local_url,
-      "author_url" => author_url,
-      "print_url"  => print_url,
+      "url" => run_url,
+      "author_url" => "#{local_url}/edit",
+      "print_url"  => "#{local_url}/print_blank",
       "thumbnail_url" => thumbnail_url,
-      "author_email" => self.user.email
+      # These are specific to the Activity Player publish
+      "tool_id" => tool_id,
+      "append_auth_token" => append_auth_token
     }
-    data['activities'] = self.activities.map { |a| a.serialize_for_portal(host) }
+  end
+
+  def serialize_for_portal(host)
+    data = serialize_for_portal_basic(host)
+    data["create_url"] = data["url"]
+    data["author_email"] = self.user.email
+    # Description is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its description copy each time the sequence was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+    data["description"] = self.description
+    # Abstract is not used by new Portal anymore. However, we still need to send it to support older Portal instances.
+    # Otherwise, the old Portal code would reset its abstract copy each time the sequence was published.
+    # When all Portals are upgraded to v1.31 we can stop sending this property.
+
+    data["abstract"] = self.abstract
+    data["activities"] = self.activities.map { |a| a.serialize_for_portal(host) }
     data
   end
 
@@ -149,6 +173,18 @@ class Sequence < ActiveRecord::Base
     data
   end
 
+  def activity_player_sequence_url(protocol, host, preview)
+    sequence_api_url = "#{Rails.application.routes.url_helpers.api_v1_sequence_url(id: self.id, protocol: protocol, host: host)}.json"
+    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
+    query = Rack::Utils.parse_query(uri.query)
+    if preview
+      query["preview"] = nil # adds 'preview' to query string as a valueless param
+    end
+    query["sequence"] = URI.escape(sequence_api_url)
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
+  end
+
   def self.extact_from_hash(sequence_json_object)
     {
       abstract: sequence_json_object[:abstract],
@@ -158,7 +194,8 @@ class Sequence < ActiveRecord::Base
       project_id: sequence_json_object[:project_id],
       theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
-      title: sequence_json_object[:title]
+      title: sequence_json_object[:title],
+      runtime: sequence_json_object[:runtime]
     }
 
   end
@@ -166,6 +203,7 @@ class Sequence < ActiveRecord::Base
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
     helper = LaraSerializationHelper.new
     import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
+    import_sequence.runtime = sequence_json_object[:runtime]
     Sequence.transaction do
       import_sequence.title = import_sequence.title
       import_sequence.imported_activity_url = imported_activity_url
