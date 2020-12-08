@@ -50,14 +50,13 @@ footer.sequence_run {
 #activities ul.menu li.delete form {
   display: inline;
   input[type="submit"] {
+    background: transparent;
     border: none;
     cursor: pointer;
     font: inherit;
-    background: transparent url(/assets/icons/delete.png) 0 0 no-repeat;
-    background-size: 16px;
     color: #333;
     height: 16px;
-    padding-left: 18px;
+    padding-left: 16px;
   }
 }
 .activities {
