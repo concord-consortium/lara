@@ -10,6 +10,7 @@ FactoryGirl.define do
     publication_status 'hidden'
     related { generate(:related) }
     description { generate(:description) }
+    runtime "LARA"
   end
 
   factory :activity_with_page, :class => LightweightActivity do
@@ -55,5 +56,13 @@ FactoryGirl.define do
     is_locked true
     related { generate(:related) }
     description { generate(:description) }
+  end
+
+  factory :activity_player_activity, :class => LightweightActivity do
+    name { generate(:name) }
+    publication_status 'public'
+    related { generate(:related) }
+    description { generate(:description) }
+    runtime "Activity Player"
   end
 end

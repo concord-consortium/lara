@@ -11,6 +11,18 @@ module EmbeddableHelper
     select_tag :embeddable_type, options_for_select(Embeddable::InteractiveTypes.map { |type| [type.model_name.human, type.to_s] }), {id: "embeddable_type_interactives"}
   end
 
+  def ap_interactives_selector
+    ap_compatible_interactives = [
+      "MwInteractive",
+      "ManagedInteractive",
+      "Embeddable::Xhtml"
+    ]
+    mi_type = Embeddable::Types.select { |type| ap_compatible_interactives.include? type.to_s }
+    embeddable_types = mi_type.map { |type| [type.model_name.human, type.to_s] }
+    plugin_items = ApprovedScript.authoring_menu_items("embeddable").map { |ami| [ami.name, Embeddable::EmbeddablePlugin.to_s, {"data-approved-script-id" => ami.approved_script_id, "data-component-label" => ami.component_label}] }
+    select_tag :embeddable_type, options_for_select(embeddable_types + plugin_items), {id: "embeddable_type_interactives"}
+  end
+
   def available_wrapped_embeddable_plugins(embeddable)
     ApprovedScript.authoring_menu_items("embeddable-decoration", embeddable)
   end

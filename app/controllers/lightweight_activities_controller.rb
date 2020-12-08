@@ -7,7 +7,7 @@ class LightweightActivitiesController < ApplicationController
     portal_launchable = (action_name == 'show' && params[:sequence_id].blank?)
     set_run_key(portal_launchable: portal_launchable)
   }
-  before_filter :set_sequence, :only   => [:summary, :show, :single_page]
+  before_filter :set_sequence, :only   => [:summary, :show, :single_page, :preview]
 
   before_filter :enable_js_logger, :only => [:summary, :show, :preview, :single_page]
 

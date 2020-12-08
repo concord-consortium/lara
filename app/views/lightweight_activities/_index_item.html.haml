@@ -4,7 +4,7 @@
   %div.action_menu
     %div.action_menu_header_left
       = activity.id.to_s + '.'
-      = link_to activity.name, activity_path(activity), :class => 'container_link', :title => 'Preview Activity'
+      = link_to activity.name, runtime_url(activity), :class => 'container_link', :title => 'Preview Activity'
     %div.action_menu_header_right
       %ul.menu
         %li.export= link_to('Export', show_status_activity_path(activity), :remote => true) if can? :export, activity
@@ -18,7 +18,7 @@
         - if can? :read, activity
           %li.print
             = link_to "print", print_blank_activity_path(activity), :target => 'new'
-          %li.run= link_to "Run", activity_path(activity), :target => 'new'
+          %li.run= link_to "Run", runtime_url(activity), :target => 'new'
 
   %div{:id => dom_id_for(activity, :details), :class => 'tiny'}
     - if (activity.active_runs > 0) && (can? :edit, activity)

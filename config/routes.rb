@@ -46,7 +46,11 @@ LightweightStandalone::Application.routes.draw do
       # TODO: dpeprecate this Dashboard route
       get :dashboard_toc, to: redirect(path: "/api/v1/dashboard_toc/sequences/%{id}")
     end
-    resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary]
+    resources :activities, :controller => 'lightweight_activities', :constraints => { :id => /\d+/, :sequence_id => /\d+/ }, :only => [:show, :summary] do
+      member do
+        get :preview
+      end
+    end
   end
 
   namespace :embeddable do

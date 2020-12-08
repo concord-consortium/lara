@@ -34,6 +34,9 @@
       ("Locked" activities may only be copied or edited by admin users, not regular authors.)
   = field_set_tag 'Publication status' do
     = f.select :publication_status, options_for_select(LightweightActivity::PUB_STATUSES_OPTIONS, @activity.publication_status)
+  = field_set_tag 'Runtime environment' do
+    = f.select :runtime, options_for_select(LightweightActivity::RUNTIME_OPTIONS, @activity.runtime)
+    .hint (Once the activity is published, you can't change this setting. You'll have to make a copy and change it for the copy instead.)
   = field_set_tag 'Activity Description' do
     = f.text_area :description, :cols => 80, :rows => 5, :class => 'wysiwyg'
   = field_set_tag 'Related Content' do

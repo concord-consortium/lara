@@ -204,28 +204,34 @@ export const getAuthInfo = (): Promise<IAuthInfo> => {
 
 export const getFirebaseJwt = (firebaseApp: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
-    const listener = (response: IGetFirebaseJwtResponse) => {
-      if (response.response_type === "ERROR") {
-        reject(response.message || "Error getting Firebase JWT");
-      } else if (response.token) {
-        try {
-          const claimsJson = atob(response.token.split(".")[1]);
-          resolve({token: response.token, claims: JSON.parse(claimsJson)});
-        } catch (error) {
-          reject("Unable to parse JWT Token");
-        }
+    getInitInteractiveMessage().then(initMsg => {
+      if (initMsg && initMsg.mode === "runtime" && initMsg.hostFeatures?.getFirebaseJwt?.version === "1.0.0") {
+        const listener = (response: IGetFirebaseJwtResponse) => {
+          if (response.response_type === "ERROR") {
+            reject(response.message || "Error getting Firebase JWT");
+          } else if (response.token) {
+            try {
+              const claimsJson = atob(response.token.split(".")[1]);
+              resolve({token: response.token, claims: JSON.parse(claimsJson)});
+            } catch (error) {
+              reject("Unable to parse JWT Token");
+            }
+          } else {
+            reject("Empty token");
+          }
+        };
+        const client = getClient();
+        const requestId = client.getNextRequestId();
+        const request: IGetFirebaseJwtRequest = {
+          requestId,
+          firebase_app: firebaseApp
+        };
+        client.addListener("firebaseJWT", listener, requestId);
+        client.post("getFirebaseJWT", { lol: 123});
       } else {
-        reject("Empty token");
+        reject("getFirebaseJwt not supported by the host environment");
       }
-    };
-    const client = getClient();
-    const requestId = client.getNextRequestId();
-    const request: IGetFirebaseJwtRequest = {
-      requestId,
-      firebase_app: firebaseApp
-    };
-    client.addListener("firebaseJWT", listener, requestId);
-    client.post("getFirebaseJWT", request);
+    });
   });
 };
 

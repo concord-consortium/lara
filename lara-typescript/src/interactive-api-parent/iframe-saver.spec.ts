@@ -158,6 +158,9 @@ describe("IFrameSaver", () => {
               alert: true,
               lightbox: true,
               dialog: false
+            },
+            getFirebaseJwt: {
+              version: "1.0.0"
             }
           },
           authoredState: {test: 123},
@@ -202,6 +205,9 @@ describe("IFrameSaver", () => {
               alert: true,
               lightbox: true,
               dialog: false
+            },
+            getFirebaseJwt: {
+              version: "1.0.0"
             }
           },
           authoredState: {test: 123},

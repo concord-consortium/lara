@@ -1,13 +1,13 @@
 :ruby
   if section_name == InteractivePage::HEADER_BLOCK
     section_hidden_field = hidden_field_tag :section, InteractivePage::HEADER_BLOCK
-    selector_menu = embeddable_selector(section_name)
+    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_selector(section_name)
   elsif section_name == InteractivePage::INTERACTIVE_BOX
     section_hidden_field = hidden_field_tag :section, InteractivePage::INTERACTIVE_BOX
-    selector_menu = embeddable_interactives_selector
+    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_interactives_selector
   else
     section_hidden_field = nil
-    selector_menu = embeddable_selector(section_name)
+    selector_menu = @activity.runtime == "Activity Player" ? ap_interactives_selector : embeddable_selector(section_name)
   end
   section_embeddables_list = @page.section_embeddables(section_name)
 
