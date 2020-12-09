@@ -382,6 +382,52 @@ describe LightweightActivity do
     end
   end
 
+  describe '#serialize_for_portal_basic' do
+    let(:basic_portal_hash) do
+      url = "http://test.host/activities/#{activity.id}"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
+      {
+        "type"                   =>"Activity",
+        "name"                   => activity.name,
+        "author_url"             => author_url,
+        "print_url"              => print_url,
+        "student_report_enabled" => activity.student_report_enabled,
+        "show_submit_button"     => true,
+        "thumbnail_url"          => thumbnail_url,
+        "is_locked"              => false,
+        "url"                    => url
+      }
+    end
+    let(:ap_basic_portal_hash) do
+      url = "http://test.host/activities/#{activity_player_activity.id}"
+      author_url = "#{url}/edit"
+      print_url = "#{url}/print_blank"
+      ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json"
+      {
+        "type"                   =>"Activity",
+        "name"                   => activity_player_activity.name,
+        "author_url"             => author_url,
+        "print_url"              => print_url,
+        "thumbnail_url"          => thumbnail_url,
+        "student_report_enabled" => activity_player_activity.student_report_enabled,
+        "show_submit_button"     => true,
+        "is_locked"              => false,
+        "url"                    => ap_url,
+        "tool_id"                => "https://activity-player.concord.org",
+        "append_auth_token"      => true
+      }
+    end
+
+    it 'returns a simple hash that can be consumed by the Portal' do
+      expect(activity.serialize_for_portal_basic('http://test.host')).to eq(basic_portal_hash)
+    end
+
+    it 'returns a simple hash for an Activity Player activity that can be consumed by the Portal' do
+      expect(activity_player_activity.serialize_for_portal_basic('http://test.host')).to eq(ap_basic_portal_hash)
+    end
+  end
+
   describe '#serialize_for_portal' do
     let(:simple_portal_hash) do
       url = "http://test.host/activities/#{activity.id}"
