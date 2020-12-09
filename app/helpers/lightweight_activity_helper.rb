@@ -60,7 +60,7 @@ module LightweightActivityHelper
   end
 
   def activity_player_url(activity, mode="")
-    activity_api_url = "#{api_v1_activity_url(@activity.id)}.json"
+    activity_api_url = "#{api_v1_activity_url(activity.id)}.json"
     return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview&mode=#{mode}"
   end
 
