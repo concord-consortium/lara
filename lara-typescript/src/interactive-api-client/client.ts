@@ -41,7 +41,8 @@ export class Client {
 
   constructor() {
     if (!inIframe()) {
-      throw new Error("Interactive API is meant to be used in iframe");
+      // tslint:disable-next-line:no-console
+      console.warn("Interactive API is meant to be used in iframe");
     }
     if (phoneInitialized()) {
       throw new Error("IframePhone has been initialized previously. Only one Client instance is allowed.");
