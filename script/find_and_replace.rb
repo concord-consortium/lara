@@ -1,6 +1,5 @@
 text_fields = {
   "InteractivePage" => [
-    :text,
     :name,
     :sidebar,
     :sidebar_title
