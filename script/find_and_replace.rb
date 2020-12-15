@@ -1,18 +1,19 @@
 text_fields = {
   "InteractivePage" => [
-    :text,
     :name,
     :sidebar,
     :sidebar_title
   ],
   "ImageInteractive" => [
     :caption,
-    :credit
+    :credit,
+    :url
   ],
   "LightweightActivity" => [
     :name,
     :description,
-    :notes
+    :notes,
+    :thumbnail_url
   ],
   "MwInteractive" => [
     :name,
@@ -22,7 +23,8 @@ text_fields = {
   "Sequence" => [
     :description,
     :title,
-    :display_title
+    :display_title,
+    :thumbnail_url
   ],
   "VideoInteractive" => [
     :caption,
