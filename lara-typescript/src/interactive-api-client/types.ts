@@ -156,7 +156,8 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "getLibraryInteractiveList" |
                                        "getInteractiveSnapshot" |
                                        "addLinkedInteractiveStateListener" |
-                                       "removeLinkedInteractiveStateListener"
+                                       "removeLinkedInteractiveStateListener" |
+                                       "selectDecoratedContent"
                                       ;
 
 export type IRuntimeServerMessage = "authInfo" |
@@ -168,7 +169,8 @@ export type IRuntimeServerMessage = "authInfo" |
                                        "libraryInteractiveList" |
                                        "interactiveSnapshot" |
                                        "contextMembership" |
-                                       "linkedInteractiveState"
+                                       "linkedInteractiveState" |
+                                       "decorateContent"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -295,6 +297,11 @@ export type IShowModal = IShowAlert | IShowLightbox | IShowDialog;
 export interface ICloseModal {
   // Necessary only when there are multiple modals. Otherwise it'll close the currently open modal.
   uuid?: string;
+}
+
+export interface IDecoratedContentMessage {
+  type: string;
+  text: string;
 }
 
 export interface ICustomMessage {

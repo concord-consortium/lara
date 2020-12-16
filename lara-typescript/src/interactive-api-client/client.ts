@@ -133,6 +133,14 @@ export class Client {
     return this.removeListener("customMessage");
   }
 
+  public addDecorateContentListener(callback: ICustomMessageHandler) {
+    this.addListener("decorateContent", callback);
+  }
+
+  public removeDecorateContentListener() {
+    return this.removeListener("decorateContent");
+  }
+
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {
     let newRequest = request;
     if (this.customMessagesHandled) {

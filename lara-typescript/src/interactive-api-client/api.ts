@@ -24,10 +24,12 @@ import {
   IAddLinkedInteractiveStateListenerOptions,
   ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest,
-  IRemoveLinkedInteractiveStateListenerRequest
+  IRemoveLinkedInteractiveStateListenerRequest,
+  IDecoratedContentMessage
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
+import { ListenerCallback } from "iframe-phone";
 
 const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
   throw new Error(`${method} is not yet implemented in the client!`);
@@ -163,6 +165,14 @@ export const removeCustomMessageListener = () => {
   getClient().removeCustomMessageListener();
 };
 
+export const addDecorateContentListener = (callback: ListenerCallback) => {
+  getClient().addListener("decorateContent", callback);
+};
+
+export const removeDecorateContentListener = () => {
+  getClient().removeListener("decorateContent");
+};
+
 export const setSupportedFeatures = (features: ISupportedFeatures) => {
   const request: ISupportedFeaturesRequest = {
     apiVersion: 1,
@@ -173,6 +183,10 @@ export const setSupportedFeatures = (features: ISupportedFeatures) => {
 
 export const setHeight = (height: number | string) => {
   getClient().post("height", height);
+};
+
+export const selectDecoratedContent = (msg: IDecoratedContentMessage) => {
+  getClient().post("selectDecoratedContent", msg);
 };
 
 /*
