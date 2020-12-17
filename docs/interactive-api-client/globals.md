@@ -28,6 +28,7 @@
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
 * [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
 * [IDataset](interfaces/idataset.md)
+* [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
@@ -106,10 +107,12 @@
 
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
 * [addCustomMessageListener](globals.md#const-addcustommessagelistener)
+* [addDecorateContentListener](globals.md#const-adddecoratecontentlistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
+* [decoratedContentEvent](globals.md#const-decoratedcontentevent)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
@@ -125,6 +128,7 @@
 * [log](globals.md#const-log)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
+* [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
@@ -139,6 +143,7 @@
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
 * [useCustomMessages](globals.md#const-usecustommessages)
+* [useDecorateContent](globals.md#const-usedecoratecontent)
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
@@ -235,7 +240,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
 
 ___
 
@@ -247,7 +252,7 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState"*
+Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
 
 ___
 
@@ -338,6 +343,20 @@ Name | Type |
 
 ___
 
+### `Const` addDecorateContentListener
+
+▸ **addDecorateContentListener**(`callback`: ListenerCallback): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | ListenerCallback |
+
+**Returns:** *void*
+
+___
+
 ### `Const` addGlobalInteractiveStateListener
 
 ▸ **addGlobalInteractiveStateListener**‹**GlobalInteractiveState**›(`listener`: function): *void*
@@ -421,6 +440,20 @@ ___
 Name | Type |
 ------ | ------ |
 `options` | [ICloseModal](interfaces/iclosemodal.md) |
+
+**Returns:** *void*
+
+___
+
+### `Const` decoratedContentEvent
+
+▸ **decoratedContentEvent**(`msg`: [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`msg` | [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md) |
 
 **Returns:** *void*
 
@@ -612,6 +645,14 @@ ___
 ### `Const` removeCustomMessageListener
 
 ▸ **removeCustomMessageListener**(): *void*
+
+**Returns:** *void*
+
+___
+
+### `Const` removeDecorateContentListener
+
+▸ **removeDecorateContentListener**(): *void*
 
 **Returns:** *void*
 
@@ -905,6 +946,20 @@ Name | Type |
 ------ | ------ |
 `callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
 `handles?` | [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap) |
+
+**Returns:** *void*
+
+___
+
+### `Const` useDecorateContent
+
+▸ **useDecorateContent**(`callback`: ListenerCallback): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | ListenerCallback |
 
 **Returns:** *void*
 
