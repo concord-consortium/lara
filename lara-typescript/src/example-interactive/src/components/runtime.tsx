@@ -2,7 +2,7 @@ import * as React from "react";
 const { useEffect, useState } = React;
 import {
   IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage, getInteractiveSnapshot,
-  selectDecoratedContent, useDecorateContent } from "../../../interactive-api-client";
+  decoratedContentEvent, useDecorateContent } from "../../../interactive-api-client";
 import { IAuthoredState } from "./types";
 import * as TextDecorator from "@concord-consortium/text-decorator";
 
@@ -39,7 +39,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
       replace: msg.replace,
     };
 
-    const decoratedContentListener = {
+    const decoratedContentClickListener = {
       type: "click",
       listener: (evt: Event) => {
         const wordElement = evt.srcElement as HTMLElement;
@@ -47,11 +47,10 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
           return;
         }
         const clickedWord = (wordElement.textContent || "").toLowerCase();
-        selectDecoratedContent({type: "click", text: clickedWord});
+        decoratedContentEvent({type: "click", text: clickedWord});
       }
     };
-
-    TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentListener);
+    TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentClickListener);
   });
 
   const handleSnapshotTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {

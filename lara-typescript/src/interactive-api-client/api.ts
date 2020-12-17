@@ -25,7 +25,7 @@ import {
   ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest,
   IRemoveLinkedInteractiveStateListenerRequest,
-  IDecoratedContentMessage
+  IDecoratedContentEventMessage
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -185,8 +185,8 @@ export const setHeight = (height: number | string) => {
   getClient().post("height", height);
 };
 
-export const selectDecoratedContent = (msg: IDecoratedContentMessage) => {
-  getClient().post("selectDecoratedContent", msg);
+export const decoratedContentEvent = (msg: IDecoratedContentEventMessage) => {
+  getClient().post("decoratedContentEvent", msg);
 };
 
 /*

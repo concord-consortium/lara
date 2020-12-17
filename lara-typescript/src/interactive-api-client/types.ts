@@ -157,7 +157,7 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "getInteractiveSnapshot" |
                                        "addLinkedInteractiveStateListener" |
                                        "removeLinkedInteractiveStateListener" |
-                                       "selectDecoratedContent"
+                                       "decoratedContentEvent"
                                       ;
 
 export type IRuntimeServerMessage = "authInfo" |
@@ -299,7 +299,7 @@ export interface ICloseModal {
   uuid?: string;
 }
 
-export interface IDecoratedContentMessage {
+export interface IDecoratedContentEventMessage {
   type: string;
   text: string;
 }
