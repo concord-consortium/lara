@@ -23,10 +23,10 @@ describe("Client", () => {
       inIframe = false;
     });
 
-    it("throws an error", () => {
+    it("does not throw an error", () => {
       expect(() => {
         const c = new Client();
-      }).toThrowError();
+      }).not.toThrowError();
     });
   });
 
