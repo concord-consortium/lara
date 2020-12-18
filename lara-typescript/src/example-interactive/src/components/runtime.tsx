@@ -2,7 +2,7 @@ import * as React from "react";
 const { useEffect, useState } = React;
 import {
   IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage, getInteractiveSnapshot,
-  decoratedContentEvent, useDecorateContent } from "../../../interactive-api-client";
+  postDecoratedContentEvent, useDecorateContent } from "../../../interactive-api-client";
 import { IAuthoredState } from "./types";
 import * as TextDecorator from "@concord-consortium/text-decorator";
 
@@ -47,7 +47,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
           return;
         }
         const clickedWord = (wordElement.textContent || "").toLowerCase();
-        decoratedContentEvent({type: "click", text: clickedWord});
+        postDecoratedContentEvent({type: "click", text: clickedWord, bounds: wordElement.getBoundingClientRect()});
       }
     };
     TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentClickListener);

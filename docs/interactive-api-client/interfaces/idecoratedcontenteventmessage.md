@@ -10,10 +10,17 @@
 
 ### Properties
 
+* [bounds](idecoratedcontenteventmessage.md#optional-bounds)
 * [text](idecoratedcontenteventmessage.md#text)
 * [type](idecoratedcontenteventmessage.md#type)
 
 ## Properties
+
+### `Optional` bounds
+
+• **bounds**? : *DOMRect*
+
+___
 
 ###  text
 

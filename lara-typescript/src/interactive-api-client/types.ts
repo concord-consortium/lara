@@ -302,6 +302,7 @@ export interface ICloseModal {
 export interface IDecoratedContentEventMessage {
   type: string;
   text: string;
+  bounds?: DOMRect;
 }
 
 export interface ICustomMessage {

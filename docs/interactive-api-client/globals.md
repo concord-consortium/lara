@@ -112,7 +112,6 @@
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
-* [decoratedContentEvent](globals.md#const-decoratedcontentevent)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
@@ -126,6 +125,7 @@
 * [getMode](globals.md#const-getmode)
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
+* [postDecoratedContentEvent](globals.md#const-postdecoratedcontentevent)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
@@ -445,20 +445,6 @@ Name | Type |
 
 ___
 
-### `Const` decoratedContentEvent
-
-▸ **decoratedContentEvent**(`msg`: [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`msg` | [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md) |
-
-**Returns:** *void*
-
-___
-
 ### `Const` flushStateUpdates
 
 ▸ **flushStateUpdates**(): *void*
@@ -613,6 +599,20 @@ Name | Type |
 ------ | ------ |
 `action` | string |
 `data?` | undefined &#124; object |
+
+**Returns:** *void*
+
+___
+
+### `Const` postDecoratedContentEvent
+
+▸ **postDecoratedContentEvent**(`msg`: [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`msg` | [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md) |
 
 **Returns:** *void*
 

@@ -185,7 +185,7 @@ export const setHeight = (height: number | string) => {
   getClient().post("height", height);
 };
 
-export const decoratedContentEvent = (msg: IDecoratedContentEventMessage) => {
+export const postDecoratedContentEvent = (msg: IDecoratedContentEventMessage) => {
   getClient().post("decoratedContentEvent", msg);
 };
 
