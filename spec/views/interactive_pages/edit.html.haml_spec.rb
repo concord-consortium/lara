@@ -46,9 +46,9 @@ describe "interactive_pages/edit" do
   #   page.should have_content('This is edited text')
   # end
 
-  it 'has links to show the page or add another page' do
+  it 'has options to preview the page or add another page' do
     render
-    expect(rendered).to match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/#{page.id}\/preview"[^>]*>[\s]*Preview[\s]*<\/a>/
+    expect(rendered).to match /<option[^>]+value="\/activities\/#{activity.id}\/pages\/#{page.id}\/preview"[^>]*>[\s]*LARA Runtime[\s]*<\/option>/
     # Used to check for a link back to the activity, but that's in the breadcrumbs now and not part of this view
     # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/edit"[^>]*>[\s]*#{activity.name}[\s]*<\/a>/
     # rendered.should match /<a[^>]+href="\/activities\/#{activity.id}\/pages\/new"[^>]*>[\s]*Add another page to #{activity.name}[\s]*<\/a>/

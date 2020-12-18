@@ -10,6 +10,9 @@ $(function () {
             $($this.data('replace')).html(JSON.parse(data).html);
             $this.trigger('ajax:replaced');
         });
+    $('#preview-options-select').on('change', function() {
+      previewOptionSelected(this.value);
+    });
 });
 
 // Everything to run at page load time
@@ -143,4 +146,10 @@ function saveAccordionState(accordionContainerId, accordionState) {
       "open_items": openItems
     })
   );
+}
+
+function previewOptionSelected(previewURL) {
+  if (previewURL !== '') {
+    window.open(previewURL, '_blank');
+  }
 }
