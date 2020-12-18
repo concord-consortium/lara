@@ -91,6 +91,17 @@ shared_examples "a base interactive" do |model_factory|
     end
   end
 
+  describe "#portal_hash" do
+    let (:authored_state) { JSON({questionType: "image_question", prompt: "<p>Lorem <strong>ipsum dolor sit amet</strong>, consectetur<br /> adipiscing elit. Duis porttitor tincidunt ante. Pellentesque suscipit sollicitudin condimentum. Vivamus gravida aliquam fringilla. Nunc pretium, urna eget accumsan interdum, turpis ante iaculis nisl, a condimentum nisl odio a ipsum. Aliquam erat volutpat. Nulla facilisi. Pellentesque ultrices rutrum est. Cras nec felis in orci porttitor iaculis in vel lectus. Nam aliquam mi sem, quis viverra ligula consequat at. Aliquam dictum eros felis, sit amet fermentum odio sagittis nec. Sed pretium dignissim commodo.</p>", answerPrompt: "answer prompt", required: true}) }
+    let (:interactive) { FactoryGirl.create(model_factory, authored_state: authored_state, name: nil) }
+
+    it 'handles complex prompts' do
+      expect(interactive.portal_hash).to include(
+        name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor tincidunt ante. Pellentesque suscipit sollicitudin condimentum. Vivamus gravida aliquam fringilla. Nunc pretium, urna eget ac..."
+      )
+    end
+  end
+
   describe "#report_service_hash" do
     it 'returns properties supported by Report Service' do
       expect(interactive.report_service_hash).to include(

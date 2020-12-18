@@ -50,7 +50,7 @@ module BaseInteractive
 
     # If name is not available, but prompt is, this should make Portal details report a bit more readable.
     unless result[:name].present?
-      result[:name] = result[:prompt]
+      result[:name] = BaseInteractive.clean_value(result[:prompt]).truncate(200)
     end
 
     # Open response and multiple choice properties are the same as in report_service_hash and/or properties mapped above.
@@ -153,6 +153,14 @@ module BaseInteractive
     if page_item
       self.linked_interactive = page_item.embeddable
     end
+  end
+
+  def self.clean_value(value)
+    value.class == String ? clean_text(value) : value
+  end
+
+  def self.clean_text(text)
+    Nokogiri::HTML(text).inner_text
   end
 
 end
