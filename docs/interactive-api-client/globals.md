@@ -28,7 +28,7 @@
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
 * [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
 * [IDataset](interfaces/idataset.md)
-* [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)
+* [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
@@ -71,6 +71,7 @@
 * [IShowLightbox](interfaces/ishowlightbox.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
+* [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
 
 ### Type aliases
@@ -92,6 +93,7 @@
 * [IRuntimeMetadata](globals.md#iruntimemetadata)
 * [IRuntimeServerMessage](globals.md#iruntimeservermessage)
 * [IShowModal](globals.md#ishowmodal)
+* [ITextDecorationHandler](globals.md#itextdecorationhandler)
 * [IframePhoneServerMessage](globals.md#iframephoneservermessage)
 * [InitInteractiveMode](globals.md#initinteractivemode)
 * [InteractiveItemId](globals.md#interactiveitemid)
@@ -259,6 +261,22 @@ ___
 ###  IShowModal
 
 Ƭ **IShowModal**: *[IShowAlert](interfaces/ishowalert.md) | [IShowLightbox](interfaces/ishowlightbox.md) | [IShowDialog](interfaces/ishowdialog.md)*
+
+___
+
+###  ITextDecorationHandler
+
+Ƭ **ITextDecorationHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [ITextDecorationInfo](interfaces/itextdecorationinfo.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [ITextDecorationInfo](interfaces/itextdecorationinfo.md) |
 
 ___
 
@@ -606,13 +624,13 @@ ___
 
 ### `Const` postDecoratedContentEvent
 
-▸ **postDecoratedContentEvent**(`msg`: [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md)): *void*
+▸ **postDecoratedContentEvent**(`msg`: [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`msg` | [IDecoratedContentEventMessage](interfaces/idecoratedcontenteventmessage.md) |
+`msg` | [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md) |
 
 **Returns:** *void*
 
@@ -953,13 +971,13 @@ ___
 
 ### `Const` useDecorateContent
 
-▸ **useDecorateContent**(`callback`: ListenerCallback): *void*
+▸ **useDecorateContent**(`callback`: [ITextDecorationHandler](globals.md#itextdecorationhandler)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`callback` | ListenerCallback |
+`callback` | [ITextDecorationHandler](globals.md#itextdecorationhandler) |
 
 **Returns:** *void*
 

@@ -305,6 +305,15 @@ export interface IDecoratedContentEvent {
   bounds?: DOMRect;
 }
 
+export interface ITextDecorationInfo {
+  words: string[];
+  replace: string;
+  wordClass: string;
+  eventListeners: any;
+}
+
+export type ITextDecorationHandler = (message: ITextDecorationInfo) => void;
+
 export interface ICustomMessage {
   type: string;
   content: Record<string, any>;

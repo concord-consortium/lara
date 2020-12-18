@@ -3,7 +3,7 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage } from "./types";
+        ServerMessage, ITextDecorationHandler } from "./types";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -133,7 +133,7 @@ export class Client {
     return this.removeListener("customMessage");
   }
 
-  public addDecorateContentListener(callback: ICustomMessageHandler) {
+  public addDecorateContentListener(callback: ITextDecorationHandler) {
     this.addListener("decorateContent", callback);
   }
 

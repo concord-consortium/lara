@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive } from "./types";
+import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler } from "./types";
 import * as client from "./api";
-import { ListenerCallback } from "iframe-phone";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
 const handleUpdate = <S>(newStateOrUpdateFunc: S | null | UpdateFunc<S>, prevState: S | null) => {
@@ -125,7 +124,7 @@ export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICu
   }, []);
 };
 
-export const useDecorateContent = (callback: ListenerCallback) => {
+export const useDecorateContent = (callback: ITextDecorationHandler) => {
   useEffect(() => {
     client.addDecorateContentListener(callback);
     return () => client.removeDecorateContentListener();
