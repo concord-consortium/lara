@@ -299,7 +299,7 @@ export interface ICloseModal {
   uuid?: string;
 }
 
-export interface IDecoratedContentEventMessage {
+export interface IDecoratedContentEvent {
   type: string;
   text: string;
   bounds?: DOMRect;
