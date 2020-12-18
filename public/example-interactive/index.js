@@ -8165,7 +8165,7 @@ module.exports = function deepFreeze (o) {
       deepFreeze(o[prop]);
     }
   });
-
+  
   return o;
 };
 
@@ -34492,7 +34492,7 @@ function injectIntoDevTools(devToolsConfig) {
     // Enables DevTools to append owner stacks to error messages in DEV mode.
     getCurrentFiber:  function () {
       return current;
-    }
+    } 
   }));
 }
 var IsSomeRendererActing$1 = ReactSharedInternals.IsSomeRendererActing;
@@ -40407,7 +40407,7 @@ exports.RuntimeComponent = function (_a) {
                     return;
                 }
                 var clickedWord = (wordElement.textContent || "").toLowerCase();
-                interactive_api_client_1.decoratedContentEvent({ type: "click", text: clickedWord });
+                interactive_api_client_1.postDecoratedContentEvent({ type: "click", text: clickedWord, bounds: wordElement.getBoundingClientRect() });
             }
         };
         TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentClickListener);
@@ -40501,7 +40501,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.decoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
+exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
 var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/index.js");
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
@@ -40641,7 +40641,7 @@ exports.setSupportedFeatures = function (features) {
 exports.setHeight = function (height) {
     client_1.getClient().post("height", height);
 };
-exports.decoratedContentEvent = function (msg) {
+exports.postDecoratedContentEvent = function (msg) {
     client_1.getClient().post("decoratedContentEvent", msg);
 };
 /*
@@ -40973,6 +40973,12 @@ var Client = /** @class */ (function () {
     };
     Client.prototype.removeCustomMessageListener = function () {
         return this.removeListener("customMessage");
+    };
+    Client.prototype.addDecorateContentListener = function (callback) {
+        this.addListener("decorateContent", callback);
+    };
+    Client.prototype.removeDecorateContentListener = function () {
+        return this.removeListener("decorateContent");
     };
     Client.prototype.connect = function () {
         var _this = this;
