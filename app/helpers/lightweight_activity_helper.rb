@@ -61,7 +61,13 @@ module LightweightActivityHelper
 
   def activity_player_url(activity, mode="")
     activity_api_url = "#{api_v1_activity_url(activity.id)}.json"
-    return  "#{ENV['ACTIVITY_PLAYER_URL']}/?activity=#{CGI.escape(activity_api_url)}&preview&mode=#{mode}"
+    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
+    query = Rack::Utils.parse_query(uri.query)
+    query["activity"] = URI.escape(activity_api_url)
+    query["preview"] = nil # adds 'preview' to query string as a valueless param
+    query["mode"] = mode
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
   end
 
   def activity_player_page_url(activity, page, mode="")
