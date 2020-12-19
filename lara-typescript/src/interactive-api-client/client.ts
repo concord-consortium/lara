@@ -134,7 +134,28 @@ export class Client {
   }
 
   public addDecorateContentListener(callback: ITextDecorationHandler) {
-    this.addListener("decorateContent", callback);
+    // Instead of `msg: any` here this should use a type defined in the api
+    // that type should also be used by the AP to verify it is sending the right kind of message
+    this.addListener("decorateContent", (msg: any) => {
+      callback({
+        words: msg.words,
+        replace: msg.replace,
+        wordClass: msg.wordClass,
+        eventlisteners: msg.eventListeners.map((eventListener) => {
+          return {
+            type: eventListener.type,
+            listener: (evt: Event) => {
+              const wordElement = evt.srcElement as HTMLElement;
+              if (!wordElement) {
+                return;
+              }
+              const clickedWord = (wordElement.textContent || "").toLowerCase();
+              postDecoratedContentEvent({type: eventListener.type, text: clickedWord, bounds: wordElement.getBoundingClientRect()});
+            }
+          }
+        })
+      });
+    });
   }
 
   public removeDecorateContentListener() {

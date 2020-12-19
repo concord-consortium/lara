@@ -39,18 +39,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
       replace: msg.replace,
     };
 
-    const decoratedContentClickListener = {
-      type: "click",
-      listener: (evt: Event) => {
-        const wordElement = evt.srcElement as HTMLElement;
-        if (!wordElement) {
-          return;
-        }
-        const clickedWord = (wordElement.textContent || "").toLowerCase();
-        postDecoratedContentEvent({type: "click", text: clickedWord, bounds: wordElement.getBoundingClientRect()});
-      }
-    };
-    TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentClickListener);
+    TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, msg.eventListeners);
   });
 
   const handleSnapshotTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
