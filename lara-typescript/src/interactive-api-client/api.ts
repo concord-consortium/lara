@@ -25,7 +25,8 @@ import {
   ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest,
   IRemoveLinkedInteractiveStateListenerRequest,
-  IDecoratedContentEvent
+  IDecoratedContentEvent,
+  ITextDecorationHandler
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -165,12 +166,12 @@ export const removeCustomMessageListener = () => {
   getClient().removeCustomMessageListener();
 };
 
-export const addDecorateContentListener = (callback: ListenerCallback) => {
-  getClient().addListener("decorateContent", callback);
+export const addDecorateContentListener = (callback: ITextDecorationHandler) => {
+  getClient().addDecorateContentListener(callback);
 };
 
 export const removeDecorateContentListener = () => {
-  getClient().removeListener("decorateContent");
+  getClient().removeDecorateContentListener();
 };
 
 export const setSupportedFeatures = (features: ISupportedFeatures) => {

@@ -363,13 +363,13 @@ ___
 
 ### `Const` addDecorateContentListener
 
-▸ **addDecorateContentListener**(`callback`: ListenerCallback): *void*
+▸ **addDecorateContentListener**(`callback`: [ITextDecorationHandler](globals.md#itextdecorationhandler)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`callback` | ListenerCallback |
+`callback` | [ITextDecorationHandler](globals.md#itextdecorationhandler) |
 
 **Returns:** *void*
 

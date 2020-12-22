@@ -44023,27 +44023,18 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var kClassName = "text-decorate";
 exports.useGlossaryDecoration = function () {
     var _a = react_1.useState({ words: [], replace: "" }), options = _a[0], setOptions = _a[1];
+    var _b = react_1.useState(), listeners = _b[0], setListeners = _b[1];
     interactive_api_client_1.useDecorateContent(function (msg) {
         var msgOptions = {
             words: msg.words,
             replace: render_html_1.renderHTML(msg.replace),
         };
         setOptions(msgOptions);
+        setListeners(msg.eventListeners);
     });
     react_1.useEffect(function () {
-        var decoratedContentClickListener = {
-            type: "click",
-            listener: function (evt) {
-                var wordElement = evt.srcElement;
-                if (!wordElement) {
-                    return;
-                }
-                var clickedWord = (wordElement.textContent || "").toLowerCase();
-                interactive_api_client_1.postDecoratedContentEvent({ type: "click", text: clickedWord, bounds: wordElement.getBoundingClientRect() });
-            }
-        };
-        text_decorator_1.addEventListeners(kClassName, decoratedContentClickListener);
-        return function () { return text_decorator_1.removeEventListeners(kClassName, decoratedContentClickListener); };
+        listeners && text_decorator_1.addEventListeners(kClassName, listeners);
+        return function () { return listeners && text_decorator_1.removeEventListeners(kClassName, listeners); };
     });
     return [options, kClassName];
 };
@@ -44197,10 +44188,10 @@ exports.removeCustomMessageListener = function () {
     client_1.getClient().removeCustomMessageListener();
 };
 exports.addDecorateContentListener = function (callback) {
-    client_1.getClient().addListener("decorateContent", callback);
+    client_1.getClient().addDecorateContentListener(callback);
 };
 exports.removeDecorateContentListener = function () {
-    client_1.getClient().removeListener("decorateContent");
+    client_1.getClient().removeDecorateContentListener();
 };
 exports.setSupportedFeatures = function (features) {
     var request = {
@@ -44430,6 +44421,7 @@ exports.Client = exports.getClient = void 0;
 // to allow callbacks to optionally be tied to a requestId.  This allows us to have multiple listeners
 // to the same message and auto-removing listeners when a requestId is given.
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
+var interactive_api_client_1 = __webpack_require__(/*! ../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
 var parseJSONIfString = function (data) {
@@ -44546,7 +44538,30 @@ var Client = /** @class */ (function () {
         return this.removeListener("customMessage");
     };
     Client.prototype.addDecorateContentListener = function (callback) {
-        this.addListener("decorateContent", callback);
+        // Instead of `msg: any` here this should use a type defined in the api
+        // that type should also be used by the AP to verify it is sending the right kind of message
+        this.addListener("decorateContent", function (msg) {
+            callback({
+                words: msg.words,
+                replace: msg.replace,
+                wordClass: msg.wordClass,
+                eventListeners: msg.eventListeners.map(function (eventListener) {
+                    return {
+                        type: eventListener.type,
+                        listener: function (evt) {
+                            var wordElement = evt.srcElement;
+                            if (!wordElement) {
+                                return;
+                            }
+                            var clickedWord = (wordElement.textContent || "").toLowerCase();
+                            interactive_api_client_1.postDecoratedContentEvent({ type: eventListener.type,
+                                text: clickedWord,
+                                bounds: wordElement.getBoundingClientRect() });
+                        }
+                    };
+                })
+            });
+        });
     };
     Client.prototype.removeDecorateContentListener = function () {
         return this.removeListener("decorateContent");
