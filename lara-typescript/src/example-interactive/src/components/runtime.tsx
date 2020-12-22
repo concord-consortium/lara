@@ -1,10 +1,10 @@
 import * as React from "react";
 const { useEffect, useState } = React;
-import {
-  IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage, getInteractiveSnapshot,
-  postDecoratedContentEvent, useDecorateContent } from "../../../interactive-api-client";
+import { IRuntimeInitInteractive, getFirebaseJwt, useCustomMessages, ICustomMessage,
+         getInteractiveSnapshot } from "../../../interactive-api-client";
 import { IAuthoredState } from "./types";
-import * as TextDecorator from "@concord-consortium/text-decorator";
+import { DecorateChildren } from "@concord-consortium/text-decorator";
+import { useGlossaryDecoration } from "../use-glossary-decoration";
 
 interface Props {
   initMessage: IRuntimeInitInteractive<{}, IAuthoredState>;
@@ -15,6 +15,7 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   const [snapshotSourceId, setSnapshotSourceId] = useState<string>("interactive_123");
   const [snapshotUrl, setSnapshotUrl] = useState<string>();
   const { authoredState } = initMessage;
+  const [ decorateOptions, decorateClassName ] = useGlossaryDecoration();
   useEffect(() => {
     if (authoredState?.firebaseApp) {
       getFirebaseJwt(authoredState.firebaseApp)
@@ -31,27 +32,6 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
   useCustomMessages((msg: ICustomMessage) => {
     setCustomMessages(messages => [...messages, msg]);
   }, { "*": true });
-
-  useDecorateContent((msg: any) => {
-    const domClasses = ["text-decorate"];
-    const options = {
-      words: msg.words,
-      replace: msg.replace,
-    };
-
-    const decoratedContentClickListener = {
-      type: "click",
-      listener: (evt: Event) => {
-        const wordElement = evt.srcElement as HTMLElement;
-        if (!wordElement) {
-          return;
-        }
-        const clickedWord = (wordElement.textContent || "").toLowerCase();
-        postDecoratedContentEvent({type: "click", text: clickedWord, bounds: wordElement.getBoundingClientRect()});
-      }
-    };
-    TextDecorator.decorateDOMClasses(domClasses, options, msg.wordClass, decoratedContentClickListener);
-  });
 
   const handleSnapshotTargetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSnapshotSourceId(event.target.value);
@@ -108,13 +88,15 @@ export const RuntimeComponent: React.FC<Props> = ({initMessage}) => {
       </fieldset>
       <fieldset>
         <legend>Text Decoration</legend>
-        <div className="text-decorate">
-          This text decoration example is designed to work with a glossary containing the terms "test" and "page."
-          In the Activity Player, the sample activity "sample-activity-glossary-plugin-example-interactive" contains
-          embeddables that use this example-interactive and a glossary plugin linked to a glossary with the necessary
-          terms. When the "sample-activity-glossary-plugin-example-interactive" activity is run in the Activity Player,
-          both "test" and "page" should appear decorated and be clickable.
-        </div>
+        <DecorateChildren decorateOptions={decorateOptions}>
+          <div className={decorateClassName}>
+            This text decoration example is designed to work with a glossary containing the terms "test" and "page."
+            In the Activity Player, the sample activity "sample-activity-glossary-plugin-example-interactive" contains
+            embeddables that use this example-interactive and a glossary plugin linked to a glossary with the necessary
+            terms. When the "sample-activity-glossary-plugin-example-interactive" activity is run in the Activity
+            Player, both "test" and "page" should appear decorated and be clickable.
+          </div>
+        </DecorateChildren>
       </fieldset>
     </div>
   );
