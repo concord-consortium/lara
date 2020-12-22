@@ -30,7 +30,6 @@ import {
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
-import { ListenerCallback } from "iframe-phone";
 
 const THROW_NOT_IMPLEMENTED_YET = (method: string) => {
   throw new Error(`${method} is not yet implemented in the client!`);

@@ -3,8 +3,9 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage, ITextDecorationHandler } from "./types";
+        ServerMessage, ITextDecorationHandler, ITextDecorationInfo } from "./types";
 import { postDecoratedContentEvent } from "../interactive-api-client";
+import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -135,14 +136,13 @@ export class Client {
   }
 
   public addDecorateContentListener(callback: ITextDecorationHandler) {
-    // Instead of `msg: any` here this should use a type defined in the api
-    // that type should also be used by the AP to verify it is sending the right kind of message
-    this.addListener("decorateContent", (msg: any) => {
+    this.addListener("decorateContent", (msg: ITextDecorationInfo) => {
+      const listeners = Array.isArray(msg.eventListeners) ? msg.eventListeners : [msg.eventListeners];
       callback({
         words: msg.words,
         replace: msg.replace,
         wordClass: msg.wordClass,
-        eventListeners: msg.eventListeners.map((eventListener: any) => {
+        eventListeners: listeners.map((eventListener: IEventListener) => {
           return {
             type: eventListener.type,
             listener: (evt: Event) => {

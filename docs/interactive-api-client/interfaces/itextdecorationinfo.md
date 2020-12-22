@@ -19,7 +19,7 @@
 
 ###  eventListeners
 
-• **eventListeners**: *any*
+• **eventListeners**: *IEventListeners*
 
 ___
 

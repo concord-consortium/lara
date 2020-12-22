@@ -1,3 +1,5 @@
+import { IEventListeners } from "../plugin-api";
+
 // Export some shared types.
 export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
 
@@ -309,7 +311,7 @@ export interface ITextDecorationInfo {
   words: string[];
   replace: string;
   wordClass: string;
-  eventListeners: any;
+  eventListeners: IEventListeners;
 }
 
 export type ITextDecorationHandler = (message: ITextDecorationInfo) => void;

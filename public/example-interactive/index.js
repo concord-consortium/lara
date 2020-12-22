@@ -44538,14 +44538,13 @@ var Client = /** @class */ (function () {
         return this.removeListener("customMessage");
     };
     Client.prototype.addDecorateContentListener = function (callback) {
-        // Instead of `msg: any` here this should use a type defined in the api
-        // that type should also be used by the AP to verify it is sending the right kind of message
         this.addListener("decorateContent", function (msg) {
+            var listeners = Array.isArray(msg.eventListeners) ? msg.eventListeners : [msg.eventListeners];
             callback({
                 words: msg.words,
                 replace: msg.replace,
                 wordClass: msg.wordClass,
-                eventListeners: msg.eventListeners.map(function (eventListener) {
+                eventListeners: listeners.map(function (eventListener) {
                     return {
                         type: eventListener.type,
                         listener: function (evt) {

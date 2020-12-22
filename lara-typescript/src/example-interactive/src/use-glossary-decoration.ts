@@ -1,4 +1,4 @@
-import { useDecorateContent, postDecoratedContentEvent } from "../../interactive-api-client";
+import { useDecorateContent, ITextDecorationInfo } from "../../interactive-api-client";
 import { renderHTML } from "./render-html";
 import { addEventListeners, removeEventListeners, IDecorateReactOptions } from "@concord-consortium/text-decorator";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export const useGlossaryDecoration = (): [IDecorateReactOptions, string] => {
   const [options, setOptions] = useState<IDecorateReactOptions>({ words: [], replace: "" });
   const [listeners, setListeners] = useState<IEventListeners>();
 
-  useDecorateContent((msg: any) => {
+  useDecorateContent((msg: ITextDecorationInfo) => {
     const msgOptions = {
       words: msg.words,
       replace: renderHTML(msg.replace) as string | React.ReactElement,
