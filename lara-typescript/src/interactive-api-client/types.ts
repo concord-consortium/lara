@@ -307,17 +307,17 @@ export interface IDecoratedContentEvent {
   bounds?: DOMRect;
 }
 
-export interface ITextDecorationInfo {
+interface ITextDecorationBaseInfo {
   words: string[];
   replace: string;
   wordClass: string;
+}
+
+export interface ITextDecorationInfo extends ITextDecorationBaseInfo {
   listenerTypes: Array<{type: string}>;
 }
 
-export interface ITextDecorationHandlerInfo {
-  words: string[];
-  replace: string;
-  wordClass: string;
+export interface ITextDecorationHandlerInfo extends ITextDecorationBaseInfo {
   eventListeners: IEventListeners;
 }
 

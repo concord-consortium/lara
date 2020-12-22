@@ -4,7 +4,9 @@
 
 ## Hierarchy
 
-* **ITextDecorationInfo**
+* ITextDecorationBaseInfo
+
+  ↳ **ITextDecorationInfo**
 
 ## Index
 
@@ -27,14 +29,20 @@ ___
 
 • **replace**: *string*
 
+*Inherited from [ITextDecorationInfo](itextdecorationinfo.md).[replace](itextdecorationinfo.md#replace)*
+
 ___
 
 ###  wordClass
 
 • **wordClass**: *string*
 
+*Inherited from [ITextDecorationInfo](itextdecorationinfo.md).[wordClass](itextdecorationinfo.md#wordclass)*
+
 ___
 
 ###  words
 
 • **words**: *string[]*
+
+*Inherited from [ITextDecorationInfo](itextdecorationinfo.md).[words](itextdecorationinfo.md#words)*
