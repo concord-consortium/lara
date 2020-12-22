@@ -311,10 +311,17 @@ export interface ITextDecorationInfo {
   words: string[];
   replace: string;
   wordClass: string;
+  listenerTypes: Array<{type: string}>;
+}
+
+export interface ITextDecorationHandlerInfo {
+  words: string[];
+  replace: string;
+  wordClass: string;
   eventListeners: IEventListeners;
 }
 
-export type ITextDecorationHandler = (message: ITextDecorationInfo) => void;
+export type ITextDecorationHandler = (message: ITextDecorationHandlerInfo) => void;
 
 export interface ICustomMessage {
   type: string;

@@ -44539,21 +44539,20 @@ var Client = /** @class */ (function () {
     };
     Client.prototype.addDecorateContentListener = function (callback) {
         this.addListener("decorateContent", function (msg) {
-            var listeners = Array.isArray(msg.eventListeners) ? msg.eventListeners : [msg.eventListeners];
             callback({
                 words: msg.words,
                 replace: msg.replace,
                 wordClass: msg.wordClass,
-                eventListeners: listeners.map(function (eventListener) {
+                eventListeners: msg.listenerTypes.map(function (listener) {
                     return {
-                        type: eventListener.type,
+                        type: listener.type,
                         listener: function (evt) {
                             var wordElement = evt.srcElement;
                             if (!wordElement) {
                                 return;
                             }
                             var clickedWord = (wordElement.textContent || "").toLowerCase();
-                            interactive_api_client_1.postDecoratedContentEvent({ type: eventListener.type,
+                            interactive_api_client_1.postDecoratedContentEvent({ type: listener.type,
                                 text: clickedWord,
                                 bounds: wordElement.getBoundingClientRect() });
                         }

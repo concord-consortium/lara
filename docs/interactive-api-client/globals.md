@@ -71,6 +71,7 @@
 * [IShowLightbox](interfaces/ishowlightbox.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
+* [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
 * [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
 
@@ -270,13 +271,13 @@ ___
 
 #### Type declaration:
 
-▸ (`message`: [ITextDecorationInfo](interfaces/itextdecorationinfo.md)): *void*
+▸ (`message`: [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`message` | [ITextDecorationInfo](interfaces/itextdecorationinfo.md) |
+`message` | [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md) |
 
 ___
 

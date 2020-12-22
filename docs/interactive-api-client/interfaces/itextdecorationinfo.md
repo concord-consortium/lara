@@ -10,16 +10,16 @@
 
 ### Properties
 
-* [eventListeners](itextdecorationinfo.md#eventlisteners)
+* [listenerTypes](itextdecorationinfo.md#listenertypes)
 * [replace](itextdecorationinfo.md#replace)
 * [wordClass](itextdecorationinfo.md#wordclass)
 * [words](itextdecorationinfo.md#words)
 
 ## Properties
 
-###  eventListeners
+###  listenerTypes
 
-• **eventListeners**: *IEventListeners*
+• **listenerTypes**: *Array‹object›*
 
 ___
 

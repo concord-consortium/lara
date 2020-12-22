@@ -137,21 +137,20 @@ export class Client {
 
   public addDecorateContentListener(callback: ITextDecorationHandler) {
     this.addListener("decorateContent", (msg: ITextDecorationInfo) => {
-      const listeners = Array.isArray(msg.eventListeners) ? msg.eventListeners : [msg.eventListeners];
       callback({
         words: msg.words,
         replace: msg.replace,
         wordClass: msg.wordClass,
-        eventListeners: listeners.map((eventListener: IEventListener) => {
+        eventListeners: msg.listenerTypes.map((listener) => {
           return {
-            type: eventListener.type,
+            type: listener.type,
             listener: (evt: Event) => {
               const wordElement = evt.srcElement as HTMLElement;
               if (!wordElement) {
                 return;
               }
               const clickedWord = (wordElement.textContent || "").toLowerCase();
-              postDecoratedContentEvent({type: eventListener.type,
+              postDecoratedContentEvent({type: listener.type,
                                          text: clickedWord,
                                          bounds: wordElement.getBoundingClientRect()});
             }
