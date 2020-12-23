@@ -1,3 +1,5 @@
+import { IEventListeners } from "../plugin-api";
+
 // Export some shared types.
 export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
 
@@ -156,7 +158,8 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "getLibraryInteractiveList" |
                                        "getInteractiveSnapshot" |
                                        "addLinkedInteractiveStateListener" |
-                                       "removeLinkedInteractiveStateListener"
+                                       "removeLinkedInteractiveStateListener" |
+                                       "decoratedContentEvent"
                                       ;
 
 export type IRuntimeServerMessage = "authInfo" |
@@ -168,7 +171,8 @@ export type IRuntimeServerMessage = "authInfo" |
                                        "libraryInteractiveList" |
                                        "interactiveSnapshot" |
                                        "contextMembership" |
-                                       "linkedInteractiveState"
+                                       "linkedInteractiveState" |
+                                       "decorateContent"
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
@@ -296,6 +300,28 @@ export interface ICloseModal {
   // Necessary only when there are multiple modals. Otherwise it'll close the currently open modal.
   uuid?: string;
 }
+
+export interface IDecoratedContentEvent {
+  type: string;
+  text: string;
+  bounds?: DOMRect;
+}
+
+interface ITextDecorationBaseInfo {
+  words: string[];
+  replace: string;
+  wordClass: string;
+}
+
+export interface ITextDecorationInfo extends ITextDecorationBaseInfo {
+  listenerTypes: Array<{type: string}>;
+}
+
+export interface ITextDecorationHandlerInfo extends ITextDecorationBaseInfo {
+  eventListeners: IEventListeners;
+}
+
+export type ITextDecorationHandler = (message: ITextDecorationHandlerInfo) => void;
 
 export interface ICustomMessage {
   type: string;

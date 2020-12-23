@@ -3,7 +3,9 @@
 // to the same message and auto-removing listeners when a requestId is given.
 import * as iframePhone from "iframe-phone";
 import { ClientMessage, ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ISupportedFeaturesRequest,
-        ServerMessage } from "./types";
+        ServerMessage, ITextDecorationHandler, ITextDecorationInfo } from "./types";
+import { postDecoratedContentEvent } from "../interactive-api-client";
+import { IEventListener } from "../plugin-api";
 import { inIframe } from "./in-frame";
 import { ManagedState } from "./managed-state";
 
@@ -131,6 +133,35 @@ export class Client {
 
   public removeCustomMessageListener() {
     return this.removeListener("customMessage");
+  }
+
+  public addDecorateContentListener(callback: ITextDecorationHandler) {
+    this.addListener("decorateContent", (msg: ITextDecorationInfo) => {
+      callback({
+        words: msg.words,
+        replace: msg.replace,
+        wordClass: msg.wordClass,
+        eventListeners: msg.listenerTypes.map((listener) => {
+          return {
+            type: listener.type,
+            listener: (evt: Event) => {
+              const wordElement = evt.srcElement as HTMLElement;
+              if (!wordElement) {
+                return;
+              }
+              const clickedWord = (wordElement.textContent || "").toLowerCase();
+              postDecoratedContentEvent({type: listener.type,
+                                         text: clickedWord,
+                                         bounds: wordElement.getBoundingClientRect()});
+            }
+          };
+        })
+      });
+    });
+  }
+
+  public removeDecorateContentListener() {
+    return this.removeListener("decorateContent");
   }
 
   public setSupportedFeatures = (request: ISupportedFeaturesRequest) => {

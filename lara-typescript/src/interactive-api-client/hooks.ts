@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive } from "./types";
+import { ICustomMessageHandler, ICustomMessagesHandledMap, IInitInteractive, ITextDecorationHandler } from "./types";
 import * as client from "./api";
 
 type UpdateFunc<S> = (prevState: S | null) => S;
@@ -121,5 +121,12 @@ export const useCustomMessages = (callback: ICustomMessageHandler, handles?: ICu
     client.addCustomMessageListener(callback, handles);
 
     return () => client.removeCustomMessageListener();
+  }, []);
+};
+
+export const useDecorateContent = (callback: ITextDecorationHandler) => {
+  useEffect(() => {
+    client.addDecorateContentListener(callback);
+    return () => client.removeDecorateContentListener();
   }, []);
 };

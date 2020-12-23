@@ -28,6 +28,7 @@
 * [ICustomReportFieldsAuthoredStateField](interfaces/icustomreportfieldsauthoredstatefield.md)
 * [ICustomReportFieldsInteractiveState](interfaces/icustomreportfieldsinteractivestate.md)
 * [IDataset](interfaces/idataset.md)
+* [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md)
 * [IGetAuthInfoRequest](interfaces/igetauthinforequest.md)
 * [IGetAuthInfoResponse](interfaces/igetauthinforesponse.md)
 * [IGetFirebaseJwtRequest](interfaces/igetfirebasejwtrequest.md)
@@ -70,6 +71,8 @@
 * [IShowLightbox](interfaces/ishowlightbox.md)
 * [ISupportedFeatures](interfaces/isupportedfeatures.md)
 * [ISupportedFeaturesRequest](interfaces/isupportedfeaturesrequest.md)
+* [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
+* [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
 
 ### Type aliases
@@ -91,6 +94,7 @@
 * [IRuntimeMetadata](globals.md#iruntimemetadata)
 * [IRuntimeServerMessage](globals.md#iruntimeservermessage)
 * [IShowModal](globals.md#ishowmodal)
+* [ITextDecorationHandler](globals.md#itextdecorationhandler)
 * [IframePhoneServerMessage](globals.md#iframephoneservermessage)
 * [InitInteractiveMode](globals.md#initinteractivemode)
 * [InteractiveItemId](globals.md#interactiveitemid)
@@ -106,6 +110,7 @@
 
 * [addAuthoredStateListener](globals.md#const-addauthoredstatelistener)
 * [addCustomMessageListener](globals.md#const-addcustommessagelistener)
+* [addDecorateContentListener](globals.md#const-adddecoratecontentlistener)
 * [addGlobalInteractiveStateListener](globals.md#const-addglobalinteractivestatelistener)
 * [addInteractiveStateListener](globals.md#const-addinteractivestatelistener)
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
@@ -123,8 +128,10 @@
 * [getMode](globals.md#const-getmode)
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
+* [postDecoratedContentEvent](globals.md#const-postdecoratedcontentevent)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
+* [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
 * [removeGlobalInteractiveStateListener](globals.md#const-removeglobalinteractivestatelistener)
 * [removeInteractiveStateListener](globals.md#const-removeinteractivestatelistener)
 * [removeLinkedInteractiveStateListener](globals.md#const-removelinkedinteractivestatelistener)
@@ -139,6 +146,7 @@
 * [showModal](globals.md#const-showmodal)
 * [useAuthoredState](globals.md#const-useauthoredstate)
 * [useCustomMessages](globals.md#const-usecustommessages)
+* [useDecorateContent](globals.md#const-usedecoratecontent)
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
@@ -235,7 +243,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
 
 ___
 
@@ -247,13 +255,29 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState"*
+Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
 
 ___
 
 ###  IShowModal
 
 Ƭ **IShowModal**: *[IShowAlert](interfaces/ishowalert.md) | [IShowLightbox](interfaces/ishowlightbox.md) | [IShowDialog](interfaces/ishowdialog.md)*
+
+___
+
+###  ITextDecorationHandler
+
+Ƭ **ITextDecorationHandler**: *function*
+
+#### Type declaration:
+
+▸ (`message`: [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`message` | [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md) |
 
 ___
 
@@ -333,6 +357,20 @@ Name | Type |
 ------ | ------ |
 `callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
 `handles?` | [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap) |
+
+**Returns:** *void*
+
+___
+
+### `Const` addDecorateContentListener
+
+▸ **addDecorateContentListener**(`callback`: [ITextDecorationHandler](globals.md#itextdecorationhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | [ITextDecorationHandler](globals.md#itextdecorationhandler) |
 
 **Returns:** *void*
 
@@ -585,6 +623,20 @@ Name | Type |
 
 ___
 
+### `Const` postDecoratedContentEvent
+
+▸ **postDecoratedContentEvent**(`msg`: [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`msg` | [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md) |
+
+**Returns:** *void*
+
+___
+
 ### `Const` removeAuthoredStateListener
 
 ▸ **removeAuthoredStateListener**‹**AuthoredState**›(`listener`: function): *void*
@@ -612,6 +664,14 @@ ___
 ### `Const` removeCustomMessageListener
 
 ▸ **removeCustomMessageListener**(): *void*
+
+**Returns:** *void*
+
+___
+
+### `Const` removeDecorateContentListener
+
+▸ **removeDecorateContentListener**(): *void*
 
 **Returns:** *void*
 
@@ -905,6 +965,20 @@ Name | Type |
 ------ | ------ |
 `callback` | [ICustomMessageHandler](globals.md#icustommessagehandler) |
 `handles?` | [ICustomMessagesHandledMap](globals.md#icustommessageshandledmap) |
+
+**Returns:** *void*
+
+___
+
+### `Const` useDecorateContent
+
+▸ **useDecorateContent**(`callback`: [ITextDecorationHandler](globals.md#itextdecorationhandler)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`callback` | [ITextDecorationHandler](globals.md#itextdecorationhandler) |
 
 **Returns:** *void*
 
