@@ -280,7 +280,8 @@ class InteractivePage < ActiveRecord::Base
 
   def export
     helper = LaraSerializationHelper.new
-    page_json = self.as_json(only: [:name,
+    page_json = self.as_json(only: [:id,
+                                    :name,
                                     :position,
                                     :layout,
                                     :is_hidden,
