@@ -241,7 +241,7 @@ export const getFirebaseJwt = (firebaseApp: string): Promise<IJwtResponse> => {
           firebase_app: firebaseApp
         };
         client.addListener("firebaseJWT", listener, requestId);
-        client.post("getFirebaseJWT", { lol: 123});
+        client.post("getFirebaseJWT", request);
       } else {
         reject("getFirebaseJwt not supported by the host environment");
       }
