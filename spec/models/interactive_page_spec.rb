@@ -203,6 +203,7 @@ describe InteractivePage do
       expect(page_json['embeddables'].length).to eq(page.embeddables.count)
       expect(page_json['is_hidden']).to eq(page.is_hidden)
       expect(page_json['is_completion']).to eq(page.is_completion)
+      expect(page_json['id']).to eq(page.id)
     end
 
     describe "with a labbook" do
