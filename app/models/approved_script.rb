@@ -52,4 +52,16 @@ class ApprovedScript < ActiveRecord::Base
       {}
     end
   end
+
+  def to_hash
+    {
+      name: name,
+      url: url,
+      label: label,
+      description: description,
+      version: version,
+      json_url: json_url,
+      authoring_metadata: authoring_metadata
+    }
+  end
 end
