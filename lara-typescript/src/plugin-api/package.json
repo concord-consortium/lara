@@ -1,6 +1,6 @@
 {
   "name": "@concord-consortium/lara-plugin-api",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "LARA Plugin API",
   "types": "./index-bundle.d.ts",
   "repository": {

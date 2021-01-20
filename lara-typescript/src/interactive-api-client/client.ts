@@ -18,7 +18,13 @@ interface IListenerMap {
 }
 
 const parseJSONIfString = (data: any) => {
-  return typeof data === "string" ?  JSON.parse(data) : data;
+  // Note that we don't want to call JSON.parse for an empty string.
+  try {
+    return typeof data === "string" ? JSON.parse(data) : data;
+  } catch {
+    // If JSON string is malformed, it's an empty string, or not a JSON at all, return the original value.
+    return data;
+  }
 };
 
 const phoneInitialized = () => iframePhone.getIFrameEndpoint().getListenerNames().length > 0;
