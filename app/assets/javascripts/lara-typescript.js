@@ -27827,33 +27827,42 @@ var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/e
 var emitter = new eventemitter2_1.EventEmitter2({
     maxListeners: Infinity
 });
-exports.emitLog = function (logData) {
+var emitLog = function (logData) {
     emitter.emit("log", logData);
 };
-exports.onLog = function (handler) {
+exports.emitLog = emitLog;
+var onLog = function (handler) {
     emitter.on("log", handler);
 };
-exports.offLog = function (handler) {
+exports.onLog = onLog;
+var offLog = function (handler) {
     emitter.off("log", handler);
 };
-exports.emitInteractiveAvailable = function (event) {
+exports.offLog = offLog;
+var emitInteractiveAvailable = function (event) {
     emitter.emit("interactiveAvailable", event);
 };
-exports.onInteractiveAvailable = function (handler) {
+exports.emitInteractiveAvailable = emitInteractiveAvailable;
+var onInteractiveAvailable = function (handler) {
     emitter.on("interactiveAvailable", handler);
 };
-exports.offInteractiveAvailable = function (handler) {
+exports.onInteractiveAvailable = onInteractiveAvailable;
+var offInteractiveAvailable = function (handler) {
     emitter.off("interactiveAvailable", handler);
 };
-exports.emitInteractiveSupportedFeatures = function (event) {
+exports.offInteractiveAvailable = offInteractiveAvailable;
+var emitInteractiveSupportedFeatures = function (event) {
     emitter.emit("interactiveSupportedFeatures", event);
 };
-exports.onInteractiveSupportedFeatures = function (handler) {
+exports.emitInteractiveSupportedFeatures = emitInteractiveSupportedFeatures;
+var onInteractiveSupportedFeatures = function (handler) {
     emitter.on("interactiveSupportedFeatures", handler);
 };
-exports.offInteractiveSupportedFeatures = function (handler) {
+exports.onInteractiveSupportedFeatures = onInteractiveSupportedFeatures;
+var offInteractiveSupportedFeatures = function (handler) {
     emitter.off("interactiveSupportedFeatures", handler);
 };
+exports.offInteractiveSupportedFeatures = offInteractiveSupportedFeatures;
 
 
 /***/ }),
@@ -28525,7 +28534,7 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     o[k2] = m[k];
 }));
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var global_iframe_saver_1 = __webpack_require__(/*! ./global-iframe-saver */ "./src/interactive-api-parent/global-iframe-saver.ts");
@@ -28565,7 +28574,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModalApiPlugin = void 0;
 var plugin_api_1 = __webpack_require__(/*! ../plugin-api */ "./src/plugin-api/index.ts");
 var defaultId = "mainModal";
-exports.ModalApiPlugin = function (iframePhone) {
+var ModalApiPlugin = function (iframePhone) {
     var modalMap = {};
     function showAlert(options) {
         var style = options.style, _title = options.title, text = options.text;
@@ -28687,6 +28696,7 @@ exports.ModalApiPlugin = function (iframePhone) {
         }
     };
 };
+exports.ModalApiPlugin = ModalApiPlugin;
 
 
 /***/ }),
@@ -28715,7 +28725,7 @@ var FormattedField = function (_a) {
         React.createElement("label", { style: { textAlign: "right", padding: "0 5px" } }, label),
         React.createElement("input", { style: { width: 50, padding: 5 }, type: "number", value: value, onChange: onChange })));
 };
-exports.AspectRatioChooser = function (props) {
+var AspectRatioChooser = function (props) {
     var _a = react_1.useState(props.width), width = _a[0], setWidth = _a[1];
     var _b = react_1.useState(props.height), height = _b[0], setHeight = _b[1];
     var _c = react_1.useState(props.mode), mode = _c[0], setMode = _c[1];
@@ -28752,6 +28762,7 @@ exports.AspectRatioChooser = function (props) {
         })),
         mode === "MANUAL" ? renderInputs() : undefined));
 };
+exports.AspectRatioChooser = AspectRatioChooser;
 
 
 /***/ }),
@@ -28792,7 +28803,7 @@ var useValidateAuthoredState = function (_authoredState) {
     }, [authoredState]);
     return { isValidJSON: isValidJSON, setAuthoredState: setAuthoredState };
 };
-exports.AuthoredState = function (_a) {
+var AuthoredState = function (_a) {
     var id = _a.id, name = _a.name, authoredState = _a.authoredState;
     var _b = react_1.useState(false), edit = _b[0], setEdit = _b[1];
     var _c = useValidateAuthoredState(authoredState), isValidJSON = _c.isValidJSON, setAuthoredState = _c.setAuthoredState;
@@ -28833,6 +28844,7 @@ exports.AuthoredState = function (_a) {
             editCheckboxLabel,
             "\" checkbox enabled for your changes to be saved.") : undefined));
 };
+exports.AuthoredState = AuthoredState;
 
 
 /***/ }),
@@ -28849,7 +28861,7 @@ exports.AuthoredState = function (_a) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Checkbox = void 0;
 var React = __webpack_require__(/*! react */ "react");
-exports.Checkbox = function (props) {
+var Checkbox = function (props) {
     var id = props.id, name = props.name, checked = props.checked, defaultChecked = props.defaultChecked, label = props.label, warning = props.warning, onChange = props.onChange;
     var handleChange = function (e) {
         if (onChange) {
@@ -28873,6 +28885,7 @@ exports.Checkbox = function (props) {
         label,
         renderWarning()));
 };
+exports.Checkbox = Checkbox;
 
 
 /***/ }),
@@ -28889,7 +28902,7 @@ exports.Checkbox = function (props) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomizableOption = void 0;
 var React = __webpack_require__(/*! react */ "react");
-exports.CustomizableOption = function (props) {
+var CustomizableOption = function (props) {
     var label = props.label, inheritName = props.inheritName, customName = props.customName, inherit = props.inherit, defaultLabel = props.defaultLabel, onChange = props.onChange, children = props.children;
     var handleChange = function (e) {
         onChange(!!(e.target.checked && (e.target.value === "1")));
@@ -28906,6 +28919,7 @@ exports.CustomizableOption = function (props) {
             React.createElement("span", { className: "radio-label" }, "Customize"),
             !inherit ? children : undefined)));
 };
+exports.CustomizableOption = CustomizableOption;
 
 
 /***/ }),
@@ -28924,7 +28938,7 @@ exports.InteractiveAuthoringPreview = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
-exports.InteractiveAuthoringPreview = function (_a) {
+var InteractiveAuthoringPreview = function (_a) {
     var interactive = _a.interactive, user = _a.user;
     var iframe = react_1.useRef(null);
     var _b = react_1.useState(typeof interactive.authored_state === "string"
@@ -28968,6 +28982,7 @@ exports.InteractiveAuthoringPreview = function (_a) {
     return (React.createElement("div", { className: "authoring-interactive-preview" },
         React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url || "", width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio })));
 };
+exports.InteractiveAuthoringPreview = InteractiveAuthoringPreview;
 
 
 /***/ }),
@@ -28986,7 +29001,7 @@ exports.InteractiveAuthoring = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var react_1 = __webpack_require__(/*! react */ "react");
 var interactive_iframe_1 = __webpack_require__(/*! ./interactive-iframe */ "./src/page-item-authoring/common/components/interactive-iframe.tsx");
-exports.InteractiveAuthoring = function (props) {
+var InteractiveAuthoring = function (props) {
     var interactive = props.interactive, onAuthoredStateChange = props.onAuthoredStateChange, onLinkedInteractivesChange = props.onLinkedInteractivesChange, allowReset = props.allowReset, authoringApiUrls = props.authoringApiUrls;
     var _a = react_1.useState(false), authoringSupported = _a[0], setAuthoringSupported = _a[1];
     var _b = react_1.useState(typeof interactive.authored_state === "string"
@@ -29027,6 +29042,7 @@ exports.InteractiveAuthoring = function (props) {
             : undefined,
         React.createElement(interactive_iframe_1.InteractiveIframe, { src: interactive.url, width: "100%", initialAuthoredState: authoredState, initMsg: initMsg, resetCount: resetCount, onAuthoredStateChange: handleAuthoredStateChange, onLinkedInteractivesChange: onLinkedInteractivesChange, onSupportedFeaturesUpdate: handleSupportedFeatures, authoredAspectRatioMethod: interactive.aspect_ratio_method, authoredAspectRatio: interactive.aspect_ratio, authoringApiUrls: authoringApiUrls })));
 };
+exports.InteractiveAuthoring = InteractiveAuthoring;
 
 
 /***/ }),
@@ -29045,7 +29061,7 @@ exports.InteractiveIframe = void 0;
 var React = __webpack_require__(/*! react */ "react");
 var iframePhone = __webpack_require__(/*! iframe-phone */ "./node_modules/iframe-phone/main.js");
 var react_1 = __webpack_require__(/*! react */ "react");
-exports.InteractiveIframe = function (props) {
+var InteractiveIframe = function (props) {
     var src = props.src, width = props.width, initMsg = props.initMsg, onAuthoredStateChange = props.onAuthoredStateChange, onLinkedInteractivesChange = props.onLinkedInteractivesChange, resetCount = props.resetCount, onSupportedFeaturesUpdate = props.onSupportedFeaturesUpdate, authoredAspectRatio = props.authoredAspectRatio, authoredAspectRatioMethod = props.authoredAspectRatioMethod, authoringApiUrls = props.authoringApiUrls;
     var iframe = react_1.useRef(null);
     // FIXME: The interactive sizing computation at runtime is currently handled
@@ -29140,6 +29156,7 @@ exports.InteractiveIframe = function (props) {
     }
     return (React.createElement("iframe", { ref: iframe, src: src, width: width, height: computedHeight, key: iframeId, frameBorder: "no", scrolling: "no", allowFullScreen: true, allow: "geolocation *; microphone *; camera *", "data-iframe_mouseover": "false", onLoad: handleIframeLoaded }));
 };
+exports.InteractiveIframe = InteractiveIframe;
 
 
 /***/ }),
@@ -29156,7 +29173,7 @@ exports.InteractiveIframe = function (props) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReadOnlyFormField = void 0;
 var React = __webpack_require__(/*! react */ "react");
-exports.ReadOnlyFormField = function (_a) {
+var ReadOnlyFormField = function (_a) {
     var legend = _a.legend, value = _a.value, inherit = _a.inherit, inherited = _a.inherited, inheritedValue = _a.inheritedValue, children = _a.children;
     var renderValue = function () {
         var renderedValue = inherit
@@ -29173,6 +29190,7 @@ exports.ReadOnlyFormField = function (_a) {
     }
     return renderValue();
 };
+exports.ReadOnlyFormField = ReadOnlyFormField;
 
 
 /***/ }),
@@ -29189,7 +29207,7 @@ exports.ReadOnlyFormField = function (_a) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useCurrentUser = void 0;
 var react_1 = __webpack_require__(/*! react */ "react");
-exports.useCurrentUser = function () {
+var useCurrentUser = function () {
     var _a = react_1.useState(undefined), user = _a[0], setUser = _a[1];
     react_1.useEffect(function () {
         fetch("/api/v1/user_check", { credentials: "same-origin" })
@@ -29213,6 +29231,7 @@ exports.useCurrentUser = function () {
     }, []);
     return user;
 };
+exports.useCurrentUser = useCurrentUser;
 
 
 /***/ }),
@@ -29229,7 +29248,7 @@ exports.useCurrentUser = function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useLibraryInteractives = void 0;
 var react_1 = __webpack_require__(/*! react */ "react");
-exports.useLibraryInteractives = function () {
+var useLibraryInteractives = function () {
     var _a = react_1.useState({ state: "loading" }), state = _a[0], setState = _a[1];
     // load the list of interactives once at load time - this json is readable by admins and authors
     react_1.useEffect(function () {
@@ -29243,6 +29262,7 @@ exports.useLibraryInteractives = function () {
     }, []);
     return state;
 };
+exports.useLibraryInteractives = useLibraryInteractives;
 
 
 /***/ }),
@@ -29259,12 +29279,13 @@ exports.useLibraryInteractives = function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RailsFormField = void 0;
 // returns a type-safe form id/name generator
-exports.RailsFormField = function (name) {
+var RailsFormField = function (name) {
     return function (field) { return ({
         id: name + "_" + field,
         name: name + "[" + field + "]",
     }); };
 };
+exports.RailsFormField = RailsFormField;
 
 
 /***/ }),
@@ -29325,7 +29346,7 @@ var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect
 var customizable_option_1 = __webpack_require__(/*! ../common/components/customizable-option */ "./src/page-item-authoring/common/components/customizable-option.tsx");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
-exports.CustomizeManagedInteractive = function (props) {
+var CustomizeManagedInteractive = function (props) {
     var managedInteractive = props.managedInteractive, libraryInteractive = props.libraryInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
     var inherit_aspect_ratio_method = managedInteractive.inherit_aspect_ratio_method, custom_aspect_ratio_method = managedInteractive.custom_aspect_ratio_method, custom_native_width = managedInteractive.custom_native_width, custom_native_height = managedInteractive.custom_native_height, inherit_click_to_play = managedInteractive.inherit_click_to_play, custom_click_to_play = managedInteractive.custom_click_to_play, inherit_click_to_play_prompt = managedInteractive.inherit_click_to_play_prompt, custom_click_to_play_prompt = managedInteractive.custom_click_to_play_prompt, inherit_full_window = managedInteractive.inherit_full_window, custom_full_window = managedInteractive.custom_full_window, inherit_image_url = managedInteractive.inherit_image_url, custom_image_url = managedInteractive.custom_image_url, linked_interactive_id = managedInteractive.linked_interactive_id, linked_interactive_type = managedInteractive.linked_interactive_type, show_in_featured_question_report = managedInteractive.show_in_featured_question_report, linked_interactive_item_id = managedInteractive.linked_interactive_item_id;
     var _a = react_1.useState(inherit_aspect_ratio_method), inheritAspectRatio = _a[0], setInheritAspectRatio = _a[1];
@@ -29454,6 +29475,7 @@ exports.CustomizeManagedInteractive = function (props) {
                         : undefined),
                 clickToPlayEnabled ? renderClickToPlayOptions() : undefined)));
 };
+exports.CustomizeManagedInteractive = CustomizeManagedInteractive;
 
 
 /***/ }),
@@ -29482,7 +29504,7 @@ var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-use
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var formField = rails_form_field_1.RailsFormField("managed_interactive");
-exports.ManagedInteractiveAuthoring = function (props) {
+var ManagedInteractiveAuthoring = function (props) {
     var managedInteractive = props.managedInteractive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
     var libraryInteractives = use_library_interactives_1.useLibraryInteractives();
     var _a = react_1.useState(props.libraryInteractive), libraryInteractive = _a[0], setLibraryInteractive = _a[1];
@@ -29593,6 +29615,7 @@ exports.ManagedInteractiveAuthoring = function (props) {
         renderRequiredFields(),
         renderTabs());
 };
+exports.ManagedInteractiveAuthoring = ManagedInteractiveAuthoring;
 
 
 /***/ }),
@@ -29614,7 +29637,7 @@ var rails_form_field_1 = __webpack_require__(/*! ../common/utils/rails-form-fiel
 var aspect_ratio_chooser_1 = __webpack_require__(/*! ../common/components/aspect-ratio-chooser */ "./src/page-item-authoring/common/components/aspect-ratio-chooser.tsx");
 var checkbox_1 = __webpack_require__(/*! ../common/components/checkbox */ "./src/page-item-authoring/common/components/checkbox.tsx");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
-exports.CustomizeMWInteractive = function (props) {
+var CustomizeMWInteractive = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt;
     var native_width = interactive.native_width, native_height = interactive.native_height, enable_learner_state = interactive.enable_learner_state, show_delete_data_button = interactive.show_delete_data_button, has_report_url = interactive.has_report_url, click_to_play = interactive.click_to_play, click_to_play_prompt = interactive.click_to_play_prompt, full_window = interactive.full_window, image_url = interactive.image_url, show_in_featured_question_report = interactive.show_in_featured_question_report, aspect_ratio_method = interactive.aspect_ratio_method, linked_interactive_id = interactive.linked_interactive_id, linked_interactive_type = interactive.linked_interactive_type, linked_interactive_item_id = interactive.linked_interactive_item_id;
     var _a = react_1.useState({
@@ -29673,6 +29696,7 @@ exports.CustomizeMWInteractive = function (props) {
                 React.createElement(checkbox_1.Checkbox, { name: formField("enable_learner_state").name, checked: enableLearnerState, onChange: setEnableLearnerState, label: "Enable save state", warning: "Please do not select this unless your interactive contains a serializable data set" }),
                 enableLearnerState ? renderInteractiveStateOptions() : undefined)));
 };
+exports.CustomizeMWInteractive = CustomizeMWInteractive;
 
 
 /***/ }),
@@ -29699,7 +29723,7 @@ var use_current_user_1 = __webpack_require__(/*! ../common/hooks/use-current-use
 var authored_state_1 = __webpack_require__(/*! ../common/components/authored-state */ "./src/page-item-authoring/common/components/authored-state.tsx");
 __webpack_require__(/*! react-tabs/style/react-tabs.css */ "./node_modules/react-tabs/style/react-tabs.css");
 var formField = rails_form_field_1.RailsFormField("mw_interactive");
-exports.MWInteractiveAuthoring = function (props) {
+var MWInteractiveAuthoring = function (props) {
     var interactive = props.interactive, defaultClickToPlayPrompt = props.defaultClickToPlayPrompt, authoringApiUrls = props.authoringApiUrls;
     var interactiveAuthoredStateRef = react_1.useRef(null);
     var linkedInteractivesRef = react_1.useRef(null);
@@ -29767,6 +29791,7 @@ exports.MWInteractiveAuthoring = function (props) {
         renderRequiredFields(),
         renderTabs());
 };
+exports.MWInteractiveAuthoring = MWInteractiveAuthoring;
 
 
 /***/ }),
@@ -29792,7 +29817,7 @@ var TextDecorator = __webpack_require__(/*! @concord-consortium/text-decorator *
  @param listeners One or more { type, listener } tuples. Note that events are added to `wordClass`
  described above. It's client code responsibility to use this class in the `replace` string.
  ****************************************************************************/
-exports.decorateContent = function (words, replace, wordClass, listeners) {
+var decorateContent = function (words, replace, wordClass, listeners) {
     var domClasses = ["question-txt", "help-content", "intro-txt"];
     var options = {
         words: words,
@@ -29800,6 +29825,7 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
     };
     TextDecorator.decorateDOMClasses(domClasses, options, wordClass, listeners);
 };
+exports.decorateContent = decorateContent;
 
 
 /***/ }),
@@ -29814,7 +29840,7 @@ exports.decorateContent = function (words, replace, wordClass, listeners) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.events = void 0;
+exports.events = exports.offInteractiveSupportedFeatures = exports.onInteractiveSupportedFeatures = exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.offLog = exports.onLog = void 0;
 var events_1 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
 // Export event types as a part of Plugin API.
 var events_2 = __webpack_require__(/*! ../events */ "./src/events/index.ts");
@@ -29878,7 +29904,7 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     o[k2] = m[k];
 }));
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(__webpack_require__(/*! ./types */ "./src/plugin-api/types.ts"), exports);
@@ -29922,9 +29948,10 @@ var plugins_1 = __webpack_require__(/*! ../plugins/plugins */ "./src/plugins/plu
  @param options The registration options
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
-exports.registerPlugin = function (options) {
+var registerPlugin = function (options) {
     return plugins_1.registerPlugin(options);
 };
+exports.registerPlugin = registerPlugin;
 
 
 /***/ }),
@@ -29980,7 +30007,7 @@ exports.ADD_POPUP_DEFAULT_OPTIONS = {
  React warning: if you use React to render content, remember to call `ReactDOM.unmountComponentAtNode(content)`
  in `onRemove` handler.
  ****************************************************************************/
-exports.addPopup = function (_options) {
+var addPopup = function (_options) {
     var options = $.extend({}, exports.ADD_POPUP_DEFAULT_OPTIONS, _options);
     if (!options.content) {
         throw new Error("LARA.addPopup - content option is required");
@@ -30056,6 +30083,7 @@ exports.addPopup = function (_options) {
         remove: remove
     };
 };
+exports.addPopup = addPopup;
 
 
 /***/ }),
@@ -30133,7 +30161,7 @@ var closeAllSidebars = function () {
 
  It returns a simple controller that can be used to open or close sidebar.
  ****************************************************************************/
-exports.addSidebar = function (_options) {
+var addSidebar = function (_options) {
     var options = $.extend({}, exports.ADD_SIDEBAR_DEFAULT_OPTIONS, _options);
     if (options.icon === "default") {
         options.icon = $("<i class='default-icon fa fa-arrow-circle-left'>")[0];
@@ -30212,6 +30240,7 @@ exports.addSidebar = function (_options) {
     // Return controller.
     return controller;
 };
+exports.addSidebar = addSidebar;
 
 
 /***/ }),
@@ -30270,7 +30299,7 @@ var getReportingUrl = function (interactiveStateUrl, interactiveStatePromise) {
         }
     });
 };
-exports.generateEmbeddableRuntimeContext = function (context) {
+var generateEmbeddableRuntimeContext = function (context) {
     return {
         container: context.container,
         laraJson: context.laraJson,
@@ -30301,6 +30330,7 @@ exports.generateEmbeddableRuntimeContext = function (context) {
         }
     };
 };
+exports.generateEmbeddableRuntimeContext = generateEmbeddableRuntimeContext;
 
 
 /***/ }),
@@ -30315,6 +30345,7 @@ exports.generateEmbeddableRuntimeContext = function (context) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setNextPluginLabel = exports.initPlugin = void 0;
 var plugins_1 = __webpack_require__(/*! ./plugins */ "./src/plugins/plugins.ts");
 Object.defineProperty(exports, "initPlugin", { enumerable: true, get: function () { return plugins_1.initPlugin; } });
 Object.defineProperty(exports, "setNextPluginLabel", { enumerable: true, get: function () { return plugins_1.setNextPluginLabel; } });
@@ -30350,10 +30381,11 @@ var ajaxPromise = function (url, data) {
         });
     });
 };
-exports.saveLearnerPluginState = function (learnerStateSaveUrl, state) {
+var saveLearnerPluginState = function (learnerStateSaveUrl, state) {
     return ajaxPromise(learnerStateSaveUrl, { state: state });
 };
-exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
+exports.saveLearnerPluginState = saveLearnerPluginState;
+var saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
     var editPluginForm = document.getElementsByClassName("edit_plugin")[0];
     var editEmbeddedPluginForm = document.getElementsByClassName("edit_embeddable_embeddable_plugin")[0];
     var editForm = editPluginForm || editEmbeddedPluginForm;
@@ -30374,6 +30406,7 @@ exports.saveAuthoredPluginState = function (authoringSaveStateUrl, authorData) {
         throw err;
     });
 };
+exports.saveAuthoredPluginState = saveAuthoredPluginState;
 var getFirebaseJwt = function (firebaseJwtUrl, appName) {
     var appSpecificUrl = firebaseJwtUrl.replace("_FIREBASE_APP_", appName);
     return fetch(appSpecificUrl, { method: "POST" })
@@ -30422,7 +30455,7 @@ var fetchPluginEventLogData = function (context) {
     }
     return logData;
 };
-exports.generateRuntimePluginContext = function (options) {
+var generateRuntimePluginContext = function (options) {
     var context = {
         name: options.name,
         url: options.url,
@@ -30442,7 +30475,8 @@ exports.generateRuntimePluginContext = function (options) {
     };
     return context;
 };
-exports.generateAuthoringPluginContext = function (options) {
+exports.generateRuntimePluginContext = generateRuntimePluginContext;
+var generateAuthoringPluginContext = function (options) {
     return {
         name: options.name,
         url: options.url,
@@ -30455,6 +30489,7 @@ exports.generateAuthoringPluginContext = function (options) {
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); }
     };
 };
+exports.generateAuthoringPluginContext = generateAuthoringPluginContext;
 
 
 /***/ }),
@@ -30489,9 +30524,10 @@ var pluginClasses = {};
  * match the label in LARA's database.
  */
 var nextPluginLabel = "";
-exports.setNextPluginLabel = function (override) {
+var setNextPluginLabel = function (override) {
     nextPluginLabel = override;
 };
+exports.setNextPluginLabel = setNextPluginLabel;
 /****************************************************************************
  Note that this method is NOT meant to be called by plugins. It's used by LARA internals.
  This method is called to initialize the plugin.
@@ -30499,7 +30535,7 @@ exports.setNextPluginLabel = function (override) {
  @param label The the script identifier.
  @param options Initial plugin context generated by LARA. Will be transformed into IPluginRuntimeContext instance.
  ****************************************************************************/
-exports.initPlugin = function (label, options) {
+var initPlugin = function (label, options) {
     if (options.type === "authoring") {
         initAuthoringPlugin(label, options);
     }
@@ -30507,6 +30543,7 @@ exports.initPlugin = function (label, options) {
         initRuntimePlugin(label, options);
     }
 };
+exports.initPlugin = initPlugin;
 var initRuntimePlugin = function (label, options) {
     var Constructor = pluginClasses[label].runtimeClass;
     if (typeof Constructor === "function") {
@@ -30549,7 +30586,7 @@ var initAuthoringPlugin = function (label, options) {
  @param options The registration options
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
-exports.registerPlugin = function (options) {
+var registerPlugin = function (options) {
     if (nextPluginLabel === "") {
         // tslint:disable-next-line:no-console
         console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
@@ -30576,6 +30613,7 @@ exports.registerPlugin = function (options) {
         return true;
     }
 };
+exports.registerPlugin = registerPlugin;
 
 
 /***/ }),

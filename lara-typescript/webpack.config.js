@@ -1,5 +1,4 @@
 'use strict';
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -35,16 +34,13 @@ module.exports = (env, argv) => {
           enforce: 'pre',
           use: [
             {
-              loader: 'tslint-loader',
-              options: {}
+              loader: 'tslint-loader'
             }
           ]
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          options: {
-          }
+          loader: 'ts-loader'
         },
         {
           test: /\.s?css$/,
@@ -72,7 +68,6 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new ForkTsCheckerWebpackPlugin(),
       new CopyPlugin([
         { from: 'src/plugin-api/package.json', to: 'plugin-api' },
         { from: 'src/plugin-api/README.md', to: 'plugin-api' },
@@ -115,16 +110,13 @@ module.exports = (env, argv) => {
           enforce: 'pre',
           use: [
             {
-              loader: 'tslint-loader',
-              options: {}
+              loader: 'tslint-loader'
             }
           ]
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          options: {
-          }
+          loader: 'ts-loader'
         }
       ]
     },
@@ -136,7 +128,6 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new ForkTsCheckerWebpackPlugin(),
       new CopyPlugin([
         { from: 'src/interactive-api-client/package.json', to: 'interactive-api-client' },
         { from: 'src/interactive-api-client/README.md', to: 'interactive-api-client' }
@@ -169,16 +160,13 @@ module.exports = (env, argv) => {
           enforce: 'pre',
           use: [
             {
-              loader: 'tslint-loader',
-              options: {}
+              loader: 'tslint-loader'
             }
           ]
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          options: {
-          }
+          loader: 'ts-loader'
         }
       ]
     },
@@ -190,7 +178,6 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new ForkTsCheckerWebpackPlugin(),
       new CopyPlugin([
         { from: 'src/example-interactive/index.html', to: 'example-interactive' },
         { from: 'src/example-interactive/index.css', to: 'example-interactive' }

@@ -43534,7 +43534,7 @@ var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-
 var authoring_1 = __webpack_require__(/*! ./authoring */ "./src/example-interactive/src/components/authoring.tsx");
 var report_1 = __webpack_require__(/*! ./report */ "./src/example-interactive/src/components/report.tsx");
 var runtime_1 = __webpack_require__(/*! ./runtime */ "./src/example-interactive/src/components/runtime.tsx");
-exports.AppComponent = function (props) {
+var AppComponent = function (props) {
     var initMessage = interactive_api_client_1.useInitMessage();
     // TODO: this should really be moved into a client hook file so it can be reused
     useEffect(function () {
@@ -43573,6 +43573,7 @@ exports.AppComponent = function (props) {
             return React.createElement(runtime_1.RuntimeComponent, { initMessage: initMessage });
     }
 };
+exports.AppComponent = AppComponent;
 
 
 /***/ }),
@@ -43627,7 +43628,7 @@ exports.GetInteractiveListComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var client = __webpack_require__(/*! ../../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
-exports.GetInteractiveListComponent = function (_a) {
+var GetInteractiveListComponent = function (_a) {
     var setError = _a.setError, setOutput = _a.setOutput;
     var scopeRef = react_1.useRef(null);
     var supportsSnapshotsRef = react_1.useRef(null);
@@ -43673,6 +43674,7 @@ exports.GetInteractiveListComponent = function (_a) {
         React.createElement("div", null,
             React.createElement("button", { onClick: handleCall }, "Call"))));
 };
+exports.GetInteractiveListComponent = GetInteractiveListComponent;
 
 
 /***/ }),
@@ -43727,7 +43729,7 @@ exports.SetLinkedInteractivesComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var client = __webpack_require__(/*! ../../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
-exports.SetLinkedInteractivesComponent = function (_a) {
+var SetLinkedInteractivesComponent = function (_a) {
     var setError = _a.setError, setOutput = _a.setOutput;
     var linkedInteractivesRef = react_1.useRef(null);
     var linkedStateRef = react_1.useRef(null);
@@ -43773,6 +43775,7 @@ exports.SetLinkedInteractivesComponent = function (_a) {
             React.createElement("button", { onClick: handleCall }, "Send"),
             " (no response)")));
 };
+exports.SetLinkedInteractivesComponent = SetLinkedInteractivesComponent;
 
 
 /***/ }),
@@ -43793,7 +43796,7 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var get_interactive_list_1 = __webpack_require__(/*! ./authoring-apis/get-interactive-list */ "./src/example-interactive/src/components/authoring-apis/get-interactive-list.tsx");
 var set_linked_interactives_1 = __webpack_require__(/*! ./authoring-apis/set-linked-interactives */ "./src/example-interactive/src/components/authoring-apis/set-linked-interactives.tsx");
-exports.AuthoringComponent = function (_a) {
+var AuthoringComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = react_1.useState("getInteractiveList"), selectedAuthoringApi = _b[0], setSelectedAuthoringApi = _b[1];
     var _c = react_1.useState(), authoringApiError = _c[0], setAuthoringApiError = _c[1];
@@ -43843,6 +43846,7 @@ exports.AuthoringComponent = function (_a) {
                 "Firebase App:\u00A0",
                 React.createElement("input", { type: "text", value: authoredState === null || authoredState === void 0 ? void 0 : authoredState.firebaseApp, onChange: handleFirebaseAppChange })))));
 };
+exports.AuthoringComponent = AuthoringComponent;
 
 
 /***/ }),
@@ -43859,13 +43863,14 @@ exports.AuthoringComponent = function (_a) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportComponent = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-exports.ReportComponent = function (_a) {
+var ReportComponent = function (_a) {
     var initMessage = _a.initMessage;
     return (React.createElement("div", { className: "padded" },
         React.createElement("fieldset", null,
             React.createElement("legend", null, "Report Init Message"),
             React.createElement("div", { className: "padded monospace pre" }, JSON.stringify(initMessage, null, 2)))));
 };
+exports.ReportComponent = ReportComponent;
 
 
 /***/ }),
@@ -43893,7 +43898,7 @@ var useEffect = React.useEffect, useState = React.useState;
 var interactive_api_client_1 = __webpack_require__(/*! ../../../interactive-api-client */ "./src/interactive-api-client/index.ts");
 var text_decorator_1 = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 var use_glossary_decoration_1 = __webpack_require__(/*! ../use-glossary-decoration */ "./src/example-interactive/src/use-glossary-decoration.ts");
-exports.RuntimeComponent = function (_a) {
+var RuntimeComponent = function (_a) {
     var initMessage = _a.initMessage;
     var _b = useState(), rawFirebaseJwt = _b[0], setRawFirebaseJWT = _b[1];
     var _c = useState("interactive_123"), snapshotSourceId = _c[0], setSnapshotSourceId = _c[1];
@@ -43962,6 +43967,7 @@ exports.RuntimeComponent = function (_a) {
             React.createElement(text_decorator_1.DecorateChildren, { decorateOptions: decorateOptions },
                 React.createElement("div", { className: decorateClassName }, "This text decoration example is designed to work with a glossary containing the terms \"test\" and \"page.\" In the Activity Player, the sample activity \"sample-activity-glossary-plugin-example-interactive\" contains embeddables that use this example-interactive and a glossary plugin linked to a glossary with the necessary terms. When the \"sample-activity-glossary-plugin-example-interactive\" activity is run in the Activity Player, both \"test\" and \"page\" should appear decorated and be clickable.")))));
 };
+exports.RuntimeComponent = RuntimeComponent;
 
 
 /***/ }),
@@ -44021,7 +44027,7 @@ var render_html_1 = __webpack_require__(/*! ./render-html */ "./src/example-inte
 var text_decorator_1 = __webpack_require__(/*! @concord-consortium/text-decorator */ "./node_modules/@concord-consortium/text-decorator/dist/text-decorator.js");
 var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var kClassName = "text-decorate";
-exports.useGlossaryDecoration = function () {
+var useGlossaryDecoration = function () {
     var _a = react_1.useState({ words: [], replace: "" }), options = _a[0], setOptions = _a[1];
     var _b = react_1.useState(), listeners = _b[0], setListeners = _b[1];
     interactive_api_client_1.useDecorateContent(function (msg) {
@@ -44038,6 +44044,7 @@ exports.useGlossaryDecoration = function () {
     });
     return [options, kClassName];
 };
+exports.useGlossaryDecoration = useGlossaryDecoration;
 
 
 /***/ }),
@@ -44069,7 +44076,7 @@ var uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-brows
 var THROW_NOT_IMPLEMENTED_YET = function (method) {
     throw new Error(method + " is not yet implemented in the client!");
 };
-exports.getInitInteractiveMessage = function () {
+var getInitInteractiveMessage = function () {
     var client = client_1.getClient();
     // tslint:disable-next-line:max-line-length
     return new Promise(function (resolve) {
@@ -44081,12 +44088,15 @@ exports.getInitInteractiveMessage = function () {
         }
     });
 };
-exports.getMode = function () {
+exports.getInitInteractiveMessage = getInitInteractiveMessage;
+var getMode = function () {
     return exports.getInitInteractiveMessage().then(function (initInteractiveMessage) { return initInteractiveMessage === null || initInteractiveMessage === void 0 ? void 0 : initInteractiveMessage.mode; });
 };
-exports.getInteractiveState = function () {
+exports.getMode = getMode;
+var getInteractiveState = function () {
     return client_1.getClient().managedState.interactiveState;
 };
+exports.getInteractiveState = getInteractiveState;
 var setInteractiveStateTimeoutId;
 var delayedInteractiveStateUpdate = null;
 exports.setInteractiveStateTimeout = 2000; // ms
@@ -44107,7 +44117,7 @@ exports.setInteractiveStateTimeout = 2000; // ms
  * setInteractiveState(previousState);
  * ```
  */
-exports.setInteractiveState = function (newInteractiveState) {
+var setInteractiveState = function (newInteractiveState) {
     var client = client_1.getClient();
     client.managedState.interactiveState = newInteractiveState;
     window.clearTimeout(setInteractiveStateTimeoutId);
@@ -44121,19 +44131,22 @@ exports.setInteractiveState = function (newInteractiveState) {
         delayedInteractiveStateUpdate === null || delayedInteractiveStateUpdate === void 0 ? void 0 : delayedInteractiveStateUpdate();
     }, exports.setInteractiveStateTimeout);
 };
+exports.setInteractiveState = setInteractiveState;
 /**
  * Useful in rare cases when it's not desirable to wait for the delayed state updates (at this point it only applies
  * to interactive state updates). Internally used by the showModal and closeModal functions, as opening modal
  * usually means reloading interactive. It's necessary to make sure that the state is up to date before it happens.
  */
-exports.flushStateUpdates = function () {
+var flushStateUpdates = function () {
     // Note that if delayedInteractiveStateUpdate was set, it should set itself to null and setTimeout will ignore it.
     delayedInteractiveStateUpdate === null || delayedInteractiveStateUpdate === void 0 ? void 0 : delayedInteractiveStateUpdate();
     window.clearTimeout(setInteractiveStateTimeoutId);
 };
-exports.getAuthoredState = function () {
+exports.flushStateUpdates = flushStateUpdates;
+var getAuthoredState = function () {
     return client_1.getClient().managedState.authoredState;
 };
+exports.getAuthoredState = getAuthoredState;
 /**
  * Note that state will become frozen and should never be mutated.
  * Each time you update state, make sure that a new object is passed.
@@ -44151,14 +44164,16 @@ exports.getAuthoredState = function () {
  * setAuthoredState(previousState);
  * ```
  */
-exports.setAuthoredState = function (newAuthoredState) {
+var setAuthoredState = function (newAuthoredState) {
     var client = client_1.getClient();
     client.managedState.authoredState = newAuthoredState;
     client.post("authoredState", newAuthoredState);
 };
-exports.getGlobalInteractiveState = function () {
+exports.setAuthoredState = setAuthoredState;
+var getGlobalInteractiveState = function () {
     return client_1.getClient().managedState.globalInteractiveState;
 };
+exports.getGlobalInteractiveState = getGlobalInteractiveState;
 /**
  * Note that state will become frozen and should never be mutated.
  * Each time you update state, make sure that a new object is passed.
@@ -44176,47 +44191,57 @@ exports.getGlobalInteractiveState = function () {
  * setGlobalInteractiveState(previousState);
  * ```
  */
-exports.setGlobalInteractiveState = function (newGlobalState) {
+var setGlobalInteractiveState = function (newGlobalState) {
     var client = client_1.getClient();
     client.managedState.globalInteractiveState = newGlobalState;
     client.post("interactiveStateGlobal", newGlobalState);
 };
-exports.addCustomMessageListener = function (callback, handles) {
+exports.setGlobalInteractiveState = setGlobalInteractiveState;
+var addCustomMessageListener = function (callback, handles) {
     client_1.getClient().addCustomMessageListener(callback, handles);
 };
-exports.removeCustomMessageListener = function () {
+exports.addCustomMessageListener = addCustomMessageListener;
+var removeCustomMessageListener = function () {
     client_1.getClient().removeCustomMessageListener();
 };
-exports.addDecorateContentListener = function (callback) {
+exports.removeCustomMessageListener = removeCustomMessageListener;
+var addDecorateContentListener = function (callback) {
     client_1.getClient().addDecorateContentListener(callback);
 };
-exports.removeDecorateContentListener = function () {
+exports.addDecorateContentListener = addDecorateContentListener;
+var removeDecorateContentListener = function () {
     client_1.getClient().removeDecorateContentListener();
 };
-exports.setSupportedFeatures = function (features) {
+exports.removeDecorateContentListener = removeDecorateContentListener;
+var setSupportedFeatures = function (features) {
     var request = {
         apiVersion: 1,
         features: features
     };
     client_1.getClient().setSupportedFeatures(request);
 };
-exports.setHeight = function (height) {
+exports.setSupportedFeatures = setSupportedFeatures;
+var setHeight = function (height) {
     client_1.getClient().post("height", height);
 };
-exports.postDecoratedContentEvent = function (msg) {
+exports.setHeight = setHeight;
+var postDecoratedContentEvent = function (msg) {
     client_1.getClient().post("decoratedContentEvent", msg);
 };
+exports.postDecoratedContentEvent = postDecoratedContentEvent;
 /*
  * Providing empty string or null disables hint.
  */
-exports.setHint = function (hint) {
+var setHint = function (hint) {
     var request = { text: hint };
     client_1.getClient().post("hint", request);
 };
-exports.setNavigation = function (options) {
+exports.setHint = setHint;
+var setNavigation = function (options) {
     client_1.getClient().post("navigation", options);
 };
-exports.getAuthInfo = function () {
+exports.setNavigation = setNavigation;
+var getAuthInfo = function () {
     return new Promise(function (resolve, reject) {
         var listener = function (authInfo) {
             resolve(authInfo);
@@ -44230,7 +44255,8 @@ exports.getAuthInfo = function () {
         client.post("getAuthInfo", request);
     });
 };
-exports.getFirebaseJwt = function (firebaseApp) {
+exports.getAuthInfo = getAuthInfo;
+var getFirebaseJwt = function (firebaseApp) {
     return new Promise(function (resolve, reject) {
         exports.getInitInteractiveMessage().then(function (initMsg) {
             var _a, _b;
@@ -44267,34 +44293,42 @@ exports.getFirebaseJwt = function (firebaseApp) {
         });
     });
 };
-exports.log = function (action, data) {
+exports.getFirebaseJwt = getFirebaseJwt;
+var log = function (action, data) {
     client_1.getClient().post("log", { action: action, data: data });
 };
+exports.log = log;
 // tslint:disable-next-line:max-line-length
-exports.addInteractiveStateListener = function (listener) {
+var addInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.on("interactiveStateUpdated", listener);
 };
+exports.addInteractiveStateListener = addInteractiveStateListener;
 // tslint:disable-next-line:max-line-length
-exports.removeInteractiveStateListener = function (listener) {
+var removeInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.off("interactiveStateUpdated", listener);
 };
-exports.addAuthoredStateListener = function (listener) {
+exports.removeInteractiveStateListener = removeInteractiveStateListener;
+var addAuthoredStateListener = function (listener) {
     client_1.getClient().managedState.on("authoredStateUpdated", listener);
 };
-exports.removeAuthoredStateListener = function (listener) {
+exports.addAuthoredStateListener = addAuthoredStateListener;
+var removeAuthoredStateListener = function (listener) {
     client_1.getClient().managedState.off("authoredStateUpdated", listener);
 };
+exports.removeAuthoredStateListener = removeAuthoredStateListener;
 // tslint:disable-next-line:max-line-length
-exports.addGlobalInteractiveStateListener = function (listener) {
+var addGlobalInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.on("globalInteractiveStateUpdated", listener);
 };
+exports.addGlobalInteractiveStateListener = addGlobalInteractiveStateListener;
 // tslint:disable-next-line:max-line-length
-exports.removeGlobalInteractiveStateListener = function (listener) {
+var removeGlobalInteractiveStateListener = function (listener) {
     client_1.getClient().managedState.off("globalInteractiveStateUpdated", listener);
 };
+exports.removeGlobalInteractiveStateListener = removeGlobalInteractiveStateListener;
 // Mapping between external listener and internal listener, so it's possible to remove linkedInteractiveState listeners.
 var _linkedInteractiveStateListeners = new Map();
-exports.addLinkedInteractiveStateListener = function (listener, options) {
+var addLinkedInteractiveStateListener = function (listener, options) {
     var client = client_1.getClient();
     var listenerId = uuid_1.v4();
     var internalListener = function (response) {
@@ -44312,7 +44346,8 @@ exports.addLinkedInteractiveStateListener = function (listener, options) {
         internalListener: internalListener
     });
 };
-exports.removeLinkedInteractiveStateListener = function (listener) {
+exports.addLinkedInteractiveStateListener = addLinkedInteractiveStateListener;
+var removeLinkedInteractiveStateListener = function (listener) {
     var client = client_1.getClient();
     if (_linkedInteractiveStateListeners.has(listener)) {
         var _a = _linkedInteractiveStateListeners.get(listener), internalListener = _a.internalListener, listenerId = _a.listenerId;
@@ -44325,24 +44360,27 @@ exports.removeLinkedInteractiveStateListener = function (listener) {
         _linkedInteractiveStateListeners.delete(listener);
     }
 };
+exports.removeLinkedInteractiveStateListener = removeLinkedInteractiveStateListener;
 /**
  * "lightbox" type is used for displaying images or generic iframes (e.g. help page, but NOT dynamic interactives).
  * "dialog" is used for showing dynamic interactives. It'll be initialized correctly by the host environment and
  * all the runtime features will be supported.
  */
-exports.showModal = function (options) {
+var showModal = function (options) {
     // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
     // before it happens.
     exports.flushStateUpdates();
     client_1.getClient().post("showModal", options);
 };
-exports.closeModal = function (options) {
+exports.showModal = showModal;
+var closeModal = function (options) {
     // Opening modal usually means reloading interactive. It's necessary to make sure that the state is up to date
     // before it happens.
     exports.flushStateUpdates();
     client_1.getClient().post("closeModal", options);
 };
-exports.getInteractiveList = function (options) {
+exports.closeModal = closeModal;
+var getInteractiveList = function (options) {
     return new Promise(function (resolve, reject) {
         return exports.getMode()
             .then(function (mode) {
@@ -44359,10 +44397,12 @@ exports.getInteractiveList = function (options) {
         });
     });
 };
-exports.setLinkedInteractives = function (options) {
+exports.getInteractiveList = getInteractiveList;
+var setLinkedInteractives = function (options) {
     client_1.getClient().post("setLinkedInteractives", options);
 };
-exports.getInteractiveSnapshot = function (options) {
+exports.setLinkedInteractives = setLinkedInteractives;
+var getInteractiveSnapshot = function (options) {
     return new Promise(function (resolve, reject) {
         var listener = function (snapshotResponse) {
             resolve(snapshotResponse);
@@ -44374,12 +44414,14 @@ exports.getInteractiveSnapshot = function (options) {
         client.post("getInteractiveSnapshot", request);
     });
 };
+exports.getInteractiveSnapshot = getInteractiveSnapshot;
 /**
  * @todo Implement this function.
  */
-exports.getLibraryInteractiveList = function (options) {
+var getLibraryInteractiveList = function (options) {
     THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };
+exports.getLibraryInteractiveList = getLibraryInteractiveList;
 
 
 /***/ }),
@@ -44429,7 +44471,7 @@ var parseJSONIfString = function (data) {
 };
 var phoneInitialized = function () { return iframePhone.getIFrameEndpoint().getListenerNames().length > 0; };
 var clientInstance;
-exports.getClient = function () {
+var getClient = function () {
     // !phoneInitialized() part isn't really necessary. But it's fine in web browser and it helps in testing environment.
     // Tests can reset mock iframe phone and get new Client instance.
     if (!clientInstance || !phoneInitialized()) {
@@ -44437,6 +44479,7 @@ exports.getClient = function () {
     }
     return clientInstance;
 };
+exports.getClient = getClient;
 var Client = /** @class */ (function () {
     function Client() {
         var _this = this;
@@ -44655,7 +44698,7 @@ var handleUpdate = function (newStateOrUpdateFunc, prevState) {
         return newStateOrUpdateFunc;
     }
 };
-exports.useInteractiveState = function () {
+var useInteractiveState = function () {
     var _a = react_1.useState(null), interactiveState = _a[0], setInteractiveState = _a[1];
     react_1.useEffect(function () {
         setInteractiveState(client.getInteractiveState());
@@ -44677,7 +44720,8 @@ exports.useInteractiveState = function () {
     };
     return { interactiveState: interactiveState, setInteractiveState: handleSetInteractiveState };
 };
-exports.useAuthoredState = function () {
+exports.useInteractiveState = useInteractiveState;
+var useAuthoredState = function () {
     var _a = react_1.useState(null), authoredState = _a[0], setAuthoredState = _a[1];
     react_1.useEffect(function () {
         // Note that we need to update authoredState exactly in this moment, right before setting up event listeners.
@@ -44706,7 +44750,8 @@ exports.useAuthoredState = function () {
     };
     return { authoredState: authoredState, setAuthoredState: handleSetAuthoredState };
 };
-exports.useGlobalInteractiveState = function () {
+exports.useAuthoredState = useAuthoredState;
+var useGlobalInteractiveState = function () {
     var _a = react_1.useState(null), globalInteractiveState = _a[0], setGlobalInteractiveState = _a[1];
     react_1.useEffect(function () {
         setGlobalInteractiveState(client.getGlobalInteractiveState());
@@ -44729,8 +44774,9 @@ exports.useGlobalInteractiveState = function () {
     };
     return { globalInteractiveState: globalInteractiveState, setGlobalInteractiveState: handleSetGlobalInteractiveState };
 };
+exports.useGlobalInteractiveState = useGlobalInteractiveState;
 // tslint:disable-next-line:max-line-length
-exports.useInitMessage = function () {
+var useInitMessage = function () {
     var _a = react_1.useState(null), initMessage = _a[0], setInitMessage = _a[1];
     react_1.useEffect(function () {
         // useEffect callback can't be async.
@@ -44749,18 +44795,21 @@ exports.useInitMessage = function () {
     }, []);
     return initMessage;
 };
-exports.useCustomMessages = function (callback, handles) {
+exports.useInitMessage = useInitMessage;
+var useCustomMessages = function (callback, handles) {
     react_1.useEffect(function () {
         client.addCustomMessageListener(callback, handles);
         return function () { return client.removeCustomMessageListener(); };
     }, []);
 };
-exports.useDecorateContent = function (callback) {
+exports.useCustomMessages = useCustomMessages;
+var useDecorateContent = function (callback) {
     react_1.useEffect(function () {
         client.addDecorateContentListener(callback);
         return function () { return client.removeDecorateContentListener(); };
     }, []);
 };
+exports.useDecorateContent = useDecorateContent;
 
 
 /***/ }),
@@ -44784,7 +44833,8 @@ var _inIframe = (function () {
         return true;
     }
 })();
-exports.inIframe = function () { return _inIframe; };
+var inIframe = function () { return _inIframe; };
+exports.inIframe = inIframe;
 
 
 /***/ }),
@@ -44806,7 +44856,7 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     o[k2] = m[k];
 }));
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(__webpack_require__(/*! ./types */ "./src/interactive-api-client/types.ts"), exports);
