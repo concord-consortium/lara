@@ -44467,7 +44467,14 @@ var interactive_api_client_1 = __webpack_require__(/*! ../interactive-api-client
 var in_frame_1 = __webpack_require__(/*! ./in-frame */ "./src/interactive-api-client/in-frame.ts");
 var managed_state_1 = __webpack_require__(/*! ./managed-state */ "./src/interactive-api-client/managed-state.ts");
 var parseJSONIfString = function (data) {
-    return typeof data === "string" ? JSON.parse(data) : data;
+    // Note that we don't want to call JSON.parse for an empty string.
+    try {
+        return typeof data === "string" ? JSON.parse(data) : data;
+    }
+    catch (_a) {
+        // If JSON string is malformed, it's an empty string, or not a JSON at all, return the original value.
+        return data;
+    }
 };
 var phoneInitialized = function () { return iframePhone.getIFrameEndpoint().getListenerNames().length > 0; };
 var clientInstance;

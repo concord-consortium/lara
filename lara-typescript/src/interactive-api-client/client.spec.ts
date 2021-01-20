@@ -87,6 +87,22 @@ describe("Client", () => {
       expect(client.managedState.globalInteractiveState).toEqual({ globalState: true });
     });
 
+    it("handles init message and saves interactive, authored and global interactive states even if they're malformed JSONs or empty strings", () => {
+      const client = new Client();
+      mockedPhone.fakeServerMessage({
+        type: "initInteractive",
+        content: {
+          mode: "runtime",
+          interactiveState: "{ \"interactiveStat }",
+          authoredState: "",
+          globalInteractiveState: "{ \"global"
+        }
+      });
+      expect(client.managedState.interactiveState).toEqual("{ \"interactiveStat }");
+      expect(client.managedState.authoredState).toEqual("");
+      expect(client.managedState.globalInteractiveState).toEqual("{ \"global");
+    });
+
     it("automatically supports the getInteractiveState message", () => {
       const client = new Client();
       client.managedState.interactiveState = {test: 123};
