@@ -5,7 +5,15 @@ describe Plugin do
 
   let(:activity_opts)        {  {}  }
   let(:approved_script_opts) do
-    {}
+    {
+      name: "test approved script",
+      url: "https://example.com/plugin.js",
+      label: "testscript",
+      description: "This is a test script",
+      version: "1.0.0",
+      json_url: "https://example.com/manifest.json",
+      authoring_metadata: "{}"
+    }
   end
 
   let(:shared_learner_state_key)  {'global-plugin-id'}
@@ -48,7 +56,16 @@ describe Plugin do
           description: description,
           author_data: author_data,
           approved_script_label: approved_script.label,
-          component_label: component_label
+          component_label: component_label,
+          approved_script: {
+            name: approved_script.name,
+            url: approved_script.url,
+            label: approved_script.label,
+            description: approved_script.description,
+            version: approved_script.version,
+            json_url: approved_script.json_url,
+            authoring_metadata: approved_script.authoring_metadata
+          }
         }
       )
     end

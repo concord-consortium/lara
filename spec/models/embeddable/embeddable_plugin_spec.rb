@@ -26,7 +26,16 @@ describe Embeddable::EmbeddablePlugin do
           description: plugin.description,
           author_data: plugin.author_data,
           approved_script_label: plugin.approved_script.label,
-          component_label: plugin.component_label
+          component_label: plugin.component_label,
+          approved_script: {
+            name: plugin.approved_script.name,
+            url: plugin.approved_script.url,
+            label: plugin.approved_script.label,
+            description: plugin.approved_script.description,
+            version: plugin.approved_script.version,
+            json_url: plugin.approved_script.json_url,
+            authoring_metadata: plugin.approved_script.authoring_metadata
+          }
         },
         is_hidden: true,
         is_full_width: true
