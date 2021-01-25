@@ -450,11 +450,11 @@ describe LightweightActivity do
         "sections"               =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end
+    let(:ap_url) { "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json" }
     let(:ap_simple_portal_hash) do
       url = "http://test.host/activities/#{activity_player_activity.id}"
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
-      ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json"
       {
         "type"                   =>"Activity",
         "name"                   => activity_player_activity.name,
@@ -479,20 +479,40 @@ describe LightweightActivity do
     end
 
     describe 'pages section' do
-      before(:each) do
-        activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
-        activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
-        activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
-        activity.reload
+      describe 'for the portal' do
+        before(:each) do
+          activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
+          activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
+          activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+          activity.reload
+        end
+
+        it 'returns only visible pages' do
+          pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
+          expect(pages.length).to eql(2)
+          expect(pages[0]['name']).to eql('page 1')
+          expect(pages[0]['url']).to match /http:\/\/test.host\/pages\/\d+/
+          expect(pages[1]['name']).to eql('page 2')
+          expect(pages[1]['url']).to match /http:\/\/test.host\/pages\/\d+/
+        end
       end
 
-      it 'returns only visible pages' do
-        pages = activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
-        expect(pages.length).to eql(2)
-        expect(pages[0]['name']).to eql('page 1')
-        expect(pages[0]['url']).to match /http:\/\/test.host\/pages\/\d+/
-        expect(pages[1]['name']).to eql('page 2')
-        expect(pages[1]['url']).to match /http:\/\/test.host\/pages\/\d+/
+      describe 'for the Activity Player' do
+        before(:each) do
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
+          activity_player_activity.pages << FactoryGirl.create(:page, name: 'hidden page', is_hidden: true, position: 2)
+          activity_player_activity.reload
+        end
+
+        it 'returns only visible pages' do
+          pages = activity_player_activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
+          expect(pages.length).to eql(2)
+          expect(pages[0]['name']).to eql('page 1')
+          expect(pages[0]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[0].id}"
+          expect(pages[1]['name']).to eql('page 2')
+          expect(pages[1]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[1].id}"
+        end
       end
     end
 
