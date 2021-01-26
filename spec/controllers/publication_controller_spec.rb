@@ -89,7 +89,7 @@ describe PublicationsController do
         "show_submit_button" => true,
         "thumbnail_url" =>"thumbnail",
         "is_locked"     =>false,
-        "url"           =>"#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{act_two.id}.json",
+        "url"           =>"#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{act_two.id}.json",
         "tool_id"       => "https://activity-player.concord.org",
         "append_auth_token" => true
       }
