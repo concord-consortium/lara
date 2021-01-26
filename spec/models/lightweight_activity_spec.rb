@@ -403,7 +403,7 @@ describe LightweightActivity do
       url = "http://test.host/activities/#{activity_player_activity.id}"
       author_url = "#{url}/edit"
       print_url = "#{url}/print_blank"
-      ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json"
+      ap_url = "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json"
       {
         "type"                   =>"Activity",
         "name"                   => activity_player_activity.name,
@@ -450,7 +450,7 @@ describe LightweightActivity do
         "sections"               =>[{"name"=>"#{activity.name} Section", "pages"=>[]}]
       }
     end
-    let(:ap_url) { "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http://test.host/api/v1/activities/#{activity_player_activity.id}.json" }
+    let(:ap_url) { "#{ENV["ACTIVITY_PLAYER_URL"]}?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json" }
     let(:ap_simple_portal_hash) do
       url = "http://test.host/activities/#{activity_player_activity.id}"
       author_url = "#{url}/edit"

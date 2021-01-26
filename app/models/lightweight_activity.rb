@@ -223,7 +223,7 @@ class LightweightActivity < ActiveRecord::Base
     }
 
     if self.runtime == "Activity Player"
-      data["url"] = ap_url(host)
+      data["url"] = serialized_ap_url(host)
       data["tool_id"] = "https://activity-player.concord.org"
       data["append_auth_token"] = true
     else
@@ -246,7 +246,7 @@ class LightweightActivity < ActiveRecord::Base
     pages = []
     visible_pages_with_embeddables.each do |page|
       if self.runtime == "Activity Player"
-        page_url = ap_url(host, page)
+        page_url = serialized_ap_url(host, page)
       else
         page_url = "#{host}#{Rails.application.routes.url_helpers.page_path(page)}"
       end
@@ -359,8 +359,15 @@ class LightweightActivity < ActiveRecord::Base
     return  "#{activity_player_url(protocol, host, preview)}&page=#{page.position}"
   end
 
-  def ap_url(host, page=nil)
+  def serialized_ap_url(host, page=nil)
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
-    ENV["ACTIVITY_PLAYER_URL"] + "?activity=" + api_url + (page != nil ? "&page=page_#{page.id}" : "")
+    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
+    query = Rack::Utils.parse_query(uri.query)
+    query["activity"] = URI.escape(api_url)
+    if page != nil
+      query["page"] = "page_#{page.id}"
+    end
+    uri.query = Rack::Utils.build_query(query)
+    return uri.to_s
   end
 end
