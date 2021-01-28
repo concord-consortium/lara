@@ -71,8 +71,14 @@ namespace :reporting do
 
   desc "publish runs to report service"
   task :publish_runs => :environment do
-    # limit this to portal runs for now
-    runs = Run.where('remote_endpoint is not null')
+    # limit this to portal runs by default:
+    where_query = 'remote_endpoint is not null'
+    # Or specify remote endpoint substring to match:
+    env_value = ENV["REPORT_PUSH_RUN_SELECT_REMOTE"]
+    if env_value && env_value.size > 0
+      where_query = "remote_endpoint like '%#{env_value}%'"
+    end
+    runs = Run.where(where_query)
     opts = { send_all_answers: true }
     send_all_resources(runs, ReportService::RunSender, opts)
   end
