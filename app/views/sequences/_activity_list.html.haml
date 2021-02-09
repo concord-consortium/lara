@@ -1,11 +1,11 @@
 #menu
   #activities
-    %h2 Activities in sequence
+    %h2 Activities in Sequence
     %ul.sortable-list#sort-activities
       - @sequence.lightweight_activities_sequences.each do |las|
         - activity = las.lightweight_activity
         %li{ :id => dom_id_for(las, :item), :class => 'item' }
-          = truncate(activity.name_with_id, :length => 20, :omission => "…")
+          = truncate(activity.name_with_id, :length => 25, :omission => "…")
           %ul.menu
             %li.edit= link_to "Edit", edit_activity_path(activity) if can? :update, activity
             %li.run= link_to "Preview", preview_sequence_activity_path(activity, sequence_id: @sequence.id)
