@@ -72,7 +72,7 @@ button, .btn-primary, span.edit_trigger, #modal .embeddable-save, #modal .close 
   background: #6fc5d8;
   border: none;
   border-radius: 20px;
-  color: #fff;
+  color: #fff !important;
   cursor: pointer;
   display: inline-block;
   font-size: .9em;
@@ -144,7 +144,7 @@ button.disabled, .btn-primary.disabled, span.edit_trigger.disabled {
   margin: 0 auto;
   min-height: 500px;
   position: relative;
-  width: 960px;
+  width: 1140px;
   h1 {
     clear: both;
     color: #eb8723;
@@ -634,37 +634,38 @@ form.new_lightweight_activity {
      font-weight: bold;
   }
   .submit {
-  text-align: right;
-  width: 100%;
+    margin: 0 0 10px;
+    text-align: right;
+    width: 100%;
   }
 }
 
 #menu {
-   float: right;
-   list-style-type: none;
-   h2 {
-     font-weight: bold;
-     margin-bottom: 10px;
+  h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
   }
   .sortable-list {
-     clear: both;
-     float: none;
-     list-style-type: none;
-     margin: 0;
-     padding: 0;
+    clear: both;
+    float: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
     .item {
-       border-bottom: dashed 1px #6fc5d8;
-       clear: both;
-       margin: 0 0 .5em;
-       padding: 5px 3px;
+      border-bottom: dashed 1px #6fc5d8;
+      clear: both;
+      margin: 0 0 .5em;
       min-height: 15px;
+      padding: 5px 0;
     }
     .menu {
-      margin-left: 0px;
       float: right;
+      margin-left: 0;
+
       li {
-        display: inline;
         border: none;
+        display: inline;
       }
     }
   }
@@ -673,41 +674,49 @@ form.new_lightweight_activity {
   }
 }
 #pages, #activities {
-  background: #c9e9e6;
-  padding: 15px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
+  background: #bddfdf;
   border-radius: 8px;
-    width: 100%;
+  padding: 20px;
+
   li#add {
     margin-top: 10px;
+
     a {
       background: transparent url(/assets/icons/add.png) 0 0 no-repeat;
       background-size: 14px;
       color: #333;
       height: 14px;
       padding-left: 18px;
-       text-decoration: none;
+      text-decoration: none;
     }
   }
   li a {
     color: #333;
+    font-size: .9em;
     height: 14px;
-    padding-left: 16px;
+    padding-left: 15px;
     text-decoration: none;
+    text-transform: uppercase;
   }
   li.drag_handle {
-    padding: 5px;
     cursor: move;
-    padding-top: 0;
+    min-width: 30px;
+    padding: 0 0 5px 27px;
+    position: relative;
+
+    &:before {
+      position: absolute;
+      right: 0;
+      top: 8.5px;
+    }
   }
 }
 #plugins {
-  margin-top: 1em;
-  background: #c9e9e6;
-  padding: 15px;
+  background: #bddfdf;
   border-radius: 8px;
-    width: 100%;
+  margin-top: 15px;
+  padding: 20px;
+
   #plugin_list {
     grid-template-columns: 3fr 1fr 1fr;
     display: grid;
@@ -1184,14 +1193,17 @@ body.admin.edit {
 
 #activities ul.menu li.delete form {
   display: inline;
+
   input[type="submit"] {
     background: transparent;
     border: none;
+    color: #333;
     cursor: pointer;
     font: inherit;
-    color: #333;
+    font-size: .9em;
     height: 16px;
-    padding-left: 16px;
+    padding: 0 0 0 15px;
+    text-transform: uppercase;
   }
 }
 

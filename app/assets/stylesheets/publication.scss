@@ -9,9 +9,12 @@
       padding: 0;
       position: relative;
 
-      .title{
+      .title {
+        display: inline-block;
         font-size: 18px;
         font-weight: bold;
+        padding-top: 0;
+        width: 425px;
       }
 
       .close_link{
@@ -68,13 +71,14 @@
   }
 }
 .publication_details {
+  background: #eee;
   color: #770000;
-  padding: 1em;
-  margin: 1em;
+  padding: 20px;
+  margin: 0 0 15px;
+
   ul {
     margin-left: 3em;
   }
-  border: 1px solid;
 
   span.message {
     color: #fff;

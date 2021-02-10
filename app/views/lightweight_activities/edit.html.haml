@@ -107,7 +107,7 @@
           %li{ :id => dom_id_for(p, :item), :class => 'item' }
             -if p.is_completion
               %i.fa.fa-flag-checkered
-            = truncate(p.name, :length => 18, :omission => "…")
+            = truncate(p.name, :length => 25, :omission => "…")
             %ul.menu
               %li.edit= link_to "Edit", edit_activity_page_path(@activity, p)
               %li.run= link_to "Preview", preview_activity_page_path(@activity, p), :target => 'new'
