@@ -592,6 +592,20 @@ describe LightweightActivity do
         expect(pages[1][:name]).to eql('page 2')
         expect(pages[1][:url]).to match /http:\/\/test.host\/pages\/\d+/
       end
+
+      it 'sets the page url for the activity player runtime' do
+        activity.runtime = "Activity Player"
+        pages = activity.serialize_for_report_service('http://test.host')[:children][0][:children]
+        page_url_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
+        expect(pages.length).to eql(2)
+        expect(pages[0][:type]).to eql('page')
+        expect(pages[0][:name]).to eql('page 1')
+        # https://activity-player.concord.org/branch/master?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F885.json&page=page_550
+        expect(pages[0][:url]).to match page_url_pattern
+        expect(pages[1][:type]).to eql('page')
+        expect(pages[1][:name]).to eql('page 2')
+        expect(pages[0][:url]).to match page_url_pattern
+      end
     end
 
     describe 'pages section with hidden embeddables & reportable interactives' do
