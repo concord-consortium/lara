@@ -600,7 +600,6 @@ describe LightweightActivity do
         expect(pages.length).to eql(2)
         expect(pages[0][:type]).to eql('page')
         expect(pages[0][:name]).to eql('page 1')
-        # https://activity-player.concord.org/branch/master?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F885.json&page=page_550
         expect(pages[0][:url]).to match page_url_pattern
         expect(pages[1][:type]).to eql('page')
         expect(pages[1][:name]).to eql('page 2')
