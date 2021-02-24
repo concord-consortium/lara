@@ -289,11 +289,16 @@ class LightweightActivity < ActiveRecord::Base
         questions.push(embeddable.report_service_hash) if embeddable.respond_to?(:report_service_hash)
         # Otherwise we don't support this embeddable type right now.
       end
+      if self.runtime == "Activity Player"
+        page_url = serialized_ap_url(host, page)
+      else
+        page_url = "#{host}#{Rails.application.routes.url_helpers.page_path(page)}"
+      end
       pages.push({
         id: "page_" + page.id.to_s,
         type: "page",
         name: page.name,
-        url: "#{host}#{Rails.application.routes.url_helpers.page_path(page)}",
+        url: page_url,
         children: questions
       })
     end
