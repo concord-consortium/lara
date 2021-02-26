@@ -355,7 +355,6 @@ class LightweightActivity < ActiveRecord::Base
     if preview
       query["preview"] = nil # adds 'preview' to query string as a valueless param
     end
-    query["activity"] = URI.escape(activity_api_url)
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s
   end
