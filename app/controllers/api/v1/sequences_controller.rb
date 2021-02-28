@@ -12,4 +12,12 @@ class Api::V1::SequencesController < API::APIController
     sequence_json = sequence.export
     render json: sequence_json
   end
+
+  # GET /api/v1/sequences/1/reeport_structure.json
+  def report_structure
+    sequence = Sequence.find(params[:id])
+    self_url = "#{request.protocol}#{request.host_with_port}"
+    json = sequence.serialize_for_report_service(self_url).to_json
+    render json: json
+  end
 end

@@ -127,7 +127,7 @@ class Sequence < ActiveRecord::Base
       run_url = local_url
       source_type = "LARA"
       append_auth_token = false
-      tool_id = ""  
+      tool_id = ""
     end
 
     {
@@ -169,12 +169,20 @@ class Sequence < ActiveRecord::Base
       name: self.title,
       url: local_url
     }
+    if self.runtime == "Activity Player"
+      data[:preview_url] = self.activity_player_sequence_url(host, true)
+    end
+
+    # FIXME: the urls and preview_urls in these activities do not include the
+    # the sequence, so links in the report to the activities or activity pages
+    # will not show the activity or page in the context of a sequence 
+    # see https://www.pivotaltracker.com/story/show/177122631
     data[:children] = self.activities.map { |a| a.serialize_for_report_service(host) }
     data
   end
 
-  def activity_player_sequence_url(protocol, host, preview)
-    sequence_api_url = "#{Rails.application.routes.url_helpers.api_v1_sequence_url(id: self.id, protocol: protocol, host: host)}.json"
+  def activity_player_sequence_url(host, preview)
+    sequence_api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
     uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
     query = Rack::Utils.parse_query(uri.query)
     if preview

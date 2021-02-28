@@ -25,6 +25,25 @@ describe Api::V1::LightweightActivitiesController do
     end
   end
 
+  describe "#report_structure" do
+    it 'recognizes and generates #report_structure' do
+      expect({:get => "api/v1/activities/1/report_structure.json"}).to route_to(
+        :controller => 'api/v1/lightweight_activities',
+        :action => 'report_structure',
+        :id => "1",
+        :format => "json"
+      )
+    end
+
+    it "when user is anonymous, shows an the json sent to the report structure" do
+
+      get :report_structure, :id => activity.id, :format => :json
+      expect(response.status).to eq(200)
+      # json_response = JSON.parse(response.body)
+      # expect(json_response["token"]).to eq('fake-token')
+    end
+  end
+
   describe "#destroy" do
     def expect_success_for(user)
       if user

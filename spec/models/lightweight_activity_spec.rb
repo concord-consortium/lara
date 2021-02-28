@@ -509,9 +509,9 @@ describe LightweightActivity do
           pages = activity_player_activity.serialize_for_portal('http://test.host')['sections'][0]['pages']
           expect(pages.length).to eql(2)
           expect(pages[0]['name']).to eql('page 1')
-          expect(pages[0]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[0].id}"
+          expect(pages[0]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[0].id}&preview"
           expect(pages[1]['name']).to eql('page 2')
-          expect(pages[1]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[1].id}"
+          expect(pages[1]['url']).to match "#{ap_url}&page=page_#{activity_player_activity.pages[1].id}&preview"
         end
       end
     end
@@ -554,27 +554,42 @@ describe LightweightActivity do
   end
 
   describe '#serialize_for_report_service' do
-    it 'returns a simple hash that can be consumed by the report service' do
-      url = "http://test.host/activities/#{activity.id}"
-      report_service_hash = {
+    let(:activity_url) {
+      "http://test.host/activities/#{activity.id}"
+    }
+    let(:basic_report_service_hash) {
+      {
         id: "activity_#{activity.id}",
         type: "activity",
         name: activity.name,
-        url: url,
+        url: activity_url,
         children: [
           {
             id: "section_#{activity.id}",
             type: "section",
             name: "#{activity.name} Section",
-            url: url,
+            url: activity_url,
             children: []
           }
         ]
       }
-      expect(activity.serialize_for_report_service('http://test.host')).to eq(report_service_hash)
+    }
+    it 'returns a simple hash that can be consumed by the report service' do
+      expect(activity.serialize_for_report_service('http://test.host')).to eq(basic_report_service_hash)
+    end
+
+    it 'adds a preview_url for activity player activities' do
+      activity.runtime = "Activity Player"
+      ap_hash = basic_report_service_hash
+      ap_hash[:preview_url] =
+        "https://activity-player.concord.org/branch/master?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity.id}.json&preview"
+      expect(activity.serialize_for_report_service('http://test.host')).to eq(ap_hash)
     end
 
     describe 'pages section' do
+      lara_page_pattern = /http:\/\/test.host\/pages\/\d+/
+      activity_player_page_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
+
       before(:each) do
         activity.pages << FactoryGirl.create(:page, name: 'page 1', position: 0)
         activity.pages << FactoryGirl.create(:page, name: 'page 2', position: 1)
@@ -587,23 +602,24 @@ describe LightweightActivity do
         expect(pages.length).to eql(2)
         expect(pages[0][:type]).to eql('page')
         expect(pages[0][:name]).to eql('page 1')
-        expect(pages[0][:url]).to match /http:\/\/test.host\/pages\/\d+/
+        expect(pages[0][:url]).to match lara_page_pattern
         expect(pages[1][:type]).to eql('page')
         expect(pages[1][:name]).to eql('page 2')
-        expect(pages[1][:url]).to match /http:\/\/test.host\/pages\/\d+/
+        expect(pages[1][:url]).to match lara_page_pattern
       end
 
       it 'sets the page url for the activity player runtime' do
         activity.runtime = "Activity Player"
         pages = activity.serialize_for_report_service('http://test.host')[:children][0][:children]
-        page_url_pattern = /https:\/\/activity-player.concord.org\/.*&page=page_\d+/
         expect(pages.length).to eql(2)
         expect(pages[0][:type]).to eql('page')
         expect(pages[0][:name]).to eql('page 1')
-        expect(pages[0][:url]).to match page_url_pattern
+        expect(pages[0][:url]).to match lara_page_pattern
+        expect(pages[0][:preview_url]).to match activity_player_page_pattern
         expect(pages[1][:type]).to eql('page')
         expect(pages[1][:name]).to eql('page 2')
-        expect(pages[0][:url]).to match page_url_pattern
+        expect(pages[1][:url]).to match lara_page_pattern
+        expect(pages[1][:preview_url]).to match activity_player_page_pattern
       end
     end
 
