@@ -359,7 +359,7 @@ class LightweightActivity < ActiveRecord::Base
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
     uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
     query = Rack::Utils.parse_query(uri.query)
-    query["activity"] = URI.escape(api_url)
+    query["activity"] = api_url
     if page != nil
       query["page"] = "page_#{page.id}"
     end
