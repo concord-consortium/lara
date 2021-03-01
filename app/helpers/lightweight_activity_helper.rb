@@ -59,21 +59,6 @@ module LightweightActivityHelper
     end
   end
 
-  def activity_player_url(activity, mode="")
-    activity_api_url = "#{api_v1_activity_url(activity.id)}.json"
-    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
-    query = Rack::Utils.parse_query(uri.query)
-    query["activity"] = URI.escape(activity_api_url)
-    query["preview"] = nil # adds 'preview' to query string as a valueless param
-    query["mode"] = mode
-    uri.query = Rack::Utils.build_query(query)
-    return uri.to_s
-  end
-
-  def activity_player_page_url(activity, page, mode="")
-    return  "#{activity_player_url(activity, mode)}&page=#{page.position}"
-  end
-
   def activity_player_conversion_url(activity)
     if @sequence
       lara_resource = "#{api_v1_activity_url(@sequence.id)}.json"
@@ -92,14 +77,14 @@ module LightweightActivityHelper
   end
 
   def activity_preview_options(activity, page=nil)
+    base_url = request.base_url
+
+    activity_player_url = activity.activity_player_url(base_url, page: page)
+    activity_player_te_url = activity.activity_player_url(base_url, page: page, mode: "teacher-edition")
     if page
-      activity_player_url = activity_player_page_url(activity, page)
-      activity_player_te_url = activity_player_page_url(activity, page, "teacher-edition")
       lara_runtime_url = preview_activity_page_path(activity, page)
       lara_runtime_te_url = preview_activity_page_path(activity, page, mode: "teacher-edition")
     else
-      activity_player_url = activity_player_url(activity)
-      activity_player_te_url = activity_player_url(activity, "teacher-edition")
       lara_runtime_url = preview_activity_path(activity)
       lara_runtime_te_url = preview_activity_path(activity, mode: "teacher-edition")
     end
@@ -114,7 +99,7 @@ module LightweightActivityHelper
 
   def runtime_url(activity)
     if activity.runtime == "Activity Player"
-      view_activity_url = activity.activity_player_url(request.protocol, request.host_with_port, true)
+      view_activity_url = activity.activity_player_url(request.base_url, preview: true)
     else
       view_activity_url = activity_path(activity)
     end

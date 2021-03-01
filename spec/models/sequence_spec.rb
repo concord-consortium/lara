@@ -231,6 +231,13 @@ describe Sequence do
       expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
     end
 
+    it 'returns a hash for a simple sequence with a preview_url when sequence has an activity player runtime that can be consumed by the report service' do
+      sequence.runtime = "Activity Player"
+      ap_hash = simple_report_service_hash
+      ap_hash[:preview_url] = "https://activity-player.concord.org/branch/master?sequence=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Fsequences%2F#{sequence.id}.json&preview"
+      expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
+    end
+
     it 'returns a hash for a sequence with activities that can be consumed by the report service' do
       expect(sequence_with_activities.serialize_for_report_service("http://test.host")).to eq(complex_report_service_hash)
     end
@@ -357,6 +364,32 @@ describe Sequence do
       dup.lightweight_activities_sequences.zip(sequence_with_activities.lightweight_activities_sequences) do |a, b|
         expect(a.position).to eq(b.position)
         expect(a.lightweight_activity.name).to eq(b.lightweight_activity.name)
+      end
+    end
+  end
+
+  describe "#activity_player_sequence_url" do
+    let(:base_url) { "http://test.host" }
+    describe "with an activity" do
+      it "should return a URI containing the required param" do
+        activity_player_sequence_url = sequence.activity_player_sequence_url(base_url, preview: true)
+        uri = URI.parse(activity_player_sequence_url)
+        query = Rack::Utils.parse_query(uri.query)
+        expect(query["sequence"]).to eq("http://test.host/api/v1/sequences/#{sequence.id}.json")
+        expect(query).to have_key("preview")
+        expect(query["preview"]).to be_nil
+        expect(query).to_not have_key("mode")
+      end
+    end
+    describe "with an activity and teacher mode enabled" do
+      it "should return a URI containing the required params" do
+        activity_player_sequence_url = sequence.activity_player_sequence_url(base_url, preview: true, mode:"teacher-edition")
+        uri = URI.parse(activity_player_sequence_url)
+        query = Rack::Utils.parse_query(uri.query)
+        expect(query["sequence"]).to eq("http://test.host/api/v1/sequences/#{sequence.id}.json")
+        expect(query).to have_key("preview")
+        expect(query["preview"]).to be_nil
+        expect(query["mode"]).to eq("teacher-edition")
       end
     end
   end
