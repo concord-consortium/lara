@@ -185,13 +185,13 @@ class Sequence < ActiveRecord::Base
     sequence_api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_sequence_path(self)}.json"
     uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
     query = Rack::Utils.parse_query(uri.query)
+    query["sequence"] = sequence_api_url
     if preview
       query["preview"] = nil # adds 'preview' to query string as a valueless param
     end
     if mode
       query["mode"] = mode
     end
-    query["sequence"] = sequence_api_url
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s
   end

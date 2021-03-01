@@ -234,7 +234,7 @@ describe Sequence do
     it 'returns a hash for a simple sequence with a preview_url when sequence has an activity player runtime that can be consumed by the report service' do
       sequence.runtime = "Activity Player"
       ap_hash = simple_report_service_hash
-      ap_hash[:preview_url] = "https://activity-player.concord.org/branch/master?preview&sequence=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Fsequences%2F#{sequence.id}.json"
+      ap_hash[:preview_url] = "https://activity-player.concord.org/branch/master?sequence=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Fsequences%2F#{sequence.id}.json&preview"
       expect(sequence.serialize_for_report_service('http://test.host')).to eq(simple_report_service_hash)
     end
 

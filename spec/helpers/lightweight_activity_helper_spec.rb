@@ -2,6 +2,7 @@ require "spec_helper"
 
 describe LightweightActivityHelper do
   let(:activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity") }
+  let(:activity_player_activity)     { FactoryGirl.create(:activity, id: 23, name: "Test Activity", runtime: "Activity Player") }
   let(:sequence)     { FactoryGirl.create(:sequence, id: 1, title: "Test Sequence", lightweight_activities: [activity])}
   let(:user)         { FactoryGirl.create(:user) }
   let(:sequence_run) { FactoryGirl.create(:sequence_run, sequence_id: sequence.id, user_id: user.id) }
@@ -69,6 +70,21 @@ describe LightweightActivityHelper do
       it "should return a list of preview options" do
         preview_options = helper.activity_preview_options(activity)
         expect(preview_options["Select a runtime option..."]).to eq("")
+      end
+    end
+  end
+
+  describe "#runtime_url" do
+    context "with an activity player runtime" do
+      it "returns an activity player url" do
+        url = "https://activity-player.concord.org/branch/master" +
+          "?activity=http%3A%2F%2Ftest.host%2Fapi%2Fv1%2Factivities%2F#{activity_player_activity.id}.json&preview"
+        expect(helper.runtime_url(activity_player_activity)).to eq(url)
+      end
+    end
+    context "with a LARA runtime" do
+      it "returns a LARA url" do
+        expect(helper.runtime_url(activity)).to eq("/activities/#{activity.id}")
       end
     end
   end
