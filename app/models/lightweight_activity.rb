@@ -223,7 +223,7 @@ class LightweightActivity < ActiveRecord::Base
     }
 
     if self.runtime == "Activity Player"
-      data["url"] = serialized_ap_url(host)
+      data["url"] = activity_player_url(host)
       data["tool_id"] = "https://activity-player.concord.org"
       data["append_auth_token"] = true
     else
@@ -246,7 +246,7 @@ class LightweightActivity < ActiveRecord::Base
     pages = []
     visible_pages_with_embeddables.each do |page|
       if self.runtime == "Activity Player"
-        page_url = serialized_ap_url(host, page: page, preview: true)
+        page_url = activity_player_url(host, page: page, preview: true)
       else
         page_url = "#{host}#{Rails.application.routes.url_helpers.page_path(page)}"
       end
@@ -282,7 +282,7 @@ class LightweightActivity < ActiveRecord::Base
       url: activity_url
     }
     if self.runtime == "Activity Player"
-      data[:preview_url] = serialized_ap_url(host, preview: true)
+      data[:preview_url] = activity_player_url(host, preview: true)
     end
 
     pages = []
@@ -301,7 +301,7 @@ class LightweightActivity < ActiveRecord::Base
         children: questions
       }
       if self.runtime == "Activity Player"
-        page_data[:preview_url] = serialized_ap_url(host, page: page, preview: true)
+        page_data[:preview_url] = activity_player_url(host, page: page, preview: true)
       end
 
       pages.push(page_data)
@@ -318,7 +318,7 @@ class LightweightActivity < ActiveRecord::Base
     }
 
     # NOTE: there is no Activity Player runtime component for a section so the section
-    # doesn't have a runtime_url
+    # doesn't have a preview_url
 
     data[:children] = [ section ]
     data
@@ -355,23 +355,7 @@ class LightweightActivity < ActiveRecord::Base
     where("name LIKE ?", "%#{query}%")
   end
 
-  def activity_player_url(protocol, host, preview)
-    activity_api_url = "#{Rails.application.routes.url_helpers.api_v1_activity_url(id: self.id, protocol: protocol, host: host)}.json"
-    uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
-    query = Rack::Utils.parse_query(uri.query)
-    if preview
-      query["preview"] = nil # adds 'preview' to query string as a valueless param
-    end
-    query["activity"] = URI.escape(activity_api_url)
-    uri.query = Rack::Utils.build_query(query)
-    return uri.to_s
-  end
-
-  def activity_player_page_url(protocol, host, page, preview)
-    return  "#{activity_player_url(protocol, host, preview)}&page=#{page.position}"
-  end
-
-  def serialized_ap_url(host, page: nil, preview: false)
+  def activity_player_url(host, page: nil, preview: false, mode: nil)
     api_url = "#{host}#{Rails.application.routes.url_helpers.api_v1_activity_path(self)}.json"
     uri = URI.parse(ENV["ACTIVITY_PLAYER_URL"])
     query = Rack::Utils.parse_query(uri.query)
@@ -381,6 +365,9 @@ class LightweightActivity < ActiveRecord::Base
     end
     if preview
       query["preview"] = nil # adds 'preview' to query string as a valueless param
+    end
+    if mode
+      query["mode"] = mode
     end
     uri.query = Rack::Utils.build_query(query)
     return uri.to_s

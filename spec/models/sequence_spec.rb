@@ -368,4 +368,30 @@ describe Sequence do
     end
   end
 
+  describe "#activity_player_sequence_url" do
+    let(:base_url) { "http://test.host" }
+    describe "with an activity" do
+      it "should return a URI containing the required param" do
+        activity_player_sequence_url = sequence.activity_player_sequence_url(base_url, preview: true)
+        uri = URI.parse(activity_player_sequence_url)
+        query = Rack::Utils.parse_query(uri.query)
+        expect(query["sequence"]).to eq("http://test.host/api/v1/sequences/#{sequence.id}.json")
+        expect(query).to have_key("preview")
+        expect(query["preview"]).to be_nil
+        expect(query).to_not have_key("mode")
+      end
+    end
+    describe "with an activity and teacher mode enabled" do
+      it "should return a URI containing the required params" do
+        activity_player_sequence_url = sequence.activity_player_sequence_url(base_url, preview: true, mode:"teacher-edition")
+        uri = URI.parse(activity_player_sequence_url)
+        query = Rack::Utils.parse_query(uri.query)
+        expect(query["sequence"]).to eq("http://test.host/api/v1/sequences/#{sequence.id}.json")
+        expect(query).to have_key("preview")
+        expect(query["preview"]).to be_nil
+        expect(query["mode"]).to eq("teacher-edition")
+      end
+    end
+  end
+
 end
