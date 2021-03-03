@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src="iframe-phone.js"></script>
+    <script>
+    	var phone = iframePhone.getIFrameEndpoint();
+    	phone.addListener('getInteractiveState', function () {
+        console.log("iframe received getInteractiveState");
+    	  let state = document.getElementById('textarea').value;
+        state = JSON.parse(state);
+    	  console.log("sending back: ", state);
+     	  phone.post('interactiveState', state);
+    	});
+    	phone.addListener('initInteractive', function (initMsg) {
+     	  console.log("iframe received initInteractive: ", initMsg);
+        let state = JSON.stringify(initMsg.interactiveState);
+        document.getElementById('textarea').value = state;
+    	});
+    	phone.initialize();
+    </script>
+  </head>
+  <body>
+    <p>Basic object state saving.<br/>
+       Sends <code>JSON.parse(text)</code> to host.<br/>
+       Converts object from host with <code>JSON.stringify(interactiveState)</code></p>
+    <textarea id="textarea" rows="10" cols="80"></textarea>
+  </body>
+</html>
