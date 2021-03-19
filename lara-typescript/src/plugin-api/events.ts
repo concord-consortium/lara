@@ -1,7 +1,8 @@
 import {
   onLog, offLog, ILogEventHandler,
   onInteractiveAvailable, offInteractiveAvailable, IInteractiveAvailableEventHandler,
-  onInteractiveSupportedFeatures, offInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEventHandler
+  onInteractiveSupportedFeatures, offInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEventHandler,
+  onPluginSyncRequest, offPluginSyncRequest, IPluginSyncRequestEventHandler
 } from "../events";
 // Export event types as a part of Plugin API.
 export {
@@ -9,7 +10,8 @@ export {
   onInteractiveAvailable, offInteractiveAvailable,
   IInteractiveAvailableEvent, IInteractiveAvailableEventHandler,
   onInteractiveSupportedFeatures, offInteractiveSupportedFeatures,
-  IInteractiveSupportedFeaturesEvent, IInteractiveSupportedFeaturesEventHandler
+  IInteractiveSupportedFeaturesEvent, IInteractiveSupportedFeaturesEventHandler,
+  IPluginSyncUpdate, PluginSyncUpdateCallback, IPluginSyncEvent, IPluginSyncRequestEventHandler
 } from "../events";
 
 /**
@@ -46,5 +48,15 @@ export const events = {
    * Removes InteractiveSupportedFeatures event handler.
    */
   offInteractiveSupportedFeatures:
-    (handler: IInteractiveSupportedFeaturesEventHandler) => offInteractiveSupportedFeatures(handler)
+    (handler: IInteractiveSupportedFeaturesEventHandler) => offInteractiveSupportedFeatures(handler),
+  /**
+   * Subscribes to PluginSyncRequest events. Gets called when the plugins are commanded to sync their offline data.
+   */
+  onPluginSyncRequest:
+    (handler: IPluginSyncRequestEventHandler) => onPluginSyncRequest(handler),
+  /**
+   * Removes PluginSyncRequest event handler.
+   */
+  offPluginSyncRequest:
+    (handler: IPluginSyncRequestEventHandler) => offPluginSyncRequest(handler)
 };

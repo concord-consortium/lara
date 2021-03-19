@@ -27822,7 +27822,7 @@ module.exports = g;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.offInteractiveSupportedFeatures = exports.onInteractiveSupportedFeatures = exports.emitInteractiveSupportedFeatures = exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
+exports.offPluginSyncRequest = exports.onPluginSyncRequest = exports.emitPluginSyncRequest = exports.offInteractiveSupportedFeatures = exports.onInteractiveSupportedFeatures = exports.emitInteractiveSupportedFeatures = exports.offInteractiveAvailable = exports.onInteractiveAvailable = exports.emitInteractiveAvailable = exports.offLog = exports.onLog = exports.emitLog = void 0;
 var eventemitter2_1 = __webpack_require__(/*! eventemitter2 */ "./node_modules/eventemitter2/lib/eventemitter2.js");
 var emitter = new eventemitter2_1.EventEmitter2({
     maxListeners: Infinity
@@ -27863,6 +27863,18 @@ var offInteractiveSupportedFeatures = function (handler) {
     emitter.off("interactiveSupportedFeatures", handler);
 };
 exports.offInteractiveSupportedFeatures = offInteractiveSupportedFeatures;
+var emitPluginSyncRequest = function (event) {
+    emitter.emit("PluginSyncRequest", event);
+};
+exports.emitPluginSyncRequest = emitPluginSyncRequest;
+var onPluginSyncRequest = function (handler) {
+    emitter.on("PluginSyncRequest", handler);
+};
+exports.onPluginSyncRequest = onPluginSyncRequest;
+var offPluginSyncRequest = function (handler) {
+    emitter.off("PluginSyncRequest", handler);
+};
+exports.offPluginSyncRequest = offPluginSyncRequest;
 
 
 /***/ }),
@@ -29881,7 +29893,15 @@ exports.events = {
     /**
      * Removes InteractiveSupportedFeatures event handler.
      */
-    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveSupportedFeatures(handler); }
+    offInteractiveSupportedFeatures: function (handler) { return events_1.offInteractiveSupportedFeatures(handler); },
+    /**
+     * Subscribes to PluginSyncRequest events. Gets called when the plugins are commanded to sync their offline data.
+     */
+    onPluginSyncRequest: function (handler) { return events_1.onPluginSyncRequest(handler); },
+    /**
+     * Removes PluginSyncRequest event handler.
+     */
+    offPluginSyncRequest: function (handler) { return events_1.offPluginSyncRequest(handler); }
 };
 
 
@@ -30471,7 +30491,8 @@ var generateRuntimePluginContext = function (options) {
         getClassInfo: function () { return getClassInfo(options.classInfoUrl); },
         getFirebaseJwt: function (appName) { return getFirebaseJwt(options.firebaseJwtUrl, appName); },
         wrappedEmbeddable: options.wrappedEmbeddable ? embeddable_runtime_context_1.generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-        log: function (logData) { return log(options, logData); }
+        log: function (logData) { return log(options, logData); },
+        offlineMode: options.offlineMode
     };
     return context;
 };

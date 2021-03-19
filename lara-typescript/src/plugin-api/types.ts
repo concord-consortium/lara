@@ -68,6 +68,8 @@ export interface IPluginRuntimeContext {
    * @param logData Data to log. Can be either event name or hash with at least `event` property.
    */
   log: (logData: string | ILogData) => void;
+  /** Flag denoting offline mode of an Activity Player activity */
+  offlineMode: boolean;
 }
 
 export interface IEmbeddableRuntimeContext {

@@ -30,7 +30,8 @@ describe("Plugin runtime context helper", () => {
     firebaseJwtUrl: "http://firebase.jwt._FIREBASE_APP_.com",
     wrappedEmbeddable: null,
     componentLabel: "test",
-    resourceUrl: "http://lara.activity.com/123"
+    resourceUrl: "http://lara.activity.com/123",
+    offlineMode: false
   };
 
   it("should copy basic properties to runtime context", () => {

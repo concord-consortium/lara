@@ -50,10 +50,29 @@ export interface IInteractiveSupportedFeaturesEvent {
   supportedFeatures: ISupportedFeatures;
 }
 
+export interface IPluginSyncUpdate {
+  status: "started" | "working" | "failed" | "completed";
+  message?: string;
+}
+
+export type PluginSyncUpdateCallback = (update: IPluginSyncUpdate) => void;
+
+export interface IPluginSyncEvent {
+  maxUpdateCallbackInterval: number;
+  updateCallback: PluginSyncUpdateCallback;
+}
+
+// Events for plugin communication.
+
 /**
  * SupportedFeatures event handler.
  */
 export type IInteractiveSupportedFeaturesEventHandler = (event: IInteractiveSupportedFeaturesEvent) => void;
+
+/**
+ * PluginSync event handler.
+ */
+export type IPluginSyncRequestEventHandler = (event: IPluginSyncEvent) => void;
 
 const emitter = new EventEmitter2({
   maxListeners: Infinity
@@ -87,4 +106,14 @@ export const onInteractiveSupportedFeatures = (handler: IInteractiveSupportedFea
 };
 export const offInteractiveSupportedFeatures = (handler: IInteractiveSupportedFeaturesEventHandler) => {
   emitter.off("interactiveSupportedFeatures", handler);
+};
+
+export const emitPluginSyncRequest = (event: IPluginSyncEvent) => {
+  emitter.emit("PluginSyncRequest", event);
+};
+export const onPluginSyncRequest = (handler: IPluginSyncRequestEventHandler) => {
+  emitter.on("PluginSyncRequest", handler);
+};
+export const offPluginSyncRequest = (handler: IPluginSyncRequestEventHandler) => {
+  emitter.off("PluginSyncRequest", handler);
 };
