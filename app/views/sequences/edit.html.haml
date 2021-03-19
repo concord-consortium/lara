@@ -18,7 +18,8 @@
     Edit sequence
   #preview-menu
     %label{for: "preview-options-select"}
-      Preview in:
+      %strong
+        Preview in:
     = select_tag :preview_options_select, options_for_select(sequence_preview_options(@sequence)), {id: 'preview-options-select'}
 
 = render :partial => "publications/publication_details", :locals =>{ :publication => @sequence}

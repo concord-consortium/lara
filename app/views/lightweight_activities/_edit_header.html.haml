@@ -11,7 +11,8 @@
       = link_to "Convert", activity_player_conversion_url(@activity), :target => 'new'
   #preview-menu
     %label{for: "preview-options-select"}
-      Preview in:
+      %strong
+        Preview in:
     = select_tag :preview_options_select, options_for_select(activity_preview_options(@activity)), {id: 'preview-options-select'}
 
 - if show_publication_details

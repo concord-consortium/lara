@@ -69,7 +69,7 @@ describe LightweightActivityHelper do
     describe "with an activity" do
       it "should return a list of preview options" do
         preview_options = helper.activity_preview_options(activity)
-        expect(preview_options["Select a runtime option..."]).to eq("")
+        expect(preview_options["Select an option..."]).to eq("")
       end
     end
   end
