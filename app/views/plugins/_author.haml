@@ -38,7 +38,7 @@
                   - else
                     - partial_name = "#{wrapped_embeddable.class.name.underscore.pluralize}/lightweight"
                     = render(partial: partial_name, locals: { embeddable: wrapped_embeddable })
-          -# The authored UI of the plugin is injected in this plugin-out div.
+          -# The authored UI of the plugin is injected in this plugin-output div.
           -# The plugin also receives the question-mod block above as the wrapped embeddable
           -# container. This approach doesn't match the dom structure at runtime, but it does provide
           -# a basic preview. A better approach would be to give the plugin an independent dom element
@@ -65,6 +65,7 @@
 
   - runtime_div_selector = "##{output_id}"
   - wrapped_div_selector = "##{wrapped_id}"
+  - userInfo = current_user.nil? ? {loggedIn: false, authProvider: nil, email: nil} : {loggedIn: true, authProvider: (Concord::AuthPortal.url_for_strategy_name(current_user.most_recent_authentication.provider) rescue nil), email: current_user.email}
 
   :javascript
     // Begin script for #{plugin.name}
@@ -92,6 +93,11 @@
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
+        var interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
+        LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(interactiveContainer, {
+          interactive: #{wrapped_embeddable.to_authoring_preview_hash().to_json},
+          user: #{userInfo.to_json}
+        });
       };
       script.onerror = function () {
         alert("Unable to load plugin script: #{plugin.url}");
