@@ -66,7 +66,8 @@ describe("Plugins", () => {
       embeddablePluginId: null,
       wrappedEmbeddable: null,
       componentLabel: "test",
-      resourceUrl: "http://lara.activity.com/123"
+      resourceUrl: "http://lara.activity.com/123",
+      offlineMode: false
     };
     const authoringContextOptions: IPluginAuthoringContextOptions = {
       type: "authoring",

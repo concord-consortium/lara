@@ -1,5 +1,5 @@
 import * as events from "./index";
-import { IInteractiveAvailableEvent, IInteractiveSupportedFeaturesEvent } from "./index";
+import { IInteractiveAvailableEvent, IInteractiveSupportedFeaturesEvent, IPluginSyncEvent } from "./index";
 
 describe("Events helper", () => {
   describe("Log event", () => {
@@ -37,6 +37,19 @@ describe("Events helper", () => {
       expect(handler).toHaveBeenNthCalledWith(1, e);
       events.offInteractiveSupportedFeatures(handler);
       events.emitInteractiveSupportedFeatures(e);
+      expect(handler).toHaveBeenNthCalledWith(1, e);
+    });
+  });
+
+  describe("PluginSyncRequest event", () => {
+    it("provides working API for event handling", () => {
+      const handler = jest.fn();
+      events.onPluginSyncRequest(handler);
+      const e: IPluginSyncEvent = { maxUpdateCallbackInterval: 1000, updateCallback: jest.fn() };
+      events.emitPluginSyncRequest(e);
+      expect(handler).toHaveBeenNthCalledWith(1, e);
+      events.offPluginSyncRequest(handler);
+      events.emitPluginSyncRequest(e);
       expect(handler).toHaveBeenNthCalledWith(1, e);
     });
   });

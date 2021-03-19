@@ -19,6 +19,8 @@
 * [IPlugin](interfaces/iplugin.md)
 * [IPluginAuthoringContext](interfaces/ipluginauthoringcontext.md)
 * [IPluginRuntimeContext](interfaces/ipluginruntimecontext.md)
+* [IPluginSyncEvent](interfaces/ipluginsyncevent.md)
+* [IPluginSyncUpdate](interfaces/ipluginsyncupdate.md)
 * [IPopupController](interfaces/ipopupcontroller.md)
 * [IPopupOptions](interfaces/ipopupoptions.md)
 * [IPortalClaims](interfaces/iportalclaims.md)
@@ -33,6 +35,8 @@
 * [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)
 * [IInteractiveSupportedFeaturesEventHandler](globals.md#iinteractivesupportedfeatureseventhandler)
 * [ILogEventHandler](globals.md#ilogeventhandler)
+* [IPluginSyncRequestEventHandler](globals.md#ipluginsyncrequesteventhandler)
+* [PluginSyncUpdateCallback](globals.md#pluginsyncupdatecallback)
 
 ### Functions
 
@@ -114,6 +118,40 @@ Log event handler.
 Name | Type |
 ------ | ------ |
 `event` | [ILogData](interfaces/ilogdata.md) |
+
+___
+
+###  IPluginSyncRequestEventHandler
+
+Ƭ **IPluginSyncRequestEventHandler**: *function*
+
+PluginSync event handler.
+
+#### Type declaration:
+
+▸ (`event`: [IPluginSyncEvent](interfaces/ipluginsyncevent.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`event` | [IPluginSyncEvent](interfaces/ipluginsyncevent.md) |
+
+___
+
+###  PluginSyncUpdateCallback
+
+Ƭ **PluginSyncUpdateCallback**: *function*
+
+#### Type declaration:
+
+▸ (`update`: [IPluginSyncUpdate](interfaces/ipluginsyncupdate.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`update` | [IPluginSyncUpdate](interfaces/ipluginsyncupdate.md) |
 
 ## Functions
 
@@ -469,6 +507,20 @@ Name | Type |
 
 **Returns:** *void*
 
+###  offPluginSyncRequest
+
+▸ **offPluginSyncRequest**(`handler`: [IPluginSyncRequestEventHandler](globals.md#ipluginsyncrequesteventhandler)): *void*
+
+Removes PluginSyncRequest event handler.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IPluginSyncRequestEventHandler](globals.md#ipluginsyncrequesteventhandler) |
+
+**Returns:** *void*
+
 ###  onInteractiveAvailable
 
 ▸ **onInteractiveAvailable**(`handler`: [IInteractiveAvailableEventHandler](globals.md#iinteractiveavailableeventhandler)): *void*
@@ -509,5 +561,19 @@ Subscribes to log events. Gets called when any event is logged to the CC Log Man
 Name | Type |
 ------ | ------ |
 `handler` | [ILogEventHandler](globals.md#ilogeventhandler) |
+
+**Returns:** *void*
+
+###  onPluginSyncRequest
+
+▸ **onPluginSyncRequest**(`handler`: [IPluginSyncRequestEventHandler](globals.md#ipluginsyncrequesteventhandler)): *void*
+
+Subscribes to PluginSyncRequest events. Gets called when the plugins are commanded to sync their offline data.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`handler` | [IPluginSyncRequestEventHandler](globals.md#ipluginsyncrequesteventhandler) |
 
 **Returns:** *void*

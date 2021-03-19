@@ -47,6 +47,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   embeddablePluginId: number | null;
   /** URL of the resource associated with the current run (sequence URL or activity URL) */
   resourceUrl: string;
+  /** Flag denoting offline mode of an Activity Player activity */
+  offlineMode: boolean;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -201,7 +203,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwt(options.firebaseJwtUrl, appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData)
+    log: (logData: string | ILogData) => log(options, logData),
+    offlineMode: options.offlineMode
   };
   return context;
 };

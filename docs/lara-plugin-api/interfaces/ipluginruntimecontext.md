@@ -17,6 +17,7 @@
 * [learnerState](ipluginruntimecontext.md#learnerstate)
 * [log](ipluginruntimecontext.md#log)
 * [name](ipluginruntimecontext.md#name)
+* [offlineMode](ipluginruntimecontext.md#offlinemode)
 * [pluginId](ipluginruntimecontext.md#pluginid)
 * [remoteEndpoint](ipluginruntimecontext.md#remoteendpoint)
 * [resourceUrl](ipluginruntimecontext.md#resourceurl)
@@ -116,6 +117,14 @@ ___
 • **name**: *string*
 
 Name of the plugin
+
+___
+
+###  offlineMode
+
+• **offlineMode**: *boolean*
+
+Flag denoting offline mode of an Activity Player activity
 
 ___
 
