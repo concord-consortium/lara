@@ -93,11 +93,13 @@
         }
         console.log("Adding #{plugin.name} authoring plugin as #{v3_plugin_label} with V3 LARA Plugin API")
         LARA.Plugins.initPlugin('#{v3_plugin_label}', pluginContext);
-        var interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
-        LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(interactiveContainer, {
-          interactive: #{wrapped_embeddable.to_authoring_preview_hash().to_json},
-          user: #{userInfo.to_json}
-        });
+        if ($('#wrapped_embeddable').length > 0) {
+          var interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
+          LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(interactiveContainer, {
+            interactive: #{wrapped_embeddable ? wrapped_embeddable.to_authoring_preview_hash().to_json : 'null'},
+            user: #{userInfo.to_json}
+          });
+        }
       };
       script.onerror = function () {
         alert("Unable to load plugin script: #{plugin.url}");
