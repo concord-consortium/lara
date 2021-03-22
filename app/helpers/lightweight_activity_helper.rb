@@ -88,13 +88,19 @@ module LightweightActivityHelper
       lara_runtime_url = preview_activity_path(activity)
       lara_runtime_te_url = preview_activity_path(activity, mode: "teacher-edition")
     end
-    {
-      'Select a runtime option...' => '',
-      'Activity Player' => activity_player_url,
-      'Activity Player Teacher Edition' => activity_player_te_url,
-      'LARA Runtime' => lara_runtime_url,
-      'LARA Runtime Teacher Edition' => lara_runtime_te_url
-    }
+
+    preview_options = {
+                       'Select an option...' => '', 
+                       'Activity Player' => activity_player_url, 
+                       'Activity Player Teacher Edition' => activity_player_te_url
+                      }
+
+    if activity.runtime != "Activity Player"
+      preview_options['LARA Runtime'] = lara_runtime_url
+      preview_options['LARA Runtime Teacher Edition'] = lara_runtime_te_url
+    end
+
+    return preview_options
   end
 
   def runtime_url(activity)
