@@ -196,12 +196,23 @@ describe LightweightActivity do
 
   describe '#export' do
     let(:export) { activity.export }
+    let(:approved_script) { FactoryGirl.create(:approved_script) }
+    let(:plugins) do
+      FactoryGirl.create_list(:plugin, 2, approved_script: approved_script)
+    end
+
+    before :each do
+      plugins.each { |p| activity.plugins.push(p) }
+    end
+
     describe "the activity json" do
       it 'includes the activity pages' do
         expect(export[:pages].length).to eq(activity.pages.count)
       end
       it 'includes the plugins' do
         expect(export[:plugins].length).to eq(activity.plugins.count)
+        expect(export[:plugins][0][:id]).to eq(plugins[0].id)
+        expect(export[:plugins][1][:id]).to eq(plugins[1].id)
       end
     end
   end

@@ -23,6 +23,7 @@ describe Embeddable::EmbeddablePlugin do
     it 'has saves interesting attributes' do
       expected = {
         plugin: {
+          id: plugin.id,
           description: plugin.description,
           author_data: plugin.author_data,
           approved_script_label: plugin.approved_script.label,

@@ -53,6 +53,7 @@ describe Plugin do
     it "should respond with serialized params" do
       expect(plugin.to_hash).to include(
         {
+          id: plugin.id,
           description: description,
           author_data: author_data,
           approved_script_label: approved_script.label,
