@@ -18,6 +18,7 @@ class Plugin < ActiveRecord::Base
 
   def to_hash
     {
+      id: id,
       description: description,
       author_data: author_data,
       approved_script_label: approved_script && approved_script.label,
@@ -42,6 +43,8 @@ class Plugin < ActiveRecord::Base
     # the approved_script_label is not found.  For now delete it from the hash so new doesn't try to load it directly
     # which will fail as it is a hash and not an instance of the class
     import_hash.delete(:approved_script)
+    # delete the id added to the to_hash method
+    import_hash.delete(:id)
     the_copy = self.new(import_hash)
     return the_copy
   end
