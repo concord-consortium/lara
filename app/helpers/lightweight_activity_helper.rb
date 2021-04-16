@@ -59,13 +59,13 @@ module LightweightActivityHelper
     end
   end
 
-  def activity_player_conversion_url(activity)
-    if @sequence
-      lara_resource = "#{api_v1_activity_url(@sequence.id)}.json"
-      resource_name = @sequence.title
+  def activity_player_conversion_url(resource)
+    if resource.is_a? Sequence
+      lara_resource = "#{api_v1_sequence_url(resource.id)}.json"
+      resource_name = resource.title
     else
-      lara_resource = "#{api_v1_activity_url(activity.id)}.json"
-      resource_name = activity.name
+      lara_resource = "#{api_v1_activity_url(resource.id)}.json"
+      resource_name = resource.name
     end
 
     uri = URI.parse(ENV['CONVERSION_SCRIPT_URL'])
