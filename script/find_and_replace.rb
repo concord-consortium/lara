@@ -1,13 +1,8 @@
-text_fields = {
+ap_runtime_text_fields = {
   "InteractivePage" => [
     :name,
     :sidebar,
     :sidebar_title
-  ],
-  "ImageInteractive" => [
-    :caption,
-    :credit,
-    :url
   ],
   "LightweightActivity" => [
     :name,
@@ -18,13 +13,35 @@ text_fields = {
   "MwInteractive" => [
     :name,
     :url,
-    :image_url
+    :image_url,
+    :authored_state
+  ],
+  "ManagedInteractive" => [
+    :name,
+    :url_fragment,
+    :custom_image_url,
+    :authored_state
   ],
   "Sequence" => [
     :description,
     :title,
     :display_title,
     :thumbnail_url
+  ],
+  "Embeddable::Xhtml" => [
+    :name,
+    :content
+  ],
+  "Plugin" => [
+    :author_data
+  ]
+};
+
+lara_runtime_text_fields = ap_runtime_text_fields.merge({
+  "ImageInteractive" => [
+    :caption,
+    :credit,
+    :url
   ],
   "VideoInteractive" => [
     :caption,
@@ -33,10 +50,6 @@ text_fields = {
   ],
   "VideoSource" => [
     :url
-  ],
-  "Embeddable::Xhtml" => [
-    :name,
-    :content
   ],
   "Embeddable::OpenResponse" => [
     :name,
@@ -67,7 +80,7 @@ text_fields = {
     :drawing_prompt,
     :prediction_feedback
   ]
-}
+})
 
 interactive_url_field = {
   "MwInteractive" => [
@@ -144,6 +157,7 @@ end
 # There is a `text_fields` global defined above that specifies the fields of each model
 # So this an example usage:
 #   find_and_replace_all(text_fields, "http://itsi.portal.concord.org/system/images", "https://s3.amazonaws.com/itsi-production/images-2009")
+# Note some AWS endpoints support using `+` for spaces, but some don't, so when switching endpoints watch out for these
 def find_and_replace_all(text_fields, text, replacement)
   total = 0
   text_fields.each do |model_class, fields|
