@@ -319,7 +319,8 @@ class InteractivePage < ActiveRecord::Base
       :show_interactive,
       :show_info_assessment,
       :toggle_info_assessment,
-      :embeddable_display_mode
+      :embeddable_display_mode,
+      :is_completion
     ]
 
     attributes = {}
