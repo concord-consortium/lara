@@ -96,7 +96,7 @@
         if ($('#wrapped_embeddable').length > 0) {
           var interactiveContainer = $('#wrapped_embeddable').find('.interactive-container')[0];
           LARA.PageItemAuthoring.renderInteractiveAuthoringPreview(interactiveContainer, {
-            interactive: #{wrapped_embeddable ? wrapped_embeddable.to_authoring_preview_hash().to_json : 'null'},
+            interactive: #{wrapped_embeddable && defined?(wrapped_embeddable.to_authoring_preview_hash) ? wrapped_embeddable.to_authoring_preview_hash().to_json : 'null'},
             user: #{userInfo.to_json}
           });
         }
