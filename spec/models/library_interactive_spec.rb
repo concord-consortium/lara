@@ -98,4 +98,14 @@ describe LibraryInteractive do
       expect(library_interactive).not_to be_valid
     end
   end
+
+  describe "#use_count" do
+    it 'returns the number of managed interactives that use the library interactive' do
+      expect(library_interactive.use_count()).to eq(0)
+      managed_interactive = FactoryGirl.create(:managed_interactive,
+                                                :library_interactive => library_interactive
+                                               )
+      expect(library_interactive.use_count()).to eq(1)
+    end
+  end
 end

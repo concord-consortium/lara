@@ -90,4 +90,8 @@ class LibraryInteractive < ActiveRecord::Base
     self.export_hash = self.generate_export_hash()
   end
 
+  def use_count
+    ManagedInteractive.where(library_interactive_id: self.id).length
+  end
+
 end
