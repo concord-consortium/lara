@@ -6,7 +6,7 @@ class LibraryInteractive < ActiveRecord::Base
 
   attr_accessible :aspect_ratio_method, :authoring_guidance, :base_url, :click_to_play, :click_to_play_prompt, :description,
                   :enable_learner_state, :full_window, :has_report_url, :image_url, :name, :native_height, :native_width,
-                  :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable
+                  :no_snapshots, :show_delete_data_button, :thumbnail_url, :export_hash, :customizable, :authorable, :data
 
   default_value_for :native_width, ASPECT_RATIO_DEFAULT_WIDTH
   default_value_for :native_height, ASPECT_RATIO_DEFAULT_HEIGHT
@@ -81,7 +81,9 @@ class LibraryInteractive < ActiveRecord::Base
   end
 
   def generate_export_hash
-    Digest::SHA1.hexdigest(export().to_json)
+    export = export()
+    export.except("authoring_guidance", "description", "name")
+    Digest::SHA1.hexdigest(export.to_json)
   end
 
   def update_export_hash

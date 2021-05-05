@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20201117173617) do
+ActiveRecord::Schema.define(:version => 20210504192337) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"

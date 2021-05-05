@@ -180,7 +180,6 @@ class ManagedInteractive < ActiveRecord::Base
     hash = to_hash()
     hash.delete(:library_interactive_id)
     hash[:library_interactive] = library_interactive ? {
-      hash: library_interactive.generate_export_hash(),
       data: library_interactive.to_hash()
     } : nil
     hash
@@ -197,7 +196,9 @@ class ManagedInteractive < ActiveRecord::Base
 
     # find the existing matching library interactive or create a new one
     if imported_library_interactive
-      library_interactive = LibraryInteractive.find_by_export_hash(imported_library_interactive[:hash])
+      potential_new_li = LibraryInteractive.new(imported_library_interactive[:data])
+      potential_new_li_export_hash = potential_new_li.generate_export_hash()
+      library_interactive = LibraryInteractive.find_by_export_hash(potential_new_li_export_hash)
       if library_interactive
         managed_interactive.library_interactive = library_interactive
       else
