@@ -82,7 +82,7 @@ class LibraryInteractive < ActiveRecord::Base
 
   def generate_export_hash
     export = export()
-    export.except("authoring_guidance", "description", "name")
+    export.except!("authoring_guidance", "description", "name")
     Digest::SHA1.hexdigest(export.to_json)
   end
 
