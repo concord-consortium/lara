@@ -99,6 +99,44 @@ describe LibraryInteractive do
     end
   end
 
+  describe "generate_export_hash" do
+    it "returns a hash value based on only certain properties" do
+      library_interactives = FactoryGirl.create_list(:library_interactive, 3,
+                                                     :aspect_ratio_method => "DEFAULT",
+                                                     :authoring_guidance => "",
+                                                     :base_url => "https://fake.url",
+                                                     :click_to_play => false,
+                                                     :click_to_play_prompt => nil,
+                                                     :description => "This is my beautiful description.",
+                                                     :enable_learner_state => true,
+                                                     :full_window => false,
+                                                     :has_report_url => false,
+                                                     :image_url => nil,
+                                                     :name => "MC Question",
+                                                     :native_height => 435,
+                                                     :native_width => 576,
+                                                     :no_snapshots => false,
+                                                     :show_delete_data_button => false,
+                                                     :thumbnail_url => "",
+                                                     :customizable => false,
+                                                     :authorable => true
+                                                    )
+
+      library_interactives[1].description = "This is not my beautiful description."
+      library_interactives[1].authoring_guidance = "Something goes here."
+      library_interactives[1].name = "Also an MC Question"
+      library_interactives[2].base_url = "https://different.fake.url"
+
+      library_interactive1_hash = library_interactives[0].generate_export_hash()
+      library_interactive2_hash = library_interactives[1].generate_export_hash()
+      library_interactive3_hash = library_interactives[2].generate_export_hash()
+
+      expect(library_interactive1_hash).not_to eq(nil)
+      expect(library_interactive1_hash).to eq(library_interactive2_hash)
+      expect(library_interactive1_hash).not_to eq(library_interactive3_hash)
+    end
+  end
+
   describe "#use_count" do
     it 'returns the number of managed interactives that use the library interactive' do
       expect(library_interactive.use_count()).to eq(0)
