@@ -180,7 +180,7 @@ describe ManagedInteractive do
     end
 
     it 'creates a new library interactive if export_hash not found' do
-      managed_interactive.library_interactive.name = "This doesn't exist in the database"
+      managed_interactive.library_interactive.base_url = "https://not.in.database"
       imported = ManagedInteractive.import(managed_interactive.export())
       expect(imported.export()).to eq managed_interactive.export()
 
@@ -192,7 +192,7 @@ describe ManagedInteractive do
     end
 
     it 'does not create duplicate new library interactives if export_hash not found' do
-      managed_interactive.library_interactive.name = "This doesn't exist in the database"
+      managed_interactive.library_interactive.base_url = "https://not.in.database"
       exported = managed_interactive.export()
       imported1 = ManagedInteractive.import(exported)
       imported2 = ManagedInteractive.import(exported)
