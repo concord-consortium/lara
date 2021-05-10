@@ -28,6 +28,7 @@
         %div.action_menu_header_right.themes
           %ul.menu
             %li.edit= link_to "Edit", edit_library_interactive_path(library_interactive) if can? :update, library_interactive
+            %li.edit= link_to "Migrate", migrate_library_interactive_path(library_interactive) if can? :update, library_interactive
             %li.delete= link_to 'Delete', library_interactive_path(library_interactive), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, library_interactive
       %div.tiny
         %p

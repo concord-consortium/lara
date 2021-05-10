@@ -1,6 +1,10 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :library_interactives, :except => [:show]
+  resources :library_interactives, :except => [:show] do
+    member do
+      get :migrate
+    end
+  end
 
   resources :approved_scripts
 
@@ -213,6 +217,8 @@ LightweightStandalone::Application.routes.draw do
       match 'plugins/:plugin_id/author_data' => 'plugins#save_author_data', as: 'update_plugin_author_data', via: 'put'
     end
   end
+
+  match '/managed_interactives/set_library_interactive' => 'managed_interactives#set_library_interactive', via: 'put'
 
   match "/publications/show_status/:publishable_type/:publishable_id"=> 'publications#show_status', :as => 'publication_show_status'
   match "/publications/autopublishing_status/:publishable_type/:publishable_id"=> 'publications#autopublishing_status', :as => 'publication_autopublishing_status'

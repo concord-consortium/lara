@@ -61,6 +61,11 @@ class LibraryInteractivesController < ApplicationController
     end
   end
 
+  # GET /library_interactives/1/migrate
+  def migrate
+    @library_interactive = LibraryInteractive.find(params[:id]) 
+  end
+
   # DELETE /library_interactives/1
   # DELETE /library_interactives/1.json
   def destroy
