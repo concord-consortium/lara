@@ -111,6 +111,23 @@ describe LibraryInteractivesController do
       end
     end
 
+    describe "GET #migrate" do
+      it "returns a success response" do
+        library_interactive = LibraryInteractive.create! valid_attributes
+        get :migrate, {:id => library_interactive.to_param, :library_interactive => valid_attributes}
+        expect(response).to be_successful
+      end
+    end
+
+    describe "PUT #migrate" do
+      it "changes all references to one library_interactive to another specified library_interactive and redirects to the library_interactive index" do
+        library_interactive1 = LibraryInteractive.create! valid_attributes
+        library_interactive2 = LibraryInteractive.create! valid_attributes
+        put :update, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
+        expect(response).to redirect_to(library_interactives_url)
+      end
+    end
+
     describe "DELETE #destroy" do
       it "destroys the requested library_interactive" do
         library_interactive = LibraryInteractive.create! valid_attributes
@@ -172,6 +189,24 @@ describe LibraryInteractivesController do
         it "returns a failure response" do
           library_interactive = LibraryInteractive.create! valid_attributes
           put :update, {:id => library_interactive.to_param, :library_interactive => {:name => "new name"}}
+          expect(response).not_to be_successful
+          expect(response).to have_http_status(403)
+        end
+      end
+
+      describe "GET #migrate" do
+        it "returns a failure response for HTML requests" do
+          library_interactive = LibraryInteractive.create! valid_attributes
+          get :migrate, {:id => library_interactive.to_param}
+          expect(response).not_to be_successful
+          expect(response).to have_http_status(403)
+        end
+      end
+
+      describe "PUT #migrate" do
+        it "returns a failure response" do
+          library_interactive = LibraryInteractive.create! valid_attributes
+          get :migrate, {:id => library_interactive.to_param}
           expect(response).not_to be_successful
           expect(response).to have_http_status(403)
         end
