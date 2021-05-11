@@ -13,10 +13,9 @@
       %li= "/ Migrate #{@library_interactive.name}"
 
 %h1.title= "Migrate #{@library_interactive.name}"
-= form_for @library_interactive, :url => managed_interactives_set_library_interactive_path, :html => {:class => "styled-admin-form"} do |f|
+= form_for @library_interactive, :url => migrate_library_interactive_path, :html => {:class => "styled-admin-form"} do |f|
   %div{:class => "option_group"}
     = f.label :new_library_interactive_id, "Select a new version of #{@library_interactive.name} to migrate to."
     %br
     = select_tag :new_library_interactive_id, options_for_select(migrate_library_interactive_options(@library_interactive)), {id: 'migrate-options-select'}
-    = hidden_field_tag 'current_library_interactive_id', @library_interactive.id
     = f.submit "Migrate", :style => "margin-left:10px"
