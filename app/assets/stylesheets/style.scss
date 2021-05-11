@@ -572,6 +572,13 @@ div.summary {
       &:hover {
         color: #ea6d2f;
       }
+      &.disabled {
+        cursor: default;
+        opacity: .5;
+        &:hover {
+          color: #333;
+        }
+      }
     }
   }
 }
