@@ -123,7 +123,7 @@ describe LibraryInteractivesController do
       it "changes all references to one library_interactive to another specified library_interactive and redirects to the library_interactive index" do
         library_interactive1 = LibraryInteractive.create! valid_attributes
         library_interactive2 = LibraryInteractive.create! valid_attributes
-        put :update, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
+        put :migrate, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
         expect(response).to redirect_to(library_interactives_url)
       end
     end
@@ -205,8 +205,9 @@ describe LibraryInteractivesController do
 
       describe "PUT #migrate" do
         it "returns a failure response" do
-          library_interactive = LibraryInteractive.create! valid_attributes
-          get :migrate, {:id => library_interactive.to_param}
+          library_interactive1 = LibraryInteractive.create! valid_attributes
+          library_interactive2 = LibraryInteractive.create! valid_attributes
+          put :migrate, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
           expect(response).not_to be_successful
           expect(response).to have_http_status(403)
         end
