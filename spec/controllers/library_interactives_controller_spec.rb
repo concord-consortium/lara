@@ -120,10 +120,20 @@ describe LibraryInteractivesController do
     end
 
     describe "PUT #migrate" do
-      it "changes all references to one library_interactive to another specified library_interactive and redirects to the library_interactive index" do
+      it "changes all references to one library_interactive to another library_interactive and redirects to the library_interactive index" do
         library_interactive1 = LibraryInteractive.create! valid_attributes
         library_interactive2 = LibraryInteractive.create! valid_attributes
         managed_interactive = FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive1)
+        put :migrate, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
+        managed_interactive.reload
+        expect(response).to redirect_to(library_interactives_url)
+        expect(managed_interactive.library_interactive_id).to eq(library_interactive2.id)
+      end
+
+      it "changes nothing and redirects to the library_interactive index when the library interactive specified for migration is not used by any managed interactives" do
+        library_interactive1 = LibraryInteractive.create! valid_attributes
+        library_interactive2 = LibraryInteractive.create! valid_attributes
+        managed_interactive = FactoryGirl.create(:managed_interactive, :library_interactive => library_interactive2)
         put :migrate, {:id => library_interactive1.to_param, :new_library_interactive_id => library_interactive2.to_param}
         managed_interactive.reload
         expect(response).to redirect_to(library_interactives_url)
