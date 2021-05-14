@@ -12,6 +12,7 @@ $(function () {
         });
     $('#preview-options-select').on('change', function() {
       previewOptionSelected(this.value);
+      $(this).prop("selectedIndex", 0);
     });
 });
 
