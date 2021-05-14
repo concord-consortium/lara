@@ -28,6 +28,10 @@
         %div.action_menu_header_right.themes
           %ul.menu
             %li.edit= link_to "Edit", edit_library_interactive_path(library_interactive) if can? :update, library_interactive
+            - if library_interactive.use_count > 0
+              %li.migrate= link_to "Migrate", migrate_library_interactive_path(library_interactive) if can? :update, library_interactive
+            - else 
+              %li.migrate= link_to "Migrate", "javascript:alert('No embeddables currently use this library interactive.')", :class => 'disabled' if can? :update, library_interactive
             %li.delete= link_to 'Delete', library_interactive_path(library_interactive), method: :delete, data: { confirm: 'Are you sure?' } if can? :update, library_interactive
       %div.tiny
         %p

@@ -61,6 +61,32 @@ class LibraryInteractivesController < ApplicationController
     end
   end
 
+  # GET /library_interactives/1/migrate
+  # POST /library_interactives/1/migrate
+  def migrate
+    @library_interactive = LibraryInteractive.find(params[:id]) 
+    
+    if params[:new_library_interactive_id]
+      @mi_count = 0
+      ManagedInteractive.where("library_interactive_id = #{params[:id]}").find_each do |mi|
+        mi.library_interactive_id = params[:new_library_interactive_id]
+        mi.save
+        @mi_count += 1
+      end
+
+      if @mi_count > 0
+        @notice = 'All embeddables that used the library interactive have been updated to use the new version.'
+      else
+        @notice = 'No embeddables currently use the older version of that library interactive.'
+      end
+
+      respond_to do |format|
+        format.html { redirect_to library_interactives_url, notice: @notice }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   # DELETE /library_interactives/1
   # DELETE /library_interactives/1.json
   def destroy

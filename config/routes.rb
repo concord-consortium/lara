@@ -1,6 +1,11 @@
 LightweightStandalone::Application.routes.draw do
 
-  resources :library_interactives, :except => [:show]
+  resources :library_interactives, :except => [:show] do
+    member do
+      get :migrate
+      put :migrate
+    end
+  end
 
   resources :approved_scripts
 
