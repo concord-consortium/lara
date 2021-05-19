@@ -127,7 +127,8 @@ class LightweightActivity < ActiveRecord::Base
   end
 
   def export
-    activity_json = self.as_json(only: [:name,
+    activity_json = self.as_json(only: [:id,
+                                        :name,
                                         :related,
                                         :description,
                                         :time_to_complete,
