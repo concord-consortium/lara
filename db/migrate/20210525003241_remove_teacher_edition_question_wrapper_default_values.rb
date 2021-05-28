@@ -2,9 +2,16 @@ class RemoveTeacherEditionQuestionWrapperDefaultValues < ActiveRecord::Migration
   class Plugin < ActiveRecord::Base
   end
 
+  def valid_json(json) 
+      JSON.parse(json)
+      return true
+    rescue JSON::ParserError => e
+      return false
+  end
+
   def change
     Plugin.all.each do |p|
-      if p.author_data.present?
+      if p.author_data.present? && valid_json(p.author_data)
         author_data = JSON.parse(p.author_data)
         change_required = false
         if author_data["questionWrapper"]
