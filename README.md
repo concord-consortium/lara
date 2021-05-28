@@ -17,7 +17,7 @@ To get started quickly, run:
 
     docker-compose up
 
-You can now access LARA at http://localhost:3000  
+You can now access LARA at http://localhost:3000
 
 This will be very slow on OS X and not support a connection to the portal. So we use docker-compose override files to layer additional features onto the basic compose file. These overrides are specified in a `.env` file. To make the initial setup easier there is a `.env-osx-sample` file that contains the standard setup we use. So you can simply:
 
@@ -43,7 +43,9 @@ Finally, sign out and sign back in again using http://app.lara.docker/users/sign
 To use SSO with the Portal you need to make sure your `PORTAL_HOST` and `PORTAL_PROTOCOL` is set correctly in your lara `.env` file.
 
 1. In the Portal, edit `.env` and append `docker/dev/docker-compose-lara-proxy.yml` to the `COMPOSE_FILE` var.
-1. In the Portal, as an administrator, setup a new "Auth Client". Use the following settings:
+2. In the Portal, edit `.env` set SITE_URL=https://app.portal.docker (Ensure that its using https. Othewise there will be communication issues between Portal and lara)
+3. In the Portal, as an administrator, setup a new "Auth Client". Use the following settings:
+
 ```
 Name: `localhost`
 App Id: `localhost`
@@ -53,10 +55,12 @@ Site Url: `https://app.lara.docker` *(use https if you are running it that way..
 Allowed Domains: (leave blank)
 Allowed URL Redirects: 'https://app.lara.docker/users/auth/cc_portal_localhost/callback'
 ```
+
 1. In Lara, edit `.env` and append `docker/dev/docker-compose-portal-proxy.yml` to the `COMPOSE_FILE` var.
 2. You may need to use the rails console in LARA to set the `is_admin` flag to the portal admin user.
 
 ## Users and administration
+
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
 
 Some details about the relative authorization privileges of the author, admin and anonymous roles can be found by looking at the Ability class at `app/models/ability.rb`.
@@ -80,22 +84,23 @@ If you have a local webserver running on localhost:80 you either need to move th
 
 **Warning:** Switching to SSL might break some things. You will probably need to
 update database entities:
- * external_activities in the Portal
- * runs and sequence_runs in LARA (remote_endpoints)
- * maybe some SSO paths?
+
+- external_activities in the Portal
+- runs and sequence_runs in LARA (remote_endpoints)
+- maybe some SSO paths?
 
 Installing certificates, and configuring the docker overlay:
-1. install [mkcert](https://github.com/FiloSottile/mkcert) :  `brew install mkcert`
-2. Create and install the trusted CA in keychain:   `mkcert -install`
+
+1. install [mkcert](https://github.com/FiloSottile/mkcert) : `brew install mkcert`
+2. Create and install the trusted CA in keychain: `mkcert -install`
 3. Ensure you have a certificate directory: `mkdir -p ~/.dinghy/certs`
 4. Make certs:
-    1. `cd ~/.dinghy/certs`
-    2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
-    3. `mkcert -cert-file app.portal.docker.crt -key-file app.portal.docker.key app.portal.docker`
+   1. `cd ~/.dinghy/certs`
+   2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
+   3. `mkcert -cert-file app.portal.docker.crt -key-file app.portal.docker.key app.portal.docker`
 5. You should be using `docker-compose-portal-proxy.yml` in your docker overlays. Check for the
-`COMPOSE_FILE=` entry in `.env` includes that overlay.
+   `COMPOSE_FILE=` entry in `.env` includes that overlay.
 6. Edit your `.env` file to include `PORTAL_PROTOCOL=https`
-
 
 ## Editing CSS
 
@@ -112,6 +117,7 @@ Theme stylesheets must be added to the config.assets.precompile list in `config/
 in order to function in production environments.
 
 ## Running RSpec tests
+
 While developing, you might wish to run integration tests inside a
 Docker container.
 
@@ -125,11 +131,12 @@ For running the tests just once
 
     docker-compose exec app docker/dev/run-spec.sh
 
-It can also be useful to start a bash shell in the container, setup the test environment and then manually run rspec from inside of that shell.  You start a bash shell with
+It can also be useful to start a bash shell in the container, setup the test environment and then manually run rspec from inside of that shell. You start a bash shell with
 
     docker-compose exec app /bin/bash
 
 ## Adding code coverage reports
+
 If you set the `COVERAGE_REPORT` environment variable to a non-falsy value a html code coverage report will be generated in the (git ignored) `coverage` directory.
 
 To use this under Docker run `docker-compose up` followed by either
@@ -143,34 +150,34 @@ To use this under Docker run `docker-compose up` followed by either
 
 and open [http://localhost:8888](http://localhost:8888)
 
-*Running the tests with PhantomJS is not currently working*
+_Running the tests with PhantomJS is not currently working_
 If it was working you could run
 
     docker-compose run --rm app bundle exec rake jasmine:ci
 
-
 ## Adding Embeddable support
+
 _This may be obsolete as of April 2013_
 
 To support new Embeddables:
 
-* Add a model definition and controller in `app/models/embeddable/` `app/controllers/embeddable/`, respectively. The controller should have the necessary code to accept in-place-editing updates of individual fields in the Embeddable.
-* Add the resource to the "embeddable" namespace in `config/routes.rb`.
-* Add a view directory at `app/views/embeddable/<embeddable_name>`
-* Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
-* Provide a `_author.html.haml` partial as well (for editing the Embeddable)
-* Add the Embeddable to the `Embeddable::Types` constant in `app/models/embeddable.rb`.
-* Add a human name for the embeddable to the activerecord.models section in config/locales/en.yml
-* There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
+- Add a model definition and controller in `app/models/embeddable/` `app/controllers/embeddable/`, respectively. The controller should have the necessary code to accept in-place-editing updates of individual fields in the Embeddable.
+- Add the resource to the "embeddable" namespace in `config/routes.rb`.
+- Add a view directory at `app/views/embeddable/<embeddable_name>`
+- Provide a `_lightweight.html.haml` partial within that view directory (for showing the Embeddable within an InteractivePage)
+- Provide a `_author.html.haml` partial as well (for editing the Embeddable)
+- Add the Embeddable to the `Embeddable::Types` constant in `app/models/embeddable.rb`.
+- Add a human name for the embeddable to the activerecord.models section in config/locales/en.yml
+- There may be additional steps needed if the Embeddable is a question (i.e. it prompts the user for some kind of response which needs to be saved). Note `LightweightActivity#questions` for example.
 
 ## Current work: reporting
-LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
+LARA's runtime is being rebuilt to support reporting student answers and progress to [Concord's project portals](https://github.com/concord-consortium/rigse).
 
 ## External Scripting & new LARA Plugin API##
 
-* Legacy ExternalScript functionality is described in [external scripts doc](./docs/external-scripts-api.md)
-* Proposed API is defined in [LARA API Doc](./docs/lara-plugin-api.md)
+- Legacy ExternalScript functionality is described in [external scripts doc](./docs/external-scripts-api.md)
+- Proposed API is defined in [LARA API Doc](./docs/lara-plugin-api.md)
 
 ## Delayed Job background job processing
 
@@ -179,8 +186,8 @@ see the readme at the [github page](https://github.com/collectiveidea/delayed_jo
 Delayed Job will run in synchronous mode unless one of two conditions is
 met:
 
-   1. Rails is running in production mode, eg: `RAILS_ENV=production rails s`
-   2. The environment variable DELAYEDJOB is set, eg: `DELAYEDJOB=1 rails s`
+1.  Rails is running in production mode, eg: `RAILS_ENV=production rails s`
+2.  The environment variable DELAYEDJOB is set, eg: `DELAYEDJOB=1 rails s`
 
 This configuration check happens in the initializer `config/initializers/delayed_job_config.rb`
 
@@ -195,17 +202,15 @@ To enque a job simply add `handle_asynchronously :method_name` to your models. e
 
 There are other methods for enqueing jobs, but this is the easiest.
 
-
 ## Docker and docker-compose for developers:
 
 For more information about the docker setup look at [the portal docker documentation](https://github.com/concord-consortium/rigse/blob/master/docs/docker.md).
 
-* There is [LARA specific docker documentation](https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md) in this repo.
+- There is [LARA specific docker documentation](https://github.com/concord-consortium/lara/blob/master/docs/dockerdev.md) in this repo.
 
 ## History
 
 This application was developed as a standalone version of the original code developed for the [Lightweight Activities Plugin.](https://github.com/concord-consortium/lightweight-activities-plugin). "Lightweight" has a specific meaning at Concord; briefly, it means an activity or interactive which may be run without Java, and it implies HTML5.
-
 
 ## LARA Interactive API
 
@@ -214,7 +219,7 @@ The LARA Interactive API defines how the runtime javascript of LARA interacts wi
 ## Old Non Docker setup
 
 This example assumes that [rvm](https://rvm.io/) is installed. This
- could be a good idea because we use an older version of ruby.
+could be a good idea because we use an older version of ruby.
 
     git clone https://github.com/concord-consortium/lara.git
     cd lara
