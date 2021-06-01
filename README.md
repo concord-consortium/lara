@@ -54,7 +54,8 @@ Allowed Domains: (leave blank)
 Allowed URL Redirects: 'https://app.lara.docker/users/auth/cc_portal_localhost/callback'
 ```
 1. In Lara, edit `.env` and append `docker/dev/docker-compose-portal-proxy.yml` to the `COMPOSE_FILE` var.
-2. You may need to use the rails console in LARA to set the `is_admin` flag to the portal admin user.
+2. In the Portal, edit `.env` set SITE_URL=https://app.portal.docker (Ensure that its using https. Othewise there will be communication issues between Portal and lara)
+3. You may need to use the rails console in LARA to set the `is_admin` flag to the portal admin user.
 
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
