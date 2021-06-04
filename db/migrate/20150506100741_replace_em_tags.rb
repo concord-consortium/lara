@@ -1,4 +1,7 @@
 class ReplaceEmTags < ActiveRecord::Migration
+  class Project < ActiveRecord::Base
+  end
+
   def up
     ReplaceEmTags.replace_em_tags("<em>","<em class=\"credit\">")
   end
@@ -22,7 +25,7 @@ private
       seq.save
     end
 
-    Project.find_each do |p|
+    ReplaceEmTags::Project.find_each do |p|
       p.footer = p.footer.gsub(current_tag,replacement_tag) unless p.footer.blank?
       p.about = p.about.gsub(current_tag,replacement_tag) unless p.about.blank?
       p.help = p.help.gsub(current_tag,replacement_tag) unless p.help.blank?

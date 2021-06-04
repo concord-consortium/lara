@@ -252,8 +252,8 @@ describe Sequence do
         publication_status: sequence.publication_status,
         abstract: sequence.abstract,
         theme_id: sequence.theme_id,
-        project_id: sequence.project_id,
         logo: sequence.logo,
+        project: sequence.project,
         display_title: sequence.display_title,
         thumbnail_url: sequence.thumbnail_url,
         runtime: "LARA"

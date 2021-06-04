@@ -11,6 +11,7 @@ FactoryGirl.define do
     related { generate(:related) }
     description { generate(:description) }
     runtime "LARA"
+    project nil
   end
 
   factory :activity_with_page, :class => LightweightActivity do

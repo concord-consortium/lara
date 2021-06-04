@@ -3,7 +3,9 @@
 FactoryGirl.define do
   factory :project do
     title "MyString"
-    logo "MyString"
+    project_key "MyString"
+    logo_lara "MyString"
+    logo_ap "MyString"
     url "MyString"
     footer "MyText"
   end

@@ -5,13 +5,13 @@ describe "projects/index" do
     assign(:projects, [
       stub_model(Project,
         :title => "Title",
-        :logo => "Logo",
+        :logo_lara => "Logo",
         :url => "Url",
         :footer => "MyText"
       ),
       stub_model(Project,
         :title => "Title",
-        :logo => "Logo",
+        :logo_lara => "Logo",
         :url => "Url",
         :footer => "MyText"
       )

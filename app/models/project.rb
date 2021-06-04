@@ -1,14 +1,15 @@
 class Project < ActiveRecord::Base
   DefaultName = 'Default Project'
 
-  attr_accessible :footer, :logo, :title, :url, :theme_id, :about, :help
+  attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :theme_id, :about, :help, :project_key
+  validates :project_key, uniqueness: true
   has_many :sequences
   has_many :lightweight_activities
   belongs_to :theme
 
   protected
   def self.create_default
-    self.create(:title => DefaultName, :logo => '', :url => 'https://concord.org/')
+    self.create(:title => DefaultName, :logo_lara => '', :url => 'https://concord.org/', :project_key => 'default-project')
   end
 
   public
@@ -50,5 +51,35 @@ class Project < ActiveRecord::Base
   def image_file_exists?(filename)
     return File.exists?(Rails.root.join('public', 'assets', filename)) ||
            File.exists?(Rails.root.join('app', 'assets', 'images', filename))
+  end
+
+  def export
+    project_json = self.as_json(only: [:about,
+                                       :footer,
+                                       :help,
+                                       :logo_ap,
+                                       :logo_lara,
+                                       :project_key,
+                                       :title,
+                                       :url])
+    return project_json
+  end
+
+  def self.find_or_create(project_data)
+    existing_project = Project.where(:project_key => project_data[:project_key]).first
+    if existing_project.blank?
+      new_project = Project.new(about: project_data[:about],
+                                footer: project_data[:footer],
+                                help: project_data[:help],
+                                logo_ap: project_data[:logo_ap],
+                                logo_lara: project_data[:logo_lara],
+                                project_key: project_data[:project_key],
+                                title: project_data[:title],
+                                url: project_data[:url])
+      new_project.save
+      return new_project
+    else
+      return existing_project
+    end
   end
 end

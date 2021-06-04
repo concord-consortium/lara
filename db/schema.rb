@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210525003241) do
+ActiveRecord::Schema.define(:version => 20210604012146) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -594,16 +594,19 @@ ActiveRecord::Schema.define(:version => 20210525003241) do
 
   create_table "projects", :force => true do |t|
     t.string   "title"
-    t.string   "logo"
+    t.string   "logo_lara"
     t.string   "url"
     t.text     "footer"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "theme_id"
     t.text     "about"
     t.text     "help"
+    t.string   "logo_ap"
+    t.string   "project_key"
   end
 
+  add_index "projects", ["project_key"], :name => "index_projects_on_project_key", :unique => true
   add_index "projects", ["theme_id"], :name => "index_projects_on_theme_id"
 
   create_table "question_trackers", :force => true do |t|

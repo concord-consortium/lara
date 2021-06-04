@@ -2,7 +2,7 @@ class Sequence < ActiveRecord::Base
 
   attr_accessible :description, :title, :theme_id, :project_id,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :runtime
+    :runtime, :project
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -51,7 +51,7 @@ class Sequence < ActiveRecord::Base
       publication_status: publication_status,
       abstract: abstract,
       theme_id: theme_id,
-      project_id: project_id,
+      project: project,
       logo: logo,
       display_title: display_title,
       thumbnail_url: thumbnail_url,
@@ -96,12 +96,12 @@ class Sequence < ActiveRecord::Base
                                         :description,
                                         :abstract,
                                         :theme_id,
-                                        :project_id,
                                         :logo,
                                         :display_title,
                                         :thumbnail_url,
                                         :runtime
     ])
+    sequence_json[:project] = self.project ? self.project.export : nil
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
       activity_hash = a.export
@@ -196,13 +196,12 @@ class Sequence < ActiveRecord::Base
     return uri.to_s
   end
 
-  def self.extact_from_hash(sequence_json_object)
+  def self.extract_from_hash(sequence_json_object)
     {
       abstract: sequence_json_object[:abstract],
       description: sequence_json_object[:description],
       display_title: sequence_json_object[:display_title],
       logo: sequence_json_object[:logo],
-      project_id: sequence_json_object[:project_id],
       theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
       title: sequence_json_object[:title],
@@ -213,8 +212,9 @@ class Sequence < ActiveRecord::Base
 
   def self.import(sequence_json_object, new_owner, imported_activity_url=nil)
     helper = LaraSerializationHelper.new
-    import_sequence = Sequence.new(self.extact_from_hash(sequence_json_object))
+    import_sequence = Sequence.new(self.extract_from_hash(sequence_json_object))
     import_sequence.runtime = sequence_json_object[:runtime]
+    import_sequence.project = Project.find_or_create(sequence_json_object[:project]) if sequence_json_object[:project]
     Sequence.transaction do
       import_sequence.title = import_sequence.title
       import_sequence.imported_activity_url = imported_activity_url
