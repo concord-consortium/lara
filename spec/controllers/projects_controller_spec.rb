@@ -55,16 +55,16 @@ describe ProjectsController do
       it "creates a new Project" do
         expect {
           post :create, {:project => {
-            :title => "Test Project 1",
-            :project_key => "test-project-1"
+            :project_key => "test-project-a",
+            :title => "Test Project A"
           }}
         }.to change(Project, :count).by(1)
       end
 
       it "assigns a newly created project as @project" do
         post :create, {:project => {
-          :title => "Test Project 2",
-          :project_key => "test-project-2"
+          :project_key => "test-project-b",
+          :title => "Test Project B"
         }}
         expect(assigns(:project)).to be_a(Project)
         expect(assigns(:project)).to be_persisted
@@ -72,8 +72,8 @@ describe ProjectsController do
 
       it "redirects to the created project" do
         post :create, {:project => {
-          :title => "Test Project 3",
-          :project_key => "test-project-3"
+          :project_key => "test-project-c",
+          :title => "Test Project C"
         }}
         expect(response).to redirect_to(edit_project_url(Project.last))
       end

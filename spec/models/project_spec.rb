@@ -43,8 +43,9 @@ describe Project do
   end
 
   describe "Project.find_or_create" do
-    project_data = {project_key: "default-project", title: "Default Project"}
     it "finds a project when it exists" do
+      Project.send(:create_default)
+      project_data = {project_key: "default-project", title: "Default Project"}
       project = Project.find_or_create(project_data)
       expect(project).to be_a(Project)
       expect(project.project_key).to eq("default-project")

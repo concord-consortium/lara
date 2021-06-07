@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   DefaultName = 'Default Project'
+  DefaultKey = 'default-project'
 
   attr_accessible :footer, :logo_lara, :logo_ap, :title, :url, :theme_id, :about, :help, :project_key
   validates :project_key, uniqueness: true
@@ -9,7 +10,7 @@ class Project < ActiveRecord::Base
 
   protected
   def self.create_default
-    self.create(:title => DefaultName, :logo_lara => '', :url => 'https://concord.org/', :project_key => 'default-project')
+    self.create(:title => DefaultName, :logo_lara => '', :url => 'https://concord.org/', :project_key => DefaultKey)
   end
 
   public
