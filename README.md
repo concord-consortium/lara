@@ -104,8 +104,10 @@ Installing certificates, and configuring the docker overlay:
 4. Make certs:
     1. `cd ~/.dinghy/certs`
     2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
-       [For automation `mkcert -cert-file authoring.dev.docker.crt -key-file authoring.dev.docker.key authoring.dev.docker`]
-    3. `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker` 
+    3. `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker`
+    4. For automation:
+       1.  `mkcert -cert-file authoring.dev.docker.crt -key-file authoring.dev.docker.key authoring.dev.docker`
+       2.  `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker`
 5. You should be using `docker-compose-portal-proxy.yml` in your docker overlays. Check for the
 `COMPOSE_FILE=` entry in `.env` includes that overlay.
 6. Edit your `.env` file to include `PORTAL_PROTOCOL=https`
