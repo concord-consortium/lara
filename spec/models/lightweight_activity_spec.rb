@@ -183,10 +183,10 @@ describe LightweightActivity do
         show_submit_button: true,
         description: activity.description,
         time_to_complete: activity.time_to_complete,
-        project_id: activity.project_id,
         theme_id: activity.theme_id,
         thumbnail_url: activity.thumbnail_url,
         notes: activity.notes,
+        project: activity.project,
         layout: activity.layout,
         editor_mode: activity.editor_mode,
         runtime: "LARA" }

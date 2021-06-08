@@ -13,11 +13,19 @@
     %br
     = f.text_field :title
   .field
-    = f.label :logo
+    = f.label :project_key
     %br
-    = f.text_field :logo
+    = f.text_field :project_key
   .field
-    = f.label :url
+    = f.label :logo_lara, "Logo URL for LARA runtime"
+    %br
+    = f.text_field :logo_lara
+  .field
+    = f.label :logo_ap, "Logo URL for Activity Player"
+    %br
+    = f.text_field :logo_ap
+  .field
+    = f.label :url, "URL"
     %br
     = f.text_field :url
   .field

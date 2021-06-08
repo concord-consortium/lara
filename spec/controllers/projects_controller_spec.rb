@@ -54,18 +54,27 @@ describe ProjectsController do
     describe "with valid params" do
       it "creates a new Project" do
         expect {
-          post :create, {:project => {}}
+          post :create, {:project => {
+            :project_key => "test-project-a",
+            :title => "Test Project A"
+          }}
         }.to change(Project, :count).by(1)
       end
 
       it "assigns a newly created project as @project" do
-        post :create, {:project => {}}
+        post :create, {:project => {
+          :project_key => "test-project-b",
+          :title => "Test Project B"
+        }}
         expect(assigns(:project)).to be_a(Project)
         expect(assigns(:project)).to be_persisted
       end
 
       it "redirects to the created project" do
-        post :create, {:project => {}}
+        post :create, {:project => {
+          :project_key => "test-project-c",
+          :title => "Test Project C"
+        }}
         expect(response).to redirect_to(edit_project_url(Project.last))
       end
     end
@@ -128,14 +137,14 @@ describe ProjectsController do
 
   describe "DELETE destroy" do
     it "destroys the requested project" do
-      project = Project.create! {}
+      project = Project.create(:project_key => "something-unique-123-abc")
       expect {
         delete :destroy, {:id => project.id}
       }.to change(Project, :count).by(-1)
     end
 
     it "redirects to the projects list" do
-      project = Project.create! {}
+      project = Project.create(:project_key => "something-unique-123-abc")
       delete :destroy, {:id => project.id}
       expect(response).to redirect_to(projects_url)
     end

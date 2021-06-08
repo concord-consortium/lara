@@ -4,6 +4,7 @@ FactoryGirl.define do
   sequence(:word)         { |n| Faker::Lorem.word     }
   sequence(:sentence)     { |n| Faker::Lorem.sentence }
   sequence(:author_data)  { |n| Faker::Lorem.sentence }
+
   factory :approved_script do
     json_url { generate(:url) }
     name { generate(:word) }

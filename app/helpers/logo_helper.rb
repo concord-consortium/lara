@@ -10,8 +10,8 @@ module LogoHelper
 
   def project_logo_tag
     project = @project
-    if project and project.logo.present?
-      return logo_tag(project.logo, project.title, project.url)
+    if project and project.logo_lara.present?
+      return logo_tag(project.logo_lara, project.title, project.url)
     end
     return nil
   end
