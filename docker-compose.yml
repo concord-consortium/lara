@@ -16,8 +16,8 @@ services:
       LARA_VERSION: Local Docker
       REPORT_SERVICE_TOKEN:
       REPORT_SERVICE_URL:
-      REPORT_SERVICE_SELF_URL:
-      REPORT_SERVICE_TOOL_ID:
+      REPORT_SERVICE_SELF_URL: "${LARA_PROTOCOL:-http}://${LARA_HOST:-app.lara.docker}"
+      REPORT_SERVICE_TOOL_ID: "${LARA_HOST:-app.lara.docker}.${USER}"
       SECRET_TOKEN: b30c94c7-81b7-4f20-8df9-686b079a616a
       SHUTTERBUG_URI:
       # Enables logging to stdout instead of file.
@@ -28,6 +28,9 @@ services:
       ACTIVITY_PLAYER_URL: "${ACTIVITY_PLAYER_URL:-https://activity-player.concord.org/branch/master/}"
       # URL of script to create an Activity Player compatible version of resources by converting old embeddables to library interactives
       CONVERSION_SCRIPT_URL: "${CONVERSION_SCRIPT_URL:-https://models-resources.concord.org/question-interactives/convert-old-lara/?lara_root=https://app.lara.docker&template=https://app.lara.docker/api/v1/activities/214.json}"
+
+      VIRTUAL_HOST: "${LARA_HOST:-app.lara.docker}"
+
     # no ports are published, see below for details
     depends_on:
       - db

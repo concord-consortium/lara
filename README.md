@@ -57,6 +57,16 @@ Allowed URL Redirects: 'https://app.lara.docker/users/auth/cc_portal_localhost/c
 2. In the Portal, edit `.env` set SITE_URL=https://app.portal.docker (Ensure that its using https. Othewise there will be communication issues between Portal and lara)
 3. You may need to use the rails console in LARA to set the `is_admin` flag to the portal admin user.
 
+### Communication with reporting service
+To communicate with reporting service you need to make sure you update '.env' with below variables
+1. REPORT_SERVICE_URL=https://us-central1-report-service-dev.cloudfunctions.net/api
+2. REPORT_SERVICE_TOKEN=
+
+### Automation setup to use same super domain for portal and lara
+Automation scripts need portal and lara to be in same super domain.
+1. In Lara edit '.env' and add LARA_HOST as authoring.dev.docker and LARA_PROTOCOL as https
+2. In Lara edit '.env' and update PORTAL_HOST as learn.dev.docker and PORTAL_PROTOCOL as https
+
 ## Users and administration
 User authentication is handled by [Devise](https://github.com/plataformatec/devise). Currently, the confirmation plugin is not enabled, so anyone who fills out the registration form at `/users/sign_up` will be automatically confirmed as a user. To get author or administrator privilege, the newly-registered user would need to be given those privileges by an existing admin user (on deployed systems e.g. staging or production).
 
@@ -93,6 +103,9 @@ Installing certificates, and configuring the docker overlay:
     1. `cd ~/.dinghy/certs`
     2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
     3. `mkcert -cert-file app.portal.docker.crt -key-file app.portal.docker.key app.portal.docker`
+    4. For automation:
+       1.  `mkcert -cert-file authoring.dev.docker.crt -key-file authoring.dev.docker.key authoring.dev.docker`
+       2.  `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker`
 5. You should be using `docker-compose-portal-proxy.yml` in your docker overlays. Check for the
 `COMPOSE_FILE=` entry in `.env` includes that overlay.
 6. Edit your `.env` file to include `PORTAL_PROTOCOL=https`
