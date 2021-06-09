@@ -60,9 +60,7 @@ Allowed URL Redirects: 'https://app.lara.docker/users/auth/cc_portal_localhost/c
 ### Communication with reporting service
 To communicate with reporting service you need to make sure you update '.env' with below variables
 1. REPORT_SERVICE_URL=https://us-central1-report-service-dev.cloudfunctions.net/api
-2. REPORT_SERVICE_TOKEN as 'devtoken' for development
-3. REPORT_SERVICE_SELF_URL=https://app.lara.docker (for automation https://authoring.dev.docker) 
-4. REPORT_SERVICE_TOOL_ID with lara host name. Example: app.lara.docker  and for automation authoring.dev.docker
+2. REPORT_SERVICE_TOKEN=
 
 ### Automation setup to use same super domain for portal and lara
 Automation scripts need portal and lara to be in same super domain.
@@ -104,7 +102,7 @@ Installing certificates, and configuring the docker overlay:
 4. Make certs:
     1. `cd ~/.dinghy/certs`
     2. `mkcert -cert-file app.lara.docker.crt -key-file app.lara.docker.key app.lara.docker`
-    3. `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker`
+    3. `mkcert -cert-file app.portal.docker.crt -key-file app.portal.docker.key app.portal.docker`
     4. For automation:
        1.  `mkcert -cert-file authoring.dev.docker.crt -key-file authoring.dev.docker.key authoring.dev.docker`
        2.  `mkcert -cert-file learn.dev.docker.crt -key-file learn.dev.docker.key learn.dev.docker`
