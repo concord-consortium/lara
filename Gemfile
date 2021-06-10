@@ -91,7 +91,7 @@ gem "omniauth-oauth2", "~> 1.1", {:git=>"https://github.com/intridea/omniauth-oa
 gem "default_value_for", "~> 2.0"
 gem "tinymce-rails", "~> 4.7"
 gem "yaml_db", "~> 0.2", {:git=>"git://github.com/lostapathy/yaml_db.git"}
-gem "aws-ses", "~> 0.5", {:require=>"aws/ses"}
+gem "aws-ses", git: "https://github.com/zebitex/aws-ses.git", ref: "78-sigv4-problem"
 gem "uuidtools", "~> 2.1"
 gem "httparty", "~> 0.12"
 gem "exception_notification", "~> 4.0"
