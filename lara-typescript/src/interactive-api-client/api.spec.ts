@@ -136,47 +136,51 @@ describe("api", () => {
 
   describe("getFirebaseJwt", () => {
     it("supports multiple calls", async () => {
-      const requestContent: string[] = [
-        "foo",
-        "bar",
-        "baz"
-      ];
-      mockedPhone.fakeServerMessage({
-        type: "initInteractive",
-        content: {
-          mode: "runtime",
-          hostFeatures: {
-            getFirebaseJwt: {version: "1.0.0"}
+      ["runtime", "authoring"].forEach(async (mode) => {
+        const requestContent: string[] = [
+          "foo",
+          "bar",
+          "baz"
+        ];
+        mockedPhone.fakeServerMessage({
+          type: "initInteractive",
+          content: {
+            mode,
+            hostFeatures: {
+              getFirebaseJwt: {version: "1.0.0"}
+            }
           }
-        }
-      });
-      await testRequestResponse({
-        method: api.getFirebaseJwt,
-        requestType: "getFirebaseJwt",
-        requestContent,
-        responseType: "firebaseJWT",
-        responseContent: [
-          // Tokens generated using: https://jwt.io/
-          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
-          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
-          {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
-        ],
-        resolvesTo: [
-          {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
-          {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
-          {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
-        ]
+        });
+        await testRequestResponse({
+          method: api.getFirebaseJwt,
+          requestType: "getFirebaseJwt",
+          requestContent,
+          responseType: "firebaseJWT",
+          responseContent: [
+            // Tokens generated using: https://jwt.io/
+            {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+            {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+            {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"}
+          ],
+          resolvesTo: [
+            {claims: { claims: { platform_user_id: 1 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6MX19.uA1QBaqlcsWv7cGIEn9WvhBT1PZW7l1VD28dz9mu-U8"},
+            {claims: { claims: { platform_user_id: 2 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6Mn19.--dC7AzrLHCGENkoGbwtJvst0OEG2IDZmDZSMZG-6D0"},
+            {claims: { claims: { platform_user_id: 3 } }, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsicGxhdGZvcm1fdXNlcl9pZCI6M319.yxGmCe0ZDavxl1NFrVw9-WDhbDFZ6J5hKdhXDeUPkAQ"},
+          ]
+        });
       });
     });
 
     it("fails when hostFeatures.getFirebaseJwt is not present", async () => {
-      mockedPhone.fakeServerMessage({
-        type: "initInteractive",
-        content: {
-          mode: "runtime"
-        }
+      ["runtime", "authoring"].forEach(async (mode) => {
+        mockedPhone.fakeServerMessage({
+          type: "initInteractive",
+          content: {
+            mode
+          }
+        });
+        await expect(api.getFirebaseJwt("foo")).rejects.toEqual("getFirebaseJwt not supported by the host environment");
       });
-      await expect(api.getFirebaseJwt("foo")).rejects.toEqual("getFirebaseJwt not supported by the host environment");
     });
 
     it("handles errors from getFirebaseJwt", () => {

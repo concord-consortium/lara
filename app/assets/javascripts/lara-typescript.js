@@ -29036,6 +29036,17 @@ var InteractiveAuthoring = function (props) {
         version: 1,
         error: null,
         mode: "authoring",
+        hostFeatures: {
+            modal: {
+                version: "1.0.0",
+                dialog: false,
+                lightbox: true,
+                alert: true
+            },
+            getFirebaseJwt: {
+                version: "1.0.0",
+            }
+        },
         authoredState: authoredState,
         themeInfo: {
             colors: {
@@ -29117,6 +29128,31 @@ var InteractiveIframe = function (props) {
             }
         });
     };
+    var handleGetFirebaseJwt = function (request) {
+        var requestId = request ? request.requestId : undefined;
+        var opts = request || {};
+        if (opts.requestId) {
+            delete opts.requestId;
+        }
+        var createResponse = function (baseResponse) {
+            if (requestId) {
+                baseResponse.requestId = requestId;
+            }
+            return baseResponse;
+        };
+        // TODO: after typescript upgrade remove `requestId: requestId!, `
+        return $.ajax({
+            type: "POST",
+            url: "/api/v1/get_firebase_jwt",
+            data: opts,
+            success: function (data) {
+                phone.post("firebaseJWT", createResponse({ requestId: requestId, token: data.token }));
+            },
+            error: function (jqxhr, status, error) {
+                phone.post("firebaseJWT", createResponse({ requestId: requestId, response_type: "ERROR", message: error }));
+            }
+        });
+    };
     var _c = react_1.useState(0), iframeId = _c[0], setIFrameId = _c[1];
     var phone;
     var connect = function () {
@@ -29138,6 +29174,9 @@ var InteractiveIframe = function (props) {
         }
         phone.addListener("setLinkedInteractives", function (request) {
             onLinkedInteractivesChange === null || onLinkedInteractivesChange === void 0 ? void 0 : onLinkedInteractivesChange(request);
+        });
+        phone.addListener("getFirebaseJWT", function (request) {
+            return handleGetFirebaseJwt(request);
         });
     };
     var disconnect = function () {

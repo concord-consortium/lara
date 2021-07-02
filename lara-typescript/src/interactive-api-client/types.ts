@@ -79,6 +79,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   version: 1;
   error: null;
   mode: "authoring";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
   interactiveItemId: string;
@@ -176,10 +177,12 @@ export type IRuntimeServerMessage = "authInfo" |
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
-                                      "setLinkedInteractives"
+                                      "setLinkedInteractives" |
+                                      "getFirebaseJWT"
                                       ;
 
-export type IAuthoringServerMessage = "interactiveList"
+export type IAuthoringServerMessage = "interactiveList" |
+                                      "firebaseJWT"
                                       ;
 
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
