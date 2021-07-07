@@ -44078,7 +44078,6 @@ var THROW_NOT_IMPLEMENTED_YET = function (method) {
 };
 var getInitInteractiveMessage = function () {
     var client = client_1.getClient();
-    // tslint:disable-next-line:max-line-length
     return new Promise(function (resolve) {
         if (client.managedState.initMessage) {
             resolve(client.managedState.initMessage);

@@ -6,9 +6,9 @@ jest.mock("iframe-phone", () => {
   return mockIFramePhone();
 });
 
-let inIframe = false;
+const inIframe = jest.fn();
 jest.mock("./in-frame", () => ({
-  inIframe: () => inIframe
+  inIframe: () => inIframe()
 }));
 
 const mockedPhone = iframePhone.getIFrameEndpoint() as unknown as MockPhone;
@@ -20,7 +20,9 @@ describe("Client", () => {
 
   describe("outside of an iframe", () => {
     beforeEach(() => {
-      inIframe = false;
+      inIframe.mockImplementation(() => false);
+      // suppress console warning
+      jest.spyOn(global.console, "warn").mockImplementation(() => null);
     });
 
     it("does not throw an error", () => {
@@ -32,7 +34,7 @@ describe("Client", () => {
 
   describe("inside of an iframe", () => {
     beforeEach(() => {
-      inIframe = true;
+      inIframe.mockImplementation(() => true);
     });
 
     it("throws an error when second Client instance is created", () => {

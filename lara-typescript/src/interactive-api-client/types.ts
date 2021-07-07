@@ -47,6 +47,7 @@ export interface IRuntimeInitInteractive<InteractiveState = {}, AuthoredState = 
   authoredState: AuthoredState | null;
   globalInteractiveState: GlobalInteractiveState | null;
   interactiveStateUrl: string;
+  runRemoteEndpoint?: string;
   collaboratorUrls: string[] | null;
   classInfoUrl: string;
   interactive: {
