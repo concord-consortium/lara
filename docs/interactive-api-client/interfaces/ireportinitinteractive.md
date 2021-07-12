@@ -17,6 +17,7 @@
 ### Properties
 
 * [authoredState](ireportinitinteractive.md#authoredstate)
+* [hostFeatures](ireportinitinteractive.md#hostfeatures)
 * [interactiveState](ireportinitinteractive.md#interactivestate)
 * [mode](ireportinitinteractive.md#mode)
 * [themeInfo](ireportinitinteractive.md#themeinfo)
@@ -27,6 +28,12 @@
 ###  authoredState
 
 • **authoredState**: *AuthoredState*
+
+___
+
+###  hostFeatures
+
+• **hostFeatures**: *[IHostFeatures](ihostfeatures.md)*
 
 ___
 

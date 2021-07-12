@@ -17,6 +17,7 @@
 ### Properties
 
 * [authoredState](iaggregateinitinteractive.md#authoredstate)
+* [hostFeatures](iaggregateinitinteractive.md#hostfeatures)
 * [interactiveState](iaggregateinitinteractive.md#interactivestate)
 * [mode](iaggregateinitinteractive.md#mode)
 * [version](iaggregateinitinteractive.md#version)
@@ -26,6 +27,12 @@
 ###  authoredState
 
 • **authoredState**: *AuthoredState*
+
+___
+
+###  hostFeatures
+
+• **hostFeatures**: *[IHostFeatures](ihostfeatures.md)*
 
 ___
 

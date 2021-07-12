@@ -21,5 +21,10 @@
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"],
     "no-namespace": false,
     "react-hooks-nesting": "error"
+  },
+  "linterOptions": {
+    "exclude": [
+      "src/interactive-api-client/node_modules/**"
+    ]
   }
 }

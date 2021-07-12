@@ -191,7 +191,7 @@ ___
 
 ###  IAuthoringClientMessage
 
-Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives"*
+Ƭ **IAuthoringClientMessage**: *"getInteractiveList" | "setLinkedInteractives" | "getFirebaseJWT"*
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 ###  IAuthoringServerMessage
 
-Ƭ **IAuthoringServerMessage**: *"interactiveList"*
+Ƭ **IAuthoringServerMessage**: *"interactiveList" | "firebaseJWT"*
 
 ___
 

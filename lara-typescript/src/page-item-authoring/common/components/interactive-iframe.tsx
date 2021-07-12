@@ -6,6 +6,9 @@ import * as LaraInteractiveApi from "../../../interactive-api-client";
 import { IInteractiveListResponseItem, IInitInteractive } from "../../../interactive-api-client";
 import { AuthoringApiUrls } from "../types";
 
+type IGetFirebaseJwtRequestOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtRequest;
+type IGetFirebaseJwtResponseOptionalRequestId = LaraInteractiveApi.IGetFirebaseJwtResponse;
+
 interface Props {
   src: string;
   width: string | number;
@@ -80,6 +83,33 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
       }});
   };
 
+  const handleGetFirebaseJwt = (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
+    const requestId = request ? request.requestId : undefined;
+    const opts: any = request || {};
+    if (opts.requestId) {
+      delete opts.requestId;
+    }
+
+    const createResponse = (baseResponse: IGetFirebaseJwtResponseOptionalRequestId) => {
+      if (requestId) {
+        baseResponse.requestId = requestId;
+      }
+      return baseResponse;
+    };
+
+    // TODO: after typescript upgrade remove `requestId: requestId!, `
+    return $.ajax({
+      type: "POST",
+      url: "/api/v1/get_firebase_jwt",
+      data: opts,
+      success: (data: {token: string}) => {
+        phone.post("firebaseJWT", createResponse({requestId: requestId!, token: data.token}));
+      },
+      error: (jqxhr, status, error) => {
+        phone.post("firebaseJWT", createResponse({requestId: requestId!, response_type: "ERROR", message: error}));
+    }});
+  };
+
   const [iframeId, setIFrameId] = useState<number>(0);
   let phone: IFramePhoneParentEndpoint;
 
@@ -106,6 +136,10 @@ export const InteractiveIframe: React.FC<Props> = (props) => {
 
     phone.addListener("setLinkedInteractives", (request: LaraInteractiveApi.ISetLinkedInteractives) => {
       onLinkedInteractivesChange?.(request);
+    });
+
+    phone.addListener("getFirebaseJWT", (request?: IGetFirebaseJwtRequestOptionalRequestId) => {
+      return handleGetFirebaseJwt(request);
     });
   };
 

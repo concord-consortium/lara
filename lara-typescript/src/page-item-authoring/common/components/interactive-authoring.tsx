@@ -48,6 +48,11 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
     version: 1,
     error: null,
     mode: "authoring",
+    hostFeatures: {
+      getFirebaseJwt: {
+        version: "1.0.0",
+      }
+    },
     authoredState,
     themeInfo: {            // TODO: add theme colors (future story)
       colors: {

@@ -16,6 +16,7 @@
 
 * [authoredState](iauthoringinitinteractive.md#authoredstate)
 * [error](iauthoringinitinteractive.md#error)
+* [hostFeatures](iauthoringinitinteractive.md#hostfeatures)
 * [interactiveItemId](iauthoringinitinteractive.md#interactiveitemid)
 * [linkedInteractives](iauthoringinitinteractive.md#linkedinteractives)
 * [mode](iauthoringinitinteractive.md#mode)
@@ -33,6 +34,12 @@ ___
 ###  error
 
 • **error**: *null*
+
+___
+
+###  hostFeatures
+
+• **hostFeatures**: *[IHostFeatures](ihostfeatures.md)*
 
 ___
 

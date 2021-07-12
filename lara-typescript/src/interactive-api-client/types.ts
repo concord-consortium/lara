@@ -80,6 +80,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
   version: 1;
   error: null;
   mode: "authoring";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState | null;
   themeInfo: IThemeInfo;
   interactiveItemId: string;
@@ -89,6 +90,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
   themeInfo: IThemeInfo;
@@ -97,6 +99,7 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
 export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "aggregate";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
 }
@@ -177,10 +180,12 @@ export type IRuntimeServerMessage = "authInfo" |
                                        ;
 
 export type IAuthoringClientMessage = "getInteractiveList" |
-                                      "setLinkedInteractives"
+                                      "setLinkedInteractives" |
+                                      "getFirebaseJWT"
                                       ;
 
-export type IAuthoringServerMessage = "interactiveList"
+export type IAuthoringServerMessage = "interactiveList" |
+                                      "firebaseJWT"
                                       ;
 
 export type GlobalIFrameSaverClientMessage = "interactiveStateGlobal";
