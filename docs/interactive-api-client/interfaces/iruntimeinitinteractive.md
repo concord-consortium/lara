@@ -39,6 +39,7 @@
 * [mode](iruntimeinitinteractive.md#mode)
 * [pageName](iruntimeinitinteractive.md#optional-pagename)
 * [pageNumber](iruntimeinitinteractive.md#optional-pagenumber)
+* [runRemoteEndpoint](iruntimeinitinteractive.md#optional-runremoteendpoint)
 * [themeInfo](iruntimeinitinteractive.md#themeinfo)
 * [updatedAt](iruntimeinitinteractive.md#optional-updatedat)
 * [version](iruntimeinitinteractive.md#version)
@@ -190,6 +191,12 @@ ___
 • **pageNumber**? : *undefined | number*
 
 *Inherited from [IInteractiveStateProps](iinteractivestateprops.md).[pageNumber](iinteractivestateprops.md#optional-pagenumber)*
+
+___
+
+### `Optional` runRemoteEndpoint
+
+• **runRemoteEndpoint**? : *undefined | string*
 
 ___
 
