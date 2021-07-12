@@ -135,13 +135,19 @@ describe("api", () => {
   });
 
   describe("getFirebaseJwt", () => {
-    it("supports multiple calls", async () => {
-      ["runtime", "authoring"].forEach(async (mode) => {
+    const modesToTest = ["runtime", "authoring"];
+
+    for(let mode of modesToTest) {
+      it(`supports multiple calls in mode: ${mode}`, async () => {
         const requestContent: string[] = [
           "foo",
           "bar",
           "baz"
         ];
+
+        // 1 assertion for each requestContent, plus 1 additional assertion
+        expect.assertions(requestContent.length+1);
+
         mockedPhone.fakeServerMessage({
           type: "initInteractive",
           content: {
@@ -169,7 +175,7 @@ describe("api", () => {
           ]
         });
       });
-    });
+    }
 
     it("fails when hostFeatures.getFirebaseJwt is not present", async () => {
       ["runtime", "authoring"].forEach(async (mode) => {
