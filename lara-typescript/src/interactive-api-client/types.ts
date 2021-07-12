@@ -89,6 +89,7 @@ export interface IAuthoringInitInteractive<AuthoredState = {}> {
 export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "report";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
   themeInfo: IThemeInfo;
@@ -97,6 +98,7 @@ export interface IReportInitInteractive<InteractiveState = {}, AuthoredState = {
 export interface IAggregateInitInteractive<InteractiveState = {}, AuthoredState = {}> {
   version: 1;
   mode: "aggregate";
+  hostFeatures: IHostFeatures;
   authoredState: AuthoredState;
   interactiveState: InteractiveState;
 }

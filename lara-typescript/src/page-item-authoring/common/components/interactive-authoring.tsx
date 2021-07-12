@@ -49,12 +49,6 @@ export const InteractiveAuthoring: React.FC<Props> = (props) => {
     error: null,
     mode: "authoring",
     hostFeatures: {
-      modal: {
-        version: "1.0.0",
-        dialog: false,
-        lightbox: true,
-        alert: true
-      },
       getFirebaseJwt: {
         version: "1.0.0",
       }
