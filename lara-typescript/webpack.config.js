@@ -68,10 +68,12 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new CopyPlugin([
-        { from: 'src/plugin-api/package.json', to: 'plugin-api' },
-        { from: 'src/plugin-api/README.md', to: 'plugin-api' },
-      ]),
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/plugin-api/package.json', to: 'plugin-api' },
+          { from: 'src/plugin-api/README.md', to: 'plugin-api' },
+        ]
+      }),
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
@@ -128,10 +130,12 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new CopyPlugin([
-        { from: 'src/interactive-api-client/package.json', to: 'interactive-api-client' },
-        { from: 'src/interactive-api-client/README.md', to: 'interactive-api-client' }
-      ])
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/interactive-api-client/package.json', to: 'interactive-api-client' },
+          { from: 'src/interactive-api-client/README.md', to: 'interactive-api-client' }
+        ]
+      })
     ],
     externals: {
       'react': 'commonjs2 react'   // allows interactives to use their own react instead of bundling it in this library
@@ -178,10 +182,12 @@ module.exports = (env, argv) => {
       warningsFilter: /export .* was not found in/
     },
     plugins: [
-      new CopyPlugin([
-        { from: 'src/example-interactive/index.html', to: 'example-interactive' },
-        { from: 'src/example-interactive/index.css', to: 'example-interactive' }
-      ])
+      new CopyPlugin({
+        patterns: [
+          { from: 'src/example-interactive/index.html', to: 'example-interactive' },
+          { from: 'src/example-interactive/index.css', to: 'example-interactive' }
+        ]
+      })
     ]
   }];
 };

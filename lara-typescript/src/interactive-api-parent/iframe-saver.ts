@@ -251,7 +251,7 @@ export class IFrameSaver {
       } else {
         $container.find(".help-icon").addClass("hidden");
       }
-      const html = DOMPurify.sanitize(hintRequest.text || "", {SAFE_FOR_JQUERY: true});
+      const html = DOMPurify.sanitize(hintRequest.text || "");
       $container.find(".help-content .text").html(html);
     });
 
