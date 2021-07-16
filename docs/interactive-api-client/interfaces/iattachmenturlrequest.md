@@ -14,11 +14,18 @@
 
 ### Properties
 
+* [expires](iattachmenturlrequest.md#optional-expires)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
 * [requestId](iattachmenturlrequest.md#requestid)
 
 ## Properties
+
+### `Optional` expires
+
+• **expires**? : *undefined | number*
+
+___
 
 ###  name
 

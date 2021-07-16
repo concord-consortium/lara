@@ -45410,6 +45410,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAttachmentUrl = exports.readAttachment = exports.writeAttachment = exports.getLibraryInteractiveList = exports.getInteractiveSnapshot = exports.setLinkedInteractives = exports.getInteractiveList = exports.closeModal = exports.showModal = exports.removeLinkedInteractiveStateListener = exports.addLinkedInteractiveStateListener = exports.removeGlobalInteractiveStateListener = exports.addGlobalInteractiveStateListener = exports.removeAuthoredStateListener = exports.addAuthoredStateListener = exports.removeInteractiveStateListener = exports.addInteractiveStateListener = exports.log = exports.getFirebaseJwt = exports.getAuthInfo = exports.setNavigation = exports.setHint = exports.postDecoratedContentEvent = exports.setHeight = exports.setSupportedFeatures = exports.removeDecorateContentListener = exports.addDecorateContentListener = exports.removeCustomMessageListener = exports.addCustomMessageListener = exports.setGlobalInteractiveState = exports.getGlobalInteractiveState = exports.setAuthoredState = exports.getAuthoredState = exports.flushStateUpdates = exports.setInteractiveState = exports.setInteractiveStateTimeout = exports.getInteractiveState = exports.getMode = exports.getInitInteractiveMessage = void 0;
 var client_1 = __webpack_require__(/*! ./client */ "./src/interactive-api-client/client.ts");
@@ -45765,30 +45776,32 @@ exports.getLibraryInteractiveList = getLibraryInteractiveList;
 var writeAttachment = function (params) {
     return new Promise(function (resolve, reject) {
         var client = client_1.getClient();
-        var name = params.name, content = params.content, options = params.options;
-        var request = { name: name, operation: "write", requestId: client.getNextRequestId() };
+        var content = params.content, options = params.options, others = __rest(params, ["content", "options"]);
+        var request = __assign(__assign({}, others), { operation: "write", requestId: client.getNextRequestId() });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
-            var e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, e_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (!response.url) return [3 /*break*/, 5];
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _b.trys.push([1, 3, , 4]);
+                        // resolves with the fetch Response object, so clients can check status
+                        _a = resolve;
                         return [4 /*yield*/, fetch(response.url, __assign(__assign({}, options), { method: "PUT", body: content }))];
                     case 2:
-                        _a.sent();
-                        resolve();
+                        // resolves with the fetch Response object, so clients can check status
+                        _a.apply(void 0, [_b.sent()]);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_1 = _a.sent();
+                        e_1 = _b.sent();
                         reject(e_1);
                         return [3 /*break*/, 4];
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         reject(new Error(response.error || "error writing attachment"));
-                        _a.label = 6;
+                        _b.label = 6;
                     case 6: return [2 /*return*/];
                 }
             });
@@ -45836,11 +45849,11 @@ var readAttachment = function (name) {
     });
 };
 exports.readAttachment = readAttachment;
-var getAttachmentUrl = function (name) {
+var getAttachmentUrl = function (name, expires) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = client_1.getClient();
-        var request = { name: name, operation: "read", requestId: client.getNextRequestId() };
+        var request = { name: name, operation: "read", expires: expires, requestId: client.getNextRequestId() };
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (response.url) {

@@ -28,8 +28,8 @@ import {
   IDecoratedContentEvent,
   ITextDecorationHandler,
   IAttachmentUrlRequest,
-  IWriteAttachmentRequest,
-  IAttachmentUrlResponse
+  IAttachmentUrlResponse,
+  IWriteAttachmentRequest
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -392,16 +392,17 @@ export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListReq
   THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
 };
 
-export const writeAttachment = (params: Omit<IWriteAttachmentRequest, "requestId" | "operation">) => {
-  return new Promise<void>((resolve, reject) => {
+type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
+export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
+  return new Promise<Response>((resolve, reject) => {
     const client = getClient();
-    const { name, content, options } = params;
-    const request: IAttachmentUrlRequest = { name, operation: "write", requestId: client.getNextRequestId() };
+    const { content, options, ...others } = params;
+    const request: IAttachmentUrlRequest = { ...others, operation: "write", requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         try {
-          await fetch(response.url, { ...options, method: "PUT", body: content });
-          resolve();
+          // resolves with the fetch Response object, so clients can check status
+          resolve(await fetch(response.url, { ...options, method: "PUT", body: content }));
         }
         catch (e) {
           reject(e);
@@ -415,7 +416,7 @@ export const writeAttachment = (params: Omit<IWriteAttachmentRequest, "requestId
   });
 };
 
-export const readAttachment = (name: string) => {
+export const readAttachment = (name: string): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     // set up response listener
     const client = getClient();
@@ -439,11 +440,11 @@ export const readAttachment = (name: string) => {
   });
 };
 
-export const getAttachmentUrl = (name: string) => {
+export const getAttachmentUrl = (name: string, expires?: number) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener
     const client = getClient();
-    const request: IAttachmentUrlRequest = { name, operation: "read", requestId: client.getNextRequestId() };
+    const request: IAttachmentUrlRequest = { name, operation: "read", expires, requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         resolve(response.url);

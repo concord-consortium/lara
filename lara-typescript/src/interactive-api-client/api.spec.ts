@@ -8,10 +8,12 @@ import {
   IShowDialog,
   IShowLightbox,
   ICloseModal,
+  IGetInteractiveListOptions,
   IGetInteractiveSnapshotOptions,
   ILinkedInteractiveStateResponse,
   ITextDecorationInfo,
-  IWriteAttachmentRequest
+  IWriteAttachmentRequest,
+  IAttachmentUrlResponse
 } from "./types";
 
 jest.mock("./in-frame", () => ({
@@ -104,6 +106,7 @@ describe("api", () => {
     expect(callback).toHaveBeenCalledTimes(1);
     api.removeDecorateContentListener();
     api.postDecoratedContentEvent({ type: "type", text: "text" });
+    // verify that listener wasn't called again after removal
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
@@ -344,6 +347,15 @@ describe("api", () => {
     });
   });
 
+  it("should reject on getInteractiveList outside of authoring", async () => {
+    const request: IGetInteractiveListOptions = {scope: "page", supportsSnapshots: true};
+    mockedPhone.fakeServerMessage({
+      type: "initInteractive",
+      content: { mode: "runtime" }
+    });
+    expect(api.getInteractiveList(request)).rejects.toBeDefined();
+  });
+
   it("should implement setLinkedInteractives", () => {
     api.setLinkedInteractives({
       linkedInteractives: [
@@ -402,6 +414,8 @@ describe("api", () => {
   describe("attachments support", () => {
     const globalFetch = global.fetch;
     const fetchMock = jest.fn();
+    const kUrlError = "No url for you!";
+    const kFetchError = "No fetch for you!";
 
     beforeEach(() => {
       global.fetch = fetchMock;
@@ -429,7 +443,7 @@ describe("api", () => {
     it("can write attachments", async () => {
       const request: Partial<IWriteAttachmentRequest> = { name: "name.ext", content: "foo" };
       const url = "https://concord.org/foo";
-      const apiResponse = { url };
+      const apiResponse: Partial<IAttachmentUrlResponse> = { url };
       fetchMock.mockReturnValue(Promise.resolve());
       await testWriteAttachmentResponse({
         requestContent: [request],
@@ -440,14 +454,26 @@ describe("api", () => {
       expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
     });
 
-    it("returns error when write attachment fails", async () => {
+    it("returns error when write attachment api fails", async () => {
       const request: Partial<IWriteAttachmentRequest> = { name: "name.ext", content: "foo" };
-      const response = { url: "https://concord.org/foo", fields: { foo: "bar" }};
-      fetchMock.mockImplementation(() => { throw new Error("error"); });
+      const response: Partial<IAttachmentUrlResponse> = { error: kUrlError };
+      fetchMock.mockReturnValue(Promise.resolve());
       await testWriteAttachmentResponse({
         requestContent: [request],
         responseContent: [response],
-        rejectsWith: [new Error("error")]
+        rejectsWith: [new Error(kUrlError)]
+      });
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("returns error when write attachment fetch fails", async () => {
+      const request: Partial<IWriteAttachmentRequest> = { name: "name.ext", content: "foo" };
+      const response: Partial<IAttachmentUrlResponse> = { url: "https://concord.org/foo" };
+      fetchMock.mockImplementation(() => { throw new Error(kFetchError); });
+      await testWriteAttachmentResponse({
+        requestContent: [request],
+        responseContent: [response],
+        rejectsWith: [new Error(kFetchError)]
       });
       expect(fetchMock.mock.calls[0][0]).toBe(response.url);
       expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
@@ -463,7 +489,7 @@ describe("api", () => {
 
     it("can read attachments", async () => {
       const url = "https://concord.org/foo";
-      const apiResponse = { url };
+      const apiResponse: Partial<IAttachmentUrlResponse> = { url };
       const fetchResponse = { ok: true, text: () => "foo" };
       fetchMock.mockReturnValue(Promise.resolve(fetchResponse));
       await testReadAttachmentResponse({
@@ -471,24 +497,38 @@ describe("api", () => {
         responseContent: [apiResponse],
         resolvesTo: [fetchResponse]
       });
+      expect(fetchMock.mock.calls[0].length).toBe(1);
       expect(fetchMock.mock.calls[0][0]).toBe(url);
     });
 
-    it("returns error when read attachment fails", async () => {
+    it("returns error when read attachment api fails", async () => {
       const url = "https://concord.org/foo";
-      const apiResponse = { url };
-      fetchMock.mockImplementation(() => { throw new Error("error"); });
+      const apiResponse: Partial<IAttachmentUrlResponse> = { error: kUrlError };
+      fetchMock.mockReturnValue(Promise.resolve());
       await testReadAttachmentResponse({
         requestContent: [{ name: "name.ext" }],
         responseContent: [apiResponse],
-        rejectsWith: [new Error("error")]
+        rejectsWith: [new Error(kUrlError)]
       });
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("returns error when read attachment fetch fails", async () => {
+      const url = "https://concord.org/foo";
+      const apiResponse: Partial<IAttachmentUrlResponse> = { url };
+      fetchMock.mockImplementation(() => { throw new Error(kFetchError); });
+      await testReadAttachmentResponse({
+        requestContent: [{ name: "name.ext" }],
+        responseContent: [apiResponse],
+        rejectsWith: [new Error(kFetchError)]
+      });
+      expect(fetchMock.mock.calls[0].length).toBe(1);
       expect(fetchMock.mock.calls[0][0]).toBe(url);
     });
 
     it("can return attachment urls", async () => {
       const url = "https://concord.org/foo";
-      const apiResponse = { url };
+      const apiResponse: Partial<IAttachmentUrlResponse> = { url };
       await testRequestResponse({
         method: api.getAttachmentUrl,
         requestType: "getAttachmentUrl",
@@ -496,6 +536,19 @@ describe("api", () => {
         responseType: "attachmentUrl",
         responseContent: [apiResponse],
         resolvesTo: [url]
+      });
+    });
+
+    it("returns error when request for attachment urls fails", async () => {
+      const url = "https://concord.org/foo";
+      const apiResponse: Partial<IAttachmentUrlResponse> = { error: kUrlError };
+      await testRequestResponse({
+        method: api.getAttachmentUrl,
+        requestType: "getAttachmentUrl",
+        requestContent: [{ name: "name.ext" }],
+        responseType: "attachmentUrl",
+        responseContent: [apiResponse],
+        rejectsWith: [new Error(kUrlError)]
       });
     });
   });

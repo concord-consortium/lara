@@ -7,6 +7,7 @@
     "publish:plugin-api:beta": "npm run build && cd dist/plugin-api && npm publish --tag beta --access public",
     "publish:interactive-api-client": "npm run build && cd dist/interactive-api-client && npm publish --access public",
     "publish:interactive-api-client:beta": "npm run build && cd dist/interactive-api-client && npm publish --tag beta --access public",
+    "publish:interactive-api-client:yalc": "npm run build && cd dist/interactive-api-client && npx yalc publish",
     "build": "npm-run-all lint:build clean build:webpack build:types build:docs",
     "build:webpack": "webpack --devtool false && npm run build:copy-to-rails",
     "build:types": "rollup -c",

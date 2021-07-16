@@ -484,13 +484,14 @@ ___
 
 ### `Const` getAttachmentUrl
 
-▸ **getAttachmentUrl**(`name`: string): *Promise‹string›*
+▸ **getAttachmentUrl**(`name`: string, `expires?`: undefined | number): *Promise‹string›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `name` | string |
+`expires?` | undefined &#124; number |
 
 **Returns:** *Promise‹string›*
 
@@ -1068,12 +1069,12 @@ ___
 
 ### `Const` writeAttachment
 
-▸ **writeAttachment**(`params`: Omit‹[IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md), "requestId" | "operation"›): *Promise‹void›*
+▸ **writeAttachment**(`params`: WriteAttachmentParams): *Promise‹Response›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`params` | Omit‹[IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md), "requestId" &#124; "operation"› |
+`params` | WriteAttachmentParams |
 
-**Returns:** *Promise‹void›*
+**Returns:** *Promise‹Response›*

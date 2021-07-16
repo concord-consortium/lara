@@ -13,6 +13,7 @@
 ### Properties
 
 * [content](iwriteattachmentrequest.md#content)
+* [expires](iwriteattachmentrequest.md#optional-expires)
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
@@ -23,6 +24,14 @@
 ###  content
 
 • **content**: *any*
+
+___
+
+### `Optional` expires
+
+• **expires**? : *undefined | number*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[expires](iattachmenturlrequest.md#optional-expires)*
 
 ___
 

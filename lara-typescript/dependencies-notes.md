@@ -24,7 +24,7 @@ Note that some dependencies that would normally be `dependencies` are listed as 
 |react|16.14.0|17.0.2|React 17|
 |react-dom|16.14.0|17.0.2|React 17|
 |react-test-renderer|16.14.0|17.0.2|React 17|
-|sass-loader|10.2.0|12.1.0|Webpack 5 (11.0.0), Node 12 (12.0.0)|
+|sass-loader|10.2.0|12.1.0|Node 12 (12.0.0), Webpack 5 (11.0.0)|
 |style-loader|2.0.0|3.0.0|Node 12, Webpack 5|
 |ts-loader|8.3.0|9.2.3|Node 12, Webpack 5|
 |ts-node|9.1.1|10.1.0|Node 12|
