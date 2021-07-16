@@ -218,7 +218,6 @@ export const getAuthInfo = (): Promise<IAuthInfo> => {
 export const getFirebaseJwt = (firebaseApp: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
     getInitInteractiveMessage().then(initMsg => {
-      if (initMsg
       if (initMsg?.hostFeatures?.getFirebaseJwt?.version === "1.0.0") {
         const listener = (response: IGetFirebaseJwtResponse) => {
           if (response.response_type === "ERROR") {
