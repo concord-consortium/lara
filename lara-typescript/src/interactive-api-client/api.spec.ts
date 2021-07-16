@@ -141,10 +141,13 @@ describe("api", () => {
         "bar",
         "baz"
       ];
+
+      // 1 assertion for each requestContent, plus 1 additional assertion
+      expect.assertions(requestContent.length + 1);
+
       mockedPhone.fakeServerMessage({
         type: "initInteractive",
         content: {
-          mode: "runtime",
           hostFeatures: {
             getFirebaseJwt: {version: "1.0.0"}
           }
@@ -170,10 +173,10 @@ describe("api", () => {
     });
 
     it("fails when hostFeatures.getFirebaseJwt is not present", async () => {
+      expect.assertions(1);
       mockedPhone.fakeServerMessage({
         type: "initInteractive",
         content: {
-          mode: "runtime"
         }
       });
       await expect(api.getFirebaseJwt("foo")).rejects.toEqual("getFirebaseJwt not supported by the host environment");

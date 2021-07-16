@@ -44259,7 +44259,7 @@ var getFirebaseJwt = function (firebaseApp) {
     return new Promise(function (resolve, reject) {
         exports.getInitInteractiveMessage().then(function (initMsg) {
             var _a, _b;
-            if (initMsg && initMsg.mode === "runtime" && ((_b = (_a = initMsg.hostFeatures) === null || _a === void 0 ? void 0 : _a.getFirebaseJwt) === null || _b === void 0 ? void 0 : _b.version) === "1.0.0") {
+            if (((_b = (_a = initMsg === null || initMsg === void 0 ? void 0 : initMsg.hostFeatures) === null || _a === void 0 ? void 0 : _a.getFirebaseJwt) === null || _b === void 0 ? void 0 : _b.version) === "1.0.0") {
                 var listener = function (response) {
                     if (response.response_type === "ERROR") {
                         reject(response.message || "Error getting Firebase JWT");
