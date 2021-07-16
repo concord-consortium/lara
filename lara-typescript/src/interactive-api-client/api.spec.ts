@@ -9,9 +9,10 @@ import {
   IShowLightbox,
   ICloseModal,
   IGetInteractiveSnapshotOptions,
-  ILinkedInteractiveStateResponse
+  ILinkedInteractiveStateResponse,
+  ITextDecorationInfo,
+  IWriteAttachmentRequest
 } from "./types";
-import { getInitInteractiveMessage } from "./api";
 
 jest.mock("./in-frame", () => ({
   inIframe: () => true
@@ -87,6 +88,23 @@ describe("api", () => {
     const handler = jest.fn();
     api.addCustomMessageListener(handler, { handles: { foo: true } });
     api.removeCustomMessageListener();
+  });
+
+  it("supports content decoration", () => {
+    const callback = jest.fn();
+    api.addDecorateContentListener(callback);
+    const content: ITextDecorationInfo = {
+      listenerTypes: [{ type: "type" }],
+      words: [],
+      replace: "",
+      wordClass: "word"
+    };
+    mockedPhone.fakeServerMessage({type: "decorateContent", content});
+    api.postDecoratedContentEvent({ type: "type", text: "text" });
+    expect(callback).toHaveBeenCalledTimes(1);
+    api.removeDecorateContentListener();
+    api.postDecoratedContentEvent({ type: "type", text: "text" });
+    expect(callback).toHaveBeenCalledTimes(1);
   });
 
   it("supports setSupportedFeatures", () => {
@@ -376,6 +394,111 @@ describe("api", () => {
       ]
     });
   });
+
+  it("does not yet implement getLibraryInteractiveList", () => {
+    expect(() => api.getLibraryInteractiveList({} as any)).toThrow();
+  });
+
+  describe("attachments support", () => {
+    const globalFetch = global.fetch;
+    const fetchMock = jest.fn();
+
+    beforeEach(() => {
+      global.fetch = fetchMock;
+      fetchMock.mockReset();
+    });
+
+    afterEach(() => {
+      global.fetch = globalFetch;
+    });
+
+    interface ITestAttachmentResponse {
+      requestContent: any[];
+      responseContent: any[];
+      resolvesTo?: any[];
+      rejectsWith?: any[];
+    }
+    const testWriteAttachmentResponse = (others: ITestAttachmentResponse) =>
+      testRequestResponse({
+        method: api.writeAttachment,
+        requestType: "getAttachmentUrl",
+        responseType: "attachmentUrl",
+        ...others
+      });
+
+    it("can write attachments", async () => {
+      const request: Partial<IWriteAttachmentRequest> = { name: "name.ext", content: "foo" };
+      const url = "https://concord.org/foo";
+      const apiResponse = { url };
+      fetchMock.mockReturnValue(Promise.resolve());
+      await testWriteAttachmentResponse({
+        requestContent: [request],
+        responseContent: [apiResponse],
+        resolvesTo: [undefined]
+      });
+      expect(fetchMock.mock.calls[0][0]).toBe(url);
+      expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
+    });
+
+    it("returns error when write attachment fails", async () => {
+      const request: Partial<IWriteAttachmentRequest> = { name: "name.ext", content: "foo" };
+      const response = { url: "https://concord.org/foo", fields: { foo: "bar" }};
+      fetchMock.mockImplementation(() => { throw new Error("error"); });
+      await testWriteAttachmentResponse({
+        requestContent: [request],
+        responseContent: [response],
+        rejectsWith: [new Error("error")]
+      });
+      expect(fetchMock.mock.calls[0][0]).toBe(response.url);
+      expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
+    });
+
+    const testReadAttachmentResponse = (others: ITestAttachmentResponse) =>
+      testRequestResponse({
+        method: api.readAttachment,
+        requestType: "getAttachmentUrl",
+        responseType: "attachmentUrl",
+        ...others
+      });
+
+    it("can read attachments", async () => {
+      const url = "https://concord.org/foo";
+      const apiResponse = { url };
+      const fetchResponse = { ok: true, text: () => "foo" };
+      fetchMock.mockReturnValue(Promise.resolve(fetchResponse));
+      await testReadAttachmentResponse({
+        requestContent: [{ name: "name.ext" }],
+        responseContent: [apiResponse],
+        resolvesTo: [fetchResponse]
+      });
+      expect(fetchMock.mock.calls[0][0]).toBe(url);
+    });
+
+    it("returns error when read attachment fails", async () => {
+      const url = "https://concord.org/foo";
+      const apiResponse = { url };
+      fetchMock.mockImplementation(() => { throw new Error("error"); });
+      await testReadAttachmentResponse({
+        requestContent: [{ name: "name.ext" }],
+        responseContent: [apiResponse],
+        rejectsWith: [new Error("error")]
+      });
+      expect(fetchMock.mock.calls[0][0]).toBe(url);
+    });
+
+    it("can return attachment urls", async () => {
+      const url = "https://concord.org/foo";
+      const apiResponse = { url };
+      await testRequestResponse({
+        method: api.getAttachmentUrl,
+        requestType: "getAttachmentUrl",
+        requestContent: [{ name: "name.ext" }],
+        responseType: "attachmentUrl",
+        responseContent: [apiResponse],
+        resolvesTo: [url]
+      });
+    });
+  });
 });
 
 // helpers
@@ -386,13 +509,11 @@ interface IRequestResponseOptions {
   requestContent: any[];
   responseType: string;
   responseContent: any[];
-  resolvesTo: any[];
+  resolvesTo?: any[];
+  rejectsWith?: any[];
 }
 
 const testRequestResponse = async (options: IRequestResponseOptions) => {
-  // call getClient() just before saving phone.numListeners. Client will add some default listeners itself.
-  // And it might not be initialized before the first api method is called.
-  getClient();
   const startListeners = mockedPhone.numListeners;
   const requestIds: number[] = [];
   const promises: Array<Promise<any>> = [];
@@ -422,7 +543,12 @@ const testRequestResponse = async (options: IRequestResponseOptions) => {
   }, 10);
 
   await Promise.all(promises.map(async (promise, index) => {
-    await expect(promise).resolves.toEqual(options.resolvesTo[index]);
+    if ((options.rejectsWith?.length || 0) > index) {
+      await expect(promise).rejects.toEqual(options.rejectsWith?.[index]);
+    }
+    else if ((options.resolvesTo?.length || 0) > index) {
+      await expect(promise).resolves.toEqual(options.resolvesTo?.[index]);
+    }
   }));
 
   mockedPhone.removeListener(options.requestType);
