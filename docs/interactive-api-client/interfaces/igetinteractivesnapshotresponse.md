@@ -22,7 +22,7 @@
 
 • **requestId**: *number*
 
-*Inherited from [IGetAuthInfoRequest](igetauthinforequest.md).[requestId](igetauthinforequest.md#requestid)*
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[requestId](iattachmenturlrequest.md#requestid)*
 
 ___
 

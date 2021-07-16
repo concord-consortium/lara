@@ -26,7 +26,10 @@ import {
   IAddLinkedInteractiveStateListenerRequest,
   IRemoveLinkedInteractiveStateListenerRequest,
   IDecoratedContentEvent,
-  ITextDecorationHandler
+  ITextDecorationHandler,
+  IAttachmentUrlRequest,
+  IAttachmentUrlResponse,
+  IWriteAttachmentRequest
 } from "./types";
 import { getClient } from "./client";
 import { v4 as uuidv4 } from "uuid";
@@ -387,4 +390,69 @@ export const getInteractiveSnapshot = (options: IGetInteractiveSnapshotOptions) 
  */
 export const getLibraryInteractiveList = (options: IGetLibraryInteractiveListRequest) => {
   THROW_NOT_IMPLEMENTED_YET("getLibraryInteractiveList");
+};
+
+type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operation">;
+export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
+  return new Promise<Response>((resolve, reject) => {
+    const client = getClient();
+    const { content, options, ...others } = params;
+    const request: IAttachmentUrlRequest = { ...others, operation: "write", requestId: client.getNextRequestId() };
+    client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
+      if (response.url) {
+        try {
+          // resolves with the fetch Response object, so clients can check status
+          resolve(await fetch(response.url, { ...options, method: "PUT", body: content }));
+        }
+        catch (e) {
+          reject(e);
+        }
+      }
+      else {
+        reject(new Error(response.error || "error writing attachment"));
+      }
+    }, request.requestId);
+    client.post("getAttachmentUrl", request);
+  });
+};
+
+export const readAttachment = (name: string): Promise<Response> => {
+  return new Promise<Response>((resolve, reject) => {
+    // set up response listener
+    const client = getClient();
+    const request: IAttachmentUrlRequest = { name, operation: "read", requestId: client.getNextRequestId() };
+    client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
+      if (response.url) {
+        try {
+          // resolves with the fetch Response object, so clients can check status
+          // or convert to JSON or text or something else.
+          resolve(await fetch(response.url));
+        }
+        catch (e) {
+          reject(e);
+        }
+      }
+      else {
+        reject(new Error(response.error || "error reading attachment"));
+      }
+    }, request.requestId);
+    client.post("getAttachmentUrl", request);
+  });
+};
+
+export const getAttachmentUrl = (name: string, expires?: number) => {
+  return new Promise<string>((resolve, reject) => {
+    // set up response listener
+    const client = getClient();
+    const request: IAttachmentUrlRequest = { name, operation: "read", expires, requestId: client.getNextRequestId() };
+    client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
+      if (response.url) {
+        resolve(response.url);
+      }
+      else {
+        reject(new Error(response.error || "error getting attachment url"));
+      }
+    }, request.requestId);
+    client.post("getAttachmentUrl", request);
+  });
 };

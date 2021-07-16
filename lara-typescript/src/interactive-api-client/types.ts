@@ -150,6 +150,7 @@ Full window header buttons
 export type IRuntimeClientMessage = "interactiveState" |
                                        "height" |
                                        "hint" |
+                                       "getAttachmentUrl" |
                                        "getAuthInfo" |
                                        "supportedFeatures" |
                                        "navigation" |
@@ -166,7 +167,8 @@ export type IRuntimeClientMessage = "interactiveState" |
                                        "decoratedContentEvent"
                                       ;
 
-export type IRuntimeServerMessage = "authInfo" |
+export type IRuntimeServerMessage = "attachmentUrl" |
+                                       "authInfo" |
                                        "getInteractiveState" |
                                        "initInteractive" |
                                        "firebaseJWT" |
@@ -352,6 +354,20 @@ export interface IAuthInfo {
   provider: string;
   loggedIn: boolean;
   email?: string;
+}
+
+export interface IAttachmentUrlRequest extends IBaseRequestResponse {
+  name: string;
+  operation: "read" | "write";
+  expires?: number; // seconds
+}
+export interface IWriteAttachmentRequest extends IAttachmentUrlRequest {
+  content: any;
+  options?: RequestInit;
+}
+export interface IAttachmentUrlResponse extends IBaseRequestResponse {
+  url?: string;
+  error?: string;
 }
 
 export interface IGetAuthInfoRequest extends IBaseRequestResponse {

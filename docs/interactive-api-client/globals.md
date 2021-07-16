@@ -9,6 +9,8 @@
 * [IAddLinkedInteractiveStateListenerOptions](interfaces/iaddlinkedinteractivestatelisteneroptions.md)
 * [IAddLinkedInteractiveStateListenerRequest](interfaces/iaddlinkedinteractivestatelistenerrequest.md)
 * [IAggregateInitInteractive](interfaces/iaggregateinitinteractive.md)
+* [IAttachmentUrlRequest](interfaces/iattachmenturlrequest.md)
+* [IAttachmentUrlResponse](interfaces/iattachmenturlresponse.md)
 * [IAuthInfo](interfaces/iauthinfo.md)
 * [IAuthoringCustomReportField](interfaces/iauthoringcustomreportfield.md)
 * [IAuthoringCustomReportFields](interfaces/iauthoringcustomreportfields.md)
@@ -74,6 +76,7 @@
 * [ITextDecorationHandlerInfo](interfaces/itextdecorationhandlerinfo.md)
 * [ITextDecorationInfo](interfaces/itextdecorationinfo.md)
 * [IThemeInfo](interfaces/ithemeinfo.md)
+* [IWriteAttachmentRequest](interfaces/iwriteattachmentrequest.md)
 
 ### Type aliases
 
@@ -116,6 +119,7 @@
 * [addLinkedInteractiveStateListener](globals.md#const-addlinkedinteractivestatelistener)
 * [closeModal](globals.md#const-closemodal)
 * [flushStateUpdates](globals.md#const-flushstateupdates)
+* [getAttachmentUrl](globals.md#const-getattachmenturl)
 * [getAuthInfo](globals.md#const-getauthinfo)
 * [getAuthoredState](globals.md#const-getauthoredstate)
 * [getFirebaseJwt](globals.md#const-getfirebasejwt)
@@ -129,6 +133,7 @@
 * [inIframe](globals.md#const-iniframe)
 * [log](globals.md#const-log)
 * [postDecoratedContentEvent](globals.md#const-postdecoratedcontentevent)
+* [readAttachment](globals.md#const-readattachment)
 * [removeAuthoredStateListener](globals.md#const-removeauthoredstatelistener)
 * [removeCustomMessageListener](globals.md#const-removecustommessagelistener)
 * [removeDecorateContentListener](globals.md#const-removedecoratecontentlistener)
@@ -150,6 +155,7 @@
 * [useGlobalInteractiveState](globals.md#const-useglobalinteractivestate)
 * [useInitMessage](globals.md#const-useinitmessage)
 * [useInteractiveState](globals.md#const-useinteractivestate)
+* [writeAttachment](globals.md#const-writeattachment)
 
 ## Type aliases
 
@@ -243,7 +249,7 @@ ___
 
 ###  IRuntimeClientMessage
 
-Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
+Ƭ **IRuntimeClientMessage**: *"interactiveState" | "height" | "hint" | "getAttachmentUrl" | "getAuthInfo" | "supportedFeatures" | "navigation" | "getFirebaseJWT" | "authoredState" | "authoringCustomReportFields" | "runtimeCustomReportValues" | "showModal" | "closeModal" | "getLibraryInteractiveList" | "getInteractiveSnapshot" | "addLinkedInteractiveStateListener" | "removeLinkedInteractiveStateListener" | "decoratedContentEvent"*
 
 ___
 
@@ -255,7 +261,7 @@ ___
 
 ###  IRuntimeServerMessage
 
-Ƭ **IRuntimeServerMessage**: *"authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
+Ƭ **IRuntimeServerMessage**: *"attachmentUrl" | "authInfo" | "getInteractiveState" | "initInteractive" | "firebaseJWT" | "closedModal" | "customMessage" | "libraryInteractiveList" | "interactiveSnapshot" | "contextMembership" | "linkedInteractiveState" | "decorateContent"*
 
 ___
 
@@ -476,6 +482,21 @@ usually means reloading interactive. It's necessary to make sure that the state 
 
 ___
 
+### `Const` getAttachmentUrl
+
+▸ **getAttachmentUrl**(`name`: string, `expires?`: undefined | number): *Promise‹string›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`name` | string |
+`expires?` | undefined &#124; number |
+
+**Returns:** *Promise‹string›*
+
+___
+
 ### `Const` getAuthInfo
 
 ▸ **getAuthInfo**(): *Promise‹[IAuthInfo](interfaces/iauthinfo.md)›*
@@ -634,6 +655,20 @@ Name | Type |
 `msg` | [IDecoratedContentEvent](interfaces/idecoratedcontentevent.md) |
 
 **Returns:** *void*
+
+___
+
+### `Const` readAttachment
+
+▸ **readAttachment**(`name`: string): *Promise‹Response›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`name` | string |
+
+**Returns:** *Promise‹Response›*
 
 ___
 
@@ -1029,3 +1064,17 @@ ___
 * **interactiveState**: *null | InteractiveState*
 
 * **setInteractiveState**: *handleSetInteractiveState* = handleSetInteractiveState
+
+___
+
+### `Const` writeAttachment
+
+▸ **writeAttachment**(`params`: WriteAttachmentParams): *Promise‹Response›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`params` | WriteAttachmentParams |
+
+**Returns:** *Promise‹Response›*

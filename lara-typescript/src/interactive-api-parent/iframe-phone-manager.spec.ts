@@ -30,7 +30,7 @@ describe("IframePhoneManager", () => {
       const phone = IframePhoneManager.getPhone(iframeEl, callback) as unknown as MockPhone;
       expect(callback).not.toHaveBeenCalled();
 
-      return setTimeout(() => {
+      setTimeout(() => {
         phone.fakeConnection();
         // Callbacks added before connection was initialized should be executed right away when it happens
         // (in real world it's async).
