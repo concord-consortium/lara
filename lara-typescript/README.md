@@ -78,6 +78,7 @@ To facilitate testing local changes to the `lara-interactive-api` with existing 
 
 ```
 cd lara-typescript
+npm install  
 npm run lara-api:link     # creates a global symlink for clients to link to
 cd [the client you want to test (e.g. concord-consortium/question-interactives)]
 npm link @concord-consortium/lara-interactive-api
