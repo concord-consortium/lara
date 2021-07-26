@@ -14,6 +14,8 @@
 
   ↳ [IAuthoringImageQuestionMetadata](iauthoringimagequestionmetadata.md)
 
+  ↳ [IAuthoringLabbookMetadata](iauthoringlabbookmetadata.md)
+
 ## Index
 
 ### Properties

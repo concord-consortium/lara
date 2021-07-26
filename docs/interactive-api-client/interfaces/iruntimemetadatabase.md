@@ -14,6 +14,8 @@
 
   ↳ [IRuntimeImageQuestionMetadata](iruntimeimagequestionmetadata.md)
 
+  ↳ [IRuntimeLabbookQuestionMetadata](iruntimelabbookquestionmetadata.md)
+
 ## Index
 
 ### Properties

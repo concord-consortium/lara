@@ -44,8 +44,16 @@ export interface IAuthoringImageQuestionMetadata extends IAuthoringMetadataBase 
   answerPrompt?: string;
 }
 
-export type IAuthoringMetadata = IAuthoringInteractiveMetadata | IAuthoringOpenResponseMetadata |
-  IAuthoringMultipleChoiceMetadata | IAuthoringImageQuestionMetadata;
+export interface IAuthoringLabbookMetadata extends IAuthoringMetadataBase {
+  questionType: "labbook_question";
+  answerPrompt?: string;
+}
+
+export type IAuthoringMetadata = IAuthoringInteractiveMetadata
+  | IAuthoringOpenResponseMetadata
+  | IAuthoringMultipleChoiceMetadata
+  | IAuthoringImageQuestionMetadata
+  | IAuthoringLabbookMetadata;
 
 // Runtime metadata:
 
@@ -81,5 +89,13 @@ export interface IRuntimeImageQuestionMetadata extends IRuntimeMetadataBase {
   answerImageUrl?: string;
 }
 
-export type IRuntimeMetadata = IRuntimeInteractiveMetadata | IRuntimeOpenResponseMetadata |
-  IRuntimeMultipleChoiceMetadata | IRuntimeImageQuestionMetadata;
+export interface IRuntimeLabbookQuestionMetadata extends IRuntimeMetadataBase {
+  answerType: "labbook_question_answer";
+  answerImageUrl?: string;
+}
+
+export type IRuntimeMetadata = IRuntimeInteractiveMetadata
+  | IRuntimeOpenResponseMetadata
+  | IRuntimeMultipleChoiceMetadata
+  | IRuntimeImageQuestionMetadata
+  | IRuntimeLabbookQuestionMetadata;

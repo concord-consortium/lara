@@ -17,6 +17,7 @@
 * [IAuthoringImageQuestionMetadata](interfaces/iauthoringimagequestionmetadata.md)
 * [IAuthoringInitInteractive](interfaces/iauthoringinitinteractive.md)
 * [IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md)
+* [IAuthoringLabbookMetadata](interfaces/iauthoringlabbookmetadata.md)
 * [IAuthoringMetadataBase](interfaces/iauthoringmetadatabase.md)
 * [IAuthoringMultipleChoiceChoiceMetadata](interfaces/iauthoringmultiplechoicechoicemetadata.md)
 * [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md)
@@ -64,6 +65,7 @@
 * [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)
 * [IRuntimeInitInteractive](interfaces/iruntimeinitinteractive.md)
 * [IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md)
+* [IRuntimeLabbookQuestionMetadata](interfaces/iruntimelabbookquestionmetadata.md)
 * [IRuntimeMetadataBase](interfaces/iruntimemetadatabase.md)
 * [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md)
 * [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md)
@@ -203,7 +205,7 @@ ___
 
 ###  IAuthoringMetadata
 
-Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md) | [IAuthoringImageQuestionMetadata](interfaces/iauthoringimagequestionmetadata.md)*
+Ƭ **IAuthoringMetadata**: *[IAuthoringInteractiveMetadata](interfaces/iauthoringinteractivemetadata.md) | [IAuthoringOpenResponseMetadata](interfaces/iauthoringopenresponsemetadata.md) | [IAuthoringMultipleChoiceMetadata](interfaces/iauthoringmultiplechoicemetadata.md) | [IAuthoringImageQuestionMetadata](interfaces/iauthoringimagequestionmetadata.md) | [IAuthoringLabbookMetadata](interfaces/iauthoringlabbookmetadata.md)*
 
 ___
 
@@ -255,7 +257,7 @@ ___
 
 ###  IRuntimeMetadata
 
-Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md) | [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md)*
+Ƭ **IRuntimeMetadata**: *[IRuntimeInteractiveMetadata](interfaces/iruntimeinteractivemetadata.md) | [IRuntimeOpenResponseMetadata](interfaces/iruntimeopenresponsemetadata.md) | [IRuntimeMultipleChoiceMetadata](interfaces/iruntimemultiplechoicemetadata.md) | [IRuntimeImageQuestionMetadata](interfaces/iruntimeimagequestionmetadata.md) | [IRuntimeLabbookQuestionMetadata](interfaces/iruntimelabbookquestionmetadata.md)*
 
 ___
 
