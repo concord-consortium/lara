@@ -26,6 +26,10 @@
       .field
         = f.label :theme_id, 'Theme'
         = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
+      .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
+        = f.label :background_image, 'Background Image URL'
+        = f.text_field :background_image
+        .hint (Specify the full URL of a background image file. NOTE: This value is only used by Activity Player. For LARA runtime, a background image can be specified in the theme.)
       - if current_user.is_admin
         .field
           = f.label :project_id, 'Project'

@@ -2,7 +2,7 @@ class Sequence < ActiveRecord::Base
 
   attr_accessible :description, :title, :theme_id, :project_id,
     :user_id, :logo, :display_title, :thumbnail_url, :abstract, :publication_hash,
-    :runtime, :project
+    :runtime, :project, :background_image
 
   include Publishable # defines methods to publish to portals
   include PublicationStatus # defines publication status scopes and helpers
@@ -102,6 +102,7 @@ class Sequence < ActiveRecord::Base
                                         :runtime
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
+    sequence_json[:background_image] = self.background_image ? self.background_image : nil
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
       activity_hash = a.export
