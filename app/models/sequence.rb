@@ -99,10 +99,10 @@ class Sequence < ActiveRecord::Base
                                         :logo,
                                         :display_title,
                                         :thumbnail_url,
-                                        :runtime
+                                        :runtime,
+                                        :background_image
     ])
     sequence_json[:project] = self.project ? self.project.export : nil
-    sequence_json[:background_image] = self.background_image ? self.background_image : nil
     sequence_json[:activities] = []
     self.lightweight_activities.each_with_index do |a,i|
       activity_hash = a.export

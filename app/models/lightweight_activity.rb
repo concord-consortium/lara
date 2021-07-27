@@ -138,10 +138,10 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :student_report_enabled,
                                         :show_submit_button,
-                                        :runtime ])
+                                        :runtime,
+                                        :background_image ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
-    activity_json[:background_image] = self.background_image ? self.background_image : nil
     activity_json[:project] = self.project ? self.project.export : nil
     activity_json[:pages] = []
     self.pages.each do |p|
