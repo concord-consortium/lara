@@ -169,7 +169,8 @@ class LightweightActivity < ActiveRecord::Base
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode],
-      runtime: activity_json_object[:runtime]
+      runtime: activity_json_object[:runtime],
+      background_image: activity_json_object[:background_image]
     }
 
   end

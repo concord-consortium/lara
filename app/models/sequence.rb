@@ -206,7 +206,8 @@ class Sequence < ActiveRecord::Base
       theme_id: sequence_json_object[:theme_id],
       thumbnail_url: sequence_json_object[:thumbnail_url],
       title: sequence_json_object[:title],
-      runtime: sequence_json_object[:runtime]
+      runtime: sequence_json_object[:runtime],
+      background_image: sequence_json_object[:background_image]
     }
 
   end
