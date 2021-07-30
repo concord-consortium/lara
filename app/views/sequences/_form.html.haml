@@ -29,7 +29,7 @@
           [preview]
         .activity_thumbnail#thumbnail_preview
           %img
-    .field
+    .field{:class => ("disabled" if @sequence.runtime != 'LARA')}
       = f.label :theme_id, "Theme"
       = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @sequence.theme_id), { :include_blank => "None (inherit from project, or site default)" }
     .field{:class => ("disabled" if @sequence.runtime != 'Activity Player')}

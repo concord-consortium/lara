@@ -23,7 +23,7 @@
       .field
         = f.label :name, 'Activity Name'
         = f.text_field :name, :size => 80
-      .field
+      .field{:class => ("disabled" if @activity.runtime != 'LARA')}
         = f.label :theme_id, 'Theme'
         = f.select :theme_id, options_from_collection_for_select(Theme.all, 'id', 'name', @activity.theme_id), { :include_blank => "None (inherit from sequence, project, or site default)" }
       .field{:class => ("disabled" if @activity.runtime != 'Activity Player')}
