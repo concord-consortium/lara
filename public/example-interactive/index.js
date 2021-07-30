@@ -45849,11 +45849,12 @@ var readAttachment = function (name) {
     });
 };
 exports.readAttachment = readAttachment;
-var getAttachmentUrl = function (name, expires) {
+var getAttachmentUrl = function (name, type, expires) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = client_1.getClient();
-        var request = { name: name, operation: "read", expires: expires, requestId: client.getNextRequestId() };
+        var requestId = client.getNextRequestId();
+        var request = { name: name, operation: "read", type: type, expires: expires, requestId: requestId };
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (response.url) {

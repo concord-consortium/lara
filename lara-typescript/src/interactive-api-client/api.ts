@@ -440,11 +440,12 @@ export const readAttachment = (name: string): Promise<Response> => {
   });
 };
 
-export const getAttachmentUrl = (name: string, expires?: number) => {
+export const getAttachmentUrl = (name: string, type?: string, expires?: number) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener
     const client = getClient();
-    const request: IAttachmentUrlRequest = { name, operation: "read", expires, requestId: client.getNextRequestId() };
+    const requestId = client.getNextRequestId();
+    const request: IAttachmentUrlRequest = { name, operation: "read", type, expires, requestId };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         resolve(response.url);

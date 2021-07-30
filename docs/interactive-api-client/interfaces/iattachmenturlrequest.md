@@ -18,6 +18,7 @@
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
 * [requestId](iattachmenturlrequest.md#requestid)
+* [type](iattachmenturlrequest.md#optional-type)
 
 ## Properties
 
@@ -44,3 +45,9 @@ ___
 • **requestId**: *number*
 
 *Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[requestId](iattachmenturlrequest.md#requestid)*
+
+___
+
+### `Optional` type
+
+• **type**? : *undefined | string*

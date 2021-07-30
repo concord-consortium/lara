@@ -359,6 +359,7 @@ export interface IAuthInfo {
 export interface IAttachmentUrlRequest extends IBaseRequestResponse {
   name: string;
   operation: "read" | "write";
+  type?: string;    // defaults to application/json
   expires?: number; // seconds
 }
 export interface IWriteAttachmentRequest extends IAttachmentUrlRequest {
