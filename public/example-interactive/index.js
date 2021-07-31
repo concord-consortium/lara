@@ -45776,32 +45776,37 @@ exports.getLibraryInteractiveList = getLibraryInteractiveList;
 var writeAttachment = function (params) {
     return new Promise(function (resolve, reject) {
         var client = client_1.getClient();
-        var content = params.content, options = params.options, others = __rest(params, ["content", "options"]);
+        var content = params.content, contentType = params.contentType, options = params.options, others = __rest(params, ["content", "contentType", "options"]);
         var request = __assign(__assign({}, others), { operation: "write", requestId: client.getNextRequestId() });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
-            var _a, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var headers, _a, e_1;
+            var _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         if (!response.url) return [3 /*break*/, 5];
-                        _b.label = 1;
+                        headers = __assign({}, (_b = params.options) === null || _b === void 0 ? void 0 : _b.headers);
+                        if (params.contentType) {
+                            headers["Content-Type"] = contentType || "text/plain";
+                        }
+                        _c.label = 1;
                     case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        _c.trys.push([1, 3, , 4]);
                         // resolves with the fetch Response object, so clients can check status
                         _a = resolve;
                         return [4 /*yield*/, fetch(response.url, __assign(__assign({}, options), { method: "PUT", body: content }))];
                     case 2:
                         // resolves with the fetch Response object, so clients can check status
-                        _a.apply(void 0, [_b.sent()]);
+                        _a.apply(void 0, [_c.sent()]);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_1 = _b.sent();
+                        e_1 = _c.sent();
                         reject(e_1);
                         return [3 /*break*/, 4];
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         reject(new Error(response.error || "error writing attachment"));
-                        _b.label = 6;
+                        _c.label = 6;
                     case 6: return [2 /*return*/];
                 }
             });
@@ -45849,11 +45854,12 @@ var readAttachment = function (name) {
     });
 };
 exports.readAttachment = readAttachment;
-var getAttachmentUrl = function (name, expires) {
+var getAttachmentUrl = function (name, contentType, expiresIn) {
     return new Promise(function (resolve, reject) {
         // set up response listener
         var client = client_1.getClient();
-        var request = { name: name, operation: "read", expires: expires, requestId: client.getNextRequestId() };
+        var requestId = client.getNextRequestId();
+        var request = { name: name, operation: "read", contentType: contentType, expiresIn: expiresIn, requestId: requestId };
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (response.url) {

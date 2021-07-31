@@ -14,16 +14,23 @@
 
 ### Properties
 
-* [expires](iattachmenturlrequest.md#optional-expires)
+* [contentType](iattachmenturlrequest.md#optional-contenttype)
+* [expiresIn](iattachmenturlrequest.md#optional-expiresin)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
 * [requestId](iattachmenturlrequest.md#requestid)
 
 ## Properties
 
-### `Optional` expires
+### `Optional` contentType
 
-• **expires**? : *undefined | number*
+• **contentType**? : *undefined | string*
+
+___
+
+### `Optional` expiresIn
+
+• **expiresIn**? : *undefined | number*
 
 ___
 

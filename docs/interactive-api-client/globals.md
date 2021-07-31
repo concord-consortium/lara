@@ -484,14 +484,15 @@ ___
 
 ### `Const` getAttachmentUrl
 
-▸ **getAttachmentUrl**(`name`: string, `expires?`: undefined | number): *Promise‹string›*
+▸ **getAttachmentUrl**(`name`: string, `contentType?`: undefined | string, `expiresIn?`: undefined | number): *Promise‹string›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `name` | string |
-`expires?` | undefined &#124; number |
+`contentType?` | undefined &#124; string |
+`expiresIn?` | undefined &#124; number |
 
 **Returns:** *Promise‹string›*
 
