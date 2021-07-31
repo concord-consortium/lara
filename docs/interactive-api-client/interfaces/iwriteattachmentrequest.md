@@ -13,12 +13,12 @@
 ### Properties
 
 * [content](iwriteattachmentrequest.md#content)
-* [expires](iwriteattachmentrequest.md#optional-expires)
+* [contentType](iwriteattachmentrequest.md#optional-contenttype)
+* [expiresIn](iwriteattachmentrequest.md#optional-expiresin)
 * [name](iwriteattachmentrequest.md#name)
 * [operation](iwriteattachmentrequest.md#operation)
 * [options](iwriteattachmentrequest.md#optional-options)
 * [requestId](iwriteattachmentrequest.md#requestid)
-* [type](iwriteattachmentrequest.md#optional-type)
 
 ## Properties
 
@@ -28,11 +28,19 @@
 
 ___
 
-### `Optional` expires
+### `Optional` contentType
 
-• **expires**? : *undefined | number*
+• **contentType**? : *undefined | string*
 
-*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[expires](iattachmenturlrequest.md#optional-expires)*
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[contentType](iattachmenturlrequest.md#optional-contenttype)*
+
+___
+
+### `Optional` expiresIn
+
+• **expiresIn**? : *undefined | number*
+
+*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[expiresIn](iattachmenturlrequest.md#optional-expiresin)*
 
 ___
 
@@ -63,11 +71,3 @@ ___
 • **requestId**: *number*
 
 *Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[requestId](iattachmenturlrequest.md#requestid)*
-
-___
-
-### `Optional` type
-
-• **type**? : *undefined | string*
-
-*Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[type](iattachmenturlrequest.md#optional-type)*

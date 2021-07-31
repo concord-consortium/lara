@@ -14,17 +14,23 @@
 
 ### Properties
 
-* [expires](iattachmenturlrequest.md#optional-expires)
+* [contentType](iattachmenturlrequest.md#optional-contenttype)
+* [expiresIn](iattachmenturlrequest.md#optional-expiresin)
 * [name](iattachmenturlrequest.md#name)
 * [operation](iattachmenturlrequest.md#operation)
 * [requestId](iattachmenturlrequest.md#requestid)
-* [type](iattachmenturlrequest.md#optional-type)
 
 ## Properties
 
-### `Optional` expires
+### `Optional` contentType
 
-• **expires**? : *undefined | number*
+• **contentType**? : *undefined | string*
+
+___
+
+### `Optional` expiresIn
+
+• **expiresIn**? : *undefined | number*
 
 ___
 
@@ -45,9 +51,3 @@ ___
 • **requestId**: *number*
 
 *Inherited from [IAttachmentUrlRequest](iattachmenturlrequest.md).[requestId](iattachmenturlrequest.md#requestid)*
-
-___
-
-### `Optional` type
-
-• **type**? : *undefined | string*

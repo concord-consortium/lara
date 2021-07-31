@@ -396,10 +396,14 @@ type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operat
 export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     const client = getClient();
-    const { content, options, ...others } = params;
+    const { content, contentType, options, ...others } = params;
     const request: IAttachmentUrlRequest = { ...others, operation: "write", requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
+        const headers: Record<string, string> = { ...(params.options?.headers as Record<string, string>) };
+        if (params.contentType) {
+          headers["Content-Type"] = contentType || "text/plain";
+        }
         try {
           // resolves with the fetch Response object, so clients can check status
           resolve(await fetch(response.url, { ...options, method: "PUT", body: content }));
@@ -440,12 +444,12 @@ export const readAttachment = (name: string): Promise<Response> => {
   });
 };
 
-export const getAttachmentUrl = (name: string, type?: string, expires?: number) => {
+export const getAttachmentUrl = (name: string, contentType?: string, expiresIn?: number) => {
   return new Promise<string>((resolve, reject) => {
     // set up response listener
     const client = getClient();
     const requestId = client.getNextRequestId();
-    const request: IAttachmentUrlRequest = { name, operation: "read", type, expires, requestId };
+    const request: IAttachmentUrlRequest = { name, operation: "read", contentType, expiresIn, requestId };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
         resolve(response.url);
