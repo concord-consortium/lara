@@ -18,7 +18,7 @@ class LightweightActivity < ActiveRecord::Base
   attr_accessible :name, :user_id, :pages, :related, :description,
                   :time_to_complete, :is_locked, :notes, :thumbnail_url, :theme_id, :project_id,
                   :portal_run_count, :layout, :editor_mode, :publication_hash, :copied_from_id,
-                  :student_report_enabled, :show_submit_button, :runtime, :project
+                  :student_report_enabled, :show_submit_button, :runtime, :project, :background_image
 
   belongs_to :user # Author
   belongs_to :changed_by, :class_name => 'User'
@@ -138,7 +138,8 @@ class LightweightActivity < ActiveRecord::Base
                                         :editor_mode,
                                         :student_report_enabled,
                                         :show_submit_button,
-                                        :runtime ])
+                                        :runtime,
+                                        :background_image ])
     activity_json[:version] = 1
     activity_json[:theme_name] = self.theme ? self.theme.name : nil
     activity_json[:project] = self.project ? self.project.export : nil
@@ -168,7 +169,8 @@ class LightweightActivity < ActiveRecord::Base
       time_to_complete: activity_json_object[:time_to_complete],
       layout: activity_json_object[:layout],
       editor_mode: activity_json_object[:editor_mode],
-      runtime: activity_json_object[:runtime]
+      runtime: activity_json_object[:runtime],
+      background_image: activity_json_object[:background_image]
     }
 
   end
