@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210604012146) do
+ActiveRecord::Schema.define(:version => 20210802185808) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "kind"
@@ -284,10 +284,10 @@ ActiveRecord::Schema.define(:version => 20210604012146) do
   create_table "embeddable_plugins", :force => true do |t|
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
-    t.integer  "embeddable_id"
-    t.string   "embeddable_type"
     t.boolean  "is_hidden",       :default => false
     t.boolean  "is_full_width",   :default => false
+    t.integer  "embeddable_id"
+    t.string   "embeddable_type"
   end
 
   create_table "embeddable_xhtmls", :force => true do |t|
@@ -535,7 +535,10 @@ ActiveRecord::Schema.define(:version => 20210604012146) do
     t.integer  "position"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
-    t.string   "section"
+    t.string   "old_section"
+    t.integer  "section_id"
+    t.string   "column"
+    t.integer  "section_position"
   end
 
   add_index "page_items", ["embeddable_id", "embeddable_type"], :name => "index_page_items_on_embeddable_id_and_embeddable_type"
@@ -647,6 +650,17 @@ ActiveRecord::Schema.define(:version => 20210604012146) do
   add_index "runs", ["user_id", "activity_id"], :name => "index_runs_on_user_id_and_activity_id"
   add_index "runs", ["user_id", "remote_id", "remote_endpoint"], :name => "runs_user_remote_endpt_idx"
   add_index "runs", ["user_id"], :name => "index_runs_on_user_id"
+
+  create_table "sections", :force => true do |t|
+    t.string   "title"
+    t.boolean  "show"
+    t.string   "layout"
+    t.integer  "position"
+    t.integer  "interactive_page_id"
+    t.boolean  "can_collapse_small"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "sequence_runs", :force => true do |t|
     t.integer  "user_id"

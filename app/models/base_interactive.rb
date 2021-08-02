@@ -111,7 +111,7 @@ module BaseInteractive
   end
 
   def page_section
-    page_item && page_item.section
+    page_item && page_item.old_section
   end
 
   def question_index

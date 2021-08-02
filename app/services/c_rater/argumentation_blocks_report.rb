@@ -69,7 +69,7 @@ module CRater::ArgumentationBlocksReport
         INNER JOIN #{CRater::FeedbackSubmission.table_name}
           ON #{CRater::FeedbackSubmission.table_name}.id = #{s[:feedback_type].table_name}.feedback_submission_id
       WHERE
-        #{PageItem.table_name}.section = "arg_block"
+        #{PageItem.table_name}.old_section = "arg_block"
         AND
         embeddable_type = "#{s[:question_type].name}"
         AND

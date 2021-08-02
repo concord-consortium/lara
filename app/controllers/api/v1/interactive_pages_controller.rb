@@ -33,7 +33,7 @@ class Api::V1::InteractivePagesController < ApplicationController
             id: "interactive_#{pi.id}",
             pageId: @interactive_page.id,
             name: i.name,
-            section: pi.section != nil ? pi.section : "assessment_block",
+            section: pi.old_section != nil ? pi.old_section : "assessment_block",
             url: i.url,
             thumbnailUrl: i.thumbnail_url,
             supportsSnapshots: !i.no_snapshots
