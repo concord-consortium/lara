@@ -70,7 +70,7 @@ describe InteractivePage do
       embed = FactoryGirl.create(:xhtml, :name => "", :content => embed_text)
       page.add_embeddable(embed, 1, InteractivePage::HEADER_BLOCK)
       expect(page.embeddables.size).to eq(4)
-      expect(page.page_items.last.section).to eq(InteractivePage::HEADER_BLOCK)
+      expect(page.page_items.last.old_section).to eq(InteractivePage::HEADER_BLOCK)
       expect(page.embeddables.first.content).to eq(embed_text)
     end
   end
