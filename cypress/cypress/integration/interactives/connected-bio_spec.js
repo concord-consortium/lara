@@ -14,7 +14,7 @@ context('Test Connected Bio Interactive Embedded In LARA', () => {
         cy.visit(testUrl)
     })
 
-    context.only('Authored state persists on load', () => {
+    context('Authored state persists on load', () => {
         it('tests initial backpack state', () => {
             cy.getInteractiveIframe(0).find('div.app-container').within(() => {
                 backpack.getFullCollectButton().should('have.length', 2)
