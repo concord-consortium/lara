@@ -396,14 +396,14 @@ type WriteAttachmentParams = Omit<IWriteAttachmentRequest, "requestId" | "operat
 export const writeAttachment = (params: WriteAttachmentParams): Promise<Response> => {
   return new Promise<Response>((resolve, reject) => {
     const client = getClient();
-    const { content, contentType, options, ...others } = params;
+    const { content, options = {}, ...others } = params;
+    const { contentType = "text/plain" } = params;
     const request: IAttachmentUrlRequest = { ...others, operation: "write", requestId: client.getNextRequestId() };
     client.addListener("attachmentUrl", async (response: IAttachmentUrlResponse) => {
       if (response.url) {
-        const headers: Record<string, string> = { ...(params.options?.headers as Record<string, string>) };
-        if (params.contentType) {
-          headers["Content-Type"] = contentType || "text/plain";
-        }
+        const headers: Record<string, string> = { ...(options.headers as Record<string, string>) };
+        headers["Content-Type"] = contentType;
+        options.headers = headers;
         try {
           // resolves with the fetch Response object, so clients can check status
           resolve(await fetch(response.url, { ...options, method: "PUT", body: content }));
