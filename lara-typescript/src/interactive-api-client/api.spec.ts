@@ -451,7 +451,8 @@ describe("api", () => {
         resolvesTo: [undefined]
       });
       expect(fetchMock.mock.calls[0][0]).toBe(url);
-      expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
+      const fetchOptions = { method: "PUT", headers: { "Content-Type": "text/plain" }, body: "foo" };
+      expect(fetchMock.mock.calls[0][1]).toEqual(fetchOptions);
     });
 
     it("returns error when write attachment api fails", async () => {
@@ -476,7 +477,8 @@ describe("api", () => {
         rejectsWith: [new Error(kFetchError)]
       });
       expect(fetchMock.mock.calls[0][0]).toBe(response.url);
-      expect(fetchMock.mock.calls[0][1]).toEqual({ method: "PUT", body: "foo" });
+      const fetchOptions = { method: "PUT", headers: { "Content-Type": "text/plain" }, body: "foo" };
+      expect(fetchMock.mock.calls[0][1]).toEqual(fetchOptions);
     });
 
     const testReadAttachmentResponse = (others: ITestAttachmentResponse) =>
