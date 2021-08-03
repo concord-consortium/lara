@@ -45776,7 +45776,8 @@ exports.getLibraryInteractiveList = getLibraryInteractiveList;
 var writeAttachment = function (params) {
     return new Promise(function (resolve, reject) {
         var client = client_1.getClient();
-        var content = params.content, contentType = params.contentType, _a = params.options, options = _a === void 0 ? {} : _a, others = __rest(params, ["content", "contentType", "options"]);
+        var content = params.content, _a = params.options, options = _a === void 0 ? {} : _a, others = __rest(params, ["content", "options"]);
+        var _b = params.contentType, contentType = _b === void 0 ? "text/plain" : _b;
         var request = __assign(__assign({}, others), { operation: "write", requestId: client.getNextRequestId() });
         client.addListener("attachmentUrl", function (response) { return __awaiter(void 0, void 0, void 0, function () {
             var headers, _a, e_1;
@@ -45785,7 +45786,7 @@ var writeAttachment = function (params) {
                     case 0:
                         if (!response.url) return [3 /*break*/, 5];
                         headers = __assign({}, options.headers);
-                        headers["Content-Type"] = contentType || "text/plain";
+                        headers["Content-Type"] = contentType;
                         options.headers = headers;
                         _b.label = 1;
                     case 1:
