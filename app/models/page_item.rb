@@ -1,8 +1,8 @@
 class PageItem < ActiveRecord::Base
-  attr_accessible :interactive_page, :position, :section, :embeddable
+  attr_accessible :section, :position, :section, :embeddable
   acts_as_list :scope => :interactive_page
 
-  belongs_to :interactive_page
+  belongs_to :section
   belongs_to :embeddable, :polymorphic => true, :dependent => :destroy
 
   has_many :primary_linked_items, :foreign_key => :primary_id, :class_name => LinkedPageItem, :dependent => :destroy

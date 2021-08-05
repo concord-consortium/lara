@@ -33,6 +33,8 @@ class InteractivePage < ActiveRecord::Base
   # PageItem is a join model; if this is deleted, it should go too
   has_many :page_items, :order => [:section, :position], :dependent => :destroy, :include => [:embeddable]
 
+  has_many :sections, :order => :position, :dependent => :destroy, :include => [:page_items]
+
   def toggle_info_assessment
     self[:toggle_info_assessment].nil? ? true : self[:toggle_info_assessment]
   end
@@ -165,12 +167,20 @@ class InteractivePage < ActiveRecord::Base
     visible_embeddables.select { |item| item.reportable? }
   end
 
-  def add_embeddable(embeddable, position = nil, section = nil)
-    join = PageItem.create!(:interactive_page => self, :embeddable => embeddable,
-                            :position => position, :section => section)
-    unless position
-      join.move_to_bottom
+  # 2021-08-05 NP: Lets add embeddables this way still,
+  # Just look for a section index value
+  def add_embeddable(embeddable, position = nil, section_id = nil)
+    if(self.sections.empty?)
+      self.sections.create(Section::DEFAULT_PARAMS)
     end
+    section = self.sections.find { |s| s.id == section_id } || self.sections.first
+    page_item = section.page_items.create!(embeddable: Embeddable, position: position)
+    if (position)
+      page_item.insert_at(position) if position
+    else
+      page_item.move_to_top
+    end
+
   end
 
   def add_interactive(interactive, position = nil, validate = true)
