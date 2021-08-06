@@ -19,27 +19,9 @@
 # NOTE if your proxy is not configured correctly, oauth will fail to
 # authenticate users against portal.
 #
-# You will also need to set the PORTAL_HOST environment variable (e.g. using `.env` file)
-# to match the name of the portal host. If you are using the dinghy or dory proxy
-# this will be:
-#   app.[project name of portal].docker
-#   examples: app.portal.docker, app.rigse.docker
-#
-# To setup the client id and client secret you should run this command in
-# the portal project:
-#   docker-compose run --rm app bundle exec rake sso:add_client
-# When asked for "secret" you can use 'unsecure local secret' so you don't
-# need to change this file.
-#
-# Also, you need to do a few things on the Portal side:
-# 1. Set SITE_URL environment variable in the portal project (e.g. using `.env` file)
-#    to match your proxy host. If you are using the dinghy or dory proxy this will be:
-#      http://app.[project name of portal].docker
-#      examples: http://app.portal.docker, http://app.rigse.docker
-#    (protocol is necessary in this case)
-#    Portal uses this value when providing `remote_endpoint` to LARA,
-#    which then uses it to send students answers back to Portal.
-# 2. Use docker/dev/docker-compose-lara-proxy.yml overlay.
+# Follow the directions in
+# https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration
+# To complete the setup
 version: '3'
 services:
   app:
