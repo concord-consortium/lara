@@ -40,22 +40,9 @@ Finally, sign out and sign back in again using http://app.lara.docker/users/sign
 
 ### SSO with a local portal
 
-To use SSO with the Portal you need to make sure your `PORTAL_HOST` and `PORTAL_PROTOCOL` is set correctly in your lara `.env` file.
-
-1. In the Portal, edit `.env` and append `docker/dev/docker-compose-lara-proxy.yml` to the `COMPOSE_FILE` var.
-1. In the Portal, as an administrator, setup a new "Auth Client". Use the following settings:
-```
-Name: `localhost`
-App Id: `localhost`
-App Secret: 'unsecure local secret'
-Client Type: 'confidential'
-Site Url: `https://app.lara.docker` *(use https if you are running it that way...)
-Allowed Domains: (leave blank)
-Allowed URL Redirects: 'https://app.lara.docker/users/auth/cc_portal_localhost/callback'
-```
-1. In Lara, edit `.env` and append `docker/dev/docker-compose-portal-proxy.yml` to the `COMPOSE_FILE` var.
-2. In the Portal, edit `.env` set SITE_URL=https://app.portal.docker (Ensure that its using https. Othewise there will be communication issues between Portal and lara)
-3. You may need to use the rails console in LARA to set the `is_admin` flag to the portal admin user.
+Follow the directions in the
+[SSO Clients and LARA (authoring) integration](https://github.com/concord-consortium/rigse/blob/master/README.md#sso-clients-and-lara-authoring-integration)
+section of the Portal's README.
 
 ### Communication with reporting service
 To communicate with reporting service you need to make sure you update '.env' with below variables
