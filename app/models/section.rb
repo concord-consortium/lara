@@ -8,7 +8,7 @@ class Section < ActiveRecord::Base
   HEADER_BLOCK = 'header_block'
   INTERACTIVE_BOX = 'interactive_box'
 
-  LAYOUT_FULL_WIDHT="Full Width"
+  LAYOUT_FULL_WIDTH="Full Width"
   LAYOUT_60_40="60-40"
   LAYOUT_40_60="40-60"
   LAYOUT_70_30="70-30"
@@ -17,7 +17,7 @@ class Section < ActiveRecord::Base
   LAYOUT_DFEAULT=LAYOUT_FULL_WIDTH
 
   LAYOUT_OPTIONS = [
-    { :name => LAYOUT_FULL_WIDHT, :class_val => 'l-full-width' },
+    { :name => LAYOUT_FULL_WIDTH, :class_val => 'l-full-width' },
     { :name => LAYOUT_60_40,      :class_val => 'l-6040' },
     { :name => LAYOUT_40_60,      :class_val => 'l-7030' },
     { :name => LAYOUT_70_30,      :class_val => 'r-4060' },
@@ -30,7 +30,7 @@ class Section < ActiveRecord::Base
   DEFAULT_PARAMS = {
     title: "Default section",
     show: true,
-    layout: DEFAULT_LAYOUT,
+    layout: LAYOUT_DFEAULT,
     can_collapse_small: false
   }
 
