@@ -258,6 +258,9 @@ LightweightStandalone::Application.routes.draw do
   match "/home/bad_browser" => "home#bad_browser"
   match "/print_headers" => "home#print_headers"
 
+  # Remote duplicate
+  match "/remote_duplicate" => "home#remote_duplicate"
+
   # Web interface to show the delayed jobs for admins
   # unfortunately this route has caused other route constraints to stop working?
   match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post], :constraints => lambda { |request|

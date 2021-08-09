@@ -2,6 +2,24 @@ require 'spec_helper'
 
 describe HomeController do
 
+  it_behaves_like "remote duplicate support" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:resource) { FactoryGirl.create(:activity) }
+  end
+
+  it_behaves_like "remote duplicate support" do
+    let(:project) { FactoryGirl.create(:project) }
+    let(:theme) { FactoryGirl.create(:theme) }
+    let(:sequence) { FactoryGirl.create(:sequence,
+      publication_status: 'public',
+      theme: theme,
+      project: project,
+      user: user) }
+    let(:activity) { FactoryGirl.create(:public_activity) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:resource) { FactoryGirl.create(:sequence) }
+  end
+
   describe '#home' do
     before(:each) do
       make_collection_with_rand_modication_time(:public_activity,15)
